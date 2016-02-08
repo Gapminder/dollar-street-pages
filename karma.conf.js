@@ -66,7 +66,7 @@ module.exports = function (config) {
         {type: 'text'},
         {type: 'json'},
         {type: 'html', subdir: 'report-html'},
-        {type: 'lcov'}
+        {type: 'lcov', subdir: 'report-lcov'}
       ]
     },
     webpackServer: {noInfo: true},
