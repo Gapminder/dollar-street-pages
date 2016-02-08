@@ -1,0 +1,79 @@
+{
+  "name": "gapminder.org",
+  "version": "0.0.1",
+  "private": true,
+  "description": "gapminder.org angular2 client application",
+  "main": "index.js",
+  "dependencies": {
+    "angular2": "2.0.0-beta.3",
+    "es6-promise": "3.0.2",
+    "es6-shim": "0.33.3",
+    "es7-reflect-metadata": "1.5.5",
+    "rxjs": "5.0.0-beta.0",
+    "zone.js": "0.5.10"
+  },
+  "devDependencies": {
+    "compression-webpack-plugin": "0.2.0",
+    "concurrently": "1.0.0",
+    "copy-webpack-plugin": "1.1.1",
+    "cpy": "4.0.0",
+    "del": "2.2.0",
+    "eslint": "1.10.3",
+    "exports-loader": "0.6.2",
+    "file-loader": "0.8.5",
+    "gh-pages": "0.9.0",
+    "gulp": "3.9.0",
+    "gulp-eslint": "1.1.1",
+    "gulp-tslint": "4.3.1",
+    "html-loader": "0.4.0",
+    "html-webpack-plugin": "2.8.1",
+    "istanbul-instrumenter-loader": "0.1.3",
+    "jasmine": "2.4.1",
+    "karma": "0.13.19",
+    "karma-chrome-launcher": "0.2.2",
+    "karma-coverage": "0.5.3",
+    "karma-jasmine": "0.3.7",
+    "karma-phantomjs-launcher": "1.0.0",
+    "karma-sourcemap-loader": "0.3.7",
+    "karma-spec-reporter": "0.0.23",
+    "karma-webpack": "1.7.0",
+    "lite-server": "2.0.1",
+    "phantomjs-polyfill": "0.0.1",
+    "phantomjs-prebuilt": "2.1.4",
+    "pre-commit": "1.1.2",
+    "raw-loader": "0.5.1",
+    "reflect-metadata": "0.1.2",
+    "source-map-loader": "0.1.5",
+    "ts-loader": "0.8.0",
+    "tslint": "3.3.0",
+    "typescript": "1.7.5",
+    "typings": "0.6.6",
+    "webpack": "1.12.13"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/.bin/typings install",
+    "deploy": "npm run build:prod && npm run publish:gh-pages",
+    "publish:gh-pages": "./tools/gh-pages-publish.js",
+    "build:prod": "NODE_ENV=production ./node_modules/.bin/webpack --progress --color",
+    "build:dev": "./node_modules/.bin/webpack --progress --color",
+    "watch:dev": "./node_modules/.bin/webpack --progress --color -w",
+    "watch:prod": "NODE_ENV=production ./node_modules/.bin/webpack --progress --color -w",
+    "serve": "./node_modules/.bin/lite-server",
+    "start": "./node_modules/.bin/concurrent \"npm run watch:dev\" \"npm run serve\"",
+    "pretest": "./node_modules/.bin/gulp lint",
+    "test": "NODE_ENV=test ./node_modules/.bin/karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valorkin/gapminder-org.git"
+  },
+  "keywords": [
+    "gapminder"
+  ],
+  "author": "Dmitriy Shekhovtsov <valorkin@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/valorkin/gapminder-org/issues"
+  },
+  "homepage": "https://github.com/valorkin/gapminder-org#readme"
+}
