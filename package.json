@@ -16,6 +16,7 @@
     "compression-webpack-plugin": "0.2.0",
     "concurrently": "1.0.0",
     "copy-webpack-plugin": "1.1.1",
+    "coveralls": "2.11.6",
     "cpy": "4.0.0",
     "del": "2.2.0",
     "eslint": "1.10.3",
