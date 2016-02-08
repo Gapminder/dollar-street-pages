@@ -8,9 +8,6 @@ before_install:
 
 script:
 - npm test
-- npm run deploy
+- cat ./coverage/report-lcov/lcov.info | ./node_modules/.bin/coveralls --verbose
 
-env:
-  global:
-    - GH_REF: github.com:valorkin/gapminder-org.git
-    - secure: "B4pKZG75UCQGVAe4iuW4RKyocyQ8wPgmtm3/pa9/ToTYBtCBK8euEuxCSInPTCL83xHTDPpx7GYHkzWe4ni/f9FZaJV8s+vPAMRQNqRQvoUP88gaKYg0O2O8NDVXQ5hwFvG3rTe6Igg+qPTmr0mJ3GFkS6dbglSSuyoyOic6G9J40oe7hPUHbzG2KJ3I31+UxptGJIIkQ4b/2oFQB4/f18TM6QBr4KWQEFNd2bRFigfwTSk9AV/RvFuwMikFyLVb2j42ro1PJB5zdPcE3iHN868VJMOu6eYOwxP85HdchbhjVv9Cbh5wiE0b7rd3uhA1zSLgdp2HlRtNUmhd2Hjs8A3zqYKI2iyf7xq4i6dwZIx1nqXh8gEfr5y8jRMHRKzP4yqFPRwZKmFy0NG4szewG7md8jcHBjp04k+EmGXYQlaykFpDF0FN54Al+VOqmoj5mhWzZliLV4c6SYsmRHJKvb+toeQEVCU4ocDaj0fSHPc8ndvyGLriF5u1STMyqk7bWh3MJrK0XBL5QGIpORIcycJXasaLpsflyRkPkCt/HD2cbJ4ejgc3J6b/lwosl+aKOSJXZXylGuYm2Ng3fRsNPWOj/O71edAc4FWU2dpPLv7JJS3+Lc0ugjIFv3I+AoiH5kgoP4lFgGvy+ZQtKFIsF1va/4wj9x0UMa63wJkXYxE="
+

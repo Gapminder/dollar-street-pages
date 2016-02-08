@@ -27,7 +27,7 @@ module.exports = function (config) {
     webpack: {
       resolve: {
         root: [path.resolve(cwd)],
-        modulesDirectories: ['node_modules', 'demo', 'components', 'test', '.'],
+        modulesDirectories: ['node_modules'],
         extensions: ['', '.ts', '.js', '.css']
       },
       module: {
@@ -38,7 +38,7 @@ module.exports = function (config) {
           // instrument only testing sources with Istanbul
           {
             test: /\.(js|ts)$/,
-            include: root('components'),
+            include: root('app'),
             loader: 'istanbul-instrumenter-loader',
             exclude: [
               /\.e2e\.ts$/,
@@ -65,7 +65,8 @@ module.exports = function (config) {
       reporters: [
         {type: 'text'},
         {type: 'json'},
-        {type: 'html'}
+        {type: 'html', subdir: 'report-html'},
+        {type: 'lcov'}
       ]
     },
     webpackServer: {noInfo: true},
