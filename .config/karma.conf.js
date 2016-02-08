@@ -1,5 +1,6 @@
-var path = require('path');
-var cwd = process.cwd();
+'use strict';
+
+const webpackConfig = require('./webpack-karma.config');
 
 module.exports = function (config) {
   config.set({
@@ -24,44 +25,10 @@ module.exports = function (config) {
       'test.bundle.js': ['coverage', 'webpack', 'sourcemap']
     },
 
-    webpack: {
-      resolve: {
-        root: [path.resolve(cwd)],
-        modulesDirectories: ['node_modules'],
-        extensions: ['', '.ts', '.js', '.css']
-      },
-      module: {
-        loaders: [
-          {test: /\.ts$/, loader: 'ts-loader', exclude: [/node_modules/]}
-        ],
-        postLoaders: [
-          // instrument only testing sources with Istanbul
-          {
-            test: /\.(js|ts)$/,
-            include: root('app'),
-            loader: 'istanbul-instrumenter-loader',
-            exclude: [
-              /\.e2e\.ts$/,
-              /node_modules/
-            ]
-          }
-        ],
-        noParse: [
-          /rtts_assert\/src\/rtts_assert/,
-          /reflect-metadata/,
-          /zone\.js\/dist/
-        ]
-      },
-      stats: {
-        colors: true,
-        reasons: true
-      },
-      watch: true,
-      debug: true
-    },
+    webpack: webpackConfig,
 
     coverageReporter: {
-      dir: 'coverage/',
+      dir: '../coverage/',
       reporters: [
         {type: 'text'},
         {type: 'json'},
@@ -98,7 +65,3 @@ module.exports = function (config) {
     singleRun: true
   });
 };
-
-function root(p) {
-  return path.join(__dirname, p);
-}

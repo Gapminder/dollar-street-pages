@@ -1,18 +1,13 @@
 {
+  "root": true,
   "env": {
-    "browser": 2,
-    "node": 2,
-    "mocha": 2,
-    "es6": 2
+    "browser": true,
+    "node": true,
+    "mocha": true,
+    "es6": true
   },
   "ecmaFeatures": {
     "modules": true
-  },
-  "globals": {
-    "_": 2,
-    "$": 2,
-    "angular": 2,
-    "jQuery": 2
   },
   "rules": {
     // Possible Errors
@@ -95,7 +90,7 @@
     "no-throw-literal": 2,
     "no-unused-expressions": 2,
     "no-void": 2,
-    "no-warning-comments": [1, { "terms": ["todo", "fixme"], "location": "anywhere" }],
+    "no-warning-comments": [0, { "terms": ["todo", "fixme"], "location": "anywhere" }],
     "no-with": 2,
     "radix": 2,
     "vars-on-top": 0,

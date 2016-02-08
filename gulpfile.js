@@ -6,28 +6,13 @@ gulp.paths = {
     '!node_modules/**/*',
     '!bundles/**/*',
     '!typings/**/*',
-    '!**/*.{ts,coffee}.js'],
-  jssrc: [
-    '*.js',
-    'tools/*.js',
-    '!app/**/*',
-    '!bundles/*.js',
-    '!node_modules/**/*',
     '!**/*.{ts,coffee}.js']
 };
 
 // Code linting
-var esLint = require('gulp-eslint');
 var tslint = require('gulp-tslint');
 
 var paths = gulp.paths;
-
-gulp.task('eslint', function () {
-  return gulp.src(paths.jssrc)
-    .pipe(esLint({useEslintrc: true}))
-    .pipe(esLint.format())
-    .pipe(esLint.failOnError());
-});
 
 gulp.task('tslint', function () {
   return gulp.src(paths.tssrc)
@@ -38,9 +23,7 @@ gulp.task('tslint', function () {
     }));
 });
 
-gulp.task('lint', ['tslint', 'eslint']);
-
 // gulp default task
 gulp.task('default', function () {
-  gulp.start('lint');
+  gulp.start('tslint');
 });
