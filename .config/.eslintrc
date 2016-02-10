@@ -1,0 +1,16 @@
+{
+  "globals": {
+    "browser":true,
+    "jasmine":true
+  },
+  "rules": {
+    "quote-props": 0,
+    "key-spacing": 0,
+    "object-curly-spacing": 0,
+    "camelcase": 0,
+    "eqeqeq": 0,
+    "no-process-env": 0,
+    "no-process-exit":0,
+    "no-console": 0
+  }
+}
