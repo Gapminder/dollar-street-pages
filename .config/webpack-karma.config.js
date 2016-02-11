@@ -6,7 +6,7 @@ module.exports = {
   resolve: {
     root: [path.resolve(cwd)],
     modulesDirectories: ['node_modules'],
-    extensions: ['', '.ts', '.js', '.css']
+    extensions: ['', '.ts', '.js', '.css', '.html']
   },
   module: {
     loaders: [

@@ -28,7 +28,7 @@ const config = {
   resolve: {
     cache: false,
     root: __dirname,
-    extensions: ['', '.ts', '.js', '.json']
+    extensions: ['', '.ts', '.js', '.json', '.css', '.html']
   },
 
   entry: {
