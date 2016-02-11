@@ -1,9 +1,7 @@
 import {Component} from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 
-import { MainComponent } from './main/main.component';
-import { MatrixComponent } from './matrix/matrix.component';
-import { PlaceComponent } from './place/place.component';
+import { config } from './app.config';
 
 @Component({
   selector: 'consumer-app',
@@ -22,24 +20,8 @@ import { PlaceComponent } from './place/place.component';
   ]
 })
 
-@RouteConfig([
-  {
-    path: '/main',
-    name: 'Main',
-    component: MainComponent,
-    useAsDefault: true
-  },
-  {
-    path: '/matrix',
-    name: 'Matrix',
-    component: MatrixComponent
-  },
-  {
-    path: '/place',
-    name: 'Place',
-    component: PlaceComponent
-  }
-])
+
+@RouteConfig(config.routes)
 
 export class AppComponent {
   type:string = 'app component';
