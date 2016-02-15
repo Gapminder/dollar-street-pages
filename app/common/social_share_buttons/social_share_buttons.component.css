@@ -1,0 +1,22 @@
+.share-button-container {
+  overflow: hidden;
+  padding: 15px 10px;
+}
+
+.share-button-container > div {
+  float: left;
+  width: 25%;
+  text-align: center;
+}
+
+.share-button-container > div {
+  float: left;
+  width: 25%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.share-button-container .share-button i {
+  font-size: 26px;
+  color: #767d86;
+}
