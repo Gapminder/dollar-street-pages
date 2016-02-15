@@ -6,14 +6,25 @@ import { config } from './app.config';
 @Component({
   selector: 'consumer-app',
   template: `
-  <h1>Here will be new consumer app</h1>
-    <nav>
-      <a [routerLink]="['Main']">Main</a>
-      <a [routerLink]="['Matrix']">Matrix</a>
-      <a [routerLink]="['Place']">Place</a>
-    </nav>
     <router-outlet></router-outlet>
   `,
+  styles: [`
+  body {
+  color: #374551;
+}
+
+a {
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -o-transition: all .2s ease-out;
+  transition: all .2s ease-out;
+  text-decoration: none !important;
+}
+
+a:hover {
+  cursor: pointer;
+}
+`],
   directives: [ROUTER_DIRECTIVES],
   providers: [
     ROUTER_PROVIDERS
