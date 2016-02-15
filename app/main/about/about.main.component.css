@@ -1,0 +1,41 @@
+#about {
+  padding-top: 67px;
+}
+
+#about .about_header {
+  text-align: center;
+  padding: 30px 0 20px;
+}
+
+#about .about_header h2 {
+  font-size: 44px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+#about .about_header p {
+  color: #767d86;
+  font-size: 24px;
+  line-height: 36px;
+}
+
+#about .about_description p {
+  color: #767d86;
+  font-size: 22px;
+  line-height: 36px;
+}
+
+@media (max-width: 480px) {
+  #about .about_header {
+    padding-top: 0;
+  }
+
+  #about .about_header h2 {
+    font-size: 36px;
+  }
+
+  #about .about_description p {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
