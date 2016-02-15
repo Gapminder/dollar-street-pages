@@ -19,6 +19,7 @@
     "./typings/browser.d.ts",
     "./app/index.ts",
     "./app/app.component.ts",
+    "./app/app.config.ts",
     "./app/common/social_share_buttons/social_share_buttons.component.ts",
     "./app/common/footer/footer.component.ts",
     "./app/main/main.component.ts",
@@ -26,6 +27,8 @@
     "./app/main/about/about.main.component.ts",
     "./app/main/header/header.main.component.ts",
     "./app/matrix/matrix.component.ts",
+    "./app/matrix/matrix.service.ts",
+    "./app/matrix/matrix.images.component/matrix.images.component.ts",
     "./app/place/place.component.ts"
   ]
 }

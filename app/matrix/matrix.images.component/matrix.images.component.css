@@ -1,0 +1,99 @@
+.image-content{
+  position: relative;
+  float: left;
+  background-position: 50% 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.image-content.column-2 {
+  width: 49%;
+  margin: .5%;
+  padding-top: 49%
+}
+
+.image-content.column-3 {
+  width: 32.33%;
+  margin: 0.5%;
+  padding-top: 32.33%;
+}
+
+.image-content.column-4 {
+  width: 24%;
+  margin: .5%;
+  padding-top: 24%;
+}
+
+.image-content.column-5 {
+  width: 19%;
+  margin: .5%;
+  padding-top: 19%;
+}
+
+.image-content.column-6 {
+  width: 15.866%;
+  margin: .4%;
+  padding-top: 15.866%;
+}
+
+.image-content.column-7 {
+  width: 13.685%;
+  margin: .3%;
+  padding-top: 13.685%;
+}
+
+.image-content.column-8 {
+  width: 11.9%;
+  margin: .3%;
+  padding-top: 11.9%;
+}
+
+.image-content.column-9 {
+  width: 10.711%;
+  margin: .2%;
+  padding-top: 10.711%;
+}
+
+.image-content.column-10 {
+  width: 9.8%;
+  margin: .1%;
+  padding-top: 9.8%;
+}
+
+
+.image-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px 8px 8px;
+  font-size: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+}
+
+
+.place-image-box-country,
+.place-image-box-income {
+  position: absolute;
+  bottom: 0;
+  padding: 13px;
+  color: white;
+  font-size: 18px;
+}
+
+.place-image-box-country {
+  left: 0;
+}
+
+.place-image-box:hover {
+  box-shadow: 0 0 0 5px #374551 inset;
+}
+
+.place-image-box-income {
+  right: 0;
+}
+
+.place-image-box-empty {
+  float: left;
+  margin: 0 1px;
+}
