@@ -17,6 +17,10 @@
   ],
   "files": [
     "./typings/browser.d.ts",
-    "./app/index.ts"
+    "./app/index.ts",
+    "./app/app.component.ts",
+    "./app/main/main.component.ts",
+    "./app/matrix/matrix.component.ts",
+    "./app/place/place.component.ts"
   ]
 }
