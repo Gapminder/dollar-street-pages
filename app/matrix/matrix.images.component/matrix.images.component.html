@@ -1,0 +1,20 @@
+<div class="images-container " *ngIf="places.length">
+  <!--ng-mouseenter="thumbUnhover()"-->
+  <div class=" image-content" *ngFor="#place of places"
+       [style.backgroundImage]="place.background"
+       [ngClass]="'column-5'"
+  >
+    <!--
+    ng-class="'column-'+zoomColumn"
+    ng-mouseleave="unHoverHouse(place)"
+       ng-mouseover="hoverHouse(place)"
+       ui-sref="place-page({thing: thingId, image: place.image})"
+       analytics-on="click" analytics-event="go to place page from matrix (click on matrix)"-->
+    <div class="image-description">
+      <span class="place-image-box-country pull-left">
+      {{place.country}}
+      </span>
+      <span class="place-image-box-income pull-right">{{place.income}}$</span>
+    </div>
+  </div>
+</div>
