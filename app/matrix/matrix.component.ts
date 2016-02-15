@@ -2,6 +2,7 @@ import { Component, OnInit ,Inject} from 'angular2/core';
 
 import {MatrixService} from './matrix.service';
 import {MatrixImagesComponent} from './matrix.images.component/matrix.images.component';
+import {FooterComponent} from '../common/footer/footer.component';
 
 let tpl = require('./matrix.component.html');
 let style = require('./matrix.component.css');
@@ -10,7 +11,7 @@ let style = require('./matrix.component.css');
   selector: 'matrix',
   template: tpl,
   styles: [style],
-  directives:[MatrixImagesComponent]
+  directives:[MatrixImagesComponent,FooterComponent]
 })
 export class MatrixComponent implements OnInit{
   public matrixService:MatrixService;
