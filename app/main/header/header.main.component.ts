@@ -1,5 +1,5 @@
 import { Component, OnInit } from 'angular2/core';
-import {SocialShareButtons} from '../../common/social_share_buttons/social_share_buttons.component.ts';
+import {SocialShareButtons} from '../../common/social_share_buttons/social_share_buttons.component';
 
 let tpl = require('./header.main.component.html');
 let style = require('./header.main.component.css');
