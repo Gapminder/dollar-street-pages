@@ -1,3 +1,6 @@
+.images-container {
+  overflow: hidden;
+}
 .image-content{
   position: relative;
   float: left;
