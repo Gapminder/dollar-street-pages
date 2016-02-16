@@ -5,11 +5,13 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 
 import {AppComponent} from './app.component';
 import {MatrixService} from './matrix/matrix.service'
+import {MainPlacesService} from './main/places/main.places.service.ts'
 
 bootstrap(AppComponent,[
   ROUTER_PROVIDERS,
   HTTP_PROVIDERS,
   MatrixService,
+  MainPlacesService,
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);
 
