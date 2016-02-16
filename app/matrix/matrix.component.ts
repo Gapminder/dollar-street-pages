@@ -22,7 +22,7 @@ export class MatrixComponent implements OnInit{
   }
   ngOnInit(): void {
     this.matrixService.getMatrixImages(`thing=546ccf730f7ddf45c0179688&regions=World&countries=World`)
-      .subscribe((res)=>{
+      .subscribe((res: any)=>{
         if(res.err){
           return res.err;
         }

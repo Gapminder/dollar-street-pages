@@ -25,6 +25,7 @@
     "./app/main/main.component.ts",
     "./app/main/places/main.places.service.ts",
     "./app/main/comparison/comparison.main.component.ts",
+    "./app/main/things/things.main.component.js",
     "./app/main/about/about.main.component.ts",
     "./app/main/places/places.main.component.ts",
     "./app/main/header/header.main.component.ts",

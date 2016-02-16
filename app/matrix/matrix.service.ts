@@ -8,7 +8,7 @@ import {Observable} from "rxjs/Observable";
 export class MatrixService {
   public http:Http;
 
-  constructor(@Inject(Http) http) {
+  constructor(@Inject(Http) http:Http) {
     this.http = http;
   }
 
