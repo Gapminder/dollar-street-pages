@@ -5,7 +5,7 @@ import {Observable} from "rxjs/Observable";
 export class ThingsMainService{
   public http:Http;
 
-  constructor(@Inject(Http) http:any) {
+  constructor(@Inject(Http) http:Http) {
     this.http = http;
   }
 

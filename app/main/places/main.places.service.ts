@@ -6,7 +6,7 @@ import {Observable} from "rxjs/Observable";
 export class MainPlacesService {
   public http:Http;
 
-  constructor(@Inject(Http) http) {
+  constructor(@Inject(Http) http:Http) {
     this.http = http;
   }
 
