@@ -1,0 +1,34 @@
+.header-content {
+  display: block;
+  vertical-align: top;
+  width: 100%;
+  height: 68px !important;
+  background-color: white;
+}
+
+.header-content .icon-container {
+  position: relative;
+  z-index: 500;
+}
+
+.header-content .icon-container img {
+  width: 55px;
+  height: 55px;
+  margin: 5px 10px;
+  cursor: pointer;
+}
+
+.header-content .icon-container span {
+  color: #303e4b;
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+@media (max-width: 480px) {
+  .header-content .icon-container img {
+    width: 45px;
+    height: 45px;
+    margin-top: 12px;
+    margin-right: 4px;
+  }
+}
