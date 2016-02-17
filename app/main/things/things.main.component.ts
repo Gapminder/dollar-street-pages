@@ -1,5 +1,6 @@
-import {Component, Inject} from 'angular2/core';
-import {ThingsMainService} from './things.main.service'
+import { Component, OnInit , Inject } from 'angular2/core';
+
+import {ThingsMainService} from './things.main.service';
 
 let tpl = require('./things.main.component.html');
 let style = require('./things.main.component.css');
@@ -13,14 +14,13 @@ let style = require('./things.main.component.css');
 
 export class ThingsMainComponent {
   public thingsMainService:ThingsMainService;
-  public things:any[] = [];
-  public amazonUrl:any;
+  public things:any[]=[];
 
   constructor(@Inject(ThingsMainService) thingsMainService:any) {
     this.thingsMainService = thingsMainService;
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.thingsMainService.getMainThings({})
       .subscribe((res:any)=> {
         if (res.err) {

@@ -23,6 +23,7 @@
     "./app/common/social_share_buttons/social_share_buttons.component.ts",
     "./app/common/footer/footer.component.ts",
     "./app/main/main.component.ts",
+    "./app/main/concept/concept.main.component.ts",
     "./app/main/places/main.places.service.ts",
     "./app/main/comparison/comparison.main.component.ts",
     "./app/main/things/things.main.component.ts",
