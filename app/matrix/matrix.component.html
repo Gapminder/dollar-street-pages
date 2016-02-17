@@ -1,3 +1,5 @@
-<h1>Matrix Component</h1>
-<matrix-images [places]="places"></matrix-images>
+<div class="matrix-header" >
+<street [places]="places" [chosenPlaces]="chosenPlaces" [hoverPlace]="hoverPlace"></street>
+</div>
+<matrix-images [places]="places" (hoverPlace)="hoverPlaceS($event)"></matrix-images>
 <footer></footer>
