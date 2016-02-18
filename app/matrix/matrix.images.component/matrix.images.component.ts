@@ -18,8 +18,6 @@ export class MatrixImagesComponent {
   private currentPlaces = [];
   @Input('places')
   private places:Observable<any>;
-  // @Input('padding')
-  // private padding:Observable<any>;
   private element:HTMLElement;
 
 
@@ -30,17 +28,10 @@ export class MatrixImagesComponent {
   ngOnInit():any {
     this.places.subscribe((places)=> {
       this.currentPlaces = places;
-    })
-    // this.padding.subscribe((padding)=> {
-    //   this.paddingTop = padding.top;
-    //   this.paddingBottom = padding.bottom;
-    // })
+    });
   }
 
-  //
   hoverImage(place):void {
     this.hoverPlace.emit(place);
   }
-
-
 }
