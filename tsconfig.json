@@ -39,6 +39,8 @@
     "./app/matrix/matrix.component.ts",
     "./app/matrix/matrix.service.ts",
     "./app/matrix/matrix.images.component/matrix.images.component.ts",
-    "./app/place/place.component.ts"
+    "./app/place/place.component.ts",
+    "./app/place/family/family.place.component.ts",
+    "./app/place/family/family.place.service.ts"
   ]
 }
