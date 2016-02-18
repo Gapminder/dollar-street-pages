@@ -31,7 +31,42 @@ export class FamilyPlaceComponent {
     this.nextImages(10);
   }
 
-  nextImages () {
+  goToThing (thing, image) {
+    this.images.length = 0;
+    this.nextImages(10, image);
+    this.getThings();
+  };
+
+  getThings () {
+
+    this.places.length = 0;
+
+    this.familyPlaceService.getPlaceFamilyThings()
+      .subscribe((res:any)=> {
+        if (res.err) {
+          location.go('main');
+          return res.err;
+        }
+        this.updateArr(this.places, res.places);
+
+        this.resThing = res.thing;
+        this.image = res.image;
+      });
+  };
+
+
+  updateArr (context:any, update:any, change:any) {
+    var cloneArr = update.slice(0);
+
+    if (change) {
+      cloneArr = change(cloneArr);
+    }
+
+    Array.prototype.unshift.apply(cloneArr, [0, 1]);
+    Array.prototype.splice.apply(context, cloneArr);
+  }
+
+  nextImages (limit, image, cb) {
 
     this.familyPlaceService.getPlaceFamilyImages('isTrash=false&limit=10&placeId=54b4f73c9f0c8d666e1ac45e&skip=0')
       .subscribe((res:any)=> {

@@ -5,11 +5,11 @@
          *ngFor="#image of images">
       <div class="family-image"
            image-loading="image.background"
-           (click)="goToThing(image.thing, image._id)"
+           (click)="goToThing(image)"
            [ngStyle]="{'background-image':image.background}">
 
         <div class="image-description">
-          <img *ngIf="image.thingIcon" src="{{image.thingIcon}}" alt="">
+          <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
           <span>{{image.thingName}}</span>
         </div>
         <div class="hover-block">
