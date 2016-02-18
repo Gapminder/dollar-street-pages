@@ -1,3 +1,8 @@
-<header></header>
-<matrix-images [places]="places"></matrix-images>
+<div class="matrix-header">
+  <header (mouseenter)="isHover()" ></header>
+  <street [places]="places" [chosenPlaces]="chosenPlaces" [hoverPlace]="hoverPlace" [hoverHeader]="hoverHeader"></street>
+</div>
+<matrix-images [places]="places" (hoverPlace)="hoverPlaceS($event)"
+[padding]="padding"
+></matrix-images>
 <footer></footer>

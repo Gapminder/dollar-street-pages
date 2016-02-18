@@ -1,3 +1,25 @@
-/**
-* Custom styles should be here
-*/
+.matrix-header {
+  z-index: 9995;
+}
+.matrix-header {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.matrix-header {
+  background-color: #fff;
+}
+
+.matrix-header .street-box svg {
+  position: relative;
+  top: -11px;
+  width: 100%;
+  height: 61px;
+  z-index: 9;
+}
+
+.matrix-header .street-box svg text {
+  font-family: "Bariol Regular";
+}
