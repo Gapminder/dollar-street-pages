@@ -1,5 +1,37 @@
 <div class="street-box">
-  <svg>
+  <svg (mouseover)="onStreet($event)">
 
   </svg>
+  <div class='thumbView-box'  [style.left.px]="thumbLeft" *ngIf="isThumbView"
+  (mouseleave)="thumbUnhover()">
+    <div class="thumbViewPlace-content" *ngFor="#place of thumbPlaces"
+    (mouseenter)="thumbHover(place)">
+      <!--
+         ui-sref="place-page({thing: thingId, image: place.image})"
+         analytics-on="click" analytics-event="go to place page from matrix (click on thumb)"-->
+      <div class="load">
+        <div class="la-ball-spin la-dark la-2x">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+      <div class="thumbViewPlace"
+           [style.backgroundImage]="place.background">
+        <div class="house-thumb-description" >
+          <span class="pull-left">{{place.country}}</span>
+          <span class="pull-right">{{place.income}}$</span>
+        </div>
+        <div class="hover-block">
+          <span>+</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

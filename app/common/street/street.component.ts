@@ -13,7 +13,8 @@ let style = require('./street.component.css');
 })
 
 export class StreetComponent implements OnInit {
-
+  @Input('hoverHeader')
+  private hoverHeader:Observable<any>;
   @Input('places')
   private places:Observable<any>;
   @Input('chosenPlaces')
@@ -24,6 +25,11 @@ export class StreetComponent implements OnInit {
   private street:any;
 
   private element:HTMLElement;
+
+  private thumbPlaces:any[];
+
+  private thumbLeft:number;
+  private isThumbView:boolean;
 
   constructor(@Inject(ElementRef) element) {
     this.element = element.nativeElement;
@@ -36,6 +42,10 @@ export class StreetComponent implements OnInit {
     this.places.subscribe((places)=> {
       this.street
         .drawScale(places)
+        .set('places', _.sortBy(places, 'income'))
+        .set('fullIncomeArr', _.chain(places).sortBy('income').map((place:any)=> {
+          return this.street.scale(place.income);
+        }).value());
     });
 
     this.chosenPlaces.subscribe((chosenPlaces)=> {
@@ -49,9 +59,47 @@ export class StreetComponent implements OnInit {
         return;
       }
       this.street.drawHoverCircle(hoverPlace).drawHoverHouse(hoverPlace);
-
     })
+    this.hoverHeader.subscribe(()=>{
+      this.thumbUnhover()
+    })
+  }
 
+  onStreet(e) {
+    this.street.onSvgHover(e.x, (options)=> {
+      let {places, left}=options;
+      this.isThumbView = true;
+
+      this.thumbPlaces = places;
+
+      let indent = 260;
+      if (places.length === 2) {
+        indent = 175;
+      }
+      if (places.length === 1) {
+        indent = 87.5;
+      }
+      this.thumbLeft = left - indent;
+    })
+  }
+
+
+  public thumbHover(place) {
+    this.street
+      .removeHouses('chosen')
+      .removeCircles('hover');
+    let currentPlaces = _.filter(this.street.places, (currentPlace:any) => {
+      return currentPlace.income === place.income;
+    });
+    this.street.set('hoverPlace', place)
+      .drawLineOfHouses(currentPlaces)
+      .drawHoverCircle(place);
+  };
+
+  public thumbUnhover() {
+    this.street.hoverPlace = null;
+    this.street.clearAndRedraw(this.street.chosenPlaces);
+    this.isThumbView = false;
   }
 
 }

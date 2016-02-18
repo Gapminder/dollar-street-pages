@@ -1,4 +1,5 @@
-<div class="images-container " *ngIf="currentPlaces.length">
+<div class="images-container " *ngIf="currentPlaces.length"
+     >
   <!--ng-mouseenter="thumbUnhover()"-->
   <div class=" image-content" *ngFor="#place of currentPlaces"
        [style.backgroundImage]="place.background"

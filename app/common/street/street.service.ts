@@ -34,8 +34,8 @@ export class StreetDrawService {
     return this;
   };
 
-  public onSvgHover(positionX) {
-    this.hoverOnScalePoint(this.whatIsIncome(Math.round(positionX)));
+  public onSvgHover(positionX, cb) {
+    this.hoverOnScalePoint(this.whatIsIncome(Math.round(positionX)), cb);
   };
 
   public whatIsIncome(positionX):any {
@@ -73,14 +73,6 @@ export class StreetDrawService {
       .attr('height', 0.5 * this.height + 55)
       .style('fill', 'white');
 
-    // if (!mobile) {
-    //   this.svg.selectAll('rect.headerBox').on('mouseenter', () => {
-    //     if (this.thumbUnhover) {
-    //       this.thumbUnhover.call(this);
-    //     }
-    //   });
-    // }
-
     this.svg
       .selectAll('text.poorest')
       .data([this.poorest])
@@ -113,46 +105,26 @@ export class StreetDrawService {
       .attr('stroke-width', 3)
       .attr('stroke', '#d7dbe1');
 
-      this.svg
-        .selectAll('circle.point')
-        .data(places)
-        .enter()
-        .append('circle')
-        .attr('class', 'point')
-        .attr('cx', (d) => {
-          return this.scale(d.income);
-        })
-        .attr('cy', 0.5 * this.height + 15)
-        .attr('r', 5.5)
-        .style('fill', (d) => {
-          if (this.incomeArr.indexOf(d.income) === -1) {
-            this.incomeArr.push(d.income);
-            return '#babfc4';
-          }
-          return '#52606b';
-        });
+    this.svg
+      .selectAll('circle.point')
+      .data(places)
+      .enter()
+      .append('circle')
+      .attr('class', 'point')
+      .attr('cx', (d) => {
+        return this.scale(d.income);
+      })
+      .attr('cy', 0.5 * this.height + 15)
+      .attr('r', 5.5)
+      .style('fill', (d) => {
+        if (this.incomeArr.indexOf(d.income) === -1) {
+          this.incomeArr.push(d.income);
+          return '#babfc4';
+        }
+        return '#52606b';
+      });
 
     this.incomeArr.length = 0;
-    // if (!mobile) {
-    //   this.svg
-    //     .selectAll('circle.point')
-    //     .data(places)
-    //     .enter()
-    //     .append('circle')
-    //     .attr('class', 'point')
-    //     .attr('cx', (d) => {
-    //       return this.scale(d.income);
-    //     })
-    //     .attr('cy', 0.5 * this.height + 15)
-    //     .attr('r', 5.5)
-    //     .style('fill', (d) => {
-    //       if (this.incomeArr.indexOf(d.income) === -1) {
-    //         this.incomeArr.push(d.income);
-    //         return '#babfc4';
-    //       }
-    //       return '#52606b';
-    //     });
-    // }
 
     this.svg
       .selectAll('text.scale-label')
@@ -179,57 +151,27 @@ export class StreetDrawService {
     return this;
   };
 
-  public hoverOnScalePoint(d):void {
-    // if (!d) {
-    //   return;
-    // }
-    // let this = this;
-    // this.hideThumb();
-    // this
-    //   .set('hoverPlace', null)
-    //   .removeHouses('chosen')
-    //   .removeCircles('hover');
-    // let places = _.filter(this.places, (place) => {
-    //   return place.income === d.income;
-    // });
-    // if (places.length === 1) {
-    //   this.set('hoverPlace', places[0])
-    //     .drawHoverCircle(places[0]);
-    // }
-    // let options = {
-    //   places: places,
-    //   left: this.scale(d.income),
-    //   top: 0.5 * this.height - 35,
-    //   thumbHover: places.length > 1 ? (place) => {
-    //     return this.thumbHover.call(this, place);
-    //   } : null,
-    //   thumbUnhover: ()=> {
-    //     return this.thumbUnhover.call(this);
-    //   },
-    //   thumbClick: (place)=> {
-    //     return this.thumbClick.call(this, place);
-    //   }
-    // };
-    // this.showThumb(options);
-    // this.drawLineOfHouses(places);
-  };
-
-  public thumbHover(place) {
-    // this
-    //   .removeHouses('chosen')
-    //   .removeCircles('hover');
-    // let currentPlaces = _.filter(this.places, (currentPlace) => {
-    //   return currentPlace.income === place.income;
-    // });
-    // this.set('hoverPlace', place)
-    //   .drawLineOfHouses(currentPlaces)
-    //   .drawHoverCircle(place);
-  };
-
-  public thumbUnhover() {
-    // this.hideThumb();
-    // this.hoverPlace = null;
-    // this.clearAndRedraw(this.chosenPlaces);
+  public hoverOnScalePoint(d, cb):void {
+    if (!d) {
+      return;
+    }
+    this
+      .set('hoverPlace', null)
+      .removeHouses('chosen')
+      .removeCircles('hover');
+    let places = _.filter(this.places, (place:any) => {
+      return place.income === d.income;
+    });
+    if (places.length === 1) {
+      this.set('hoverPlace', places[0])
+        .drawHoverCircle(places[0]);
+    }
+    let options = {
+      places: places,
+      left: this.scale(d.income),
+    };
+    cb(options);
+    this.drawLineOfHouses(places);
   };
 
   public drawTablesOfHouses(places, selector):this {
@@ -366,7 +308,7 @@ export class StreetDrawService {
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke-width', (house) => {
-        if(!this.hoverPlace){
+        if (!this.hoverPlace) {
           return 1
         }
         if (house._id === this.hoverPlace._id) {
@@ -381,7 +323,7 @@ export class StreetDrawService {
         return !datum ? void 0 : fills[datum.region];
       })
       .attr('fill-opacity', (house) => {
-        if(!this.hoverPlace){
+        if (!this.hoverPlace) {
           return 1
         }
         if (house._id === this.hoverPlace._id) {
@@ -447,7 +389,7 @@ export class StreetDrawService {
         return !d ? void 0 : 5.5;
       })
       .attr('stroke-width', (house)=> {
-        if(!this.hoverPlace){
+        if (!this.hoverPlace) {
           return 1
         }
         if (house._id === this.hoverPlace._id) {
