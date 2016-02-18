@@ -1,5 +1,8 @@
 import { Component } from 'angular2/core';
 import {FooterComponent} from '../common/footer/footer.component';
+import {StreetComponent} from '../common/street/street.component';
+import {HeaderComponent} from '../common/header/header.component';
+
 
 let tpl = require('./place.component.html');
 let style = require('./place.component.css');
@@ -9,7 +12,7 @@ let style = require('./place.component.css');
   selector: 'place',
   template: tpl,
   styles: [style],
-  directives: [FooterComponent]
+  directives: [HeaderComponent,StreetComponent,FooterComponent]
 })
 export class PlaceComponent {
 

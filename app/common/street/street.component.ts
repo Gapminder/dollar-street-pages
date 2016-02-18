@@ -39,7 +39,7 @@ export class StreetComponent implements OnInit {
     let svg = this.element.querySelector('.street-box svg') as HTMLElement;
     this.street = new StreetDrawService(svg);
     this.street.init();
-    this.places.subscribe((places)=> {
+    this.places&&this.places.subscribe((places)=> {
       this.street
         .drawScale(places)
         .set('places', _.sortBy(places, 'income'))
@@ -48,11 +48,12 @@ export class StreetComponent implements OnInit {
         }).value());
     });
 
-    this.chosenPlaces.subscribe((chosenPlaces)=> {
+    this.chosenPlaces&&this.chosenPlaces.subscribe((chosenPlaces)=> {
       this.street.set('chosenPlaces', chosenPlaces).clearAndRedraw(chosenPlaces);
     });
 
-    this.hoverPlace.subscribe((hoverPlace)=> {
+
+    this.hoverPlace&&this.hoverPlace.subscribe((hoverPlace)=> {
       this.street.set('hoverPlace', hoverPlace);
       this.street.clearAndRedraw(this.street.chosenPlaces);
       if (!hoverPlace) {
@@ -60,7 +61,7 @@ export class StreetComponent implements OnInit {
       }
       this.street.drawHoverCircle(hoverPlace).drawHoverHouse(hoverPlace);
     })
-    this.hoverHeader.subscribe(()=>{
+    this.hoverHeader&&this.hoverHeader.subscribe(()=>{
       this.thumbUnhover()
     })
   }
