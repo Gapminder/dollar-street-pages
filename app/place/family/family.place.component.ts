@@ -44,7 +44,6 @@ export class FamilyPlaceComponent {
     this.familyPlaceService.getPlaceFamilyThings()
       .subscribe((res:any)=> {
         if (res.err) {
-          location.go('main');
           return res.err;
         }
         this.updateArr(this.places, res.places);
