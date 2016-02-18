@@ -1,0 +1,23 @@
+<div class="family-things-container family-things-container-scroll">
+  <div class="family-images-container">
+       <!--infinite-scroll="nextImages(10)">-->
+    <div class="family-image-container"
+         *ngFor="#image of images">
+      <div class="family-image"
+           image-loading="image.background"
+           (click)="goToThing(image.thing, image._id)"
+           [ngStyle]="{'background-image':image.background}">
+
+        <div class="image-description">
+          <img *ngIf="image.thingIcon" src="{{image.thingIcon}}" alt="">
+          <span>{{image.thingName}}</span>
+        </div>
+        <div class="hover-block">
+          <span>+</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--<load-more></load-more>-->
+</div>

@@ -4,6 +4,8 @@ import {StreetComponent} from '../common/street/street.component';
 import {HeaderComponent} from '../common/header/header.component';
 
 
+import {FamilyPlaceComponent} from './family/family.place.component';
+
 let tpl = require('./place.component.html');
 let style = require('./place.component.css');
 
@@ -12,8 +14,9 @@ let style = require('./place.component.css');
   selector: 'place',
   template: tpl,
   styles: [style],
-  directives: [HeaderComponent,StreetComponent,FooterComponent]
+  directives: [HeaderComponent, StreetComponent, FamilyPlaceComponent, FooterComponent]
 })
+
 export class PlaceComponent {
 
 }
