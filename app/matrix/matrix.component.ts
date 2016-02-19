@@ -11,7 +11,7 @@ import {FooterComponent} from '../common/footer/footer.component';
 import {HeaderComponent} from '../common/header/header.component';
 import {Subject} from "rxjs/Subject";
 
-let _ = require('lodash')
+let _ = require('lodash');
 
 
 let tpl = require('./matrix.component.html');
