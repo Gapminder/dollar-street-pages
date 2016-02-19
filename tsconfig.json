@@ -29,6 +29,7 @@
     "./app/common/search/search.component.ts",
     "./app/main/main.component.ts",
     "./app/main/concept/concept.main.component.ts",
+    "./app/main/concept/concept.main.service.ts",
     "./app/main/places/main.places.service.ts",
     "./app/main/comparison/comparison.main.component.ts",
     "./app/main/things/things.main.component.ts",
