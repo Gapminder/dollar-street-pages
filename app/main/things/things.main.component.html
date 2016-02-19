@@ -12,8 +12,7 @@
       </div>
 
       <div class="col-md-12 things_content">
-        <div class="thing" *ngFor="#thing of things">
-             <!--ui-sref="matrix-page(::{thing: thing._id,states:'World',zoom:5,row:1})"-->
+        <div class="thing" *ngFor="#thing of things" [routerLink]="['Matrix', {thing: thing._id,countries:'World',regions:'World'}]">
              <!--analytics-on="click" analytics-event="go to matrix page from main (click on thing)">-->
           <div class="thing_wrapper">
             <div class="image_container">

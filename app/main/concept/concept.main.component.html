@@ -77,10 +77,9 @@
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's simply dummy text of the printing and typesetting industry. Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing
             </p>
-            <a>
-              <!--ui-sref="matrix-page({thing: activeThing._id,states:'World',zoom:5,row:1})"-->
+            <a [routerLink]="['Matrix', {thing: activeThing._id,countries:'World',regions:'World'}]">
                <!--analytics-on="click" analytics-event="go to matrix page from main">-->
-              See all <span>{{activeThing.plural}}</span> >></a>
+              See all <span >{{activeThing.plural}}</span> >></a>
           </div>
         </div>
       </div>

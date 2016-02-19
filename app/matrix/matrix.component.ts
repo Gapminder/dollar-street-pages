@@ -1,5 +1,9 @@
 import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
 
+import {
+  RouteParams,
+} from 'angular2/router';
+
 import {MatrixService} from './matrix.service';
 import {MatrixImagesComponent} from './matrix.images.component/matrix.images.component';
 import {StreetComponent} from '../common/street/street.component';
@@ -34,14 +38,35 @@ export class MatrixComponent implements OnInit {
   private footerHeight:number;
   private imageMargin:number;
 
+  private routeParams:RouteParams;
+  private thing:string;
+  private countries:string;
+  private regions:string;
+
   constructor(@Inject(MatrixService) matrixService,
-              @Inject(ElementRef) element) {
+              @Inject(ElementRef) element,
+  @Inject(RouteParams) routeParams) {
     this.matrixService = matrixService;
     this.element = element.nativeElement
+    this.routeParams = routeParams;
   }
 
   ngOnInit():void {
-    this.urlChanged();
+
+    this.thing = this.routeParams.get('thing');
+    this.countries = this.routeParams.get('countries');
+    this.regions = this.routeParams.get('regions');
+    if(!this.thing){
+      this.thing='546ccf730f7ddf45c0179688';
+    }
+    if(!this.countries){
+      this.countries='World';
+    }
+    if(!this.regions){
+      this.regions='World';
+    }
+    let query =`thing=${this.thing}&countries=${this.countries}&regions=${this.regions}`
+    this.urlChanged(query);
     document.addEventListener('scroll', ()=> {
       this.stopScroll()
     });
@@ -69,7 +94,9 @@ export class MatrixComponent implements OnInit {
       row++;
     }
     let clonePlaces = _.cloneDeep(this.placesArr);
-    this.chosenPlaces.next(clonePlaces.splice(row * 5, 5));
+    if(clonePlaces&&clonePlaces.length){
+      this.chosenPlaces.next(clonePlaces.splice(row * 5, 5));
+    }
   }
 
 
@@ -98,13 +125,15 @@ export class MatrixComponent implements OnInit {
   }
 
 
-  urlChanged():void {
-    this.matrixService.getMatrixImages(`thing=546ccf730f7ddf45c0179688&regions=World&countries=World`)
+  urlChanged(query):void {
+    this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
         this.places.next(val.places);
         this.placesArr = val.places
         let clonePlaces = _.cloneDeep(this.placesArr);
-        this.chosenPlaces.next(clonePlaces.splice((1 - 1) * 5, 5));
+        if(clonePlaces&&clonePlaces.length){
+          this.chosenPlaces.next(clonePlaces.splice((1 - 1) * 5, 5));
+        }
       })
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from 'angular2/core';
-
+import {
+  RouterLink,
+} from 'angular2/router';
 import {ConceptMainService} from './concept.main.service';
 
 let tpl = require('./concept.main.component.html');
@@ -9,8 +11,8 @@ let style = require('./concept.main.component.css');
   selector: 'concept-main',
   template: tpl,
   styles: [style],
-  providers: [ConceptMainService]
-
+  providers: [ConceptMainService],
+  directives:[RouterLink]
 })
 
 export class ConceptMainComponent {
