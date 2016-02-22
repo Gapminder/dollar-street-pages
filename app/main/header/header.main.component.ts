@@ -21,10 +21,10 @@ export class HeaderMainComponent {
   }
   /** remove document and other things .This code is not pretty*/
   animateScroll(selector, inc, duration, cb) {
-    var elem = document.getElementById(selector);
-    var startScroll = document.body.scrollTop;
-    var endScroll = elem.offsetTop;
-    var step = (endScroll - startScroll) / duration * inc;
+    let elem = document.getElementById(selector);
+    let startScroll = document.body.scrollTop;
+    let endScroll = elem.offsetTop;
+    let step = (endScroll - startScroll) / duration * inc;
 
     requestAnimationFrame(this.goToScroll(step, duration, inc, cb));
   }
