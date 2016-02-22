@@ -23,3 +23,86 @@
 .matrix-header .street-box svg text {
   font-family: "Bariol Regular";
 }
+
+
+
+.zoom-column {
+  position: fixed;
+  top: 145px;
+  right: 20px;
+}
+
+.zoom-column button,
+.zoom-column button b {
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -o-transition: all .2s ease-out;
+  transition: all .2s ease-out;
+}
+
+.zoom-column button {
+  width: 33px;
+  height: 33px;
+  background: #525E68;
+  border: none;
+  border-radius: 50%;
+  margin-right: 3px;
+  box-shadow: 0.574px 0.819px 2.88px 0.12px rgba(0, 0, 0, 0.2);
+  padding: 0 6px;
+}
+
+.zoom-column button b {
+  color: #fff;
+  line-height: 0;
+  font-size: 22px;
+}
+
+.zoom-column button:hover {
+  background-color: #374551;
+}
+
+.zoom-column button:hover b {
+  color: #fff;
+}
+
+.zoom-column button[disabled="disabled"] {
+  background: #9babb8 !important;
+  cursor: not-allowed;
+  opacity: .7;
+}
+
+.zoom-column button[disabled="disabled"] b {
+  color: #374551 !important;
+}
+
+@media (max-width: 1200px) {
+  .zoom-column {
+    top: 130px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .zoom-column {
+    right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .zoom-column {
+    top: 128px;
+    right: 14px;
+  }
+
+  .zoom-column button {
+    width: 29px;
+    height: 29px;
+  }
+}
+
+@media (max-width: 495px) {
+  .zoom-column {
+    top: 125px;
+    right: 8px;
+  }
+}

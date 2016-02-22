@@ -8,8 +8,17 @@
           [hoverHeader]="hoverHeader"></street>
 </div>
 
-<matrix-images [places]="places" [thing]="thing"
+<matrix-images [places]="places" [thing]="thing" [zoom]="zoom"
                (hoverPlace)="hoverPlaceS($event)"
                [padding]="padding"></matrix-images>
-
+<div class="zoom-column pull-right">
+  <button type="button"
+          (click)="changeZoom(-1)">
+    <b>+</b>
+  </button>
+  <button type="button"
+         (click)="changeZoom(1)">
+    <b>-</b>
+  </button>
+</div>
 <footer></footer>

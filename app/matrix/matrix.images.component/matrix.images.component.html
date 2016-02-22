@@ -1,15 +1,12 @@
-<div class="images-container " *ngIf="currentPlaces.length"
-     >
-  <!--ng-mouseenter="thumbUnhover()"-->
+<div class="images-container " *ngIf="currentPlaces.length">
   <div class=" image-content" *ngFor="#place of currentPlaces"
        [style.backgroundImage]="place.background"
-       [ngClass]="'column-5'"
-        (mouseenter)="hoverImage(place)"
-        (mouseleave)="hoverImage()"
+       [ngClass]="'column-'+zoom"
+       (mouseenter)="hoverImage(place)"
+       (mouseleave)="hoverImage()"
        [routerLink]="['Place',{thing:thing,image:place.image}]"
   >
     <!--
-    ng-class="'column-'+zoomColumn"
        analytics-on="click" analytics-event="go to place page from matrix (click on matrix)"-->
     <div class="image-description">
       <span class="place-image-box-country pull-left">
