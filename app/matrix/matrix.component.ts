@@ -76,7 +76,6 @@ export class MatrixComponent implements OnInit {
       this.regions = 'World';
     }
     this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&row=${this.row}`;
-    this.location.replaceState(`/matrix`, `${this.query}`);
     this.urlChanged(this.query);
     document.addEventListener('scroll', ()=> {
       this.stopScroll()
@@ -148,6 +147,7 @@ export class MatrixComponent implements OnInit {
 
 
   urlChanged(query):void {
+    this.location.replaceState(`/matrix`, `${query}`);
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
         this.places.next(val.places);
