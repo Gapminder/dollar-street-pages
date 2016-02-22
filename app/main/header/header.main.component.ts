@@ -34,7 +34,6 @@ export class HeaderMainComponent {
       let currentDuration = duration - inc;
       document.body.scrollTop += step;
       if (currentDuration < inc) {
-        console.log(currentDuration,document.body.scrollTop,step);
         cb();
         return;
       }
