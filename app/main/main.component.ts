@@ -1,4 +1,4 @@
-import { Component, OnInit ,Inject} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {HeaderMainComponent} from './header/header.main.component';
 import {ConceptMainComponent} from './concept/concept.main.component';
 import {ComparisonMainComponent} from './comparison/comparison.main.component';
@@ -20,6 +20,6 @@ let style = require('./main.component.css');
 })
 
 export class MainComponent {
-
+  
 }
 
