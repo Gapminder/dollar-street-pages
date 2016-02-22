@@ -10,7 +10,6 @@ let style = require('./matrix.images.component.css');
 @Component({
   selector: 'matrix-images',
   outputs: ['hoverPlace'],
-  inputs:['thing'],
   template: tpl,
   styles: [style],
   directives:[RouterLink]
@@ -22,6 +21,11 @@ export class MatrixImagesComponent {
   private currentPlaces = [];
   @Input('places')
   private places:Observable<any>;
+  @Input('thing')
+  private thing:string;
+  @Input('zoom')
+  private zoom:number;
+  
   private element:HTMLElement;
 
 

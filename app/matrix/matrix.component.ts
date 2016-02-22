@@ -47,6 +47,7 @@ export class MatrixComponent implements OnInit {
   private row:number;
   private location:any;
   private query:string;
+  private zoom:number;
 
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
@@ -62,7 +63,11 @@ export class MatrixComponent implements OnInit {
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries');
     this.regions = this.routeParams.get('regions');
-    this.row = this.routeParams.get('row') as number;
+    this.row = parseInt(this.routeParams.get('row'),10);
+    this.zoom = parseInt(this.routeParams.get('zoom'),10);
+    if (!this.zoom||this.zoom<2||this.zoom>10) {
+      this.zoom = 5;
+    }
     if (!this.row) {
       this.row = 1;
     }
@@ -75,7 +80,7 @@ export class MatrixComponent implements OnInit {
     if (!this.regions) {
       this.regions = 'World';
     }
-    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&row=${this.row}`;
+    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}`;
     this.urlChanged(this.query);
     document.addEventListener('scroll', ()=> {
       this.stopScroll()
@@ -114,7 +119,7 @@ export class MatrixComponent implements OnInit {
 
     let clonePlaces = _.cloneDeep(this.placesArr);
     if (clonePlaces && clonePlaces.length) {
-      this.chosenPlaces.next(clonePlaces.splice(row * 5, 5));
+      this.chosenPlaces.next(clonePlaces.splice(row * this.zoom, this.zoom));
     }
   }
 
@@ -122,10 +127,10 @@ export class MatrixComponent implements OnInit {
   getPaddings() {
     let windowInnerWidth = document.querySelector('body').scrollWidth;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
-    this.imageMargin = (windowInnerWidth - this.imageHeight * 5) / (2 * 5);
+    this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
 
     let bottomPadding = window.innerHeight - header.offsetHeight - this.footerHeight - this.imageHeight
-      - 3 * (windowInnerWidth - this.imageHeight * 5) / (2 * 5);
+      - 3 * (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
 
     if (bottomPadding <= 0) {
       bottomPadding = 0;
@@ -149,6 +154,7 @@ export class MatrixComponent implements OnInit {
 
   urlChanged(query):void {
     /**to remove things like this*/
+    this.query = query;
     this.location.replaceState(`/matrix`, `${query}`);
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
@@ -156,8 +162,20 @@ export class MatrixComponent implements OnInit {
         this.placesArr = val.places;
         let clonePlaces = _.cloneDeep(this.placesArr);
         if (clonePlaces && clonePlaces.length) {
-          this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * 5, 5));
+          this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom));
         }
       })
   }
+
+  changeZoom(inc) {
+    if (this.zoom > 2 && inc < 0) {
+      this.zoom--;
+    } else if (this.zoom < 10 && inc > 0) {
+      this.zoom++;
+    } else {
+      return;
+    }
+
+    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`))
+  };
 }
