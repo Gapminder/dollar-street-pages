@@ -26,12 +26,12 @@
             <div class="slide-sidebar">
               <img *ngIf="image.family"
                    [src]="image.family.url"
-                   (click)="goToThing(image.family.thing, image.family._id)"
+                   [routerLink]="['Place', {thing: image.family.thing, image: image.family._id}]"
                    alt="Family portrait">
 
               <img *ngIf="image.house"
                    [src]="image.house.url"
-                   (click)="goToThing(image.house.thing, image.house._id)"
+                   [routerLink]="['Place', {thing: image.house.thing, image: image.house._id}]"
                    alt="House type">
             </div>
           </div>
@@ -57,21 +57,21 @@
   </div>
 
   <div class="fancyBox-container" *ngIf="fancyBoxImage" (click)="fancyBoxClose()">
-    <div class="load-container">
-      <div class="load">
-        <div class="la-ball-spin la-dark la-2x">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </div>
+    <!--<div class="load-container">-->
+      <!--<div class="load">-->
+        <!--<div class="la-ball-spin la-dark la-2x">-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
-    <!--<div class="fancyBox-image" *ngStyle="{'background-image': fancyBoxImage}"></div>-->
+    <div class="fancyBox-image" [style.backgroundImage]="fancyBoxImage"></div>
   </div>
 </div>

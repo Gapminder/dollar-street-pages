@@ -1,4 +1,9 @@
 import { Component, OnInit , Inject } from 'angular2/core';
+import {
+  RouterLink,
+  RouteParams,
+  Location
+} from 'angular2/router';
 
 import {SliderPlaceService} from './slider.place.service';
 
@@ -19,7 +24,8 @@ let slideHeight = sliderWidth / proportion;
   selector: 'slider-place',
   template: tpl,
   styles: [style],
-  providers: [SliderPlaceService]
+  providers: [SliderPlaceService],
+  directives:[RouterLink]
 })
 
 export class SliderPlaceComponent {
@@ -30,24 +36,21 @@ export class SliderPlaceComponent {
   public thing:any;
   public image:any;
   public amazonUrl:any = 'http://static.dollarstreet.org.s3.amazonaws.com/';
+  public fancyBoxImage:any;
+  private routeParams:RouteParams;
+  private location:any;
 
-  constructor(@Inject(SliderPlaceService) sliderPlaceService:any) {
+  constructor(@Inject(SliderPlaceService) sliderPlaceService,
+              @Inject(RouteParams) routeParams,
+              @Inject(Location) location) {
     this.sliderPlaceService = sliderPlaceService;
+    this.routeParams = routeParams;
+    this.location = location;
   }
 
   ngOnInit():void {
-    this.sliderPlaceService.getThingsByRegion('image=560987fbd918ffad05cee257&thing=546ccf730f7ddf45c0179688')
-      .subscribe((res:any)=> {
-        if (res.err) {
-          return res.err;
-        }
 
-        this.updateArr(this.allPlaces, res.data.places);
-
-        this.thing = res.data.thing;
-        this.image = res.data.image;
-        this.init();
-      });
+    this.getThings();
 
     document.addEventListener('keyup', (e) => {
       if (this.popIsOpen) {
@@ -62,6 +65,31 @@ export class SliderPlaceComponent {
         this.slideNext();
       }
     });
+  }
+
+  getThings() {
+    this.thing = this.routeParams.get('thing');
+    this.image = this.routeParams.get('image');
+
+    let query = `image=${this.image}&thing=${this.thing}`;
+
+    this.sliderPlaceService.getThingsByRegion(query)
+      .subscribe((res:any)=> {
+        if (res.err) {
+          return res.err;
+        }
+
+        this.updateArr(this.allPlaces, res.data.places);
+
+        this.thing = res.data.thing;
+        this.image = res.data.image;
+
+        let query = `image=${this.image}&thing=${this.thing._id}`;
+
+        this.location.replaceState(`/place`, `${query}`);
+
+        this.init();
+      });
   }
 
   init(position:any) {
@@ -206,9 +234,25 @@ export class SliderPlaceComponent {
 
     this.chosenPlace = this.allPlaces[this.position];
 
+    let query = `image=${this.chosenPlace.image}&thing=${this.thing._id}`;
+    this.location.replaceState(`/place`, `${query}`);
+
     this.arrowDisabled = data.arrowDisabled;
     this.images = data.images;
+  };
 
+  openPopUp = (image) => {
+    this.popIsOpen = true;
+    this.fancyBoxImage = 'url("' + image.url.replace('desktops', 'original') + '")';
+  };
+
+  fancyBoxClose = () => {
+    this.popIsOpen = false;
+    this.fancyBoxImage = null;
+  }
+
+  goToThing() {
+    this.getThings();
   }
 }
 
