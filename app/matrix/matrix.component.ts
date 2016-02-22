@@ -51,7 +51,7 @@ export class MatrixComponent implements OnInit {
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
-              @Inject(Location) location)  {
+              @Inject(Location) location) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
@@ -99,6 +99,7 @@ export class MatrixComponent implements OnInit {
   }
 
   stopScroll() {
+    /**  each document usage breaks possible server side rendering*/
     let row = 0;
     let scrollTop = document.body.scrollTop //? body.scrollTop : ieScrollBody.scrollTop;
     let distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
@@ -108,8 +109,8 @@ export class MatrixComponent implements OnInit {
     if (rest >= 0.65) {
       row++;
     }
-    this.row=row+1;
-    this.location.replaceState(`/matrix`, `${this.query.replace(/row\=\d*/,`row=${this.row}`)}`);
+    this.row = row + 1;
+    this.location.replaceState(`/matrix`, `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`);
 
     let clonePlaces = _.cloneDeep(this.placesArr);
     if (clonePlaces && clonePlaces.length) {
@@ -129,12 +130,12 @@ export class MatrixComponent implements OnInit {
     if (bottomPadding <= 0) {
       bottomPadding = 0;
     }
-
+    /**use content\view child\childer*/
     let imagesConteiner = this.element.querySelector('.images-container') as HTMLElement;
     let imageConteiner = this.element.querySelector('.image-content') as HTMLElement;
     imagesConteiner.style.paddingTop = `${header.offsetHeight}px`;
     imagesConteiner.style.paddingBottom = `${bottomPadding}px`;
-    document.querySelector('body').scrollTop=(this.row - 1) * (imageConteiner.offsetHeight+2*this.imageMargin);//(containerHeight + 2 * containerMarginBottom)
+    document.querySelector('body').scrollTop = (this.row - 1) * (imageConteiner.offsetHeight + 2 * this.imageMargin);//(containerHeight + 2 * containerMarginBottom)
   }
 
   hoverPlaceS(place) {
@@ -147,6 +148,7 @@ export class MatrixComponent implements OnInit {
 
 
   urlChanged(query):void {
+    /**to remove things like this*/
     this.location.replaceState(`/matrix`, `${query}`);
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
