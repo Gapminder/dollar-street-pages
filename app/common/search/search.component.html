@@ -1,4 +1,4 @@
-<div class="search-container">
+<div class="search-container" [ngClass]="{'place-page': !matrixComponent}">
   <div class="search-title-container pull-left">
     <div class="search-title pull-left">
       <div class="pull-left">
@@ -9,16 +9,17 @@
              [alt]="activeThing.name">
 
         <div class="search-text">
-          <span>{{activeThing.plural || activeThing.name}}</span>
-          <span *ngIf="title[0] !== 'World'">
-            <span *ngFor="#state of title; #i = index; #last = last">
+          <span *ngIf="matrixComponent">{{activeThing.plural || activeThing.name}}</span>
+          <span *ngIf="!matrixComponent">{{activeThing.name}}</span>
+          <span *ngIf="matrixComponent && states[0] !== 'World'">
+            <span *ngFor="#state of states; #i = index; #last = last">
               <span *ngIf="i === 0">&nbsp;in</span>
-              <span *ngIf="i !== 0 && !(last && title.length > 1)">,</span>
-              <span *ngIf="last && title.length > 1">&nbsp;&</span>
+              <span *ngIf="i !== 0 && !(last && states.length > 1)">,</span>
+              <span *ngIf="last && states.length > 1">&nbsp;&</span>
               <span class="removeItem" (click)="removeItemFromState(state)">&nbsp;{{state}}</span>
             </span>
           </span>
-          <span class="income-sorted"><span [hidden]="title.indexOf('World') !== -1">&nbsp;sorted</span>
+          <span *ngIf="matrixComponent" class="income-sorted"><span [hidden]="states.indexOf('World') !== -1">&nbsp;sorted</span>
             &nbsp;by income</span>
         </div>
 
@@ -93,7 +94,7 @@
                   </ul>
                 </div>
 
-                <div class="search-list-places" *ngIf="!placePage">
+                <div class="search-list-places" *ngIf="matrixComponent">
                   <div class="search-list-header">
                     <h3>PLACES</h3>
                   </div>

@@ -37,7 +37,7 @@
   margin: 0;
 }
 
-div.place-header .search-content .dropdown-menu {
+.search-container.place-page .dropdown-menu {
   width: 315px;
 }
 

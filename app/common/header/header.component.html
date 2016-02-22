@@ -1,12 +1,13 @@
 <div class="header-content">
   <div class="icon-container pull-left">
-    <img src="/app/assets/img/dollar-street.svg" alt=""/>
+    <img [routerLink]="['Main']" src="/app/assets/img/dollar-street.svg" alt=""/>
   </div>
 
   <search class="pull-left"
-          [query]="query"
+          [url]="query"
+          [defaultThing]="defaultThing"
           (selectedFilter)="urlTransfer($event)"
           (selectedThing)="activeThingTransfer($event)"></search>
 
-  <main-menu class="pull-right" [thing]="activeThing"></main-menu>
+  <main-menu class="pull-right" [activeThing]="activeThing" [defaultThing]="defaultThing"></main-menu>
 </div>

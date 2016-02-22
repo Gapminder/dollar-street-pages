@@ -1,4 +1,7 @@
-import {Component, EventEmitter} from 'angular2/core';
+import {Component, Input, Output, Inject, OnInit, EventEmitter} from 'angular2/core';
+import {RouterLink} from 'angular2/router';
+
+import {HeaderService} from './header.service';
 import {MainMenuComponent} from '../menu/menu.component';
 import {SearchComponent} from '../search/search.component';
 
@@ -9,14 +12,33 @@ let style = require('./header.component.css');
   selector: 'header',
   template: tpl,
   styles: [style],
-  inputs: ['query'],
-  outputs: ['filter'],
-  directives: [SearchComponent, MainMenuComponent]
+  directives: [SearchComponent, MainMenuComponent, RouterLink]
 })
 
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  @Input()
+  private query:string;
+  @Output()
   private filter:EventEmitter<any> = new EventEmitter();
-  public activeThing:any;
+
+  private activeThing:any;
+  private defaultThing:any;
+  private headerService:HeaderService;
+
+  constructor(@Inject(HeaderService) headerService) {
+    this.headerService = headerService;
+  }
+
+  ngOnInit():void {
+    this.headerService.getDefaultThing()
+      .subscribe((res:any)=> {
+        if (res.err) {
+          return res.err;
+        }
+
+        this.defaultThing = res.data;
+      });
+  }
 
   urlTransfer(url) {
     this.filter.emit(url);
