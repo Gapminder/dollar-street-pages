@@ -5,9 +5,9 @@
   <div class='thumbView-box'  [style.left.px]="thumbLeft" *ngIf="isThumbView"
   (mouseleave)="thumbUnhover()">
     <div class="thumbViewPlace-content" *ngFor="#place of thumbPlaces"
-    (mouseenter)="thumbHover(place)">
+    (mouseenter)="thumbHover(place)"
+         [routerLink]="['Place',{thing:thing,image:place.image}]">
       <!--
-         ui-sref="place-page({thing: thingId, image: place.image})"
          analytics-on="click" analytics-event="go to place page from matrix (click on thumb)"-->
       <div class="load">
         <div class="la-ball-spin la-dark la-2x">

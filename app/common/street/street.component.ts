@@ -1,5 +1,8 @@
 import {Component, OnInit, Input, ElementRef, Inject} from 'angular2/core';
 import {Observable} from "rxjs/Observable";
+import {
+  RouterLink,
+} from 'angular2/router';
 import {StreetDrawService} from "./street.service";
 
 
@@ -10,6 +13,8 @@ let style = require('./street.component.css');
   selector: 'street',
   template: tpl,
   styles: [style],
+  inputs:['thing'],
+  directives: [RouterLink]
 })
 
 export class StreetComponent implements OnInit {
@@ -39,7 +44,7 @@ export class StreetComponent implements OnInit {
     let svg = this.element.querySelector('.street-box svg') as HTMLElement;
     this.street = new StreetDrawService(svg);
     this.street.init();
-    this.places&&this.places.subscribe((places)=> {
+    this.places && this.places.subscribe((places)=> {
       this.street
         .clearSvg()
         .drawScale(places)
@@ -49,12 +54,12 @@ export class StreetComponent implements OnInit {
         }).value());
     });
 
-    this.chosenPlaces&&this.chosenPlaces.subscribe((chosenPlaces)=> {
+    this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces)=> {
       this.street.set('chosenPlaces', chosenPlaces).clearAndRedraw(chosenPlaces);
     });
 
 
-    this.hoverPlace&&this.hoverPlace.subscribe((hoverPlace)=> {
+    this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
       this.street.set('hoverPlace', hoverPlace);
       this.street.clearAndRedraw(this.street.chosenPlaces);
       if (!hoverPlace) {
@@ -62,7 +67,7 @@ export class StreetComponent implements OnInit {
       }
       this.street.drawHoverCircle(hoverPlace).drawHoverHouse(hoverPlace);
     })
-    this.hoverHeader&&this.hoverHeader.subscribe(()=>{
+    this.hoverHeader && this.hoverHeader.subscribe(()=> {
       this.thumbUnhover()
     })
   }
