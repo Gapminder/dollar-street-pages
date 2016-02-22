@@ -19,5 +19,5 @@ let style = require('./place.component.css');
 })
 
 export class PlaceComponent {
-
+  query:string = `thing=546ccf730f7ddf45c0179688&countries=World&regions=World`;
 }

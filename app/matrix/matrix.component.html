@@ -1,8 +1,15 @@
 <div class="matrix-header">
-  <header (mouseenter)="isHover()" ></header>
-  <street [places]="places" [chosenPlaces]="chosenPlaces" [hoverPlace]="hoverPlace" [hoverHeader]="hoverHeader"></street>
+  <header [query]="query"
+          (mouseenter)="isHover()" (filter)="urlChanged($event)"></header>
+
+  <street [places]="places"
+          [chosenPlaces]="chosenPlaces"
+          [hoverPlace]="hoverPlace"
+          [hoverHeader]="hoverHeader"></street>
 </div>
-<matrix-images [places]="places" (hoverPlace)="hoverPlaceS($event)"
-[padding]="padding"
-></matrix-images>
+
+<matrix-images [places]="places"
+               (hoverPlace)="hoverPlaceS($event)"
+               [padding]="padding"></matrix-images>
+
 <footer></footer>

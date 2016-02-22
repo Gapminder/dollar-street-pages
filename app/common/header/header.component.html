@@ -4,14 +4,9 @@
   </div>
 
   <search class="pull-left"
-                 next-places="nextPlaces"
-                 place="place"
-                 locations="locations"
-                 current-things="things"
-                 things-countries="thingsCountries"
-                 things-regions="thingsRegions"
-                 select-thing="selectThing">
-  </search>
+          [query]="query"
+          (selectedFilter)="urlTransfer($event)"
+          (selectedThing)="activeThingTransfer($event)"></search>
 
-  <main-menu class="pull-right" [thing]="thing"></main-menu>
+  <main-menu class="pull-right" [thing]="activeThing"></main-menu>
 </div>

@@ -27,6 +27,8 @@
     "./app/common/header/header.component.ts",
     "./app/common/menu/menu.component.ts",
     "./app/common/search/search.component.ts",
+    "./app/common/search/search.service.ts",
+    "./app/common/search/thingFilter.pipe.ts",
     "./app/main/main.component.ts",
     "./app/main/concept/concept.main.component.ts",
     "./app/main/concept/concept.main.service.ts",

@@ -1,5 +1,5 @@
 <div class="matrix-header">
-  <header (mouseenter)="isHover&&isHover()" ></header>
+  <header [query]="query" (mouseenter)="isHover&&isHover()" ></header>
   <street [places]="places" [chosenPlaces]="chosenPlaces" [hoverPlace]="hoverPlace" [hoverHeader]="hoverHeader"></street>
 </div>
 <div class="main">

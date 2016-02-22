@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, EventEmitter} from 'angular2/core';
 import {MainMenuComponent} from '../menu/menu.component';
 import {SearchComponent} from '../search/search.component';
 
@@ -9,12 +9,20 @@ let style = require('./header.component.css');
   selector: 'header',
   template: tpl,
   styles: [style],
+  inputs: ['query'],
+  outputs: ['filter'],
   directives: [SearchComponent, MainMenuComponent]
 })
 
 export class HeaderComponent {
-  thing:any = {
-    _id: '5477537786deda0b00d43be5',
-    name: 'Homes'
+  private filter:EventEmitter<any> = new EventEmitter();
+  public activeThing:any;
+
+  urlTransfer(url) {
+    this.filter.emit(url);
+  }
+
+  activeThingTransfer(thing) {
+    this.activeThing = thing;
   }
 }
