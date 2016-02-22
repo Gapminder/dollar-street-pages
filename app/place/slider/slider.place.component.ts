@@ -84,7 +84,7 @@ export class SliderPlaceComponent {
         this.thing = res.data.thing;
         this.image = res.data.image;
 
-        let query = `thing=${this.thing._id}&image=${this.image}`;
+        let query = `image=${this.image}&thing=${this.thing._id}`;
 
         this.location.replaceState(`/place`, `${query}`);
 
@@ -234,7 +234,7 @@ export class SliderPlaceComponent {
 
     this.chosenPlace = this.allPlaces[this.position];
 
-    let query = `thing=${this.thing._id}&image=${this.chosenPlace.image}`;
+    let query = `image=${this.chosenPlace.image}&thing=${this.thing._id}`;
     this.location.replaceState(`/place`, `${query}`);
 
     this.arrowDisabled = data.arrowDisabled;
