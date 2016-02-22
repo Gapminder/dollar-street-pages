@@ -102,8 +102,8 @@ export class MatrixComponent implements OnInit {
   stopScroll() {
     let row = 0;
     let scrollTop = document.body.scrollTop //? body.scrollTop : ieScrollBody.scrollTop;
-    var distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
-    var rest = distance % 1;
+    let distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
+    let rest = distance % 1;
     row = distance - rest;
 
     if (rest >= 0.65) {
