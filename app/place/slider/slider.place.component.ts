@@ -30,6 +30,8 @@ export class SliderPlaceComponent {
   public thing:any;
   public image:any;
   public amazonUrl:any = 'http://static.dollarstreet.org.s3.amazonaws.com/';
+  public fancyBoxImage:any;
+
 
   constructor(@Inject(SliderPlaceService) sliderPlaceService:any) {
     this.sliderPlaceService = sliderPlaceService;
@@ -208,7 +210,16 @@ export class SliderPlaceComponent {
 
     this.arrowDisabled = data.arrowDisabled;
     this.images = data.images;
+  };
 
+  openPopUp = (image) => {
+    this.popIsOpen = true;
+    this.fancyBoxImage = 'url("' + image.url.replace('desktops', 'original') + '")';
+  };
+
+  fancyBoxClose = () => {
+    this.popIsOpen = false;
+    this.fancyBoxImage = null;
   }
 }
 
