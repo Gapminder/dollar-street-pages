@@ -1,6 +1,10 @@
 <div class="matrix-header">
-  <header (mouseenter)="isHover&&isHover()" ></header>
+  <header [query]="query" (mouseenter)="isHover&&isHover()" ></header>
   <street [places]="places" [chosenPlaces]="chosenPlaces" [hoverPlace]="hoverPlace" [hoverHeader]="hoverHeader"></street>
 </div>
-<family-place></family-place>
-<footer></footer>
+<div class="main">
+  <slider-place></slider-place>
+  <family-place></family-place>
+  <footer></footer>
+</div>
+

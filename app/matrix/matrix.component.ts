@@ -12,7 +12,7 @@ import {FooterComponent} from '../common/footer/footer.component';
 import {HeaderComponent} from '../common/header/header.component';
 import {Subject} from "rxjs/Subject";
 
-let _ = require('lodash')
+let _ = require('lodash');
 
 
 let tpl = require('./matrix.component.html');
@@ -26,6 +26,7 @@ let style = require('./matrix.component.css');
 })
 
 export class MatrixComponent implements OnInit {
+  public query:string;
   public matrixService:MatrixService;
   public places:Subject<any> = new Subject();
   public chosenPlaces:Subject<any> = new Subject();
@@ -50,15 +51,14 @@ export class MatrixComponent implements OnInit {
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
-              @Inject(Location) location) {
+              @Inject(Location) location)  {
     this.matrixService = matrixService;
-    this.element = element.nativeElement
+    this.element = element.nativeElement;
     this.routeParams = routeParams;
     this.location = location;
   }
 
   ngOnInit():void {
-
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries');
     this.regions = this.routeParams.get('regions');
@@ -75,8 +75,8 @@ export class MatrixComponent implements OnInit {
     if (!this.regions) {
       this.regions = 'World';
     }
-    console.log( this.row )
     this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&row=${this.row}`;
+    this.location.replaceState(`/matrix`, `${this.query}`);
     this.urlChanged(this.query);
     document.addEventListener('scroll', ()=> {
       this.stopScroll()
@@ -86,12 +86,16 @@ export class MatrixComponent implements OnInit {
   ngAfterViewChecked() {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
+
     if (this.footerHeight === footer.offsetHeight &&
       this.imageHeight === imgContent.offsetHeight || !this.element.querySelector('.image-content')) {
+
       return;
     }
+
     this.imageHeight = imgContent.offsetHeight;
     this.footerHeight = footer.offsetHeight;
+
     this.getPaddings()
   }
 
@@ -101,11 +105,12 @@ export class MatrixComponent implements OnInit {
     var distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
     var rest = distance % 1;
     row = distance - rest;
+
     if (rest >= 0.65) {
       row++;
     }
     this.row=row+1;
-    this.location.replaceState(`/matrix`, `${this.query}&row=${this.row}`);
+    this.location.replaceState(`/matrix`, `${this.query.replace(/row\=\d*/,`row=${this.row}`)}`);
 
     let clonePlaces = _.cloneDeep(this.placesArr);
     if (clonePlaces && clonePlaces.length) {
@@ -118,16 +123,19 @@ export class MatrixComponent implements OnInit {
     let windowInnerWidth = document.querySelector('body').scrollWidth;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     this.imageMargin = (windowInnerWidth - this.imageHeight * 5) / (2 * 5);
+
     let bottomPadding = window.innerHeight - header.offsetHeight - this.footerHeight - this.imageHeight
       - 3 * (windowInnerWidth - this.imageHeight * 5) / (2 * 5);
 
     if (bottomPadding <= 0) {
       bottomPadding = 0;
     }
-    let imagsConteiner = this.element.querySelector('.images-container') as HTMLElement;
-    imagsConteiner.style.paddingTop = `${header.offsetHeight}px`;
-    imagsConteiner.style.paddingBottom = `${bottomPadding}px`;
 
+    let imagesConteiner = this.element.querySelector('.images-container') as HTMLElement;
+    let imageConteiner = this.element.querySelector('.image-content') as HTMLElement;
+    imagesConteiner.style.paddingTop = `${header.offsetHeight}px`;
+    imagesConteiner.style.paddingBottom = `${bottomPadding}px`;
+    document.querySelector('body').scrollTop=(this.row - 1) * (imageConteiner.offsetHeight+2*this.imageMargin);//(containerHeight + 2 * containerMarginBottom)
   }
 
   hoverPlaceS(place) {
@@ -143,7 +151,7 @@ export class MatrixComponent implements OnInit {
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
         this.places.next(val.places);
-        this.placesArr = val.places
+        this.placesArr = val.places;
         let clonePlaces = _.cloneDeep(this.placesArr);
         if (clonePlaces && clonePlaces.length) {
           this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * 5, 5));

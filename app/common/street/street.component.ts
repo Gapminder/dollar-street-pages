@@ -41,6 +41,7 @@ export class StreetComponent implements OnInit {
     this.street.init();
     this.places&&this.places.subscribe((places)=> {
       this.street
+        .clearSvg()
         .drawScale(places)
         .set('places', _.sortBy(places, 'income'))
         .set('fullIncomeArr', _.chain(places).sortBy('income').map((place:any)=> {

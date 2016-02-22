@@ -1,0 +1,168 @@
+<div class="search-container">
+  <div class="search-title-container pull-left">
+    <div class="search-title pull-left">
+      <div class="pull-left">
+        <img class="search-title-thing-icon pull-left icon"
+             [hidden]="!(activeThing && activeThing.iconDark)"
+             (click)="openSearch(isOpen)"
+             [src]="activeThing.iconDark"
+             [alt]="activeThing.name">
+
+        <div class="search-text">
+          <span>{{activeThing.plural || activeThing.name}}</span>
+          <span *ngIf="title[0] !== 'World'">
+            <span *ngFor="#state of title; #i = index; #last = last">
+              <span *ngIf="i === 0">&nbsp;in</span>
+              <span *ngIf="i !== 0 && !(last && title.length > 1)">,</span>
+              <span *ngIf="last && title.length > 1">&nbsp;&</span>
+              <span class="removeItem" (click)="removeItemFromState(state)">&nbsp;{{state}}</span>
+            </span>
+          </span>
+          <span class="income-sorted"><span [hidden]="title.indexOf('World') !== -1">&nbsp;sorted</span>
+            &nbsp;by income</span>
+        </div>
+
+        <div class="search-content pull-left">
+          <div class="btn-group open" [ngClass]="{open: isOpen}">
+            <div class="matrix-search-button" (click)="openSearch(isOpen)">
+              <img src="/app/assets/img/search-icon.svg" alt=""/>
+            </div>
+
+            <div id="dropdown-conteiner" class="dropdown-menu" [style.left]="modalPosition">
+              <div class="search-input">
+                <input id="search"
+                       class="form-control"
+                       placeholder="Enter keyword"
+                       [(ngModel)]="search.text">
+                <img src="/app/assets/img/search-icon.svg" alt=""/>
+              </div>
+              <div class="search-lists">
+                <div class="search-list-things">
+                  <div class="search-list-header">
+                    <h3>THINGS</h3>
+                  </div>
+                  <ul class="search-list-categories default-position-top">
+                    <li [hidden]="activeThing.name && activeThing.name.indexOf(search.text) === -1">
+                      <div class="category-name">
+                        <span>{{activeThing.category}}</span>
+                      </div>
+                      <ul class="search-items-container">
+                        <li class="active">
+                          <div class="search-item">
+                            <div class="search-item-icon">
+                              <img *ngIf="activeThing.iconLight"
+                                   [src]="activeThing.iconLight" alt="activeThing.name">
+                            </div>
+                            <span class="search-item-name">
+                              <span class="thing-button">
+                                {{activeThing.name}}
+                              </span>
+                            </span>
+                            <span class="pointer"
+                                  (click)="goToThing(null)">
+                              <img class="checked" src="/app/assets/img/check.png">
+                              <img class="close" src="/app/assets/img/close.png">
+                            </span>
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                    <li *ngFor="#category of categories | SearchFilter:search.text:'name':true">
+                      <div class="category-name">
+                        <span>{{category._id}}</span>
+                      </div>
+                      <ul class="search-items-container">
+                        <li *ngFor="#thing of category.things "
+                            [ngClass]="{'no-pass': thing.empty}"
+                            (click)="goToThing(thing._id)">
+
+                          <div class="search-item">
+                            <div class="search-item-icon">
+                              <img *ngIf="thing.icon"
+                                   [src]="thing.icon" alt="thing.name">
+                            </div>
+                              <span class="search-item-name">
+                                <span class="thing-button">
+                                  {{thing.name}}
+                                </span>
+                              </span>
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="search-list-places" *ngIf="!placePage">
+                  <div class="search-list-header">
+                    <h3>PLACES</h3>
+                  </div>
+
+                  <ul class="search-list-of-places default-position-top">
+                    <li class="regions" [hidden]="!regions.length">
+                      <div class="category-name">
+                        <span>Region</span>
+
+                        <div class="search-item"
+                             [ngClass]="{active: activeRegions[0] === 'World' && activeCountries[0] === 'World'}"
+                             (click)="goToRegions('World')">
+                          <div class="search-item-icon">
+                            <img src="/app/assets/img/world.svg" alt="">
+                          </div>
+                          <span class="search-item-name world">World</span>
+                        </div>
+                      </div>
+                      <ul class="search-items-container regions">
+                        <li *ngFor="#region of regions | SearchFilter:search.text:null"
+                            [ngClass]="{active: activeRegions.indexOf(region) !== -1}"
+                            (click)="goToRegions(region)">
+                          <div class="search-item">
+                            <div class="search-item-icon">
+                              <img *ngIf="region === 'Africa'" src="/app/assets/img/africa.svg" alt="">
+                              <img *ngIf="region === 'Europe'" src="/app/assets/img/europe.svg" alt="">
+                              <img *ngIf="region === 'Asia'" src="/app/assets/img/asia.svg" alt="">
+                              <img *ngIf="region === 'America'" src="/app/assets/img/america.svg" alt="">
+                            </div>
+
+                            <span class="search-item-name"
+                                  [ngClass]="region.toLowerCase()">
+                              {{region}}
+                              <span class="pointer">
+                                <img class="close" src="/app/assets/img/close.png" width="7" height="7" alt="">
+                              </span>
+                            </span>
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li class="countries" [hidden]="!countries.length">
+                      <div class="category-name">
+                        <span>Countries</span>
+                      </div>
+                      <ul class="search-items-container regions">
+                        <li *ngFor="#location of countries | SearchFilter:search.text:'country'"
+                            [ngClass]="{active: activeCountries.indexOf(location.country) !== -1, 'no-pass': location.empty}"
+                            (click)="goToCountries(location)">
+                          <div class="search-item">
+                            <span class="search-item-name">
+                              {{location.country}}
+                            </span>
+                            <span class="pointer">
+                              <img class="checked" src="/app/assets/img/check.png">
+                              <img class="close" src="/app/assets/img/close.png">
+                            </span>
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

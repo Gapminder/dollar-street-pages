@@ -1,0 +1,77 @@
+<div class="place-slider-wrapper">
+  <div class="arrow-container arrow-prev">
+      <span class="glyphicon glyphicon-chevron-left slider-arrow"
+            (click)="slidePrev()"
+            [hidden]="position"></span>
+  </div>
+
+  <div class="arrow-container arrow-next">
+      <span class="glyphicon glyphicon-chevron-right slider-arrow"
+            (click)="slideNext()"
+            [hidden]="(position || position === 0) && allPlaces.length - 1 !== position"></span>
+  </div>
+
+  <div class="slider-container">
+    <div class="slider-content">
+      <div class="slide" *ngFor="#image of images">
+        <div class="slide-content">
+          <div class="slide-wrapper">
+            <div class="image" (click)="openPopUp(image)">
+              <img class="slide-img" [src]="image.url" alt="">
+              <div class="thing-content">
+                <img [src]="amazonUrl + 'thing/' + thing._id + '/FFFFFF-' + thing.icon" alt="">
+                <span>{{thing.thingName}}</span>
+              </div>
+            </div>
+            <div class="slide-sidebar">
+              <img *ngIf="image.family"
+                   [src]="image.family.url"
+                   (click)="goToThing(image.family.thing, image.family._id)"
+                   alt="Family portrait">
+
+              <img *ngIf="image.house"
+                   [src]="image.house.url"
+                   (click)="goToThing(image.house.thing, image.house._id)"
+                   alt="House type">
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-description">
+          <div class="slide-header">
+            <div class="slide-button pull-left">
+              <!--<span ui-sref="matrix-page({thing: thing._id})">« All {{thing.thingName}}</span>-->
+            </div>
+            <div class="slide-map pull-right">
+              <!--<place-map chosen-place="image"></place-map>-->
+            </div>
+          </div>
+          <h2>
+            <span>{{image.income}}$</span> The {{image.familyName}} in {{image.country}}
+          </h2>
+
+          <p *ngIf="image.infoSummary">{{image.infoSummary}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fancyBox-container" *ngIf="fancyBoxImage" (click)="fancyBoxClose()">
+    <div class="load-container">
+      <div class="load">
+        <div class="la-ball-spin la-dark la-2x">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="fancyBox-image" *ngStyle="{'background-image': fancyBoxImage}"></div>-->
+  </div>
+</div>

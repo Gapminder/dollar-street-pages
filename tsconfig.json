@@ -27,6 +27,8 @@
     "./app/common/header/header.component.ts",
     "./app/common/menu/menu.component.ts",
     "./app/common/search/search.component.ts",
+    "./app/common/search/search.service.ts",
+    "./app/common/search/thingFilter.pipe.ts",
     "./app/main/main.component.ts",
     "./app/main/concept/concept.main.component.ts",
     "./app/main/concept/concept.main.service.ts",
@@ -42,6 +44,8 @@
     "./app/matrix/matrix.images.component/matrix.images.component.ts",
     "./app/place/place.component.ts",
     "./app/place/family/family.place.component.ts",
-    "./app/place/family/family.place.service.ts"
+    "./app/place/family/family.place.service.ts",
+    "./app/place/slider/slider.place.component.ts",
+    "./app/place/slider/slider.place.service.ts"
   ]
 }
