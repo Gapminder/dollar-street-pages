@@ -147,6 +147,7 @@ export class MatrixComponent implements OnInit {
 
 
   urlChanged(query):void {
+    console.log(query)
     this.location.replaceState(`/matrix`, `${query}`);
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
