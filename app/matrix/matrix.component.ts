@@ -2,6 +2,7 @@ import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
 
 import {
   RouteParams,
+  Location
 } from 'angular2/router';
 
 import {MatrixService} from './matrix.service';
@@ -42,13 +43,18 @@ export class MatrixComponent implements OnInit {
   private thing:string;
   private countries:string;
   private regions:string;
+  private row:number;
+  private location:any;
+  private query:string;
 
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
-  @Inject(RouteParams) routeParams) {
+              @Inject(RouteParams) routeParams,
+              @Inject(Location) location) {
     this.matrixService = matrixService;
     this.element = element.nativeElement
     this.routeParams = routeParams;
+    this.location = location;
   }
 
   ngOnInit():void {
@@ -56,17 +62,22 @@ export class MatrixComponent implements OnInit {
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries');
     this.regions = this.routeParams.get('regions');
-    if(!this.thing){
-      this.thing='546ccf730f7ddf45c0179688';
+    this.row = this.routeParams.get('row') as number;
+    if (!this.row) {
+      this.row = 1;
     }
-    if(!this.countries){
-      this.countries='World';
+    if (!this.thing) {
+      this.thing = '546ccf730f7ddf45c0179688';
     }
-    if(!this.regions){
-      this.regions='World';
+    if (!this.countries) {
+      this.countries = 'World';
     }
-    let query =`thing=${this.thing}&countries=${this.countries}&regions=${this.regions}`
-    this.urlChanged(query);
+    if (!this.regions) {
+      this.regions = 'World';
+    }
+    console.log( this.row )
+    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&row=${this.row}`;
+    this.urlChanged(this.query);
     document.addEventListener('scroll', ()=> {
       this.stopScroll()
     });
@@ -85,7 +96,7 @@ export class MatrixComponent implements OnInit {
   }
 
   stopScroll() {
-    row = 0;
+    let row = 0;
     let scrollTop = document.body.scrollTop //? body.scrollTop : ieScrollBody.scrollTop;
     var distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
     var rest = distance % 1;
@@ -93,8 +104,11 @@ export class MatrixComponent implements OnInit {
     if (rest >= 0.65) {
       row++;
     }
+    this.row=row+1;
+    this.location.replaceState(`/matrix`, `${this.query}&row=${this.row}`);
+
     let clonePlaces = _.cloneDeep(this.placesArr);
-    if(clonePlaces&&clonePlaces.length){
+    if (clonePlaces && clonePlaces.length) {
       this.chosenPlaces.next(clonePlaces.splice(row * 5, 5));
     }
   }
@@ -131,8 +145,8 @@ export class MatrixComponent implements OnInit {
         this.places.next(val.places);
         this.placesArr = val.places
         let clonePlaces = _.cloneDeep(this.placesArr);
-        if(clonePlaces&&clonePlaces.length){
-          this.chosenPlaces.next(clonePlaces.splice((1 - 1) * 5, 5));
+        if (clonePlaces && clonePlaces.length) {
+          this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * 5, 5));
         }
       })
   }
