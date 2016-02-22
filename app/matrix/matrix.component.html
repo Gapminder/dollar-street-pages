@@ -2,13 +2,13 @@
   <header [query]="query"
           (mouseenter)="isHover()" (filter)="urlChanged($event)"></header>
 
-  <street [places]="places"
+  <street [places]="places" [thing]="thing"
           [chosenPlaces]="chosenPlaces"
           [hoverPlace]="hoverPlace"
           [hoverHeader]="hoverHeader"></street>
 </div>
 
-<matrix-images [places]="places"
+<matrix-images [places]="places" [thing]="thing"
                (hoverPlace)="hoverPlaceS($event)"
                [padding]="padding"></matrix-images>
 

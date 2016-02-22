@@ -16,7 +16,7 @@ let style = require('./things.main.component.css');
   providers: [ThingsMainService]
 })
 
-export class ThingsMainComponent {
+export class ThingsMainComponent implements OnInit{
   public thingsMainService:ThingsMainService;
   public things:any[]=[];
 
