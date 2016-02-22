@@ -21,6 +21,7 @@
                [style.top.px]="place.top"
                (mouseenter)="hoverOnMarker(i)"
                (mouseleave)="unHoverOnMarker()"
+               [routerLink]="['Place', {thing: place.homeImg.thing,image:place.homeImg.imageId}]"
           >
 <!--ui-sref="place-page(::{thing:homeId, image: place.houseImageId})"
  analytics-on="click" analytics-event="go to place page from main (click on the map)"
@@ -51,8 +52,9 @@
         <div class="portrait"
              *ngFor="#place of places; #i=index"
              (mouseenter)="hoverOnFamily(i)"
-             (mouseleave)="unHoverOnFamily()">
-          <!--    ui-sref="place-page(::{thing:familyId, image: place.familyImageId})"
+             (mouseleave)="unHoverOnFamily()"
+             [routerLink]="['Place', {thing: place.familyImg.thing,image:place.familyImg.imageId}]">
+          <!--
              analytics-on="click" analytics-event="go to place page from main"-->
           <img [src]="place.familyImg.background" alt="">
 

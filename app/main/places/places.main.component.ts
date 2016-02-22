@@ -1,4 +1,7 @@
 import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
+import {
+  RouterLink,
+} from 'angular2/router';
 import {MainPlacesService} from './main.places.service';
 
 let tpl = require('./places.main.component.html');
@@ -7,7 +10,8 @@ let style = require('./places.main.component.css');
 @Component({
   selector: 'places-main',
   template: tpl,
-  styles: [style]
+  styles: [style],
+  directives:[RouterLink],
 })
 
 export class PlacesMainComponent implements OnInit {
@@ -34,7 +38,7 @@ export class PlacesMainComponent implements OnInit {
           return res.err;
         }
         this.map = this.element.nativeElement.querySelector('.mapBox');
-        this.setMarkersCoord(res.places)
+        this.setMarkersCoord(res.places);
         this.places = res.places;
       });
   }
