@@ -35,7 +35,6 @@ export class MainMenuComponent implements OnChanges {
       this.thing = this.activeThing;
 
       if (this.matrixComponent) {
-        console.log(this.defaultThing);
         this.thing = this.defaultThing;
       }
 

@@ -63,6 +63,7 @@ export class MatrixComponent implements OnInit {
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries');
     this.regions = this.routeParams.get('regions');
+    //todo: row null
     this.row = parseInt(this.routeParams.get('row'),10);
     this.zoom = parseInt(this.routeParams.get('zoom'),10);
     if (!this.zoom||this.zoom<2||this.zoom>10) {
