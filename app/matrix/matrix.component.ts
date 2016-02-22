@@ -2,6 +2,7 @@ import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
 
 import {
   RouteParams,
+  Location
 } from 'angular2/router';
 
 import {MatrixService} from './matrix.service';
@@ -43,36 +44,39 @@ export class MatrixComponent implements OnInit {
   private thing:string;
   private countries:string;
   private regions:string;
+  private row:number;
+  private location:any;
+  private query:string;
 
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
-              @Inject(RouteParams) routeParams) {
+              @Inject(RouteParams) routeParams,
+              @Inject(Location) location)  {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
+    this.location = location;
   }
 
   ngOnInit():void {
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries');
     this.regions = this.routeParams.get('regions');
-
+    this.row = this.routeParams.get('row') as number;
+    if (!this.row) {
+      this.row = 1;
+    }
     if (!this.thing) {
       this.thing = '546ccf730f7ddf45c0179688';
     }
-
     if (!this.countries) {
       this.countries = 'World';
     }
-
     if (!this.regions) {
       this.regions = 'World';
     }
-
-    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}`;
-
+    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&row=${this.row}`;
     this.urlChanged(this.query);
-
     document.addEventListener('scroll', ()=> {
       this.stopScroll()
     });
@@ -95,18 +99,19 @@ export class MatrixComponent implements OnInit {
   }
 
   stopScroll() {
-    row = 0;
+    let row = 0;
     let scrollTop = document.body.scrollTop //? body.scrollTop : ieScrollBody.scrollTop;
-    var distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
-    var rest = distance % 1;
+    let distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
+    let rest = distance % 1;
     row = distance - rest;
 
     if (rest >= 0.65) {
       row++;
     }
+    this.row=row+1;
+    this.location.replaceState(`/matrix`, `${this.query.replace(/row\=\d*/,`row=${this.row}`)}`);
 
     let clonePlaces = _.cloneDeep(this.placesArr);
-
     if (clonePlaces && clonePlaces.length) {
       this.chosenPlaces.next(clonePlaces.splice(row * 5, 5));
     }
@@ -125,10 +130,11 @@ export class MatrixComponent implements OnInit {
       bottomPadding = 0;
     }
 
-    let imagsConteiner = this.element.querySelector('.images-container') as HTMLElement;
-    imagsConteiner.style.paddingTop = `${header.offsetHeight}px`;
-    imagsConteiner.style.paddingBottom = `${bottomPadding}px`;
-
+    let imagesConteiner = this.element.querySelector('.images-container') as HTMLElement;
+    let imageConteiner = this.element.querySelector('.image-content') as HTMLElement;
+    imagesConteiner.style.paddingTop = `${header.offsetHeight}px`;
+    imagesConteiner.style.paddingBottom = `${bottomPadding}px`;
+    document.querySelector('body').scrollTop=(this.row - 1) * (imageConteiner.offsetHeight+2*this.imageMargin);//(containerHeight + 2 * containerMarginBottom)
   }
 
   hoverPlaceS(place) {
@@ -141,14 +147,14 @@ export class MatrixComponent implements OnInit {
 
 
   urlChanged(query):void {
+    this.location.replaceState(`/matrix`, `${query}`);
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
         this.places.next(val.places);
         this.placesArr = val.places;
         let clonePlaces = _.cloneDeep(this.placesArr);
-
         if (clonePlaces && clonePlaces.length) {
-          this.chosenPlaces.next(clonePlaces.splice((1 - 1) * 5, 5));
+          this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * 5, 5));
         }
       })
   }
