@@ -1,10 +1,16 @@
 <div class="matrix-header">
-  <header [query]="query" (mouseenter)="isHover&&isHover()" ></header>
-  <street [places]="places" [chosenPlaces]="chosenPlaces" [hoverPlace]="hoverPlace" [hoverHeader]="hoverHeader"></street>
+  <header [query]="query"
+          (mouseenter)="isHover && isHover()"
+          (filter)="urlChanged($event)"></header>
+
+  <street [places]="places"
+          [chosenPlaces]="chosenPlaces"
+          [hoverPlace]="hoverPlace"
+          [hoverHeader]="hoverHeader"></street>
 </div>
+
 <div class="main">
   <slider-place></slider-place>
   <family-place></family-place>
   <footer></footer>
 </div>
-

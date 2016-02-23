@@ -19,5 +19,9 @@ let style = require('./place.component.css');
 })
 
 export class PlaceComponent {
-  query:string = `thing=546ccf730f7ddf45c0179688&countries=World&regions=World`;
+  query:string = `thing=546ccf730f7ddf45c0179688&image=556470c7ea89dc0e1a5003f5`;
+
+  urlChanged(url) {
+    console.log(url);
+  }
 }

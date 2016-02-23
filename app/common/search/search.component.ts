@@ -1,4 +1,6 @@
-import {Component, OnInit, Input, Inject, EventEmitter} from 'angular2/core';
+import {Component, OnInit, Input, Output, Inject, EventEmitter, Output} from 'angular2/core';
+import {Router} from 'angular2/router';
+
 import {SearchService} from './search.service';
 import {SearchFilter} from './thingFilter.pipe';
 
@@ -9,55 +11,64 @@ let style = require('./search.component.css');
   selector: 'search',
   template: tpl,
   styles: [style],
-  pipes: [SearchFilter],
-  outputs: ['selectedFilter', 'selectedThing']
+  pipes: [SearchFilter]
 })
 
 export class SearchComponent implements OnInit {
   @Input()
-  private query:string;
+  private url:string;
+  @Input()
+  private defaultThing:any;
+  @Output()
+  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  @Output()
+  private selectedThing:EventEmitter<any> = new EventEmitter();
 
-  private title:any = [];
+  private paramsUrl:any;
+  private router:Router;
+  private states:any = [];
   private isOpen:boolean = false;
   private search:any = {text: ''};
   private regions:any = [];
   private countries:any = [];
   private categories:any = [];
+  private activeImage:any = {};
   private activeThing:any = {};
   private activeRegions:any = [];
   private activeCountries:any = [];
   private searchService:SearchService;
-  private defaultThing:string = '5477537786deda0b00d43be5';
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
-  public selectedThing:EventEmitter<any> = new EventEmitter();
   private modalPosition:string;
+  private matrixComponent:boolean;
 
-  constructor(@Inject(SearchService) searchService) {
+  constructor(@Inject(SearchService) searchService, @Inject(Router) _router) {
     this.searchService = searchService;
+    this.router = _router;
+    this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
   }
 
-  ngOnInit() {
-    this.getInitData(this.query, true);
+  ngOnInit():void {
+    this.paramsUrl = this.parseUrl(this.url);
+
+    this.getInitData(true);
   }
 
-  goToThing(thing) {
+  goToThing(thing:any):void {
     if (thing && thing.empty) {
       return;
     }
 
-    let url:string;
-
     if (!thing) {
-      thing = this.defaultThing;
+      thing = this.defaultThing._id;
     }
 
-    url = `thing=${thing}&countries=${this.activeCountries.join()}&regions=${this.activeRegions.join()}`;
+    this.paramsUrl.thing = thing;
 
-    this.getInitData(url);
+    this.getInitData();
   }
 
-  openSearch(isOpen) {
+  openSearch(isOpen:boolean):void {
     this.isOpen = !isOpen;
+    this.search.text = '';
     let elem = document.getElementById('dropdown-conteiner');
     let cssWidth = window.getComputedStyle(elem).width;
     let elemWidth = parseFloat(cssWidth);
@@ -67,7 +78,7 @@ export class SearchComponent implements OnInit {
     this.modalPosition = isBigger ? '0px' : window.innerWidth - parentOffsetLeft - elemWidth - 20 + 'px';
   }
 
-  goToRegions(region) {
+  goToRegions(region):void {
     let indexWorld = this.activeRegions.indexOf('World');
     let index = this.activeRegions.indexOf(region);
 
@@ -94,12 +105,11 @@ export class SearchComponent implements OnInit {
       this.activeCountries = ['World'];
     }
 
-    let url:string = `thing=${this.activeThing._id}&countries=${this.activeCountries.join()}&regions=${this.activeRegions.join()}`;
-
-    this.getInitData(url);
+    this.paramsUrl.regions = this.activeRegions;
+    this.getInitData();
   }
 
-  goToCountries(location) {
+  goToCountries(location):void {
     if (location.empty) {
       return;
     }
@@ -121,12 +131,12 @@ export class SearchComponent implements OnInit {
       this.activeCountries = ['World'];
     }
 
-    let url:string = `thing=${this.activeThing._id}&countries=${this.activeCountries.join()}&regions=${this.activeRegions.join()}`;
+    this.paramsUrl.countries = this.activeCountries;
 
-    this.getInitData(url);
+    this.getInitData();
   }
 
-  removeItemFromState(state:string) {
+  removeItemFromState(state:string):void {
     let indexCountry = this.activeCountries.indexOf(state);
     let indexRegion = this.activeRegions.indexOf(state);
 
@@ -146,20 +156,26 @@ export class SearchComponent implements OnInit {
       }
     }
 
-    let url:string = `thing=${this.activeThing._id}&countries=${this.activeCountries.join()}&regions=${this.activeRegions.join()}`;
+    this.paramsUrl.regions = this.activeRegions;
+    this.paramsUrl.countries = this.activeCountries;
 
-    this.getInitData(url);
+    this.getInitData();
   }
 
-  getInitData(url, init?) {
+  getInitData(init?) {
     this.isOpen = false;
     this.search.text = '';
+    let url:string;
+
+    if (this.matrixComponent) {
+      url = `thing=${this.paramsUrl.thing}&countries=${this.paramsUrl.countries.join()}&regions=${this.paramsUrl.regions.join()}&zoom=${this.paramsUrl.zoom}&row=${this.paramsUrl.row}`;
+    } else {
+      url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
+    }
 
     if (!init) {
       this.selectedFilter.emit(url);
     }
-
-    let query = this.parseUrl(url);
 
     this.searchService.getSearchInitData(url)
       .subscribe((res:any)=> {
@@ -172,11 +188,14 @@ export class SearchComponent implements OnInit {
         this.regions = res.data.regions;
         this.activeThing = res.data.thing;
 
-        this.activeRegions = query.regions;
-        this.activeCountries = query.countries;
+        this.activeRegions = this.paramsUrl.regions;
+        this.activeCountries = this.paramsUrl.countries;
+        this.activeImage = this.paramsUrl.image;
         this.selectedThing.next(this.activeThing);
 
-        this.title = this.getTitle(this.activeRegions, this.activeCountries);
+        if (this.matrixComponent) {
+          this.states = this.getLocations(this.activeRegions, this.activeCountries);
+        }
       });
   }
 
@@ -186,13 +205,15 @@ export class SearchComponent implements OnInit {
 
     let query = JSON.parse(url);
 
-    query.regions = query.regions.split(',');
-    query.countries = query.countries.split(',');
+    if (this.matrixComponent) {
+      query.regions = query.regions.split(',');
+      query.countries = query.countries.split(',');
+    }
 
     return query;
   }
 
-  getTitle(regions, countries):any {
+  getLocations(regions:any, countries:any):any {
     let states = this.getUnique(regions.concat(countries));
     let indexWorld = states.indexOf('World');
 
@@ -201,10 +222,6 @@ export class SearchComponent implements OnInit {
     }
 
     return states;
-  }
-
-  makeStateName(state, $index) {
-    console.log(arguments);
   }
 
   getUnique(items:any):any {

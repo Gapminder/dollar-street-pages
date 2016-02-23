@@ -11,7 +11,9 @@
           <a href="#">First page</a>
         </li>
         <li>
-          <a href="#">All {{thing && thing.plural}}</a>
+          <a [routerLink]="['Matrix', goToMatrix]">
+            All {{thing && thing.plural}}
+          </a>
         </li>
         <li>
           <a href="/main#about">About</a>
