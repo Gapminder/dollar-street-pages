@@ -6,7 +6,7 @@
       <div class="family-image"
            image-loading="image.background"
            [routerLink]="['Place', {thing: image.thing, image: image._id}]"
-           [ngStyle]="{'background-image':image.background}">
+           [style.backgroundImage]="image.background">
 
         <div class="image-description">
           <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
