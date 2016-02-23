@@ -12,7 +12,7 @@ let style = require('./social_share_buttons.component.css');
   providers: [SocialShareButtonsService]
 })
 
-export class SocialShareButtons {
+export class SocialShareButtons implements OnInit {
   public socialShareButtonsService: SocialShareButtonsService;
   private platformLocation: PlatformLocation;
   public url:string;
