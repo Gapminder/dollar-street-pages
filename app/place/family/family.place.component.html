@@ -5,7 +5,7 @@
          *ngFor="#image of images">
       <div class="family-image"
            image-loading="image.background"
-           (click)="goToThing(image)"
+           [routerLink]="['Place', {thing: image.thing, image: image._id}]"
            [ngStyle]="{'background-image':image.background}">
 
         <div class="image-description">
