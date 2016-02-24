@@ -2,8 +2,10 @@ import {Component, OnInit, Input, ElementRef, Inject} from 'angular2/core';
 import {Observable} from "rxjs/Observable";
 import {
   RouterLink,
+  Router
 } from 'angular2/router';
 import {StreetDrawService} from "./street.service";
+import {Subject} from "rxjs/Subject";
 
 
 let tpl = require('./street.component.html');
@@ -13,11 +15,12 @@ let style = require('./street.component.css');
   selector: 'street',
   template: tpl,
   styles: [style],
-  inputs:['thing'],
   directives: [RouterLink]
 })
 
 export class StreetComponent implements OnInit {
+  @Input('thing')
+  private thing:string;
   @Input('hoverHeader')
   private hoverHeader:Observable<any>;
   @Input('places')
@@ -26,6 +29,8 @@ export class StreetComponent implements OnInit {
   private chosenPlaces:Observable<any>;
   @Input('hoverPlace')
   private hoverPlace:Observable<any>;
+  @Input('controllSlider')
+  private controllSlider:Subject<any>;
 
   private street:any;
 
@@ -35,9 +40,12 @@ export class StreetComponent implements OnInit {
 
   private thumbLeft:number;
   private isThumbView:boolean;
+  private router:Router;
 
-  constructor(@Inject(ElementRef) element) {
+  constructor(@Inject(ElementRef) element,
+              @Inject(Router)  router) {
     this.element = element.nativeElement;
+    this.router = router;
   }
 
   ngOnInit():any {
@@ -109,4 +117,24 @@ export class StreetComponent implements OnInit {
     this.isThumbView = false;
   }
 
+  private toUrl(image) {
+    return `url("${image.replace('desktops', '150x150')}")`
+  }
+
+  private clickOnThumb(thing, place) {
+    if (this.controllSlider) {
+      var j;
+
+      _.forEach(this.street.places, function (p, t) {
+        if (p._id !== place._id) {
+          return;
+        }
+
+        j = t;
+      });
+      this.controllSlider.next(j)
+      return;
+    }
+    this.router.navigate(['Place', {thing: thing, place: place._id, image: place.image}])
+  }
 }

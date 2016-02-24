@@ -16,7 +16,7 @@ export class FamilyPlaceService{
     })
   }
 
-  public getPlaceFamilyThings(query:any):Observable<any> {
+  public getPlaceFamilyThings(query?:any):Observable<any> {
     return this.http.get(`http://localhost/consumer/api/v1/place/family/things`).map((res:any)=>{
       let parseRes=JSON.parse(res._body);
       return {err:parseRes.error, things:parseRes.data}

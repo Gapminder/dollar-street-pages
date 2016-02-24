@@ -1,4 +1,4 @@
-import {Component, Input, EventEmitter, ElementRef, Inject} from 'angular2/core';
+import {Component, Input, EventEmitter, ElementRef, Inject, Output} from 'angular2/core';
 import {Observable} from "rxjs/Observable";
 import {
   RouterLink,
@@ -9,14 +9,13 @@ let style = require('./matrix.images.component.css');
 
 @Component({
   selector: 'matrix-images',
-  outputs: ['hoverPlace'],
   template: tpl,
   styles: [style],
   directives:[RouterLink]
 })
 
 export class MatrixImagesComponent {
-  private hoverPlace:EventEmitter<any> = new EventEmitter();
+
 
   private currentPlaces = [];
   @Input('places')
@@ -25,7 +24,10 @@ export class MatrixImagesComponent {
   private thing:string;
   @Input('zoom')
   private zoom:number;
-  
+
+  @Output('hoverPlace')
+  private hoverPlace:EventEmitter<any> = new EventEmitter();
+
   private element:HTMLElement;
 
 
@@ -38,7 +40,9 @@ export class MatrixImagesComponent {
       this.currentPlaces = places;
     });
   }
-
+  private toUrl(image) {
+    return `url("${image}")`
+  }
   hoverImage(place):void {
     this.hoverPlace.emit(place);
   }

@@ -13,15 +13,17 @@ let style = require('./family.place.component.css');
 })
 
 export class FamilyPlaceComponent {
-  public familyPlaceService:FamilyPlaceService;
-  public loadMore:boolean = true;
-  public amazon:any = '';
-  public loadPage:boolean = true;
-  public filterList:any = 'all';
-  public type:any = {};
-  public images:any = [];
-  public places:any = [];
-  public isZoom:boolean = false;
+  private familyPlaceService:FamilyPlaceService;
+  private loadMore:boolean = true;
+  private amazon:any = '';
+  private loadPage:boolean = true;
+  private filterList:any = 'all';
+  private type:any = {};
+  private images:any = [];
+  private places:any = [];
+  private isZoom:boolean = false;
+  private resThing:any;
+  private image:any;
 
   constructor(@Inject(FamilyPlaceService) familyPlaceService:any) {
     this.familyPlaceService = familyPlaceService;
@@ -54,7 +56,7 @@ export class FamilyPlaceComponent {
   };
 
 
-  updateArr (context:any, update:any, change:any) {
+  updateArr (context:any, update:any, change?:any) {
     var cloneArr = update.slice(0);
 
     if (change) {
@@ -65,8 +67,7 @@ export class FamilyPlaceComponent {
     Array.prototype.splice.apply(context, cloneArr);
   }
 
-  nextImages (limit, image, cb) {
-
+  nextImages (limit, image?:any) {
     this.familyPlaceService.getPlaceFamilyImages('isTrash=false&limit=10&placeId=54b4f73c9f0c8d666e1ac45e&skip=0')
       .subscribe((res:any)=> {
         if (res.err) {

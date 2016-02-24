@@ -11,7 +11,6 @@ export class SocialShareButtonsService {
     /**
      * todo: complete shorten url
      */
-    console.log(location.href);
 
     return 'hello world'
   }
