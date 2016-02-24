@@ -1,5 +1,6 @@
-import { Component, OnInit } from 'angular2/core';
+import { Component, OnInit, Inject } from 'angular2/core';
 import {SocialShareButtonsService} from './social_share_buttons.service';
+import {PlatformLocation} from 'angular2/router';
 
 let tpl = require('./social_share_buttons.component.html');
 let style = require('./social_share_buttons.component.css');
@@ -11,11 +12,34 @@ let style = require('./social_share_buttons.component.css');
   providers: [SocialShareButtonsService]
 })
 
-export class SocialShareButtons {
+export class SocialShareButtons implements OnInit {
+  public socialShareButtonsService: SocialShareButtonsService;
+  private platformLocation: PlatformLocation;
+  public url:string;
 
-  constructor(private _socialShareButtonsService: SocialShareButtonsService) { }
+  constructor(@Inject(SocialShareButtonsService) socialShareButtonsService:any,
+              @Inject(PlatformLocation) platformLocation:any) {
+    this.socialShareButtonsService = socialShareButtonsService;
+    this.platformLocation = platformLocation;
 
-  public url = this._socialShareButtonsService.getUrl();
+  }
+
+  ngOnInit(): void {
+    this.getUrl();
+  }
+
+  getUrl() {
+
+    let query =`url=${this.platformLocation.location.href}`;
+
+    this.socialShareButtonsService.getUrl(query)
+      .subscribe((res:any)=> {
+        if (res.err) {
+          return res.err;
+        }
+        this.url = res.url;
+      });
+  }
 
   openPopUp(originalUrl:string) {
     let left = (window.innerWidth - 490) / 2;

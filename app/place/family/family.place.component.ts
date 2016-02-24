@@ -1,4 +1,7 @@
 import { Component, OnInit , Inject } from 'angular2/core';
+import {
+  RouterLink
+} from 'angular2/router';
 
 import {FamilyPlaceService} from './family.place.service';
 
@@ -9,7 +12,8 @@ let style = require('./family.place.component.css');
   selector: 'family-place',
   template: tpl,
   styles: [style],
-  providers: [FamilyPlaceService]
+  providers: [FamilyPlaceService],
+  directives:[RouterLink]
 })
 
 export class FamilyPlaceComponent {
