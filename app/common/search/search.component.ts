@@ -4,13 +4,23 @@ import {Router} from 'angular2/router';
 import {SearchService} from './search.service';
 import {SearchFilter} from './thingFilter.pipe';
 
-let tpl = require('./search.component.html');
-let style = require('./search.component.css');
+let tpl = '';
+let desktopStyle = require('./search.component.css');
+let mobileStyle = require('./search-mobile.component.css');
+
+let device = require('device.js')();
+const isDesktop = device.desktop();
+
+if (isDesktop) {
+  tpl = require('./search.component.html');
+} else {
+  tpl = require('./search-mobile.component.html');
+}
 
 @Component({
   selector: 'search',
   template: tpl,
-  styles: [style],
+  styles: [desktopStyle, mobileStyle],
   pipes: [SearchFilter]
 })
 
@@ -39,6 +49,9 @@ export class SearchComponent implements OnInit {
   private searchService:SearchService;
   private modalPosition:string;
   private matrixComponent:boolean;
+  private isDesktop:boolean = isDesktop;
+  private mobileTitle:string;
+  private tab:number = 0;
 
   constructor(@Inject(SearchService) searchService, @Inject(Router) _router) {
     this.searchService = searchService;
@@ -191,12 +204,29 @@ export class SearchComponent implements OnInit {
         this.activeRegions = this.paramsUrl.regions;
         this.activeCountries = this.paramsUrl.countries;
         this.activeImage = this.paramsUrl.image;
-        this.selectedThing.next(this.activeThing);
+        this.selectedThing.emit(this.activeThing);
 
         if (this.matrixComponent) {
           this.states = this.getLocations(this.activeRegions, this.activeCountries);
         }
+
+        if (this.matrixComponent && !this.isDesktop) {
+          this.mobileTitle = this.getMobileTitle(this.activeThing, this.states);
+        }
       });
+  }
+
+  getMobileTitle(thing, states) {
+    let thingName = thing.plural || thing.name;
+    let isSelectedWorld = states.indexOf('World') !== -1;
+
+    if (!isSelectedWorld && states && states.length) {
+      let countryTitle = states.length > 1 ? 'countries' : 'country';
+
+      return `${thingName} (${states.length} ${countryTitle})`;
+    }
+
+    return `${thingName} by income`;
   }
 
   parseUrl(url:string):any {

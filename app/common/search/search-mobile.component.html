@@ -1,0 +1,132 @@
+<div id="mobile-search"
+     [ngClass]="{'place-page': !matrixComponent}"
+     [hidden]="!(activeThing && activeThing.iconDark)">
+  <img class="thing-icon pull-left"
+       (click)="isOpen = !isOpen"
+       [src]="activeThing.iconDark"
+       [alt]="activeThing.name">
+
+  <div class="title-container pull-left" *ngIf="matrixComponent">{{mobileTitle}}</div>
+
+  <div class="title-container pull-left" *ngIf="!matrixComponent">
+    <span>{{activeThing.name}}</span>
+    <!--<span>{{place.income}}$, {{place.country}}</span>-->
+  </div>
+
+  <img class="open-modal-icon pull-right"
+       src="/app/assets/img/search-icon.svg"
+       (click)="isOpen = !isOpen" alt="search-icon"/>
+</div>
+
+<div id="mobile-search-popup" [hidden]="!isOpen">
+  <div class="search-input">
+    <input class="form-control"
+           placeholder="Enter keyword"
+           [(ngModel)]="search.text">
+    <img src="/app/assets/img/search-icon.svg" alt=""/>
+    <div class="close-modal" (click)="isOpen = !isOpen">X</div>
+  </div>
+
+  <div class="tabs-container">
+    <div class="tabs-header">
+      <div class="tab-button" (click)="tab = 0" [ngClass]="{active: tab === 0}">Things</div>
+      <div class="tab-button"
+           (click)="tab = 1"
+           [ngClass]="{active: tab === 1}"
+           *ngIf="matrixComponent">
+        Places
+      </div>
+    </div>
+
+    <div class="tabs-body">
+      <div [hidden]="tab === 1" class="tab-content">
+        <div class="item"
+             [hidden]="activeThing.name && activeThing.name.indexOf(search.text) === -1">
+          <h3 class="title">{{activeThing.category}}</h3>
+
+          <div class="sub-item-content active">
+            <div class="item-icon">
+              <img *ngIf="activeThing.iconLight"
+                   [src]="activeThing.iconLight" alt="activeThing.name">
+            </div>
+
+            <div class="item-name">
+              {{activeThing.name}}
+            </div>
+
+            <div class="pointer"
+                 (click)="goToThing(null)">
+            </div>
+          </div>
+        </div>
+
+        <div class="item" *ngFor="#category of categories | SearchFilter:search.text:'name':true">
+          <h3 class="title">{{category._id}}</h3>
+
+          <div class="sub-item-content"
+               *ngFor="#thing of category.things"
+               [ngClass]="{'no-pass': thing.empty}"
+               (click)="goToThing(thing._id)">
+            <div class="item-icon">
+              <img *ngIf="thing.icon"
+                   [src]="thing.icon" alt="thing.name">
+            </div>
+
+            <div class="item-name">
+              {{thing.name}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div [hidden]="tab === 0" *ngIf="matrixComponent" class="tab-content">
+        <div class="item column">
+          <h3 class="title">Region
+            <div class="sub-item-content"
+                 [ngClass]="{active: activeRegions[0] === 'World' && activeCountries[0] === 'World'}"
+                 (click)="goToRegions('World')">
+              <div class="item-icon">
+                <img src="/app/assets/img/world.svg" alt="">
+              </div>
+
+              <div class="item-name world">World</div>
+            </div>
+          </h3>
+
+          <div class="sub-item-content"
+               *ngFor="#region of regions | SearchFilter:search.text:null"
+               [ngClass]="{active: activeRegions.indexOf(region) !== -1}"
+               (click)="goToRegions(region)">
+            <div class="item-icon">
+              <img *ngIf="region === 'Africa'" src="/app/assets/img/africa.svg" alt="">
+              <img *ngIf="region === 'Europe'" src="/app/assets/img/europe.svg" alt="">
+              <img *ngIf="region === 'Asia'" src="/app/assets/img/asia.svg" alt="">
+              <img *ngIf="region === 'America'" src="/app/assets/img/america.svg" alt="">
+            </div>
+
+            <div class="item-name" [ngClass]="region.toLowerCase()">{{region}}</div>
+
+            <div class="pointer"></div>
+          </div>
+        </div>
+
+        <div class="item">
+          <h3 class="title">Countries</h3>
+
+          <div class="sub-item-content"
+               *ngFor="#location of countries | SearchFilter:search.text:'country'"
+               [ngClass]="{active: activeCountries.indexOf(location.country) !== -1, 'no-pass': location.empty}"
+               (click)="goToCountries(location)">
+            <div class="item-name">
+              {{location.country}}
+            </div>
+
+            <div class="pointer"
+                 (click)="goToThing(null)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

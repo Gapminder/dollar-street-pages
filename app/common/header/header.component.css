@@ -24,11 +24,19 @@
   vertical-align: middle;
 }
 
+.header-content search {
+  width: calc(100% - 140px)
+}
+
 @media (max-width: 480px) {
   .header-content .icon-container img {
     width: 45px;
     height: 45px;
     margin-top: 12px;
     margin-right: 4px;
+  }
+
+  .header-content search {
+    width: calc(100% - 115px)
   }
 }
