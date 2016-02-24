@@ -46,6 +46,5 @@ export class SocialShareButtons implements OnInit {
 
     let popupWin = window.open(originalUrl+this.url, "contacts",'"location, width=490, height=368, top=100, left=' + left);
     popupWin.focus();
-    console.log(this);
   }
 }

@@ -3,14 +3,14 @@
           (mouseenter)="isHover && isHover()"
           (filter)="urlChanged($event)"></header>
 
-  <street [places]="places"
+  <street [places]="streetPlaces" [thing]="thing" [controllSlider]="controllSlider"
           [chosenPlaces]="chosenPlaces"
           [hoverPlace]="hoverPlace"
           [hoverHeader]="hoverHeader"></street>
 </div>
 
 <div class="main">
-  <slider-place></slider-place>
+  <slider-place (currentPlace)="choseCurrentPlace($event)" [controllSlider]="controllSlider"></slider-place>
   <family-place></family-place>
   <footer></footer>
 </div>

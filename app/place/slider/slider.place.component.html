@@ -14,10 +14,10 @@
   <div class="slider-container">
     <div class="slider-content">
       <div class="slide" *ngFor="#image of images">
-        <div class="slide-content">
+        <div class="slide-content" *ngIf="image">
           <div class="slide-wrapper">
             <div class="image" (click)="openPopUp(image)">
-              <img class="slide-img" [src]="image.url" alt="">
+              <img class="slide-img" [src]="image.background" alt="">
               <div class="thing-content">
                 <img [src]="amazonUrl + 'thing/' + thing._id + '/FFFFFF-' + thing.icon" alt="">
                 <span>{{thing.thingName}}</span>
@@ -25,19 +25,19 @@
             </div>
             <div class="slide-sidebar">
               <img *ngIf="image.family"
-                   [src]="image.family.url"
+                   [src]="image.family.background"
                    [routerLink]="['Place', {thing: image.family.thing, image: image.family._id}]"
                    alt="Family portrait">
 
               <img *ngIf="image.house"
-                   [src]="image.house.url"
+                   [src]="image.house.background"
                    [routerLink]="['Place', {thing: image.house.thing, image: image.house._id}]"
                    alt="House type">
             </div>
           </div>
         </div>
 
-        <div class="slide-description">
+        <div class="slide-description" *ngIf="image">
           <div class="slide-header">
             <div class="slide-button pull-left">
               <!--<span ui-sref="matrix-page({thing: thing._id})">« All {{thing.thingName}}</span>-->

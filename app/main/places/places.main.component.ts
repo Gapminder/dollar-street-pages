@@ -40,6 +40,7 @@ export class PlacesMainComponent implements OnInit {
         this.map = this.element.nativeElement.querySelector('.mapBox');
         this.setMarkersCoord(res.places);
         this.places = res.places;
+        console.log( this.places)
       });
   }
 

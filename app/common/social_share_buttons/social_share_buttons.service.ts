@@ -5,7 +5,7 @@ import {Observable} from "rxjs/Observable";
 export class SocialShareButtonsService {
 
   public http:Http;
-
+  
   constructor(@Inject(Http) http:Http) {
     this.http = http;
   }
