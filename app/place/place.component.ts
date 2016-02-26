@@ -35,6 +35,7 @@ export class PlaceComponent implements OnInit {
   private query:string;
   private image:string;
   private place:any;
+  private init:boolean = true;
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
@@ -53,8 +54,9 @@ export class PlaceComponent implements OnInit {
   }
 
   urlChanged(thing):void {
-    /**start there**/
-    console.log(thing)
+    if (this.init) {
+      return;
+    }
     this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`)
   }
 
@@ -65,6 +67,7 @@ export class PlaceComponent implements OnInit {
   getStreetPlaces(thing) {
     this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
       this.streetPlaces.next(res.data.places);
+      this.init = false;
     })
   }
 

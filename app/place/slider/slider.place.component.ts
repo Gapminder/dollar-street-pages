@@ -109,7 +109,6 @@ export class SliderPlaceComponent {
 
     var startImage = this.images[1];
     this.chosenPlace = startImage;
-    console.log('this.chosenPlace', this.images)
 
     var img = new Image();
 
