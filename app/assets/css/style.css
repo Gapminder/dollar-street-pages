@@ -25,14 +25,25 @@
 body {
   font-family: 'Bariol Regular';
   overflow-x: hidden;
+  color: #374551;
 }
 
+a:focus,
 *:focus {
   outline: 0;
+  text-decoration: none;
+}
+
+a {
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -o-transition: all .2s ease-out;
+  transition: all .2s ease-out;
 }
 
 a:hover {
   text-decoration: none;
+  cursor: pointer;
 }
 
 #windowScale,
@@ -41,11 +52,10 @@ html, body, body > div[ui-view] {
 }
 
 .dollarIcon {
+  background: url('../img/dollar-street.svg') no-repeat 50% 50%;
   background-size: cover;
-  background-position: 50% 50%;
   width: 30px;
   height: 30px;
-  background-image: url('../img/dollar-street.svg');
   margin-top: 5px;
   cursor: pointer;
 }
@@ -80,7 +90,7 @@ html, body, body > div[ui-view] {
 
 .tooltipContainer {
   position: relative;
-  border: 2px solid #ffffff
+  border: 2px solid #fff;
 }
 
 .tooltipContainer img {

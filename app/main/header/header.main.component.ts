@@ -41,12 +41,16 @@ export class HeaderMainComponent {
     };
   }
 
-  goToAbout() {
+  goToAbout(e) {
+    e.preventDefault();
+    
     this.animateScroll('about', 20, 1000,  ()=> {
       this.location.replaceState(`/main#about`);
     });
   };
-  goToConcept() {
+  goToConcept(e) {
+    e.preventDefault();
+    
     this.animateScroll('concept', 20, 1000,  ()=> {
       this.location.replaceState(`/main`);
     });

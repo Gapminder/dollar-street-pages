@@ -354,14 +354,10 @@
 }
 
 @media (max-width: 992px) {
-  .container {
-    padding: 0;
-  }
-
   .concept-place-arrow-container,
   .concept-houses div[class$="-house"] {
     width: 23%;
-    margin-left: 2%;
+    margin-left: 2% !important;
   }
 
   .concept-place-arrow-container + .concept-place-arrow-container {
