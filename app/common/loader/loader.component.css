@@ -1,0 +1,69 @@
+#loader-container {
+  position: fixed;
+  z-index: 9990;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+#loader-container .loader-content,
+#loader-container {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#loader-container .loader-content {
+  position: absolute;
+  height: 190px;
+  margin: auto;
+  text-align: center;
+}
+
+#loader-container .loader-content h1 {
+  text-transform: uppercase;
+  font-family: 'Bariol Light';
+}
+
+.loader {
+  width: 136px;
+  height: 136px;
+  display: inline-block;
+
+  -webkit-animation-name: spinner;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-duration: 5s;
+
+  animation-name: spinner;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 5s;
+
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+@-webkit-keyframes spinner {
+  from {
+    -webkit-transform: rotateY(0deg);
+  }
+  to {
+    -webkit-transform: rotateY(-360deg);
+  }
+}
+
+@keyframes spinner {
+  from {
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+  to {
+    -moz-transform: rotateY(-360deg);
+    -ms-transform: rotateY(-360deg);
+    transform: rotateY(-360deg);
+  }
+}
