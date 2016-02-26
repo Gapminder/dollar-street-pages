@@ -46,6 +46,10 @@ a:hover {
   cursor: pointer;
 }
 
+svg circle {
+  cursor: pointer;
+}
+
 #windowScale,
 html, body, body > div[ui-view] {
   height: 100%;

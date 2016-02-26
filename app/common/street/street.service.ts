@@ -1,7 +1,7 @@
-/**
- * Created by igor on 2/17/16.
- */
-const d3 = require('d3')
+const d3 = require('d3');
+let device = require('device.js')();
+const isDesktop = device.desktop();
+
 export class StreetDrawService {
   private places = [];
   private poorest = 'Poorest 1$';
@@ -105,24 +105,26 @@ export class StreetDrawService {
       .attr('stroke-width', 3)
       .attr('stroke', '#d7dbe1');
 
-    this.svg
-      .selectAll('circle.point')
-      .data(places)
-      .enter()
-      .append('circle')
-      .attr('class', 'point')
-      .attr('cx', (d) => {
-        return this.scale(d.income);
-      })
-      .attr('cy', 0.5 * this.height + 15)
-      .attr('r', 5.5)
-      .style('fill', (d) => {
-        if (this.incomeArr.indexOf(d.income) === -1) {
-          this.incomeArr.push(d.income);
-          return '#babfc4';
-        }
-        return '#52606b';
-      });
+    if (isDesktop) {
+      this.svg
+        .selectAll('circle.point')
+        .data(places)
+        .enter()
+        .append('circle')
+        .attr('class', 'point')
+        .attr('cx', (d) => {
+          return this.scale(d.income);
+        })
+        .attr('cy', 0.5 * this.height + 15)
+        .attr('r', 5.5)
+        .style('fill', (d) => {
+          if (this.incomeArr.indexOf(d.income) === -1) {
+            this.incomeArr.push(d.income);
+            return '#babfc4';
+          }
+          return '#52606b';
+        });
+    }
 
     this.incomeArr.length = 0;
 
