@@ -173,9 +173,7 @@ export class SearchComponent implements OnInit {
       url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
     }
 
-    if (!init) {
-      this.selectedFilter.emit(url);
-    }
+
 
     this.searchService.getSearchInitData(url)
       .subscribe((res:any)=> {
@@ -188,10 +186,12 @@ export class SearchComponent implements OnInit {
         this.regions = res.data.regions;
         this.activeThing = res.data.thing;
 
+        this.selectedFilter.emit(this.activeThing);
+        
         this.activeRegions = this.paramsUrl.regions;
         this.activeCountries = this.paramsUrl.countries;
         this.activeImage = this.paramsUrl.image;
-        this.selectedThing.next(this.activeThing);
+        this.selectedThing.emit(this.activeThing);
 
         if (this.matrixComponent) {
           this.states = this.getLocations(this.activeRegions, this.activeCountries);

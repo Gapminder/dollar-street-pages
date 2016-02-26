@@ -30,10 +30,10 @@ export class PlaceComponent implements OnInit {
   private streetPlaces:Subject<any> = new Subject();
   private chosenPlaces:Subject<any> = new Subject();
   private controllSlider:Subject<any> = new Subject();
+  public hoverHeader:Subject<any> = new Subject();
   private thing:string;
   private query:string;
   private image:string;
-  private placeId:string;
   private place:any;
 
   constructor(@Inject(PlaceStreetService)
@@ -46,19 +46,24 @@ export class PlaceComponent implements OnInit {
 
   ngOnInit() {
     this.thing = this.routeParams.get('thing');
-    this.placeId = this.routeParams.get('place');
+    this.place = this.routeParams.get('place');
     this.image = this.routeParams.get('image');
-    this.query = `thing=${this.thing}&place=${this.placeId}&image=${this.image}`;
+    this.query = `thing=${this.thing}&place=${this.place}&image=${this.image}`;
     this.getStreetPlaces(this.query)
   }
 
   urlChanged(thing):void {
-   // console.log(query)
+    /**start there**/
+    console.log(thing)
+    this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`)
+  }
+
+  isHover() {
+    this.hoverHeader.next(null)
   }
 
   getStreetPlaces(thing) {
-    //getThingsByRegion
-    this.placeStreetService.getThingsByRegion(thing).subscribe((res) =>{
+    this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
       this.streetPlaces.next(res.data.places);
     })
   }
@@ -73,4 +78,3 @@ export class PlaceComponent implements OnInit {
     this.location.replaceState(`/place`, `${query}`);
   }
 }
-

@@ -14,12 +14,12 @@
   <div class="slider-container">
     <div class="slider-content">
       <div class="slide" *ngFor="#image of images">
-        <div class="slide-content" *ngIf="image">
+        <div class="slide-content" >
           <div class="slide-wrapper">
             <div class="image" (click)="openPopUp(image)">
               <img class="slide-img" [src]="image.background" alt="">
               <div class="thing-content">
-                <img [src]="amazonUrl + 'thing/' + thing._id + '/FFFFFF-' + thing.icon" alt="">
+                <img [src]="amazonUrl + 'thing/' + thing + '/FFFFFF-' + thing+'.svg'" alt="">
                 <span>{{thing.thingName}}</span>
               </div>
             </div>
@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <div class="slide-description" *ngIf="image">
+        <div class="slide-description" >
           <div class="slide-header">
             <div class="slide-button pull-left">
               <!--<span ui-sref="matrix-page({thing: thing._id})">« All {{thing.thingName}}</span>-->

@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
+import {Component, OnInit, Inject, ElementRef,OnDestroy} from 'angular2/core';
 
 import {
   RouteParams,
@@ -25,7 +25,7 @@ let style = require('./matrix.component.css');
   directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent]
 })
 
-export class MatrixComponent implements OnInit {
+export class MatrixComponent implements OnInit,OnDestroy {
   public query:string;
   public matrixService:MatrixService;
   public places:Subject<any> = new Subject();
@@ -64,9 +64,9 @@ export class MatrixComponent implements OnInit {
     this.countries = this.routeParams.get('countries');
     this.regions = this.routeParams.get('regions');
     //todo: row null
-    this.row = parseInt(this.routeParams.get('row'),10);
-    this.zoom = parseInt(this.routeParams.get('zoom'),10);
-    if (!this.zoom||this.zoom<2||this.zoom>10) {
+    this.row = parseInt(this.routeParams.get('row'), 10);
+    this.zoom = parseInt(this.routeParams.get('zoom'), 10);
+    if (!this.zoom || this.zoom < 2 || this.zoom > 10) {
       this.zoom = 5;
     }
     if (!this.row) {
@@ -83,9 +83,12 @@ export class MatrixComponent implements OnInit {
     }
     this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}`;
     this.urlChanged(this.query);
-    document.addEventListener('scroll', ()=> {
+    document.onscroll= ()=> {
       this.stopScroll()
-    });
+    };
+  }
+  ngOnDestroy() {
+    document.onscroll=null;
   }
 
   ngAfterViewChecked() {
@@ -176,7 +179,7 @@ export class MatrixComponent implements OnInit {
     } else {
       return;
     }
-
-    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`))
+    this.row = 1;
+    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`))
   };
 }

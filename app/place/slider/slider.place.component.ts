@@ -1,4 +1,4 @@
-import { Component, OnInit , Inject,EventEmitter,Output,Input } from 'angular2/core';
+import {Component, OnInit, Inject, EventEmitter, Output, Input} from 'angular2/core';
 import {
   RouterLink,
   RouteParams,
@@ -26,7 +26,7 @@ let slideHeight = sliderWidth / proportion;
   template: tpl,
   styles: [style],
   providers: [SliderPlaceService],
-  directives:[RouterLink]
+  directives: [RouterLink]
 })
 
 export class SliderPlaceComponent {
@@ -47,6 +47,9 @@ export class SliderPlaceComponent {
   @Input('controllSlider')
   private controllSlider:Observable<any>;
 
+  @Input('places')
+  private streetPlaces:Observable<any>;
+
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
 
@@ -58,9 +61,14 @@ export class SliderPlaceComponent {
     this.location = location;
   }
 
-  ngOnInit():void {
+  protected ngOnInit():void {
 
-    this.getThings();
+    this.streetPlaces.subscribe((places)=> {
+      this.thing = this.routeParams.get('thing');
+      this.image = this.routeParams.get('image');
+      this.allPlaces=places;
+      this.init();
+    })
 
     document.addEventListener('keyup', (e) => {
       if (this.popIsOpen) {
@@ -76,32 +84,13 @@ export class SliderPlaceComponent {
       }
     });
 
-    this.controllSlider.subscribe((i)=>{
+    this.controllSlider.subscribe((i)=> {
       this.init(i)
     })
 
   }
 
-  getThings() {
-    this.thing = this.routeParams.get('thing');
-    this.image = this.routeParams.get('image');
-
-    let query = `image=${this.image}&thing=${this.thing}`;
-
-    this.sliderPlaceService.getThingsByRegion(query)
-      .subscribe((res:any)=> {
-        if (res.err) {
-          return res.err;
-        }
-        this.updateArr(this.allPlaces, res.data.places);
-
-        this.thing = res.data.thing;
-        this.image = res.data.image;
-        this.init();
-      });
-  }
-
-  init(position?:any) {
+  protected init(position?:any) {
 
     this.position = this.allPlaces.map(function (place:any) {
       return place.image;
@@ -120,6 +109,7 @@ export class SliderPlaceComponent {
 
     var startImage = this.images[1];
     this.chosenPlace = startImage;
+    console.log('this.chosenPlace', this.images)
 
     var img = new Image();
 
@@ -131,7 +121,7 @@ export class SliderPlaceComponent {
     img.src = startImage.background;
   }
 
-  resizeSlider(event?:any) {
+  protected resizeSlider(event?:any) {
 
     var windowInnerWidth = event ? event.currentTarget.innerWidth : window.innerWidth;
     var windowInnerHeight = event ? event.currentTarget.innerHeight : window.innerHeight;
@@ -160,18 +150,7 @@ export class SliderPlaceComponent {
     slideHeight = sliderWidth / proportion;
   }
 
-  updateArr (context:any, update?:any, change?:any) {
-    var cloneArr = update.slice(0);
-
-    if (change) {
-      cloneArr = change(cloneArr);
-    }
-
-    Array.prototype.unshift.apply(cloneArr, [0, 1]);
-    Array.prototype.splice.apply(context, cloneArr);
-  }
-
-  slidePrev () {
+  protected slidePrev() {
     if (this.arrowDisabled || this.position === 0) {
       return;
     }
@@ -184,7 +163,7 @@ export class SliderPlaceComponent {
       this.position--;
     }
 
-    var prevSlide = prevSliderActionAfterAnimation(this.allPlaces, this.images, this.position, this.cb);
+    var prevSlide = prevSliderActionAfterAnimation.apply(this,[this.allPlaces, this.images, this.position, this.cb]);
 
     var shiftPrev = 0;
 
@@ -198,7 +177,7 @@ export class SliderPlaceComponent {
     newPrevImage.src = this.images[0].background;
   }
 
-  slideNext () {
+  protected slideNext() {
     if (this.arrowDisabled || this.allPlaces.length - 1 === this.position) {
       return;
     }
@@ -210,8 +189,7 @@ export class SliderPlaceComponent {
     } else {
       this.position++;
     }
-
-    var nextSlide = nextSlideActionAfterAnimation(this.allPlaces, this.images, this.position, this.cb);
+    var nextSlide = nextSlideActionAfterAnimation.apply(this, [this.allPlaces, this.images, this.position, this.cb]);
 
     var shiftNext = sliderWidth * 2;
 
@@ -225,12 +203,11 @@ export class SliderPlaceComponent {
     newNextImage.src = this.images[2].background;
   }
 
-  cb = (err, data) => {
+  protected cb(err, data) {
     if (err) {
       console.log(err);
       return;
     }
-
     $('.slider-container .slider-content')
       .removeClass('active')
       .css({
@@ -242,35 +219,30 @@ export class SliderPlaceComponent {
       });
 
     this.chosenPlace = this.allPlaces[this.position];
-
     this.arrowDisabled = data.arrowDisabled;
     this.images = data.images;
     this.currentPlace.emit([this.chosenPlace]);
   };
 
-  openPopUp = (image) => {
+  protected protectedopenPopUp(image) {
     this.popIsOpen = true;
     this.fancyBoxImage = 'url("' + image.background.replace('desktops', 'original') + '")';
   };
 
-  fancyBoxClose = () => {
+  protected ancyBoxClose() {
     this.popIsOpen = false;
     this.fancyBoxImage = null;
-  }
-
-  goToThing() {
-    this.getThings();
   }
 }
 
 function prevSliderActionAfterAnimation(places, images, position, cb) {
-  return function () {
+  return () => {
     var prevPlacePosition = position - 1;
 
     if (places[prevPlacePosition]) {
       images.unshift(places[prevPlacePosition]);
     } else {
-      images.unshift(places[places.length]);
+      images.unshift(places[places.length-1]);
     }
 
     images.length = images.length - 1;
@@ -280,12 +252,12 @@ function prevSliderActionAfterAnimation(places, images, position, cb) {
       images: images
     };
 
-    cb(null, res);
+    cb.apply(this, [null, res]);
   };
 }
 
 function nextSlideActionAfterAnimation(places, images, position, cb) {
-  return function () {
+  return () => {
     var nextPlacePosition = position + 1;
 
     if (places[nextPlacePosition]) {
@@ -300,8 +272,7 @@ function nextSlideActionAfterAnimation(places, images, position, cb) {
       arrowDisabled: false,
       images: images
     };
-
-    cb(null, res);
+    cb.apply(this, [null, res]);
   };
 }
 
@@ -323,11 +294,10 @@ function selectImagesForSlider(places, position) {
 
   var arr = [];
   var index = 1;
-
   if (places[position - index]) {
     arr.push(places[position - index]);
   } else {
-    arr.push(places[places.length]);
+    arr.push(places[places.length-1]);
   }
 
   if (places[position]) {
@@ -349,21 +319,21 @@ function setImageWidth() {
   var sliderImages = $('.slide .slide-content .image .slide-img');
 
   async.parallel({
-    sliderSidebarImages: function (cb) {
+    sliderSidebarImages: (cb)=> {
       sliderSidebarImages.each(function () {
         $(this).width($(this).height());
       });
 
       cb(null);
     },
-    sliderImages: function (cb) {
+    sliderImages: (cb)=> {
       sliderImages.each(function () {
         $(this).width(this.naturalWidth / (this.naturalHeight / this.clientHeight));
       });
 
       cb(null);
     }
-  }, function (err) {
+  }, (err)=> {
     if (err) {
       return console.log(err);
     }
