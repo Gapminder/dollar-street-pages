@@ -1,6 +1,5 @@
 import {Component, OnChanges, Input, Inject} from 'angular2/core';
-import {Router} from 'angular2/router';
-import {RouterLink} from 'angular2/router';
+import {Router, RouterLink} from 'angular2/router';
 
 import {SocialShareButtons} from '../social_share_buttons/social_share_buttons.component';
 

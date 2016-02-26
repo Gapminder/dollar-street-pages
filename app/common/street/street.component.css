@@ -1,17 +1,14 @@
+.street-box {
+  margin-top: -11px;
+}
+
 .street-box svg {
   position: relative;
-  top: 5px;
   width: 100%;
   height: 61px;
   z-index: 9;
-  position: relative;
+  vertical-align: top;
 }
-
-.street-box svg text {
-  font-family: "Bariol Regular";
-}
-
-
 
 .thumbView-box {
   /*overflow-y: auto;*/
