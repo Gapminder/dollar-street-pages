@@ -2,12 +2,12 @@
   <div class="container">
     <div class="row">
       <div class="logo col-md-2 col-sm-2 col-xs-2">
-        <a (click)="goToConcept()">
+        <a href="#concept" (click)="goToConcept($event)">
           <img src="/app/assets/img/dollar-street.svg" alt="">
         </a>
       </div>
       <div class="menu col-md-8 col-sm-7 col-xs-4">
-        <a (click)="goToAbout()">About</a>
+        <a href="#about" (click)="goToAbout($event)">About</a>
       </div>
       <div class="col-md-2 col-sm-3 col-xs-6">
         <social-share-buttons></social-share-buttons>

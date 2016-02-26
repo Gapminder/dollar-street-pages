@@ -1,29 +1,31 @@
 import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
-import {
-  RouterLink,
-} from 'angular2/router';
+import {RouterLink} from 'angular2/router';
+import {Observable} from 'rxjs/Rx';
+
 import {MainPlacesService} from './main.places.service';
 
 let tpl = require('./places.main.component.html');
 let style = require('./places.main.component.css');
 
+let device = require('device.js')();
+const isDesktop = device.desktop();
+
 @Component({
   selector: 'places-main',
   template: tpl,
   styles: [style],
-  directives:[RouterLink],
+  directives: [RouterLink]
 })
 
 export class PlacesMainComponent implements OnInit {
   private placeService:MainPlacesService;
   private places:any[] = [];
   private element:any;
-  private map:HTMLElement;
+  private map:HTMLImageElement;
   private hoverPlace:any = null;
   private markers:any;
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
-
 
   constructor(@Inject(MainPlacesService) placeService,
               @Inject(ElementRef) element) {
@@ -37,41 +39,61 @@ export class PlacesMainComponent implements OnInit {
         if (res.err) {
           return res.err;
         }
+
         this.map = this.element.nativeElement.querySelector('.mapBox');
-        this.setMarkersCoord(res.places);
+
         this.places = res.places;
-        console.log( this.places)
+        this.setMarkersCoord(this.places);
+
+        Observable
+          .fromEvent(window, 'resize')
+          .debounceTime(150)
+          .subscribe(() => {
+            this.setMarkersCoord(this.places);
+          });
       });
   }
 
-
   setMarkersCoord(places) {
-    let width = this.map.offsetWidth;
-    let height = this.map.offsetHeight;
-    let greenwich = 0.439 * width;
-    let equator = 0.545 * height;
+    let img = new Image();
+    let mapImage = this.element.nativeElement.querySelector('.map');
 
-    places.forEach((place:any)=> {
-      let stepTop, stepRight;
-      if (place.lat > 0) {
-        stepTop = equator / 75;
-      } else {
-        stepTop = (height - equator) / 75;
-      }
+    img.onload = () => {
+      let width = mapImage.offsetWidth;
+      let height = mapImage.offsetHeight;
+      let greenwich = 0.439 * width;
+      let equator = 0.545 * height;
 
-      if (place.lng < 0) {
-        stepRight = greenwich / 130;
-      } else {
-        stepRight = (width - greenwich) / 158;
-      }
+      places.forEach((place:any) => {
+        let stepTop, stepRight;
 
-      place.left = place.lng * stepRight + greenwich;
-      place.top = equator - place.lat * stepTop - 23;
-    });
+        if (place.lat > 0) {
+          stepTop = equator / 75;
+        } else {
+          stepTop = (height - equator) / 75;
+        }
+
+        if (place.lng < 0) {
+          stepRight = greenwich / 130;
+        } else {
+          stepRight = (width - greenwich) / 158;
+        }
+
+        place.left = place.lng * stepRight + greenwich;
+        place.top = equator - place.lat * stepTop - 23;
+      });
+    };
+
+    img.src = mapImage.src;
   }
 
   private hoverOnMarker(index):void {
+    if (!isDesktop) {
+      return;
+    }
+
     this.markers = this.map.querySelectorAll('.marker');
+
     this.places.forEach((place, i) => {
       if (i !== index) {
         return;
@@ -79,10 +101,12 @@ export class PlacesMainComponent implements OnInit {
 
       this.hoverPlace = place;
     });
+
     Array.prototype.forEach.call(this.markers, (marker, i)=> {
       if (i === index) {
         return;
       }
+
       marker.style.opacity = 0.3;
     });
 
@@ -95,28 +119,39 @@ export class PlacesMainComponent implements OnInit {
       img.onload = ()=> {
         this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetWidth - 40;
         this.hoverPortraitLeft = this.hoverPlace.left - portraitBox.offsetHeight / 2 + 27;
-        portraitBox.style.opacity = '1';
 
+        portraitBox.style.opacity = '1';
       };
 
       img.src = this.hoverPlace.familyImg.background;
     }
   }
 
-  private unHoverOnMarker():void{
+  private unHoverOnMarker():void {
+    if (!isDesktop) {
+      return;
+    }
+
     this.hoverPlace = null;
     this.hoverPortraitTop = null;
     this.hoverPortraitLeft = null;
-    Array.prototype.forEach.call(this.markers, (marker, i)=> {
+
+    Array.prototype.forEach.call(this.markers, (marker) => {
       marker.style.opacity = '1';
     });
-    this.markers=null;
+
+    this.markers = null;
   }
 
 
   private hoverOnFamily(index):void {
+    if (!isDesktop) {
+      return;
+    }
+
     this.markers = this.map.querySelectorAll('.marker');
-    Array.prototype.forEach.call(this.markers, (marker, i)=> {
+
+    Array.prototype.forEach.call(this.markers, (marker, i) => {
       if (i === index) {
         return;
       }
@@ -125,10 +160,15 @@ export class PlacesMainComponent implements OnInit {
     });
   };
 
-  private unHoverOnFamily ():void{
-    Array.prototype.forEach.call(this.markers, (marker)=> {
+  private unHoverOnFamily():void {
+    if (!isDesktop) {
+      return;
+    }
+
+    Array.prototype.forEach.call(this.markers, (marker) => {
       marker.style.opacity = '1';
     });
-    this.markers=null;
+
+    this.markers = null;
   };
 }
