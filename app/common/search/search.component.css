@@ -157,7 +157,7 @@
   margin: -12px 0 0 35px;
 }
 
-.pointer {
+.search-content .pointer {
   width: 19px;
   height: 19px;
   border-radius: 50%;
@@ -364,22 +364,27 @@
   clear: both;
 }
 
+.sub-item-content.active .africa,
 .active .africa {
   color: #15b0d1;
 }
 
+.sub-item-content.active .america,
 .active .america {
   color: #b1e826;
 }
 
+.sub-item-content.active .world,
 .active .world {
   color: #ffb702;
 }
 
+.sub-item-content.active .asia,
 .active .asia {
   color: #f23373;
 }
 
+.sub-item-content.active .europe,
 .active .europe {
   color: #ffe800;
 }

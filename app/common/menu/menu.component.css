@@ -81,3 +81,9 @@
 #main-menu .share-button-container i {
   color: #fff;
 }
+
+@media (max-width: 480px) {
+  #main-menu .menu-icon {
+    width: 55px;
+  }
+}
