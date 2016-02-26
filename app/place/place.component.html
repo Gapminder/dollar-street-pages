@@ -10,7 +10,9 @@
 </div>
 
 <div class="main">
-  <slider-place (currentPlace)="choseCurrentPlace($event)" [controllSlider]="controllSlider"></slider-place>
+  <slider-place (currentPlace)="choseCurrentPlace($event)" [controllSlider]="controllSlider" [places]="streetPlaces">
+
+  </slider-place>
   <family-place></family-place>
   <footer></footer>
 </div>
