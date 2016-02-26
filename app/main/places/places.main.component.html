@@ -11,51 +11,49 @@
           detail here.
         </p>
       </div>
+
       <div class="col-md-12 mapBox">
         <div class="mapBoxConteiner">
-          <img class="map" [src]="'app/assets/img/mapa-index.png'" alt="">
+          <img class="map" src="/app/assets/img/mapa-index.png" alt="">
           <img class="marker"
-               src="app/assets/img/marker.png" alt="marker"
+               src="/app/assets/img/marker.png" alt="marker"
                *ngFor="#place of places;#i=index"
                [style.left.px]="place.left"
                [style.top.px]="place.top"
                (mouseenter)="hoverOnMarker(i)"
                (mouseleave)="unHoverOnMarker()"
-               [routerLink]="['Place', {thing: place.homeImg.thing,image:place.homeImg.imageId}]"
-          >
-<!--ui-sref="place-page(::{thing:homeId, image: place.houseImageId})"
- analytics-on="click" analytics-event="go to place page from main (click on the map)"
--->
+               [routerLink]="['Place', {thing: place.homeImg.thing, image: place.homeImg.imageId}]">
+          <!--analytics-on="click" analytics-event="go to place page from main (click on the map)"-->
           <div class="hover_portrait" [hidden]="!hoverPlace"
                [style.top.px]="hoverPortraitTop"
                [style.left.px]="hoverPortraitLeft">
             <div class="hover_portrait_box">
-              <img [src]="hoverPlace?hoverPlace.homeImg.background:''" alt="">
+              <img [src]="hoverPlace ? hoverPlace.homeImg.background : ''" alt="">
 
               <div class="hover_portrait_description" *ngIf="hoverPlace">
                 <div class="pull-left">
                   <span class="name">{{hoverPlace.family}}s</span>
                   <span class="country">{{hoverPlace.country}}</span>
                 </div>
+
                 <div class="pull-right">
                   <span class="income">{{hoverPlace.income}}$</span>
                 </div>
               </div>
             </div>
+
             <div class="hover_portrait_arrow"></div>
           </div>
-
-
         </div>
       </div>
+
       <div class="col-md-12 familyPortraits" *ngIf="places">
         <div class="portrait"
              *ngFor="#place of places; #i=index"
              (mouseenter)="hoverOnFamily(i)"
              (mouseleave)="unHoverOnFamily()"
              [routerLink]="['Place', {thing: place.familyImg.thing,image:place.familyImg.imageId}]">
-          <!--
-             analytics-on="click" analytics-event="go to place page from main"-->
+          <!--analytics-on="click" analytics-event="go to place page from main"-->
           <img [src]="place.familyImg.background" alt="">
 
           <div class="description">
@@ -63,15 +61,16 @@
               <span class="name" *ngIf="place.family">{{place.family}}s</span>
               <span class="country">{{place.country}}</span>
             </div>
+
             <div class="pull-right">
               <span class="income">{{place.income}}$</span></div>
           </div>
         </div>
       </div>
-      <div class="see_more_container">
-        <a class="see_more" href="">All families >></a>
-      </div>
 
+      <div class="see_more_container">
+        <a class="see_more" href="#">All families >></a>
+      </div>
     </div>
   </div>
 </div>

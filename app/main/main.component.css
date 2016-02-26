@@ -1,15 +1,3 @@
-body {
-  color: #374551;
-}
-
-a {
-  -webkit-transition: all .2s ease-out;
-  -moz-transition: all .2s ease-out;
-  -o-transition: all .2s ease-out;
-  transition: all .2s ease-out;
-  text-decoration: none !important;
-}
-
-a:hover {
-  cursor: pointer;
+footer {
+  margin-top: 100px;
 }
