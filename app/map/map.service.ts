@@ -10,10 +10,10 @@ export class MapService {
     this.http = http;
   }
 
-  public getMainPlaces():Observable<any> {
-    return this.http.get(`http://localhost/consumer/api/v1/public/places`).map((res:any)=>{
+  public getMainPlaces(query):Observable<any> {
+    return this.http.get(`http://localhost/consumer/api/v1/map?${query}`).map((res:any)=>{
       let parseRes=JSON.parse(res._body);
-      return {err:parseRes.error,places:parseRes.data}
+      return {err:parseRes.error,data:parseRes.data}
     })
   }
 }

@@ -1,8 +1,9 @@
 import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {RouterLink,Location} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
 import {MapService} from './map.service.ts';
+import {HeaderComponent} from '../common/header/header.component';
 
 let tpl = require('./map.html');
 let style = require('./map.component.css');
@@ -11,38 +12,50 @@ let device = require('device.js')();
 const isDesktop = device.desktop();
 
 @Component({
-  selector: 'places-main',
+  selector: 'map-component',
   template: tpl,
   styles: [style],
-  directives: [RouterLink]
+  directives: [RouterLink,HeaderComponent]
 })
 
 export class MapComponent implements OnInit {
   private mapService:MapService;
   private places:any[] = [];
+  private countries:any[] = [];
   private element:any;
   private map:HTMLImageElement;
   private hoverPlace:any = null;
   private markers:any;
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
+  private location:Location;
+  private query:string;
 
   constructor(@Inject(MapService) placeService,
-              @Inject(ElementRef) element) {
+              @Inject(ElementRef) element,
+              @Inject(Location) location
+  ) {
     this.mapService = placeService;
     this.element = element;
+    this.location = location;
   }
 
   ngOnInit():void {
-    this.mapService.getMainPlaces()
+    this.urlChanged()
+  }
+  urlChanged(query=''){
+    this.mapService.getMainPlaces(query)
       .subscribe((res)=> {
         if (res.err) {
           return res.err;
         }
 
         this.map = this.element.nativeElement.querySelector('.mapBox');
-
-        this.places = res.places;
+console.log(res.data.places)
+        this.places = res.data.places;
+        this.query=`thing=${res.data.thing}`;
+        this.location.replaceState(`/map`, `${this.query}`);
+        this.countries = res.data.countries;
         this.setMarkersCoord(this.places);
 
         Observable
@@ -101,7 +114,9 @@ export class MapComponent implements OnInit {
 
       this.hoverPlace = place;
     });
-
+    if (!this.hoverPlace) {
+      return
+    }
     Array.prototype.forEach.call(this.markers, (marker, i)=> {
       if (i === index) {
         return;
@@ -110,21 +125,22 @@ export class MapComponent implements OnInit {
       marker.style.opacity = 0.3;
     });
 
-    if (this.hoverPlace) {
-      let img = new Image();
+    let img = new Image();
 
-      let portraitBox = this.map.querySelector('.hover_portrait') as HTMLElement;
-      portraitBox.style.opacity = '0';
+    let portraitBox = this.map.querySelector('.hover_portrait') as HTMLElement;
+    portraitBox.style.opacity = '0';
 
-      img.onload = ()=> {
-        this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetWidth - 40;
-        this.hoverPortraitLeft = this.hoverPlace.left - portraitBox.offsetHeight / 2 + 27;
+    img.onload = ()=> {
+      if (!this.hoverPlace) {
+        return;
+      }
+      this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetWidth - 40;
+      this.hoverPortraitLeft = this.hoverPlace.left - portraitBox.offsetHeight / 2 + 27;
 
-        portraitBox.style.opacity = '1';
-      };
+      portraitBox.style.opacity = '1';
+    };
 
-      img.src = this.hoverPlace.familyImg.background;
-    }
+    img.src = this.hoverPlace.familyImg.background;
   }
 
   private unHoverOnMarker():void {
