@@ -1,19 +1,15 @@
-import {Component, OnInit, Inject, ElementRef,OnDestroy} from 'angular2/core';
-
-import {
-  RouteParams,
-  Location
-} from 'angular2/router';
+import {Component, OnInit, Inject, ElementRef, OnDestroy} from 'angular2/core';
+import {RouteParams, Location} from 'angular2/router';
+import {Subject} from "rxjs/Subject";
 
 import {MatrixService} from './matrix.service';
 import {MatrixImagesComponent} from './matrix.images.component/matrix.images.component';
 import {StreetComponent} from '../common/street/street.component';
 import {FooterComponent} from '../common/footer/footer.component';
 import {HeaderComponent} from '../common/header/header.component';
-import {Subject} from "rxjs/Subject";
 
 let _ = require('lodash');
-
+let device = require('device.js')();
 
 let tpl = require('./matrix.component.html');
 let style = require('./matrix.component.css');
@@ -48,6 +44,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
   private location:any;
   private query:string;
   private zoom:number;
+  private isDesktop:boolean = device.desktop();
 
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
@@ -61,34 +58,47 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
   ngOnInit():void {
     this.thing = this.routeParams.get('thing');
-    this.countries = this.routeParams.get('countries');
+    this.countries = decodeURI(this.routeParams.get('countries'));
     this.regions = this.routeParams.get('regions');
     //todo: row null
     this.row = parseInt(this.routeParams.get('row'), 10);
     this.zoom = parseInt(this.routeParams.get('zoom'), 10);
-    if (!this.zoom || this.zoom < 2 || this.zoom > 10) {
+
+    if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
       this.zoom = 5;
     }
+
+    if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
+      this.zoom = 3;
+    }
+
     if (!this.row) {
       this.row = 1;
     }
+
     if (!this.thing) {
       this.thing = '546ccf730f7ddf45c0179688';
     }
+
     if (!this.countries) {
       this.countries = 'World';
     }
+
     if (!this.regions) {
       this.regions = 'World';
     }
+
     this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}`;
+
     this.urlChanged(this.query);
-    document.onscroll= ()=> {
-      this.stopScroll()
+
+    document.onscroll = ()=> {
+      this.stopScroll();
     };
   }
+
   ngOnDestroy() {
-    document.onscroll=null;
+    document.onscroll = null;
   }
 
   ngAfterViewChecked() {
@@ -109,24 +119,24 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
   stopScroll() {
     /**  each document usage breaks possible server side rendering*/
-    let row = 0;
-    let scrollTop = document.body.scrollTop //? body.scrollTop : ieScrollBody.scrollTop;
+    let scrollTop = document.body.scrollTop; //? body.scrollTop : ieScrollBody.scrollTop;
     let distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
     let rest = distance % 1;
-    row = distance - rest;
+    let row = distance - rest;
 
     if (rest >= 0.65) {
       row++;
     }
+
     this.row = row + 1;
     this.location.replaceState(`/matrix`, `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`);
 
     let clonePlaces = _.cloneDeep(this.placesArr);
+
     if (clonePlaces && clonePlaces.length) {
       this.chosenPlaces.next(clonePlaces.splice(row * this.zoom, this.zoom));
     }
   }
-
 
   getPaddings() {
     let windowInnerWidth = document.querySelector('body').scrollWidth;
@@ -139,32 +149,44 @@ export class MatrixComponent implements OnInit,OnDestroy {
     if (bottomPadding <= 0) {
       bottomPadding = 0;
     }
+
     /**use content\view child\childer*/
-    let imagesConteiner = this.element.querySelector('.images-container') as HTMLElement;
-    let imageConteiner = this.element.querySelector('.image-content') as HTMLElement;
-    imagesConteiner.style.paddingTop = `${header.offsetHeight}px`;
-    imagesConteiner.style.paddingBottom = `${bottomPadding}px`;
-    document.querySelector('body').scrollTop = (this.row - 1) * (imageConteiner.offsetHeight + 2 * this.imageMargin);//(containerHeight + 2 * containerMarginBottom)
+    let imagesContainer = this.element.querySelector('.images-container') as HTMLElement;
+    let imageContainer = this.element.querySelector('.image-content') as HTMLElement;
+
+    imagesContainer.style.paddingTop = `${header.offsetHeight}px`;
+    imagesContainer.style.paddingBottom = `${bottomPadding}px`;
+
+    document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
   }
 
   hoverPlaceS(place) {
-    this.hoverPlace.next(place)
+    if (!this.isDesktop) {
+      return;
+    }
+
+    this.hoverPlace.next(place);
   }
 
   isHover() {
-    this.hoverHeader.next(null)
-  }
+    if (!this.isDesktop) {
+      return;
+    }
 
+    this.hoverHeader.next(null);
+  }
 
   urlChanged(query):void {
     /**to remove things like this*/
     this.query = query;
     this.location.replaceState(`/matrix`, `${query}`);
+
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
         this.places.next(val.places);
         this.placesArr = val.places;
         let clonePlaces = _.cloneDeep(this.placesArr);
+
         if (clonePlaces && clonePlaces.length) {
           this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom));
         }
@@ -179,7 +201,9 @@ export class MatrixComponent implements OnInit,OnDestroy {
     } else {
       return;
     }
+
     this.row = 1;
-    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`))
+
+    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`));
   };
 }

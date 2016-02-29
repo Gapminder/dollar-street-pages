@@ -1,24 +1,33 @@
 <div class="matrix-header">
   <header [query]="query"
-          (mouseenter)="isHover()" (filter)="urlChanged($event)"></header>
+          (mouseenter)="isHover()"
+          (filter)="urlChanged($event)"></header>
 
-  <street [places]="places" [thing]="thing"
+  <street [places]="places"
+          [thing]="thing"
           [chosenPlaces]="chosenPlaces"
           [hoverPlace]="hoverPlace"
           [hoverHeader]="hoverHeader"></street>
 </div>
 
-<matrix-images [places]="places" [thing]="thing" [zoom]="zoom"
+<matrix-images [places]="places"
+               [thing]="thing"
+               [zoom]="zoom"
                (hoverPlace)="hoverPlaceS($event)"
                [padding]="padding"></matrix-images>
+
 <div class="zoom-column pull-right">
   <button type="button"
+          [disabled]="zoom === 2"
           (click)="changeZoom(-1)">
     <b>+</b>
   </button>
+
   <button type="button"
-         (click)="changeZoom(1)">
+          [disabled]="!isDesktop ? zoom === 3 : zoom === 10 || zoom >= places.length"
+          (click)="changeZoom(1)">
     <b>-</b>
   </button>
 </div>
+
 <footer></footer>
