@@ -2,6 +2,7 @@ import { MainComponent } from './main/main.component';
 import { MatrixComponent } from './matrix/matrix.component';
 import { PlaceComponent } from './place/place.component';
 import { AllPhotographersComponent } from './all-photographers/all-photographers.component';
+import { PhotographerComponent } from './photographer/photographer.component';
 
 export module config {
   export let routes = [
@@ -25,6 +26,11 @@ export module config {
       path: '/photographers',
       name: 'Photographers',
       component: AllPhotographersComponent
+    },
+    {
+      path: '/photographer',
+      name: 'Photographer',
+      component: PhotographerComponent
     }
   ]
 }
