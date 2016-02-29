@@ -19,7 +19,7 @@ export class MatrixImagesComponent {
   private thing:string;
   @Input('zoom')
   private zoom:number;
-  
+
   @Output('hoverPlace')
   private hoverPlace:EventEmitter<any> = new EventEmitter();
 
@@ -36,8 +36,11 @@ export class MatrixImagesComponent {
       this.currentPlaces = places;
     });
   }
-  
+
   hoverImage(place):void {
     this.hoverPlace.emit(place);
+  }
+  private toUrl(image) {
+    return `url("${image}")`;
   }
 }

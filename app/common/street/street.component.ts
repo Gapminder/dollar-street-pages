@@ -150,7 +150,7 @@ export class StreetComponent implements OnInit {
   }
 
   private toUrl(image) {
-    return image.replace('desktops', '150x150');
+    return `url("${image.replace('devices', '150x150')}")`;
   }
 
   private clickOnThumb(thing, place) {

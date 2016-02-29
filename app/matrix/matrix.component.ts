@@ -183,6 +183,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
+        console.log(val.places)
         this.places.next(val.places);
         this.placesArr = val.places;
         let clonePlaces = _.cloneDeep(this.placesArr);
@@ -206,4 +207,5 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
     this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`));
   };
+
 }
