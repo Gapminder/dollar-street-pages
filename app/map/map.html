@@ -1,0 +1,49 @@
+<!--<div class="matrix-header">-->
+  <!--<header [query]="query"-->
+          <!--(mouseenter)="isHover && isHover()"-->
+          <!--(filter)="urlChanged($event)"></header>-->
+<!--</div>-->
+<div id="places">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 places_header">
+
+
+      <div class="col-md-12 mapBox">
+        <div class="mapBoxConteiner">
+          <img class="map" src="/app/assets/img/mapa-index.png" alt="">
+          <img class="marker"
+               src="/app/assets/img/marker.png" alt="marker"
+               *ngFor="#place of places;#i=index"
+               [style.left.px]="place.left"
+               [style.top.px]="place.top"
+               (mouseenter)="hoverOnMarker(i)"
+               (mouseleave)="unHoverOnMarker()"
+               [routerLink]="['Place', {thing: place.homeImg.thing, image: place.homeImg.imageId}]">
+          <!--analytics-on="click" analytics-event="go to place page from main (click on the map)"-->
+          <div class="hover_portrait" [hidden]="!hoverPlace"
+               [style.top.px]="hoverPortraitTop"
+               [style.left.px]="hoverPortraitLeft">
+            <div class="hover_portrait_box">
+              <img [src]="hoverPlace ? hoverPlace.homeImg.background : ''" alt="">
+
+              <div class="hover_portrait_description" *ngIf="hoverPlace">
+                <div class="pull-left">
+                  <span class="name">{{hoverPlace.family}}s</span>
+                  <span class="country">{{hoverPlace.country}}</span>
+                </div>
+
+                <div class="pull-right">
+                  <span class="income">{{hoverPlace.income}}$</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hover_portrait_arrow"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

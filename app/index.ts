@@ -9,6 +9,7 @@ import {HeaderService} from './common/header/header.service';
 import {SearchService} from './common/search/search.service';
 import {MainPlacesService} from './main/places/main.places.service.ts';
 import {PlaceStreetService} from './place/place.street.service';
+import {MapService} from './map/map.service';
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
@@ -18,6 +19,7 @@ bootstrap(AppComponent, [
   SearchService,
   MainPlacesService,
   PlaceStreetService,
+  MapService,
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);
 
