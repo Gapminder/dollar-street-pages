@@ -2,7 +2,7 @@ import {Inject} from 'angular2/core';
 import {Http} from 'angular2/http';
 import {Observable} from "rxjs/Observable";
 
-export class FamilyPlaceService{
+export class FamilyPlaceService {
   public http:Http;
 
   constructor(@Inject(Http) http:Http) {
@@ -10,16 +10,10 @@ export class FamilyPlaceService{
   }
 
   public getPlaceFamilyImages(query:any):Observable<any> {
-    return this.http.get(`http://localhost/consumer/api/v1/place/family/images?${query}`).map((res:any)=>{
-      let parseRes=JSON.parse(res._body);
-      return {err:parseRes.error, images:parseRes.data}
-    })
-  }
+    return this.http.get(`http://localhost/consumer/api/v1/place/family/images?${query}`).map((res:any) => {
+      let parseRes = JSON.parse(res._body);
 
-  public getPlaceFamilyThings(query?:any):Observable<any> {
-    return this.http.get(`http://localhost/consumer/api/v1/place/family/things`).map((res:any)=>{
-      let parseRes=JSON.parse(res._body);
-      return {err:parseRes.error, things:parseRes.data}
+      return {err: parseRes.error, images: parseRes.data};
     })
   }
 }

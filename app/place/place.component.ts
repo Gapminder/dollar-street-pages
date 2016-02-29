@@ -1,8 +1,6 @@
 import {Component, Inject, OnInit} from 'angular2/core';
-import {
-  Location,
-  RouteParams
-} from 'angular2/router';
+import {Location, RouteParams} from 'angular2/router';
+import {Subject} from "rxjs/Subject";
 
 import {FooterComponent} from '../common/footer/footer.component';
 import {StreetComponent} from '../common/street/street.component';
@@ -12,21 +10,17 @@ import {PlaceStreetService} from './place.street.service';
 import {SliderMobilePlaceComponent} from './slider-mobile/slider-mobile.place.component';
 import {FamilyPlaceComponent} from './family/family.place.component';
 
-import {Subject} from "rxjs/Subject";
-
 let tpl = require('./place.component.html');
 let style = require('./place.component.css');
 
-var device = require('device.js')();
-var mobile = device.mobile();
-var tablet = device.tablet();
-
+let device = require('device.js')();
+let isDesktop = device.desktop();
 
 @Component({
   selector: 'place',
   template: tpl,
   styles: [style],
-  directives: [HeaderComponent, StreetComponent, (mobile || tablet) ? SliderMobilePlaceComponent : SliderPlaceComponent, FamilyPlaceComponent, FooterComponent]
+  directives: [HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent]
 })
 
 export class PlaceComponent implements OnInit {
@@ -39,6 +33,7 @@ export class PlaceComponent implements OnInit {
   private image:string;
   private place:any;
   private init:boolean = true;
+  private activeThing:any = {};
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
@@ -57,10 +52,13 @@ export class PlaceComponent implements OnInit {
   }
 
   urlChanged(thing):void {
+    this.activeThing = thing;
+
     if (this.init) {
       return;
     }
-    this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`)
+
+    this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`);
   }
 
   isHover() {
@@ -76,11 +74,13 @@ export class PlaceComponent implements OnInit {
 
   choseCurrentPlace(place) {
     this.chosenPlaces.next(place);
+
     this.changeLocation(place[0], this.thing);
   }
 
   changeLocation(place, thing) {
     let query = `thing=${thing}&place=${place._id}&image=${place.image}`;
+
     this.location.replaceState(`/place`, `${query}`);
   }
 }
