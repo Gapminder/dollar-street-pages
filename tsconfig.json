@@ -57,6 +57,10 @@
     "./app/all-photographers/all-photographers.component.ts",
     "./app/all-photographers/header/header.photographers.component.ts",
     "./app/all-photographers/photographers/photographers.component.ts",
-    "./app/all-photographers/photographers/photographers.service.ts"
+    "./app/all-photographers/photographers/photographers.service.ts",
+    "./app/photographer/photographer.component.ts",
+    "./app/photographer/header/header.photographer.component.ts",
+    "./app/photographer/photographer/photographer.photographer.component.ts",
+    "./app/photographer/photographer/photographer.photographer.service.ts"
   ]
 }
