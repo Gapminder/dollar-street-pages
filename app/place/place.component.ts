@@ -9,8 +9,7 @@ import {StreetComponent} from '../common/street/street.component';
 import {HeaderComponent} from '../common/header/header.component';
 import {SliderPlaceComponent} from './slider/slider.place.component';
 import {PlaceStreetService} from './place.street.service';
-
-
+import {SliderMobilePlaceComponent} from './slider-mobile/slider-mobile.place.component';
 import {FamilyPlaceComponent} from './family/family.place.component';
 
 import {Subject} from "rxjs/Subject";
@@ -18,12 +17,16 @@ import {Subject} from "rxjs/Subject";
 let tpl = require('./place.component.html');
 let style = require('./place.component.css');
 
+var device = require('device.js')();
+var mobile = device.mobile();
+var tablet = device.tablet();
+
 
 @Component({
   selector: 'place',
   template: tpl,
   styles: [style],
-  directives: [HeaderComponent, StreetComponent, SliderPlaceComponent, FamilyPlaceComponent, FooterComponent]
+  directives: [HeaderComponent, StreetComponent, (mobile || tablet) ? SliderMobilePlaceComponent : SliderPlaceComponent, FamilyPlaceComponent, FooterComponent]
 })
 
 export class PlaceComponent implements OnInit {
