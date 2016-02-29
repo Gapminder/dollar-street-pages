@@ -52,6 +52,10 @@
     "./app/place/slider/slider.place.service.ts",
     "./app/place/place.street.service.ts",
     "./app/place/slider-mobile/slider-mobile.place.component.ts",
-    "./app/place/slider-mobile/slider-mobile.place.service.ts"
+    "./app/place/slider-mobile/slider-mobile.place.service.ts",
+    "./app/all-photographers/all-photographers.component.ts",
+    "./app/all-photographers/header/header.photographers.component.ts",
+    "./app/all-photographers/photographers/photographers.component.ts",
+    "./app/all-photographers/photographers/photographers.service.ts"
   ]
 }
