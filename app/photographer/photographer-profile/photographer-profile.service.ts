@@ -2,7 +2,7 @@ import {Inject} from 'angular2/core';
 import {Http} from 'angular2/http';
 import {Observable} from "rxjs/Observable";
 
-export class PhotographerService{
+export class PhotographerProfileService{
   public http:Http;
 
   constructor(@Inject(Http) http:Http) {

@@ -11,7 +11,7 @@ import {MainPlacesService} from './main/places/main.places.service.ts';
 import {PlaceStreetService} from './place/place.street.service';
 import {MapService} from './map/map.service';
 import {PhotographersService} from './all-photographers/photographers/photographers.service';
-import {PhotographerService} from './photographer/photographer/photographer.photographer.service';
+import {PhotographerProfileService} from './photographer/photographer-profile/photographer-profile.service';
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
@@ -23,7 +23,7 @@ bootstrap(AppComponent, [
   PlaceStreetService,
   MapService,
   PhotographersService,
-  PhotographerService,
+  PhotographerProfileService,
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);
 
