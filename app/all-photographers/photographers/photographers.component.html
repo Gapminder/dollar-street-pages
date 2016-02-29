@@ -1,0 +1,15 @@
+<div id="photographers">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 ">
+        <h2>Photographers</h2>
+        <div class="photographers" *ngFor="#photographer of photographers" [routerLink]="['Photographer', {photographer: photographer._id}]">
+             <!--analytics-on="click" analytics-event="go to matrix page from main (click on thing)">-->
+          <div class="photographer_wrapper">
+            <p>{{photographer.name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
