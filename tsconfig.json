@@ -50,6 +50,8 @@
     "./app/place/family/family.place.service.ts",
     "./app/place/slider/slider.place.component.ts",
     "./app/place/slider/slider.place.service.ts",
-    "./app/place/place.street.service.ts"
+    "./app/place/place.street.service.ts",
+    "./app/place/slider-mobile/slider-mobile.place.component.ts",
+    "./app/place/slider-mobile/slider-mobile.place.service.ts"
   ]
 }
