@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, Inject, EventEmitter, Output} from 'angular2/core';
+import {Component, OnInit, Input, Output, Inject, EventEmitter, Output,OnChanges} from 'angular2/core';
 import {Router} from 'angular2/router';
 
 import {SearchService} from './search.service';
@@ -24,7 +24,7 @@ if (isDesktop) {
   pipes: [SearchFilter]
 })
 
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnChanges{
   @Input()
   private url:string;
   @Input()
@@ -49,6 +49,7 @@ export class SearchComponent implements OnInit {
   private searchService:SearchService;
   private modalPosition:string;
   private matrixComponent:boolean;
+  private mapComponent:boolean;
   private isDesktop:boolean = isDesktop;
   private mobileTitle:string;
   private tab:number = 0;
@@ -57,12 +58,15 @@ export class SearchComponent implements OnInit {
     this.searchService = searchService;
     this.router = _router;
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
+    this.mapComponent = this.router.hostComponent.name === 'MapComponent';
   }
 
-  ngOnInit():void {
-    this.paramsUrl = this.parseUrl(this.url);
-
-    this.getInitData(true);
+  ngOnChanges(properties):void {
+    if(properties.currentValue){
+      this.paramsUrl = this.parseUrl(this.url);
+      this.getInitData(true);
+    }
+    console.log(properties)
   }
 
   goToThing(thing:any):void {
@@ -175,13 +179,15 @@ export class SearchComponent implements OnInit {
     this.getInitData();
   }
 
-  getInitData(init?) {
+  getInitData(init?:boolean) {
     this.isOpen = false;
     this.search.text = '';
     let url:string;
 
     if (this.matrixComponent) {
       url = `thing=${this.paramsUrl.thing}&countries=${this.paramsUrl.countries.join()}&regions=${this.paramsUrl.regions.join()}&zoom=${this.paramsUrl.zoom}&row=${this.paramsUrl.row}`;
+    } else if (this.mapComponent) {
+      url = `thing=${this.paramsUrl.thing}`;
     } else {
       url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
     }
