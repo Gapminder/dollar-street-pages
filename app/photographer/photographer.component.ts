@@ -1,16 +1,16 @@
 import {Component} from 'angular2/core';
-import {HeaderPhotographerComponent} from './header/header.photographer.component';
-import {PhotographerPhotographerComponent} from './photographer/photographer.component';
+import {HeaderPhotographerComponent} from './header/photographer-header.component';
+import {PhotographerProfileComponent} from './photographer-profile/photographer-profile.component';
 import {FooterComponent} from '../common/footer/footer.component';
 
-let tpl = require('./photographer.component.html');
-let style = require('./photographer.component.css');
+let tpl = require('./photographer.template.html');
+let style = require('./photographer.css');
 
 @Component({
-  selector: 'main',
+  selector: 'photographer',
   template: tpl,
   styles: [style],
-  directives: [HeaderPhotographerComponent, PhotographerComponent, FooterComponent]
+  directives: [HeaderPhotographerComponent, PhotographerProfileComponent, FooterComponent]
 })
 
 export class PhotographerComponent {
