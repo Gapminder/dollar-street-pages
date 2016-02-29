@@ -1,7 +1,7 @@
 <div class="images-container" *ngIf="currentPlaces.length">
   <div class="image-content"
        *ngFor="#place of currentPlaces"
-       [style.backgroundImage]="place.background"
+       [style.backgroundImage]="toUrl(place.background)"
        [ngClass]="'column-'+zoom"
        (mouseenter)="hoverImage(place)"
        (mouseleave)="hoverImage()"
