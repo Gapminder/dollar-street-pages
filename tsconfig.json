@@ -22,6 +22,7 @@
     "./app/app.config.ts",
     "./app/common/social_share_buttons/social_share_buttons.service.ts",
     "./app/common/social_share_buttons/social_share_buttons.component.ts",
+    "./app/common/url-change/url-change.service.ts",
     "./app/common/footer/footer.component.ts",
     "./app/common/street/street.component.ts",
     "./app/common/street/street.service.ts",

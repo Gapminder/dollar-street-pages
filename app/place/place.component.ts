@@ -1,10 +1,11 @@
 import {Component, Inject, OnInit} from 'angular2/core';
-import {Location, RouteParams} from 'angular2/router';
+import {RouteParams} from 'angular2/router';
 import {Subject} from "rxjs/Subject";
 
 import {FooterComponent} from '../common/footer/footer.component';
 import {StreetComponent} from '../common/street/street.component';
 import {HeaderComponent} from '../common/header/header.component';
+import {UrlChangeService} from '../common/url-change/url-change.service';
 import {SliderPlaceComponent} from './slider/slider.place.component';
 import {PlaceStreetService} from './place.street.service';
 import {SliderMobilePlaceComponent} from './slider-mobile/slider-mobile.place.component';
@@ -37,8 +38,8 @@ export class PlaceComponent implements OnInit {
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
-              @Inject(Location)
-              private location,
+              @Inject(UrlChangeService)
+              private urlChangeService,
               @Inject(RouteParams)
               private routeParams) {
   }
@@ -81,6 +82,6 @@ export class PlaceComponent implements OnInit {
   changeLocation(place, thing) {
     let query = `thing=${thing}&place=${place._id}&image=${place.image}`;
 
-    this.location.replaceState(`/place`, `${query}`);
+    this.urlChangeService.replaceState('/place', query);
   }
 }
