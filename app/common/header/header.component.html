@@ -7,6 +7,7 @@
           [url]="query"
           [defaultThing]="defaultThing"
           (selectedFilter)="urlTransfer($event)"
+          [chosenPlaces]="chosenPlaces"
           (selectedThing)="activeThingTransfer($event)"></search>
 
   <main-menu class="pull-right" [activeThing]="activeThing" [defaultThing]="defaultThing"></main-menu>

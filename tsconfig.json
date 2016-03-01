@@ -49,12 +49,11 @@
     "./app/place/family/family.place.component.ts",
     "./app/place/family/family.place.service.ts",
     "./app/place/slider/slider.place.component.ts",
-    "./app/place/slider/slider.place.service.ts",
     "./app/place/place.street.service.ts",
     "./app/place/slider-mobile/slider-mobile.place.component.ts",
     "./app/place/slider-mobile/slider-mobile.place.service.ts",
     "./app/map/map.service.ts",
-    "./app/map/map.component.ts"
+    "./app/map/map.component.ts",
     "./app/all-photographers/all-photographers.component.ts",
     "./app/all-photographers/header/header.photographers.component.ts",
     "./app/all-photographers/photographers/photographers.component.ts",

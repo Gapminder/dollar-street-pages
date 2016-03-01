@@ -1,11 +1,11 @@
 <div class="place-slider-wrapper">
-  <div class="arrow-container arrow-prev">
+  <div class="arrow-container arrow-prev" [ngStyle]="sliderHeight">
       <span class="glyphicon glyphicon-chevron-left slider-arrow"
             (click)="slidePrev()"
             [hidden]="position"></span>
   </div>
 
-  <div class="arrow-container arrow-next">
+  <div class="arrow-container arrow-next" [ngStyle]="sliderHeight">
       <span class="glyphicon glyphicon-chevron-right slider-arrow"
             (click)="slideNext()"
             [hidden]="(position || position === 0) && allPlaces.length - 1 !== position"></span>
@@ -14,24 +14,24 @@
   <div class="slider-container">
     <div class="slider-content">
       <div class="slide" *ngFor="#image of images">
-        <div class="slide-content" >
+        <div class="slide-content" [ngStyle]="sliderHeight">
           <div class="slide-wrapper">
             <div class="image" (click)="openPopUp(image)">
               <img class="slide-img" [src]="image.background" alt="">
               <div class="thing-content">
-                <img [src]="amazonUrl + 'thing/' + thing + '/FFFFFF-' + thing+'.svg'" alt="">
-                <span>{{thing.thingName}}</span>
+                <img [src]="activeThing.iconLight" alt="">
+                <span>{{activeThing.name}}</span>
               </div>
             </div>
             <div class="slide-sidebar">
               <img *ngIf="image.family"
                    [src]="image.family.background"
-                   [routerLink]="['Place', {thing: image.family.thing, image: image.family._id}]"
+                   [routerLink]="['Place', {thing: image.family.thing, place: image._id, image: image.family._id}]"
                    alt="Family portrait">
 
               <img *ngIf="image.house"
                    [src]="image.house.background"
-                   [routerLink]="['Place', {thing: image.house.thing, image: image.house._id}]"
+                   [routerLink]="['Place', {thing: image.house.thing, place: image._id, image: image.house._id}]"
                    alt="House type">
             </div>
           </div>
@@ -40,10 +40,12 @@
         <div class="slide-description" >
           <div class="slide-header">
             <div class="slide-button pull-left">
-              <!--<span ui-sref="matrix-page({thing: thing._id})">« All {{thing.thingName}}</span>-->
+              <span [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
+                « All {{activeThing.plural}}
+              </span>
             </div>
             <div class="slide-map pull-right">
-              <!--<place-map chosen-place="image"></place-map>-->
+              <!--<place-map [place]="image"></place-map>-->
             </div>
           </div>
           <h2>
