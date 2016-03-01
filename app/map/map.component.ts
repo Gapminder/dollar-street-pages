@@ -1,5 +1,5 @@
 import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {RouterLink, RouteParams} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
 import {UrlChangeService} from '../common/url-change/url-change.service';
@@ -16,7 +16,7 @@ const isDesktop = device.desktop();
   selector: 'map-component',
   template: tpl,
   styles: [style],
-  directives: [RouterLink,HeaderComponent]
+  directives: [RouterLink, HeaderComponent]
 })
 
 export class MapComponent implements OnInit {
@@ -29,22 +29,33 @@ export class MapComponent implements OnInit {
   private markers:any;
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
+  private thing:any;
   private urlChangeService:UrlChangeService;
   private query:string;
+  private routeParams:any;
 
   constructor(@Inject(MapService) placeService,
               @Inject(ElementRef) element,
-              @Inject(UrlChangeService) urlChangeService
-  ) {
+              @Inject(RouteParams) routeParams,
+              @Inject(UrlChangeService) urlChangeService) {
     this.mapService = placeService;
     this.element = element;
+    this.routeParams = routeParams;
     this.urlChangeService = urlChangeService;
   }
 
   ngOnInit():void {
-    this.urlChanged()
+    this.thing = this.routeParams.get('thing');
+    this.urlChanged(this.thing)
   }
-  urlChanged(query=''){
+
+  urlChanged(thing:any) {
+    this.thing = thing;
+    let query = '';
+    if (thing && thing._id) {
+      query = `thing=${this.thing._id}`;
+    }
+
     this.mapService.getMainPlaces(query)
       .subscribe((res)=> {
         if (res.err) {

@@ -192,7 +192,6 @@ export class MatrixComponent implements OnInit,OnDestroy {
         this.places.next(val.places);
         this.placesArr = val.places;
         let clonePlaces = _.cloneDeep(this.placesArr);
-
         if (clonePlaces && clonePlaces.length) {
           this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom));
         }

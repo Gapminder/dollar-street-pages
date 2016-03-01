@@ -52,6 +52,7 @@ export class SearchComponent implements OnInit, OnChanges {
   private modalPosition:string;
   private matrixComponent:boolean;
   private mapComponent:boolean;
+  private placeComponent:boolean;
   private isDesktop:boolean = isDesktop;
   private mobileTitle:string;
   private tab:number = 0;
@@ -61,6 +62,7 @@ export class SearchComponent implements OnInit, OnChanges {
     this.router = _router;
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     this.mapComponent = this.router.hostComponent.name === 'MapComponent';
+    this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
   }
 
   ngOnInit() {
@@ -199,12 +201,15 @@ export class SearchComponent implements OnInit, OnChanges {
 
     if (this.matrixComponent) {
       url = `thing=${this.paramsUrl.thing}&countries=${this.paramsUrl.countries.join()}&regions=${this.paramsUrl.regions.join()}&zoom=${this.paramsUrl.zoom}&row=${this.paramsUrl.row}`;
-    } else if (this.mapComponent) {
-      url = `thing=${this.paramsUrl.thing}`;
-    } else {
-      url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
     }
 
+    if (this.mapComponent) {
+      url = `thing=${this.paramsUrl.thing}&countries=World&regions=World`;
+    }
+
+    if (this.placeComponent) {
+      url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
+    }
     this.searchService.getSearchInitData(url)
       .subscribe((res:any)=> {
         if (res.err) {
