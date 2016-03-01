@@ -3,6 +3,8 @@ import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 import {NgStyle} from 'angular2/common';
 
+import {PlaceMapComponent} from '../../common/place-map/place-map.component';
+
 let $ = require('jquery');
 
 let tpl = require('./slider.place.component.html');
@@ -16,7 +18,7 @@ let proportion = 2.24;
   selector: 'slider-place',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, NgStyle]
+  directives: [PlaceMapComponent, RouterLink, NgStyle]
 })
 
 export class SliderPlaceComponent implements OnInit {
