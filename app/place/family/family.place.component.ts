@@ -1,7 +1,6 @@
-import { Component, OnInit , Inject } from 'angular2/core';
-import {
-  RouterLink
-} from 'angular2/router';
+import {Component, OnInit, Input, Inject} from 'angular2/core';
+import {RouterLink} from 'angular2/router';
+import {Observable} from "rxjs/Observable";
 
 import {FamilyPlaceService} from './family.place.service';
 
@@ -13,70 +12,35 @@ let style = require('./family.place.component.css');
   template: tpl,
   styles: [style],
   providers: [FamilyPlaceService],
-  directives:[RouterLink]
+  directives: [RouterLink]
 })
 
-export class FamilyPlaceComponent {
+export class FamilyPlaceComponent implements OnInit {
+  @Input('chosenPlaces')
+  private chosenPlaces:Observable<any>;
+
   private familyPlaceService:FamilyPlaceService;
-  private loadMore:boolean = true;
-  private amazon:any = '';
-  private loadPage:boolean = true;
-  private filterList:any = 'all';
-  private type:any = {};
   private images:any = [];
-  private places:any = [];
-  private isZoom:boolean = false;
-  private resThing:any;
-  private image:any;
 
   constructor(@Inject(FamilyPlaceService) familyPlaceService:any) {
     this.familyPlaceService = familyPlaceService;
   }
 
-  ngOnInit(): void {
-    this.nextImages(10);
+  ngOnInit():void {
+    this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
+      this.nextImages(10, place[0]._id);
+    })
   }
 
-  goToThing (thing, image) {
-    this.images.length = 0;
-    this.nextImages(10, image);
-    this.getThings();
-  };
+  nextImages(limit:number, placeId:string):void {
+    let url = `isTrash=false&limit=${limit}&placeId=${placeId}&skip=0`;
 
-  getThings () {
-
-    this.places.length = 0;
-
-    this.familyPlaceService.getPlaceFamilyThings()
+    this.familyPlaceService.getPlaceFamilyImages(url)
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
         }
-        this.updateArr(this.places, res.places);
 
-        this.resThing = res.thing;
-        this.image = res.image;
-      });
-  };
-
-
-  updateArr (context:any, update:any, change?:any) {
-    var cloneArr = update.slice(0);
-
-    if (change) {
-      cloneArr = change(cloneArr);
-    }
-
-    Array.prototype.unshift.apply(cloneArr, [0, 1]);
-    Array.prototype.splice.apply(context, cloneArr);
-  }
-
-  nextImages (limit, image?:any) {
-    this.familyPlaceService.getPlaceFamilyImages('isTrash=false&limit=10&placeId=54b4f73c9f0c8d666e1ac45e&skip=0')
-      .subscribe((res:any)=> {
-        if (res.err) {
-          return res.err;
-        }
         this.images = res.images;
       });
   }

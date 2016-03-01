@@ -1,5 +1,6 @@
-import {Component, OnInit, Input, Output, Inject, EventEmitter, Output,OnChanges} from 'angular2/core';
+import {Component, OnInit, Input, Output, Inject, EventEmitter, Output, OnChanges} from 'angular2/core';
 import {Router} from 'angular2/router';
+import {Observable} from "rxjs/Observable";
 
 import {SearchService} from './search.service';
 import {SearchFilter} from './thingFilter.pipe';
@@ -24,9 +25,11 @@ if (isDesktop) {
   pipes: [SearchFilter]
 })
 
-export class SearchComponent implements OnChanges{
+export class SearchComponent implements OnInit, OnChanges {
   @Input()
   private url:string;
+  @Input('chosenPlaces')
+  private chosenPlaces:Observable<any>;
   @Input()
   private defaultThing:any;
   @Output()
@@ -42,7 +45,6 @@ export class SearchComponent implements OnChanges{
   private regions:any = [];
   private countries:any = [];
   private categories:any = [];
-  private activeImage:any = {};
   private activeThing:any = {};
   private activeRegions:any = [];
   private activeCountries:any = [];
@@ -61,8 +63,20 @@ export class SearchComponent implements OnChanges{
     this.mapComponent = this.router.hostComponent.name === 'MapComponent';
   }
 
+  ngOnInit() {
+    this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
+      this.paramsUrl = {
+        thing: this.activeThing._id,
+        place: place[0]._id,
+        image: place[0].image
+      };
+
+      this.getInitDataForSlider();
+    });
+  }
+
   ngOnChanges(properties):void {
-    if(properties.currentValue){
+    if (properties.url && properties.url.currentValue) {
       this.paramsUrl = this.parseUrl(this.url);
       this.getInitData(true);
     }
@@ -204,24 +218,36 @@ export class SearchComponent implements OnChanges{
 
         this.activeRegions = this.paramsUrl.regions;
         this.activeCountries = this.paramsUrl.countries;
-        this.activeImage = this.paramsUrl.image;
         this.selectedThing.emit(this.activeThing);
 
         if (this.matrixComponent) {
           this.states = this.getLocations(this.activeRegions, this.activeCountries);
         }
 
-        if (!init) {
-          if (this.matrixComponent) {
-            this.selectedFilter.emit(url);
-          } else {
-            this.selectedFilter.emit(this.activeThing);
-          }
+        if (this.matrixComponent) {
+          this.selectedFilter.emit(url);
+        } else {
+          this.selectedFilter.emit(this.activeThing);
         }
 
         if (this.matrixComponent && !this.isDesktop) {
           this.mobileTitle = this.getMobileTitle(this.activeThing, this.states);
         }
+      });
+  }
+
+  getInitDataForSlider() {
+    this.isOpen = false;
+    this.search.text = '';
+    let url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
+
+    this.searchService.getSearchInitData(url)
+      .subscribe((res:any)=> {
+        if (res.err) {
+          return res.err;
+        }
+
+        this.categories = res.data.categories;
       });
   }
 

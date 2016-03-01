@@ -1,5 +1,6 @@
 import {Component, Input, Output, Inject, OnInit, EventEmitter} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
+import {Observable} from "rxjs/Observable";
 
 import {HeaderService} from './header.service';
 import {MainMenuComponent} from '../menu/menu.component';
@@ -18,6 +19,8 @@ let style = require('./header.component.css');
 export class HeaderComponent implements OnInit {
   @Input()
   private query:string;
+  @Input('chosenPlaces')
+  private chosenPlaces:Observable<any>;
   @Output()
   private filter:EventEmitter<any> = new EventEmitter();
 

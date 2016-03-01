@@ -1,74 +1,62 @@
 import {Component, OnInit, Inject, EventEmitter, Output, Input} from 'angular2/core';
-import {
-  RouterLink,
-  RouteParams,
-  Location
-} from 'angular2/router';
+import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
-
-import {SliderPlaceService} from './slider.place.service';
+import {NgStyle} from 'angular2/common';
 
 let $ = require('jquery');
-let async = require('async');
 
 let tpl = require('./slider.place.component.html');
 let style = require('./slider.place.component.css');
 
-
 let sliderWidth = window.innerWidth - 150 - (window.innerWidth - document.body.offsetWidth);
 let startPosition = sliderWidth;
-let slideContent = null;
 let proportion = 2.24;
-let slideHeight = sliderWidth / proportion;
 
 @Component({
   selector: 'slider-place',
   template: tpl,
   styles: [style],
-  providers: [SliderPlaceService],
-  directives: [RouterLink]
+  directives: [RouterLink, NgStyle]
 })
 
-export class SliderPlaceComponent {
-  public sliderPlaceService:SliderPlaceService;
+export class SliderPlaceComponent implements OnInit {
+  @Input('controllSlider')
+  private controllSlider:Observable<any>;
+  @Input('places')
+  private streetPlaces:Observable<any>;
+  @Input('activeThing')
+  private activeThing:any;
+
+  @Output('currentPlace')
+  private currentPlace:EventEmitter<any> = new EventEmitter();
+
   public allPlaces:any = [];
   public images:any = [];
   public position:any;
   public thing:any;
   public image:any;
-  public amazonUrl:any = 'http://static.dollarstreet.org.s3.amazonaws.com/';
   public fancyBoxImage:any;
   private routeParams:RouteParams;
   private location:Location;
   private popIsOpen:boolean;
   private arrowDisabled:boolean;
   private chosenPlace:any;
+  private sliderHeight:any = {height: 0};
 
-  @Input('controllSlider')
-  private controllSlider:Observable<any>;
-
-  @Input('places')
-  private streetPlaces:Observable<any>;
-
-  @Output('currentPlace')
-  private currentPlace:EventEmitter<any> = new EventEmitter();
-
-  constructor(@Inject(SliderPlaceService) sliderPlaceService,
-              @Inject(RouteParams) routeParams,
+  constructor(@Inject(RouteParams) routeParams,
               @Inject(Location) location) {
-    this.sliderPlaceService = sliderPlaceService;
     this.routeParams = routeParams;
     this.location = location;
   }
 
   protected ngOnInit():void {
-
     this.streetPlaces.subscribe((places)=> {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
-      this.allPlaces=places;
+      this.allPlaces = places;
+
       this.init();
-    })
+    });
 
     document.addEventListener('keyup', (e) => {
       if (this.popIsOpen) {
@@ -84,17 +72,20 @@ export class SliderPlaceComponent {
       }
     });
 
-    this.controllSlider.subscribe((i)=> {
-      this.init(i)
-    })
+    this.controllSlider.subscribe((i) => {
+      this.init(i);
+    });
 
+    window.addEventListener('resize', _.debounce(() => {
+      this.resizeSlider.call(this);
+    }, 300));
   }
 
   protected init(position?:any) {
-
     this.position = this.allPlaces.map(function (place:any) {
       return place.image;
     }).indexOf(this.image);
+
     if (position || position === 0) {
       this.position = position;
     }
@@ -107,10 +98,10 @@ export class SliderPlaceComponent {
 
     this.images = selectImagesForSlider(this.allPlaces, this.position);
 
-    var startImage = this.images[1];
+    let startImage = this.images[1];
     this.chosenPlace = startImage;
 
-    var img = new Image();
+    let img = new Image();
 
     img.onload = () => {
       this.resizeSlider();
@@ -121,11 +112,10 @@ export class SliderPlaceComponent {
   }
 
   protected resizeSlider(event?:any) {
+    let windowInnerWidth = event ? event.currentTarget.innerWidth : window.innerWidth;
+    let windowInnerHeight = event ? event.currentTarget.innerHeight : window.innerHeight;
 
-    var windowInnerWidth = event ? event.currentTarget.innerWidth : window.innerWidth;
-    var windowInnerHeight = event ? event.currentTarget.innerHeight : window.innerHeight;
-
-    sliderWidth = windowInnerWidth - 150 - (window.innerWidth - document.body.offsetWidth);
+    sliderWidth = windowInnerWidth - 150;
     startPosition = sliderWidth;
 
     $('.slider-container .slider-content').css({
@@ -136,17 +126,17 @@ export class SliderPlaceComponent {
       transform: ''
     });
 
-    slideContent = $('.slide .slide-content, .arrow-container');
+    let height = sliderWidth / proportion;
 
     if (sliderWidth / proportion > windowInnerHeight - 225) {
-      slideHeight = windowInnerHeight - 225;
-      slideContent.css({height: slideHeight});
-
-      setImageWidth();
-      return;
+      height = windowInnerHeight - 225;
     }
 
-    slideHeight = sliderWidth / proportion;
+    height = height < 400 ? 400 : height;
+
+    this.sliderHeight.height = height + 'px';
+
+    setImageWidth(height);
   }
 
   protected slidePrev() {
@@ -162,11 +152,11 @@ export class SliderPlaceComponent {
       this.position--;
     }
 
-    var prevSlide = prevSliderActionAfterAnimation.apply(this,[this.allPlaces, this.images, this.position, this.cb]);
+    let prevSlide = prevSliderActionAfterAnimation.apply(this, [this.allPlaces, this.images, this.position, this.cb]);
 
-    var shiftPrev = 0;
+    let shiftPrev = 0;
 
-    var newPrevImage = new Image();
+    let newPrevImage = new Image();
 
     newPrevImage.onload = function () {
       setDescriptionsWidth(1);
@@ -188,11 +178,10 @@ export class SliderPlaceComponent {
     } else {
       this.position++;
     }
-    var nextSlide = nextSlideActionAfterAnimation.apply(this, [this.allPlaces, this.images, this.position, this.cb]);
 
-    var shiftNext = sliderWidth * 2;
-
-    var newNextImage = new Image();
+    let nextSlide = nextSlideActionAfterAnimation.apply(this, [this.allPlaces, this.images, this.position, this.cb]);
+    let shiftNext = sliderWidth * 2;
+    let newNextImage = new Image();
 
     newNextImage.onload = function () {
       setDescriptionsWidth(3);
@@ -207,6 +196,7 @@ export class SliderPlaceComponent {
       console.log(err);
       return;
     }
+
     $('.slider-container .slider-content')
       .removeClass('active')
       .css({
@@ -220,15 +210,17 @@ export class SliderPlaceComponent {
     this.chosenPlace = this.allPlaces[this.position];
     this.arrowDisabled = data.arrowDisabled;
     this.images = data.images;
+
     this.currentPlace.emit([this.chosenPlace]);
   };
 
-  protected protectedopenPopUp(image) {
+
+  protected openPopUp(image) {
     this.popIsOpen = true;
     this.fancyBoxImage = 'url("' + image.background.replace('desktops', 'original') + '")';
   };
 
-  protected ancyBoxClose() {
+  protected fancyBoxClose() {
     this.popIsOpen = false;
     this.fancyBoxImage = null;
   }
@@ -236,17 +228,17 @@ export class SliderPlaceComponent {
 
 function prevSliderActionAfterAnimation(places, images, position, cb) {
   return () => {
-    var prevPlacePosition = position - 1;
+    let prevPlacePosition = position - 1;
 
     if (places[prevPlacePosition]) {
       images.unshift(places[prevPlacePosition]);
     } else {
-      images.unshift(places[places.length-1]);
+      images.unshift(places[places.length - 1]);
     }
 
     images.length = images.length - 1;
 
-    var res = {
+    let res = {
       arrowDisabled: false,
       images: images
     };
@@ -257,7 +249,7 @@ function prevSliderActionAfterAnimation(places, images, position, cb) {
 
 function nextSlideActionAfterAnimation(places, images, position, cb) {
   return () => {
-    var nextPlacePosition = position + 1;
+    let nextPlacePosition = position + 1;
 
     if (places[nextPlacePosition]) {
       images.push(places[nextPlacePosition]);
@@ -267,10 +259,11 @@ function nextSlideActionAfterAnimation(places, images, position, cb) {
 
     images.splice(0, 1);
 
-    var res = {
+    let res = {
       arrowDisabled: false,
       images: images
     };
+
     cb.apply(this, [null, res]);
   };
 }
@@ -290,13 +283,13 @@ function animationSlider(shiftLeft, endAnimation) {
 }
 
 function selectImagesForSlider(places, position) {
+  let arr = [];
+  let index = 1;
 
-  var arr = [];
-  var index = 1;
   if (places[position - index]) {
     arr.push(places[position - index]);
   } else {
-    arr.push(places[places.length-1]);
+    arr.push(places[places.length - 1]);
   }
 
   if (places[position]) {
@@ -312,38 +305,24 @@ function selectImagesForSlider(places, position) {
   return arr;
 }
 
+function setImageWidth(sliderHeight) {
+  let sliderSidebarImages = $('.slide .slide-content .slide-sidebar img');
+  let sliderImages = $('.slide .slide-content .image .slide-img');
 
-function setImageWidth() {
-  var sliderSidebarImages = $('.slide .slide-content .slide-sidebar img');
-  var sliderImages = $('.slide .slide-content .image .slide-img');
-
-  async.parallel({
-    sliderSidebarImages: (cb)=> {
-      sliderSidebarImages.each(function () {
-        $(this).width($(this).height());
-      });
-
-      cb(null);
-    },
-    sliderImages: (cb)=> {
-      sliderImages.each(function () {
-        $(this).width(this.naturalWidth / (this.naturalHeight / this.clientHeight));
-      });
-
-      cb(null);
-    }
-  }, (err)=> {
-    if (err) {
-      return console.log(err);
-    }
-
-    setDescriptionsWidth(2);
+  sliderSidebarImages.each(function () {
+    $(this).width((sliderHeight - parseFloat($(this).css('margin-top'))) / 2);
   });
+
+  sliderImages.each(function () {
+    $(this).width(this.naturalWidth / (this.naturalHeight / sliderHeight));
+  });
+
+  setDescriptionsWidth(2);
 }
 
 function setDescriptionsWidth(slideNumber) {
-  var slide = $('.slider-content .slide:nth-child(' + slideNumber + ')');
-  var slideWidth = slide.find('.slide-wrapper').width();
+  let slide = $('.slider-content .slide:nth-child(' + slideNumber + ')');
+  let slideWidth = slide.find('.slide-wrapper').width();
 
   slide.find('.slide-description').width(slideWidth);
 }
