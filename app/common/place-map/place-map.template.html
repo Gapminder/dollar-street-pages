@@ -1,0 +1,23 @@
+<div id="map-content">
+  <img class="map" src="/app/assets/img/map_dark_border.svg"/>
+
+  <img class="marker"
+       src="/app/assets/img/africa-map-house.png"
+       *ngIf="region === 'africa'"
+       [ngStyle]="markerPosition" alt="Africa"/>
+
+  <img class="marker"
+       src="/app/assets/img/america-map-house.png"
+       *ngIf="region === 'america'"
+       [ngStyle]="markerPosition" alt="America"/>
+
+  <img class="marker"
+       src="/app/assets/img/asia-map-house.png"
+       *ngIf="region === 'asia'"
+       [ngStyle]="markerPosition" alt="Asia"/>
+
+  <img class="marker"
+       src="/app/assets/img/europe-map-house.png"
+       *ngIf="region === 'europe'"
+       [ngStyle]="markerPosition" alt="Europe"/>
+</div>

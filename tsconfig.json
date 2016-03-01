@@ -33,6 +33,7 @@
     "./app/common/search/search.service.ts",
     "./app/common/search/thingFilter.pipe.ts",
     "./app/common/loader/loade.component.ts",
+    "./app/common/place-map/place-map.component.ts",
     "./app/main/main.component.ts",
     "./app/main/concept/concept.main.component.ts",
     "./app/main/concept/concept.main.service.ts",
