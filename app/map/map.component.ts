@@ -1,7 +1,8 @@
 import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
-import {RouterLink,Location} from 'angular2/router';
+import {RouterLink} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
+import {UrlChangeService} from '../common/url-change/url-change.service';
 import {MapService} from './map.service.ts';
 import {HeaderComponent} from '../common/header/header.component';
 
@@ -28,16 +29,16 @@ export class MapComponent implements OnInit {
   private markers:any;
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
-  private location:Location;
+  private urlChangeService:UrlChangeService;
   private query:string;
 
   constructor(@Inject(MapService) placeService,
               @Inject(ElementRef) element,
-              @Inject(Location) location
+              @Inject(UrlChangeService) urlChangeService
   ) {
     this.mapService = placeService;
     this.element = element;
-    this.location = location;
+    this.urlChangeService = urlChangeService;
   }
 
   ngOnInit():void {
@@ -51,10 +52,10 @@ export class MapComponent implements OnInit {
         }
 
         this.map = this.element.nativeElement.querySelector('.mapBox');
-console.log(res.data.places)
         this.places = res.data.places;
         this.query=`thing=${res.data.thing}`;
-        this.location.replaceState(`/map`, `${this.query}`);
+
+        this.urlChangeService.replaceState('/map', this.query);
         this.countries = res.data.countries;
         this.setMarkersCoord(this.places);
 
