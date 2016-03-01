@@ -36,7 +36,6 @@ export class HeaderComponent implements OnInit {
           return res.err;
         }
         this.defaultThing = res.data;
-        console.log(this.defaultThing)
       });
   }
 

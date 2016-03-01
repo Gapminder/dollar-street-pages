@@ -66,7 +66,6 @@ export class SearchComponent implements OnChanges{
       this.paramsUrl = this.parseUrl(this.url);
       this.getInitData(true);
     }
-    console.log(properties)
   }
 
   goToThing(thing:any):void {
