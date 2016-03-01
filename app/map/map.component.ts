@@ -1,5 +1,5 @@
 import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
-import {RouterLink,Location} from 'angular2/router';
+import {RouterLink, Location, RouteParams} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
 import {MapService} from './map.service.ts';
@@ -15,7 +15,7 @@ const isDesktop = device.desktop();
   selector: 'map-component',
   template: tpl,
   styles: [style],
-  directives: [RouterLink,HeaderComponent]
+  directives: [RouterLink, HeaderComponent]
 })
 
 export class MapComponent implements OnInit {
@@ -29,21 +29,32 @@ export class MapComponent implements OnInit {
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
   private location:Location;
+  private thing:any;
   private query:string;
+  private routeParams:any;
 
   constructor(@Inject(MapService) placeService,
               @Inject(ElementRef) element,
-              @Inject(Location) location
-  ) {
+              @Inject(Location) location,
+              @Inject(RouteParams) routeParams) {
     this.mapService = placeService;
     this.element = element;
     this.location = location;
+    this.routeParams = routeParams;
   }
 
   ngOnInit():void {
-    this.urlChanged()
+    this.thing = this.routeParams.get('thing');
+    this.urlChanged(this.thing)
   }
-  urlChanged(query=''){
+
+  urlChanged(thing:any) {
+    this.thing = thing;
+    let query = '';
+    if (thing && thing._id) {
+      query = `thing=${this.thing._id}`;
+    }
+
     this.mapService.getMainPlaces(query)
       .subscribe((res)=> {
         if (res.err) {
@@ -51,9 +62,8 @@ export class MapComponent implements OnInit {
         }
 
         this.map = this.element.nativeElement.querySelector('.mapBox');
-console.log(res.data.places)
         this.places = res.data.places;
-        this.query=`thing=${res.data.thing}`;
+        this.query = `thing=${res.data.thing}`;
         this.location.replaceState(`/map`, `${this.query}`);
         this.countries = res.data.countries;
         this.setMarkersCoord(this.places);
