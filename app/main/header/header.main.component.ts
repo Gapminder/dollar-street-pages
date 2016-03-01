@@ -1,8 +1,7 @@
 import {Component, Inject} from 'angular2/core';
-import {
-  Location
-} from 'angular2/router';
+
 import {SocialShareButtons} from '../../common/social_share_buttons/social_share_buttons.component';
+import {UrlChangeService} from '../../common/url-change/url-change.service';
 
 let tpl = require('./header.main.component.html');
 let style = require('./header.main.component.css');
@@ -15,10 +14,12 @@ let style = require('./header.main.component.css');
 })
 
 export class HeaderMainComponent {
-  private location:Location;
-  constructor( @Inject(Location) location){
-    this.location=location;
+  private urlChangeService:UrlChangeService;
+
+  constructor(@Inject(UrlChangeService) urlChangeService) {
+    this.urlChangeService = urlChangeService;
   }
+
   /** remove document and other things .This code is not pretty*/
   animateScroll(selector, inc, duration, cb) {
     let elem = document.getElementById(selector);
@@ -32,27 +33,30 @@ export class HeaderMainComponent {
   goToScroll(step, duration, inc, cb) {
     return ()=> {
       let currentDuration = duration - inc;
+
       document.body.scrollTop += step;
+
       if (currentDuration < inc) {
-        cb();
-        return;
+        return cb();
       }
+
       requestAnimationFrame(this.goToScroll(step, currentDuration, inc, cb));
     };
   }
 
   goToAbout(e) {
     e.preventDefault();
-    
-    this.animateScroll('about', 20, 1000,  ()=> {
-      this.location.replaceState(`/main#about`);
+
+    this.animateScroll('about', 20, 1000, () => {
+      this.urlChangeService.replaceState('/main#about');
     });
   };
+
   goToConcept(e) {
     e.preventDefault();
-    
-    this.animateScroll('concept', 20, 1000,  ()=> {
-      this.location.replaceState(`/main`);
+
+    this.animateScroll('concept', 20, 1000, () => {
+      this.urlChangeService.replaceState('/main');
     });
   };
 }

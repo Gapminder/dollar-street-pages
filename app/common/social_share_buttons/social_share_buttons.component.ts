@@ -1,6 +1,8 @@
-import { Component, OnInit, Inject } from 'angular2/core';
+import {Component, OnInit, Inject} from 'angular2/core';
+import {Location} from 'angular2/router';
+
+import {UrlChangeService} from '../url-change/url-change.service';
 import {SocialShareButtonsService} from './social_share_buttons.service';
-import {PlatformLocation} from 'angular2/router';
 
 let tpl = require('./social_share_buttons.component.html');
 let style = require('./social_share_buttons.component.css');
@@ -13,30 +15,39 @@ let style = require('./social_share_buttons.component.css');
 })
 
 export class SocialShareButtons implements OnInit {
-  public socialShareButtonsService: SocialShareButtonsService;
-  private platformLocation: PlatformLocation;
+  public socialShareButtonsService:SocialShareButtonsService;
+  private location:Location;
+  private urlChangeService:UrlChangeService;
   public url:string;
 
-  constructor(@Inject(SocialShareButtonsService) socialShareButtonsService:any,
-              @Inject(PlatformLocation) platformLocation:any) {
+  constructor(@Inject(SocialShareButtonsService) socialShareButtonsService,
+              @Inject(UrlChangeService) urlChangeService,
+              @Inject(Location) location) {
     this.socialShareButtonsService = socialShareButtonsService;
-    this.platformLocation = platformLocation;
-
+    this.urlChangeService = urlChangeService;
+    this.location = location;
   }
 
-  ngOnInit(): void {
+  ngOnInit():void {
     this.getUrl();
+
+    this.urlChangeService
+      .getUrlEvents()
+      .debounceTime(300)
+      .subscribe(() => {
+        this.getUrl();
+      });
   }
 
   getUrl() {
-
-    let query =`url=${this.platformLocation.location.href}`;
+    let query = `url=${this.location.path()}`;
 
     this.socialShareButtonsService.getUrl(query)
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
         }
+
         this.url = res.url;
       });
   }
@@ -44,7 +55,7 @@ export class SocialShareButtons implements OnInit {
   openPopUp(originalUrl:string) {
     let left = (window.innerWidth - 490) / 2;
 
-    let popupWin = window.open(originalUrl+this.url, "contacts",'"location, width=490, height=368, top=100, left=' + left);
+    let popupWin = window.open(originalUrl + this.url, "contacts", '"location, width=490, height=368, top=100, left=' + left);
     popupWin.focus();
   }
 }

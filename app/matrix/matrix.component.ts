@@ -7,6 +7,7 @@ import {MatrixImagesComponent} from './matrix.images.component/matrix.images.com
 import {StreetComponent} from '../common/street/street.component';
 import {FooterComponent} from '../common/footer/footer.component';
 import {HeaderComponent} from '../common/header/header.component';
+import {UrlChangeService} from '../common/url-change/url-change.service';
 
 let _ = require('lodash');
 let device = require('device.js')();
@@ -36,6 +37,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
   private footerHeight:number;
   private imageMargin:number;
 
+  private urlChangeService:UrlChangeService;
   private routeParams:RouteParams;
   private thing:string;
   private countries:string;
@@ -48,12 +50,14 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
+              @Inject(UrlChangeService) urlChangeService,
               @Inject(RouteParams) routeParams,
               @Inject(Location) location) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
     this.location = location;
+    this.urlChangeService = urlChangeService;
   }
 
   ngOnInit():void {
@@ -129,7 +133,9 @@ export class MatrixComponent implements OnInit,OnDestroy {
     }
 
     this.row = row + 1;
-    this.location.replaceState(`/matrix`, `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`);
+    
+    
+    this.urlChangeService.replaceState(`/matrix`, `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`);
 
     let clonePlaces = _.cloneDeep(this.placesArr);
 
@@ -179,7 +185,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
   urlChanged(query):void {
     /**to remove things like this*/
     this.query = query;
-    this.location.replaceState(`/matrix`, `${query}`);
+    this.urlChangeService.replaceState(`/matrix`, `${query}`);
 
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {

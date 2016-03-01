@@ -22,6 +22,7 @@
     "./app/app.config.ts",
     "./app/common/social_share_buttons/social_share_buttons.service.ts",
     "./app/common/social_share_buttons/social_share_buttons.component.ts",
+    "./app/common/url-change/url-change.service.ts",
     "./app/common/footer/footer.component.ts",
     "./app/common/street/street.component.ts",
     "./app/common/street/street.service.ts",
@@ -57,6 +58,10 @@
     "./app/all-photographers/all-photographers.component.ts",
     "./app/all-photographers/header/header.photographers.component.ts",
     "./app/all-photographers/photographers/photographers.component.ts",
-    "./app/all-photographers/photographers/photographers.service.ts"
+    "./app/all-photographers/photographers/photographers.service.ts",
+    "./app/photographer/photographer.component.ts",
+    "./app/photographer/header/photographer-header.component.ts",
+    "./app/photographer/photographer-profile/photographer-profile.component.ts",
+    "./app/photographer/photographer-profile/photographer-profile.service.ts"
   ]
 }
