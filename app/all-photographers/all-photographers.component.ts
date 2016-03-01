@@ -7,7 +7,7 @@ let tpl = require('./all-photographers.component.html');
 let style = require('./all-photographers.component.css');
 
 @Component({
-  selector: 'main',
+  selector: 'photographers',
   template: tpl,
   styles: [style],
   directives: [HeaderPhotographersComponent, PhotographersComponent, FooterComponent]
