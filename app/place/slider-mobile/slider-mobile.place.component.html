@@ -6,52 +6,50 @@
     <span class="glyphicon glyphicon-chevron-right slider-mobile-arrow arrow-mobile-next"
           (click)="slideNext()"
           [hidden]="(position || position === 0) && allPlaces.length - 1 !== position"></span>
+
     <div class="slider-mobile-content">
-      <div class="slider-mobile"
+      <div id="slider-mobile-container"
+           class="slider-mobile"
            ng-swipe-left="slideNext()"
            ng-swipe-right="slidePrev()">
         <div class="slider-mobile-slide" *ngFor="#image of images">
-          <img class="slider-mobile-slide-image" [src]="image.url" alt=""/>
-        </div>
-      </div>
-      <div class="load">
-        <div class="la-ball-spin la-dark">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+          <img class="slider-mobile-slide-image" [src]="image.background" alt=""/>
         </div>
       </div>
     </div>
   </div>
 
   <span class="showContentForMobile"
-        *ngIf="!isShowInfoFamily"
-        (click)="showInfoFamily(chosenPlace._id)">
+        [hidden]="showInfoFamily"
+        (click)="showInfoFamily = !showInfoFamily">
     Info about family
   </span>
 
-  <div *ngIf="isShowInfoFamily" class="slider-mobile-description-container">
+  <div *ngIf="showInfoFamily" class="slider-mobile-description-container">
     <div class="slider-mobile-family-description">
       <div class="slider-mobile-family-title">
         <p>Family</p>
-        <h2>{{family.familyName}}</h2>
+        <h2>{{chosenPlace.familyName}}</h2>
       </div>
+
       <div class="slider-mobile-family-map">
-        <!--<place-map chosen-place="chosenPlace"></place-map>-->
+        <place-map [place]="chosenPlace"></place-map>
       </div>
     </div>
 
     <div class="slider-mobile-family-images-container">
       <div class="slider-mobile-family-portrait">
-        <img *ngIf="family" [src]="family.background" alt="">
+        <img *ngIf="chosenPlace.family"
+             [src]="chosenPlace.family.background"
+             [routerLink]="['Place', {thing: chosenPlace.family.thing, place: chosenPlace._id, image: chosenPlace.family._id}]"
+             alt="">
       </div>
+
       <div class="slider-mobile-family-house">
-        <img *ngIf="house" [src]="house.background" alt="">
+        <img *ngIf="chosenPlace.house"
+             [src]="chosenPlace.house.background"
+             [routerLink]="['Place', {thing: chosenPlace.house.thing, place: chosenPlace._id, image: chosenPlace.house._id}]"
+             alt="">
       </div>
     </div>
   </div>

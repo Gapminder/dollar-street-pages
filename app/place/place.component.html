@@ -17,6 +17,16 @@
                 [controllSlider]="controllSlider"
                 [activeThing]="activeThing"
                 [places]="streetPlaces"></slider-place>
-  <family-place [chosenPlaces]="chosenPlaces"></family-place>
+
+  <span class="showContentForMobile"
+        *ngIf="!isShowImagesFamily && !isDesktop"
+        (click)="isShowImagesFamily = !isShowImagesFamily">
+    See all images
+  </span>
+
+  <family-place [hidden]="!isShowImagesFamily" [chosenPlaces]="chosenPlaces"></family-place>
+
+  <p class="photographer"
+     [hidden]="!currentPlace.photographer">Photographer: {{currentPlace.photographer}}</p>
   <footer></footer>
 </div>
