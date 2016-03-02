@@ -35,6 +35,9 @@ export class PlaceComponent implements OnInit {
   private place:any;
   private init:boolean = true;
   private activeThing:any = {};
+  private currentPlace:any = {};
+  private isDesktop:boolean = isDesktop;
+  private isShowImagesFamily:boolean = isDesktop;
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
@@ -74,7 +77,12 @@ export class PlaceComponent implements OnInit {
   }
 
   choseCurrentPlace(place) {
+    this.currentPlace = place[0];
     this.chosenPlaces.next(place);
+
+    if (!this.isDesktop) {
+      this.isShowImagesFamily = false;
+    }
 
     this.changeLocation(place[0], this.thing);
   }
