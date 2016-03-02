@@ -5,6 +5,7 @@
 .matrix-header {
   z-index: 9995;
 }
+
 .matrix-header {
   position: fixed !important;
   top: 0;
@@ -24,6 +25,22 @@
   z-index: 9;
 }
 
-.matrix-header .street-box svg text {
-  font-family: "Bariol Regular";
+.photographer {
+  text-align: right;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 15px 20px;
+}
+
+.showContentForMobile {
+  background-color: #374551;
+  border-radius: 5px;
+  color: #fff;
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 25px auto;
+  padding: 10px 20px;
+  width: 250px;
+  text-align: center;
 }
