@@ -12,15 +12,19 @@
       </div>
 
       <div class="col-md-12 things_content">
-        <div class="thing" *ngFor="#thing of things" [routerLink]="['Matrix', {thing: thing._id,countries:'World',regions:'World'}]">
-             <!--analytics-on="click" analytics-event="go to matrix page from main (click on thing)">-->
+        <div class="thing"
+             *ngFor="#thing of things"
+             [routerLink]="['Matrix', {thing: thing._id,countries:'World',regions:'World'}]"
+             [angulartics2On]="'click'"
+             [angularticsEvent]="'go to matrix page from main (click on thing)'">
           <div class="thing_wrapper">
             <div class="image_container">
               <img *ngIf="thing.icon" class="thing-icon"
-                   src="{{thing.thingUrl}}" alt=""/>
+                   [src]="thing.thingUrl" alt=""/>
               <img *ngIf="thing.icon" class="thing-icon"
-                   src="{{thing.thingUrlHovered}}" alt=""/>
+                   [src]="thing.thingUrlHovered" alt=""/>
             </div>
+
             <p>{{thing.thingName}}</p>
           </div>
         </div>
