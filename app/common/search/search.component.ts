@@ -56,6 +56,7 @@ export class SearchComponent implements OnInit, OnChanges {
   private isDesktop:boolean = isDesktop;
   private mobileTitle:string;
   private tab:number = 0;
+  private header:any;
 
   constructor(@Inject(SearchService) searchService, @Inject(Router) _router) {
     this.searchService = searchService;
@@ -208,14 +209,14 @@ export class SearchComponent implements OnInit, OnChanges {
     }
 
     if (this.placeComponent) {
-      url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
+      url = `thing=${this.paramsUrl.thing}&place=${this.paramsUrl.place}&image=${this.paramsUrl.image}`;
     }
     this.searchService.getSearchInitData(url)
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
         }
-
+        this.header=res.data.header;
         this.countries = res.data.countries;
         this.categories = res.data.categories;
         this.regions = res.data.regions;
