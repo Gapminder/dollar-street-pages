@@ -18,11 +18,12 @@
                 (click)="selectThing(thing)"
                 [ngClass]="{active: activeThing._id === thing._id}">
               <div class="icon">
-                <img *ngIf="thing.icon" src="{{thing.thingUrl}}"
+                <img *ngIf="thing.icon" [src]="thing.thingUrl"
                      alt="">
-                <img *ngIf="thing.icon" src="{{thing.thingUrlHovered}}"
+                <img *ngIf="thing.icon" [src]="thing.thingUrlHovered"
                      alt="">
               </div>
+
               <span>{{thing.plural}}</span>
             </li>
           </ul>
@@ -31,7 +32,7 @@
         <div class="concept_things_content">
           <div class="concept-header">
             <div class="concept-header-thing-info pull-left">
-              <img class="pull-left" src="{{activeThing.icon}}">
+              <img class="pull-left" [src]="activeThing.icon">
 
               <div class="concept-header-thing-title pull-right">
                 <p>{{activeThing.plural}} across the World</p>
@@ -59,7 +60,7 @@
                 <div class="concept-place-arrow-up"></div>
                 <div class="concept-place">
                   <div class="concept-place-arrow-up"></div>
-                  <img src="{{amazonS3Url + image.imageUrl}}">
+                  <img [src]="amazonS3Url + image.imageUrl" alt="">
                   <div class="concept-place-captions">
                     <div class="concept-country">{{image.place.country}}</div>
                     <div class="concept-income">{{image.place.income}}$</div>
@@ -75,11 +76,14 @@
 
           <div class="concept-info">
             <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's simply dummy text of the printing and typesetting industry. Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+              industry's simply dummy text of the printing and typesetting industry. Lorem Ipsum.Lorem Ipsum is simply
+              dummy text of the printing
             </p>
-            <a [routerLink]="['Matrix', {thing: activeThing._id,countries:'World',regions:'World'}]">
-               <!--analytics-on="click" analytics-event="go to matrix page from main">-->
-              See all <span >{{activeThing.plural}}</span> >></a>
+            <a [routerLink]="['Matrix', {thing: activeThing._id,countries:'World',regions:'World'}]"
+               [angulartics2On]="'click'"
+               [angularticsEvent]="'go to matrix page from main'">
+              See all <span>{{activeThing.plural}}</span> >></a>
           </div>
         </div>
       </div>

@@ -22,8 +22,9 @@
                [style.top.px]="place.top"
                (mouseenter)="hoverOnMarker(i)"
                (mouseleave)="unHoverOnMarker()"
-               [routerLink]="['Place', {thing: place.homeImg.thing, image: place.homeImg.imageId}]">
-          <!--analytics-on="click" analytics-event="go to place page from main (click on the map)"-->
+               [routerLink]="['Place', {thing: place.homeImg.thing, image: place.homeImg.imageId}]"
+               [angulartics2On]="'click'"
+               [angularticsEvent]="'go to place page from main (click on the map)'">
           <div class="hover_portrait" [hidden]="!hoverPlace"
                [style.top.px]="hoverPortraitTop"
                [style.left.px]="hoverPortraitLeft">
@@ -52,8 +53,9 @@
              *ngFor="#place of places; #i=index"
              (mouseenter)="hoverOnFamily(i)"
              (mouseleave)="unHoverOnFamily()"
-             [routerLink]="['Place', {thing: place.familyImg.thing,image:place.familyImg.imageId}]">
-          <!--analytics-on="click" analytics-event="go to place page from main"-->
+             [routerLink]="['Place', {thing: place.familyImg.thing,image:place.familyImg.imageId}]"
+             [angulartics2On]="'click'"
+             [angularticsEvent]="'go to place page from main (click on the map)'">
           <img [src]="place.familyImg.background" alt="">
 
           <div class="description">
