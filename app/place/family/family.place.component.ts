@@ -41,7 +41,6 @@ export class FamilyPlaceComponent implements OnInit {
         if (res.err) {
           return res.err;
         }
-
         this.images = res.images;
       });
   }

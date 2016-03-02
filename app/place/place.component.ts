@@ -61,7 +61,9 @@ export class PlaceComponent implements OnInit {
     if (this.init) {
       return;
     }
+    this.thing = thing._id;
 
+    /* init when start load page !!!!*/
     this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`);
   }
 
@@ -72,24 +74,26 @@ export class PlaceComponent implements OnInit {
   getStreetPlaces(thing) {
     this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
       this.streetPlaces.next(res.data.places);
-      this.init = false;
     })
   }
 
   choseCurrentPlace(place) {
     this.currentPlace = place[0];
     this.chosenPlaces.next(place);
-
     if (!this.isDesktop) {
       this.isShowImagesFamily = false;
     }
-
     this.changeLocation(place[0], this.thing);
   }
 
   changeLocation(place, thing) {
+
     let query = `thing=${thing}&place=${place._id}&image=${place.image}`;
 
     this.urlChangeService.replaceState('/place', query);
+    this.routeParams.params = {'thing': thing, 'place': place._id, 'image': place.image}
+    this.init = false;
+    this.place = place._id;
+    this.image = place.image;
   }
 }
