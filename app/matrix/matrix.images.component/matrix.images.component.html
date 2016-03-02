@@ -5,8 +5,9 @@
        [ngClass]="'column-'+zoom"
        (mouseenter)="hoverImage(place)"
        (mouseleave)="hoverImage()"
-       [routerLink]="['Place', {thing: thing, place: place._id, image: place.image}]">
-    <!--analytics-on="click" analytics-event="go to place page from matrix (click on matrix)"-->
+       [routerLink]="['Place', {thing: thing, place: place._id, image: place.image}]"
+       [angulartics2On]="'click'"
+       [angularticsEvent]="'go to place page from matrix (click on matrix)'">
     <div class="image-description">
       <span class="place-image-box-country pull-left">{{place.country}}</span>
       <span class="place-image-box-income pull-right">{{place.income}}$</span>
