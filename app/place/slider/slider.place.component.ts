@@ -37,6 +37,7 @@ export class SliderPlaceComponent implements OnInit {
   public position:any;
   public thing:any;
   public image:any;
+  public place:any;
   public fancyBoxImage:any;
   private routeParams:RouteParams;
   private location:Location;
@@ -55,8 +56,8 @@ export class SliderPlaceComponent implements OnInit {
     this.streetPlaces.subscribe((places)=> {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
+      this.place = this.routeParams.get('place');
       this.allPlaces = places;
-
       this.init();
     });
 
@@ -85,8 +86,8 @@ export class SliderPlaceComponent implements OnInit {
 
   protected init(position?:any) {
     this.position = this.allPlaces.map(function (place:any) {
-      return place.image;
-    }).indexOf(this.image);
+      return place._id;
+    }).indexOf(this.place);
 
     if (position || position === 0) {
       this.position = position;

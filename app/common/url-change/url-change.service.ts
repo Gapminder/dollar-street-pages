@@ -21,4 +21,11 @@ export class UrlChangeService {
   getUrlEvents():Observable {
     return this.urlEvents;
   }
+
+  parseUrl(url:string):any {
+    url = '{\"' + url.replace(/&/g, '\",\"') + '\"}';
+    url = url.replace(/=/g, '\":\"');
+    return JSON.parse(url);
+  }
+
 }
