@@ -321,6 +321,15 @@
   width: 35px;
   height: 35px;
 }
+.search-portrait-icon {
+  cursor: pointer;
+  margin: -14px 10px 0 5px !important;
+  width: 55px;
+  height: 55px;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
 
 .search-title div {
   font-size: 26px;

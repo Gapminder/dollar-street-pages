@@ -216,7 +216,6 @@ export class SearchComponent implements OnInit, OnChanges {
         if (res.err) {
           return res.err;
         }
-        this.header=res.data.header;
         this.countries = res.data.countries;
         this.categories = res.data.categories;
         this.regions = res.data.regions;
@@ -246,15 +245,17 @@ export class SearchComponent implements OnInit, OnChanges {
     this.isOpen = false;
     this.search.text = '';
     let url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
-
     this.searchService.getSearchInitData(url)
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
         }
-
+        this.header=res.data.header;
         this.categories = res.data.categories;
       });
+  }
+  private toUrl(image) {
+    return `url("${image}")`;
   }
 
   getMobileTitle(thing, states) {

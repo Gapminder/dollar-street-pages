@@ -7,7 +7,8 @@
              (click)="openSearch(isOpen)"
              [src]="activeThing.iconDark"
              [alt]="activeThing.name">
-        <img class="search-title-thing-icon pull-left icon" [src]="header.icon" *ngIf="placeComponent&&header">
+
+        <div class="search-portrait-icon pull-left icon" [style.backgroundImage]="toUrl(header.icon)" *ngIf="placeComponent&&header"></div>
 
         <div class="search-text">
           <span *ngIf="matrixComponent">{{activeThing.plural || activeThing.name}}</span>

@@ -1,7 +1,3 @@
-.street-box {
-  margin-top: -11px;
-}
-
 .street-box svg {
   position: relative;
   width: 100%;
@@ -11,12 +7,10 @@
 }
 
 .thumbView-box {
-  /*overflow-y: auto;*/
   position: absolute;
   z-index: 9999;
   max-width: 540px;
   top: 96%;
-  /*max-height: calc(100% - 175px);*/
   height:auto;
   background-color: rgba(55, 69, 81, 0.8);
   display: flex;
