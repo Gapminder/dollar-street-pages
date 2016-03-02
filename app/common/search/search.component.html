@@ -2,15 +2,18 @@
   <div class="search-title-container pull-left">
     <div class="search-title pull-left">
       <div class="pull-left">
-        <img class="search-title-thing-icon pull-left icon"
+        <img class="search-title-thing-icon pull-left icon" *ngIf="!placeComponent"
              [hidden]="!(activeThing && activeThing.iconDark)"
              (click)="openSearch(isOpen)"
              [src]="activeThing.iconDark"
              [alt]="activeThing.name">
 
+        <div class="search-portrait-icon pull-left icon" [style.backgroundImage]="toUrl(header.icon)" *ngIf="placeComponent&&header"></div>
+
         <div class="search-text">
           <span *ngIf="matrixComponent">{{activeThing.plural || activeThing.name}}</span>
-          <span *ngIf="!matrixComponent">{{activeThing.name}}</span>
+          <span *ngIf="placeComponent&&header">{{header.family[0]}}, {{header.income}}$, {{header.country}}</span>
+          <span *ngIf="mapComponent">{{activeThing.name}}</span>
           <span *ngIf="matrixComponent && states[0] !== 'World'">
             <span *ngFor="#state of states; #i = index; #last = last">
               <span *ngIf="i === 0">&nbsp;in</span>

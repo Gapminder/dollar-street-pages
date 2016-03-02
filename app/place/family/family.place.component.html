@@ -5,7 +5,7 @@
          *ngFor="#image of images">
       <div class="family-image"
            image-loading="image.background"
-           [routerLink]="['Place', {thing: image.thing, image: image._id}]"
+           [routerLink]="['Place', {thing: image.thing,place:placeId,image: image._id}]"
            [style.backgroundImage]="image.background">
 
         <div class="image-description">
