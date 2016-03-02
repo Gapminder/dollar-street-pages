@@ -2,11 +2,17 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 ">
-        <h2>Photographers</h2>
+        <h2>Photographer - {{photographer.name}}</h2>
         <div class="photographer">
              <!--analytics-on="click" analytics-event="go to matrix page from main (click on thing)">-->
           <div class="photographer_wrapper">
-            <p>{{photographer}}</p>
+            <div *ngFor="#place of photographer.places" [routerLink]="['Place', {thing: thing, place: place._id, image: place.imageId}]">
+              <img *ngIf="place.portrait" [src]="place.portrait" alt=""/>
+
+              <span>Place name: {{place.name}}</span>
+              <span>Rating: {{place.rating}}</span>
+              <span>Place date of creation: {{place.date}}</span>
+            </div>
           </div>
         </div>
       </div>
