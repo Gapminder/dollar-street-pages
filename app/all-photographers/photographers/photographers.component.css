@@ -1,4 +1,135 @@
 #photographers {
-  padding-top: 67px;
+  padding-top: 137px;
+  height: 100%;
+}
+
+#photographers .container,
+#photographers .row,
+#photographers .left-side-bar {
+  height: 100%;
+}
+
+#photographers .search-input {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+#photographers .search-input input {
+  font-size: 16px;
+  color: #767d86;
+  height: 34px;
+  padding-left: 32px;
+  border-radius: 3px;
+  border: 1px solid #e2e6ec;
+}
+
+#photographers .search-input img {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 18px;
+  color: #767d86;
+  width: 15px;
+}
+
+#photographers .photographers-country {
+  overflow-y: scroll;
+}
+
+#photographers .photographers-list {
+  border-bottom: 1px solid #e2e6ec;
+  margin-right: 15px;
+}
+
+#photographers .photographers-country,
+#photographers .photographers-list {
+  padding: 0;
+  height: calc(100% - 44px);
+  list-style-type: none;
+  color: #767d86;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#photographers .photographer-country {
+  text-transform: uppercase;
+  color: #000;
+}
+
+#photographers .photographers-country > li {
+  margin-top: 15px;
+}
+
+#photographers .photographers-list li {
+  padding: 10px 0;
+}
+
+#photographers .photographers-list .photographer-name {
+  display: inline-block;
+  width: 80%;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+#photographers .photographers-list .photographer-places {
+  display: inline-block;
+  float: right;
+  font-size: 14px;
+}
+
+#photographers .photographers-container {
+  padding: 0;
+  color: #767d86;
+  font-weight: 500;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+#photographers .photographers-container h3 {
+  height: 26px;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 20px;
+  overflow: hidden;
+  font-weight: 500;
+}
+
+#photographers .photographer-card {
+  display: inline-block;
+  width: 194px;
+  padding: 0 10px;
+  margin-bottom: 20px;
+}
+
+#photographers .photographer-portrait {
+  position: relative;
+  height: 150px;
+  text-align: center;
+  color: #fff;
+}
+
+#photographers .photographer-portrait .photographer-material {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#photographers .photographer-portrait .photographer-material span {
+  padding: 3px;
+}
+
+#photographers ::-webkit-scrollbar {
+  width: 2px;
+}
+
+#photographers ::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #deeae7;
+}
+
+#photographers ::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #b3b9c3;
 }
 

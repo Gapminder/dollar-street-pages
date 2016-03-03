@@ -3,7 +3,7 @@ import {
   RouterLink,
 } from 'angular2/router';
 import {PhotographersService} from './photographers.service';
-
+import {PhotographersFilter} from './photographersFilter.pipe';
 
 let tpl = require('./photographers.component.html');
 let style = require('./photographers.component.css');
@@ -13,12 +13,14 @@ let style = require('./photographers.component.css');
   template: tpl,
   styles: [style],
   directives:[RouterLink],
-  providers: [PhotographersService]
+  pipes: [PhotographersFilter]
 })
 
 export class PhotographersComponent implements OnInit{
   public photographersService:PhotographersService;
-  public photographers:any[]=[];
+  public photographersByCountry:any[]=[];
+  public photographersByName:any[]=[];
+  private search:any = {text: ''};
 
   constructor(@Inject(PhotographersService) photographersService:any) {
     this.photographersService = photographersService;
@@ -30,7 +32,8 @@ export class PhotographersComponent implements OnInit{
         if (res.err) {
           return res.err;
         }
-        this.photographers = res.photographers;
+        this.photographersByCountry = res.data.photographers;
+        this.photographersByName = res.data.allPhotographers;
       });
   }
 }
