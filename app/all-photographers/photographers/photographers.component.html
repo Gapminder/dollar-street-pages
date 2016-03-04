@@ -1,13 +1,48 @@
 <div id="photographers">
   <div class="container">
     <div class="row">
-      <div class="col-md-12 ">
-        <h2>Photographers</h2>
-        <div class="photographers" *ngFor="#photographer of photographers" [routerLink]="['Photographer', {photographer: photographer._id}]">
-             <!--analytics-on="click" analytics-event="go to matrix page from main (click on thing)">-->
-          <div class="photographer_wrapper">
-            <p>{{photographer._id}}</p>
+      <div class="col-md-2 left-side-bar">
+        <div class="search-input">
+          <input class="form-control ng-untouched ng-pristine ng-valid"
+                 id="search"
+                 placeholder="Search..."
+                 [(ngModel)]="search.text">
+          <img alt="" src="/app/assets/img/search-icon.svg">
+        </div>
+        <ul class="photographers-country">
+          <li *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:true">
+            <div>
+              <span class="photographer-country">{{country._id}}</span>
+              <ul class="photographers-list">
+                <li
+                  *ngFor="#photographer of country.photographers"
+                  [routerLink]="['Photographer', {name: photographer.name}]"
+                  [angulartics2On]="'click'"
+                  [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
+                  {{photographer.name}}
+                  <span class="photographer-places">{{photographer.placesCount}}</span>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-10 photographers-container">
+        <div class="photographer-card"
+             *ngFor="#photographer of photographersByName | PhotographersFilter:search.text"
+             [routerLink]="['Photographer', {name: photographer._id}]"
+             [angulartics2On]="'click'"
+             [angularticsEvent]="'go to ' + photographer._id + ' from photographers page'">
+          <div class="photographer-portrait"
+               [ngStyle]="{'background-image': photographer.image || 'url(/app/assets/img/photographer-icon.jpg)'}">
+            <div class="photographer-material">
+              <span><i class="fa fa-camera"></i> {{photographer.imagesCount}}</span>
+              <span><i class="fa fa-video-camera"></i> {{photographer.videoCount || 0}}</span>
+              <span><i class="fa fa-home"></i> {{photographer.placesCount}}</span>
+            </div>
           </div>
+          <h3>{{photographer._id}}</h3>
         </div>
       </div>
     </div>

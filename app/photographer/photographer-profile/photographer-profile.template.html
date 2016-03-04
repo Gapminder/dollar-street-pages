@@ -1,21 +1,31 @@
-<div id="photographer">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 ">
-        <h2>Photographer - {{photographer.name}}</h2>
-        <div class="photographer">
-             <!--analytics-on="click" analytics-event="go to matrix page from main (click on thing)">-->
-          <div class="photographer_wrapper">
-            <div *ngFor="#place of photographer.places" [routerLink]="['Place', {thing: thing, place: place._id, image: place.imageId}]">
-              <img *ngIf="place.portrait" [src]="place.portrait" alt=""/>
+<div id="photographer-profile">
+  <header>
+    <img src="/app/assets/img/photographer-icon.jpg" alt="">
+    <h2>{{photographer.name}}</h2>
+    <p *ngIf="photographer.company">{{photographer.company.name}}</p>
+  </header>
 
-              <span>Place name: {{place.name}}</span>
-              <span>Rating: {{place.rating}}</span>
-              <span>Place date of creation: {{place.date}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+  <main>
+    <p class="home"><i class="fa fa-home"></i> Visited Families: <span class="pull-right">{{photographer.places}}</span></p>
+    <p class="photo"><i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{photographer.images}}</span></p>
+    <p class="camera"><i class="fa fa-video-camera"></i> Total Videos: <span class="pull-right">{{photographer.video}}</span></p>
+  </main>
+
+  <footer>
+    <h3>On the web</h3>
+
+    <p class="company" *ngIf="photographer.company">
+      <a [href]="'http://' + photographer.company.url" target="_blank">{{photographer.company.url}}</a>
+    </p>
+
+    <div *ngIf="photographer.social" class="social-network-container">
+      <a *ngFor="#social of photographer.social"
+         [href]="social.url">
+        <i class="fa fa-google-plus-square" *ngIf="social.name === 'google'"></i>
+        <i class="fa fa-facebook-square" *ngIf="social.name === 'facebook'"></i>
+        <i class="fa fa-twitter-square" *ngIf="social.name === 'twitter'"></i>
+        <i class="fa fa-linkedin-square" *ngIf="social.name === 'instagram'"></i>
+      </a>
     </div>
-  </div>
+  </footer>
 </div>

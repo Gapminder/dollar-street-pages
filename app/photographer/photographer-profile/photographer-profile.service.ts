@@ -9,8 +9,8 @@ export class PhotographerProfileService{
     this.http = http;
   }
 
-  public getPhotographer(query:any):Observable<any> {
-    return this.http.get(`http://localhost/consumer/api/v1/photographer?${query}`).map((res:any)=>{
+  public getPhotographerProfile(query:any):Observable<any> {
+    return this.http.get(`http://localhost/consumer/api/v1/photographer-profile?${query}`).map((res:any)=>{
       let parseRes = JSON.parse(res._body);
       return {err:parseRes.error, data: parseRes.data}
     })

@@ -59,9 +59,12 @@
     "./app/all-photographers/header/header.photographers.component.ts",
     "./app/all-photographers/photographers/photographers.component.ts",
     "./app/all-photographers/photographers/photographers.service.ts",
+    "./app/all-photographers/photographers/photographersFilter.pipe.ts",
     "./app/photographer/photographer.component.ts",
     "./app/photographer/header/photographer-header.component.ts",
     "./app/photographer/photographer-profile/photographer-profile.component.ts",
-    "./app/photographer/photographer-profile/photographer-profile.service.ts"
+    "./app/photographer/photographer-profile/photographer-profile.service.ts",
+    "./app/photographer/photographer-places/photographer-places.component.ts",
+    "./app/photographer/photographer-places/photographer-places.service.ts"
   ]
 }

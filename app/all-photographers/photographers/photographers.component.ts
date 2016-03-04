@@ -1,9 +1,11 @@
-import { Component, OnInit , Inject } from 'angular2/core';
-import {
-  RouterLink,
-} from 'angular2/router';
-import {PhotographersService} from './photographers.service';
+import {Component, OnInit, Inject} from 'angular2/core';
+import {RouterLink} from 'angular2/router';
 
+import {Angulartics2On} from 'angulartics2/index';
+import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
+
+import {PhotographersService} from './photographers.service';
+import {PhotographersFilter} from './photographersFilter.pipe';
 
 let tpl = require('./photographers.component.html');
 let style = require('./photographers.component.css');
@@ -12,25 +14,32 @@ let style = require('./photographers.component.css');
   selector: 'photographers',
   template: tpl,
   styles: [style],
-  directives:[RouterLink],
-  providers: [PhotographersService]
+  directives: [RouterLink, Angulartics2On],
+  pipes: [PhotographersFilter]
 })
 
-export class PhotographersComponent implements OnInit{
+export class PhotographersComponent implements OnInit {
+  private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   public photographersService:PhotographersService;
-  public photographers:any[]=[];
+  public photographersByCountry:any[] = [];
+  public photographersByName:any[] = [];
+  private search:any = {text: ''};
 
-  constructor(@Inject(PhotographersService) photographersService:any) {
+  constructor(@Inject(PhotographersService) photographersService:any,
+              @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
     this.photographersService = photographersService;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
-  ngOnInit(): void {
+  ngOnInit():void {
     this.photographersService.getPhotographers({})
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
         }
-        this.photographers = res.photographers;
+
+        this.photographersByCountry = res.data.photographersByCountries;
+        this.photographersByName = res.data.allPhotographers;
       });
   }
 }
