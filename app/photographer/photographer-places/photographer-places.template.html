@@ -4,12 +4,18 @@
 
     <div class="place" *ngFor="#place of country.places">
       <div class="image">
-        <img [src]="place.image" alt="">
+        <img [src]="place.image"
+             [routerLink]="['Place', {thing: familyThingId, place: place.placeId, image: place.imageId}]"
+             [angulartics2On]="'click'"
+             [angularticsEvent]="'go to place page from photographer page'"
+             alt="">
       </div>
+
       <div class="place-description">
         <div class="family">
           <h3>{{place.family}} family</h3>
         </div>
+
         <div class="place-country">
           <p>
             <img *ngIf="country.region === 'Africa'" src="/app/assets/img/africa.svg" alt="">
@@ -19,12 +25,16 @@
             <span>{{country.name}}</span>
           </p>
         </div>
+
         <div class="income">
           <span>${{place.income}}</span>
         </div>
       </div>
+
       <div class="link">
-        <a [routerLink]="['Place', {thing: familyThingId, place: place.placeId, image: place.imageId}]" href="">Visit family »</a>
+        <a [routerLink]="['Place', {thing: familyThingId, place: place.placeId, image: place.imageId}]"
+           [angulartics2On]="'click'"
+           [angularticsEvent]="'go to place page from photographer page'">Visit family »</a>
       </div>
     </div>
   </div>

@@ -29,6 +29,7 @@
 
 #photographer-places .place .image img {
   width: 100%;
+  cursor: pointer;
 }
 
 #photographer-places .place .place-description {

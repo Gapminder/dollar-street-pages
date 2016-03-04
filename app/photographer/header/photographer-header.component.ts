@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core';
-import {SocialShareButtons} from '../../common/social_share_buttons/social_share_buttons.component';
+
+import {MainMenuComponent} from '../../common/menu/menu.component';
 
 let tpl = require('./photographer-header.template.html');
 let style = require('./photographer-header.css');
@@ -8,7 +9,7 @@ let style = require('./photographer-header.css');
   selector: 'header-photographer',
   template: tpl,
   styles: [style],
-  directives: [SocialShareButtons]
+  directives: [MainMenuComponent]
 })
 
 export class HeaderPhotographerComponent {

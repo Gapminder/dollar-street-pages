@@ -7,41 +7,43 @@
                  id="search"
                  placeholder="Search..."
                  [(ngModel)]="search.text">
-          <img  alt="" src="/app/assets/img/search-icon.svg">
+          <img alt="" src="/app/assets/img/search-icon.svg">
         </div>
         <ul class="photographers-country">
-          <li *ngFor="#country of photographersByCountry">
-            <!--analytics-on="click" analytics-event="go to matrix page from main (click on thing)">-->
+          <li *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:true">
             <div>
               <span class="photographer-country">{{country._id}}</span>
               <ul class="photographers-list">
-                <li *ngFor="#photographer of country.photographer | PhotographersFilter:search.text:'photographer._id':true"
-                    [routerLink]="['Photographer', {name: photographer.name}]">
+                <li
+                  *ngFor="#photographer of country.photographers"
+                  [routerLink]="['Photographer', {name: photographer.name}]"
+                  [angulartics2On]="'click'"
+                  [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
                   {{photographer.name}}
-                  <span class="photographer-places">{{photographer.places.length}}</span>
+                  <span class="photographer-places">{{photographer.placesCount}}</span>
                 </li>
               </ul>
             </div>
           </li>
         </ul>
       </div>
+
       <div class="col-md-10 photographers-container">
         <div class="photographer-card"
-             *ngFor="#photographer of photographersByName | PhotographersFilter:search.text:'photographer._id':true"
-             [routerLink]="['Photographer', {name: photographer._id}]">
+             *ngFor="#photographer of photographersByName | PhotographersFilter:search.text"
+             [routerLink]="['Photographer', {name: photographer._id}]"
+             [angulartics2On]="'click'"
+             [angularticsEvent]="'go to ' + photographer._id + ' from photographers page'">
           <div class="photographer-portrait"
-               style="background-image: url(/app/assets/img/photographer-icon.jpg)">
+               [ngStyle]="{'background-image': photographer.image || 'url(/app/assets/img/photographer-icon.jpg)'}">
             <div class="photographer-material">
-
-
-              <span><i class="fa fa-camera">&nbsp;1000</i></span>
-              <span><i class="fa fa-video-camera">&nbsp;0</i></span>
-              <span><i class="fa fa-home">&nbsp;{{photographer.places.length}}</i></span>
+              <span><i class="fa fa-camera"></i> {{photographer.imagesCount}}</span>
+              <span><i class="fa fa-video-camera"></i> {{photographer.videoCount || 0}}</span>
+              <span><i class="fa fa-home"></i> {{photographer.placesCount}}</span>
             </div>
           </div>
           <h3>{{photographer._id}}</h3>
         </div>
-
       </div>
     </div>
   </div>
