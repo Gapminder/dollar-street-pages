@@ -1,3 +1,15 @@
 <header-photographer></header-photographer>
-<photographer></photographer>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2">
+      <photographer-profile [photographerName]="photographerName"></photographer-profile>
+    </div>
+
+    <div class="col-md-10">
+      <photographer-places [photographerName]="photographerName"></photographer-places>
+    </div>
+  </div>
+</div>
+
 <footer></footer>

@@ -1,0 +1,88 @@
+#photographer-places p,
+#photographer-places h3 {
+  margin: 0;
+}
+
+#photographer-places .country > h3 {
+  font-size: 20px;
+  font-family: 'Bariol Bold';
+  margin-bottom: 10px;
+  margin-top: -4px;
+}
+
+#photographer-places .place {
+  border: 1px solid #d8dce1;
+  border-radius: 3px;
+  padding: 5px 15px 5px 5px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+#photographer-places .place .place-description > div,
+#photographer-places .place > div {
+  float: left;
+}
+
+#photographer-places .place .image {
+  width: 160px;
+}
+
+#photographer-places .place .image img {
+  width: 100%;
+}
+
+#photographer-places .place .place-description {
+  width: calc(100% - 362px);
+  overflow: hidden;
+  margin: 52px 20px 0;
+}
+
+#photographer-places .place-description > div {
+  width: 33%;
+  text-align: center;
+}
+
+#photographer-places .place-description .family {
+  margin-top: 13px;
+}
+
+#photographer-places .place-description .family h3 {
+  font-size: 20px;
+  font-family: 'Bariol Bold';
+}
+
+#photographer-places .place-description .place-country {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+#photographer-places .place-description .place-country img {
+  width: 19px;
+  margin-top: -9px;
+}
+
+#photographer-places .place-description .income {
+  font-size: 45px;
+  font-family: 'Bariol Light';
+  line-height: 46px;
+}
+
+#photographer-places .link {
+  margin-top: 52px;
+}
+
+#photographer-places .link a {
+  color: #fff;
+  padding: 10px 30px;
+  background-color: #374551;
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+  border-radius: 5px;
+  bottom: 0;
+}
+
+#photographer-places .link a:hover {
+  background-color: #ffb702;
+}
+
