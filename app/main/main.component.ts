@@ -6,7 +6,7 @@ import {ThingsMainComponent} from './things/things.main.component';
 import {AboutMainComponent} from './about/about.main.component';
 import {FooterComponent} from '../common/footer/footer.component';
 import {PlacesMainComponent} from './places/places.main.component';
-import {LoaderComponent} from '../common/loader/loade.component';
+import {LoaderComponent} from '../common/loader/loader.component';
 
 let tpl = require('./main.component.html');
 let style = require('./main.component.css');

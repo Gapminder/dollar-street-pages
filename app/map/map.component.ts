@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Rx';
 import {UrlChangeService} from '../common/url-change/url-change.service';
 import {MapService} from './map.service.ts';
 import {HeaderComponent} from '../common/header/header.component';
+import {LoaderComponent} from '../common/loader/loader.component';
 
 let tpl = require('./map.html');
 let style = require('./map.component.css');
@@ -16,7 +17,7 @@ const isDesktop = device.desktop();
   selector: 'map-component',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, HeaderComponent]
+  directives: [RouterLink, HeaderComponent, LoaderComponent]
 })
 
 export class MapComponent implements OnInit {
@@ -44,7 +45,8 @@ export class MapComponent implements OnInit {
   private isOpenLeftSide:boolean = false;
   private init:boolean;
   private router:Router;
-
+  public loader:boolean = false;
+  
   constructor(@Inject(MapService) placeService,
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
@@ -89,6 +91,7 @@ export class MapComponent implements OnInit {
         this.urlChangeService.replaceState('/map', this.query);
         this.countries = res.data.countries;
         this.setMarkersCoord(this.places);
+        this.loader = true;
         Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
