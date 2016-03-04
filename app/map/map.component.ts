@@ -1,5 +1,5 @@
 import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
-import {RouterLink, RouteParams} from 'angular2/router';
+import {RouterLink, RouteParams, Router} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
 import {UrlChangeService} from '../common/url-change/url-change.service';
@@ -33,29 +33,49 @@ export class MapComponent implements OnInit {
   private urlChangeService:UrlChangeService;
   private query:string;
   private routeParams:any;
+  private currentCountry:string;
+  private lefSideCountries:any;
+  private lefSideLeft:string = '-324px';
+  private lefSideOpacity:string = '0';
+  private seeAllHomes:boolean = false;
+  private leftArrowTop:any;
+  private onThumb:boolean = false;
+  private onMarker:boolean = false;
+  private isOpenLeftSide:boolean = false;
+  private init:boolean;
+  private router:Router;
 
   constructor(@Inject(MapService) placeService,
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
+              @Inject(Router) router,
               @Inject(UrlChangeService) urlChangeService) {
     this.mapService = placeService;
     this.element = element;
     this.routeParams = routeParams;
+    this.router = router;
     this.urlChangeService = urlChangeService;
   }
 
   ngOnInit():void {
+    this.init = true;
     this.thing = this.routeParams.get('thing');
     this.urlChanged(this.thing)
   }
 
   urlChanged(thing:any) {
     this.thing = thing;
-    let query = '';
+    let query = `thing=${this.thing}`;
+    if (!thing) {
+      query = '';
+    }
     if (thing && thing._id) {
+      if (this.init) {
+        this.init = false;
+        return;
+      }
       query = `thing=${this.thing._id}`;
     }
-
     this.mapService.getMainPlaces(query)
       .subscribe((res)=> {
         if (res.err) {
@@ -64,12 +84,11 @@ export class MapComponent implements OnInit {
 
         this.map = this.element.nativeElement.querySelector('.mapBox');
         this.places = res.data.places;
-        this.query=`thing=${res.data.thing}`;
+        this.query = `thing=${res.data.thing}`;
 
         this.urlChangeService.replaceState('/map', this.query);
         this.countries = res.data.countries;
         this.setMarkersCoord(this.places);
-
         Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
@@ -112,9 +131,20 @@ export class MapComponent implements OnInit {
     img.src = mapImage.src;
   }
 
-  private hoverOnMarker(index):void {
+  private hoverOnMarker(index, country):void {
     if (!isDesktop) {
       return;
+    }
+    if (this.isOpenLeftSide) {
+      return
+    }
+    this.onMarker = true;
+    this.currentCountry = country;
+    this.lefSideCountries = this.places.filter((place)=> {
+      return place.country === this.currentCountry;
+    });
+    if (this.lefSideCountries.length > 1) {
+      this.seeAllHomes = true;
     }
 
     this.markers = this.map.querySelectorAll('.marker');
@@ -146,35 +176,63 @@ export class MapComponent implements OnInit {
       if (!this.hoverPlace) {
         return;
       }
-      this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetWidth - 40;
-      this.hoverPortraitLeft = this.hoverPlace.left - portraitBox.offsetHeight / 2 + 27;
-
+      this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
+      this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
+      this.leftArrowTop = null;
+      if (this.hoverPortraitTop < 10) {
+        this.hoverPortraitTop = 10;
+        this.hoverPortraitLeft += (portraitBox.offsetWidth + 32) / 2;
+        this.leftArrowTop = this.hoverPlace.top - 9;
+        if (portraitBox.offsetHeight - 12 <= this.leftArrowTop) {
+          let dif = this.leftArrowTop - (portraitBox.offsetHeight - 12);
+          this.leftArrowTop -= 20;
+          this.hoverPortraitTop += 20;
+        }
+      }
       portraitBox.style.opacity = '1';
     };
 
     img.src = this.hoverPlace.familyImg.background;
   }
 
-  private unHoverOnMarker():void {
+  private unHoverOnMarker(e):void {
     if (!isDesktop) {
       return;
     }
-
-    this.hoverPlace = null;
-    this.hoverPortraitTop = null;
-    this.hoverPortraitLeft = null;
-
-    Array.prototype.forEach.call(this.markers, (marker) => {
-      marker.style.opacity = '1';
-    });
-
-    this.markers = null;
+    if (this.isOpenLeftSide) {
+      return
+    }
+    this.onMarker = false;
+    setTimeout(()=> {
+      if (this.onThumb) {
+        this.onThumb = !this.onThumb;
+        return
+      }
+      if (this.onMarker) {
+        this.onMarker = !this.onMarker;
+        return
+      }
+      if (!this.markers) {
+        return;
+      }
+      Array.prototype.forEach.call(this.markers, (marker) => {
+        marker.style.opacity = '1';
+      });
+      this.seeAllHomes = false;
+      this.hoverPlace = null;
+      this.hoverPortraitTop = null;
+      this.hoverPortraitLeft = null;
+      this.markers = null;
+    }, 300)
   }
 
 
   private hoverOnFamily(index):void {
     if (!isDesktop) {
       return;
+    }
+    if (this.isOpenLeftSide) {
+      return
     }
 
     this.markers = this.map.querySelectorAll('.marker');
@@ -199,4 +257,56 @@ export class MapComponent implements OnInit {
 
     this.markers = null;
   };
+
+  private openLeftSideBar(country):void {
+    this.isOpenLeftSide = true;
+    this.lefSideLeft = `0`;
+    this.lefSideOpacity = `1`;
+  }
+
+  private closeLeftSideBar(e) {
+    if (e.target.classList.contains('see-all') ||
+      e.target.classList.contains('see-all-span')) {
+      this.onMarker = false;
+      this.onThumb = false;
+      this.seeAllHomes = false;
+      this.hoverPlace = null;
+      this.hoverPortraitTop = null;
+      this.hoverPortraitLeft = null;
+      this.unHoverOnMarker(e)
+      return;
+    }
+    this.isOpenLeftSide = false;
+    this.onMarker = false;
+    this.onThumb = false;
+    if (!e.target.classList.contains('marker')) {
+      this.unHoverOnMarker(e)
+    }
+    this.lefSideLeft = `-324px`;
+    this.lefSideOpacity = `0`;
+  }
+
+  private clickOnMarker(e, index, country) {
+    if (this.isOpenLeftSide) {
+      this.isOpenLeftSide = !this.isOpenLeftSide;
+      this.closeLeftSideBar(e)
+      this.hoverOnMarker(index, country)
+      return;
+    }
+    if (this.lefSideCountries.length === 1) {
+      this.router.navigate(['Place', {
+        thing: this.hoverPlace.familyImg.thing,
+        place: this.hoverPlace._id,
+        image: this.hoverPlace.familyImg.imageId
+      }])
+    }
+  }
+
+  private thumbHover() {
+    this.onThumb = true
+  }
+
+  private toUrl(image) {
+    return `url("${image.replace('150x150', 'devices')}")`;
+  }
 }
