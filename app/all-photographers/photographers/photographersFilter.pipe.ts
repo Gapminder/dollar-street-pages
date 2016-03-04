@@ -6,7 +6,7 @@ import {Pipe} from 'angular2/core';
 
 export class PhotographersFilter {
   transform(value, args) {
-    let [text] = args;
+    let [text, nested] = args;
 
     if (!text) {
       return value;
@@ -15,37 +15,43 @@ export class PhotographersFilter {
     var items:any = value;
     var newItems:any = [];
 
-    items.forEach(function (item:any) {
-      let itemsName = newItems.map(function (newItem:any) {
-        return newItem._id;
+    if (!nested) {
+      items.forEach(function (item:any) {
+        if (item._id.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
+          newItems.push(item);
+        }
       });
+    }
 
-      let index = null;
+    if (nested) {
+      items.forEach(function (item:any) {
+        let itemsName = newItems.map(function (newItem:any) {
+          return newItem._id;
+        });
 
-      if (itemsName.length) {
-        if (itemsName.indexOf(item._id) !== -1) {
-          index = itemsName.indexOf(item._id);
-        }
-      }
+        let index = null;
 
-      if (item._id && item._id.indexOf(text) !== -1) {
-        if (index) {
-          newItems[index].push(item);
-          return;
-        }
-
-        newItems.push(item)
-      }
-
-      if (item.name && item.name.indexOf(text) !== -1) {
-        if (index) {
-          newItems[index].push(item);
-          return;
+        if (itemsName.length) {
+          if (itemsName.indexOf(item._id) !== -1) {
+            index = itemsName.indexOf(item._id);
+          }
         }
 
-        newItems.push(item)
-      }
-    });
+        item.photographers.forEach(function (photographer:any) {
+          if (photographer.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
+            if (index) {
+              newItems[index].photographers.push(photographer);
+              return;
+            }
+
+            newItems.push({
+              _id: item._id,
+              photographers: [photographer]
+            })
+          }
+        });
+      });
+    }
 
     return newItems;
   }
