@@ -8,6 +8,7 @@ import {StreetComponent} from '../common/street/street.component';
 import {FooterComponent} from '../common/footer/footer.component';
 import {HeaderComponent} from '../common/header/header.component';
 import {UrlChangeService} from '../common/url-change/url-change.service';
+import {LoaderComponent} from '../common/loader/loader.component';
 
 let _ = require('lodash');
 let device = require('device.js')();
@@ -19,7 +20,7 @@ let style = require('./matrix.component.css');
   selector: 'matrix',
   template: tpl,
   styles: [style],
-  directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent]
+  directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
 })
 
 export class MatrixComponent implements OnInit,OnDestroy {
@@ -49,6 +50,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
   private query:string;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
+  public loader:boolean = false;
 
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
@@ -150,7 +152,6 @@ export class MatrixComponent implements OnInit,OnDestroy {
       this.urlChangeService.replaceState(`/matrix`, query);
     }
 
-
     let clonePlaces = _.cloneDeep(this.placesArr);
 
     if (clonePlaces && clonePlaces.length) {
@@ -210,6 +211,8 @@ export class MatrixComponent implements OnInit,OnDestroy {
           this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom));
         }
         cb && cb();
+
+        this.loader = true;
       })
   }
 

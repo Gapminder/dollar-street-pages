@@ -10,6 +10,7 @@ import {SliderPlaceComponent} from './slider/slider.place.component';
 import {PlaceStreetService} from './place.street.service';
 import {SliderMobilePlaceComponent} from './slider-mobile/slider-mobile.place.component';
 import {FamilyPlaceComponent} from './family/family.place.component';
+import {LoaderComponent} from '../common/loader/loader.component';
 
 let tpl = require('./place.component.html');
 let style = require('./place.component.css');
@@ -21,7 +22,7 @@ let isDesktop = device.desktop();
   selector: 'place',
   template: tpl,
   styles: [style],
-  directives: [HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent]
+  directives: [HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent, LoaderComponent]
 })
 
 export class PlaceComponent implements OnInit {
@@ -38,6 +39,7 @@ export class PlaceComponent implements OnInit {
   private currentPlace:any = {};
   private isDesktop:boolean = isDesktop;
   private isShowImagesFamily:boolean = isDesktop;
+  public loader:boolean = false;
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
@@ -83,6 +85,8 @@ export class PlaceComponent implements OnInit {
     if (!this.isDesktop) {
       this.isShowImagesFamily = false;
     }
+    this.loader = true;
+
     this.changeLocation(place[0], this.thing);
   }
 

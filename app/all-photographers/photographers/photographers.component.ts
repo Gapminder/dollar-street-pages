@@ -7,6 +7,8 @@ import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-g
 import {PhotographersService} from './photographers.service';
 import {PhotographersFilter} from './photographersFilter.pipe';
 
+import {LoaderComponent} from '../../common/loader/loader.component';
+
 let tpl = require('./photographers.component.html');
 let style = require('./photographers.component.css');
 
@@ -14,7 +16,7 @@ let style = require('./photographers.component.css');
   selector: 'photographers',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On],
+  directives: [RouterLink, Angulartics2On, LoaderComponent],
   pipes: [PhotographersFilter]
 })
 
@@ -24,6 +26,7 @@ export class PhotographersComponent implements OnInit {
   public photographersByCountry:any[] = [];
   public photographersByName:any[] = [];
   private search:any = {text: ''};
+  public loader:boolean = false;
 
   constructor(@Inject(PhotographersService) photographersService:any,
               @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
@@ -40,6 +43,8 @@ export class PhotographersComponent implements OnInit {
 
         this.photographersByCountry = res.data.photographersByCountries;
         this.photographersByName = res.data.allPhotographers;
+        this.loader = true;
+
       });
   }
 }

@@ -5,6 +5,7 @@ import {Angulartics2On} from 'angulartics2/index';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 import {PhotographerPlacesService} from './photographer-places.service';
+import {LoaderComponent} from '../../common/loader/loader.component';
 
 let tpl = require('./photographer-places.template.html');
 let style = require('./photographer-places.css');
@@ -13,7 +14,7 @@ let style = require('./photographer-places.css');
   selector: 'photographer-places',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On]
+  directives: [RouterLink, Angulartics2On, LoaderComponent]
 })
 
 export class PhotographerPlacesComponent implements OnInit {
@@ -24,6 +25,7 @@ export class PhotographerPlacesComponent implements OnInit {
   private countries:any = [];
   private familyThingId:string;
   private photographerPlacesService:PhotographerPlacesService;
+  public loader:boolean = false;
 
   constructor(@Inject(PhotographerPlacesService) photographerPlacesService,
               @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
@@ -37,9 +39,10 @@ export class PhotographerPlacesComponent implements OnInit {
         if (res.err) {
           return res.err;
         }
-        
+
         this.countries = res.data.countries;
         this.familyThingId = res.data.familyThingId;
+        this.loader = true;
       });
   }
 }
