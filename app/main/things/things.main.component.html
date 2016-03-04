@@ -14,7 +14,7 @@
       <div class="col-md-12 things_content">
         <div class="thing"
              *ngFor="#thing of things"
-             [routerLink]="['Matrix', {thing: thing._id,countries:'World',regions:'World'}]"
+             [routerLink]="['Matrix', {thing: thing._id,countries:'World',regions:'World',zoom:5,row:1}]"
              [angulartics2On]="'click'"
              [angularticsEvent]="'go to matrix page from main (click on thing)'">
           <div class="thing_wrapper">

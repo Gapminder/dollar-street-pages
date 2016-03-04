@@ -33,6 +33,8 @@ export class MatrixComponent implements OnInit,OnDestroy {
   private placesArr:any[];
   private element:HTMLElement;
 
+  private rowEtalon:number = 0;
+
   private imageHeight:number;
   private footerHeight:number;
   private imageMargin:number;
@@ -58,6 +60,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
     this.routeParams = routeParams;
     this.location = location;
     this.urlChangeService = urlChangeService;
+
   }
 
   ngOnInit():void {
@@ -94,11 +97,13 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
     this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}`;
 
-    this.urlChanged(this.query);
+    this.urlChanged(this.query, ()=> {
 
+    });
     document.onscroll = ()=> {
       this.stopScroll();
     };
+
   }
 
   ngOnDestroy() {
@@ -125,6 +130,9 @@ export class MatrixComponent implements OnInit,OnDestroy {
     /**  each document usage breaks possible server side rendering*/
     let scrollTop = document.body.scrollTop; //? body.scrollTop : ieScrollBody.scrollTop;
     let distance = scrollTop / ( this.imageHeight + 2 * this.imageMargin);
+    if (isNaN(distance)) {
+      return
+    }
     let rest = distance % 1;
     let row = distance - rest;
 
@@ -132,10 +140,16 @@ export class MatrixComponent implements OnInit,OnDestroy {
       row++;
     }
 
+
     this.row = row + 1;
-    
-    
-    this.urlChangeService.replaceState(`/matrix`, `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`);
+
+
+    if (this.rowEtalon !== this.row) {
+      this.rowEtalon = this.row;
+      let query = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`
+      this.urlChangeService.replaceState(`/matrix`, query);
+    }
+
 
     let clonePlaces = _.cloneDeep(this.placesArr);
 
@@ -182,10 +196,10 @@ export class MatrixComponent implements OnInit,OnDestroy {
     this.hoverHeader.next(null);
   }
 
-  urlChanged(query):void {
+  urlChanged(query, cb = null):void {
     /**to remove things like this*/
     this.query = query;
-    this.urlChangeService.replaceState(`/matrix`, `${query}`);
+    // this.urlChangeService.replaceState(`/matrix`, `${query}`);
 
     this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
@@ -195,6 +209,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
         if (clonePlaces && clonePlaces.length) {
           this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom));
         }
+        cb && cb();
       })
   }
 
@@ -212,4 +227,9 @@ export class MatrixComponent implements OnInit,OnDestroy {
     this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`));
   };
 
+  parseUrl(url:string):any {
+    url = '{\"' + url.replace(/&/g, '\",\"') + '\"}';
+    url = url.replace(/=/g, '\":\"');
+    return JSON.parse(url);
+  }
 }

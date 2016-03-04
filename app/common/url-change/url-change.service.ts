@@ -1,31 +1,35 @@
-import {Injectable} from "angular2/core";
+import {Inject} from "angular2/core";
 import {Location} from "angular2/router";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 
-@Injectable()
 export class UrlChangeService {
   private location:Location;
   private urlEvents:Subject<any>;
+  private popStateSub:Subject<any>;
+  private popState:(location:any)=>void;
+  private onPopstate:boolean;
 
-  constructor(_location:Location) {
+  constructor(@Inject(Location) location) {
     this.urlEvents = new Subject();
-    this.location = _location;
+    this.popStateSub = new Subject();
+    this.location = location;
+    this.location.subscribe((a)=> {
+      this.onPopstate = true;
+    });
   }
 
   replaceState(path:string, query?:string):void {
-    this.location.replaceState(path, query);
+    if (this.onPopstate) {
+      this.onPopstate = !this.onPopstate;
+      return;
+    }
+    this.location.go(path, query);
     this.urlEvents.next({path, query});
   }
 
   getUrlEvents():Observable {
     return this.urlEvents;
   }
-
-  parseUrl(url:string):any {
-    url = '{\"' + url.replace(/&/g, '\",\"') + '\"}';
-    url = url.replace(/=/g, '\":\"');
-    return JSON.parse(url);
-  }
-
+  
 }

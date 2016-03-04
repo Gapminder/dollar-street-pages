@@ -19,7 +19,7 @@
     "pretest": "npm run lint:eslint &&./node_modules/.bin/gulp tslint"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.3",
+    "angular2": "2.0.0-beta.7",
     "angulartics2": "1.0.0",
     "d3": "3.5.15",
     "device.js": "0.1.2",
@@ -28,7 +28,7 @@
     "es7-reflect-metadata": "1.5.5",
     "jquery": "2.2.0",
     "lodash": "4.*",
-    "rxjs": "5.0.0-beta.0",
+    "rxjs": "5.0.0-beta.2",
     "zone.js": "0.5.10"
   },
   "devDependencies": {
