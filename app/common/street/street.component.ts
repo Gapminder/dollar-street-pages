@@ -35,6 +35,7 @@ export class StreetComponent implements OnInit {
   private element:HTMLElement;
   private thumbPlaces:any[];
   private thumbLeft:number;
+  private arrowLeft:number;
   private isThumbView:boolean;
   private router:Router;
 
@@ -85,18 +86,21 @@ export class StreetComponent implements OnInit {
       });
 
     this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces)=> {
-      this.street.set('chosenPlaces', chosenPlaces).clearAndRedraw(chosenPlaces);
+      this.street.set('chosenPlaces', chosenPlaces)
+      if (this.controllSlider) {
+        this.street.clearAndRedraw(chosenPlaces, true);
+        return;
+      }
+      this.street.clearAndRedraw(chosenPlaces);
     });
 
     this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
       this.street.set('hoverPlace', hoverPlace);
       this.street.clearAndRedraw(this.street.chosenPlaces);
-
       if (!hoverPlace) {
         return;
       }
       this.street.drawHoverHouse(hoverPlace);
-      //this.street.drawHoverCircle(hoverPlace).drawHoverHouse(hoverPlace);
     });
 
     this.hoverHeader && this.hoverHeader.subscribe(()=> {
@@ -109,43 +113,50 @@ export class StreetComponent implements OnInit {
       return;
     }
 
-    // this.street.onSvgHover(e.x, (options)=> {
-    //   let {places, left}=options;
-    //   this.isThumbView = true;
-    //
-    //   this.thumbPlaces = places;
-    //
-    //   let indent = 260;
-    //
-    //   if (places.length === 2) {
-    //     indent = 175;
-    //   }
-    //
-    //   if (places.length === 1) {
-    //     indent = 87.5;
-    //   }
-    //
-    //   this.thumbLeft = left - indent;
-    // })
+    this.street.onSvgHover(e.x, (options)=> {
+      let {places, left}=options;
+      this.isThumbView = true;
+
+      this.thumbPlaces = places;
+
+      let indent = 3 * 176 / 2;
+
+      if (places.length === 2) {
+        indent = 2 * 176 / 2;
+      }
+
+      if (places.length === 1) {
+        indent = 176 / 2;
+      }
+
+      this.thumbLeft = left - indent + 15;
+
+      if (this.thumbLeft <= 15) {
+        this.thumbLeft = 15
+      }
+      if (this.thumbLeft + 2 * indent >= window.innerWidth - 15) {
+        this.thumbLeft = window.innerWidth - 30 - 2 * indent;
+      }
+
+      this.arrowLeft = left - this.thumbLeft + 9;
+    })
   }
 
   public thumbHover(place) {
     this.street
       .removeHouses('chosen')
-     // .removeCircles('hover');
-
-    let currentPlaces = _.filter(this.street.places, (currentPlace:any) => {
-      return currentPlace.income === place.income;
-    });
-
+      .removeHouses('hover')
     this.street.set('hoverPlace', place)
-      .drawLineOfHouses(currentPlaces)
-      //.drawHoverCircle(place);
+    this.street.drawHoverHouse(place)
   };
 
   public thumbUnhover() {
     this.street.hoverPlace = null;
-    this.street.clearAndRedraw(this.street.chosenPlaces);
+    if (this.controllSlider) {
+      this.street.clearAndRedraw(this.street.chosenPlaces, true);
+    } else {
+      this.street.clearAndRedraw(this.street.chosenPlaces);
+    }
     this.isThumbView = false;
   }
 
@@ -154,6 +165,7 @@ export class StreetComponent implements OnInit {
   }
 
   private clickOnThumb(thing, place) {
+    this.isThumbView = false;
     if (this.controllSlider) {
       var j;
 
@@ -164,9 +176,7 @@ export class StreetComponent implements OnInit {
 
         j = t;
       });
-
       this.controllSlider.next(j);
-
       return;
     }
 
