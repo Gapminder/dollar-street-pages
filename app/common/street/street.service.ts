@@ -65,15 +65,6 @@ export class StreetDrawService {
       .tickSize(6, 0);
 
     this.svg
-      .append('rect')
-      .attr('class', '.headerBox')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('width', this.width)
-      .attr('height', 0.5 * this.height + 55)
-      .style('fill', 'white');
-
-    this.svg
       .selectAll('text.poorest')
       .data([this.poorest])
       .enter()
@@ -81,7 +72,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 15)
-      .attr('y', this.height - 25)
+      .attr('y', this.height)
       .attr('fill', '#767d86');
 
     this.svg
@@ -92,8 +83,36 @@ export class StreetDrawService {
       .attr('class', 'richest')
       .text(this.richest)
       .attr('x', this.width - 55)
-      .attr('y', this.height - 25)
+      .attr('y', this.height)
       .attr('fill', '#767d86');
+
+
+    this.svg
+      .selectAll('rect.point')
+      .data(places)
+      .enter()
+      .append('rect')
+      .attr('class', 'point')
+      .attr('x', (d)=> {
+        return this.scale(d.income)
+      })
+      .attr('y', `${0.5 * this.height - 11}`)
+      .attr('width', 8)
+      .attr('height', 7)
+      .style('fill', '#cfd2d6');
+
+
+    this.svg
+      .append('polygon')
+      .attr('class', 'road')
+      .attr('points', () => {
+        let point1 = `0,${0.5 * this.height + 14}`;
+        let point2 = `9,${0.5 * this.height - 4}`;
+        let point3 = `${ this.width - 9},${0.5 * this.height - 4}`;
+        let point4 = `${ this.width},${0.5 * this.height + 14}`;
+        return `${point1} ${point2} ${point3} ${point4}`
+      })
+      .style('fill', '#5f6a74')
 
     this.svg
       .append('line')
@@ -103,28 +122,19 @@ export class StreetDrawService {
       .attr('x2', this.width)
       .attr('y2', 0.5 * this.height + 15)
       .attr('stroke-width', 3)
-      .attr('stroke', '#d7dbe1');
+      .attr('stroke', '#374551');
 
-    if (isDesktop) {
-      this.svg
-        .selectAll('circle.point')
-        .data(places)
-        .enter()
-        .append('circle')
-        .attr('class', 'point')
-        .attr('cx', (d) => {
-          return this.scale(d.income);
-        })
-        .attr('cy', 0.5 * this.height + 15)
-        .attr('r', 5.5)
-        .style('fill', (d) => {
-          if (this.incomeArr.indexOf(d.income) === -1) {
-            this.incomeArr.push(d.income);
-            return '#babfc4';
-          }
-          return '#52606b';
-        });
-    }
+    this.svg
+      .append('line')
+      .attr('class', 'dash')
+      .attr('x1', 18)
+      .attr('y1', `${0.5 * this.height + 5}`)
+      .attr('x2', `${ this.width - 9}`)
+      .attr('y2', `${0.5 * this.height + 5}`)
+      .attr('stroke-dasharray', '8,8')
+      .attr('stroke-width', 1.5)
+      .attr('stroke', 'white');
+
 
     this.incomeArr.length = 0;
 
@@ -147,7 +157,7 @@ export class StreetDrawService {
         }
         return this.scale(d) - indent;
       })
-      .attr('y', this.height - 25)
+      .attr('y', this.height)
       .attr('fill', '#767d86');
 
     return this;
@@ -160,13 +170,13 @@ export class StreetDrawService {
     this
       .set('hoverPlace', null)
       .removeHouses('chosen')
-      .removeCircles('hover');
+    // .removeCircles('hover');
     let places = _.filter(this.places, (place:any) => {
       return place.income === d.income;
     });
     if (places.length === 1) {
       this.set('hoverPlace', places[0])
-        .drawHoverCircle(places[0]);
+      // .drawHoverCircle(places[0]);
     }
     let options = {
       places: places,
@@ -288,7 +298,7 @@ export class StreetDrawService {
     let colors = this.getFills();
     let fills = colors.fills;
     let fillsOfBorders = colors.fillsOfBorders;
-    let houseWidth = 15;
+    let houseWidth = 19;
     this.svg.selectAll('polygon.chosen')
       .data(places)
       .enter()
@@ -297,13 +307,13 @@ export class StreetDrawService {
       .attr('points', (datum)=> {
         let point1, point2, point3, point4, point5, point6, point7;
         if (datum) {
-          point1 = this.scale(datum.income) - 0.5 * houseWidth + ',' + (0.5 * this.height + 0);
-          point2 = this.scale(datum.income) - 0.5 * houseWidth + ',' + (0.5 * this.height - 12);
-          point3 = this.scale(datum.income) - 2 - 0.5 * houseWidth + ',' + (0.5 * this.height - 12 );
-          point4 = this.scale(datum.income) + 7.5 - 0.5 * houseWidth + ',' + (0.5 * this.height - 22);
-          point5 = this.scale(datum.income) + 17 - 0.5 * houseWidth + ',' + (0.5 * this.height - 12 );
-          point6 = this.scale(datum.income) + 15 - 0.5 * houseWidth + ',' + (0.5 * this.height - 12 );
-          point7 = this.scale(datum.income) + 15 - 0.5 * houseWidth + ',' + (0.5 * this.height + 0 );
+          point1 = this.scale(datum.income) + 2 - 0.5 * houseWidth + ',' + (0.5 * this.height);
+          point2 = this.scale(datum.income) + 2 - 0.5 * houseWidth + ',' + (0.5 * this.height - 11);
+          point3 = this.scale(datum.income) - 0.5 * houseWidth + ',' + (0.5 * this.height - 11 );
+          point4 = this.scale(datum.income) + ',' + (0.5 * this.height - 19);
+          point5 = this.scale(datum.income)  + 0.5 * houseWidth + ',' + (0.5 * this.height - 11 );
+          point6 = this.scale(datum.income) -2+ 0.5 * houseWidth + ',' + (0.5 * this.height - 11 );
+          point7 = this.scale(datum.income) -2+ 0.5 * houseWidth + ',' + (0.5 * this.height );
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
@@ -318,22 +328,22 @@ export class StreetDrawService {
         }
         return 0;
       })
-      .attr('stroke', (datum) => {
-        return !datum ? void 0 : fillsOfBorders[datum.region];
-      })
-      .style('fill', (datum) => {
-        return !datum ? void 0 : fills[datum.region];
-      })
-      .attr('fill-opacity', (house) => {
-        if (!this.hoverPlace) {
-          return 1
-        }
-        if (house._id === this.hoverPlace._id) {
-          return 1;
-        }
-        return 0.3;
+      .attr('stroke', '#98a5b0')
+      .style('fill', '#a9b3bc')
 
-      });
+    // .style('fill', (datum) => {
+    //   return !datum ? void 0 : fills[datum.region];
+    // })
+    // .attr('fill-opacity', (house) => {
+    //   if (!this.hoverPlace) {
+    //     return 1
+    //   }
+    //   if (house._id === this.hoverPlace._id) {
+    //     return 1;
+    //   }
+    //   return 0.3;
+    //
+    // });
     return this;
   };
 
@@ -341,7 +351,7 @@ export class StreetDrawService {
     let colors = this.getFills();
     let fills = colors.fills;
     let fillsOfBorders = colors.fillsOfBorders;
-    let houseWidth = 15;
+    let houseWidth = 23;
     this.svg.selectAll('polygon.hover')
       .data([place])
       .enter()
@@ -350,13 +360,13 @@ export class StreetDrawService {
       .attr('points', (datum)=> {
         let point1, point2, point3, point4, point5, point6, point7;
         if (datum) {
-          point1 = this.scale(datum.income) - 0.5 * houseWidth + ',' + (0.5 * this.height + 0);
-          point2 = this.scale(datum.income) - 0.5 * houseWidth + ',' + (0.5 * this.height - 12);
-          point3 = this.scale(datum.income) - 2 - 0.5 * houseWidth + ',' + (0.5 * this.height - 12 );
-          point4 = this.scale(datum.income) + 7.5 - 0.5 * houseWidth + ',' + (0.5 * this.height - 22);
-          point5 = this.scale(datum.income) + 17 - 0.5 * houseWidth + ',' + (0.5 * this.height - 12 );
-          point6 = this.scale(datum.income) + 15 - 0.5 * houseWidth + ',' + (0.5 * this.height - 12 );
-          point7 = this.scale(datum.income) + 15 - 0.5 * houseWidth + ',' + (0.5 * this.height + 0 );
+          point1 = this.scale(datum.income) + 2 - 0.5 * houseWidth + ',' + (0.5 * this.height + 0);
+          point2 = this.scale(datum.income) + 2 - 0.5 * houseWidth + ',' + (0.5 * this.height - 14);
+          point3 = this.scale(datum.income) - 0.5 * houseWidth + ',' + (0.5 * this.height - 14 );
+          point4 = this.scale(datum.income) + ',' + (0.5 * this.height - 23);
+          point5 = this.scale(datum.income)  + 0.5 * houseWidth + ',' + (0.5 * this.height - 14 );
+          point6 = this.scale(datum.income) -2+ 0.5 * houseWidth + ',' + (0.5 * this.height - 14 );
+          point7 = this.scale(datum.income) -2+ 0.5 * houseWidth + ',' + (0.5 * this.height + 0 );
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
@@ -373,88 +383,88 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawCircles(places):this {
-    let colors = this.getFills();
-    let fills = colors.fills;
-    let fillsOfBorders = colors.fillsOfBorders;
-    this.svg
-      .selectAll('circle.chosen')
-      .data(places)
-      .enter()
-      .append('circle')
-      .attr('class', 'chosen')
-      .attr('cx', (d)=> {
-        return !d ? void 0 : this.scale(d.income);
-      })
-      .attr('cy', 0.5 * this.height + 15)
-      .attr('r', (d) => {
-        return !d ? void 0 : 5.5;
-      })
-      .attr('stroke-width', (house)=> {
-        if (!this.hoverPlace) {
-          return 1
-        }
-        if (house._id === this.hoverPlace._id) {
-          return 1;
-        }
-        return 0;
-      })
-      .attr('stroke', (datum, i)=> {
-        if (!datum) {
-          return void 0;
-        }
-        if (places[i + 1] && datum && places[i + 1].income === datum.income ||
-          places[i - 1] && datum && places[i - 1].income === datum.income) {
-          return '#52606b';
-        }
-        return fillsOfBorders[datum.region];
-      })
-      .style('fill', (datum, i) => {
-        if (!datum) {
-          return void 0;
-        }
+  // public drawCircles(places):this {
+  //   let colors = this.getFills();
+  //   let fills = colors.fills;
+  //   let fillsOfBorders = colors.fillsOfBorders;
+  //   this.svg
+  //     .selectAll('circle.chosen')
+  //     .data(places)
+  //     .enter()
+  //     .append('circle')
+  //     .attr('class', 'chosen')
+  //     .attr('cx', (d)=> {
+  //       return !d ? void 0 : this.scale(d.income);
+  //     })
+  //     .attr('cy', 0.5 * this.height + 15)
+  //     .attr('r', (d) => {
+  //       return !d ? void 0 : 5.5;
+  //     })
+  //     .attr('stroke-width', (house)=> {
+  //       if (!this.hoverPlace) {
+  //         return 1
+  //       }
+  //       if (house._id === this.hoverPlace._id) {
+  //         return 1;
+  //       }
+  //       return 0;
+  //     })
+  //     .attr('stroke', (datum, i)=> {
+  //       if (!datum) {
+  //         return void 0;
+  //       }
+  //       if (places[i + 1] && datum && places[i + 1].income === datum.income ||
+  //         places[i - 1] && datum && places[i - 1].income === datum.income) {
+  //         return '#52606b';
+  //       }
+  //       return fillsOfBorders[datum.region];
+  //     })
+  //     .style('fill', (datum, i) => {
+  //       if (!datum) {
+  //         return void 0;
+  //       }
+  //
+  //       let fill = fills[datum.region];
+  //
+  //       if (places[i + 1] && datum && places[i + 1].income === datum.income ||
+  //         places[i - 1] && datum && places[i - 1].income === datum.income) {
+  //         fill = '#52606b';
+  //       }
+  //
+  //       return fill;
+  //     });
+  //   return this;
+  // };
 
-        let fill = fills[datum.region];
-
-        if (places[i + 1] && datum && places[i + 1].income === datum.income ||
-          places[i - 1] && datum && places[i - 1].income === datum.income) {
-          fill = '#52606b';
-        }
-
-        return fill;
-      });
-    return this;
-  };
-
-  public drawHoverCircle(hoverPlace):this {
-    let colors = this.getFills();
-    let fills = colors.fills;
-    let fillsOfBorders = colors.fillsOfBorders;
-    this.svg
-      .selectAll('circle.hover')
-      .data([hoverPlace])
-      .enter()
-      .append('circle')
-      .attr('class', 'hover')
-      .attr('cx', (d) => {
-        return this.scale(d.income);
-      })
-      .attr('cy', 0.5 * this.height + 15)
-      .attr('r', (d) => {
-        return !d ? void 0 : 5.5;
-      })
-      .attr('stroke-width', 1)
-      .attr('stroke', (datum)=> {
-        return !datum ? void 0 : fillsOfBorders[datum.region];
-      })
-      .style('fill', (datum) => {
-        return !datum ? void 0 : fills[datum.region];
-      });
-
-    this.svg.selectAll('circle.chosen').attr('fill-opacity', 0.5);
-    //this.svg.selectAll('circle.point').attr('fill-opacity', 0.5);
-    return this;
-  };
+  // public drawHoverCircle(hoverPlace):this {
+  //   let colors = this.getFills();
+  //   let fills = colors.fills;
+  //   let fillsOfBorders = colors.fillsOfBorders;
+  //   this.svg
+  //     .selectAll('circle.hover')
+  //     .data([hoverPlace])
+  //     .enter()
+  //     .append('circle')
+  //     .attr('class', 'hover')
+  //     .attr('cx', (d) => {
+  //       return this.scale(d.income);
+  //     })
+  //     .attr('cy', 0.5 * this.height + 15)
+  //     .attr('r', (d) => {
+  //       return !d ? void 0 : 5.5;
+  //     })
+  //     .attr('stroke-width', 1)
+  //     .attr('stroke', (datum)=> {
+  //       return !datum ? void 0 : fillsOfBorders[datum.region];
+  //     })
+  //     .style('fill', (datum) => {
+  //       return !datum ? void 0 : fills[datum.region];
+  //     });
+  //
+  //   //this.svg.selectAll('circle.chosen').attr('fill-opacity', 0.5);
+  //   //this.svg.selectAll('circle.point').attr('fill-opacity', 0.5);
+  //   return this;
+  // };
 
   public getFills() {
     return {
@@ -475,27 +485,27 @@ export class StreetDrawService {
 
   public clearAndRedraw(places):this {
     this.removeHouses('hover')
-      .removeCircles('hover')
+      //.removeCircles('hover')
       .removeHouses('chosen')
-      .removeCircles('chosen');
+    // .removeCircles('chosen');
     if (places) {
       this.drawLineOfHouses(places)
-        .drawCircles(places);
+      // .drawCircles(places);
     }
     return this;
   };
 
-  public removeCircles(selector):this {
-    this.svg.selectAll('circle.' + selector).remove('circle.' + selector);
-    this.svg.selectAll('circle.point').attr('fill-opacity', 1);
-    return this;
-  };
+  // public removeCircles(selector):this {
+  //   this.svg.selectAll('circle.' + selector).remove('circle.' + selector);
+  //   this.svg.selectAll('circle.point').attr('fill-opacity', 1);
+  //   return this;
+  // };
 
   public removeHouses(selector):this {
     this.svg.selectAll('rect.' + selector).remove('rect.' + selector);
     this.svg.selectAll('polygon.' + selector).remove('polygon.' + selector);
     this.svg.selectAll('g.' + selector).remove('polygon.' + selector);
-    this.svg.selectAll('circle.point').attr('fill-opacity', 1);
+    // this.svg.selectAll('circle.point').attr('fill-opacity', 1);
 
     if (selector === 'chosen') {
       this.svg.selectAll('polygon.chosenLine').remove('polygon.chosenLine');
