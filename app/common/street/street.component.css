@@ -1,3 +1,7 @@
+.street-box{
+  margin: 0px 15px 0px 15px;
+  padding-bottom: 4px;
+}
 .street-box svg {
   position: relative;
   width: 100%;
@@ -10,9 +14,14 @@
   position: absolute;
   z-index: 9999;
   max-width: 540px;
-  top: 96%;
+  top: 110px;
   height:auto;
-  background-color: rgba(55, 69, 81, 0.8);
+
+  background-color: #f3fafc;
+  border: 1px solid #e2e6ec;
+  border-top: none;
+  box-shadow: 2px 0 5.5px 0.5px rgba(0, 0, 0, 0.2);
+
   display: flex;
   display: -webkit-box;
   display: -moz-box;
@@ -22,7 +31,17 @@
   justify-content: center;
 }
 
+.thumbView-box .arrow_up{
+  position: absolute;
+  top:-5px;
+  left:calc(50% - 5px);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
 
+  border-bottom: 5px solid #f3fafc;
+}
 .thumbViewPlace-content {
   width: 165px;
   height: 165px;
