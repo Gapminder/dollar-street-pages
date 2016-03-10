@@ -41,7 +41,7 @@ body {
 }
 
 a:focus,
-*:focus {
+input:focus {
   outline: 0;
   text-decoration: none;
 }
@@ -62,112 +62,6 @@ svg circle {
   cursor: pointer;
 }
 
-#windowScale,
 html, body, body > div[ui-view] {
   height: 100%;
-}
-
-.dollarIcon {
-  background: url('../img/dollar-street.svg') no-repeat 50% 50%;
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-  margin-top: 5px;
-  cursor: pointer;
-}
-
-.container-fluid {
-  padding: 5px;
-}
-
-.wrapper {
-  height: calc(100% - 233px);
-}
-
-.responsive .wrapper {
-  height: calc(100% - 210px);
-}
-
-/*************** TOOLTIP *****************/
-
-
-.tooltip .tooltip-inner {
-  background-color: #fafafa;
-  color: #000;
-  white-space: nowrap;
-  padding: 3px;
-}
-
-.tooltip .tooltip-inner .tooltip-description {
-  border: 1px solid;
-  padding: 3px;
-  border-radius: 4px;
-}
-
-.tooltipContainer {
-  position: relative;
-  border: 2px solid #fff;
-}
-
-.tooltipContainer img {
-  width: 100%;
-}
-
-.tooltipContainer > div {
-  padding: 8px;
-  color: #000;
-  font-size: 19px;
-  overflow: hidden;
-}
-
-.streetHome > .tooltip.top {
-  margin: 4px !important;
-}
-
-.tooltip-arrow {
-  display: none;
-}
-
-.tooltipContainer > div > div {
-  margin: 0 10px;
-}
-
-.tooltipContainer > img + div {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  color: #fff;
-}
-
-/*************** TOOLTIP *****************/
-
-.hidenSibling {
-  opacity: 0.3 !important;
-}
-
-.pageNameTitle,
-.photographerNameTitle {
-  width: 100%;
-}
-
-.pageNameTitle span,
-.photographerNameTitle span {
-  font-size: 32px;
-}
-
-.infoLink {
-  cursor: pointer;
-  text-decoration: none;
-  color: #333 !important;
-  font-size: 16px;
-  display: inline-block;
-  vertical-align: super;
-  margin-left: 5px;
-  position: relative;
-}
-
-.infoLink:hover {
-  font-weight: bold;
-  text-decoration: none;
 }
