@@ -1,5 +1,5 @@
 const d3 = require('d3');
-let device = require('device.js')();
+const device = require('device.js')();
 const isDesktop = device.desktop();
 
 export class StreetDrawService {
@@ -8,6 +8,7 @@ export class StreetDrawService {
   private richest = 'Richest';
   private width:number;
   private height:number;
+  private halfOfHeight:number;
   private scale:any;
   private axisLabel = [10, 100];
   private svg:any;
@@ -22,6 +23,7 @@ export class StreetDrawService {
   public init():this {
     this.width = parseInt(this.svg.style('width'), 10);
     this.height = parseInt(this.svg.style('height'), 10);
+    this.halfOfHeight = 0.5 * this.height;
     this.scale = d3
       .scale.log()
       .domain([1, 10, 100, 10000])
@@ -35,10 +37,10 @@ export class StreetDrawService {
   };
 
   public onSvgHover(positionX, cb) {
-    this.hoverOnScalePoint(this.whatIsIncome(Math.round(positionX-15)), cb);
+    this.hoverOnScalePoint(this.whatIsIncome(Math.round(positionX - 15)), cb);
   };
 
-  public whatIsIncome(positionX):any {
+  protected whatIsIncome(positionX):any {
     let index = _.sortedIndex(this.fullIncomeArr, positionX);
     let indexL = index - 1;
     if (indexL <= 0) {
@@ -96,7 +98,7 @@ export class StreetDrawService {
       .attr('x', (d)=> {
         return this.scale(d.income) - 4;
       })
-      .attr('y', `${0.5 * this.height - 11}`)
+      .attr('y', `${this.halfOfHeight - 11}`)
       .attr('width', 8)
       .attr('height', 7)
       .style('fill', '#cfd2d6')
@@ -107,31 +109,31 @@ export class StreetDrawService {
       .append('polygon')
       .attr('class', 'road')
       .attr('points', () => {
-        let point1 = `0,${0.5 * this.height + 14}`;
-        let point2 = `9,${0.5 * this.height - 4}`;
-        let point3 = `${ this.width - 9},${0.5 * this.height - 4}`;
-        let point4 = `${ this.width},${0.5 * this.height + 14}`;
+        let point1 = `0,${ this.halfOfHeight + 14}`;
+        let point2 = `9,${ this.halfOfHeight - 4}`;
+        let point3 = `${ this.width - 9},${ this.halfOfHeight - 4}`;
+        let point4 = `${ this.width},${ this.halfOfHeight + 14}`;
         return `${point1} ${point2} ${point3} ${point4}`
       })
-      .style('fill', '#5f6a74')
+      .style('fill', '#5f6a74');
 
     this.svg
       .append('line')
       .attr('class', 'axis')
       .attr('x1', 0)
-      .attr('y1', 0.5 * this.height + 15)
+      .attr('y1', this.halfOfHeight + 15)
       .attr('x2', this.width)
-      .attr('y2', 0.5 * this.height + 15)
+      .attr('y2', this.halfOfHeight + 15)
       .attr('stroke-width', 3)
-      .attr('stroke', '#374551')
+      .attr('stroke', '#374551');
 
     this.svg
       .append('line')
       .attr('class', 'dash')
       .attr('x1', 18)
-      .attr('y1', `${0.5 * this.height + 5}`)
+      .attr('y1', `${ this.halfOfHeight + 5}`)
       .attr('x2', `${ this.width - 9}`)
-      .attr('y2', `${0.5 * this.height + 5}`)
+      .attr('y2', `${ this.halfOfHeight + 5}`)
       .attr('stroke-dasharray', '8,8')
       .attr('stroke-width', 1.5)
       .attr('stroke', 'white');
@@ -164,7 +166,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public hoverOnScalePoint(d, cb):void {
+  protected hoverOnScalePoint(d, cb):void {
     if (!d) {
       return;
     }
@@ -181,7 +183,7 @@ export class StreetDrawService {
     } else {
 
       this.set('hoverPlace', places[0])
-        .drawHoverHouse(places[0],true)
+        .drawHoverHouse(places[0], true)
     }
     let options = {
       places: places,
@@ -189,10 +191,12 @@ export class StreetDrawService {
     };
     cb(options);
   };
-  
+
 
   public drawHouses(places):this {
-    let houseWidth = 19;
+    let halfHouseWidth = 9.5;
+    let roofX = 2 - halfHouseWidth;
+    let roofY = this.halfOfHeight - 11;
     this.svg.selectAll('polygon.chosen')
       .data(places)
       .enter()
@@ -201,15 +205,15 @@ export class StreetDrawService {
       .attr('points', (datum)=> {
         let point1, point2, point3, point4, point5, point6, point7;
         if (datum) {
-          point1 = this.scale(datum.income) + 2 - 0.5 * houseWidth + ',' + (0.5 * this.height);
-          point2 = this.scale(datum.income) + 2 - 0.5 * houseWidth + ',' + (0.5 * this.height - 11);
-          point3 = this.scale(datum.income) - 0.5 * houseWidth + ',' + (0.5 * this.height - 11 );
-          point4 = this.scale(datum.income) + ',' + (0.5 * this.height - 19);
-          point5 = this.scale(datum.income) + 0.5 * houseWidth + ',' + (0.5 * this.height - 11 );
-          point6 = this.scale(datum.income) - 2 + 0.5 * houseWidth + ',' + (0.5 * this.height - 11 );
-          point7 = this.scale(datum.income) - 2 + 0.5 * houseWidth + ',' + (0.5 * this.height );
+          let scaleDatumIncome = this.scale(datum.income);
+          point1 = `${ scaleDatumIncome + roofX},${this.halfOfHeight}`;
+          point2 = `${scaleDatumIncome + roofX},${roofY}`;
+          point3 = `${scaleDatumIncome - halfHouseWidth },${roofY}`;
+          point4 = `${scaleDatumIncome },${ this.halfOfHeight - 19}`;
+          point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
+          point6 = `${scaleDatumIncome - roofX },${ roofY}`;
+          point7 = `${scaleDatumIncome - roofX },${ this.halfOfHeight}`;
         }
-
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
@@ -218,11 +222,13 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawHoverHouse(place,gray=false):this {
+  public drawHoverHouse(place, gray = false):this {
     let colors = this.getFills();
     let fills = colors.fills;
     let fillsOfBorders = colors.fillsOfBorders;
-    let houseWidth = 23;
+    let halfHouseWidth = 11.5;
+    let roofX = 2 - halfHouseWidth;
+    let roofY = this.halfOfHeight - 14;
     this.svg.selectAll('polygon.hover')
       .data([place])
       .enter()
@@ -231,35 +237,35 @@ export class StreetDrawService {
       .attr('points', (datum)=> {
         let point1, point2, point3, point4, point5, point6, point7;
         if (datum) {
-          point1 = this.scale(datum.income) + 2 - 0.5 * houseWidth + ',' + (0.5 * this.height + 0);
-          point2 = this.scale(datum.income) + 2 - 0.5 * houseWidth + ',' + (0.5 * this.height - 14);
-          point3 = this.scale(datum.income) - 0.5 * houseWidth + ',' + (0.5 * this.height - 14 );
-          point4 = this.scale(datum.income) + ',' + (0.5 * this.height - 23);
-          point5 = this.scale(datum.income) + 0.5 * houseWidth + ',' + (0.5 * this.height - 14 );
-          point6 = this.scale(datum.income) - 2 + 0.5 * houseWidth + ',' + (0.5 * this.height - 14 );
-          point7 = this.scale(datum.income) - 2 + 0.5 * houseWidth + ',' + (0.5 * this.height + 0 );
+          let scaleDatumIncome = this.scale(datum.income);
+          point1 = `${scaleDatumIncome + roofX },${ this.halfOfHeight}`;
+          point2 = `${scaleDatumIncome + roofX},${roofY}`;
+          point3 = `${scaleDatumIncome - halfHouseWidth },${roofY}`;
+          point4 = `${scaleDatumIncome },${this.halfOfHeight - 23}`;
+          point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
+          point6 = `${scaleDatumIncome - roofX },${roofY}`;
+          point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight}`;
         }
-
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke-width', 1)
       .attr('stroke', (datum)=> {
-        if(gray){
+        if (gray) {
           return '#98a5b0'
         }
         return !datum ? void 0 : fillsOfBorders[datum.region];
       })
       .style('fill', (datum) => {
-        if(gray){
+        if (gray) {
           return '#a9b3bc'
         }
         return !datum ? void 0 : fills[datum.region];
-      })
+      });
     return this;
   };
 
-  public getFills() {
+  protected getFills() {
     return {
       fills: {
         Europe: '#FFE800',
@@ -276,14 +282,14 @@ export class StreetDrawService {
     };
   };
 
-  public clearAndRedraw(places,slider=false):this {
+  public clearAndRedraw(places, slider = false):this {
     this.removeHouses('hover')
       .removeHouses('chosen');
-      if(slider){
-        this.drawHoverHouse(places[0]);
-        return
-      }
-      this.drawHouses(places);
+    if (slider) {
+      this.drawHoverHouse(places[0]);
+      return
+    }
+    this.drawHouses(places);
     return this;
   };
 
@@ -294,7 +300,6 @@ export class StreetDrawService {
     if (selector === 'chosen') {
       this.svg.selectAll('polygon.chosenLine').remove('polygon.chosenLine');
     }
-
     return this;
   };
 

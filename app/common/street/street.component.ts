@@ -95,11 +95,11 @@ export class StreetComponent implements OnInit {
     });
 
     this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
-      this.street.set('hoverPlace', hoverPlace);
-      this.street.clearAndRedraw(this.street.chosenPlaces);
       if (!hoverPlace) {
         return;
       }
+      this.street.set('hoverPlace', hoverPlace);
+      this.street.clearAndRedraw(this.street.chosenPlaces);
       this.street.drawHoverHouse(hoverPlace);
     });
 
@@ -160,11 +160,11 @@ export class StreetComponent implements OnInit {
     this.isThumbView = false;
   }
 
-  private toUrl(image) {
+  protected toUrl(image) {
     return `url("${image.replace('devices', '150x150')}")`;
   }
 
-  private clickOnThumb(thing, place) {
+  protected clickOnThumb(thing, place) {
     this.isThumbView = false;
     if (this.controllSlider) {
       var j;
