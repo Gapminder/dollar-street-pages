@@ -1,7 +1,7 @@
 import {Inject} from 'angular2/core';
 import {Http} from 'angular2/http';
 import {Observable} from "rxjs/Observable";
-
+import {config} from '../../app.config';
 export class SocialShareButtonsService {
 
   public http:Http;
@@ -11,7 +11,7 @@ export class SocialShareButtonsService {
   }
 
   public getUrl(query:any):Observable<any> {
-    return this.http.get(`http://localhost/consumer/api/v1/shorturl?${query}`).map((res:any)=>{
+    return this.http.get(`${config.api}/consumer/api/v1/shorturl?${query}`).map((res:any)=>{
       let parseRes=JSON.parse(res._body);
       return {err:parseRes.error, url:parseRes.data}
     })
