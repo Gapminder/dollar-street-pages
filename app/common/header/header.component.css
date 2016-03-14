@@ -25,8 +25,15 @@
 }
 
 .header-content search {
-  width: calc(100% - 140px)
+  width: calc(100% - 215px)
 }
+place-map{
+  width:71px;
+  display:block;
+  float:left;
+  margin-top: 15px;
+}
+
 
 @media (max-width: 480px) {
   .header-content .icon-container img {
@@ -37,6 +44,7 @@
   }
 
   .header-content search {
-    width: calc(100% - 115px)
+    width: calc(100% - 185px);
   }
 }
+

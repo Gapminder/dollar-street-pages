@@ -14,6 +14,8 @@ let style = require('./place-map.css');
 export class PlaceMapComponent implements OnInit {
   @Input()
   private place:string;
+  @Input()
+  private isHeader:boolean;
 
   private region:string;
   private markerPosition:any = {};
@@ -25,16 +27,16 @@ export class PlaceMapComponent implements OnInit {
 
   ngOnInit():void {
     let img = new Image();
-    let mapImage = this.element.nativeElement.querySelector('.map');
-
+    let mapImage = this.isHeader ? this.element.nativeElement.querySelector('.map+.map') :
+      this.element.nativeElement.querySelector('.map');
     img.onload = () => {
       this.drawMarker(this.place, mapImage);
     };
-
     img.src = mapImage.src;
   }
 
   drawMarker(place, mapImage):void {
+
     let stepTop;
     let stepRight;
     let widthOfMap = mapImage.offsetWidth;

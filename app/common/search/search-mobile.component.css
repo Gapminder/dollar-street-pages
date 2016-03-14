@@ -19,8 +19,7 @@
 
 #mobile-search .title-container {
   font-size: 18px;
-  margin-top: -6px;
-  width: calc(100% - 70px);
+  margin-top: 6px;
   padding: 0 5px;
 }
 
@@ -189,3 +188,10 @@
   width: 19px;
   margin-top: 7px;
 }
+
+@media (max-width: 480px) {
+  #mobile-search .title-container {
+    font-size: 13px;
+  }
+}
+

@@ -3,14 +3,21 @@
        *ngFor="#place of currentPlaces"
        [style.backgroundImage]="toUrl(place.background)"
        [ngClass]="'column-'+zoom"
-       (mouseenter)="hoverImage(place)"
-       (mouseleave)="hoverImage()"
-       [routerLink]="['Place', {thing: thing, place: place._id, image: place.image}]"
+       (mouseenter)="hoverImage($event,place)"
+       (mouseleave)="hoverImage($event)"
+       (click)="goToPlace(place)"
        [angulartics2On]="'click'"
        [angularticsEvent]="'go to place page from matrix (click on matrix)'">
     <div class="image-description">
       <span class="place-image-box-country pull-left">{{place.country}}</span>
       <span class="place-image-box-income pull-right">{{place.income}}$</span>
     </div>
+    <div class="mobile-hover" *ngIf="!isDesktop&&(place._id===oldPlaceId)"  >
+      <div class="plus" (click)="goToPlace(place)"
+           [angulartics2On]="'click'"
+           [angularticsEvent]="'go to place page from matrix (click on matrix)'" >VISIT FAMILY >></div>
+    </div>
   </div>
+
 </div>
+

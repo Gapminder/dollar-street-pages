@@ -1,5 +1,8 @@
+const device = require('device.js')();
+const isDesktop = device.desktop();
+
 import {Component, Input, EventEmitter, ElementRef, Inject, Output} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
 import {Angulartics2On} from 'angulartics2/index';
@@ -12,7 +15,7 @@ let style = require('./matrix.images.component.css');
   selector: 'matrix-images',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On]
+  directives: [Angulartics2On]
 })
 
 export class MatrixImagesComponent {
@@ -26,14 +29,19 @@ export class MatrixImagesComponent {
   @Output('hoverPlace')
   private hoverPlace:EventEmitter<any> = new EventEmitter();
 
+  private isDesktop:boolean = isDesktop;
+  private oldPlaceId:string;
+  private router:Router;
   private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   private currentPlaces:any = [];
   private element:HTMLElement;
 
 
   constructor(@Inject(ElementRef) element,
+              @Inject(Router) router,
               @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
     this.element = element.nativeElement;
+    this.router = router;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
@@ -43,8 +51,28 @@ export class MatrixImagesComponent {
     });
   }
 
-  hoverImage(place):void {
+  hoverImage(event, place):void {
+
     this.hoverPlace.emit(place);
+    if (isDesktop) {
+      return
+    }
+    if (!place) {
+      this.oldPlaceId = null;
+      return;
+    }
+  }
+
+  goToPlace(place) {
+    if (isDesktop) {
+      this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}])
+      return
+    }
+    if (!this.oldPlaceId) {
+      this.oldPlaceId = place._id
+      return;
+    }
+    this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}])
   }
 
   private toUrl(image) {
