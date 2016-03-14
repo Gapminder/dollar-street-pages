@@ -125,8 +125,6 @@ export class MatrixComponent implements OnInit,OnDestroy {
   }
 
   stopScroll() {
-    // if()
-    //
     /**  each document usage breaks possible server side rendering*/
     let scrollTop = document.body.scrollTop; //? body.scrollTop : ieScrollBody.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
@@ -204,10 +202,6 @@ export class MatrixComponent implements OnInit,OnDestroy {
   }
 
   hoverPlaceS(place) {
-    // if (!this.isDesktop) {
-    //   return;
-    // }
-
     this.hoverPlace.next(place);
   }
 
