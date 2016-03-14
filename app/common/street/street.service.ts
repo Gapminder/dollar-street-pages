@@ -88,21 +88,22 @@ export class StreetDrawService {
       .attr('y', this.height)
       .attr('fill', '#767d86');
 
-
-    this.svg
-      .selectAll('rect.point')
-      .data(places)
-      .enter()
-      .append('rect')
-      .attr('class', 'point')
-      .attr('x', (d)=> {
-        return this.scale(d.income) - 4;
-      })
-      .attr('y', `${this.halfOfHeight - 11}`)
-      .attr('width', 8)
-      .attr('height', 7)
-      .style('fill', '#cfd2d6')
-      .style('opacity', '0.7');
+    if (isDesktop) {
+      this.svg
+        .selectAll('rect.point')
+        .data(places)
+        .enter()
+        .append('rect')
+        .attr('class', 'point')
+        .attr('x', (d)=> {
+          return this.scale(d.income) - 4;
+        })
+        .attr('y', `${this.halfOfHeight - 11}`)
+        .attr('width', 8)
+        .attr('height', 7)
+        .style('fill', '#cfd2d6')
+        .style('opacity', '0.7');
+    }
 
 
     this.svg

@@ -103,6 +103,29 @@
   box-shadow: 0 0 0 5px #374551 inset;
 }
 
+.mobile-hover .plus,
+.mobile-hover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.mobile-hover .plus{
+  color: white;
+  margin: auto;
+  height: 15px;
+  text-align: center;
+  display: inline-block;
+}
+
+.mobile-hover {
+  /*display:none;*/
+  background-color: rgba(0, 0, 0, .5);
+}
+.mobile-hover.active{
+  display: block;
+}
 @media (min-width: 768px) {
   .place-image-box-country,
   .place-image-box-income {

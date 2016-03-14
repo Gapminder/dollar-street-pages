@@ -1,6 +1,6 @@
-<div id="map-content">
-  <img class="map" src="/app/assets/img/map_dark_border.svg"/>
-
+<div id="map-content" >
+  <img class="map map_transparent" src="/app/assets/img/map_dark_border.svg"  [hidden]="isHeader"/>
+  <img class="map map_gray" src="/app/assets/img/map-gray.svg" [hidden]="!isHeader"/>
   <img class="marker"
        src="/app/assets/img/africa-map-house.png"
        *ngIf="region === 'africa'"

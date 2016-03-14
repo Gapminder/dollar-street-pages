@@ -18,3 +18,7 @@ app/**/*.d.ts
 #ts typings
 typings
 
+.DS_Store
+app/.DS_Store
+
+

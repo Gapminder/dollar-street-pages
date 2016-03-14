@@ -1,6 +1,6 @@
 <div class="matrix-header">
   <header [query]="query"
-          (mouseenter)="isHover()"
+          (mouseenter)="isHover()"  [hoverPlace]="hoverPlace"
           (filter)="urlChanged($event)"></header>
 
   <street [places]="places"

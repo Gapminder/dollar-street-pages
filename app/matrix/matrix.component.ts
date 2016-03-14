@@ -202,10 +202,6 @@ export class MatrixComponent implements OnInit,OnDestroy {
   }
 
   hoverPlaceS(place) {
-    if (!this.isDesktop) {
-      return;
-    }
-
     this.hoverPlace.next(place);
   }
 
