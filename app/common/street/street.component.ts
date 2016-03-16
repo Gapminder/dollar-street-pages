@@ -48,11 +48,11 @@ export class StreetComponent implements OnInit {
   ngOnInit():any {
     let svg = this.element.querySelector('.street-box svg') as HTMLElement;
     this.street = new StreetDrawService(svg);
-    this.street.init();
 
     this.places && this.places.subscribe((places)=> {
       this.street
         .clearSvg()
+        .init()
         .drawScale(places)
         .set('places', _.sortBy(places, 'income'))
         .set('fullIncomeArr', _
