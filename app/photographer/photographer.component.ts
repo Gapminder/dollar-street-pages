@@ -25,6 +25,6 @@ export class PhotographerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.photographerId = decodeURI(this.routeParams.get('id'));
+    this.photographerId = this.routeParams.get('id');
   }
 }
