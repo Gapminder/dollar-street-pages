@@ -15,7 +15,7 @@ let style = require('./photographer-profile.css');
 
 export class PhotographerProfileComponent implements OnInit {
   @Input()
-  private photographerName:string;
+  private photographerId:string;
   
   private photographer:any = {};
   private photographerProfileService:PhotographerProfileService;
@@ -25,7 +25,7 @@ export class PhotographerProfileComponent implements OnInit {
   }
 
   ngOnInit():void {
-    this.photographerProfileService.getPhotographerProfile(`name=${this.photographerName}`)
+    this.photographerProfileService.getPhotographerProfile(`id=${this.photographerId}`)
       .subscribe((res:any) => {
         if (res.err) {
           return res.err;

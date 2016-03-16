@@ -12,15 +12,15 @@
         <ul class="photographers-country">
           <li *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:true">
             <div>
-              <span class="photographer-country">{{country._id}}</span>
+              <span class="photographer-country">{{country.name}}</span>
               <ul class="photographers-list">
                 <li
                   *ngFor="#photographer of country.photographers"
-                  [routerLink]="['Photographer', {name: photographer.name}]"
+                  [routerLink]="['Photographer', {id: photographer.userId}]"
                   [angulartics2On]="'click'"
                   [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
                   {{photographer.name}}
-                  <span class="photographer-places">{{photographer.placesCount}}</span>
+                  <span class="photographer-places">{{photographer.places}}</span>
                 </li>
               </ul>
             </div>
@@ -31,18 +31,18 @@
       <div class="col-md-10 photographers-container">
         <div class="photographer-card"
              *ngFor="#photographer of photographersByName | PhotographersFilter:search.text"
-             [routerLink]="['Photographer', {name: photographer._id}]"
+             [routerLink]="['Photographer', {id: photographer.userId}]"
              [angulartics2On]="'click'"
-             [angularticsEvent]="'go to ' + photographer._id + ' from photographers page'">
+             [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
           <div class="photographer-portrait"
-               [ngStyle]="{'background-image': photographer.image || 'url(/app/assets/img/photographer-icon.jpg)'}">
+               [ngStyle]="{'background-image': photographer.avatar || 'url(/app/assets/img/photographer-icon.jpg)'}">
             <div class="photographer-material">
-              <span><i class="fa fa-camera"></i> {{photographer.imagesCount}}</span>
-              <span><i class="fa fa-video-camera"></i> {{photographer.videoCount || 0}}</span>
-              <span><i class="fa fa-home"></i> {{photographer.placesCount}}</span>
+              <span><i class="fa fa-camera"></i> {{photographer.images}}</span>
+              <span><i class="fa fa-video-camera"></i> {{photographer.video || 0}}</span>
+              <span><i class="fa fa-home"></i> {{photographer.places}}</span>
             </div>
           </div>
-          <h3>{{photographer._id}}</h3>
+          <h3>{{photographer.name}}</h3>
         </div>
       </div>
     </div>

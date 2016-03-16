@@ -108,6 +108,8 @@
   height: 150px;
   text-align: center;
   color: #fff;
+  background-size: cover;
+  background-position: 50% 50%;
 }
 
 #photographers .photographer-portrait .photographer-material {

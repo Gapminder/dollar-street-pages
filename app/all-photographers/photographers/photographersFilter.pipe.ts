@@ -17,7 +17,7 @@ export class PhotographersFilter {
 
     if (!nested) {
       items.forEach(function (item:any) {
-        if (item._id.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
+        if (item.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
           newItems.push(item);
         }
       });
@@ -26,14 +26,14 @@ export class PhotographersFilter {
     if (nested) {
       items.forEach(function (item:any) {
         let itemsName = newItems.map(function (newItem:any) {
-          return newItem._id;
+          return newItem.name;
         });
 
         let index = null;
 
         if (itemsName.length) {
-          if (itemsName.indexOf(item._id) !== -1) {
-            index = itemsName.indexOf(item._id);
+          if (itemsName.indexOf(item.name) !== -1) {
+            index = itemsName.indexOf(item.name);
           }
         }
 
@@ -45,7 +45,7 @@ export class PhotographersFilter {
             }
 
             newItems.push({
-              _id: item._id,
+              name: item.name,
               photographers: [photographer]
             })
           }

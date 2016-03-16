@@ -40,9 +40,8 @@ export class PhotographersComponent implements OnInit {
         if (res.err) {
           return res.err;
         }
-
-        this.photographersByCountry = res.data.photographersByCountries;
-        this.photographersByName = res.data.allPhotographers;
+        this.photographersByCountry = res.data.countryList;
+        this.photographersByName = res.data.photographersList;
         this.loader = true;
 
       });
