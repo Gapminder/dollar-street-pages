@@ -18,13 +18,13 @@ let style = require('./photographer.css');
 
 export class PhotographerComponent implements OnInit {
   private routeParams:RouteParams;
-  private photographerName:string;
+  private photographerId:string;
 
   constructor(@Inject(RouteParams) routeParams) {
     this.routeParams = routeParams;
   }
 
   ngOnInit() {
-    this.photographerName = decodeURI(this.routeParams.get('name'));
+    this.photographerId = decodeURI(this.routeParams.get('id'));
   }
 }

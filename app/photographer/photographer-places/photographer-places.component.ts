@@ -19,7 +19,7 @@ let style = require('./photographer-places.css');
 
 export class PhotographerPlacesComponent implements OnInit {
   @Input()
-  private photographerName:string;
+  private photographerId:string;
 
   private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   private countries:any = [];
@@ -34,8 +34,9 @@ export class PhotographerPlacesComponent implements OnInit {
   }
 
   ngOnInit():void {
-    this.photographerPlacesService.getPhotographerPlaces(`name=${this.photographerName}`)
+    this.photographerPlacesService.getPhotographerPlaces(`id=${this.photographerId}`)
       .subscribe((res:any) => {
+        console.log(res)
         if (res.err) {
           return res.err;
         }
