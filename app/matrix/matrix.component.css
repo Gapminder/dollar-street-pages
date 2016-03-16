@@ -77,7 +77,7 @@
 
 @media (max-width: 768px) {
   .zoom-column {
-    top: 140px;
+    top: 135px;
     right: 14px;
   }
 
@@ -89,7 +89,13 @@
 
 @media (max-width: 495px) {
   .zoom-column {
-    top: 140px;
+    top: 135px;
     right: 8px;
+  }
+}
+
+@media (max-width: 320px) {
+  .zoom-column {
+    top: 150px;
   }
 }
