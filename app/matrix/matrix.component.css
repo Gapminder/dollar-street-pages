@@ -14,8 +14,8 @@
 
 .zoom-column {
   position: fixed;
-  top: 145px;
-  right: 20px;
+  top: 140px;
+  right: 14px;
 }
 
 .zoom-column button,
@@ -63,20 +63,21 @@
 
 @media (max-width: 1200px) {
   .zoom-column {
-    top: 130px;
+    top: 140px;
     right: 20px;
   }
 }
 
 @media (max-width: 992px) {
   .zoom-column {
+    top: 140px;
     right: 20px;
   }
 }
 
 @media (max-width: 768px) {
   .zoom-column {
-    top: 128px;
+    top: 140px;
     right: 14px;
   }
 
@@ -88,7 +89,7 @@
 
 @media (max-width: 495px) {
   .zoom-column {
-    top: 125px;
+    top: 140px;
     right: 8px;
   }
 }

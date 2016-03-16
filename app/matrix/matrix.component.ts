@@ -178,6 +178,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
     this.getViewableRows(header.offsetHeight);
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
+    this.places.next(this.placesArr);
   }
 
   getViewableRows(headerHeight:number):void {
