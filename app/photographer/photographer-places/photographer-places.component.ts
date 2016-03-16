@@ -36,7 +36,6 @@ export class PhotographerPlacesComponent implements OnInit {
   ngOnInit():void {
     this.photographerPlacesService.getPhotographerPlaces(`id=${this.photographerId}`)
       .subscribe((res:any) => {
-        console.log(res)
         if (res.err) {
           return res.err;
         }

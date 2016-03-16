@@ -40,7 +40,6 @@ export class PhotographersComponent implements OnInit {
         if (res.err) {
           return res.err;
         }
-        console.log(res)
         this.photographersByCountry = res.data.countryList;
         this.photographersByName = res.data.photographersList;
         this.loader = true;

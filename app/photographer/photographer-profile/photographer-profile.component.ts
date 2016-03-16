@@ -27,7 +27,6 @@ export class PhotographerProfileComponent implements OnInit {
   ngOnInit():void {
     this.photographerProfileService.getPhotographerProfile(`id=${this.photographerId}`)
       .subscribe((res:any) => {
-        console.log(res)
         if (res.err) {
           return res.err;
         }
