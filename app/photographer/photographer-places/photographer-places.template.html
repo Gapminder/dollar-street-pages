@@ -4,15 +4,15 @@
 
     <div class="place" *ngFor="#place of country.places">
       <div class="image">
-        <img [src]="place.image"
-             [routerLink]="['Place', {thing: familyThingId, place: place.placeId, image: place.imageId}]"
+        <img *ngIf="place.image" [src]="place.image"
+             [routerLink]="['Place', {thing:  place.thing, place: place.placeId, image: place.imageId}]"
              [angulartics2On]="'click'"
              [angularticsEvent]="'go to place page from photographer page'"
              alt="">
       </div>
 
       <div class="place-description">
-        <div class="family">
+        <div class="family" *ngIf="place.family">
           <h3>{{place.family}} family</h3>
         </div>
 
@@ -32,7 +32,7 @@
       </div>
 
       <div class="link">
-        <a [routerLink]="['Place', {thing: familyThingId, place: place.placeId, image: place.imageId}]"
+        <a [routerLink]="['Place', {thing: place.thing, place: place.placeId, image: place.imageId}]"
            [angulartics2On]="'click'"
            [angularticsEvent]="'go to place page from photographer page'">Visit family »</a>
       </div>
