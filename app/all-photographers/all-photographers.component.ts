@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core';
-import {HeaderPhotographersComponent} from './header/header.photographers.component';
+
+import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {PhotographersComponent} from './photographers/photographers.component';
 import {FooterComponent} from '../common/footer/footer.component';
 
@@ -10,8 +11,9 @@ let style = require('./all-photographers.component.css');
   selector: 'photographers',
   template: tpl,
   styles: [style],
-  directives: [HeaderPhotographersComponent, PhotographersComponent, FooterComponent]
+  directives: [HeaderWithoutSearchComponent, PhotographersComponent, FooterComponent]
 })
 
 export class AllPhotographersComponent {
+  private title:string = 'Photographers';
 }

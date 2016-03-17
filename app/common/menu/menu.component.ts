@@ -22,18 +22,20 @@ export class MainMenuComponent implements OnChanges {
   private thing:any = {};
   private goToMatrix:any = {};
   private router:Router;
-  private matrixComponent:boolean;
+  private placeComponent:boolean;
 
   constructor(@Inject(Router) _router) {
     this.router = _router;
-    this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
+    this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
   }
 
   ngOnChanges(changes) {
-    if (this.activeThing && this.defaultThing) {
-      this.thing = this.activeThing;
+    if (this.defaultThing) {
+      if (this.activeThing && this.placeComponent) {
+        this.thing = this.activeThing;
+      }
 
-      if (this.matrixComponent) {
+      if (!this.placeComponent) {
         this.thing = this.defaultThing;
       }
 
