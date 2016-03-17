@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
 import {Location} from 'angular2/router';
 
 import {UrlChangeService} from '../url-change/url-change.service';
@@ -14,11 +14,12 @@ let style = require('./social_share_buttons.component.css');
   providers: [SocialShareButtonsService]
 })
 
-export class SocialShareButtons implements OnInit {
+export class SocialShareButtons implements OnInit, OnDestroy {
   public socialShareButtonsService:SocialShareButtonsService;
   private location:Location;
   private urlChangeService:UrlChangeService;
   public url:string;
+  public urlEvents:any;
 
   constructor(@Inject(SocialShareButtonsService) socialShareButtonsService,
               @Inject(UrlChangeService) urlChangeService,
@@ -31,12 +32,16 @@ export class SocialShareButtons implements OnInit {
   ngOnInit():void {
     this.getUrl();
 
-    this.urlChangeService
+    this.urlEvents = this.urlChangeService
       .getUrlEvents()
       .debounceTime(300)
       .subscribe(() => {
         this.getUrl();
       });
+  }
+
+  ngOnDestroy() {
+    this.urlEvents.unsubscribe();
   }
 
   getUrl() {
