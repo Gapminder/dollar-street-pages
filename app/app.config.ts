@@ -6,7 +6,7 @@ import {AllPhotographersComponent} from './all-photographers/all-photographers.c
 import { PhotographerComponent } from './photographer/photographer.component';
 
 export module config {
-  export let api='http://128.199.60.70';
+  export let api='http://localhost';
   export let routes = [
     {
       path: '/main',

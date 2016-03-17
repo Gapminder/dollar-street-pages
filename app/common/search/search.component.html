@@ -8,8 +8,9 @@
              [src]="activeThing.iconDark"
              [alt]="activeThing.name">
 
-        <div class="search-portrait-icon pull-left icon" [style.backgroundImage]="toUrl(header.icon)"
-             *ngIf="placeComponent&&header"></div>
+        <div class="search-portrait-icon pull-left icon"
+             *ngIf="placeComponent && header && header.icon"
+             [style.backgroundImage]="toUrl(header.icon)"></div>
 
         <div class="search-text">
           <span *ngIf="matrixComponent">{{activeThing.plural || activeThing.name}}</span>
