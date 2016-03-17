@@ -22,7 +22,6 @@
 .family-images-container .family-image {
   background-position: 50% 50%;
   background-size: cover;
-  /*opacity: 0;*/
 }
 
 .family-images-container .family-image,
@@ -96,7 +95,7 @@
 
   .family-things-container .image-description img {
     width: 16px;
-    margin: 0px 10px 0 0;
+    margin: 0;
   }
 }
 
@@ -108,13 +107,12 @@
 
   .family-things-container .image-description img {
     width: 20px;
-    margin: 0px 10px 0 0;
+    margin: 0 10px 0 0;
   }
 }
 
 @media (min-width: 992px) {
   .family-things-container .image-description {
-    padding: 30px 8px 8px;
     font-size: 20px;
   }
 
