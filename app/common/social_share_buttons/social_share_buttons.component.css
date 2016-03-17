@@ -20,3 +20,9 @@
   font-size: 26px;
   color: #767d86;
 }
+
+@media (max-width: 600px) {
+  .share-button-container .share-button i {
+    font-size: 18px;
+  }
+}

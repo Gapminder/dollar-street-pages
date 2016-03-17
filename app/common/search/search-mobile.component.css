@@ -9,6 +9,9 @@
 #mobile-search .thing-icon {
   width: 35px;
   height: 35px;
+  background-position: 50% 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 #mobile-search .open-modal-icon {
@@ -89,7 +92,7 @@
   float: none;
 }
 
-#mobile-search-popup .tabs-header .tab-button:first-child{
+#mobile-search-popup .tabs-header .tab-button:first-child {
   border-right: 1px solid #303e4a;
 }
 
@@ -189,9 +192,26 @@
   margin-top: 7px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  #mobile-search {
+    margin-top: 7px;
+  }
+
   #mobile-search .title-container {
-    font-size: 13px;
+    font-size: 14px;
+    width: calc(100% - 42px);
+    margin-top: 5px;
+  }
+
+  #mobile-search .open-modal-icon {
+    width: 16px;
+    height: auto;
+    margin-top: 10px;
+  }
+
+  #mobile-search .thing-icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
