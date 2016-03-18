@@ -4,7 +4,6 @@
       <div class="pull-left">
         <img class="search-title-thing-icon pull-left icon" *ngIf="!placeComponent"
              [hidden]="!(activeThing && activeThing.iconDark)"
-             (click)="openSearch(isOpen)"
              [src]="activeThing.iconDark"
              [alt]="activeThing.name">
 
