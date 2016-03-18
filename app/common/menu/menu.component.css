@@ -82,8 +82,23 @@
   color: #fff;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   #main-menu .menu-icon {
-    width: 55px;
+    width: 30px;
+    height: 42px;
+  }
+
+  #main-menu .menu-icon img {
+    width: 19px;
+    height: 19px;
+  }
+
+  #main-menu .open .dropdown-menu {
+    width: 180px;
+  }
+
+  #main-menu .open .dropdown-menu li a {
+    font-size: 14px;
+    padding: 10px 15px;
   }
 }

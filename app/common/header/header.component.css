@@ -27,24 +27,26 @@
 .header-content search {
   width: calc(100% - 215px)
 }
-place-map{
-  width:71px;
-  display:block;
-  float:left;
+
+place-map {
+  width: 71px;
+  display: block;
+  float: left;
   margin-top: 15px;
 }
 
-
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .header-content .icon-container img {
-    width: 45px;
-    height: 45px;
-    margin-top: 12px;
-    margin-right: 4px;
+    width: 32px;
+    height: 32px;
+    margin: 5px;
   }
 
   .header-content search {
-    width: calc(100% - 185px);
+    width: calc(100% - 127px);
+  }
+
+  place-map {
+    width: 54px;
   }
 }
-

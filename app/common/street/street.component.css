@@ -118,3 +118,9 @@
   padding: 5px;
   z-index: 5;
 }
+
+@media (max-width: 600px) {
+  .street-box {
+    margin: -23px 15px 0;
+  }
+}

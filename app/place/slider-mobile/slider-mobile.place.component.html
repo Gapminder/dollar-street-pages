@@ -26,17 +26,6 @@
   </span>
 
   <div *ngIf="showInfoFamily" class="slider-mobile-description-container">
-    <div class="slider-mobile-family-description">
-      <div class="slider-mobile-family-title">
-        <p>Family</p>
-        <h2>{{chosenPlace.familyName}}</h2>
-      </div>
-
-      <div class="slider-mobile-family-map">
-        <place-map [place]="chosenPlace"></place-map>
-      </div>
-    </div>
-
     <div class="slider-mobile-family-images-container">
       <div class="slider-mobile-family-portrait">
         <img *ngIf="chosenPlace.family"
@@ -52,5 +41,20 @@
              alt="">
       </div>
     </div>
+
+    <div class="slider-mobile-family-description">
+      <div class="slider-mobile-family-title">
+        <span [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
+          « All {{activeThing.plural}}
+        </span>
+        <h2><span>{{chosenPlace.income}}$</span> The {{chosenPlace.familyName}} in {{chosenPlace.country}}</h2>
+      </div>
+
+      <div class="slider-mobile-family-map">
+        <place-map [place]="chosenPlace"></place-map>
+      </div>
+    </div>
+
+    <p class="info" *ngIf="chosenPlace.infoSummary">{{chosenPlace.infoSummary}}</p>
   </div>
 </div>

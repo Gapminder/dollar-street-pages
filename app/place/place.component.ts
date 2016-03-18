@@ -68,11 +68,10 @@ export class PlaceComponent implements OnInit {
     if (this.init) {
       return;
     }
+
     this.thing = thing._id;
-
-    /* init when start load page !!!!*/
-
     this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`);
+    this.loader = false;
   }
 
   isHover() {
