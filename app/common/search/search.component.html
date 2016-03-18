@@ -47,7 +47,7 @@
                     <h3>THINGS</h3>
                   </div>
                   <ul class="search-list-categories default-position-top">
-                    <li [hidden]="activeThing.name && activeThing.name.indexOf(search.text) === -1">
+                    <li [hidden]="activeThing.name && activeThing.name.toLowerCase().indexOf(search.text.toLowerCase()) === -1">
                       <div class="category-name">
                         <span>{{activeThing.category}}</span>
                       </div>
