@@ -26,8 +26,8 @@
 
   <family-place [hidden]="!isShowImagesFamily" [chosenPlaces]="chosenPlaces"></family-place>
 
-  <p class="photographer"
-     [hidden]="!currentPlace.photographer">Photographer: {{currentPlace.photographer}}</p>
+  <p class="photographer" [routerLink]="['Photographer', {id: currentPlace.photographer._id}]"
+     *ngIf="currentPlace.photographer">Photographer: {{currentPlace.photographer.fullName}}</p>
 
   <footer></footer>
 
