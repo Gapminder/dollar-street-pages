@@ -30,6 +30,11 @@
   font-weight: bold;
   font-size: 16px;
   margin: 15px 20px;
+  cursor: pointer;
+}
+
+.photographer:hover {
+  font-weight: bold;
 }
 
 .showContentForMobile {

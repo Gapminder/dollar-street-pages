@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {RouteParams, RouterLink} from 'angular2/router';
 import {Subject} from "rxjs/Subject";
 
 import {FooterComponent} from '../common/footer/footer.component';
@@ -22,7 +22,7 @@ let isDesktop = device.desktop();
   selector: 'place',
   template: tpl,
   styles: [style],
-  directives: [HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent, LoaderComponent]
+  directives: [RouterLink, HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent, LoaderComponent]
 })
 
 export class PlaceComponent implements OnInit {
