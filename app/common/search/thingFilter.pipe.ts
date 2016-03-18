@@ -23,7 +23,7 @@ export class SearchFilter {
           fieldItem = item;
         }
 
-        if (fieldItem.indexOf(text) !== -1) {
+        if (fieldItem.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
           newItems.push(item);
         }
       });
@@ -44,7 +44,7 @@ export class SearchFilter {
         }
 
         item.things.forEach(function (thing:any) {
-          if (thing.name.indexOf(text) !== -1) {
+          if (thing.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
             if (index) {
               newItems[index].things.push(thing);
               return;
