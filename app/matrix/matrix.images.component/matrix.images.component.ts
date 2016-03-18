@@ -35,6 +35,7 @@ export class MatrixImagesComponent {
   private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   private currentPlaces:any = [];
   private element:HTMLElement;
+  private placesSubscribe:any;
 
 
   constructor(@Inject(ElementRef) element,
@@ -46,9 +47,13 @@ export class MatrixImagesComponent {
   }
 
   ngOnInit():any {
-    this.places.subscribe((places)=> {
+    this.placesSubscribe = this.places.subscribe((places)=> {
       this.currentPlaces = places;
     });
+  }
+
+  ngOnDestroy() {
+    this.placesSubscribe.unsubscribe()
   }
 
   hoverImage(event, place):void {

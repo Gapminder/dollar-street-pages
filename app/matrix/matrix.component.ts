@@ -1,5 +1,5 @@
 import {Component, OnInit, Inject, ElementRef, OnDestroy} from 'angular2/core';
-import {RouteParams, Location} from 'angular2/router';
+import {RouteParams} from 'angular2/router';
 import {Subject} from "rxjs/Subject";
 
 import {MatrixService} from './matrix.service';
@@ -47,21 +47,21 @@ export class MatrixComponent implements OnInit,OnDestroy {
   private countries:string;
   private regions:string;
   private row:number;
-  private location:any;
+
   private query:string;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
   public loader:boolean = false;
 
+  public matrixServiceSubscrib:any;
+
   constructor(@Inject(MatrixService) matrixService,
               @Inject(ElementRef) element,
               @Inject(UrlChangeService) urlChangeService,
-              @Inject(RouteParams) routeParams,
-              @Inject(Location) location) {
+              @Inject(RouteParams) routeParams) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
-    this.location = location;
     this.urlChangeService = urlChangeService;
   }
 
@@ -106,6 +106,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
   ngOnDestroy() {
     document.onscroll = null;
+    this.matrixServiceSubscrib.unsubscribe()
   }
 
   ngAfterViewChecked() {
@@ -217,9 +218,10 @@ export class MatrixComponent implements OnInit,OnDestroy {
   urlChanged(query, cb = null):void {
     /**to remove things like this*/
     this.query = query;
-    // this.urlChangeService.replaceState(`/matrix`, `${query}`);
+    this.thing=this.parseUrl(this.query).thing;
+    this.urlChangeService.replaceState(`/matrix`, `${query}`);
 
-    this.matrixService.getMatrixImages(query)
+    this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
         this.places.next(val.places);
         this.placesArr = val.places;

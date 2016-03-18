@@ -40,6 +40,7 @@ export class PlaceComponent implements OnInit {
   private isDesktop:boolean = isDesktop;
   private isShowImagesFamily:boolean = isDesktop;
   public loader:boolean = false;
+  public placeStreetServiceSubscribe:any;
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
@@ -57,6 +58,10 @@ export class PlaceComponent implements OnInit {
     this.getStreetPlaces(this.query)
   }
 
+  ngOnDestroy() {
+    this.placeStreetServiceSubscribe.unsubscribe();
+  }
+
   urlChanged(thing):void {
     this.activeThing = thing;
 
@@ -65,9 +70,8 @@ export class PlaceComponent implements OnInit {
     }
 
     this.thing = thing._id;
-
-    this.loader = false;
     this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`);
+    this.loader = false;
   }
 
   isHover() {
@@ -75,7 +79,7 @@ export class PlaceComponent implements OnInit {
   }
 
   getStreetPlaces(thing) {
-    this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
+    this.placeStreetServiceSubscribe = this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
       this.streetPlaces.next(res.data.places);
     })
   }
@@ -86,19 +90,20 @@ export class PlaceComponent implements OnInit {
     if (!this.isDesktop) {
       this.isShowImagesFamily = false;
     }
-    this.loader = true;
-
     this.changeLocation(place[0], this.thing);
+    this.loader = true;
   }
 
   changeLocation(place, thing) {
-
     let query = `thing=${thing}&place=${place._id}&image=${place.image}`;
-
+    this.place = place._id;
+    this.image = place.image;
+    if (this.init) {
+      this.init = !this.init;
+      return;
+    }
     this.urlChangeService.replaceState('/place', query);
     this.routeParams.params = {'thing': thing, 'place': place._id, 'image': place.image}
     this.init = false;
-    this.place = place._id;
-    this.image = place.image;
   }
 }
