@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ElementRef, Inject} from 'angular2/core';
+import {Component, OnInit, Input, ElementRef, Inject, OnDestroy} from 'angular2/core';
 import {Observable} from "rxjs/Observable";
 import {RouterLink, Router} from 'angular2/router';
 import {StreetDrawService} from "./street.service";
@@ -17,7 +17,7 @@ let style = require('./street.component.css');
   directives: [RouterLink]
 })
 
-export class StreetComponent implements OnInit {
+export class StreetComponent implements OnInit,OnDestroy {
   @Input('thing')
   private thing:string;
   @Input('hoverHeader')
@@ -39,6 +39,12 @@ export class StreetComponent implements OnInit {
   private isThumbView:boolean;
   private router:Router;
 
+  private resize:any;
+  private placesSubscribe:any;
+  private hoverPlaceSubscribe:any;
+  private chosenPlacesSubscribe:any;
+  private hoverHeaderSubscribe:any;
+
   constructor(@Inject(ElementRef) element,
               @Inject(Router)  router) {
     this.element = element.nativeElement;
@@ -49,23 +55,23 @@ export class StreetComponent implements OnInit {
     let svg = this.element.querySelector('.street-box svg') as HTMLElement;
     this.street = new StreetDrawService(svg);
 
-    this.places && this.places.subscribe((places)=> {
-      this.street
-        .clearSvg()
-        .init()
-        .drawScale(places)
-        .set('places', _.sortBy(places, 'income'))
-        .set('fullIncomeArr', _
-          .chain(places)
-          .sortBy('income')
-          .map((place:any)=> {
-            return this.street.scale(place.income);
-          })
-          .value()
-        );
-    });
+    this.placesSubscribe = this.places && this.places.subscribe((places)=> {
+        this.street
+          .clearSvg()
+          .init()
+          .drawScale(places)
+          .set('places', _.sortBy(places, 'income'))
+          .set('fullIncomeArr', _
+            .chain(places)
+            .sortBy('income')
+            .map((place:any)=> {
+              return this.street.scale(place.income);
+            })
+            .value()
+          );
+      });
 
-    Observable
+    this.resize = Observable
       .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -85,27 +91,27 @@ export class StreetComponent implements OnInit {
           .clearAndRedraw(this.street.chosenPlaces);
       });
 
-    this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces)=> {
-      this.street.set('chosenPlaces', chosenPlaces)
-      if (this.controllSlider) {
-        this.street.clearAndRedraw(chosenPlaces, true);
-        return;
-      }
-      this.street.clearAndRedraw(chosenPlaces);
-    });
+    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces)=> {
+        this.street.set('chosenPlaces', chosenPlaces)
+        if (this.controllSlider) {
+          this.street.clearAndRedraw(chosenPlaces, true);
+          return;
+        }
+        this.street.clearAndRedraw(chosenPlaces);
+      });
 
-    this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
-      if (!hoverPlace) {
-        return;
-      }
-      this.street.set('hoverPlace', hoverPlace);
-      this.street.clearAndRedraw(this.street.chosenPlaces);
-      this.street.drawHoverHouse(hoverPlace);
-    });
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
+        if (!hoverPlace) {
+          return;
+        }
+        this.street.set('hoverPlace', hoverPlace);
+        this.street.clearAndRedraw(this.street.chosenPlaces);
+        this.street.drawHoverHouse(hoverPlace);
+      });
 
-    this.hoverHeader && this.hoverHeader.subscribe(()=> {
-      this.thumbUnhover()
-    })
+    this.hoverHeaderSubscribe = this.hoverHeader && this.hoverHeader.subscribe(()=> {
+        this.thumbUnhover()
+      })
   }
 
   onStreet(e) {
@@ -141,6 +147,25 @@ export class StreetComponent implements OnInit {
       this.arrowLeft = left - this.thumbLeft + 9;
     })
   }
+
+  ngOnDestroy() {
+    if (this.resize) {
+      this.resize.unsubscribe();
+    }
+    if (this.placesSubscribe) {
+      this.placesSubscribe.unsubscribe();
+    }
+    if (this.hoverPlaceSubscribe) {
+      this.hoverPlaceSubscribe.unsubscribe();
+    }
+    if (this.chosenPlacesSubscribe) {
+      this.chosenPlacesSubscribe.unsubscribe();
+    }
+    if (this.hoverHeaderSubscribe) {
+      this.hoverHeaderSubscribe.unsubscribe();
+    }
+  }
+
 
   public thumbHover(place) {
     this.street

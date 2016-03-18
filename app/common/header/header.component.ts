@@ -32,21 +32,31 @@ export class HeaderComponent implements OnInit {
   private hoveredPlace:any;
   private headerService:HeaderService;
 
+  private headerServiceSubscribe:any;
+  private hoverPlaceSubscribe:any;
+
   constructor(@Inject(HeaderService) headerService) {
     this.headerService = headerService;
   }
 
   ngOnInit():void {
-    this.headerService.getDefaultThing()
+    this.headerServiceSubscribe = this.headerService.getDefaultThing()
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
         }
         this.defaultThing = res.data;
       });
-    this.hoverPlace && this.hoverPlace.subscribe((place)=> {
-      this.hoveredPlace = place;
-    })
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place)=> {
+        this.hoveredPlace = place;
+      })
+  }
+
+  ngOnDestroy():void {
+    this.headerServiceSubscribe.unsubscribe();
+    if (this.hoverPlaceSubscribe) {
+      this.hoverPlaceSubscribe.unsubscribe();
+    }
   }
 
   urlTransfer(url) {

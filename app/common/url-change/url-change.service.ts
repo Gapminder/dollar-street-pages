@@ -4,7 +4,7 @@ import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 
 export class UrlChangeService {
-  private location:Location;
+  public location:Location;
   private urlEvents:Subject<any>;
   private popStateSub:Subject<any>;
   private popState:(location:any)=>void;
@@ -14,22 +14,22 @@ export class UrlChangeService {
     this.urlEvents = new Subject();
     this.popStateSub = new Subject();
     this.location = location;
-    this.location.subscribe((a)=> {
-      this.onPopstate = true;
-    });
+    // this.location.subscribe((a)=> {
+    //   console.log('change 11111')
+    //   this.onPopstate = true;
+    //   this.urlEvents.next('my event');
+    // });
   }
-
   replaceState(path:string, query?:string):void {
-    if (this.onPopstate) {
-      this.onPopstate = !this.onPopstate;
-      return;
-    }
+    // if (this.onPopstate) {
+    //   this.onPopstate = !this.onPopstate;
+    //   return;
+    // }
     this.location.go(path, query);
-    this.urlEvents.next({path, query});
   }
 
   getUrlEvents():Observable {
     return this.urlEvents;
   }
-  
+
 }

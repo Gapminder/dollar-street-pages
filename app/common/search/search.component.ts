@@ -55,8 +55,10 @@ export class SearchComponent implements OnInit, OnChanges {
   private placeComponent:boolean;
   private isDesktop:boolean = isDesktop;
   private mobileTitle:string;
-  private tab:number = 0;
   private header:any;
+
+  private chosenPlacesSubscribe:any;
+  private searchServiceSubscribe:any;
 
   constructor(@Inject(SearchService) searchService, @Inject(Router) _router) {
     this.searchService = searchService;
@@ -67,15 +69,24 @@ export class SearchComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
-      this.paramsUrl = {
-        thing: this.activeThing._id,
-        place: place[0]._id,
-        image: place[0].image
-      };
+    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
+        this.paramsUrl = {
+          thing: this.activeThing._id,
+          place: place[0]._id,
+          image: place[0].image
+        };
 
-      this.getInitDataForSlider();
-    });
+        this.getInitDataForSlider();
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.chosenPlacesSubscribe) {
+      this.chosenPlacesSubscribe.unsubscribe();
+    }
+    if(this.searchServiceSubscribe){
+      this.searchServiceSubscribe.unsubscribe();
+    }
   }
 
   ngOnChanges(properties):void {
@@ -211,11 +222,16 @@ export class SearchComponent implements OnInit, OnChanges {
     if (this.placeComponent) {
       url = `thing=${this.paramsUrl.thing}&place=${this.paramsUrl.place}&image=${this.paramsUrl.image}`;
     }
-    this.searchService.getSearchInitData(url)
+
+    if(this.searchServiceSubscribe){
+      this.searchServiceSubscribe.unsubscribe();
+    }
+    this.searchServiceSubscribe = this.searchService.getSearchInitData(url)
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
         }
+
         this.countries = res.data.countries;
         this.categories = res.data.categories;
         this.regions = res.data.regions;
@@ -224,7 +240,6 @@ export class SearchComponent implements OnInit, OnChanges {
         this.activeRegions = this.paramsUrl.regions;
         this.activeCountries = this.paramsUrl.countries;
         this.selectedThing.emit(this.activeThing);
-
         if (this.matrixComponent) {
           this.states = this.getLocations(this.activeRegions, this.activeCountries);
         }
@@ -234,7 +249,6 @@ export class SearchComponent implements OnInit, OnChanges {
         } else {
           this.selectedFilter.emit(this.activeThing);
         }
-
         if (this.matrixComponent && !this.isDesktop) {
           this.mobileTitle = this.getMobileTitle(this.activeThing, this.states);
         }
@@ -245,15 +259,19 @@ export class SearchComponent implements OnInit, OnChanges {
     this.isOpen = false;
     this.search.text = '';
     let url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
-    this.searchService.getSearchInitData(url)
+    if(this.searchServiceSubscribe){
+      this.searchServiceSubscribe.unsubscribe();
+    }
+    this.searchServiceSubscribe = this.searchService.getSearchInitData(url)
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
         }
-        this.header=res.data.header;
+        this.header = res.data.header;
         this.categories = res.data.categories;
       });
   }
+
   private toUrl(image) {
     return `url("${image}")`;
   }
