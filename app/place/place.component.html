@@ -1,6 +1,6 @@
 <div class="matrix-header">
-  <header [query]="query"
-          (mouseenter)="isHover && isHover()"
+  <header [query]="query" *ngIf="isHover"
+          (mouseenter)="isHover()"
           [chosenPlaces]="chosenPlaces"
           (filter)="urlChanged($event)"></header>
 

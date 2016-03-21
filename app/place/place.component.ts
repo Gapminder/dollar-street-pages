@@ -44,6 +44,7 @@ export class PlaceComponent implements OnInit {
   public placeStreetServiceSubscribe:any;
   public scrollWidth:number;
   public places:any[];
+  private isSafari:boolean = /Apple/.test(window.navigator.vendor);
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
@@ -66,11 +67,14 @@ export class PlaceComponent implements OnInit {
   }
 
   ngAfterViewChecked() {
-    if(this.scrollWidth===document.body.scrollWidth){
+    if (this.isSafari) {
       return;
     }
-    this.scrollWidth=document.body.scrollWidth
-    if(this.places&&this.places.length){
+    if (this.scrollWidth === document.body.scrollWidth) {
+      return;
+    }
+    this.scrollWidth = document.body.scrollWidth
+    if (this.places && this.places.length) {
       this.streetPlaces.next(this.places);
     }
   }
@@ -93,7 +97,10 @@ export class PlaceComponent implements OnInit {
 
   getStreetPlaces(thing) {
     this.placeStreetServiceSubscribe = this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
-      this.places=res.data.places;
+      this.places = res.data.places;
+      if (this.isSafari) {
+        this.streetPlaces.next(this.places);
+      }
       this.sliderPlaces.next(res.data.places);
     })
   }

@@ -17,8 +17,6 @@
   ],
   "files": [
     "./typings/browser.d.ts",
-    "./node_modules/angular2/typings/browser.d.ts",
-    "./node_modules/zone.js/dist/zone.js.d.ts",
     "./app/index.ts",
     "./app/app.component.ts",
     "./app/app.config.ts",
