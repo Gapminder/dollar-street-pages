@@ -27,6 +27,7 @@ let isDesktop = device.desktop();
 
 export class PlaceComponent implements OnInit {
   private streetPlaces:Subject<any> = new Subject();
+  private sliderPlaces:Subject<any> = new Subject();
   private chosenPlaces:Subject<any> = new Subject();
   private controllSlider:Subject<any> = new Subject();
   public hoverHeader:Subject<any> = new Subject();
@@ -41,6 +42,8 @@ export class PlaceComponent implements OnInit {
   private isShowImagesFamily:boolean = isDesktop;
   public loader:boolean = false;
   public placeStreetServiceSubscribe:any;
+  public scrollWidth:number;
+  public places:any[];
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
@@ -62,6 +65,16 @@ export class PlaceComponent implements OnInit {
     this.placeStreetServiceSubscribe.unsubscribe();
   }
 
+  ngAfterViewChecked() {
+    if(this.scrollWidth===document.body.scrollWidth){
+      return;
+    }
+    this.scrollWidth=document.body.scrollWidth
+    if(this.places&&this.places.length){
+      this.streetPlaces.next(this.places);
+    }
+  }
+
   urlChanged(thing):void {
     this.activeThing = thing;
 
@@ -80,7 +93,8 @@ export class PlaceComponent implements OnInit {
 
   getStreetPlaces(thing) {
     this.placeStreetServiceSubscribe = this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
-      this.streetPlaces.next(res.data.places);
+      this.places=res.data.places;
+      this.sliderPlaces.next(res.data.places);
     })
   }
 

@@ -6,8 +6,7 @@ const webpack = require('webpack');
 
 const CompressionPlugin = require('compression-webpack-plugin');
 //const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const HtmlWebpackPlugin=require('html-webpack-plugin')
 const isProduction = (process.env.NODE_ENV || 'development') === 'production';
 const devtool = process.env.NODE_ENV !== 'test' ? 'source-map' : 'inline-source-map';
 const dest = 'dist';
@@ -34,8 +33,10 @@ const config = {
   entry: {
     angular2: [
       // Angular 2 Deps
-      'zone.js/dist/zone-microtask',
-      'reflect-metadata',
+      // 'core-js',
+      'angular2/bundles/angular2-polyfills',
+      // 'zone.js/dist/zone',
+      // 'reflect-metadata',
       'rxjs',
       'angular2/platform/browser',
       'angular2/common',

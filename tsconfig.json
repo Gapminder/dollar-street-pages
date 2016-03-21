@@ -8,7 +8,7 @@
     "removeComments": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "listFiles": false,
     "noLib": false
   },
@@ -17,6 +17,8 @@
   ],
   "files": [
     "./typings/browser.d.ts",
+    "./node_modules/angular2/typings/browser.d.ts",
+    "./node_modules/zone.js/dist/zone.js.d.ts",
     "./app/index.ts",
     "./app/app.component.ts",
     "./app/app.config.ts",
