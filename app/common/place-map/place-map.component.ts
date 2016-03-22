@@ -19,6 +19,7 @@ export class PlaceMapComponent implements OnInit {
 
   private region:string;
   private markerPosition:any = {};
+  private mapImage:any;
   private element:ElementRef;
 
   constructor(@Inject(ElementRef) element) {
@@ -29,14 +30,29 @@ export class PlaceMapComponent implements OnInit {
     let img = new Image();
     let mapImage = this.isHeader ? this.element.nativeElement.querySelector('.map+.map') :
       this.element.nativeElement.querySelector('.map');
+
     img.onload = () => {
-      this.drawMarker(this.place, mapImage);
+      this.mapImage = mapImage;
+
+      if (!this.isHeader) {
+        this.drawMarker(this.place, this.mapImage);
+      }
     };
+
     img.src = mapImage.src;
   }
 
-  drawMarker(place, mapImage):void {
+  ngOnChanges(changes) {
+    if (!this.isHeader) {
+      return;
+    }
 
+    if (this.mapImage && changes.place.currentValue) {
+      this.drawMarker(changes.place.currentValue, this.mapImage);
+    }
+  }
+
+  drawMarker(place, mapImage):void {
     let stepTop;
     let stepRight;
     let widthOfMap = mapImage.offsetWidth;
