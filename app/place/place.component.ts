@@ -42,9 +42,8 @@ export class PlaceComponent implements OnInit {
   private isShowImagesFamily:boolean = isDesktop;
   public loader:boolean = false;
   public placeStreetServiceSubscribe:any;
-  public scrollWidth:number;
+  public isScroll:boolean;
   public places:any[];
-  private isSafari:boolean = /Apple/.test(window.navigator.vendor);
 
   constructor(@Inject(PlaceStreetService)
               private placeStreetService,
@@ -59,7 +58,7 @@ export class PlaceComponent implements OnInit {
     this.place = this.routeParams.get('place');
     this.image = this.routeParams.get('image');
     this.query = `thing=${this.thing}&place=${this.place}&image=${this.image}`;
-    this.getStreetPlaces(this.query)
+    this.getStreetPlaces(this.query);
   }
 
   ngOnDestroy() {
@@ -67,16 +66,19 @@ export class PlaceComponent implements OnInit {
   }
 
   ngAfterViewChecked() {
-    if (this.isSafari) {
+    if (!this.places || !this.places.length) {
       return;
     }
-    if (this.scrollWidth === document.body.scrollWidth) {
+
+    if (document.body.scrollHeight < document.body.clientHeight) {
       return;
     }
-    this.scrollWidth = document.body.scrollWidth
-    if (this.places && this.places.length) {
+
+    if (!this.isScroll) {
       this.streetPlaces.next(this.places);
     }
+
+    this.isScroll = true;
   }
 
   urlChanged(thing):void {
@@ -98,10 +100,7 @@ export class PlaceComponent implements OnInit {
   getStreetPlaces(thing) {
     this.placeStreetServiceSubscribe = this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
       this.places = res.data.places;
-      if (this.isSafari) {
-        this.streetPlaces.next(this.places);
-      }
-      this.sliderPlaces.next(res.data.places);
+      this.sliderPlaces.next(this.places);
     })
   }
 
