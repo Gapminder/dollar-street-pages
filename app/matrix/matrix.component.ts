@@ -179,7 +179,10 @@ export class MatrixComponent implements OnInit,OnDestroy {
     this.getViewableRows(header.offsetHeight);
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
-    this.places.next(this.placesArr);
+    if (this.clonePlaces) {
+      this.places.next(this.placesArr);
+      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
+    }
   }
 
   getViewableRows(headerHeight:number):void {
@@ -196,10 +199,10 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
     this.visiblePlaces = row;
 
-    let clonePlaces = _.cloneDeep(this.placesArr);
+    this.clonePlaces = _.cloneDeep(this.placesArr);
 
-    if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
-      this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
+    if (this.clonePlaces && this.clonePlaces.length && this.visiblePlaces) {
+      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
     }
   }
 
@@ -225,11 +228,11 @@ export class MatrixComponent implements OnInit,OnDestroy {
       .subscribe((val) => {
         this.places.next(val.places);
         this.placesArr = val.places;
-        let clonePlaces = _.cloneDeep(this.placesArr);
+        this.clonePlaces = _.cloneDeep(this.placesArr);
 
-        if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
-          this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
-        }
+        // if (this.clonePlaces && this.clonePlaces.length && this.visiblePlaces) {
+        //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
+        // }
 
         cb && cb();
 
