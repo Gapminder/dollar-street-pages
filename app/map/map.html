@@ -3,25 +3,23 @@
     <header [query]="query"
             (filter)="urlChanged($event)"></header>
   </div>
-
 </div>
+
 <div id="places" (click)="closeLeftSideBar($event)">
   <div class="container">
     <div class="row">
       <div class="col-md-12 places_header">
-
-
         <div class="col-md-12 mapBox">
           <div class="mapBoxConteiner">
-            <img class="map" src="/app/assets/img/mapa-index.png" alt="">
+            <img class="map-color" src="/app/assets/img/mapa-index.png" alt="">
             <img class="marker"
                  src="/app/assets/img/marker.png" alt="marker"
-                 *ngFor="#place of places;#i=index"
+                 *ngFor="#place of places; #i = index"
                  [style.left.px]="place.left"
                  [style.top.px]="place.top"
-                 (mouseenter)="hoverOnMarker(i,place.country)"
+                 (mouseenter)="hoverOnMarker(i, place.country)"
                  (mouseleave)="unHoverOnMarker($event)"
-                 (click)="clickOnMarker($event,i,place.country)"
+                 (click)="clickOnMarker($event, i, place.country)"
             >
             <!--[routerLink]="['Place', {thing: place.familyImg.thing, image: place.familyImg.imageId}]">-->
             <!--analytics-on="click" analytics-event="go to place page from main (click on the map)"-->
@@ -30,8 +28,7 @@
                  [style.top.px]="hoverPortraitTop"
                  [style.left.px]="hoverPortraitLeft"
                  (mouseenter)="thumbHover()"
-                 (mouseleave)="unHoverOnMarker($event)"
-            >
+                 (mouseleave)="unHoverOnMarker($event)">
               <div class="hover_portrait_box">
                 <img [src]="hoverPlace ? hoverPlace.familyImg.background : ''" alt="">
 
@@ -55,22 +52,24 @@
             </div>
           </div>
         </div>
-        <div *ngFor="#country of countries;#i=index">
+
+        <div *ngFor="#country of countries; #i = index">
           <span class="col-md-2 country-name">{{country}}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="left-side-info" [ngStyle]="{left:lefSideLeft,opacity:lefSideOpacity}">
-    <div class="header" [ngStyle]="{left:lefSideLeft,opacity:lefSideOpacity}">
+  <div class="left-side-info" [ngStyle]="{left: lefSideLeft, opacity: lefSideOpacity}">
+    <div class="header" [ngStyle]="{left: lefSideLeft, opacity: lefSideOpacity}">
       <p>HOUSES IN {{currentCountry}}</p>
       <span (click)="closeLeftSideBar($event)">x</span>
     </div>
+
     <div class="info-box" *ngFor="#place of lefSideCountries"
-         [routerLink]="['Place', {thing: place.familyImg.thing, place:place._id,image: place.familyImg.imageId}]">
-      <div class="family-photo" [ngStyle]="{'background-image':toUrl(place.familyImg.background)}" alt="">
-      </div>
+         [routerLink]="['Place', {thing: place.familyImg.thing, place: place._id, image: place.familyImg.imageId}]">
+      <div class="family-photo" [ngStyle]="{'background-image':toUrl(place.familyImg.background)}" alt=""></div>
+
       <div class="hover_portrait_description">
         <div class="pull-left">
           <span class="name">{{place.family}}s</span>
@@ -82,5 +81,6 @@
       </div>
     </div>
   </div>
+
   <loader [hidden]="loader"></loader>
 </div>
