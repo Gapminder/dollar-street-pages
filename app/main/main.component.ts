@@ -20,20 +20,5 @@ let style = require('./main.component.css');
 })
 
 export class MainComponent {
-  constructor() {
-  console.log('init class')
-  }
-
-  ngOnInit() {
-    console.log(12312312)
-  }
-
-  ngAfterViewInit() {
-    console.log(555555)
-  }
-
-  ngAfterViewInit() {
-    console.log(99999)
-  }
 }
 
