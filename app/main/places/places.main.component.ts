@@ -40,7 +40,7 @@ export class PlacesMainComponent implements OnInit {
   }
 
   ngOnInit():void {
-    this.placeService.getMainPlaces()
+    this.placeServiceSubscribe = this.placeService.getMainPlaces()
       .subscribe((res)=> {
         if (res.err) {
           return res.err;
@@ -51,13 +51,18 @@ export class PlacesMainComponent implements OnInit {
         this.places = res.places;
         this.setMarkersCoord(this.places);
 
-        Observable
+        this.resizeSubscribe = Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
             this.setMarkersCoord(this.places);
           });
       });
+  }
+
+  ngOnDestroy() {
+    this.resizeSubscribe.unsubscribe();
+    this.placeServiceSubscribe.unsubscribe();
   }
 
   setMarkersCoord(places) {

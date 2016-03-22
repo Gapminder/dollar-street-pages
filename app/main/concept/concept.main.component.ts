@@ -37,7 +37,7 @@ export class ConceptMainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.conceptMainService.getMainConceptThings({})
+    this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptThings({})
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
@@ -51,13 +51,17 @@ export class ConceptMainComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    this.conceptMainServiceSubscribe.unsubscribe();
+  }
+
   selectThing(thing:any) {
     this.activeThing = {_id: thing._id, plural: thing.plural, icon: thing.thingUrl};
     this.renderIncomePlot(thing);
   };
 
   renderIncomePlot(thing:any) {
-    this.conceptMainService.getMainConceptImages({thingId: thing._id})
+    this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptImages({thingId: thing._id})
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;

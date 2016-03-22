@@ -28,7 +28,7 @@ export class ThingsMainComponent implements OnInit {
   }
 
   ngOnInit():void {
-    this.thingsMainService.getMainThings({})
+    this.thingsMainServiceSubscribe = this.thingsMainService.getMainThings({})
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
@@ -36,5 +36,9 @@ export class ThingsMainComponent implements OnInit {
 
         this.things = res.things;
       });
+  }
+
+  ngOnDestroy() {
+    this.thingsMainServiceSubscribe.unsubscribe();
   }
 }
