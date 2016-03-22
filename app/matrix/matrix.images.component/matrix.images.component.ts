@@ -6,7 +6,6 @@ import {Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
 import {Angulartics2On} from 'angulartics2/index';
-import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 let tpl = require('./matrix.images.component.html');
 let style = require('./matrix.images.component.css');
@@ -32,18 +31,15 @@ export class MatrixImagesComponent {
   private isDesktop:boolean = isDesktop;
   private oldPlaceId:string;
   private router:Router;
-  private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   private currentPlaces:any = [];
   private element:HTMLElement;
   private placesSubscribe:any;
 
 
   constructor(@Inject(ElementRef) element,
-              @Inject(Router) router,
-              @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
+              @Inject(Router) router) {
     this.element = element.nativeElement;
     this.router = router;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   ngOnInit():any {

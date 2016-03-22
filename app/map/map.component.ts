@@ -121,7 +121,6 @@ export class MapComponent implements OnInit {
     img.onload = () => {
       let width = mapImage.offsetWidth;
       let height = mapImage.offsetHeight;
-      console.log(this.element.nativeElement, mapImage, width, height);
       let greenwich = 0.439 * width;
       let equator = 0.545 * height;
 

@@ -2,7 +2,6 @@ import {Component, OnInit, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
-import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 import {ConceptMainService} from './concept.main.service';
 
@@ -17,7 +16,6 @@ let style = require('./concept.main.component.css');
 })
 
 export class ConceptMainComponent implements OnInit {
-  private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   public conceptMainService:ConceptMainService;
   public activeThing:any = {};
   public amazonS3Url:any = 'http://static.dollarstreet.org.s3.amazonaws.com/';
@@ -30,10 +28,8 @@ export class ConceptMainComponent implements OnInit {
     America: 'america-house'
   };
 
-  constructor(@Inject(ConceptMainService) conceptMainService,
-              @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
+  constructor(@Inject(ConceptMainService) conceptMainService) {
     this.conceptMainService = conceptMainService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   ngOnInit() {

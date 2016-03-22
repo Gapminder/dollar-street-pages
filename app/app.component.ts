@@ -1,41 +1,22 @@
-import {Component} from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { config } from './app.config';
+import {Component, Inject} from 'angular2/core';
+import {RouteConfig, RouterOutlet} from 'angular2/router';
+import {config} from './app.config';
+
+import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 @Component({
   selector: 'consumer-app',
-  template: `
-    <router-outlet></router-outlet>
-  `,
-  styles: [`
-  body {
-  color: #374551;
-}
-
-a {
-  -webkit-transition: all .2s ease-out;
-  -moz-transition: all .2s ease-out;
-  -o-transition: all .2s ease-out;
-  transition: all .2s ease-out;
-  text-decoration: none !important;
-}
-
-a:hover {
-  cursor: pointer;
-}
-`],
-  directives: [ROUTER_DIRECTIVES],
-  providers: [
-    ROUTER_PROVIDERS
-  ]
+  template: '<router-outlet></router-outlet>',
+  directives: [RouterOutlet]
 })
-
 
 @RouteConfig(config.routes)
 
 export class AppComponent {
   type:string = 'app component';
+  private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
 
-  constructor() {
+  constructor(@Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 }
