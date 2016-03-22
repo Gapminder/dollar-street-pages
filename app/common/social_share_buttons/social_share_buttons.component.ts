@@ -20,6 +20,7 @@ export class SocialShareButtons implements OnInit, OnDestroy {
   private urlChangeService:UrlChangeService;
   public url:string;
   public urlEvents:any;
+  public socialShareButtonsServiceSubscribe:any;
 
   constructor(@Inject(SocialShareButtonsService) socialShareButtonsService,
               @Inject(UrlChangeService) urlChangeService,
@@ -42,12 +43,13 @@ export class SocialShareButtons implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.urlEvents.unsubscribe();
+    this.socialShareButtonsServiceSubscribe.unsubscribe();
   }
 
   getUrl() {
     let query = `url=${this.location.path()}`;
 
-    this.socialShareButtonsService.getUrl(query)
+    this.socialShareButtonsServiceSubscribe=this.socialShareButtonsService.getUrl(query)
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;

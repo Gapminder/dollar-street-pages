@@ -1,5 +1,5 @@
 import {Component, Input, Output, Inject, OnInit, EventEmitter} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {RouterLink,Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
 import {HeaderService} from './header.service';
@@ -31,12 +31,15 @@ export class HeaderComponent implements OnInit {
   private defaultThing:any;
   private hoveredPlace:any;
   private headerService:HeaderService;
+  private router:Router;
 
   private headerServiceSubscribe:any;
   private hoverPlaceSubscribe:any;
 
-  constructor(@Inject(HeaderService) headerService) {
+  constructor(@Inject(HeaderService) headerService,
+              @Inject(Router) router) {
     this.headerService = headerService;
+    this.router = router;
   }
 
   ngOnInit():void {
@@ -65,5 +68,8 @@ export class HeaderComponent implements OnInit {
 
   activeThingTransfer(thing) {
     this.activeThing = thing;
+  }
+  goToMain(){
+    this.router.navigate(['Main'])
   }
 }

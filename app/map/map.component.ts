@@ -46,7 +46,9 @@ export class MapComponent implements OnInit {
   private init:boolean;
   private router:Router;
   public loader:boolean = false;
-  
+  public resizeSubscribe:any;
+  public mapServiceSubscribe:any;
+
   constructor(@Inject(MapService) placeService,
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
@@ -78,7 +80,7 @@ export class MapComponent implements OnInit {
       }
       query = `thing=${this.thing._id}`;
     }
-    this.mapService.getMainPlaces(query)
+    this.mapServiceSubscribe=this.mapService.getMainPlaces(query)
       .subscribe((res)=> {
         if (res.err) {
           return res.err;
@@ -92,13 +94,18 @@ export class MapComponent implements OnInit {
         this.countries = res.data.countries;
         this.setMarkersCoord(this.places);
         this.loader = true;
-        Observable
+        this.resizeSubscribe=Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
             this.setMarkersCoord(this.places);
           });
       });
+  }
+
+  ngOnDestroy(){
+    this.mapServiceSubscribe.unsubscribe()
+    this.resizeSubscribe.unsubscribe()
   }
 
   setMarkersCoord(places) {

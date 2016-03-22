@@ -32,12 +32,7 @@ const config = {
 
   entry: {
     angular2: [
-      // 'zone.js/dist/zone',
-      // Angular 2 Deps
       'angular2/bundles/angular2-polyfills',
-      'core-js',
-
-      // 'reflect-metadata',
       'rxjs',
       'angular2/platform/browser',
       'angular2/common',
