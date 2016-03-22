@@ -1,8 +1,13 @@
 <div id="photographer-profile">
   <header>
-    <img [src]="photographer.avatar || '/app/assets/img/photographer-icon.jpg'" alt="">
+    <img [src]="photographer.avatar || '/app/assets/img/photographer-icon.jpg'" alt="avatar">
     <h2>{{photographer.firstName}} {{photographer.lastName}}</h2>
-    <p *ngIf="photographer.company">{{photographer.company.name}}</p>
+    <p *ngIf="photographer.company && photographer.company.name && !photographer.company.link">
+      {{photographer.company.name}}
+    </p>
+    <a target="_blank"
+       *ngIf="photographer.company && photographer.company.name && photographer.company.link"
+       [href]="photographer.company.link">{{photographer.company.name}}</a>
   </header>
 
   <main>
@@ -11,12 +16,8 @@
     <p class="camera"><i class="fa fa-video-camera"></i> Total Videos: <span class="pull-right">{{photographer.video || 0}}</span></p>
   </main>
 
-  <footer>
+  <footer *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
     <h3>On the web</h3>
-
-    <p class="company" *ngIf="photographer.company">
-      <a [href]="'http://' + photographer.company.url" target="_blank">{{photographer.company.url}}</a>
-    </p>
 
     <div  class="social-network-container">
       <a *ngIf="photographer.google"
