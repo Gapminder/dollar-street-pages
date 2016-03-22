@@ -55,7 +55,31 @@ export class StreetComponent implements OnInit,OnDestroy {
     let svg = this.element.querySelector('.street-box svg') as HTMLElement;
     this.street = new StreetDrawService(svg);
 
+    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces)=> {
+
+        this.street.set('chosenPlaces', chosenPlaces)
+        if (this.controllSlider) {
+          this.street.clearAndRedraw(chosenPlaces, true);
+          return;
+        }
+        this.street.clearAndRedraw(chosenPlaces);
+      });
+
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
+        if (!hoverPlace) {
+          return;
+        }
+        this.street.set('hoverPlace', hoverPlace);
+        this.street.clearAndRedraw(this.street.chosenPlaces);
+        this.street.drawHoverHouse(hoverPlace);
+      });
+
+    this.hoverHeaderSubscribe = this.hoverHeader && this.hoverHeader.subscribe(()=> {
+        this.thumbUnhover()
+      });
+
     this.placesSubscribe = this.places && this.places.subscribe((places)=> {
+
         this.street
           .clearSvg()
           .init()
@@ -90,28 +114,6 @@ export class StreetComponent implements OnInit,OnDestroy {
           .set('chosenPlaces', this.street.chosenPlaces)
           .clearAndRedraw(this.street.chosenPlaces);
       });
-
-    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces)=> {
-        this.street.set('chosenPlaces', chosenPlaces)
-        if (this.controllSlider) {
-          this.street.clearAndRedraw(chosenPlaces, true);
-          return;
-        }
-        this.street.clearAndRedraw(chosenPlaces);
-      });
-
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
-        if (!hoverPlace) {
-          return;
-        }
-        this.street.set('hoverPlace', hoverPlace);
-        this.street.clearAndRedraw(this.street.chosenPlaces);
-        this.street.drawHoverHouse(hoverPlace);
-      });
-
-    this.hoverHeaderSubscribe = this.hoverHeader && this.hoverHeader.subscribe(()=> {
-        this.thumbUnhover()
-      })
   }
 
   onStreet(e) {

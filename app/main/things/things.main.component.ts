@@ -2,7 +2,6 @@ import {Component, OnInit, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
-import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 import {ThingsMainService} from './things.main.service';
 
@@ -17,18 +16,15 @@ let style = require('./things.main.component.css');
 })
 
 export class ThingsMainComponent implements OnInit {
-  private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   public thingsMainService:ThingsMainService;
   public things:any[] = [];
 
-  constructor(@Inject(ThingsMainService) thingsMainService,
-              @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
+  constructor(@Inject(ThingsMainService) thingsMainService) {
     this.thingsMainService = thingsMainService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   ngOnInit():void {
-    this.thingsMainService.getMainThings({})
+    this.thingsMainServiceSubscribe = this.thingsMainService.getMainThings({})
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
@@ -36,5 +32,9 @@ export class ThingsMainComponent implements OnInit {
 
         this.things = res.things;
       });
+  }
+
+  ngOnDestroy() {
+    this.thingsMainServiceSubscribe.unsubscribe();
   }
 }

@@ -19,13 +19,14 @@ export class HeaderWithoutSearchComponent implements OnInit {
   private title:string;
   private defaultThing:any;
   private headerService:HeaderService;
+  private headerServiceSibscribe:any;
 
   constructor(@Inject(HeaderService) headerService) {
     this.headerService = headerService;
   }
 
   ngOnInit():void {
-    this.headerService.getDefaultThing()
+    this.headerServiceSibscribe=this.headerService.getDefaultThing()
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
@@ -33,5 +34,8 @@ export class HeaderWithoutSearchComponent implements OnInit {
 
         this.defaultThing = res.data;
       });
+  }
+  ngOnDestroy():void{
+    this.headerServiceSibscribe.unsubscribe()
   }
 }

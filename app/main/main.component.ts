@@ -16,8 +16,9 @@ let style = require('./main.component.css');
   template: tpl,
   styles: [style],
   directives: [HeaderMainComponent, FooterComponent, AboutMainComponent,
-    ComparisonMainComponent, PlacesMainComponent, ThingsMainComponent, ConceptMainComponent, LoaderComponent]
+    ComparisonMainComponent, PlacesMainComponent, ThingsMainComponent, ConceptMainComponent, LoaderComponent],
 })
 
 export class MainComponent {
 }
+

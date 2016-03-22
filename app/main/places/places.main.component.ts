@@ -3,7 +3,6 @@ import {RouterLink} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
 import {Angulartics2On} from 'angulartics2/index';
-import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 import {MainPlacesService} from './main.places.service';
 
@@ -21,7 +20,6 @@ const isDesktop = device.desktop();
 })
 
 export class PlacesMainComponent implements OnInit {
-  private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   private placeService:MainPlacesService;
   private places:any[] = [];
   private element:any;
@@ -32,15 +30,13 @@ export class PlacesMainComponent implements OnInit {
   private hoverPortraitLeft:any;
 
   constructor(@Inject(MainPlacesService) placeService,
-              @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics,
               @Inject(ElementRef) element) {
     this.placeService = placeService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.element = element;
   }
 
   ngOnInit():void {
-    this.placeService.getMainPlaces()
+    this.placeServiceSubscribe = this.placeService.getMainPlaces()
       .subscribe((res)=> {
         if (res.err) {
           return res.err;
@@ -51,13 +47,18 @@ export class PlacesMainComponent implements OnInit {
         this.places = res.places;
         this.setMarkersCoord(this.places);
 
-        Observable
+        this.resizeSubscribe = Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
             this.setMarkersCoord(this.places);
           });
       });
+  }
+
+  ngOnDestroy() {
+    this.resizeSubscribe.unsubscribe();
+    this.placeServiceSubscribe.unsubscribe();
   }
 
   setMarkersCoord(places) {

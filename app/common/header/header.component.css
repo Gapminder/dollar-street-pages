@@ -35,6 +35,10 @@ place-map {
   margin-top: 15px;
 }
 
+place-map[hidden] {
+  display: none;
+}
+
 @media (max-width: 600px) {
   .header-content .icon-container img {
     width: 32px;

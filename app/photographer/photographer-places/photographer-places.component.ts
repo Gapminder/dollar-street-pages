@@ -2,7 +2,6 @@ import {Component, OnInit, Input Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
-import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 import {PhotographerPlacesService} from './photographer-places.service';
 import {LoaderComponent} from '../../common/loader/loader.component';
@@ -21,16 +20,13 @@ export class PhotographerPlacesComponent implements OnInit {
   @Input()
   private photographerId:string;
 
-  private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
   private countries:any = [];
   private familyThingId:string;
   private photographerPlacesService:PhotographerPlacesService;
   public loader:boolean = false;
 
-  constructor(@Inject(PhotographerPlacesService) photographerPlacesService,
-              @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
+  constructor(@Inject(PhotographerPlacesService) photographerPlacesService) {
     this.photographerPlacesService = photographerPlacesService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   ngOnInit():void {
