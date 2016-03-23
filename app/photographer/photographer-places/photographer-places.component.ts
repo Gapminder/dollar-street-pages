@@ -1,4 +1,4 @@
-import {Component, OnInit, Input Inject} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Input Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
@@ -16,7 +16,7 @@ let style = require('./photographer-places.css');
   directives: [RouterLink, Angulartics2On, LoaderComponent]
 })
 
-export class PhotographerPlacesComponent implements OnInit {
+export class PhotographerPlacesComponent implements OnInit,OnDestroy {
   @Input()
   private photographerId:string;
 
@@ -24,13 +24,14 @@ export class PhotographerPlacesComponent implements OnInit {
   private familyThingId:string;
   private photographerPlacesService:PhotographerPlacesService;
   public loader:boolean = false;
+  public photographerPlacesServiceSubscribe:any;
 
   constructor(@Inject(PhotographerPlacesService) photographerPlacesService) {
     this.photographerPlacesService = photographerPlacesService;
   }
 
   ngOnInit():void {
-    this.photographerPlacesService.getPhotographerPlaces(`id=${this.photographerId}`)
+    this.photographerPlacesServiceSubscribe=this.photographerPlacesService.getPhotographerPlaces(`id=${this.photographerId}`)
       .subscribe((res:any) => {
         if (res.err) {
           return res.err;
@@ -40,5 +41,8 @@ export class PhotographerPlacesComponent implements OnInit {
         this.familyThingId = res.data.familyThingId;
         this.loader = true;
       });
+  }
+  ngOnDestroy(){
+    this.photographerPlacesServiceSubscribe.unsubscribe();
   }
 }

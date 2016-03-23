@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, EventEmitter, Output, Input} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 import {NgStyle} from 'angular2/common';
@@ -21,7 +21,7 @@ let proportion = 2.24;
   directives: [PlaceMapComponent, RouterLink, NgStyle]
 })
 
-export class SliderPlaceComponent implements OnInit {
+export class SliderPlaceComponent implements OnInit,OnDestroy {
   @Input('controllSlider')
   private controllSlider:Observable<any>;
   @Input('places')
@@ -45,6 +45,10 @@ export class SliderPlaceComponent implements OnInit {
   private arrowDisabled:boolean;
   private chosenPlace:any;
   private sliderHeight:any = {height: 0};
+  private controllSliderSubscribe:any;
+  private streetPlacesSubscribe:any;
+  private resizeSubscibe:any;
+  private keyUpSubscribe:any;
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(Location) location) {
@@ -53,7 +57,7 @@ export class SliderPlaceComponent implements OnInit {
   }
 
   protected ngOnInit():void {
-    this.streetPlaces.subscribe((places)=> {
+    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places)=> {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
       this.place = this.routeParams.get('place');
@@ -61,27 +65,40 @@ export class SliderPlaceComponent implements OnInit {
       this.init();
     });
 
-    document.addEventListener('keyup', (e) => {
-      if (this.popIsOpen) {
-        return;
-      }
 
-      if (e.keyCode === 37) {
-        this.slidePrev();
-      }
+    this.keyUpSubscribe = Observable.fromEvent(document, 'keyup')
+      .subscribe((e)=> {
+        if (this.popIsOpen) {
+          return;
+        }
 
-      if (e.keyCode === 39) {
-        this.slideNext();
-      }
-    });
+        if (e.keyCode === 37) {
+          this.slidePrev();
+        }
 
-    this.controllSlider.subscribe((i) => {
+        if (e.keyCode === 39) {
+          this.slideNext();
+        }
+      })
+
+    this.controllSliderSubscribe = this.controllSlider.subscribe((i) => {
       this.init(i);
     });
 
-    window.addEventListener('resize', _.debounce(() => {
-      this.resizeSlider.call(this);
-    }, 300));
+
+    this.resizeSubscibe = Observable.fromEvent(window, 'resize').subscribe(()=> {
+      _.debounce(() => {
+        this.resizeSlider()
+      }, 300);
+    })
+  }
+
+
+  ngOnDestroy() {
+    this.controllSliderSubscribe.unsubscribe();
+    this.streetPlacesSubscribe.unsubscribe();
+    this.resizeSubscibe.unsubscribe();
+    this.keyUpSubscribe.unsubscribe();
   }
 
   protected init(position?:any) {

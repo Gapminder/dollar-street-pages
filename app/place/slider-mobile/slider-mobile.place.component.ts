@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, Inject, EventEmitter, ElementRef} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, ElementRef} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
@@ -16,7 +16,7 @@ let style = require('./slider-mobile.place.component.css');
   directives: [PlaceMapComponent, RouterLink]
 })
 
-export class SliderMobilePlaceComponent implements OnInit {
+export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
   @Input('places')
   private streetPlaces:Observable<any>;
   @Input('activeThing')
@@ -38,6 +38,9 @@ export class SliderMobilePlaceComponent implements OnInit {
   private slideWidth:number = window.innerWidth;
   private sliderContainer:any;
   private element:ElementRef;
+  private streetPlacesSubscribe:any;
+  private resizeSubscribe:any;
+  
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(ElementRef) elementRef,
@@ -48,7 +51,7 @@ export class SliderMobilePlaceComponent implements OnInit {
   }
 
   protected ngOnInit():void {
-    this.streetPlaces.subscribe((places)=> {
+    this.streetPlacesSubscribe=this.streetPlaces.subscribe((places)=> {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
       this.allPlaces = places;
@@ -59,6 +62,11 @@ export class SliderMobilePlaceComponent implements OnInit {
     let sliderContainer = this.element.nativeElement.querySelector('#slider-mobile-container');
 
     this.swipe(sliderContainer);
+  }
+  
+  ngOnDestroy(){
+    this.streetPlacesSubscribe.unsubscribe();
+    this.resizeSubscribe.unsubscribe();
   }
 
   protected init(position?:any) {
@@ -182,7 +190,7 @@ export class SliderMobilePlaceComponent implements OnInit {
     let touchStart = Observable.fromEvent(sliderContainer, 'touchstart');
     let touchEnd = Observable.fromEvent(sliderContainer, 'touchend');
 
-    Observable.zip(
+    this.resizeSubscribe=Observable.zip(
       touchStart,
       touchEnd,
       function (touchStart, touchEnd) {

@@ -1,4 +1,4 @@
-import {Component, Input, Output, Inject, OnInit, EventEmitter} from 'angular2/core';
+import {Component, Input, Output, Inject, OnInit,OnDestroy, EventEmitter} from 'angular2/core';
 import {RouterLink,Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
@@ -17,7 +17,7 @@ let style = require('./header.component.css');
   directives: [SearchComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit,OnDestroy {
   @Input()
   private query:string;
   @Input('hoverPlace')

@@ -51,6 +51,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
   private query:string;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
+  private clonePlaces:any[];
   public loader:boolean = false;
 
   public matrixServiceSubscrib:any;
@@ -229,13 +230,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
         this.places.next(val.places);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.placesArr);
-
-        // if (this.clonePlaces && this.clonePlaces.length && this.visiblePlaces) {
-        //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
-        // }
-
         cb && cb();
-
         this.loader = true;
       })
   }

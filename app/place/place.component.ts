@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from 'angular2/core';
+import {Component, Inject, OnInit,OnDestroy} from 'angular2/core';
 import {RouteParams, RouterLink} from 'angular2/router';
 import {Subject} from "rxjs/Subject";
 
@@ -25,7 +25,7 @@ let isDesktop = device.desktop();
   directives: [RouterLink, HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent, LoaderComponent]
 })
 
-export class PlaceComponent implements OnInit {
+export class PlaceComponent implements OnInit,OnDestroy {
   private streetPlaces:Subject<any> = new Subject();
   private sliderPlaces:Subject<any> = new Subject();
   private chosenPlaces:Subject<any> = new Subject();
