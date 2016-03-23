@@ -67,6 +67,7 @@ export class StreetComponent implements OnInit,OnDestroy {
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
         if (!hoverPlace) {
+          this.street.removeHouses('hover')
           return;
         }
         this.street.set('hoverPlace', hoverPlace);

@@ -53,7 +53,6 @@ export class MatrixImagesComponent implements OnInit,OnDestroy {
   }
 
   hoverImage(event, place):void {
-
     this.hoverPlace.emit(place);
     if (isDesktop) {
       return
