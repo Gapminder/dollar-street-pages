@@ -5,8 +5,8 @@ import {Angulartics2On} from 'angulartics2/index';
 
 import {ThingsMainService} from './things.main.service';
 
-let tpl = require('./things.main.component.html');
-let style = require('./things.main.component.css');
+let tpl = require('./things.main.template.html');
+let style = require('./things.main.css');
 
 @Component({
   selector: 'things-main',

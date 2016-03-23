@@ -1,8 +1,8 @@
 import { Component, OnInit } from 'angular2/core';
-import {SocialShareButtons} from '../social_share_buttons/social_share_buttons.component';
+import {SocialShareButtons} from '../social_share_buttons/social-share-buttons.component.ts';
 
-let tpl = require('./footer.component.html');
-let style = require('./footer.component.css');
+let tpl = require('./footer.template.html');
+let style = require('./footer.css');
 
 @Component({
   selector: 'footer',

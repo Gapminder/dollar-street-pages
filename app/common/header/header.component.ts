@@ -7,8 +7,8 @@ import {MainMenuComponent} from '../menu/menu.component';
 import {SearchComponent} from '../search/search.component';
 import {PlaceMapComponent} from '../place-map/place-map.component';
 
-let tpl = require('./header.component.html');
-let style = require('./header.component.css');
+let tpl = require('./header.template.html');
+let style = require('./header.css');
 
 @Component({
   selector: 'header',

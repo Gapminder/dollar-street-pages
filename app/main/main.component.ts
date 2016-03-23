@@ -8,8 +8,8 @@ import {FooterComponent} from '../common/footer/footer.component';
 import {PlacesMainComponent} from './places/places.main.component';
 import {LoaderComponent} from '../common/loader/loader.component';
 
-let tpl = require('./main.component.html');
-let style = require('./main.component.css');
+let tpl = require('./main.template.html');
+let style = require('./main.css');
 
 @Component({
   selector: 'main',

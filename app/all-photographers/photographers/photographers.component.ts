@@ -4,12 +4,12 @@ import {RouterLink} from 'angular2/router';
 import {Angulartics2On} from 'angulartics2/index';
 
 import {PhotographersService} from './photographers.service';
-import {PhotographersFilter} from './photographersFilter.pipe';
+import {PhotographersFilter} from './photographers-filter.pipe.ts';
 
 import {LoaderComponent} from '../../common/loader/loader.component';
 
-let tpl = require('./photographers.component.html');
-let style = require('./photographers.component.css');
+let tpl = require('./photographers.template.html');
+let style = require('./photographers.css');
 
 @Component({
   selector: 'photographers',

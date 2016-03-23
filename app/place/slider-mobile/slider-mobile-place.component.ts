@@ -1,29 +1,22 @@
-import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, ElementRef} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
-import {NgStyle} from 'angular2/common';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
 let $ = require('jquery');
 
-let tpl = require('./slider.place.component.html');
-let style = require('./slider.place.component.css');
-
-let sliderWidth = window.innerWidth - 150 - (window.innerWidth - document.body.offsetWidth);
-let startPosition = sliderWidth;
-let proportion = 2.24;
+let tpl = require('./slider-mobile-place.template.html');
+let style = require('./slider-mobile-place.css');
 
 @Component({
   selector: 'slider-place',
   template: tpl,
   styles: [style],
-  directives: [PlaceMapComponent, RouterLink, NgStyle]
+  directives: [PlaceMapComponent, RouterLink]
 })
 
-export class SliderPlaceComponent implements OnInit,OnDestroy {
-  @Input('controllSlider')
-  private controllSlider:Observable<any>;
+export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
   @Input('places')
   private streetPlaces:Observable<any>;
   @Input('activeThing')
@@ -37,74 +30,49 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
   public position:any;
   public thing:any;
   public image:any;
-  public place:any;
-  public fancyBoxImage:any;
   private routeParams:RouteParams;
   private location:Location;
-  private popIsOpen:boolean;
   private arrowDisabled:boolean;
   private chosenPlace:any;
-  private sliderHeight:any = {height: 0};
-  private controllSliderSubscribe:any;
+  private showInfoFamily:boolean = false;
+  private slideWidth:number = window.innerWidth;
+  private sliderContainer:any;
+  private element:ElementRef;
   private streetPlacesSubscribe:any;
-  private resizeSubscibe:any;
-  private keyUpSubscribe:any;
+  private resizeSubscribe:any;
+  
 
   constructor(@Inject(RouteParams) routeParams,
+              @Inject(ElementRef) elementRef,
               @Inject(Location) location) {
     this.routeParams = routeParams;
+    this.element = elementRef;
     this.location = location;
   }
 
   protected ngOnInit():void {
-    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places)=> {
+    this.streetPlacesSubscribe=this.streetPlaces.subscribe((places)=> {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
-      this.place = this.routeParams.get('place');
       this.allPlaces = places;
+      this.sliderContainer = $('.slider-mobile-content .slider-mobile');
       this.init();
     });
 
+    let sliderContainer = this.element.nativeElement.querySelector('#slider-mobile-container');
 
-    this.keyUpSubscribe = Observable.fromEvent(document, 'keyup')
-      .subscribe((e)=> {
-        if (this.popIsOpen) {
-          return;
-        }
-
-        if (e.keyCode === 37) {
-          this.slidePrev();
-        }
-
-        if (e.keyCode === 39) {
-          this.slideNext();
-        }
-      })
-
-    this.controllSliderSubscribe = this.controllSlider.subscribe((i) => {
-      this.init(i);
-    });
-
-
-    this.resizeSubscibe = Observable.fromEvent(window, 'resize').subscribe(()=> {
-      _.debounce(() => {
-        this.resizeSlider()
-      }, 300);
-    })
+    this.swipe(sliderContainer);
   }
-
-
-  ngOnDestroy() {
-    this.controllSliderSubscribe.unsubscribe();
+  
+  ngOnDestroy(){
     this.streetPlacesSubscribe.unsubscribe();
-    this.resizeSubscibe.unsubscribe();
-    this.keyUpSubscribe.unsubscribe();
+    this.resizeSubscribe.unsubscribe();
   }
 
   protected init(position?:any) {
     this.position = this.allPlaces.map(function (place:any) {
-      return place._id;
-    }).indexOf(this.place);
+      return place.image;
+    }).indexOf(this.image);
 
     if (position || position === 0) {
       this.position = position;
@@ -124,39 +92,13 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     let img = new Image();
 
     img.onload = () => {
-      this.resizeSlider();
+      let sliderHeight = $('.slider-mobile-slide:nth-child(2) img').height();
+      this.sliderContainer.css({height: sliderHeight});
+
       this.currentPlace.emit([this.chosenPlace]);
     };
 
     img.src = startImage.background;
-  }
-
-  protected resizeSlider(event?:any) {
-    let windowInnerWidth = event ? event.currentTarget.innerWidth : window.innerWidth;
-    let windowInnerHeight = event ? event.currentTarget.innerHeight : window.innerHeight;
-
-    sliderWidth = windowInnerWidth - 150;
-    startPosition = sliderWidth;
-
-    $('.slider-container .slider-content').css({
-      '-webkit-transform': '',
-      '-moz-transform': '',
-      '-ms-transform': '',
-      '-o-transform': '',
-      transform: ''
-    });
-
-    let height = sliderWidth / proportion;
-
-    if (sliderWidth / proportion > windowInnerHeight - 225) {
-      height = windowInnerHeight - 225;
-    }
-
-    height = height < 400 ? 400 : height;
-
-    this.sliderHeight.height = height + 'px';
-
-    setImageWidth(height);
   }
 
   protected slidePrev() {
@@ -165,6 +107,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     }
 
     this.arrowDisabled = true;
+    this.showInfoFamily = false;
 
     if (this.position === 0) {
       this.position = this.allPlaces.length - 1;
@@ -178,8 +121,10 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
 
     let newPrevImage = new Image();
 
-    newPrevImage.onload = function () {
-      setDescriptionsWidth(1);
+    newPrevImage.onload = () => {
+      let sliderHeight = $('.slider-mobile-slide:nth-child(1) img').height();
+      this.sliderContainer.css({height: sliderHeight});
+
       animationSlider(shiftPrev, prevSlide);
     };
 
@@ -192,6 +137,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     }
 
     this.arrowDisabled = true;
+    this.showInfoFamily = false;
 
     if (this.allPlaces.length - 1 === this.position) {
       this.position = 0;
@@ -200,11 +146,13 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     }
 
     let nextSlide = nextSlideActionAfterAnimation.apply(this, [this.allPlaces, this.images, this.position, this.cb]);
-    let shiftNext = sliderWidth * 2;
+    let shiftNext = this.slideWidth * 2;
     let newNextImage = new Image();
 
-    newNextImage.onload = function () {
-      setDescriptionsWidth(3);
+    newNextImage.onload = () => {
+      let sliderHeight = $('.slider-mobile-slide:nth-child(3) img').height();
+      this.sliderContainer.css({height: sliderHeight});
+
       animationSlider(shiftNext, nextSlide);
     };
 
@@ -217,14 +165,14 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
       return;
     }
 
-    $('.slider-container .slider-content')
+    $('.slider-mobile-wrapper .slider-mobile')
       .removeClass('active')
       .css({
-        '-webkit-transform': 'translateX(-' + startPosition + 'px)',
-        '-moz-transform': 'translateX(-' + startPosition + 'px)',
-        '-ms-transform': 'translateX(-' + startPosition + 'px)',
-        '-o-transform': 'translateX(-' + startPosition + 'px)',
-        transform: 'translateX(-' + startPosition + 'px)'
+        '-webkit-transform': 'translateX(-' + this.slideWidth + 'px)',
+        '-moz-transform': 'translateX(-' + this.slideWidth + 'px)',
+        '-ms-transform': 'translateX(-' + this.slideWidth + 'px)',
+        '-o-transform': 'translateX(-' + this.slideWidth + 'px)',
+        transform: 'translateX(-' + this.slideWidth + 'px)'
       });
 
     this.chosenPlace = this.allPlaces[this.position];
@@ -234,15 +182,39 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     this.currentPlace.emit([this.chosenPlace]);
   };
 
+  swipe(sliderContainer:HTMLElement):void {
+    if (!sliderContainer) {
+      return;
+    }
 
-  protected openPopUp(image) {
-    this.popIsOpen = true;
-    this.fancyBoxImage = 'url("' + image.background.replace('desktops', 'original') + '")';
-  };
+    let touchStart = Observable.fromEvent(sliderContainer, 'touchstart');
+    let touchEnd = Observable.fromEvent(sliderContainer, 'touchend');
 
-  protected fancyBoxClose() {
-    this.popIsOpen = false;
-    this.fancyBoxImage = null;
+    this.resizeSubscribe=Observable.zip(
+      touchStart,
+      touchEnd,
+      function (touchStart, touchEnd) {
+        let startX = touchStart.touches[0].clientX;
+        let endX = touchEnd.changedTouches[0].clientX;
+
+        return {startX, endX};
+      }
+    ).subscribe((results) => {
+      let startX = results.startX;
+      let endX = results.endX;
+
+      let difference = startX > endX ? startX - endX : endX - startX;
+
+      if (20 > difference) {
+        return;
+      }
+
+      if (startX > endX) {
+        this.slideNext();
+      } else {
+        this.slidePrev();
+      }
+    });
   }
 }
 
@@ -289,7 +261,7 @@ function nextSlideActionAfterAnimation(places, images, position, cb) {
 }
 
 function animationSlider(shiftLeft, endAnimation) {
-  $('.slider-container .slider-content')
+  $('.slider-mobile-wrapper .slider-mobile')
     .addClass('active')
     .css({
       '-webkit-transform': 'translate3d(-' + shiftLeft + 'px, 0, 0)',
@@ -323,26 +295,4 @@ function selectImagesForSlider(places, position) {
   }
 
   return arr;
-}
-
-function setImageWidth(sliderHeight) {
-  let sliderSidebarImages = $('.slide .slide-content .slide-sidebar img');
-  let sliderImages = $('.slide .slide-content .image .slide-img');
-
-  sliderSidebarImages.each(function () {
-    $(this).width((sliderHeight - parseFloat($(this).css('margin-top'))) / 2);
-  });
-
-  sliderImages.each(function () {
-    $(this).width(this.naturalWidth / (this.naturalHeight / sliderHeight));
-  });
-
-  setDescriptionsWidth(2);
-}
-
-function setDescriptionsWidth(slideNumber) {
-  let slide = $('.slider-content .slide:nth-child(' + slideNumber + ')');
-  let slideWidth = slide.find('.slide-wrapper').width();
-
-  slide.find('.slide-description').width(slideWidth);
 }

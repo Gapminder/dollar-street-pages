@@ -7,8 +7,8 @@ import {Observable} from "rxjs/Observable";
 
 import {Angulartics2On} from 'angulartics2/index';
 
-let tpl = require('./matrix.images.component.html');
-let style = require('./matrix.images.component.css');
+let tpl = require('./matrix-images.template.html');
+let style = require('./matrix-images.css');
 
 @Component({
   selector: 'matrix-images',

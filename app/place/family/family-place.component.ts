@@ -2,10 +2,10 @@ import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
-import {FamilyPlaceService} from './family.place.service';
+import {FamilyPlaceService} from './family-place.service.ts';
 
-let tpl = require('./family.place.component.html');
-let style = require('./family.place.component.css');
+let tpl = require('./family-place.template.html');
+let style = require('./family-place.css');
 
 @Component({
   selector: 'family-place',

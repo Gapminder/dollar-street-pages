@@ -4,8 +4,8 @@ import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header
 import {PhotographersComponent} from './photographers/photographers.component';
 import {FooterComponent} from '../common/footer/footer.component';
 
-let tpl = require('./all-photographers.component.html');
-let style = require('./all-photographers.component.css');
+let tpl = require('./all-photographers.template.html');
+let style = require('./all-photographers.css');
 
 @Component({
   selector: 'photographers',

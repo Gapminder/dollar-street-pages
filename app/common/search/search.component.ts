@@ -3,19 +3,19 @@ import {Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
 import {SearchService} from './search.service';
-import {SearchFilter} from './thingFilter.pipe';
+import {SearchFilter} from './thing-filter.pipe.ts';
 
 let tpl = '';
-let desktopStyle = require('./search.component.css');
-let mobileStyle = require('./search-mobile.component.css');
+let desktopStyle = require('./search.css');
+let mobileStyle = require('./search-mobile.css');
 
 let device = require('device.js')();
 const isDesktop = device.desktop();
 
 if (isDesktop) {
-  tpl = require('./search.component.html');
+  tpl = require('./search.template.html');
 } else {
-  tpl = require('./search-mobile.component.html');
+  tpl = require('./search-mobile.template.html');
 }
 
 @Component({

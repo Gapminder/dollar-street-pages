@@ -6,8 +6,8 @@ import {Angulartics2On} from 'angulartics2/index';
 
 import {MainPlacesService} from './main.places.service';
 
-let tpl = require('./places.main.component.html');
-let style = require('./places.main.component.css');
+let tpl = require('./places.main.template.html');
+let style = require('./places.main.css');
 
 let device = require('device.js')();
 const isDesktop = device.desktop();
