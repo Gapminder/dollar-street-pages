@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Inject, ElementRef} from 'angular2/core';
+import {Component, OnInit, Input, Inject, ElementRef, NgZone} from 'angular2/core';
 import {NgStyle} from 'angular2/common';
 
 let tpl = require('./place-map.template.html');
@@ -21,35 +21,33 @@ export class PlaceMapComponent implements OnInit {
   private markerPosition:any = {};
   private mapImage:any;
   private element:ElementRef;
+  private zone:NgZone;
 
-  constructor(@Inject(ElementRef) element) {
+  constructor(@Inject(ElementRef) element,
+              @Inject(NgZone) zone) {
     this.element = element;
+    this.zone = zone;
   }
 
   ngOnInit():void {
     let img = new Image();
-    let mapImage = this.isHeader ? this.element.nativeElement.querySelector('.map+.map') :
+    this.mapImage = this.isHeader ? this.element.nativeElement.querySelector('.map+.map') :
       this.element.nativeElement.querySelector('.map');
 
     img.onload = () => {
-      this.mapImage = mapImage;
-
-      if (!this.isHeader) {
-        this.drawMarker(this.place, this.mapImage);
-      }
+      this.zone.run(()=> {
+        this.drawMarker(this.place, this.mapImage)
+      })
     };
 
-    img.src = mapImage.src;
+    img.src = this.mapImage.src;
   }
 
   ngOnChanges(changes) {
     if (!this.isHeader) {
       return;
     }
-
-    if (this.mapImage && changes.place.currentValue) {
-      this.drawMarker(changes.place.currentValue, this.mapImage);
-    }
+    this.place = changes.place.currentValue;
   }
 
   drawMarker(place, mapImage):void {
