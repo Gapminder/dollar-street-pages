@@ -7,8 +7,8 @@ import {MapService} from './map.service.ts';
 import {HeaderComponent} from '../common/header/header.component';
 import {LoaderComponent} from '../common/loader/loader.component';
 
-let tpl = require('./map.html');
-let style = require('./map.component.css');
+let tpl = require('./map.template.html');
+let style = require('./map.css');
 
 let device = require('device.js')();
 const isDesktop = device.desktop();

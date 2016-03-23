@@ -1,7 +1,7 @@
 import {Component} from 'angular2/core';
 
-let tpl = require('./loader.component.html');
-let style = require('./loader.component.css');
+let tpl = require('./loader.template.html');
+let style = require('./loader.css');
 
 @Component({
   selector: 'loader',

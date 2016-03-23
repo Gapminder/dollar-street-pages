@@ -7,8 +7,8 @@ import {Subject} from "rxjs/Subject";
 let device = require('device.js')();
 const isDesktop = device.desktop();
 
-let tpl = require('./street.component.html');
-let style = require('./street.component.css');
+let tpl = require('./street.template.html');
+let style = require('./street.css');
 
 @Component({
   selector: 'street',

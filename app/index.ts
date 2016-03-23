@@ -10,7 +10,7 @@ import {HeaderService} from './common/header/header.service';
 import {SearchService} from './common/search/search.service';
 import {MainPlacesService} from './main/places/main.places.service.ts';
 import {ThingsMainService} from './main/things/things.main.service';
-import {PlaceStreetService} from './place/place.street.service';
+import {PlaceStreetService} from './place/place-street.service.ts';
 import {ConceptMainService} from './main/concept/concept.main.service';
 import {MapService} from './map/map.service';
 import {UrlChangeService} from './common/url-change/url-change.service';

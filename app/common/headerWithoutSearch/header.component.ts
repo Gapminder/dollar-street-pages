@@ -4,8 +4,8 @@ import {RouterLink} from 'angular2/router';
 import {HeaderService} from '../header/header.service';
 import {MainMenuComponent} from '../menu/menu.component';
 
-let tpl = require('./header.component.html');
-let style = require('./header.component.css');
+let tpl = require('./header.template.html');
+let style = require('./header.css');
 
 @Component({
   selector: 'header',

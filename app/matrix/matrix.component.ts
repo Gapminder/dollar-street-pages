@@ -3,7 +3,7 @@ import {RouteParams} from 'angular2/router';
 import {Subject} from "rxjs/Subject";
 
 import {MatrixService} from './matrix.service';
-import {MatrixImagesComponent} from './matrix.images.component/matrix.images.component';
+import {MatrixImagesComponent} from './matrix-images/matrix-images.component';
 import {StreetComponent} from '../common/street/street.component';
 import {FooterComponent} from '../common/footer/footer.component';
 import {HeaderComponent} from '../common/header/header.component';
@@ -13,8 +13,8 @@ import {LoaderComponent} from '../common/loader/loader.component';
 let _ = require('lodash');
 let device = require('device.js')();
 
-let tpl = require('./matrix.component.html');
-let style = require('./matrix.component.css');
+let tpl = require('./matrix.template.html');
+let style = require('./matrix.css');
 
 @Component({
   selector: 'matrix',

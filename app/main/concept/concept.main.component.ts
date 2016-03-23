@@ -5,8 +5,8 @@ import {Angulartics2On} from 'angulartics2/index';
 
 import {ConceptMainService} from './concept.main.service';
 
-let tpl = require('./concept.main.component.html');
-let style = require('./concept.main.component.css');
+let tpl = require('./concept.main.template.html');
+let style = require('./concept.main.css');
 
 @Component({
   selector: 'concept-main',

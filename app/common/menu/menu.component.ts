@@ -1,10 +1,10 @@
 import {Component, OnChanges, Input, Inject} from 'angular2/core';
 import {Router, RouterLink} from 'angular2/router';
 
-import {SocialShareButtons} from '../social_share_buttons/social_share_buttons.component';
+import {SocialShareButtons} from '../social_share_buttons/social-share-buttons.component.ts';
 
-let tpl = require('./menu.component.html');
-let style = require('./menu.component.css');
+let tpl = require('./menu.template.html');
+let style = require('./menu.css');
 
 @Component({
   selector: 'main-menu',

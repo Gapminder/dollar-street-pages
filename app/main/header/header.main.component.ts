@@ -1,10 +1,10 @@
 import {Component, Inject} from 'angular2/core';
 
-import {SocialShareButtons} from '../../common/social_share_buttons/social_share_buttons.component';
+import {SocialShareButtons} from '../../common/social_share_buttons/social-share-buttons.component.ts';
 import {UrlChangeService} from '../../common/url-change/url-change.service';
 
-let tpl = require('./header.main.component.html');
-let style = require('./header.main.component.css');
+let tpl = require('./header.main.template.html');
+let style = require('./header.main.css');
 
 @Component({
   selector: 'header-main',

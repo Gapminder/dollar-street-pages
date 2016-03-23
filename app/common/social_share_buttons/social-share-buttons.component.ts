@@ -2,10 +2,10 @@ import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
 import {Location} from 'angular2/router';
 
 import {UrlChangeService} from '../url-change/url-change.service';
-import {SocialShareButtonsService} from './social_share_buttons.service';
+import {SocialShareButtonsService} from './social-share-buttons.service.ts';
 
-let tpl = require('./social_share_buttons.component.html');
-let style = require('./social_share_buttons.component.css');
+let tpl = require('./social-share-buttons.html');
+let style = require('./social-share-buttons.css');
 
 @Component({
   selector: 'social-share-buttons',

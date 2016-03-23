@@ -6,14 +6,14 @@ import {FooterComponent} from '../common/footer/footer.component';
 import {StreetComponent} from '../common/street/street.component';
 import {HeaderComponent} from '../common/header/header.component';
 import {UrlChangeService} from '../common/url-change/url-change.service';
-import {SliderPlaceComponent} from './slider/slider.place.component';
-import {PlaceStreetService} from './place.street.service';
-import {SliderMobilePlaceComponent} from './slider-mobile/slider-mobile.place.component';
-import {FamilyPlaceComponent} from './family/family.place.component';
+import {SliderPlaceComponent} from './slider/slider-place.component.ts';
+import {PlaceStreetService} from './place-street.service.ts';
+import {SliderMobilePlaceComponent} from './slider-mobile/slider-mobile-place.component.ts';
+import {FamilyPlaceComponent} from './family/family-place.component.ts';
 import {LoaderComponent} from '../common/loader/loader.component';
 
-let tpl = require('./place.component.html');
-let style = require('./place.component.css');
+let tpl = require('./place.template.html');
+let style = require('./place.css');
 
 let device = require('device.js')();
 let isDesktop = device.desktop();

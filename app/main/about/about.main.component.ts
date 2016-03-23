@@ -1,7 +1,7 @@
 import { Component, OnInit } from 'angular2/core';
 
-let tpl = require('./about.main.component.html');
-let style = require('./about.main.component.css');
+let tpl = require('./about.main.template.html');
+let style = require('./about.main.css');
 
 @Component({
   selector: 'about-main',
