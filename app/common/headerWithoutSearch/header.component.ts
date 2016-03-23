@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from 'angular2/core';
+import {Component, Inject, Input, OnInit,OnDestroy} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {HeaderService} from '../header/header.service';
@@ -14,7 +14,7 @@ let style = require('./header.component.css');
   directives: [MainMenuComponent, RouterLink]
 })
 
-export class HeaderWithoutSearchComponent implements OnInit {
+export class HeaderWithoutSearchComponent implements OnInit,OnDestroy {
   @Input()
   private title:string;
   private defaultThing:any;

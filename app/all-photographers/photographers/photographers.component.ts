@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
@@ -19,19 +19,20 @@ let style = require('./photographers.component.css');
   pipes: [PhotographersFilter]
 })
 
-export class PhotographersComponent implements OnInit {
+export class PhotographersComponent implements OnInit,OnDestroy {
   public photographersService:PhotographersService;
   public photographersByCountry:any[] = [];
   public photographersByName:any[] = [];
   private search:any = {text: ''};
   public loader:boolean = false;
+  public photographersServiceSubscribe:any;
 
   constructor(@Inject(PhotographersService) photographersService:any) {
     this.photographersService = photographersService;
   }
 
   ngOnInit():void {
-    this.photographersService.getPhotographers({})
+    this.photographersServiceSubscribe = this.photographersService.getPhotographers({})
       .subscribe((res:any)=> {
         if (res.err) {
           return res.err;
@@ -41,5 +42,9 @@ export class PhotographersComponent implements OnInit {
         this.loader = true;
 
       });
+  }
+
+  ngOnDestroy() {
+    this.photographersServiceSubscribe.unsubscribe();
   }
 }

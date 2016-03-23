@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Inject, ElementRef} from 'angular2/core';
 import {RouterLink, RouteParams, Router} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
@@ -20,7 +20,7 @@ const isDesktop = device.desktop();
   directives: [RouterLink, HeaderComponent, LoaderComponent]
 })
 
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit,OnDestroy {
   private mapService:MapService;
   private places:any[] = [];
   private countries:any[] = [];

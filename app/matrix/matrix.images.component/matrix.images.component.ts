@@ -1,7 +1,7 @@
 const device = require('device.js')();
 const isDesktop = device.desktop();
 
-import {Component, Input, EventEmitter, ElementRef, Inject, Output} from 'angular2/core';
+import {Component, Input, EventEmitter, ElementRef, Inject, Output,OnInit,OnDestroy} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
@@ -17,7 +17,7 @@ let style = require('./matrix.images.component.css');
   directives: [Angulartics2On]
 })
 
-export class MatrixImagesComponent {
+export class MatrixImagesComponent implements OnInit,OnDestroy {
   @Input('places')
   private places:Observable<any>;
   @Input('thing')

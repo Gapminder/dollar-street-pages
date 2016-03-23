@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, ElementRef} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Inject, ElementRef} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
@@ -19,7 +19,7 @@ const isDesktop = device.desktop();
   directives: [RouterLink, Angulartics2On]
 })
 
-export class PlacesMainComponent implements OnInit {
+export class PlacesMainComponent implements OnInit,OnDestroy {
   private placeService:MainPlacesService;
   private places:any[] = [];
   private element:any;
@@ -28,6 +28,8 @@ export class PlacesMainComponent implements OnInit {
   private markers:any;
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
+  private resizeSubscribe:any;
+  private placeServiceSubscribe:any;
 
   constructor(@Inject(MainPlacesService) placeService,
               @Inject(ElementRef) element) {

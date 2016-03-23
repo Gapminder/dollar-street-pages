@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, Inject, EventEmitter, Output, OnChanges} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, Output, OnChanges} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
@@ -25,7 +25,7 @@ if (isDesktop) {
   pipes: [SearchFilter]
 })
 
-export class SearchComponent implements OnInit, OnChanges {
+export class SearchComponent implements OnInit,OnDestroy, OnChanges {
   @Input()
   private url:string;
   @Input('chosenPlaces')
