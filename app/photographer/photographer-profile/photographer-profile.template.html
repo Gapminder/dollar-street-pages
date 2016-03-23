@@ -5,6 +5,10 @@
     <p *ngIf="photographer.company && photographer.company.name && !photographer.company.link">
       {{photographer.company.name}}
     </p>
+    <p *ngIf="photographer.company && photographer.company.description" class="description">
+      {{photographer.company.description}}
+    </p>
+
     <a target="_blank"
        *ngIf="photographer.company && photographer.company.name && photographer.company.link"
        [href]="photographer.company.link">{{photographer.company.name}}</a>

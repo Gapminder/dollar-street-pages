@@ -16,7 +16,7 @@ let style = require('./photographer-profile.css');
 export class PhotographerProfileComponent implements OnInit,OnDestroy {
   @Input()
   private photographerId:string;
-  
+
   private photographer:any = {};
   private photographerProfileService:PhotographerProfileService;
   private photographerProfileServiceSubscribe:any;
@@ -33,6 +33,7 @@ export class PhotographerProfileComponent implements OnInit,OnDestroy {
         }
 
         this.photographer = res.data;
+        console.log(this.photographer)
       });
   }
   ngOnDestroy():void{

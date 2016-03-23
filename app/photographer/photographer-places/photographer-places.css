@@ -5,7 +5,7 @@
 
 #photographer-places .country > h3 {
   font-size: 20px;
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Light';
   margin-bottom: 10px;
   margin-top: -4px;
 }
@@ -24,7 +24,7 @@
 }
 
 #photographer-places .place .image {
-  width: 160px;
+  width: 120px;
 }
 
 #photographer-places .place .image img {
@@ -33,9 +33,9 @@
 }
 
 #photographer-places .place .place-description {
-  width: calc(100% - 362px);
+  width: calc(100% - 322px);
   overflow: hidden;
-  margin: 52px 20px 0;
+  margin: 38px 20px 0;
 }
 
 #photographer-places .place-description > div {
@@ -49,7 +49,7 @@
 
 #photographer-places .place-description .family h3 {
   font-size: 20px;
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Light';
 }
 
 #photographer-places .place-description .place-country {
@@ -69,7 +69,7 @@
 }
 
 #photographer-places .link {
-  margin-top: 52px;
+  margin-top: 37px;
 }
 
 #photographer-places .link a {
