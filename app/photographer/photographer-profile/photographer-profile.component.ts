@@ -31,9 +31,7 @@ export class PhotographerProfileComponent implements OnInit,OnDestroy {
         if (res.err) {
           return res.err;
         }
-
         this.photographer = res.data;
-        console.log(this.photographer)
       });
   }
   ngOnDestroy():void{
