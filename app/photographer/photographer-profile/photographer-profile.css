@@ -6,9 +6,13 @@
 #photographer-profile p {
   margin: 0;
 }
+#photographer-profile p.description {
+  font-size: 13px;
+  text-align: justify;
+}
 
 #photographer-profile header img {
-  width: 125px;
+  width: 100%;
   margin-bottom: 15px;
 }
 
