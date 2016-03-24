@@ -1,5 +1,6 @@
 .images-container {
   overflow: hidden;
+  position: relative;
 }
 
 .image-content {
@@ -111,7 +112,8 @@
   left: 0;
   right: 0;
 }
-.mobile-hover .plus{
+
+.mobile-hover .plus {
   color: white;
   margin: auto;
   height: 15px;
@@ -123,9 +125,11 @@
   /*display:none;*/
   background-color: rgba(0, 0, 0, .5);
 }
-.mobile-hover.active{
+
+.mobile-hover.active {
   display: block;
 }
+
 @media (min-width: 768px) {
   .place-image-box-country,
   .place-image-box-income {

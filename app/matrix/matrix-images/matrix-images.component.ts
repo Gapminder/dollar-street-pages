@@ -1,11 +1,13 @@
 const device = require('device.js')();
 const isDesktop = device.desktop();
 
-import {Component, Input, EventEmitter, ElementRef, Inject, Output,OnInit,OnDestroy} from 'angular2/core';
+import {Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDestroy, OnChanges} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
 import {Angulartics2On} from 'angulartics2/index';
+
+import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
 
 let tpl = require('./matrix-images.template.html');
 let style = require('./matrix-images.css');
@@ -14,10 +16,10 @@ let style = require('./matrix-images.css');
   selector: 'matrix-images',
   template: tpl,
   styles: [style],
-  directives: [Angulartics2On]
+  directives: [Angulartics2On, RowLoaderComponent]
 })
 
-export class MatrixImagesComponent implements OnInit,OnDestroy {
+export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   @Input('places')
   private places:Observable<any>;
   @Input('thing')
@@ -34,7 +36,7 @@ export class MatrixImagesComponent implements OnInit,OnDestroy {
   private currentPlaces:any = [];
   private element:HTMLElement;
   private placesSubscribe:any;
-
+  private itemSize:number;
 
   constructor(@Inject(ElementRef) element,
               @Inject(Router) router) {
@@ -43,9 +45,17 @@ export class MatrixImagesComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit():any {
+    this.itemSize = window.innerWidth / this.zoom;
+
     this.placesSubscribe = this.places.subscribe((places)=> {
       this.currentPlaces = places;
     });
+  }
+
+  ngOnChanges(changes) {
+    if (changes.zoom) {
+      this.itemSize = window.innerWidth / this.zoom;
+    }
   }
 
   ngOnDestroy() {
@@ -54,11 +64,15 @@ export class MatrixImagesComponent implements OnInit,OnDestroy {
 
   hoverImage(event, place):void {
     this.hoverPlace.emit(place);
+
     if (isDesktop) {
-      return
+
+      return;
     }
+
     if (!place) {
       this.oldPlaceId = null;
+
       return;
     }
   }
@@ -66,12 +80,16 @@ export class MatrixImagesComponent implements OnInit,OnDestroy {
   goToPlace(place) {
     if (isDesktop) {
       this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}])
-      return
-    }
-    if (!this.oldPlaceId) {
-      this.oldPlaceId = place._id
+
       return;
     }
+
+    if (!this.oldPlaceId) {
+      this.oldPlaceId = place._id;
+
+      return;
+    }
+
     this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}])
   }
 

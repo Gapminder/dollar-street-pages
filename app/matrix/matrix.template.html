@@ -19,13 +19,13 @@
 <div class="zoom-column pull-right">
   <button type="button"
           [disabled]="zoom === 2"
-          (click)="changeZoom(-1)">
+          (click)="changeZoom(zoom - 1)">
     <b>+</b>
   </button>
 
   <button type="button"
           [disabled]="!isDesktop ? zoom === 3 : zoom === 10 || zoom >= places.length"
-          (click)="changeZoom(1)">
+          (click)="changeZoom(zoom + 1)">
     <b>-</b>
   </button>
 </div>

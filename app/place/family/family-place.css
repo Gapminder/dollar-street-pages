@@ -1,5 +1,6 @@
 .family-things-container {
   min-height: 450px;
+  padding-top: 15px;
 }
 
 .family-images-container {
@@ -7,7 +8,7 @@
   vertical-align: top;
   width: 100%;
   min-height: 250px;
-  padding-top: 15px;
+  position: relative;
 }
 
 .family-images-container .family-image-container {
