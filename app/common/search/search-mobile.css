@@ -192,13 +192,38 @@
   margin-top: 7px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 992px) {
   #mobile-search {
-    margin-top: 7px;
+    margin-top: 24px;
   }
 
   #mobile-search .title-container {
-    font-size: 14px;
+    font-size: 26px;
+    width: calc(100% - 42px);
+    margin-top: 5px;
+  }
+
+  #mobile-search .thing-icon {
+    width: 26px;
+    height: 25px;
+    margin-top: 4px;
+  }
+
+  #mobile-search .open-modal-icon {
+    width: 21px;
+    height: auto;
+    margin-top: -15px;
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  #mobile-search {
+    margin-top: 12px;
+  }
+
+  #mobile-search .title-container {
+    font-size: 18px;
     width: calc(100% - 42px);
     margin-top: 5px;
   }
@@ -206,12 +231,13 @@
   #mobile-search .open-modal-icon {
     width: 16px;
     height: auto;
-    margin-top: 10px;
+    margin-top: -4px;
   }
 
   #mobile-search .thing-icon {
     width: 20px;
     height: 20px;
+    margin-top: 0px;
   }
 }
 

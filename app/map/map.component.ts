@@ -6,6 +6,7 @@ import {UrlChangeService} from '../common/url-change/url-change.service';
 import {MapService} from './map.service.ts';
 import {HeaderComponent} from '../common/header/header.component';
 import {LoaderComponent} from '../common/loader/loader.component';
+import {FooterComponent} from '../common/footer/footer.component';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');
@@ -17,7 +18,7 @@ const isDesktop = device.desktop();
   selector: 'map-component',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, HeaderComponent, LoaderComponent]
+  directives: [RouterLink, HeaderComponent, LoaderComponent, FooterComponent]
 })
 
 export class MapComponent implements OnInit,OnDestroy {
