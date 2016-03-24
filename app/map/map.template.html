@@ -9,7 +9,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 places_header">
-        <div class="col-md-12 mapBox">
+        <div class="col-md-12 col-sm-12 mapBox">
           <div class="mapBoxConteiner">
             <img class="map-color" src="/app/assets/img/mapa-index.png" alt="">
             <img class="marker"
@@ -49,10 +49,16 @@
             </div>
           </div>
         </div>
-
-        <div *ngFor="#country of countries; #i = index">
-          <span class="col-md-2 country-name">{{country}}</span>
-        </div>
+      </div>
+    </div>
+    <div class="row countries-list">
+      <div *ngFor="#list of countries; #i = index" class="country">
+        <span class="country-letter">{{list.letter}}</span>
+        <ul class="countries">
+          <li *ngFor="#country of list.countries">
+            <span class="country-name">{{country}}</span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -81,3 +87,5 @@
 
   <loader [hidden]="loader"></loader>
 </div>
+
+<footer></footer>

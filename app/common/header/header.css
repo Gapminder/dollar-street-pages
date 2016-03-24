@@ -39,7 +39,22 @@ place-map[hidden] {
   display: none;
 }
 
+@media (max-width: 992px) {
+  .header-content {
+    height: 50px !important;
+  }
+  .header-content .icon-container img {
+    width: 42px;
+    height: 42px;
+    margin: 10px;
+  }
+}
+
 @media (max-width: 600px) {
+  .header-content {
+    height: 38px !important;
+  }
+
   .header-content .icon-container img {
     width: 32px;
     height: 32px;
