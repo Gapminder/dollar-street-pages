@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Inject, ElementRef} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject, ElementRef} from 'angular2/core';
 import {RouterLink, RouteParams, Router} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
@@ -50,6 +50,8 @@ export class MapComponent implements OnInit,OnDestroy {
   public resizeSubscribe:any;
   public mapServiceSubscribe:any;
 
+  private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
+
   constructor(@Inject(MapService) placeService,
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
@@ -86,7 +88,7 @@ export class MapComponent implements OnInit,OnDestroy {
 
       query = `thing=${this.thing._id}`;
     }
-    this.mapServiceSubscribe=this.mapService.getMainPlaces(query)
+    this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
       .subscribe((res)=> {
         if (res.err) {
           return res.err;
@@ -100,7 +102,7 @@ export class MapComponent implements OnInit,OnDestroy {
         this.countries = res.data.countries;
         this.setMarkersCoord(this.places);
         this.loader = true;
-        this.resizeSubscribe=Observable
+        this.resizeSubscribe = Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
@@ -109,7 +111,7 @@ export class MapComponent implements OnInit,OnDestroy {
       });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.mapServiceSubscribe.unsubscribe()
     this.resizeSubscribe.unsubscribe()
   }
@@ -203,19 +205,21 @@ export class MapComponent implements OnInit,OnDestroy {
       this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
       this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
       this.leftArrowTop = null;
-
+      this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
       if (this.hoverPortraitTop < 10) {
         this.hoverPortraitTop = 10;
         this.hoverPortraitLeft += (portraitBox.offsetWidth + 32) / 2;
         this.leftArrowTop = this.hoverPlace.top - 9;
 
         if (portraitBox.offsetHeight - 12 <= this.leftArrowTop) {
-          // let dif = this.leftArrowTop - (portraitBox.offsetHeight - 12);
           this.leftArrowTop -= 20;
           this.hoverPortraitTop += 20;
         }
+        this.shadowClass = {'shadow_to_left': false, 'shadow_to_right': true};
       }
-
+      if(!this.seeAllHomes){
+        this.shadowClass = {'shadow_to_left': false, 'shadow_to_right': false};
+      }
       portraitBox.style.opacity = '1';
     };
 

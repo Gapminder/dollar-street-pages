@@ -10,7 +10,7 @@
           <img alt="" src="/app/assets/img/search-icon.svg">
         </div>
         <ul class="photographers-country">
-          <li *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:true">
+          <li *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:photographersByCountry:true">
             <div>
               <span class="photographer-country">{{country.name}}</span>
               <ul class="photographers-list">
@@ -30,7 +30,7 @@
 
       <div class="col-md-10 photographers-container">
         <div class="photographer-card"
-             *ngFor="#photographer of photographersByName | PhotographersFilter:search.text"
+             *ngFor="#photographer of photographersByName | PhotographersFilter:search.text:photographersByCountry"
              [routerLink]="['Photographer', {id: photographer.userId}]"
              [angulartics2On]="'click'"
              [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
