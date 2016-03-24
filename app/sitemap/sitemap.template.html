@@ -1,0 +1,24 @@
+<header [title]="title"></header>
+
+<div class="container sitemap">
+  <ul id="sitemap">
+    <li><a [routerLink]="['Main']">Main page</a></li>
+    <li><a [routerLink]="['Matrix', {
+    thing: '546ccf730f7ddf45c0179658',
+    countries:'World',
+    regions:'World',
+    zoom:5,
+    row:1}]">Matrix page</a></li>
+    <li><a [routerLink]="['Place', {
+  thing: '546ccf730f7ddf45c0179658',
+  place: '54b64e2e05df73e554319388',
+  image: '54b64e2e05df73e554319388'}]">Place page</a>
+    </li>
+    <li><a [routerLink]="['Map']">Map page</a></li>
+    <li><a [routerLink]="['Photographers']">Photographers page</a></li>
+    <li><a [routerLink]="['Photographer', {id: '56ec091caf72e9437cbccfab'}]">Photographer page</a></li>
+    <li><a [routerLink]="['Sitemap']">Sitemap page</a></li>
+  </ul>
+</div>
+
+<footer></footer>
