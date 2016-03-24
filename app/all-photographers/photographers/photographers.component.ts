@@ -47,4 +47,8 @@ export class PhotographersComponent implements OnInit,OnDestroy {
   ngOnDestroy() {
     this.photographersServiceSubscribe.unsubscribe();
   }
+
+  toggleLeftSide(e){
+    e.target.parentNode.classList.toggle('show')
+  }
 }
