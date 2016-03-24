@@ -2,17 +2,22 @@ import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
-import {FamilyPlaceService} from './family-place.service.ts';
+import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
+
+import {FamilyPlaceService} from './family-place.service';
 
 let tpl = require('./family-place.template.html');
 let style = require('./family-place.css');
+
+const device = require('device.js')();
+const isDesktop = device.desktop();
 
 @Component({
   selector: 'family-place',
   template: tpl,
   styles: [style],
   providers: [FamilyPlaceService],
-  directives: [RouterLink]
+  directives: [RouterLink, RowLoaderComponent]
 })
 
 export class FamilyPlaceComponent implements OnInit,OnDestroy {
@@ -24,6 +29,8 @@ export class FamilyPlaceComponent implements OnInit,OnDestroy {
   private placeId:string;
   private familyPlaceServiceSubscribe:any;
   private chosenPlacesSubscribe:any;
+  private zoom:number = isDesktop ? 5 : 3;
+  private itemSize:number = window.innerWidth / this.zoom;
 
   constructor(@Inject(FamilyPlaceService) familyPlaceService:any) {
     this.familyPlaceService = familyPlaceService;

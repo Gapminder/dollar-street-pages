@@ -174,7 +174,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
     let imagesContainer = this.element.querySelector('.images-container') as HTMLElement;
     let imageContainer = this.element.querySelector('.image-content') as HTMLElement;
 
-    imagesContainer.style.paddingTop = `${header.offsetHeight}px`;
+    imagesContainer.style.marginTop = `${header.offsetHeight}px`;
     imagesContainer.style.paddingBottom = `${bottomPadding}px`;
 
     this.getViewableRows(header.offsetHeight);
@@ -222,8 +222,13 @@ export class MatrixComponent implements OnInit,OnDestroy {
   urlChanged(query, cb = null):void {
     /**to remove things like this*/
     this.query = query;
-    this.thing=this.parseUrl(this.query).thing;
+    let parseQuery = this.parseUrl(this.query);
+    this.thing = parseQuery.thing;
     this.urlChangeService.replaceState(`/matrix`, `${query}`);
+
+    if (this.matrixServiceSubscrib) {
+      this.matrixServiceSubscrib.unsubscribe();
+    }
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
@@ -231,22 +236,14 @@ export class MatrixComponent implements OnInit,OnDestroy {
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.placesArr);
         cb && cb();
+
+        this.zoom = +parseQuery.zoom;
         this.loader = true;
       })
   }
 
-  changeZoom(inc) {
-    if (this.zoom > 2 && inc < 0) {
-      this.zoom--;
-    } else if (this.zoom < 10 && inc > 0) {
-      this.zoom++;
-    } else {
-      return;
-    }
-
-    this.row = 1;
-
-    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`));
+  changeZoom(zoom) {
+    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`));
   };
 
   parseUrl(url:string):any {

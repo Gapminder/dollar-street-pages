@@ -1,34 +1,28 @@
-#loader-container {
-  position: fixed;
-  z-index: 9990;
-  background-color: #fff;
+#row-loader-container {
   overflow: hidden;
-}
-
-#loader-container .loader-content,
-#loader-container {
+  display: block;
+  clear: both;
+  text-align: center;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 9;
 }
 
-#loader-container .loader-content {
-  position: absolute;
-  height: 190px;
-  margin: auto;
-  text-align: center;
-}
-
-#loader-container .loader-content h1 {
+#row-loader-container h1 {
   text-transform: uppercase;
   font-family: 'Bariol Light';
 }
 
-#loader-container .loader {
+#row-loader-container .loader {
   width: 136px;
   height: 136px;
   display: inline-block;
+  margin-top: 10px;
 
   -webkit-animation-name: spinner;
   -webkit-animation-timing-function: linear;
@@ -69,12 +63,12 @@
 }
 
 @media (max-width: 600px) {
-  #loader-container .loader {
+  #row-loader-container .loader {
     width: 60px;
     height: 60px;
   }
 
-  #loader-container .loader-content h1 {
+  #row-loader-container h1 {
     font-size: 18px;
   }
 }
