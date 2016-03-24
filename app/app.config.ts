@@ -4,6 +4,7 @@ import {PlaceComponent} from './place/place.component';
 import {MapComponent} from './map/map.component';
 import {AllPhotographersComponent} from './all-photographers/all-photographers.component';
 import { PhotographerComponent } from './photographer/photographer.component';
+import { SitemapComponent } from './sitemap/sitemap.component';
 
 export module config {
   export let api='http://localhost';
@@ -38,6 +39,11 @@ export module config {
       path: '/photographer',
       name: 'Photographer',
       component: PhotographerComponent
+    },
+    {
+      path: '/sitemap',
+      name: 'Sitemap',
+      component: SitemapComponent
     }
   ]
 }

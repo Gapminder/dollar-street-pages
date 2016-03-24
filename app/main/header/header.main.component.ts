@@ -1,4 +1,5 @@
 import {Component, Inject} from 'angular2/core';
+import {RouterLink} from 'angular2/router';
 
 import {SocialShareButtons} from '../../common/social_share_buttons/social-share-buttons.component.ts';
 import {UrlChangeService} from '../../common/url-change/url-change.service';
@@ -10,7 +11,7 @@ let style = require('./header.main.css');
   selector: 'header-main',
   template: tpl,
   styles: [style],
-  directives: [SocialShareButtons]
+  directives: [RouterLink, SocialShareButtons]
 })
 
 export class HeaderMainComponent {

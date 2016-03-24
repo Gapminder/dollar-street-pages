@@ -65,6 +65,7 @@
     "./app/photographer/photographer-profile/photographer-profile.component.ts",
     "./app/photographer/photographer-profile/photographer-profile.service.ts",
     "./app/photographer/photographer-places/photographer-places.component.ts",
-    "./app/photographer/photographer-places/photographer-places.service.ts"
+    "./app/photographer/photographer-places/photographer-places.service.ts",
+    "./app/sitemap/sitemap.component.ts"
   ]
 }
