@@ -6,52 +6,40 @@ import {Pipe} from 'angular2/core';
 
 export class PhotographersFilter {
   transform(value, args) {
-    let [text, nested] = args;
-
+    let [text, countries, nested] = args;
+    let photographersArr = [];
     if (!text) {
       return value;
     }
-
     var items:any = value;
     var newItems:any = [];
+    newItems = _.filter(countries, (country)=> {
+
+      let photographers = _.filter(country.photographers, (photographer)=> {
+        return photographer.name.toLowerCase().indexOf(text.toLowerCase()) !== -1
+      });
+      if (photographers.length) {
+        photographersArr.push(...photographers.map((photographer)=> {
+          return photographer.name;
+        }));
+        country.photographers = photographers
+        return country;
+      }
+      if (country.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
+        photographersArr.push(...country.photographers.map((photographer)=> {
+          return photographer.name;
+        }));
+        return true;
+      }
+      return false;
+    });
 
     if (!nested) {
-      items.forEach(function (item:any) {
-        if (item.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
-          newItems.push(item);
-        }
+      newItems = items.filter((photographer)=> {
+        return photographersArr.indexOf(photographer.name) !== -1;
       });
     }
 
-    if (nested) {
-      items.forEach(function (item:any) {
-        let itemsName = newItems.map(function (newItem:any) {
-          return newItem.name;
-        });
-
-        let index = null;
-
-        if (itemsName.length) {
-          if (itemsName.indexOf(item.name) !== -1) {
-            index = itemsName.indexOf(item.name);
-          }
-        }
-
-        item.photographers.forEach(function (photographer:any) {
-          if (photographer.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
-            if (index) {
-              newItems[index].photographers.push(photographer);
-              return;
-            }
-
-            newItems.push({
-              name: item.name,
-              photographers: [photographer]
-            })
-          }
-        });
-      });
-    }
 
     return newItems;
   }

@@ -21,7 +21,7 @@
                  (mouseleave)="unHoverOnMarker($event)"
                  (click)="clickOnMarker($event, i, place.country)"
             >
-            <div class="hover_portrait" [hidden]="!hoverPlace"
+            <div class="hover_portrait" [hidden]="!hoverPlace" [ngClass]="shadowClass"
                  [style.top.px]="hoverPortraitTop"
                  [style.left.px]="hoverPortraitLeft"
                  (mouseenter)="thumbHover()"
