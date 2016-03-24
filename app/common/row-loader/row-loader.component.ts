@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges} from 'angular2/core';
+import {Component, Input, Inject, NgZone, OnChanges} from 'angular2/core';
 
 let _ = require('lodash');
 let tpl = require('./row-loader.template.html');
@@ -23,12 +23,14 @@ export class RowLoaderComponent implements OnChanges {
   @Input('count')
   private count:number;
 
+  private zone:NgZone;
   private item:number = 0;
   private top:number = 0;
   private isShow:boolean = true;
   private cloneItems:any;
 
-  constructor() {
+  constructor(@Inject(NgZone) zone) {
+    this.zone = zone;
   }
 
   ngOnChanges(changes) {
@@ -42,7 +44,9 @@ export class RowLoaderComponent implements OnChanges {
     this.item = 0;
     this.top = 0;
 
-    this.isUploadItem(this.item);
+    this.zone.run(()=> {
+      this.isUploadItem(this.item);
+    });
   }
 
   isUploadItem(item:number) {
@@ -63,7 +67,9 @@ export class RowLoaderComponent implements OnChanges {
         this.top = item / this.count * this.itemHeight;
       }
 
-      this.isUploadItem(this.item);
+      this.zone.run(()=> {
+        this.isUploadItem(this.item);
+      });
     };
 
     if (image[this.field].indexOf('url(') !== -1) {
