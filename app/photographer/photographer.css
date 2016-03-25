@@ -5,3 +5,21 @@
 footer {
   margin-top: 100px;
 }
+
+@media (max-width: 1023px) {
+  .container {
+    width: 100%;
+    margin-top: 77px;
+  }
+
+  .container .row > div {
+    float: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin-top: 57px;
+  }
+}

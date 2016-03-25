@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Input Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {PhotographerProfileService} from './photographer-profile.service';
@@ -20,21 +20,35 @@ export class PhotographerProfileComponent implements OnInit,OnDestroy {
   private photographer:any = {};
   private photographerProfileService:PhotographerProfileService;
   private photographerProfileServiceSubscribe:any;
+  private isShowInfo:boolean = false;
 
   constructor(@Inject(PhotographerProfileService) photographerProfileService) {
     this.photographerProfileService = photographerProfileService;
   }
 
   ngOnInit():void {
-    this.photographerProfileServiceSubscribe=this.photographerProfileService.getPhotographerProfile(`id=${this.photographerId}`)
+    let query = `id=${this.photographerId}`;
+
+    this.photographerProfileServiceSubscribe = this.photographerProfileService.getPhotographerProfile(query)
       .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
+
         this.photographer = res.data;
       });
   }
-  ngOnDestroy():void{
+
+  ngOnDestroy():void {
     this.photographerProfileServiceSubscribe.unsubscribe()
+  }
+
+  isShowInfoMore(photographer:any):boolean {
+    return photographer.company ||
+      photographer.description ||
+      photographer.google ||
+      photographer.facebook ||
+      photographer.twitter ||
+      photographer.linkedIn;
   }
 }
