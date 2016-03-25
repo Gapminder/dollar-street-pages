@@ -1,6 +1,6 @@
 # DS Consumer
 
-New Consumer app
+[![Throughput Graph](https://graphs.waffle.io/Gapminder/dollar-street-pages/throughput.svg)](https://waffle.io/Gapminder/dollar-street-pages/metrics)
 
 # How to install
 - `git clone`
