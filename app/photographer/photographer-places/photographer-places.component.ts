@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Input Inject} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';

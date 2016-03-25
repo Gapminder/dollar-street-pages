@@ -1,0 +1,38 @@
+<div id="country-places">
+  <div class="place" *ngFor="#place of places">
+    <div class="image">
+      <img *ngIf="place.image" [src]="place.image"
+           [routerLink]="['Place', {thing:  place.thing, place: place.placeId, image: place.imageId}]"
+           [angulartics2On]="'click'"
+           [angularticsEvent]="'go to place page from photographer page'"
+           alt="">
+    </div>
+
+    <div class="place-description">
+      <div class="family" *ngIf="place.family">
+        <h3>{{place.family}} family</h3>
+      </div>
+
+      <div class="place-country">
+        <p>
+          <img *ngIf="country.region === 'Africa'" src="/app/assets/img/africa.svg" alt="">
+          <img *ngIf="country.region === 'Europe'" src="/app/assets/img/europe.svg" alt="">
+          <img *ngIf="country.region === 'Asia'" src="/app/assets/img/asia.svg" alt="">
+          <img *ngIf="country.region === 'America'" src="/app/assets/img/america.svg" alt="">
+          <span>{{country.name}}</span>
+        </p>
+      </div>
+
+      <div class="income">
+        <span>${{place.income}}</span>
+      </div>
+    </div>
+
+    <div class="link">
+      <a [routerLink]="['Place', {thing: place.thing, place: place.placeId, image: place.imageId}]"
+         [angulartics2On]="'click'"
+         [angularticsEvent]="'go to place page from photographer page'">Visit family »</a>
+    </div>
+  </div>
+</div>
+<loader [hidden]="loader"></loader>
