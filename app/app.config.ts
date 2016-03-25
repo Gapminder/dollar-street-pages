@@ -17,7 +17,7 @@ export module config {
       path: '/sitemap',
       name: 'Sitemap',
       component: SitemapComponent,
-      default: true
+      useAsDefault: true
     },
     {
       path: '/main',
