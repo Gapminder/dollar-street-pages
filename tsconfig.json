@@ -17,6 +17,7 @@
   ],
   "files": [
     "./typings/browser.d.ts",
+    "./typings/tsd.d.ts",
     "./app/index.ts",
     "./app/app.component.ts",
     "./app/app.config.ts",
@@ -69,6 +70,11 @@
     "./app/ambassadors/ambassadors.component.ts",
     "./app/ambassadors/ambassadors-list/ambassadors-list.component.ts",
     "./app/ambassadors/ambassadors-list/ambassadors-list.service.ts",
-    "./app/sitemap/sitemap.component.ts"
+    "./app/sitemap/sitemap.component.ts",
+    "./app/country/country.component.ts",
+    "./app/country/country-info/country-info.component.ts",
+    "./app/country/country-info/country-info.service.ts",
+    "./app/country/country-places/country-places.component.ts",
+    "./app/country/country-places/country-places.service.ts"
   ]
 }

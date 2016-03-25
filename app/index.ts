@@ -8,6 +8,8 @@ import {AppComponent} from './app.component';
 import {MatrixService} from './matrix/matrix.service';
 import {HeaderService} from './common/header/header.service';
 import {SearchService} from './common/search/search.service';
+import {CountryInfoService} from './country/country-info/country-info.service';
+import {CountryPlacesService} from './country/country-places/country-places.service';
 import {MainPlacesService} from './main/places/main.places.service.ts';
 import {ThingsMainService} from './main/things/things.main.service';
 import {PlaceStreetService} from './place/place-street.service.ts';
@@ -38,6 +40,8 @@ bootstrap(AppComponent, [
   PhotographerPlacesService,
   AmbassadorsListService,
   Angulartics2GoogleAnalytics,
+  CountryInfoService,
+  CountryPlacesService,
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);
 
