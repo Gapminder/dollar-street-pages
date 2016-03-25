@@ -4,6 +4,7 @@ import {PlaceComponent} from './place/place.component';
 import {MapComponent} from './map/map.component';
 import {AllPhotographersComponent} from './all-photographers/all-photographers.component';
 import { PhotographerComponent } from './photographer/photographer.component';
+import { AmbassadorsComponent } from './ambassadors/ambassadors.component';
 import { SitemapComponent } from './sitemap/sitemap.component';
 
 export module config {
@@ -39,6 +40,11 @@ export module config {
       path: '/photographer',
       name: 'Photographer',
       component: PhotographerComponent
+    },
+    {
+      path: '/ambassadors',
+      name: 'Ambassadors',
+      component: AmbassadorsComponent
     },
     {
       path: '/sitemap',

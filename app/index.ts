@@ -17,6 +17,7 @@ import {UrlChangeService} from './common/url-change/url-change.service';
 import {PhotographersService} from './all-photographers/photographers/photographers.service';
 import {PhotographerProfileService} from './photographer/photographer-profile/photographer-profile.service';
 import {PhotographerPlacesService} from './photographer/photographer-places/photographer-places.service';
+import {AmbassadorsListService} from './ambassadors/ambassadors-list/ambassadors-list.service';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 bootstrap(AppComponent, [
@@ -35,6 +36,7 @@ bootstrap(AppComponent, [
   PhotographersService,
   PhotographerProfileService,
   PhotographerPlacesService,
+  AmbassadorsListService,
   Angulartics2GoogleAnalytics,
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);

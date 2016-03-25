@@ -66,6 +66,9 @@
     "./app/photographer/photographer-profile/photographer-profile.service.ts",
     "./app/photographer/photographer-places/photographer-places.component.ts",
     "./app/photographer/photographer-places/photographer-places.service.ts",
+    "./app/ambassadors/ambassadors.component.ts",
+    "./app/ambassadors/ambassadors-list/ambassadors-list.component.ts",
+    "./app/ambassadors/ambassadors-list/ambassadors-list.service.ts",
     "./app/sitemap/sitemap.component.ts"
   ]
 }
