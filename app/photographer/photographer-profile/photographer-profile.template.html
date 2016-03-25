@@ -1,45 +1,148 @@
 <div id="photographer-profile">
-  <header>
+  <div class="header">
     <img [src]="photographer.avatar || '/app/assets/img/photographer-icon.jpg'" alt="avatar">
     <h2>{{photographer.firstName}} {{photographer.lastName}}</h2>
     <p *ngIf="photographer.company && photographer.company.name && !photographer.company.link">
       {{photographer.company.name}}
     </p>
-    <p *ngIf="photographer.company && photographer.company.description" class="description">
-      {{photographer.company.description}}
+    <p *ngIf="photographer.description" class="description">
+      {{photographer.description}}
     </p>
 
     <a target="_blank"
        *ngIf="photographer.company && photographer.company.name && photographer.company.link"
        [href]="photographer.company.link">{{photographer.company.name}}</a>
-  </header>
+  </div>
 
-  <main>
-    <p class="home"><i class="fa fa-home"></i> Visited Families: <span class="pull-right">{{photographer.placesCount || 0}}</span></p>
-    <p class="photo"><i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{photographer.imagesCount || 0}}</span></p>
-    <p class="camera"><i class="fa fa-video-camera"></i> Total Videos: <span class="pull-right">{{photographer.video || 0}}</span></p>
-  </main>
+  <div class="main">
+    <p class="home">
+      <i class="fa fa-home"></i> Visited Families: <span class="pull-right">{{photographer.placesCount || 0}}</span>
+    </p>
 
-  <footer *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
+    <p class="photo">
+      <i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{photographer.imagesCount || 0}}</span>
+    </p>
+
+    <p class="camera">
+      <i class="fa fa-video-camera"></i> Total Videos: <span class="pull-right">{{photographer.video || 0}}</span>
+    </p>
+  </div>
+
+  <div class="footer"
+       *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
     <h3>On the web</h3>
 
-    <div  class="social-network-container">
+    <div class="social-network-container">
       <a *ngIf="photographer.google"
-         [href]="photographer.google">
+         [href]="photographer.google"
+         target="_blank">
         <i class="fa fa-google-plus-square"></i>
       </a>
       <a *ngIf="photographer.facebook"
-         [href]="photographer.facebook">
+         [href]="photographer.facebook"
+         target="_blank">
         <i class="fa fa-facebook-square"></i>
       </a>
       <a *ngIf="photographer.twitter"
-         [href]="photographer.twitter">
+         [href]="photographer.twitter"
+         target="_blank">
         <i class="fa fa-twitter-square"></i>
       </a>
       <a *ngIf="photographer.linkedIn"
-         [href]="photographer.linkedIn">
+         [href]="photographer.linkedIn"
+         target="_blank">
         <i class="fa fa-linkedin-square"></i>
       </a>
     </div>
-  </footer>
+  </div>
+</div>
+
+<div id="mobile-photographer-profile" class="row" [ngClass]="{'open': isShowInfo}">
+  <div class="image-container">
+    <img [src]="photographer.avatar || '/app/assets/img/photographer-icon.jpg'" alt="avatar">
+
+    <div class="social-network-container"
+         *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
+      <a *ngIf="photographer.google"
+         [href]="photographer.google"
+         target="_blank">
+        <i class="fa fa-google-plus-square"></i>
+      </a>
+
+      <a *ngIf="photographer.facebook"
+         [href]="photographer.facebook"
+         target="_blank">
+        <i class="fa fa-facebook-square"></i>
+      </a>
+
+      <a *ngIf="photographer.twitter"
+         [href]="photographer.twitter"
+         target="_blank">
+        <i class="fa fa-twitter-square"></i>
+      </a>
+
+      <a *ngIf="photographer.linkedIn"
+         [href]="photographer.linkedIn"
+         target="_blank">
+        <i class="fa fa-linkedin-square"></i>
+      </a>
+    </div>
+
+    <div class="more-info" *ngIf="isShowInfoMore(photographer)">
+        <span (click)="isShowInfo = !isShowInfo">
+          <span [hidden]="isShowInfo">More Info »</span>
+          <span [hidden]="!isShowInfo">Hide Info »</span>
+        </span>
+    </div>
+  </div>
+
+  <div class="photographer-description">
+    <div class="photographer-description-header">
+      <div class="header">
+        <h2>{{photographer.firstName}} {{photographer.lastName}} <span *ngIf="photographer.country"><i
+          class="fa fa-map-marker"></i> {{photographer.country.country}}</span></h2>
+      </div>
+
+      <div class="count">
+        <p class="home">
+          <i class="fa fa-home"></i> Visited Families: <span>{{photographer.placesCount || 0}}</span>
+        </p>
+
+        <p class="photo">
+          <i class="fa fa-camera"></i> Total Photos: <span>{{photographer.imagesCount || 0}}</span>
+        </p>
+
+        <p class="camera">
+          <i class="fa fa-video-camera"></i> Total Videos: <span>{{photographer.video || 0}}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="photographer-description-footer"
+         *ngIf="photographer.company || photographer.description">
+      <div class="company-description line-clamp"
+           [ngClass]="{'line-clamp-2': !isShowInfo}"
+           *ngIf="photographer.description">{{photographer.description}}
+      </div>
+
+      <div class="more-info" *ngIf="isShowInfoMore(photographer)">
+        <span (click)="isShowInfo = !isShowInfo">
+          <span [hidden]="isShowInfo">More Info »</span>
+          <span [hidden]="!isShowInfo">Hide Info »</span>
+        </span>
+      </div>
+
+      <div class="company-container" *ngIf="photographer.company">
+        <div class="company-name" *ngIf="photographer.company.name">
+          <h3>Organization</h3>
+          <p>{{photographer.company.name}}</p>
+        </div>
+
+        <div class="company-link" *ngIf="photographer.company.link">
+          <h3>On the web</h3>
+          <p><a [href]="photographer.company.link" target="_blank">{{photographer.company.link}}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

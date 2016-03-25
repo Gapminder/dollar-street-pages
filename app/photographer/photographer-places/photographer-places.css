@@ -34,17 +34,17 @@
 
 #photographer-places .place .place-description {
   width: calc(100% - 322px);
-  overflow: hidden;
   margin: 38px 20px 0;
 }
 
 #photographer-places .place-description > div {
-  width: 33%;
   text-align: center;
 }
 
 #photographer-places .place-description .family {
   margin-top: 13px;
+  width: 33%;
+  min-height: 1px;
 }
 
 #photographer-places .place-description .family h3 {
@@ -52,9 +52,16 @@
   font-family: 'Bariol Light';
 }
 
+#photographer-places .country-income {
+  overflow: hidden;
+  width: 66%
+}
+
 #photographer-places .place-description .place-country {
   font-size: 20px;
   margin-top: 10px;
+  width: 50%;
+  float: left;
 }
 
 #photographer-places .place-description .place-country img {
@@ -66,6 +73,8 @@
   font-size: 45px;
   font-family: 'Bariol Light';
   line-height: 46px;
+  width: 50%;
+  float: right;
 }
 
 #photographer-places .link {
@@ -88,3 +97,164 @@
   background-color: #ffb702;
 }
 
+@media (max-width: 1023px) {
+  #photographer-places .family {
+    width: 60% !important;
+  }
+
+  #photographer-places .country-income {
+    width: 40% !important;
+    margin-top: -23px;
+  }
+
+  #photographer-places .country-income .income {
+    margin-bottom: 10px !important;
+  }
+
+  #photographer-places .country-income .income span {
+    font-size: 40px;
+  }
+
+  #photographer-places .country-income .place-country span {
+    font-size: 18px;
+  }
+
+  #photographer-places .country-income > div {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  #photographer-places .place {
+    padding: 5px;
+    width: calc(50% - 5px);
+    margin: 0 0 10px 10px;
+    float: left;
+  }
+
+  #photographer-places .place:nth-child(2n) {
+    margin-left: 0;
+  }
+
+  #photographer-places .country {
+    overflow: hidden;
+  }
+
+  #photographer-places .place .link,
+  #photographer-places .place .link a,
+  #photographer-places .place .place-description,
+  #photographer-places .place .image {
+    width: 100%;
+  }
+
+  #photographer-places .place .image {
+    padding-top: 100%;
+    line-height: 0;
+  }
+
+  #photographer-places .place .image img {
+    margin-top: -100%;
+  }
+
+  #photographer-places .place .place-description > div,
+  #photographer-places .place .place-description {
+    margin: 0;
+  }
+
+  #photographer-places .place .place-description {
+    margin-top: 5px;
+    min-height: 45px;
+    position: relative;
+  }
+
+  #photographer-places .place .place-description .country-income,
+  #photographer-places .place .place-description .family {
+    width: calc(100% - 65px) !important;
+    text-align: left;
+    float: none;
+  }
+
+  #photographer-places .place .place-description .place-country p span,
+  #photographer-places .place .place-description .family h3 {
+    font-size: 16px;
+  }
+
+  #photographer-places .place-description .place-country img {
+    width: 14px;
+    margin-top: -5px;
+  }
+
+  #photographer-places .place .place-description .income {
+    width: 65px !important;
+    font-size: 22px !important;
+    line-height: 22px;
+    text-align: right;
+    position: absolute;
+    top: 10px;
+    right: 0;
+    margin: 0 !important;
+  }
+
+  #photographer-places .place .place-description .income span {
+    font-size: 22px !important;
+    line-height: 22px;
+  }
+
+  #photographer-places .place .link {
+    margin-top: 5px;
+  }
+
+  #photographer-places .place .link a {
+    font-size: 14px;
+  }
+
+  #photographer-places .place .place-country {
+    margin-top: 6px !important;
+    font-size: 16px !important;
+  }
+
+  #photographer-places .place .family + .place-country {
+    margin-top: 0 !important;
+  }
+
+  #photographer-places .link a {
+    padding: 6px 0;
+  }
+
+  #photographer-places .place .place-description .family h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  #photographer-places .country-income .place-country span {
+    width: calc(100% - 20px);
+    display: block;
+    float: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 320px) {
+  #photographer-places .place .place-description .country-income,
+  #photographer-places .place .place-description .family {
+    width: 100% !important;
+    text-align: left;
+    float: none;
+  }
+
+  #photographer-places .place .place-description .family {
+    min-height: 17px;
+  }
+
+  #photographer-places .place .place-description .income {
+    position: static;
+    width: 100% !important;
+    margin-top: 10px !important;
+    text-align: left;
+  }
+}
