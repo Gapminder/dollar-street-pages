@@ -10,10 +10,15 @@ export module config {
   export let api='http://128.199.60.70';
   export let routes = [
     {
+      path: '/sitemap',
+      name: 'Sitemap',
+      component: SitemapComponent,
+      useAsDefault: true
+    },
+    {
       path: '/main',
       name: 'Main',
-      component: MainComponent,
-      useAsDefault: true
+      component: MainComponent
     },
     {
       path: '/matrix',
@@ -39,11 +44,6 @@ export module config {
       path: '/photographer',
       name: 'Photographer',
       component: PhotographerComponent
-    },
-    {
-      path: '/sitemap',
-      name: 'Sitemap',
-      component: SitemapComponent
     }
   ]
 }
