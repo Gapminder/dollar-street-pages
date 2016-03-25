@@ -9,12 +9,19 @@ import { SitemapComponent } from './sitemap/sitemap.component';
 
 export module config {
   export let api='http://128.199.60.70';
+  // export let api='http://stage.dollarstreet.org';
+  //export let api='http://localhost';
   export let routes = [
+    {
+      path: '/sitemap',
+      name: 'Sitemap',
+      component: SitemapComponent,
+      useAsDefault: true
+    },
     {
       path: '/main',
       name: 'Main',
-      component: MainComponent,
-      useAsDefault: true
+      component: MainComponent
     },
     {
       path: '/matrix',

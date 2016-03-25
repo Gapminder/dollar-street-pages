@@ -12,22 +12,24 @@
       </div>
 
       <div class="place-description">
-        <div class="family" *ngIf="place.family">
-          <h3>{{place.family}} family</h3>
+        <div class="family">
+          <h3 *ngIf="place.family">{{place.family}}</h3>
         </div>
 
-        <div class="place-country">
-          <p>
-            <img *ngIf="country.region === 'Africa'" src="/app/assets/img/africa.svg" alt="">
-            <img *ngIf="country.region === 'Europe'" src="/app/assets/img/europe.svg" alt="">
-            <img *ngIf="country.region === 'Asia'" src="/app/assets/img/asia.svg" alt="">
-            <img *ngIf="country.region === 'America'" src="/app/assets/img/america.svg" alt="">
-            <span>{{country.name}}</span>
-          </p>
-        </div>
+        <div class="country-income">
+          <div class="income">
+            <span>${{place.income}}</span>
+          </div>
 
-        <div class="income">
-          <span>${{place.income}}</span>
+          <div class="place-country">
+            <p>
+              <img *ngIf="country.region === 'Africa'" src="/app/assets/img/africa.svg" alt="">
+              <img *ngIf="country.region === 'Europe'" src="/app/assets/img/europe.svg" alt="">
+              <img *ngIf="country.region === 'Asia'" src="/app/assets/img/asia.svg" alt="">
+              <img *ngIf="country.region === 'America'" src="/app/assets/img/america.svg" alt="">
+              <span>{{country.name}}</span>
+            </p>
+          </div>
         </div>
       </div>
 

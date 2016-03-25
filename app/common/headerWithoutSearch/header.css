@@ -30,5 +30,10 @@
 @media (max-width: 600px) {
   .header .heading {
     font-size: 24px;
+    margin: 8px 0 0 15px;
+  }
+
+  .header .logo {
+    margin-top: 0;
   }
 }
