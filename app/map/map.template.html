@@ -1,7 +1,6 @@
 <div class="map-header" (click)="closeLeftSideBar($event)">
   <div class="container">
-    <header [query]="query"
-            (filter)="urlChanged($event)"></header>
+    <header [query]="query" (filter)="urlChanged($event)"></header>
   </div>
 </div>
 
@@ -10,18 +9,20 @@
     <div class="row">
       <div class="col-md-12 places_header">
         <div class="col-md-12 col-sm-12 mapBox">
-          <div class="mapBoxConteiner">
+          <div class="mapBoxContainer">
             <img class="map-color" src="/app/assets/img/mapa-index.png" alt="">
             <img class="marker"
-                 src="/app/assets/img/marker.png" alt="marker"
+                 src="/app/assets/img/marker.png"
+                 alt="marker"
                  *ngFor="#place of places; #i = index"
                  [style.left.px]="place.left"
                  [style.top.px]="place.top"
                  (mouseenter)="hoverOnMarker(i, place.country)"
                  (mouseleave)="unHoverOnMarker($event)"
-                 (click)="clickOnMarker($event, i, place.country)"
-            >
-            <div class="hover_portrait" [hidden]="!hoverPlace" [ngClass]="shadowClass"
+                 (click)="isDesktop ? clickOnMarker($event, i, place.country) : mobileClickOnMarker(place.country)">
+            <div class="hover_portrait"
+                 [hidden]="!hoverPlace"
+                 [ngClass]="shadowClass"
                  [style.top.px]="hoverPortraitTop"
                  [style.left.px]="hoverPortraitLeft"
                  (mouseenter)="thumbHover()"
@@ -31,14 +32,14 @@
 
                 <div class="hover_portrait_description" *ngIf="hoverPlace">
                   <div class="pull-left info">
-                    <span class="name">{{hoverPlace.family}} {{hoverPlace.family?'family':''}}</span>
+                    <span class="name">{{hoverPlace.family}} {{hoverPlace.family ? 'family' : ''}}</span>
                     <span class="country">{{hoverPlace.country}}</span>
                   </div>
 
                   <div class="pull-right">
                     <span class="income">{{hoverPlace.income}}$</span>
                   </div>
-                  <div class="see-all" *ngIf="seeAllHomes" (click)="openLeftSideBar(hoverPlace.country)">
+                  <div class="see-all" *ngIf="seeAllHomes" (click)="openLeftSideBar()">
                     <span class="see-all-span">See All Famlies >></span>
                   </div>
                 </div>
@@ -52,7 +53,7 @@
       </div>
     </div>
     <div class="row countries-list">
-      <div *ngFor="#list of countries; #i = index" class="country">
+      <div class="country" *ngFor="#list of countries; #i = index">
         <span class="country-letter">{{list.letter}}</span>
         <ul class="countries">
           <li *ngFor="#country of list.countries">
@@ -63,15 +64,16 @@
     </div>
   </div>
 
-  <div class="left-side-info" [ngStyle]="{left: lefSideLeft, opacity: lefSideOpacity}">
-    <div class="header" [ngStyle]="{left: lefSideLeft, opacity: lefSideOpacity}">
-      <p *ngIf="lefSideCountries&&lefSideCountries.length">{{lefSideCountries.length}} houses in {{currentCountry}}</p>
+  <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
+    <div class="header">
+      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} houses in {{currentCountry}}</p>
       <span (click)="closeLeftSideBar($event)">x</span>
     </div>
 
-    <div class="info-box" *ngFor="#place of lefSideCountries"
+    <div class="info-box"
+         *ngFor="#place of lefSideCountries"
          [routerLink]="['Place', {thing: place.familyImg.thing, place: place._id, image: place.familyImg.imageId}]">
-      <div class="family-photo" [ngStyle]="{'background-image':toUrl(place.familyImg.background)}" alt=""></div>
+      <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
 
       <div class="hover_portrait_description">
         <div class="pull-left">

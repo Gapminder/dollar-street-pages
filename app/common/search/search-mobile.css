@@ -194,13 +194,13 @@
 
 @media (max-width: 992px) {
   #mobile-search {
-    margin-top: 24px;
+    margin-top: 15px;
   }
 
   #mobile-search .title-container {
     font-size: 26px;
-    width: calc(100% - 42px);
-    margin-top: 5px;
+    width: calc(100% - 65px);
+    margin-top: 0;
   }
 
   #mobile-search .thing-icon {
@@ -212,8 +212,8 @@
   #mobile-search .open-modal-icon {
     width: 21px;
     height: auto;
-    margin-top: -15px;
-    margin-left: 10px;
+    margin-top: 7px;
+    margin-left: 5px;
   }
 }
 
@@ -225,7 +225,7 @@
   #mobile-search .title-container {
     font-size: 18px;
     width: calc(100% - 42px);
-    margin-top: 5px;
+    margin-top: 0;
   }
 
   #mobile-search .open-modal-icon {
