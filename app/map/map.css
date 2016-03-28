@@ -67,7 +67,6 @@
   padding-top: 67px;
 }
 
-
 #places .places_header {
   padding-top: 30px;
   padding-bottom: 20px;
@@ -92,7 +91,7 @@
   margin-bottom: 40px;
 }
 
-#places .mapBox .mapBoxConteiner {
+#places .mapBox .mapBoxContainer {
   position: relative;
   width: 100%;
   max-height: 585px;
@@ -100,7 +99,7 @@
   margin: auto;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait {
+#places .mapBox .mapBoxContainer .hover_portrait {
   position: absolute;
   min-width: 164px;
   min-height: 203px;
@@ -112,10 +111,10 @@
   transition: opacity 0.3s ease-out;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait.shadow_to_left:before,
-#places .mapBox .mapBoxConteiner .hover_portrait.shadow_to_left:after,
-#places .mapBox .mapBoxConteiner .hover_portrait.shadow_to_right:before,
-#places .mapBox .mapBoxConteiner .hover_portrait.shadow_to_right:after{
+#places .mapBox .mapBoxContainer .hover_portrait.shadow_to_left:before,
+#places .mapBox .mapBoxContainer .hover_portrait.shadow_to_left:after,
+#places .mapBox .mapBoxContainer .hover_portrait.shadow_to_right:before,
+#places .mapBox .mapBoxContainer .hover_portrait.shadow_to_right:after {
   border-radius: 5px;
   content: '';
   position: absolute;
@@ -125,49 +124,50 @@
   box-shadow: 0.574px 0.819px 2.88px 0.1px rgba(0, 0, 0, 0.2);
   background: #fff;
 }
-#places .mapBox .mapBoxConteiner .hover_portrait.shadow_to_left:before{
+
+#places .mapBox .mapBoxContainer .hover_portrait.shadow_to_left:before {
   z-index: 1;
   top: -4px;
   left: -4px;
   height: calc(100% - 8px);
 }
-#places .mapBox .mapBoxConteiner .hover_portrait.shadow_to_left:after {
+
+#places .mapBox .mapBoxContainer .hover_portrait.shadow_to_left:after {
   z-index: 0;
   top: -8px;
   left: -8px;
   height: calc(100% - 8px);
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait.shadow_to_right:before{
+#places .mapBox .mapBoxContainer .hover_portrait.shadow_to_right:before {
   z-index: 1;
   top: -4px;
   left: 4px;
   height: calc(100% - 2px);
 }
-#places .mapBox .mapBoxConteiner .hover_portrait.shadow_to_right:after {
+
+#places .mapBox .mapBoxContainer .hover_portrait.shadow_to_right:after {
   z-index: 0;
   top: -8px;
   left: 8px;
   height: calc(100% - 2px);
 }
 
-
-
-#places .mapBox .mapBoxConteiner .hover_portrait img {
+#places .mapBox .mapBoxContainer .hover_portrait img {
   width: 100%;
   border: 1px solid white;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box {
   background-color: #fff;
   border-radius: 5px;
   padding: 5px;
   box-shadow: 0.574px 0.819px 2.88px 0.1px rgba(0, 0, 0, 0.2);
-  position:relative;
+  position: relative;
   z-index: 2;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_arrow {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_arrow {
   margin: auto;
   width: 0;
   height: 0;
@@ -176,7 +176,7 @@
   border-top: 6px solid #fff;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_arrow_left {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_arrow_left {
   position: absolute;
   width: 0;
   height: 0;
@@ -186,35 +186,35 @@
   left: -6px;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description {
   font-family: 'Bariol Light';
   overflow: hidden;
   padding-top: 5px;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .name {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .name {
   font-size: 14px;
   color: #767d86;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .country {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .country {
   font-size: 14px;
   display: block;
   color: #767d86;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .income {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .income {
   color: #767d86;
   font-size: 26px;
   line-height: 26px;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .pull-left {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .pull-left {
   line-height: 14px;
   text-align: left;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .pull-right {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .pull-right {
   text-align: right;
 }
 
@@ -317,7 +317,7 @@
   color: #374551;
   -moz-column-count: 4;
   -moz-columns: 4;
-  -webkit-columns:4;
+  -webkit-columns: 4;
   columns: 4;
 }
 
@@ -352,9 +352,15 @@
   top: 80px;
   padding: 55px 20px 20px 20px;
   overflow: scroll;
-  -webkit-transition: left 0.5s, opacity 0.3s;
-  transition: left 0.5s, opacity 0.3s;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+
   box-shadow: 0px 0px 5.28px 0.72px rgba(0, 0, 0, 0.24);
+  left: -100%;
+  opacity: 0;
 }
 
 .left-side-info .header {
@@ -362,11 +368,21 @@
   background-color: #e9f4f7;
   height: 55px;
   top: 80px;
-  left: 0;
   width: 324px;
   padding: 5px;
-  -webkit-transition: left 0.5s, opacity 0.3s;
-  transition: left 0.5s, opacity 0.3s;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  left: -100%;
+  opacity: 0;
+}
+
+.left-side-info.open .header,
+.left-side-info.open {
+  opacity: 1;
+  left: 0;
 }
 
 .left-side-info .header p {
@@ -396,6 +412,10 @@
   padding-bottom: 40px;
   margin-top: 20px;
   border-bottom: 1px solid #dce0e7;
+}
+
+.left-side-info .info-box:last-child {
+  border-bottom: 0;
 }
 
 .left-side-info .info-box .income,
@@ -443,6 +463,33 @@
 
   #places .familyPortraits .portrait .description .name {
     font-size: 15px;
+  }
+
+  .left-side-info {
+    height: calc(100% - 44px);
+    bottom: 0;
+    padding-top: 42px;
+  }
+
+  .left-side-info .header,
+  .left-side-info {
+    width: 100%;
+    top: 44px;
+  }
+
+  .left-side-info .info-box .name {
+    font-size: 20px;
+    display: inline-block;
+    margin-top: 6px;
+  }
+
+  .left-side-info .header p {
+    font-size: 16px;
+    margin: 4px 0 0 10px;
+  }
+
+  .left-side-info .header {
+    height: 42px;
   }
 }
 
