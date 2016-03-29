@@ -39,7 +39,7 @@
     "coveralls": "2.11.6",
     "cpy": "4.0.0",
     "del": "2.2.0",
-    "eslint": "1.10.3",
+    "eslint-config-valorsoft": "0.0.8",
     "exports-loader": "0.6.3",
     "file-loader": "0.8.5",
     "gh-pages": "0.9.0",
