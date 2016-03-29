@@ -1,2 +1,16 @@
 <div id="country-info">
+  <div class="header">
+    <place-map *ngIf="country" [place]="country"></place-map>
+  </div>
+
+  <div class="main">
+    <h2 *ngIf="country">{{country.country}}</h2>
+    <p *ngIf="placesQantity" class="places">
+      {{placesQantity}} Families
+    </p>
+    <p *ngIf="country && country.description" class="description">
+      {{country.description}}
+    </p>
+  </div>
 </div>
+

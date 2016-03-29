@@ -57,7 +57,8 @@
         <span class="country-letter">{{list.letter}}</span>
         <ul class="countries">
           <li *ngFor="#country of list.countries">
-            <span class="country-name">{{country}}</span>
+            <span class="country-name"
+              [routerLink]="['Country', {id: country._id}]">{{country.name}}</span>
           </li>
         </ul>
       </div>
