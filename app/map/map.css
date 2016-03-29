@@ -338,6 +338,10 @@
   font-weight: bold;
 }
 
+.countries-list .country-name {
+  cursor: pointer;
+}
+
 .countries-list .countries {
   list-style-type: none;
   padding: 0;

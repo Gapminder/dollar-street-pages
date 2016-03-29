@@ -1,10 +1,14 @@
 <div id="country-info">
   <div class="header">
-    <place-map *ngIf="country" [place]="country"></place-map>
+    <place-map *ngIf="country" [place]="country" [isHeader]="true"></place-map>
   </div>
 
   <div class="main">
-    <h2 *ngIf="country">{{country.country}}</h2>
+
+
+    <h2 *ngIf="country"><img class="marker"
+                             src="/app/assets/img/marker.png"
+                             alt="marker"> {{country.country}}</h2>
     <p *ngIf="placesQantity" class="places">
       {{placesQantity}} Families
     </p>
