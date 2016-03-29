@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, Output, OnChanges} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 

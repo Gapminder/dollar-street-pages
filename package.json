@@ -17,7 +17,7 @@
     "watch:prod": "NODE_ENV=production ./node_modules/.bin/webpack --progress --color -w",
     "serve": "./node_modules/.bin/lite-server",
     "pretest": "npm run lint:eslint &&./node_modules/.bin/gulp tslint",
-    "unit-tests":"./node_modules/.bin/karma start"
+    "unit-tests":"./node_modules/.bin/karma start "
   },
   "dependencies": {
     "angular2": "2.0.0-beta.12",

@@ -46,7 +46,6 @@ export class MatrixComponent implements OnInit,OnDestroy {
   private regions:string;
   private row:number;
 
-  private query:string;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];

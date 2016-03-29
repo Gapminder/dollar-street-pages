@@ -13,16 +13,16 @@ export class PhotographersFilter {
     }
     var items:any = value;
     var newItems:any = [];
-    newItems = _.filter(countries, (country)=> {
+    newItems = countries.filter(country=> {
 
-      let photographers = _.filter(country.photographers, (photographer)=> {
+      let photographers = country.photographers.filter(photographer=> {
         return photographer.name.toLowerCase().indexOf(text.toLowerCase()) !== -1
       });
       if (photographers.length) {
         photographersArr.push(...photographers.map((photographer)=> {
           return photographer.name;
         }));
-        country.photographers = photographers
+        country.photographers = photographers;
         return country;
       }
       if (country.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {

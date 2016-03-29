@@ -16,7 +16,7 @@ app/**/*.js.map
 app/**/*.d.ts
 
 #ts typings
-typings
+#typings
 
 .DS_Store
 app/.DS_Store

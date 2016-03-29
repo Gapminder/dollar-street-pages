@@ -1,6 +1,6 @@
 const path = require('path');
 const cwd = process.cwd();
-console.log(path.resolve(cwd))
+
 module.exports = {
   resolve: {
     root: [path.resolve(cwd)],
@@ -35,8 +35,7 @@ module.exports = {
     ],
     noParse: [
       /rtts_assert\/src\/rtts_assert/,
-      /reflect-metadata/,
-      /zone\.js\/dist/
+      /reflect-metadata/
     ]
   },
   stats: {

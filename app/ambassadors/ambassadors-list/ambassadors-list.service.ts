@@ -2,7 +2,7 @@ import {Observable} from "rxjs/Observable";
 
 export class AmbassadorsListService {
   public getAmbassadors(query:any):Observable<any> {
-    return new Observable.of(this.getMockData())
+    return Observable.of(this.getMockData())
   }
 
   getMockData() {

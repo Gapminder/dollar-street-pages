@@ -193,7 +193,7 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     this.resizeSubscribe=Observable.zip(
       touchStart,
       touchEnd,
-      function (touchStart, touchEnd) {
+      function (touchStart:any, touchEnd:any) {
         let startX = touchStart.touches[0].clientX;
         let endX = touchEnd.changedTouches[0].clientX;
 

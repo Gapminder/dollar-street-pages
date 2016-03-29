@@ -20,9 +20,8 @@ describe("PhotographersComponent", () => {
       mockPhotographersService.getProviders()
     ];
   })
-  it("retrieves the artist", injectAsync([TestComponentBuilder], (tcb) => {
+  it("test 1 PhotographersComponent", injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(PhotographersComponent).then((fixture) =>{
-      //console.log(fixture)
       let photographersComponent = fixture.debugElement.componentInstance;
       photographersComponent.ngOnInit()
       console.log(photographersComponent.photographersByCountry)
