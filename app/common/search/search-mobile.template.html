@@ -13,11 +13,11 @@
 
   <div class="title-container pull-left" *ngIf="matrixComponent">{{mobileTitle}}</div>
 
-  <span class="title-container pull-left" *ngIf="placeComponent && header">
+  <div class="title-container pull-left" *ngIf="placeComponent && header">
     {{header.family[0]?header.family[0]+', ':''}}{{header.income?header.income+'$, ':''}}{{header.country}}
-  </span>
+  </div>
 
-  <span class="title-container" *ngIf="mapComponent">{{activeThing.name}}</span>
+  <div class="title-container pull-left" *ngIf="mapComponent">{{activeThing.name}}</div>
 
   <img class="open-modal-icon"
        src="/app/assets/img/search-icon.svg"

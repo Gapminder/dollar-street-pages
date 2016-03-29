@@ -38,7 +38,6 @@ export class CountryPlacesComponent implements OnInit,OnDestroy {
 
         this.country = res.data.country;
         this.places = res.data.places;
-        console.log(this.places)
         this.loader = true;
       });
   }

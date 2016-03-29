@@ -10,7 +10,6 @@ let tpl = require('./map.template.html');
 let style = require('./map.css');
 
 let device = require('device.js')();
-const isDesktop = device.desktop();
 
 @Component({
   selector: 'map-component',
@@ -35,8 +34,6 @@ export class MapComponent implements OnInit,OnDestroy {
   private routeParams:any;
   private currentCountry:string;
   private lefSideCountries:any;
-  private lefSideLeft:string = '-324px';
-  private lefSideOpacity:string = '0';
   private seeAllHomes:boolean = false;
   private leftArrowTop:any;
   private onThumb:boolean = false;
@@ -44,6 +41,7 @@ export class MapComponent implements OnInit,OnDestroy {
   private isOpenLeftSide:boolean = false;
   private init:boolean;
   private router:Router;
+  private isDesktop:boolean = device.desktop();
   public loader:boolean = false;
 
   public resizeSubscribe:any;
@@ -87,6 +85,7 @@ export class MapComponent implements OnInit,OnDestroy {
 
       query = `thing=${this.thing._id}`;
     }
+
     this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
       .subscribe((res)=> {
         if (res.err) {
@@ -99,8 +98,11 @@ export class MapComponent implements OnInit,OnDestroy {
 
         this.urlChangeService.replaceState('/map', this.query);
         this.countries = res.data.countries;
+
         this.setMarkersCoord(this.places);
+
         this.loader = true;
+
         this.resizeSubscribe = Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
@@ -111,8 +113,8 @@ export class MapComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy() {
-    this.mapServiceSubscribe.unsubscribe()
-    this.resizeSubscribe.unsubscribe()
+    this.mapServiceSubscribe.unsubscribe();
+    this.resizeSubscribe.unsubscribe();
   }
 
   setMarkersCoord(places) {
@@ -149,7 +151,7 @@ export class MapComponent implements OnInit,OnDestroy {
   }
 
   private hoverOnMarker(index, country):void {
-    if (!isDesktop) {
+    if (!this.isDesktop) {
       return;
     }
 
@@ -205,6 +207,7 @@ export class MapComponent implements OnInit,OnDestroy {
       this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
       this.leftArrowTop = null;
       this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
+
       if (this.hoverPortraitTop < 10) {
         this.hoverPortraitTop = 10;
         this.hoverPortraitLeft += (portraitBox.offsetWidth + 32) / 2;
@@ -214,11 +217,14 @@ export class MapComponent implements OnInit,OnDestroy {
           this.leftArrowTop -= 20;
           this.hoverPortraitTop += 20;
         }
+
         this.shadowClass = {'shadow_to_left': false, 'shadow_to_right': true};
       }
-      if(!this.seeAllHomes){
+
+      if (!this.seeAllHomes) {
         this.shadowClass = {'shadow_to_left': false, 'shadow_to_right': false};
       }
+
       portraitBox.style.opacity = '1';
     };
 
@@ -226,7 +232,7 @@ export class MapComponent implements OnInit,OnDestroy {
   }
 
   private unHoverOnMarker(e):void {
-    if (!isDesktop) {
+    if (!this.isDesktop) {
       return;
     }
 
@@ -267,9 +273,10 @@ export class MapComponent implements OnInit,OnDestroy {
 
 
   private hoverOnFamily(index):void {
-    if (!isDesktop) {
+    if (!this.isDesktop) {
       return;
     }
+
     if (this.isOpenLeftSide) {
       return
     }
@@ -286,7 +293,7 @@ export class MapComponent implements OnInit,OnDestroy {
   };
 
   private unHoverOnFamily():void {
-    if (!isDesktop) {
+    if (!this.isDesktop) {
       return;
     }
 
@@ -297,47 +304,61 @@ export class MapComponent implements OnInit,OnDestroy {
     this.markers = null;
   };
 
-  private openLeftSideBar(country):void {
+  private openLeftSideBar():void {
     this.isOpenLeftSide = true;
-    this.lefSideLeft = `0`;
-    this.lefSideOpacity = `1`;
   }
 
   private closeLeftSideBar(e) {
     if (e.target.classList.contains('see-all') ||
-      e.target.classList.contains('see-all-span')) {
+      e.target.classList.contains('see-all-span') ||
+      (!this.isDesktop && e.target.classList.contains('marker'))) {
       this.onMarker = false;
       this.onThumb = false;
       this.seeAllHomes = false;
       this.hoverPlace = null;
       this.hoverPortraitTop = null;
       this.hoverPortraitLeft = null;
-      this.unHoverOnMarker(e)
+      this.unHoverOnMarker(e);
+
       return;
     }
+
     this.isOpenLeftSide = false;
     this.onMarker = false;
     this.onThumb = false;
+
     if (!e.target.classList.contains('marker')) {
-      this.unHoverOnMarker(e)
+      this.unHoverOnMarker(e);
     }
-    this.lefSideLeft = `-324px`;
-    this.lefSideOpacity = `0`;
   }
 
   private clickOnMarker(e, index, country) {
     if (this.isOpenLeftSide) {
       this.isOpenLeftSide = !this.isOpenLeftSide;
-      this.closeLeftSideBar(e)
-      this.hoverOnMarker(index, country)
+      this.closeLeftSideBar(e);
+      this.hoverOnMarker(index, country);
+
       return;
     }
-    if (this.lefSideCountries.length === 1) {
+
+    if (this.lefSideCountries && this.lefSideCountries.length === 1) {
       this.router.navigate(['Place', {
         thing: this.hoverPlace.familyImg.thing,
         place: this.hoverPlace._id,
         image: this.hoverPlace.familyImg.imageId
-      }])
+      }]);
+    }
+  }
+
+  private mobileClickOnMarker(country) {
+    this.currentCountry = country;
+    
+    this.lefSideCountries = this.places.filter((place)=> {
+      return place.country === this.currentCountry;
+    });
+
+    if (this.lefSideCountries && this.lefSideCountries.length) {
+      this.openLeftSideBar();
     }
   }
 

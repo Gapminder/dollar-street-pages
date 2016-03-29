@@ -9,8 +9,8 @@
     </div>
 
     <div class="place-description">
-      <div class="family" *ngIf="place.family">
-        <h3>{{place.family}} family</h3>
+      <div class="family">
+        <h3 *ngIf="place.family">{{place.family}} family</h3>
       </div>
 
       <div class="place-country">
@@ -19,7 +19,7 @@
           <img *ngIf="country.region === 'Europe'" src="/app/assets/img/europe.svg" alt="">
           <img *ngIf="country.region === 'Asia'" src="/app/assets/img/asia.svg" alt="">
           <img *ngIf="country.region === 'America'" src="/app/assets/img/america.svg" alt="">
-          <span>{{country.name}}</span>
+          <span>{{country.country}}</span>
         </p>
       </div>
 

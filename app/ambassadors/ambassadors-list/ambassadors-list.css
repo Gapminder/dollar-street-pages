@@ -10,18 +10,18 @@
 .ambassadors .ambassadors-people .see-more {
   display: block;
   color: #fff;
-  margin:   30px auto 0;;
+  margin: 30px auto 0;;
   padding: 10px 30px;
   background-color: #374551;
   font-size: 20px;
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
-  width:165px;
-
+  width: 180px;
+  text-align: center;
 }
 
-.ambassadors .ambassadors-people .see-more:hover{
+.ambassadors .ambassadors-people .see-more:hover {
   background-color: #FFB702;
 }
 
@@ -45,13 +45,13 @@
 }
 
 .ambassadors .ambassadors-people .ambassadors-people {
-  width: calc(100%/6);
+  width: calc(100% / 6);
   padding: 2px;
   display: none;
 }
 
 .ambassadors .ambassadors-people .ambassadors-organization {
-  width: calc(100%/4);
+  width: calc(100% / 4);
   padding: 2px;
   display: none;
 }
@@ -77,7 +77,7 @@
 .ambassadors .ambassadors-people .ambassadors-people-box .country img {
   width: 10px;
   height: 15px;
-  margin: 5px 6px 0px 0px;
+  margin: 5px 6px 0 0;
   display: block;
   float: left;
 }
@@ -92,17 +92,19 @@
   .ambassadors .ambassadors-people .ambassadors-organization:nth-child(-n+4) {
     display: none;
   }
+
   .ambassadors .ambassadors-people .ambassadors-people:nth-child(-n+4),
   .ambassadors .ambassadors-people .ambassadors-organization:nth-child(-n+3) {
     display: block;
   }
+
   .ambassadors .ambassadors-people .ambassadors-people {
-    width: calc(100%/4);
+    width: calc(100% / 4);
     padding: 2px;
   }
 
   .ambassadors .ambassadors-people .ambassadors-organization {
-    width: calc(100%/3);
+    width: calc(100% / 3);
     padding: 2px;
   }
 }
@@ -112,21 +114,24 @@
   .ambassadors .ambassadors-people .ambassadors-organization:nth-child(-n+4) {
     display: none;
   }
+
   .ambassadors .ambassadors-people .ambassadors-people:nth-child(-n+4),
   .ambassadors .ambassadors-people .ambassadors-organization:nth-child(-n+3) {
     display: none;
   }
+
   .ambassadors .ambassadors-people .ambassadors-people:nth-child(-n+2),
   .ambassadors .ambassadors-people .ambassadors-organization:nth-child(-n+2) {
     display: block;
   }
+
   .ambassadors .ambassadors-people .ambassadors-people {
-    width: calc(100%/2);
+    width: calc(100% / 2);
     padding: 2px;
   }
 
   .ambassadors .ambassadors-people .ambassadors-organization {
-    width: calc(100%/2);
+    width: calc(100% / 2);
     padding: 2px;
   }
 }

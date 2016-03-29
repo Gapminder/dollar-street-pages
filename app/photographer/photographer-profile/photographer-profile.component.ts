@@ -1,5 +1,4 @@
-
-import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input,Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 let tpl = require('./photographer-profile.template.html');
