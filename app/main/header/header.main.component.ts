@@ -2,7 +2,6 @@ import {Component, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {SocialShareButtons} from '../../common/social_share_buttons/social-share-buttons.component.ts';
-import {UrlChangeService} from '../../common/url-change/url-change.service';
 
 let tpl = require('./header.main.template.html');
 let style = require('./header.main.css');
@@ -15,9 +14,9 @@ let style = require('./header.main.css');
 })
 
 export class HeaderMainComponent {
-  private urlChangeService:UrlChangeService;
+  private urlChangeService:any;
 
-  constructor(@Inject(UrlChangeService) urlChangeService) {
+  constructor(@Inject('UrlChangeService') urlChangeService) {
     this.urlChangeService = urlChangeService;
   }
 

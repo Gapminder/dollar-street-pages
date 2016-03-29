@@ -1,7 +1,5 @@
 import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
-
-import {CountryInfoService} from './country-info.service.ts';
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
 let tpl = require('./country-info.template.html');
@@ -17,13 +15,14 @@ let style = require('./country-info.css');
 export class CountryInfoComponent implements OnInit, OnDestroy {
   @Input()
   private countryId:string;
-
-  private country:any = null;
+  
+  private country:any = {};
+  private countryInfoService:any;
   private places:any;
-  private countryInfoService:CountryInfoService;
   private countryInfoServiceSubscribe:any;
+  private placesQantity:any;
 
-  constructor(@Inject(CountryInfoService) countryInfoService) {
+  constructor(@Inject('CountryInfoService') countryInfoService) {
     this.countryInfoService = countryInfoService;
   }
 

@@ -5,7 +5,7 @@ import {config} from '../../app.config';
 export class PhotographersService{
   public http:Http;
 
-  constructor(@Inject(Http) http:Http) {
+  constructor(@Inject(Http) http) {
     this.http = http;
   }
 

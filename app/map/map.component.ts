@@ -2,8 +2,6 @@ import {Component, OnInit, OnDestroy, Inject, ElementRef} from 'angular2/core';
 import {RouterLink, RouteParams, Router} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
-import {UrlChangeService} from '../common/url-change/url-change.service';
-import {MapService} from './map.service.ts';
 import {HeaderComponent} from '../common/header/header.component';
 import {LoaderComponent} from '../common/loader/loader.component';
 import {FooterComponent} from '../common/footer/footer.component';
@@ -21,7 +19,7 @@ let device = require('device.js')();
 })
 
 export class MapComponent implements OnInit,OnDestroy {
-  private mapService:MapService;
+  private mapService:any;
   private places:any[] = [];
   private countries:any[] = [];
   private element:any;
@@ -31,7 +29,7 @@ export class MapComponent implements OnInit,OnDestroy {
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
   private thing:any;
-  private urlChangeService:UrlChangeService;
+  private urlChangeService:any;
   private query:string;
   private routeParams:any;
   private currentCountry:string;
@@ -51,11 +49,11 @@ export class MapComponent implements OnInit,OnDestroy {
 
   private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
 
-  constructor(@Inject(MapService) placeService,
+  constructor(@Inject('MapService') placeService,
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
               @Inject(Router) router,
-              @Inject(UrlChangeService) urlChangeService) {
+              @Inject('UrlChangeService') urlChangeService) {
     this.mapService = placeService;
     this.element = element;
     this.routeParams = routeParams;

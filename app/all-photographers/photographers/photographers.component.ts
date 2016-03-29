@@ -3,9 +3,7 @@ import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
 
-import {PhotographersService} from './photographers.service';
 import {PhotographersFilter} from './photographers-filter.pipe.ts';
-
 import {LoaderComponent} from '../../common/loader/loader.component';
 
 let tpl = require('./photographers.template.html');
@@ -20,14 +18,14 @@ let style = require('./photographers.css');
 })
 
 export class PhotographersComponent implements OnInit,OnDestroy {
-  public photographersService:PhotographersService;
-  public photographersByCountry:any[] = [];
-  public photographersByName:any[] = [];
+  private photographersService:any;
+  private photographersByCountry:any[] = [];
+  private photographersByName:any[] = [];
   private search:any = {text: ''};
-  public loader:boolean = false;
-  public photographersServiceSubscribe:any;
+  private loader:boolean = false;
+  private photographersServiceSubscribe:any;
 
-  constructor(@Inject(PhotographersService) photographersService:any) {
+  constructor(@Inject('PhotographersService') photographersService:any) {
     this.photographersService = photographersService;
   }
 

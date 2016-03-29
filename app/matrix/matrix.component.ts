@@ -2,12 +2,10 @@ import {Component, OnInit, Inject, ElementRef, OnDestroy} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
 import {Subject} from "rxjs/Subject";
 
-import {MatrixService} from './matrix.service';
 import {MatrixImagesComponent} from './matrix-images/matrix-images.component';
 import {StreetComponent} from '../common/street/street.component';
 import {FooterComponent} from '../common/footer/footer.component';
 import {HeaderComponent} from '../common/header/header.component';
-import {UrlChangeService} from '../common/url-change/url-change.service';
 import {LoaderComponent} from '../common/loader/loader.component';
 
 let _ = require('lodash');
@@ -25,7 +23,7 @@ let style = require('./matrix.css');
 
 export class MatrixComponent implements OnInit,OnDestroy {
   public query:string;
-  public matrixService:MatrixService;
+  public matrixService:any;
   public places:Subject<any> = new Subject();
   public chosenPlaces:Subject<any> = new Subject();
   public hoverPlace:Subject<any> = new Subject();
@@ -41,14 +39,13 @@ export class MatrixComponent implements OnInit,OnDestroy {
   private imageMargin:number;
   private visiblePlaces:number;
 
-  private urlChangeService:UrlChangeService;
+  private urlChangeService:any;
   private routeParams:RouteParams;
   private thing:string;
   private countries:string;
   private regions:string;
   private row:number;
 
-  private query:string;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];
@@ -56,9 +53,9 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
   public matrixServiceSubscrib:any;
 
-  constructor(@Inject(MatrixService) matrixService,
+  constructor(@Inject('MatrixService') matrixService,
               @Inject(ElementRef) element,
-              @Inject(UrlChangeService) urlChangeService,
+              @Inject('UrlChangeService') urlChangeService,
               @Inject(RouteParams) routeParams) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;

@@ -3,8 +3,6 @@ import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
 
-import {ThingsMainService} from './things.main.service';
-
 let tpl = require('./things.main.template.html');
 let style = require('./things.main.css');
 
@@ -16,11 +14,11 @@ let style = require('./things.main.css');
 })
 
 export class ThingsMainComponent implements OnInit,OnDestroy{
-  public thingsMainService:ThingsMainService;
+  public thingsMainService:any;
   public things:any[] = [];
   private thingsMainServiceSubscribe:any;
 
-  constructor(@Inject(ThingsMainService) thingsMainService) {
+  constructor(@Inject('ThingsMainService') thingsMainService) {
     this.thingsMainService = thingsMainService;
   }
 

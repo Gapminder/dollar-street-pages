@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input} from 
 import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 import {NgStyle} from 'angular2/common';
+const _ = require('lodash');
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
@@ -56,7 +57,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     this.location = location;
   }
 
-  protected ngOnInit():void {
+  ngOnInit():void {
     this.streetPlacesSubscribe = this.streetPlaces.subscribe((places)=> {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
@@ -67,7 +68,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
 
 
     this.keyUpSubscribe = Observable.fromEvent(document, 'keyup')
-      .subscribe((e)=> {
+      .subscribe((e:KeyboardEvent)=> {
         if (this.popIsOpen) {
           return;
         }

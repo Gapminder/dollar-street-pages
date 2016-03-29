@@ -3,8 +3,6 @@ import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
 
-import {ConceptMainService} from './concept.main.service';
-
 let tpl = require('./concept.main.template.html');
 let style = require('./concept.main.css');
 
@@ -16,7 +14,7 @@ let style = require('./concept.main.css');
 })
 
 export class ConceptMainComponent implements OnInit,OnDestroy {
-  public conceptMainService:ConceptMainService;
+  public conceptMainService:any;
   public activeThing:any = {};
   public amazonS3Url:any = 'http://static.dollarstreet.org.s3.amazonaws.com/';
   public images:any[] = [];
@@ -29,7 +27,7 @@ export class ConceptMainComponent implements OnInit,OnDestroy {
   };
   private conceptMainServiceSubscribe:any;
 
-  constructor(@Inject(ConceptMainService) conceptMainService) {
+  constructor(@Inject('ConceptMainService') conceptMainService) {
     this.conceptMainService = conceptMainService;
   }
 

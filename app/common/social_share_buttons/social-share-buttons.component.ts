@@ -1,29 +1,25 @@
 import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
 import {Location} from 'angular2/router';
 
-import {UrlChangeService} from '../url-change/url-change.service';
-import {SocialShareButtonsService} from './social-share-buttons.service.ts';
-
 let tpl = require('./social-share-buttons.html');
 let style = require('./social-share-buttons.css');
 
 @Component({
   selector: 'social-share-buttons',
   template: tpl,
-  styles: [style],
-  providers: [SocialShareButtonsService]
+  styles: [style]
 })
 
 export class SocialShareButtons implements OnInit, OnDestroy {
-  public socialShareButtonsService:SocialShareButtonsService;
+  public socialShareButtonsService:any;
   private location:Location;
-  private urlChangeService:UrlChangeService;
+  private urlChangeService:any;
   public url:string;
   public urlEvents:any;
   public socialShareButtonsServiceSubscribe:any;
 
-  constructor(@Inject(SocialShareButtonsService) socialShareButtonsService,
-              @Inject(UrlChangeService) urlChangeService,
+  constructor(@Inject('SocialShareButtonsService') socialShareButtonsService,
+              @Inject('UrlChangeService') urlChangeService,
               @Inject(Location) location) {
     this.socialShareButtonsService = socialShareButtonsService;
     this.urlChangeService = urlChangeService;

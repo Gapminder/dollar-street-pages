@@ -3,7 +3,6 @@ import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
 
-import {CountryPlacesService} from './country-places.service.ts';
 import {LoaderComponent} from '../../common/loader/loader.component';
 
 let tpl = require('./country-places.template.html');
@@ -22,11 +21,11 @@ export class CountryPlacesComponent implements OnInit,OnDestroy {
 
   private places:any = [];
   private country:any;
-  private countryPlacesService:CountryPlacesService;
+  private countryPlacesService:any;
   public loader:boolean = false;
   public countryPlacesServiceSubscribe:any;
 
-  constructor(@Inject(CountryPlacesService) countryPlacesService) {
+  constructor(@Inject('CountryPlacesService') countryPlacesService) {
     this.countryPlacesService = countryPlacesService;
   }
 

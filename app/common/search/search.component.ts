@@ -1,8 +1,7 @@
-import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, Output, OnChanges} from 'angular2/core';
+import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
-import {SearchService} from './search.service';
 import {SearchFilter} from './thing-filter.pipe.ts';
 
 let tpl = '';
@@ -48,7 +47,7 @@ export class SearchComponent implements OnInit,OnDestroy, OnChanges {
   private activeThing:any = {};
   private activeRegions:any = [];
   private activeCountries:any = [];
-  private searchService:SearchService;
+  private searchService:any;
   private modalPosition:string;
   private matrixComponent:boolean;
   private mapComponent:boolean;
@@ -60,7 +59,7 @@ export class SearchComponent implements OnInit,OnDestroy, OnChanges {
   private chosenPlacesSubscribe:any;
   private searchServiceSubscribe:any;
 
-  constructor(@Inject(SearchService) searchService, @Inject(Router) _router) {
+  constructor(@Inject('SearchService') searchService, @Inject(Router) _router) {
     this.searchService = searchService;
     this.router = _router;
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';

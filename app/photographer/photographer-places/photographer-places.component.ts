@@ -3,7 +3,6 @@ import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
 
-import {PhotographerPlacesService} from './photographer-places.service';
 import {LoaderComponent} from '../../common/loader/loader.component';
 
 let tpl = require('./photographer-places.template.html');
@@ -22,11 +21,11 @@ export class PhotographerPlacesComponent implements OnInit,OnDestroy {
 
   private countries:any = [];
   private familyThingId:string;
-  private photographerPlacesService:PhotographerPlacesService;
+  private photographerPlacesService:any;
   public loader:boolean = false;
   public photographerPlacesServiceSubscribe:any;
 
-  constructor(@Inject(PhotographerPlacesService) photographerPlacesService) {
+  constructor(@Inject('PhotographerPlacesService') photographerPlacesService) {
     this.photographerPlacesService = photographerPlacesService;
   }
 

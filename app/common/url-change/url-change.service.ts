@@ -17,7 +17,7 @@ export class UrlChangeService {
     this.urlEvents.next('my event');
   }
 
-  getUrlEvents():Observable {
+  getUrlEvents():Observable<any>{
     return this.urlEvents;
   }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
-import {AmbassadorsListService} from './ambassadors-list.service';
+
 let tpl = require('./ambassadors-list.template.html');
 let style = require('./ambassadors-list.css');
 
@@ -10,11 +10,11 @@ let style = require('./ambassadors-list.css');
 })
 
 export class AmbassadorsListComponent implements OnInit,OnDestroy {
-  private ambassadorsListService:AmbassadorsListService;
+  private ambassadorsListService:any;
   private ambassadorsList:any;
   private showedBlock:number;
 
-  constructor(@Inject(AmbassadorsListService) ambassadorsListService) {
+  constructor(@Inject('AmbassadorsListService') ambassadorsListService) {
     this.ambassadorsListService = ambassadorsListService;
   }
 

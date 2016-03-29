@@ -1,5 +1,7 @@
+import {Injectable} from 'angular2/core'
 const d3 = require('d3');
 const device = require('device.js')();
+const _=require('lodash');
 const isDesktop = device.desktop();
 
 export class StreetDrawService {
@@ -16,10 +18,6 @@ export class StreetDrawService {
   private fullIncomeArr = [];
   private hoverPlace:any = null;
 
-  constructor(element:HTMLElement) {
-    this.svg = d3.select(element);
-  }
-
   public init():this {
     this.width = parseInt(this.svg.style('width'), 10);
     this.height = parseInt(this.svg.style('height'), 10);
@@ -29,6 +27,9 @@ export class StreetDrawService {
       .domain([1, 10, 100, 10000])
       .range([0.07 * this.width, 0.375 * this.width, 0.75 * this.width, 0.97 * this.width]);
     return this;
+  }
+  set setSvg(element:HTMLElement){
+    this.svg = d3.select(element);
   }
 
   public set(key, val):this {
