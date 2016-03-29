@@ -4,8 +4,6 @@ import {Observable} from 'rxjs/Rx';
 
 import {Angulartics2On} from 'angulartics2/index';
 
-import {MainPlacesService} from './main.places.service';
-
 let tpl = require('./places.main.template.html');
 let style = require('./places.main.css');
 
@@ -20,7 +18,7 @@ const isDesktop = device.desktop();
 })
 
 export class PlacesMainComponent implements OnInit,OnDestroy {
-  private placeService:MainPlacesService;
+  private placeService:any;
   private places:any[] = [];
   private element:any;
   private map:HTMLImageElement;
@@ -31,7 +29,7 @@ export class PlacesMainComponent implements OnInit,OnDestroy {
   private resizeSubscribe:any;
   private placeServiceSubscribe:any;
 
-  constructor(@Inject(MainPlacesService) placeService,
+  constructor(@Inject('MainPlacesService') placeService,
               @Inject(ElementRef) element) {
     this.placeService = placeService;
     this.element = element;

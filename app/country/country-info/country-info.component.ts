@@ -1,8 +1,6 @@
 import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
-import {CountryInfoService} from './country-info.service.ts';
-
 let tpl = require('./country-info.template.html');
 let style = require('./country-info.css');
 
@@ -18,10 +16,10 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private countryId:string;
 
   private country:any = {};
-  private countryInfoService:CountryInfoService;
+  private countryInfoService:any;
   private countryInfoServiceSubscribe:any;
 
-  constructor(@Inject(CountryInfoService) countryInfoService) {
+  constructor(@Inject('CountryInfoService') countryInfoService) {
     this.countryInfoService = countryInfoService;
   }
 

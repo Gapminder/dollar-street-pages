@@ -2,7 +2,6 @@ import {Component, Input, Output, Inject, OnInit,OnDestroy, EventEmitter} from '
 import {RouterLink,Router} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
-import {HeaderService} from './header.service';
 import {MainMenuComponent} from '../menu/menu.component';
 import {SearchComponent} from '../search/search.component';
 import {PlaceMapComponent} from '../place-map/place-map.component';
@@ -30,13 +29,13 @@ export class HeaderComponent implements OnInit,OnDestroy {
   private activeThing:any;
   private defaultThing:any;
   private hoveredPlace:any;
-  private headerService:HeaderService;
+  private headerService:any;
   private router:Router;
 
   private headerServiceSubscribe:any;
   private hoverPlaceSubscribe:any;
 
-  constructor(@Inject(HeaderService) headerService,
+  constructor(@Inject('HeaderService') headerService,
               @Inject(Router) router) {
     this.headerService = headerService;
     this.router = router;

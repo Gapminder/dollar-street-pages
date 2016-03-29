@@ -4,8 +4,6 @@ import {Observable} from "rxjs/Observable";
 
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
 
-import {FamilyPlaceService} from './family-place.service';
-
 let tpl = require('./family-place.template.html');
 let style = require('./family-place.css');
 
@@ -16,7 +14,6 @@ const isDesktop = device.desktop();
   selector: 'family-place',
   template: tpl,
   styles: [style],
-  providers: [FamilyPlaceService],
   directives: [RouterLink, RowLoaderComponent]
 })
 
@@ -24,7 +21,7 @@ export class FamilyPlaceComponent implements OnInit,OnDestroy {
   @Input('chosenPlaces')
   private chosenPlaces:Observable<any>;
 
-  private familyPlaceService:FamilyPlaceService;
+  private familyPlaceService:any;
   private images:any = [];
   private placeId:string;
   private familyPlaceServiceSubscribe:any;
@@ -32,7 +29,7 @@ export class FamilyPlaceComponent implements OnInit,OnDestroy {
   private zoom:number = isDesktop ? 5 : 3;
   private itemSize:number = window.innerWidth / this.zoom;
 
-  constructor(@Inject(FamilyPlaceService) familyPlaceService:any) {
+  constructor(@Inject('FamilyPlaceService') familyPlaceService) {
     this.familyPlaceService = familyPlaceService;
   }
 

@@ -1,9 +1,9 @@
 import {Component, OnInit, Input, ElementRef, Inject, OnDestroy} from 'angular2/core';
 import {Observable} from "rxjs/Observable";
 import {RouterLink, Router} from 'angular2/router';
-import {StreetDrawService} from "./street.service";
 import {Subject} from "rxjs/Subject";
 
+const _ = require('lodash');
 let device = require('device.js')();
 const isDesktop = device.desktop();
 
@@ -32,6 +32,7 @@ export class StreetComponent implements OnInit,OnDestroy {
   private controllSlider:Subject<any>;
 
   private street:any;
+  private StreetDrawService:any;
   private element:HTMLElement;
   private thumbPlaces:any[];
   private thumbLeft:number;
@@ -46,14 +47,16 @@ export class StreetComponent implements OnInit,OnDestroy {
   private hoverHeaderSubscribe:any;
 
   constructor(@Inject(ElementRef) element,
-              @Inject(Router)  router) {
+              @Inject(Router)  router,
+              @Inject('StreetDrawService')  streetDrawService) {
     this.element = element.nativeElement;
     this.router = router;
+    this.street = streetDrawService;
   }
 
   ngOnInit():any {
     let svg = this.element.querySelector('.street-box svg') as HTMLElement;
-    this.street = new StreetDrawService(svg);
+    this.street.setSvg = svg;
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces)=> {
 

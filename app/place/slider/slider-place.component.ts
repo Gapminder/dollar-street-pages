@@ -56,7 +56,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     this.location = location;
   }
 
-  protected ngOnInit():void {
+  ngOnInit():void {
     this.streetPlacesSubscribe = this.streetPlaces.subscribe((places)=> {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
