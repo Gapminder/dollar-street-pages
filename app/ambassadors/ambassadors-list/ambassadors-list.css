@@ -19,6 +19,10 @@
   cursor: pointer;
   width: 180px;
   text-align: center;
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -o-transition: all .2s ease-out;
+  transition: all .2s ease-out;
 }
 
 .ambassadors .ambassadors-people .see-more:hover {
