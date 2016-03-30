@@ -192,7 +192,7 @@ export class StreetComponent implements OnInit,OnDestroy {
   }
 
   protected toUrl(image) {
-    return `url("${image.replace('devices', '150x150')}")`;
+    return `url("${image.replace('desktops', '150x150')}")`;
   }
 
   protected clickOnThumb(thing, place) {
