@@ -9,11 +9,22 @@
     <h2 *ngIf="country"><img class="marker"
                              src="/app/assets/img/marker.png"
                              alt="marker"> {{country.country}}</h2>
-    <p *ngIf="placesQantity" class="places">
-      {{placesQantity}} Families
-    </p>
     <p *ngIf="country && country.description" class="description">
       {{country.description}}
+    </p>
+  </div>
+
+  <div class="footer">
+    <p class="home" *ngIf="placesQantity" >
+      <i class="fa fa-home"></i> Visited Families: <span class="pull-right">{{placesQantity || 0}}</span>
+    </p>
+
+    <p class="photo">
+      <i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{photosQantity || 0}}</span>
+    </p>
+
+    <p class="camera">
+      <i class="fa fa-video-camera"></i> Total Videos: <span class="pull-right">{{videosQantity || 0}}</span>
     </p>
   </div>
 </div>

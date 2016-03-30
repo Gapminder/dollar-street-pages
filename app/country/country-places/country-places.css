@@ -44,7 +44,10 @@
 
 #country-places .place-description > div {
   width: 33%;
-  text-align: center;
+}
+
+#country-places .place-description .family * {
+  margin-left: 40px;
 }
 
 #country-places .place-description .family {
