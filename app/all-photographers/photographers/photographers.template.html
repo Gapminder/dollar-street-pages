@@ -11,7 +11,7 @@
           <img alt="" src="/app/assets/img/search-icon.svg">
         </div>
         <ul class="photographers-country">
-          <li *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:photographersByCountry:true">
+          <li class="country-card" *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:photographersByCountry:true">
             <div>
               <span class="photographer-country">{{country.name}}</span>
               <ul class="photographers-list">
