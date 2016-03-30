@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, ElementRef} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 
@@ -39,19 +39,22 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
   private sliderContainer:any;
   private element:ElementRef;
   private streetPlacesSubscribe:any;
+  private touchSubscribe:any;
+  private zone:NgZone;
   private resizeSubscribe:any;
-  
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(ElementRef) elementRef,
+              @Inject(NgZone) zone,
               @Inject(Location) location) {
     this.routeParams = routeParams;
     this.element = elementRef;
     this.location = location;
+    this.zone = zone;
   }
 
   ngOnInit():void {
-    this.streetPlacesSubscribe=this.streetPlaces.subscribe((places)=> {
+    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places)=> {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
       this.allPlaces = places;
@@ -62,10 +65,17 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let sliderContainer = this.element.nativeElement.querySelector('#slider-mobile-container');
 
     this.swipe(sliderContainer);
+
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
+      .debounceTime(300).subscribe(()=> {
+        this.resizeSlider()
+      });
   }
-  
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     this.streetPlacesSubscribe.unsubscribe();
+    this.touchSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
   }
 
@@ -92,13 +102,20 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let img = new Image();
 
     img.onload = () => {
-      let sliderHeight = $('.slider-mobile-slide:nth-child(2) img').height();
-      this.sliderContainer.css({height: sliderHeight});
+      this.zone.run(()=> {
+        this.resizeSlider();
 
-      this.currentPlace.emit([this.chosenPlace]);
+        this.currentPlace.emit([this.chosenPlace]);
+      });
     };
 
     img.src = startImage.background;
+  }
+
+  protected resizeSlider() {
+    this.slideWidth = window.innerWidth;
+    let sliderHeight = $('.slider-mobile-slide:nth-child(2) img').height();
+    this.sliderContainer.css({height: sliderHeight});
   }
 
   protected slidePrev() {
@@ -122,10 +139,12 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let newPrevImage = new Image();
 
     newPrevImage.onload = () => {
-      let sliderHeight = $('.slider-mobile-slide:nth-child(1) img').height();
-      this.sliderContainer.css({height: sliderHeight});
+      this.zone.run(()=> {
+        let sliderHeight = $('.slider-mobile-slide:nth-child(1) img').height();
+        this.sliderContainer.css({height: sliderHeight});
 
-      animationSlider(shiftPrev, prevSlide);
+        animationSlider(shiftPrev, prevSlide);
+      });
     };
 
     newPrevImage.src = this.images[0].background;
@@ -150,10 +169,12 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let newNextImage = new Image();
 
     newNextImage.onload = () => {
-      let sliderHeight = $('.slider-mobile-slide:nth-child(3) img').height();
-      this.sliderContainer.css({height: sliderHeight});
+      this.zone.run(()=> {
+        let sliderHeight = $('.slider-mobile-slide:nth-child(3) img').height();
+        this.sliderContainer.css({height: sliderHeight});
 
-      animationSlider(shiftNext, nextSlide);
+        animationSlider(shiftNext, nextSlide);
+      });
     };
 
     newNextImage.src = this.images[2].background;
@@ -168,11 +189,11 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     $('.slider-mobile-wrapper .slider-mobile')
       .removeClass('active')
       .css({
-        '-webkit-transform': 'translateX(-' + this.slideWidth + 'px)',
-        '-moz-transform': 'translateX(-' + this.slideWidth + 'px)',
-        '-ms-transform': 'translateX(-' + this.slideWidth + 'px)',
-        '-o-transform': 'translateX(-' + this.slideWidth + 'px)',
-        transform: 'translateX(-' + this.slideWidth + 'px)'
+        '-webkit-transform': '',
+        '-moz-transform': '',
+        '-ms-transform': '',
+        '-o-transform': '',
+        transform: ''
       });
 
     this.chosenPlace = this.allPlaces[this.position];
@@ -190,31 +211,30 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let touchStart = Observable.fromEvent(sliderContainer, 'touchstart');
     let touchEnd = Observable.fromEvent(sliderContainer, 'touchend');
 
-    this.resizeSubscribe=Observable.zip(
-      touchStart,
-      touchEnd,
-      function (touchStart:any, touchEnd:any) {
-        let startX = touchStart.touches[0].clientX;
-        let endX = touchEnd.changedTouches[0].clientX;
+    this.touchSubscribe = Observable
+      .zip(touchStart, touchEnd,
+        function (touchStart:any, touchEnd:any) {
+          let startX = touchStart.touches[0].clientX;
+          let endX = touchEnd.changedTouches[0].clientX;
 
-        return {startX, endX};
-      }
-    ).subscribe((results) => {
-      let startX = results.startX;
-      let endX = results.endX;
+          return {startX, endX};
+        })
+      .subscribe((results) => {
+        let startX = results.startX;
+        let endX = results.endX;
 
-      let difference = startX > endX ? startX - endX : endX - startX;
+        let difference = startX > endX ? startX - endX : endX - startX;
 
-      if (20 > difference) {
-        return;
-      }
+        if (20 > difference) {
+          return;
+        }
 
-      if (startX > endX) {
-        this.slideNext();
-      } else {
-        this.slidePrev();
-      }
-    });
+        if (startX > endX) {
+          this.slideNext();
+        } else {
+          this.slidePrev();
+        }
+      });
   }
 }
 

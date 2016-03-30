@@ -246,7 +246,6 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     this.currentPlace.emit([this.chosenPlace]);
   };
 
-
   protected openPopUp(image) {
     this.popIsOpen = true;
     this.fancyBoxImage = 'url("' + image.background.replace('desktops', 'original') + '")';
@@ -340,8 +339,6 @@ function selectImagesForSlider(places, position) {
 function setImageWidth(sliderHeight) {
   let sliderSidebarImages = $('.slide .slide-content .slide-sidebar img');
   let sliderImages = $('.slide .slide-content .image .slide-img');
-
-  console.log(sliderSidebarImages);
 
   sliderSidebarImages.each(function () {
     $(this).width((sliderHeight - parseFloat($(this).css('margin-top'))) / 2);
