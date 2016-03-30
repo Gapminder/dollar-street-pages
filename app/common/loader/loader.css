@@ -1,8 +1,8 @@
 #loader-container {
   position: fixed;
-  z-index: 9990;
-  background-color: #fff;
   overflow: hidden;
+  background-color: #fff;
+  z-index: 999;
 }
 
 #loader-container .loader-content,
@@ -69,6 +69,10 @@
 }
 
 @media (max-width: 600px) {
+  #loader-container .loader-content {
+    height: 110px;
+  }
+
   #loader-container .loader {
     width: 60px;
     height: 60px;

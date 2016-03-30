@@ -257,17 +257,21 @@
 }
 
 @media (max-width: 600px) {
+  #photographers {
+    padding-top: 120px;
+  }
+
   #photographers .photographer-card {
     width: calc(50% - 20px);
   }
 
   #photographers .photographers-country {
     margin-top: -15px;
-    top: 138px;
+    top: 130px;
   }
 
   #photographers .search-input {
-    top: 67px;
+    top: 57px;
     padding: 10px 10px;
     margin: 0;
   }

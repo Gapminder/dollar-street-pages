@@ -65,3 +65,7 @@ svg circle {
 html, body, body > div[ui-view] {
   height: 100%;
 }
+
+.main-header {
+  z-index: 1000 !important;
+}

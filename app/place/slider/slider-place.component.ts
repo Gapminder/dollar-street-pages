@@ -1,8 +1,7 @@
-import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input, NgZone} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from "rxjs/Observable";
 import {NgStyle} from 'angular2/common';
-const _ = require('lodash');
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
@@ -50,24 +49,29 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
   private streetPlacesSubscribe:any;
   private resizeSubscibe:any;
   private keyUpSubscribe:any;
+  private zone:NgZone;
 
   constructor(@Inject(RouteParams) routeParams,
-              @Inject(Location) location) {
+              @Inject(Location) location,
+              @Inject(NgZone) zone) {
     this.routeParams = routeParams;
     this.location = location;
+    this.zone = zone;
   }
 
   ngOnInit():void {
-    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places)=> {
-      this.thing = this.routeParams.get('thing');
-      this.image = this.routeParams.get('image');
-      this.place = this.routeParams.get('place');
-      this.allPlaces = places;
-      this.init();
-    });
+    this.streetPlacesSubscribe = this.streetPlaces
+      .subscribe((places)=> {
+        this.thing = this.routeParams.get('thing');
+        this.image = this.routeParams.get('image');
+        this.place = this.routeParams.get('place');
+        this.allPlaces = places;
 
+        this.init();
+      });
 
-    this.keyUpSubscribe = Observable.fromEvent(document, 'keyup')
+    this.keyUpSubscribe = Observable
+      .fromEvent(document, 'keyup')
       .subscribe((e:KeyboardEvent)=> {
         if (this.popIsOpen) {
           return;
@@ -80,18 +84,19 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
         if (e.keyCode === 39) {
           this.slideNext();
         }
-      })
+      });
 
-    this.controllSliderSubscribe = this.controllSlider.subscribe((i) => {
-      this.init(i);
-    });
+    this.controllSliderSubscribe = this.controllSlider
+      .subscribe((i) => {
+        this.init(i);
+      });
 
 
-    this.resizeSubscibe = Observable.fromEvent(window, 'resize').subscribe(()=> {
-      _.debounce(() => {
+    this.resizeSubscibe = Observable
+      .fromEvent(window, 'resize')
+      .debounceTime(300).subscribe(()=> {
         this.resizeSlider()
-      }, 300);
-    })
+      });
   }
 
 
@@ -125,8 +130,10 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     let img = new Image();
 
     img.onload = () => {
-      this.resizeSlider();
-      this.currentPlace.emit([this.chosenPlace]);
+      this.zone.run(()=> {
+        this.resizeSlider();
+        this.currentPlace.emit([this.chosenPlace]);
+      });
     };
 
     img.src = startImage.background;
@@ -179,9 +186,11 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
 
     let newPrevImage = new Image();
 
-    newPrevImage.onload = function () {
-      setDescriptionsWidth(1);
-      animationSlider(shiftPrev, prevSlide);
+    newPrevImage.onload = () => {
+      this.zone.run(()=> {
+        setDescriptionsWidth(1);
+        animationSlider(shiftPrev, prevSlide);
+      });
     };
 
     newPrevImage.src = this.images[0].background;
@@ -204,9 +213,11 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     let shiftNext = sliderWidth * 2;
     let newNextImage = new Image();
 
-    newNextImage.onload = function () {
-      setDescriptionsWidth(3);
-      animationSlider(shiftNext, nextSlide);
+    newNextImage.onload = () => {
+      this.zone.run(()=> {
+        setDescriptionsWidth(3);
+        animationSlider(shiftNext, nextSlide);
+      });
     };
 
     newNextImage.src = this.images[2].background;
@@ -329,6 +340,8 @@ function selectImagesForSlider(places, position) {
 function setImageWidth(sliderHeight) {
   let sliderSidebarImages = $('.slide .slide-content .slide-sidebar img');
   let sliderImages = $('.slide .slide-content .image .slide-img');
+
+  console.log(sliderSidebarImages);
 
   sliderSidebarImages.each(function () {
     $(this).width((sliderHeight - parseFloat($(this).css('margin-top'))) / 2);
