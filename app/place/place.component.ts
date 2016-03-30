@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit,OnDestroy} from 'angular2/core';
+import {Component, Inject, OnInit, OnDestroy, NgZone} from 'angular2/core';
 import {RouteParams, RouterLink} from 'angular2/router';
 import {Subject} from "rxjs/Subject";
 
@@ -48,7 +48,9 @@ export class PlaceComponent implements OnInit,OnDestroy {
               @Inject('UrlChangeService')
               private urlChangeService,
               @Inject(RouteParams)
-              private routeParams) {
+              private routeParams,
+              @Inject(NgZone)
+              private zone) {
   }
 
   ngOnInit() {
@@ -88,11 +90,14 @@ export class PlaceComponent implements OnInit,OnDestroy {
 
     this.thing = thing._id;
     this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`);
-    this.loader = false;
+
+    this.zone.run(()=> {
+      this.loader = false;
+    });
   }
 
   isHover() {
-    this.hoverHeader.next(null)
+    this.hoverHeader.next(null);
   }
 
   getStreetPlaces(thing) {
@@ -105,11 +110,16 @@ export class PlaceComponent implements OnInit,OnDestroy {
   choseCurrentPlace(place) {
     this.currentPlace = place[0];
     this.chosenPlaces.next(place);
+
     if (!this.isDesktop) {
       this.isShowImagesFamily = false;
     }
+
     this.changeLocation(place[0], this.thing);
-    this.loader = true;
+
+    this.zone.run(()=> {
+      this.loader = true;
+    });
   }
 
   changeLocation(place, thing) {

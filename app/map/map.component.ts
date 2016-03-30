@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject, ElementRef, NgZone} from 'angular2/core';
 import {RouterLink, RouteParams, Router} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
@@ -43,6 +43,7 @@ export class MapComponent implements OnInit,OnDestroy {
   private router:Router;
   private isDesktop:boolean = device.desktop();
   public loader:boolean = false;
+  private zone:NgZone;
 
   public resizeSubscribe:any;
   public mapServiceSubscribe:any;
@@ -53,11 +54,13 @@ export class MapComponent implements OnInit,OnDestroy {
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
               @Inject(Router) router,
+              @Inject(NgZone) zone,
               @Inject('UrlChangeService') urlChangeService) {
     this.mapService = placeService;
     this.element = element;
     this.routeParams = routeParams;
     this.router = router;
+    this.zone = zone;
     this.urlChangeService = urlChangeService;
   }
 
@@ -122,28 +125,30 @@ export class MapComponent implements OnInit,OnDestroy {
     let mapImage = this.element.nativeElement.querySelector('.map-color');
 
     img.onload = () => {
-      let width = mapImage.offsetWidth;
-      let height = mapImage.offsetHeight;
-      let greenwich = 0.439 * width;
-      let equator = 0.545 * height;
+      this.zone.run(()=> {
+        let width = mapImage.offsetWidth;
+        let height = mapImage.offsetHeight;
+        let greenwich = 0.439 * width;
+        let equator = 0.545 * height;
 
-      places.forEach((place:any) => {
-        let stepTop, stepRight;
+        places.forEach((place:any) => {
+          let stepTop, stepRight;
 
-        if (place.lat > 0) {
-          stepTop = equator / 75;
-        } else {
-          stepTop = (height - equator) / 75;
-        }
+          if (place.lat > 0) {
+            stepTop = equator / 75;
+          } else {
+            stepTop = (height - equator) / 75;
+          }
 
-        if (place.lng < 0) {
-          stepRight = greenwich / 130;
-        } else {
-          stepRight = (width - greenwich) / 158;
-        }
+          if (place.lng < 0) {
+            stepRight = greenwich / 130;
+          } else {
+            stepRight = (width - greenwich) / 158;
+          }
 
-        place.left = place.lng * stepRight + greenwich;
-        place.top = equator - place.lat * stepTop - 23;
+          place.left = place.lng * stepRight + greenwich;
+          place.top = equator - place.lat * stepTop - 23;
+        });
       });
     };
 
@@ -199,37 +204,39 @@ export class MapComponent implements OnInit,OnDestroy {
     portraitBox.style.opacity = '0';
 
     img.onload = ()=> {
-      if (!this.hoverPlace) {
-        return;
-      }
-
-      this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
-      this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
-      this.leftArrowTop = null;
-      this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
-
-      if (this.hoverPortraitTop < 10) {
-        this.hoverPortraitTop = 10;
-        this.hoverPortraitLeft += (portraitBox.offsetWidth + 32) / 2;
-        this.leftArrowTop = this.hoverPlace.top - 9;
-
-        if (portraitBox.offsetHeight - 12 <= this.leftArrowTop) {
-          this.leftArrowTop -= 20;
-          this.hoverPortraitTop += 20;
+      this.zone.run(()=> {
+        if (!this.hoverPlace) {
+          return;
         }
 
-        this.shadowClass = {'shadow_to_left': false, 'shadow_to_right': true};
-      }
+        this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
+        this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
+        this.leftArrowTop = null;
+        this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
 
-      if (!this.seeAllHomes) {
-        this.shadowClass = {'shadow_to_left': false, 'shadow_to_right': false};
-      }
+        if (this.hoverPortraitTop < 10) {
+          this.hoverPortraitTop = 10;
+          this.hoverPortraitLeft += (portraitBox.offsetWidth + 32) / 2;
+          this.leftArrowTop = this.hoverPlace.top - 9;
 
-      portraitBox.style.opacity = '1';
+          if (portraitBox.offsetHeight - 12 <= this.leftArrowTop) {
+            this.leftArrowTop -= 20;
+            this.hoverPortraitTop += 20;
+          }
+
+          this.shadowClass = {'shadow_to_left': false, 'shadow_to_right': true};
+        }
+
+        if (!this.seeAllHomes) {
+          this.shadowClass = {'shadow_to_left': false, 'shadow_to_right': false};
+        }
+
+        portraitBox.style.opacity = '1';
+      });
     };
 
     img.src = this.hoverPlace.familyImg.background;
-  }
+  };
 
   private unHoverOnMarker(e):void {
     if (!this.isDesktop) {
@@ -352,7 +359,7 @@ export class MapComponent implements OnInit,OnDestroy {
 
   private mobileClickOnMarker(country) {
     this.currentCountry = country;
-    
+
     this.lefSideCountries = this.places.filter((place)=> {
       return place.country === this.currentCountry;
     });
