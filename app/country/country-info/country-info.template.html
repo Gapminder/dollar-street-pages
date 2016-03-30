@@ -4,17 +4,82 @@
   </div>
 
   <div class="main">
-
-
     <h2 *ngIf="country"><img class="marker"
                              src="/app/assets/img/marker.png"
                              alt="marker"> {{country.country}}</h2>
-    <p *ngIf="placesQantity" class="places">
-      {{placesQantity}} Families
-    </p>
     <p *ngIf="country && country.description" class="description">
       {{country.description}}
     </p>
   </div>
+
+  <div class="footer">
+    <p class="home" *ngIf="placesQantity" >
+      <i class="fa fa-home"></i> Visited Families: <span class="pull-right">{{placesQantity || 0}}</span>
+    </p>
+
+    <p class="photo">
+      <i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{photosQantity || 0}}</span>
+    </p>
+
+    <p class="camera">
+      <i class="fa fa-video-camera"></i> Total Videos: <span class="pull-right">{{videosQantity || 0}}</span>
+    </p>
+  </div>
 </div>
 
+<div id="mobile-country-info" class="row" [ngClass]="{'open': isShowInfo}">
+  <div class="image-container" *ngIf="country">
+    <place-map *ngIf="country" [place]="country" [isHeader]="true"></place-map>
+
+
+  </div>
+
+  <div class="country-description">
+    <div class="country-description-header">
+      <div class="header">
+        <h2 *ngIf="country"><i class="fa fa-map-marker"></i>{{country.country}}</h2>
+      </div>
+
+      <div class="count">
+        <p class="home" *ngIf="placesQantity" >
+          <i class="fa fa-home"></i> Visited Families: <span>{{placesQantity || 0}}</span>
+        </p>
+
+        <p class="photo">
+          <i class="fa fa-camera"></i> Total Photos: <span>{{photosQantity || 0}}</span>
+        </p>
+
+        <p class="camera">
+          <i class="fa fa-video-camera"></i> Total Videos: <span>{{videosQantity || 0}}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="country-description-footer"
+         *ngIf="country.description">
+      <div class="company-description line-clamp"
+           [ngClass]="{'line-clamp-2': !isShowInfo}"
+           *ngIf="country.description">{{country.description}}
+      </div>
+
+      <div class="more-info" *ngIf="isShowInfoMore(country)">
+        <span (click)="isShowInfo = !isShowInfo">
+          <span [hidden]="isShowInfo">More Info »</span>
+          <span [hidden]="!isShowInfo">Hide Info »</span>
+        </span>
+      </div>
+
+      <!--<div class="company-container" *ngIf="country.company">-->
+        <!--<div class="company-name" *ngIf="country.company.name">-->
+          <!--<h3>Organization</h3>-->
+          <!--<p>{{country.company.name}}</p>-->
+        <!--</div>-->
+
+        <!--<div class="company-link" *ngIf="country.company.link">-->
+          <!--<h3>On the web</h3>-->
+          <!--<p><a [href]="country.company.link" target="_blank">{{country.company.link}}</a></p>-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
+  </div>
+</div>
