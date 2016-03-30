@@ -8,12 +8,14 @@ import {
 } from 'angular2/testing';
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services'
-import {MockPhotographersService} from "./mocks/photographers.service";
+import {MockService} from '../../common-mocks/mock.service.template'
+import {photographers} from "./mocks/data.ts";
 
 import {PhotographersComponent} from '../../../app/all-photographers/photographers/photographers.component.ts';
 
 describe("PhotographersComponent", () => {
-  let mockPhotographersService = new MockPhotographersService();
+  let mockPhotographersService = new MockService();
+  mockPhotographersService.fakeResponse=photographers;
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
@@ -34,8 +36,8 @@ describe("PhotographersComponent", () => {
     return tcb.createAsync(PhotographersComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
-      context.ngOnDestroy();
-      expect(context.photographersServiceSubscribe.isDestoyed).toBe(true);
+      fixture.destroy()
+      expect(context.photographersServiceSubscribe.isUnsubscribe).toBe(true);
     })
   }));
   it("PhotographersComponent must show on mobile ", injectAsync([TestComponentBuilder], (tcb) => {

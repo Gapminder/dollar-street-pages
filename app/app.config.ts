@@ -19,7 +19,7 @@ export module config {
     component: SitemapComponent,
     useAsDefault: true
   }, {
-    path: '/main',
+    path: '/main/',
     name: 'Main',
     component: MainComponent
   }, {
