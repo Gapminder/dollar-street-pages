@@ -13,6 +13,7 @@ export class CountryInfoService{
   public getCountryInfo(query:any):Observable<any> {
     return this.http.get(`${config.api}/consumer/api/v1/country-info?${query}`).map((res:any)=>{
       let parseRes = JSON.parse(res._body);
+      console.log(parseRes.data)
       return {err:parseRes.error, data: parseRes.data}
     })
   }

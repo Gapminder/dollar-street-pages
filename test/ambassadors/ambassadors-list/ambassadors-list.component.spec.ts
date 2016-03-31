@@ -12,7 +12,7 @@ import {
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services'
 import {MockService} from '../../common-mocks/mock.service.template'
-import {ambassadors} from "./mock/data.ts";
+import {ambassadors} from "../mocks/data.ts";
 
 import {AmbassadorsListComponent} from '../../../app/ambassadors/ambassadors-list/ambassadors-list.component';
 

@@ -13,7 +13,7 @@ let style = require('./place-map.css');
 
 export class PlaceMapComponent implements OnInit {
   @Input()
-  private place:string;
+  private place:any=null;
   @Input()
   private isHeader:boolean;
 

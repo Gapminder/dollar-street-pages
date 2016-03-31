@@ -6,7 +6,7 @@ import {provide} from 'angular2/core';
 export class MockService {
   private response;
   private name:string;
-  private isUnsubscribe = false;
+  public isUnsubscribe = false;
     
   subscribe(callback):this {
     callback(this.fakeResponse);
