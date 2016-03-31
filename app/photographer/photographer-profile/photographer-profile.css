@@ -256,6 +256,28 @@
   }
 }
 
+@media (max-width: 1200px) {
+  #photographer-profile {
+    font-size: 14px;
+  }
+
+  #photographer-profile .main .home i {
+    font-size: 12px;
+  }
+
+  #photographer-profile .main .photo i {
+    font-size: 10px;
+  }
+
+  #photographer-profile .main .camera i {
+    font-size: 11px;
+  }
+
+  #photographer-profile .main span {
+    margin-top: 1px;
+  }
+}
+
 @media (max-width: 600px) {
   #mobile-photographer-profile .image-container {
     width: 130px;
