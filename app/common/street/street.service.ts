@@ -1,7 +1,6 @@
-import {Injectable} from 'angular2/core'
 const d3 = require('d3');
+const _ = require('lodash');
 const device = require('device.js')();
-const _=require('lodash');
 const isDesktop = device.desktop();
 
 export class StreetDrawService {
@@ -22,18 +21,22 @@ export class StreetDrawService {
     this.width = parseInt(this.svg.style('width'), 10);
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
+
     this.scale = d3
       .scale.log()
       .domain([1, 10, 100, 10000])
       .range([0.07 * this.width, 0.375 * this.width, 0.75 * this.width, 0.97 * this.width]);
+
     return this;
   }
-  set setSvg(element:HTMLElement){
+
+  set setSvg(element:HTMLElement) {
     this.svg = d3.select(element);
   }
 
   public set(key, val):this {
     this[key] = val;
+
     return this;
   };
 
@@ -44,17 +47,22 @@ export class StreetDrawService {
   protected whatIsIncome(positionX):any {
     let index = _.sortedIndex(this.fullIncomeArr, positionX);
     let indexL = index - 1;
+
     if (indexL <= 0) {
       return _.first(this.places);
     }
+
     if (index >= this.fullIncomeArr.length) {
       return _.last(this.places);
     }
+
     let right = this.scale(this.places[index].income) - positionX;
     let left = this.scale(this.places[indexL].income) - positionX;
+
     if (Math.abs(right) > Math.abs(left)) {
       return this.places[indexL];
     }
+
     return this.places[index];
   };
 
@@ -106,7 +114,6 @@ export class StreetDrawService {
         .style('opacity', '0.7');
     }
 
-
     this.svg
       .append('polygon')
       .attr('class', 'road')
@@ -140,7 +147,6 @@ export class StreetDrawService {
       .attr('stroke-width', 1.5)
       .attr('stroke', 'white');
 
-
     this.incomeArr.length = 0;
 
     this.svg
@@ -154,12 +160,15 @@ export class StreetDrawService {
       })
       .attr('x', (d) => {
         let indent = 0;
+
         if ((d + '').length === 2) {
           indent = 11;
         }
+
         if ((d + '').length === 3) {
           indent = 15;
         }
+
         return this.scale(d) - indent;
       })
       .attr('y', this.height)
@@ -172,33 +181,37 @@ export class StreetDrawService {
     if (!d) {
       return;
     }
+
     this
       .set('hoverPlace', null)
       .removeHouses('chosen')
       .removeHouses('hover');
+
     let places = _.filter(this.places, (place:any) => {
       return place.income === d.income;
     });
+
     if (places.length === 1) {
       this.set('hoverPlace', places[0])
         .drawHoverHouse(places[0])
     } else {
-
       this.set('hoverPlace', places[0])
         .drawHoverHouse(places[0], true)
     }
+
     let options = {
       places: places,
       left: this.scale(d.income),
     };
+
     cb(options);
   };
-
 
   public drawHouses(places):this {
     let halfHouseWidth = 9.5;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 11;
+
     this.svg.selectAll('polygon.chosen')
       .data(places)
       .enter()
@@ -206,6 +219,7 @@ export class StreetDrawService {
       .attr('class', 'chosen')
       .attr('points', (datum)=> {
         let point1, point2, point3, point4, point5, point6, point7;
+
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
           point1 = `${ scaleDatumIncome + roofX},${this.halfOfHeight}`;
@@ -216,11 +230,13 @@ export class StreetDrawService {
           point6 = `${scaleDatumIncome - roofX },${ roofY}`;
           point7 = `${scaleDatumIncome - roofX },${ this.halfOfHeight}`;
         }
+
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke', '#98a5b0')
       .style('fill', '#a9b3bc');
+
     return this;
   };
 
@@ -231,6 +247,7 @@ export class StreetDrawService {
     let halfHouseWidth = 11.5;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 14;
+
     this.svg.selectAll('polygon.hover')
       .data([place])
       .enter()
@@ -238,6 +255,7 @@ export class StreetDrawService {
       .attr('class', 'hover')
       .attr('points', (datum)=> {
         let point1, point2, point3, point4, point5, point6, point7;
+
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
           point1 = `${scaleDatumIncome + roofX },${ this.halfOfHeight}`;
@@ -248,6 +266,7 @@ export class StreetDrawService {
           point6 = `${scaleDatumIncome - roofX },${roofY}`;
           point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight}`;
         }
+
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
@@ -256,14 +275,17 @@ export class StreetDrawService {
         if (gray) {
           return '#98a5b0'
         }
+
         return !datum ? void 0 : fillsOfBorders[datum.region];
       })
       .style('fill', (datum) => {
         if (gray) {
           return '#a9b3bc'
         }
+
         return !datum ? void 0 : fills[datum.region];
       });
+
     return this;
   };
 
@@ -287,26 +309,32 @@ export class StreetDrawService {
   public clearAndRedraw(places, slider = false):this {
     this.removeHouses('hover')
       .removeHouses('chosen');
+
     if (slider) {
       this.drawHoverHouse(places[0]);
-      return
+      
+      return;
     }
+    
     this.drawHouses(places);
+    
     return this;
   };
-
 
   public removeHouses(selector):this {
     this.svg.selectAll('rect.' + selector).remove('rect.' + selector);
     this.svg.selectAll('polygon.' + selector).remove('polygon.' + selector);
+    
     if (selector === 'chosen') {
       this.svg.selectAll('polygon.chosenLine').remove('polygon.chosenLine');
     }
+    
     return this;
   };
 
   public clearSvg():this {
     this.svg.selectAll('*').remove('*');
+    
     return this;
   };
 }
