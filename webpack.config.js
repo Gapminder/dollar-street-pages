@@ -34,6 +34,7 @@ const config = {
     angular2: [
       'angular2/bundles/angular2-polyfills',
       'rxjs',
+      'es6-shim',
       'angular2/platform/browser',
       'angular2/common',
       'angular2/core'
