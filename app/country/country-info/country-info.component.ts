@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
@@ -15,7 +15,7 @@ let style = require('./country-info.css');
 export class CountryInfoComponent implements OnInit, OnDestroy {
   @Input()
   private countryId:string;
-
+  private isShowInfo:boolean = false;
   private country:any = {};
   private countryInfoService:any;
   private places:any;
@@ -29,7 +29,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit():void {
-    this.countryInfoServiceSubscribe=this.countryInfoService.getCountryInfo(`id=${this.countryId}`)
+    this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}`)
       .subscribe((res:any) => {
         if (res.err) {
           return res.err;
@@ -39,7 +39,8 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         this.photosQantity = res.data.images;
       });
   }
-  ngOnDestroy():void{
+
+  ngOnDestroy():void {
     this.countryInfoServiceSubscribe.unsubscribe()
   }
 

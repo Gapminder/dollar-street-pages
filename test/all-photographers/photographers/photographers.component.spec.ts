@@ -9,7 +9,7 @@ import {
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services'
 import {MockService} from '../../common-mocks/mock.service.template'
-import {photographers} from "./mocks/data.ts";
+import {photographers} from "../mocks/data.ts";
 
 import {PhotographersComponent} from '../../../app/all-photographers/photographers/photographers.component.ts';
 
@@ -39,7 +39,7 @@ describe("PhotographersComponent", () => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
       fixture.destroy()
-      expect(context.photographersServiceSubscribe.isUnsubscribe).toBe(true);
+      expect(mockPhotographersService.isUnsubscribe).toBe(true);
     })
   }));
   it("PhotographersComponent must show on mobile ", injectAsync([TestComponentBuilder], (tcb) => {
