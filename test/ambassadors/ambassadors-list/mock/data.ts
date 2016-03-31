@@ -1,7 +1,7 @@
 /**
  * Created by igor on 3/30/16.
  */
-export let ampassadors = {
+export let ambassadors = {
   err: null, data: [{
     position: 'Teachers',
     ambassadors: [

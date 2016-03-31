@@ -5,8 +5,9 @@
 import {provide} from 'angular2/core';
 export class MockService {
   private response;
+  private name:string;
   private isUnsubscribe = false;
-
+    
   subscribe(callback):this {
     callback(this.fakeResponse);
     return this;
@@ -19,12 +20,16 @@ export class MockService {
     this.isUnsubscribe = !this.isUnsubscribe;
   }
 
+  set serviceName(name:string){
+      this.name=name
+  }
+  
   getProviders():Array<any> {
-    return [provide('PhotographersService', {useValue: this})];
+    return [provide(this.name, {useValue: this})];
   }
 
-  getPhotographers():this {
-    return this
+  set getMethod(name){
+    this[name]=()=>this
   }
 
   get fakeResponse() {

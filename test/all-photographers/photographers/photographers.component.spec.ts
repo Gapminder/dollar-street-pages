@@ -15,6 +15,8 @@ import {PhotographersComponent} from '../../../app/all-photographers/photographe
 
 describe("PhotographersComponent", () => {
   let mockPhotographersService = new MockService();
+  mockPhotographersService.serviceName='PhotographersService';
+  mockPhotographersService.getMethod='getPhotographers';
   mockPhotographersService.fakeResponse=photographers;
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {

@@ -12,18 +12,20 @@ import {
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services'
 import {MockService} from '../../common-mocks/mock.service.template'
-import {ampassadors} from "./mock/data.ts";
+import {ambassadors} from "./mock/data.ts";
 
 import {AmbassadorsListComponent} from '../../../app/ambassadors/ambassadors-list/ambassadors-list.component';
 
 describe("PhotographersComponent", () => {
   let mockAmbassadorsService = new MockService();
-  mockAmbassadorsService.fakeResponse=ampassadors;
+  mockAmbassadorsService.serviceName = 'AmbassadorsListService';
+  mockAmbassadorsService.getMethod = 'getAmbassadors';
+  mockAmbassadorsService.fakeResponse = ambassadors;
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
       mockCommonDependency.getProviders(),
-      mockAmbassadorsService.getProviders(),
+      mockAmbassadorsService.getProviders()
     ];
   });
   it("AmbassadorsComponent must init ", injectAsync([TestComponentBuilder], (tcb) => {
@@ -31,6 +33,38 @@ describe("PhotographersComponent", () => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
       expect(context.ambassadorsList.length).toEqual(3)
+    })
+  }));
+  it("AmbassadorsComponent people render by right title ", injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AmbassadorsListComponent).then((fixture) => {
+      let context = fixture.debugElement.componentInstance;
+      let nativeElement = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
+      let sectionHeaders = nativeElement.querySelectorAll('.ambassadors-peoples h2');
+      expect(sectionHeaders[0].innerHTML).toEqual('Teachers');
+      expect(sectionHeaders[1].innerHTML).toEqual('Writers');
+      expect(sectionHeaders[2].innerHTML).toEqual('Organisations')
+    })
+  }));
+  it("AmbassadorsComponent show more ", injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AmbassadorsListComponent).then((fixture) => {
+      let context = fixture.debugElement.componentInstance;
+      let nativeElement = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
+
+      let sections = nativeElement.querySelectorAll('.ambassadors-peoples:first-child .ambassadors-people');
+      let showMore = nativeElement.querySelectorAll('.see-more');
+      
+      for (let section of sections){
+        expect(section.classList.contains('show')).toEqual(false);
+      }
+      expect(showMore[0].innerHTML).toEqual('Show more »');
+      showMore[0].click();
+      fixture.detectChanges();
+      expect(showMore[0].innerHTML).toEqual('Show less »');
+      for (let section of sections){
+        expect(section.classList.contains('show')).toEqual(true);
+      }
     })
   }));
 });
