@@ -19,8 +19,11 @@ export class AmbassadorsListComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit():void {
-    this.ambassadorsListService.getAmbassadors({}).subscribe((data)=> {
-      this.ambassadorsList = data;
+    this.ambassadorsListService.getAmbassadors({}).subscribe((res)=> {
+      if (res.err) {
+        return res.err;
+      }
+      this.ambassadorsList = res.data;
     })
   }
 
