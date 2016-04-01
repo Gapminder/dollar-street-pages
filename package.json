@@ -17,8 +17,14 @@
     "watch:prod": "NODE_ENV=production ./node_modules/.bin/webpack --progress --color -w",
     "serve": "./node_modules/.bin/lite-server",
     "pretest": "npm run lint:eslint &&./node_modules/.bin/gulp tslint",
-    "unit-tests":"./node_modules/.bin/karma start -w"
+    "unit-tests": "./node_modules/.bin/karma start -w",
+    "codecov": "cat ./coverage/report-lcov/lcov.info | ./node_modules/.bin/codecov -t df0807c8-8da5-4cfd-beff-2ef4c6f3f8ea",
+    "pre-commit-test":"./node_modules/.bin/karma start ./.config/karma-pre.config.js"
   },
+  "pre-commit":[
+    "pre-commit-test",
+    "codecov"
+  ],
   "dependencies": {
     "angular2": "2.0.0-beta.12",
     "angulartics2": "1.0.0",
@@ -33,6 +39,7 @@
     "zone.js": "0.6.6"
   },
   "devDependencies": {
+    "codecov": "1.0.1",
     "compression-webpack-plugin": "0.2.0",
     "concurrently": "1.0.0",
     "copy-webpack-plugin": "1.1.1",

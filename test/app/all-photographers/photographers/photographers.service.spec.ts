@@ -18,9 +18,9 @@ import {
   ResponseOptions
 } from 'angular2/http';
 
-import {config} from '../../../app/app.config.ts';
+import {config} from '../../../../app/app.config.ts';
 
-import {PhotographersService} from '../../../app/all-photographers/photographers/photographers.service.ts';
+import {PhotographersService} from '../../../../app/all-photographers/photographers/photographers.service.ts';
 
 describe('PhotographersService', () => {
   beforeEachProviders(() => {

@@ -10,8 +10,8 @@ import {
   TestComponentBuilder,
 } from 'angular2/testing';
 
-import {MockCommonDependency} from '../common-mocks/mocked.services'
-import {AllPhotographersComponent} from '../../app/all-photographers/all-photographers.component';
+import {MockCommonDependency} from '../../app/common-mocks/mocked.services'
+import {AllPhotographersComponent} from '../../../app/all-photographers/all-photographers.component';
 
 
 describe("PhotographersComponent", () => {
