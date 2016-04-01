@@ -1,6 +1,6 @@
-import {Component, Input, Output, Inject, OnInit,OnDestroy, EventEmitter} from 'angular2/core';
-import {RouterLink,Router} from 'angular2/router';
-import {Observable} from "rxjs/Observable";
+import {Component, Input, Output, Inject, OnInit, OnDestroy, EventEmitter} from 'angular2/core';
+import {RouterLink, Router} from 'angular2/router';
+import {Observable} from 'rxjs/Observable';
 
 import {MainMenuComponent} from '../menu/menu.component';
 import {SearchComponent} from '../search/search.component';
@@ -16,7 +16,7 @@ let style = require('./header.css');
   directives: [SearchComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
 })
 
-export class HeaderComponent implements OnInit,OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
   @Input()
   private query:string;
   @Input('hoverPlace')
@@ -43,19 +43,22 @@ export class HeaderComponent implements OnInit,OnDestroy {
 
   ngOnInit():void {
     this.headerServiceSubscribe = this.headerService.getDefaultThing()
-      .subscribe((res:any)=> {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
+
         this.defaultThing = res.data;
       });
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place)=> {
+
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place) => {
         this.hoveredPlace = place;
-      })
+      });
   }
 
   ngOnDestroy():void {
     this.headerServiceSubscribe.unsubscribe();
+
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
     }
@@ -68,7 +71,8 @@ export class HeaderComponent implements OnInit,OnDestroy {
   activeThingTransfer(thing) {
     this.activeThing = thing;
   }
-  goToMain(){
-    this.router.navigate(['Main'])
+
+  goToMain() {
+    this.router.navigate(['Main']);
   }
 }

@@ -43,7 +43,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy():void {
-    this.countryInfoServiceSubscribe.unsubscribe()
+    this.countryInfoServiceSubscribe.unsubscribe();
   }
 
 

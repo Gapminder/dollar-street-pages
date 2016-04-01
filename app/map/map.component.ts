@@ -18,7 +18,7 @@ let device = require('device.js')();
   directives: [RouterLink, HeaderComponent, LoaderComponent, FooterComponent]
 })
 
-export class MapComponent implements OnInit,OnDestroy {
+export class MapComponent implements OnInit, OnDestroy {
   private mapService:any;
   private places:any[] = [];
   private countries:any[] = [];
@@ -68,7 +68,7 @@ export class MapComponent implements OnInit,OnDestroy {
     this.init = true;
     this.thing = this.routeParams.get('thing');
 
-    this.urlChanged(this.thing)
+    this.urlChanged(this.thing);
   }
 
   urlChanged(thing:any) {
@@ -90,7 +90,7 @@ export class MapComponent implements OnInit,OnDestroy {
     }
 
     this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
-      .subscribe((res)=> {
+      .subscribe((res) => {
         if (res.err) {
           return res.err;
         }
@@ -125,7 +125,7 @@ export class MapComponent implements OnInit,OnDestroy {
     let mapImage = this.element.nativeElement.querySelector('.map-color');
 
     img.onload = () => {
-      this.zone.run(()=> {
+      this.zone.run(() => {
         let width = mapImage.offsetWidth;
         let height = mapImage.offsetHeight;
         let greenwich = 0.439 * width;
@@ -167,7 +167,7 @@ export class MapComponent implements OnInit,OnDestroy {
     this.onMarker = true;
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place)=> {
+    this.lefSideCountries = this.places.filter((place) => {
       return place.country === this.currentCountry;
     });
 
@@ -189,7 +189,7 @@ export class MapComponent implements OnInit,OnDestroy {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker, i)=> {
+    Array.prototype.forEach.call(this.markers, (marker, i) => {
       if (i === index) {
         return;
       }
@@ -203,8 +203,8 @@ export class MapComponent implements OnInit,OnDestroy {
 
     portraitBox.style.opacity = '0';
 
-    img.onload = ()=> {
-      this.zone.run(()=> {
+    img.onload = () => {
+      this.zone.run(() => {
         if (!this.hoverPlace) {
           return;
         }
@@ -249,7 +249,7 @@ export class MapComponent implements OnInit,OnDestroy {
 
     this.onMarker = false;
 
-    setTimeout(()=> {
+    setTimeout(() => {
       if (this.onThumb) {
         this.onThumb = !this.onThumb;
 
@@ -285,7 +285,7 @@ export class MapComponent implements OnInit,OnDestroy {
     }
 
     if (this.isOpenLeftSide) {
-      return
+      return;
     }
 
     this.markers = this.map.querySelectorAll('.marker');
@@ -360,7 +360,7 @@ export class MapComponent implements OnInit,OnDestroy {
   private mobileClickOnMarker(country) {
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place)=> {
+    this.lefSideCountries = this.places.filter((place) => {
       return place.country === this.currentCountry;
     });
 
@@ -370,7 +370,7 @@ export class MapComponent implements OnInit,OnDestroy {
   }
 
   private thumbHover() {
-    this.onThumb = true
+    this.onThumb = true;
   }
 
   private toUrl(image) {

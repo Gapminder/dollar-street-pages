@@ -31,7 +31,7 @@ export class HeaderMainComponent {
   }
 
   goToScroll(step, duration, inc, cb) {
-    return ()=> {
+    return () => {
       let currentDuration = duration - inc;
 
       document.body.scrollTop += step;

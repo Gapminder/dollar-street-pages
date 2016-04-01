@@ -5,15 +5,15 @@ const path = require('path');
 const webpack = require('webpack');
 
 const CompressionPlugin = require('compression-webpack-plugin');
-//const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin=require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isProduction = (process.env.NODE_ENV || 'development') === 'production';
-const devtool = process.env.NODE_ENV !== 'test' ? 'source-map' : 'inline-source-map';
+const devtool = isProduction ? 'inline-source-map' : 'source-map';
 const dest = 'dist';
 const absDest = root(dest);
 
 const config = {
-  devtool: devtool,
+  devtool,
   debug: false,
 
   verbose: true,
@@ -98,7 +98,7 @@ const config = {
     }),
     // static assets
     //new CopyWebpackPlugin([{from: 'demo/favicon.ico', to: 'favicon.ico'}]),
-    //new CopyWebpackPlugin([{from: 'demo/assets', to: 'assets'}]),
+    new CopyWebpackPlugin([{from: 'app/assets', to: 'assets'}]),
     // generating html
     new HtmlWebpackPlugin({template: 'app/index.html'})
   ]
@@ -109,7 +109,7 @@ function pushPlugins(conf) {
     return;
   }
 
-  conf.plugins.push.apply(conf.plugins, [
+  conf.plugins.push(conf.plugins, [
     //production only
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
@@ -138,6 +138,6 @@ pushPlugins(config);
 
 module.exports = config;
 
-function root(p) {
-  return path.join(__dirname, p);
+function root(location) {
+  return path.join(__dirname, location);
 }

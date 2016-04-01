@@ -45,8 +45,8 @@ export class SocialShareButtons implements OnInit, OnDestroy {
   getUrl() {
     let query = `url=${this.location.path()}`;
 
-    this.socialShareButtonsServiceSubscribe=this.socialShareButtonsService.getUrl(query)
-      .subscribe((res:any)=> {
+    this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl(query)
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
@@ -58,7 +58,7 @@ export class SocialShareButtons implements OnInit, OnDestroy {
   openPopUp(originalUrl:string) {
     let left = (window.innerWidth - 490) / 2;
 
-    let popupWin = window.open(originalUrl + this.url, "contacts", '"location, width=490, height=368, top=100, left=' + left);
+    let popupWin = window.open(originalUrl + this.url, 'contacts', 'location, width=490, height=368, top=100, left=' + left);
     popupWin.focus();
   }
 }

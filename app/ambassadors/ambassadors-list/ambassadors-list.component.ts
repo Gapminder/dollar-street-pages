@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
+import {Component, OnInit, Inject} from 'angular2/core';
 
 let tpl = require('./ambassadors-list.template.html');
 let style = require('./ambassadors-list.css');
@@ -9,7 +9,7 @@ let style = require('./ambassadors-list.css');
   styles: [style]
 })
 
-export class AmbassadorsListComponent implements OnInit,OnDestroy {
+export class AmbassadorsListComponent implements OnInit {
   private ambassadorsListService:any;
   private ambassadorsList:any;
   private showedBlock:number;
@@ -19,24 +19,22 @@ export class AmbassadorsListComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit():void {
-    this.ambassadorsListService.getAmbassadors({}).subscribe((res)=> {
+    this.ambassadorsListService.getAmbassadors({}).subscribe((res) => {
       if (res.err) {
         return res.err;
       }
+
       this.ambassadorsList = res.data;
-    })
+    });
   }
-
-
-  ngOnDestroy() {
-  }
-
 
   show(i:number) {
     if (this.showedBlock === i) {
       this.showedBlock = null;
-      return
+
+      return;
     }
+
     this.showedBlock = i;
   }
 }

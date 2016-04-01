@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Inject, ElementRef} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject, ElementRef} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 import {Observable} from 'rxjs/Rx';
 
@@ -17,7 +17,7 @@ const isDesktop = device.desktop();
   directives: [RouterLink, Angulartics2On]
 })
 
-export class PlacesMainComponent implements OnInit,OnDestroy {
+export class PlacesMainComponent implements OnInit, OnDestroy {
   private placeService:any;
   private places:any[] = [];
   private element:any;
@@ -37,7 +37,7 @@ export class PlacesMainComponent implements OnInit,OnDestroy {
 
   ngOnInit():void {
     this.placeServiceSubscribe = this.placeService.getMainPlaces()
-      .subscribe((res)=> {
+      .subscribe((res) => {
         if (res.err) {
           return res.err;
         }
@@ -109,7 +109,7 @@ export class PlacesMainComponent implements OnInit,OnDestroy {
       this.hoverPlace = place;
     });
 
-    Array.prototype.forEach.call(this.markers, (marker, i)=> {
+    Array.prototype.forEach.call(this.markers, (marker, i) => {
       if (i === index) {
         return;
       }
@@ -123,7 +123,7 @@ export class PlacesMainComponent implements OnInit,OnDestroy {
       let portraitBox = this.map.querySelector('.hover_portrait') as HTMLElement;
       portraitBox.style.opacity = '0';
 
-      img.onload = ()=> {
+      img.onload = () => {
         this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetWidth - 40;
         this.hoverPortraitLeft = this.hoverPlace.left - portraitBox.offsetHeight / 2 + 27;
 

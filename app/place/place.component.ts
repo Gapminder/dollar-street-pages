@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, OnDestroy, NgZone} from 'angular2/core';
 import {RouteParams, RouterLink} from 'angular2/router';
-import {Subject} from "rxjs/Subject";
+import {Subject} from 'rxjs/Subject';
 
 import {FooterComponent} from '../common/footer/footer.component';
 import {StreetComponent} from '../common/street/street.component';
@@ -23,7 +23,7 @@ let isDesktop = device.desktop();
   directives: [RouterLink, HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent, LoaderComponent]
 })
 
-export class PlaceComponent implements OnInit,OnDestroy {
+export class PlaceComponent implements OnInit, OnDestroy {
   private streetPlaces:Subject<any> = new Subject();
   private sliderPlaces:Subject<any> = new Subject();
   private chosenPlaces:Subject<any> = new Subject();
@@ -91,7 +91,7 @@ export class PlaceComponent implements OnInit,OnDestroy {
     this.thing = thing._id;
     this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`);
 
-    this.zone.run(()=> {
+    this.zone.run(() => {
       this.loader = false;
     });
   }
@@ -104,7 +104,7 @@ export class PlaceComponent implements OnInit,OnDestroy {
     this.placeStreetServiceSubscribe = this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
       this.places = res.data.places;
       this.sliderPlaces.next(this.places);
-    })
+    });
   }
 
   choseCurrentPlace(place) {
@@ -117,7 +117,7 @@ export class PlaceComponent implements OnInit,OnDestroy {
 
     this.changeLocation(place[0], this.thing);
 
-    this.zone.run(()=> {
+    this.zone.run(() => {
       this.loader = true;
     });
   }
@@ -126,12 +126,16 @@ export class PlaceComponent implements OnInit,OnDestroy {
     let query = `thing=${thing}&place=${place._id}&image=${place.image}`;
     this.place = place._id;
     this.image = place.image;
+
     if (this.init) {
       this.init = !this.init;
+
       return;
     }
+
     this.urlChangeService.replaceState('/place', query);
-    this.routeParams.params = {'thing': thing, 'place': place._id, 'image': place.image}
+    this.routeParams.params = {'thing': thing, 'place': place._id, 'image': place.image};
+
     this.init = false;
   }
 }

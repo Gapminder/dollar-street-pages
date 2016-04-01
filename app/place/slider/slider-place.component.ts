@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input, NgZone} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 import {NgStyle} from 'angular2/common';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
@@ -21,7 +21,7 @@ let proportion = 2.24;
   directives: [PlaceMapComponent, RouterLink, NgStyle]
 })
 
-export class SliderPlaceComponent implements OnInit,OnDestroy {
+export class SliderPlaceComponent implements OnInit, OnDestroy {
   @Input('controllSlider')
   private controllSlider:Observable<any>;
   @Input('places')
@@ -61,7 +61,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
 
   ngOnInit():void {
     this.streetPlacesSubscribe = this.streetPlaces
-      .subscribe((places)=> {
+      .subscribe((places) => {
         this.thing = this.routeParams.get('thing');
         this.image = this.routeParams.get('image');
         this.place = this.routeParams.get('place');
@@ -72,7 +72,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
 
     this.keyUpSubscribe = Observable
       .fromEvent(document, 'keyup')
-      .subscribe((e:KeyboardEvent)=> {
+      .subscribe((e:KeyboardEvent) => {
         if (this.popIsOpen) {
           return;
         }
@@ -94,8 +94,8 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
 
     this.resizeSubscibe = Observable
       .fromEvent(window, 'resize')
-      .debounceTime(300).subscribe(()=> {
-        this.resizeSlider()
+      .debounceTime(300).subscribe(() => {
+        this.resizeSlider();
       });
   }
 
@@ -130,7 +130,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     let img = new Image();
 
     img.onload = () => {
-      this.zone.run(()=> {
+      this.zone.run(() => {
         this.resizeSlider();
         this.currentPlace.emit([this.chosenPlace]);
       });
@@ -187,7 +187,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     let newPrevImage = new Image();
 
     newPrevImage.onload = () => {
-      this.zone.run(()=> {
+      this.zone.run(() => {
         setDescriptionsWidth(1);
         animationSlider(shiftPrev, prevSlide);
       });
@@ -214,7 +214,7 @@ export class SliderPlaceComponent implements OnInit,OnDestroy {
     let newNextImage = new Image();
 
     newNextImage.onload = () => {
-      this.zone.run(()=> {
+      this.zone.run(() => {
         setDescriptionsWidth(3);
         animationSlider(shiftNext, nextSlide);
       });

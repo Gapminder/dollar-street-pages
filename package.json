@@ -16,12 +16,15 @@
     "watch:dev": "./node_modules/.bin/webpack --progress --color -w",
     "watch:prod": "NODE_ENV=production ./node_modules/.bin/webpack --progress --color -w",
     "serve": "./node_modules/.bin/lite-server",
-    "pretest": "npm run lint:eslint &&./node_modules/.bin/gulp tslint",
     "unit-tests": "./node_modules/.bin/karma start -w",
     "codecov": "cat ./coverage/report-lcov/lcov.info | ./node_modules/.bin/codecov -t df0807c8-8da5-4cfd-beff-2ef4c6f3f8ea",
-    "pre-commit-test":"./node_modules/.bin/karma start ./.config/karma-pre.config.js"
+    "pre-commit-test":"./node_modules/.bin/karma start ./.config/karma-pre.config.js",
+    "eslint": "./node_modules/.bin/eslint --ignore-path .gitignore --ext js --fix . .config",
+    "lint": "npm run tslint && npm run eslint",
+    "tslint": "./node_modules/.bin/gulp tslint"
   },
   "pre-commit":[
+    "lint",
     "pre-commit-test",
     "codecov"
   ],

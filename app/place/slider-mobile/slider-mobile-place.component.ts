@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
@@ -16,7 +16,7 @@ let style = require('./slider-mobile-place.css');
   directives: [PlaceMapComponent, RouterLink]
 })
 
-export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
+export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   @Input('places')
   private streetPlaces:Observable<any>;
   @Input('activeThing')
@@ -54,7 +54,7 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit():void {
-    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places)=> {
+    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places) => {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
       this.allPlaces = places;
@@ -68,8 +68,8 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
 
     this.resizeSubscribe = Observable
       .fromEvent(window, 'resize')
-      .debounceTime(300).subscribe(()=> {
-        this.resizeSlider()
+      .debounceTime(300).subscribe(() => {
+        this.resizeSlider();
       });
   }
 
@@ -102,7 +102,7 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let img = new Image();
 
     img.onload = () => {
-      this.zone.run(()=> {
+      this.zone.run(() => {
         this.resizeSlider();
 
         this.currentPlace.emit([this.chosenPlace]);
@@ -139,7 +139,7 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let newPrevImage = new Image();
 
     newPrevImage.onload = () => {
-      this.zone.run(()=> {
+      this.zone.run(() => {
         let sliderHeight = $('.slider-mobile-slide:nth-child(1) img').height();
         this.sliderContainer.css({height: sliderHeight});
 
@@ -169,7 +169,7 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let newNextImage = new Image();
 
     newNextImage.onload = () => {
-      this.zone.run(()=> {
+      this.zone.run(() => {
         let sliderHeight = $('.slider-mobile-slide:nth-child(3) img').height();
         this.sliderContainer.css({height: sliderHeight});
 
@@ -212,13 +212,12 @@ export class SliderMobilePlaceComponent implements OnInit,OnDestroy {
     let touchEnd = Observable.fromEvent(sliderContainer, 'touchend');
 
     this.touchSubscribe = Observable
-      .zip(touchStart, touchEnd,
-        function (touchStart:any, touchEnd:any) {
-          let startX = touchStart.touches[0].clientX;
-          let endX = touchEnd.changedTouches[0].clientX;
+      .zip(touchStart, touchEnd, (touchStartRes:any, touchEndRes:any) => {
+        let startX = touchStartRes.touches[0].clientX;
+        let endX = touchEndRes.changedTouches[0].clientX;
 
-          return {startX, endX};
-        })
+        return {startX, endX};
+      })
       .subscribe((results) => {
         let startX = results.startX;
         let endX = results.endX;

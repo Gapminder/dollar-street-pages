@@ -15,7 +15,7 @@ let style = require('./country.css');
   styles: [style],
   directives: [HeaderWithoutSearchComponent,
     CountryInfoComponent,
-    CountryPlacesComponent, 
+    CountryPlacesComponent,
     FooterComponent]
 })
 

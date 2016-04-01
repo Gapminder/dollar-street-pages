@@ -17,7 +17,7 @@ let style = require('./photographers.css');
   pipes: [PhotographersFilter]
 })
 
-export class PhotographersComponent implements OnInit,OnDestroy {
+export class PhotographersComponent implements OnInit, OnDestroy {
   private photographersService:any;
   private photographersByCountry:any[] = [];
   private photographersByName:any[] = [];
@@ -31,14 +31,14 @@ export class PhotographersComponent implements OnInit,OnDestroy {
 
   ngOnInit():void {
     this.photographersServiceSubscribe = this.photographersService.getPhotographers({})
-      .subscribe((res:any)=> {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
+
         this.photographersByCountry = res.data.countryList;
         this.photographersByName = res.data.photographersList;
         this.loader = true;
-
       });
   }
 
@@ -46,7 +46,7 @@ export class PhotographersComponent implements OnInit,OnDestroy {
     this.photographersServiceSubscribe.unsubscribe();
   }
 
-  toggleLeftSide(e){
-    e.target.parentNode.classList.toggle('show')
+  toggleLeftSide(e) {
+    e.target.parentNode.classList.toggle('show');
   }
 }

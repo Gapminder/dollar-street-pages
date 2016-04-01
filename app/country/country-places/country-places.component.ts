@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
@@ -15,7 +15,7 @@ let style = require('./country-places.css');
   directives: [RouterLink, Angulartics2On, LoaderComponent]
 })
 
-export class CountryPlacesComponent implements OnInit,OnDestroy {
+export class CountryPlacesComponent implements OnInit, OnDestroy {
   @Input()
   private countryId:string;
 
@@ -30,7 +30,7 @@ export class CountryPlacesComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit():void {
-    this.countryPlacesServiceSubscribe=this.countryPlacesService.getCountryPlaces(`id=${this.countryId}`)
+    this.countryPlacesServiceSubscribe = this.countryPlacesService.getCountryPlaces(`id=${this.countryId}`)
       .subscribe((res:any) => {
         if (res.err) {
           return res.err;
@@ -41,7 +41,8 @@ export class CountryPlacesComponent implements OnInit,OnDestroy {
         this.loader = true;
       });
   }
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     this.countryPlacesServiceSubscribe.unsubscribe();
   }
 }

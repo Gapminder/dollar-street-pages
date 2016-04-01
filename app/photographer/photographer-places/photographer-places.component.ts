@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
@@ -15,7 +15,7 @@ let style = require('./photographer-places.css');
   directives: [RouterLink, Angulartics2On, LoaderComponent]
 })
 
-export class PhotographerPlacesComponent implements OnInit,OnDestroy {
+export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   @Input()
   private photographerId:string;
 
@@ -30,7 +30,8 @@ export class PhotographerPlacesComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit():void {
-    this.photographerPlacesServiceSubscribe=this.photographerPlacesService.getPhotographerPlaces(`id=${this.photographerId}`)
+    this.photographerPlacesServiceSubscribe = this.photographerPlacesService
+      .getPhotographerPlaces(`id=${this.photographerId}`)
       .subscribe((res:any) => {
         if (res.err) {
           return res.err;
@@ -41,7 +42,8 @@ export class PhotographerPlacesComponent implements OnInit,OnDestroy {
         this.loader = true;
       });
   }
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     this.photographerPlacesServiceSubscribe.unsubscribe();
   }
 }

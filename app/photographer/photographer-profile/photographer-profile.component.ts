@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input,Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 let tpl = require('./photographer-profile.template.html');
@@ -11,7 +11,7 @@ let style = require('./photographer-profile.css');
   directives: [RouterLink]
 })
 
-export class PhotographerProfileComponent implements OnInit,OnDestroy {
+export class PhotographerProfileComponent implements OnInit, OnDestroy {
   @Input()
   private photographerId:string;
 
@@ -38,7 +38,7 @@ export class PhotographerProfileComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy():void {
-    this.photographerProfileServiceSubscribe.unsubscribe()
+    this.photographerProfileServiceSubscribe.unsubscribe();
   }
 
   isShowInfoMore(photographer:any):boolean {

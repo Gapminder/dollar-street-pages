@@ -20,7 +20,7 @@
   <div class="title-container pull-left" *ngIf="mapComponent">{{activeThing.name}}</div>
 
   <img class="open-modal-icon"
-       src="/app/assets/img/search-icon.svg"
+       src="/assets/img/search-icon.svg"
        (click)="isOpen = !isOpen" alt="search-icon"/>
 </div>
 
@@ -29,7 +29,7 @@
     <input class="form-control"
            placeholder="Enter keyword"
            [(ngModel)]="search.text">
-    <img src="/app/assets/img/search-icon.svg" alt=""/>
+    <img src="/assets/img/search-icon.svg" alt=""/>
     <div class="close-modal" (click)="isOpen = !isOpen">X</div>
   </div>
 
@@ -92,7 +92,7 @@
                  [ngClass]="{active: activeRegions[0] === 'World' && activeCountries[0] === 'World'}"
                  (click)="goToRegions('World')">
               <div class="item-icon">
-                <img src="/app/assets/img/world.svg" alt="">
+                <img src="/assets/img/world.svg" alt="">
               </div>
 
               <div class="item-name world">World</div>
@@ -104,10 +104,10 @@
                [ngClass]="{active: activeRegions.indexOf(region) !== -1}"
                (click)="goToRegions(region)">
             <div class="item-icon">
-              <img *ngIf="region === 'Africa'" src="/app/assets/img/africa.svg" alt="">
-              <img *ngIf="region === 'Europe'" src="/app/assets/img/europe.svg" alt="">
-              <img *ngIf="region === 'Asia'" src="/app/assets/img/asia.svg" alt="">
-              <img *ngIf="region === 'America'" src="/app/assets/img/america.svg" alt="">
+              <img *ngIf="region === 'Africa'" src="/assets/img/africa.svg" alt="">
+              <img *ngIf="region === 'Europe'" src="/assets/img/europe.svg" alt="">
+              <img *ngIf="region === 'Asia'" src="/assets/img/asia.svg" alt="">
+              <img *ngIf="region === 'America'" src="/assets/img/america.svg" alt="">
             </div>
 
             <div class="item-name" [ngClass]="region.toLowerCase()">{{region}}</div>

@@ -1,6 +1,6 @@
 <div id="photographer-profile">
   <div class="header">
-    <img [src]="photographer.avatar || '/app/assets/img/photographer-icon.jpg'" alt="avatar">
+    <img [src]="photographer.avatar || '/assets/img/photographer-icon.jpg'" alt="avatar">
     <h2>{{photographer.firstName}} {{photographer.lastName}}</h2>
     <p *ngIf="photographer.company && photographer.company.name && !photographer.company.link">
       {{photographer.company.name}}
@@ -59,7 +59,7 @@
 
 <div id="mobile-photographer-profile" class="row" [ngClass]="{'open': isShowInfo}">
   <div class="image-container">
-    <img [src]="photographer.avatar || '/app/assets/img/photographer-icon.jpg'" alt="avatar">
+    <img [src]="photographer.avatar || '/assets/img/photographer-icon.jpg'" alt="avatar">
 
     <div class="social-network-container"
          *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">

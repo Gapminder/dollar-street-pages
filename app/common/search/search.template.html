@@ -30,7 +30,7 @@
         <div class="search-content pull-left">
           <div class="btn-group open" [ngClass]="{open: isOpen}">
             <div class="matrix-search-button" (click)="openSearch(isOpen)">
-              <img src="/app/assets/img/search-icon.svg" alt=""/>
+              <img src="/assets/img/search-icon.svg" alt=""/>
             </div>
 
             <div id="dropdown-conteiner" class="dropdown-menu" [style.left]="modalPosition">
@@ -39,7 +39,7 @@
                        class="form-control"
                        placeholder="Enter keyword"
                        [(ngModel)]="search.text">
-                <img src="/app/assets/img/search-icon.svg" alt=""/>
+                <img src="/assets/img/search-icon.svg" alt=""/>
               </div>
               <div class="search-lists">
                 <div class="search-list-things">
@@ -65,8 +65,8 @@
                             </span>
                             <span class="pointer"
                                   (click)="goToThing(null)">
-                              <img class="checked" src="/app/assets/img/check.png">
-                              <img class="close" src="/app/assets/img/close.png">
+                              <img class="checked" src="/assets/img/check.png">
+                              <img class="close" src="/assets/img/close.png">
                             </span>
                           </div>
                         </li>
@@ -112,7 +112,7 @@
                              [ngClass]="{active: activeRegions[0] === 'World' && activeCountries[0] === 'World'}"
                              (click)="goToRegions('World')">
                           <div class="search-item-icon">
-                            <img src="/app/assets/img/world.svg" alt="">
+                            <img src="/assets/img/world.svg" alt="">
                           </div>
                           <span class="search-item-name world">World</span>
                         </div>
@@ -123,17 +123,17 @@
                             (click)="goToRegions(region)">
                           <div class="search-item">
                             <div class="search-item-icon">
-                              <img *ngIf="region === 'Africa'" src="/app/assets/img/africa.svg" alt="">
-                              <img *ngIf="region === 'Europe'" src="/app/assets/img/europe.svg" alt="">
-                              <img *ngIf="region === 'Asia'" src="/app/assets/img/asia.svg" alt="">
-                              <img *ngIf="region === 'America'" src="/app/assets/img/america.svg" alt="">
+                              <img *ngIf="region === 'Africa'" src="/assets/img/africa.svg" alt="">
+                              <img *ngIf="region === 'Europe'" src="/assets/img/europe.svg" alt="">
+                              <img *ngIf="region === 'Asia'" src="/assets/img/asia.svg" alt="">
+                              <img *ngIf="region === 'America'" src="/assets/img/america.svg" alt="">
                             </div>
 
                             <span class="search-item-name"
                                   [ngClass]="region.toLowerCase()">
                               {{region}}
                               <span class="pointer">
-                                <img class="close" src="/app/assets/img/close.png" width="7" height="7" alt="">
+                                <img class="close" src="/assets/img/close.png" width="7" height="7" alt="">
                               </span>
                             </span>
                           </div>
@@ -154,8 +154,8 @@
                               {{location.country}}
                             </span>
                             <span class="pointer">
-                              <img class="checked" src="/app/assets/img/check.png">
-                              <img class="close" src="/app/assets/img/close.png">
+                              <img class="checked" src="/assets/img/check.png">
+                              <img class="close" src="/assets/img/close.png">
                             </span>
                           </div>
                         </li>
