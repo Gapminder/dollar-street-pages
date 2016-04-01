@@ -16,7 +16,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   @Input()
   private countryId:string;
   private isShowInfo:boolean = false;
-  private country:any = {};
+  private country:any;
   private countryInfoService:any;
   private places:any;
   private countryInfoServiceSubscribe:any;
@@ -34,9 +34,11 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         if (res.err) {
           return res.err;
         }
+
         this.country = res.data.country;
         this.placesQantity = res.data.places;
         this.photosQantity = res.data.images;
+        this.videosQantity = res.data.video;
       });
   }
 

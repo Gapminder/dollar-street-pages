@@ -1,16 +1,9 @@
-#country-places p,
-#country-places h3 {
+#country-place p,
+#country-place h3 {
   margin: 0;
 }
 
-#country-places .country > h3 {
-  font-size: 20px;
-  font-family: 'Bariol Light';
-  margin-bottom: 10px;
-  margin-top: -4px;
-}
-
-#country-places .place {
+#country-place .place {
   border: 1px solid #d8dce1;
   border-radius: 3px;
   padding: 5px 15px 5px 5px;
@@ -18,62 +11,72 @@
   margin-bottom: 25px;
 }
 
-#country-places .place .place-description > div,
-#country-places .place > div {
+#country-place .place .place-description > div,
+#country-place .place > div {
   float: left;
 }
 
-#country-places .place .image {
+#country-place .place .image {
   width: 120px;
 }
 
-#country-places .place .image img {
+#country-place .place .image img {
   width: 100%;
   cursor: pointer;
 }
 
-#country-places .place .place-description {
+#country-place .place .place-description {
   width: calc(100% - 322px);
   margin: 38px 20px 0;
 }
 
-#country-places .place-description > div {
+#country-place .place-description > div {
   text-align: center;
 }
 
-#country-places .place-description .family {
+#country-place .place-description .family {
   width: 33%;
   min-height: 1px;
+  padding-left: 25px;
   text-align: left;
 }
 
-#country-places .place-description .family * {
-  margin-left: 40px;
+#country-place .place-description .family > span {
+  font-size: 16px;
+  color: #767d86;
+  margin-top: -4px;
+  display: block;
+  font-family: 'Bariol Light';
 }
 
-#country-places .place-description .family h3 {
+#country-place .place-description .family h3 {
   font-size: 24px;
   font-family: 'Bariol Light';
 }
 
-#country-places .country-income {
+#country-place .place-description .family h3 span {
+  display: none;
+}
+
+#country-place .country-income {
   overflow: hidden;
   width: 66%
 }
 
-#country-places .place-description .place-country {
+#country-place .place-description .place-country {
   font-size: 20px;
   margin-top: 10px;
   width: 50%;
   float: left;
+  font-family: 'Bariol Light';
 }
 
-#country-places .place-description .place-country img {
+#country-place .place-description .place-country img {
   width: 19px;
   margin-top: -9px;
 }
 
-#country-places .place-description .income {
+#country-place .place-description .income {
   font-size: 45px;
   font-family: 'Bariol Light';
   line-height: 46px;
@@ -81,11 +84,11 @@
   float: right;
 }
 
-#country-places .link {
+#country-place .link {
   margin-top: 37px;
 }
 
-#country-places .link a {
+#country-place .link a {
   color: #fff;
   padding: 10px 0;
   background-color: #374551;
@@ -97,99 +100,130 @@
   text-align: center;
 }
 
-#country-places .link a:hover {
+#country-place .link a:hover {
   background-color: #ffb702;
 }
 
+@media (max-width: 1199px) {
+  #country-place .place-description .family {
+    padding-left: 0;
+  }
+
+  #country-place .place-description .family span {
+    margin-top: -4px;
+  }
+
+  #country-place .place-description .family h3 {
+    font-size: 20px;
+  }
+}
+
 @media (max-width: 1023px) {
-  #country-places .family {
+  #country-place .family {
     width: 60% !important;
   }
 
-  #country-places .country-income {
+  #country-place .country-income {
     width: 40% !important;
     margin-top: -23px;
   }
 
-  #country-places .country-income .income {
+  #country-place .country-income .income {
     margin-bottom: 10px !important;
   }
 
-  #country-places .country-income .income span {
+  #country-place .country-income .income span {
     font-size: 40px;
   }
 
-  #country-places .country-income .place-country span {
+  #country-place .country-income .place-country span {
     font-size: 18px;
   }
 
-  #country-places .country-income > div {
+  #country-place .country-income > div {
     width: 100% !important;
     margin: 0 !important;
+  }
+
+  #country-place .link a {
+    width: 138px;
+    font-size: 16px;
+  }
+
+  #country-place .place-description .family > span {
+    display: none;
+  }
+
+  #country-place .place-description .family h3 {
+    margin-top: 8px;
+  }
+
+  #country-place .place-description .family h3 span {
+    display: inline;
   }
 }
 
 @media (max-width: 600px) {
-  #country-places .place {
+  #country-place .place {
     padding: 5px;
     width: calc(50% - 5px);
     margin: 0 0 10px 10px;
     float: left;
   }
 
-  #country-places .place:nth-child(2n) {
+  #country-place .place:nth-child(2n) {
     margin-left: 0;
   }
 
-  #country-places .country {
+  #country-place .country {
     overflow: hidden;
   }
 
-  #country-places .place .link,
-  #country-places .place .link a,
-  #country-places .place .place-description,
-  #country-places .place .image {
+  #country-place .place .link,
+  #country-place .place .link a,
+  #country-place .place .place-description,
+  #country-place .place .image {
     width: 100%;
   }
 
-  #country-places .place .image {
+  #country-place .place .image {
     padding-top: 100%;
     line-height: 0;
   }
 
-  #country-places .place .image img {
+  #country-place .place .image img {
     margin-top: -100%;
   }
 
-  #country-places .place .place-description > div,
-  #country-places .place .place-description {
+  #country-place .place .place-description > div,
+  #country-place .place .place-description {
     margin: 0;
   }
 
-  #country-places .place .place-description {
+  #country-place .place .place-description {
     margin-top: 5px;
     min-height: 45px;
     position: relative;
   }
 
-  #country-places .place .place-description .country-income,
-  #country-places .place .place-description .family {
+  #country-place .place .place-description .country-income,
+  #country-place .place .place-description .family {
     width: calc(100% - 65px) !important;
     text-align: left;
     float: none;
   }
 
-  #country-places .place .place-description .place-country p span,
-  #country-places .place .place-description .family h3 {
+  #country-place .place .place-description .place-country p span,
+  #country-place .place .place-description .family h3 {
     font-size: 16px;
   }
 
-  #country-places .place-description .place-country img {
+  #country-place .place-description .place-country img {
     width: 14px;
     margin-top: -5px;
   }
 
-  #country-places .place .place-description .income {
+  #country-place .place .place-description .income {
     width: 65px !important;
     font-size: 22px !important;
     line-height: 22px;
@@ -200,40 +234,40 @@
     margin: 0 !important;
   }
 
-  #country-places .place .place-description .income span {
+  #country-place .place .place-description .income span {
     font-size: 22px !important;
     line-height: 22px;
   }
 
-  #country-places .place .link {
+  #country-place .place .link {
     margin-top: 5px;
   }
 
-  #country-places .place .link a {
+  #country-place .place .link a {
     font-size: 14px;
   }
 
-  #country-places .place .place-country {
+  #country-place .place .place-country {
     margin-top: 6px !important;
     font-size: 16px !important;
   }
 
-  #country-places .place .family + .place-country {
+  #country-place .place .family + .place-country {
     margin-top: 0 !important;
   }
 
-  #country-places .link a {
+  #country-place .link a {
     padding: 6px 0;
   }
 
-  #country-places .place .place-description .family h3 {
+  #country-place .place .place-description .family h3 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
   }
 
-  #country-places .country-income .place-country span {
+  #country-place .country-income .place-country span {
     width: calc(100% - 20px);
     display: block;
     float: right;
@@ -244,24 +278,21 @@
 }
 
 @media (max-width: 320px) {
-  #country-places .place .place-description .country-income,
-  #country-places .place .place-description .family {
+  #country-place .place .place-description .country-income,
+  #country-place .place .place-description .family {
     width: 100% !important;
     text-align: left;
     float: none;
   }
 
-  #country-places .place .place-description .family {
+  #country-place .place .place-description .family {
     min-height: 17px;
   }
 
-
-  #country-places .place .place-description .family span {
-    display: none;
-  }
-
-
-  #country-places .place .place-description .income {
-    top: 0;
+  #country-place .place .place-description .income {
+    position: static;
+    width: 100% !important;
+    margin-top: 10px !important;
+    text-align: left;
   }
 }
