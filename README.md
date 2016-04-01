@@ -1,3 +1,8 @@
+# Test coverage
+
+[![codecov.io](https://codecov.io/github/Gapminder/dollar-street-pages/coverage.svg?branch=development)](https://codecov.io/github/Gapminder/dollar-street-pages?branch=development)
+
+
 # DS Consumer
 
 [![Throughput Graph](https://graphs.waffle.io/Gapminder/dollar-street-pages/throughput.svg)](https://waffle.io/Gapminder/dollar-street-pages/metrics)
