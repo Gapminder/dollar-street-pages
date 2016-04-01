@@ -7,11 +7,11 @@ import {
   TestComponentBuilder,
 } from 'angular2/testing';
 
-import {MockCommonDependency} from '../../common-mocks/mocked.services'
-import {MockService} from '../../common-mocks/mock.service.template'
+import {MockCommonDependency} from '../../../app/common-mocks/mocked.services'
+import {MockService} from '../../../app/common-mocks/mock.service.template'
 import {photographers} from "../mocks/data.ts";
 
-import {PhotographersComponent} from '../../../app/all-photographers/photographers/photographers.component.ts';
+import {PhotographersComponent} from '../../../../app/all-photographers/photographers/photographers.component.ts';
 
 describe("PhotographersComponent", () => {
   let mockPhotographersService = new MockService();

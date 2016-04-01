@@ -1,4 +1,4 @@
-import {PhotographersFilter} from '../../../app/all-photographers/photographers/photographers-filter.pipe';
+import {PhotographersFilter} from '../../../../app/all-photographers/photographers/photographers-filter.pipe';
 describe('InitCapsPipe', () => {
   let pipe:PhotographersFilter = new PhotographersFilter();
   it('firs test transform"', () => {

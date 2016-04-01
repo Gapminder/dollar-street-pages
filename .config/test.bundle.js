@@ -20,6 +20,7 @@ require('node_modules/zone.js/dist/long-stack-trace-zone.js');
 require('node_modules/zone.js/dist/jasmine-patch.js');
 
 
+
 var testing = require('angular2/testing');
 var browser = require('angular2/platform/testing/browser');
 testing.setBaseTestProviders(
@@ -42,3 +43,7 @@ var testContext = require.context('../test', true, /\.spec\.ts/);
 // that will require the file and load it up here. Context will
 // loop and require those spec files here
 testContext.keys().forEach(testContext);
+
+var appContext = require.context('../app', true, /\.ts/);
+
+appContext.keys().forEach(appContext);
