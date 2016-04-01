@@ -159,7 +159,7 @@
   width: 19px;
   height: 19px;
   border-radius: 50%;
-  background: url('/app/assets/img/close.png') no-repeat 50% 50%;
+  background: url('/assets/img/close.png') no-repeat 50% 50%;
   display: none;
 }
 

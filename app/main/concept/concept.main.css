@@ -173,19 +173,19 @@
 }
 
 .concept-houses .africa-house {
-  background-image: url('/app/assets/img/africa.svg');
+  background-image: url('/assets/img/africa.svg');
 }
 
 .concept-houses .asia-house {
-  background-image: url('/app/assets/img/asia.svg');
+  background-image: url('/assets/img/asia.svg');
 }
 
 .concept-houses .america-house {
-  background-image: url('/app/assets/img/america.svg');
+  background-image: url('/assets/img/america.svg');
 }
 
 .concept-houses .europe-house {
-  background-image: url('/app/assets/img/europe.svg');
+  background-image: url('/assets/img/europe.svg');
 }
 
 .concept-houses div[class$="-house"] {

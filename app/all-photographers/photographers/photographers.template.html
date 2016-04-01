@@ -9,7 +9,7 @@
                  type="search"
                  placeholder="Search..."
                  [(ngModel)]="search.text">
-          <img alt="" src="/app/assets/img/search-icon.svg">
+          <img alt="" src="/assets/img/search-icon.svg">
         </div>
         <ul class="photographers-country">
           <li class="country-card" *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:photographersByCountry:true">
@@ -37,7 +37,7 @@
              [angulartics2On]="'click'"
              [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
           <div class="photographer-portrait"
-               [ngStyle]="{'background-image': photographer.avatar || 'url(/app/assets/img/photographer-icon.jpg)'}">
+               [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/photographer-icon.jpg)'}">
             <div class="photographer-material">
               <span><i class="fa fa-camera"></i> {{photographer.images}}</span>
               <span><i class="fa fa-video-camera"></i> {{photographer.video || 0}}</span>

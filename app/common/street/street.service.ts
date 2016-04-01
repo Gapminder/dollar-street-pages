@@ -104,7 +104,7 @@ export class StreetDrawService {
         .enter()
         .append('rect')
         .attr('class', 'point')
-        .attr('x', (d)=> {
+        .attr('x', (d) => {
           return this.scale(d.income) - 4;
         })
         .attr('y', `${this.halfOfHeight - 11}`)
@@ -122,7 +122,8 @@ export class StreetDrawService {
         let point2 = `9,${ this.halfOfHeight - 4}`;
         let point3 = `${ this.width - 9},${ this.halfOfHeight - 4}`;
         let point4 = `${ this.width},${ this.halfOfHeight + 14}`;
-        return `${point1} ${point2} ${point3} ${point4}`
+
+        return `${point1} ${point2} ${point3} ${point4}`;
       })
       .style('fill', '#5f6a74');
 
@@ -193,15 +194,15 @@ export class StreetDrawService {
 
     if (places.length === 1) {
       this.set('hoverPlace', places[0])
-        .drawHoverHouse(places[0])
+        .drawHoverHouse(places[0]);
     } else {
       this.set('hoverPlace', places[0])
-        .drawHoverHouse(places[0], true)
+        .drawHoverHouse(places[0], true);
     }
 
     let options = {
       places: places,
-      left: this.scale(d.income),
+      left: this.scale(d.income)
     };
 
     cb(options);
@@ -217,7 +218,7 @@ export class StreetDrawService {
       .enter()
       .append('polygon')
       .attr('class', 'chosen')
-      .attr('points', (datum)=> {
+      .attr('points', (datum) => {
         let point1, point2, point3, point4, point5, point6, point7;
 
         if (datum) {
@@ -253,7 +254,7 @@ export class StreetDrawService {
       .enter()
       .append('polygon')
       .attr('class', 'hover')
-      .attr('points', (datum)=> {
+      .attr('points', (datum) => {
         let point1, point2, point3, point4, point5, point6, point7;
 
         if (datum) {
@@ -271,16 +272,16 @@ export class StreetDrawService {
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke-width', 1)
-      .attr('stroke', (datum)=> {
+      .attr('stroke', (datum) => {
         if (gray) {
-          return '#98a5b0'
+          return '#98a5b0';
         }
 
         return !datum ? void 0 : fillsOfBorders[datum.region];
       })
       .style('fill', (datum) => {
         if (gray) {
-          return '#a9b3bc'
+          return '#a9b3bc';
         }
 
         return !datum ? void 0 : fills[datum.region];
@@ -312,29 +313,29 @@ export class StreetDrawService {
 
     if (slider) {
       this.drawHoverHouse(places[0]);
-      
+
       return;
     }
-    
+
     this.drawHouses(places);
-    
+
     return this;
   };
 
   public removeHouses(selector):this {
     this.svg.selectAll('rect.' + selector).remove('rect.' + selector);
     this.svg.selectAll('polygon.' + selector).remove('polygon.' + selector);
-    
+
     if (selector === 'chosen') {
       this.svg.selectAll('polygon.chosenLine').remove('polygon.chosenLine');
     }
-    
+
     return this;
   };
 
   public clearSvg():this {
     this.svg.selectAll('*').remove('*');
-    
+
     return this;
   };
 }

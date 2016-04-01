@@ -1,6 +1,6 @@
-import {Component, OnInit,OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from 'angular2/core';
 import {Router} from 'angular2/router';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
 import {SearchFilter} from './thing-filter.pipe.ts';
 
@@ -24,7 +24,7 @@ if (isDesktop) {
   pipes: [SearchFilter]
 })
 
-export class SearchComponent implements OnInit,OnDestroy, OnChanges {
+export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   private url:string;
   @Input('chosenPlaces')
@@ -83,7 +83,8 @@ export class SearchComponent implements OnInit,OnDestroy, OnChanges {
     if (this.chosenPlacesSubscribe) {
       this.chosenPlacesSubscribe.unsubscribe();
     }
-    if(this.searchServiceSubscribe){
+
+    if (this.searchServiceSubscribe) {
       this.searchServiceSubscribe.unsubscribe();
     }
   }
@@ -222,11 +223,11 @@ export class SearchComponent implements OnInit,OnDestroy, OnChanges {
       url = `thing=${this.paramsUrl.thing}&place=${this.paramsUrl.place}&image=${this.paramsUrl.image}`;
     }
 
-    if(this.searchServiceSubscribe){
+    if (this.searchServiceSubscribe) {
       this.searchServiceSubscribe.unsubscribe();
     }
     this.searchServiceSubscribe = this.searchService.getSearchInitData(url)
-      .subscribe((res:any)=> {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
@@ -258,14 +259,17 @@ export class SearchComponent implements OnInit,OnDestroy, OnChanges {
     this.isOpen = false;
     this.search.text = '';
     let url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
-    if(this.searchServiceSubscribe){
+
+    if (this.searchServiceSubscribe) {
       this.searchServiceSubscribe.unsubscribe();
     }
+
     this.searchServiceSubscribe = this.searchService.getSearchInitData(url)
-      .subscribe((res:any)=> {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
+
         this.header = res.data.header;
         this.categories = res.data.categories;
       });

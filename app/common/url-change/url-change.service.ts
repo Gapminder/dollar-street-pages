@@ -1,7 +1,7 @@
-import {Inject} from "angular2/core";
-import {Location} from "angular2/router";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
+import {Inject} from 'angular2/core';
+import {Location} from 'angular2/router';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
 
 export class UrlChangeService {
   public location:Location;
@@ -17,7 +17,7 @@ export class UrlChangeService {
     this.urlEvents.next('my event');
   }
 
-  getUrlEvents():Observable<any>{
+  getUrlEvents():Observable<any> {
     return this.urlEvents;
   }
 }

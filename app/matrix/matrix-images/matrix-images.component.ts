@@ -1,13 +1,13 @@
-const device = require('device.js')();
-const isDesktop = device.desktop();
-
 import {Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDestroy, OnChanges} from 'angular2/core';
 import {Router} from 'angular2/router';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
 import {Angulartics2On} from 'angulartics2/index';
 
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
+
+const device = require('device.js')();
+const isDesktop = device.desktop();
 
 let tpl = require('./matrix-images.template.html');
 let style = require('./matrix-images.css');
@@ -47,7 +47,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit():any {
     this.itemSize = window.innerWidth / this.zoom;
 
-    this.placesSubscribe = this.places.subscribe((places)=> {
+    this.placesSubscribe = this.places.subscribe((places) => {
       this.currentPlaces = places;
     });
   }
@@ -59,14 +59,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    this.placesSubscribe.unsubscribe()
+    this.placesSubscribe.unsubscribe();
   }
 
   hoverImage(event, place):void {
     this.hoverPlace.emit(place);
 
     if (isDesktop) {
-
       return;
     }
 
@@ -79,7 +78,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   goToPlace(place) {
     if (isDesktop) {
-      this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}])
+      this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
 
       return;
     }
@@ -90,7 +89,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}])
+    this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
   }
 
   private toUrl(image) {

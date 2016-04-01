@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy,Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
@@ -13,7 +13,7 @@ let style = require('./concept.main.css');
   directives: [RouterLink, Angulartics2On]
 })
 
-export class ConceptMainComponent implements OnInit,OnDestroy {
+export class ConceptMainComponent implements OnInit, OnDestroy {
   public conceptMainService:any;
   public activeThing:any = {};
   public amazonS3Url:any = 'http://static.dollarstreet.org.s3.amazonaws.com/';
@@ -33,10 +33,11 @@ export class ConceptMainComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptThings({})
-      .subscribe((res:any)=> {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
+
         this.things = res.things;
 
         let lastThing = this.things[this.things.length - 1];
@@ -59,8 +60,9 @@ export class ConceptMainComponent implements OnInit,OnDestroy {
     if (this.conceptMainServiceSubscribe) {
       this.conceptMainServiceSubscribe.unsubscribe();
     }
+
     this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptImages({thingId: thing._id})
-      .subscribe((res:any)=> {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }

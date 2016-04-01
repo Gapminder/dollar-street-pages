@@ -44,7 +44,7 @@ export class RowLoaderComponent implements OnChanges {
     this.item = 0;
     this.top = 0;
 
-    this.zone.run(()=> {
+    this.zone.run(() => {
       this.isUploadItem(this.item);
     });
   }
@@ -67,7 +67,7 @@ export class RowLoaderComponent implements OnChanges {
         this.top = item / this.count * this.itemHeight;
       }
 
-      this.zone.run(()=> {
+      this.zone.run(() => {
         this.isUploadItem(this.item);
       });
     };

@@ -1,4 +1,4 @@
-import { Component, OnInit } from 'angular2/core';
+import {Component} from 'angular2/core';
 
 let tpl = require('./about.main.template.html');
 let style = require('./about.main.css');

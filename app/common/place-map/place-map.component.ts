@@ -13,7 +13,7 @@ let style = require('./place-map.css');
 
 export class PlaceMapComponent implements OnInit {
   @Input()
-  private place:any=null;
+  private place:any = null;
   @Input()
   private isHeader:boolean;
 
@@ -35,9 +35,9 @@ export class PlaceMapComponent implements OnInit {
       this.element.nativeElement.querySelector('.map');
 
     img.onload = () => {
-      this.zone.run(()=> {
-        this.drawMarker(this.place, this.mapImage)
-      })
+      this.zone.run(() => {
+        this.drawMarker(this.place, this.mapImage);
+      });
     };
 
     img.src = this.mapImage.src;
@@ -47,6 +47,7 @@ export class PlaceMapComponent implements OnInit {
     if (!this.isHeader) {
       return;
     }
+
     this.place = changes.place.currentValue;
   }
 

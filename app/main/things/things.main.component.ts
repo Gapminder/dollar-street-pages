@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 import {Angulartics2On} from 'angulartics2/index';
@@ -13,7 +13,7 @@ let style = require('./things.main.css');
   directives: [RouterLink, Angulartics2On]
 })
 
-export class ThingsMainComponent implements OnInit,OnDestroy{
+export class ThingsMainComponent implements OnInit, OnDestroy {
   public thingsMainService:any;
   public things:any[] = [];
   private thingsMainServiceSubscribe:any;
@@ -24,7 +24,7 @@ export class ThingsMainComponent implements OnInit,OnDestroy{
 
   ngOnInit():void {
     this.thingsMainServiceSubscribe = this.thingsMainService.getMainThings({})
-      .subscribe((res:any)=> {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }

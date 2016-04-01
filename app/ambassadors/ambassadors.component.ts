@@ -1,7 +1,8 @@
-import {Component, OnInit, OnDestroy,} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {AmbassadorsListComponent} from './ambassadors-list/ambassadors-list.component';
 import {FooterComponent} from '../common/footer/footer.component';
+
 let tpl = require('./ambassadors.template.html');
 let style = require('./ambassadors.css');
 
@@ -9,20 +10,16 @@ let style = require('./ambassadors.css');
   selector: 'ambassadors',
   template: tpl,
   styles: [style],
-  directives: [HeaderWithoutSearchComponent, AmbassadorsListComponent,FooterComponent]
+  directives: [HeaderWithoutSearchComponent, AmbassadorsListComponent, FooterComponent]
 })
 
-export class AmbassadorsComponent implements OnInit,OnDestroy {
+export class AmbassadorsComponent implements OnInit {
   private title:string;
 
   constructor() {
   }
 
   ngOnInit():void {
-    this.title='Ambassadors'
-  }
-
-
-  ngOnDestroy() {
+    this.title = 'Ambassadors';
   }
 }

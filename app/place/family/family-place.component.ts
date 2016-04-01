@@ -1,6 +1,6 @@
-import {Component, OnInit,OnDestroy, Input, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
 
@@ -17,7 +17,7 @@ const isDesktop = device.desktop();
   directives: [RouterLink, RowLoaderComponent]
 })
 
-export class FamilyPlaceComponent implements OnInit,OnDestroy {
+export class FamilyPlaceComponent implements OnInit, OnDestroy {
   @Input('chosenPlaces')
   private chosenPlaces:Observable<any>;
 
@@ -37,7 +37,7 @@ export class FamilyPlaceComponent implements OnInit,OnDestroy {
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
         this.placeId = place[0]._id;
         this.nextImages(10, this.placeId);
-      })
+      });
   }
 
   ngOnDestroy():void {
@@ -48,10 +48,11 @@ export class FamilyPlaceComponent implements OnInit,OnDestroy {
   nextImages(limit:number, placeId:string):void {
     let url = `isTrash=false&limit=${limit}&placeId=${placeId}&skip=0`;
     this.familyPlaceServiceSubscribe = this.familyPlaceService.getPlaceFamilyImages(url)
-      .subscribe((res:any)=> {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
+
         this.images = res.images;
       });
   }

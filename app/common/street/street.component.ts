@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, ElementRef, Inject, OnDestroy} from 'angular2/core';
 import {RouterLink, Router} from 'angular2/router';
-import {Observable} from "rxjs/Observable";
-import {Subject} from "rxjs/Subject";
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
 
 const _ = require('lodash');
 let device = require('device.js')();
@@ -17,7 +17,7 @@ let style = require('./street.css');
   directives: [RouterLink]
 })
 
-export class StreetComponent implements OnInit,OnDestroy {
+export class StreetComponent implements OnInit, OnDestroy {
   @Input('thing')
   private thing:string;
   @Input('hoverHeader')
@@ -58,7 +58,7 @@ export class StreetComponent implements OnInit,OnDestroy {
     let svg = this.element.querySelector('.street-box svg') as HTMLElement;
     this.street.setSvg = svg;
 
-    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces)=> {
+    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces) => {
         this.street.set('chosenPlaces', chosenPlaces);
 
         if (this.controllSlider) {
@@ -70,7 +70,7 @@ export class StreetComponent implements OnInit,OnDestroy {
         this.street.clearAndRedraw(chosenPlaces);
       });
 
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace)=> {
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace) => {
         if (!hoverPlace) {
           this.street.removeHouses('hover');
 
@@ -82,11 +82,11 @@ export class StreetComponent implements OnInit,OnDestroy {
         this.street.drawHoverHouse(hoverPlace);
       });
 
-    this.hoverHeaderSubscribe = this.hoverHeader && this.hoverHeader.subscribe(()=> {
-        this.thumbUnhover()
+    this.hoverHeaderSubscribe = this.hoverHeader && this.hoverHeader.subscribe(() => {
+        this.thumbUnhover();
       });
 
-    this.placesSubscribe = this.places && this.places.subscribe((places)=> {
+    this.placesSubscribe = this.places && this.places.subscribe((places) => {
         this.street
           .clearSvg()
           .init()
@@ -95,7 +95,7 @@ export class StreetComponent implements OnInit,OnDestroy {
           .set('fullIncomeArr', _
             .chain(places)
             .sortBy('income')
-            .map((place:any)=> {
+            .map((place:any) => {
               return this.street.scale(place.income);
             })
             .value()
@@ -128,7 +128,7 @@ export class StreetComponent implements OnInit,OnDestroy {
       return;
     }
 
-    this.street.onSvgHover(e.clientX, (options)=> {
+    this.street.onSvgHover(e.clientX, (options) => {
       let {places, left} = options;
       this.isThumbView = true;
       this.thumbPlaces = places;
@@ -145,7 +145,7 @@ export class StreetComponent implements OnInit,OnDestroy {
       this.thumbLeft = left - indent + 15;
 
       if (this.thumbLeft <= 15) {
-        this.thumbLeft = 15
+        this.thumbLeft = 15;
       }
 
       if (this.thumbLeft + 2 * indent >= window.innerWidth - 15) {
@@ -153,7 +153,7 @@ export class StreetComponent implements OnInit,OnDestroy {
       }
 
       this.arrowLeft = left - this.thumbLeft + 9;
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -182,8 +182,9 @@ export class StreetComponent implements OnInit,OnDestroy {
     this.street
       .removeHouses('chosen')
       .removeHouses('hover');
+
     this.street.set('hoverPlace', place);
-    this.street.drawHoverHouse(place)
+    this.street.drawHoverHouse(place);
   };
 
   public thumbUnhover() {
@@ -221,6 +222,6 @@ export class StreetComponent implements OnInit,OnDestroy {
       return;
     }
 
-    this.router.navigate(['Place', {thing: thing, place: place._id, image: place.image}])
+    this.router.navigate(['Place', {thing: thing, place: place._id, image: place.image}]);
   }
 }

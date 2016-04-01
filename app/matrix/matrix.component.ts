@@ -1,6 +1,6 @@
 import {Component, OnInit, Inject, ElementRef, OnDestroy} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
-import {Subject} from "rxjs/Subject";
+import {Subject} from 'rxjs/Subject';
 
 import {MatrixImagesComponent} from './matrix-images/matrix-images.component';
 import {StreetComponent} from '../common/street/street.component';
@@ -21,7 +21,7 @@ let style = require('./matrix.css');
   directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
 })
 
-export class MatrixComponent implements OnInit,OnDestroy {
+export class MatrixComponent implements OnInit, OnDestroy {
   public query:string;
   public matrixService:any;
   public places:Subject<any> = new Subject();
@@ -97,14 +97,14 @@ export class MatrixComponent implements OnInit,OnDestroy {
 
     this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}`;
 
-    document.onscroll = ()=> {
+    document.onscroll = () => {
       this.stopScroll();
     };
   }
 
   ngOnDestroy() {
     document.onscroll = null;
-    this.matrixServiceSubscrib.unsubscribe()
+    this.matrixServiceSubscrib.unsubscribe();
   }
 
   ngAfterViewChecked() {
@@ -216,7 +216,7 @@ export class MatrixComponent implements OnInit,OnDestroy {
     this.hoverHeader.next(null);
   }
 
-  urlChanged(query, cb = null):void {
+  urlChanged(query):void {
     /**to remove things like this*/
     this.query = query;
     let parseQuery = this.parseUrl(this.query);
@@ -232,11 +232,10 @@ export class MatrixComponent implements OnInit,OnDestroy {
         this.places.next(val.places);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.placesArr);
-        cb && cb();
 
         this.zoom = +parseQuery.zoom;
         this.loader = true;
-      })
+      });
   }
 
   changeZoom(zoom) {

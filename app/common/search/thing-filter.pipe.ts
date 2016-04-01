@@ -53,7 +53,7 @@ export class SearchFilter {
             newItems.push({
               _id: item._id,
               things: [thing]
-            })
+            });
           }
         });
       });
