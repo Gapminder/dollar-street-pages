@@ -13,7 +13,8 @@
 
       <div class="place-description">
         <div class="family">
-          <h3 *ngIf="place.family">{{place.family}}</h3>
+          <span *ngIf="place.family">family</span>
+          <h3 *ngIf="place.family">{{place.family}} <span>family</span></h3>
         </div>
 
         <div class="country-income">

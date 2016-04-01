@@ -1,4 +1,4 @@
-<div id="country-places">
+<div id="country-place">
   <div class="place" *ngFor="#place of places">
     <div class="image">
       <img *ngIf="place.image" [src]="place.image"
@@ -10,12 +10,11 @@
 
     <div class="place-description">
       <div class="family">
-        <span>family</span>
-        <h3 *ngIf="place.family">{{place.family}}</h3>
+        <span *ngIf="place.family">family</span>
+        <h3 *ngIf="place.family">{{place.family}} <span>family</span></h3>
       </div>
 
       <div class="country-income">
-
         <div class="income">
           <span>${{place.income}}</span>
         </div>
@@ -30,7 +29,6 @@
           </p>
         </div>
       </div>
-
     </div>
 
     <div class="link">
