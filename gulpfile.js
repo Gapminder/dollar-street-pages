@@ -9,6 +9,7 @@ gulp.paths = {
     '!bundles/**/*',
     '!typings/**/*',
     '!test/**/*',
+    '!dist/**/*',
     '!**/*.{ts,coffee}.js'
   ]
 };
@@ -27,7 +28,6 @@ gulp.task('tslint', () =>
     }))
 );
 
-// gulp default task
 gulp.task('default', () => {
   gulp.start('tslint');
 });
