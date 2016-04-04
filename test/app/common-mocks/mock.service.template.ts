@@ -6,18 +6,16 @@ import {provide} from 'angular2/core';
 export class MockService {
   private response;
   private name:string;
-  public isUnsubscribe = false;
+  public countOfSubscribes:number=0;
     
   subscribe(callback):this {
+    this.countOfSubscribes++;
     callback(this.fakeResponse);
     return this;
   }
 
   unsubscribe():void {
-    if(this.isUnsubscribe){
-      return;
-    }
-    this.isUnsubscribe = !this.isUnsubscribe;
+    this.countOfSubscribes--;
   }
 
   set serviceName(name:string){
@@ -38,5 +36,9 @@ export class MockService {
 
   set fakeResponse(response) {
     this.response = response;
+  }
+
+  public toInitState(){
+    this.countOfSubscribes=0;
   }
 }

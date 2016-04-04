@@ -32,6 +32,7 @@ describe("PhotographersComponent", () => {
       expect(context.photographersByCountry.length).toBe(4);
       expect(context.photographersByName.length).toBe(4);
       expect(context.loader).toBe(true)
+      mockPhotographersService.toInitState();
     })
   }));
   it("PhotographersComponent must destroy ", injectAsync([TestComponentBuilder], (tcb) => {
@@ -39,7 +40,7 @@ describe("PhotographersComponent", () => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
       fixture.destroy()
-      expect(mockPhotographersService.isUnsubscribe).toBe(true);
+      expect(mockPhotographersService.countOfSubscribes).toBe(0);
     })
   }));
   it("PhotographersComponent must show on mobile ", injectAsync([TestComponentBuilder], (tcb) => {

@@ -54,7 +54,7 @@ export class MockCommonDependency {
       provide("CountryPlacesService", {useClass: CountryPlacesService}),
       provide("PhotographersService", {useClass: PhotographersService}),
       provide("SocialShareButtonsService", {useClass: SocialShareButtonsService}),
-      
+
       provide(APP_BASE_HREF, {useValue: '/'}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: AppComponent}),
       provide(ApplicationRef, {useClass: MockApplicationRef}),

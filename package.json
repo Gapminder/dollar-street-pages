@@ -29,7 +29,7 @@
     "codecov"
   ],
   "dependencies": {
-    "angular2": "2.0.0-beta.12",
+    "angular2": "2.0.0-beta.13",
     "angulartics2": "1.0.0",
     "d3": "3.5.15",
     "device.js": "0.1.2",
