@@ -341,7 +341,7 @@ function setImageWidth(sliderHeight) {
   let sliderImages = $('.slide .slide-content .image .slide-img');
 
   sliderSidebarImages.each(function () {
-    $(this).width((sliderHeight - parseFloat($(this).css('margin-top'))) / 2);
+    $(this).width(sliderHeight / 2 - 7.5);
   });
 
   sliderImages.each(function () {
