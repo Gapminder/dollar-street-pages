@@ -2,7 +2,7 @@
  * Created by igor on 3/30/16.
  */
 import {provide,ApplicationRef} from 'angular2/core'
-import {ROUTER_PRIMARY_COMPONENT,APP_BASE_HREF,ROUTER_PROVIDERS} from 'angular2/router';
+import {ROUTER_PRIMARY_COMPONENT,APP_BASE_HREF,ROUTER_PROVIDERS,RouteParams} from 'angular2/router';
 import {MockApplicationRef} from 'angular2/src/mock/mock_application_ref'
 import {HTTP_PROVIDERS} from 'angular2/http';
 
@@ -36,6 +36,7 @@ export class MockCommonDependency {
     return [
       ROUTER_PROVIDERS,
       HTTP_PROVIDERS,
+      provide(RouteParams, {useClass: MockRouteParams}),
       provide("StreetDrawService", {useClass: StreetDrawService}),
       provide("ConceptMainService", {useClass: ConceptMainService}),
       provide("ThingsMainService", {useClass: ThingsMainService}),
@@ -60,5 +61,15 @@ export class MockCommonDependency {
       provide(ApplicationRef, {useClass: MockApplicationRef}),
       provide(Angulartics2, {useClass: Angulartics2}),
     ];
+  }
+}
+
+class MockRouteParams{
+  private params:any={};
+  set(key:string, value:string):void{
+    this.params[key]=value;
+  }
+  get(key:string):void{
+    return this.params[key];
   }
 }

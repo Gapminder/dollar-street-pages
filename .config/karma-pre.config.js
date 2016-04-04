@@ -12,7 +12,7 @@ module.exports = function (config) {
       {pattern: 'test.bundle.js', watched: false}
     ],
     proxies: {
-      '/app/assets/img/': 'http://localhost:3000/app/assets/img'
+      '/assets/img/': 'http://localhost:3000/app/assets/img'
     },
     exclude: [],
     preprocessors: {

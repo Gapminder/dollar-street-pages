@@ -16,14 +16,11 @@ import {MatrixImagesComponent} from '../../../../app/matrix/matrix-images/matrix
 
 describe("MatrixImagesComponent", () => {
   let placesObservable = new MockService();
-  // countryPlacesService.serviceName = 'CountryPlacesService';
-  //placesObservable.getMethod = 'getCountryPlaces';
   placesObservable.fakeResponse = places;
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
       mockCommonDependency.getProviders(),
-      // countryPlacesService.getProviders()
     ];
   });
   it(" must init ", injectAsync([TestComponentBuilder], (tcb) => {
@@ -35,7 +32,7 @@ describe("MatrixImagesComponent", () => {
       fixture.detectChanges();
       expect(context.currentPlaces.length).toEqual(5);
       context.hoverPlace.subscribe((place)=> {
-        //console.log('@@@@', place)
+        expect(place.income).toEqual(1)
       });
       context.hoverImage(null, context.currentPlaces[0]);
       placesObservable.toInitState();

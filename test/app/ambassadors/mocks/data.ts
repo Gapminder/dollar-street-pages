@@ -10,82 +10,82 @@ export let ambassadors = {
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: ``,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       },
       {
         name: 'Jonathan James',
         country: 'England',
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-        img: '/app/assets/img/ambassador.svg',
+        img: '/assets/img/ambassador.svg',
       }
     ]
   },
@@ -97,82 +97,82 @@ export let ambassadors = {
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: ``,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/ambassador.svg',
+          img: '/assets/img/ambassador.svg',
         }
       ]
     },
@@ -184,82 +184,82 @@ export let ambassadors = {
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: ``,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         },
         {
           name: 'Jonathan James',
           country: 'England',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
     Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/app/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg',
         }
       ]
     }
