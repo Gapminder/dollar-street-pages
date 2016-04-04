@@ -68,11 +68,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     if (isDesktop) {
       return;
     }
-
     if (!place) {
       this.oldPlaceId = null;
-
-      return;
     }
   }
 

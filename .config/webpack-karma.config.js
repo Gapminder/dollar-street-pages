@@ -1,11 +1,11 @@
 const path = require('path');
 const cwd = process.cwd();
-console.log(path.resolve(cwd))
+console.log(path.resolve(cwd));
 module.exports = {
   resolve: {
     root: [path.resolve(cwd)],
-    modulesDirectories: ['node_modules', 'test', 'app','.'],
-    extensions: ['', '.ts' ,'.js', '.css'],
+    modulesDirectories: ['node_modules', 'test', 'app', '.'],
+    extensions: ['', '.ts', '.js', '.css'],
     alias: {
       'test': 'test'
     }
@@ -29,19 +29,13 @@ module.exports = {
             removeComments: true,
             noEmitHelpers: false
           }
-        },
-       // exclude: [/\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/]
+        }
       }
     ],
     postLoaders: [
-
-      // Instruments JS files with Istanbul for subsequent code coverage reporting.
-      // Instrument only testing sources.
-      //
-      // See: https://github.com/deepsweet/istanbul-instrumenter-loader
       {
         test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
-        include: path.resolve(cwd)+'/app',
+        include: path.resolve(cwd) + '/app',
         exclude: [
           /\.(e2e|spec)\.ts$/,
           /node_modules/
@@ -60,4 +54,4 @@ module.exports = {
   },
   watch: true,
   debug: true
-}
+};

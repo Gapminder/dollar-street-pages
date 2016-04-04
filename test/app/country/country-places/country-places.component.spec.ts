@@ -30,14 +30,15 @@ describe("CountryPlacesComponent", () => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
       expect(context.places.length).toEqual(3);
-      expect(context.loader).toEqual(true)
+      expect(context.loader).toEqual(true);
+      countryPlacesService.toInitState();
     })
   }));
   it("CountryPlaceComponent must destroy ", injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(CountryPlacesComponent).then((fixture) => {
       fixture.detectChanges();
       fixture.destroy();
-      expect(countryPlacesService.isUnsubscribe).toBe(true);
+      expect(countryPlacesService.countOfSubscribes).toBe(0);
     })
   }));
 });

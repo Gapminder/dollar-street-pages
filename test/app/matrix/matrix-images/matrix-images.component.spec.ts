@@ -11,13 +11,14 @@ import {MockCommonDependency} from '../../common-mocks/mocked.services.ts'
 import {MockService} from '../../common-mocks/mock.service.template.ts'
 import {places} from "../mocks/data.ts";
 
+
 import {MatrixImagesComponent} from '../../../../app/matrix/matrix-images/matrix-images.component';
 
 describe("MatrixImagesComponent", () => {
-  //let countryPlacesService = new MockService();
+  let placesObservable = new MockService();
   // countryPlacesService.serviceName = 'CountryPlacesService';
-  // countryPlacesService.getMethod = 'getCountryPlaces';
-  // countryPlacesService.fakeResponse = places;
+  //placesObservable.getMethod = 'getCountryPlaces';
+  placesObservable.fakeResponse = places;
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
@@ -25,28 +26,30 @@ describe("MatrixImagesComponent", () => {
       // countryPlacesService.getProviders()
     ];
   });
-  it("MatrixImagesComponent must init ", injectAsync([TestComponentBuilder], (tcb) => {
+  it(" must init ", injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       context.thing = '546ccf730f7ddf45c0179658';
       context.zoom = 5;
-      context.places = places;
+      context.places = placesObservable;
       fixture.detectChanges();
       expect(context.currentPlaces.length).toEqual(5);
-      console.log( this.placesSubscribe)
-      context.hoverPlace.subscribe((place)=>{
-        console.log('@@@@',place)
-      })
-      context.hoverImage(null,context.currentPlaces[0]);
-      
-  
+      context.hoverPlace.subscribe((place)=> {
+        //console.log('@@@@', place)
+      });
+      context.hoverImage(null, context.currentPlaces[0]);
+      placesObservable.toInitState();
     })
   }));
-  // it("CountryPlaceComponent must destroy ", injectAsync([TestComponentBuilder], (tcb) => {
-  //   return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
-  //     fixture.detectChanges();
-  //     fixture.destroy();
-  //     expect(countryPlacesService.isUnsubscribe).toBe(true);
-  //   })
-  // }));
+  it(" must destroy ", injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
+      let context = fixture.debugElement.componentInstance;
+      context.thing = '546ccf730f7ddf45c0179658';
+      context.zoom = 5;
+      context.places = placesObservable;
+      fixture.detectChanges();
+      fixture.destroy();
+      expect(placesObservable.countOfSubscribes).toEqual(0);
+    })
+  }));
 });

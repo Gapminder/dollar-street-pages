@@ -1,6 +1,6 @@
 import {Observable} from "rxjs/Observable";
 
-export let places = Observable.of([
+export let places = [
   {
     _id: "54b6862f3755cbfb542c28cb",
     background: "http://static.dollarstreet.org.s3.amazonaws.com/media/Liberia 1/image/4c2c9365-4d30-4ea9-acdc-f7f2cb1daf29/devices-4c2c9365-4d30-4ea9-acdc-f7f2cb1daf29.jpg",
@@ -51,4 +51,4 @@ export let places = Observable.of([
     lng: -9.429499000000002,
     region: "Africa"
   }
-])
+]

@@ -31,6 +31,7 @@ describe("CountryInfoComponent", () => {
       fixture.detectChanges();
       expect(context.placesQantity).toEqual(7);
       expect(context.photosQantity).toEqual(1223)
+      countryInfoService.toInitState();
     })
   }));
   it("CountryInfoComponent must destroy ", injectAsync([TestComponentBuilder], (tcb) => {
@@ -38,7 +39,7 @@ describe("CountryInfoComponent", () => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
       fixture.destroy()
-      expect(countryInfoService.isUnsubscribe).toBe(true);
+      expect(countryInfoService.countOfSubscribes).toBe(0);
     })
   }));
   it("CountryInfoComponent must showMore ", injectAsync([TestComponentBuilder], (tcb) => {
