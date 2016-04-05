@@ -101,7 +101,7 @@
 
 #photographers .photographer-card {
   display: inline-block;
-  width: 194px;
+  width: calc(100% / 5);
   padding: 0 10px;
   margin-bottom: 20px;
   cursor: pointer;
@@ -174,11 +174,9 @@
   #photographers .search-input .sort-country {
     display: block;
     width: 125px;
-    margin: 7px 0px 0px 0px;
+    margin: 7px 0 0;
     color: #767d86;
-    font-family: Bariol;
     font-size: 18px;
-    font-weight: 400;
     line-height: 19px;
     float: left;
   }
@@ -245,10 +243,8 @@
 
   #photographers .photographer-card {
     display: inline-block;
-    width: calc(25% - 20px);
-    margin: 10px;
-    padding: 0;
-    cursor: pointer;
+    width: 25%;
+    margin-bottom: 10px;
   }
 
   #photographers .photographers-container h3 {
@@ -262,12 +258,11 @@
   }
 
   #photographers .photographer-card {
-    width: calc(50% - 20px);
+    width: 50%;
   }
 
   #photographers .photographers-country {
-    margin-top: -15px;
-    top: 130px;
+    top: 113px;
   }
 
   #photographers .search-input {
