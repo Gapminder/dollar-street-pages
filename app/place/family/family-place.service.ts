@@ -14,7 +14,6 @@ export class FamilyPlaceService {
   public getPlaceFamilyImages(query:any):Observable<any> {
     return this.http.get(`${config.api}/consumer/api/v1/place/family/images?${query}`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
-
       return {err: parseRes.error, images: parseRes.data};
     });
   }

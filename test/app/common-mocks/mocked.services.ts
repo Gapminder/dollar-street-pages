@@ -1,10 +1,11 @@
 /**
  * Created by igor on 3/30/16.
  */
-import {provide,ApplicationRef} from 'angular2/core'
-import {ROUTER_PRIMARY_COMPONENT,APP_BASE_HREF,ROUTER_PROVIDERS,RouteParams} from 'angular2/router';
-import {MockApplicationRef} from 'angular2/src/mock/mock_application_ref'
+import {provide, ApplicationRef, NgZone} from 'angular2/core';
+import {ROUTER_PRIMARY_COMPONENT, APP_BASE_HREF, ROUTER_PROVIDERS, RouteParams} from 'angular2/router';
+import {MockApplicationRef} from 'angular2/src/mock/mock_application_ref';
 import {HTTP_PROVIDERS} from 'angular2/http';
+import {MockNgZone} from 'angular2/testing';
 
 import {AppComponent} from '../../../app/app.component';
 import {StreetDrawService} from '../../../app/common/street/street.service';
@@ -37,25 +38,25 @@ export class MockCommonDependency {
       ROUTER_PROVIDERS,
       HTTP_PROVIDERS,
       provide(RouteParams, {useClass: MockRouteParams}),
-      provide("StreetDrawService", {useClass: StreetDrawService}),
-      provide("ConceptMainService", {useClass: ConceptMainService}),
-      provide("ThingsMainService", {useClass: ThingsMainService}),
-      provide("MatrixService", {useClass: MatrixService}),
-      provide("HeaderService", {useClass: HeaderService}),
-      provide("SearchService", {useClass: SearchService}),
-      provide("MainPlacesService", {useClass: MainPlacesService}),
-      provide("PlaceStreetService", {useClass: PlaceStreetService}),
-      provide("FamilyPlaceService", {useClass: FamilyPlaceService}),
-      provide("MapService", {useClass: MapService}),
-      provide("UrlChangeService", {useClass: UrlChangeService}),
-      provide("PhotographerProfileService", {useClass: PhotographerProfileService}),
-      provide("PhotographerPlacesService", {useClass: PhotographerPlacesService}),
-      provide("AmbassadorsListService", {useClass: AmbassadorsListService}),
-      provide("CountryInfoService", {useClass: CountryInfoService}),
-      provide("CountryPlacesService", {useClass: CountryPlacesService}),
-      provide("PhotographersService", {useClass: PhotographersService}),
-      provide("SocialShareButtonsService", {useClass: SocialShareButtonsService}),
-
+      provide(NgZone, {useClass: MockNgZone}),
+      provide('StreetDrawService', {useClass: StreetDrawService}),
+      provide('ConceptMainService', {useClass: ConceptMainService}),
+      provide('ThingsMainService', {useClass: ThingsMainService}),
+      provide('MatrixService', {useClass: MatrixService}),
+      provide('HeaderService', {useClass: HeaderService}),
+      provide('SearchService', {useClass: SearchService}),
+      provide('MainPlacesService', {useClass: MainPlacesService}),
+      provide('PlaceStreetService', {useClass: PlaceStreetService}),
+      provide('FamilyPlaceService', {useClass: FamilyPlaceService}),
+      provide('MapService', {useClass: MapService}),
+      provide('UrlChangeService', {useClass: UrlChangeService}),
+      provide('PhotographerProfileService', {useClass: PhotographerProfileService}),
+      provide('PhotographerPlacesService', {useClass: PhotographerPlacesService}),
+      provide('AmbassadorsListService', {useClass: AmbassadorsListService}),
+      provide('CountryInfoService', {useClass: CountryInfoService}),
+      provide('CountryPlacesService', {useClass: CountryPlacesService}),
+      provide('PhotographersService', {useClass: PhotographersService}),
+      provide('SocialShareButtonsService', {useClass: SocialShareButtonsService}),
       provide(APP_BASE_HREF, {useValue: '/'}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: AppComponent}),
       provide(ApplicationRef, {useClass: MockApplicationRef}),
@@ -64,12 +65,26 @@ export class MockCommonDependency {
   }
 }
 
-class MockRouteParams{
-  private params:any={};
-  set(key:string, value:string):void{
-    this.params[key]=value;
+class MockRouteParams {
+  private params:any = {};
+
+  set(key:string, value:string):void {
+    this.params[key] = value;
   }
-  get(key:string):void{
+
+  get(key:string):void {
     return this.params[key];
   }
 }
+
+// class MockNgZone extends NgZone {
+//   constructor();
+//
+//   onEventDone:EventEmitter<any>;
+//
+//   run(fn:Function):any;
+//
+//   runOutsideAngular(fn:Function):any;
+//
+//   simulateZoneExit():void;
+// }
