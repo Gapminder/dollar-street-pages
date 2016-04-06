@@ -94,6 +94,10 @@
 }
 
 @media (max-width: 1023px) {
+  .container {
+    width: 100%;
+  }
+
   .ambassadors .ambassadors-peoples .ambassadors-people:nth-child(-n+6),
   .ambassadors .ambassadors-peoples .ambassadors-organization:nth-child(-n+4) {
     display: none;
@@ -106,12 +110,38 @@
 
   .ambassadors .ambassadors-peoples .ambassadors-people {
     width: calc(100% / 4);
-    padding: 2px;
   }
 
   .ambassadors .ambassadors-peoples .ambassadors-organization {
     width: calc(100% / 3);
-    padding: 2px;
+  }
+
+  .ambassadors .ambassadors-peoples h2 {
+    font-size: 32px;
+    margin: 30px 0 15px;
+  }
+
+  .ambassadors .ambassadors-peoples .see-more {
+    padding: 5px 10px;
+    font-size: 16px;
+    width: 140px;
+  }
+
+  .ambassadors .ambassadors-peoples .ambassadors-people-box .name {
+    font-size: 18px;
+  }
+
+  .ambassadors .ambassadors-peoples .ambassadors-people-box .country {
+    font-size: 16px;
+  }
+
+  .ambassadors .ambassadors-peoples .ambassadors-people-box .description {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .ambassadors .ambassadors-peoples .ambassadors-organization {
+    margin-bottom: 30px;
   }
 }
 
@@ -122,6 +152,10 @@
 }
 
 @media (max-width: 600px) {
+  .ambassadors {
+    margin: 43px auto 30px;
+  }
+
   .ambassadors .ambassadors-peoples .ambassadors-people:nth-child(-n+6),
   .ambassadors .ambassadors-peoples .ambassadors-organization:nth-child(-n+4) {
     display: none;
@@ -137,13 +171,18 @@
     display: block;
   }
 
+  .ambassadors .ambassadors-peoples .ambassadors-organization,
   .ambassadors .ambassadors-peoples .ambassadors-people {
     width: calc(100% / 2);
-    padding: 2px;
+    padding: 0 10px;
   }
 
-  .ambassadors .ambassadors-peoples .ambassadors-organization {
-    width: calc(100% / 2);
-    padding: 2px;
+  .ambassadors .ambassadors-peoples h2 {
+    font-size: 26px;
+    margin: 10px 0 5px;
+  }
+
+  .ambassadors .ambassadors-peoples .ambassadors-people {
+    margin-bottom: 20px;
   }
 }

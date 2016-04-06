@@ -28,19 +28,27 @@
   color: #374551;
 }
 
+@media (min-width: 1400px) {
+  .container {
+    width: 1400px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .container {
+    width: 100%;
+  }
+}
+
 @media (max-width: 600px) {
   .header .heading {
-    font-size: 24px;
-    margin: 8px 0 0 15px;
+    font-size: 18px;
+    margin: 0 0 0 10px;
+    line-height: 32px;
   }
 
   .header .logo {
     margin-top: 0;
-  }
-}
-
-@media (min-width: 1400px) {
-  .container {
-    width: 1400px;
+    width: 32px;
   }
 }
