@@ -4,8 +4,8 @@
 
 .matrix-search-button img {
   margin: -17px 0 0 10px;
-  width: 27px;
-  height: 27px;
+  width: 21px;
+  height: 21px;
   opacity: 0.8;
 }
 
@@ -317,8 +317,8 @@
 
 .search-title-thing-icon {
   margin: -4px 10px 0 5px;
-  width: 35px;
-  height: 35px;
+  width: 26px;
+  height: 26px;
 }
 
 .search-portrait-icon {
@@ -332,6 +332,7 @@
 .search-title div {
   font-size: 26px;
   margin: 3px 0 0;
+  line-height: 26px;
 }
 
 .search-text span {
@@ -408,4 +409,12 @@
 .search-content .dropdown-menu ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #1e2c37;
+}
+
+.map-page .search-title > div {
+  margin-top: 4px;
+}
+
+.map-page .search-title-container {
+  margin: 15px 0 0;
 }

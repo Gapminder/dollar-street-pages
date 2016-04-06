@@ -158,73 +158,36 @@ export class AmbassadorsListService {
         ambassadors: [{
           name: 'Jonathan James',
           country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg'
         }, {
           name: 'Jonathan James',
           country: 'England',
           description: ``,
-          img: '/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `.`,
-          img: '/assets/img/univercity.svg',
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in placerat massa. 
-    Donec sodales risus quis augue tincidunt iaculis. Fusce tincidunt lacinia purus nec tincidunt.`,
-          img: '/assets/img/univercity.svg',
+          img: '/assets/img/univercity.svg'
         }]
       }]
     };

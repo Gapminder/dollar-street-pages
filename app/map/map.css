@@ -64,7 +64,7 @@
 }
 
 #places {
-  padding-top: 67px;
+  padding-top: 80px;
 }
 
 #places .places_header {
@@ -88,14 +88,13 @@
 #places .mapBox {
   width: 100%;
   text-align: center;
-  margin-bottom: 40px;
 }
 
 #places .mapBox .mapBoxContainer {
   position: relative;
   width: 100%;
-  max-height: 585px;
-  max-width: 961px;
+  max-height: 885px;
+  max-width: 1130px;
   margin: auto;
 }
 
@@ -315,10 +314,10 @@
   margin-bottom: 50px;
   font-size: 20px;
   color: #374551;
-  -moz-column-count: 4;
-  -moz-columns: 4;
-  -webkit-columns: 4;
-  columns: 4;
+  -moz-column-count: 6;
+  -moz-columns: 6;
+  -webkit-columns: 6;
+  columns: 6;
 }
 
 .countries-list .country {
@@ -335,7 +334,7 @@
 .countries-list .country-letter {
   display: block;
   padding: 10px 0;
-  font-weight: bold;
+  font-family: 'Bariol Bold';
 }
 
 .countries-list .country-name {
@@ -345,6 +344,7 @@
 .countries-list .countries {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .left-side-info {
@@ -448,6 +448,21 @@
 .left-side-info ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #1e2c37;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    width: 1400px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .countries-list {
+    -moz-column-count: 4;
+    -moz-columns: 4;
+    -webkit-columns: 4;
+    columns: 4;
+  }
 }
 
 @media (max-width: 991px) {
