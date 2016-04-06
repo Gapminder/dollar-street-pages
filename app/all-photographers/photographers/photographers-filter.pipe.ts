@@ -8,13 +8,14 @@ export class PhotographersFilter {
   transform(value, args) {
     let [text, countries, nested] = args;
     let photographersArr = [];
+    countries = JSON.parse(JSON.stringify(countries));
 
     if (!text) {
       return value;
     }
 
     var items:any = value;
-    var newItems:any = [];
+    var newItems:any;
 
     newItems = countries.filter(country => {
       let photographers = country.photographers.filter(photographer => {
