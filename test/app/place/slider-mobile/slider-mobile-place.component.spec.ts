@@ -11,7 +11,7 @@
 // import {MockService} from '../../common-mocks/mock.service.template.ts';
 // import {places, place, activeThing, streetPlacesData} from '../mocks/data.ts';
 //
-// import {SliderMobilePlaceComponent} from '../../../../app/place/slider-mobile/slider-mobile-place.component';
+// import {SliderPlaceComponent} from '../../../../app/place/slider/slider-place.component';
 //
 // /** todo: remove this crutch */
 // interface ObjectCtor extends ObjectConstructor {
@@ -40,7 +40,7 @@
 // /**
 //  * *************/
 //
-// describe('SliderMobilePlaceComponent', () => {
+// describe('SliderPlaceComponent', () => {
 //   let controllSlider = new MockService();
 //   let streetPlaces = new MockService();
 //   let currentPlace = new MockService();
@@ -98,7 +98,6 @@
 //   it('slidePrev', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
 //       let context = fixture.debugElement.componentInstance;
-//
 //       context.currentPlace = currentPlace;
 //       context.controllSlider = controllSlider;
 //       context.activeThing = activeThing;
@@ -118,7 +117,6 @@
 //   it('slideNext', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
 //       let context = fixture.debugElement.componentInstance;
-//
 //       context.currentPlace = currentPlace;
 //       context.controllSlider = controllSlider;
 //       context.activeThing = activeThing;
