@@ -47,12 +47,14 @@ export class FamilyPlaceComponent implements OnInit, OnDestroy {
 
   nextImages(limit:number, placeId:string):void {
     let url = `isTrash=false&limit=${limit}&placeId=${placeId}&skip=0`;
+    if (this.familyPlaceServiceSubscribe) {
+      this.familyPlaceServiceSubscribe = null;
+    }
     this.familyPlaceServiceSubscribe = this.familyPlaceService.getPlaceFamilyImages(url)
       .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
-
         this.images = res.images;
       });
   }

@@ -66,7 +66,6 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
         this.image = this.routeParams.get('image');
         this.place = this.routeParams.get('place');
         this.allPlaces = places;
-
         this.init();
       });
 
@@ -108,10 +107,9 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   }
 
   protected init(position?:any) {
-    this.position = this.allPlaces.map(function (place:any) {
+    this.position = this.allPlaces.map((place:any) => {
       return place._id;
     }).indexOf(this.place);
-
     if (position || position === 0) {
       this.position = position;
     }
@@ -187,12 +185,9 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     let newPrevImage = new Image();
 
     newPrevImage.onload = () => {
-      this.zone.run(() => {
-        setDescriptionsWidth(1);
-        animationSlider(shiftPrev, prevSlide);
-      });
+      setDescriptionsWidth(1);
+      animationSlider(shiftPrev, prevSlide);
     };
-
     newPrevImage.src = this.images[0].background;
   }
 
@@ -309,7 +304,6 @@ function animationSlider(shiftLeft, endAnimation) {
       '-o-transform': 'translate3d(-' + shiftLeft + 'px, 0, 0)',
       transform: 'translate3d(-' + shiftLeft + 'px, 0, 0)'
     });
-
   setTimeout(endAnimation, 600);
 }
 

@@ -6,8 +6,8 @@ import {provide} from 'angular2/core';
 export class MockService {
   private response;
   private name:string;
-  public countOfSubscribes:number=0;
-    
+  public countOfSubscribes:number = 0;
+
   subscribe(callback):this {
     this.countOfSubscribes++;
     callback(this.fakeResponse);
@@ -18,16 +18,20 @@ export class MockService {
     this.countOfSubscribes--;
   }
 
-  set serviceName(name:string){
-      this.name=name
+  emit():this {
+    return;
   }
-  
+
+  set serviceName(name:string) {
+    this.name = name;
+  }
+
   getProviders():Array<any> {
     return [provide(this.name, {useValue: this})];
   }
 
-  set getMethod(name){
-    this[name]=()=>this
+  set getMethod(name) {
+    this[name] = (url?:any) => this;
   }
 
   get fakeResponse() {
@@ -38,7 +42,7 @@ export class MockService {
     this.response = response;
   }
 
-  public toInitState(){
-    this.countOfSubscribes=0;
+  public toInitState() {
+    this.countOfSubscribes = 0;
   }
 }

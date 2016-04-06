@@ -9,12 +9,12 @@ import {
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts'
 import {MockService} from '../../common-mocks/mock.service.template.ts'
-import {places} from "../mocks/data.ts";
+import {places} from '../mocks/data.ts';
 
 
 import {MatrixImagesComponent} from '../../../../app/matrix/matrix-images/matrix-images.component';
 
-describe("MatrixImagesComponent", () => {
+describe('MatrixImagesComponent', () => {
   let placesObservable = new MockService();
   placesObservable.fakeResponse = places;
   let mockCommonDependency = new MockCommonDependency();
@@ -23,7 +23,7 @@ describe("MatrixImagesComponent", () => {
       mockCommonDependency.getProviders(),
     ];
   });
-  it(" must init ", injectAsync([TestComponentBuilder], (tcb) => {
+  it('must init', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       context.thing = '546ccf730f7ddf45c0179658';
@@ -31,14 +31,14 @@ describe("MatrixImagesComponent", () => {
       context.places = placesObservable;
       fixture.detectChanges();
       expect(context.currentPlaces.length).toEqual(5);
-      context.hoverPlace.subscribe((place)=> {
-        expect(place.income).toEqual(1)
+      context.hoverPlace.subscribe((place) => {
+        expect(place.income).toEqual(1);
       });
       context.hoverImage(null, context.currentPlaces[0]);
       placesObservable.toInitState();
-    })
+    });
   }));
-  it(" must destroy ", injectAsync([TestComponentBuilder], (tcb) => {
+  it('must destroy', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       context.thing = '546ccf730f7ddf45c0179658';
@@ -47,6 +47,6 @@ describe("MatrixImagesComponent", () => {
       fixture.detectChanges();
       fixture.destroy();
       expect(placesObservable.countOfSubscribes).toEqual(0);
-    })
+    });
   }));
 });
