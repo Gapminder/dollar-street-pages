@@ -58,10 +58,10 @@ describe("PhotographersComponent", () => {
       for (let section of sections){
         expect(section.classList.contains('show')).toEqual(false);
       }
-      expect(showMore[0].innerHTML).toEqual('Show more »');
+      expect(showMore[0].innerHTML).toEqual('View More »');
       showMore[0].click();
       fixture.detectChanges();
-      expect(showMore[0].innerHTML).toEqual('Show less »');
+      expect(showMore[0].innerHTML).toEqual('View Less »');
       for (let section of sections){
         expect(section.classList.contains('show')).toEqual(true);
       }

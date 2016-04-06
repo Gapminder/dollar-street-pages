@@ -19,12 +19,13 @@
 }
 
 #photographers .search-input input {
-  font-size: 16px;
+  font-size: 18px;
   color: #767d86;
-  height: 34px;
+  height: 36px;
   padding-left: 32px;
   border-radius: 3px;
   border: 1px solid #e2e6ec;
+  box-shadow: none;
 }
 
 #photographers .search-input img {
@@ -51,13 +52,13 @@
   height: calc(100% - 44px);
   list-style-type: none;
   color: #767d86;
-  font-weight: bold;
   font-size: 16px;
 }
 
 #photographers .photographer-country {
   text-transform: uppercase;
-  color: #000;
+  color: #374551;
+  font-family: 'Bariol Bold';
 }
 
 #photographers .photographers-country > li {
@@ -103,22 +104,23 @@
   display: inline-block;
   width: calc(100% / 5);
   padding: 0 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   cursor: pointer;
 }
 
 #photographers .photographer-portrait {
   position: relative;
-  height: 150px;
   text-align: center;
   color: #fff;
   background-size: cover;
   background-position: 50% 50%;
+  padding-top: 85%;
+  font-size: 16px;
 }
 
 #photographers .photographer-portrait .photographer-material {
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
   left: 0;
   right: 0;
 }
@@ -139,6 +141,12 @@
 #photographers ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #b3b9c3;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    width: 1400px;
+  }
 }
 
 @media (max-width: 1023px) {
