@@ -1,18 +1,21 @@
-// import {
-//   it,
-//   describe,
-//   expect,
-//   injectAsync,
-//   beforeEachProviders,
-//   TestComponentBuilder,
-// } from 'angular2/testing';
-//
-// import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
-// import {MockService} from '../../common-mocks/mock.service.template.ts';
-// import {places, place, activeThing, streetPlacesData} from '../mocks/data.ts';
-//
-// import {SliderPlaceComponent} from '../../../../app/place/slider/slider-place.component';
-//
+import {
+  it,
+  describe,
+  expect,
+  injectAsync,
+  beforeEachProviders,
+  TestComponentBuilder,
+} from 'angular2/testing';
+
+
+import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
+import {MockService} from '../../common-mocks/mock.service.template.ts';
+import {places, place, activeThing, streetPlacesData} from '../mocks/data.ts';
+
+import {SliderMobilePlaceComponent} from '../../../../app/place/slider-mobile/slider-mobile-place.component';
+
+
+
 // /** todo: remove this crutch */
 // interface ObjectCtor extends ObjectConstructor {
 //   assign(target: any, ...sources: any[]): any;

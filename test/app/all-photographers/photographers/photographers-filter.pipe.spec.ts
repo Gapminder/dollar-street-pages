@@ -6,6 +6,7 @@ describe('InitCapsPipe', () => {
   let pipe:PhotographersFilter = new PhotographersFilter();
   it('firs test transform', () => {
     expect(pipe.transform(countryList, ['Alb', countryList, true]).length).toEqual(1);
+    expect(pipe.transform(countryList, ['Alb', countryList, true]).length).toEqual(1);
     expect(pipe.transform(photographersList, ['Alb', countryList, false]).length).toEqual(1);
     expect(pipe.transform(countryList, ['', countryList, false]).length).toEqual(4);
     expect(pipe.transform(photographersList, ['', countryList, false]).length).toEqual(4);

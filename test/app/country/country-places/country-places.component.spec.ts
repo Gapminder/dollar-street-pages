@@ -9,11 +9,11 @@ import {
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts'
 import {MockService} from '../../common-mocks/mock.service.template.ts'
-import {places} from "../mocks/data.ts";
+import {places} from '../mocks/data.ts';
 
 import {CountryPlacesComponent} from '../../../../app/country/country-places/country-places.component';
 
-describe("CountryPlacesComponent", () => {
+describe('CountryPlacesComponent', () => {
   let countryPlacesService = new MockService();
   countryPlacesService.serviceName = 'CountryPlacesService';
   countryPlacesService.getMethod = 'getCountryPlaces';
@@ -25,7 +25,7 @@ describe("CountryPlacesComponent", () => {
       countryPlacesService.getProviders()
     ];
   });
-  it("CountryPlaceComponent must init ", injectAsync([TestComponentBuilder], (tcb) => {
+  it('CountryPlaceComponent must init ', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(CountryPlacesComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
@@ -34,7 +34,7 @@ describe("CountryPlacesComponent", () => {
       countryPlacesService.toInitState();
     })
   }));
-  it("CountryPlaceComponent must destroy ", injectAsync([TestComponentBuilder], (tcb) => {
+  it('CountryPlaceComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(CountryPlacesComponent).then((fixture) => {
       fixture.detectChanges();
       fixture.destroy();

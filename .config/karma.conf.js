@@ -15,25 +15,25 @@ module.exports = function (config) {
     },
     // list of files to exclude
     exclude: [],
-
+    
+    reporters: ['progress', 'coverage'],
     preprocessors: {
-      'test.bundle.js': ['coverage', 'webpack', 'sourcemap']
+      'test.bundle.js': ['webpack']
     },
-
     webpack: webpackConfig,
 
     coverageReporter: {
       dir: '../coverage/',
       reporters: [
-        { type: 'text-summary' },
-        { type: 'json' },
-        { type: 'html' },
+        {type: 'text-summary'},
+        {type: 'json'},
+        {type: 'html'},
         {type: 'lcov', subdir: 'report-lcov'}
       ]
     },
-    webpackServer: {noInfo: true},
 
-    reporters: ['progress', 'coverage'] ,
+
+    webpackServer: {noInfo: true},
 
     port: 9876,
 

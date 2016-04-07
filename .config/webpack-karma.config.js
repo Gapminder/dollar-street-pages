@@ -4,8 +4,8 @@ console.log(path.resolve(cwd));
 module.exports = {
   resolve: {
     root: [path.resolve(cwd)],
-    modulesDirectories: ['node_modules', 'test', 'app', '.'],
-    extensions: ['', '.ts', '.js', '.css'],
+    modulesDirectories: ['node_modules', 'test', 'app'],
+    extensions: ['', '.ts', '.js'],
     alias: {
       'test': 'test'
     }
@@ -38,10 +38,13 @@ module.exports = {
         include: path.resolve(cwd) + '/app',
         exclude: [
           /\.(e2e|spec)\.ts$/,
-          /node_modules/
+          /node_modules/,
+          path.resolve(cwd) + '/app/main',
+          path.resolve(cwd) + '/app/sitemap',
+          path.resolve(cwd) + '/app/assets'
         ]
       }
-
+    
     ],
     noParse: [
       /rtts_assert\/src\/rtts_assert/,
