@@ -2,7 +2,7 @@
 const path=require('path')
 const cwd = process.cwd();
 exports.config = {
-  baseUrl: 'http://consumer.dollarstreet.org/',
+//  baseUrl: 'http://consumer.dollarstreet.org/',
 
   specs: [
     path.resolve(cwd)+'/test-e2e/**/*.e2e.ts'
@@ -18,7 +18,7 @@ exports.config = {
     showColors: true,
     isVerbose: false,
     includeStackTrace: false,
-    defaultTimeoutInterval: 400000
+    defaultTimeoutInterval: 30000
   },
   directConnect: true,
 
