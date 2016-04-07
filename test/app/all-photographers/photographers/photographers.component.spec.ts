@@ -7,17 +7,17 @@ import {
   TestComponentBuilder,
 } from 'angular2/testing';
 
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services'
-import {MockService} from '../../../app/common-mocks/mock.service.template'
-import {photographers} from "../mocks/data.ts";
+import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
+import {MockService} from '../../../app/common-mocks/mock.service.template';
+import {photographers} from '../mocks/data.ts';
 
 import {PhotographersComponent} from '../../../../app/all-photographers/photographers/photographers.component.ts';
 
-describe("PhotographersComponent", () => {
+describe('Photographers Component', () => {
   let mockPhotographersService = new MockService();
-  mockPhotographersService.serviceName='PhotographersService';
-  mockPhotographersService.getMethod='getPhotographers';
-  mockPhotographersService.fakeResponse=photographers;
+  mockPhotographersService.serviceName = 'PhotographersService';
+  mockPhotographersService.getMethod = 'getPhotographers';
+  mockPhotographersService.fakeResponse = photographers;
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
@@ -25,25 +25,25 @@ describe("PhotographersComponent", () => {
       mockPhotographersService.getProviders(),
     ];
   });
-  it("PhotographersComponent must init ", injectAsync([TestComponentBuilder], (tcb) => {
+  it('PhotographersComponent must init', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(PhotographersComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
       expect(context.photographersByCountry.length).toBe(4);
       expect(context.photographersByName.length).toBe(4);
-      expect(context.loader).toBe(true)
+      expect(context.loader).toBe(true);
       mockPhotographersService.toInitState();
-    })
+    });
   }));
-  it("PhotographersComponent must destroy ", injectAsync([TestComponentBuilder], (tcb) => {
+  it('PhotographersComponent must destroy', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(PhotographersComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
-      fixture.destroy()
-      expect(mockPhotographersService.countOfSubscribes).toBe(0);
-    })
+      fixture.destroy();
+      expect(context.photographersServiceSubscribe.countOfSubscribes).toBe(0);
+    });
   }));
-  it("PhotographersComponent must show on mobile ", injectAsync([TestComponentBuilder], (tcb) => {
+  it('PhotographersComponent must show on mobile', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(PhotographersComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       let nativeElement = fixture.debugElement.nativeElement;
@@ -54,9 +54,9 @@ describe("PhotographersComponent", () => {
       expect(searchInput.classList.contains('show')).toBe(true);
       context.toggleLeftSide({target: sortButton});
       expect(searchInput.classList.contains('show')).toBe(false);
-    })
+    });
   }));
-  it("PhotographersComponent must render photographers", injectAsync([TestComponentBuilder],(tcb)=> {
+  it('PhotographersComponent must render photographers', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(PhotographersComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       let nativeElement = fixture.debugElement.nativeElement;
@@ -71,6 +71,8 @@ describe("PhotographersComponent", () => {
       countryCard = nativeElement.querySelectorAll('.country-card');
       expect(photographerСard.length).toBe(1);
       expect(countryCard.length).toBe(2);
-    })
-  }))
+    });
+  }));
 });
+
+

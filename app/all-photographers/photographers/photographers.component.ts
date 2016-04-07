@@ -35,7 +35,6 @@ export class PhotographersComponent implements OnInit, OnDestroy {
         if (res.err) {
           return res.err;
         }
-
         this.photographersByCountry = res.data.countryList;
         this.photographersByName = res.data.photographersList;
         this.loader = true;

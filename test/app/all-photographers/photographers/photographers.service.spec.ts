@@ -34,7 +34,7 @@ describe('PhotographersService', () => {
             return new Http(backend, defaultOptions);
           }, deps: [MockBackend, BaseRequestOptions]
         })
-    ]
+    ];
   });
   it('test getPhotographers()', inject([PhotographersService, MockBackend], fakeAsync((photographersService,
                                                                                        mockBackend) => {
