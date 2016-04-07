@@ -19,12 +19,13 @@
 }
 
 #photographers .search-input input {
-  font-size: 16px;
+  font-size: 18px;
   color: #767d86;
-  height: 34px;
+  height: 36px !important;
   padding-left: 32px;
   border-radius: 3px;
   border: 1px solid #e2e6ec;
+  box-shadow: none;
 }
 
 #photographers .search-input img {
@@ -51,13 +52,13 @@
   height: calc(100% - 44px);
   list-style-type: none;
   color: #767d86;
-  font-weight: bold;
   font-size: 16px;
 }
 
 #photographers .photographer-country {
   text-transform: uppercase;
-  color: #000;
+  color: #374551;
+  font-family: 'Bariol Bold';
 }
 
 #photographers .photographers-country > li {
@@ -103,22 +104,23 @@
   display: inline-block;
   width: calc(100% / 5);
   padding: 0 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   cursor: pointer;
 }
 
 #photographers .photographer-portrait {
   position: relative;
-  height: 150px;
   text-align: center;
   color: #fff;
   background-size: cover;
   background-position: 50% 50%;
+  padding-top: 85%;
+  font-size: 16px;
 }
 
 #photographers .photographer-portrait .photographer-material {
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
   left: 0;
   right: 0;
 }
@@ -141,9 +143,19 @@
   background-color: #b3b9c3;
 }
 
+@media (min-width: 1400px) {
+  .container {
+    width: 1400px;
+  }
+}
+
 @media (max-width: 1023px) {
   .container {
     width: 100%;
+  }
+
+  #photographers {
+    padding-top: 120px;
   }
 
   .container .row > div {
@@ -163,12 +175,12 @@
     overflow: hidden;
     position: fixed;
     z-index: 1;
-    background-color: white;
     left: 0;
     right: 0;
     width: 100%;
-    top: 77px;
-    padding: 15px 10px;
+    top: 61px;
+    padding: 5px 10px;
+    background-color: #f4fafb;
   }
 
   #photographers .search-input .sort-country {
@@ -207,7 +219,7 @@
   }
 
   #photographers .search-input img {
-    top: 25px;
+    top: 16px;
     left: 145px !important;
   }
 
@@ -228,7 +240,7 @@
     box-shadow: 0 0 5.3px 0.7px rgba(0, 0, 0, 0.24);
     position: fixed;
     z-index: 2;
-    top: 142px;
+    top: 107px;
     left: -100%;
     opacity: 0;
     bottom: 0;
@@ -242,9 +254,8 @@
   }
 
   #photographers .photographer-card {
-    display: inline-block;
     width: 25%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   #photographers .photographers-container h3 {
@@ -254,28 +265,20 @@
 
 @media (max-width: 600px) {
   #photographers {
-    padding-top: 120px;
+    padding-top: 100px;
   }
 
   #photographers .photographer-card {
     width: 50%;
+    margin-bottom: 10px;
   }
 
   #photographers .photographers-country {
-    top: 113px;
+    top: 90px;
   }
 
   #photographers .search-input {
-    top: 57px;
-    padding: 10px 10px;
+    top: 44px;
     margin: 0;
-  }
-
-  #photographers .photographers-container {
-    margin-top: -17px;
-  }
-
-  #photographers .search-input img {
-    top: 21px;
   }
 }

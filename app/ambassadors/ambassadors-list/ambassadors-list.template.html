@@ -2,16 +2,18 @@
 
   <div class="ambassadors-peoples" *ngFor="#ambassadors of ambassadorsList; #i = index; #l = last;">
     <h2>{{ambassadors.position}}</h2>
+
     <div class="ambassadors-people-box">
       <div *ngFor="#ambassador of ambassadors.ambassadors"
-           [ngClass]="!l?{'ambassadors-people':true,show:i===showedBlock}:
-           {'ambassadors-organization':true,show:i===showedBlock}">
-        <img [src]="ambassador.img">
+           [ngClass]="!l ? {'ambassadors-people': true, show: i === showedBlock}:
+           {'ambassadors-organization show': true}">
+        <img [src]="ambassador.img" alt="">
         <p class="name">{{ambassador.name}}</p>
-        <p class="country"><img [src]="'/assets/img/gray_marker.png'">{{ambassador.country}}</p>
-        <p class="description">{{ambassador.description}}</p>
+        <p class="country"><img src="/assets/img/gray_marker.png" alt="">{{ambassador.country}}</p>
+        <p class="description" *ngIf="ambassador.description">{{ambassador.description}}</p>
       </div>
     </div>
-    <span class="see-more" (click)="show(i)">{{i===showedBlock?'Show less »':'Show more »'}}</span>
+
+    <span class="see-more" *ngIf="!l" (click)="show(i)">{{i === showedBlock ? 'View Less »' : 'View More »'}}</span>
   </div>
 </div>
