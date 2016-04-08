@@ -8,12 +8,13 @@
 }
 
 #country-info p.description {
-  font-size: 13px;
-  text-align: justify;
+  font-size: 14px;
+  color: #767d86;
+  margin-top: 10px;
 }
 
 #country-info .header h2 {
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Bold', sans-serif;
   margin: 15px 0 0;
   font-size: 18px;
   text-transform: uppercase;
@@ -21,13 +22,11 @@
 
 #country-info .header .marker {
   width: 10px;
-  height: 15px;
-  opacity: 0.7;
-  margin-bottom: 4px;
+  margin: -5px 0 0;
 }
 
 #country-info .main {
-  border-top: 2px solid #e2e6ec;
+  border-top: 1px solid #e2e6ec;
   margin: 15px 0;
   padding: 7px 0;
 }
@@ -43,6 +42,11 @@
 
 #country-info .main .home i {
   font-size: 15px;
+}
+
+#country-info .main .home img {
+  width: 13px;
+  margin-top: -6px;
 }
 
 #country-info .main .photo i {
@@ -67,6 +71,12 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 19px;
+}
+
+#country-info .main span {
+  font-size: 14px;
+  color: #767d86;
+  margin-top: 5px;
 }
 
 #mobile-country-info {
@@ -112,7 +122,7 @@
 #mobile-country-info .country-description h2 {
   color: #3a4550;
   font-size: 18px;
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Bold', sans-serif;
   line-height: 20px;
   text-transform: uppercase;
   margin: -4px 0 25px;
@@ -121,7 +131,7 @@
 #mobile-country-info .country-description h2 span {
   color: #767d86;
   font-size: 18px;
-  font-family: 'Bariol Regular';
+  font-family: 'Bariol Regular', sans-serif;
   text-transform: capitalize;
   display: inline-block;
   margin-left: 20px;
@@ -164,7 +174,7 @@
   color: #3a4550;
   font-size: 14px;
   text-transform: uppercase;
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Bold', sans-serif;
   margin-top: 0;
 }
 
@@ -176,7 +186,7 @@
 
 #mobile-country-info .country-description-main div + div a {
   color: #3a4550;
-  font-family: Helvetica;
+  font-family: Helvetica, sans-serif;
   font-size: 13px;
   font-weight: 300;
   padding-top: 4px;

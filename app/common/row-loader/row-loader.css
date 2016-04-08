@@ -15,7 +15,7 @@
 
 #row-loader-container h1 {
   text-transform: uppercase;
-  font-family: 'Bariol Light';
+  font-family: 'Bariol Light', sans-serif;
 }
 
 #row-loader-container .loader {

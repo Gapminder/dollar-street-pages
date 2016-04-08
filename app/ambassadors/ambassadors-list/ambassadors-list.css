@@ -11,22 +11,24 @@
   display: block;
   color: #fff;
   margin: 0 auto;;
-  padding: 10px 30px;
+  padding: 8px 20px;
   background-color: #374551;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
-  width: 180px;
+  width: 150px;
   text-align: center;
   -webkit-transition: all .2s ease-out;
   -moz-transition: all .2s ease-out;
   -o-transition: all .2s ease-out;
   transition: all .2s ease-out;
+  border: 1px solid #303e4a;
 }
 
 .ambassadors .ambassadors-peoples .see-more:hover {
-  background-color: #FFB702;
+  background-color: #f9cd28;
+  border: 1px solid #dfb209;
 }
 
 .ambassadors .ambassadors-peoples span {
@@ -67,6 +69,10 @@
   display: block;
 }
 
+.ambassadors .ambassadors-peoples .ambassadors-organization > img {
+  border: 1px solid #d2d5da;
+}
+
 .ambassadors .ambassadors-peoples .ambassadors-people-box img {
   width: 100%;
 }
@@ -81,11 +87,8 @@
 }
 
 .ambassadors .ambassadors-peoples .ambassadors-people-box .country img {
-  width: 10px;
-  height: 15px;
-  margin: 5px 6px 0 0;
-  display: block;
-  float: left;
+  width: 11px;
+  margin: -7px 6px 0 0;
 }
 
 .ambassadors .ambassadors-peoples .ambassadors-people-box .description {

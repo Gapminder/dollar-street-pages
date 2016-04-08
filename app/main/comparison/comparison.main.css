@@ -39,7 +39,7 @@
 #comparison .comparison_content .image_description {
   position: relative;
   margin-top: -35px;
-  color: #ffffff;
+  color: #fff;
 }
 
 #comparison .comparison_content span.country {
@@ -115,7 +115,7 @@
 }
 
 #comparison .comparison_content .description .see_more:hover {
-  background-color: #FFB702;
+  background-color: #f9cd28;
 }
 
 #comparison .comparison_content {

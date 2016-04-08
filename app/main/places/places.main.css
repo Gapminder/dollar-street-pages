@@ -30,7 +30,7 @@
   margin-bottom: 40px;
 }
 
-#places .mapBox .mapBoxConteiner {
+#places .mapBox .mapBoxContainer {
   position: relative;
   width: 100%;
   max-height: 585px;
@@ -38,7 +38,7 @@
   margin: auto;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait {
+#places .mapBox .mapBoxContainer .hover_portrait {
   position: absolute;
   width: 164px;
   color: white;
@@ -48,19 +48,19 @@
   transition: opacity 0.3s ease-out;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait img {
+#places .mapBox .mapBoxContainer .hover_portrait img {
   width: 100%;
   border: 1px solid white;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box {
   background-color: #fff;
   border-radius: 5px;
   padding: 5px;
   box-shadow: 0.574px 0.819px 2.88px 0.1px rgba(0, 0, 0, 0.2);
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_arrow {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_arrow {
   margin: auto;
   width: 0;
   height: 0;
@@ -69,35 +69,35 @@
   border-top: 6px solid #fff;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description {
-  font-family: 'Bariol Light';
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description {
+  font-family: 'Bariol Light', sans-serif;
   overflow: hidden;
   padding-top: 5px;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .name {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .name {
   font-size: 14px;
   color: #767d86;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .country {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .country {
   font-size: 14px;
   display: block;
   color: #767d86;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .income {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .income {
   color: #767d86;
   font-size: 26px;
   line-height: 26px;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .pull-left {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .pull-left {
   line-height: 14px;
   text-align: left;
 }
 
-#places .mapBox .mapBoxConteiner .hover_portrait .hover_portrait_box .hover_portrait_description .pull-right {
+#places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .pull-right {
   text-align: right;
 }
 
@@ -126,7 +126,7 @@
 #places .familyPortraits .portrait .description {
   overflow: hidden;
   margin-top: 7px;
-  font-family: 'Bariol Light';
+  font-family: 'Bariol Light', sans-serif;
 }
 
 #places .familyPortraits .portrait .description .name {
@@ -180,7 +180,7 @@
 }
 
 #places  .see_more_container .see_more:hover {
-  background-color: #FFB702;
+  background-color: #f9cd28;
 }
 
 @media (max-width: 991px) {

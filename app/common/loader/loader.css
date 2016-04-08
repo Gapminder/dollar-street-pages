@@ -22,7 +22,7 @@
 
 #loader-container .loader-content h1 {
   text-transform: uppercase;
-  font-family: 'Bariol Light';
+  font-family: 'Bariol Light', sans-serif;
 }
 
 #loader-container .loader {

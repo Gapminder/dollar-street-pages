@@ -59,7 +59,6 @@
 .slider-mobile-wrapper .slider-mobile-container .slider-mobile-content .slider-mobile.active {
   -webkit-transition: -webkit-transform .4s ease-out;
   -moz-transition: -moz-transition .4s ease-out;
-  -ms-transition: -ms-transition .4s ease-out;
   -o-transition: -o-transition .4s ease-out;
   transition: transform .4s ease-out;
 }

@@ -56,16 +56,29 @@
   background-color: #303E4A;
 }
 
-.footer .share-button-container .share-button i {
-  color: #e0e7ef;
+@media (min-width: 1400px) {
+  .container {
+    width: 1400px;
+  }
 }
 
 @media (max-width: 991px) {
   .footer .f-creative-commons,
   .footer .f-dollar-street,
   .footer .f-social {
-    /*margin-top: 30px;*/
     text-align: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer .share-button-container .share-button {
+    text-align: left !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .footer .share-button-container .share-button {
+    text-align: left !important;
   }
 }
 
