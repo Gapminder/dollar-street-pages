@@ -17,12 +17,14 @@
     "watch:prod": "NODE_ENV=production ./node_modules/.bin/webpack --progress --color -w",
     "serve": "./node_modules/.bin/lite-server",
     "unit-tests": "./node_modules/.bin/karma start -w",
-    "codecov": "cat ./coverage/report-lcov/lcov.info | ./node_modules/.bin/codecov -t df0807c8-8da5-4cfd-beff-2ef4c6f3f8ea",
+    "codecov": "cat ./coverage/report-lcov/lcov.info | ./node_modules/.bin/codecov -t $CODECOV_KEY",
     "pre-commit-test":"./node_modules/.bin/karma start ./.config/karma-pre.config.js",
     "eslint": "./node_modules/.bin/eslint --ignore-path .gitignore --ext js --fix . .config",
     "lint": "npm run tslint && npm run eslint",
     "tslint": "./node_modules/.bin/gulp tslint",
-    "protractor:test":"./node_modules/.bin/protractor ./.config/protractor.conf.js"
+    "e2e:local":"./node_modules/.bin/protractor ./.config/protractor.conf.js",
+    "e2e:bstack:tunnel": ".config/tools/bstack-local.js",
+    "e2e:bstack": ".config/tools/wait4tunnel.js && ./node_modules/.bin/protractor ./.config/protractor-browserstack.conf.js"
   },
   "pre-commit":[
     "lint",
@@ -83,7 +85,11 @@
     "tslint": "3.3.0",
     "typescript": "1.7.5",
     "typings": "0.6.7",
-    "webpack": "1.12.13"
+    "webpack": "1.12.13",
+    "eslint": "1.10.3",
+    "browserstack-wrapper": "1.0.0",
+    "browserstacktunnel-wrapper": "1.4.2",
+    "shelljs": "0.6.0"
   },
   "repository": {
     "type": "git",
