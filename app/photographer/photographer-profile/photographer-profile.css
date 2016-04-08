@@ -8,8 +8,8 @@
 }
 
 #photographer-profile p.description {
-  font-size: 13px;
-  text-align: justify;
+  font-size: 14px;
+  color: #767d86;
 }
 
 #photographer-profile .header img {
@@ -17,9 +17,20 @@
   margin-bottom: 15px;
 }
 
+#photographer-profile .header .country {
+  font-size: 18px;
+  color: #767d86;
+  margin-bottom: 5px;
+}
+
+#photographer-profile .header .country img {
+  width: 10px;
+  margin: -5px 0 0;
+}
+
 #photographer-profile .main {
-  border-top: 2px solid #e2e6ec;
-  border-bottom: 2px solid #e2e6ec;
+  border-top: 1px solid #e2e6ec;
+  border-bottom: 1px solid #e2e6ec;
   margin: 15px 0;
   padding: 7px 0;
 }
@@ -33,8 +44,9 @@
   margin: 10px 0;
 }
 
-#photographer-profile .main .home i {
-  font-size: 15px;
+#photographer-profile .main .home img {
+  width: 13px;
+  margin-top: -6px;
 }
 
 #photographer-profile .main .photo i {
@@ -51,11 +63,17 @@
   margin-top: 5px;
 }
 
+#photographer-profile .footer + .footer {
+  border-top: 1px solid #e2e6ec;
+  padding-top: 15px;
+  margin-top: 11px;
+}
+
 #photographer-profile .footer h3,
 #photographer-profile .header h2 {
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Bold', sans-serif;
   font-size: 18px;
-  margin: 0;
+  margin: 0 0 5px;
   text-transform: uppercase;
 }
 
@@ -77,6 +95,18 @@
   font-size: 20px;
   display: inline-block;
   margin-right: 15px;
+}
+
+#photographer-profile .organisation p {
+  color: #727982;
+  font-size: 16px;
+}
+
+#photographer-profile .footer > a {
+  color: #374551;
+  font-size: 13px;
+  display: block;
+  margin: 7px 0 0;
 }
 
 #mobile-photographer-profile {
@@ -122,7 +152,7 @@
 #mobile-photographer-profile .photographer-description h2 {
   color: #3a4550;
   font-size: 18px;
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Bold', sans-serif;
   line-height: 20px;
   text-transform: uppercase;
   margin: -4px 0 25px;
@@ -131,7 +161,7 @@
 #mobile-photographer-profile .photographer-description h2 span {
   color: #767d86;
   font-size: 18px;
-  font-family: 'Bariol Regular';
+  font-family: 'Bariol Regular', sans-serif;
   text-transform: capitalize;
   display: inline-block;
   margin-left: 20px;
@@ -174,7 +204,7 @@
   color: #3a4550;
   font-size: 14px;
   text-transform: uppercase;
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Bold', sans-serif;
   margin-top: 0;
 }
 
@@ -186,7 +216,7 @@
 
 #mobile-photographer-profile .photographer-description-footer div + div a {
   color: #3a4550;
-  font-family: Helvetica;
+  font-family: Helvetica, sans-serif;
   font-size: 13px;
   font-weight: 300;
   padding-top: 4px;
