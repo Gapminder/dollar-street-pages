@@ -21,8 +21,8 @@ describe('Photographers Page ', function() {
     browser.wait(EC.visibilityOf(zorianMiller), TIMEOUT, message);
   });
   afterEach (function check() {
-    browser.wait(EC.visibilityOf(photographerPortreit), TIMEOUT, photographerMessage);
-    photographerPortreit.click();
+    /*browser.wait(EC.visibilityOf(photographerPortreit), TIMEOUT, photographerMessage);
+    photographerPortreit.click();*/
     browser.isElementPresent(namePhotographer);
     browser.isElementPresent(country);
     browser.isElementPresent(totalPhotos);
@@ -39,24 +39,24 @@ describe('Photographers Page ', function() {
     searchField.sendKeys('AJ SHARMA' + '\n');
   });
   it('test Anna Graboowska', function() {
-    searchField.sendKeys('Anna Graboowska' + '\n');
+    browser.get('/photographer?id=56ec091caf72e9437cbccfab');
   });
   it('test Zoriah Miller', function() {
-    searchField.sendKeys('Zoriah Miller' + '\n');
+    browser.get('/photographer?id=56ec0917af72e9437cbccf93');
   });
   it('test Luc Forsyth', function() {
-    searchField.sendKeys('Luc Forsyth' + '\n');
+    browser.get('/photographer?id=56ec0918af72e9437cbccf97');
   });
   it('test Jonathan Taylor', function() {
-    searchField.sendKeys('Jonathan Taylor' + '\n');
+    browser.get('/photographer?id=56ec0917af72e9437cbccf94');
   });
   it('test Abhineet Malhotra', function() {
-    searchField.sendKeys('Abhineet Malhotra' + '\n');
+    browser.get('/photographer?id=56ec0919af72e9437cbccf9b');
   });
   it('test Konstatins Sigulis', function() {
-    searchField.sendKeys('Konstatins Sigulis\n');
+    browser.get('/photographer?id=56ec091caf72e9437cbccfac');
   });
-  it('test Jose Ramirez', function() {
+  /*it('test Jose Ramirez', function() {
     searchField.sendKeys('Jose Ramirez\n');
-  });
+  });*/
 });

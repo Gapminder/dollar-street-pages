@@ -3,8 +3,7 @@
 }
 
 ul#sitemap {
-  margin: 0;
-  margin-top: 120px;
+  margin: 120px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -15,12 +14,12 @@ ul#sitemap ul {
 }
 
 ul#sitemap li {
-  border-bottom: 2px solid #FFFFFF;
+  border-bottom: 2px solid #fff;
   font-size: 20px;
 }
 
 ul#sitemap li a:link, ul#sitemap li a:visited{
-  background-color: #CCCCCC;
+  background-color: #ccc;
   display: block;
   padding: 0.4em;
   text-decoration: none;
@@ -28,19 +27,19 @@ ul#sitemap li a:link, ul#sitemap li a:visited{
 }
 
 ul#sitemap li a:hover {
-  background-color: #999999;
-  color: #FFFFFF;
+  background-color: #999;
+  color: #fff;
 }
 
 ul#sitemap li li a:link, ul#sitemap li li a:visited{
-  background-color: #FFFFFF;
+  background-color: #fff;
   display: block;
   padding: 0.4em;
 }
 
 ul#sitemap li li a:hover {
-  background-color: #FFFFFF;
-  color: #057FAC;
+  background-color: #fff;
+  color: #057fac;
 }
 
 footer {

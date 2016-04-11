@@ -2,35 +2,42 @@
   <div class="header">
     <img [src]="photographer.avatar || '/assets/img/photographer-icon.jpg'" alt="avatar">
     <h2>{{photographer.firstName}} {{photographer.lastName}}</h2>
-    <p *ngIf="photographer.company && photographer.company.name && !photographer.company.link">
-      {{photographer.company.name}}
-    </p>
-    <p *ngIf="photographer.description" class="description">
-      {{photographer.description}}
-    </p>
 
-    <a target="_blank"
-       *ngIf="photographer.company && photographer.company.name && photographer.company.link"
-       [href]="photographer.company.link">{{photographer.company.name}}</a>
+    <div class="country" *ngIf="photographer.country && photographer.country.country">
+      <img src="/assets/img/grey-marker.svg" alt=""> {{photographer.country.country}}
+    </div>
+
+    <p class="description" *ngIf="photographer?.description">{{photographer.description}}</p>
   </div>
 
   <div class="main">
     <p class="home">
-      <i class="fa fa-home"></i> Visited Families: <span class="pull-right">{{photographer.placesCount || 0}}</span>
+      <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span class="pull-right">{{photographer.placesCount || 0}}</span>
     </p>
 
     <p class="photo">
       <i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{photographer.imagesCount || 0}}</span>
     </p>
 
-    <p class="camera">
+    <p class="camera" *ngIf="photographer.video">
       <i class="fa fa-video-camera"></i> Total Videos: <span class="pull-right">{{photographer.video || 0}}</span>
     </p>
+  </div>
+
+  <div class="footer organisation"
+       *ngIf="photographer.company && photographer.company.name">
+    <h3>Organisation</h3>
+
+    <p>{{photographer.company.name}}</p>
   </div>
 
   <div class="footer"
        *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
     <h3>On the web</h3>
+
+    <a target="_blank"
+       *ngIf="photographer.company && photographer.company.name && photographer.company.link"
+       [href]="photographer.company.link">{{photographer.company.link.replace('http://', '')}}</a>
 
     <div class="social-network-container">
       <a *ngIf="photographer.google"

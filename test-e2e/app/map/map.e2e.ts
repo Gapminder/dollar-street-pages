@@ -10,27 +10,28 @@ describe('App', () => {
     let result = 'Dollar Street';
     expect(subject).toEqual(result);
   });
+});
 
-  it('search-title-thing-icon', () => {
-    let subject = element(by.css('.search-title-thing-icon')).isPresent();
-    let result = true;
-    expect(subject).toEqual(result);
-  });
+  //it('search-title-thing-icon', () => {
+  //  let subject = element(by.css('.search-title-thing-icon')).isPresent();
+  //  let result = true;
+ //   expect(subject).toEqual(result);
+ // });
 
-  it('search-text', () => {
-    let subject = element(by.css('.search-text > span')).isPresent();
-    let result = true;
-    expect(subject).toEqual(result);
+  //it('search-text', () => {
+  //  let subject = element(by.css('.search-text > span')).isPresent();
+  //  let result = true;
+  //  expect(subject).toEqual(result);
 
-    browser.wait(() => {
+   /* browser.wait(() => {
       return element(by.css('.search-text')).element(by.tagName('span')).getText();
     });
     let thing = element(by.css('.search-text')).element(by.tagName('span')).getText();
     let resultThing = 'Home';
     expect(thing).toEqual(resultThing);
-  });
+  })*/
 
-  it('search menu open', () => {
+ /* it('search menu open', () => {
     element(by.css('.search-content')).click().then(() => {
       browser.wait(() => {
         return element(by.css('.dropdown-menu')).isDisplayed();
@@ -45,5 +46,5 @@ describe('App', () => {
       count = element(by.css('.search-list-categories')).all(by.tagName('li')).count();
       expect(count).toEqual(1);
     });
-  });
-});
+  });*/
+

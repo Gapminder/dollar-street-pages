@@ -374,6 +374,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private toUrl(image) {
-    return `url("${image.replace('150x150', 'devices')}")`;
+    return `url("${image}")`;
   }
 }

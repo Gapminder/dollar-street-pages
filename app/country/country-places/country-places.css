@@ -46,12 +46,12 @@
   color: #767d86;
   margin-top: -4px;
   display: block;
-  font-family: 'Bariol Light';
+  font-family: 'Bariol Light', sans-serif;
 }
 
 #country-place .place-description .family h3 {
   font-size: 24px;
-  font-family: 'Bariol Light';
+  font-family: 'Bariol Light', sans-serif;
 }
 
 #country-place .place-description .family h3 span {
@@ -68,7 +68,9 @@
   margin-top: 10px;
   width: 50%;
   float: left;
-  font-family: 'Bariol Light';
+  font-family: 'Bariol Light', sans-serif;
+  text-align: left;
+  padding-left: 50px;
 }
 
 #country-place .place-description .place-country img {
@@ -78,30 +80,32 @@
 
 #country-place .place-description .income {
   font-size: 45px;
-  font-family: 'Bariol Light';
+  font-family: 'Bariol Light', sans-serif;
   line-height: 46px;
   width: 50%;
   float: right;
 }
 
 #country-place .link {
-  margin-top: 37px;
+  margin-top: 42px;
 }
 
 #country-place .link a {
   color: #fff;
-  padding: 10px 0;
+  padding: 8px 0;
   background-color: #374551;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   display: inline-block;
   border-radius: 5px;
-  width: 162px;
+  width: 150px;
   text-align: center;
+  border: 1px solid #303e4a;
 }
 
 #country-place .link a:hover {
-  background-color: #ffb702;
+  background-color: #f9cd28;
+  border: 1px solid #dfb209;
 }
 
 @media (max-width: 1199px) {
