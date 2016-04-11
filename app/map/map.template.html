@@ -12,7 +12,7 @@
           <div class="mapBoxContainer">
             <img class="map-color" src="/assets/img/original-map.svg" alt="">
             <img class="marker"
-                 src="/assets/img/marker.png"
+                 src="/assets/img/dark-marker.svg"
                  alt="marker"
                  *ngFor="#place of places; #i = index"
                  [style.left.px]="place.left"
@@ -40,7 +40,7 @@
                     <span class="income">{{hoverPlace.income}}$</span>
                   </div>
                   <div class="see-all" *ngIf="seeAllHomes" (click)="openLeftSideBar()">
-                    <span class="see-all-span">See All Famlies >></span>
+                    <span class="see-all-span">See all {{lefSideCountries.length}} Families »</span>
                   </div>
                 </div>
               </div>
@@ -67,22 +67,25 @@
 
   <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
     <div class="header">
-      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} houses in {{currentCountry}}</p>
+      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} Houses in {{currentCountry}}</p>
       <span (click)="closeLeftSideBar($event)">x</span>
     </div>
 
-    <div class="info-box"
-         *ngFor="#place of lefSideCountries"
-         [routerLink]="['Place', {thing: place.familyImg.thing, place: place._id, image: place.familyImg.imageId}]">
-      <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
+    <div class="info-box-container">
+      <div class="info-box"
+           *ngFor="#place of lefSideCountries"
+           [routerLink]="['Place', {thing: place.familyImg.thing, place: place._id, image: place.familyImg.imageId}]">
+        <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
 
-      <div class="hover_portrait_description">
-        <div class="pull-left">
-          <span class="name">{{place.family}}s</span>
-        </div>
+        <div class="hover_portrait_description">
+          <div class="pull-left">
+            <span class="name">{{place.family}}s</span>
+            <span class="country">{{currentCountry}}</span>
+          </div>
 
-        <div class="pull-right">
-          <span class="income">{{place.income}}$</span>
+          <div class="pull-right">
+            <span class="income">{{place.income}}$</span>
+          </div>
         </div>
       </div>
     </div>

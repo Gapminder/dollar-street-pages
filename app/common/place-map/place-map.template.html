@@ -1,23 +1,23 @@
 <div id="map-content" >
   <img class="map map_transparent" src="/assets/img/map_dark_border.svg"  [hidden]="isHeader"/>
   <img class="map map_gray" src="/assets/img/map-gray.svg" [hidden]="!isHeader"/>
-  <img class="marker" *ngIf=""
-       src="/assets/img/africa-map-house.png"
+  <img class="marker"
+       src="/assets/img/africa-marker.svg"
        *ngIf="region === 'africa'"
        [ngStyle]="markerPosition" alt="Africa"/>
 
   <img class="marker"
-       src="/assets/img/america-map-house.png"
+       src="/assets/img/america-marker.svg"
        *ngIf="region === 'america'"
        [ngStyle]="markerPosition" alt="America"/>
 
   <img class="marker"
-       src="/assets/img/asia-map-house.png"
+       src="/assets/img/asia-marker.svg"
        *ngIf="region === 'asia'"
        [ngStyle]="markerPosition" alt="Asia"/>
 
   <img class="marker"
-       src="/assets/img/europe-map-house.png"
+       src="/assets/img/europe-marker.svg"
        *ngIf="region === 'europe'"
        [ngStyle]="markerPosition" alt="Europe"/>
 </div>

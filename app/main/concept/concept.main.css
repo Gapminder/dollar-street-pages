@@ -53,7 +53,7 @@
   right: -6px;
   bottom: 0;
   border-top: 6px solid transparent;
-  border-left: 6px solid #FFB702;
+  border-left: 6px solid #f9cd28;
   border-bottom: 6px solid transparent;
   margin: auto 0;
 }
@@ -84,7 +84,7 @@
 
 .concept_things_menu ul li.active,
 .concept_things_menu ul li:hover {
-  background-color: #FFB702;
+  background-color: #f9cd28;
 }
 
 .concept_things_menu ul li.active .icon img:first-child,
@@ -157,7 +157,7 @@
 }
 
 .concept_things_content .concept-info a:hover {
-  background-color: #FFB702;
+  background-color: #f9cd28;
 }
 
 .concept_things_content {
@@ -419,7 +419,7 @@
   }
 
   .concept_things_menu > ul > li.active {
-    background-color: #FFB702;
+    background-color: #f9cd28;
   }
 
   .concept_things_menu > ul > li.active:before {

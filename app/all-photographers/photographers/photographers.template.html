@@ -40,8 +40,8 @@
                [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/photographer-icon.jpg)'}">
             <div class="photographer-material">
               <span><i class="fa fa-camera"></i> {{photographer.images}}</span>
-              <span><i class="fa fa-video-camera"></i> {{photographer.video || 0}}</span>
-              <span><i class="fa fa-home"></i> {{photographer.places}}</span>
+              <span *ngIf="photographer.video"><i class="fa fa-video-camera"></i> {{photographer.video || 0}}</span>
+              <span><img src="/assets/img/house-icon-white.png" alt=""> {{photographer.places}}</span>
             </div>
           </div>
           <h3>{{photographer.name}}</h3>

@@ -3,26 +3,22 @@
     <place-map [hoverPlace]="hoverPlace" [isHeader]="true" [isHeader]="true" [routerLink]="['Map',{thing:thing}]"></place-map>
 
     <h2 *ngIf="country">
-      <img class="marker"
-           src="/assets/img/marker.png"
-           alt="marker"> {{country.country}}
+      <img class="marker" src="/assets/img/grey-marker.svg" alt=""> {{country.country}}
     </h2>
 
-    <p class="description" *ngIf="country?.description">
-      {{country.description}}
-    </p>
+    <p class="description" *ngIf="country?.description">{{country.description}}</p>
   </div>
 
   <div class="main">
     <p class="home" *ngIf="placesQantity">
-      <i class="fa fa-home"></i> Visited Families: <span class="pull-right">{{placesQantity || 0}}</span>
+      <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span class="pull-right">{{placesQantity || 0}}</span>
     </p>
 
     <p class="photo">
       <i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{photosQantity || 0}}</span>
     </p>
 
-    <p class="camera">
+    <p class="camera" *ngIf="videosQantity">
       <i class="fa fa-video-camera"></i> Total Videos: <span class="pull-right">{{videosQantity || 0}}</span>
     </p>
   </div>

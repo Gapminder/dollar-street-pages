@@ -115,7 +115,6 @@
 .slider-container .slider-content.active {
   -webkit-transition: -webkit-transform .6s ease-out;
   -moz-transition: -moz-transform .6s ease-out;
-  -ms-transition: -ms-transform .6s ease-out;
   -o-transition: -o-transform .6s ease-out;
   transition: transform .6s ease-out;
 }
@@ -128,7 +127,7 @@
 .slide-description .slide-header h2,
 .slide-description p {
   margin: 0;
-  font-family: 'Bariol Light';
+  font-family: 'Bariol Light', sans-serif;
 }
 
 .slide-description .slide-header h2 {

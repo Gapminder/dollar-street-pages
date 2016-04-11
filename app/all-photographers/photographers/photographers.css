@@ -1,5 +1,5 @@
 #photographers {
-  padding-top: 137px;
+  padding-top: 122px;
   height: 100%;
 }
 
@@ -58,7 +58,7 @@
 #photographers .photographer-country {
   text-transform: uppercase;
   color: #374551;
-  font-family: 'Bariol Bold';
+  font-family: 'Bariol Bold', sans-serif;
 }
 
 #photographers .photographers-country > li {
@@ -120,13 +120,24 @@
 
 #photographers .photographer-portrait .photographer-material {
   position: absolute;
-  bottom: 5px;
+  bottom: 0;
   left: 0;
   right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+  padding: 5px 0;
 }
 
 #photographers .photographer-portrait .photographer-material span {
   padding: 3px;
+}
+
+#photographers .photographer-portrait .photographer-material span i {
+  font-size: 13px;
+}
+
+#photographers .photographer-portrait .photographer-material span img {
+  width: 13px;
+  margin-top: -6px;
 }
 
 #photographers ::-webkit-scrollbar {
@@ -248,7 +259,6 @@
     padding-left: 10px !important;
     -webkit-transition: left 0.5s, opacity 0.2s;
     -moz-transition: left 0.5s, opacity 0.2s;
-    -ms-transition: left 0.5s, opacity 0.2s;
     -o-transition: left 0.5s, opacity 0.2s;
     transition: left 0.5s, opacity 0.2s;
   }

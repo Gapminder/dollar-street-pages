@@ -158,36 +158,36 @@ export class AmbassadorsListService {
         ambassadors: [{
           name: 'Jonathan James',
           country: 'England',
-          img: '/assets/img/univercity.svg'
+          img: '/assets/img/university.png'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          img: '/assets/img/univercity.svg'
+          img: '/assets/img/university.png'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          img: '/assets/img/univercity.svg'
+          img: '/assets/img/university.png'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          img: '/assets/img/univercity.svg'
+          img: '/assets/img/university.png'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          img: '/assets/img/univercity.svg'
+          img: '/assets/img/university.png'
         }, {
           name: 'Jonathan James',
           country: 'England',
           description: ``,
-          img: '/assets/img/univercity.svg'
+          img: '/assets/img/university.png'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          img: '/assets/img/univercity.svg'
+          img: '/assets/img/university.png'
         }, {
           name: 'Jonathan James',
           country: 'England',
-          img: '/assets/img/univercity.svg'
+          img: '/assets/img/university.png'
         }]
       }]
     };
