@@ -1,44 +1,40 @@
 <div id="photographer-places">
-  <div class="country" *ngFor="#country of countries">
-    <h3>{{country.name}}</h3>
-
-    <div class="place" *ngFor="#place of country.places">
-      <div class="image">
-        <img *ngIf="place.image" [src]="place.image"
-             [routerLink]="['Place', {thing:  place.thing, place: place.placeId, image: place.imageId}]"
-             [angulartics2On]="'click'"
-             [angularticsEvent]="'go to place page from photographer page'"
-             alt="">
-      </div>
-
-      <div class="place-description">
-        <div class="family">
-          <span *ngIf="place.family">family</span>
-          <h3 *ngIf="place.family">{{place.family}} <span>family</span></h3>
-        </div>
-
-        <div class="country-income">
-          <div class="income">
-            <span>${{place.income}}</span>
-          </div>
-
-          <div class="place-country">
-            <p>
-              <img *ngIf="country.region === 'Africa'" src="/assets/img/africa.svg" alt="">
-              <img *ngIf="country.region === 'Europe'" src="/assets/img/europe.svg" alt="">
-              <img *ngIf="country.region === 'Asia'" src="/assets/img/asia.svg" alt="">
-              <img *ngIf="country.region === 'America'" src="/assets/img/america.svg" alt="">
-              <span>{{country.name}}</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="link">
-        <a [routerLink]="['Place', {thing: place.thing, place: place.placeId, image: place.imageId}]"
+  <div class="place" *ngFor="#place of places">
+    <div class="image">
+      <img *ngIf="place.image" [src]="place.image"
+           [routerLink]="['Place', {thing:  place.thing, place: place.placeId, image: place.imageId}]"
            [angulartics2On]="'click'"
-           [angularticsEvent]="'go to place page from photographer page'">Visit family »</a>
+           [angularticsEvent]="'go to place page from photographer page'"
+           alt="">
+    </div>
+
+    <div class="place-description">
+      <div class="family">
+        <span *ngIf="place.family">family</span>
+        <h3 *ngIf="place.family">{{place.family}} <span>family</span></h3>
       </div>
+
+      <div class="country-income">
+        <div class="income">
+          <span>${{place.income}}</span>
+        </div>
+
+        <div class="place-country">
+          <p>
+            <img *ngIf="place.region === 'Africa'" src="/assets/img/africa.svg" alt="">
+            <img *ngIf="place.region === 'Europe'" src="/assets/img/europe.svg" alt="">
+            <img *ngIf="place.region === 'Asia'" src="/assets/img/asia.svg" alt="">
+            <img *ngIf="place.region === 'America'" src="/assets/img/america.svg" alt="">
+            <span>{{place.country}}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="link">
+      <a [routerLink]="['Place', {thing: place.thing, place: place.placeId, image: place.imageId}]"
+         [angulartics2On]="'click'"
+         [angularticsEvent]="'go to place page from photographer page'">Visit family »</a>
     </div>
   </div>
 </div>
