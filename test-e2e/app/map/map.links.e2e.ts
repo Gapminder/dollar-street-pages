@@ -4,14 +4,14 @@
 describe('Dollar Street test', function() {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
-  var mainPage = element(by.css('#sitemap>li>a[href*=main]'));
-  var matrixPage = element(by.css('#sitemap>li>a[href*=matrix]'));
-  var placePage = element(by.css('#sitemap>li>a[href*=place]'));
-  var mapPage = element(by.css('#sitemap>li>a[href^=/map]'));
-  var photographersPage = element(by.css('#sitemap>li>a[href*=photographers]'));
-  var photographerPage = element(by.css('#sitemap>li>a[href*=photographer?]'));
-  var ambassadorsPage = element(by.css('#sitemap>li>a[href*=ambass]'));
-  var countryPage = element(by.css('#sitemap>li>a[href*=country]'));
+  var mainPage = element(by.css('#sitemap>li>a[href*="main"]'));
+  var matrixPage = element(by.css('#sitemap>li>a[href*="matrix"]'));
+  var placePage = element(by.css('#sitemap>li>a[href*="place"]'));
+  var mapPage = element(by.css('#sitemap>li>a[href^="/map"]'));
+  var photographersPage = element(by.css('#sitemap>li>a[href*="photographers"]'));
+  var photographerPage = element(by.css('#sitemap>li>a[href*="photographer?"]'));
+  var ambassadorsPage = element(by.css('#sitemap>li>a[href*="ambass"]'));
+  var countryPage = element(by.css('#sitemap>li>a[href*="country"]'));
   var EC = protractor.ExpectedConditions;
   var TIMEOUT = 60000;
   //  browser.manage().timeouts().pageLoadTimeout(90000);
