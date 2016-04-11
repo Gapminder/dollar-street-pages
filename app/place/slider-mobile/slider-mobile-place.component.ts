@@ -1,6 +1,7 @@
 import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from 'rxjs/Observable';
+import {ReplaySubject} from 'rxjs/Subject/ReplaySubject';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
@@ -42,6 +43,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private touchSubscribe:any;
   private zone:NgZone;
   private resizeSubscribe:any;
+  private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(ElementRef) elementRef,
@@ -83,7 +85,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     this.position = this.allPlaces.map(function (place:any) {
       return place.image;
     }).indexOf(this.image);
-
     if (position || position === 0) {
       this.position = position;
     }
@@ -104,8 +105,8 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     img.onload = () => {
       this.zone.run(() => {
         this.resizeSlider();
-
         this.currentPlace.emit([this.chosenPlace]);
+        this.hoverPlace.next(this.chosenPlace);
       });
     };
 
@@ -199,7 +200,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     this.chosenPlace = this.allPlaces[this.position];
     this.arrowDisabled = data.arrowDisabled;
     this.images = data.images;
-
+    this.hoverPlace.next(this.chosenPlace);
     this.currentPlace.emit([this.chosenPlace]);
   };
 

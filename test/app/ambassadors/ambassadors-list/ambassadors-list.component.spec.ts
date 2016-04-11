@@ -33,7 +33,7 @@ describe('PhotographersComponent', () => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
       expect(context.ambassadorsList.length).toEqual(3)
-    })
+    });
   }));
   it('AmbassadorsComponent people render by right title ', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(AmbassadorsListComponent).then((fixture) => {

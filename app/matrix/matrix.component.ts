@@ -65,7 +65,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
   ngOnInit():void {
     this.thing = this.routeParams.get('thing');
-    this.countries = decodeURI(this.routeParams.get('countries'));
+    this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
     this.regions = this.routeParams.get('regions');
     //todo: row null
     this.row = parseInt(this.routeParams.get('row'), 10);
@@ -78,22 +78,10 @@ export class MatrixComponent implements OnInit, OnDestroy {
     if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
       this.zoom = 3;
     }
-
-    if (!this.row) {
-      this.row = 1;
-    }
-
-    if (!this.thing) {
-      this.thing = '546ccf730f7ddf45c0179688';
-    }
-
-    if (!this.countries) {
-      this.countries = 'World';
-    }
-
-    if (!this.regions) {
-      this.regions = 'World';
-    }
+    this.thing = this.thing ? this.thing : '5477537786deda0b00d43be5';
+    this.zoom = this.zoom ? this.zoom : 5;
+    this.row = this.row ? this.row : 1;
+    this.regions = this.regions ? this.regions : 'World';
 
     this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}`;
 

@@ -14,7 +14,6 @@ export class MapService {
   public getMainPlaces(query):Observable<any> {
     return this.http.get(`${config.api}/consumer/api/v1/map?${query}`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
-
       return {err: parseRes.error, data: parseRes.data};
     });
   }

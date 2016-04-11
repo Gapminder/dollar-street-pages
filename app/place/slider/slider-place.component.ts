@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {NgStyle} from 'angular2/common';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
+import {ReplaySubject} from 'rxjs/Subject/ReplaySubject';
 
 let $ = require('jquery');
 
@@ -50,6 +51,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private resizeSubscibe:any;
   private keyUpSubscribe:any;
   private zone:NgZone;
+  private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(Location) location,
@@ -131,6 +133,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
       this.zone.run(() => {
         this.resizeSlider();
         this.currentPlace.emit([this.chosenPlace]);
+        this.hoverPlace.next(this.allPlaces[this.position]);
       });
     };
 
@@ -237,7 +240,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     this.chosenPlace = this.allPlaces[this.position];
     this.arrowDisabled = data.arrowDisabled;
     this.images = data.images;
-
+    this.hoverPlace.next(this.chosenPlace);
     this.currentPlace.emit([this.chosenPlace]);
   };
 

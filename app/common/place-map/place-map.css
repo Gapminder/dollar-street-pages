@@ -1,6 +1,7 @@
 #map-content {
   position: relative;
   width: 100%;
+  cursor: pointer;
 }
 
 #map-content .map {

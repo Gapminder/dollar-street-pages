@@ -31,7 +31,7 @@ export class MockService {
   }
 
   set getMethod(name) {
-    this[name] = (url?:any) => this;
+    this[name] = (url?:any, qyery?:any) => this;
   }
 
   get fakeResponse() {
