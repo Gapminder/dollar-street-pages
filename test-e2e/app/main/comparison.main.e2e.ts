@@ -1,72 +1,57 @@
 /**
  * Created by vs on 4/5/16.
  */
-describe('Main Page test', function () {
+describe('Main Page test', function() {
   //  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
-  var baseUrl;
-  var frontDoors = element(by.xpath('.//*[@id=\'concept\']//span[.=\'Front doors\']'));
-  var homes = element(by.xpath('.//*[@id=\'concept\']//span[.=\'Homes\']'));
-  var sofas = element(by.xpath('.//*[@id=\'concept\']//span[.=\'Sofas\']'));
-  var stoves = element(by.xpath('.//*[@id=\'concept\']//span[.=\'Stoves\']'));
-  var toilets = element(by.xpath('.//*[@id=\'concept\']//span[.=\'Toilets\']'));
-  var seeAll = element(by.xpath('.//*[@id=\'concept\']//a'));
-  var allFamilies = element(by.xpath('.//*[@id=\'places\']//a[@class=\'see_more\']'));
+  var frontDoors = element.all(by.css('.concept_things_menu>ul>li>span')).first();
+  var homes = element.all(by.css('.concept_things_menu>ul>li>span')).get(1);
+  var sofas = element.all(by.css('.concept_things_menu>ul>li>span')).get(2);
+  var stoves = element.all(by.css('.concept_things_menu>ul>li>span')).get(3);
+  var toilets = element.all(by.css('.concept_things_menu>ul>li>span')).get(4);
+  var seeAll = element(by.css('#concept a'));
+  var allFamilies = element(by.css('#places a'));
+  var acrossTheWorld = element(by.css('.concept-header-thing-title.pull-right>p'));
   var EC = protractor.ExpectedConditions;
   var TIMEOUT = 60000;
-
-  baseUrl = 'http://consumer.dollarstreet.org/main';
   browser.manage().window().maximize();
-
-    /* Click on every page on Main Page
-    * Check every sub-menu: Front doors, homes, sofas, stoves, toilets
-    * Check sub-header of every sub-menu: Front doors across the World
-    * Check link See all of every sub-menu
-    * Check link All Families*/
-
-  afterEach(function () {
-      browser.wait(EC.visibilityOf(allFamilies));
-    });
-
+  /* Click on every page on Main Page
+   * Check every sub-menu: Front doors, homes, sofas, stoves, toilets
+   * Check sub-header of every sub-menu: Front doors across the World
+   * Check link See all of every sub-menu
+   * Check link All Families*/
+  afterEach(function(){
+    browser.wait(EC.visibilityOf(acrossTheWorld));
+    browser.wait(EC.visibilityOf(allFamilies));
+  });
   it('CheckAndOpenFrontDoors', function () {
-
-      browser.get(baseUrl);
-      browser.wait(EC.visibilityOf(frontDoors), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(homes), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(sofas), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(stoves), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(toilets), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-      frontDoors.click();
-      browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Front Doors on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(element(by.xpath('.//*[@id=\'concept\']//p[.=\'Front doors across the World\']'))));
-    });
-
+    browser.get('/main');
+    browser.wait(EC.visibilityOf(frontDoors), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(homes), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(sofas), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(stoves), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(toilets), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
+    frontDoors.click();
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Front Doors on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(element(by.css('.concept-header-thing-title.pull-right>p'))));
+  });
   it('CheckAndOpenHomes', function () {
-      homes.click();
-      browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Homes on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(element(by.xpath('.//*[@id=\'concept\']//p[.=\'Homes across the World\']'))));
-    });
-
+    homes.click();
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Homes on MainPage is not visibility');
+  });
   it('CheckAndOpenSofas', function () {
-      sofas.click();
-      browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Sofas on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(element(by.xpath('.//*[@id=\'concept\']//p[.=\'Sofas across the World\']'))));
-    });
-
+    sofas.click();
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Sofas on MainPage is not visibility');
+  });
   it('CheckAndOpenStoves', function () {
-      stoves.click();
-      browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Stoves on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(element(by.xpath('.//*[@id=\'concept\']//p[.=\'Stoves across the World\']'))));
-    });
-
+    stoves.click();
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Stoves on MainPage is not visibility');
+  });
   it('CheckAndOpenToilets', function () {
-      toilets.click();
-      browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Toilets on MainPage is not visibility');
-      browser.wait(EC.visibilityOf(element(by.xpath('.//*[@id=\'concept\']//p[.=\'Toilets across the World\']'))));
-    });
-
-  //  afterAll(function(){
-  //      browser.close();
-  //  });
-
+    toilets.click();
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Toilets on MainPage is not visibility');
+  });
+ /* afterAll(function(){
+    browser.close();
+  });*/
 });
