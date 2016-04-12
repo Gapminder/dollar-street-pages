@@ -5,10 +5,8 @@ require('node_modules/es6-promise');
 require('node_modules/es6-shim');
 require('node_modules/es7-reflect-metadata/dist/browser');
 require('node_modules/zone.js/dist/zone.js');
-// require('node_modules/zone.js/dist/long-stack-trace-zone.js');
-//require('node_modules/zone.js/dist/jasmine-patch.js');
-// require('node_modules/zone.js/dist/async-test.js');
-
+require('node_modules/zone.js/dist/long-stack-trace-zone.js');
+// require('node_modules/zone.js/dist/jasmine-patch.js');
 
 var testing = require('angular2/testing');
 var browser = require('angular2/platform/testing/browser');

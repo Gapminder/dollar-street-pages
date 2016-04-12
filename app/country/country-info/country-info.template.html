@@ -3,7 +3,7 @@
     <place-map [hoverPlace]="hoverPlace" [isHeader]="true" [isHeader]="true" [routerLink]="['Map',{thing:thing}]"></place-map>
 
     <h2 *ngIf="country">
-      <img class="marker" src="/assets/img/grey-marker.svg" alt=""> {{country.country}}
+      <img class="marker" src="/assets/img/grey-marker.svg" alt=""> {{country.alias || country.country}}
     </h2>
 
     <p class="description" *ngIf="country?.description">{{country.description}}</p>
@@ -32,7 +32,7 @@
   <div class="country-description">
     <div class="country-description-header">
       <div class="header">
-        <h2 *ngIf="country"><i class="fa fa-map-marker"></i>{{country.country}}</h2>
+        <h2 *ngIf="country"><i class="fa fa-map-marker"></i>{{country.alias || country.country}}</h2>
       </div>
 
       <div class="count">

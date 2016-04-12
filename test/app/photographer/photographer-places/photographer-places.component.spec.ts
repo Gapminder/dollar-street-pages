@@ -1,6 +1,5 @@
 // import {
 //   it,
-//   xit,
 //   describe,
 //   expect,
 //   injectAsync,
@@ -26,23 +25,22 @@
 //       mockPhotographerPlacesService.getProviders(),
 //     ];
 //   });
-//   xit('PhotographerPlacesComponent must init', injectAsync([TestComponentBuilder], (tcb) => {
+//   it('PhotographerPlacesComponent must init', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
 //       let context = fixture.debugElement.componentInstance;
 //       fixture.detectChanges();
-//       expect(context.countries.length).toBe(1);
-//       expect(context.countries[0].places.length).toBe(4);
+//       expect(context.places.length).toBe(4);
 //       mockPhotographerPlacesService.toInitState();
 //     });
 //   }));
-//   xit('PhotographerPlacesComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
+//   it('PhotographerPlacesComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
 //       fixture.detectChanges();
 //       fixture.destroy();
 //       expect(mockPhotographerPlacesService.countOfSubscribes).toBe(0);
 //     });
 //   }));
-//   xit('PhotographerPlacesComponent must show on mobile ', injectAsync([TestComponentBuilder], (tcb) => {
+//   it('PhotographerPlacesComponent must show on mobile ', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
 //       /**
 //        * ToDo: create some cases for
@@ -50,13 +48,11 @@
 //        */
 //     });
 //   }));
-//   xit('PhotographerPlacesComponent must render places', injectAsync([TestComponentBuilder], (tcb) => {
+//   it('PhotographerPlacesComponent must render places', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
 //       let nativeElement = fixture.debugElement.nativeElement;
 //       fixture.detectChanges();
-//       let photographerCountries = nativeElement.querySelectorAll('#photographer-places .country');
-//       let photographerCountryPlaces = nativeElement.querySelectorAll('#photographer-places .country:first-child .place');
-//       expect(photographerCountries.length).toBe(1);
+//       let photographerCountryPlaces = nativeElement.querySelectorAll('#photographer-places .place');
 //       expect(photographerCountryPlaces.length).toBe(4);
 //     });
 //   }));
