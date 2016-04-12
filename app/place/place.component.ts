@@ -29,6 +29,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private chosenPlaces:Subject<any> = new Subject();
   private controllSlider:Subject<any> = new Subject();
   public hoverHeader:Subject<any> = new Subject();
+  private controllSliderSubscribe:any;
   private thing:string;
   private query:string;
   private image:string;
@@ -59,10 +60,18 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.image = this.routeParams.get('image');
     this.query = `thing=${this.thing}&place=${this.place}&image=${this.image}`;
     this.getStreetPlaces(this.query);
+
+    this.controllSliderSubscribe = this.controllSlider
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.loader = false;
+        });
+      });
   }
 
   ngOnDestroy() {
     this.placeStreetServiceSubscribe.unsubscribe();
+    this.controllSliderSubscribe.unsubscribe();
   }
 
   ngAfterViewChecked() {
