@@ -37,7 +37,7 @@ describe('PhotographersService', () => {
         })
     ];
   });
-  xit('test getPhotographers()', inject([PhotographerProfileService, MockBackend], fakeAsync((photographerProfileService,
+  it('test getPhotographers()', inject([PhotographerProfileService, MockBackend], fakeAsync((photographerProfileService,
                                                                                              mockBackend) => {
     var res;
     mockBackend.connections.subscribe(connection => {
