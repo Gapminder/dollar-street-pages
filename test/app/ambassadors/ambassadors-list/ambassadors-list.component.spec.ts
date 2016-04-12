@@ -43,7 +43,7 @@ describe('PhotographersComponent', () => {
       let sectionHeaders = nativeElement.querySelectorAll('.ambassadors-peoples h2');
       expect(sectionHeaders[0].innerHTML).toEqual('Teachers');
       expect(sectionHeaders[1].innerHTML).toEqual('Writers');
-      expect(sectionHeaders[2].innerHTML).toEqual('Organisations')
+      expect(sectionHeaders[2].innerHTML).toEqual('Organisations');
     });
   }));
   it('AmbassadorsComponent show more ', injectAsync([TestComponentBuilder], (tcb) => {
@@ -57,10 +57,10 @@ describe('PhotographersComponent', () => {
       for (let section of sections) {
         expect(section.classList.contains('show')).toEqual(false);
       }
-      expect(showMore[0].innerHTML).toEqual('View More »');
+      expect(showMore[0].innerHTML).toEqual('View More &gt;&gt;');
       showMore[0].click();
       fixture.detectChanges();
-      expect(showMore[0].innerHTML).toEqual('View Less »');
+      expect(showMore[0].innerHTML).toEqual('View Less &lt;&lt;');
       for (let section of sections) {
         expect(section.classList.contains('show')).toEqual(true);
       }

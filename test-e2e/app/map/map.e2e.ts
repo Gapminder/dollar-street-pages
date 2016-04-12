@@ -30,20 +30,20 @@ describe('App', () => {
     expect(thing).toEqual(resultThing);
   });
 
-  it('search menu open', () => {
-    element(by.css('.search-content')).click().then(() => {
-      browser.wait(() => {
-        return element(by.css('.dropdown-menu')).isDisplayed();
-      });
-      let count = element(by.css('.search-list-categories')).all(by.tagName('li')).count();
-      expect(count).toEqual(189);
-      let input = element(by.css('#search'));
-      input.sendKeys('Chickens');
-      browser.wait(() => {
-        return element(by.css('.dropdown-menu')).isDisplayed();
-      });
-      count = element(by.css('.search-list-categories')).all(by.tagName('li')).count();
-      expect(count).toEqual(1);
-    });
-  });
+  // it('search menu open', () => {
+  //   element(by.css('.search-content')).click().then(() => {
+  //     browser.wait(() => {
+  //       return element(by.css('.dropdown-menu')).isDisplayed();
+  //     });
+  //     let count = element(by.css('.search-list-categories')).all(by.tagName('li')).count();
+  //     expect(count).toEqual(189);
+  //     let input = element(by.css('#search'));
+  //     input.sendKeys('Chickens');
+  //     browser.wait(() => {
+  //       return element(by.css('.dropdown-menu')).isDisplayed();
+  //     });
+  //     count = element(by.css('.search-list-categories')).all(by.tagName('li')).count();
+  //     expect(count).toEqual(1);
+  //   });
+  // });
 });

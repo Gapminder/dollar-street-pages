@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from 'angular2/core';
 import {RouterLink, RouteParams, Location} from 'angular2/router';
 import {Observable} from 'rxjs/Observable';
-import {ReplaySubject} from 'rxjs/Subject/ReplaySubject';
+import {ReplaySubject} from 'rxjs/subject/ReplaySubject';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 

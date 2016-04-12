@@ -50,6 +50,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];
   public loader:boolean = false;
+  public isDraw:boolean = false;
 
   public matrixServiceSubscrib:any;
 
@@ -166,6 +167,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
     if (this.clonePlaces) {
+      this.isDraw = true;
       this.places.next(this.placesArr);
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
     }
@@ -213,10 +215,15 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     if (this.matrixServiceSubscrib) {
       this.matrixServiceSubscrib.unsubscribe();
+      this.matrixServiceSubscrib = null;
     }
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
+        if (this.isDraw) {
+          this.isDraw = !this.isDraw;
+          return;
+        }
         this.places.next(val.places);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.placesArr);

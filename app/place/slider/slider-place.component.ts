@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {NgStyle} from 'angular2/common';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
-import {ReplaySubject} from 'rxjs/Subject/ReplaySubject';
+import {ReplaySubject} from 'rxjs/subject/ReplaySubject';
 
 let $ = require('jquery');
 
