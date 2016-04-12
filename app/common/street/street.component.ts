@@ -27,7 +27,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   @Input('chosenPlaces')
   private chosenPlaces:Observable<any>;
   @Input('hoverPlace')
-  private hoverPlace:Observable<any>;
+  private hoverPlace:Subject<any>;
   @Input('controllSlider')
   private controllSlider:Subject<any>;
 
@@ -41,6 +41,8 @@ export class StreetComponent implements OnInit, OnDestroy {
   private router:Router;
 
   private resize:any;
+  private drawOnMap:boolean = false;
+
   private placesSubscribe:any;
   private hoverPlaceSubscribe:any;
   private chosenPlacesSubscribe:any;
@@ -71,6 +73,10 @@ export class StreetComponent implements OnInit, OnDestroy {
       });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace) => {
+        if (this.drawOnMap) {
+          this.drawOnMap = !this.drawOnMap;
+          return;
+        }
         if (!hoverPlace) {
           this.street.removeHouses('hover');
 
@@ -129,6 +135,7 @@ export class StreetComponent implements OnInit, OnDestroy {
     }
 
     this.street.onSvgHover(e.clientX, (options) => {
+      // this.hoverPlace.next(null);
       let {places, left} = options;
       this.isThumbView = true;
       this.thumbPlaces = places;
@@ -140,6 +147,11 @@ export class StreetComponent implements OnInit, OnDestroy {
 
       if (places.length === 1) {
         indent = 176 / 2;
+        this.hoverPlace.next(places[0]);
+      }
+      if (places.length > 1) {
+        this.drawOnMap = true;
+        this.hoverPlace.next(null);
       }
 
       this.thumbLeft = left - indent + 15;
@@ -179,6 +191,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   }
 
   public thumbHover(place) {
+    this.hoverPlace.next(place);
     this.street
       .removeHouses('chosen')
       .removeHouses('hover');
@@ -188,8 +201,8 @@ export class StreetComponent implements OnInit, OnDestroy {
   };
 
   public thumbUnhover() {
+    this.hoverPlace.next(null);
     this.street.hoverPlace = null;
-
     if (this.controllSlider) {
       this.street.clearAndRedraw(this.street.chosenPlaces, true);
     } else {
