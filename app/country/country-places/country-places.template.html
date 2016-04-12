@@ -25,7 +25,7 @@
             <img *ngIf="country.region === 'Europe'" src="/assets/img/europe.svg" alt="">
             <img *ngIf="country.region === 'Asia'" src="/assets/img/asia.svg" alt="">
             <img *ngIf="country.region === 'America'" src="/assets/img/america.svg" alt="">
-            <span>{{country.country}}</span>
+            <span>{{country.alias || country.country}}</span>
           </p>
         </div>
       </div>
