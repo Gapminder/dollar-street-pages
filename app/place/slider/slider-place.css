@@ -122,6 +122,7 @@
 .slide-description .slide-header {
   display: inline-block;
   width: 100%;
+  min-height: 66px;
 }
 
 .slide-description .slide-header h2,
