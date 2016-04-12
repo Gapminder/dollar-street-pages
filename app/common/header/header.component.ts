@@ -19,6 +19,8 @@ let style = require('./header.css');
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input()
   private query:string;
+  @Input()
+  private thing:string;
   @Input('hoverPlace')
   private hoverPlace:Observable<any>;
   @Input('chosenPlaces')
@@ -28,12 +30,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private activeThing:any;
   private defaultThing:any;
-  private hoveredPlace:any;
   private headerService:any;
   private router:Router;
 
   private headerServiceSubscribe:any;
-  private hoverPlaceSubscribe:any;
 
   constructor(@Inject('HeaderService') headerService,
               @Inject(Router) router) {
@@ -50,18 +50,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
         this.defaultThing = res.data;
       });
-
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place) => {
-        this.hoveredPlace = place;
-      });
   }
 
   ngOnDestroy():void {
     this.headerServiceSubscribe.unsubscribe();
-
-    if (this.hoverPlaceSubscribe) {
-      this.hoverPlaceSubscribe.unsubscribe();
-    }
   }
 
   urlTransfer(url) {

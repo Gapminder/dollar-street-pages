@@ -76,15 +76,3 @@ class MockRouteParams {
     return this.params[key];
   }
 }
-
-// class MockNgZone extends NgZone {
-//   constructor();
-//
-//   onEventDone:EventEmitter<any>;
-//
-//   run(fn:Function):any;
-//
-//   runOutsideAngular(fn:Function):any;
-//
-//   simulateZoneExit():void;
-// }

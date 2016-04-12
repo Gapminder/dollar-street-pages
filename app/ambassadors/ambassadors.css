@@ -1,1 +1,9 @@
-
+@media (max-width: 600px) {
+  .header .heading{
+    font-size: 20px!important;
+    margin: 5px 0 0 10px!important;
+  }
+  .header a>img{
+    margin-top: 5px!important;
+  }
+}

@@ -127,7 +127,7 @@ export let streetPlacesData = [
       background: '/assets/img/mock.jpg',
       thing: "5477537786deda0b00d43be5"
     },
-    image: "54b6866a38ef07015525f5be",
+    image: "54b6866a38ef07785525f5be",
     income: 1,
     lat: 6.428055,
     lng: -9.429499000000002,
@@ -153,7 +153,7 @@ export let streetPlacesData = [
       background: '/assets/img/mock.jpg',
       thing: "5477537786deda0b00d43be5"
     },
-    image: "54b6866a38ef07015525f5be",
+    image: "54b6866a38ef89015525f5be",
     income: 10,
     lat: 6.428055,
     lng: -9.429499000000002,

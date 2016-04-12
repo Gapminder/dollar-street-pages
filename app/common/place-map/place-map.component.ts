@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, Inject, ElementRef, NgZone} from 'angular2/core';
 import {NgStyle} from 'angular2/common';
+import {Observable} from 'rxjs/Observable';
 
 let tpl = require('./place-map.template.html');
 let style = require('./place-map.css');
@@ -13,7 +14,7 @@ let style = require('./place-map.css');
 
 export class PlaceMapComponent implements OnInit {
   @Input()
-  private place:any = null;
+  private hoverPlace:Observable<any>;
   @Input()
   private isHeader:boolean;
 
@@ -22,6 +23,7 @@ export class PlaceMapComponent implements OnInit {
   private mapImage:any;
   private element:ElementRef;
   private zone:NgZone;
+  private hoverPlaceSubscribe:any;
 
   constructor(@Inject(ElementRef) element,
               @Inject(NgZone) zone) {
@@ -30,25 +32,29 @@ export class PlaceMapComponent implements OnInit {
   }
 
   ngOnInit():void {
-    let img = new Image();
-    this.mapImage = this.isHeader ? this.element.nativeElement.querySelector('.map+.map') :
-      this.element.nativeElement.querySelector('.map');
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place) => {
+        if (!place) {
+          this.region = null;
+          return;
+        }
+        let img = new Image();
+        this.mapImage = this.isHeader ? this.element.nativeElement.querySelector('.map+.map') :
+          this.element.nativeElement.querySelector('.map');
 
-    img.onload = () => {
-      this.zone.run(() => {
-        this.drawMarker(this.place, this.mapImage);
+        img.onload = () => {
+          this.zone.run(() => {
+            this.drawMarker(place, this.mapImage);
+          });
+        };
+
+        img.src = this.mapImage.src;
       });
-    };
-
-    img.src = this.mapImage.src;
   }
 
-  ngOnChanges(changes) {
-    if (!this.isHeader) {
-      return;
+  ngOnDestroy() {
+    if (this.hoverPlaceSubscribe) {
+      this.hoverPlaceSubscribe.unsubscribe();
     }
-
-    this.place = changes.place.currentValue;
   }
 
   drawMarker(place, mapImage):void {

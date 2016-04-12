@@ -43,6 +43,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private router:Router;
   private isDesktop:boolean = device.desktop();
   public loader:boolean = false;
+  public needChangeUrl:boolean = false;
   private zone:NgZone;
 
   public resizeSubscribe:any;
@@ -57,7 +58,7 @@ export class MapComponent implements OnInit, OnDestroy {
               @Inject(NgZone) zone,
               @Inject('UrlChangeService') urlChangeService) {
     this.mapService = placeService;
-    this.element = element;
+    this.element = element.nativeElement;
     this.routeParams = routeParams;
     this.router = router;
     this.zone = zone;
@@ -67,7 +68,6 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit():void {
     this.init = true;
     this.thing = this.routeParams.get('thing');
-
     this.urlChanged(this.thing);
   }
 
@@ -76,16 +76,15 @@ export class MapComponent implements OnInit, OnDestroy {
     let query = `thing=${this.thing}`;
 
     if (!thing) {
+      this.needChangeUrl = true;
       query = '';
     }
 
     if (thing && thing._id) {
       if (this.init) {
         this.init = false;
-
         return;
       }
-
       query = `thing=${this.thing._id}`;
     }
 
@@ -94,18 +93,15 @@ export class MapComponent implements OnInit, OnDestroy {
         if (res.err) {
           return res.err;
         }
-
-        this.map = this.element.nativeElement.querySelector('.mapBox');
         this.places = res.data.places;
-        this.query = `thing=${res.data.thing}`;
-
-        this.urlChangeService.replaceState('/map', this.query);
         this.countries = res.data.countries;
-
+        this.map = this.element.querySelector('.mapBox');
+        this.query = `thing=${res.data.thing}`;
+        if (this.needChangeUrl) {
+          this.urlChangeService.replaceState('/map', this.query);
+        }
         this.setMarkersCoord(this.places);
-
         this.loader = true;
-
         this.resizeSubscribe = Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
@@ -122,8 +118,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   setMarkersCoord(places) {
     let img = new Image();
-    let mapImage = this.element.nativeElement.querySelector('.map-color');
-
+    let mapImage = this.element.querySelector('.map-color');
     img.onload = () => {
       this.zone.run(() => {
         let width = mapImage.offsetWidth;
@@ -181,14 +176,12 @@ export class MapComponent implements OnInit, OnDestroy {
       if (i !== index) {
         return;
       }
-
       this.hoverPlace = place;
     });
 
     if (!this.hoverPlace) {
       return;
     }
-
     Array.prototype.forEach.call(this.markers, (marker, i) => {
       if (i === index) {
         return;
@@ -208,12 +201,10 @@ export class MapComponent implements OnInit, OnDestroy {
         if (!this.hoverPlace) {
           return;
         }
-
         this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
         this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
         this.leftArrowTop = null;
         this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
-
         if (this.hoverPortraitTop < 10) {
           this.hoverPortraitTop = 10;
           this.hoverPortraitLeft += (portraitBox.offsetWidth + 32) / 2;
@@ -252,20 +243,17 @@ export class MapComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (this.onThumb) {
         this.onThumb = !this.onThumb;
-
         return;
       }
 
       if (this.onMarker) {
         this.onMarker = !this.onMarker;
-
         return;
       }
 
       if (!this.markers) {
         return;
       }
-
       Array.prototype.forEach.call(this.markers, (marker) => {
         marker.style.opacity = '1';
       });

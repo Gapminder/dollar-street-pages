@@ -1,6 +1,7 @@
 import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
+import {Subject} from 'rxjs/Subject';
 
 let tpl = require('./country-info.template.html');
 let style = require('./country-info.css');
@@ -19,10 +20,12 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private country:any;
   private countryInfoService:any;
   private places:any;
+  private thing:any;
   private countryInfoServiceSubscribe:any;
   private placesQantity:any;
   private photosQantity:any;
   private videosQantity:any;
+  private hoverPlace:Subject<any> = new Subject();
 
   constructor(@Inject('CountryInfoService') countryInfoService) {
     this.countryInfoService = countryInfoService;
@@ -34,8 +37,9 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         if (res.err) {
           return res.err;
         }
-
         this.country = res.data.country;
+        this.hoverPlace.next(res.data.country);
+        this.thing = res.data.thing;
         this.placesQantity = res.data.places;
         this.photosQantity = res.data.images;
         this.videosQantity = res.data.video;

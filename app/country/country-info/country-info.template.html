@@ -1,8 +1,6 @@
 <div id="country-info">
   <div class="header">
-    <a [routerLink]="['Map']">
-      <place-map *ngIf="country" [place]="country" [isHeader]="true"></place-map>
-    </a>
+    <place-map [hoverPlace]="hoverPlace" [isHeader]="true" [isHeader]="true" [routerLink]="['Map',{thing:thing}]"></place-map>
 
     <h2 *ngIf="country">
       <img class="marker" src="/assets/img/grey-marker.svg" alt=""> {{country.alias || country.country}}
@@ -27,8 +25,8 @@
 </div>
 
 <div id="mobile-country-info" class="row" [ngClass]="{'open': isShowInfo}">
-  <div class="image-container" *ngIf="country">
-    <place-map *ngIf="country" [place]="country" [isHeader]="true"></place-map>
+  <div class="image-container">
+    <place-map  [hoverPlace]="hoverPlace" [isHeader]="true" [routerLink]="['Map',{thing:thing}]"></place-map>
   </div>
 
   <div class="country-description">

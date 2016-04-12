@@ -10,8 +10,8 @@ exports.config = {
   exclude: [],
 
   framework: 'jasmine',
-  //
-  // allScriptsTimeout: 110000,
+  
+  allScriptsTimeout: 110000,
 
   jasmineNodeOpts: {
     showTiming: true,

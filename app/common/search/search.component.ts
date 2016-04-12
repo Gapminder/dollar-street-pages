@@ -68,15 +68,17 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
-        this.paramsUrl = {
-          thing: this.activeThing._id,
-          place: place[0]._id,
-          image: place[0].image
-        };
+    if (this.placeComponent) {
+      this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
+          this.paramsUrl = {
+            thing: this.activeThing._id,
+            place: place[0]._id,
+            image: place[0].image
+          };
 
-        this.getInitDataForSlider();
-      });
+          this.getInitDataForSlider();
+        });
+    }
   }
 
   ngOnDestroy() {
@@ -218,7 +220,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     if (this.mapComponent) {
       url = `thing=${this.paramsUrl.thing}&countries=World&regions=World`;
     }
-
     if (this.placeComponent) {
       url = `thing=${this.paramsUrl.thing}&place=${this.paramsUrl.place}&image=${this.paramsUrl.image}`;
     }
@@ -231,7 +232,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         if (res.err) {
           return res.err;
         }
-
         this.countries = res.data.countries;
         this.categories = res.data.categories;
         this.regions = res.data.regions;
@@ -263,7 +263,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     if (this.searchServiceSubscribe) {
       this.searchServiceSubscribe.unsubscribe();
     }
-
     this.searchServiceSubscribe = this.searchService.getSearchInitData(url)
       .subscribe((res:any) => {
         if (res.err) {
@@ -293,11 +292,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   parseUrl(url:string):any {
-    url = '{\"' + url.replace(/&/g, '\",\"') + '\"}';
-    url = url.replace(/=/g, '\":\"');
-
-    let query = JSON.parse(url);
-
+    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
+    let query = JSON.parse(urlForParse);
     if (this.matrixComponent) {
       query.regions = query.regions.split(',');
       query.countries = query.countries.split(',');

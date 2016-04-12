@@ -1,5 +1,6 @@
 // import {
 //   it,
+//   xit,
 //   describe,
 //   expect,
 //   injectAsync,
@@ -11,7 +12,7 @@
 // import {MockService} from '../../common-mocks/mock.service.template.ts';
 // import {places, place, activeThing, streetPlacesData} from '../mocks/data.ts';
 //
-// import {SliderMobilePlaceComponent} from '../../../../app/place/slider-mobile/slider-mobile-place.component';
+// import {SliderPlaceComponent} from '../../../../app/place/slider/slider-place.component';
 //
 // /** todo: remove this crutch */
 // interface ObjectCtor extends ObjectConstructor {
@@ -53,11 +54,7 @@
 //       mockCommonDependency.getProviders()
 //     ];
 //   });
-//   beforeEach(() => {
-//     /*** find better solution*/
-//
-//   })
-//   it('must init', injectAsync([TestComponentBuilder], (tcb) => {
+//   xit('must init', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
 //       let context = fixture.debugElement.componentInstance;
 //       context.currentPlace = currentPlace;
@@ -79,7 +76,7 @@
 //       streetPlaces.toInitState();
 //     });
 //   }));
-//   it('must destroy', injectAsync([TestComponentBuilder], (tcb) => {
+//   xit('must destroy', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
 //       let context = fixture.debugElement.componentInstance;
 //       context.currentPlace = currentPlace;
@@ -95,7 +92,7 @@
 //       expect(controllSlider.countOfSubscribes).toEqual(0);
 //     });
 //   }));
-//   it('slidePrev', injectAsync([TestComponentBuilder], (tcb) => {
+//   xit('slidePrev', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
 //       let context = fixture.debugElement.componentInstance;
 //
@@ -115,7 +112,7 @@
 //       expect(context.chosenPlace.income).toEqual(1);
 //     });
 //   }));
-//   it('slideNext', injectAsync([TestComponentBuilder], (tcb) => {
+//   xit('slideNext', injectAsync([TestComponentBuilder], (tcb) => {
 //     return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
 //       let context = fixture.debugElement.componentInstance;
 //
