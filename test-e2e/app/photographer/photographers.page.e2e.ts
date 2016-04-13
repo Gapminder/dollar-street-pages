@@ -8,15 +8,14 @@ describe('Photographers Page ', function() {
   var numPhotographers = element.all(by.css('.photographers-list>li'));
   var EC = protractor.ExpectedConditions;
   var TIMEOUT = 10000;
-  var zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]'));
+  var zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56e946bed360263447ff6f95"]'));
   var message = 'Zorian Miller on PhotographersPage is not visibility';
   var photographerPortreit = element(by.css('.photographer-portrait'));
   var photographerMessage = 'Photographer portrait is not visible';
   var isClickable = EC.elementToBeClickable(zorianMiller);
   var country = element(by.css('.country-card>div>span'));
   var photosIcon = element.all(by.css('.photographer-material>span>i[class*="fa-camera"]'));
-  var videosIcon = element.all(by.css('.photographer-material>span>i[class*="fa-video"]'));
-  var homesIcon = element.all(by.css('.photographer-material>span>i[class*="fa-home"]'));
+  var homesIcon = element.all(by.css('.photographer-material>span>img'));
 
   browser.manage().window().maximize();
 
@@ -37,13 +36,11 @@ describe('Photographers Page ', function() {
   it('test check icons with guantity Photos, videos, Homes at the first Photographer', function(){
     browser.wait(EC.visibilityOf(country));
     browser.wait(EC.visibilityOf(photosIcon.first()));
-    browser.wait(EC.visibilityOf(videosIcon.first()));
     browser.wait(EC.visibilityOf(homesIcon.first()));
   });
   it('test check icons with guantity Photos, videos, Homes at the last Photographer', function(){
     browser.wait(EC.visibilityOf(country));
     browser.wait(EC.visibilityOf(photosIcon.last()));
-    browser.wait(EC.visibilityOf(videosIcon.last()));
     browser.wait(EC.visibilityOf(homesIcon.last()));
   });
   /*it('test input bulgaria', function(){
