@@ -82,7 +82,7 @@ export class StreetDrawService {
       .append('text')
       .attr('class', 'poorest')
       .text(this.poorest)
-      .attr('x', 15)
+      .attr('x', 0)
       .attr('y', this.height)
       .attr('fill', '#767d86');
 
@@ -93,7 +93,7 @@ export class StreetDrawService {
       .append('text')
       .attr('class', 'richest')
       .text(this.richest)
-      .attr('x', this.width - 55)
+      .attr('x', this.width - 40)
       .attr('y', this.height)
       .attr('fill', '#767d86');
 
@@ -118,32 +118,32 @@ export class StreetDrawService {
       .append('polygon')
       .attr('class', 'road')
       .attr('points', () => {
-        let point1 = `0,${ this.halfOfHeight + 14}`;
-        let point2 = `9,${ this.halfOfHeight - 4}`;
-        let point3 = `${ this.width - 9},${ this.halfOfHeight - 4}`;
-        let point4 = `${ this.width},${ this.halfOfHeight + 14}`;
+        let point1 = `0,${ this.halfOfHeight + 9}`;
+        let point2 = `15,${ this.halfOfHeight - 4}`;
+        let point3 = `${ this.width - 15},${ this.halfOfHeight - 4}`;
+        let point4 = `${ this.width},${ this.halfOfHeight + 9}`;
 
         return `${point1} ${point2} ${point3} ${point4}`;
       })
-      .style('fill', '#5f6a74');
+      .style('fill', '#737b83');
 
     this.svg
       .append('line')
       .attr('class', 'axis')
       .attr('x1', 0)
-      .attr('y1', this.halfOfHeight + 15)
+      .attr('y1', this.halfOfHeight + 10)
       .attr('x2', this.width)
-      .attr('y2', this.halfOfHeight + 15)
-      .attr('stroke-width', 3)
-      .attr('stroke', '#374551');
+      .attr('y2', this.halfOfHeight + 10)
+      .attr('stroke-width', 2)
+      .attr('stroke', '#505b65');
 
     this.svg
       .append('line')
       .attr('class', 'dash')
       .attr('x1', 18)
-      .attr('y1', `${ this.halfOfHeight + 5}`)
+      .attr('y1', `${ this.halfOfHeight + 3}`)
       .attr('x2', `${ this.width - 9}`)
-      .attr('y2', `${ this.halfOfHeight + 5}`)
+      .attr('y2', `${ this.halfOfHeight + 3}`)
       .attr('stroke-dasharray', '8,8')
       .attr('stroke-width', 1.5)
       .attr('stroke', 'white');
@@ -209,9 +209,9 @@ export class StreetDrawService {
   };
 
   public drawHouses(places):this {
-    let halfHouseWidth = 9.5;
+    let halfHouseWidth = 10;
     let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 11;
+    let roofY = this.halfOfHeight - 12;
 
     this.svg.selectAll('polygon.chosen')
       .data(places)
@@ -223,20 +223,20 @@ export class StreetDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${ scaleDatumIncome + roofX},${this.halfOfHeight}`;
+          point1 = `${ scaleDatumIncome + roofX},${this.halfOfHeight - 1}`;
           point2 = `${scaleDatumIncome + roofX},${roofY}`;
           point3 = `${scaleDatumIncome - halfHouseWidth },${roofY}`;
-          point4 = `${scaleDatumIncome },${ this.halfOfHeight - 19}`;
+          point4 = `${scaleDatumIncome },${ this.halfOfHeight - 21}`;
           point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
           point6 = `${scaleDatumIncome - roofX },${ roofY}`;
-          point7 = `${scaleDatumIncome - roofX },${ this.halfOfHeight}`;
+          point7 = `${scaleDatumIncome - roofX },${ this.halfOfHeight - 1}`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
-      .attr('stroke', '#98a5b0')
-      .style('fill', '#a9b3bc');
+      .attr('stroke', '#303e4a')
+      .style('fill', '#374551');
 
     return this;
   };
@@ -245,9 +245,9 @@ export class StreetDrawService {
     let colors = this.getFills();
     let fills = colors.fills;
     let fillsOfBorders = colors.fillsOfBorders;
-    let halfHouseWidth = 11.5;
+    let halfHouseWidth = 12.5;
     let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 14;
+    let roofY = this.halfOfHeight - 15;
 
     this.svg.selectAll('polygon.hover')
       .data([place])
@@ -259,13 +259,13 @@ export class StreetDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${scaleDatumIncome + roofX },${ this.halfOfHeight}`;
+          point1 = `${scaleDatumIncome + roofX },${ this.halfOfHeight - 1}`;
           point2 = `${scaleDatumIncome + roofX},${roofY}`;
           point3 = `${scaleDatumIncome - halfHouseWidth },${roofY}`;
-          point4 = `${scaleDatumIncome },${this.halfOfHeight - 23}`;
+          point4 = `${scaleDatumIncome },${this.halfOfHeight - 26}`;
           point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
           point6 = `${scaleDatumIncome - roofX },${roofY}`;
-          point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight}`;
+          point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight - 1}`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
