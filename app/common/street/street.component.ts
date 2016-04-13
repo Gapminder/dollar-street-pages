@@ -135,7 +135,6 @@ export class StreetComponent implements OnInit, OnDestroy {
     }
 
     this.street.onSvgHover(e.clientX, (options) => {
-      // this.hoverPlace.next(null);
       let {places, left} = options;
       this.isThumbView = true;
       this.thumbPlaces = places;
@@ -147,11 +146,15 @@ export class StreetComponent implements OnInit, OnDestroy {
 
       if (places.length === 1) {
         indent = 176 / 2;
-        this.hoverPlace.next(places[0]);
+        if (this.hoverPlace) {
+          this.hoverPlace.next(places[0]);
+        }
       }
       if (places.length > 1) {
         this.drawOnMap = true;
-        this.hoverPlace.next(null);
+        if (this.hoverPlace) {
+          this.hoverPlace.next(null);
+        }
       }
 
       this.thumbLeft = left - indent + 15;
@@ -191,7 +194,9 @@ export class StreetComponent implements OnInit, OnDestroy {
   }
 
   public thumbHover(place) {
-    this.hoverPlace.next(place);
+    if (this.hoverPlace) {
+      this.hoverPlace.next(place);
+    }
     this.street
       .removeHouses('chosen')
       .removeHouses('hover');
@@ -201,7 +206,9 @@ export class StreetComponent implements OnInit, OnDestroy {
   };
 
   public thumbUnhover() {
-    this.hoverPlace.next(null);
+    if (this.hoverPlace) {
+      this.hoverPlace.next(null);
+    }
     this.street.hoverPlace = null;
     if (this.controllSlider) {
       this.street.clearAndRedraw(this.street.chosenPlaces, true);
