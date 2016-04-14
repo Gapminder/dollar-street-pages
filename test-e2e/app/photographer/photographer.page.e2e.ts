@@ -25,22 +25,22 @@ describe('Photographer Page ', function() {
     element(by.css('.photographer-card>h3')).click();
   });
   it('test Anna Graboowska', function() {
-    browser.get('/photographer?id=56e946bad360263447ff6f89');
+    browser.get('/photographer?id=56e946bad360263447ff6f89', TIMEOUT);
   });
   it('test Zoriah Miller', function() {
-    browser.get('/photographer?id=56e946bed360263447ff6f95');
+    browser.get('/photographer?id=56e946bed360263447ff6f95', TIMEOUT);
   });
   it('test Luc Forsyth', function() {
-    browser.get('/photographer?id=56e946bfd360263447ff6f99');
+    browser.get('/photographer?id=56e946bfd360263447ff6f99', TIMEOUT);
   });
   it('test Jonathan Taylor', function() {
-    browser.get('/photographer?id=56e946bed360263447ff6f96');
+    browser.get('/photographer?id=56e946bed360263447ff6f96', TIMEOUT);
   });
   it('test Abhineet Malhotra', function() {
-    browser.get('/photographer?id=56e946c0d360263447ff6f9d');
+    browser.get('/photographer?id=56e946c0d360263447ff6f9d', TIMEOUT);
   });
   it('test Konstatins Sigulis', function() {
-    browser.get('/photographer?id=56e946c5d360263447ff6fae');
+    browser.get('/photographer?id=56e946c5d360263447ff6fae', TIMEOUT);
   });
   afterEach (function check() {
     browser.wait(EC.visibilityOf(photographerPortreit), TIMEOUT, photographerMessage);

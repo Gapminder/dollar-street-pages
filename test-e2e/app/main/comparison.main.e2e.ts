@@ -13,7 +13,7 @@ describe('Main Page test', function() {
   var allFamilies = element(by.css('#places a'));
   var acrossTheWorld = element(by.css('.concept-header-thing-title.pull-right>p'));
   var EC = protractor.ExpectedConditions;
-  var TIMEOUT = 60000;
+  var TIMEOUT = 10000;
   browser.manage().window().maximize();
   /* Click on every page on Main Page
    * Check every sub-menu: Front doors, homes, sofas, stoves, toilets

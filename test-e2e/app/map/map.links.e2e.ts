@@ -2,7 +2,7 @@
  * Created by vs on 4/5/16.
  */
 describe('Dollar Street test', function() {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+ // jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
   var mainPage = element(by.css('#sitemap>li>a[href*="main"]'));
   var matrixPage = element(by.css('#sitemap>li>a[href*="matrix"]'));
@@ -13,7 +13,7 @@ describe('Dollar Street test', function() {
   var ambassadorsPage = element(by.css('#sitemap>li>a[href*="ambass"]'));
   var countryPage = element(by.css('#sitemap>li>a[href*="country"]'));
   var EC = protractor.ExpectedConditions;
-  var TIMEOUT = 60000;
+  var TIMEOUT = 10000;
   //  browser.manage().timeouts().pageLoadTimeout(90000);
   browser.manage().window().maximize();
   /* Click on every page on SiteMap */
