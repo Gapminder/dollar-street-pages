@@ -7,8 +7,8 @@ import {
   TestComponentBuilder,
 } from 'angular2/testing';
 
-import {MockCommonDependency} from '../../common-mocks/mocked.services.ts'
-import {MockService} from '../../common-mocks/mock.service.template.ts'
+import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
+import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {places} from '../mocks/data.ts';
 
 
@@ -16,7 +16,7 @@ import {MatrixImagesComponent} from '../../../../app/matrix/matrix-images/matrix
 
 describe('MatrixImagesComponent', () => {
   let placesObservable = new MockService();
-  placesObservable.fakeResponse = places;
+  placesObservable.fakeResponse = places.places;
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
