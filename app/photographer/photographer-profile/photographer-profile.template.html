@@ -4,7 +4,7 @@
     <h2>{{photographer.firstName}} {{photographer.lastName}}</h2>
 
     <div class="country" *ngIf="photographer.country && photographer.country.country">
-      <img src="/assets/img/grey-marker.svg" alt=""> {{photographer.country.country}}
+      <img src="/assets/img/grey-marker.svg" alt=""> {{photographer.country.alias || photographer.country.country}}
     </div>
 
     <p class="description" *ngIf="photographer?.description">{{photographer.description}}</p>
@@ -24,14 +24,14 @@
     </p>
   </div>
 
-  <div class="footer organisation"
+  <div class="footer-profile organisation"
        *ngIf="photographer.company && photographer.company.name">
     <h3>Organisation</h3>
 
     <p>{{photographer.company.name}}</p>
   </div>
 
-  <div class="footer"
+  <div class="footer-profile"
        *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
     <h3>On the web</h3>
 

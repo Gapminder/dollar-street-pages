@@ -12,7 +12,7 @@
   </div>
   <div class="slider-container">
     <div class="slider-content">
-      <div class="slide" *ngFor="#image of images">
+      <div class="slide" *ngFor="#image of images; #i=index">
         <div class="slide-content" [ngStyle]="sliderHeight">
           <div class="slide-wrapper">
             <div class="image" (click)="openPopUp(image)">
@@ -44,7 +44,7 @@
               </span>
             </div>
             <div class="slide-map pull-right">
-              <place-map [place]="image"></place-map>
+              <place-map [hoverPlace]="hoverPlace" [routerLink]="['Map',{thing:thing}]" *ngIf="hoverPlace&&i===1"></place-map>
             </div>
           </div>
           <h2>

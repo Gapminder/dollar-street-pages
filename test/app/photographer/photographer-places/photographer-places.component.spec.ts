@@ -29,8 +29,7 @@ describe('PhotographerPlacesComponent', () => {
     return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
-      expect(context.countries.length).toBe(1);
-      expect(context.countries[0].places.length).toBe(4);
+      expect(context.places.length).toBe(4);
       mockPhotographerPlacesService.toInitState();
     });
   }));
@@ -53,9 +52,7 @@ describe('PhotographerPlacesComponent', () => {
     return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
       let nativeElement = fixture.debugElement.nativeElement;
       fixture.detectChanges();
-      let photographerCountries = nativeElement.querySelectorAll('#photographer-places .country');
-      let photographerCountryPlaces = nativeElement.querySelectorAll('#photographer-places .country:first-child .place');
-      expect(photographerCountries.length).toBe(1);
+      let photographerCountryPlaces = nativeElement.querySelectorAll('#photographer-places .place');
       expect(photographerCountryPlaces.length).toBe(4);
     });
   }));

@@ -1,5 +1,6 @@
 import {
   it,
+  xit,
   describe,
   expect,
   inject,
@@ -58,4 +59,3 @@ describe('PhotographersService', () => {
     expect(res.data.placesCount).toBe(4);
   })));
 });
-

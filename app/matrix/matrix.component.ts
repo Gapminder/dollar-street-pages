@@ -50,6 +50,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];
   public loader:boolean = false;
+  public isDraw:boolean = false;
 
   public matrixServiceSubscrib:any;
 
@@ -65,7 +66,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
   ngOnInit():void {
     this.thing = this.routeParams.get('thing');
-    this.countries = decodeURI(this.routeParams.get('countries'));
+    this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
     this.regions = this.routeParams.get('regions');
     //todo: row null
     this.row = parseInt(this.routeParams.get('row'), 10);
@@ -78,22 +79,10 @@ export class MatrixComponent implements OnInit, OnDestroy {
     if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
       this.zoom = 3;
     }
-
-    if (!this.row) {
-      this.row = 1;
-    }
-
-    if (!this.thing) {
-      this.thing = '546ccf730f7ddf45c0179688';
-    }
-
-    if (!this.countries) {
-      this.countries = 'World';
-    }
-
-    if (!this.regions) {
-      this.regions = 'World';
-    }
+    this.thing = this.thing ? this.thing : '5477537786deda0b00d43be5';
+    this.zoom = this.zoom ? this.zoom : 5;
+    this.row = this.row ? this.row : 1;
+    this.regions = this.regions ? this.regions : 'World';
 
     this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}`;
 
@@ -178,6 +167,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
     if (this.clonePlaces) {
+      this.isDraw = true;
       this.places.next(this.placesArr);
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
     }
@@ -225,10 +215,15 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     if (this.matrixServiceSubscrib) {
       this.matrixServiceSubscrib.unsubscribe();
+      this.matrixServiceSubscrib = null;
     }
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
+        if (this.isDraw) {
+          this.isDraw = !this.isDraw;
+          return;
+        }
         this.places.next(val.places);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.placesArr);

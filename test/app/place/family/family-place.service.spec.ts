@@ -56,4 +56,3 @@ describe('FamilyPlaceService', () => {
     expect(res.images.length).toBe(2);
   })));
 });
-

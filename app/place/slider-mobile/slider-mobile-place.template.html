@@ -10,7 +10,7 @@
     <div class="slider-mobile-content">
       <div id="slider-mobile-container"
            class="slider-mobile">
-        <div class="slider-mobile-slide" *ngFor="#image of images">
+        <div class="slider-mobile-slide" *ngFor="#image of images; #i=index">
           <img class="slider-mobile-slide-image" [src]="image.background" alt=""/>
         </div>
       </div>
@@ -49,7 +49,7 @@
       </div>
 
       <div class="slider-mobile-family-map">
-        <place-map [place]="chosenPlace"></place-map>
+        <place-map [hoverPlace]="hoverPlace" [routerLink]="['Map',{thing:thing}]" *ngIf="hoverPlace"></place-map>
       </div>
     </div>
 

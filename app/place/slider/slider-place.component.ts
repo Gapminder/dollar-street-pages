@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {NgStyle} from 'angular2/common';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
+import {ReplaySubject} from 'rxjs/subject/ReplaySubject';
 
 let $ = require('jquery');
 
@@ -50,6 +51,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private resizeSubscibe:any;
   private keyUpSubscribe:any;
   private zone:NgZone;
+  private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(Location) location,
@@ -90,14 +92,14 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
         this.init(i);
       });
 
-
     this.resizeSubscibe = Observable
       .fromEvent(window, 'resize')
       .debounceTime(300).subscribe(() => {
-        this.resizeSlider();
+        this.zone.run(() => {
+          this.resizeSlider();
+        });
       });
   }
-
 
   ngOnDestroy() {
     this.controllSliderSubscribe.unsubscribe();
@@ -110,6 +112,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     this.position = this.allPlaces.map((place:any) => {
       return place._id;
     }).indexOf(this.place);
+
     if (position || position === 0) {
       this.position = position;
     }
@@ -130,7 +133,9 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     img.onload = () => {
       this.zone.run(() => {
         this.resizeSlider();
+
         this.currentPlace.emit([this.chosenPlace]);
+        this.hoverPlace.next(this.allPlaces[this.position]);
       });
     };
 
@@ -141,7 +146,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     let windowInnerWidth = event ? event.currentTarget.innerWidth : window.innerWidth;
     let windowInnerHeight = event ? event.currentTarget.innerHeight : window.innerHeight;
 
-    sliderWidth = windowInnerWidth - 150;
+    sliderWidth = windowInnerWidth - 150 - (windowInnerWidth - document.body.offsetWidth);
     startPosition = sliderWidth;
 
     $('.slider-container .slider-content').css({
@@ -185,9 +190,12 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     let newPrevImage = new Image();
 
     newPrevImage.onload = () => {
-      setDescriptionsWidth(1);
-      animationSlider(shiftPrev, prevSlide);
+      this.zone.run(() => {
+        setDescriptionsWidth(1);
+        animationSlider(shiftPrev, prevSlide);
+      });
     };
+
     newPrevImage.src = this.images[0].background;
   }
 
@@ -237,7 +245,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     this.chosenPlace = this.allPlaces[this.position];
     this.arrowDisabled = data.arrowDisabled;
     this.images = data.images;
-
+    this.hoverPlace.next(this.chosenPlace);
     this.currentPlace.emit([this.chosenPlace]);
   };
 
@@ -304,6 +312,7 @@ function animationSlider(shiftLeft, endAnimation) {
       '-o-transform': 'translate3d(-' + shiftLeft + 'px, 0, 0)',
       transform: 'translate3d(-' + shiftLeft + 'px, 0, 0)'
     });
+
   setTimeout(endAnimation, 600);
 }
 

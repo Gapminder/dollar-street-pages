@@ -19,7 +19,7 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   @Input()
   private photographerId:string;
 
-  private countries:any = [];
+  private places:any = [];
   private familyThingId:string;
   private photographerPlacesService:any;
   public loader:boolean = false;
@@ -37,7 +37,7 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
           return res.err;
         }
 
-        this.countries = res.data.countries;
+        this.places = res.data.places;
         this.familyThingId = res.data.familyThingId;
         this.loader = true;
       });
