@@ -26,7 +26,7 @@
     "e2e:bstack:tunnel": ".config/tools/bstack-local.js",
     "e2e:bstack": ".config/tools/wait4tunnel.js && ./node_modules/.bin/protractor ./.config/protractor-browserstack.conf.js"
   },
-  "pre-commit":[
+  "pre-commit": [
     "lint",
     "pre-commit-test"
   ],
@@ -51,6 +51,7 @@
     "coveralls": "2.11.6",
     "cpy": "4.0.0",
     "del": "2.2.0",
+    "eslint": "^2.7.0",
     "eslint-config-valorsoft": "0.0.8",
     "exports-loader": "0.6.3",
     "file-loader": "0.8.5",
@@ -81,7 +82,7 @@
     "reflect-metadata": "0.1.2",
     "source-map-loader": "0.1.5",
     "ts-loader": "0.8.1",
-    "tslint": "3.3.0",
+    "tslint": "^3.7.1",
     "typescript": "1.7.5",
     "typings": "0.6.7",
     "webpack": "1.12.13",
