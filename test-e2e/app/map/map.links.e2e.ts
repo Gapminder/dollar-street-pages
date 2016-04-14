@@ -1,7 +1,7 @@
 /**
  * Created by vs on 4/5/16.
  */
-describe('Dollar Street test', function() {
+describe('Dollar Street test - map', function() {
  // jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
   var mainPage = element(by.css('#sitemap>li>a[href*="main"]'));

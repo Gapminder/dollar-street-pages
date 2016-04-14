@@ -8,7 +8,7 @@ describe('Photographers Page ', function() {
   var numPhotographers = element.all(by.css('.photographers-list>li'));
   var EC = protractor.ExpectedConditions;
   var TIMEOUT = 10000;
-  var zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56e946bed360263447ff6f95"]'));
+  var zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]'));
   var message = 'Zorian Miller on PhotographersPage is not visibility';
   var photographerPortreit = element(by.css('.photographer-portrait'));
   var photographerMessage = 'Photographer portrait is not visible';
