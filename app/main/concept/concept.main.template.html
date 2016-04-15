@@ -80,10 +80,11 @@
               industry's simply dummy text of the printing and typesetting industry. Lorem Ipsum.Lorem Ipsum is simply
               dummy text of the printing
             </p>
-            <a [routerLink]="['Matrix', {thing: activeThing._id,countries:'World',regions:'World',zoom:5,row:1}]"
+            <a class="custom-button"
+               [routerLink]="['Matrix', {thing: activeThing._id,countries:'World',regions:'World',zoom:5,row:1}]"
                [angulartics2On]="'click'"
                [angularticsEvent]="'go to matrix page from main'">
-              See all <span>{{activeThing.plural}}</span> »</a>
+              See all <span>{{activeThing.plural}}</span> >></a>
           </div>
         </div>
       </div>

@@ -32,9 +32,10 @@
     </div>
 
     <div class="link">
-      <a [routerLink]="['Place', {thing: place.thing, place: place.placeId, image: place.imageId}]"
+      <a class="custom-button"
+         [routerLink]="['Place', {thing: place.thing, place: place.placeId, image: place.imageId}]"
          [angulartics2On]="'click'"
-         [angularticsEvent]="'go to place page from photographer page'">Visit family »</a>
+         [angularticsEvent]="'go to place page from photographer page'">Visit family >></a>
     </div>
   </div>
 </div>

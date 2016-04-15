@@ -90,24 +90,6 @@
   margin-top: 42px;
 }
 
-#country-place .link a {
-  color: #fff;
-  padding: 8px 0;
-  background-color: #374551;
-  font-size: 18px;
-  font-weight: bold;
-  display: inline-block;
-  border-radius: 5px;
-  width: 150px;
-  text-align: center;
-  border: 1px solid #303e4a;
-}
-
-#country-place .link a:hover {
-  background-color: #f9cd28;
-  border: 1px solid #dfb209;
-}
-
 @media (max-width: 1199px) {
   #country-place .place-description .family {
     padding-left: 0;
@@ -147,11 +129,6 @@
   #country-place .country-income > div {
     width: 100% !important;
     margin: 0 !important;
-  }
-
-  #country-place .link a {
-    width: 138px;
-    font-size: 16px;
   }
 
   #country-place .place-description .family > span {

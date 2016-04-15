@@ -168,19 +168,8 @@
   clear: both;
 }
 
-#places .see_more_container .see_more {
-  color: #fff;
+#places .see_more_container .custom-button {
   margin-top: 34px;
-  padding: 10px 30px;
-  background-color: #374551;
-  font-size: 20px;
-  font-weight: bold;
-  display: inline-block;
-  border-radius: 5px;
-}
-
-#places  .see_more_container .see_more:hover {
-  background-color: #f9cd28;
 }
 
 @media (max-width: 991px) {
@@ -234,7 +223,7 @@
     min-height: 220px;
   }
 
-  #places  .see_more_container .see_more {
+  #places  .see_more_container .custom-button {
     margin-top: 10px;
   }
 }
