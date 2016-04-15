@@ -53,7 +53,7 @@ describe('PhotographersComponent', () => {
       fixture.detectChanges();
 
       let sections = nativeElement.querySelectorAll('.ambassadors-peoples:first-child .ambassadors-people');
-      let showMore = nativeElement.querySelectorAll('.see-more');
+      let showMore = nativeElement.querySelectorAll('.custom-button');
       for (let section of sections) {
         expect(section.classList.contains('show')).toEqual(false);
       }
