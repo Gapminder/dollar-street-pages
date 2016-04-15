@@ -82,6 +82,12 @@
   color: #fff;
 }
 
+@media (max-width: 1023px) {
+  #main-menu .menu-icon {
+    height: 62px;
+  }
+}
+
 @media (max-width: 600px) {
   #main-menu .menu-icon {
     width: 30px;

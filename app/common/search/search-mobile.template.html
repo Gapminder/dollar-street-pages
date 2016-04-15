@@ -17,7 +17,7 @@
     {{header.family[0]?header.family[0]+', ':''}}{{header.income?header.income+'$, ':''}}{{header.country}}
   </div>
 
-  <div class="title-container pull-left" *ngIf="mapComponent">{{activeThing.name}}</div>
+  <div class="title-container pull-left" *ngIf="mapComponent">{{activeThing.name}} <span>on the World map</span></div>
 
   <img class="open-modal-icon"
        src="/assets/img/search-icon.svg"

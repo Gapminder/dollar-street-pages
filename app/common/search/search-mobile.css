@@ -237,7 +237,11 @@
   #mobile-search .thing-icon {
     width: 20px;
     height: 20px;
-    margin-top: 0px;
+    margin-top: 0;
+  }
+
+  #mobile-search .title-container span {
+    display: none;
   }
 }
 
