@@ -25,7 +25,14 @@ footer {
 }
 
 @media (max-width: 600px) {
+  .container .row > div {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+}
+
+@media (max-width: 600px) {
   .container {
-    margin-top: 44px;
+    margin-top: 54px;
   }
 }

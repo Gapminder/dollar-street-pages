@@ -368,7 +368,6 @@
 
 .left-side-info .header {
   background-color: #e9f4f7;
-  height: 54px;
   position: relative;
 }
 
@@ -513,11 +512,6 @@
   .left-side-info {
     height: calc(100% - 44px);
     bottom: 0;
-    padding-top: 42px;
-  }
-
-  .left-side-info .header,
-  .left-side-info {
     width: 80%;
     top: 44px;
   }
@@ -530,11 +524,7 @@
 
   .left-side-info .header p {
     font-size: 16px;
-    margin: 4px 0 0 10px;
-  }
-
-  .left-side-info .header {
-    height: 42px;
+    line-height: 42px;
   }
 }
 
