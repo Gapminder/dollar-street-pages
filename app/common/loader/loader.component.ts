@@ -14,7 +14,6 @@ export class LoaderComponent implements OnInit {
 
   ngOnInit() {
     let header = document.querySelector('.main-header');
-
     if (header) {
       this.top = header.clientHeight;
     }
