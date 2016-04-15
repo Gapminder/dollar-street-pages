@@ -92,14 +92,11 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   urlChanged(thing):void {
     this.activeThing = thing;
-
     if (this.init) {
       return;
     }
-
     this.thing = thing._id;
     this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`);
-
     this.zone.run(() => {
       this.loader = false;
     });
@@ -138,7 +135,6 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
     if (this.init) {
       this.init = !this.init;
-
       return;
     }
 

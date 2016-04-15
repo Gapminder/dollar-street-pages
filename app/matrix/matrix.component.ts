@@ -99,16 +99,12 @@ export class MatrixComponent implements OnInit, OnDestroy {
   ngAfterViewChecked() {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
-
     if (this.footerHeight === footer.offsetHeight &&
       this.imageHeight === imgContent.offsetHeight || !this.element.querySelector('.image-content')) {
-
       return;
     }
-
     this.imageHeight = imgContent.offsetHeight;
     this.footerHeight = footer.offsetHeight;
-
     this.getPaddings();
   }
 
@@ -227,7 +223,6 @@ export class MatrixComponent implements OnInit, OnDestroy {
         this.places.next(val.places);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.placesArr);
-
         this.zoom = +parseQuery.zoom;
         this.loader = true;
       });

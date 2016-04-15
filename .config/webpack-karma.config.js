@@ -5,7 +5,7 @@ module.exports = {
   resolve: {
     root: [path.resolve(cwd)],
     modulesDirectories: ['node_modules', 'test', 'app'],
-    extensions: ['', '.ts', '.js'],
+    extensions: ['', '.ts', '.js','.html','.css'],
     alias: {
       'test': 'test'
     }
