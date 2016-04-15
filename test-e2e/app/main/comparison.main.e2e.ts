@@ -2,9 +2,9 @@
  * Created by vs on 4/5/16.
  */
 describe('Main Page test', function() {
-  //  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+  //jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
-  var frontDoors = element.all(by.css('.concept_things_menu>ul>li>span')).first();
+  var frontDoors = element.all(by.css('.concept_things_menu>ul>li>span')).get(0);
   var homes = element.all(by.css('.concept_things_menu>ul>li>span')).get(1);
   var sofas = element.all(by.css('.concept_things_menu>ul>li>span')).get(2);
   var stoves = element.all(by.css('.concept_things_menu>ul>li>span')).get(3);
@@ -13,19 +13,21 @@ describe('Main Page test', function() {
   var allFamilies = element(by.css('#places a'));
   var acrossTheWorld = element(by.css('.concept-header-thing-title.pull-right>p'));
   var EC = protractor.ExpectedConditions;
-  var TIMEOUT = 10000;
+  var TIMEOUT = 20000;
   browser.manage().window().maximize();
   /* Click on every page on Main Page
    * Check every sub-menu: Front doors, homes, sofas, stoves, toilets
    * Check sub-header of every sub-menu: Front doors across the World
    * Check link See all of every sub-menu
    * Check link All Families*/
+
   afterEach(function(){
     browser.wait(EC.visibilityOf(acrossTheWorld));
     browser.wait(EC.visibilityOf(allFamilies));
   });
   it('CheckAndOpenFrontDoors', function () {
     browser.get('/main');
+    browser.driver.sleep(2000);
     browser.wait(EC.visibilityOf(frontDoors), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
     browser.wait(EC.visibilityOf(homes), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
     browser.wait(EC.visibilityOf(sofas), TIMEOUT, 'Element FrontDors on MainPage is not visibility');

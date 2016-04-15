@@ -21,7 +21,7 @@ describe('Photographer Page ', function() {
     browser.wait(EC.visibilityOf(zorianMiller), TIMEOUT, 'Zorian Miller on PhotographersPage is not visible');
   });
   it('test AJ SHARMA', function() {
-    searchField.sendKeys('AJ SHARMA' + '\n');
+    searchField.sendKeys('SHARMA' + '\n');
     element(by.css('.photographer-card>h3')).click();
   });
   it('test Anna Graboowska', function() {
