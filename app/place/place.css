@@ -37,15 +37,8 @@
   font-weight: bold;
 }
 
-.showContentForMobile {
-  background-color: #374551;
-  border-radius: 5px;
-  color: #fff;
+.custom-button {
   display: block;
-  font-size: 20px;
-  font-weight: bold;
   margin: 25px auto;
-  padding: 10px 20px;
   width: 250px;
-  text-align: center;
 }

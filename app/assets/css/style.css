@@ -46,6 +46,7 @@ input:focus {
   text-decoration: none;
 }
 
+.custom-button,
 a {
   -webkit-transition: all .2s ease-out;
   -moz-transition: all .2s ease-out;
@@ -68,4 +69,21 @@ html, body, body > div[ui-view] {
 
 .main-header {
   z-index: 1000 !important;
+}
+
+.custom-button {
+  background-color: #374551;
+  font-family: 'Bariol Light', sans-serif;
+  color: white;
+  font-size: 18px;
+  display: inline-block;
+  padding: 7px 20px;
+  border: 1px solid #374551;
+  text-align: center;
+}
+
+.custom-button:hover {
+  cursor: pointer;
+  color: #374551;
+  background-color: transparent;
 }

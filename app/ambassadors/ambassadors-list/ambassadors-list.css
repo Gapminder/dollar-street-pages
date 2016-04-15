@@ -7,34 +7,10 @@
   margin: 0;
 }
 
-.ambassadors .ambassadors-peoples .see-more {
+.ambassadors .ambassadors-peoples .custom-button {
   display: block;
-  color: #fff;
   margin: 0 auto;;
-  padding: 8px 20px;
-  background-color: #374551;
-  font-size: 18px;
-  font-family: 'Bariol Light';
-  border-radius: 5px;
-  cursor: pointer;
   width: 150px;
-  text-align: center;
-  -webkit-transition: all .2s ease-out;
-  -moz-transition: all .2s ease-out;
-  -o-transition: all .2s ease-out;
-  transition: all .2s ease-out;
-  border: 1px solid #303e4a;
-}
-
-.ambassadors .ambassadors-peoples .see-more:hover {
-  background-color: #f9cd28;
-  border: 1px solid #dfb209;
-}
-
-.ambassadors .ambassadors-peoples span {
-  display: block;
-  color: #374551;
-  font-size: 44px;
 }
 
 .ambassadors .ambassadors-peoples h2 {
@@ -122,12 +98,6 @@
   .ambassadors .ambassadors-peoples h2 {
     font-size: 28px;
     margin: 40px 0 10px;
-  }
-
-  .ambassadors .ambassadors-peoples .see-more {
-    padding: 5px 10px;
-    font-size: 16px;
-    width: 140px;
   }
 
   .ambassadors .ambassadors-peoples .ambassadors-people-box .name {

@@ -139,25 +139,13 @@
   width: 70%;
 }
 
-.concept_things_content .concept-info a {
-  color: #fff;
+.concept_things_content .concept-info a.custom-button {
   margin: 20px 2.5%;
-  padding: 10px 30px;
-  background-color: #374551;
-  font-size: 20px;
-  font-weight: bold;
-  display: inline-block;
-  border-radius: 5px;
-  bottom: 0;
   float: right;
 }
 
-.concept_things_content .concept-info a span {
+.concept_things_content .concept-info a.custom-button span {
   text-transform: lowercase;
-}
-
-.concept_things_content .concept-info a:hover {
-  background-color: #f9cd28;
 }
 
 .concept_things_content {
@@ -348,7 +336,8 @@
     width: 100%;
   }
 
-  .concept_things_content .concept-info a, .concept_things_content .concept-info p {
+  .concept_things_content .concept-info a.custom-button,
+  .concept_things_content .concept-info p {
     float: none;
   }
 }
