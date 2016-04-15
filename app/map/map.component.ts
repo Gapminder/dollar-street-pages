@@ -87,7 +87,6 @@ export class MapComponent implements OnInit, OnDestroy {
       }
       query = `thing=${this.thing._id}`;
     }
-
     this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
       .subscribe((res) => {
         if (res.err) {
@@ -125,22 +124,18 @@ export class MapComponent implements OnInit, OnDestroy {
         let height = mapImage.offsetHeight;
         let greenwich = 0.439 * width;
         let equator = 0.545 * height;
-
         places.forEach((place:any) => {
           let stepTop, stepRight;
-
           if (place.lat > 0) {
             stepTop = equator / 75;
           } else {
             stepTop = (height - equator) / 75;
           }
-
           if (place.lng < 0) {
             stepRight = greenwich / 130;
           } else {
             stepRight = (width - greenwich) / 158;
           }
-
           place.left = place.lng * stepRight + greenwich;
           place.top = equator - place.lat * stepTop - 23;
         });

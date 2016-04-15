@@ -7,7 +7,6 @@ import {Pipe} from 'angular2/core';
 export class SearchFilter {
   transform(value, args) {
     let [text, field, inside] = args;
-
     if (!text) {
       return value;
     }

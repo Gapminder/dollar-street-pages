@@ -185,7 +185,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   removeItemFromState(state:string):void {
     let indexCountry = this.activeCountries.indexOf(state);
     let indexRegion = this.activeRegions.indexOf(state);
-
     if (indexCountry !== -1) {
       this.activeCountries.splice(indexCountry, 1);
 
