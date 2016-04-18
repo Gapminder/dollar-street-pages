@@ -126,6 +126,7 @@
   #photographer-places .country-income {
     width: 50% !important;
     margin-top: -6px;
+    overflow: visible;
   }
 
   #photographer-places .country-income .income {

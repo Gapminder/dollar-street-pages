@@ -122,7 +122,6 @@
 .slide-description .slide-header {
   display: inline-block;
   width: 100%;
-  min-height: 66px;
 }
 
 .slide-description .slide-header h2,
@@ -162,16 +161,16 @@
   margin: 12px auto;
 }
 
-.slide-description .slide-button {
+.slide-description .slide-button span {
   font-size: 18px;
   line-height: 18px;
-  border-bottom: 1px solid #374551;
   opacity: .8;
 }
 
-.slide-description .slide-button:hover {
+.slide-description .slide-button span:hover {
   opacity: 1;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .slide-description p {
@@ -181,18 +180,14 @@
   color: #767d86;
 }
 
-.slide-description h2{
+.slide-description h2 {
   color: #374551;
   font-size: 28px;
-  margin: -40px 0 0;
+  margin: 0;
 }
 
 .slide-description h2 span {
   font-size: 40px;
-}
-
-.slide-description .slide-header .slide-map {
-  width: 110px;
 }
 
 .fancyBox-container {

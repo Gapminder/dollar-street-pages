@@ -2,7 +2,8 @@
   <header [query]="query" *ngIf="isHover"
           (mouseenter)="isHover()"
           [chosenPlaces]="chosenPlaces"
-          (filter)="urlChanged($event)"></header>
+          (filter)="urlChanged($event)"
+          [hoverPlace]="hoverPlace"></header>
 
   <street [places]="streetPlaces"
           [thing]="thing"
@@ -32,4 +33,3 @@
 
   <loader [hidden]="loader"></loader>
 </div>
-

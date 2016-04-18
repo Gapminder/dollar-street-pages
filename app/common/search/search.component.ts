@@ -72,8 +72,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
       this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
           this.paramsUrl = {
             thing: this.activeThing._id,
-            place: place[0]._id,
-            image: place[0].image
+            place: place._id,
+            image: place.image
           };
 
           this.getInitDataForSlider();

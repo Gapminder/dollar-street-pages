@@ -8,7 +8,7 @@ let tpl = require('./sitemap.template.html');
 let style = require('./sitemap.css');
 
 @Component({
-  selector: 'photographer',
+  selector: 'sitemap',
   template: tpl,
   styles: [style],
   directives: [RouterLink, HeaderWithoutSearchComponent, FooterComponent]

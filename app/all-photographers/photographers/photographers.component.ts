@@ -10,7 +10,7 @@ let tpl = require('./photographers.template.html');
 let style = require('./photographers.css');
 
 @Component({
-  selector: 'photographers',
+  selector: 'photographers-list',
   template: tpl,
   styles: [style],
   directives: [RouterLink, Angulartics2On, LoaderComponent],

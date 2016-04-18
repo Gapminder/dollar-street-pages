@@ -303,9 +303,13 @@
 
 #places .hover_portrait_description .see-all {
   clear: both;
-  cursor: pointer;
   font-size: 14px;
   color: #374551;
+}
+
+#places .hover_portrait_description .see-all:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 #places .hover_portrait_description .info {
@@ -339,8 +343,9 @@
   font-family: 'Bariol Bold', sans-serif;
 }
 
-.countries-list .country-name {
+.countries-list .country-name:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .countries-list .countries {
@@ -361,7 +366,7 @@
   -o-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
 
-  box-shadow: 0 0 5.28px 0.72px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 4px 5.28px 0.72px rgba(0, 0, 0, 0.24);
   left: -100%;
   opacity: 0;
 }
@@ -432,6 +437,7 @@
 
 .left-side-info .hover_portrait_description {
   overflow: hidden;
+  cursor: pointer;
 }
 
 .left-side-info .info-box .name {
@@ -475,9 +481,34 @@
   background-color: #1e2c37;
 }
 
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 @media (min-width: 1400px) {
   .container {
     width: 1400px;
+  }
+}
+
+@media (min-width: 768px) {
+  #places {
+    padding-bottom: 323px;
+  }
+}
+
+@media (max-width: 767px) {
+  #places {
+    padding-bottom: 244px;
+  }
+}
+
+@media (max-width: 600px) {
+  #places {
+    padding-bottom: 237px;
   }
 }
 
