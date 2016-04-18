@@ -14,7 +14,7 @@ import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {SearchComponent} from '../../../../app/common/search/search.component';
 import {initData, sliderInitData} from './mocks/data.ts';
 
-describe('PlaceComponent', () => {
+describe('SearchComponent', () => {
   let streetPlaces = new MockService();
   streetPlaces.serviceName = 'SearchService';
   streetPlaces.getMethod = 'getSearchInitData';

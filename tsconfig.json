@@ -16,6 +16,7 @@
     "node_modules"
   ],
   "files": [
+    "./typings/tsd.d.ts",
     "./typings/browser/ambient/jasmine/jasmine.d.ts",
     "./node_modules/angular2/typings/browser.d.ts",
     "./typings/require.d.ts",

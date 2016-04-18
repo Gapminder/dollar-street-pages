@@ -105,7 +105,9 @@ export class MapComponent implements OnInit, OnDestroy {
           .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
-            this.setMarkersCoord(this.places);
+            this.zone.run(() => {
+              this.setMarkersCoord(this.places);
+            });
           });
       });
   }

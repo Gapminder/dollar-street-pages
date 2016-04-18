@@ -79,7 +79,6 @@ export class StreetComponent implements OnInit, OnDestroy {
         }
         if (!hoverPlace) {
           this.street.removeHouses('hover');
-
           return;
         }
 
@@ -98,14 +97,7 @@ export class StreetComponent implements OnInit, OnDestroy {
           .init()
           .drawScale(places)
           .set('places', _.sortBy(places, 'income'))
-          .set('fullIncomeArr', _
-            .chain(places)
-            .sortBy('income')
-            .map((place:any) => {
-              return this.street.scale(place.income);
-            })
-            .value()
-          );
+          .set('fullIncomeArr', true);
       });
 
     this.resize = Observable
@@ -198,7 +190,8 @@ export class StreetComponent implements OnInit, OnDestroy {
       this.hoverPlace.next(place);
     }
     this.street
-      .removeHouses('chosen')
+      .removeHouses('chosen');
+    this.street
       .removeHouses('hover');
 
     this.street.set('hoverPlace', place);

@@ -7,15 +7,18 @@ import {
   xit,
   describe,
   expect,
+  beforeEach,
   injectAsync,
   beforeEachProviders,
   TestComponentBuilder,
 } from 'angular2/testing';
 
-// import {MockCommonDependency} from '../../../app/common-mocks/mocked.services.ts';
-// import {MockService} from '../../common-mocks/mock.service.template.ts';
-// import {mapdata} from './mocks/data.ts';
+import {provide} from 'angular2/core';
+
+import {MockCommonDependency} from '../../../app/common-mocks/mocked.services.ts';
+import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {StreetComponent} from '../../../../app/common/street/street.component';
+import {places} from './mocks/data.ts';
 
 /** todo: remove this crutch */
 // interface ObjectCtor extends ObjectConstructor {
@@ -43,80 +46,140 @@ import {StreetComponent} from '../../../../app/common/street/street.component';
 // assign(window, setTimeoutMock);
 /**
  * *************/
+class StreetDrawServiceMock {
+  public width:number;
+  public height:number;
+  public halfOfHeight:number;
 
-// describe('MapComponent', () => {
-//   let mockMapService = new MockService();
-//   let mockCommonDependency = new MockCommonDependency();
-//   mockMapService.serviceName = 'MapService';
-//   mockMapService.getMethod = 'getMainPlaces';
-//   mockMapService.fakeResponse = mapdata;
-//   beforeEachProviders(() => {
-//     return [
-//       mockCommonDependency.getProviders(),
-//       mockMapService.getProviders()
-//     ];
-//   });
-//   xit(' must init', injectAsync([TestComponentBuilder], (tcb) => {
-//     return tcb.createAsync(MapComponent).then((fixture) => {
-//       let context = fixture.debugElement.componentInstance;
-//       /** need solve a router state in header component -> search*/
-//       context.routeParams.set('thing', '5477537786deda0b00d43be5');
-//       spyOn(context.urlChangeService, 'replaceState');
-//       console.log(context.router.hostComponent)
-//       fixture.detectChanges();
-//       expect(context.urlChangeService.replaceState).toHaveBeenCalledWith('/map', 'thing=5477537786deda0b00d43be5');
-//       expect(context.init).toEqual(true);
-//       expect(context.places.length).toEqual(8);
-//       expect(context.countries.length).toEqual(3);
-//       expect(context.query).toEqual('thing=5477537786deda0b00d43be5');
-//       expect(context.loader).toEqual(true);
-//       mockMapService.toInitState();
-//     });
-//   }));
-//   xit(' must destroy', injectAsync([TestComponentBuilder], (tcb) => {
-//     return tcb.createAsync(MapComponent).then((fixture) => {
-//       let context = fixture.debugElement.componentInstance;
-//       context.routeParams.set('thing', '5477537786deda0b00d43be5');
-//       fixture.detectChanges();
-//       fixture.destroy()
-//       expect(context.mapServiceSubscribe.countOfSubscribes).toEqual(0);
-//     });
-//   }));
-//
-//   xit(' must hoverOnMarker', injectAsync([TestComponentBuilder], (tcb) => {
-//     return tcb.createAsync(MapComponent).then((fixture) => {
-//       let context = fixture.debugElement.componentInstance;
-//       context.isDesktop = true;
-//       context.routeParams.set('thing', '5477537786deda0b00d43be5');
-//       fixture.detectChanges();
-//       context.hoverOnMarker(1, 'Ukraine')
-//       expect(context.markers.length).toEqual(8);
-//       expect(context.onMarker).toEqual(true);
-//       expect(context.currentCountry).toEqual('Ukraine');
-//       expect(context.lefSideCountries.length).toEqual(2);
-//       expect(context.seeAllHomes).toEqual(true);
-//       expect(context.hoverPlace._id).toEqual('54b6862f3755c45b542c28cb');
-//       /**todo: test coords*/
-//     });
-//   }));
-//   xit(' must unHoverOnMarker', injectAsync([TestComponentBuilder], (tcb) => {
-//     return tcb.createAsync(MapComponent).then((fixture) => {
-//        let context = fixture.debugElement.componentInstance;
-//       context.isDesktop = true;
-//       context.isOpenLeftSide = true;
-//       context.routeParams.set('thing', '5477537786deda0b00d43be5');
-//       context.hoverOnMarker(1, 'Ukraine');
-//       fixture.detectChanges();
-//       console.log(context.markers)
-//       context.isOpenLeftSide = false;
-//       context.unHoverOnMarker();
-//       fixture.detectChanges();
-//       expect(context.onMarker).toEqual(false);
-//       expect(context.seeAllHomes).toEqual(false);
-//       expect(context.hoverPlace).toEqual(null);
-//       expect(context.hoverPortraitTop).toEqual(null);
-//       expect(context.hoverPortraitLeft).toEqual(null);
-//       expect(context.markers).toEqual(null);
-//     });
-//   }));
-// });
+  public init():this {
+    return this;
+  }
+
+  public set setSvg(element:HTMLElement) {
+  }
+
+  public set(key, val):this {
+    this[key] = val;
+    return this;
+  };
+
+  public onSvgHover(positionX, cb) {
+  };
+
+  public drawScale(places) {
+    return this;
+  };
+
+  public drawHouses(places):this {
+    return this;
+  };
+
+  public drawHoverHouse(place, gray = false):this {
+    return this;
+  };
+
+  public clearAndRedraw(places, slider = false):this {
+    return this;
+  };
+
+  public removeHouses(selector):this {
+    return this;
+  };
+
+  public clearSvg():this {
+    return this;
+  };
+}
+
+let placesSub = new MockService();
+placesSub.fakeResponse = places;
+
+describe('StreetComponent', () => {
+  beforeEachProviders(() => {
+    let mockCommonDependency = new MockCommonDependency();
+    return [
+      mockCommonDependency.getProviders(),
+      provide('StreetDrawService', {useClass: StreetDrawServiceMock})
+    ];
+  });
+  let context;
+  let fixture;
+
+
+  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+      return tcb
+        .overrideTemplate(StreetComponent, `<div></div>`)
+        .createAsync(StreetComponent)
+        .then((componentFixture) => {
+          fixture = componentFixture;
+          context = componentFixture.debugElement.componentInstance;
+        });
+    }
+  ));
+
+  xit('ngOnInit', () => {
+    context.places = placesSub;
+    spyOn(context.street, 'clearSvg').and.callThrough();
+    spyOn(context.street, 'init').and.callThrough();
+    spyOn(context.street, 'drawScale').and.callThrough();
+    spyOn(context.street, 'set').and.callThrough();
+    spyOn(_, 'sortBy').and.callThrough();
+    spyOn(_, 'chain').and.callThrough();
+    spyOn(_, 'map').and.returnValue({
+      value:() => {
+        return true;
+      }
+    });
+    spyOn(_, 'value');
+    context.ngOnInit();
+    expect(context.street.clearSvg).toHaveBeenCalled();
+    expect(context.street.init).toHaveBeenCalled();
+    expect(context.street.drawScale).toHaveBeenCalledWith(places);
+    expect(context.street.set).toHaveBeenCalledWith(places, true);
+    expect(context.street.set).toHaveBeenCalledWith('fullIncomeArr', true);
+    expect(_.chain).toHaveBeenCalledWith(places);
+    expect(_.sortBy).toHaveBeenCalledWith('income');
+    expect(_.map).toHaveBeenCalled();
+  });
+  xit('onStreet', () => {
+
+  });
+  xit('ngOnDestroy', () => {
+
+  });
+  it('thumbHover', () => {
+    spyOn(context, 'thumbHover').and.callThrough();
+    // spyOn(context.hoverPlace, 'next');
+    spyOn(context.street, 'removeHouses');
+    spyOn(context.street, 'set');
+    spyOn(context.street, 'drawHoverHouse');
+    let testObj = {place: 'test'};
+    context.thumbHover(testObj);
+    expect(context.street.removeHouses.calls.argsFor(0))
+      .toEqual(['chosen']);
+    expect(context.street.removeHouses.calls.argsFor(1))
+      .toEqual(['hover']);
+    expect(context.street.set.calls.argsFor(0))
+      .toEqual(['hoverPlace', testObj]);
+    expect(context.street.drawHoverHouse.calls.argsFor(0))
+      .toEqual([testObj]);
+  });
+  it('thumbUnhover', () => {
+    spyOn(context, 'thumbUnhover').and.callThrough();
+    // spyOn(context.hoverPlace, 'next');
+    spyOn(context.street, 'removeHouses');
+    spyOn(context.street, 'clearAndRedraw');
+    context.thumbUnhover();
+    expect(context.street.hoverPlace).toEqual(null);
+    expect(context.street.clearAndRedraw.calls.argsFor(0))
+      .toEqual([context.street.chosenPlaces]);
+  });
+  it('toUrl', () => {
+    expect(context.toUrl('http://example.com/image-desktops.jpg')).toEqual('url("http://example.com/image-150x150.jpg")');
+  });
+
+  xit('clickOnThumb', () => {
+
+  });
+
+});

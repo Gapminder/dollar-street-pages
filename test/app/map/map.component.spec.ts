@@ -11,12 +11,14 @@ import {
   beforeEach,
   beforeEachProviders,
   TestComponentBuilder,
+  tick
 } from 'angular2/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services.ts';
 import {MockService} from '../common-mocks/mock.service.template.ts';
 import {mapdata} from './mocks/data.ts';
 import {MapComponent} from '../../../app/map/map.component';
+import {Observable} from "rxjs/Observable";
 
 /** todo: remove this crutch */
 interface ObjectCreator extends ObjectConstructor {
@@ -96,8 +98,13 @@ describe('MapComponent', () => {
     expect(context.setMarkersCoord.calls.argsFor(0)).toEqual([context.places]);
   });
   it('setMarkersCoord', () => {
+    spyOn(context.element, 'querySelector').and.returnValue({
+      offsetWidth: 1130,
+      offsetHeight: 685
+    })
     spyOn(context, 'setMarkersCoord').and.callThrough();
     context.setMarkersCoord(mapdata.data.places);
+    expect(context.element.querySelector).toHaveBeenCalledWith('.map-color')
     /**write test*/
   });
 
