@@ -55,7 +55,7 @@
           <i class="fa fa-camera"></i> Total Photos: <span>{{photosQantity || 0}}</span>
         </p>
 
-        <p class="camera">
+        <p class="camera" *ngIf="videosQantity">
           <i class="fa fa-video-camera"></i> Total Videos: <span>{{videosQantity || 0}}</span>
         </p>
       </div>

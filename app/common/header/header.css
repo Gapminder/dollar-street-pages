@@ -24,14 +24,14 @@
 }
 
 .header-content search {
-  width: calc(100% - 215px)
+  width: calc(100% - 190px)
 }
 
 place-map {
   width: 71px;
   display: block;
   float: left;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 place-map[hidden] {

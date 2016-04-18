@@ -118,8 +118,14 @@
   z-index: 5;
 }
 
+@media (max-width: 1023px) {
+  .street-box {
+    margin: -10px 5px 0;
+  }
+}
+
 @media (max-width: 600px) {
   .street-box {
-    margin: -7px 15px 0;
+    margin: -7px 5px 0;
   }
 }

@@ -53,7 +53,7 @@
   font-size: 16px;
   text-align: center;
   color: #ddd;
-  background-color: #303E4A;
+  background-color: #303e4a;
 }
 
 @media (min-width: 1400px) {
@@ -82,7 +82,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 767px) {
   .footer .container {
     padding-bottom: 15px;
   }

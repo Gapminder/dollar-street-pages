@@ -99,9 +99,27 @@ html, body, body > div[ui-view] {
   top: 87px;
 }
 
+sitemap,
+country,
+ambassadors,
+photographer,
+map-component {
+  position: relative;
+  display: block;
+  min-height: 100%;
+}
+
 @media (max-width: 1023px) {
   .custom-button {
     padding: 5px 20px;
     font-size: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  svg .poorest,
+  svg .richest,
+  svg .scale-label {
+    font-size: 12px;
   }
 }

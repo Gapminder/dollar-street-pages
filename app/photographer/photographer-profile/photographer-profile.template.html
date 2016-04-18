@@ -1,6 +1,6 @@
 <div id="photographer-profile">
   <div class="header">
-    <img [src]="photographer.avatar || '/assets/img/photographer-icon.jpg'" alt="avatar">
+    <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
     <h2>{{photographer.firstName}} {{photographer.lastName}}</h2>
 
     <div class="country" *ngIf="photographer.country && photographer.country.country">
@@ -66,7 +66,7 @@
 
 <div id="mobile-photographer-profile" class="row" [ngClass]="{'open': isShowInfo}">
   <div class="image-container">
-    <img [src]="photographer.avatar || '/assets/img/photographer-icon.jpg'" alt="avatar">
+    <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
 
     <div class="social-network-container"
          *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
@@ -119,7 +119,7 @@
           <i class="fa fa-camera"></i> Total Photos: <span>{{photographer.imagesCount || 0}}</span>
         </p>
 
-        <p class="camera">
+        <p class="camera" *ngIf="photographer.video">
           <i class="fa fa-video-camera"></i> Total Videos: <span>{{photographer.video || 0}}</span>
         </p>
       </div>
