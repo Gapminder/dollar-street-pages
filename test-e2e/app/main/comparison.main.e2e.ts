@@ -27,7 +27,7 @@ describe('Main Page test', function() {
   });
   it('CheckAndOpenFrontDoors', function () {
     browser.get('/main');
-    browser.driver.sleep(2000);
+    browser.driver.sleep(3000);
     browser.wait(EC.visibilityOf(frontDoors), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
     browser.wait(EC.visibilityOf(homes), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
     browser.wait(EC.visibilityOf(sofas), TIMEOUT, 'Element FrontDors on MainPage is not visibility');

@@ -30,10 +30,10 @@ describe('Photographer Page ', function() {
   it('test Zoriah Miller', function() {
     browser.get('/photographer?id=56ec0917af72e9437cbccf93', TIMEOUT);
   });
-  it('test Luc Forsyth', function() {
+ /* it('test Luc Forsyth', function() {
     browser.get('/photographer?id=56ec0918af72e9437cbccf97', TIMEOUT);
   });
- /* it('test Jonathan Taylor', function() {
+  it('test Jonathan Taylor', function() {
     browser.get('/photographer?id=56e946bed360263447ff6f96', TIMEOUT);
   });
   it('test Abhineet Malhotra', function() {
