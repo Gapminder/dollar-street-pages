@@ -1,6 +1,6 @@
 <div id="photographer-profile">
   <div class="header">
-    <img [src]="photographer.avatar || '/assets/img/photographer-icon.jpg'" alt="avatar">
+    <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
     <h2>{{photographer.firstName}} {{photographer.lastName}}</h2>
 
     <div class="country" *ngIf="photographer.country && photographer.country.country">
@@ -66,7 +66,7 @@
 
 <div id="mobile-photographer-profile" class="row" [ngClass]="{'open': isShowInfo}">
   <div class="image-container">
-    <img [src]="photographer.avatar || '/assets/img/photographer-icon.jpg'" alt="avatar">
+    <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
 
     <div class="social-network-container"
          *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
@@ -106,20 +106,20 @@
   <div class="photographer-description">
     <div class="photographer-description-header">
       <div class="header">
-        <h2>{{photographer.firstName}} {{photographer.lastName}} <span *ngIf="photographer.country"><i
-          class="fa fa-map-marker"></i> {{photographer.country.country}}</span></h2>
+        <h2>{{photographer.firstName}} {{photographer.lastName}} <span *ngIf="photographer.country">
+          <img src="/assets/img/grey-marker.svg" alt=""> {{photographer.country.country}}</span></h2>
       </div>
 
       <div class="count">
         <p class="home">
-          <i class="fa fa-home"></i> Visited Families: <span>{{photographer.placesCount || 0}}</span>
+          <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{photographer.placesCount || 0}}</span>
         </p>
 
         <p class="photo">
           <i class="fa fa-camera"></i> Total Photos: <span>{{photographer.imagesCount || 0}}</span>
         </p>
 
-        <p class="camera">
+        <p class="camera" *ngIf="photographer.video">
           <i class="fa fa-video-camera"></i> Total Videos: <span>{{photographer.video || 0}}</span>
         </p>
       </div>

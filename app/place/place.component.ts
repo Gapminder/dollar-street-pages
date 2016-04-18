@@ -28,6 +28,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private sliderPlaces:Subject<any> = new Subject();
   private chosenPlaces:Subject<any> = new Subject();
   private controllSlider:Subject<any> = new Subject();
+  public hoverPlace:Subject<any> = new Subject();
   public hoverHeader:Subject<any> = new Subject();
   private controllSliderSubscribe:any;
   private thing:string;
@@ -115,7 +116,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   choseCurrentPlace(place) {
     this.currentPlace = place[0];
-    this.chosenPlaces.next(place);
+    this.chosenPlaces.next(this.currentPlace);
+    this.hoverPlace.next(this.currentPlace);
 
     if (!this.isDesktop) {
       this.isShowImagesFamily = false;

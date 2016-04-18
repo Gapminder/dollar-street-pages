@@ -24,24 +24,21 @@
 }
 
 .header-content search {
-  width: calc(100% - 215px)
+  width: calc(100% - 190px)
 }
 
 place-map {
   width: 71px;
   display: block;
   float: left;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 place-map[hidden] {
   display: none;
 }
 
-@media (max-width: 992px) {
-  .header-content {
-    height: 50px !important;
-  }
+@media (max-width: 1023px) {
   .header-content .icon-container img {
     width: 42px;
     height: 42px;
@@ -50,10 +47,6 @@ place-map[hidden] {
 }
 
 @media (max-width: 600px) {
-  .header-content {
-    height: 38px !important;
-  }
-
   .header-content .icon-container img {
     width: 32px;
     height: 32px;

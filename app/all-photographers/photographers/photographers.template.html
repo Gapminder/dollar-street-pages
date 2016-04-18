@@ -37,7 +37,7 @@
              [angulartics2On]="'click'"
              [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
           <div class="photographer-portrait"
-               [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/photographer-icon.jpg)'}">
+               [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/empty-photographer.jpg)'}">
             <div class="photographer-material">
               <span><i class="fa fa-camera"></i> {{photographer.images}}</span>
               <span *ngIf="photographer.video"><i class="fa fa-video-camera"></i> {{photographer.video || 0}}</span>

@@ -47,6 +47,7 @@
 #country-info .main .home img {
   width: 13px;
   margin-top: -6px;
+  margin-right: 2px;
 }
 
 #country-info .main .photo i {
@@ -116,7 +117,7 @@
 
 #mobile-country-info .country-description {
   width: calc(100% - 172px);
-  padding-left: 15px;
+  padding-left: 20px;
 }
 
 #mobile-country-info .country-description h2 {
@@ -125,7 +126,7 @@
   font-family: 'Bariol Bold', sans-serif;
   line-height: 20px;
   text-transform: uppercase;
-  margin: -4px 0 25px;
+  margin: -4px 0 20px;
 }
 
 #mobile-country-info .country-description h2 span {
@@ -137,6 +138,11 @@
   margin-left: 20px;
 }
 
+#mobile-country-info .country-description h2 img {
+  width: 10px;
+  margin-top: -6px;
+}
+
 #mobile-country-info .count {
   overflow: hidden;
   margin-bottom: 20px;
@@ -146,6 +152,7 @@
   float: left;
   width: 33.33%;
   margin: 0;
+  font-size: 16px;
 }
 
 #mobile-country-info .count p i {
@@ -153,8 +160,22 @@
   margin-right: 5px;
 }
 
+#mobile-country-info .count p.home img {
+  width: 13px;
+  margin-top: -5px;
+}
+
+#mobile-country-info .count p.photo i {
+  font-size: 13px;
+}
+
+#mobile-country-info .count p.camera i {
+  font-size: 15px;
+}
+
 #mobile-country-info .count p span {
   color: #767d86;
+  font-size: 14px;
 }
 
 #mobile-country-info .country-description-main .company-container {
@@ -171,7 +192,6 @@
 }
 
 #mobile-country-info .country-description-main .company-container h3 {
-  color: #3a4550;
   font-size: 14px;
   text-transform: uppercase;
   font-family: 'Bariol Bold', sans-serif;
@@ -186,9 +206,7 @@
 
 #mobile-country-info .country-description-main div + div a {
   color: #3a4550;
-  font-family: Helvetica, sans-serif;
-  font-size: 13px;
-  font-weight: 300;
+  font-size: 14px;
   padding-top: 4px;
 }
 
@@ -277,18 +295,22 @@
     display: block;
   }
 
-  #mobile-country-info .country-description h2 i {
-    margin-right: 5px;
+  #mobile-country-info .country-description-footer .company-description {
+    color: #747d87;
   }
 }
 
 @media (max-width: 600px) {
+  #mobile-country-info {
+    padding: 10px 15px;
+  }
+
   #mobile-country-info .image-container {
-    width: 130px;
+    width: 160px;
   }
 
   #mobile-country-info .country-description {
-    width: calc(100% - 130px);
+    width: calc(100% - 160px);
   }
 
   #mobile-country-info .country-description h2 {
@@ -302,6 +324,10 @@
     font-size: 14px;
   }
 
+  #mobile-country-info .country-description h2 span img {
+    width: 9px;
+  }
+
   #mobile-country-info .count {
     margin: 0;
   }
@@ -310,6 +336,19 @@
     width: 100%;
     float: none;
     margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  #mobile-country-info .more-info {
+    font-size: 14px;
+  }
+
+  #mobile-country-info .count p.home img {
+    margin-right: 6px;
+  }
+
+  #mobile-country-info .count p span {
+    font-size: 13px;
   }
 
   #mobile-country-info .country-description .more-info {
@@ -318,28 +357,22 @@
 
   #mobile-country-info .image-container .more-info {
     display: block;
+    margin-top: 5px;
   }
 
-  #mobile-country-info .social-network-container {
-    text-align: left;
-  }
-
-  #mobile-country-info .social-network-container a {
-    margin: 10px 10px 0 0;
-  }
-
-  #mobile-country-info .country-description-main {
+  #mobile-country-info .country-description-footer {
     display: none;
+  }
+
+  #mobile-country-info.open .country-description-footer {
+    display: block;
     position: absolute;
-    top: 92%;
+    top: 93%;
     left: 0;
     right: 0;
     background-color: #f4fafb;
     z-index: 9;
     padding: 0 15px 15px;
-  }
-
-  #mobile-country-info.open .country-description-main {
-    display: block;
+    box-shadow: 0 4px 5.3px 0.7px rgba(0, 0, 0, 0.24);
   }
 }

@@ -47,6 +47,7 @@
 #photographer-profile .main .home img {
   width: 13px;
   margin-top: -6px;
+  margin-right: 2px;
 }
 
 #photographer-profile .main .photo i {
@@ -136,7 +137,7 @@
 
 #mobile-photographer-profile .social-network-container a {
   display: inline-block;
-  margin: 10px 5px 0 5px;
+  margin: 10px 10px 0;
 }
 
 #mobile-photographer-profile .social-network-container i {
@@ -146,7 +147,7 @@
 
 #mobile-photographer-profile .photographer-description {
   width: calc(100% - 172px);
-  padding-left: 15px;
+  padding-left: 20px;
 }
 
 #mobile-photographer-profile .photographer-description h2 {
@@ -155,7 +156,7 @@
   font-family: 'Bariol Bold', sans-serif;
   line-height: 20px;
   text-transform: uppercase;
-  margin: -4px 0 25px;
+  margin: -4px 0 20px;
 }
 
 #mobile-photographer-profile .photographer-description h2 span {
@@ -167,6 +168,11 @@
   margin-left: 20px;
 }
 
+#mobile-photographer-profile .photographer-description h2 span img {
+  width: 10px;
+  margin-top: -6px;
+}
+
 #mobile-photographer-profile .count {
   overflow: hidden;
   margin-bottom: 20px;
@@ -176,6 +182,7 @@
   float: left;
   width: 33.33%;
   margin: 0;
+  font-size: 16px;
 }
 
 #mobile-photographer-profile .count p i {
@@ -183,11 +190,25 @@
   margin-right: 5px;
 }
 
-#mobile-photographer-profile .count p span {
-  color: #767d86;
+#mobile-photographer-profile .count p.home img {
+  width: 13px;
+  margin-top: -5px;
 }
 
-#mobile-photographer-profile .photographer-description-footer-profile .company-container {
+#mobile-photographer-profile .count p.photo i {
+  font-size: 13px;
+}
+
+#mobile-photographer-profile .count p.camera i {
+  font-size: 15px;
+}
+
+#mobile-photographer-profile .count p span {
+  color: #767d86;
+  font-size: 14px;
+}
+
+#mobile-photographer-profile .photographer-description-footer .company-container {
   overflow: hidden;
   margin-top: 20px;
   padding-top: 20px;
@@ -195,30 +216,27 @@
   display: none;
 }
 
-#mobile-photographer-profile .photographer-description-footer-profile .company-container > div {
+#mobile-photographer-profile .photographer-description-footer .company-container > div {
   float: left;
   width: 50%;
 }
 
-#mobile-photographer-profile .photographer-description-footer-profile .company-container h3 {
-  color: #3a4550;
+#mobile-photographer-profile .photographer-description-footer .company-container h3 {
   font-size: 14px;
   text-transform: uppercase;
   font-family: 'Bariol Bold', sans-serif;
   margin-top: 0;
 }
 
-#mobile-photographer-profile .photographer-description-footer-profile p {
+#mobile-photographer-profile .photographer-description-footer p {
   color: #727982;
   font-size: 16px;
   margin: 0;
 }
 
-#mobile-photographer-profile .photographer-description-footer-profile div + div a {
+#mobile-photographer-profile .photographer-description-footer a {
   color: #3a4550;
-  font-family: Helvetica, sans-serif;
-  font-size: 13px;
-  font-weight: 300;
+  font-size: 14px;
   padding-top: 4px;
 }
 
@@ -276,16 +294,6 @@
   }
 }
 
-@media (max-width: 1023px) {
-  #photographer-profile {
-    display: none;
-  }
-
-  #mobile-photographer-profile {
-    display: block;
-  }
-}
-
 @media (max-width: 1200px) {
   #photographer-profile {
     font-size: 14px;
@@ -308,7 +316,29 @@
   }
 }
 
+@media (max-width: 1023px) {
+  #photographer-profile {
+    display: none;
+  }
+
+  #mobile-photographer-profile {
+    display: block;
+  }
+
+  #mobile-photographer-profile .photographer-description-footer .company-description {
+    color: #747d87;
+  }
+
+  #mobile-photographer-profile .photographer-description-footer .company-container h3 {
+    margin-bottom: 5px;
+  }
+}
+
 @media (max-width: 600px) {
+  #mobile-photographer-profile {
+    padding: 10px 15px;
+  }
+
   #mobile-photographer-profile .image-container {
     width: 130px;
   }
@@ -328,6 +358,10 @@
     font-size: 14px;
   }
 
+  #mobile-photographer-profile .photographer-description h2 span img {
+    width: 9px;
+  }
+
   #mobile-photographer-profile .count {
     margin: 0;
   }
@@ -335,7 +369,20 @@
   #mobile-photographer-profile .count p {
     width: 100%;
     float: none;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+    font-size: 14px;
+  }
+
+  #mobile-photographer-profile .more-info {
+    font-size: 14px;
+  }
+
+  #mobile-photographer-profile .count p.home img {
+    margin-right: 6px;
+  }
+
+  #mobile-photographer-profile .count p span {
+    font-size: 13px;
   }
 
   #mobile-photographer-profile .photographer-description .more-info {
@@ -344,6 +391,7 @@
 
   #mobile-photographer-profile .image-container .more-info {
     display: block;
+    margin-top: 5px;
   }
 
   #mobile-photographer-profile .social-network-container {
@@ -351,13 +399,17 @@
   }
 
   #mobile-photographer-profile .social-network-container a {
-    margin: 10px 10px 0 0;
+    margin: 10px 0 0 17px;
   }
 
-  #mobile-photographer-profile .photographer-description-footer-profile {
+  #mobile-photographer-profile .social-network-container a:first-child {
+    margin: 10px 0 0;
+  }
+
+  #mobile-photographer-profile .photographer-description-footer {
     display: none;
     position: absolute;
-    top: 92%;
+    top: 93%;
     left: 0;
     right: 0;
     background-color: #f4fafb;
@@ -365,7 +417,22 @@
     padding: 0 15px 15px;
   }
 
-  #mobile-photographer-profile.open .photographer-description-footer-profile {
+  #mobile-photographer-profile.open .photographer-description-footer {
     display: block;
+    box-shadow: 0 4px 5.3px 0.7px rgba(0, 0, 0, 0.24);
+  }
+
+  #mobile-photographer-profile .company-description {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  #mobile-photographer-profile .photographer-description-footer .company-container {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  #mobile-photographer-profile .photographer-description-footer .company-container h3 {
+    margin-bottom: 0;
   }
 }

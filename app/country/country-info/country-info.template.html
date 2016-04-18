@@ -1,6 +1,7 @@
 <div id="country-info">
   <div class="header">
-    <place-map [hoverPlace]="hoverPlace" [isHeader]="true" [isHeader]="true" [routerLink]="['Map',{thing:thing}]"></place-map>
+    <place-map [hoverPlace]="hoverPlace" [isHeader]="true" [isHeader]="true"
+               [routerLink]="['Map',{thing:thing}]"></place-map>
 
     <h2 *ngIf="country">
       <img class="marker" src="/assets/img/grey-marker.svg" alt=""> {{country.alias || country.country}}
@@ -11,7 +12,8 @@
 
   <div class="main">
     <p class="home" *ngIf="placesQantity">
-      <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span class="pull-right">{{placesQantity || 0}}</span>
+      <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span
+      class="pull-right">{{placesQantity || 0}}</span>
     </p>
 
     <p class="photo">
@@ -26,25 +28,34 @@
 
 <div id="mobile-country-info" class="row" [ngClass]="{'open': isShowInfo}">
   <div class="image-container">
-    <place-map  [hoverPlace]="hoverPlace" [isHeader]="true" [routerLink]="['Map',{thing:thing}]"></place-map>
+    <place-map [hoverPlace]="hoverPlace" [isHeader]="true" [routerLink]="['Map', {thing:thing}]"></place-map>
+
+    <div class="more-info" *ngIf="country?.description">
+        <span (click)="isShowInfo = !isShowInfo">
+          <span [hidden]="isShowInfo">More Info »</span>
+          <span [hidden]="!isShowInfo">Hide Info »</span>
+        </span>
+    </div>
   </div>
 
   <div class="country-description">
     <div class="country-description-header">
       <div class="header">
-        <h2 *ngIf="country"><i class="fa fa-map-marker"></i>{{country.alias || country.country}}</h2>
+        <h2 *ngIf="country">
+          <img src="/assets/img/grey-marker.svg" alt=""> {{country.alias || country.country}}
+        </h2>
       </div>
 
       <div class="count">
         <p class="home" *ngIf="placesQantity">
-          <i class="fa fa-home"></i> Visited Families: <span>{{placesQantity || 0}}</span>
+          <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{placesQantity || 0}}</span>
         </p>
 
         <p class="photo">
           <i class="fa fa-camera"></i> Total Photos: <span>{{photosQantity || 0}}</span>
         </p>
 
-        <p class="camera">
+        <p class="camera" *ngIf="videosQantity">
           <i class="fa fa-video-camera"></i> Total Videos: <span>{{videosQantity || 0}}</span>
         </p>
       </div>
@@ -57,7 +68,7 @@
            *ngIf="country?.description">{{country.description}}
       </div>
 
-      <div class="more-info" *ngIf="isShowInfoMore(country)">
+      <div class="more-info">
         <span (click)="isShowInfo = !isShowInfo">
           <span [hidden]="isShowInfo">More Info »</span>
           <span [hidden]="!isShowInfo">Hide Info »</span>

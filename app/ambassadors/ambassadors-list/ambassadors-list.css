@@ -1,5 +1,5 @@
 .ambassadors {
-  margin: 50px auto 50px;
+  margin: 0 auto;
   overflow: hidden;
 }
 
@@ -126,10 +126,6 @@
 }
 
 @media (max-width: 600px) {
-  .ambassadors {
-    margin: 43px auto 30px;
-  }
-
   .ambassadors .ambassadors-peoples .ambassadors-people:nth-child(-n+6),
   .ambassadors .ambassadors-peoples .ambassadors-organization:nth-child(-n+4) {
     display: none;

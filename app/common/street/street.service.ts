@@ -83,7 +83,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 0)
-      .attr('y', this.height)
+      .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
     this.svg
@@ -94,7 +94,7 @@ export class StreetDrawService {
       .attr('class', 'richest')
       .text(this.richest)
       .attr('x', this.width - 40)
-      .attr('y', this.height)
+      .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
     if (isDesktop) {
@@ -172,7 +172,7 @@ export class StreetDrawService {
 
         return this.scale(d) - indent;
       })
-      .attr('y', this.height)
+      .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
     return this;
