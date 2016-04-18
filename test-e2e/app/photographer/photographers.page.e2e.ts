@@ -2,21 +2,22 @@
  * Created by vs on 4/6/16.
  */
 describe('Photographers Page ', function() {
-  //  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
   var searchField = element(by.css('#search'));
   var numPhotographers = element.all(by.css('.photographers-list>li'));
   var EC = protractor.ExpectedConditions;
   var TIMEOUT = 10000;
   var zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]'));
-  var message = 'Zorian Miller on PhotographersPage is not visibility';
+  var message = 'Zorian Miller on PhotographersPage is not loaded';
   var photographerPortreit = element(by.css('.photographer-portrait'));
-  var photographerMessage = 'Photographer portrait is not visible';
+  var photographerMessage = 'Photographer portrait is not loaded';
   var isClickableLastPhotographerLink = EC.elementToBeClickable(zorianMiller);
   var country = element(by.css('.country-card>div>span'));
   var photosIcon = element.all(by.css('.photographer-material>span>i[class*="fa-camera"]'));
   var homesIcon = element.all(by.css('.photographer-material>span>img'));
   browser.manage().window().maximize();
+  browser.manage().timeouts().pageLoadTimeout(75000);
 
   beforeAll(function() {
     browser.get('/photographers', 10000); //with timeout:will wait for loading page before 60 sec
@@ -65,5 +66,12 @@ describe('Photographers Page ', function() {
     browser.wait(isClickableLastPhotographerLink, 10000);
     expect(countries.count()).toBe(43);
     expect(numPhotographers.count()).toBe(64);
+  });
+
+  afterAll(function () {
+    var footerLogo = element(by.css('p[class^="logo_name"]'));
+    var footerGapminder = element(by.css('p[class^="logo_name"]+p'));
+    expect(footerLogo.getText()).toEqual('DOLLAR STREET');
+    expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
   });
 });

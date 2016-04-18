@@ -1,24 +1,25 @@
 describe('Photographer Page ', function() {
-  //  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
   var searchField = element(by.css('#search'));
   var EC = protractor.ExpectedConditions;
   var TIMEOUT = 10000;
   var zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]'));
   var photographerPortreit = element(by.css('.header>img'));
-  var photographerMessage = 'Photographer portrait is not visible';
+  var photographerMessage = 'Photographer portrait is not loaded';
   var families = element(by.css('.family>h3'));
   var totalPhotos = element(by.css('.photo'));
   var namePhotographer = element.all(by.css('.header>h2')).first();
   var country = element(by.css('.place-country>p>span'));
   browser.manage().window().maximize();
+  browser.manage().timeouts().pageLoadTimeout(75000);
   /* Open Photographers Page
    * Click on the Photographer
    * Check existence name, Visited Families, Photos, Videos
    */
   beforeEach(function() {
     browser.get('/photographers');
-    browser.wait(EC.visibilityOf(zorianMiller), TIMEOUT, 'Zorian Miller on PhotographersPage is not visible');
+    browser.wait(EC.visibilityOf(zorianMiller), TIMEOUT, 'Zorian Miller on PhotographersPage is not loaded');
   });
   it('test AJ SHARMA', function() {
     searchField.sendKeys('SHARMA' + '\n');
@@ -44,10 +45,16 @@ describe('Photographer Page ', function() {
   });*/
   afterEach (function check() {
     browser.wait(EC.visibilityOf(photographerPortreit), TIMEOUT, photographerMessage);
-    browser.wait(EC.visibilityOf(totalPhotos), TIMEOUT, 'Icon Total Photos on Photographer Page is not visible');
-    browser.wait(EC.visibilityOf(country), TIMEOUT, 'Countries on Photographer Page are not visible');
+    browser.wait(EC.visibilityOf(totalPhotos), TIMEOUT, 'Icon Total Photos on Photographer Page is not loaded');
+    browser.wait(EC.visibilityOf(country), TIMEOUT, 'Countries on Photographer Page are not loaded');
     expect(namePhotographer.isDisplayed()).toBe(true);
     expect(families.isDisplayed()).toBe(true);
     expect(totalPhotos.isDisplayed()).toBe(true);
+  });
+  afterAll(function () {
+    var footerLogo = element(by.css('p[class^="logo_name"]'));
+    var footerGapminder = element(by.css('p[class^="logo_name"]+p'));
+    expect(footerLogo.getText()).toEqual('DOLLAR STREET');
+    expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
   });
 });

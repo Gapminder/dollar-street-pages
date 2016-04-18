@@ -2,22 +2,23 @@
  * Created by vs on 13/4/16.
  */
 describe('Map Page ', function() {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
   var countryLink = new Array();
   countryLink = element.all(by.css('.country-name'));
   var mapImg = element(by.css('.map-color'));
   var iconHomes = element(by.css('.home>img'));
-  var messageAboutMap = 'Map can not continue loading';
-  var messageAboutCountryLink = 'Page can not loading';
+  var messageAboutMap = 'Map is not loaded';
+  var messageAboutCountryLink = 'Page is not loaded';
   var searchButton = element(by.css('.matrix-search-button>img'));
   var searchField = element(by.css('#search'));
   var itemsAroundTheWorld = element.all(by.css('.search-item-name')).last();
   var countryLetter = element.all(by.css('.country-letter'));
 
   var EC = protractor.ExpectedConditions;
-  var TIMEOUT = 10000;
+  var TIMEOUT = 5000;
   browser.manage().window().maximize();
-  //browser.manage().timeouts().pageLoadTimeout(10000);
+  browser.manage().timeouts().pageLoadTimeout(75000);
   /*
    Open Map Link
    Click on every Link with Country
@@ -157,5 +158,11 @@ describe('Map Page ', function() {
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
+  });
+  afterAll(function () {
+    var footerLogo = element(by.css('p[class^="logo_name"]'));
+    var footerGapminder = element(by.css('p[class^="logo_name"]+p'));
+    expect(footerLogo.getText()).toEqual('DOLLAR STREET');
+    expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
   });
 });

@@ -2,7 +2,7 @@
  * Created by vs on 4/5/16.
  */
 describe('Main Page test', function() {
-  //jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
   var frontDoors = element.all(by.css('.concept_things_menu>ul>li>span')).get(0);
   var homes = element.all(by.css('.concept_things_menu>ul>li>span')).get(1);
@@ -15,6 +15,7 @@ describe('Main Page test', function() {
   var EC = protractor.ExpectedConditions;
   var TIMEOUT = 20000;
   browser.manage().window().maximize();
+  browser.manage().timeouts().pageLoadTimeout(75000);
   /* Click on every page on Main Page
    * Check every sub-menu: Front doors, homes, sofas, stoves, toilets
    * Check sub-header of every sub-menu: Front doors across the World
@@ -27,33 +28,39 @@ describe('Main Page test', function() {
   });
   it('CheckAndOpenFrontDoors', function () {
     browser.get('/main');
-    browser.driver.sleep(3000);
-    browser.wait(EC.visibilityOf(frontDoors), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-    browser.wait(EC.visibilityOf(homes), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-    browser.wait(EC.visibilityOf(sofas), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-    browser.wait(EC.visibilityOf(stoves), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
-    browser.wait(EC.visibilityOf(toilets), TIMEOUT, 'Element FrontDors on MainPage is not visibility');
+    browser.sleep(3000);
+    browser.wait(EC.visibilityOf(frontDoors), TIMEOUT, 'Element FrontDors on MainPage is not loaded');
+    browser.wait(EC.visibilityOf(homes), TIMEOUT, 'Element FrontDors on MainPage is not loaded');
+    browser.wait(EC.visibilityOf(sofas), TIMEOUT, 'Element FrontDors on MainPage is not loaded');
+    browser.wait(EC.visibilityOf(stoves), TIMEOUT, 'Element FrontDors on MainPage is not loaded');
+    browser.wait(EC.visibilityOf(toilets), TIMEOUT, 'Element FrontDors on MainPage is not loaded');
     frontDoors.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Front Doors on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Front Doors on MainPage is not loaded');
     browser.wait(EC.visibilityOf(element(by.css('.concept-header-thing-title.pull-right>p'))));
   });
   it('CheckAndOpenHomes', function () {
     homes.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Homes on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Homes on MainPage is not loaded');
   });
   it('CheckAndOpenSofas', function () {
     sofas.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Sofas on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Sofas on MainPage is not loaded');
   });
   it('CheckAndOpenStoves', function () {
     stoves.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Stoves on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Stoves on MainPage is not loaded');
   });
   it('CheckAndOpenToilets', function () {
     toilets.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Toilets on MainPage is not visibility');
+    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Toilets on MainPage is not loaded');
   });
  /* afterAll(function(){
     browser.close();
   });*/
+  afterAll(function () {
+    var footerLogo = element(by.css('p[class^="logo_name"]'));
+    var footerGapminder = element(by.css('p[class^="logo_name"]+p'));
+    expect(footerLogo.getText()).toEqual('DOLLAR STREET');
+    expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
+  });
 });
