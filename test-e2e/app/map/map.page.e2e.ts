@@ -41,7 +41,13 @@ describe('Map Page ', function() {
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
   }); //TODO This code need for starting tests on Chrome. Finish
 
+  it('Check Title of the Search Field', function () {
+    var titleSearch = element(by.css('div[class^="search-text"]>span'));
+    expect(titleSearch.getText()).toEqual('Home on the World map');
+  });
+
   it ('Check country Bangladesh', function () {
+    browser.sleep(2000);
     var elem = element.all(by.css('span[class*="country-name"]')).first();
     expect(elem.getText()).toEqual('Bangladesh');
   });
@@ -66,10 +72,6 @@ describe('Map Page ', function() {
     expect(elem.getText()).toEqual('South Korea');
   });
 
-  it ('Check name of logo Dollar Street', function () {
-    var elem = element(by.css('p[class*="logo_name"]'));
-    expect(elem.getText()).toEqual('DOLLAR STREET');
-  });
   it ('Check sub-title Home on the World map', function () {
     var elem = element(by.css('div[class*="search-text"]>span'));
     expect(elem.getText()).toEqual('Home on the World map');
@@ -103,21 +105,21 @@ describe('Map Page ', function() {
    browser.waitForAngular();
    });*/
 
-  it ('Checking search field and search result using keyword Cows', function () {
+  it ('Checking search field and search result using keyword Cows ', function () {
     searchButton.click();
     searchField.sendKeys('Cows\n');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
-  it ('Checking search field and search result using keyword Fruit tree ', function () {
+  it ('Checking search field and search result using keyword Fruit ', function () {
     searchButton.click();
     searchField.sendKeys('fruit\n');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
-  it ('Checking search field and search result using keyword Dish washing soap ', function () {
+  it ('Checking search field and search result using keyword Dish ', function () {
     searchButton.click();
     searchField.sendKeys('soap\n');
     itemsAroundTheWorld.click();
@@ -162,7 +164,15 @@ describe('Map Page ', function() {
   afterAll(function () {
     var footerLogo = element(by.css('p[class^="logo_name"]'));
     var footerGapminder = element(by.css('p[class^="logo_name"]+p'));
+    var footerFacebookIcon = element(by.css('div[class="footer"] div[class*="facebook"]'));
+    var footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
+    var footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
+    var footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
     expect(footerLogo.getText()).toEqual('DOLLAR STREET');
     expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
+    expect(footerFacebookIcon.isDisplayed()).toBe(true);
+    expect(footerTwitterIcon.isDisplayed()).toBe(true);
+    expect(footerGoogleIcon.isDisplayed()).toBe(true);
+    expect(footerLinkedinIcon.isDisplayed()).toBe(true);
   });
 });
