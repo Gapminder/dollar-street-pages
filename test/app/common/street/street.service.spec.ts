@@ -212,7 +212,7 @@ describe('StreetDrawService', () => {
     expect(d3Svg.attr).toHaveBeenCalledWith('class', 'poorest');
     expect(d3Svg.text).toHaveBeenCalledWith('Poorest 1$');
     expect(d3Svg.attr).toHaveBeenCalledWith('x', 0);
-    expect(d3Svg.attr).toHaveBeenCalledWith('y', 50);
+    expect(d3Svg.attr).toHaveBeenCalledWith('y', 45);
     expect(d3Svg.attr).toHaveBeenCalledWith('fill', '#767d86');
 
     /** isDesktop true need for test  */
@@ -224,7 +224,7 @@ describe('StreetDrawService', () => {
     expect(d3Svg.attr).toHaveBeenCalledWith('class', 'richest');
     expect(d3Svg.text).toHaveBeenCalledWith('Richest');
     expect(d3Svg.attr).toHaveBeenCalledWith('x', 10);
-    expect(d3Svg.attr).toHaveBeenCalledWith('y', 50);
+    expect(d3Svg.attr).toHaveBeenCalledWith('y', 45);
     expect(d3Svg.attr).toHaveBeenCalledWith('fill', '#767d86');
 
 
@@ -260,10 +260,7 @@ describe('StreetDrawService', () => {
     expect(d3Svg.text).toHaveBeenCalled();
     /** call with function*/
     expect(d3Svg.attr).toHaveBeenCalled();
-    expect(d3Svg.attr).toHaveBeenCalledWith('y', streetDrawService.height);
+    expect(d3Svg.attr).toHaveBeenCalledWith('y', streetDrawService.height - 5);
     expect(d3Svg.attr).toHaveBeenCalledWith('fill', '#767d86');
-
   });
-
-})
-;
+});
