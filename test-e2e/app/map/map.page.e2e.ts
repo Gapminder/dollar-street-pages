@@ -14,6 +14,7 @@ describe('Map Page ', function() {
   var searchField = element(by.css('#search'));
   var itemsAroundTheWorld = element.all(by.css('.search-item-name')).last();
   var countryLetter = element.all(by.css('.country-letter'));
+  var country = element.all(by.css('span[class*="country-name"]'));
 
   var EC = protractor.ExpectedConditions;
   var TIMEOUT = 5000;
@@ -36,39 +37,34 @@ describe('Map Page ', function() {
    browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
    }); //TODO This code need for starting tests on Mozilla Firefox. Finish*/
 
-  beforeEach(function(){ //TODO This code need for starting tests on Chrome. Start
+   beforeEach(function(){ //TODO This code need for starting tests on Chrome. Start
     browser.get('/map');
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
   }); //TODO This code need for starting tests on Chrome. Finish
 
-  it('Check Title of the Search Field', function () {
-    var titleSearch = element(by.css('div[class^="search-text"]>span'));
-    expect(titleSearch.getText()).toEqual('Home on the World map');
-  });
-
   it ('Check country Bangladesh', function () {
     browser.sleep(2000);
-    var elem = element.all(by.css('span[class*="country-name"]')).first();
+    var elem = country.first();
     expect(elem.getText()).toEqual('Bangladesh');
   });
 
   it ('Check country Colombia', function () {
-    var elem = element.all(by.css('span[class*="country-name"]')).get(7);
+    var elem = country.get(7);
     expect(elem.getText()).toEqual('Colombia');
   });
 
   it ('Check country Indonesia', function () {
-    var elem = element.all(by.css('span[class*="country-name"]')).get(13);
+    var elem = country.get(13);
     expect(elem.getText()).toEqual('Indonesia');
   });
 
   it ('Check country Malawi', function () {
-    var elem = element.all(by.css('span[class*="country-name"]')).get(20);
+    var elem = country.get(20);
     expect(elem.getText()).toEqual('Malawi');
   });
 
   it ('Check country South Korea', function () {
-    var elem = element.all(by.css('span[class*="country-name"]')).get(30);
+    var elem = country.get(30);
     expect(elem.getText()).toEqual('South Korea');
   });
 
@@ -106,57 +102,73 @@ describe('Map Page ', function() {
    });*/
 
   it ('Checking search field and search result using keyword Cows ', function () {
+    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
     searchField.sendKeys('Cows\n');
+    browser.wait(EC.elementToBeClickable(itemsAroundTheWorld), TIMEOUT, 'Element is not clickable');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
   it ('Checking search field and search result using keyword Fruit ', function () {
+    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
-    searchField.sendKeys('fruit\n');
+    searchField.sendKeys('frui\n');
+    browser.wait(EC.elementToBeClickable(itemsAroundTheWorld), TIMEOUT, 'Element is not clickable');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
   it ('Checking search field and search result using keyword Dish ', function () {
+    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
-    searchField.sendKeys('soap\n');
+    searchField.sendKeys('soa\n');
+    browser.wait(EC.elementToBeClickable(itemsAroundTheWorld), TIMEOUT, 'Element is not clickable');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
   it ('Checking search field and search result using keyword Meat ', function () {
+    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
     searchField.sendKeys('meat\n');
+    browser.wait(EC.elementToBeClickable(itemsAroundTheWorld), TIMEOUT, 'Element is not clickable');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
   it ('Checking search field and search result using keyword Teeth ', function () {
+    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
-    searchField.sendKeys('teeth\n');
+    searchField.sendKeys('eth\n');
+    browser.wait(EC.elementToBeClickable(itemsAroundTheWorld), TIMEOUT, 'Element is not clickable');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
   it ('Checking search field and search result using keyword Earings ', function () {
+    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
     searchField.sendKeys('ear\n');
+    browser.wait(EC.elementToBeClickable(itemsAroundTheWorld), TIMEOUT, 'Element is not clickable');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
   it ('Checking search field and search result using keyword Trash ', function () {
+    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
-    searchField.sendKeys('trash\n');
+    searchField.sendKeys('rash\n');
+    browser.wait(EC.elementToBeClickable(itemsAroundTheWorld), TIMEOUT, 'Element is not clickable');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
   it ('Checking search field and search result using keyword Books ', function () {
+    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
     searchField.sendKeys('books\n');
+    browser.wait(EC.elementToBeClickable(itemsAroundTheWorld), TIMEOUT, 'Element is not clickable');
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(mapImg), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
@@ -168,11 +180,13 @@ describe('Map Page ', function() {
     var footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
     var footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
     var footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
+    var footerCreativeCommons = element(by.css('.col-md-3.col-sm-3.f-creative-commons>a>img'));
     expect(footerLogo.getText()).toEqual('DOLLAR STREET');
     expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
     expect(footerFacebookIcon.isDisplayed()).toBe(true);
     expect(footerTwitterIcon.isDisplayed()).toBe(true);
     expect(footerGoogleIcon.isDisplayed()).toBe(true);
     expect(footerLinkedinIcon.isDisplayed()).toBe(true);
+    expect(footerCreativeCommons.isDisplayed()).toBe(true);
   });
 });

@@ -75,11 +75,13 @@ describe('Photographers Page ', function() {
     var footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
     var footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
     var footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
+    var footerCreativeCommons = element(by.css('.col-md-3.col-sm-3.f-creative-commons>a>img'));
     expect(footerLogo.getText()).toEqual('DOLLAR STREET');
     expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
     expect(footerFacebookIcon.isDisplayed()).toBe(true);
     expect(footerTwitterIcon.isDisplayed()).toBe(true);
     expect(footerGoogleIcon.isDisplayed()).toBe(true);
     expect(footerLinkedinIcon.isDisplayed()).toBe(true);
+    expect(footerCreativeCommons.isDisplayed()).toBe(true);
   });
 });

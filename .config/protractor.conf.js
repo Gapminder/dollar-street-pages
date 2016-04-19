@@ -10,7 +10,7 @@ exports.config = {
   exclude: [],
 
   framework: 'jasmine',
-  
+
   allScriptsTimeout: 110000,
 
   jasmineNodeOpts: {
@@ -18,7 +18,7 @@ exports.config = {
     showColors: true,
     isVerbose: false,
     includeStackTrace: false,
-    //defaultTimeoutInterval: 30000
+    defaultTimeoutInterval: 30000
   },
   directConnect: true,
 
