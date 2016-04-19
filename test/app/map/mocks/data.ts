@@ -21,21 +21,6 @@ export let mapdata = {
         'thing': '546ccf730f7ddf45c017962f'
       }
     }, {
-      '_id': '54b6896d3755cbfb542c290d',
-      'country': 'Malawi',
-      'income': 2,
-      'photographer': 'Zoriah Miller',
-      'family': 'Wizilamu',
-      'locationId': '55ef338d0d2b3c82037884b3',
-      'region': 'Africa',
-      'lat': -13.254308,
-      'lng': 34.301525,
-      'familyImg': {
-        'imageId': '54b68a8705df73e5543195b4',
-        'background': 'http://static.dollarstreet.org.s3.amazonaws.com/media/Malawi 1/image/03875afa-dafc-435a-b8bd-67bada44963c/150x150-03875afa-dafc-435a-b8bd-67bada44963c.jpg',
-        'thing': '546ccf730f7ddf45c017962f'
-      }
-    }, {
       '_id': '54b7b92fcb00419b4f4bfb48',
       'country': 'Malawi',
       'income': 2,

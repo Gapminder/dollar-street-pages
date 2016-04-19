@@ -13,7 +13,7 @@ import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {SearchComponent} from '../../../../app/common/search/search.component';
 import {initData, sliderInitData} from './mocks/data.ts';
-
+let tmpl = require('./mocks/mock.search.template.html');
 describe('SearchComponent', () => {
   let streetPlaces = new MockService();
   streetPlaces.serviceName = 'SearchService';
@@ -30,7 +30,7 @@ describe('SearchComponent', () => {
 
   beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
       return tcb
-        .overrideTemplate(SearchComponent, `<div></div>`)
+        .overrideTemplate(SearchComponent, tmpl)
         .createAsync(SearchComponent)
         .then((componentFixture) => {
           fixture = componentFixture;
@@ -63,9 +63,12 @@ describe('SearchComponent', () => {
     expect(context.getInitData).toHaveBeenCalledWith();
   });
 
-  xit(' openSearch', () => {
+  it(' openSearch', () => {
     spyOn(context, 'openSearch').and.callThrough();
-    context.openSearch(true);
+    context.openSearch(false);
+    expect(context.isOpen).toEqual(true);
+    expect(context.search.text).toEqual('');
+    expect(context.modalPosition).toEqual('0px');
   });
 
   it(' goToThing', () => {

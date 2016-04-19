@@ -46,7 +46,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit():any {
     this.itemSize = window.innerWidth / this.zoom;
-
     this.placesSubscribe = this.places.subscribe((places) => {
       this.currentPlaces = places;
     });
@@ -89,7 +88,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
   }
 
-  private toUrl(image) {
+  toUrl(image) {
     return `url("${image}")`;
   }
 }

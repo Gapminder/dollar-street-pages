@@ -126,7 +126,7 @@ describe('StreetComponent', () => {
     spyOn(_, 'sortBy').and.callThrough();
     spyOn(_, 'chain').and.callThrough();
     spyOn(_, 'map').and.returnValue({
-      value:() => {
+      value: () => {
         return true;
       }
     });
@@ -144,8 +144,15 @@ describe('StreetComponent', () => {
   xit('onStreet', () => {
 
   });
-  xit('ngOnDestroy', () => {
-
+  it('ngOnDestroy', () => {
+    context.resize = {unsubscribe: () => {}};
+    context.placesSubscribe = {unsubscribe: () => {}};
+    context.hoverPlaceSubscribe = {unsubscribe: () => {}};
+    context.chosenPlacesSubscribe = {unsubscribe: () => {}};
+    spyOn(context.resize, 'unsubscribe');
+    spyOn(context.placesSubscribe, 'unsubscribe');
+    spyOn(context.hoverPlaceSubscribe, 'unsubscribe');
+    spyOn(context.chosenPlacesSubscribe, 'unsubscribe');
   });
   it('thumbHover', () => {
     spyOn(context, 'thumbHover').and.callThrough();

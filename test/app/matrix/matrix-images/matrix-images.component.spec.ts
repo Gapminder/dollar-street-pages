@@ -4,6 +4,7 @@ import {
   expect,
   injectAsync,
   beforeEachProviders,
+  beforeEach,
   TestComponentBuilder,
 } from 'angular2/testing';
 
@@ -23,30 +24,31 @@ describe('MatrixImagesComponent', () => {
       mockCommonDependency.getProviders(),
     ];
   });
-  it('must init', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.thing = '546ccf730f7ddf45c0179658';
-      context.zoom = 5;
-      context.places = placesObservable;
-      fixture.detectChanges();
-      expect(context.currentPlaces.length).toEqual(5);
-      context.hoverPlace.subscribe((place) => {
-        expect(place.income).toEqual(1);
-      });
-      context.hoverImage(null, context.currentPlaces[0]);
-      placesObservable.toInitState();
-    });
-  }));
-  it('must destroy', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.thing = '546ccf730f7ddf45c0179658';
-      context.zoom = 5;
-      context.places = placesObservable;
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(placesObservable.countOfSubscribes).toEqual(0);
-    });
-  }));
+
+  let fixture, context;
+  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+      return tcb
+        .overrideTemplate(MatrixImagesComponent, '<div></div>')
+        .createAsync(MatrixImagesComponent)
+        .then((componentFixture) => {
+          fixture = componentFixture;
+          context = componentFixture.debugElement.componentInstance;
+          context.thing = '546ccf730f7ddf45c0179658';
+          context.zoom = 5;
+          context.places = placesObservable;
+        });
+    }
+  ));
+  it('ngOnInit ngOnDestroy', () => {
+    console.log(111);
+    context.ngOnInit();
+    expect(context.itemSize).toEqual(window.innerWidth / context.zoom);
+    expect(context.currentPlaces.length).toEqual(places.places.length);
+    spyOn(context.placesSubscribe, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.placesSubscribe.unsubscribe).toHaveBeenCalled();
+  });
+  it('toUrl', () => {
+    expect(context.toUrl('http://example.com/image.jpg')).toEqual('url("http://example.com/image.jpg")');
+  });
 });

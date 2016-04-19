@@ -81,7 +81,7 @@ describe('MatrixComponent', () => {
     context.isHover();
     expect(context.hoverHeader.next.calls.count()).toEqual(1);
   });
-  it(' urlChanged', () => {
+  it(' urlChanged and ngOnDestroy', () => {
     spyOn(context, 'urlChanged').and.callThrough();
     spyOn(context, 'parseUrl').and.callThrough();
     spyOn(context.urlChangeService, 'replaceState');
@@ -99,6 +99,10 @@ describe('MatrixComponent', () => {
     expect(context.clonePlaces.length).toEqual(places.places.length);
     expect(context.zoom).toEqual(5);
     expect(context.loader).toEqual(true);
+
+    spyOn(context.matrixServiceSubscrib, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.matrixServiceSubscrib.unsubscribe).toHaveBeenCalled();
   });
   it(' changeZoom', () => {
     spyOn(context, 'changeZoom').and.callThrough();

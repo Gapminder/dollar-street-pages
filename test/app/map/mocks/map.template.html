@@ -4,7 +4,7 @@
       <div class="col-md-12 places_header">
         <div class="col-md-12 col-sm-12 mapBox">
           <div class="mapBoxContainer">
-            <img class="map-color" src="/assets/img/original-map.svg" alt="">
+            <img class="map-color" src="/assets/img/original-map.svg" alt="" width="1130" height="685">
             <img class="marker"
                  src="/assets/img/dark-marker.svg"
                  alt="marker"
@@ -14,7 +14,7 @@
                  (mouseenter)="hoverOnMarker(i, place.country)"
                  (mouseleave)="unHoverOnMarker($event)"
                  (click)="isDesktop ? clickOnMarker($event, i, place.country) : mobileClickOnMarker(place.country)">
-            <div class="hover_portrait"
+            <div class="hover_portrait" width="50" height="100"
                  [hidden]="!hoverPlace"
                  [ngClass]="shadowClass"
                  [style.top.px]="hoverPortraitTop"
