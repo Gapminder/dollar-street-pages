@@ -1,7 +1,7 @@
 .header {
   background-color: #fff;
   border-bottom: 2px solid #f9cd28;
-  padding: 5px 0;
+  /*padding: 5px 0;*/
   position: fixed;
   width: 100%;
   top: 0;
@@ -11,7 +11,7 @@
 }
 
 .header .logo {
-  margin-top: 3px;
+  margin-top: 12px;
   width: 45px;
   display: block;
 }
@@ -21,11 +21,21 @@
 }
 
 .header .heading {
-  margin: 10px 0 0 15px;
+  margin: 20px 0 0 20px;
   display: inline-block;
   line-height: 30px;
   font-size: 30px;
   color: #374551;
+}
+
+.matrix-icon {
+  width: 37px;
+  margin-top: 16px;
+  margin-right: 10px;
+}
+
+.matrix-icon img {
+  width: 100%;
 }
 
 @media (min-width: 1400px) {
@@ -37,18 +47,38 @@
 @media (max-width: 1023px) {
   .container {
     width: 100%;
+    padding: 0 0 0 8px;
+  }
+
+  .header .logo {
+    margin-top: 9px;
+    width: 42px;
+  }
+
+  .header .heading {
+    margin: 15px 0 0 15px;
+  }
+
+  .matrix-icon {
+    margin-top: 11px;
   }
 }
 
 @media (max-width: 600px) {
   .header .heading {
     font-size: 18px;
-    margin: 0 0 0 10px;
-    line-height: 32px;
+    margin: 12px 0 0 10px;
+    line-height: 18px;
   }
 
   .header .logo {
-    margin-top: 0;
+    margin-top: 5px;
     width: 32px;
+  }
+
+  .matrix-icon {
+    width: 25px;
+    margin-top: 8px;
+    margin-right: 5px;
   }
 }
