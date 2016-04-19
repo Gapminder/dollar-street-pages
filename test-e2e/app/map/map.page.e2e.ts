@@ -69,6 +69,7 @@ describe('Map Page ', function() {
   });
 
   it ('Check sub-title Home on the World map', function () {
+    browser.sleep(1000);
     var elem = element(by.css('div[class*="search-text"]>span'));
     expect(elem.getText()).toEqual('Home on the World map');
   });
