@@ -17,7 +17,7 @@ describe('Map Page ', function() {
   var country = element.all(by.css('span[class*="country-name"]'));
 
   var EC = protractor.ExpectedConditions;
-  var TIMEOUT = 5000;
+  var TIMEOUT = 7000;
   browser.manage().window().maximize();
   browser.manage().timeouts().pageLoadTimeout(75000);
   /*
