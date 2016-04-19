@@ -1,3 +1,24 @@
 footer {
-  margin-top: 100px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding-bottom: 323px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main {
+    padding-bottom: 244px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding-bottom: 237px;
+  }
 }
