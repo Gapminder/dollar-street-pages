@@ -1,4 +1,4 @@
-<div class="header main-header">
+<div class="header main-header header-without-search">
   <div class="container">
     <a [routerLink]="['Main']" class="logo pull-left">
       <img src="/assets/img/dollar-street.svg" alt="">
@@ -7,5 +7,11 @@
     <h2 class="heading">{{title}}</h2>
 
     <main-menu [defaultThing]="defaultThing" class="pull-right"></main-menu>
+
+    <div class="matrix-icon pull-right">
+      <a [routerLink]="['Matrix']">
+        <img src="/assets/img/matrix-icon.svg" alt="">
+      </a>
+    </div>
   </div>
 </div>

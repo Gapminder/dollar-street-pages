@@ -88,17 +88,7 @@ html, body, body > div[ui-view] {
   background-color: transparent;
 }
 
-.red {
-  display: block;
-  width: 100%;
-  height: 1px;
-  background-color: #000;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 87px;
-}
-
+main,
 sitemap,
 country,
 ambassadors,
@@ -109,10 +99,23 @@ map-component {
   min-height: 100%;
 }
 
+.header-without-search .menu-icon {
+  height: 70px !important;
+}
+
 @media (max-width: 1023px) {
   .custom-button {
     padding: 5px 20px;
     font-size: 16px;
+  }
+
+  .map-header .menu-icon,
+  .header-without-search .menu-icon {
+    height: 60px !important;
+  }
+
+  .map-header .matrix-icon {
+    margin-top: 11px !important;
   }
 }
 
@@ -121,5 +124,22 @@ map-component {
   svg .richest,
   svg .scale-label {
     font-size: 12px;
+  }
+
+  .map-header .menu-icon,
+  .header-without-search .menu-icon {
+    height: 42px !important;
+  }
+
+  .map-header .container {
+    padding: 0 0 0 8px;
+  }
+
+  .map-header .matrix-icon {
+    margin-top: 8px !important;
+  }
+
+  .matrix-header .matrix-icon {
+    margin-top: 5px !important;
   }
 }

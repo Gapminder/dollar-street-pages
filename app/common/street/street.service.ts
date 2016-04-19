@@ -312,7 +312,7 @@ export class StreetDrawService {
     this.removeHouses('chosen');
 
     if (slider) {
-      this.drawHoverHouse(places[0]);
+      this.drawHoverHouse(places);
 
       return;
     }

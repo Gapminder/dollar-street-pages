@@ -82,7 +82,7 @@
 
 #mobile-country-info {
   background-color: #f4fafb;
-  margin: 0 -15px 20px;
+  margin: 0 -8px 20px;
   padding: 20px 15px;
   display: none;
   position: relative;
@@ -302,7 +302,7 @@
 
 @media (max-width: 600px) {
   #mobile-country-info {
-    padding: 10px 15px;
+    padding: 10px 8px;
   }
 
   #mobile-country-info .image-container {
