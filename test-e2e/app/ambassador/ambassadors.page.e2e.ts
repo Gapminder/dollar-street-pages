@@ -45,7 +45,7 @@ describe('Ambassador PAge', function () {
         expect(ambassadorsOrganizationsIMG.count()).toBe(8);
     });
 
-    it ('Check link VIEW MORE on Teachers', function () {
+   /* it ('Check link VIEW MORE on Teachers', function () {
         seeMore.first().click();
         expect(ambassadorsPeopleNames.get(7).isDisplayed()).toBe(true);
         expect(ambassadorsPeopleNames.get(9).isDisplayed()).toBe(true);
@@ -72,7 +72,7 @@ describe('Ambassador PAge', function () {
         expect(ambassadorsPeopleIMG.get(19).isDisplayed()).toBe(false);
         expect(ambassadorsPeopleIMG.get(20).isDisplayed()).toBe(false);
         expect(ambassadorsPeopleIMG.get(22).isDisplayed()).toBe(false);
-    });
+    });*/
 
     it ('Check footer', function () {
         var footerLogo = element(by.css('p[class^="logo_name"]'));
