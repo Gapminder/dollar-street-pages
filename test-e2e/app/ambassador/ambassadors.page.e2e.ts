@@ -15,7 +15,7 @@ describe('Ambassador PAge', function () {
     var ambassadorsPeopleNames = element.all(by.css('.name'));
     var ambassadorsPeopleCountries = element.all(by.css('.country'));
     var ambassadorsOrganizationsIMG = element.all(by.css('.ambassadors-organization.show>img'));
-    var seeMore = element.all(by.css('.see-more'));
+    var seeMore = element.all(by.css('.custom-button'));
 
     var EC = protractor.ExpectedConditions;
     var TIMEOUT = 10000;

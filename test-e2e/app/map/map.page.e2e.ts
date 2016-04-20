@@ -103,7 +103,7 @@ describe('Map Page ', function() {
    browser.waitForAngular();
    });*/
 
-  it ('Checking search field and search result using keyword Cows ', function () {
+ /* it ('Checking search field and search result using keyword Cows ', function () {
     browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
     searchField.sendKeys('cow\n');
@@ -113,7 +113,7 @@ describe('Map Page ', function() {
     browser.wait(EC.visibilityOf(littleHeaderIcon), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
-  /*it ('Checking search field and search result using keyword Fruit ', function () {
+  it ('Checking search field and search result using keyword Fruit ', function () {
    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
    searchButton.click();
    searchField.sendKeys('rui\n');
@@ -122,7 +122,7 @@ describe('Map Page ', function() {
    itemsAroundTheWorld.click();
    browser.wait(EC.visibilityOf(littleHeaderIcon), TIMEOUT, messageAboutMap);
    expect(countryLetter.first().isDisplayed()).toBe(true);
-   });*/
+   });
   it ('Checking search field and search result using keyword Dish ', function () {
     browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
@@ -132,7 +132,7 @@ describe('Map Page ', function() {
     browser.wait(EC.visibilityOf(littleHeaderIcon), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
-  /*it ('Checking search field and search result using keyword Meat ', function () {
+  it ('Checking search field and search result using keyword Meat ', function () {
    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
    searchButton.click();
    searchField.sendKeys('eat\n');
@@ -141,7 +141,7 @@ describe('Map Page ', function() {
    itemsAroundTheWorld.click();
    browser.wait(EC.visibilityOf(littleHeaderIcon), TIMEOUT, messageAboutMap);
    expect(countryLetter.first().isDisplayed()).toBe(true);
-   });*/
+   });
   it ('Checking search field and search result using keyword Teeth ', function () {
     browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
@@ -151,7 +151,7 @@ describe('Map Page ', function() {
     browser.wait(EC.visibilityOf(littleHeaderIcon), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
   });
-  /* it ('Checking search field and search result using keyword Earings ', function () {
+   it ('Checking search field and search result using keyword Earings ', function () {
    browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
    searchButton.click();
    searchField.sendKeys('ear\n');
@@ -160,7 +160,7 @@ describe('Map Page ', function() {
    itemsAroundTheWorld.click();
    browser.wait(EC.visibilityOf(littleHeaderIcon), TIMEOUT, messageAboutMap);
    expect(countryLetter.first().isDisplayed()).toBe(true);
-   });*/
+   });
   it ('Checking search field and search result using keyword Trash ', function () {
     browser.wait(EC.elementToBeClickable(searchButton), TIMEOUT, 'SearchButton is not clickable');
     searchButton.click();
@@ -178,7 +178,7 @@ describe('Map Page ', function() {
     itemsAroundTheWorld.click();
     browser.wait(EC.visibilityOf(littleHeaderIcon), TIMEOUT, messageAboutMap);
     expect(countryLetter.first().isDisplayed()).toBe(true);
-  });
+  });*/
   afterAll(function () {
     var footerLogo = element(by.css('p[class^="logo_name"]'));
     var footerGapminder = element(by.css('p[class^="logo_name"]+p'));
