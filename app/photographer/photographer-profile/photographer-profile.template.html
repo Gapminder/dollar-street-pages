@@ -139,7 +139,7 @@
         </span>
       </div>
 
-      <div class="company-container" *ngIf="photographer.company">
+      <div class="company-container" *ngIf="isShowDescription(photographer.company)">
         <div class="company-name" *ngIf="photographer.company.name">
           <h3>Organization</h3>
           <p>{{photographer.company.name}}</p>

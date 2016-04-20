@@ -42,3 +42,7 @@
   margin: 25px auto;
   width: 250px;
 }
+
+footer {
+  position: relative;
+}

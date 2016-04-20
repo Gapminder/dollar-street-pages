@@ -37,6 +37,7 @@
               <div class="search-input">
                 <input id="search"
                        class="form-control"
+                       type="search"
                        placeholder="Enter keyword"
                        [(ngModel)]="search.text">
                 <img src="/assets/img/search-icon.svg" alt=""/>
@@ -79,7 +80,7 @@
                       <ul class="search-items-container">
                         <li *ngFor="#thing of category.things "
                             [ngClass]="{'no-pass': thing.empty}"
-                            (click)="goToThing(thing._id)">
+                            (click)="goToThing(thing)">
 
                           <div class="search-item">
                             <div class="search-item-icon">
