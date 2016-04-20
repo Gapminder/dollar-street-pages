@@ -5,9 +5,6 @@
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
-    "node/node.d.ts": {
-      "commit": "a44529fcb1e1cdc0355e71c42a6048de99b57c34"
-    },
     "d3/d3.d.ts": {
       "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
     },
