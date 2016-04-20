@@ -4,9 +4,11 @@
 import {
   it,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEachProviders,
+  beforeEach,
   TestComponentBuilder,
 } from 'angular2/testing';
 
@@ -20,12 +22,14 @@ describe('PhotographersComponent', () => {
       mockCommonDependency.getProviders()
     ];
   });
-  it('AllPhotographersComponent must init ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(AllPhotographersComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      let nativeElement = fixture.debugElement.nativeElement;
-      expect(nativeElement.querySelector('.heading').innerHTML).toEqual(context.title);
+  let context, fixture;
+  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AllPhotographersComponent).then((fixtureInst) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
     });
   }));
+  it('AllPhotographersComponent must init ', () => {
+    context.title = 'Photographers';
+  });
 });

@@ -119,10 +119,22 @@ describe('StreetComponent', () => {
 
   });
   it('ngOnDestroy', () => {
-    context.resize = {unsubscribe: () => {}};
-    context.placesSubscribe = {unsubscribe: () => {}};
-    context.hoverPlaceSubscribe = {unsubscribe: () => {}};
-    context.chosenPlacesSubscribe = {unsubscribe: () => {}};
+    context.resize = {
+      unsubscribe: () => {
+      }
+    };
+    context.placesSubscribe = {
+      unsubscribe: () => {
+      }
+    };
+    context.hoverPlaceSubscribe = {
+      unsubscribe: () => {
+      }
+    };
+    context.chosenPlacesSubscribe = {
+      unsubscribe: () => {
+      }
+    };
     spyOn(context.resize, 'unsubscribe');
     spyOn(context.placesSubscribe, 'unsubscribe');
     spyOn(context.hoverPlaceSubscribe, 'unsubscribe');
@@ -159,8 +171,22 @@ describe('StreetComponent', () => {
     expect(context.toUrl('http://example.com/image-desktops.jpg')).toEqual('url("http://example.com/image-150x150.jpg")');
   });
 
-  xit('clickOnThumb', () => {
-
+  it('clickOnThumb', () => {
+    spyOn(context.router, 'navigate');
+    context.controllSlider = new MockService();
+    spyOn(context.controllSlider, 'next');
+    context.street.places = places.places;
+    let thing = '546ccf730f7ddf45c0179673';
+    let place = places.places[1];
+    context.clickOnThumb(thing, place);
+    expect(context.isThumbView).toEqual(false);
+    expect(context.controllSlider.next).toHaveBeenCalledWith(1);
+    context.controllSlider = null;
+    context.clickOnThumb(thing, place);
+    expect(context.router.navigate).toHaveBeenCalledWith(['Place', {
+      thing: thing,
+      place: place._id,
+      image: place.image
+    }]);
   });
-
 });

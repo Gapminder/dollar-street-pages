@@ -2,6 +2,7 @@ import {
   it,
   xit,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEach,
@@ -27,7 +28,8 @@ describe('SearchComponent', () => {
   beforeEachProviders(() => {
     let mockCommonDependency = new MockCommonDependency();
     return [
-      mockCommonDependency.getProviders()
+      mockCommonDependency.getProviders(),
+      streetPlaces.getProviders()
     ];
   });
   let context;
@@ -185,10 +187,10 @@ describe('SearchComponent', () => {
     context.mapComponent = false;
     context.placeComponent = true;
     streetPlaces.fakeResponse = sliderInitData;
-    // context.getInitData(true);
-    // expect(context.isOpen).toEqual(false);
-    // expect(context.searchService.getSearchInitData.calls.argsFor(2))
-    //   .toEqual([`thing=${context.paramsUrl.thing}&place=${context.paramsUrl.place}&image=${context.paramsUrl.image}`]);
+    context.getInitData(true);
+    expect(context.isOpen).toEqual(false);
+    expect(context.searchService.getSearchInitData.calls.argsFor(2))
+      .toEqual([`thing=${context.paramsUrl.thing}&place=${context.paramsUrl.place}&image=${context.paramsUrl.image}`]);
   });
   it('getInitDataForSlider', () => {
     streetPlaces.fakeResponse = sliderInitData;

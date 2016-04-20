@@ -21,7 +21,9 @@ export class MockService {
   emit():this {
     return;
   }
-
+  next():this {
+    return;
+  }
   set serviceName(name:string) {
     this.name = name;
   }

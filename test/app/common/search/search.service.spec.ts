@@ -1,6 +1,7 @@
 import {
   it,
   describe,
+  xdescribe,
   expect,
   inject,
   fakeAsync,
@@ -22,7 +23,7 @@ import {config} from '../../../../app/app.config.ts';
 import {initData} from './mocks/data';
 import {SearchService} from '../../../../app/common/search/search.service';
 
-describe('MapService', () => {
+describe('SearchService', () => {
   beforeEachProviders(() => {
     return [
       BaseRequestOptions,
@@ -36,7 +37,7 @@ describe('MapService', () => {
         })
     ];
   });
-  it('test getSearchInitData()', inject([SearchService, MockBackend],
+  it('getSearchInitData()', inject([SearchService, MockBackend],
     fakeAsync((searchService, mockBackend) => {
       var res;
       mockBackend.connections.subscribe(connection => {
