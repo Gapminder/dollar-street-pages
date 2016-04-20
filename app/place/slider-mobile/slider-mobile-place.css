@@ -66,6 +66,7 @@
 .slider-mobile-wrapper .slider-mobile-container .slider-mobile-content .slider-mobile .slider-mobile-slide {
   float: left;
   width: calc(100% / 3);
+  position: relative;
 }
 
 .slider-mobile-wrapper .slider-mobile-container .slider-mobile-content .slider-mobile .slider-mobile-slide img {
@@ -161,4 +162,38 @@
 
 .custom-button[hidden] {
   display: none;
+}
+
+.slider-mobile-wrapper .thing-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px 12px 12px;
+  text-align: left;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+}
+
+.slider-mobile-wrapper .thing-content img {
+  width: 34px !important;
+}
+
+.slider-mobile-wrapper .thing-content span {
+  color: #fff;
+  font-size: 26px;
+  display: inline-block;
+  vertical-align: bottom;
+  line-height: 26px;
+  margin-left: 5px;
+}
+
+@media (max-width: 600px) {
+  .slider-mobile-wrapper .thing-content img {
+    width: 25px !important;
+  }
+
+  .slider-mobile-wrapper .thing-content span {
+    font-size: 18px;
+    line-height: 18px;
+  }
 }
