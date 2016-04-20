@@ -4,14 +4,15 @@
 import {
   it,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEachProviders,
   TestComponentBuilder,
 } from 'angular2/testing';
 
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services'
-import {MockService} from '../../../app/common-mocks/mock.service.template'
+import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
+import {MockService} from '../../../app/common-mocks/mock.service.template';
 import {ambassadors} from '../mocks/data.ts';
 
 import {AmbassadorsListComponent} from '../../../../app/ambassadors/ambassadors-list/ambassadors-list.component';
@@ -32,7 +33,7 @@ describe('PhotographersComponent', () => {
     return tcb.createAsync(AmbassadorsListComponent).then((fixture) => {
       let context = fixture.debugElement.componentInstance;
       fixture.detectChanges();
-      expect(context.ambassadorsList.length).toEqual(3)
+      expect(context.ambassadorsList.length).toEqual(3);
     });
   }));
   it('AmbassadorsComponent people render by right title ', injectAsync([TestComponentBuilder], (tcb) => {

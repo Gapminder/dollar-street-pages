@@ -4,6 +4,7 @@ import {
   expect,
   injectAsync,
   beforeEachProviders,
+  beforeEach,
   TestComponentBuilder,
 } from 'angular2/testing';
 
@@ -23,30 +24,63 @@ describe('MatrixImagesComponent', () => {
       mockCommonDependency.getProviders(),
     ];
   });
-  it('must init', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.thing = '546ccf730f7ddf45c0179658';
-      context.zoom = 5;
-      context.places = placesObservable;
-      fixture.detectChanges();
-      expect(context.currentPlaces.length).toEqual(5);
-      context.hoverPlace.subscribe((place) => {
-        expect(place.income).toEqual(1);
-      });
-      context.hoverImage(null, context.currentPlaces[0]);
-      placesObservable.toInitState();
-    });
-  }));
-  it('must destroy', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(MatrixImagesComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.thing = '546ccf730f7ddf45c0179658';
-      context.zoom = 5;
-      context.places = placesObservable;
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(placesObservable.countOfSubscribes).toEqual(0);
-    });
-  }));
+
+  let fixture, context;
+  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+      return tcb
+        .overrideTemplate(MatrixImagesComponent, '<div></div>')
+        .createAsync(MatrixImagesComponent)
+        .then((componentFixture) => {
+          fixture = componentFixture;
+          context = componentFixture.debugElement.componentInstance;
+          context.thing = '546ccf730f7ddf45c0179658';
+          context.zoom = 5;
+          context.places = placesObservable;
+        });
+    }
+  ));
+  it('ngOnInit ngOnDestroy', () => {
+    context.ngOnInit();
+    expect(context.itemSize).toEqual(window.innerWidth / context.zoom);
+    expect(context.currentPlaces.length).toEqual(places.places.length);
+    spyOn(context.placesSubscribe, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.placesSubscribe.unsubscribe).toHaveBeenCalled();
+  });
+  it('hoverImage', () => {
+    spyOn(context.hoverPlace, 'emit');
+    context.oldPlaceId = places.places[0]._id;
+    context.hoverImage(places.places[0]);
+    expect(context.hoverPlace.emit).toHaveBeenCalledWith(places.places[0]);
+    context.isDesktop = false;
+    context.hoverImage();
+    expect(context.hoverPlace.emit).toHaveBeenCalled();
+    expect(context.oldPlaceId).toEqual(null);
+  });
+  it('goToPlace', () => {
+    spyOn(context.router, 'navigate');
+    let place = places.places[0];
+    context.goToPlace(place);
+    expect(context.router.navigate.calls.argsFor(0)[0]).toEqual(['Place', {
+      thing: context.thing,
+      place: place._id,
+      image: place.image
+    }]);
+    context.isDesktop = false;
+    context.oldPlaceId = null;
+    context.goToPlace(place);
+    expect(context.oldPlaceId).toEqual(place._id);
+    context.isDesktop = false;
+    context.oldPlaceId =  place._id;
+    context.goToPlace(place);
+    expect(context.router.navigate.calls.argsFor(1)[0]).toEqual(['Place', {
+      thing: context.thing,
+      place: place._id,
+      image: place.image
+    }]);
+  });
+
+  it('toUrl', () => {
+    expect(context.toUrl('http://example.com/image.jpg')).toEqual('url("http://example.com/image.jpg")');
+  });
 });

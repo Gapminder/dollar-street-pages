@@ -76,7 +76,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
             place: place._id,
             image: place.image
           };
-
           this.getInitDataForSlider();
         });
     }

@@ -2,6 +2,7 @@ import {
   it,
   xit,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEach,
@@ -13,15 +14,22 @@ import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {SearchComponent} from '../../../../app/common/search/search.component';
 import {initData, sliderInitData} from './mocks/data.ts';
-
-describe('PlaceComponent', () => {
+let tmpl = require('./mocks/mock.search.template.html');
+describe('SearchComponent', () => {
+  let place = {
+    _id: '546ccf730f7ddf45c0179641',
+    image: '546ccf730f7ddf45c0179641'
+  };
   let streetPlaces = new MockService();
   streetPlaces.serviceName = 'SearchService';
   streetPlaces.getMethod = 'getSearchInitData';
+  let chosenPlaces = new MockService();
+  chosenPlaces.fakeResponse = place;
   beforeEachProviders(() => {
     let mockCommonDependency = new MockCommonDependency();
     return [
-      mockCommonDependency.getProviders()
+      mockCommonDependency.getProviders(),
+      streetPlaces.getProviders()
     ];
   });
   let context;
@@ -30,15 +38,30 @@ describe('PlaceComponent', () => {
 
   beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
       return tcb
-        .overrideTemplate(SearchComponent, `<div></div>`)
+        .overrideTemplate(SearchComponent, tmpl)
         .createAsync(SearchComponent)
         .then((componentFixture) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
+          context.chosenPlaces = chosenPlaces;
         });
     }
   ));
 
+  it(' ngOnInit ngOnDestroy', () => {
+    context.placeComponent = true;
+    spyOn(context, 'getInitDataForSlider');
+    context.ngOnInit();
+    expect(context.paramsUrl).toEqual({
+      thing: context.activeThing._id,
+      place: place._id,
+      image: place.image
+    });
+    expect(context.getInitDataForSlider).toHaveBeenCalled();
+    spyOn(context.chosenPlacesSubscribe, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.chosenPlacesSubscribe.unsubscribe).toHaveBeenCalled();
+  });
 
   it(' ngOnChanges', () => {
     spyOn(context, 'ngOnChanges').and.callThrough();
@@ -63,23 +86,12 @@ describe('PlaceComponent', () => {
     expect(context.getInitData).toHaveBeenCalledWith();
   });
 
-  xit(' openSearch', () => {
+  it(' openSearch', () => {
     spyOn(context, 'openSearch').and.callThrough();
-    context.openSearch(true);
-  });
-
-  it(' goToThing', () => {
-    spyOn(context, 'goToThing').and.callThrough();
-    context.paramsUrl = {
-      thing: '5477537786deda0b00d43be5',
-      place: '54b6866a38ef07015525f5be',
-      image: '54b6862f3755cbfb542c28cb'
-    };
-    context.defaultThing = {_id: '5477537786deda0b00d43333'};
-    spyOn(context, 'getInitData');
-    context.goToThing();
-    expect(context.paramsUrl.thing).toEqual('5477537786deda0b00d43333');
-    expect(context.getInitData).toHaveBeenCalledWith();
+    context.openSearch(false);
+    expect(context.isOpen).toEqual(true);
+    expect(context.search.text).toEqual('');
+    expect(context.modalPosition).toEqual('0px');
   });
 
   it(' goToRegions', () => {
@@ -175,12 +187,12 @@ describe('PlaceComponent', () => {
     context.mapComponent = false;
     context.placeComponent = true;
     streetPlaces.fakeResponse = sliderInitData;
-    // context.getInitData(true);
-    // expect(context.isOpen).toEqual(false);
-    // expect(context.searchService.getSearchInitData.calls.argsFor(2))
-    //   .toEqual([`thing=${context.paramsUrl.thing}&place=${context.paramsUrl.place}&image=${context.paramsUrl.image}`]);
+    context.getInitData(true);
+    expect(context.isOpen).toEqual(false);
+    expect(context.searchService.getSearchInitData.calls.argsFor(2))
+      .toEqual([`thing=${context.paramsUrl.thing}&place=${context.paramsUrl.place}&image=${context.paramsUrl.image}`]);
   });
-  xit('getInitDataForSlider', () => {
+  it('getInitDataForSlider', () => {
     streetPlaces.fakeResponse = sliderInitData;
     spyOn(context, 'getInitDataForSlider').and.callThrough();
     spyOn(context.searchService, 'getSearchInitData').and.callThrough();

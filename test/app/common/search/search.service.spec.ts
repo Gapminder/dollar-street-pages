@@ -1,29 +1,7 @@
-// import {Inject} from 'angular2/core';
-// import {Http} from 'angular2/http';
-// import {Observable} from 'rxjs/Observable';
-//
-// import {config} from '../../app.config';
-//
-// export class SearchService {
-//   public http:Http;
-//
-//   constructor(@Inject(Http) http:Http) {
-//     this.http = http;
-//   }
-//
-//   public getSearchInitData(query:string):Observable<any> {
-//     return this.http
-//       .get(`${config.api}/consumer/api/v1/search?${query}`)
-//       .map((res:any) => {
-//         let parseRes = JSON.parse(res._body);
-//
-//         return {err: parseRes.error, data: parseRes.data};
-//       });
-//   }
-// }
 import {
   it,
   describe,
+  xdescribe,
   expect,
   inject,
   fakeAsync,
@@ -45,7 +23,7 @@ import {config} from '../../../../app/app.config.ts';
 import {initData} from './mocks/data';
 import {SearchService} from '../../../../app/common/search/search.service';
 
-describe('MapService', () => {
+describe('SearchService', () => {
   beforeEachProviders(() => {
     return [
       BaseRequestOptions,
@@ -59,7 +37,7 @@ describe('MapService', () => {
         })
     ];
   });
-  it('test getSearchInitData()', inject([SearchService, MockBackend],
+  it('getSearchInitData()', inject([SearchService, MockBackend],
     fakeAsync((searchService, mockBackend) => {
       var res;
       mockBackend.connections.subscribe(connection => {

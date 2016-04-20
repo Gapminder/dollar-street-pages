@@ -3,8 +3,8 @@
        *ngFor="#place of currentPlaces"
        [style.backgroundImage]="toUrl(place.background)"
        [ngClass]="'column-'+zoom"
-       (mouseenter)="hoverImage($event,place)"
-       (mouseleave)="hoverImage($event)"
+       (mouseenter)="hoverImage(place)"
+       (mouseleave)="hoverImage()"
        (click)="goToPlace(place)"
        [angulartics2On]="'click'"
        [angularticsEvent]="'go to place page from matrix (click on matrix)'">

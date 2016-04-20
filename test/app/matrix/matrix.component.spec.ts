@@ -1,6 +1,7 @@
 import {
   it,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEach,
@@ -60,10 +61,19 @@ describe('MatrixComponent', () => {
     expect(context.query).toEqual(`thing=${context.thing}&countries=${context.countries}&regions=${context.regions}&zoom=${context.zoom}&row=${context.row}`);
   });
 
-  xit(' ngAfterViewChecked', () => {
+  it(' ngAfterViewChecked', () => {
     spyOn(context, 'ngAfterViewChecked').and.callThrough();
     spyOn(context, 'getPaddings');
     context.ngAfterViewChecked();
+  });
+  xit(' stopScroll', () => {
+
+  });
+  xit(' getPaddings', () => {
+
+  });
+  xit(' getViewableRows', () => {
+
   });
   it(' hoverPlaceS', () => {
     spyOn(context, 'hoverPlaceS').and.callThrough();
@@ -81,7 +91,7 @@ describe('MatrixComponent', () => {
     context.isHover();
     expect(context.hoverHeader.next.calls.count()).toEqual(1);
   });
-  it(' urlChanged', () => {
+  it(' urlChanged and ngOnDestroy', () => {
     spyOn(context, 'urlChanged').and.callThrough();
     spyOn(context, 'parseUrl').and.callThrough();
     spyOn(context.urlChangeService, 'replaceState');
@@ -99,6 +109,10 @@ describe('MatrixComponent', () => {
     expect(context.clonePlaces.length).toEqual(places.places.length);
     expect(context.zoom).toEqual(5);
     expect(context.loader).toEqual(true);
+
+    spyOn(context.matrixServiceSubscrib, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.matrixServiceSubscrib.unsubscribe).toHaveBeenCalled();
   });
   it(' changeZoom', () => {
     spyOn(context, 'changeZoom').and.callThrough();

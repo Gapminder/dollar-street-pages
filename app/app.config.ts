@@ -9,9 +9,10 @@ import {SitemapComponent} from './sitemap/sitemap.component';
 import {CountryComponent} from './country/country.component';
 
 export module config {
-  // export let api = 'http://128.199.60.70';
+  //export let api = 'http://128.199.60.70';
+  export let api = 'http://localhost';
   //export let api = 'http://stage.dollarstreet.org';
-  export let api = 'http://192.168.1.66';
+  //export let api = 'http://192.168.1.66';
 
   export let routes = [{
     path: '/sitemap',

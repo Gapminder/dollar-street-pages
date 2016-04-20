@@ -105,7 +105,9 @@ export class MapComponent implements OnInit, OnDestroy {
           .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
-            this.setMarkersCoord(this.places);
+            this.zone.run(() => {
+              this.setMarkersCoord(this.places);
+            });
           });
       });
   }
@@ -260,39 +262,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.markers = null;
     }, 300);
   }
-
-
-  private hoverOnFamily(index):void {
-    if (!this.isDesktop) {
-      return;
-    }
-
-    if (this.isOpenLeftSide) {
-      return;
-    }
-
-    this.markers = this.map.querySelectorAll('.marker');
-
-    Array.prototype.forEach.call(this.markers, (marker, i) => {
-      if (i === index) {
-        return;
-      }
-
-      marker.style.opacity = '0.3';
-    });
-  };
-
-  private unHoverOnFamily():void {
-    if (!this.isDesktop) {
-      return;
-    }
-
-    Array.prototype.forEach.call(this.markers, (marker) => {
-      marker.style.opacity = '1';
-    });
-
-    this.markers = null;
-  };
 
   private openLeftSideBar():void {
     this.isOpenLeftSide = true;

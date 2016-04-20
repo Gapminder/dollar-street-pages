@@ -6,17 +6,20 @@ import {
   it,
   xit,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEach,
   beforeEachProviders,
   TestComponentBuilder,
+  tick
 } from 'angular2/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services.ts';
 import {MockService} from '../common-mocks/mock.service.template.ts';
 import {mapdata} from './mocks/data.ts';
 import {MapComponent} from '../../../app/map/map.component';
+import {Observable} from 'rxjs/Observable';
 
 /** todo: remove this crutch */
 interface ObjectCreator extends ObjectConstructor {
@@ -91,29 +94,44 @@ describe('MapComponent', () => {
     expect(context.thing).toEqual('546ccf730f7ddf45c0179688');
     expect(context.query).toEqual('thing=546ccf730f7ddf45c0179688');
     expect(context.loader).toEqual(true);
-    expect(context.places.length).toEqual(175);
+    expect(context.places.length).toEqual(174);
     expect(context.countries.length).toEqual(17);
     expect(context.setMarkersCoord.calls.argsFor(0)).toEqual([context.places]);
   });
-  it('setMarkersCoord', () => {
+  it('setMarkersCoord,hoverOnMarker,unHoverOnMarker', () => {
+    context.places = mapdata.data.places;
+    fixture.detectChanges();
+    spyOn(context.element, 'querySelector').and.callThrough();
     spyOn(context, 'setMarkersCoord').and.callThrough();
+    spyOn(context, 'hoverOnMarker').and.callThrough();
+    spyOn(context, 'unHoverOnMarker').and.callThrough();
     context.setMarkersCoord(mapdata.data.places);
+    expect(context.element.querySelector).toHaveBeenCalledWith('.map-color');
+
+    context.isDesktop = true;
+    context.hoverOnMarker(2, 'Burundi');
+    expect(context.onMarker).toEqual(true);
+    expect(context.currentCountry).toEqual('Burundi');
+    expect(context.lefSideCountries.length).toEqual(3);
+    expect(context.seeAllHomes).toEqual(true);
+    expect(context.markers.length).toEqual(174);
+    expect(context.hoverPlace).toEqual(context.places[2]);
+    expect(context.leftArrowTop).toEqual(null);
+    expect(context.shadowClass).toEqual({'shadow_to_left': true, 'shadow_to_right': false});
+
+
+    context.unHoverOnMarker();
+    expect(context.onMarker).toEqual(false);
+    expect(context.seeAllHomes).toEqual(false);
+    expect(context.hoverPortraitTop).toEqual(null);
+    expect(context.hoverPortraitLeft).toEqual(null);
+    expect(context.markers).toEqual(null);
+    expect(context.onMarker).toEqual(false);
+
+    this.seeAllHomes = false;
     /**write test*/
   });
 
-
-  xit(' hoverOnMarker', () => {
-    /**todo: test */
-  });
-  xit(' unHoverOnMarker', () => {
-    /**todo: test */
-  });
-  xit(' hoverOnFamily', () => {
-    /**todo: test */
-  });
-  xit(' unHoverOnFamily', () => {
-    /**todo: test */
-  });
   it(' openLeftSideBar', () => {
     spyOn(context, 'openLeftSideBar').and.callThrough();
     context.openLeftSideBar();

@@ -2,7 +2,6 @@ import {
   it,
   expect,
   describe,
-  xdescribe,
   inject,
   fakeAsync,
   beforeEachProviders,
@@ -19,18 +18,18 @@ import {
   ResponseOptions
 } from 'angular2/http';
 
-import {config} from '../../../../app/app.config.ts';
+import {config} from '../../../app/app.config.ts';
 
-import {FamilyPlaceService} from '../../../../app/place/family/family-place.service';
+import {PlaceStreetService} from '../../../app/place/place-street.service';
 
-import {jsonPlaces} from '../mocks/data.ts';
+import {streetPlaceStr} from './mocks/data.ts';
 
-describe('FamilyPlaceService', () => {
+describe('PlaceStreetService', () => {
   beforeEachProviders(() => {
     return [
       BaseRequestOptions,
       MockBackend,
-      FamilyPlaceService,
+      PlaceStreetService,
       provide(
         Http, {
           useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions) => {
@@ -39,21 +38,21 @@ describe('FamilyPlaceService', () => {
         })
     ];
   });
-  it('getPlaceFamilyImages()', inject([FamilyPlaceService, MockBackend], fakeAsync((familyPlaceService,
+  it('getThingsByRegion', inject([PlaceStreetService, MockBackend], fakeAsync((placeStreetService,
                                                                                     mockBackend) => {
     var res;
     mockBackend.connections.subscribe(connection => {
-      expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/place/family/images?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);
+      expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/slider/things?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);
       let response = new ResponseOptions({
-        body: jsonPlaces
+        body: streetPlaceStr
       });
       connection.mockRespond(new Response(response));
     });
-    familyPlaceService.getPlaceFamilyImages(`isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`).subscribe((_res) => {
+    placeStreetService.getThingsByRegion(`isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`).subscribe((_res) => {
       res = _res;
     });
     tick();
     expect(res.err).toBe(null);
-    expect(res.images.length).toBe(2);
+    expect(res.data.places.length).toBe(203);
   })));
 });
