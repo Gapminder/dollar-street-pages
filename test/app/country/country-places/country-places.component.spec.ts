@@ -7,8 +7,8 @@ import {
   TestComponentBuilder,
 } from 'angular2/testing';
 
-import {MockCommonDependency} from '../../common-mocks/mocked.services.ts'
-import {MockService} from '../../common-mocks/mock.service.template.ts'
+import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
+import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {places} from '../mocks/data.ts';
 
 import {CountryPlacesComponent} from '../../../../app/country/country-places/country-places.component';
@@ -32,14 +32,13 @@ describe('CountryPlacesComponent', () => {
       expect(context.places.length).toEqual(3);
       expect(context.loader).toEqual(true);
       countryPlacesService.toInitState();
-    })
+    });
   }));
   it('CountryPlaceComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(CountryPlacesComponent).then((fixture) => {
       fixture.detectChanges();
       fixture.destroy();
       expect(countryPlacesService.countOfSubscribes).toBe(0);
-    })
+    });
   }));
 });
-

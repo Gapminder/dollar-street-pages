@@ -20,32 +20,6 @@ import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {StreetComponent} from '../../../../app/common/street/street.component';
 import {places} from './mocks/data.ts';
 
-/** todo: remove this crutch */
-// interface ObjectCtor extends ObjectConstructor {
-//   assign(target:any, ...sources:any[]):any;
-// }
-// declare var Object:ObjectCtor;
-// export let assign = Object.assign ? Object.assign : function (target:any, ...sources:any[]):any {
-//   return;
-// };
-//
-// class Image {
-//   set onload(fn) {
-//     fn();
-//   }
-// }
-// let ImageMock = {
-//   Image: Image
-// };
-// let setTimeoutMock = {
-//   setTimeout: (fn, time) => {
-//     fn();
-//   }
-// };
-// assign(window, ImageMock);
-// assign(window, setTimeoutMock);
-/**
- * *************/
 class StreetDrawServiceMock {
   public width:number;
   public height:number;

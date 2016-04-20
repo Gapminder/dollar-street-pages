@@ -40,7 +40,6 @@ describe('MatrixImagesComponent', () => {
     }
   ));
   it('ngOnInit ngOnDestroy', () => {
-    console.log(111);
     context.ngOnInit();
     expect(context.itemSize).toEqual(window.innerWidth / context.zoom);
     expect(context.currentPlaces.length).toEqual(places.places.length);
@@ -48,6 +47,39 @@ describe('MatrixImagesComponent', () => {
     context.ngOnDestroy();
     expect(context.placesSubscribe.unsubscribe).toHaveBeenCalled();
   });
+  it('hoverImage', () => {
+    spyOn(context.hoverPlace, 'emit');
+    context.oldPlaceId = places.places[0]._id;
+    context.hoverImage(places.places[0]);
+    expect(context.hoverPlace.emit).toHaveBeenCalledWith(places.places[0]);
+    context.isDesktop = false;
+    context.hoverImage();
+    expect(context.hoverPlace.emit).toHaveBeenCalled();
+    expect(context.oldPlaceId).toEqual(null);
+  });
+  it('goToPlace', () => {
+    spyOn(context.router, 'navigate');
+    let place = places.places[0];
+    context.goToPlace(place);
+    expect(context.router.navigate.calls.argsFor(0)[0]).toEqual(['Place', {
+      thing: context.thing,
+      place: place._id,
+      image: place.image
+    }]);
+    context.isDesktop = false;
+    context.oldPlaceId = null;
+    context.goToPlace(place);
+    expect(context.oldPlaceId).toEqual(place._id);
+    context.isDesktop = false;
+    context.oldPlaceId =  place._id;
+    context.goToPlace(place);
+    expect(context.router.navigate.calls.argsFor(1)[0]).toEqual(['Place', {
+      thing: context.thing,
+      place: place._id,
+      image: place.image
+    }]);
+  });
+
   it('toUrl', () => {
     expect(context.toUrl('http://example.com/image.jpg')).toEqual('url("http://example.com/image.jpg")');
   });

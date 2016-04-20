@@ -13,10 +13,11 @@ module.exports = function (config) {
     proxies: {
       '/assets/img/': 'http://localhost:3000/app/assets/img/'
     },
-    // list of files to exclude
+
     exclude: [],
-    
+
     reporters: ['progress', 'coverage'],
+
     preprocessors: {
       'test.bundle.js': ['webpack']
     },
@@ -40,9 +41,10 @@ module.exports = function (config) {
     colors: true,
 
     logLevel: config.LOG_INFO,
-
+    
     autoWatch: true,
 
     browsers: ['PhantomJS']
+
   });
 };

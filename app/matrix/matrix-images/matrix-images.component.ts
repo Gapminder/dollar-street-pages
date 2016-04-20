@@ -61,10 +61,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     this.placesSubscribe.unsubscribe();
   }
 
-  hoverImage(event, place):void {
+  hoverImage(place):void {
     this.hoverPlace.emit(place);
-
-    if (isDesktop) {
+    if (this.isDesktop) {
       return;
     }
     if (!place) {
@@ -73,15 +72,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   goToPlace(place) {
-    if (isDesktop) {
+    if (this.isDesktop) {
       this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
-
       return;
     }
 
     if (!this.oldPlaceId) {
       this.oldPlaceId = place._id;
-
       return;
     }
 

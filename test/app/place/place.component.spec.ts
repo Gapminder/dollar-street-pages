@@ -43,7 +43,7 @@ describe('PlaceComponent', () => {
   ));
 
 
-  it(' must init', () => {
+  it('must init', () => {
     spyOn(context, 'getStreetPlaces');
     spyOn(context.controllSlider, 'subscribe');
     fixture.detectChanges();
@@ -52,7 +52,7 @@ describe('PlaceComponent', () => {
     expect(context.controllSlider.subscribe).toHaveBeenCalled();
     expect(context.loader).toEqual(false);
   });
-  it(' urlChanged', () => {
+  it('urlChanged', () => {
     spyOn(context, 'getStreetPlaces');
     fixture.detectChanges();
     context.place = '54b6866a38ef07015525f5be';
@@ -64,13 +64,13 @@ describe('PlaceComponent', () => {
     expect(context.thing).toEqual('5477537786deda0b00d43eee');
     expect(context.getStreetPlaces.calls.argsFor(1)).toEqual([`thing=5477537786deda0b00d43eee&place=54b6866a38ef07015525f5be&isSearch=true`]);
   });
-  it(' isHover', () => {
+  it('isHover', () => {
     spyOn(context, 'getStreetPlaces');
     spyOn(context.hoverHeader, 'next');
     context.isHover();
     expect(context.hoverHeader.next).toHaveBeenCalledWith(null);
   });
-  it(' choseCurrentPlace', () => {
+  it('choseCurrentPlace', () => {
     context.thing = '5477537786deda0b00d43be5';
     spyOn(context, 'getStreetPlaces');
     spyOn(context.chosenPlaces, 'next');
@@ -81,7 +81,7 @@ describe('PlaceComponent', () => {
     expect(context.thing).toEqual('5477537786deda0b00d43be5');
     expect(context.changeLocation.calls.argsFor(0)).toEqual([streetPlacesData[0], '5477537786deda0b00d43be5']);
   });
-  it(' changeLocation', () => {
+  it('changeLocation', () => {
     context.init = false;
     spyOn(context.urlChangeService, 'replaceState');
     spyOn(context, 'changeLocation').and.callThrough();

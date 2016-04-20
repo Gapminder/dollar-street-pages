@@ -57,7 +57,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (res.err) {
           return res.err;
         }
-
         this.defaultThing = res.data;
       });
   }

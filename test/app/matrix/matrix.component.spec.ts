@@ -60,10 +60,19 @@ describe('MatrixComponent', () => {
     expect(context.query).toEqual(`thing=${context.thing}&countries=${context.countries}&regions=${context.regions}&zoom=${context.zoom}&row=${context.row}`);
   });
 
-  xit(' ngAfterViewChecked', () => {
+  it(' ngAfterViewChecked', () => {
     spyOn(context, 'ngAfterViewChecked').and.callThrough();
     spyOn(context, 'getPaddings');
     context.ngAfterViewChecked();
+  });
+  xit(' stopScroll', () => {
+
+  });
+  xit(' getPaddings', () => {
+
+  });
+  xit(' getViewableRows', () => {
+
   });
   it(' hoverPlaceS', () => {
     spyOn(context, 'hoverPlaceS').and.callThrough();

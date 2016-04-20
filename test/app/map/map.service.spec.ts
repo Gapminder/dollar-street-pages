@@ -83,4 +83,3 @@ describe('MapService', () => {
       expect(res.data.countries.length).toBe(18);
     })));
 });
-
