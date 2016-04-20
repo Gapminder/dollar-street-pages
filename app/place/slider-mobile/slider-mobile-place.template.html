@@ -12,6 +12,10 @@
            class="slider-mobile">
         <div class="slider-mobile-slide" *ngFor="#image of images; #i=index">
           <img class="slider-mobile-slide-image" [src]="image.background" alt=""/>
+          <div class="thing-content">
+            <img [src]="activeThing.iconLight" alt="">
+            <span>{{activeThing.name}}</span>
+          </div>
         </div>
       </div>
     </div>

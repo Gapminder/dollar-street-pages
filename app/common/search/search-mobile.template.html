@@ -27,6 +27,7 @@
 <div id="mobile-search-popup" [hidden]="!isOpen">
   <div class="search-input">
     <input class="form-control"
+           type="search"
            placeholder="Enter keyword"
            [(ngModel)]="search.text">
     <img src="/assets/img/search-icon.svg" alt=""/>
@@ -36,10 +37,7 @@
   <div class="tabs-container">
     <div class="tabs-header">
       <div class="tab-button" (click)="tab = 0" [ngClass]="{active: tab === 0}">Things</div>
-      <div class="tab-button"
-           (click)="tab = 1"
-           [ngClass]="{active: tab === 1}"
-           *ngIf="matrixComponent">
+      <div class="tab-button" (click)="tab = 1" [ngClass]="{active: tab === 1}" *ngIf="matrixComponent">
         Places
       </div>
     </div>
@@ -72,7 +70,7 @@
           <div class="sub-item-content"
                *ngFor="#thing of category.things"
                [ngClass]="{'no-pass': thing.empty}"
-               (click)="goToThing(thing._id)">
+               (click)="goToThing(thing)">
             <div class="item-icon">
               <img *ngIf="thing.icon"
                    [src]="thing.icon" alt="thing.name">

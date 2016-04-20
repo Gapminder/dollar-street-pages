@@ -409,12 +409,12 @@
   #mobile-photographer-profile .photographer-description-footer {
     display: none;
     position: absolute;
-    top: 93%;
+    top: 96%;
     left: 0;
     right: 0;
     background-color: #f4fafb;
     z-index: 9;
-    padding: 0 15px 15px;
+    padding: 0 8px 15px;
   }
 
   #mobile-photographer-profile.open .photographer-description-footer {
@@ -424,7 +424,6 @@
 
   #mobile-photographer-profile .company-description {
     font-size: 13px;
-    margin-top: 10px;
   }
 
   #mobile-photographer-profile .photographer-description-footer .company-container {

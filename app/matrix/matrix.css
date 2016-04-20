@@ -62,6 +62,10 @@
   color: #374551 !important;
 }
 
+footer {
+  position: relative;
+}
+
 @media (max-width: 1200px) {
   .zoom-column {
     top: 140px;

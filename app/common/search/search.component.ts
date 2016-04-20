@@ -55,6 +55,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   private isDesktop:boolean = isDesktop;
   private mobileTitle:string;
   private header:any;
+  private tab:number = 0;
 
   private chosenPlacesSubscribe:any;
   private searchServiceSubscribe:any;
@@ -102,11 +103,15 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
+    let thingId:string;
+
     if (!thing) {
-      thing = this.defaultThing._id;
+      thingId = this.defaultThing._id;
+    } else {
+      thingId = thing._id;
     }
 
-    this.paramsUrl.thing = thing;
+    this.paramsUrl.thing = thingId;
 
     this.getInitData();
   }
