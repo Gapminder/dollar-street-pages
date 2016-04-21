@@ -313,7 +313,6 @@ export class StreetDrawService {
 
     if (slider) {
       this.drawHoverHouse(places);
-
       return;
     }
 

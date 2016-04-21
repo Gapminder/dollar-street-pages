@@ -105,7 +105,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     img.onload = () => {
       this.zone.run(() => {
         this.resizeSlider();
-
         this.currentPlace.emit([this.chosenPlace]);
         this.hoverPlace.next(this.chosenPlace);
       });

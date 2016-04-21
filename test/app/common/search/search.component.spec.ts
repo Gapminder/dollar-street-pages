@@ -68,7 +68,7 @@ describe('SearchComponent', () => {
     spyOn(context, 'parseUrl');
     spyOn(context, 'getInitData');
     context.ngOnChanges({url: {currentValue: 'thing=5477537786deda0b00d43be5&place=54b6866a38ef07015525f5be&image=54b6862f3755cbfb542c28cb'}});
-    expect(context.getInitData).toHaveBeenCalledWith(true);
+    expect(context.getInitData).toHaveBeenCalledWith();
   });
 
 
