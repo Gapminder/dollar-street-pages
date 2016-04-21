@@ -56,6 +56,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   private mobileTitle:string;
   private header:any;
   private tab:number = 0;
+  private init:boolean = true;
 
   private chosenPlacesSubscribe:any;
   private searchServiceSubscribe:any;
@@ -94,7 +95,10 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(properties):void {
     if (properties.url && properties.url.currentValue) {
       this.paramsUrl = this.parseUrl(this.url);
-      this.getInitData(true);
+      if (this.init) {
+        this.init = !this.init;
+        this.getInitData();
+      }
     }
   }
 
@@ -112,7 +116,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.paramsUrl.thing = thingId;
-
     this.getInitData();
   }
 
@@ -182,7 +185,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.paramsUrl.countries = this.activeCountries;
-
     this.getInitData();
   }
 
@@ -207,11 +209,10 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
 
     this.paramsUrl.regions = this.activeRegions;
     this.paramsUrl.countries = this.activeCountries;
-
     this.getInitData();
   }
 
-  getInitData(init?:boolean) {
+  getInitData() {
     this.isOpen = false;
     this.search.text = '';
     let url:string;

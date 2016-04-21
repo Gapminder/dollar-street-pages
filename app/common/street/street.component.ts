@@ -65,7 +65,6 @@ export class StreetComponent implements OnInit, OnDestroy {
 
         if (this.controllSlider) {
           this.street.clearAndRedraw(chosenPlaces, true);
-
           return;
         }
 
@@ -116,8 +115,12 @@ export class StreetComponent implements OnInit, OnDestroy {
               return this.street.scale(place.income);
             }).value()
           )
-          .set('chosenPlaces', this.street.chosenPlaces)
-          .clearAndRedraw(this.street.chosenPlaces);
+          .set('chosenPlaces', this.street.chosenPlaces);
+        if (this.controllSlider) {
+          this.street.clearAndRedraw(this.street.chosenPlaces, true);
+          return;
+        }
+        this.street.clearAndRedraw(this.street.chosenPlaces);
       });
   }
 
