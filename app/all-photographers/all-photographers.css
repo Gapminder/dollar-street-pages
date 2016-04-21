@@ -1,5 +1,6 @@
 footer {
   margin-top: 100px;
+  position: relative;
 }
 
 @media (max-width: 600px) {
