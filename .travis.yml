@@ -41,4 +41,5 @@ script:
 # submit coverage report to codecov
 - npm run codecov
 # run protractor tests
-- npm run e2e:bstack
+- [[ "$TRAVIS_BRANCH" == "development" ]] && [[ "${TRAVIS_PULL_REQUEST}" == "false" ]] && npm run e2e:bstack
+- [[ "$TRAVIS_BRANCH" == "development" ]] && [[ "${TRAVIS_PULL_REQUEST}" == "false" ]] && .config/tools/bsurls.js
