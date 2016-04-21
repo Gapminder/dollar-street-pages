@@ -187,7 +187,7 @@
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description {
   overflow: hidden;
-  padding-top: 5px;
+  margin-top: 2px;
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .name {
@@ -199,7 +199,7 @@
   font-size: 16px;
   display: block;
   color: #767d86;
-  margin-top: 5px;
+  margin-top: -2px;
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .income {
@@ -209,13 +209,12 @@
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .pull-left {
-  line-height: 14px;
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .pull-right {
-  margin-top: 10px;
+  margin-top: 13px;
 }
 
 #places .mapBox .map-color {
