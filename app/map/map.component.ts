@@ -83,22 +83,28 @@ export class MapComponent implements OnInit, OnDestroy {
     if (thing && thing._id) {
       if (this.init) {
         this.init = false;
+
         return;
       }
+
       query = `thing=${this.thing._id}`;
     }
+
     this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
       .subscribe((res) => {
         if (res.err) {
           return res.err;
         }
+
         this.places = res.data.places;
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
         this.query = `thing=${res.data.thing}`;
+
         if (this.needChangeUrl) {
           this.urlChangeService.replaceState('/map', this.query);
         }
+
         this.setMarkersCoord(this.places);
         this.loader = true;
         this.resizeSubscribe = Observable
@@ -120,24 +126,29 @@ export class MapComponent implements OnInit, OnDestroy {
   setMarkersCoord(places) {
     let img = new Image();
     let mapImage = this.element.querySelector('.map-color');
+
     img.onload = () => {
       this.zone.run(() => {
         let width = mapImage.offsetWidth;
         let height = mapImage.offsetHeight;
         let greenwich = 0.439 * width;
         let equator = 0.545 * height;
+
         places.forEach((place:any) => {
           let stepTop, stepRight;
+
           if (place.lat > 0) {
             stepTop = equator / 75;
           } else {
             stepTop = (height - equator) / 75;
           }
+
           if (place.lng < 0) {
             stepRight = greenwich / 130;
           } else {
             stepRight = (width - greenwich) / 158;
           }
+
           place.left = place.lng * stepRight + greenwich;
           place.top = equator - place.lat * stepTop - 23;
         });
@@ -163,9 +174,7 @@ export class MapComponent implements OnInit, OnDestroy {
       return place.country === this.currentCountry;
     });
 
-    if (this.lefSideCountries.length > 1) {
-      this.seeAllHomes = true;
-    }
+    this.seeAllHomes = this.lefSideCountries.length > 1;
 
     this.markers = this.map.querySelectorAll('.marker');
 
@@ -173,12 +182,14 @@ export class MapComponent implements OnInit, OnDestroy {
       if (i !== index) {
         return;
       }
+
       this.hoverPlace = place;
     });
 
     if (!this.hoverPlace) {
       return;
     }
+
     Array.prototype.forEach.call(this.markers, (marker, i) => {
       if (i === index) {
         return;
@@ -198,10 +209,12 @@ export class MapComponent implements OnInit, OnDestroy {
         if (!this.hoverPlace) {
           return;
         }
+
         this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
         this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
         this.leftArrowTop = null;
         this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
+
         if (this.hoverPortraitTop < 10) {
           this.hoverPortraitTop = 10;
           this.hoverPortraitLeft += (portraitBox.offsetWidth + 32) / 2;
@@ -240,17 +253,20 @@ export class MapComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (this.onThumb) {
         this.onThumb = !this.onThumb;
+
         return;
       }
 
       if (this.onMarker) {
         this.onMarker = !this.onMarker;
+
         return;
       }
 
       if (!this.markers) {
         return;
       }
+
       Array.prototype.forEach.call(this.markers, (marker) => {
         marker.style.opacity = '1';
       });
