@@ -23,7 +23,7 @@
 #mobile-search .title-container {
   font-size: 18px;
   margin-top: 6px;
-  padding: 0 5px;
+  padding: 0 5px !important;
 }
 
 #mobile-search-popup {
