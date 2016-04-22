@@ -201,8 +201,9 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.hoverHeader.next(null);
   }
 
-  urlChanged(query):void {
+  urlChanged(options):void {
     /**to remove things like this*/
+    let {query, search} = options;
     this.query = query;
     let parseQuery = this.parseUrl(this.query);
     this.thing = parseQuery.thing;
@@ -223,13 +224,17 @@ export class MatrixComponent implements OnInit, OnDestroy {
         this.matrixPlaces.next(val.places);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.placesArr);
+        if (search) {
+          this.streetPlaces.next(this.placesVal);
+          this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+        }
         this.zoom = +parseQuery.zoom;
         this.loader = true;
       });
   }
 
   changeZoom(zoom) {
-    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`));
+    this.urlChanged({query: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
   };
 
   parseUrl(url:string):any {
