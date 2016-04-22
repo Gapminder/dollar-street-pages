@@ -96,7 +96,12 @@ export class StreetComponent implements OnInit, OnDestroy {
           .init()
           .drawScale(places)
           .set('places', _.sortBy(places, 'income'))
-          .set('fullIncomeArr', true);
+          .set('fullIncomeArr', _
+            .chain(this.street.places)
+            .sortBy('income')
+            .map((place:any) => {
+              return this.street.scale(place.income);
+            }).value());
       });
 
     this.resize = Observable

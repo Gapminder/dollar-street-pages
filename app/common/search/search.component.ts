@@ -251,7 +251,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         if (this.matrixComponent) {
-          this.selectedFilter.emit(url);
+          this.selectedFilter.emit({query: url, search: true});
         } else {
           this.selectedFilter.emit(this.activeThing);
         }
