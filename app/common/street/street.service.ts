@@ -273,14 +273,14 @@ export class StreetDrawService {
       .attr('stroke-width', 1)
       .attr('stroke', (datum) => {
         if (gray) {
-          return '#98a5b0';
+          return '#303e4a';
         }
 
         return !datum ? void 0 : fillsOfBorders[datum.region];
       })
       .style('fill', (datum) => {
         if (gray) {
-          return '#a9b3bc';
+          return '#374551';
         }
 
         return !datum ? void 0 : fills[datum.region];
