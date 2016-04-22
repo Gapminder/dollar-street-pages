@@ -159,6 +159,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.paramsUrl.regions = this.activeRegions;
+    this.paramsUrl.countries = this.activeCountries;
+
     this.getInitData();
   }
 

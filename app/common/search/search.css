@@ -1,9 +1,10 @@
 .matrix-search-button {
   cursor: pointer;
+  margin-top: -8px !important;
 }
 
 .matrix-search-button img {
-  margin: -17px 0 0 10px;
+  margin: 10px 0 10px 10px;
   width: 21px;
   height: 21px;
   opacity: 0.8;
@@ -144,11 +145,13 @@
 
 .search-content .regions .search-item-icon {
   margin-right: 0;
+  margin-top: 7px;
 }
 
 .search-content .regions .search-item-icon img {
   vertical-align: inherit;
   width: 19px;
+  margin-top: 5px;
 }
 
 .search-content .regions .search-item-name {
@@ -271,6 +274,10 @@
   padding: 6px 0 12px 0;
 }
 
+.search-content .search-list-places .search-item .pointer {
+  top: 13px;
+}
+
 .search-content .search-list-places .regions .search-items-container.regions li {
   border-top: 1px solid rgb(48, 62, 74);
 }
@@ -337,10 +344,9 @@
   margin: -15px 10px 0 5px !important;
 }
 
-.search-title div {
-  font-size: 26px;
-  margin: 3px 0 0;
+.search-title .search-text {
   line-height: 26px;
+  font-size: 26px;
 }
 
 .search-text span {
