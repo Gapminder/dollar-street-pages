@@ -2,10 +2,10 @@
   <div class="slider-mobile-container">
     <span class="glyphicon glyphicon-chevron-left slider-mobile-arrow arrow-mobile-prev"
           (click)="slidePrev()"
-          [hidden]="position"></span>
+          [hidden]="!position"></span>
     <span class="glyphicon glyphicon-chevron-right slider-mobile-arrow arrow-mobile-next"
           (click)="slideNext()"
-          [hidden]="(position || position === 0) && allPlaces.length - 1 !== position"></span>
+          [hidden]="(position || position === 0) && allPlaces.length - 1 === position"></span>
 
     <div class="slider-mobile-content">
       <div id="slider-mobile-container"

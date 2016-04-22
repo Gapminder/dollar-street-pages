@@ -2,13 +2,13 @@
   <div class="arrow-container arrow-prev" [ngStyle]="sliderHeight">
       <span class="glyphicon glyphicon-chevron-left slider-arrow"
             (click)="slidePrev()"
-            [hidden]="position"></span>
+            [hidden]="!position"></span>
   </div>
 
   <div class="arrow-container arrow-next" [ngStyle]="sliderHeight">
       <span class="glyphicon glyphicon-chevron-right slider-arrow"
             (click)="slideNext()"
-            [hidden]="(position || position === 0) && allPlaces.length - 1 !== position"></span>
+            [hidden]="(position || position === 0) && allPlaces.length - 1 === position"></span>
   </div>
   <div class="slider-container">
     <div class="slider-content">

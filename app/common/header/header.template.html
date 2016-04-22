@@ -18,7 +18,7 @@
                  *ngIf="hoverPlace"></place-map>
     </div>
 
-    <div class="matrix-icon" *ngIf="placeComponent && !isDesktop || mapComponent">
+    <div class="matrix-icon" *ngIf="placeComponent || mapComponent">
       <a [routerLink]="['Matrix']">
         <img src="/assets/img/matrix-icon.svg" alt="">
       </a>

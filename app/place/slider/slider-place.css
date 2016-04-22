@@ -29,6 +29,10 @@
   cursor: pointer;
 }
 
+.place-slider-wrapper .slider-arrow[hidden] {
+  display: none;
+}
+
 .place-slider-wrapper .arrow-container.arrow-prev {
   left: 0;
 }

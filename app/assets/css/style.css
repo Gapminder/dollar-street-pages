@@ -136,6 +136,14 @@ map-component {
   max-height: calc(16px * 1.42857143 * 2);
 }
 
+.place-header search {
+  width: calc(100% - 250px) !important;
+}
+
+.place-header .matrix-icon {
+  margin-left: 20px !important;
+}
+
 @supports (-webkit-line-clamp: 1) {
   .line-clamp:after {
     display: none !important;
@@ -155,6 +163,14 @@ map-component {
 
   .map-header .matrix-icon {
     margin-top: 11px !important;
+  }
+
+  .place-header .header-content search {
+    width: calc(100% - 167px) !important;
+  }
+
+  .place-header .matrix-icon {
+    margin-left: 10px !important;
   }
 }
 
@@ -179,6 +195,11 @@ map-component {
   }
 
   .matrix-header .matrix-icon {
-    margin-top: 5px !important;
+    margin-top: 9px !important;
+  }
+
+  matrix .matrix-header .menu-icon,
+  .place-header .menu-icon {
+    height: 42px !important;
   }
 }

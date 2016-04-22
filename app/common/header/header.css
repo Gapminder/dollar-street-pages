@@ -65,7 +65,7 @@ place-map[hidden] {
   }
 
   .header-content search {
-    width: calc(100% - 127px);
+    width: calc(100% - 127px) !important;
   }
 
   place-map {
@@ -75,6 +75,6 @@ place-map[hidden] {
 
   .matrix-icon {
     width: 25px;
-    margin-left: 25px;
+    margin-left: 25px !important;
   }
 }
