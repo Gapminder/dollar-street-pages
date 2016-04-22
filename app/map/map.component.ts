@@ -76,7 +76,6 @@ export class MapComponent implements OnInit, OnDestroy {
     let query = `thing=${this.thing}`;
 
     if (!thing) {
-      this.needChangeUrl = true;
       query = '';
     }
 
@@ -100,11 +99,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
         this.query = `thing=${res.data.thing}`;
-
-        if (this.needChangeUrl) {
-          this.urlChangeService.replaceState('/map', this.query);
-        }
-
+        this.urlChangeService.replaceState('/map', this.query);
         this.setMarkersCoord(this.places);
         this.loader = true;
         this.resizeSubscribe = Observable

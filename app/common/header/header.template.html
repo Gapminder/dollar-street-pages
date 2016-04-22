@@ -14,7 +14,7 @@
     <div class="map-content" *ngIf="matrixComponent || placeComponent && isDesktop">
       <place-map [isHeader]="true"
                  [hoverPlace]="hoverPlace"
-                 [routerLink]="['Map', {thing: thing}]"
+                 [routerLink]="['Map', {thing: activeThing?._id||defaultThing?._id}]"
                  *ngIf="hoverPlace"></place-map>
     </div>
 
