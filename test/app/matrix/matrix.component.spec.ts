@@ -95,7 +95,7 @@ describe('MatrixComponent', () => {
     spyOn(context, 'urlChanged').and.callThrough();
     spyOn(context, 'parseUrl').and.callThrough();
     spyOn(context.urlChangeService, 'replaceState');
-    spyOn(context.places, 'next');
+    spyOn(context.matrixPlaces, 'next');
     spyOn(context.matrixService, 'getMatrixImages').and.callThrough();
     spyOn(context, 'stopScroll');
     context.urlChanged('thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1');
@@ -104,7 +104,7 @@ describe('MatrixComponent', () => {
     expect(context.thing).toEqual('5477537786deda0b00d43be5');
     expect(context.urlChangeService.replaceState.calls.argsFor(0)).toEqual(['/matrix', 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1']);
     expect(context.matrixService.getMatrixImages.calls.argsFor(0)).toEqual([context.query]);
-    expect(context.places.next.calls.argsFor(0)).toEqual([places.places]);
+    expect(context.matrixPlaces.next.calls.argsFor(0)).toEqual([places.places]);
     expect(context.placesArr).toEqual(places.places);
     expect(context.clonePlaces.length).toEqual(places.places.length);
     expect(context.zoom).toEqual(5);

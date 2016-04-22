@@ -24,7 +24,8 @@ let style = require('./matrix.css');
 export class MatrixComponent implements OnInit, OnDestroy {
   public query:string;
   public matrixService:any;
-  public places:Subject<any> = new Subject();
+  public streetPlaces:Subject<any> = new Subject();
+  public matrixPlaces:Subject<any> = new Subject();
   public chosenPlaces:Subject<any> = new Subject();
   public hoverPlace:Subject<any> = new Subject();
   public padding:Subject<any> = new Subject();
@@ -51,6 +52,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
   private clonePlaces:any[];
   public loader:boolean = false;
   public isDraw:boolean = false;
+
+  private placesVal:any;
 
   public matrixServiceSubscrib:any;
 
@@ -164,13 +167,10 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.getViewableRows(header.offsetHeight);
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
-    // if (this.clonePlaces) {
-    //   this.isDraw = true;
-    //   console.log('asdadsd')
-    //   this.places.next(this.placesArr);
-    //   console.log(2)
-    //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
-    // }
+    if (this.clonePlaces) {
+      this.streetPlaces.next(this.placesVal);
+      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+    }
   }
 
   getViewableRows(headerHeight:number):void {
@@ -188,11 +188,6 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.visiblePlaces = row;
 
     this.clonePlaces = _.cloneDeep(this.placesArr);
-
-    // if (this.clonePlaces && this.clonePlaces.length && this.visiblePlaces) {
-    //   console.log(3)
-    //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
-    // }
   }
 
   hoverPlaceS(place) {
@@ -220,20 +215,16 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
-          if (val.err) {
-            console.log(val.err);
-            return;
-          }
-          // if (this.isDraw) {
-          //   this.isDraw = !this.isDraw;
-          //   return;
-          // }
-          this.places.next(val.places);
-          this.placesArr = val.places;
-          this.clonePlaces = _.cloneDeep(this.placesArr);
-          this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-          this.zoom = +parseQuery.zoom;
-          this.loader = true;
+        if (val.err) {
+          console.log(val.err);
+          return;
+        }
+        this.placesVal = val.places;
+        this.matrixPlaces.next(val.places);
+        this.placesArr = val.places;
+        this.clonePlaces = _.cloneDeep(this.placesArr);
+        this.zoom = +parseQuery.zoom;
+        this.loader = true;
       });
   }
 
