@@ -3,14 +3,14 @@
           (mouseenter)="isHover()"  [hoverPlace]="hoverPlace"
           (filter)="urlChanged($event)" [thing]="thing"></header>
 
-  <street  [places]="places"
+  <street  [places]="streetPlaces"
           [thing]="thing"
           [chosenPlaces]="chosenPlaces"
           [hoverPlace]="hoverPlace"
           [hoverHeader]="hoverHeader"></street>
 </div>
 
-<matrix-images [places]="places"
+<matrix-images [places]="matrixPlaces"
                [thing]="thing"
                [zoom]="zoom"
                (hoverPlace)="hoverPlaceS($event)"
@@ -24,7 +24,7 @@
   </button>
 
   <button type="button"
-          [disabled]="!isDesktop ? zoom === 3 : zoom === 10 || zoom >= places.length"
+          [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
           (click)="changeZoom(zoom + 1)">
     <b>-</b>
   </button>
