@@ -204,7 +204,6 @@ export class StreetDrawService {
       places: places,
       left: this.scale(d.income)
     };
-
     cb(options);
   };
 
