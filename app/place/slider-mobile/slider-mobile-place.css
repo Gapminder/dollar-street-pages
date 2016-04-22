@@ -11,6 +11,10 @@
   z-index: 9;
 }
 
+.slider-mobile-wrapper .slider-mobile-container .slider-mobile-arrow[hidden] {
+  display: none;
+}
+
 .slider-mobile-wrapper .slider-mobile-container .slider-mobile-arrow:before {
   display: block;
   width: 50px;
