@@ -12,9 +12,9 @@
 }
 
 .thumbView-box {
-  position: absolute;
+  position: fixed;
   z-index: 9999;
-  max-width: 540px;
+  max-width: 542px;
   top: 85px;
   height: auto;
 
@@ -29,6 +29,8 @@
   display: -webkit-flex;
   flex-wrap: wrap;
   justify-content: center;
+  max-height: calc(100% - 90px);
+  overflow-y: auto;
 }
 
 .thumbView-box .arrow_up {
