@@ -21,8 +21,6 @@ let style = require('./header.css');
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input()
   private query:string;
-  @Input()
-  private thing:string;
   @Input('hoverPlace')
   private hoverPlace:Observable<any>;
   @Input('chosenPlaces')
