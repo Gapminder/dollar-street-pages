@@ -1,40 +1,39 @@
-/**
- * Created by vs on 4/6/16.
- */
-describe('Photographers Page ', function() {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
-
-  var searchField = element(by.css('#search'));
-  var numPhotographers = element.all(by.css('.photographers-list>li'));
-  var EC = protractor.ExpectedConditions;
-  var TIMEOUT = 10000;
-  var zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]'));
-  var message = 'Zorian Miller on PhotographersPage is not loaded';
-  var photographerPortreit = element(by.css('.photographer-portrait'));
-  var photographerMessage = 'Photographer portrait is not loaded';
-  var isClickableLastPhotographerLink = EC.elementToBeClickable(zorianMiller);
-  var country = element(by.css('.country-card>div>span'));
-  var photosIcon = element.all(by.css('.photographer-material>span>i[class*="fa-camera"]'));
-  var homesIcon = element.all(by.css('.photographer-material>span>img'));
+'use strict';
+describe('Photographers Page ', () => {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+  const searchField = element(by.css('#search'));
+  const numPhotographers = element.all(by.css('.photographers-list>li'));
+  const EC = protractor.ExpectedConditions;
+  const TIMEOUT = 10000;
+  const zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]'));
+  const message = 'Zorian Miller on PhotographersPage is not loaded';
+  const photographerPortreit = element(by.css('.photographer-portrait'));
+  const photographerMessage = 'Photographer portrait is not loaded';
+  const isClickableLastPhotographerLink = EC.elementToBeClickable(zorianMiller);
+  const country = element(by.css('.country-card>div>span'));
+  const photosIcon = element.all(by.css('.photographer-material>span>i[class*="fa-camera"]'));
+  const homesIcon = element.all(by.css('.photographer-material>span>img'));
   browser.manage().window().maximize();
-  browser.manage().timeouts().pageLoadTimeout(75000);
+  browser.manage().timeouts().pageLoadTimeout(30000);
+  browser.ignoreSynchronization = true;
 
-  beforeAll(function() {
-    browser.get('/photographers', 10000); //with timeout:will wait for loading page before 60 sec
+  beforeAll(() => {
+    browser.get('/photographers', 10000);
     browser.wait(EC.visibilityOf(zorianMiller), TIMEOUT, message);
   });
-
+  beforeEach(() => {
+    browser.wait(EC.invisibilityOf(element(by.css('.loader>img'))));
+  });
   /* Enter query to Search field
    * Check visibility of photographers
    * Check icons with guantity Photos, videos, Homes at the first Photographer
    */
-
-  it('test input bangladesh', function(){
-    searchField.sendKeys('bangladesh\n');
+  it('test input bangladesh', () => {
+    searchField.sendKeys('bang\n');
     browser.wait(EC.visibilityOf(photographerPortreit), TIMEOUT, photographerMessage);
     searchField.clear();
   });
-  it('test check icons with guantity Photos, videos, Homes at the first Photographer', function(){
+  it('test check icons with guantity Photos, videos, Homes at the first Photographer', () => {
     browser.wait(EC.visibilityOf(country));
     browser.wait(EC.visibilityOf(photosIcon.first()));
     browser.wait(EC.visibilityOf(homesIcon.first()));
@@ -42,7 +41,7 @@ describe('Photographers Page ', function() {
     expect(photosIcon.first().isDisplayed()).toBe(true);
     expect(homesIcon.first().isDisplayed()).toBe(true);
   });
-  it('test check icons with guantity Photos, videos, Homes at the last Photographer', function(){
+  it('test check icons with guantity Photos, videos, Homes at the last Photographer', () => {
     browser.wait(EC.visibilityOf(country));
     browser.wait(EC.visibilityOf(photosIcon.last()));
     browser.wait(EC.visibilityOf(homesIcon.last()));
@@ -50,32 +49,21 @@ describe('Photographers Page ', function() {
     expect(photosIcon.last().isDisplayed()).toBe(true);
     expect(homesIcon.last().isDisplayed()).toBe(true);
   });
-  /*it('test input bulgaria', function(){
-   searchField.sendKeys('bulgaria\n');
-   browser.wait(EC.visibilityOf(photographerPortreit), TIMEOUT, photographerMessage);
-   });
-   it('test input error data', function(){
-   searchField.sendKeys('lalala\n');
-   expect(numPhotographers.count()).toBe(0);
-   });*/
-  // Check quantity of photographers and countries
-
-  it ('Countries', function(){
+  it ('Countries', () => {
     browser.get('/photographers');
-    var countries = element.all(by.css('.photographer-country'));
+    let countries = element.all(by.css('.photographer-country'));
     browser.wait(isClickableLastPhotographerLink, 10000);
-    expect(countries.count()).toBe(43);
-    expect(numPhotographers.count()).toBe(64);
+    expect(countries.count()).toBe(46);
+    expect(numPhotographers.count()).toBe(67);
   });
-
-  afterAll(function () {
-    var footerLogo = element(by.css('p[class^="logo_name"]'));
-    var footerGapminder = element(by.css('p[class^="logo_name"]+p'));
-    var footerFacebookIcon = element(by.css('div[class="footer"] div[class*="facebook"]'));
-    var footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
-    var footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
-    var footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
-    var footerCreativeCommons = element(by.css('.col-md-3.col-sm-3.f-creative-commons>a>img'));
+  it('Check footer', () => {
+    let footerLogo = element(by.css('p[class^="logo_name"]'));
+    let footerGapminder = element(by.css('p[class^="logo_name"]+p'));
+    let footerFacebookIcon = element(by.css('div[class="footer"] div[class*="facebook"]'));
+    let footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
+    let footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
+    let footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
+    let footerCreativeCommons = element(by.css('.col-md-3.col-sm-3.f-creative-commons>a>img'));
     expect(footerLogo.getText()).toEqual('DOLLAR STREET');
     expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
     expect(footerFacebookIcon.isDisplayed()).toBe(true);

@@ -6,6 +6,7 @@ exports.config = {
 
   specs: [
     path.resolve(cwd)+'/test-e2e/**/*.e2e.ts'
+  //  path.resolve(cwd)+'/test-e2e/app/ambassador/ambassadors.page.e2e.ts'
   ],
   exclude: [],
 
