@@ -1,7 +1,8 @@
 # Test coverage
-
+[![Build Status](https://travis-ci.org/Gapminder/dollar-street-pages.svg?branch=development)](https://travis-ci.org/Gapminder/dollar-street-pages)
 [![codecov.io](https://codecov.io/github/Gapminder/dollar-street-pages/coverage.svg?branch=development)](https://codecov.io/github/Gapminder/dollar-street-pages?branch=development)
-
+[![Dependency Status](https://david-dm.org/Gapminder/dollar-street-pages.svg)](https://david-dm.org/Gapminder/dollar-street-pages)
+[![devDependency Status](https://david-dm.org/Gapminder/dollar-street-pages/dev-status.svg)](https://david-dm.org/Gapminder/dollar-street-pages#info=devDependencies)
 
 # DS Consumer
 
