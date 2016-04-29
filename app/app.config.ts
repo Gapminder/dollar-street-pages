@@ -1,4 +1,4 @@
-import {MainComponent} from './main/main.component';
+import {FirstComponent} from './first/first.component';
 import {MatrixComponent} from './matrix/matrix.component';
 import {PlaceComponent} from './place/place.component';
 import {MapComponent} from './map/map.component';
@@ -15,14 +15,14 @@ export module config {
   //export let api = 'http://192.168.1.81';
 
   export let routes = [{
-    path: '/sitemap',
-    name: 'Sitemap',
-    component: SitemapComponent,
-    useAsDefault: true
-  }, {
     path: '/main',
     name: 'Main',
-    component: MainComponent
+    component: FirstComponent,
+    useAsDefault: true
+  }, {
+    path: '/sitemap',
+    name: 'Sitemap',
+    component: SitemapComponent
   }, {
     path: '/matrix',
     name: 'Matrix',
