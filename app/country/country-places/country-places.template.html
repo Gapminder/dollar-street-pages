@@ -21,11 +21,12 @@
 
         <div class="place-country">
           <p>
-            <img *ngIf="country.region === 'Africa'" src="/assets/img/africa.svg" alt="">
-            <img *ngIf="country.region === 'Europe'" src="/assets/img/europe.svg" alt="">
-            <img *ngIf="country.region === 'Asia'" src="/assets/img/asia.svg" alt="">
-            <img *ngIf="country.region === 'America'" src="/assets/img/america.svg" alt="">
-            <span>{{country.alias || country.country}}</span>
+            <!--<img *ngIf="country.region === 'Africa'" src="/assets/img/africa.svg" alt="">-->
+            <!--<img *ngIf="country.region === 'Europe'" src="/assets/img/europe.svg" alt="">-->
+            <!--<img *ngIf="country.region === 'Asia'" src="/assets/img/asia.svg" alt="">-->
+            <!--<img *ngIf="country.region === 'America'" src="/assets/img/america.svg" alt="">-->
+            <!--<span>{{country.alias || country.country}}</span>-->
+            <i class="fa fa-camera"></i><span>{{place.imagesCount || 0}}</span>
           </p>
         </div>
       </div>

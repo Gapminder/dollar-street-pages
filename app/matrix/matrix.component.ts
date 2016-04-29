@@ -137,9 +137,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
     }
 
     let clonePlaces = _.cloneDeep(this.placesArr);
-
     if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
-      this.chosenPlaces.next(clonePlaces.splice(row * this.zoom, this.zoom * this.visiblePlaces));
+      this.chosenPlaces.next(clonePlaces.splice(this.row * this.zoom, this.zoom * this.visiblePlaces));
     }
   }
 
@@ -177,10 +176,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
     let windowInnerHeight = window.innerHeight;
     let viewable = windowInnerHeight - headerHeight;
     let distance = viewable / (this.imageHeight + 2 * this.imageMargin);
-
     let rest = distance % 1;
     let row = distance - rest;
-
     if (rest >= 0.65) {
       row++;
     }

@@ -1,9 +1,9 @@
-<header [title]="title"></header>
+<header [title]="title" [subTitle]="subTitle"></header>
 
 <div class="container">
   <div class="row">
     <div class="col-md-2">
-      <photographer-profile [photographerId]="photographerId"></photographer-profile>
+      <photographer-profile [photographerId]="photographerId" (getPhotographer)="subTitle=$event"></photographer-profile>
     </div>
 
     <div class="col-md-10">

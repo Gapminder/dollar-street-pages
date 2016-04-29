@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 import {Subject} from 'rxjs/Subject';
@@ -26,6 +26,8 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private photosQantity:any;
   private videosQantity:any;
   private hoverPlace:Subject<any> = new Subject();
+  @Output()
+  private getCountry:EventEmitter<any> = new EventEmitter();
 
   constructor(@Inject('CountryInfoService') countryInfoService) {
     this.countryInfoService = countryInfoService;
@@ -38,6 +40,8 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
           return res.err;
         }
         this.country = res.data.country;
+        let country = this.country.alias || this.country.country;
+        this.getCountry.emit(country);
         this.hoverPlace.next(res.data.country);
         this.thing = res.data.thing;
         this.placesQantity = res.data.places;

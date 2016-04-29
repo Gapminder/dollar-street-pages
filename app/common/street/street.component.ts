@@ -100,8 +100,12 @@ export class StreetComponent implements OnInit, OnDestroy {
             .chain(this.street.places)
             .sortBy('income')
             .map((place:any) => {
+              if (!place) {
+                return null;
+              }
               return this.street.scale(place.income);
-            }).value());
+            })
+            .value());
       });
 
     this.resize = Observable
@@ -133,7 +137,6 @@ export class StreetComponent implements OnInit, OnDestroy {
     if (!isDesktop) {
       return;
     }
-
     this.street.onSvgHover(e.clientX, (options) => {
       let {places, left} = options;
       this.isThumbView = true;

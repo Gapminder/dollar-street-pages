@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Input, Inject, Output, EventEmitter} from 'angular2/core';
 import {RouterLink} from 'angular2/router';
 
 let tpl = require('./photographer-profile.template.html');
@@ -14,6 +14,8 @@ let style = require('./photographer-profile.css');
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
   @Input()
   private photographerId:string;
+  @Output()
+  private getPhotographer:EventEmitter<any> = new EventEmitter();
 
   private photographer:any = {};
   private photographerProfileService:any;
@@ -34,6 +36,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
         }
 
         this.photographer = res.data;
+        this.getPhotographer.emit(`${this.photographer.firstName} ${this.photographer.lastName}`);
       });
   }
 

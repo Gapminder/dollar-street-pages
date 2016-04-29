@@ -50,6 +50,7 @@ export class RowLoaderComponent implements OnChanges {
   }
 
   isUploadItem(item:number) {
+
     if (item > this.cloneItems.length - 1) {
       this.isShow = false;
 
@@ -57,7 +58,13 @@ export class RowLoaderComponent implements OnChanges {
     }
 
     let image = this.cloneItems[item];
-
+    if (!image) {
+      this.zone.run(() => {
+        this.item = item + 1;
+        this.isUploadItem(this.item);
+      });
+      return;
+    }
     let img = new Image();
 
     img.onload = () => {

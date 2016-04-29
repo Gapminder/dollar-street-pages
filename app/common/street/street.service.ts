@@ -105,11 +105,24 @@ export class StreetDrawService {
         .append('rect')
         .attr('class', 'point')
         .attr('x', (d) => {
+          if (!d) {
+            return 0;
+          }
           return this.scale(d.income) - 4;
         })
         .attr('y', this.halfOfHeight - 11)
-        .attr('width', 8)
-        .attr('height', 7)
+        .attr('width', (d) => {
+          if (!d) {
+            return 0;
+          }
+          return 8;
+        })
+        .attr('height', (d) => {
+          if (!d) {
+            return 0;
+          }
+          return 7;
+        })
         .style('fill', '#cfd2d6')
         .style('opacity', '0.7');
     }
@@ -179,6 +192,7 @@ export class StreetDrawService {
   };
 
   protected hoverOnScalePoint(d, cb):void {
+
     if (!d) {
       return;
     }
@@ -189,9 +203,11 @@ export class StreetDrawService {
       .removeHouses('hover');
 
     let places = _.filter(this.places, (place:any) => {
+      if (!place) {
+        return false;
+      }
       return place.income === d.income;
     });
-
     if (places.length === 1) {
       this.set('hoverPlace', places[0])
         .drawHoverHouse(places[0]);
