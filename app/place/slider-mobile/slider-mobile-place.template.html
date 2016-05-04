@@ -49,7 +49,9 @@
         <span [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
           « All {{activeThing.plural}}
         </span>
-        <h2><span>{{chosenPlace.income}}$</span> The {{chosenPlace.familyName}} in {{chosenPlace.country}}</h2>
+        <h2><span>{{chosenPlace.income}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="chosenPlace.aboutData"
+                                               (click)="showInfo()"></span> {{chosenPlace.familyName}}
+          {{chosenPlace.familyName ? 'family' : ''}} in {{chosenPlace.country}}</h2>
       </div>
 
       <div class="slider-mobile-family-map">

@@ -46,8 +46,10 @@
             </div>
           </div>
           <h2>
-            <span>{{image.income}}$</span> {{image.familyName}} {{image.familyName ? 'family' : ''}} in
-            {{image.country}}
+            <span>{{image.income}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="image.aboutData"
+                                         (click)="showInfo()"></span>
+            {{image.familyName}} {{image.familyName ?
+            'family' : ''}} in {{image.country}}
           </h2>
 
           <p *ngIf="image.familyInfoSummary">{{image.familyInfoSummary}}</p>
