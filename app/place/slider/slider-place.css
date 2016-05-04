@@ -249,3 +249,11 @@
   width: 15px;
   height: 15px;
 }
+
+.slide-description h2 span img {
+  width: 18px;
+  margin-top: -30px;
+  margin-left: -7px;
+  margin-right: 7px;
+  cursor: pointer;
+}

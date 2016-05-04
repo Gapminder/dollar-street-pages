@@ -25,6 +25,8 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
 
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
+  @Output('isShowAboutData')
+  private isShowAboutData:EventEmitter<any> = new EventEmitter();
 
   public allPlaces:any = [];
   public images:any = [];
@@ -44,6 +46,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private zone:NgZone;
   private resizeSubscribe:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
+  private showAboutData:boolean;
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(ElementRef) elementRef,
@@ -111,6 +114,10 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     };
 
     img.src = startImage.background;
+  }
+
+  protected showInfo():void {
+    this.isShowAboutData.emit(true);
   }
 
   protected resizeSlider() {
