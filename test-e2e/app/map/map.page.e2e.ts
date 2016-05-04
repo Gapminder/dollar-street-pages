@@ -1,7 +1,7 @@
 'use strict';
 describe('Map Page ', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
-  const mapImg = element(by.css('.map-color'));
+  const mapImg = $('.map-color');
   const messageAboutMap = 'Map is not loaded';
   const country = element.all(by.css('span[class*="country-name"]'));
   const EC = protractor.ExpectedConditions;
@@ -39,17 +39,17 @@ describe('Map Page ', () => {
     expect(elem.getText()).toEqual('Rwanda');
   });
   it ('Check sub-title Home on the World map', () => {
-    let elem = element(by.css('div[class*="search-text"]>span'));
+    let elem = $('div[class*="search-text"]>span');
     expect(elem.getText()).toEqual('Home on the World map');
   });
   it('Check footer', () => {
-    let footerLogo = element(by.css('p[class^="logo_name"]'));
-    let footerGapminder = element(by.css('p[class^="logo_name"]+p'));
-    let footerFacebookIcon = element(by.css('div[class="footer"] div[class*="facebook"]'));
-    let footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
-    let footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
-    let footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
-    let footerCreativeCommons = element(by.css('.col-md-3.col-sm-3.f-creative-commons>a>img'));
+    let footerLogo = $('p[class^="logo_name"]');
+    let footerGapminder = $('p[class^="logo_name"]+p');
+    let footerFacebookIcon = $('div[class="footer"] div[class*="facebook"]');
+    let footerTwitterIcon = $('div[class="footer"] div[class*="twitter"]');
+    let footerGoogleIcon = $('div[class="footer"] div[class*="google"]');
+    let footerLinkedinIcon = $('div[class="footer"] div[class*="linkedin"]');
+    let footerCreativeCommons = $('.col-md-3.col-sm-3.f-creative-commons>a>img');
     expect(footerLogo.getText()).toEqual('DOLLAR STREET');
     expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
     expect(footerFacebookIcon.isDisplayed()).toBe(true);

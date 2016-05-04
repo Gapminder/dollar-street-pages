@@ -1,63 +1,60 @@
 'use strict';
 describe('Main Page test', () => {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
-  const frontDoors = element.all(by.css('.concept_things_menu>ul>li>span')).get(0);
-  const homes = element.all(by.css('.concept_things_menu>ul>li>span')).get(1);
-  const sofas = element.all(by.css('.concept_things_menu>ul>li>span')).get(2);
-  const stoves = element.all(by.css('.concept_things_menu>ul>li>span')).get(3);
-  const toilets = element.all(by.css('.concept_things_menu>ul>li>span')).get(4);
-  const seeAll = element(by.css('#concept a'));
-  const allFamilies = element(by.css('#places a'));
-  const acrossTheWorld = element(by.css('.concept-header-thing-title.pull-right>p'));
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+  const homesInHeader = $('div[class*="menu"]>a[href*="matrix"]');
+  const mapInHeader = $('div[class*="menu"]>a[href^="/map"]');
+  const photographersInHeader = $('div[class*="menu"]>a[href*="photographers"]');
+  const ambassadorsInHeader = $('div[class*="menu"]>a[href*="ambassadors"]');
+  const sitemapInHeader = $('div[class*="menu"]>a[href*="sitemap"]');
   const EC = protractor.ExpectedConditions;
   const TIMEOUT = 20000;
   browser.manage().window().maximize();
   browser.manage().timeouts().pageLoadTimeout(75000);
-  /* Click on every page on Main Page
-   * Check every sub-menu: Front doors, homes, sofas, stoves, toilets
-   * Check sub-header of every sub-menu: Front doors across the World
-   * Check link See all of every sub-menu
-   * Check link All Families*/
-  afterEach(() => {
-    browser.wait(EC.visibilityOf(acrossTheWorld));
-    browser.wait(EC.visibilityOf(allFamilies));
-  });
-  it('CheckAndOpenFrontDoors', () => {
+  browser.ignoreSynchronization = true;
+
+  beforeAll(() => {
     browser.get('/main');
-    browser.sleep(4000);
-    browser.wait(EC.visibilityOf(frontDoors), TIMEOUT, 'Element FrontDors on MainPage is not visible');
-    browser.wait(EC.visibilityOf(homes), TIMEOUT, 'Element Homes on MainPage is not visible');
-    browser.wait(EC.visibilityOf(sofas), TIMEOUT, 'Element Sofas on MainPage is not visible');
-    browser.wait(EC.visibilityOf(stoves), TIMEOUT, 'Element Stoves on MainPage is not visible');
-    browser.wait(EC.visibilityOf(toilets), TIMEOUT, 'Element Toilets on MainPage is not visible');
-    frontDoors.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'See all on MainPage is not visible');
-    browser.wait(EC.visibilityOf(element(by.css('.concept-header-thing-title.pull-right>p'))));
+    browser.sleep(2000);
   });
-  it('CheckAndOpenHomes', () => {
-    homes.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'See all on MainPage is not visible');
+  it ('Check the Link Texts on Header', () => {
+    expect(homesInHeader.getText()).toEqual('Homes');
+    expect(mapInHeader.getText()).toEqual('Map');
+    expect(photographersInHeader.getText()).toEqual('Photographers');
+    expect(ambassadorsInHeader.getText()).toEqual('Ambassadors');
+    expect(sitemapInHeader.getText()).toEqual('Sitemap');
   });
-  it('CheckAndOpenSofas', () => {
-    sofas.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Sofas on MainPage is not loaded');
+  it ('Check social icons on the header', () => {
+    let facebookIconHeader = $('div[class*="header"] .fa.fa-facebook');
+    let twitterIconHeader = $('div[class*="header"] .fa.fa-twitter');
+    let googleIconHeader = $('div[class*="header"] .fa.fa-google-plus');
+    let linkedinIconHeader = $('div[class*="header"] .fa.fa-linkedin');
+    expect(facebookIconHeader.isDisplayed()).toBe(true);
+    expect(twitterIconHeader.isDisplayed()).toBe(true);
+    expect(googleIconHeader.isDisplayed()).toBe(true);
+    expect(linkedinIconHeader.isDisplayed()).toBe(true);
   });
-  it('CheckAndOpenStoves', () => {
-    stoves.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Stoves on MainPage is not loaded');
+  it ('Check sub-headers', () => {
+    let welcome = $('div[class*="welcome-header"]>h1');
+    expect(welcome.getText()).toEqual('Welcome to Dollar Street');
+    let about = $('div[class*="about-header"]>h2');
+    expect(about.getText()).toEqual('ABOUT');
+    let similarities = $('div[class*="similarities"]>h2');
+    expect(similarities.getText()).toEqual('SIMILARITIES');
   });
-  it('CheckAndOpenToilets', () => {
-    toilets.click();
-    browser.wait(EC.visibilityOf(seeAll), TIMEOUT, 'Toilets on MainPage is not loaded');
+  it ('Check visibility images and videos', () => {
+    let wayWithHomes = $('.description.col-md-12>img');
+    expect(wayWithHomes.isDisplayed()).toBe(true);
+    let video = $('.video-content>p');
+    expect(video.isDisplayed()).toBe(true);
   });
-  it('Check footer', () => {
-    let footerLogo = element(by.css('p[class^="logo_name"]'));
-    let footerGapminder = element(by.css('p[class^="logo_name"]+p'));
-    let footerFacebookIcon = element(by.css('div[class="footer"] div[class*="facebook"]'));
-    let footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
-    let footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
-    let footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
-    let footerCreativeCommons = element(by.css('.col-md-3.col-sm-3.f-creative-commons>a>img'));
+  it ('Check footer', () => {
+    let footerLogo = $('p[class^="logo_name"]');
+    let footerGapminder = $('p[class^="logo_name"]+p');
+    let footerFacebookIcon = $('div[class="footer"] div[class*="facebook"]');
+    let footerTwitterIcon = $('div[class="footer"] div[class*="twitter"]');
+    let footerGoogleIcon = $('div[class="footer"] div[class*="google"]');
+    let footerLinkedinIcon = $('div[class="footer"] div[class*="linkedin"]');
+    let footerCreativeCommons = $('.col-md-3.col-sm-3.f-creative-commons>a>img');
     expect(footerLogo.getText()).toEqual('DOLLAR STREET');
     expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
     expect(footerFacebookIcon.isDisplayed()).toBe(true);

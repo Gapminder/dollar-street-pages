@@ -1,10 +1,10 @@
 'use strict';
 describe('Ambassador PAge', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
-    const lastOgranization = element(by.css('.ambassadors-organization.show>img'));
-    const headerH2 = element(by.css('h2[class="heading"]'));
-    const logoHeader = element(by.css('.logo.pull-left>img'));
-    const menuHeader = element(by.css('.menu-icon'));
+    const lastOgranization = $('.ambassadors-organization.show>img');
+    const headerH2 = $('h2[class="heading"]');
+    const logoHeader = $('.logo.pull-left>img');
+    const menuHeader = $('.menu-icon');
     const contentH2 = element.all(by.css('div[class="ambassadors-peoples"] > h2'));
     const ambassadorsPeopleIMG = element.all(by.css('.ambassadors-people>img'));
     const ambassadorsPeopleNames = element.all(by.css('.name'));
@@ -35,13 +35,13 @@ describe('Ambassador PAge', () => {
         expect(ambassadorsOrganizationsIMG.count()).toBe(8);
     });
     it ('Check footer', () => {
-      let footerLogo = element(by.css('p[class^="logo_name"]'));
-      let footerGapminder = element(by.css('p[class^="logo_name"]+p'));
-      let footerFacebookIcon = element(by.css('div[class="footer"] div[class*="facebook"]'));
-      let footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
-      let footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
-      let footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
-      let footerCreativeCommons = element(by.css('.col-md-3.col-sm-3.f-creative-commons>a>img'));
+      let footerLogo = $('p[class^="logo_name"]');
+      let footerGapminder = $('p[class^="logo_name"]+p');
+      let footerFacebookIcon = $('div[class="footer"] div[class*="facebook"]');
+      let footerTwitterIcon = $('div[class="footer"] div[class*="twitter"]');
+      let footerGoogleIcon = $('div[class="footer"] div[class*="google"]');
+      let footerLinkedinIcon = $('div[class="footer"] div[class*="linkedin"]');
+      let footerCreativeCommons = $('.col-md-3.col-sm-3.f-creative-commons>a>img');
         expect(footerLogo.getText()).toEqual('DOLLAR STREET');
         expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
         expect(footerFacebookIcon.isDisplayed()).toBe(true);

@@ -1,16 +1,16 @@
 'use strict';
 describe('Photographers Page ', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
-  const searchField = element(by.css('#search'));
+  const searchField = $('#search');
   const numPhotographers = element.all(by.css('.photographers-list>li'));
   const EC = protractor.ExpectedConditions;
   const TIMEOUT = 10000;
-  const zorianMiller = element(by.css('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]'));
+  const zorianMiller = $('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]');
   const message = 'Zorian Miller on PhotographersPage is not loaded';
-  const photographerPortreit = element(by.css('.photographer-portrait'));
+  const photographerPortreit = $('.photographer-portrait');
   const photographerMessage = 'Photographer portrait is not loaded';
   const isClickableLastPhotographerLink = EC.elementToBeClickable(zorianMiller);
-  const country = element(by.css('.country-card>div>span'));
+  const country = $('.country-card>div>span');
   const photosIcon = element.all(by.css('.photographer-material>span>i[class*="fa-camera"]'));
   const homesIcon = element.all(by.css('.photographer-material>span>img'));
   browser.manage().window().maximize();
@@ -22,7 +22,7 @@ describe('Photographers Page ', () => {
     browser.wait(EC.visibilityOf(zorianMiller), TIMEOUT, message);
   });
   beforeEach(() => {
-    browser.wait(EC.invisibilityOf(element(by.css('.loader>img'))));
+    browser.wait(EC.invisibilityOf($('.loader>img')));
   });
   /* Enter query to Search field
    * Check visibility of photographers
@@ -54,16 +54,16 @@ describe('Photographers Page ', () => {
     let countries = element.all(by.css('.photographer-country'));
     browser.wait(isClickableLastPhotographerLink, 10000);
     expect(countries.count()).toBe(46);
-    expect(numPhotographers.count()).toBe(67);
+    expect(numPhotographers.count()).toBe(66);
   });
   it('Check footer', () => {
-    let footerLogo = element(by.css('p[class^="logo_name"]'));
-    let footerGapminder = element(by.css('p[class^="logo_name"]+p'));
-    let footerFacebookIcon = element(by.css('div[class="footer"] div[class*="facebook"]'));
-    let footerTwitterIcon = element(by.css('div[class="footer"] div[class*="twitter"]'));
-    let footerGoogleIcon = element(by.css('div[class="footer"] div[class*="google"]'));
-    let footerLinkedinIcon = element(by.css('div[class="footer"] div[class*="linkedin"]'));
-    let footerCreativeCommons = element(by.css('.col-md-3.col-sm-3.f-creative-commons>a>img'));
+    let footerLogo = $('p[class^="logo_name"]');
+    let footerGapminder = $('p[class^="logo_name"]+p');
+    let footerFacebookIcon = $('div[class="footer"] div[class*="facebook"]');
+    let footerTwitterIcon = $('div[class="footer"] div[class*="twitter"]');
+    let footerGoogleIcon = $('div[class="footer"] div[class*="google"]');
+    let footerLinkedinIcon = $('div[class="footer"] div[class*="linkedin"]');
+    let footerCreativeCommons = $('.col-md-3.col-sm-3.f-creative-commons>a>img');
     expect(footerLogo.getText()).toEqual('DOLLAR STREET');
     expect(footerGapminder.getText()).toEqual('Powered by Gapminder');
     expect(footerFacebookIcon.isDisplayed()).toBe(true);
