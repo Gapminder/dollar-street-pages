@@ -53,8 +53,8 @@ describe('Photographers Page ', () => {
     browser.get('/photographers');
     let countries = element.all(by.css('.photographer-country'));
     browser.wait(isClickableLastPhotographerLink, 10000);
-    expect(countries.count()).toBe(46);
-    expect(numPhotographers.count()).toBe(66);
+    expect(countries.count()).toBe(43);
+    expect(numPhotographers.count()).toBe(64);
   });
   it('Check footer', () => {
     let footerLogo = $('p[class^="logo_name"]');

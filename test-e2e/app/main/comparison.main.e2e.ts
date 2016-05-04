@@ -14,7 +14,7 @@ describe('Main Page test', () => {
 
   beforeAll(() => {
     browser.get('/main');
-    browser.sleep(2000);
+    browser.sleep(3500);
   });
   it ('Check the Link Texts on Header', () => {
     expect(homesInHeader.getText()).toEqual('Homes');
