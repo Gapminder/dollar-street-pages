@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {PhotographersComponent} from './photographers/photographers.component';

@@ -1,5 +1,5 @@
-import {Component, Input, Output, Inject, OnInit, OnDestroy, EventEmitter} from 'angular2/core';
-import {RouterLink, Router} from 'angular2/router';
+import {Component, Input, Output, Inject, OnInit, OnDestroy, EventEmitter} from '@angular/core';
+import {RouterLink, Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
 import {MainMenuComponent} from '../menu/menu.component';

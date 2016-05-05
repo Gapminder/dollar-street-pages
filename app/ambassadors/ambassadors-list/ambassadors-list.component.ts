@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from 'angular2/core';
+import {Component, OnInit, Inject} from '@angular/core';
 
 let tpl = require('./ambassadors-list.template.html');
 let style = require('./ambassadors-list.css');

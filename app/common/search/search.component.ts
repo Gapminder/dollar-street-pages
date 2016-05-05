@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from 'angular2/core';
-import {Router} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
 import {SearchFilter} from './thing-filter.pipe.ts';
@@ -57,13 +57,17 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   private header:any;
   private tab:number = 0;
   private init:boolean = true;
+  private math:any;
 
   private chosenPlacesSubscribe:any;
   private searchServiceSubscribe:any;
 
-  constructor(@Inject('SearchService') searchService, @Inject(Router) _router) {
+  constructor(@Inject('SearchService') searchService,
+              @Inject(Router) _router,
+              @Inject('Math') math) {
     this.searchService = searchService;
     this.router = _router;
+    this.math = math;
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     this.mapComponent = this.router.hostComponent.name === 'MapComponent';
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';

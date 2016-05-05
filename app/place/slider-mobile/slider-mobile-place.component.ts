@@ -1,7 +1,9 @@
-import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from 'angular2/core';
-import {RouterLink, RouteParams, Location} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from '@angular/core';
+import {RouterLink, RouteParams} from '@angular/router-deprecated';
+import {Location} from '@angular/common';
 import {Observable} from 'rxjs/Observable';
-import {ReplaySubject} from 'rxjs/subject/ReplaySubject';
+import {fromEvent} from 'rxjs/observable/fromEvent';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
@@ -42,17 +44,20 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private streetPlacesSubscribe:any;
   private touchSubscribe:any;
   private zone:NgZone;
+  private math:any;
   private resizeSubscribe:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(ElementRef) elementRef,
               @Inject(NgZone) zone,
+              @Inject('Math') math,
               @Inject(Location) location) {
     this.routeParams = routeParams;
     this.element = elementRef;
     this.location = location;
     this.zone = zone;
+    this.math = math;
   }
 
   ngOnInit():void {
@@ -68,8 +73,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
 
     this.swipe(sliderContainer);
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300).subscribe(() => {
         this.resizeSlider();
       });
@@ -209,8 +213,8 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let touchStart = Observable.fromEvent(sliderContainer, 'touchstart');
-    let touchEnd = Observable.fromEvent(sliderContainer, 'touchend');
+    let touchStart = fromEvent(sliderContainer, 'touchstart');
+    let touchEnd = fromEvent(sliderContainer, 'touchend');
 
     this.touchSubscribe = Observable
       .zip(touchStart, touchEnd, (touchStartRes:any, touchEndRes:any) => {
@@ -219,7 +223,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
 
         return {startX, endX};
       })
-      .subscribe((results) => {
+      .subscribe((results:any) => {
         let startX = results.startX;
         let endX = results.endX;
 

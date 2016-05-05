@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from 'angular2/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {AmbassadorsListComponent} from './ambassadors-list/ambassadors-list.component';
 import {FooterComponent} from '../common/footer/footer.component';

@@ -12,7 +12,7 @@
   </div>
   <div class="slider-container">
     <div class="slider-content">
-      <div class="slide" *ngFor="#image of images; #i=index">
+      <div class="slide" *ngFor="let image of images; #i=index">
         <div class="slide-content" [ngStyle]="sliderHeight">
           <div class="slide-wrapper">
             <div class="image" (click)="openPopUp(image)">
@@ -45,8 +45,12 @@
               </span>
             </div>
           </div>
+          <div class="slide-map pull-right">
+            <place-map [hoverPlace]="hoverPlace"  *ngIf="hoverPlace"
+                       [routerLink]="['Map', {thing: activeThing?._id}]"></place-map>
+          </div>
           <h2>
-            <span>{{image.income}}$</span> {{image.familyName}} {{image.familyName ? 'family' : ''}} in
+            <span>{{math.round(image.income)}}$</span> {{image.familyName}} {{image.familyName ? 'family' : ''}} in
             {{image.country}}
           </h2>
 

@@ -17,14 +17,12 @@
           <img class="map" src="/assets/img/mapa-index.png" alt="">
           <img class="marker"
                src="/assets/img/marker.png" alt="marker"
-               *ngFor="#place of places;#i=index"
+               *ngFor="let place of places;#i=index"
                [style.left.px]="place.left"
                [style.top.px]="place.top"
                (mouseenter)="hoverOnMarker(i)"
                (mouseleave)="unHoverOnMarker()"
-               [routerLink]="['Place', {thing: place.homeImg.thing,place:place._id, image: place.homeImg.imageId}]"
-               [angulartics2On]="'click'"
-               [angularticsEvent]="'go to place page from main (click on the map)'">
+               [routerLink]="['Place', {thing: place.homeImg.thing,place:place._id, image: place.homeImg.imageId}]">
           <div class="hover_portrait" [hidden]="!hoverPlace"
                [style.top.px]="hoverPortraitTop"
                [style.left.px]="hoverPortraitLeft">
@@ -50,12 +48,10 @@
 
       <div class="col-md-12 familyPortraits" *ngIf="places">
         <div class="portrait"
-             *ngFor="#place of places; #i=index"
+             *ngFor="let place of places; #i=index"
              (mouseenter)="hoverOnFamily(i)"
              (mouseleave)="unHoverOnFamily()"
-             [routerLink]="['Place', {thing: place.familyImg.thing,place:place._id,image:place.familyImg.imageId}]"
-             [angulartics2On]="'click'"
-             [angularticsEvent]="'go to place page from main (click on the map)'">
+             [routerLink]="['Place', {thing: place.familyImg.thing,place:place._id,image:place.familyImg.imageId}]">
           <img [src]="place.familyImg.background" alt="">
 
           <div class="description">

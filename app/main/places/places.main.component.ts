@@ -1,8 +1,6 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Inject, ElementRef} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Rx';
-
-import {Angulartics2On} from 'angulartics2/index';
 
 let tpl = require('./places.main.template.html');
 let style = require('./places.main.css');
@@ -14,7 +12,7 @@ const isDesktop = device.desktop();
   selector: 'places-main',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On]
+  directives: [RouterLink]
 })
 
 export class PlacesMainComponent implements OnInit, OnDestroy {
@@ -47,7 +45,7 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
         this.places = res.places;
         this.setMarkersCoord(this.places);
 
-        this.resizeSubscribe = Observable
+        this.resizeSubscribe = new Observable()
           .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {

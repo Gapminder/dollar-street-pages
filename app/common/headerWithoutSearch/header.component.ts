@@ -1,5 +1,5 @@
-import {Component, Inject, Input, OnInit, OnDestroy} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, Inject, Input, OnInit, OnDestroy} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 import {MainMenuComponent} from '../menu/menu.component';
 
 let tpl = require('./header.template.html');

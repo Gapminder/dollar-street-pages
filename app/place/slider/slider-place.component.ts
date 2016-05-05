@@ -1,10 +1,11 @@
-import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input, NgZone} from 'angular2/core';
-import {RouterLink, RouteParams, Location} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input, NgZone} from '@angular/core';
+import {RouterLink, RouteParams} from '@angular/router-deprecated';
+import {Location} from '@angular/common';
 import {Observable} from 'rxjs/Observable';
-import {NgStyle} from 'angular2/common';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
-import {ReplaySubject} from 'rxjs/subject/ReplaySubject';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 let $ = require('jquery');
 
@@ -19,7 +20,7 @@ let proportion = 2.24;
   selector: 'slider-place',
   template: tpl,
   styles: [style],
-  directives: [PlaceMapComponent, RouterLink, NgStyle]
+  directives: [PlaceMapComponent, RouterLink]
 })
 
 export class SliderPlaceComponent implements OnInit, OnDestroy {
@@ -51,14 +52,17 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private resizeSubscibe:any;
   private keyUpSubscribe:any;
   private zone:NgZone;
+  private math:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(Location) location,
-              @Inject(NgZone) zone) {
+              @Inject(NgZone) zone,
+              @Inject('Math') math) {
     this.routeParams = routeParams;
     this.location = location;
     this.zone = zone;
+    this.math = math;
   }
 
   ngOnInit():void {
@@ -71,8 +75,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
         this.init();
       });
 
-    this.keyUpSubscribe = Observable
-      .fromEvent(document, 'keyup')
+    this.keyUpSubscribe = fromEvent(document, 'keyup')
       .subscribe((e:KeyboardEvent) => {
         if (this.popIsOpen) {
           return;
@@ -92,8 +95,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
         this.init(i);
       });
 
-    this.resizeSubscibe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscibe = fromEvent(window, 'resize')
       .debounceTime(300).subscribe(() => {
         this.zone.run(() => {
           this.resizeSlider();

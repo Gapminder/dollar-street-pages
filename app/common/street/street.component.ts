@@ -1,6 +1,7 @@
-import {Component, OnInit, Input, ElementRef, Inject, OnDestroy} from 'angular2/core';
-import {RouterLink, Router} from 'angular2/router';
+import {Component, OnInit, Input, ElementRef, Inject, OnDestroy} from '@angular/core';
+import {RouterLink, Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 import {Subject} from 'rxjs/Subject';
 
 const _ = require('lodash');
@@ -47,12 +48,15 @@ export class StreetComponent implements OnInit, OnDestroy {
   private hoverPlaceSubscribe:any;
   private chosenPlacesSubscribe:any;
   private hoverHeaderSubscribe:any;
+  private math:any;
 
   constructor(@Inject(ElementRef) element,
               @Inject(Router)  router,
+              @Inject('Math')  math,
               @Inject('StreetDrawService')  streetDrawService) {
     this.element = element.nativeElement;
     this.router = router;
+    this.math = math;
     this.street = streetDrawService;
   }
 
@@ -108,8 +112,7 @@ export class StreetComponent implements OnInit, OnDestroy {
             .value());
       });
 
-    this.resize = Observable
-      .fromEvent(window, 'resize')
+    this.resize = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.street

@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';

@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Inject, Output, EventEmitter} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Inject, Output, EventEmitter} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 let tpl = require('./photographer-profile.template.html');
 let style = require('./photographer-profile.css');

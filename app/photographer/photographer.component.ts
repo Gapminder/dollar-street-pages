@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit, Inject} from '@angular/core';
+import {RouteParams} from '@angular/router-deprecated';
 
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {PhotographerProfileComponent} from './photographer-profile/photographer-profile.component';

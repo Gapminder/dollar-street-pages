@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
-import {Location} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {Location} from '@angular/common';
 
 let tpl = require('./social-share-buttons.html');
 let style = require('./social-share-buttons.css');

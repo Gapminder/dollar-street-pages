@@ -1,8 +1,7 @@
-import {Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDestroy, OnChanges} from 'angular2/core';
-import {Router} from 'angular2/router';
+import {Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDestroy, OnChanges} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
-import {Angulartics2On} from 'angulartics2/index';
 
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
 
@@ -16,7 +15,7 @@ let style = require('./matrix-images.css');
   selector: 'matrix-images',
   template: tpl,
   styles: [style],
-  directives: [Angulartics2On, RowLoaderComponent]
+  directives: [RowLoaderComponent]
 })
 
 export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
@@ -37,11 +36,14 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private element:HTMLElement;
   private placesSubscribe:any;
   private itemSize:number;
+  private math:any;
 
   constructor(@Inject(ElementRef) element,
-              @Inject(Router) router) {
+              @Inject(Router) router,
+              @Inject('Math') math) {
     this.element = element.nativeElement;
     this.router = router;
+    this.math = math;
   }
 
   ngOnInit():any {

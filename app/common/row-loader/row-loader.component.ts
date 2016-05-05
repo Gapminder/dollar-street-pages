@@ -1,4 +1,4 @@
-import {Component, Input, Inject, NgZone, OnChanges} from 'angular2/core';
+import {Component, Input, Inject, NgZone, OnChanges} from '@angular/core';
 
 let _ = require('lodash');
 let tpl = require('./row-loader.template.html');

@@ -1,7 +1,5 @@
-import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
-
-import {Angulartics2On} from 'angulartics2/index';
+import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 import {PhotographersFilter} from './photographers-filter.pipe.ts';
 import {LoaderComponent} from '../../common/loader/loader.component';
@@ -13,7 +11,7 @@ let style = require('./photographers.css');
   selector: 'photographers-list',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On, LoaderComponent],
+  directives: [RouterLink, LoaderComponent],
   pipes: [PhotographersFilter]
 })
 

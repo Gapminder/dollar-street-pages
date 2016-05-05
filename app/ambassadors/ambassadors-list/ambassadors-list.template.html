@@ -1,10 +1,10 @@
 <div class="ambassadors container">
 
-  <div class="ambassadors-peoples" *ngFor="#ambassadors of ambassadorsList; #i = index; #l = last;">
+  <div class="ambassadors-peoples" *ngFor="let ambassadors of ambassadorsList; let i = index; letl = last;">
     <h2>{{ambassadors.position}}</h2>
 
     <div class="ambassadors-people-box">
-      <div *ngFor="#ambassador of ambassadors.ambassadors"
+      <div *ngFor="let ambassador of ambassadors.ambassadors"
            [ngClass]="!l ? {'ambassadors-people': true, show: i === showedBlock}:
            {'ambassadors-organization show': true}">
         <img [src]="ambassador.img" alt="">

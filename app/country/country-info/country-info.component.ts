@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 import {Subject} from 'rxjs/Subject';
 

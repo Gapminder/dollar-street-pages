@@ -1,5 +1,5 @@
-import {Component, OnChanges, Input, Inject} from 'angular2/core';
-import {Router, RouterLink} from 'angular2/router';
+import {Component, OnChanges, Input, Inject} from '@angular/core';
+import {Router, RouterLink} from '@angular/router-deprecated';
 
 import {SocialShareButtons} from '../social_share_buttons/social-share-buttons.component.ts';
 

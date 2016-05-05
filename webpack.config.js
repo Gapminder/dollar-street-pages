@@ -1,5 +1,6 @@
 /*eslint no-process-env:0, camelcase:0*/
 'use strict';
+const helpers = require('./helpers');
 
 const path = require('path');
 const webpack = require('webpack');
@@ -30,15 +31,9 @@ const config = {
   },
 
   entry: {
-    angular2: [
-      'angular2/bundles/angular2-polyfills',
-      'rxjs',
-      'es6-shim',
-      'angular2/platform/browser',
-      'angular2/common',
-      'angular2/core'
-    ],
-    app: 'app'
+    'polyfills': './app/polyfills.ts',
+    'vendor': './app/vendor.ts',
+    'app': './app/boot.ts'
   },
 
   output: {
@@ -91,15 +86,16 @@ const config = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'angular2',
-      minChunks: Infinity,
-      filename: 'angular2.js'
+      name: helpers.reverse(['polyfills', 'vendor'])
     }),
     // static assets
     //new CopyWebpackPlugin([{from: 'demo/favicon.ico', to: 'favicon.ico'}]),
     new CopyWebpackPlugin([{from: 'app/assets', to: 'assets'}]),
     // generating html
-    new HtmlWebpackPlugin({template: 'app/index.html'})
+    new HtmlWebpackPlugin({
+      template: 'app/index.html',
+      chunksSortMode: helpers.packageSort(['polyfills', 'vendor', 'main'])
+    })
   ]
 };
 

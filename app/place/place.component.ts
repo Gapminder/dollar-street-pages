@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit, OnDestroy, NgZone} from 'angular2/core';
-import {RouteParams, RouterLink} from 'angular2/router';
+import {Component, Inject, OnInit, OnDestroy, NgZone} from '@angular/core';
+import {RouteParams, RouterLink} from '@angular/router-deprecated';
 import {Subject} from 'rxjs/Subject';
 
 import {FooterComponent} from '../common/footer/footer.component';

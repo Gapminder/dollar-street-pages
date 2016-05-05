@@ -1,7 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
-
-import {Angulartics2On} from 'angulartics2/index';
+import {Component, OnInit, OnDestroy, Input, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 import {LoaderComponent} from '../../common/loader/loader.component';
 
@@ -12,7 +10,7 @@ let style = require('./country-places.css');
   selector: 'country-places',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On, LoaderComponent]
+  directives: [RouterLink, LoaderComponent]
 })
 
 export class CountryPlacesComponent implements OnInit, OnDestroy {
@@ -24,9 +22,12 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   private countryPlacesService:any;
   public loader:boolean = false;
   public countryPlacesServiceSubscribe:any;
+  public math:any;
 
-  constructor(@Inject('CountryPlacesService') countryPlacesService) {
+  constructor(@Inject('CountryPlacesService') countryPlacesService,
+              @Inject('Math') math) {
     this.countryPlacesService = countryPlacesService;
+    this.math = math;
   }
 
   ngOnInit():void {

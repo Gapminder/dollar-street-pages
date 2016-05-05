@@ -1,5 +1,4 @@
-import {Component, OnInit, Input, Inject, ElementRef, NgZone} from 'angular2/core';
-import {NgStyle} from 'angular2/common';
+import {Component, OnInit, Input, Inject, ElementRef, NgZone} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
 let tpl = require('./place-map.template.html');
@@ -8,8 +7,7 @@ let style = require('./place-map.css');
 @Component({
   selector: 'place-map',
   template: tpl,
-  styles: [style],
-  directives: [NgStyle]
+  styles: [style]
 })
 
 export class PlaceMapComponent implements OnInit {

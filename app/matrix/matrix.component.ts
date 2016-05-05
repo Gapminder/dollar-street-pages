@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject, ElementRef, OnDestroy} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit, Inject, ElementRef, OnDestroy} from '@angular/core';
+import {RouteParams} from '@angular/router-deprecated';
 import {Subject} from 'rxjs/Subject';
 
 import {MatrixImagesComponent} from './matrix-images/matrix-images.component';

@@ -13,10 +13,10 @@
 
         <div class="search-text">
           <span *ngIf="matrixComponent">{{activeThing.plural || activeThing.name}}</span>
-          <span *ngIf="placeComponent&&header">{{header.family[0]?header.family[0]+' family, ':''}}{{header.income?header.income+'$, ':''}}{{header.country}}</span>
+          <span *ngIf="placeComponent&&header">{{header.family[0]?header.family[0]+' family, ':''}}{{math.round(header.income?header.income+'$, ':'')}}{{header.country}}</span>
           <span *ngIf="mapComponent">{{activeThing.name}} on the World map</span>
           <span *ngIf="matrixComponent && states[0] !== 'World'">
-            <span *ngFor="#state of states; #i = index; #last = last">
+            <span *ngFor="let state of states; let i = index; let last = last">
               <span *ngIf="i === 0">&nbsp;in</span>
               <span *ngIf="i !== 0 && !(last && states.length > 1)">,</span>
               <span *ngIf="last && states.length > 1">&nbsp;&</span>
@@ -73,12 +73,12 @@
                         </li>
                       </ul>
                     </li>
-                    <li *ngFor="#category of categories | SearchFilter:search.text:'name':true">
+                    <li *ngFor="let category of categories | SearchFilter:search.text:'name':true">
                       <div class="category-name">
                         <span>{{category._id}}</span>
                       </div>
                       <ul class="search-items-container">
-                        <li *ngFor="#thing of category.things "
+                        <li *ngFor="let thing of category.things "
                             [ngClass]="{'no-pass': thing.empty}"
                             (click)="goToThing(thing)">
 
@@ -119,7 +119,7 @@
                         </div>
                       </div>
                       <ul class="search-items-container regions">
-                        <li *ngFor="#region of regions | SearchFilter:search.text:null"
+                        <li *ngFor="let region of regions | SearchFilter:search.text:null"
                             [ngClass]="{active: activeRegions.indexOf(region) !== -1}"
                             (click)="goToRegions(region)">
                           <div class="search-item">
@@ -147,7 +147,7 @@
                         <span>Countries</span>
                       </div>
                       <ul class="search-items-container regions">
-                        <li *ngFor="#location of countries | SearchFilter:search.text:'country'"
+                        <li *ngFor="let location of countries | SearchFilter:search.text:'country'"
                             [ngClass]="{active: activeCountries.indexOf(location.country) !== -1, 'no-pass': location.empty}"
                             (click)="goToCountries(location)">
                           <div class="search-item">

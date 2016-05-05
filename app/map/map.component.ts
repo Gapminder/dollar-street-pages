@@ -1,6 +1,6 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef, NgZone} from 'angular2/core';
-import {RouterLink, RouteParams, Router} from 'angular2/router';
-import {Observable} from 'rxjs/Rx';
+import {Component, OnInit, OnDestroy, Inject, ElementRef, NgZone} from '@angular/core';
+import {RouterLink, RouteParams, Router} from '@angular/router-deprecated';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 import {HeaderComponent} from '../common/header/header.component';
 import {LoaderComponent} from '../common/loader/loader.component';
@@ -48,6 +48,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public resizeSubscribe:any;
   public mapServiceSubscribe:any;
+  public math:any;
 
   private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
 
@@ -56,12 +57,14 @@ export class MapComponent implements OnInit, OnDestroy {
               @Inject(RouteParams) routeParams,
               @Inject(Router) router,
               @Inject(NgZone) zone,
-              @Inject('UrlChangeService') urlChangeService) {
+              @Inject('UrlChangeService') urlChangeService,
+              @Inject('Math') math) {
     this.mapService = placeService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
     this.router = router;
     this.zone = zone;
+    this.math = math;
     this.urlChangeService = urlChangeService;
   }
 
@@ -102,8 +105,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.urlChangeService.replaceState('/map', this.query);
         this.setMarkersCoord(this.places);
         this.loader = true;
-        this.resizeSubscribe = Observable
-          .fromEvent(window, 'resize')
+        this.resizeSubscribe = fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
             this.zone.run(() => {

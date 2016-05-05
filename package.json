@@ -27,11 +27,17 @@
     "e2e:bstack": ".config/tools/wait4tunnel.js && ./node_modules/.bin/protractor ./.config/protractor-browserstack.conf.js"
   },
   "pre-commit": [
-    "lint",
-    "pre-commit-test"
+    "lint"
   ],
   "dependencies": {
     "angular2": "2.0.0-beta.15",
+    "@angular/common": "2.0.0-rc.1",
+    "@angular/compiler": "2.0.0-rc.1",
+    "@angular/core": "2.0.0-rc.1",
+    "@angular/http": "2.0.0-rc.1",
+    "@angular/platform-browser": "2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.1",
+    "@angular/router": "2.0.0-rc.1",
     "angulartics2": "1.0.0",
     "d3": "3.5.15",
     "device.js": "0.1.2",
@@ -40,8 +46,8 @@
     "es7-reflect-metadata": "1.5.5",
     "jquery": "2.2.0",
     "lodash": "4.*",
-    "rxjs": "5.0.0-beta.2",
-    "zone.js": "0.6.10"
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "0.6.12"
   },
   "devDependencies": {
     "browserstack-wrapper": "1.0.0",
@@ -86,7 +92,7 @@
     "source-map-loader": "0.1.5",
     "ts-loader": "0.8.1",
     "tslint": "^3.7.1",
-    "typescript": "1.7.5",
+    "typescript": "1.8.10",
     "typings": "0.6.7",
     "webpack": "1.12.13"
   },

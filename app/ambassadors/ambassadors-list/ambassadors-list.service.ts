@@ -1,8 +1,9 @@
 import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs/observable/of';
 
 export class AmbassadorsListService {
   public getAmbassadors(query:any):Observable<any> {
-    return Observable.of(this.getMockData());
+    return of(this.getMockData());
   }
 
   getMockData() {
