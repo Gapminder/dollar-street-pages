@@ -33,6 +33,8 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
 
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
+  @Output('isShowAboutData')
+  private isShowAboutData:EventEmitter<any> = new EventEmitter();
 
   public allPlaces:any = [];
   public images:any = [];
@@ -44,6 +46,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private routeParams:RouteParams;
   private location:Location;
   private popIsOpen:boolean;
+  private showAboutData:boolean;
   private arrowDisabled:boolean;
   private chosenPlace:any;
   private sliderHeight:any = {height: 0};
@@ -96,7 +99,8 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
       });
 
     this.resizeSubscibe = fromEvent(window, 'resize')
-      .debounceTime(300).subscribe(() => {
+      .debounceTime(300)
+      .subscribe(() => {
         this.zone.run(() => {
           this.resizeSlider();
         });
@@ -141,6 +145,10 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     };
 
     img.src = startImage.background;
+  }
+
+  protected showInfo():void {
+    this.isShowAboutData.emit(true);
   }
 
   protected resizeSlider(event?:any) {

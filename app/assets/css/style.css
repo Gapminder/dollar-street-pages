@@ -91,12 +91,19 @@ html, body, body > div[ui-view] {
 main,
 sitemap,
 country,
+first-page,
 ambassadors,
 photographer,
 map-component {
   position: relative;
   display: block;
   min-height: 100%;
+}
+
+.first-page.header .social-share-buttons-container i {
+  color: #767d86;
+  font-size: 26px;
+  margin-left: 35px;
 }
 
 .header-without-search .menu-icon {

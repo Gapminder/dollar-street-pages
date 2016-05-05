@@ -9,7 +9,7 @@
 
   <div class="thing-icon pull-left"
        *ngIf="placeComponent && header && header.icon"
-       [style.backgroundImage]="toUrl(header.icon)"></div>
+       [ngStyle]="{'background-image':toUrl(header.icon)}"></div>
 
   <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="matrixComponent">{{mobileTitle}}</div>
 

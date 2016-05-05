@@ -4,7 +4,7 @@
          *ngFor="let image of images">
       <div class="family-image"
            [routerLink]="['Place', {thing: image.thing, place: placeId,image: image._id}]"
-           [style.backgroundImage]="image.background">
+           [ngStyle]="{'background-image':image.background}">
 
         <div class="image-description">
           <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">

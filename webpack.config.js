@@ -94,7 +94,7 @@ const config = {
     // generating html
     new HtmlWebpackPlugin({
       template: 'app/index.html',
-      chunksSortMode: helpers.packageSort(['polyfills', 'vendor', 'main'])
+      chunksSortMode: helpers.packageSort(['polyfills', 'vendor', 'app'])
     })
   ]
 };

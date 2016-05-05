@@ -12,7 +12,7 @@
   </div>
   <div class="slider-container">
     <div class="slider-content">
-      <div class="slide" *ngFor="let image of images; #i=index">
+      <div class="slide" *ngFor="let image of images; let i=index">
         <div class="slide-content" [ngStyle]="sliderHeight">
           <div class="slide-wrapper">
             <div class="image" (click)="openPopUp(image)">
@@ -50,8 +50,10 @@
                        [routerLink]="['Map', {thing: activeThing?._id}]"></place-map>
           </div>
           <h2>
-            <span>{{math.round(image.income)}}$</span> {{image.familyName}} {{image.familyName ? 'family' : ''}} in
-            {{image.country}}
+            <span>{{math.round(image.income)}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="image.aboutData"
+                                         (click)="showInfo()"></span>
+            {{image.familyName}} {{image.familyName ?
+            'family' : ''}} in {{image.country}}
           </h2>
 
           <p *ngIf="image.familyInfoSummary">{{image.familyInfoSummary}}</p>

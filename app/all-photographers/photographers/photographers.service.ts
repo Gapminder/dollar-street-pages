@@ -14,7 +14,6 @@ export class PhotographersService {
   public getPhotographers(query:any):Observable<any> {
     return this.http.get(`${config.api}/consumer/api/v1/photographers`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
-
       return {err: parseRes.error, data: parseRes.data};
     });
   }

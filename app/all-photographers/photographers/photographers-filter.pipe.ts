@@ -5,8 +5,8 @@ import {Pipe} from '@angular/core';
 })
 
 export class PhotographersFilter {
-  transform(value, args) {
-    let [text, countries, nested] = args;
+  transform(...args:any[]) {
+    let [value, text, countries, nested] = args;
     let photographersArr = [];
     countries = JSON.parse(JSON.stringify(countries));
 

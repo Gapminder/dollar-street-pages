@@ -3,6 +3,7 @@ import {RouterLink, RouteParams} from '@angular/router-deprecated';
 import {Location} from '@angular/common';
 import {Observable} from 'rxjs/Observable';
 import {fromEvent} from 'rxjs/observable/fromEvent';
+import {zip} from 'rxjs/observable/zip';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
@@ -27,6 +28,8 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
 
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
+  @Output('isShowAboutData')
+  private isShowAboutData:EventEmitter<any> = new EventEmitter();
 
   public allPlaces:any = [];
   public images:any = [];
@@ -47,6 +50,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private math:any;
   private resizeSubscribe:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
+  private showAboutData:boolean;
 
   constructor(@Inject(RouteParams) routeParams,
               @Inject(ElementRef) elementRef,
@@ -74,7 +78,8 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     this.swipe(sliderContainer);
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(300).subscribe(() => {
+      .debounceTime(300)
+      .subscribe(() => {
         this.resizeSlider();
       });
   }
@@ -115,6 +120,10 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     };
 
     img.src = startImage.background;
+  }
+
+  protected showInfo():void {
+    this.isShowAboutData.emit(true);
   }
 
   protected resizeSlider() {
@@ -216,8 +225,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     let touchStart = fromEvent(sliderContainer, 'touchstart');
     let touchEnd = fromEvent(sliderContainer, 'touchend');
 
-    this.touchSubscribe = Observable
-      .zip(touchStart, touchEnd, (touchStartRes:any, touchEndRes:any) => {
+    this.touchSubscribe = zip(touchStart, touchEnd, (touchStartRes:any, touchEndRes:any) => {
         let startX = touchStartRes.touches[0].clientX;
         let endX = touchEndRes.changedTouches[0].clientX;
 

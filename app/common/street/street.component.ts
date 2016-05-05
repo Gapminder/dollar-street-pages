@@ -124,6 +124,9 @@ export class StreetComponent implements OnInit, OnDestroy {
             .chain(this.street.places)
             .sortBy('income')
             .map((place:any) => {
+              if (!place || !place.length) {
+                return;
+              }
               return this.street.scale(place.income);
             }).value()
           )

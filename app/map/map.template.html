@@ -14,7 +14,7 @@
             <img class="marker"
                  src="/assets/img/dark-marker.svg"
                  alt="marker"
-                 *ngFor="let place of places; #i = index"
+                 *ngFor="let place of places; let i = index"
                  [style.left.px]="place.left"
                  [style.top.px]="place.top"
                  (mouseenter)="hoverOnMarker(i, place.country)"
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="row countries-list">
-      <div class="country" *ngFor="let list of countries; #i = index">
+      <div class="country" *ngFor="let list of countries; let i = index">
         <span class="country-letter">{{list.letter}}</span>
         <ul class="countries">
           <li *ngFor="let country of list.countries">

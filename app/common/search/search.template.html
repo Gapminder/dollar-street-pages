@@ -9,7 +9,7 @@
 
         <div class="search-portrait-icon pull-left icon"
              *ngIf="placeComponent && header && header.icon"
-             [style.backgroundImage]="toUrl(header.icon)"></div>
+             [ngStyle]="{'background-image':toUrl(header.icon)}"></div>
 
         <div class="search-text">
           <span *ngIf="matrixComponent">{{activeThing.plural || activeThing.name}}</span>
@@ -48,7 +48,8 @@
                     <h3>THINGS</h3>
                   </div>
                   <ul class="search-list-categories default-position-top">
-                    <li [hidden]="activeThing.name && activeThing.name.toLowerCase().indexOf(search.text.toLowerCase()) === -1">
+                    <li
+                      [hidden]="activeThing.name && activeThing.name.toLowerCase().indexOf(search.text.toLowerCase()) === -1">
                       <div class="category-name">
                         <span>{{activeThing.category}}</span>
                       </div>

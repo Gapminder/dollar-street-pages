@@ -6,8 +6,8 @@ let _ = require('lodash');
 })
 
 export class SearchFilter {
-  transform(value, args) {
-    let [text, field, inside] = args;
+  transform(...args:any[]) {
+    let [value, text, field, inside] = args;
     if (!text) {
       return value;
     }

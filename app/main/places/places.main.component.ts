@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, Inject, ElementRef} from '@angular/core';
 import {RouterLink} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Rx';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 let tpl = require('./places.main.template.html');
 let style = require('./places.main.css');
@@ -45,8 +45,7 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
         this.places = res.places;
         this.setMarkersCoord(this.places);
 
-        this.resizeSubscribe = new Observable()
-          .fromEvent(window, 'resize')
+        this.resizeSubscribe = fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
             this.setMarkersCoord(this.places);

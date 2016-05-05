@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {Component, OnInit, OnDestroy, Inject, ViewEncapsulation} from '@angular/core';
 import {Location} from '@angular/common';
 
 let tpl = require('./social-share-buttons.html');
@@ -7,7 +7,8 @@ let style = require('./social-share-buttons.css');
 @Component({
   selector: 'social-share-buttons',
   template: tpl,
-  styles: [style]
+  styles: [style],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class SocialShareButtons implements OnInit, OnDestroy {
@@ -31,7 +32,7 @@ export class SocialShareButtons implements OnInit, OnDestroy {
 
     this.urlEvents = this.urlChangeService
       .getUrlEvents()
-      .debounceTime(300)
+      //.debounceTime(300)
       .subscribe(() => {
         this.getUrl();
       });

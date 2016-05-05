@@ -1,28 +1,23 @@
-import {MainComponent} from './main/main.component';
+import {FirstComponent} from './first/first.component';
 import {MatrixComponent} from './matrix/matrix.component';
 import {PlaceComponent} from './place/place.component';
 import {MapComponent} from './map/map.component';
 import {AllPhotographersComponent} from './all-photographers/all-photographers.component';
 import {PhotographerComponent} from './photographer/photographer.component';
 import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
-import {SitemapComponent} from './sitemap/sitemap.component';
 import {CountryComponent} from './country/country.component';
 
 export module config {
-  // export let api = 'http://128.199.60.70';
+  export let api = 'http://128.199.60.70';
   //export let api = 'http://stage.dollarstreet.org';
   // export let api = 'http://192.168.1.66';
-  export let api = 'http://192.168.1.81';
+  //export let api = 'http://192.168.1.81';
 
   export let routes = [{
-    path: '/sitemap',
-    name: 'Sitemap',
-    component: SitemapComponent,
-    useAsDefault: true
-  }, {
     path: '/main',
     name: 'Main',
-    component: MainComponent
+    component: FirstComponent,
+    useAsDefault: true
   }, {
     path: '/matrix',
     name: 'Matrix',
