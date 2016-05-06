@@ -24,13 +24,13 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   public photographerPlacesServiceSubscribe:any;
   public math:any;
 
-  constructor(@Inject('PhotographerPlacesService') photographerPlacesService,
+  public constructor(@Inject('PhotographerPlacesService') photographerPlacesService,
   @Inject('Math') math) {
     this.photographerPlacesService = photographerPlacesService;
     this.math = math;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.photographerPlacesServiceSubscribe = this.photographerPlacesService
       .getPhotographerPlaces(`id=${this.photographerId}`)
       .subscribe((res:any) => {
@@ -44,7 +44,7 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.photographerPlacesServiceSubscribe.unsubscribe();
   }
 }

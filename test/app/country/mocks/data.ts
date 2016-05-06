@@ -2,7 +2,7 @@
  * Created by igor on 3/30/16.
  */
 export let places = {
-  err: null, data: {
+  err: undefined, data: {
     country: {
       _id: "55ef338d0d2b3c8203788467",
       code: "US",
@@ -41,7 +41,7 @@ export let places = {
 }
 
 export let info = {
-  err: null, data: {
+  err: undefined, data: {
     country: {
       _id: "55ef338d0d2b3c8203788467",
       code: "US",

@@ -7,11 +7,11 @@ import {config} from '../../app.config';
 export class PhotographersService {
   public http:Http;
 
-  constructor(@Inject(Http) http) {
+  public constructor(@Inject(Http) http:Http) {
     this.http = http;
   }
 
-  public getPhotographers(query:any):Observable<any> {
+  public getPhotographers():Observable<any> {
     return this.http.get(`${config.api}/consumer/api/v1/photographers`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};

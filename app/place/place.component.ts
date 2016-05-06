@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, OnDestroy, NgZone} from '@angular/core';
+import {Component, Inject, OnInit, OnDestroy, AfterViewChecked, NgZone} from '@angular/core';
 import {RouteParams, RouterLink} from '@angular/router-deprecated';
 import {Subject} from 'rxjs/Subject';
 
@@ -24,13 +24,25 @@ let isDesktop = device.desktop();
   directives: [RouterLink, HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent, LoaderComponent]
 })
 
-export class PlaceComponent implements OnInit, OnDestroy {
+export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
+  public loader:boolean = false;
+  public placeStreetServiceSubscribe:any;
+  public getCommonAboutDataServiceSubscribe:any;
+  public isScroll:boolean;
+  public places:any[];
+  public placeStreetService:any;
+  public urlChangeService:any;
+  public routeParams:RouteParams;
+  public zone:NgZone;
+  public windowHeight:number = window.innerHeight;
+  public maxHeightPopUp:number = this.windowHeight * .95 - 91;
+  public hoverPlace:Subject<any> = new Subject();
+  public hoverHeader:Subject<any> = new Subject();
+  public resizeSubscribe:any;
   private streetPlaces:Subject<any> = new Subject();
   private sliderPlaces:Subject<any> = new Subject();
   private chosenPlaces:Subject<any> = new Subject();
   private controllSlider:Subject<any> = new Subject();
-  public hoverPlace:Subject<any> = new Subject();
-  public hoverHeader:Subject<any> = new Subject();
   private controllSliderSubscribe:any;
   private thing:string;
   private query:string;
@@ -43,26 +55,18 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private currentPlace:any = {};
   private isDesktop:boolean = isDesktop;
   private isShowImagesFamily:boolean = isDesktop;
-  public loader:boolean = false;
-  public placeStreetServiceSubscribe:any;
-  public getCommonAboutDataServiceSubscribe:any;
-  public isScroll:boolean;
-  public places:any[];
-  public windowHeight:number = window.innerHeight;
-  public maxHeightPopUp:number = this.windowHeight * .95 - 91;
-  public resizeSubscribe:any;
 
-  constructor(@Inject('PlaceStreetService')
-              private placeStreetService,
-              @Inject('UrlChangeService')
-              private urlChangeService,
-              @Inject(RouteParams)
-              private routeParams,
-              @Inject(NgZone)
-              private zone) {
+  public constructor(@Inject('PlaceStreetService') placeStreetService:any,
+                     @Inject('UrlChangeService') urlChangeService:any,
+                     @Inject(RouteParams) routeParams:RouteParams,
+                     @Inject(NgZone) zone:NgZone) {
+    this.placeStreetService = placeStreetService;
+    this.urlChangeService = urlChangeService;
+    this.routeParams = routeParams;
+    this.zone = zone;
   }
 
-  ngOnInit() {
+  public ngOnInit():void {
     this.thing = this.routeParams.get('thing');
     this.place = this.routeParams.get('place');
     this.image = this.routeParams.get('image');
@@ -71,7 +75,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
     this.getCommonAboutDataServiceSubscribe = this.placeStreetService
       .getCommonAboutData()
-      .subscribe((res) => {
+      .subscribe((res:any):void => {
         this.commonAboutData = res.data;
       });
 
@@ -92,14 +96,14 @@ export class PlaceComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     this.placeStreetServiceSubscribe.unsubscribe();
     this.controllSliderSubscribe.unsubscribe();
     this.getCommonAboutDataServiceSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
   }
 
-  ngAfterViewChecked() {
+  public ngAfterViewChecked():void {
     if (!this.places || !this.places.length) {
       return;
     }
@@ -115,7 +119,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.isScroll = true;
   }
 
-  urlChanged(thing):void {
+  public urlChanged(thing:any):void {
     this.activeThing = thing;
     if (this.init) {
       return;
@@ -127,18 +131,18 @@ export class PlaceComponent implements OnInit, OnDestroy {
     });
   }
 
-  isHover() {
+  public isHover():void {
     this.hoverHeader.next(false);
   }
 
-  getStreetPlaces(thing) {
-    this.placeStreetServiceSubscribe = this.placeStreetService.getThingsByRegion(thing).subscribe((res) => {
+  public getStreetPlaces(thing:any):void {
+    this.placeStreetServiceSubscribe = this.placeStreetService.getThingsByRegion(thing).subscribe((res:any):any => {
       this.places = res.data.places;
       this.sliderPlaces.next(this.places);
     });
   }
 
-  choseCurrentPlace(place) {
+  public choseCurrentPlace(place:any):void {
     this.currentPlace = place[0];
     this.chosenPlaces.next(this.currentPlace);
     this.hoverPlace.next(this.currentPlace);
@@ -154,17 +158,18 @@ export class PlaceComponent implements OnInit, OnDestroy {
     });
   }
 
-  isShowAboutData(showAboutData) {
+  public isShowAboutData(showAboutData:any):void {
     this.showAboutData = showAboutData;
   }
 
-  closeAboutDataPopUp(event) {
-    if (event && event.target.className.indexOf('closeMenu') !== -1) {
+  public closeAboutDataPopUp(event:MouseEvent):void {
+    let el = event && event.target as HTMLElement;
+    if (el.className.indexOf('closeMenu') !== -1) {
       this.showAboutData = false;
     }
   }
 
-  changeLocation(place, thing) {
+  public changeLocation(place:any, thing:any):void {
     let query = `thing=${thing}&place=${place._id}&image=${place.image}`;
     this.place = place._id;
     this.image = place.image;

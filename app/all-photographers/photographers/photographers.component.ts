@@ -17,17 +17,21 @@ let style = require('./photographers.css');
 
 export class PhotographersComponent implements OnInit, OnDestroy {
   private photographersService:any;
-  private photographersByCountry:any[] = [];
-  private photographersByName:any[] = [];
-  private search:any = {text: ''};
-  private loader:boolean = false;
+  private photographersByCountry:any[];
+  private photographersByName:any[];
+  private search:any;
+  private loader:boolean;
   private photographersServiceSubscribe:any;
 
-  constructor(@Inject('PhotographersService') photographersService:any) {
+  public constructor(@Inject('PhotographersService') photographersService:any) {
     this.photographersService = photographersService;
+    this.photographersByCountry = [];
+    this.photographersByName = [];
+    this.search = {text: ''};
+    this.loader = false;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.photographersServiceSubscribe = this.photographersService.getPhotographers({})
       .subscribe((res:any) => {
         if (res.err) {
@@ -39,11 +43,13 @@ export class PhotographersComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     this.photographersServiceSubscribe.unsubscribe();
   }
 
-  toggleLeftSide(e) {
-    e.target.parentNode.classList.toggle('show');
+  public toggleLeftSide(e:Event):void {
+    let element = e.target as HTMLElement;
+    let parent = element.parentNode as HTMLElement;
+    parent.classList.toggle('show');
   }
 }

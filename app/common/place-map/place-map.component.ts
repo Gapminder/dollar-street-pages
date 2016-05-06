@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Inject, ElementRef, NgZone} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input, Inject, ElementRef, NgZone} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
 let tpl = require('./place-map.template.html');
@@ -10,11 +10,9 @@ let style = require('./place-map.css');
   styles: [style]
 })
 
-export class PlaceMapComponent implements OnInit {
+export class PlaceMapComponent implements OnInit,OnDestroy {
   @Input()
   private hoverPlace:Observable<any>;
-  @Input()
-  private isHeader:boolean;
 
   private region:string;
   private markerPosition:any = {};
@@ -23,21 +21,20 @@ export class PlaceMapComponent implements OnInit {
   private zone:NgZone;
   private hoverPlaceSubscribe:any;
 
-  constructor(@Inject(ElementRef) element,
-              @Inject(NgZone) zone) {
+  public constructor(@Inject(ElementRef) element:ElementRef,
+                     @Inject(NgZone) zone:NgZone) {
     this.element = element;
     this.zone = zone;
   }
 
-  ngOnInit():void {
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place) => {
+  public ngOnInit():void {
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place:any) => {
         if (!place) {
-          this.region = null;
+          this.region = void 0;
           return;
         }
         let img = new Image();
-        this.mapImage = this.isHeader ? this.element.nativeElement.querySelector('.map+.map') :
-          this.element.nativeElement.querySelector('.map');
+        this.mapImage = this.element.nativeElement.querySelector('.map');
 
         img.onload = () => {
           this.zone.run(() => {
@@ -49,13 +46,13 @@ export class PlaceMapComponent implements OnInit {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
     }
   }
 
-  drawMarker(place, mapImage):void {
+  public drawMarker(place:any, mapImage:any):void {
     let stepTop;
     let stepRight;
     let widthOfMap = mapImage.offsetWidth;

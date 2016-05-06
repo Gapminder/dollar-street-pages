@@ -14,11 +14,12 @@ let style = require('./sitemap.css');
 })
 
 export class SitemapComponent {
-  private title:string = 'Sitemap';
+  private title:string;
   private routeParams:RouteParams;
 
-  constructor(@Inject(RouteParams) routeParams) {
+  public constructor(@Inject(RouteParams) routeParams:RouteParams) {
     this.routeParams = routeParams;
+    this.title = 'Sitemap';
   }
 
 }

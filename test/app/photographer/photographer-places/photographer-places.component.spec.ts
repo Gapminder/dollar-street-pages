@@ -1,6 +1,5 @@
 import {
   it,
-  xit,
   describe,
   async,
   inject,
@@ -37,25 +36,13 @@ describe('PhotographerPlacesComponent', () => {
       nativeElement = fixture.debugElement.nativeElement;
     });
   })));
-  it('PhotographerPlacesComponent must init',()=>{
-    fixture.detectChanges();
-    expect(context.places.length).toBe(4);
-    mockPhotographerPlacesService.toInitState();
-  });
-  it('PhotographerPlacesComponent must destroy ', () => {
-    fixture.detectChanges();
-    fixture.destroy();
-    expect(mockPhotographerPlacesService.countOfSubscribes).toBe(0);
-  });
-  xit('PhotographerPlacesComponent must show on mobile ', ()=>{
-    /**
-     * ToDo: create some cases for
-     * checking mobile rendering
-     */
-  });
-  it('PhotographerPlacesComponent must render places', ()=>{
-    fixture.detectChanges();
-    let photographerCountryPlaces = nativeElement.querySelectorAll('let photographer-places .place');
-    expect(photographerCountryPlaces.length).toBe(4);
+  it('ngOnInit ngOnDestroy', ()=> {
+    context.ngOnInit();
+    expect(context.places).toEqual(places.data.places);
+    expect(context.familyThingId).toEqual(places.data.familyThingId);
+    expect(context.loader).toEqual(true);
+    spyOn(context.photographerPlacesServiceSubscribe, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.photographerPlacesServiceSubscribe.unsubscribe).toHaveBeenCalled();
   });
 });

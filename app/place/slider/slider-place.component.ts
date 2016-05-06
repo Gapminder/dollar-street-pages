@@ -24,18 +24,6 @@ let proportion = 2.24;
 })
 
 export class SliderPlaceComponent implements OnInit, OnDestroy {
-  @Input('controllSlider')
-  private controllSlider:Observable<any>;
-  @Input('places')
-  private streetPlaces:Observable<any>;
-  @Input('activeThing')
-  private activeThing:any;
-
-  @Output('currentPlace')
-  private currentPlace:EventEmitter<any> = new EventEmitter();
-  @Output('isShowAboutData')
-  private isShowAboutData:EventEmitter<any> = new EventEmitter();
-
   public allPlaces:any = [];
   public images:any = [];
   public position:any;
@@ -43,6 +31,16 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   public image:any;
   public place:any;
   public fancyBoxImage:any;
+  @Input('controllSlider')
+  private controllSlider:Observable<any>;
+  @Input('places')
+  private streetPlaces:Observable<any>;
+  @Input('activeThing')
+  private activeThing:any;
+  @Output('currentPlace')
+  private currentPlace:EventEmitter<any> = new EventEmitter();
+  @Output('isShowAboutData')
+  private isShowAboutData:EventEmitter<any> = new EventEmitter();
   private routeParams:RouteParams;
   private location:Location;
   private popIsOpen:boolean;
@@ -58,7 +56,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private math:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
-  constructor(@Inject(RouteParams) routeParams,
+  public constructor(@Inject(RouteParams) routeParams,
               @Inject(Location) location,
               @Inject(NgZone) zone,
               @Inject('Math') math) {
@@ -68,7 +66,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     this.math = math;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.streetPlacesSubscribe = this.streetPlaces
       .subscribe((places) => {
         this.thing = this.routeParams.get('thing');
@@ -107,7 +105,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.controllSliderSubscribe.unsubscribe();
     this.streetPlacesSubscribe.unsubscribe();
     this.resizeSubscibe.unsubscribe();
@@ -265,7 +263,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
 
   protected fancyBoxClose() {
     this.popIsOpen = false;
-    this.fancyBoxImage = null;
+    this.fancyBoxImage = void 0;
   }
 }
 
@@ -286,7 +284,7 @@ function prevSliderActionAfterAnimation(places, images, position, cb) {
       images: images
     };
 
-    cb.apply(this, [null, res]);
+    cb.apply(this, [void 0, res]);
   };
 }
 
@@ -307,7 +305,7 @@ function nextSlideActionAfterAnimation(places, images, position, cb) {
       images: images
     };
 
-    cb.apply(this, [null, res]);
+    cb.apply(this, [void 0, res]);
   };
 }
 

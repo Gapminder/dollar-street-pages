@@ -24,11 +24,11 @@ export class CountryComponent implements OnInit {
   private routeParams:RouteParams;
   private countryId:string;
 
-  constructor(@Inject(RouteParams) routeParams) {
+  public constructor(@Inject(RouteParams) routeParams:RouteParams) {
     this.routeParams = routeParams;
   }
 
-  ngOnInit() {
+  public ngOnInit():void {
     this.countryId = this.routeParams.get('id');
   }
 }

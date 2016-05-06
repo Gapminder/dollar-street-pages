@@ -59,7 +59,7 @@
             </div>
 
             <div class="pointer"
-                 (click)="goToThing(null)">
+                 (click)="goToThing()">
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@
           </h3>
 
           <div class="sub-item-content"
-               *ngFor="let region of regions | SearchFilter:search.text:null"
+               *ngFor="let region of regions | SearchFilter:search.text:false"
                [ngClass]="{active: activeRegions.indexOf(region) !== -1}"
                (click)="goToRegions(region)">
             <div class="item-icon">

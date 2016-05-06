@@ -160,7 +160,7 @@ describe('StreetComponent', () => {
     spyOn(context.street, 'removeHouses');
     spyOn(context.street, 'clearAndRedraw');
     context.thumbUnhover();
-    expect(context.street.hoverPlace).toEqual(null);
+    expect(context.street.hoverPlace).toEqual(undefined);
     expect(context.street.clearAndRedraw.calls.argsFor(0))
       .toEqual([context.street.chosenPlaces]);
   });
@@ -178,7 +178,7 @@ describe('StreetComponent', () => {
     context.clickOnThumb(thing, place);
     expect(context.isThumbView).toEqual(false);
     expect(context.controllSlider.next).toHaveBeenCalledWith(1);
-    context.controllSlider = null;
+    context.controllSlider = undefined;
     context.clickOnThumb(thing, place);
     expect(context.router.navigate).toHaveBeenCalledWith(['Place', {
       thing: thing,

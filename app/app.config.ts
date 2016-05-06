@@ -1,3 +1,4 @@
+
 import {FirstComponent} from './first/first.component';
 import {MatrixComponent} from './matrix/matrix.component';
 import {PlaceComponent} from './place/place.component';
@@ -7,12 +8,12 @@ import {PhotographerComponent} from './photographer/photographer.component';
 import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
 import {CountryComponent} from './country/country.component';
 
-export module config {
+export namespace config {
+  'use strict';
   export let api = 'http://128.199.60.70';
-  //export let api = 'http://stage.dollarstreet.org';
+  // export let api = 'http://stage.dollarstreet.org';
   // export let api = 'http://192.168.1.66';
-  //export let api = 'http://192.168.1.81';
-
+  // export let api = 'http://192.168.1.81';
   export let routes = [{
     path: '/main',
     name: 'Main',

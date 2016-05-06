@@ -7,17 +7,17 @@ export class UrlChangeService {
   public location:Location;
   private urlEvents:Subject<any>;
 
-  constructor(@Inject(Location) location) {
+  public constructor(@Inject(Location) location:Location) {
     this.urlEvents = new Subject();
     this.location = location;
   }
 
-  replaceState(path:string, query?:string):void {
+  public replaceState(path:string, query?:string):void {
     this.location.go(path, query);
     this.urlEvents.next('my event');
   }
 
-  getUrlEvents():Observable<any> {
+  public getUrlEvents():Observable<any> {
     return this.urlEvents;
   }
 }

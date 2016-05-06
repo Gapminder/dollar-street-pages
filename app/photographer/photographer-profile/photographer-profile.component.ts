@@ -22,11 +22,11 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   private photographerProfileServiceSubscribe:any;
   private isShowInfo:boolean = false;
 
-  constructor(@Inject('PhotographerProfileService') photographerProfileService) {
+  public constructor(@Inject('PhotographerProfileService') photographerProfileService) {
     this.photographerProfileService = photographerProfileService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     let query = `id=${this.photographerId}`;
 
     this.photographerProfileServiceSubscribe = this.photographerProfileService.getPhotographerProfile(query)
@@ -40,7 +40,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy():void {
+  public ngOnDestroy():void {
     this.photographerProfileServiceSubscribe.unsubscribe();
   }
 

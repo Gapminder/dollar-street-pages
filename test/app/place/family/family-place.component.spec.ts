@@ -38,18 +38,29 @@ describe('FamilyPlaceComponent', () => {
       context = fixture.debugElement.componentInstance;
     });
   })));
-  it(' must init ', ()=> {
+
+  it(' ngOnInit and ngOnDestroy', ()=> {
+    spyOn(context, 'ngOnInit').and.callThrough();
+    spyOn(context, 'ngOnDestroy').and.callThrough();
     context.chosenPlaces = placesObservable;
-    fixture.detectChanges();
-    expect(context.placeId).toEqual('54b6862f3755cbfb542c28cb');
-    expect(context.images.length).toEqual(5);
-    placesObservable.toInitState();
-    mockFamilyPlaceService.toInitState();
+    spyOn(context, 'nextImages');
+    context.ngOnInit();
+    expect(context.placeId).toEqual(place._id);
+    expect(context.nextImages).toHaveBeenCalledWith(10, place._id);
+
   });
-  it(' must destroy ', ()=> {
-    fixture.detectChanges();
-    fixture.destroy();
-    expect(placesObservable.countOfSubscribes).toEqual(0);
-    expect(mockFamilyPlaceService.countOfSubscribes).toEqual(0);
-  });
+  // it(' must init ', ()=> {
+  //   context.chosenPlaces = placesObservable;
+  //   fixture.detectChanges();
+  //   expect(context.placeId).toEqual('54b6862f3755cbfb542c28cb');
+  //   expect(context.images.length).toEqual(5);
+  //   placesObservable.toInitState();
+  //   mockFamilyPlaceService.toInitState();
+  // });
+  // it(' must destroy ', ()=> {
+  //   fixture.detectChanges();
+  //   fixture.destroy();
+  //   expect(placesObservable.countOfSubscribes).toEqual(0);
+  //   expect(mockFamilyPlaceService.countOfSubscribes).toEqual(0);
+  // });
 });

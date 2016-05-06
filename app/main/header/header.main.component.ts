@@ -16,7 +16,7 @@ let style = require('./header.main.css');
 export class HeaderMainComponent {
   private urlChangeService:any;
 
-  constructor(@Inject('UrlChangeService') urlChangeService) {
+  public constructor(@Inject('UrlChangeService') urlChangeService) {
     this.urlChangeService = urlChangeService;
   }
 

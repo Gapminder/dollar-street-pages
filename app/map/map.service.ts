@@ -7,7 +7,7 @@ import {config} from '../app.config';
 export class MapService {
   public http:any;
 
-  constructor(@Inject(Http) http) {
+  public constructor(@Inject(Http) http) {
     this.http = http;
   }
 

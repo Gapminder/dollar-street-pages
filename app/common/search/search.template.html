@@ -13,7 +13,7 @@
 
         <div class="search-text">
           <span *ngIf="matrixComponent">{{activeThing.plural || activeThing.name}}</span>
-          <span *ngIf="placeComponent&&header">{{header.family[0]?header.family[0]+' family, ':''}}{{math.round(header.income?header.income+'$, ':'')}}{{header.country}}</span>
+          <span *ngIf="placeComponent&&header">{{header.family[0]?header.family[0]+' family, ':''}}{{header.income?math.round(header.income)+'$, ':''}}{{header.country}}</span>
           <span *ngIf="mapComponent">{{activeThing.name}} on the World map</span>
           <span *ngIf="matrixComponent && states[0] !== 'World'">
             <span *ngFor="let state of states; let i = index; let last = last">
@@ -66,7 +66,7 @@
                               </span>
                             </span>
                             <span class="pointer"
-                                  (click)="goToThing(null)">
+                                  (click)="goToThing()">
                               <img class="checked" src="/assets/img/check.png">
                               <img class="close" src="/assets/img/close.png">
                             </span>
@@ -120,7 +120,7 @@
                         </div>
                       </div>
                       <ul class="search-items-container regions">
-                        <li *ngFor="let region of regions | SearchFilter:search.text:null"
+                        <li *ngFor="let region of regions | SearchFilter:search.text:false"
                             [ngClass]="{active: activeRegions.indexOf(region) !== -1}"
                             (click)="goToRegions(region)">
                           <div class="search-item">

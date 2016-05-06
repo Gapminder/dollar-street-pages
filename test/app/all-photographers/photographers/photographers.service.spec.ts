@@ -42,14 +42,13 @@ describe('PhotographersService', () => {
         expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/photographers`);
         let response = new ResponseOptions({
           body: `{"success":true,"msg":[],"data":{
-  "countryList":[{"name":"Bangladesh","photographers":[{"name":"AJ Sharma","userId":"56e946c4d360263447ff6fad",
-  "avatar":null,"images":289,"places":4}]}],
-  "photographersList":[{"name":"AJ Sharma","userId":"56e946c4d360263447ff6fad","avatar":null,"images":289,"places":4}]
-  },"error":null}`
+  "countryList":[{"name":"Bangladesh","photographers":[{"name":"AJ Sharma","userId":"56e946c4d360263447ff6fad","images":289,"places":4}]}],
+  "photographersList":[{"name":"AJ Sharma","userId":"56e946c4d360263447ff6fad","images":289,"places":4}]
+  },"error":false}`
         });
         connection.mockRespond(new Response(response));
       });
-      photographersService.getPhotographers({}).subscribe((_res:any) => {
+      photographersService.getPhotographers().subscribe((_res:any) => {
         res = _res;
       });
       tick();

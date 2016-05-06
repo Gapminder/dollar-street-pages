@@ -33,7 +33,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   private controllSlider:Subject<any>;
 
   private street:any;
-  private StreetDrawService:any;
+  private streetDrawService:any;
   private element:HTMLElement;
   private thumbPlaces:any[];
   private thumbLeft:number;
@@ -50,21 +50,21 @@ export class StreetComponent implements OnInit, OnDestroy {
   private hoverHeaderSubscribe:any;
   private math:any;
 
-  constructor(@Inject(ElementRef) element,
-              @Inject(Router)  router,
-              @Inject('Math')  math,
-              @Inject('StreetDrawService')  streetDrawService) {
+  public constructor(@Inject(ElementRef) element:ElementRef,
+                     @Inject(Router)  router:Router,
+                     @Inject('Math')  math:any,
+                     @Inject('StreetDrawService')  streetDrawService:any) {
     this.element = element.nativeElement;
     this.router = router;
     this.math = math;
     this.street = streetDrawService;
   }
 
-  ngOnInit():any {
+  public ngOnInit():any {
     let svg = this.element.querySelector('.street-box svg') as HTMLElement;
     this.street.setSvg = svg;
 
-    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces) => {
+    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
         this.street.set('chosenPlaces', chosenPlaces);
 
         if (this.controllSlider) {
@@ -75,7 +75,7 @@ export class StreetComponent implements OnInit, OnDestroy {
         this.street.clearAndRedraw(chosenPlaces);
       });
 
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace) => {
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace:any):void => {
         if (this.drawOnMap) {
           this.drawOnMap = !this.drawOnMap;
           return;
@@ -94,7 +94,7 @@ export class StreetComponent implements OnInit, OnDestroy {
         this.thumbUnhover();
       });
 
-    this.placesSubscribe = this.places && this.places.subscribe((places) => {
+    this.placesSubscribe = this.places && this.places.subscribe((places:any):void => {
         this.street
           .clearSvg()
           .init()
@@ -105,7 +105,7 @@ export class StreetComponent implements OnInit, OnDestroy {
             .sortBy('income')
             .map((place:any) => {
               if (!place) {
-                return null;
+                return void 0;
               }
               return this.street.scale(place.income);
             })
@@ -139,11 +139,11 @@ export class StreetComponent implements OnInit, OnDestroy {
       });
   }
 
-  onStreet(e) {
+  public onStreet(e:MouseEvent):void {
     if (!isDesktop) {
       return;
     }
-    this.street.onSvgHover(e.clientX, (options) => {
+    this.street.onSvgHover(e.clientX, (options:any):void => {
       let {places, left} = options;
       this.isThumbView = true;
       this.thumbPlaces = places;
@@ -162,7 +162,7 @@ export class StreetComponent implements OnInit, OnDestroy {
       if (places.length > 1) {
         this.drawOnMap = true;
         if (this.hoverPlace) {
-          this.hoverPlace.next(null);
+          this.hoverPlace.next(void 0);
         }
       }
 
@@ -180,7 +180,7 @@ export class StreetComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     if (this.resize) {
       this.resize.unsubscribe();
     }
@@ -202,7 +202,7 @@ export class StreetComponent implements OnInit, OnDestroy {
     }
   }
 
-  public thumbHover(place) {
+  public thumbHover(place:any):void {
     if (this.hoverPlace) {
       this.hoverPlace.next(place);
     }
@@ -215,11 +215,11 @@ export class StreetComponent implements OnInit, OnDestroy {
     this.street.drawHoverHouse(place);
   };
 
-  public thumbUnhover() {
+  public thumbUnhover():void {
     if (this.hoverPlace) {
-      this.hoverPlace.next(null);
+      this.hoverPlace.next(void 0);
     }
-    this.street.hoverPlace = null;
+    this.street.hoverPlace = void 0;
     if (this.controllSlider) {
       this.street.clearAndRedraw(this.street.chosenPlaces, true);
     } else {
@@ -229,17 +229,16 @@ export class StreetComponent implements OnInit, OnDestroy {
     this.isThumbView = false;
   }
 
-  protected toUrl(image) {
+  protected toUrl(image:any):string {
     return `url("${image.replace('desktops', '150x150')}")`;
   }
 
-  protected clickOnThumb(thing, place) {
+  protected clickOnThumb(thing:any, place:any):void {
     this.isThumbView = false;
 
     if (this.controllSlider) {
-      var j;
-
-      _.forEach(this.street.places, function (p, t) {
+      let j;
+      _.forEach(this.street.places, (p:any, t:any) => {
         if (p._id !== place._id) {
           return;
         }
@@ -248,7 +247,6 @@ export class StreetComponent implements OnInit, OnDestroy {
       });
 
       this.controllSlider.next(j);
-
       return;
     }
 

@@ -21,11 +21,11 @@ export class PhotographerComponent implements OnInit {
   private routeParams:RouteParams;
   private photographerId:string;
 
-  constructor(@Inject(RouteParams) routeParams) {
+  public constructor(@Inject(RouteParams) routeParams) {
     this.routeParams = routeParams;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.photographerId = this.routeParams.get('id');
   }
 }

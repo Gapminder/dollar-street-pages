@@ -41,7 +41,7 @@ export let places = {
     }],
     'familyThingId': '546ccf730f7ddf45c017962f'
   },
-  'error': null
+  'error': false
 };
 
 export let profile = {
@@ -59,8 +59,5 @@ export let profile = {
     'imagesCount': 289,
     'placesCount': 4
   },
-  'error': null
+  'error': false
 };
-
-
-

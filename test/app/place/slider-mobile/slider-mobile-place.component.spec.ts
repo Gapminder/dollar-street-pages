@@ -60,11 +60,11 @@ describe('SliderPlaceComponent', () => {
     return tcb.createAsync(SliderMobilePlaceComponent).then((fixtureInst:any) => {
       fixture = fixtureInst;
       context = fixture.debugElement.componentInstance;
-      console.log('########',context)
+    }).catch((e:Error)=> {
+      console.log(e);
     });
   })));
   it('must init', ()=> {
-    console.log('@@@@@@',context)
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;

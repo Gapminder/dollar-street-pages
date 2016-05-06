@@ -14,12 +14,12 @@ export class AmbassadorsListComponent implements OnInit {
   private ambassadorsList:any;
   private showedBlock:number;
 
-  constructor(@Inject('AmbassadorsListService') ambassadorsListService) {
+  public constructor(@Inject('AmbassadorsListService') ambassadorsListService:any) {
     this.ambassadorsListService = ambassadorsListService;
   }
 
-  ngOnInit():void {
-    this.ambassadorsListService.getAmbassadors({}).subscribe((res) => {
+  public ngOnInit():void {
+    this.ambassadorsListService.getAmbassadors({}).subscribe((res:any) => {
       if (res.err) {
         return res.err;
       }
@@ -28,10 +28,9 @@ export class AmbassadorsListComponent implements OnInit {
     });
   }
 
-  show(i:number) {
+  public show(i:number):void {
     if (this.showedBlock === i) {
-      this.showedBlock = null;
-
+      this.showedBlock = void 0;
       return;
     }
 

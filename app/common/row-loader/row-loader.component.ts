@@ -1,6 +1,4 @@
 import {Component, Input, Inject, NgZone, OnChanges} from '@angular/core';
-
-let _ = require('lodash');
 let tpl = require('./row-loader.template.html');
 let style = require('./row-loader.css');
 
@@ -29,11 +27,11 @@ export class RowLoaderComponent implements OnChanges {
   private isShow:boolean = true;
   private cloneItems:any;
 
-  constructor(@Inject(NgZone) zone) {
+  public constructor(@Inject(NgZone) zone:NgZone) {
     this.zone = zone;
   }
 
-  ngOnChanges(changes) {
+  public ngOnChanges(changes:any):void {
     if (!changes.items || !changes.items.currentValue && !changes.items.currentValue.length) {
       return;
     }
@@ -49,8 +47,7 @@ export class RowLoaderComponent implements OnChanges {
     });
   }
 
-  isUploadItem(item:number) {
-
+  public isUploadItem(item:number):void {
     if (item > this.cloneItems.length - 1) {
       this.isShow = false;
 

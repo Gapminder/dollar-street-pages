@@ -38,17 +38,18 @@
 
         <div class="slide-description">
           <div class="slide-header">
-            <div class="slide-button">
+            <div class="slide-button pull-left">
               <span
                 [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
                 << All {{activeThing.plural}}
               </span>
             </div>
+            <div class="slide-map pull-right">
+              <place-map [hoverPlace]="hoverPlace"  *ngIf="hoverPlace"
+                         [routerLink]="['Map', {thing: activeThing?._id}]"></place-map>
+            </div>
           </div>
-          <div class="slide-map pull-right">
-            <place-map [hoverPlace]="hoverPlace"  *ngIf="hoverPlace"
-                       [routerLink]="['Map', {thing: activeThing?._id}]"></place-map>
-          </div>
+
           <h2>
             <span>{{math.round(image.income)}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="image.aboutData"
                                          (click)="showInfo()"></span>

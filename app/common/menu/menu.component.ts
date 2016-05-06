@@ -24,12 +24,12 @@ export class MainMenuComponent implements OnChanges {
   private router:Router;
   private placeComponent:boolean;
 
-  constructor(@Inject(Router) _router) {
-    this.router = _router;
+  public constructor(@Inject(Router) router:Router) {
+    this.router = router;
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
   }
 
-  ngOnChanges(changes) {
+  public ngOnChanges():void {
     if (this.defaultThing) {
       if (this.activeThing && this.placeComponent) {
         this.thing = this.activeThing;

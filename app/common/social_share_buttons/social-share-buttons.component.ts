@@ -15,37 +15,36 @@ export class SocialShareButtons implements OnInit, OnDestroy {
   public socialShareButtonsService:any;
   private location:Location;
   private urlChangeService:any;
-  public url:string;
-  public urlEvents:any;
-  public socialShareButtonsServiceSubscribe:any;
+  private url:string;
+  private urlEvents:any;
+  private socialShareButtonsServiceSubscribe:any;
 
-  constructor(@Inject('SocialShareButtonsService') socialShareButtonsService,
-              @Inject('UrlChangeService') urlChangeService,
-              @Inject(Location) location) {
+  public constructor(@Inject('SocialShareButtonsService') socialShareButtonsService:any,
+                     @Inject('UrlChangeService') urlChangeService:any,
+                     @Inject(Location) location:Location) {
     this.socialShareButtonsService = socialShareButtonsService;
     this.urlChangeService = urlChangeService;
     this.location = location;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.getUrl();
 
     this.urlEvents = this.urlChangeService
       .getUrlEvents()
-      //.debounceTime(300)
+      // .debounceTime(300)
       .subscribe(() => {
         this.getUrl();
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     this.urlEvents.unsubscribe();
     this.socialShareButtonsServiceSubscribe.unsubscribe();
   }
 
-  getUrl() {
+  public getUrl():void {
     let query = `url=${this.location.path()}`;
-
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl(query)
       .subscribe((res:any) => {
         if (res.err) {
@@ -56,9 +55,8 @@ export class SocialShareButtons implements OnInit, OnDestroy {
       });
   }
 
-  openPopUp(originalUrl:string) {
+  public openPopUp(originalUrl:string):void {
     let left = (window.innerWidth - 490) / 2;
-
     let popupWin = window.open(originalUrl + this.url, 'contacts', 'location, width=490, height=368, top=100, left=' + left);
     popupWin.focus();
   }

@@ -25,11 +25,11 @@ export class ConceptMainComponent implements OnInit, OnDestroy {
   };
   private conceptMainServiceSubscribe:any;
 
-  constructor(@Inject('ConceptMainService') conceptMainService) {
+  public constructor(@Inject('ConceptMainService') conceptMainService) {
     this.conceptMainService = conceptMainService;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptThings({})
       .subscribe((res:any) => {
         if (res.err) {
@@ -45,7 +45,7 @@ export class ConceptMainComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.conceptMainServiceSubscribe.unsubscribe();
   }
 

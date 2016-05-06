@@ -7,7 +7,7 @@ import {config} from '../../app.config';
 export class PhotographerPlacesService {
   public http:Http;
 
-  constructor(@Inject(Http) http:Http) {
+  public constructor(@Inject(Http) http:Http) {
     this.http = http;
   }
 

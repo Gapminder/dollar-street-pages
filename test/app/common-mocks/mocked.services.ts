@@ -8,6 +8,7 @@ import {HTTP_PROVIDERS} from '@angular/http';
 import {MockNgZone,MockApplicationRef} from '@angular/core/testing';
 
 import {AppComponent} from '../../../app/app.component';
+import {MathService} from '../../../app/common/math-service/math-service';
 import {StreetDrawService} from '../../../app/common/street/street.service';
 import {MatrixService} from '../../../app/matrix/matrix.service';
 import {HeaderService} from '../../../app/common/header/header.service';
@@ -52,6 +53,7 @@ export class MockCommonDependency {
       provide('CountryPlacesService', {useClass: CountryPlacesService}),
       provide('PhotographersService', {useClass: PhotographersService}),
       provide('SocialShareButtonsService', {useClass: SocialShareButtonsService}),
+      provide('Math', {useClass: MathService}),
       provide(APP_BASE_HREF, {useValue: '/'}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: AppComponent}),
       provide(ApplicationRef, {useClass: MockApplicationRef})

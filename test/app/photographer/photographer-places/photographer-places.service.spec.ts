@@ -50,7 +50,7 @@ describe('PhotographerPlacesService', () => {
         "family":"Abdul Kadhar","placeId":"54b51c593755cbfb542c24a5","income":145,"imageId":"54b51c8105df73e55431911b","thing":"546ccf730f7ddf45c017962f"},
         {"image":"http://static.dollarstreet.org.s3.amazonaws.com/media/India 4/image/2d763a64-285b-4bd7-862e-cc1d3cb25132/thumb-2d763a64-285b-4bd7-862e-cc1d3cb25132.jpg",
         "family":"Gada","placeId":"54b520ed05df73e55431912b","income":96,"imageId":"54b5213d38ef07015525f1bd","thing":"546ccf730f7ddf45c017962f"}]}],
-        "familyThingId":"546ccf730f7ddf45c017962f"},"error":null}`
+        "familyThingId":"546ccf730f7ddf45c017962f"},"error":false}`
         });
         connection.mockRespond(new Response(response));
       });

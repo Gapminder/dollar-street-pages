@@ -38,7 +38,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private itemSize:number;
   private math:any;
 
-  constructor(@Inject(ElementRef) element,
+  public constructor(@Inject(ElementRef) element,
               @Inject(Router) router,
               @Inject('Math') math) {
     this.element = element.nativeElement;
@@ -46,20 +46,20 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     this.math = math;
   }
 
-  ngOnInit():any {
+  public ngOnInit():any {
     this.itemSize = window.innerWidth / this.zoom;
     this.placesSubscribe = this.places.subscribe((places) => {
       this.currentPlaces = places;
     });
   }
 
-  ngOnChanges(changes) {
+  public ngOnChanges(changes) {
     if (changes.zoom) {
       this.itemSize = window.innerWidth / this.zoom;
     }
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.placesSubscribe.unsubscribe();
   }
 
@@ -69,7 +69,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     if (!place) {
-      this.oldPlaceId = null;
+      this.oldPlaceId = void 0;
     }
   }
 

@@ -24,7 +24,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private countries:any[] = [];
   private element:any;
   private map:HTMLImageElement;
-  private hoverPlace:any = null;
+  private hoverPlace:any = void 0;
   private markers:any;
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
@@ -52,7 +52,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
 
-  constructor(@Inject('MapService') placeService,
+  public constructor(@Inject('MapService') placeService,
               @Inject(ElementRef) element,
               @Inject(RouteParams) routeParams,
               @Inject(Router) router,
@@ -68,7 +68,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.init = true;
     this.thing = this.routeParams.get('thing');
     this.urlChanged(this.thing);
@@ -115,7 +115,7 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.mapServiceSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
   }
@@ -209,7 +209,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
         this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
         this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
-        this.leftArrowTop = null;
+        this.leftArrowTop = void 0;
         this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
 
         if (this.hoverPortraitTop < 10) {
@@ -269,10 +269,10 @@ export class MapComponent implements OnInit, OnDestroy {
       });
 
       this.seeAllHomes = false;
-      this.hoverPlace = null;
-      this.hoverPortraitTop = null;
-      this.hoverPortraitLeft = null;
-      this.markers = null;
+      this.hoverPlace = void 0;
+      this.hoverPortraitTop = void 0;
+      this.hoverPortraitLeft = void 0;
+      this.markers = void 0;
     }, 300);
   }
 
@@ -287,9 +287,9 @@ export class MapComponent implements OnInit, OnDestroy {
       this.onMarker = false;
       this.onThumb = false;
       this.seeAllHomes = false;
-      this.hoverPlace = null;
-      this.hoverPortraitTop = null;
-      this.hoverPortraitLeft = null;
+      this.hoverPlace = void 0;
+      this.hoverPortraitTop = void 0;
+      this.hoverPortraitLeft = void 0;
       this.unHoverOnMarker(e);
 
       return;

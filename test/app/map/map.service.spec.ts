@@ -69,7 +69,7 @@ describe('MapService', () => {
         {"countries":[{"_id":"55ef338d0d2b3c82037884fc","name":"Viet Nam"}],"letter":"V"},
         {"countries":[{"_id":"55ef338d0d2b3c82037884cb","name":"Zimbabwe"}],"letter":"Z"}],
         "thing":"5477537786deda0b00d43be5"},
-        "error":null}`
+        "error":false}`
         });
         connection.mockRespond(new Response(response));
       });

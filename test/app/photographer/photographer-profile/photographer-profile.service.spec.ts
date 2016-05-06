@@ -44,7 +44,7 @@ describe('PhotographersService', () => {
           body: `{"success":true,"msg":[],"data":{"_id":"56ec091caf72e9437cbccfab","username":"aj-sharma","lastName":"Sharma",
         "firstName":"AJ","email":"aj.sharma@dollarstreet.org","role":"photographer","__v":0,
         "avatar":"http://static.dollarstreet.org.s3.amazonaws.com/users/56ec091caf72e9437cbccfab/avatar.jpg",
-        "imagesCount":289,"placesCount":4},"error":null}`
+        "imagesCount":289,"placesCount":4},"error":false}`
         });
         connection.mockRespond(new Response(response));
       });

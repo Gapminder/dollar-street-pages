@@ -22,11 +22,11 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
   private headerService:any;
   private headerServiceSibscribe:any;
 
-  constructor(@Inject('HeaderService') headerService) {
+  public constructor(@Inject('HeaderService') headerService:any) {
     this.headerService = headerService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.headerServiceSibscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
         if (res.err) {
@@ -37,7 +37,7 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy():void {
+  public ngOnDestroy():void {
     this.headerServiceSibscribe.unsubscribe();
   }
 }

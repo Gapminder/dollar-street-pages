@@ -19,12 +19,12 @@ export class AboutComponent implements OnInit, OnDestroy {
   private zone:NgZone;
   public resizeSubscribe:any;
 
-  constructor(@Inject(ElementRef) element, @Inject(NgZone) zone) {
+  public constructor(@Inject(ElementRef) element, @Inject(NgZone) zone) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.videosIframes = this.element.querySelectorAll('.video-container iframe');
 
     this.setVideosSize();
@@ -38,7 +38,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.resizeSubscribe.unsubscribe();
   }
 

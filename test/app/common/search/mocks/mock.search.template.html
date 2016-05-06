@@ -64,7 +64,7 @@
                               </span>
                             </span>
                             <span class="pointer"
-                                  (click)="goToThing(null)">
+                                  (click)="goToThing(undefined)">
                               <img class="checked" src="/assets/img/check.png">
                               <img class="close" src="/assets/img/close.png">
                             </span>
@@ -118,7 +118,7 @@
                         </div>
                       </div>
                       <ul class="search-items-container regions">
-                        <!--<li *ngFor="let region of regions | SearchFilter:search.text:null"-->
+                        <!--<li *ngFor="let region of regions | SearchFilter:search.text:undefined"-->
                             <!--[ngClass]="{active: activeRegions.indexOf(region) !== -1}"-->
                             <!--(click)="goToRegions(region)">-->
                           <!--<div class="search-item">-->

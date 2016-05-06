@@ -12,8 +12,7 @@
 
   <div class="map-menu-content">
     <div class="map-content" *ngIf="matrixComponent && isDesktop">
-      <place-map [isHeader]="true"
-                 [hoverPlace]="hoverPlace"
+      <place-map [hoverPlace]="hoverPlace"
                  [routerLink]="['Map', {thing: activeThing?._id||defaultThing?._id}]"
                  *ngIf="hoverPlace"></place-map>
     </div>

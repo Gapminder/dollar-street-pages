@@ -43,6 +43,9 @@ describe('MatrixComponent', () => {
           context.routeParams.set('regions', 'World');
           context.routeParams.set('row', 1);
           context.routeParams.set('zoom', 5);
+        })
+        .catch((e:Error)=> {
+          console.log(e);
         });
     }
   )));
@@ -83,7 +86,7 @@ describe('MatrixComponent', () => {
     spyOn(context.hoverHeader, 'next');
     context.isDesktop = true;
     context.isHover();
-    expect(context.hoverHeader.next.calls.argsFor(0)).toEqual([null]);
+    expect(context.hoverHeader.next.calls.argsFor(0)).toEqual([undefined]);
     context.isDesktop = false;
     context.isHover();
     expect(context.hoverHeader.next.calls.count()).toEqual(1);

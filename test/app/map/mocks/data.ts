@@ -2695,5 +2695,5 @@ export let mapdata = {
     }, {'countries': [{'_id': '55ef338d0d2b3c82037884cb', 'name': 'Zimbabwe'}], 'letter': 'Z'}],
     'thing': '546ccf730f7ddf45c0179688'
   },
-  'error': null
+  'error': undefined
 };

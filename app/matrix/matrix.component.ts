@@ -57,7 +57,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
   public matrixServiceSubscrib:any;
 
-  constructor(@Inject('MatrixService') matrixService,
+  public constructor(@Inject('MatrixService') matrixService,
               @Inject(ElementRef) element,
               @Inject('UrlChangeService') urlChangeService,
               @Inject(RouteParams) routeParams) {
@@ -67,11 +67,11 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
     this.regions = this.routeParams.get('regions');
-    //todo: row null
+    //todo: row void 0
     this.row = parseInt(this.routeParams.get('row'), 10);
     this.zoom = parseInt(this.routeParams.get('zoom'), 10);
 
@@ -94,8 +94,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
     };
   }
 
-  ngOnDestroy() {
-    document.onscroll = null;
+  public ngOnDestroy() {
+    document.onscroll = void 0;
     this.matrixServiceSubscrib.unsubscribe();
   }
 
@@ -195,7 +195,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     if (!this.isDesktop) {
       return;
     }
-    this.hoverHeader.next(null);
+    this.hoverHeader.next(void 0);
   }
 
   urlChanged(options):void {
@@ -208,7 +208,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     if (this.matrixServiceSubscrib) {
       this.matrixServiceSubscrib.unsubscribe();
-      this.matrixServiceSubscrib = null;
+      this.matrixServiceSubscrib = void 0;
     }
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)

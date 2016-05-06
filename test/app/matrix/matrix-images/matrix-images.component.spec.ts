@@ -68,7 +68,7 @@ describe('MatrixImagesComponent', () => {
       image: place.image
     }]);
     context.isDesktop = false;
-    context.oldPlaceId = null;
+    context.oldPlaceId = undefined;
     context.goToPlace(place);
     expect(context.oldPlaceId).toEqual(place._id);
     context.isDesktop = false;

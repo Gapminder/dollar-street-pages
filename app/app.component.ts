@@ -11,12 +11,12 @@ import {config} from './app.config';
 @RouteConfig(config.routes)
 
 export class AppComponent {
-  private router:Router;
-  type:string = 'app component';
+  private type:string;
 
-  constructor(@Inject(Router) router) {
+  public constructor(@Inject(Router) router:Router) {
     router.subscribe(() => {
       document.body.scrollTop = 0;
     });
+    this.type = 'app component';
   }
 }

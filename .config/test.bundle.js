@@ -1,11 +1,11 @@
 require('node_modules/phantomjs-polyfill');
+require('babel-polyfill');
 require('node_modules/es6-promise');
 require('node_modules/es6-shim');
 require('node_modules/es7-reflect-metadata/dist/browser');
 require('zone.js/dist/zone');
-require('zone.js/dist/long-stack-trace-zone');
-require('zone.js/dist/jasmine-patch');
 require('zone.js/dist/async-test');
+require('zone.js/dist/fake-async-test');
 
 // RxJS
 require('rxjs/Rx');
