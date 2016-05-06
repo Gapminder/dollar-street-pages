@@ -6,12 +6,13 @@ import {AllPhotographersComponent} from './all-photographers/all-photographers.c
 import {PhotographerComponent} from './photographer/photographer.component';
 import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
 import {CountryComponent} from './country/country.component';
+import {InfoComponent} from './info/info.component';
 
 export module config {
-  export let api = 'http://128.199.60.70';
-  //export let api = 'http://stage.dollarstreet.org';
-  // export let api = 'http://192.168.1.66';
-  //export let api = 'http://192.168.1.81';
+  // export let api = 'http://128.199.60.70';
+  // export let api = 'http://stage.dollarstreet.org';
+  export let api = 'http://192.168.1.66';
+  // export let api = 'http://192.168.1.81';
 
   export let routes = [{
     path: '/main',
@@ -46,5 +47,9 @@ export module config {
     path: '/country',
     name: 'Country',
     component: CountryComponent
+  }, {
+    path: '/info',
+    name: 'Info',
+    component: InfoComponent
   }];
 }
