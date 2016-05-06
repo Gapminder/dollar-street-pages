@@ -109,6 +109,7 @@ export class StreetComponent implements OnInit, OnDestroy {
               }
               return this.street.scale(place.income);
             })
+            .compact()
             .value());
       });
 

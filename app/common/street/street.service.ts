@@ -51,9 +51,11 @@ export class StreetDrawService {
     }
 
     if (index >= this.fullIncomeArr.length) {
-      return _.last(this.places);
+      return _.chain(this.places)
+        .compact()
+        .last()
+        .value();
     }
-
     let right = this.scale(this.places[index].income) - positionX;
     let left = this.scale(this.places[indexL].income) - positionX;
 
@@ -65,6 +67,9 @@ export class StreetDrawService {
   };
 
   public drawScale(places:any):this {
+    if (!places || !places.length) {
+      return this;
+    }
     d3.svg
       .axis()
       .scale(this.scale)
@@ -194,7 +199,6 @@ export class StreetDrawService {
     if (!d) {
       return;
     }
-
     this
       .set('hoverPlace', void 0)
       .removeHouses('chosen')
@@ -222,6 +226,9 @@ export class StreetDrawService {
   };
 
   public drawHouses(places:any):this {
+    if (!places || !places.length) {
+      return this;
+    }
     let halfHouseWidth = 10;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 12;
@@ -255,6 +262,9 @@ export class StreetDrawService {
   };
 
   public drawHoverHouse(place:any, gray:boolean = false):this {
+    if (!place) {
+      return this;
+    }
     let colors = this.getFills();
     let fills = colors.fills;
     let fillsOfBorders = colors.fillsOfBorders;
@@ -320,6 +330,9 @@ export class StreetDrawService {
   };
 
   public clearAndRedraw(places:any, slider:boolean = false):this {
+    if (!places || !places.length) {
+      return this;
+    }
     this.removeHouses('hover');
     this.removeHouses('chosen');
 
