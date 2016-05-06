@@ -75,7 +75,6 @@ export class StreetComponent implements OnInit, OnDestroy {
       });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace:any):void => {
-        console.log(hoverPlace)
         if (this.drawOnMap) {
           this.drawOnMap = !this.drawOnMap;
           return;
