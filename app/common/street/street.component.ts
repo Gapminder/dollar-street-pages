@@ -66,7 +66,6 @@ export class StreetComponent implements OnInit, OnDestroy {
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
         this.street.set('chosenPlaces', chosenPlaces);
-
         if (this.controllSlider) {
           this.street.clearAndRedraw(chosenPlaces, true);
           return;
@@ -76,6 +75,7 @@ export class StreetComponent implements OnInit, OnDestroy {
       });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace:any):void => {
+        console.log(hoverPlace)
         if (this.drawOnMap) {
           this.drawOnMap = !this.drawOnMap;
           return;

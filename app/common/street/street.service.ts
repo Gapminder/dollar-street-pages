@@ -330,7 +330,7 @@ export class StreetDrawService {
   };
 
   public clearAndRedraw(places:any, slider:boolean = false):this {
-    if (!places || !places.length) {
+    if (!places || !places.length && !slider) {
       return this;
     }
     this.removeHouses('hover');
