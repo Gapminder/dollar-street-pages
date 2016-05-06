@@ -21,6 +21,8 @@ import {PhotographerProfileService} from './photographer/photographer-profile/ph
 import {PhotographerPlacesService} from './photographer/photographer-places/photographer-places.service';
 import {AmbassadorsListService} from './ambassadors/ambassadors-list/ambassadors-list.service';
 import {SocialShareButtonsService} from './common/social_share_buttons/social-share-buttons.service';
+import {InfoContextService} from './info/info-context/info-context.service';
+
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
   HTTP_PROVIDERS,
@@ -39,6 +41,7 @@ bootstrap(AppComponent, [
   provide('CountryPlacesService', {useClass: CountryPlacesService}),
   provide('PhotographersService', {useClass: PhotographersService}),
   provide('SocialShareButtonsService', {useClass: SocialShareButtonsService}),
+  provide('InfoContextService', {useClass: InfoContextService}),
   provide('Math', {useClass: MathService}),
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);
