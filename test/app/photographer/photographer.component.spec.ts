@@ -1,18 +1,17 @@
 import {
   it,
-  xit,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
+  inject,
+  async,
   beforeEachProviders,
-  beforeEach,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services';
 import {PhotographerComponent} from '../../../app/photographer/photographer.component';
-
 
 describe('PhotographerComponent', () => {
   beforeEachProviders(() => {
@@ -22,15 +21,15 @@ describe('PhotographerComponent', () => {
     ];
   });
   let fixture, context;
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb
       .overrideTemplate(PhotographerComponent, '<div></div>')
-      .createAsync(PhotographerComponent).then((fixtureInst) => {
+      .createAsync(PhotographerComponent).then((fixtureInst:any) => {
         fixture = fixtureInst;
         context = fixtureInst.debugElement.componentInstance;
         context.routeParams.set('id', '5477537786deda0b00d43be5');
       });
-  }))
+  })));
   it('PhotographerComponent must init', () => {
     expect(context.title).toEqual('Photographer');
     context.ngOnInit();

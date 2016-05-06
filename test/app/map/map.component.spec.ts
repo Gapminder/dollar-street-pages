@@ -1,25 +1,19 @@
-/**
- * Created by igor on 4/4/16.
- */
-
 import {
   it,
-  xit,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
-  beforeEach,
+  inject,
+  async,
   beforeEachProviders,
-  TestComponentBuilder,
-  tick
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services.ts';
 import {MockService} from '../common-mocks/mock.service.template.ts';
 import {mapdata} from './mocks/data.ts';
 import {MapComponent} from '../../../app/map/map.component';
-import {Observable} from 'rxjs/Observable';
 
 /** todo: remove this crutch */
 interface ObjectCreator extends ObjectConstructor {
@@ -46,7 +40,7 @@ let setTimeoutMock = {
 
 assign(window, ImageMock);
 assign(window, setTimeoutMock);
-/*** *************/
+/****************/
 
 let tmpl = require('./mocks/map.template.html');
 
@@ -65,20 +59,22 @@ describe('MapComponent', () => {
   let fixture;
   let context;
 
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(MapComponent, tmpl)
         .createAsync(MapComponent)
-        .then((componentFixture) => {
+        .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
           context.routeParams.set('thing', '546ccf730f7ddf45c0179688');
         });
     }
-  ));
+  )));
 
   it(' ngOnInit', () => {
-    /** need solve a router state in header component -> search*/
+    /**
+     * need solve a router state in header component -> search
+     */
     spyOn(context, 'urlChanged');
     spyOn(context, 'ngOnInit').and.callThrough();
     context.ngOnInit();
@@ -116,20 +112,20 @@ describe('MapComponent', () => {
     expect(context.seeAllHomes).toEqual(true);
     expect(context.markers.length).toEqual(174);
     expect(context.hoverPlace).toEqual(context.places[2]);
-    expect(context.leftArrowTop).toEqual(null);
+    expect(!context.leftArrowTop).toEqual(true);
     expect(context.shadowClass).toEqual({'shadow_to_left': true, 'shadow_to_right': false});
-
-
     context.unHoverOnMarker();
     expect(context.onMarker).toEqual(false);
     expect(context.seeAllHomes).toEqual(false);
-    expect(context.hoverPortraitTop).toEqual(null);
-    expect(context.hoverPortraitLeft).toEqual(null);
-    expect(context.markers).toEqual(null);
+    expect(!context.hoverPortraitTop).toEqual(true);
+    expect(!context.hoverPortraitLeft).toEqual(true);
+    expect(!context.markers).toEqual(true);
     expect(context.onMarker).toEqual(false);
 
-    this.seeAllHomes = false;
-    /**write test*/
+    context.seeAllHomes = false;
+    /**
+     * write test
+     */
   });
 
   it(' openLeftSideBar', () => {
@@ -139,7 +135,9 @@ describe('MapComponent', () => {
   });
   it(' closeLeftSideBar', () => {
     spyOn(context, 'closeLeftSideBar').and.callThrough();
-    /**todo remove this*/
+    /**
+     * todo remove this
+     */
     let e = {
       target: {
         classList: {
@@ -154,16 +152,18 @@ describe('MapComponent', () => {
     expect(context.onMarker).toEqual(false);
     expect(context.onThumb).toEqual(false);
     expect(context.seeAllHomes).toEqual(false);
-    expect(context.hoverPlace).toEqual(null);
-    expect(context.hoverPortraitTop).toEqual(null);
-    expect(context.hoverPortraitLeft).toEqual(null);
+    expect(!context.hoverPlace).toEqual(true);
+    expect(!context.hoverPortraitTop).toEqual(true);
+    expect(!context.hoverPortraitLeft).toEqual(true);
     expect(context.unHoverOnMarker.calls.argsFor(0)).toEqual([e]);
     eCall.and.returnValue(false);
     context.closeLeftSideBar(e);
     expect(context.isOpenLeftSide).toEqual(false);
     expect(context.onMarker).toEqual(false);
     expect(context.onThumb).toEqual(false);
-    /**!e.target.classList.contains('marker')*/
+    /**
+     * !e.target.classList.contains('marker')
+     */
   });
 
   it(' clickOnMarker', () => {

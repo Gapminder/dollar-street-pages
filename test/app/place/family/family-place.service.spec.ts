@@ -1,23 +1,21 @@
 import {
   it,
-  expect,
   describe,
-  xdescribe,
   inject,
-  fakeAsync,
   beforeEachProviders,
   tick,
-} from 'angular2/testing';
+  fakeAsync
+} from '@angular/core/testing';
 
-import {MockBackend} from 'angular2/http/testing';
-import {provide} from 'angular2/core';
+import {MockBackend} from '@angular/http/testing';
+import {provide} from '@angular/core';
 import {
   Http,
   ConnectionBackend,
   BaseRequestOptions,
   Response,
   ResponseOptions
-} from 'angular2/http';
+} from '@angular/http';
 
 import {config} from '../../../../app/app.config.ts';
 
@@ -33,27 +31,28 @@ describe('FamilyPlaceService', () => {
       FamilyPlaceService,
       provide(
         Http, {
-          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions) => {
+          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions):Http => {
             return new Http(backend, defaultOptions);
           }, deps: [MockBackend, BaseRequestOptions]
         })
     ];
   });
-  it('getPlaceFamilyImages()', inject([FamilyPlaceService, MockBackend], fakeAsync((familyPlaceService,
-                                                                                    mockBackend) => {
-    var res;
-    mockBackend.connections.subscribe(connection => {
-      expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/place/family/images?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);
-      let response = new ResponseOptions({
-        body: jsonPlaces
+  it('getPlaceFamilyImages()', fakeAsync(inject([FamilyPlaceService, MockBackend],
+    (familyPlaceService:FamilyPlaceService, mockBackend:MockBackend) => {
+      let res;
+      mockBackend.connections.subscribe((connection:any) => {
+        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/place/family/images?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);
+        let response = new ResponseOptions({
+          body: jsonPlaces
+        });
+        connection.mockRespond(new Response(response));
       });
-      connection.mockRespond(new Response(response));
-    });
-    familyPlaceService.getPlaceFamilyImages(`isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`).subscribe((_res) => {
-      res = _res;
-    });
-    tick();
-    expect(res.err).toBe(null);
-    expect(res.images.length).toBe(2);
-  })));
+      familyPlaceService.getPlaceFamilyImages(`isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`)
+        .subscribe((_res:any) => {
+          res = _res;
+        });
+      tick();
+      expect(!res.err).toBe(true);
+      expect(res.images.length).toBe(2);
+    })));
 });

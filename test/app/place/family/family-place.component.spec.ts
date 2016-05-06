@@ -1,17 +1,18 @@
 import {
   it,
-  xit,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
+  inject,
+  async,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services'
+import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {FamilyPlaceComponent} from '../../../../app/place/family/family-place.component';
-import {MockService} from '../../common-mocks/mock.service.template.ts'
+import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {places, place} from '../mocks/data.ts';
 
 describe('FamilyPlaceComponent', () => {
@@ -30,25 +31,25 @@ describe('FamilyPlaceComponent', () => {
       mockFamilyPlaceService.getProviders()
     ];
   });
-  it(' must init ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(FamilyPlaceComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.chosenPlaces = placesObservable;
-      fixture.detectChanges();
-      expect(context.placeId).toEqual('54b6862f3755cbfb542c28cb');
-      expect(context.images.length).toEqual(5);
-      placesObservable.toInitState();
-      mockFamilyPlaceService.toInitState();
+  let context, fixture;
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(FamilyPlaceComponent).then((fixtureInst:any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
     });
-  }));
-  it(' must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(FamilyPlaceComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.chosenPlaces = placesObservable;
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(placesObservable.countOfSubscribes).toEqual(0);
-      expect(mockFamilyPlaceService.countOfSubscribes).toEqual(0);
-    });
-  }));
+  })));
+  it(' must init ', ()=> {
+    context.chosenPlaces = placesObservable;
+    fixture.detectChanges();
+    expect(context.placeId).toEqual('54b6862f3755cbfb542c28cb');
+    expect(context.images.length).toEqual(5);
+    placesObservable.toInitState();
+    mockFamilyPlaceService.toInitState();
+  });
+  it(' must destroy ', ()=> {
+    fixture.detectChanges();
+    fixture.destroy();
+    expect(placesObservable.countOfSubscribes).toEqual(0);
+    expect(mockFamilyPlaceService.countOfSubscribes).toEqual(0);
+  });
 });

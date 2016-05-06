@@ -1,18 +1,18 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
-  beforeEach,
+  inject,
+  async,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {MockService} from '../../../app/common-mocks/mock.service.template';
 import {HeaderComponent} from '../../../../app/common/header/header.component';
-import {HeaderService} from '../../../../app/common/header/header.service';
 import {thing} from './mocks/data.ts';
 
 describe('FooterComponent', () => {
@@ -24,20 +24,20 @@ describe('FooterComponent', () => {
     let mockCommonDependency = new MockCommonDependency();
     return [
       mockCommonDependency.getProviders(),
-      headerService.getProviders(),
+      headerService.getProviders()
     ];
   });
   let fixture, context;
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(HeaderComponent, `<div></div>`)
         .createAsync(HeaderComponent)
-        .then((componentFixture) => {
+        .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
         });
     }
-  ));
+  )));
   it('ngOnInit ngOnDestroy', () => {
     context.ngOnInit();
     expect(context.defaultThing).toEqual(thing.data);

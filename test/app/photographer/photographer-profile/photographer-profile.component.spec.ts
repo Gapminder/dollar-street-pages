@@ -2,11 +2,14 @@ import {
   it,
   xit,
   describe,
-  expect,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {MockService} from '../../../app/common-mocks/mock.service.template';
@@ -23,47 +26,44 @@ describe('PhotographerProfileComponent', () => {
   beforeEachProviders(() => {
     return [
       mockCommonDependency.getProviders(),
-      mockPhotographerProfileService.getProviders(),
+      mockPhotographerProfileService.getProviders()
     ];
   });
-  it('PhotographerProfileComponent must init ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerProfileComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      expect(context.photographer.imagesCount).toBe(289);
-      expect(context.photographer.placesCount).toBe(4);
-      mockPhotographerProfileService.toInitState();
+  let context, fixture, nativeElement;
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(PhotographerProfileComponent).then((fixtureInst:any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
+      nativeElement = fixture.debugElement.nativeElement;
     });
-  }));
-  it('PhotographerProfileComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerProfileComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(mockPhotographerProfileService.countOfSubscribes).toBe(0);
-    });
-  }));
-  it('PhotographerProfileComponent must show on mobile ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerProfileComponent).then((fixture) => {
-      /**
-       * ToDo: create some cases for 
-       * checking mobile rendering
-       */
-    });
-  }));
-  it('PhotographerProfileComponent must render photographer info', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerProfileComponent).then((fixture) => {
-      let nativeElement = fixture.debugElement.nativeElement;
-      fixture.detectChanges();
-      let photographerName = nativeElement.querySelector('#photographer-profile .header h2');
-      let photographerPhotos = nativeElement.querySelector('#photographer-profile .main .photo span');
-      expect(photographerName.innerHTML).toBe('AJ Sharma');
-      expect(photographerPhotos.innerHTML).toBe('289');
-      fixture.detectChanges();
-      photographerName = nativeElement.querySelector('#photographer-profile .header h2');
-      photographerPhotos = nativeElement.querySelector('#photographer-profile .main .photo span');
-      expect(photographerName.innerHTML).toBe('AJ Sharma');
-      expect(photographerPhotos.innerHTML).toBe('289');
-    });
-  }));
+  })));
+  it('PhotographerProfileComponent must init ', ()=> {
+    fixture.detectChanges();
+    expect(context.photographer.imagesCount).toBe(289);
+    expect(context.photographer.placesCount).toBe(4);
+    mockPhotographerProfileService.toInitState();
+  });
+  it('PhotographerProfileComponent must destroy ', ()=> {
+    fixture.detectChanges();
+    fixture.destroy();
+    expect(mockPhotographerProfileService.countOfSubscribes).toBe(0);
+  });
+  xit('PhotographerProfileComponent must show on mobile ', ()=> {
+    /**
+     * ToDo: create some cases for
+     * checking mobile rendering
+     */
+  });
+  it('PhotographerProfileComponent must render photographer info', ()=> {
+    fixture.detectChanges();
+    let photographerName = nativeElement.querySelector('let photographer-profile .header h2');
+    let photographerPhotos = nativeElement.querySelector('let photographer-profile .main .photo span');
+    expect(photographerName.innerHTML).toBe('AJ Sharma');
+    expect(photographerPhotos.innerHTML).toBe('289');
+    fixture.detectChanges();
+    photographerName = nativeElement.querySelector('let photographer-profile .header h2');
+    photographerPhotos = nativeElement.querySelector('let photographer-profile .main .photo span');
+    expect(photographerName.innerHTML).toBe('AJ Sharma');
+    expect(photographerPhotos.innerHTML).toBe('289');
+  });
 });

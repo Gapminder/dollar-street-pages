@@ -128,7 +128,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   isHover() {
-    this.hoverHeader.next(null);
+    this.hoverHeader.next(false);
   }
 
   getStreetPlaces(thing) {

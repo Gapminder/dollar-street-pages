@@ -1,11 +1,10 @@
 import {
   it,
   describe,
-  expect,
-  beforeEach,
-  beforeEachProviders,
   inject,
-} from 'angular2/testing';
+  beforeEachProviders,
+  beforeEach
+} from '@angular/core/testing';
 
 import {StreetDrawService} from '../../../../app/common/street/street.service';
 
@@ -118,14 +117,14 @@ describe('StreetDrawService', () => {
     streetDrawService.clearSvg();
     expect(d3Svg.selectAll).toHaveBeenCalledWith('*');
     expect(d3Svg.remove).toHaveBeenCalledWith('*');
-    expect(streetDrawService.clearSvg()).toBeAnInstanceOf(StreetDrawService);
+    //expect(streetDrawService.clearSvg()).toBeAnInstanceOf(StreetDrawService);
   });
   it('removeHouses', () => {
     spyOn(d3, 'select').and.returnValue(d3Svg);
     spyOn(d3Svg, 'selectAll').and.callThrough();
     spyOn(d3Svg, 'remove').and.callThrough();
     streetDrawService.setSvg = document.createElement('svg');
-    expect(streetDrawService.removeHouses('chosen')).toBeAnInstanceOf(StreetDrawService);
+    //expect(streetDrawService.removeHouses('chosen')).toBeAnInstanceOf(StreetDrawService);
     streetDrawService.removeHouses('chosen');
     expect(d3Svg.selectAll).toHaveBeenCalledWith('rect.chosen');
     expect(d3Svg.remove).toHaveBeenCalledWith('rect.chosen');
@@ -169,8 +168,8 @@ describe('StreetDrawService', () => {
     expect(d3Svg.enter).toHaveBeenCalled();
     expect(d3Svg.attr).toHaveBeenCalledWith('class', 'chosen');
     /**add attr('points', (datum) => {}) test*/
-    expect(d3Svg.attr).toHaveBeenCalledWith('stroke', '#303e4a');
-    expect(d3Svg.style).toHaveBeenCalledWith('fill', '#374551');
+    expect(d3Svg.attr).toHaveBeenCalledWith('stroke', 'let 303e4a');
+    expect(d3Svg.style).toHaveBeenCalledWith('fill', 'let 374551');
   });
 
   it('drawScale', () => {
@@ -213,7 +212,7 @@ describe('StreetDrawService', () => {
     expect(d3Svg.text).toHaveBeenCalledWith('Poorest 1$');
     expect(d3Svg.attr).toHaveBeenCalledWith('x', 0);
     expect(d3Svg.attr).toHaveBeenCalledWith('y', 45);
-    expect(d3Svg.attr).toHaveBeenCalledWith('fill', '#767d86');
+    expect(d3Svg.attr).toHaveBeenCalledWith('fill', 'let 767d86');
 
     /** isDesktop true need for test  */
 
@@ -225,13 +224,13 @@ describe('StreetDrawService', () => {
     expect(d3Svg.text).toHaveBeenCalledWith('Richest');
     expect(d3Svg.attr).toHaveBeenCalledWith('x', 10);
     expect(d3Svg.attr).toHaveBeenCalledWith('y', 45);
-    expect(d3Svg.attr).toHaveBeenCalledWith('fill', '#767d86');
+    expect(d3Svg.attr).toHaveBeenCalledWith('fill', 'let 767d86');
 
 
     expect(d3Svg.append).toHaveBeenCalledWith('polygon');
     expect(d3Svg.attr).toHaveBeenCalledWith('class', 'road');
     /**add attr('points', (datum) => {}) test*/
-    expect(d3Svg.style).toHaveBeenCalledWith('fill', '#737b83');
+    expect(d3Svg.style).toHaveBeenCalledWith('fill', 'let 737b83');
 
     expect(d3Svg.append).toHaveBeenCalledWith('line');
     expect(d3Svg.attr).toHaveBeenCalledWith('class', 'axis');
@@ -240,7 +239,7 @@ describe('StreetDrawService', () => {
     expect(d3Svg.attr).toHaveBeenCalledWith('x2', streetDrawService.width);
     expect(d3Svg.attr).toHaveBeenCalledWith('y2', streetDrawService.halfOfHeight + 10);
     expect(d3Svg.attr).toHaveBeenCalledWith('stroke-width', 2);
-    expect(d3Svg.attr).toHaveBeenCalledWith('stroke', '#505b65');
+    expect(d3Svg.attr).toHaveBeenCalledWith('stroke', 'let 505b65');
 
     expect(d3Svg.append).toHaveBeenCalledWith('line');
     expect(d3Svg.attr).toHaveBeenCalledWith('class', 'dash');
@@ -261,6 +260,6 @@ describe('StreetDrawService', () => {
     /** call with function*/
     expect(d3Svg.attr).toHaveBeenCalled();
     expect(d3Svg.attr).toHaveBeenCalledWith('y', streetDrawService.height - 5);
-    expect(d3Svg.attr).toHaveBeenCalledWith('fill', '#767d86');
+    expect(d3Svg.attr).toHaveBeenCalledWith('fill', 'let 767d86');
   });
 });

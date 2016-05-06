@@ -1,13 +1,14 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
-  beforeEach,
+  async,
+  inject,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services';
 import {MockService} from '../common-mocks/mock.service.template.ts';
@@ -15,7 +16,6 @@ import {MatrixComponent} from '../../../app/matrix/matrix.component';
 import {places} from './mocks/data.ts';
 
 let tmpl = require('./mocks/matrix.template.html');
-
 
 describe('MatrixComponent', () => {
   let matrixService = new MockService();
@@ -31,13 +31,11 @@ describe('MatrixComponent', () => {
   });
   let context;
   let fixture;
-
-
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(MatrixComponent, tmpl)
         .createAsync(MatrixComponent)
-        .then((componentFixture) => {
+        .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
           context.routeParams.set('thing', '5477537786deda0b00d43be5');
@@ -47,8 +45,7 @@ describe('MatrixComponent', () => {
           context.routeParams.set('zoom', 5);
         });
     }
-  ));
-
+  )));
 
   it('ngOnInit', () => {
     spyOn(context, 'ngOnInit').and.callThrough();
@@ -67,13 +64,13 @@ describe('MatrixComponent', () => {
     context.ngAfterViewChecked();
   });
   xit(' stopScroll', () => {
-
+    // need logic
   });
   xit(' getPaddings', () => {
-
+    // need logic
   });
   xit(' getViewableRows', () => {
-
+    // need logic
   });
   it(' hoverPlaceS', () => {
     spyOn(context, 'hoverPlaceS').and.callThrough();

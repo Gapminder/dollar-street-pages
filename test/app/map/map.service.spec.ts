@@ -1,23 +1,21 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  inject,
   fakeAsync,
+  inject,
   beforeEachProviders,
-  tick,
-} from 'angular2/testing';
+  tick
+} from '@angular/core/testing';
 
-import {MockBackend} from 'angular2/http/testing';
-import {provide} from 'angular2/core';
+import {MockBackend} from '@angular/http/testing';
+import {provide} from '@angular/core';
 import {
   Http,
   ConnectionBackend,
   BaseRequestOptions,
   Response,
   ResponseOptions
-} from 'angular2/http';
+} from '@angular/http';
 
 import {config} from '../../../app/app.config.ts';
 
@@ -31,21 +29,21 @@ describe('MapService', () => {
       MapService,
       provide(
         Http, {
-          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions) => {
+          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions):Http => {
             return new Http(backend, defaultOptions);
           }, deps: [MockBackend, BaseRequestOptions]
         })
     ];
   });
-  it('test getMainPlaces()', inject([MapService, MockBackend],
-    fakeAsync((mapService, mockBackend) => {
-      var res;
-      mockBackend.connections.subscribe(connection => {
+  it('test getMainPlaces()', fakeAsync(inject([MapService, MockBackend],
+    (mapService:MapService, mockBackend:MockBackend) => {
+      let res;
+      mockBackend.connections.subscribe((connection:any)=> {
         expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/map?thing=5477537786deda0b00d43be5`);
         /**
          * ToDo: change body of response
          * @type {ResponseOptions}
-           */
+         */
         let response = new ResponseOptions({
           body: `{"success":true,"msg":[],"data":{"places":[{"_id":"54b6862f3755cbfb542c28cb",
         "country":"Liberia",
@@ -75,11 +73,11 @@ describe('MapService', () => {
         });
         connection.mockRespond(new Response(response));
       });
-      mapService.getMainPlaces('thing=5477537786deda0b00d43be5').subscribe((_res) => {
+      mapService.getMainPlaces('thing=5477537786deda0b00d43be5').subscribe((_res:any) => {
         res = _res;
       });
       tick();
-      expect(res.err).toBe(null);
+      expect(!res.err).toBe(true);
       expect(res.data.places.length).toBe(193);
       expect(res.data.countries.length).toBe(18);
     })));

@@ -10,7 +10,7 @@
     <div class="slider-mobile-content">
       <div id="slider-mobile-container"
            class="slider-mobile">
-        <div class="slider-mobile-slide" *ngFor="let image of images; #i=index">
+        <div class="slider-mobile-slide" *ngFor="let image of images; let i=index">
           <img class="slider-mobile-slide-image" [src]="image.background" alt=""/>
           <div class="thing-content">
             <img [src]="activeThing.iconLight" alt="">
