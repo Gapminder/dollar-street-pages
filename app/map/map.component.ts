@@ -52,13 +52,13 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
 
-  public constructor(@Inject('MapService') placeService,
-              @Inject(ElementRef) element,
-              @Inject(RouteParams) routeParams,
-              @Inject(Router) router,
-              @Inject(NgZone) zone,
-              @Inject('UrlChangeService') urlChangeService,
-              @Inject('Math') math) {
+  public constructor(@Inject('MapService') placeService:any,
+                     @Inject(ElementRef) element:ElementRef,
+                     @Inject(RouteParams) routeParams:RouteParams,
+                     @Inject(Router) router:Router,
+                     @Inject(NgZone) zone:NgZone,
+                     @Inject('UrlChangeService') urlChangeService:any,
+                     @Inject('Math') math:any) {
     this.mapService = placeService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;

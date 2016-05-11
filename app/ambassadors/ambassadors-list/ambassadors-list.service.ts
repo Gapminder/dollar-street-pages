@@ -1,176 +1,21 @@
+import {Inject} from '@angular/core';
+import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {of} from 'rxjs/observable/of';
+
+import {config} from '../../app.config';
 
 export class AmbassadorsListService {
-  public getAmbassadors():Observable<any> {
-    return of(this.getMockData());
+  public http:Http;
+
+  public constructor(@Inject(Http) http:Http) {
+    this.http = http;
   }
 
-  public getMockData():any {
-    return {
-      err: void 0, data: [{
-        position: 'Teachers',
-        ambassadors: [{
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: ``,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }]
-      }, {
-        position: 'Writers',
-        ambassadors: [{
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: ``,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `.`,
-          img: '/assets/img/ambassador.svg'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. void 0a in placerat massa. Donec sodales risus quis augue tincidunt iaculis.`,
-          img: '/assets/img/ambassador.svg'
-        }]
-      }, {
-        position: 'Organisations',
-        ambassadors: [{
-          name: 'Jonathan James',
-          country: 'England',
-          img: '/assets/img/university.png'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          img: '/assets/img/university.png'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          img: '/assets/img/university.png'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          img: '/assets/img/university.png'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          img: '/assets/img/university.png'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          description: ``,
-          img: '/assets/img/university.png'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          img: '/assets/img/university.png'
-        }, {
-          name: 'Jonathan James',
-          country: 'England',
-          img: '/assets/img/university.png'
-        }]
-      }]
-    };
+  public getAmbassadors():Observable<any> {
+    return this.http.get(`${config.api}/consumer/api/v1/ambassadors`).map((res:any) => {
+      let parseRes = JSON.parse(res._body);
+
+      return {err: parseRes.error, data: parseRes.data};
+    });
   }
 }

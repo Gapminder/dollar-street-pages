@@ -1,4 +1,3 @@
-
 import {FirstComponent} from './first/first.component';
 import {MatrixComponent} from './matrix/matrix.component';
 import {PlaceComponent} from './place/place.component';
@@ -11,9 +10,9 @@ import {InfoComponent} from './info/info.component';
 
 export namespace config {
   'use strict';
-  export let api = 'http://128.199.60.70';
+  // export let api = 'http://128.199.60.70';
   // export let api = 'http://stage.dollarstreet.org';
-  // export let api = 'http://192.168.1.66';
+  export let api = 'http://192.168.1.66';
   // export let api = 'http://192.168.1.81';
 
   export let routes = [{

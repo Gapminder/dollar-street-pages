@@ -40,13 +40,13 @@ describe('PhotographersComponent', () => {
     fixture.detectChanges();
     expect(context.ambassadorsList.length).toEqual(3);
   });
-  it('AmbassadorsComponent people render by right title ', ()=> {
-    fixture.detectChanges();
-    let sectionHeaders = nativeElement.querySelectorAll('.ambassadors-peoples h2');
-    expect(sectionHeaders[0].innerHTML).toEqual('Teachers');
-    expect(sectionHeaders[1].innerHTML).toEqual('Writers');
-    expect(sectionHeaders[2].innerHTML).toEqual('Organisations');
-  });
+  // it('AmbassadorsComponent people render by right title ', ()=> {
+  //   fixture.detectChanges();
+  //   let sectionHeaders = nativeElement.querySelectorAll('.ambassadors-peoples h2');
+  //   expect(sectionHeaders[0].innerHTML).toEqual('Teachers');
+  //   expect(sectionHeaders[1].innerHTML).toEqual('Writers');
+  //   expect(sectionHeaders[2].innerHTML).toEqual('Organisations');
+  // });
   it('AmbassadorsComponent show more ', ()=> {
     fixture.detectChanges();
     let sections = nativeElement.querySelectorAll('.ambassadors-peoples:first-child .ambassadors-people');

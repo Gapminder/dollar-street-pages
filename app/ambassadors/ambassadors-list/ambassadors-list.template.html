@@ -1,13 +1,14 @@
 <div class="ambassadors container">
-
-  <div class="ambassadors-peoples" *ngFor="let ambassadors of ambassadorsList; let i = index; let l = last;">
-    <h2>{{ambassadors.position}}</h2>
+  <div class="ambassadors-peoples"
+       *ngFor="let ambassadors of ambassadorsList; let i = index;"
+       [ngClass]="{'organisations': ambassadors._id === 'organisation', writers: ambassadors._id === 'writer', theachers: ambassadors._id === 'teacher'}">
+    <h2>{{ambassadors._id}}s</h2>
 
     <div class="ambassadors-people-box">
       <div *ngFor="let ambassador of ambassadors.ambassadors"
-           [ngClass]="!l ? {'ambassadors-people': true, show: i === showedBlock}:
+           [ngClass]="ambassadors._id !== 'organisation' ? {'ambassadors-people': true, show: i === showedBlock}:
            {'ambassadors-organization show': true}">
-        <img [src]="ambassador.img" alt="">
+        <img [src]="ambassador.img || 'assets/img/ambassador.svg'" alt="">
         <p class="name">{{ambassador.name}}</p>
         <p class="country"><img class="marker" src="/assets/img/grey-marker.svg" alt="">{{ambassador.country}}</p>
         <p class="description" *ngIf="ambassador.description">{{ambassador.description}}</p>
@@ -15,7 +16,7 @@
     </div>
 
     <span class="custom-button"
-          *ngIf="!l"
+          *ngIf="ambassadors._id !== 'organisation' && ambassadors.ambassadors.length > columnsRow"
           (click)="show(i)">{{i === showedBlock ? 'View Less <<' : 'View More >>'}}</span>
   </div>
 </div>
