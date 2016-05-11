@@ -53,12 +53,12 @@ module.exports = {
         'Total photos by Photographer': {photographerDataCSS: '.photo'}
     },
     mapPageCountry:{
-        'Country Bangladesh': {element: function () {return $('span[href$="55ef338d0d2b3c82037884d0"]');}, actualResult: 'Bangladesh'},
-        'Country Colombia': {element: function () {return $('span[href$="55ef338d0d2b3c820378846c"]');}, actualResult: 'Colombia'},
-        'Country Indonesia': {element: function () {return $('span[href$="55ef338d0d2b3c82037884d9"]');}, actualResult: 'Indonesia'},
-        'Country Lithuania': {element: function () {return $('span[href$="55ef338d0d2b3c820378844a"]');}, actualResult: 'Lithuania'},
-        'Country Rwanda': {element: function () {return $('span[href$="55ef338d0d2b3c82037884b9"]');}, actualResult: 'Rwanda'},
-        'Sub-title -Home on the World Map-': {element: function () {return $('div[class*="search-text"]>span');}, actualResult: 'Home on the World map'},
+        'Country Bangladesh': {element: function () {return $('span[href$="55ef338d0d2b3c82037884d0"]'); }, actualResult: 'Bangladesh'},
+        'Country Colombia': {element: function () {return $('span[href$="55ef338d0d2b3c820378846c"]'); }, actualResult: 'Colombia'},
+        'Country Indonesia': {element: function () {return $('span[href$="55ef338d0d2b3c82037884d9"]'); }, actualResult: 'Indonesia'},
+        'Country Lithuania': {element: function () {return $('span[href$="55ef338d0d2b3c820378844a"]'); }, actualResult: 'Lithuania'},
+        'Country Rwanda': {element: function () {return $('span[href$="55ef338d0d2b3c82037884b9"]'); }, actualResult: 'Rwanda'},
+        'Sub-title -Home on the World Map-': {element: function () {return $('div[class*="search-text"]>span'); }, actualResult: 'Home on the World map'},
     },
     photographersPageSearch:{
         'Input Bangladesh in Search field': {countryQuery: 'bang'},
@@ -72,14 +72,13 @@ module.exports = {
         'Input Turkey in Search field': {countryQuery: 'tur'},
     },
     ambassadorsPageText:{
-        'H2 in header': {element: function () {return $('h2[class="heading"]');}, actualResult: 'Ambassadors'},
-        'Sub-header Teachers': {element: function () {return element.all(by.css('div[class="ambassadors-peoples"] > h2')).first();}, actualResult: 'Teachers'},
-        'Sub-header Writers': {element: function () {return element.all(by.css('div[class="ambassadors-peoples"] > h2')).get(1);}, actualResult: 'Writers'},
-        'Sub-header Organisations': {element: function () {return element.all(by.css('div[class="ambassadors-peoples"] > h2')).last();}, actualResult: 'Organisations'},
+        'H2 in header': {element: function () {return $('h2[class="heading"]'); }, actualResult: 'Ambassadors'},
+        'Sub-header Teachers': {element: function () {return element.all(by.css('div[class="ambassadors-peoples"] > h2')).first(); }, actualResult: 'Teachers'},
+        'Sub-header Writers': {element: function () {return element.all(by.css('div[class="ambassadors-peoples"] > h2')).get(1); }, actualResult: 'Writers'},
+        'Sub-header Organisations': {element: function () {return element.all(by.css('div[class="ambassadors-peoples"] > h2')).last(); }, actualResult: 'Organisations'},
     },
     ambassadorsPageBoolean:{
-        'Logo img in header': {element: function () {return $('.logo.pull-left>img');}},
-        'Menu icon in header': {element: function () {return $('.menu-icon');}}
+        'Logo img in header': {element: function () {return $('.logo.pull-left>img'); }},
+        'Menu icon in header': {element: function () {return $('.menu-icon'); }}
 }
-}
-
+};

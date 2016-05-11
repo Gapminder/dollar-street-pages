@@ -13,23 +13,23 @@ let familiesIcon = $('.place');
 
 let PhotographersPage = function () {
     this.getSearchButton = () => {
-        return searchFieldElement;};
+        return searchFieldElement; };
     this.isDisplayedPhotographerName = () => {
-        return photographerName.isDisplayed();};
+        return photographerName.isDisplayed(); };
     this.isDisplayedPhotographerPortrait = () => {
-        return photographerPortrait.isDisplayed();};
+        return photographerPortrait.isDisplayed(); };
     this.isDisplayedCamerasIcon = () => {
-        return camerasIcon.isDisplayed();};
+        return camerasIcon.isDisplayed(); };
     this.isDisplayedHomesIcon = () => {
-        return homesIcon.isDisplayed();};
+        return homesIcon.isDisplayed(); };
     this.getLastPhotographer = () => {
-        return lastPhotographer;};
-    this.setErrorMessage = () => { 
-        return 'Last photographer on Photographers Page is not loaded'};
+        return lastPhotographer; };
+    this.setErrorMessage = () => {
+        return 'Last photographer on Photographers Page is not loaded'; };
     this.getFoundPhotographer = () => {
-        return foundPhotographer;};
+        return foundPhotographer; };
     this.getFamiliesIcon = () => {
-        return familiesIcon;};
-    this.setFamilyErrorMessage = (name) => { return name + 'Families on Photographer Page is not loaded'};
+        return familiesIcon; };
+    this.setFamilyErrorMessage = (name) => { return name + 'Families on Photographer Page is not loaded'; };
 };
 module.exports = PhotographersPage;
