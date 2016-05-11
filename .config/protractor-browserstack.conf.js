@@ -5,7 +5,7 @@ const cwd = process.cwd();
 const bsConfig = require(cwd+'/bs-config.json');
 
 let config = {
-  baseUrl: 'http://localhost:'+bsConfig.port+'/',
+  baseUrl: 'http://consumer.dollarstreet.org/',
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
