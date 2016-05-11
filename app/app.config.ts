@@ -1,4 +1,3 @@
-
 import {FirstComponent} from './first/first.component';
 import {MatrixComponent} from './matrix/matrix.component';
 import {PlaceComponent} from './place/place.component';
