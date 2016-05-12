@@ -16,4 +16,9 @@ let style = require('./info.css');
 })
 
 export class InfoComponent {
+  private title:string;
+
+  public constructor() {
+    this.title = 'Info';
+  }
 }
