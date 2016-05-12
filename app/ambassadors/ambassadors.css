@@ -1,9 +1,34 @@
-@media (max-width: 600px) {
-  .header .heading{
-    font-size: 20px!important;
-    margin: 5px 0 0 10px!important;
+ambassadors-list {
+  padding-top: 50px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: block;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+@media (min-width: 768px) {
+  ambassadors-list {
+    padding-bottom: 323px;
+    display: block;
   }
-  .header a>img{
-    margin-top: 5px!important;
+}
+
+
+@media (max-width: 767px) {
+  ambassadors-list {
+    padding-bottom: 244px;
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  ambassadors-list {
+    padding-bottom: 237px;
   }
 }

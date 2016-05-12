@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
+import {Component, OnInit, OnDestroy, Inject, ViewEncapsulation} from 'angular2/core';
 import {Location} from 'angular2/router';
 
 let tpl = require('./social-share-buttons.html');
@@ -7,7 +7,8 @@ let style = require('./social-share-buttons.css');
 @Component({
   selector: 'social-share-buttons',
   template: tpl,
-  styles: [style]
+  styles: [style],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class SocialShareButtons implements OnInit, OnDestroy {

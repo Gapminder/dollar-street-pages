@@ -23,7 +23,7 @@
 #mobile-search .title-container {
   font-size: 18px;
   margin-top: 6px;
-  padding: 0 5px;
+  padding: 0 5px !important;
 }
 
 #mobile-search-popup {
@@ -223,7 +223,7 @@
   }
 
   #mobile-search .title-container {
-    font-size: 18px;
+    font-size: 16px;
     width: calc(100% - 42px);
     margin-top: 0;
   }
@@ -237,7 +237,11 @@
   #mobile-search .thing-icon {
     width: 20px;
     height: 20px;
-    margin-top: 0px;
+    margin-top: 0;
+  }
+
+  #mobile-search .title-container span {
+    display: none;
   }
 }
 

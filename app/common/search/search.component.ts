@@ -55,6 +55,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   private isDesktop:boolean = isDesktop;
   private mobileTitle:string;
   private header:any;
+  private tab:number = 0;
+  private init:boolean = true;
 
   private chosenPlacesSubscribe:any;
   private searchServiceSubscribe:any;
@@ -72,10 +74,9 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
       this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
           this.paramsUrl = {
             thing: this.activeThing._id,
-            place: place[0]._id,
-            image: place[0].image
+            place: place._id,
+            image: place.image
           };
-
           this.getInitDataForSlider();
         });
     }
@@ -94,7 +95,10 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(properties):void {
     if (properties.url && properties.url.currentValue) {
       this.paramsUrl = this.parseUrl(this.url);
-      this.getInitData(true);
+      if (this.init) {
+        this.init = !this.init;
+        this.getInitData();
+      }
     }
   }
 
@@ -103,12 +107,15 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
+    let thingId:string;
+
     if (!thing) {
-      thing = this.defaultThing._id;
+      thingId = this.defaultThing._id;
+    } else {
+      thingId = thing._id;
     }
 
-    this.paramsUrl.thing = thing;
-
+    this.paramsUrl.thing = thingId;
     this.getInitData();
   }
 
@@ -152,6 +159,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.paramsUrl.regions = this.activeRegions;
+    this.paramsUrl.countries = this.activeCountries;
+
     this.getInitData();
   }
 
@@ -178,14 +187,12 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.paramsUrl.countries = this.activeCountries;
-
     this.getInitData();
   }
 
   removeItemFromState(state:string):void {
     let indexCountry = this.activeCountries.indexOf(state);
     let indexRegion = this.activeRegions.indexOf(state);
-
     if (indexCountry !== -1) {
       this.activeCountries.splice(indexCountry, 1);
 
@@ -204,11 +211,10 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
 
     this.paramsUrl.regions = this.activeRegions;
     this.paramsUrl.countries = this.activeCountries;
-
     this.getInitData();
   }
 
-  getInitData(init?:boolean) {
+  getInitData() {
     this.isOpen = false;
     this.search.text = '';
     let url:string;
@@ -245,7 +251,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         if (this.matrixComponent) {
-          this.selectedFilter.emit(url);
+          this.selectedFilter.emit({query: url, search: true});
         } else {
           this.selectedFilter.emit(this.activeThing);
         }

@@ -1,7 +1,8 @@
 import {
   it,
-  describe,
   expect,
+  describe,
+  xdescribe,
   inject,
   fakeAsync,
   beforeEachProviders,
@@ -39,7 +40,7 @@ describe('FamilyPlaceService', () => {
     ];
   });
   it('getPlaceFamilyImages()', inject([FamilyPlaceService, MockBackend], fakeAsync((familyPlaceService,
-                                                                                       mockBackend) => {
+                                                                                    mockBackend) => {
     var res;
     mockBackend.connections.subscribe(connection => {
       expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/place/family/images?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);

@@ -11,13 +11,13 @@
        *ngIf="placeComponent && header && header.icon"
        [style.backgroundImage]="toUrl(header.icon)"></div>
 
-  <div class="title-container pull-left" *ngIf="matrixComponent">{{mobileTitle}}</div>
+  <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="matrixComponent">{{mobileTitle}}</div>
 
-  <div class="title-container pull-left" *ngIf="placeComponent && header">
-    {{header.family[0]?header.family[0]+', ':''}}{{header.income?header.income+'$, ':''}}{{header.country}}
+  <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="placeComponent && header">
+    {{header.family[0] ? header.family[0]+', ':''}}{{header.income ? header.income + '$, ':''}}{{header.country}}
   </div>
 
-  <div class="title-container pull-left" *ngIf="mapComponent">{{activeThing.name}}</div>
+  <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="mapComponent">{{activeThing.name}} <span>on the World map</span></div>
 
   <img class="open-modal-icon"
        src="/assets/img/search-icon.svg"
@@ -27,6 +27,7 @@
 <div id="mobile-search-popup" [hidden]="!isOpen">
   <div class="search-input">
     <input class="form-control"
+           type="search"
            placeholder="Enter keyword"
            [(ngModel)]="search.text">
     <img src="/assets/img/search-icon.svg" alt=""/>
@@ -36,10 +37,7 @@
   <div class="tabs-container">
     <div class="tabs-header">
       <div class="tab-button" (click)="tab = 0" [ngClass]="{active: tab === 0}">Things</div>
-      <div class="tab-button"
-           (click)="tab = 1"
-           [ngClass]="{active: tab === 1}"
-           *ngIf="matrixComponent">
+      <div class="tab-button" (click)="tab = 1" [ngClass]="{active: tab === 1}" *ngIf="matrixComponent">
         Places
       </div>
     </div>
@@ -72,7 +70,7 @@
           <div class="sub-item-content"
                *ngFor="#thing of category.things"
                [ngClass]="{'no-pass': thing.empty}"
-               (click)="goToThing(thing._id)">
+               (click)="goToThing(thing)">
             <div class="item-icon">
               <img *ngIf="thing.icon"
                    [src]="thing.icon" alt="thing.name">
@@ -127,9 +125,7 @@
               {{location.country}}
             </div>
 
-            <div class="pointer"
-                 (click)="goToThing(null)">
-            </div>
+            <div class="pointer"></div>
           </div>
         </div>
       </div>

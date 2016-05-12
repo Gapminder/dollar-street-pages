@@ -14,7 +14,13 @@ export class PlaceStreetService {
   public getThingsByRegion(query:any):Observable<any> {
     return this.http.get(`${config.api}/consumer/api/v1/slider/things?${query}`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
+      return {err: parseRes.error, data: parseRes.data};
+    });
+  }
 
+  public getCommonAboutData():Observable<any> {
+    return this.http.get(`${config.api}/consumer/api/v1/about-data`).map((res:any) => {
+      let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });
   }

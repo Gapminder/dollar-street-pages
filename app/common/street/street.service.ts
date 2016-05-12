@@ -7,9 +7,9 @@ export class StreetDrawService {
   private places = [];
   private poorest = 'Poorest 1$';
   private richest = 'Richest';
-  private width:number;
-  private height:number;
-  private halfOfHeight:number;
+  public width:number;
+  public height:number;
+  public halfOfHeight:number;
   private scale:any;
   private axisLabel = [10, 100];
   private svg:any;
@@ -30,13 +30,12 @@ export class StreetDrawService {
     return this;
   }
 
-  set setSvg(element:HTMLElement) {
+  public set setSvg(element:HTMLElement) {
     this.svg = d3.select(element);
   }
 
   public set(key, val):this {
     this[key] = val;
-
     return this;
   };
 
@@ -68,7 +67,8 @@ export class StreetDrawService {
 
   public drawScale(places) {
     d3.svg
-      .axis().scale(this.scale)
+      .axis()
+      .scale(this.scale)
       .orient('bottom')
       .tickFormat(() => {
         return null;
@@ -83,7 +83,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 0)
-      .attr('y', this.height)
+      .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
     this.svg
@@ -94,7 +94,7 @@ export class StreetDrawService {
       .attr('class', 'richest')
       .text(this.richest)
       .attr('x', this.width - 40)
-      .attr('y', this.height)
+      .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
     if (isDesktop) {
@@ -107,7 +107,7 @@ export class StreetDrawService {
         .attr('x', (d) => {
           return this.scale(d.income) - 4;
         })
-        .attr('y', `${this.halfOfHeight - 11}`)
+        .attr('y', this.halfOfHeight - 11)
         .attr('width', 8)
         .attr('height', 7)
         .style('fill', '#cfd2d6')
@@ -141,9 +141,9 @@ export class StreetDrawService {
       .append('line')
       .attr('class', 'dash')
       .attr('x1', 18)
-      .attr('y1', `${ this.halfOfHeight + 3}`)
-      .attr('x2', `${ this.width - 9}`)
-      .attr('y2', `${ this.halfOfHeight + 3}`)
+      .attr('y1', this.halfOfHeight + 3)
+      .attr('x2', this.width - 9)
+      .attr('y2', this.halfOfHeight + 3)
       .attr('stroke-dasharray', '8,8')
       .attr('stroke-width', 1.5)
       .attr('stroke', 'white');
@@ -172,7 +172,7 @@ export class StreetDrawService {
 
         return this.scale(d) - indent;
       })
-      .attr('y', this.height)
+      .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
     return this;
@@ -204,7 +204,6 @@ export class StreetDrawService {
       places: places,
       left: this.scale(d.income)
     };
-
     cb(options);
   };
 
@@ -274,14 +273,14 @@ export class StreetDrawService {
       .attr('stroke-width', 1)
       .attr('stroke', (datum) => {
         if (gray) {
-          return '#98a5b0';
+          return '#303e4a';
         }
 
         return !datum ? void 0 : fillsOfBorders[datum.region];
       })
       .style('fill', (datum) => {
         if (gray) {
-          return '#a9b3bc';
+          return '#374551';
         }
 
         return !datum ? void 0 : fills[datum.region];
@@ -308,12 +307,11 @@ export class StreetDrawService {
   };
 
   public clearAndRedraw(places, slider = false):this {
-    this.removeHouses('hover')
-      .removeHouses('chosen');
+    this.removeHouses('hover');
+    this.removeHouses('chosen');
 
     if (slider) {
-      this.drawHoverHouse(places[0]);
-
+      this.drawHoverHouse(places);
       return;
     }
 
@@ -335,7 +333,6 @@ export class StreetDrawService {
 
   public clearSvg():this {
     this.svg.selectAll('*').remove('*');
-
     return this;
   };
 }

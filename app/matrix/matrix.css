@@ -1,6 +1,10 @@
+matrix-images {
+  display: block;
+}
 .matrix-header {
   z-index: 9995;
 }
+
 .matrix-header {
   position: fixed !important;
   top: 0;
@@ -14,8 +18,8 @@
 
 .zoom-column {
   position: fixed;
-  top: 140px;
-  right: 14px;
+  top: 126px;
+  right: 16px;
 }
 
 .zoom-column button,
@@ -61,6 +65,10 @@
   color: #374551 !important;
 }
 
+footer {
+  position: relative;
+}
+
 @media (max-width: 1200px) {
   .zoom-column {
     top: 140px;
@@ -87,15 +95,14 @@
   }
 }
 
-@media (max-width: 495px) {
+@media (max-width: 600px) {
   .zoom-column {
-    top: 135px;
-    right: 8px;
+    top: 107px;
+    right: 4px;
   }
-}
 
-@media (max-width: 320px) {
-  .zoom-column {
-    top: 150px;
+  .zoom-column button {
+    width: 26px;
+    height: 26px;
   }
 }

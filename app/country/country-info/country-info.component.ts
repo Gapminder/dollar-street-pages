@@ -49,9 +49,4 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   ngOnDestroy():void {
     this.countryInfoServiceSubscribe.unsubscribe();
   }
-
-
-  isShowInfoMore(country:any):boolean {
-    return country.description;
-  }
 }

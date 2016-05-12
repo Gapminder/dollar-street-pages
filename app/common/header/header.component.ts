@@ -6,6 +6,8 @@ import {MainMenuComponent} from '../menu/menu.component';
 import {SearchComponent} from '../search/search.component';
 import {PlaceMapComponent} from '../place-map/place-map.component';
 
+let device = require('device.js')();
+
 let tpl = require('./header.template.html');
 let style = require('./header.css');
 
@@ -33,12 +35,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private headerService:any;
   private router:Router;
 
+  private matrixComponent:boolean;
+  private placeComponent:boolean;
+  private mapComponent:boolean;
+  private isDesktop:boolean = device.desktop();
   private headerServiceSubscribe:any;
 
   constructor(@Inject('HeaderService') headerService,
               @Inject(Router) router) {
     this.headerService = headerService;
     this.router = router;
+
+    this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
+    this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
+    this.mapComponent = this.router.hostComponent.name === 'MapComponent';
   }
 
   ngOnInit():void {
@@ -47,7 +57,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (res.err) {
           return res.err;
         }
-
         this.defaultThing = res.data;
       });
   }

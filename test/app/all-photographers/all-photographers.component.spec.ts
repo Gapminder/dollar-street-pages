@@ -4,13 +4,15 @@
 import {
   it,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEachProviders,
+  beforeEach,
   TestComponentBuilder,
 } from 'angular2/testing';
 
-import {MockCommonDependency} from '../../app/common-mocks/mocked.services'
+import {MockCommonDependency} from '../../app/common-mocks/mocked.services';
 import {AllPhotographersComponent} from '../../../app/all-photographers/all-photographers.component';
 
 describe('PhotographersComponent', () => {
@@ -20,12 +22,14 @@ describe('PhotographersComponent', () => {
       mockCommonDependency.getProviders()
     ];
   });
-  it('AllPhotographersComponent must init ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(AllPhotographersComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      let nativeElement = fixture.debugElement.nativeElement;
-      expect(nativeElement.querySelector('.heading').innerHTML).toEqual(context.title);
+  let context, fixture;
+  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(AllPhotographersComponent).then((fixtureInst) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
     });
   }));
+  it('AllPhotographersComponent must init ', () => {
+    context.title = 'Photographers';
+  });
 });

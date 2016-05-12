@@ -13,7 +13,6 @@ const dest = 'dist';
 const absDest = root(dest);
 
 const config = {
-  devtool,
   debug: false,
 
   verbose: true,

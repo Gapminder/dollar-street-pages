@@ -1,8 +1,9 @@
-<div class="matrix-header main-header">
+<div class="matrix-header main-header place-header">
   <header [query]="query" *ngIf="isHover"
           (mouseenter)="isHover()"
           [chosenPlaces]="chosenPlaces"
-          (filter)="urlChanged($event)"></header>
+          (filter)="urlChanged($event)"
+          [hoverPlace]="hoverPlace"></header>
 
   <street [places]="streetPlaces"
           [thing]="thing"
@@ -13,11 +14,12 @@
 
 <div class="main">
   <slider-place (currentPlace)="choseCurrentPlace($event)"
+                (isShowAboutData)="isShowAboutData($event)"
                 [controllSlider]="controllSlider"
                 [activeThing]="activeThing"
                 [places]="sliderPlaces"></slider-place>
 
-  <span class="showContentForMobile"
+  <span class="custom-button"
         *ngIf="!isShowImagesFamily && !isDesktop"
         (click)="isShowImagesFamily = !isShowImagesFamily">
     See all images
@@ -33,3 +35,20 @@
   <loader [hidden]="loader"></loader>
 </div>
 
+<div class="about-data-container closeMenu"
+     [style.lineHeight.px]="windowHeight"
+     *ngIf="showAboutData"
+     (click)="closeAboutDataPopUp($event)">
+  <div class="about-data-content">
+    <div class="about-data-header">
+      <h3>About the data</h3>
+      <span class="closeMenu">x</span>
+    </div>
+
+    <div class="about-data-body" [style.maxHeight.px]="maxHeightPopUp">
+      <p>{{commonAboutData.description}}</p>
+
+      <p>{{currentPlace.aboutData}}</p>
+    </div>
+  </div>
+</div>

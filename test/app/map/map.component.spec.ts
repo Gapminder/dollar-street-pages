@@ -6,22 +6,26 @@ import {
   it,
   xit,
   describe,
+  xdescribe,
   expect,
   injectAsync,
+  beforeEach,
   beforeEachProviders,
   TestComponentBuilder,
+  tick
 } from 'angular2/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services.ts';
 import {MockService} from '../common-mocks/mock.service.template.ts';
 import {mapdata} from './mocks/data.ts';
 import {MapComponent} from '../../../app/map/map.component';
+import {Observable} from 'rxjs/Observable';
 
 /** todo: remove this crutch */
-interface ObjectCtor extends ObjectConstructor {
+interface ObjectCreator extends ObjectConstructor {
   assign(target:any, ...sources:any[]):any;
 }
-declare var Object:ObjectCtor;
+declare var Object:ObjectCreator;
 export let assign = Object.assign ? Object.assign : function (target:any, ...sources:any[]):any {
   return;
 };
@@ -39,10 +43,12 @@ let setTimeoutMock = {
     fn();
   }
 };
+
 assign(window, ImageMock);
 assign(window, setTimeoutMock);
-/**
- * *************/
+/*** *************/
+
+let tmpl = require('./mocks/map.template.html');
 
 describe('MapComponent', () => {
   let mockMapService = new MockService();
@@ -56,67 +62,146 @@ describe('MapComponent', () => {
       mockMapService.getProviders()
     ];
   });
-  xit(' must init', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(MapComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      /** need solve a router state in header component -> search*/
-      context.routeParams.set('thing', '5477537786deda0b00d43be5');
-      spyOn(context.urlChangeService, 'replaceState');
-      console.log(context.router.hostComponent)
-      fixture.detectChanges();
-      expect(context.urlChangeService.replaceState).toHaveBeenCalledWith('/map', 'thing=5477537786deda0b00d43be5');
-      expect(context.init).toEqual(true);
-      expect(context.places.length).toEqual(8);
-      expect(context.countries.length).toEqual(3);
-      expect(context.query).toEqual('thing=5477537786deda0b00d43be5');
-      expect(context.loader).toEqual(true);
-      mockMapService.toInitState();
-    });
-  }));
-  xit(' must destroy', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(MapComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.routeParams.set('thing', '5477537786deda0b00d43be5');
-      fixture.detectChanges();
-      fixture.destroy()
-      expect(context.mapServiceSubscribe.countOfSubscribes).toEqual(0);
-    });
-  }));
+  let fixture;
+  let context;
 
-  xit(' must hoverOnMarker', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(MapComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.isDesktop = true;
-      context.routeParams.set('thing', '5477537786deda0b00d43be5');
-      fixture.detectChanges();
-      context.hoverOnMarker(1, 'Ukraine')
-      expect(context.markers.length).toEqual(8);
-      expect(context.onMarker).toEqual(true);
-      expect(context.currentCountry).toEqual('Ukraine');
-      expect(context.lefSideCountries.length).toEqual(2);
-      expect(context.seeAllHomes).toEqual(true);
-      expect(context.hoverPlace._id).toEqual('54b6862f3755c45b542c28cb');
-      /**todo: test coords*/
-    });
-  }));
-  xit(' must unHoverOnMarker', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(MapComponent).then((fixture) => {
-       let context = fixture.debugElement.componentInstance;
-      context.isDesktop = true;
-      context.isOpenLeftSide = true;
-      context.routeParams.set('thing', '5477537786deda0b00d43be5');
-      context.hoverOnMarker(1, 'Ukraine');
-      fixture.detectChanges();
-      console.log(context.markers)
-      context.isOpenLeftSide = false;
-      context.unHoverOnMarker();
-      fixture.detectChanges();
-      expect(context.onMarker).toEqual(false);
-      expect(context.seeAllHomes).toEqual(false);
-      expect(context.hoverPlace).toEqual(null);
-      expect(context.hoverPortraitTop).toEqual(null);
-      expect(context.hoverPortraitLeft).toEqual(null);
-      expect(context.markers).toEqual(null);
-    });
-  }));
+  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+      return tcb
+        .overrideTemplate(MapComponent, tmpl)
+        .createAsync(MapComponent)
+        .then((componentFixture) => {
+          fixture = componentFixture;
+          context = componentFixture.debugElement.componentInstance;
+          context.routeParams.set('thing', '546ccf730f7ddf45c0179688');
+        });
+    }
+  ));
+
+  it(' ngOnInit', () => {
+    /** need solve a router state in header component -> search*/
+    spyOn(context, 'urlChanged');
+    spyOn(context, 'ngOnInit').and.callThrough();
+    context.ngOnInit();
+    expect(context.init).toEqual(true);
+    expect(context.thing).toEqual('546ccf730f7ddf45c0179688');
+    expect(context.urlChanged).toHaveBeenCalledWith('546ccf730f7ddf45c0179688');
+  });
+  it('urlChanged', () => {
+    spyOn(context, 'urlChanged').and.callThrough();
+    spyOn(context, 'setMarkersCoord');
+    spyOn(context, 'urlChangeService');
+    context.urlChanged('546ccf730f7ddf45c0179688');
+    expect(context.thing).toEqual('546ccf730f7ddf45c0179688');
+    expect(context.query).toEqual('thing=546ccf730f7ddf45c0179688');
+    expect(context.loader).toEqual(true);
+    expect(context.places.length).toEqual(174);
+    expect(context.countries.length).toEqual(17);
+    expect(context.setMarkersCoord.calls.argsFor(0)).toEqual([context.places]);
+  });
+  it('setMarkersCoord,hoverOnMarker,unHoverOnMarker', () => {
+    context.places = mapdata.data.places;
+    fixture.detectChanges();
+    spyOn(context.element, 'querySelector').and.callThrough();
+    spyOn(context, 'setMarkersCoord').and.callThrough();
+    spyOn(context, 'hoverOnMarker').and.callThrough();
+    spyOn(context, 'unHoverOnMarker').and.callThrough();
+    context.setMarkersCoord(mapdata.data.places);
+    expect(context.element.querySelector).toHaveBeenCalledWith('.map-color');
+
+    context.isDesktop = true;
+    context.hoverOnMarker(2, 'Burundi');
+    expect(context.onMarker).toEqual(true);
+    expect(context.currentCountry).toEqual('Burundi');
+    expect(context.lefSideCountries.length).toEqual(3);
+    expect(context.seeAllHomes).toEqual(true);
+    expect(context.markers.length).toEqual(174);
+    expect(context.hoverPlace).toEqual(context.places[2]);
+    expect(context.leftArrowTop).toEqual(null);
+    expect(context.shadowClass).toEqual({'shadow_to_left': true, 'shadow_to_right': false});
+
+
+    context.unHoverOnMarker();
+    expect(context.onMarker).toEqual(false);
+    expect(context.seeAllHomes).toEqual(false);
+    expect(context.hoverPortraitTop).toEqual(null);
+    expect(context.hoverPortraitLeft).toEqual(null);
+    expect(context.markers).toEqual(null);
+    expect(context.onMarker).toEqual(false);
+
+    this.seeAllHomes = false;
+    /**write test*/
+  });
+
+  it(' openLeftSideBar', () => {
+    spyOn(context, 'openLeftSideBar').and.callThrough();
+    context.openLeftSideBar();
+    expect(context.isOpenLeftSide).toEqual(true);
+  });
+  it(' closeLeftSideBar', () => {
+    spyOn(context, 'closeLeftSideBar').and.callThrough();
+    /**todo remove this*/
+    let e = {
+      target: {
+        classList: {
+          contains: () => {
+          }
+        }
+      }
+    };
+    let eCall = spyOn(e.target.classList, 'contains').and.returnValue(true);
+    spyOn(context, 'unHoverOnMarker');
+    context.closeLeftSideBar(e);
+    expect(context.onMarker).toEqual(false);
+    expect(context.onThumb).toEqual(false);
+    expect(context.seeAllHomes).toEqual(false);
+    expect(context.hoverPlace).toEqual(null);
+    expect(context.hoverPortraitTop).toEqual(null);
+    expect(context.hoverPortraitLeft).toEqual(null);
+    expect(context.unHoverOnMarker.calls.argsFor(0)).toEqual([e]);
+    eCall.and.returnValue(false);
+    context.closeLeftSideBar(e);
+    expect(context.isOpenLeftSide).toEqual(false);
+    expect(context.onMarker).toEqual(false);
+    expect(context.onThumb).toEqual(false);
+    /**!e.target.classList.contains('marker')*/
+  });
+
+  it(' clickOnMarker', () => {
+    spyOn(context, 'clickOnMarker').and.callThrough();
+    spyOn(context, 'closeLeftSideBar');
+    spyOn(context, 'hoverOnMarker');
+    context.isOpenLeftSide = true;
+    let e = {event: 'test'};
+    context.clickOnMarker(e, 134, 'United Kingdom');
+    expect(context.isOpenLeftSide).toEqual(false);
+    expect(context.closeLeftSideBar.calls.argsFor(0)).toEqual([e]);
+    expect(context.hoverOnMarker.calls.argsFor(0)).toEqual([134, 'United Kingdom']);
+    context.isOpenLeftSide = false;
+    context.lefSideCountries = [mapdata.data.places[0]];
+    context.hoverPlace = mapdata.data.places[0];
+    spyOn(context.router, 'navigate');
+    context.clickOnMarker(e, 134, 'United Kingdom');
+    expect(context.router.navigate.calls.argsFor(0)).toEqual([['Place', {
+      thing: context.hoverPlace.familyImg.thing,
+      place: context.hoverPlace._id,
+      image: context.hoverPlace.familyImg.imageId
+    }]]);
+  });
+  it('mobileClickOnMarker', () => {
+    spyOn(context, 'mobileClickOnMarker').and.callThrough();
+    spyOn(context, 'openLeftSideBar');
+    context.places = mapdata.data.places;
+    context.mobileClickOnMarker('United States');
+    expect(context.currentCountry).toEqual('United States');
+    expect(context.lefSideCountries.length).toEqual(6);
+    expect(context.openLeftSideBar).toHaveBeenCalled();
+  });
+  it('thumbHover', () => {
+    spyOn(context, 'thumbHover').and.callThrough();
+    context.thumbHover();
+    expect(context.onThumb).toEqual(true);
+  });
+  it('toUrl', () => {
+    expect(context.toUrl('http://some.com')).toEqual('url("http://some.com")');
+  });
 });

@@ -1,6 +1,6 @@
 <div class="header-content">
   <div class="icon-container pull-left">
-    <a [routerLink]="['Main']" ><img src="/assets/img/dollar-street.svg" alt=""/></a>
+    <a [routerLink]="['Main']"><img src="/assets/img/dollar-street.svg" alt=""/></a>
   </div>
 
   <search class="pull-left"
@@ -9,7 +9,21 @@
           (selectedFilter)="urlTransfer($event)"
           [chosenPlaces]="chosenPlaces"
           (selectedThing)="activeThingTransfer($event)"></search>
-  <place-map [isHeader]="true"  [hoverPlace]="hoverPlace" [routerLink]="['Map',{thing:thing}]" *ngIf="hoverPlace"></place-map>
-  <!--*ngIf="hoveredPlace"-->
+
+  <div class="map-menu-content">
+    <div class="map-content" *ngIf="matrixComponent || placeComponent && isDesktop">
+      <place-map [isHeader]="true"
+                 [hoverPlace]="hoverPlace"
+                 [routerLink]="['Map', {thing: activeThing?._id||defaultThing?._id}]"
+                 *ngIf="hoverPlace"></place-map>
+    </div>
+
+    <div class="matrix-icon" *ngIf="placeComponent || mapComponent">
+      <a [routerLink]="['Matrix']">
+        <img src="/assets/img/matrix-icon.svg" alt="">
+      </a>
+    </div>
+  </div>
+
   <main-menu class="pull-right" [activeThing]="activeThing" [defaultThing]="defaultThing"></main-menu>
 </div>

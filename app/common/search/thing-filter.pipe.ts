@@ -1,5 +1,6 @@
 import {Pipe} from 'angular2/core';
-
+import {filter, chain} from 'lodash';
+let _ = require('lodash');
 @Pipe({
   name: 'SearchFilter'
 })
@@ -7,56 +8,32 @@ import {Pipe} from 'angular2/core';
 export class SearchFilter {
   transform(value, args) {
     let [text, field, inside] = args;
-
     if (!text) {
       return value;
     }
-
-    var items:any = value;
-    var newItems:any = [];
+    let newItems:any[];
 
     if (!inside) {
-      items.forEach(function (item:any) {
-        var fieldItem = item[field];
-
-        if (!field) {
-          fieldItem = item;
-        }
-
-        if (fieldItem.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
-          newItems.push(item);
-        }
+      newItems = filter(value, (item:any) => {
+        return field ? item.country.toLowerCase().indexOf(text.toLowerCase()) !== -1 : true;
       });
     }
 
     if (inside) {
-      items.forEach(function (item:any) {
-        let itemsName = newItems.map(function (newItem:any) {
-          return newItem._id;
-        });
-
-        let index = null;
-
-        if (itemsName.length) {
-          if (itemsName.indexOf(item._id) !== -1) {
-            index = itemsName.indexOf(item._id);
-          }
-        }
-
-        item.things.forEach(function (thing:any) {
-          if (thing.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
-            if (index) {
-              newItems[index].things.push(thing);
-              return;
-            }
-
-            newItems.push({
-              _id: item._id,
-              things: [thing]
-            });
-          }
-        });
-      });
+      newItems = chain(value)
+        .map((item) => {
+          return {
+            _id: item._id,
+            things: chain(item.things)
+              .filter((thing) => {
+                return thing.name.toLowerCase().indexOf(text.toLowerCase()) !== -1;
+              }).value()
+          };
+        })
+        .filter((item) => {
+          return item.things.length;
+        })
+        .value();
     }
 
     return newItems;

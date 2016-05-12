@@ -187,7 +187,7 @@
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description {
   overflow: hidden;
-  padding-top: 5px;
+  margin-top: 2px;
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .name {
@@ -199,7 +199,7 @@
   font-size: 16px;
   display: block;
   color: #767d86;
-  margin-top: 5px;
+  margin-top: -2px;
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .income {
@@ -209,13 +209,12 @@
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .pull-left {
-  line-height: 14px;
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .pull-right {
-  margin-top: 10px;
+  margin-top: 13px;
 }
 
 #places .mapBox .map-color {
@@ -303,9 +302,13 @@
 
 #places .hover_portrait_description .see-all {
   clear: both;
-  cursor: pointer;
   font-size: 14px;
   color: #374551;
+}
+
+#places .hover_portrait_description .see-all:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 #places .hover_portrait_description .info {
@@ -339,8 +342,9 @@
   font-family: 'Bariol Bold', sans-serif;
 }
 
-.countries-list .country-name {
+.countries-list .country-name:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .countries-list .countries {
@@ -361,14 +365,13 @@
   -o-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
 
-  box-shadow: 0 0 5.28px 0.72px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 4px 5.28px 0.72px rgba(0, 0, 0, 0.24);
   left: -100%;
   opacity: 0;
 }
 
 .left-side-info .header {
   background-color: #e9f4f7;
-  height: 54px;
   position: relative;
 }
 
@@ -433,6 +436,7 @@
 
 .left-side-info .hover_portrait_description {
   overflow: hidden;
+  cursor: pointer;
 }
 
 .left-side-info .info-box .name {
@@ -476,9 +480,34 @@
   background-color: #1e2c37;
 }
 
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 @media (min-width: 1400px) {
   .container {
     width: 1400px;
+  }
+}
+
+@media (min-width: 768px) {
+  #places {
+    padding-bottom: 323px;
+  }
+}
+
+@media (max-width: 767px) {
+  #places {
+    padding-bottom: 244px;
+  }
+}
+
+@media (max-width: 600px) {
+  #places {
+    padding-bottom: 237px;
   }
 }
 
@@ -513,11 +542,6 @@
   .left-side-info {
     height: calc(100% - 44px);
     bottom: 0;
-    padding-top: 42px;
-  }
-
-  .left-side-info .header,
-  .left-side-info {
     width: 80%;
     top: 44px;
   }
@@ -530,11 +554,7 @@
 
   .left-side-info .header p {
     font-size: 16px;
-    margin: 4px 0 0 10px;
-  }
-
-  .left-side-info .header {
-    height: 42px;
+    line-height: 42px;
   }
 }
 

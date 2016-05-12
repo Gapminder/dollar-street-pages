@@ -2,13 +2,13 @@
   <div class="arrow-container arrow-prev" [ngStyle]="sliderHeight">
       <span class="glyphicon glyphicon-chevron-left slider-arrow"
             (click)="slidePrev()"
-            [hidden]="position"></span>
+            [hidden]="!position"></span>
   </div>
 
   <div class="arrow-container arrow-next" [ngStyle]="sliderHeight">
       <span class="glyphicon glyphicon-chevron-right slider-arrow"
             (click)="slideNext()"
-            [hidden]="(position || position === 0) && allPlaces.length - 1 !== position"></span>
+            [hidden]="(position || position === 0) && allPlaces.length - 1 === position"></span>
   </div>
   <div class="slider-container">
     <div class="slider-content">
@@ -36,19 +36,20 @@
           </div>
         </div>
 
-        <div class="slide-description" >
+        <div class="slide-description">
           <div class="slide-header">
-            <div class="slide-button pull-left">
-              <span [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
-                « All {{activeThing.plural}}
+            <div class="slide-button">
+              <span
+                [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
+                << All {{activeThing.plural}}
               </span>
-            </div>
-            <div class="slide-map pull-right">
-              <place-map [hoverPlace]="hoverPlace" [routerLink]="['Map',{thing:thing}]" *ngIf="hoverPlace&&i===1"></place-map>
             </div>
           </div>
           <h2>
-            <span>{{image.income}}$</span>  {{image.familyName}} {{image.familyName?'family':''}}  in {{image.country}}
+            <span>{{image.income}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="image.aboutData"
+                                         (click)="showInfo()"></span>
+            {{image.familyName}} {{image.familyName ?
+            'family' : ''}} in {{image.country}}
           </h2>
 
           <p *ngIf="image.familyInfoSummary">{{image.familyInfoSummary}}</p>
@@ -58,21 +59,6 @@
   </div>
 
   <div class="fancyBox-container" *ngIf="fancyBoxImage" (click)="fancyBoxClose()">
-    <!--<div class="load-container">-->
-      <!--<div class="load">-->
-        <!--<div class="la-ball-spin la-dark la-2x">-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
     <div class="fancyBox-image" [style.backgroundImage]="fancyBoxImage"></div>
   </div>
 </div>

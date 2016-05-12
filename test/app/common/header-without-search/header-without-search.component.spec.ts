@@ -1,9 +1,11 @@
 import {
   it,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEachProviders,
+  beforeEach,
   TestComponentBuilder,
 } from 'angular2/testing';
 
@@ -18,27 +20,27 @@ describe('HeaderWithoutSearchComponent', () => {
   let mockHeaderService = new MockService();
   mockHeaderService.serviceName = 'HeaderService';
   mockHeaderService.getMethod = 'getDefaultThing';
-  mockHeaderService.fakeResponse = res;
+  mockHeaderService.fakeResponse = {err: null, data: res.data};
   beforeEachProviders(() => {
     return [
       mockCommonDependency.getProviders(),
       mockHeaderService.getProviders()
     ];
   });
-  it('HeaderWithoutSearchComponent must init', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(HeaderWithoutSearchComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      expect(context.defaultThing.name).toBe('Home');
-      expect(context.defaultThing.plural).toBe('Homes');
-      mockHeaderService.toInitState();
-    });
+  let context, fixture;
+  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb
+      .createAsync(HeaderWithoutSearchComponent)
+      .then((fixtureInst) => {
+        fixture = fixtureInst;
+        context = fixture.debugElement.componentInstance;
+      });
   }));
-  it('HeaderWithoutSearchComponent must destroy', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(HeaderWithoutSearchComponent).then((fixture) => {
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(mockHeaderService.countOfSubscribes).toBe(0);
-    });
-  }));
+  it('ngOnInit', () => {
+    context.ngOnInit();
+    expect(context.defaultThing).toEqual(res.data);
+    spyOn(context.headerServiceSibscribe, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.headerServiceSibscribe.unsubscribe).toHaveBeenCalled();
+  });
 });

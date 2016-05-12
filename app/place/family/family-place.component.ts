@@ -35,7 +35,7 @@ export class FamilyPlaceComponent implements OnInit, OnDestroy {
 
   ngOnInit():void {
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
-        this.placeId = place[0]._id;
+        this.placeId = place._id;
         this.nextImages(10, this.placeId);
       });
   }

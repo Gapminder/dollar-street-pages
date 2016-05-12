@@ -18,21 +18,20 @@
     "serve": "./node_modules/.bin/lite-server",
     "unit-tests": "./node_modules/.bin/karma start -w",
     "codecov": "cat ./coverage/report-lcov/lcov.info | ./node_modules/.bin/codecov -t $CODECOV_KEY",
-    "pre-commit-test":"./node_modules/.bin/karma start ./.config/karma-pre.config.js",
+    "pre-commit-test": "./node_modules/.bin/karma start ./.config/karma-pre.config.js",
     "eslint": "./node_modules/.bin/eslint --ignore-path .gitignore --ext js --fix . .config",
     "lint": "npm run tslint && npm run eslint",
     "tslint": "./node_modules/.bin/gulp tslint",
-    "e2e:local":"./node_modules/.bin/protractor ./.config/protractor.conf.js",
+    "e2e:local": "./node_modules/.bin/protractor ./.config/protractor.conf.js",
     "e2e:bstack:tunnel": ".config/tools/bstack-local.js",
     "e2e:bstack": ".config/tools/wait4tunnel.js && ./node_modules/.bin/protractor ./.config/protractor-browserstack.conf.js"
   },
   "pre-commit": [
     "lint",
-    "pre-commit-test",
-    "codecov"
+    "pre-commit-test"
   ],
   "dependencies": {
-    "angular2": "2.0.0-beta.14",
+    "angular2": "2.0.0-beta.15",
     "angulartics2": "1.0.0",
     "d3": "3.5.15",
     "device.js": "0.1.2",
@@ -45,6 +44,8 @@
     "zone.js": "0.6.10"
   },
   "devDependencies": {
+    "browserstack-wrapper": "1.0.0",
+    "browserstacktunnel-wrapper": "1.4.2",
     "codecov": "1.0.1",
     "compression-webpack-plugin": "0.2.0",
     "concurrently": "1.0.0",
@@ -52,7 +53,7 @@
     "coveralls": "2.11.6",
     "cpy": "4.0.0",
     "del": "2.2.0",
-    "eslint": "^2.7.0",
+    "eslint": "1.10.3",
     "eslint-config-valorsoft": "0.0.8",
     "exports-loader": "0.6.3",
     "file-loader": "0.8.5",
@@ -82,16 +83,13 @@
     "protractor": "3.1.1",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.2",
+    "shelljs": "0.6.0",
     "source-map-loader": "0.1.5",
     "ts-loader": "0.8.1",
     "tslint": "^3.7.1",
     "typescript": "1.7.5",
     "typings": "0.6.7",
-    "webpack": "1.12.13",
-    "eslint": "1.10.3",
-    "browserstack-wrapper": "1.0.0",
-    "browserstacktunnel-wrapper": "1.4.2",
-    "shelljs": "0.6.0"
+    "webpack": "1.12.13"
   },
   "repository": {
     "type": "git",

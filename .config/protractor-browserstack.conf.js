@@ -9,7 +9,8 @@ let config = {
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
-  specs: [path.resolve(cwd)+'/test-e2e/**/*.e2e.ts'],
+  specs: [path.resolve(cwd)+'/test-e2e/*.js',
+          path.resolve(cwd)+'/test-e2e/**/*.e2e.ts'],
   exclude: [],
 
   // Framework to use. Jasmine is recommended.

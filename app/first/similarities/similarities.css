@@ -1,0 +1,79 @@
+#similarities {
+  margin-top: 60px;
+}
+
+#similarities .similarities-header {
+  margin-bottom: 30px;
+}
+
+#similarities .similarities-header h2 {
+  font-size: 44px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+#similarities .description {
+  margin-bottom: 7px;
+}
+
+#similarities .description p {
+  font-size: 20px;
+  line-height: 28px;
+  margin: 0 0 30px;
+}
+
+#similarities .places-container {
+  overflow: hidden;
+}
+
+#similarities .places-container > div {
+  float: left;
+  width: calc((100% - 40px) / 3);
+  margin-left: 20px;
+  overflow: hidden;
+}
+
+#similarities .places-container > div:first-child {
+  margin-left: 0;
+}
+
+#similarities .place-container h3 {
+  margin: 0 0 5px;
+  font-size: 24px;
+}
+
+#similarities .place-container h3 img {
+  height: 24px;
+  vertical-align: top;
+}
+
+#similarities .place-container .place-content {
+  width: calc((100% - 6px) / 2);
+  float: left;
+  position: relative;
+}
+
+#similarities .place-container h3 .place-content {
+  margin-right: 6px;
+}
+
+#similarities .place-container .place-content img {
+  width: 100%;
+}
+
+#similarities .place-description {
+  position: absolute;
+  bottom: 3px;
+  left: 2px;
+  right: 3px;
+  padding: 2px 10px;
+}
+
+#similarities .place-description span {
+  color: white;
+  font-size: 20px;
+}
+
+#similarities .place-description span + span {
+  font-size: 18px;
+}

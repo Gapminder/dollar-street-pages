@@ -49,4 +49,8 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
       photographer.twitter ||
       photographer.linkedIn;
   }
+
+  isShowDescription(company:any):boolean {
+    return company && (company.name || company.link);
+  }
 }

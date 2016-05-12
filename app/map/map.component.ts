@@ -76,15 +76,16 @@ export class MapComponent implements OnInit, OnDestroy {
     let query = `thing=${this.thing}`;
 
     if (!thing) {
-      this.needChangeUrl = true;
       query = '';
     }
 
     if (thing && thing._id) {
       if (this.init) {
         this.init = false;
+
         return;
       }
+
       query = `thing=${this.thing._id}`;
     }
 
@@ -93,20 +94,21 @@ export class MapComponent implements OnInit, OnDestroy {
         if (res.err) {
           return res.err;
         }
+
         this.places = res.data.places;
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
         this.query = `thing=${res.data.thing}`;
-        if (this.needChangeUrl) {
-          this.urlChangeService.replaceState('/map', this.query);
-        }
+        this.urlChangeService.replaceState('/map', this.query);
         this.setMarkersCoord(this.places);
         this.loader = true;
         this.resizeSubscribe = Observable
           .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
-            this.setMarkersCoord(this.places);
+            this.zone.run(() => {
+              this.setMarkersCoord(this.places);
+            });
           });
       });
   }
@@ -119,6 +121,7 @@ export class MapComponent implements OnInit, OnDestroy {
   setMarkersCoord(places) {
     let img = new Image();
     let mapImage = this.element.querySelector('.map-color');
+
     img.onload = () => {
       this.zone.run(() => {
         let width = mapImage.offsetWidth;
@@ -166,9 +169,7 @@ export class MapComponent implements OnInit, OnDestroy {
       return place.country === this.currentCountry;
     });
 
-    if (this.lefSideCountries.length > 1) {
-      this.seeAllHomes = true;
-    }
+    this.seeAllHomes = this.lefSideCountries.length > 1;
 
     this.markers = this.map.querySelectorAll('.marker');
 
@@ -176,12 +177,14 @@ export class MapComponent implements OnInit, OnDestroy {
       if (i !== index) {
         return;
       }
+
       this.hoverPlace = place;
     });
 
     if (!this.hoverPlace) {
       return;
     }
+
     Array.prototype.forEach.call(this.markers, (marker, i) => {
       if (i === index) {
         return;
@@ -201,10 +204,12 @@ export class MapComponent implements OnInit, OnDestroy {
         if (!this.hoverPlace) {
           return;
         }
+
         this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
         this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
         this.leftArrowTop = null;
         this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
+
         if (this.hoverPortraitTop < 10) {
           this.hoverPortraitTop = 10;
           this.hoverPortraitLeft += (portraitBox.offsetWidth + 32) / 2;
@@ -243,17 +248,20 @@ export class MapComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (this.onThumb) {
         this.onThumb = !this.onThumb;
+
         return;
       }
 
       if (this.onMarker) {
         this.onMarker = !this.onMarker;
+
         return;
       }
 
       if (!this.markers) {
         return;
       }
+
       Array.prototype.forEach.call(this.markers, (marker) => {
         marker.style.opacity = '1';
       });
@@ -265,39 +273,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.markers = null;
     }, 300);
   }
-
-
-  private hoverOnFamily(index):void {
-    if (!this.isDesktop) {
-      return;
-    }
-
-    if (this.isOpenLeftSide) {
-      return;
-    }
-
-    this.markers = this.map.querySelectorAll('.marker');
-
-    Array.prototype.forEach.call(this.markers, (marker, i) => {
-      if (i === index) {
-        return;
-      }
-
-      marker.style.opacity = '0.3';
-    });
-  };
-
-  private unHoverOnFamily():void {
-    if (!this.isDesktop) {
-      return;
-    }
-
-    Array.prototype.forEach.call(this.markers, (marker) => {
-      marker.style.opacity = '1';
-    });
-
-    this.markers = null;
-  };
 
   private openLeftSideBar():void {
     this.isOpenLeftSide = true;

@@ -1,6 +1,6 @@
 <div class="map-header main-header" (click)="closeLeftSideBar($event)">
   <div class="container">
-    <header [query]="query" (filter)="urlChanged($event)" ></header>
+    <header [query]="query" (filter)="urlChanged($event)"></header>
   </div>
 </div>
 
@@ -32,8 +32,8 @@
 
                 <div class="hover_portrait_description" *ngIf="hoverPlace">
                   <div class="pull-left info">
-                    <span class="name">{{hoverPlace.family}} {{hoverPlace.family ? 'family' : ''}}</span>
-                    <span class="country">{{hoverPlace.country}}</span>
+                    <span class="name line-clamp line-clamp-1">{{hoverPlace.family}} {{hoverPlace.family ? 'family' : ''}}</span>
+                    <span class="country line-clamp line-clamp-1">{{hoverPlace.country}}</span>
                   </div>
 
                   <div class="pull-right">
@@ -67,7 +67,7 @@
 
   <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
     <div class="header">
-      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} Houses in {{currentCountry}}</p>
+      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} houses in {{currentCountry}}</p>
       <span (click)="closeLeftSideBar($event)">x</span>
     </div>
 

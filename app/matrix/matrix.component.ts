@@ -24,7 +24,8 @@ let style = require('./matrix.css');
 export class MatrixComponent implements OnInit, OnDestroy {
   public query:string;
   public matrixService:any;
-  public places:Subject<any> = new Subject();
+  public streetPlaces:Subject<any> = new Subject();
+  public matrixPlaces:Subject<any> = new Subject();
   public chosenPlaces:Subject<any> = new Subject();
   public hoverPlace:Subject<any> = new Subject();
   public padding:Subject<any> = new Subject();
@@ -51,6 +52,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
   private clonePlaces:any[];
   public loader:boolean = false;
   public isDraw:boolean = false;
+
+  private placesVal:any;
 
   public matrixServiceSubscrib:any;
 
@@ -99,16 +102,12 @@ export class MatrixComponent implements OnInit, OnDestroy {
   ngAfterViewChecked() {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
-
     if (this.footerHeight === footer.offsetHeight &&
       this.imageHeight === imgContent.offsetHeight || !this.element.querySelector('.image-content')) {
-
       return;
     }
-
     this.imageHeight = imgContent.offsetHeight;
     this.footerHeight = footer.offsetHeight;
-
     this.getPaddings();
   }
 
@@ -150,26 +149,27 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
 
     let bottomPadding = window.innerHeight - header.offsetHeight - this.footerHeight - this.imageHeight
-      - 3 * (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
+      - 2 * (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
 
     if (bottomPadding <= 0) {
       bottomPadding = 0;
     }
 
     /**use content\view child\childer*/
+
+    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
     let imagesContainer = this.element.querySelector('.images-container') as HTMLElement;
     let imageContainer = this.element.querySelector('.image-content') as HTMLElement;
 
-    imagesContainer.style.marginTop = `${header.offsetHeight}px`;
+    matrixImages.style.paddingTop = `${header.offsetHeight}px`;
     imagesContainer.style.paddingBottom = `${bottomPadding}px`;
 
     this.getViewableRows(header.offsetHeight);
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
     if (this.clonePlaces) {
-      this.isDraw = true;
-      this.places.next(this.placesArr);
-      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
+      this.streetPlaces.next(this.placesVal);
+      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
     }
   }
 
@@ -188,10 +188,6 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.visiblePlaces = row;
 
     this.clonePlaces = _.cloneDeep(this.placesArr);
-
-    if (this.clonePlaces && this.clonePlaces.length && this.visiblePlaces) {
-      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
-    }
   }
 
   hoverPlaceS(place) {
@@ -202,12 +198,12 @@ export class MatrixComponent implements OnInit, OnDestroy {
     if (!this.isDesktop) {
       return;
     }
-
     this.hoverHeader.next(null);
   }
 
-  urlChanged(query):void {
+  urlChanged(options):void {
     /**to remove things like this*/
+    let {query, search} = options;
     this.query = query;
     let parseQuery = this.parseUrl(this.query);
     this.thing = parseQuery.thing;
@@ -220,21 +216,25 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
-        if (this.isDraw) {
-          this.isDraw = !this.isDraw;
+        if (val.err) {
+          console.log(val.err);
           return;
         }
-        this.places.next(val.places);
+        this.placesVal = val.places;
+        this.matrixPlaces.next(val.places);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.placesArr);
-
+        if (search) {
+          this.streetPlaces.next(this.placesVal);
+          this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+        }
         this.zoom = +parseQuery.zoom;
         this.loader = true;
       });
   }
 
   changeZoom(zoom) {
-    this.urlChanged(this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`));
+    this.urlChanged({query: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
   };
 
   parseUrl(url:string):any {

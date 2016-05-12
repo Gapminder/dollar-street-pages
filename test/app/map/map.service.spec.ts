@@ -1,6 +1,7 @@
 import {
   it,
   describe,
+  xdescribe,
   expect,
   inject,
   fakeAsync,
@@ -83,4 +84,3 @@ describe('MapService', () => {
       expect(res.data.countries.length).toBe(18);
     })));
 });
-

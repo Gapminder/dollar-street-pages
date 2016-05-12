@@ -2,9 +2,11 @@ import {
   it,
   xit,
   describe,
+  xdescribe,
   expect,
   injectAsync,
   beforeEachProviders,
+  beforeEach,
   TestComponentBuilder,
 } from 'angular2/testing';
 
@@ -19,12 +21,19 @@ describe('PhotographerComponent', () => {
       mockCommonDependency.getProviders()
     ];
   });
-  it('PhotographerComponent must init', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      let nativeElement = fixture.debugElement.nativeElement;
-      expect(nativeElement.querySelector('.heading').innerHTML).toEqual(context.title);
-    });
-  }));
+  let fixture, context;
+  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb
+      .overrideTemplate(PhotographerComponent, '<div></div>')
+      .createAsync(PhotographerComponent).then((fixtureInst) => {
+        fixture = fixtureInst;
+        context = fixtureInst.debugElement.componentInstance;
+        context.routeParams.set('id', '5477537786deda0b00d43be5');
+      });
+  }))
+  it('PhotographerComponent must init', () => {
+    expect(context.title).toEqual('Photographer');
+    context.ngOnInit();
+    expect(context.photographerId).toEqual('5477537786deda0b00d43be5');
+  });
 });

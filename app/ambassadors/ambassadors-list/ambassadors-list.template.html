@@ -14,6 +14,8 @@
       </div>
     </div>
 
-    <span class="see-more" *ngIf="!l" (click)="show(i)">{{i === showedBlock ? 'View Less <<' : 'View More >>'}}</span>
+    <span class="custom-button"
+          *ngIf="!l"
+          (click)="show(i)">{{i === showedBlock ? 'View Less <<' : 'View More >>'}}</span>
   </div>
 </div>
