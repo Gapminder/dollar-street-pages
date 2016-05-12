@@ -1,5 +1,5 @@
 {
-  "firebase": "ds-consumer-ng2",
+  "firebase": "ds-dev-consumer",
   "public": "dist",
   "ignore": [
     "firebase.json",

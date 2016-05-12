@@ -19,6 +19,13 @@ let device = require('device.js')();
 })
 
 export class MapComponent implements OnInit, OnDestroy {
+
+  public resizeSubscribe:any;
+  public mapServiceSubscribe:any;
+  public math:any;
+  public loader:boolean = false;
+  public needChangeUrl:boolean = false;
+
   private mapService:any;
   private places:any[] = [];
   private countries:any[] = [];
@@ -42,14 +49,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private init:boolean;
   private router:Router;
   private isDesktop:boolean = device.desktop();
-  public loader:boolean = false;
-  public needChangeUrl:boolean = false;
   private zone:NgZone;
-
-  public resizeSubscribe:any;
-  public mapServiceSubscribe:any;
-  public math:any;
-
   private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
 
   public constructor(@Inject('MapService') placeService:any,
@@ -74,7 +74,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.urlChanged(this.thing);
   }
 
-  urlChanged(thing:any) {
+  public urlChanged(thing:any):void {
     this.thing = thing;
     let query = `thing=${this.thing}`;
 
@@ -93,7 +93,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
-      .subscribe((res) => {
+      .subscribe((res:any):any => {
         if (res.err) {
           return res.err;
         }
@@ -115,12 +115,12 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     this.mapServiceSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
   }
 
-  setMarkersCoord(places) {
+  public setMarkersCoord(places:any):void {
     let img = new Image();
     let mapImage = this.element.querySelector('.map-color');
 
@@ -155,7 +155,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = mapImage.src;
   }
 
-  private hoverOnMarker(index, country):void {
+  public hoverOnMarker(index:number, country:any):void {
     if (!this.isDesktop) {
       return;
     }
@@ -167,7 +167,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onMarker = true;
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place) => {
+    this.lefSideCountries = this.places.filter((place:any):boolean => {
       return place.country === this.currentCountry;
     });
 
@@ -175,7 +175,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.markers = this.map.querySelectorAll('.marker');
 
-    this.places.forEach((place, i) => {
+    this.places.forEach((place:any, i:number) => {
       if (i !== index) {
         return;
       }
@@ -187,12 +187,12 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker, i) => {
+    Array.prototype.forEach.call(this.markers, (marker:HTMLElement, i:number):void => {
       if (i === index) {
         return;
       }
 
-      marker.style.opacity = 0.3;
+      marker.style.opacity = '0.3';
     });
 
     let img = new Image();
@@ -236,7 +236,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.hoverPlace.familyImg.background;
   };
 
-  private unHoverOnMarker(e):void {
+  public unHoverOnMarker():void {
     if (!this.isDesktop) {
       return;
     }
@@ -264,7 +264,7 @@ export class MapComponent implements OnInit, OnDestroy {
         return;
       }
 
-      Array.prototype.forEach.call(this.markers, (marker) => {
+      Array.prototype.forEach.call(this.markers, (marker:HTMLElement):void => {
         marker.style.opacity = '1';
       });
 
@@ -276,21 +276,22 @@ export class MapComponent implements OnInit, OnDestroy {
     }, 300);
   }
 
-  private openLeftSideBar():void {
+  public openLeftSideBar():void {
     this.isOpenLeftSide = true;
   }
 
-  private closeLeftSideBar(e) {
-    if (e.target.classList.contains('see-all') ||
-      e.target.classList.contains('see-all-span') ||
-      (!this.isDesktop && e.target.classList.contains('marker'))) {
+  public closeLeftSideBar(e:MouseEvent):void {
+    let el = e.target as HTMLElement;
+    if (el.classList.contains('see-all') ||
+      el.classList.contains('see-all-span') ||
+      (!this.isDesktop && el.classList.contains('marker'))) {
       this.onMarker = false;
       this.onThumb = false;
       this.seeAllHomes = false;
       this.hoverPlace = void 0;
       this.hoverPortraitTop = void 0;
       this.hoverPortraitLeft = void 0;
-      this.unHoverOnMarker(e);
+      this.unHoverOnMarker();
       return;
     }
 
@@ -298,17 +299,16 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onMarker = false;
     this.onThumb = false;
 
-    if (!e.target.classList.contains('marker')) {
-      this.unHoverOnMarker(e);
+    if (!el.classList.contains('marker')) {
+      this.unHoverOnMarker();
     }
   }
 
-  private clickOnMarker(e, index, country) {
+  public clickOnMarker(e:MouseEvent, index:number, country:any):void {
     if (this.isOpenLeftSide) {
       this.isOpenLeftSide = !this.isOpenLeftSide;
       this.closeLeftSideBar(e);
       this.hoverOnMarker(index, country);
-
       return;
     }
 
@@ -321,10 +321,10 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  private mobileClickOnMarker(country) {
+  public mobileClickOnMarker(country:any):void {
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place) => {
+    this.lefSideCountries = this.places.filter((place:any):boolean => {
       return place.country === this.currentCountry;
     });
 
@@ -333,11 +333,11 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  private thumbHover() {
+  public thumbHover():void {
     this.onThumb = true;
   }
 
-  private toUrl(image) {
+  public toUrl(image:string):string {
     return `url("${image}")`;
   }
 }

@@ -155,7 +155,6 @@ describe('MapComponent', () => {
     expect(!context.hoverPlace).toEqual(true);
     expect(!context.hoverPortraitTop).toEqual(true);
     expect(!context.hoverPortraitLeft).toEqual(true);
-    expect(context.unHoverOnMarker.calls.argsFor(0)).toEqual([e]);
     eCall.and.returnValue(false);
     context.closeLeftSideBar(e);
     expect(context.isOpenLeftSide).toEqual(false);
