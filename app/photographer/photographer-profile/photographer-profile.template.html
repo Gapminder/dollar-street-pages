@@ -3,7 +3,7 @@
     <div class="avatar-box">
       <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
       <div class="country" *ngIf="photographer.country && photographer.country.country">
-        <img src="/assets/img/grey-marker.svg" alt=""> {{photographer.country.alias || photographer.country.country}}
+        <img src="/assets/img/white-marker.svg" alt=""> {{photographer.country.alias || photographer.country.country}}
       </div>
     </div>
     <p class="description" *ngIf="photographer?.description">{{photographer.description}}</p>

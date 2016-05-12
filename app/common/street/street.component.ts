@@ -33,12 +33,12 @@ export class StreetComponent implements OnInit, OnDestroy {
   private controllSlider:Subject<any>;
 
   private street:any;
-  private streetDrawService:any;
   private element:HTMLElement;
   private thumbPlaces:any[];
   private thumbLeft:number;
   private arrowLeft:number;
   private isThumbView:boolean;
+  private onThumb:boolean;
   private router:Router;
 
   private resize:any;
@@ -48,7 +48,9 @@ export class StreetComponent implements OnInit, OnDestroy {
   private hoverPlaceSubscribe:any;
   private chosenPlacesSubscribe:any;
   private hoverHeaderSubscribe:any;
+  private mouseMoveSubscriber:any;
   private math:any;
+  private svg:SVGElement;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router)  router:Router,
@@ -61,8 +63,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit():any {
-    let svg = this.element.querySelector('.street-box svg') as HTMLElement;
-    this.street.setSvg = svg;
+    this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
         this.street.set('chosenPlaces', chosenPlaces);
@@ -137,6 +138,14 @@ export class StreetComponent implements OnInit, OnDestroy {
         }
         this.street.clearAndRedraw(this.street.chosenPlaces);
       });
+
+    this.mouseMoveSubscriber = fromEvent(window, 'mousemove').filter((e:MouseEvent)=> {
+      return e.pageY > this.svg.getBoundingClientRect().bottom;
+    }).subscribe(()=> {
+      if (!this.onThumb && this.hoverPlace) {
+        this.thumbUnhover();
+      }
+    });
   }
 
   public onStreet(e:MouseEvent):void {
@@ -200,9 +209,13 @@ export class StreetComponent implements OnInit, OnDestroy {
     if (this.hoverHeaderSubscribe) {
       this.hoverHeaderSubscribe.unsubscribe();
     }
+    if (this.mouseMoveSubscriber) {
+      this.mouseMoveSubscriber.unsubscribe();
+    }
   }
 
   public thumbHover(place:any):void {
+    this.onThumb = true;
     if (this.hoverPlace) {
       this.hoverPlace.next(place);
     }
@@ -216,6 +229,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   };
 
   public thumbUnhover():void {
+    this.onThumb = false;
     if (this.hoverPlace) {
       this.hoverPlace.next(void 0);
     }

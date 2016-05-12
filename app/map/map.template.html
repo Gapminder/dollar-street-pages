@@ -4,12 +4,12 @@
   </div>
 </div>
 
-<div id="places" (click)="closeLeftSideBar($event)">
+<div id="places" >
   <div class="container">
     <div class="row">
       <div class="col-md-12 places_header">
         <div class="col-md-12 col-sm-12 mapBox">
-          <div class="mapBoxContainer">
+          <div class="mapBoxContainer" (click)="closeLeftSideBar($event)">
             <img class="map-color" src="/assets/img/original-map.svg" alt="">
             <img class="marker"
                  src="/assets/img/dark-marker.svg"
