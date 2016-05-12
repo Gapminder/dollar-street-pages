@@ -45,7 +45,10 @@ module.exports = {
     photographersPageField: {
         'Enter AJ SHARMA in Search field': {photographerQuery: 'Sharm'},
         'Enter Johan Eriksson in Search field': {photographerQuery: 'Eriks'},
-        'Enter Zoriah Miller in Search field': {photographerQuery: 'Mille'},
+        'Enter Luc Forsyth in Search field': {photographerQuery: 'Luc'},
+        'Enter Amr Said  in Search field': {photographerQuery: 'Amr'},
+        'Enter Ivan Guilbert in Search field': {photographerQuery: 'Ivan'},
+        'Enter Alisia Sidorenko in Search field': {photographerQuery: 'Alisia'},
     },
     photographerPageBoolean: {
         'Name Photographer': {photographerDataCSS: '.header>h2'},

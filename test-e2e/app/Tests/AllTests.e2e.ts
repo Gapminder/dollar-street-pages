@@ -7,6 +7,7 @@ const PhotographersPage = require('../Pages/PhotographersPage.ts');
 const using = require('jasmine-data-provider');
 let abstractPage;
 let photographersPage;
+browser.ignoreSynchronization = true;
 
 describe('Main Page test', () => {
     beforeAll( () => {
@@ -47,10 +48,11 @@ describe('Photographer Page test', () => {
         });
     });
     using(dataProvider.photographersPageField, (data, description) => {
-        it('Check the ' + description + ' on Photographer Page' , () => {
-            photographersPage.getSearchButton().sendKeys(data.photographerQuery + '\n');
-            photographersPage.getFoundPhotographer().click();
-            browser.wait(abstractPage.getEC.visibilityOf(photographersPage.getFamiliesIcon()), abstractPage.getTimeout, photographersPage.setFamilyErrorMessage(description));
+        it('Check ' + description + ' on Photographer Page' , () => {
+          photographersPage = new PhotographersPage();
+          photographersPage.getSearchButton().sendKeys(data.photographerQuery + '\n');
+          photographersPage.getFoundPhotographer().click();
+          browser.wait(abstractPage.getEC.visibilityOf(photographersPage.getFamiliesIcon()), abstractPage.getTimeout, photographersPage.setFamilyErrorMessage(description));
         });
     });
 });
