@@ -8,23 +8,9 @@ const using = require('jasmine-data-provider');
 let abstractPage;
 let photographersPage;
 
-describe('SiteMap Page test', () => {
-    abstractPage = new AbstractPage();
-    beforeEach( () => {
-        browser.get('/');
-        $('a[href*="sitemap"]').click();
-    });
-        using(dataProvider.sitemapInfo, (data, description) => {
-           it('Click on ' + description + ' page' , () => {
-                browser.wait(abstractPage.getEC.visibilityOf($(data.element)), abstractPage.getTimeout, abstractPage.setElementErrorMessage(data.namePage));
-                $(data.element).click();
-                browser.wait(abstractPage.getEC.visibilityOf($(data.elementCSS)), abstractPage.getTimeout, abstractPage.setElementErrorMessage(data.namePage));
-            });
-        });
-});
 describe('Main Page test', () => {
     beforeAll( () => {
-        browser.get('');
+        browser.get('/');
     });
     using(dataProvider.mainPageTextHeader, (data, description) => {
         it('Check the ' + description + ' on footer Main Page' , () => {
@@ -52,9 +38,7 @@ describe('Photographer Page test', () => {
     abstractPage = new AbstractPage();
     photographersPage = new PhotographersPage();
     beforeEach(() => {
-        browser.get('/');
-        let el = $('a[href*="photographers"]');
-        el.click();
+        browser.get('/photographers');
         browser.wait(abstractPage.getEC.visibilityOf(photographersPage.getLastPhotographer()), abstractPage.getTimeout, photographersPage.setErrorMessage());
     });
     afterEach(() => {
@@ -74,9 +58,7 @@ describe('Map Page test', () => {
     abstractPage = new AbstractPage();
     beforeAll(() => {
         let mapPage = new MapPage();
-        browser.get('/');
-        let el = $('a[href*="map?"]');
-        el.click();
+        browser.get('/map');
         browser.wait(abstractPage.getEC.visibilityOf(mapPage.getMapImage()), abstractPage.getTimeout, mapPage.setMapErrorMessage());
       browser.sleep(2000);
     });
@@ -90,9 +72,7 @@ describe('Photographers Page test', () => {
     abstractPage = new AbstractPage();
     photographersPage = new PhotographersPage();
     beforeAll(() => {
-       browser.get('/');
-       let el = $('a[href*="photographers"]');
-       el.click();
+       browser.get('/photographers');
        browser.wait(abstractPage.getEC.visibilityOf(photographersPage.getLastPhotographer()), abstractPage.getTimeout, photographersPage.setErrorMessage());
    });
     using(dataProvider.photographersPageSearch, (data, description) => {
@@ -110,9 +90,7 @@ describe('Photographers Page test', () => {
 describe('Ambassadors Page test', () => {
     abstractPage = new AbstractPage();
     beforeAll(() => {
-        browser.get('/');
-        let el = $('a[href*="ambassadors"]');
-        el.click();
+        browser.get('/ambassadors');
     });
     using (dataProvider.ambassadorsPageText, (data, description) => {
         it ('Check' + description + ' on Ambassadors Page', () => {
