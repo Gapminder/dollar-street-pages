@@ -64,6 +64,6 @@
   </div>
 
   <div class="fancyBox-container" *ngIf="fancyBoxImage" (click)="fancyBoxClose()">
-    <div class="fancyBox-image" [style.backgroundImage]="fancyBoxImage"></div>
+    <div class="fancyBox-image" [ngStyle]="{'background-image':fancyBoxImage}"></div>
   </div>
 </div>

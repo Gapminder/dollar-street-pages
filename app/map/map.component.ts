@@ -291,7 +291,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.hoverPortraitTop = void 0;
       this.hoverPortraitLeft = void 0;
       this.unHoverOnMarker(e);
-
       return;
     }
 

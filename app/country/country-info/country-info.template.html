@@ -3,10 +3,6 @@
     <place-map [hoverPlace]="hoverPlace"
                [routerLink]="['Map',{thing:thing}]"></place-map>
 
-    <h2 *ngIf="country">
-      <img class="marker" src="/assets/img/grey-marker.svg" alt=""> {{country.alias || country.country}}
-    </h2>
-
     <p class="description" *ngIf="country?.description">{{country.description}}</p>
   </div>
 
@@ -40,11 +36,6 @@
 
   <div class="country-description">
     <div class="country-description-header">
-      <div class="header">
-        <h2 *ngIf="country">
-          <img src="/assets/img/grey-marker.svg" alt=""> {{country.alias || country.country}}
-        </h2>
-      </div>
 
       <div class="count">
         <p class="home" *ngIf="placesQantity">

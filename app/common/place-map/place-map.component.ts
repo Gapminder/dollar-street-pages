@@ -1,5 +1,6 @@
 import {Component, OnInit, OnDestroy, Input, Inject, ElementRef, NgZone} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 let tpl = require('./place-map.template.html');
 let style = require('./place-map.css');
@@ -19,7 +20,9 @@ export class PlaceMapComponent implements OnInit,OnDestroy {
   private mapImage:any;
   private element:ElementRef;
   private zone:NgZone;
+  private place:any;
   private hoverPlaceSubscribe:any;
+  private resizeSubscriber:any;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(NgZone) zone:NgZone) {
@@ -29,26 +32,39 @@ export class PlaceMapComponent implements OnInit,OnDestroy {
 
   public ngOnInit():void {
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place:any) => {
-        if (!place) {
-          this.region = void 0;
-          return;
-        }
-        let img = new Image();
-        this.mapImage = this.element.nativeElement.querySelector('.map');
-
-        img.onload = () => {
-          this.zone.run(() => {
-            this.drawMarker(place, this.mapImage);
-          });
-        };
-
-        img.src = this.mapImage.src;
+        this.place = place;
+        this.draw(this.place);
       });
+
+    this.resizeSubscriber = fromEvent(window, 'resize').subscribe(()=> {
+      this.draw(this.place);
+    });
+
+  }
+
+  public draw(place:any):void {
+    if (!place) {
+      this.region = void 0;
+      return;
+    }
+    let img = new Image();
+    this.mapImage = this.element.nativeElement.querySelector('.map');
+
+    img.onload = () => {
+      this.zone.run(() => {
+        this.drawMarker(place, this.mapImage);
+      });
+    };
+
+    img.src = this.mapImage.src;
   }
 
   public ngOnDestroy():void {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
+    }
+    if (this.resizeSubscriber) {
+      this.resizeSubscriber.unsubscribe();
     }
   }
 
