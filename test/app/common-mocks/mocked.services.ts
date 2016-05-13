@@ -1,6 +1,3 @@
-/**
- * Created by igor on 3/30/16.
- */
 import {provide, ApplicationRef, NgZone} from '@angular/core';
 import {ROUTER_PRIMARY_COMPONENT, ROUTER_PROVIDERS, RouteParams} from '@angular/router-deprecated';
 import {APP_BASE_HREF} from '@angular/common';
@@ -27,6 +24,7 @@ import {PhotographerProfileService} from '../../../app/photographer/photographer
 import {PhotographerPlacesService} from '../../../app/photographer/photographer-places/photographer-places.service';
 import {AmbassadorsListService} from '../../../app/ambassadors/ambassadors-list/ambassadors-list.service';
 import {SocialShareButtonsService} from '../../../app/common/social_share_buttons/social-share-buttons.service';
+import {InfoContextService} from '../../../app/info/info-context/info-context.service';
 
 export class MockCommonDependency {
   public getProviders():Array<any> {
@@ -53,6 +51,7 @@ export class MockCommonDependency {
       provide('CountryPlacesService', {useClass: CountryPlacesService}),
       provide('PhotographersService', {useClass: PhotographersService}),
       provide('SocialShareButtonsService', {useClass: SocialShareButtonsService}),
+      provide('InfoContextService', {useClass: InfoContextService}),
       provide('Math', {useClass: MathService}),
       provide(APP_BASE_HREF, {useValue: '/'}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: AppComponent}),

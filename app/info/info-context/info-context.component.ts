@@ -26,7 +26,7 @@ export class InfoContextComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.info = val.info;
+      this.info = val.data;
     });
   }
 
