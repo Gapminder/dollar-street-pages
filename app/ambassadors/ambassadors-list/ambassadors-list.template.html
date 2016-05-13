@@ -8,7 +8,7 @@
       <div *ngFor="let ambassador of ambassadors.ambassadors"
            [ngClass]="ambassadors._id !== 'organisation' ? {'ambassadors-people': true, show: i === showedBlock}:
            {'ambassadors-organization show': true}">
-        <img [src]="ambassador.img || 'assets/img/ambassador.svg'" alt="">
+        <img [src]="ambassador.avatar || 'assets/img/ambassador.svg'" alt="">
         <p class="name">{{ambassador.name}}</p>
         <p class="country"><img class="marker" src="/assets/img/grey-marker.svg" alt="">{{ambassador.country}}</p>
         <p class="description" *ngIf="ambassador.description">{{ambassador.description}}</p>
