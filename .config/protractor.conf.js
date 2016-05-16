@@ -2,11 +2,12 @@
 const path=require('path')
 const cwd = process.cwd();
 exports.config = {
- baseUrl: 'http://consumer.dollarstreet.org/',
+
+  //baseUrl: 'http://ds-dev-consumer.firebaseapp.com/',
+   baseUrl: 'http://consumer.dollarstreet.org/',
 
   specs: [
     path.resolve(cwd)+'/test-e2e/**/*.e2e.ts'
-  //  path.resolve(cwd)+'/test-e2e/app/ambassador/ambassadors.page.e2e.ts'
   ],
   exclude: [],
 
