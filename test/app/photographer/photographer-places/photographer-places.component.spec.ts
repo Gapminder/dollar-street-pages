@@ -1,11 +1,14 @@
 import {
   it,
   describe,
-  expect,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {MockService} from '../../../app/common-mocks/mock.service.template';
@@ -22,38 +25,24 @@ describe('PhotographerPlacesComponent', () => {
   beforeEachProviders(() => {
     return [
       mockCommonDependency.getProviders(),
-      mockPhotographerPlacesService.getProviders(),
+      mockPhotographerPlacesService.getProviders()
     ];
   });
-  it('PhotographerPlacesComponent must init', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      expect(context.places.length).toBe(4);
-      mockPhotographerPlacesService.toInitState();
+  let context, fixture, nativeElement;
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(PhotographerPlacesComponent).then((fixtureInst:any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
+      nativeElement = fixture.debugElement.nativeElement;
     });
-  }));
-  it('PhotographerPlacesComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(mockPhotographerPlacesService.countOfSubscribes).toBe(0);
-    });
-  }));
-  it('PhotographerPlacesComponent must show on mobile ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
-      /**
-       * ToDo: create some cases for
-       * checking mobile rendering
-       */
-    });
-  }));
-  it('PhotographerPlacesComponent must render places', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerPlacesComponent).then((fixture) => {
-      let nativeElement = fixture.debugElement.nativeElement;
-      fixture.detectChanges();
-      let photographerCountryPlaces = nativeElement.querySelectorAll('#photographer-places .place');
-      expect(photographerCountryPlaces.length).toBe(4);
-    });
-  }));
+  })));
+  it('ngOnInit ngOnDestroy', ()=> {
+    context.ngOnInit();
+    expect(context.places).toEqual(places.data.places);
+    expect(context.familyThingId).toEqual(places.data.familyThingId);
+    expect(context.loader).toEqual(true);
+    spyOn(context.photographerPlacesServiceSubscribe, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.photographerPlacesServiceSubscribe.unsubscribe).toHaveBeenCalled();
+  });
 });

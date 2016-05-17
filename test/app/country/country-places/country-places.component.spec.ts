@@ -1,12 +1,14 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
@@ -26,20 +28,22 @@ describe('CountryPlacesComponent', () => {
       countryPlacesService.getProviders()
     ];
   });
-  it('CountryPlaceComponent must init ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(CountryPlacesComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      expect(context.places.length).toEqual(3);
-      expect(context.loader).toEqual(true);
-      countryPlacesService.toInitState();
+  let context, fixture;
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(CountryPlacesComponent).then((fixtureInst:any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
     });
-  }));
-  it('CountryPlaceComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(CountryPlacesComponent).then((fixture) => {
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(countryPlacesService.countOfSubscribes).toBe(0);
-    });
-  }));
+  })));
+  it('CountryPlaceComponent must init ', ()=> {
+    fixture.detectChanges();
+    expect(context.places.length).toEqual(3);
+    expect(context.loader).toEqual(true);
+    countryPlacesService.toInitState();
+  });
+  it('CountryPlaceComponent must destroy ', ()=> {
+    fixture.detectChanges();
+    fixture.destroy();
+    expect(countryPlacesService.countOfSubscribes).toBe(0);
+  });
 });

@@ -10,7 +10,7 @@
     <div class="slider-mobile-content">
       <div id="slider-mobile-container"
            class="slider-mobile">
-        <div class="slider-mobile-slide" *ngFor="#image of images; #i=index">
+        <div class="slider-mobile-slide" *ngFor="let image of images; let i=index">
           <img class="slider-mobile-slide-image" [src]="image.background" alt=""/>
           <div class="thing-content">
             <img [src]="activeThing.iconLight" alt="">
@@ -49,7 +49,7 @@
         <span [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
           « All {{activeThing.plural}}
         </span>
-        <h2><span>{{chosenPlace.income}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="chosenPlace.aboutData"
+        <h2><span>{{math.round(chosenPlace.income)}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="chosenPlace.aboutData"
                                                (click)="showInfo()"></span> {{chosenPlace.familyName}}
           {{chosenPlace.familyName ? 'family' : ''}} in {{chosenPlace.country}}</h2>
       </div>

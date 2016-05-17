@@ -9,12 +9,12 @@
 
   <div class="thing-icon pull-left"
        *ngIf="placeComponent && header && header.icon"
-       [style.backgroundImage]="toUrl(header.icon)"></div>
+       [ngStyle]="{'background-image':toUrl(header.icon)}"></div>
 
   <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="matrixComponent">{{mobileTitle}}</div>
 
   <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="placeComponent && header">
-    {{header.family[0] ? header.family[0]+', ':''}}{{header.income ? header.income + '$, ':''}}{{header.country}}
+    {{header.family[0] ? header.family[0]+', ':''}}{{header.income ? math.round(header.income) + '$, ':''}}{{header.country}}
   </div>
 
   <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="mapComponent">{{activeThing.name}} <span>on the World map</span></div>
@@ -59,16 +59,16 @@
             </div>
 
             <div class="pointer"
-                 (click)="goToThing(null)">
+                 (click)="goToThing()">
             </div>
           </div>
         </div>
 
-        <div class="item" *ngFor="#category of categories | SearchFilter:search.text:'name':true">
+        <div class="item" *ngFor="let category of categories | SearchFilter:search.text:'name':true">
           <h3 class="title">{{category._id}}</h3>
 
           <div class="sub-item-content"
-               *ngFor="#thing of category.things"
+               *ngFor="let thing of category.things"
                [ngClass]="{'no-pass': thing.empty}"
                (click)="goToThing(thing)">
             <div class="item-icon">
@@ -98,7 +98,7 @@
           </h3>
 
           <div class="sub-item-content"
-               *ngFor="#region of regions | SearchFilter:search.text:null"
+               *ngFor="let region of regions | SearchFilter:search.text:false"
                [ngClass]="{active: activeRegions.indexOf(region) !== -1}"
                (click)="goToRegions(region)">
             <div class="item-icon">
@@ -118,7 +118,7 @@
           <h3 class="title">Countries</h3>
 
           <div class="sub-item-content"
-               *ngFor="#location of countries | SearchFilter:search.text:'country'"
+               *ngFor="let location of countries | SearchFilter:search.text:'country'"
                [ngClass]="{active: activeCountries.indexOf(location.country) !== -1, 'no-pass': location.empty}"
                (click)="goToCountries(location)">
             <div class="item-name">

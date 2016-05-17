@@ -1,5 +1,5 @@
-import {Component} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 import {SocialShareButtons} from '../../common/social_share_buttons/social-share-buttons.component.ts';
 

@@ -1,8 +1,4 @@
-/**
- * Created by igor on 3/30/16.
- */
-
-import {provide} from 'angular2/core';
+import {provide} from '@angular/core';
 export class MockService {
   private response;
   private name:string;

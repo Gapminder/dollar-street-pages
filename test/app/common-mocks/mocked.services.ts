@@ -1,13 +1,11 @@
-/**
- * Created by igor on 3/30/16.
- */
-import {provide, ApplicationRef, NgZone} from 'angular2/core';
-import {ROUTER_PRIMARY_COMPONENT, APP_BASE_HREF, ROUTER_PROVIDERS, RouteParams} from 'angular2/router';
-import {MockApplicationRef} from 'angular2/src/mock/mock_application_ref';
-import {HTTP_PROVIDERS} from 'angular2/http';
-import {MockNgZone} from 'angular2/testing';
+import {provide, ApplicationRef, NgZone} from '@angular/core';
+import {ROUTER_PRIMARY_COMPONENT, ROUTER_PROVIDERS, RouteParams} from '@angular/router-deprecated';
+import {APP_BASE_HREF} from '@angular/common';
+import {HTTP_PROVIDERS} from '@angular/http';
+import {MockNgZone,MockApplicationRef} from '@angular/core/testing';
 
 import {AppComponent} from '../../../app/app.component';
+import {MathService} from '../../../app/common/math-service/math-service';
 import {StreetDrawService} from '../../../app/common/street/street.service';
 import {MatrixService} from '../../../app/matrix/matrix.service';
 import {HeaderService} from '../../../app/common/header/header.service';
@@ -26,14 +24,10 @@ import {PhotographerProfileService} from '../../../app/photographer/photographer
 import {PhotographerPlacesService} from '../../../app/photographer/photographer-places/photographer-places.service';
 import {AmbassadorsListService} from '../../../app/ambassadors/ambassadors-list/ambassadors-list.service';
 import {SocialShareButtonsService} from '../../../app/common/social_share_buttons/social-share-buttons.service';
-
-import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
-
-
-import {Angulartics2} from 'angulartics2/index';
+import {InfoContextService} from '../../../app/info/info-context/info-context.service';
 
 export class MockCommonDependency {
-  getProviders():Array<any> {
+  public getProviders():Array<any> {
     return [
       ROUTER_PROVIDERS,
       HTTP_PROVIDERS,
@@ -57,10 +51,11 @@ export class MockCommonDependency {
       provide('CountryPlacesService', {useClass: CountryPlacesService}),
       provide('PhotographersService', {useClass: PhotographersService}),
       provide('SocialShareButtonsService', {useClass: SocialShareButtonsService}),
+      provide('InfoContextService', {useClass: InfoContextService}),
+      provide('Math', {useClass: MathService}),
       provide(APP_BASE_HREF, {useValue: '/'}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: AppComponent}),
-      provide(ApplicationRef, {useClass: MockApplicationRef}),
-      provide(Angulartics2, {useClass: Angulartics2}),
+      provide(ApplicationRef, {useClass: MockApplicationRef})
     ];
   }
 }
@@ -68,11 +63,11 @@ export class MockCommonDependency {
 class MockRouteParams {
   private params:any = {};
 
-  set(key:string, value:string):void {
+  public set(key:string, value:string):void {
     this.params[key] = value;
   }
 
-  get(key:string):void {
+  public get(key:string):void {
     return this.params[key];
   }
 }

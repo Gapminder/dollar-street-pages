@@ -1,5 +1,5 @@
 <div class="street-box">
-  <svg (mouseover)="onStreet($event)"></svg>
+  <svg (mouseover)="onStreet($event)" ></svg>
 
   <div class='thumbView-box'
        *ngIf="isThumbView"
@@ -7,7 +7,7 @@
        (mouseleave)="thumbUnhover()">
     <div class="arrow_up" [style.left.px]="arrowLeft"></div>
     <div class="thumbViewPlace-content"
-         *ngFor="#place of thumbPlaces"
+         *ngFor="let place of thumbPlaces"
          (mouseenter)="thumbHover(place)"
          (click)="clickOnThumb(thing,place)">
       <!--analytics-on="click" analytics-event="go to place page from matrix (click on thumb)"-->
@@ -25,10 +25,10 @@
       </div>
 
       <div class="thumbViewPlace"
-           [style.backgroundImage]="toUrl(place.background)">
+           [ngStyle]="{'background-image':toUrl(place?.background)}">
         <div class="house-thumb-description">
-          <span class="pull-left">{{place.country}}</span>
-          <span class="pull-right">{{place.income}}$</span>
+          <span class="pull-left">{{place?.country}}</span>
+          <span class="pull-right">{{math.round(place?.income)}}$</span>
         </div>
         <div class="hover-block">
           <span>+</span>

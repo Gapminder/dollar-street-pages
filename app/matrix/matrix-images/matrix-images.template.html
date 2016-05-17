@@ -1,21 +1,18 @@
-<div class="images-container" *ngIf="currentPlaces.length">
+<div class="images-container" *ngIf="currentPlaces?.length">
   <div class="image-content"
-       *ngFor="#place of currentPlaces"
-       [style.backgroundImage]="toUrl(place.background)"
+       *ngFor="let place of currentPlaces"
+       [ngStyle]="{'background-image':toUrl(place?.background),visibility:place?'visible':'hidden'}"
        [ngClass]="'column-'+zoom"
        (mouseenter)="hoverImage(place)"
        (mouseleave)="hoverImage()"
-       (click)="goToPlace(place)"
-       [angulartics2On]="'click'"
-       [angularticsEvent]="'go to place page from matrix (click on matrix)'">
+       (click)="goToPlace(place)">
     <div class="image-description">
-      <span class="place-image-box-country pull-left">{{place.country}}</span>
-      <span class="place-image-box-income pull-right">{{place.income}}$</span>
+      <span class="place-image-box-country pull-left">{{place?.country}}</span>
+      <span class="place-image-box-income pull-right">{{math.round(place?.income)}}$</span>
     </div>
-    <div class="mobile-hover" *ngIf="!isDesktop && (place._id === oldPlaceId)">
-      <div class="plus" (click)="goToPlace(place)"
-           [angulartics2On]="'click'"
-           [angularticsEvent]="'go to place page from matrix (click on matrix)'">VISIT FAMILY >></div>
+    <div class="mobile-hover" *ngIf="!isDesktop && (place?._id === oldPlaceId)">
+      <div class="plus" (click)="goToPlace(place)">VISIT FAMILY >>
+      </div>
     </div>
   </div>
 

@@ -1,19 +1,16 @@
-/**
- * Created by igor on 4/4/16.
- */
-
 import {
   it,
-  xit,
   describe,
-  expect,
-  beforeEach,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
-import {provide} from 'angular2/core';
+import {provide} from '@angular/core';
 
 import {MockCommonDependency} from '../../../app/common-mocks/mocked.services.ts';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
@@ -80,7 +77,7 @@ describe('StreetComponent', () => {
   let fixture;
 
 
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb) => {
       return tcb
         .overrideTemplate(StreetComponent, `<div></div>`)
         .createAsync(StreetComponent)
@@ -89,7 +86,7 @@ describe('StreetComponent', () => {
           context = componentFixture.debugElement.componentInstance;
         });
     }
-  ));
+  )));
 
   xit('ngOnInit', () => {
     context.places = placesSub;
@@ -163,7 +160,7 @@ describe('StreetComponent', () => {
     spyOn(context.street, 'removeHouses');
     spyOn(context.street, 'clearAndRedraw');
     context.thumbUnhover();
-    expect(context.street.hoverPlace).toEqual(null);
+    expect(context.street.hoverPlace).toEqual(undefined);
     expect(context.street.clearAndRedraw.calls.argsFor(0))
       .toEqual([context.street.chosenPlaces]);
   });
@@ -181,7 +178,7 @@ describe('StreetComponent', () => {
     context.clickOnThumb(thing, place);
     expect(context.isThumbView).toEqual(false);
     expect(context.controllSlider.next).toHaveBeenCalledWith(1);
-    context.controllSlider = null;
+    context.controllSlider = undefined;
     context.clickOnThumb(thing, place);
     expect(context.router.navigate).toHaveBeenCalledWith(['Place', {
       thing: thing,

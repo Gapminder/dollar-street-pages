@@ -1,5 +1,5 @@
-import {Component, Input, Output, Inject, OnInit, OnDestroy, EventEmitter} from 'angular2/core';
-import {RouterLink, Router} from 'angular2/router';
+import {Component, Input, Output, Inject, OnInit, OnDestroy, EventEmitter} from '@angular/core';
+import {RouterLink, Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
 import {MainMenuComponent} from '../menu/menu.component';
@@ -41,8 +41,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private isDesktop:boolean = device.desktop();
   private headerServiceSubscribe:any;
 
-  constructor(@Inject('HeaderService') headerService,
-              @Inject(Router) router) {
+  public constructor(@Inject('HeaderService') headerService:any,
+                     @Inject(Router) router:Router) {
     this.headerService = headerService;
     this.router = router;
 
@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.mapComponent = this.router.hostComponent.name === 'MapComponent';
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.headerServiceSubscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
         if (res.err) {
@@ -61,19 +61,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy():void {
+  public ngOnDestroy():void {
     this.headerServiceSubscribe.unsubscribe();
   }
 
-  urlTransfer(url) {
+  public urlTransfer(url) {
     this.filter.emit(url);
   }
 
-  activeThingTransfer(thing) {
+  public activeThingTransfer(thing) {
     this.activeThing = thing;
   }
 
-  goToMain() {
+  public goToMain() {
     this.router.navigate(['Main']);
   }
 }

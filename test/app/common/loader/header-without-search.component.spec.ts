@@ -1,12 +1,14 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
+  inject,
+  async,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {LoaderComponent} from '../../../../app/common/loader/loader.component';
@@ -18,11 +20,15 @@ describe('LoaderComponent', () => {
       mockCommonDependency.getProviders()
     ];
   });
-  it('LoaderComponent must init', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(LoaderComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      expect(context.top).toBe(0);
+  let context, fixture;
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(LoaderComponent).then((fixtureInst:any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
     });
-  }));
+  })));
+  it('LoaderComponent must init', ()=> {
+    fixture.detectChanges();
+    expect(context.top).toBe(0);
+  });
 });

@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject, ElementRef, OnDestroy} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit, Inject, ElementRef, OnDestroy} from '@angular/core';
+import {RouteParams} from '@angular/router-deprecated';
 import {Subject} from 'rxjs/Subject';
 
 import {MatrixImagesComponent} from './matrix-images/matrix-images.component';
@@ -57,7 +57,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
   public matrixServiceSubscrib:any;
 
-  constructor(@Inject('MatrixService') matrixService,
+  public constructor(@Inject('MatrixService') matrixService,
               @Inject(ElementRef) element,
               @Inject('UrlChangeService') urlChangeService,
               @Inject(RouteParams) routeParams) {
@@ -67,11 +67,11 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
     this.regions = this.routeParams.get('regions');
-    //todo: row null
+    //todo: row void 0
     this.row = parseInt(this.routeParams.get('row'), 10);
     this.zoom = parseInt(this.routeParams.get('zoom'), 10);
 
@@ -94,8 +94,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
     };
   }
 
-  ngOnDestroy() {
-    document.onscroll = null;
+  public ngOnDestroy() {
+    document.onscroll = void 0;
     this.matrixServiceSubscrib.unsubscribe();
   }
 
@@ -137,9 +137,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
     }
 
     let clonePlaces = _.cloneDeep(this.placesArr);
-
     if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
-      this.chosenPlaces.next(clonePlaces.splice(row * this.zoom, this.zoom * this.visiblePlaces));
+      this.chosenPlaces.next(clonePlaces.splice(this.row * this.zoom, this.zoom * this.visiblePlaces));
     }
   }
 
@@ -177,10 +176,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
     let windowInnerHeight = window.innerHeight;
     let viewable = windowInnerHeight - headerHeight;
     let distance = viewable / (this.imageHeight + 2 * this.imageMargin);
-
     let rest = distance % 1;
     let row = distance - rest;
-
     if (rest >= 0.65) {
       row++;
     }
@@ -198,7 +195,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     if (!this.isDesktop) {
       return;
     }
-    this.hoverHeader.next(null);
+    this.hoverHeader.next(void 0);
   }
 
   urlChanged(options):void {
@@ -211,7 +208,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     if (this.matrixServiceSubscrib) {
       this.matrixServiceSubscrib.unsubscribe();
-      this.matrixServiceSubscrib = null;
+      this.matrixServiceSubscrib = void 0;
     }
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)

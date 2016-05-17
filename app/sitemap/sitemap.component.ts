@@ -1,6 +1,5 @@
-import {Component, Inject} from 'angular2/core';
-import {RouteParams, RouterLink} from 'angular2/router';
-
+import {Component, Inject} from '@angular/core';
+import {RouteParams, RouterLink} from '@angular/router-deprecated';
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {FooterComponent} from '../common/footer/footer.component';
 
@@ -15,11 +14,12 @@ let style = require('./sitemap.css');
 })
 
 export class SitemapComponent {
-  private title:string = 'Sitemap';
+  private title:string;
   private routeParams:RouteParams;
 
-  constructor(@Inject(RouteParams) routeParams) {
+  public constructor(@Inject(RouteParams) routeParams:RouteParams) {
     this.routeParams = routeParams;
+    this.title = 'Sitemap';
   }
 
 }

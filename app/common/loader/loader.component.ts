@@ -1,4 +1,4 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit} from '@angular/core';
 
 let tpl = require('./loader.template.html');
 let style = require('./loader.css');
@@ -12,7 +12,7 @@ let style = require('./loader.css');
 export class LoaderComponent implements OnInit {
   private top:number = 0;
 
-  ngOnInit() {
+  public ngOnInit():void {
     let header = document.querySelector('.main-header');
     if (header) {
       this.top = header.clientHeight;

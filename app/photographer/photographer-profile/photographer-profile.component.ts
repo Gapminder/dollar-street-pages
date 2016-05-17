@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Inject, Output, EventEmitter} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 let tpl = require('./photographer-profile.template.html');
 let style = require('./photographer-profile.css');
@@ -14,17 +14,19 @@ let style = require('./photographer-profile.css');
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
   @Input()
   private photographerId:string;
+  @Output()
+  private getPhotographer:EventEmitter<any> = new EventEmitter();
 
   private photographer:any = {};
   private photographerProfileService:any;
   private photographerProfileServiceSubscribe:any;
   private isShowInfo:boolean = false;
 
-  constructor(@Inject('PhotographerProfileService') photographerProfileService) {
+  public constructor(@Inject('PhotographerProfileService') photographerProfileService) {
     this.photographerProfileService = photographerProfileService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     let query = `id=${this.photographerId}`;
 
     this.photographerProfileServiceSubscribe = this.photographerProfileService.getPhotographerProfile(query)
@@ -34,10 +36,11 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
         }
 
         this.photographer = res.data;
+        this.getPhotographer.emit(`${this.photographer.firstName} ${this.photographer.lastName}`);
       });
   }
 
-  ngOnDestroy():void {
+  public ngOnDestroy():void {
     this.photographerProfileServiceSubscribe.unsubscribe();
   }
 

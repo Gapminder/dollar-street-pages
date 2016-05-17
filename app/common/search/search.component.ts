@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from 'angular2/core';
-import {Router} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
 import {SearchFilter} from './thing-filter.pipe.ts';
@@ -57,21 +57,25 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   private header:any;
   private tab:number = 0;
   private init:boolean = true;
+  private math:any;
 
   private chosenPlacesSubscribe:any;
   private searchServiceSubscribe:any;
 
-  constructor(@Inject('SearchService') searchService, @Inject(Router) _router) {
+  public constructor(@Inject('SearchService') searchService:any,
+                     @Inject(Router) router:Router,
+                     @Inject('Math') math:any) {
     this.searchService = searchService;
-    this.router = _router;
+    this.router = router;
+    this.math = math;
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     this.mapComponent = this.router.hostComponent.name === 'MapComponent';
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
   }
 
-  ngOnInit() {
+  public ngOnInit():void {
     if (this.placeComponent) {
-      this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
+      this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place:any) => {
           this.paramsUrl = {
             thing: this.activeThing._id,
             place: place._id,
@@ -82,7 +86,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     if (this.chosenPlacesSubscribe) {
       this.chosenPlacesSubscribe.unsubscribe();
     }
@@ -92,7 +96,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnChanges(properties):void {
+  public ngOnChanges(properties:any):void {
     if (properties.url && properties.url.currentValue) {
       this.paramsUrl = this.parseUrl(this.url);
       if (this.init) {
@@ -102,7 +106,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  goToThing(thing:any):void {
+  public goToThing(thing:any):void {
     if (thing && thing.empty) {
       return;
     }
@@ -119,7 +123,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     this.getInitData();
   }
 
-  openSearch(isOpen:boolean):void {
+  public openSearch(isOpen:boolean):void {
     this.isOpen = !isOpen;
     this.search.text = '';
     let elem = document.getElementById('dropdown-conteiner');
@@ -131,7 +135,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     this.modalPosition = isBigger ? '0px' : window.innerWidth - parentOffsetLeft - elemWidth - 20 + 'px';
   }
 
-  goToRegions(region):void {
+  public goToRegions(region:any):void {
     let indexWorld = this.activeRegions.indexOf('World');
     let index = this.activeRegions.indexOf(region);
 
@@ -157,14 +161,13 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
       this.activeRegions = ['World'];
       this.activeCountries = ['World'];
     }
-
     this.paramsUrl.regions = this.activeRegions;
     this.paramsUrl.countries = this.activeCountries;
 
     this.getInitData();
   }
 
-  goToCountries(location):void {
+  public goToCountries(location:any):void {
     if (location.empty) {
       return;
     }
@@ -190,7 +193,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     this.getInitData();
   }
 
-  removeItemFromState(state:string):void {
+  public removeItemFromState(state:string):void {
     let indexCountry = this.activeCountries.indexOf(state);
     let indexRegion = this.activeRegions.indexOf(state);
     if (indexCountry !== -1) {
@@ -214,7 +217,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     this.getInitData();
   }
 
-  getInitData() {
+  public getInitData():void {
     this.isOpen = false;
     this.search.text = '';
     let url:string;
@@ -261,7 +264,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  getInitDataForSlider() {
+  public getInitDataForSlider():void {
     this.isOpen = false;
     this.search.text = '';
     let url = `thing=${this.paramsUrl.thing}&image=${this.paramsUrl.image}`;
@@ -280,11 +283,11 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  private toUrl(image) {
+  public  toUrl(image:any):string {
     return `url("${image}")`;
   }
 
-  getMobileTitle(thing, states) {
+  public getMobileTitle(thing:any, states:any):string {
     let thingName = thing.plural || thing.name;
     let isSelectedWorld = states.indexOf('World') !== -1;
 
@@ -297,7 +300,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     return `${thingName} by income`;
   }
 
-  parseUrl(url:string):any {
+  public parseUrl(url:string):any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);
     if (this.matrixComponent) {
@@ -308,7 +311,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     return query;
   }
 
-  getLocations(regions:any, countries:any):any {
+  public getLocations(regions:any, countries:any):any {
     let states = this.getUnique(regions.concat(countries));
     let indexWorld = states.indexOf('World');
 
@@ -319,7 +322,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     return states;
   }
 
-  getUnique(items:any):any {
+  public getUnique(items:any):any {
     let u = {}, a = [];
 
     for (let i = 0, l = items.length; i < l; ++i) {

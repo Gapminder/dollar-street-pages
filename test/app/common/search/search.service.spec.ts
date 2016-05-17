@@ -1,23 +1,21 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  inject,
-  fakeAsync,
   beforeEachProviders,
   tick,
-} from 'angular2/testing';
+  inject,
+  fakeAsync
+} from '@angular/core/testing';
 
-import {MockBackend} from 'angular2/http/testing';
-import {provide} from 'angular2/core';
+import {MockBackend} from '@angular/http/testing';
+import {provide} from '@angular/core';
 import {
   Http,
   ConnectionBackend,
   BaseRequestOptions,
   Response,
   ResponseOptions
-} from 'angular2/http';
+} from '@angular/http';
 
 import {config} from '../../../../app/app.config.ts';
 import {initData} from './mocks/data';
@@ -31,30 +29,32 @@ describe('SearchService', () => {
       SearchService,
       provide(
         Http, {
-          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions) => {
+          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions):Http => {
             return new Http(backend, defaultOptions);
           }, deps: [MockBackend, BaseRequestOptions]
         })
     ];
   });
-  it('getSearchInitData()', inject([SearchService, MockBackend],
-    fakeAsync((searchService, mockBackend) => {
-      var res;
-      mockBackend.connections.subscribe(connection => {
+  it('getSearchInitData()', fakeAsync(inject([SearchService, MockBackend],
+    (searchService:SearchService, mockBackend:MockBackend):any => {
+      let res;
+      mockBackend.connections.subscribe((connection:any) => {
         expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/search?thing=5477537786deda0b00d43be5&place=54b6866a38ef07015525f5be&image=54b6862f3755cbfb542c28cb`);
         /**
          * ToDo: change body of response
          * @type {ResponseOptions}
          */
         let response = new ResponseOptions({
-          body: JSON.stringify(initData)});
-          connection.mockRespond(new Response(response));
+          body: JSON.stringify(initData)
+        });
+        connection.mockRespond(new Response(response));
       });
-      searchService.getSearchInitData('thing=5477537786deda0b00d43be5&place=54b6866a38ef07015525f5be&image=54b6862f3755cbfb542c28cb').subscribe((_res) => {
+      searchService.getSearchInitData('thing=5477537786deda0b00d43be5&place=54b6866a38ef07015525f5be&image=54b6862f3755cbfb542c28cb')
+        .subscribe((_res:any) => {
         res = _res;
       });
       tick();
-      expect(res.err).toBe(null);
+      expect(!res.err).toBe(true);
       expect(res.data.categories.length).toBe(27);
       expect(res.data.countries.length).toBe(43);
     })));

@@ -1,17 +1,22 @@
-Error.stackTraceLimit = Infinity;
-require('node_modules/phantomjs-polyfill'); 
+require('node_modules/phantomjs-polyfill');
+require('babel-polyfill');
 require('node_modules/es6-promise');
 require('node_modules/es6-shim');
 require('node_modules/es7-reflect-metadata/dist/browser');
-require('node_modules/zone.js/dist/zone.js');
+require('zone.js/dist/zone');
+require('zone.js/dist/async-test');
+require('zone.js/dist/fake-async-test');
 
+// RxJS
+require('rxjs/Rx');
 
-var testing = require('node_modules/angular2/testing');
-var browser = require('node_modules/angular2/platform/testing/browser');
+var testing = require('@angular/core/testing');
+var browser = require('@angular/platform-browser-dynamic/testing');
 
 testing.setBaseTestProviders(
-  browser.TEST_BROWSER_PLATFORM_PROVIDERS,
-  browser.TEST_BROWSER_APPLICATION_PROVIDERS);
+  browser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
+  browser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS
+);
 
 Object.assign(global, testing);
 

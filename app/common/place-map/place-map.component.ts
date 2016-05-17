@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, Inject, ElementRef, NgZone} from 'angular2/core';
-import {NgStyle} from 'angular2/common';
+import {Component, OnInit, OnDestroy, Input, Inject, ElementRef, NgZone} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 let tpl = require('./place-map.template.html');
 let style = require('./place-map.css');
@@ -8,56 +8,67 @@ let style = require('./place-map.css');
 @Component({
   selector: 'place-map',
   template: tpl,
-  styles: [style],
-  directives: [NgStyle]
+  styles: [style]
 })
 
-export class PlaceMapComponent implements OnInit {
+export class PlaceMapComponent implements OnInit,OnDestroy {
   @Input()
   private hoverPlace:Observable<any>;
-  @Input()
-  private isHeader:boolean;
 
   private region:string;
   private markerPosition:any = {};
   private mapImage:any;
   private element:ElementRef;
   private zone:NgZone;
+  private place:any;
   private hoverPlaceSubscribe:any;
+  private resizeSubscriber:any;
 
-  constructor(@Inject(ElementRef) element,
-              @Inject(NgZone) zone) {
+  public constructor(@Inject(ElementRef) element:ElementRef,
+                     @Inject(NgZone) zone:NgZone) {
     this.element = element;
     this.zone = zone;
   }
 
-  ngOnInit():void {
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place) => {
-        if (!place) {
-          this.region = null;
-          return;
-        }
-        let img = new Image();
-        this.mapImage = this.isHeader ? this.element.nativeElement.querySelector('.map+.map') :
-          this.element.nativeElement.querySelector('.map');
-
-        img.onload = () => {
-          this.zone.run(() => {
-            this.drawMarker(place, this.mapImage);
-          });
-        };
-
-        img.src = this.mapImage.src;
+  public ngOnInit():void {
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place:any) => {
+        this.place = place;
+        this.draw(this.place);
       });
+
+    this.resizeSubscriber = fromEvent(window, 'resize').subscribe(()=> {
+      this.draw(this.place);
+    });
+
   }
 
-  ngOnDestroy() {
+  public draw(place:any):void {
+    if (!place) {
+      this.region = void 0;
+      return;
+    }
+    let img = new Image();
+    this.mapImage = this.element.nativeElement.querySelector('.map');
+
+    img.onload = () => {
+      this.zone.run(() => {
+        this.drawMarker(place, this.mapImage);
+      });
+    };
+
+    img.src = this.mapImage.src;
+  }
+
+  public ngOnDestroy():void {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
     }
+    if (this.resizeSubscriber) {
+      this.resizeSubscriber.unsubscribe();
+    }
   }
 
-  drawMarker(place, mapImage):void {
+  public drawMarker(place:any, mapImage:any):void {
     let stepTop;
     let stepRight;
     let widthOfMap = mapImage.offsetWidth;

@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject, ElementRef, NgZone, OnDestroy} from 'angular2/core';
-import {Observable} from 'rxjs/Rx';
+import {Component, OnInit, Inject, ElementRef, NgZone, OnDestroy} from '@angular/core';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 let tpl = require('./about.template.html');
 let style = require('./about.css');
@@ -19,18 +19,17 @@ export class AboutComponent implements OnInit, OnDestroy {
   private zone:NgZone;
   public resizeSubscribe:any;
 
-  constructor(@Inject(ElementRef) element, @Inject(NgZone) zone) {
+  public constructor(@Inject(ElementRef) element, @Inject(NgZone) zone) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.videosIframes = this.element.querySelectorAll('.video-container iframe');
 
     this.setVideosSize();
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
@@ -39,7 +38,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.resizeSubscribe.unsubscribe();
   }
 

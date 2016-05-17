@@ -1,5 +1,5 @@
 export let places = {
-  err: null, images: [{
+  err: false, images: [{
     _id: "54b686503755cbfb542c28cc",
     background: "url('http://static.dollarstreet.org.s3.amazonaws.com/media/Liberia 1/image/429a350d-3392-485e-8962-4f5e44fc3997/devices-429a350d-3392-485e-8962-4f5e44fc3997.jpg')",
     thing: "54b7adfecb00419b4f4bfa6c",
@@ -80,7 +80,7 @@ export let jsonPlaces = `{"success":true,"msg":[],"data":[  {
       "thingIcon": "http://static.dollarstreet.org.s3.amazonaws.com/thing/54b7adfecb00419b4f4bfa6c/FFFFFF-54b7adfecb00419b4f4bfa6c.svg",
       "thingName": "Baby powder"
     }],
-    "error":null}`;
+    "error":false}`;
 
 export let activeThing = {
   _id: '5477537786deda0b00d43be5',
@@ -2611,7 +2611,7 @@ export let streetPlaceStr = `{
       "country": "Sweden",
       "income": 75,
       "familyName": [[]],
-      "familyInfoSummary": null,
+      "familyInfoSummary": false,
       "author": "56ec0917af72e9437cbccf96",
       "image": "54b8d1f7a8e7aa6965778245",
       "region": "Europe",
@@ -2844,7 +2844,7 @@ export let streetPlaceStr = `{
       "country": "United States",
       "income": 100,
       "familyName": [[]],
-      "familyInfoSummary": null,
+      "familyInfoSummary": false,
       "author": "56ec091aaf72e9437cbccfa3",
       "image": "54b919f7472e93d62d926425",
       "region": "America",
@@ -4765,5 +4765,5 @@ export let streetPlaceStr = `{
       }
     }], "thing": {"_id": "546ccf730f7ddf45c0179658", "thingName": "Sofa", "icon": "546ccf730f7ddf45c0179658.svg"}
   },
-  "error": null
+  "error": false
 }`

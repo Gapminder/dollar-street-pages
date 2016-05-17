@@ -27,11 +27,18 @@
     "e2e:bstack": ".config/tools/wait4tunnel.js && ./node_modules/.bin/protractor ./.config/protractor-browserstack.conf.js"
   },
   "pre-commit": [
-    "lint",
     "pre-commit-test"
   ],
   "dependencies": {
     "angular2": "2.0.0-beta.15",
+    "@angular/common": "2.0.0-rc.1",
+    "@angular/compiler": "2.0.0-rc.1",
+    "@angular/core": "2.0.0-rc.1",
+    "@angular/http": "2.0.0-rc.1",
+    "@angular/platform-browser": "2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.1",
+    "@angular/router": "2.0.0-rc.1",
+    "@angular/router-deprecated": "2.0.0-rc.1",
     "angulartics2": "1.0.0",
     "d3": "3.5.15",
     "device.js": "0.1.2",
@@ -40,10 +47,11 @@
     "es7-reflect-metadata": "1.5.5",
     "jquery": "2.2.0",
     "lodash": "4.*",
-    "rxjs": "5.0.0-beta.2",
-    "zone.js": "0.6.10"
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "0.6.12"
   },
   "devDependencies": {
+    "babel-polyfill": "6.8.0",
     "browserstack-wrapper": "1.0.0",
     "browserstacktunnel-wrapper": "1.4.2",
     "codecov": "1.0.1",
@@ -53,8 +61,7 @@
     "coveralls": "2.11.6",
     "cpy": "4.0.0",
     "del": "2.2.0",
-    "eslint": "1.10.3",
-    "eslint-config-valorsoft": "0.0.8",
+    "eslint-config-valorsoft": "0.0.10",
     "exports-loader": "0.6.3",
     "file-loader": "0.8.5",
     "gh-pages": "0.9.0",
@@ -82,12 +89,12 @@
     "protractor": "3.1.1",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.2",
-    "shelljs": "0.6.0",
+    "shelljs": "0.7.0",
     "source-map-loader": "0.1.5",
     "ts-loader": "0.8.1",
-    "tslint": "^3.7.1",
-    "typescript": "1.7.5",
-    "typings": "0.6.7",
+    "tslint-config-valorsoft": "1.0.2",
+    "typescript": "1.8.10",
+    "typings": "1.0.3",
     "webpack": "1.12.13"
   },
   "repository": {

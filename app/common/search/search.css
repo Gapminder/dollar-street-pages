@@ -182,7 +182,6 @@
   position: absolute;
   top: 5px;
   left: 4px;
-  display: none;
   opacity: 1;
 }
 
@@ -196,30 +195,8 @@
   display: block;
 }
 
-.pointer img:hover {
-  opacity: 1;
-}
-
-.search-content .search-items-container > li.active:hover .pointer {
-  background-color: #374551;
-}
-
-.search-content .search-items-container > li.active:hover .pointer:hover .checked {
-  display: none;
-}
-
-.search-content .search-items-container > li.active:hover .pointer:hover .close {
-  display: block;
-}
-
 .search-content .category-name .search-items-container .active .pointer,
-.search-content .search-items-container .active .pointer,
-.search-content .category-name .search-items-container .active .pointer .checked,
-.search-content .search-items-container .active .pointer .checked {
-  display: block;
-}
-
-.search-content .category-name .search-items-container > :hover .active .close {
+.search-content .search-items-container .active .pointer {
   display: block;
 }
 

@@ -1,17 +1,18 @@
 import {
   it,
   describe,
-  expect,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  beforeEach,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
 import {places} from '../mocks/data.ts';
-
 
 import {MatrixImagesComponent} from '../../../../app/matrix/matrix-images/matrix-images.component';
 
@@ -21,16 +22,16 @@ describe('MatrixImagesComponent', () => {
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
-      mockCommonDependency.getProviders(),
+      mockCommonDependency.getProviders()
     ];
   });
 
   let fixture, context;
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(MatrixImagesComponent, '<div></div>')
         .createAsync(MatrixImagesComponent)
-        .then((componentFixture) => {
+        .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
           context.thing = '546ccf730f7ddf45c0179658';
@@ -38,7 +39,7 @@ describe('MatrixImagesComponent', () => {
           context.places = placesObservable;
         });
     }
-  ));
+  )));
   it('ngOnInit ngOnDestroy', () => {
     context.ngOnInit();
     expect(context.itemSize).toEqual(window.innerWidth / context.zoom);
@@ -55,7 +56,7 @@ describe('MatrixImagesComponent', () => {
     context.isDesktop = false;
     context.hoverImage();
     expect(context.hoverPlace.emit).toHaveBeenCalled();
-    expect(context.oldPlaceId).toEqual(null);
+    expect(!context.oldPlaceId).toEqual(true);
   });
   it('goToPlace', () => {
     spyOn(context.router, 'navigate');
@@ -67,7 +68,7 @@ describe('MatrixImagesComponent', () => {
       image: place.image
     }]);
     context.isDesktop = false;
-    context.oldPlaceId = null;
+    context.oldPlaceId = undefined;
     context.goToPlace(place);
     expect(context.oldPlaceId).toEqual(place._id);
     context.isDesktop = false;

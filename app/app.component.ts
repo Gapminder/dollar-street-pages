@@ -1,8 +1,6 @@
-import {Component, Inject} from 'angular2/core';
-import {RouteConfig, Router, RouterOutlet} from 'angular2/router';
+import {Component, Inject} from '@angular/core';
+import {RouteConfig, Router, RouterOutlet} from '@angular/router-deprecated';
 import {config} from './app.config';
-
-import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-google-analytics';
 
 @Component({
   selector: 'consumer-app',
@@ -13,16 +11,12 @@ import {Angulartics2GoogleAnalytics} from 'angulartics2/providers/angulartics2-g
 @RouteConfig(config.routes)
 
 export class AppComponent {
-  private router:Router;
-  private angulartics2GoogleAnalytics:Angulartics2GoogleAnalytics;
-  type:string = 'app component';
+  private type:string;
 
-  constructor(@Inject(Router) router,
-              @Inject(Angulartics2GoogleAnalytics) angulartics2GoogleAnalytics) {
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-
+  public constructor(@Inject(Router) router:Router) {
     router.subscribe(() => {
       document.body.scrollTop = 0;
     });
+    this.type = 'app component';
   }
 }

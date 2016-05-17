@@ -1,8 +1,6 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
-import {Observable} from 'rxjs/Rx';
-
-import {Angulartics2On} from 'angulartics2/index';
+import {Component, OnInit, OnDestroy, Inject, ElementRef} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 let tpl = require('./places.main.template.html');
 let style = require('./places.main.css');
@@ -14,7 +12,7 @@ const isDesktop = device.desktop();
   selector: 'places-main',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On]
+  directives: [RouterLink]
 })
 
 export class PlacesMainComponent implements OnInit, OnDestroy {
@@ -22,20 +20,20 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
   private places:any[] = [];
   private element:any;
   private map:HTMLImageElement;
-  private hoverPlace:any = null;
+  private hoverPlace:any = void 0;
   private markers:any;
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
   private resizeSubscribe:any;
   private placeServiceSubscribe:any;
 
-  constructor(@Inject('MainPlacesService') placeService,
+  public constructor(@Inject('MainPlacesService') placeService,
               @Inject(ElementRef) element) {
     this.placeService = placeService;
     this.element = element;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.placeServiceSubscribe = this.placeService.getMainPlaces()
       .subscribe((res) => {
         if (res.err) {
@@ -47,8 +45,7 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
         this.places = res.places;
         this.setMarkersCoord(this.places);
 
-        this.resizeSubscribe = Observable
-          .fromEvent(window, 'resize')
+        this.resizeSubscribe = fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
             this.setMarkersCoord(this.places);
@@ -56,7 +53,7 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.resizeSubscribe.unsubscribe();
     this.placeServiceSubscribe.unsubscribe();
   }
@@ -139,15 +136,15 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.hoverPlace = null;
-    this.hoverPortraitTop = null;
-    this.hoverPortraitLeft = null;
+    this.hoverPlace = void 0;
+    this.hoverPortraitTop = void 0;
+    this.hoverPortraitLeft = void 0;
 
     Array.prototype.forEach.call(this.markers, (marker) => {
       marker.style.opacity = '1';
     });
 
-    this.markers = null;
+    this.markers = void 0;
   }
 
 
@@ -176,6 +173,6 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
       marker.style.opacity = '1';
     });
 
-    this.markers = null;
+    this.markers = void 0;
   };
 }

@@ -73,9 +73,11 @@
   padding-left: 50px;
 }
 
-#country-place .place-description .place-country img {
-  width: 19px;
-  margin-top: -8px;
+#country-place .place-description .place-country i {
+  color: #767d86;
+  font-size: 12px;
+  vertical-align: middle;
+  margin-right: 6px;
 }
 
 #country-place .place-description .income {
@@ -125,10 +127,12 @@
 
   #country-place .country-income .income {
     text-align: left;
+    margin-top: 25px;
   }
 
   #country-place .country-income .place-country {
     padding: 0;
+    margin-top: 18px;
   }
 
   #country-place .country-income .income span,
@@ -138,11 +142,6 @@
 
   #country-place .link {
     margin-top: 44px;
-  }
-
-  #country-place .country-income > div {
-    width: 100% !important;
-    margin: 0 !important;
   }
 
   #country-place .place-description .family h3 {
@@ -198,7 +197,7 @@
   }
 
   #country-place .place-description .family h3 {
-     margin-top: 0;
+    margin-top: 0;
   }
 
   #country-place .place .place-description .country-income,
@@ -211,11 +210,6 @@
   #country-place .place .place-description .place-country p span,
   #country-place .place .place-description .family h3 {
     font-size: 16px;
-  }
-
-  #country-place .place-description .place-country img {
-    width: 14px;
-    margin-top: -5px;
   }
 
   #country-place .place .place-description .income {
@@ -242,10 +236,10 @@
     font-size: 14px;
   }
 
-  #country-place .place .place-country {
+  #country-place .place .place-description .place-country {
+    margin: 0 !important;
     font-size: 16px !important;
   }
-
   #country-place .link a {
     padding: 6px 0;
   }
@@ -289,8 +283,18 @@
 
   #country-place .place .place-description .income {
     position: static;
-    width: 100% !important;
+    width: 50% !important;
     margin-top: 10px !important;
     text-align: left;
+    float: right;
+  }
+
+  #country-place .place .place-description .income span {
+    float: right;
+    margin-top: -19px;
+  }
+
+  #country-place .place .place-description .place-country {
+    margin: 0 !important;
   }
 }

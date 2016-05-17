@@ -8,7 +8,7 @@
             <img class="marker"
                  src="/assets/img/dark-marker.svg"
                  alt="marker"
-                 *ngFor="#place of places; #i = index"
+                 *ngFor="let place of places; let i = index"
                  [style.left.px]="place.left"
                  [style.top.px]="place.top"
                  (mouseenter)="hoverOnMarker(i, place.country)"
@@ -47,10 +47,10 @@
       </div>
     </div>
     <div class="row countries-list">
-      <div class="country" *ngFor="#list of countries; #i = index">
+      <div class="country" *ngFor="let list of countries; let i = index">
         <span class="country-letter">{{list.letter}}</span>
         <ul class="countries">
-          <li *ngFor="#country of list.countries">
+          <li *ngFor="let country of list.countries">
             <span class="country-name"
                   [routerLink]="['Country', {id: country._id}]">{{country.name}}</span>
           </li>
@@ -67,7 +67,7 @@
 
     <div class="info-box-container">
       <div class="info-box"
-           *ngFor="#place of lefSideCountries"
+           *ngFor="let place of lefSideCountries"
            [routerLink]="['Place', {thing: place.familyImg.thing, place: place._id, image: place.familyImg.imageId}]">
         <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
 

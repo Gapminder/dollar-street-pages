@@ -1,23 +1,21 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  inject,
-  fakeAsync,
   beforeEachProviders,
   tick,
-} from 'angular2/testing';
+  inject,
+  fakeAsync
+} from '@angular/core/testing';
 
-import {MockBackend} from 'angular2/http/testing';
-import {provide} from 'angular2/core';
+import {MockBackend} from '@angular/http/testing';
+import {provide} from '@angular/core';
 import {
   Http,
   ConnectionBackend,
   BaseRequestOptions,
   Response,
   ResponseOptions
-} from 'angular2/http';
+} from '@angular/http';
 
 import {config} from '../../../../app/app.config.ts';
 
@@ -31,33 +29,32 @@ describe('PhotographersService', () => {
       PhotographersService,
       provide(
         Http, {
-          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions) => {
+          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions):Http => {
             return new Http(backend, defaultOptions);
           }, deps: [MockBackend, BaseRequestOptions]
         })
     ];
   });
-  it('test getPhotographers()', inject([PhotographersService, MockBackend], fakeAsync((photographersService,
-                                                                                       mockBackend) => {
-    var res;
-    mockBackend.connections.subscribe(connection => {
-      expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/photographers`);
-      let response = new ResponseOptions({
-        body: `{"success":true,"msg":[],"data":{
-  "countryList":[{"name":"Bangladesh","photographers":[{"name":"AJ Sharma","userId":"56e946c4d360263447ff6fad",
-  "avatar":null,"images":289,"places":4}]}],
-  "photographersList":[{"name":"AJ Sharma","userId":"56e946c4d360263447ff6fad","avatar":null,"images":289,"places":4}]
-  },"error":null}`
+  it('test getPhotographers()', fakeAsync(inject([PhotographersService, MockBackend],
+    (photographersService:PhotographersService, mockBackend:MockBackend) => {
+      let res;
+      mockBackend.connections.subscribe((connection:any) => {
+        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/photographers`);
+        let response = new ResponseOptions({
+          body: `{"success":true,"msg":[],"data":{
+  "countryList":[{"name":"Bangladesh","photographers":[{"name":"AJ Sharma","userId":"56e946c4d360263447ff6fad","images":289,"places":4}]}],
+  "photographersList":[{"name":"AJ Sharma","userId":"56e946c4d360263447ff6fad","images":289,"places":4}]
+  },"error":false}`
+        });
+        connection.mockRespond(new Response(response));
       });
-      connection.mockRespond(new Response(response));
-    });
-    photographersService.getPhotographers({}).subscribe((_res) => {
-      res = _res;
-    });
-    tick();
-    expect(res.err).toBe(null);
-    expect(res.data.countryList.length).toBe(1);
-    expect(res.data.photographersList.length).toBe(1);
-  })));
+      photographersService.getPhotographers().subscribe((_res:any) => {
+        res = _res;
+      });
+      tick();
+      expect(!res.err).toBe(true);
+      expect(res.data.countryList.length).toBe(1);
+      expect(res.data.photographersList.length).toBe(1);
+    })));
 });
 

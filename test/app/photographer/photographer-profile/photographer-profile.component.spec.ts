@@ -1,12 +1,14 @@
 import {
   it,
-  xit,
   describe,
-  expect,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {MockService} from '../../../app/common-mocks/mock.service.template';
@@ -19,51 +21,50 @@ describe('PhotographerProfileComponent', () => {
   mockPhotographerProfileService.serviceName = 'PhotographerProfileService';
   mockPhotographerProfileService.getMethod = 'getPhotographerProfile';
   mockPhotographerProfileService.fakeResponse = profile;
+  let getPhotographer = new MockService();
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
       mockCommonDependency.getProviders(),
-      mockPhotographerProfileService.getProviders(),
+      mockPhotographerProfileService.getProviders()
     ];
   });
-  it('PhotographerProfileComponent must init ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerProfileComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      expect(context.photographer.imagesCount).toBe(289);
-      expect(context.photographer.placesCount).toBe(4);
-      mockPhotographerProfileService.toInitState();
+  let context, fixture, nativeElement;
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(PhotographerProfileComponent).then((fixtureInst:any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
+      nativeElement = fixture.debugElement.nativeElement;
     });
-  }));
-  it('PhotographerProfileComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerProfileComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(mockPhotographerProfileService.countOfSubscribes).toBe(0);
-    });
-  }));
-  it('PhotographerProfileComponent must show on mobile ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerProfileComponent).then((fixture) => {
-      /**
-       * ToDo: create some cases for 
-       * checking mobile rendering
-       */
-    });
-  }));
-  it('PhotographerProfileComponent must render photographer info', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(PhotographerProfileComponent).then((fixture) => {
-      let nativeElement = fixture.debugElement.nativeElement;
-      fixture.detectChanges();
-      let photographerName = nativeElement.querySelector('#photographer-profile .header h2');
-      let photographerPhotos = nativeElement.querySelector('#photographer-profile .main .photo span');
-      expect(photographerName.innerHTML).toBe('AJ Sharma');
-      expect(photographerPhotos.innerHTML).toBe('289');
-      fixture.detectChanges();
-      photographerName = nativeElement.querySelector('#photographer-profile .header h2');
-      photographerPhotos = nativeElement.querySelector('#photographer-profile .main .photo span');
-      expect(photographerName.innerHTML).toBe('AJ Sharma');
-      expect(photographerPhotos.innerHTML).toBe('289');
-    });
-  }));
+  })));
+  it(' ngOnInit, ngOnDestroy', ()=> {
+    context.getPhotographer = getPhotographer;
+    spyOn(context.getPhotographer, 'emit');
+    context.ngOnInit();
+    expect(context.photographer).toEqual(profile.data);
+    expect(context.getPhotographer.emit).toHaveBeenCalledWith(`${context.photographer.firstName} ${context.photographer.lastName}`);
+    spyOn(context.photographerProfileServiceSubscribe, 'unsubscribe');
+    context.ngOnDestroy();
+    expect(context.photographerProfileServiceSubscribe.unsubscribe).toHaveBeenCalled();
+  });
+  it('isShowInfoMore', ()=> {
+    let photographer:any = {company: 'company'};
+    expect(context.isShowInfoMore(photographer)).toEqual('company');
+    photographer = {description: 'description'};
+    expect(context.isShowInfoMore(photographer)).toEqual('description');
+    photographer = {google: 'google'};
+    expect(context.isShowInfoMore(photographer)).toEqual('google');
+    photographer = {facebook: 'facebook'};
+    expect(context.isShowInfoMore(photographer)).toEqual('facebook');
+    photographer = {twitter: 'twitter'};
+    expect(context.isShowInfoMore(photographer)).toEqual('twitter');
+    photographer = {linkedIn: 'linkedIn'};
+    expect(context.isShowInfoMore(photographer)).toEqual('linkedIn');
+  });
+  it('isShowDescription', ()=> {
+    let company:any = {name: 'name'};
+    expect(context.isShowDescription(company)).toEqual('name');
+    company = {link: 'link'};
+    expect(context.isShowDescription(company)).toEqual('link');
+  });
 });

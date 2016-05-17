@@ -1,12 +1,14 @@
 import {
   it,
   describe,
-  expect,
-  injectAsync,
-  beforeEach,
+  inject,
+  async,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services';
 import {MockService} from '../common-mocks/mock.service.template.ts';
@@ -26,13 +28,11 @@ describe('PlaceComponent', () => {
   });
   let context;
   let fixture;
-
-
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(PlaceComponent, `<div></div>`)
         .createAsync(PlaceComponent)
-        .then((componentFixture) => {
+        .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
           context.routeParams.set('thing', '5477537786deda0b00d43be5');
@@ -40,9 +40,7 @@ describe('PlaceComponent', () => {
           context.routeParams.set('place', '54b6866a38ef07015525f5be');
         });
     }
-  ));
-
-
+  )));
   it('must init', () => {
     spyOn(context, 'getStreetPlaces');
     spyOn(context.controllSlider, 'subscribe');
@@ -65,10 +63,9 @@ describe('PlaceComponent', () => {
     expect(context.getStreetPlaces.calls.argsFor(1)).toEqual([`thing=5477537786deda0b00d43eee&place=54b6866a38ef07015525f5be&isSearch=true`]);
   });
   it('isHover', () => {
-    spyOn(context, 'getStreetPlaces');
     spyOn(context.hoverHeader, 'next');
     context.isHover();
-    expect(context.hoverHeader.next).toHaveBeenCalledWith(null);
+    expect(context.hoverHeader.next).toHaveBeenCalledWith(false);
   });
   it('choseCurrentPlace', () => {
     context.thing = '5477537786deda0b00d43be5';

@@ -1,16 +1,14 @@
-/**
- * Created by igor on 3/30/16.
- */
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  beforeEach,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services';
 import {AllPhotographersComponent} from '../../../app/all-photographers/all-photographers.component';
@@ -23,12 +21,12 @@ describe('PhotographersComponent', () => {
     ];
   });
   let context, fixture;
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(AllPhotographersComponent).then((fixtureInst) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(AllPhotographersComponent).then((fixtureInst:any) => {
       fixture = fixtureInst;
       context = fixture.debugElement.componentInstance;
     });
-  }));
+  })));
   it('AllPhotographersComponent must init ', () => {
     context.title = 'Photographers';
   });

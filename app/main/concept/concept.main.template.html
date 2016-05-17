@@ -14,7 +14,7 @@
       <div class="concept_content col-md-12">
         <div class="concept_things_menu">
           <ul>
-            <li *ngFor="#thing of things"
+            <li *ngFor="let thing of things"
                 (click)="selectThing(thing)"
                 [ngClass]="{active: activeThing._id === thing._id}">
               <div class="icon">
@@ -50,13 +50,13 @@
               <div class="concept-richest">Richest</div>
             </div>
             <div class="houses-container" *ngIf="images.length">
-              <div *ngFor="#image of images" [ngClass]="houseClassForRegion[image.place.region]"></div>
+              <div *ngFor="let image of images" [ngClass]="houseClassForRegion[image.place.region]"></div>
             </div>
           </div>
 
           <div class="concept-places-container">
             <div class="concept-places" *ngIf="images.length">
-              <div class="concept-place-arrow-container" *ngFor="#image of images">
+              <div class="concept-place-arrow-container" *ngFor="let image of images">
                 <div class="concept-place-arrow-up"></div>
                 <div class="concept-place">
                   <div class="concept-place-arrow-up"></div>
@@ -81,9 +81,7 @@
               dummy text of the printing
             </p>
             <a class="custom-button"
-               [routerLink]="['Matrix', {thing: activeThing._id,countries:'World',regions:'World',zoom:5,row:1}]"
-               [angulartics2On]="'click'"
-               [angularticsEvent]="'go to matrix page from main'">
+               [routerLink]="['Matrix', {thing: activeThing._id,countries:'World',regions:'World',zoom:5,row:1}]">
               See all <span>{{activeThing.plural}}</span> >></a>
           </div>
         </div>
