@@ -8,10 +8,10 @@ export class StreetDrawService {
   public height:number;
   public halfOfHeight:number;
   private places:any[] = [];
-  private poorest:string = 'Poorest 1$';
+  private poorest:string = 'Poorest 3$';
   private richest:string = 'Richest';
   private scale:any;
-  private axisLabel:number[] = [10, 100];
+  private axisLabel:number[] = [30, 300, 3000];
   private svg:any;
   private incomeArr:any[] = [];
   private fullIncomeArr:any[] = [];
@@ -23,8 +23,8 @@ export class StreetDrawService {
 
     this.scale = d3
       .scale.log()
-      .domain([1, 10, 100, 10000])
-      .range([0.07 * this.width, 0.375 * this.width, 0.75 * this.width, 0.97 * this.width]);
+      .domain([1, 30, 300, 3000,15000])
+      .range([0,0.07 * this.width, 0.375 * this.width, 0.75 * this.width, 0.99 * this.width]);
 
     return this;
   }
