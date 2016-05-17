@@ -140,7 +140,7 @@ export class StreetComponent implements OnInit, OnDestroy {
       });
 
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove').filter((e:MouseEvent)=> {
-      return e.pageY > this.svg.getBoundingClientRect().bottom;
+      return e.pageY > document.body.scrollTop+this.svg.getBoundingClientRect().bottom;
     }).subscribe(()=> {
       if (!this.onThumb && this.hoverPlace) {
         this.thumbUnhover();
@@ -174,7 +174,6 @@ export class StreetComponent implements OnInit, OnDestroy {
           this.hoverPlace.next(void 0);
         }
       }
-
       this.thumbLeft = left - indent + 15;
 
       if (this.thumbLeft <= 15) {

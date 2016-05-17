@@ -254,7 +254,7 @@ describe('StreetDrawService', () => {
     expect(d3Svg.attr).toHaveBeenCalledWith('stroke', 'white');
 
     expect(d3Svg.selectAll).toHaveBeenCalledWith('text.scale-label');
-    expect(d3Svg.data).toHaveBeenCalledWith([30, 300, 3000);
+    expect(d3Svg.data).toHaveBeenCalledWith([30, 300, 3000]);
     expect(d3Svg.enter).toHaveBeenCalled();
     expect(d3Svg.append).toHaveBeenCalledWith('text');
     expect(d3Svg.attr).toHaveBeenCalledWith('class', 'scale-label');
