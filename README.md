@@ -11,6 +11,8 @@
 # How to install
 - `git clone`
 - `npm i`
+- `node node_modules/.bin/typings install lodash --save`
+- `node node_modules/.bin/typings install d3 --save`
 - `npm start`
 - *hint*: on first start if you see `can to GET /`, wait for build and refresh pages
 
