@@ -3,7 +3,6 @@ const path=require('path')
 const cwd = process.cwd();
 exports.config = {
 
-  //baseUrl: 'http://ds-dev-consumer.firebaseapp.com/',
    baseUrl: 'http://consumer.dollarstreet.org/',
 
   specs: [
