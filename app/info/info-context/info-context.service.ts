@@ -13,9 +13,7 @@ export class InfoContextService {
 
   public getInfo():Observable<any> {
     return this.http.get(`${config.api}/consumer/api/v1/info`).map((res:any) => {
-      console.log(res);
       let parseRes = JSON.parse(res._body);
-
       return {err: parseRes.error, data: parseRes.data};
     });
   }
