@@ -38,7 +38,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private location:Location;
   private arrowDisabled:boolean;
   private chosenPlace:any;
-  private showInfoFamily:boolean = false;
   private slideWidth:number = window.innerWidth;
   private sliderContainer:any;
   private element:ElementRef;
@@ -121,7 +120,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   }
 
   protected showInfo():void {
-    this.isShowAboutData.emit(true);
+    this.isShowAboutData.emit({isDevice: true});
   }
 
   protected resizeSlider():void {
@@ -136,7 +135,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     }
 
     this.arrowDisabled = true;
-    this.showInfoFamily = false;
 
     if (this.position === 0) {
       this.position = this.allPlaces.length - 1;
@@ -168,7 +166,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     }
 
     this.arrowDisabled = true;
-    this.showInfoFamily = false;
 
     if (this.allPlaces.length - 1 === this.position) {
       this.position = 0;

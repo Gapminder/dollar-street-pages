@@ -56,10 +56,10 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private math:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
-  public constructor(@Inject(RouteParams) routeParams,
-              @Inject(Location) location,
-              @Inject(NgZone) zone,
-              @Inject('Math') math) {
+  public constructor(@Inject(RouteParams) routeParams:RouteParams,
+              @Inject(Location) location:Location,
+              @Inject(NgZone) zone:NgZone,
+              @Inject('Math') math:any) {
     this.routeParams = routeParams;
     this.location = location;
     this.zone = zone;
@@ -68,7 +68,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
 
   public ngOnInit():void {
     this.streetPlacesSubscribe = this.streetPlaces
-      .subscribe((places) => {
+      .subscribe((places:any) => {
         this.thing = this.routeParams.get('thing');
         this.image = this.routeParams.get('image');
         this.place = this.routeParams.get('place');
@@ -92,7 +92,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
       });
 
     this.controllSliderSubscribe = this.controllSlider
-      .subscribe((i) => {
+      .subscribe((i:number) => {
         this.init(i);
       });
 
@@ -105,14 +105,14 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     this.controllSliderSubscribe.unsubscribe();
     this.streetPlacesSubscribe.unsubscribe();
     this.resizeSubscibe.unsubscribe();
     this.keyUpSubscribe.unsubscribe();
   }
 
-  protected init(position?:any) {
+  protected init(position?:any):void {
     this.position = this.allPlaces.map((place:any) => {
       return place._id;
     }).indexOf(this.place);
@@ -145,11 +145,15 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     img.src = startImage.background;
   }
 
-  protected showInfo():void {
-    this.isShowAboutData.emit(true);
+  protected showInfo(event:any, fixed?:boolean):void {
+    this.isShowAboutData.emit({left: event.pageX, top: event.pageY, fixed: fixed});
   }
 
-  protected resizeSlider(event?:any) {
+  protected showInfoUnhover():void {
+    this.isShowAboutData.emit({});
+  }
+
+  protected resizeSlider(event?:any):void {
     let windowInnerWidth = event ? event.currentTarget.innerWidth : window.innerWidth;
     let windowInnerHeight = event ? event.currentTarget.innerHeight : window.innerHeight;
 
@@ -177,7 +181,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     setImageWidth(height);
   }
 
-  protected slidePrev() {
+  protected slidePrev():void {
     if (this.arrowDisabled || this.position === 0) {
       return;
     }
@@ -206,7 +210,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     newPrevImage.src = this.images[0].background;
   }
 
-  protected slideNext() {
+  protected slideNext():void {
     if (this.arrowDisabled || this.allPlaces.length - 1 === this.position) {
       return;
     }
@@ -233,7 +237,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     newNextImage.src = this.images[2].background;
   }
 
-  protected cb(err, data) {
+  protected cb(err:any, data:any):void {
     if (err) {
       console.log(err);
       return;
@@ -256,18 +260,27 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     this.currentPlace.emit([this.chosenPlace]);
   };
 
-  protected openPopUp(image) {
+  protected openPopUp(image:any):void {
     this.popIsOpen = true;
-    this.fancyBoxImage = 'url("' + image.background.replace('desktops', 'original') + '")';
+    let imgUrl = image.background.replace('desktops', 'original');
+    let newImage = new Image();
+
+    newImage.onload = () => {
+      this.zone.run(() => {
+        this.fancyBoxImage = 'url("' + imgUrl + '")';
+      });
+    };
+
+    newImage.src = imgUrl;
   };
 
-  protected fancyBoxClose() {
+  protected fancyBoxClose():void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
   }
 }
 
-function prevSliderActionAfterAnimation(places, images, position, cb) {
+function prevSliderActionAfterAnimation(places:any, images:any, position:number, cb:any):any {
   return () => {
     let prevPlacePosition = position - 1;
 
@@ -288,7 +301,7 @@ function prevSliderActionAfterAnimation(places, images, position, cb) {
   };
 }
 
-function nextSlideActionAfterAnimation(places, images, position, cb) {
+function nextSlideActionAfterAnimation(places:any, images:any, position:number, cb:any):any {
   return () => {
     let nextPlacePosition = position + 1;
 
@@ -309,7 +322,7 @@ function nextSlideActionAfterAnimation(places, images, position, cb) {
   };
 }
 
-function animationSlider(shiftLeft, endAnimation) {
+function animationSlider(shiftLeft:number, endAnimation:any):void {
   $('.slider-container .slider-content')
     .addClass('active')
     .css({
@@ -323,7 +336,7 @@ function animationSlider(shiftLeft, endAnimation) {
   setTimeout(endAnimation, 600);
 }
 
-function selectImagesForSlider(places, position) {
+function selectImagesForSlider(places:any, position:number):any {
   let arr = [];
   let index = 1;
 
@@ -346,22 +359,22 @@ function selectImagesForSlider(places, position) {
   return arr;
 }
 
-function setImageWidth(sliderHeight) {
+function setImageWidth(sliderHeight:number):void {
   let sliderSidebarImages = $('.slide .slide-content .slide-sidebar img');
   let sliderImages = $('.slide .slide-content .image .slide-img');
 
-  sliderSidebarImages.each(function () {
+  sliderSidebarImages.each(function ():void {
     $(this).width(sliderHeight / 2 - 7.5);
   });
 
-  sliderImages.each(function () {
+  sliderImages.each(function ():void {
     $(this).width(this.naturalWidth / (this.naturalHeight / sliderHeight));
   });
 
   setDescriptionsWidth(2);
 }
 
-function setDescriptionsWidth(slideNumber) {
+function setDescriptionsWidth(slideNumber:number):void {
   let slide = $('.slider-content .slide:nth-child(' + slideNumber + ')');
   let slideWidth = slide.find('.slide-wrapper').width();
 
