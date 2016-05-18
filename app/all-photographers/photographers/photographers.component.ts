@@ -1,7 +1,5 @@
-import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
-
-import {Angulartics2On} from 'angulartics2/index';
+import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 import {PhotographersFilter} from './photographers-filter.pipe.ts';
 import {LoaderComponent} from '../../common/loader/loader.component';
@@ -13,23 +11,27 @@ let style = require('./photographers.css');
   selector: 'photographers-list',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On, LoaderComponent],
+  directives: [RouterLink, LoaderComponent],
   pipes: [PhotographersFilter]
 })
 
 export class PhotographersComponent implements OnInit, OnDestroy {
   private photographersService:any;
-  private photographersByCountry:any[] = [];
-  private photographersByName:any[] = [];
-  private search:any = {text: ''};
-  private loader:boolean = false;
+  private photographersByCountry:any[];
+  private photographersByName:any[];
+  private search:any;
+  private loader:boolean;
   private photographersServiceSubscribe:any;
 
-  constructor(@Inject('PhotographersService') photographersService:any) {
+  public constructor(@Inject('PhotographersService') photographersService:any) {
     this.photographersService = photographersService;
+    this.photographersByCountry = [];
+    this.photographersByName = [];
+    this.search = {text: ''};
+    this.loader = false;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.photographersServiceSubscribe = this.photographersService.getPhotographers({})
       .subscribe((res:any) => {
         if (res.err) {
@@ -41,11 +43,13 @@ export class PhotographersComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     this.photographersServiceSubscribe.unsubscribe();
   }
 
-  toggleLeftSide(e) {
-    e.target.parentNode.classList.toggle('show');
+  public toggleLeftSide(e:Event):void {
+    let element = e.target as HTMLElement;
+    let parent = element.parentNode as HTMLElement;
+    parent.classList.toggle('show');
   }
 }

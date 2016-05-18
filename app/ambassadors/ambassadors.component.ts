@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from 'angular2/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {AmbassadorsListComponent} from './ambassadors-list/ambassadors-list.component';
 import {FooterComponent} from '../common/footer/footer.component';
@@ -9,18 +9,15 @@ let style = require('./ambassadors.css');
 @Component({
   selector: 'ambassadors',
   template: tpl,
-  encapsulation:ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
   styles: [style],
   directives: [HeaderWithoutSearchComponent, AmbassadorsListComponent, FooterComponent]
 })
 
-export class AmbassadorsComponent implements OnInit {
+export class AmbassadorsComponent {
   private title:string;
 
-  constructor() {
-  }
-
-  ngOnInit():void {
+  public constructor() {
     this.title = 'Ambassadors';
   }
 }

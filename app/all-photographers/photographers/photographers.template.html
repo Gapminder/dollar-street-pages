@@ -12,15 +12,13 @@
           <img alt="" src="/assets/img/search-icon.svg">
         </div>
         <ul class="photographers-country">
-          <li class="country-card" *ngFor="#country of photographersByCountry | PhotographersFilter:search.text:photographersByCountry:true">
+          <li class="country-card" *ngFor="let country of photographersByCountry | PhotographersFilter:search.text:photographersByCountry:true">
             <div>
               <span class="photographer-country">{{country.name}}</span>
               <ul class="photographers-list">
                 <li
-                  *ngFor="#photographer of country.photographers"
-                  [routerLink]="['Photographer', {id: photographer.userId}]"
-                  [angulartics2On]="'click'"
-                  [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
+                  *ngFor="let photographer of country.photographers"
+                  [routerLink]="['Photographer', {id: photographer.userId}]">
                   {{photographer.name}}
                   <span class="photographer-places">{{photographer.places}}</span>
                 </li>
@@ -32,10 +30,8 @@
 
       <div class="col-md-10 photographers-container">
         <div class="photographer-card"
-             *ngFor="#photographer of photographersByName | PhotographersFilter:search.text:photographersByCountry"
-             [routerLink]="['Photographer', {id: photographer.userId}]"
-             [angulartics2On]="'click'"
-             [angularticsEvent]="'go to ' + photographer.name + ' from photographers page'">
+             *ngFor="let photographer of photographersByName | PhotographersFilter:search.text:photographersByCountry"
+             [routerLink]="['Photographer', {id: photographer.userId}]">
           <div class="photographer-portrait"
                [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/empty-photographer.jpg)'}">
             <div class="photographer-material">

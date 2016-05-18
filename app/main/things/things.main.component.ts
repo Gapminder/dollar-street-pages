@@ -1,7 +1,5 @@
-import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
-
-import {Angulartics2On} from 'angulartics2/index';
+import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 let tpl = require('./things.main.template.html');
 let style = require('./things.main.css');
@@ -10,7 +8,7 @@ let style = require('./things.main.css');
   selector: 'things-main',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On]
+  directives: [RouterLink]
 })
 
 export class ThingsMainComponent implements OnInit, OnDestroy {
@@ -18,11 +16,11 @@ export class ThingsMainComponent implements OnInit, OnDestroy {
   public things:any[] = [];
   private thingsMainServiceSubscribe:any;
 
-  constructor(@Inject('ThingsMainService') thingsMainService) {
+  public constructor(@Inject('ThingsMainService') thingsMainService) {
     this.thingsMainService = thingsMainService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.thingsMainServiceSubscribe = this.thingsMainService.getMainThings({})
       .subscribe((res:any) => {
         if (res.err) {
@@ -33,7 +31,7 @@ export class ThingsMainComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.thingsMainServiceSubscribe.unsubscribe();
   }
 }

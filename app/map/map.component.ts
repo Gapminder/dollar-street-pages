@@ -1,6 +1,6 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef, NgZone} from 'angular2/core';
-import {RouterLink, RouteParams, Router} from 'angular2/router';
-import {Observable} from 'rxjs/Rx';
+import {Component, OnInit, OnDestroy, Inject, ElementRef, NgZone} from '@angular/core';
+import {RouterLink, RouteParams, Router} from '@angular/router-deprecated';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 import {HeaderComponent} from '../common/header/header.component';
 import {LoaderComponent} from '../common/loader/loader.component';
@@ -19,12 +19,19 @@ let device = require('device.js')();
 })
 
 export class MapComponent implements OnInit, OnDestroy {
+
+  public resizeSubscribe:any;
+  public mapServiceSubscribe:any;
+  public math:any;
+  public loader:boolean = false;
+  public needChangeUrl:boolean = false;
+
   private mapService:any;
   private places:any[] = [];
   private countries:any[] = [];
   private element:any;
   private map:HTMLImageElement;
-  private hoverPlace:any = null;
+  private hoverPlace:any = void 0;
   private markers:any;
   private hoverPortraitTop:any;
   private hoverPortraitLeft:any;
@@ -42,36 +49,32 @@ export class MapComponent implements OnInit, OnDestroy {
   private init:boolean;
   private router:Router;
   private isDesktop:boolean = device.desktop();
-  public loader:boolean = false;
-  public needChangeUrl:boolean = false;
   private zone:NgZone;
-
-  public resizeSubscribe:any;
-  public mapServiceSubscribe:any;
-
   private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
 
-  constructor(@Inject('MapService') placeService,
-              @Inject(ElementRef) element,
-              @Inject(RouteParams) routeParams,
-              @Inject(Router) router,
-              @Inject(NgZone) zone,
-              @Inject('UrlChangeService') urlChangeService) {
+  public constructor(@Inject('MapService') placeService:any,
+                     @Inject(ElementRef) element:ElementRef,
+                     @Inject(RouteParams) routeParams:RouteParams,
+                     @Inject(Router) router:Router,
+                     @Inject(NgZone) zone:NgZone,
+                     @Inject('UrlChangeService') urlChangeService:any,
+                     @Inject('Math') math:any) {
     this.mapService = placeService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
     this.router = router;
     this.zone = zone;
+    this.math = math;
     this.urlChangeService = urlChangeService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.init = true;
     this.thing = this.routeParams.get('thing');
     this.urlChanged(this.thing);
   }
 
-  urlChanged(thing:any) {
+  public urlChanged(thing:any):void {
     this.thing = thing;
     let query = `thing=${this.thing}`;
 
@@ -90,7 +93,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
-      .subscribe((res) => {
+      .subscribe((res:any):any => {
         if (res.err) {
           return res.err;
         }
@@ -102,8 +105,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.urlChangeService.replaceState('/map', this.query);
         this.setMarkersCoord(this.places);
         this.loader = true;
-        this.resizeSubscribe = Observable
-          .fromEvent(window, 'resize')
+        this.resizeSubscribe = fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
             this.zone.run(() => {
@@ -113,12 +115,12 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     this.mapServiceSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
   }
 
-  setMarkersCoord(places) {
+  public setMarkersCoord(places:any):void {
     let img = new Image();
     let mapImage = this.element.querySelector('.map-color');
 
@@ -153,7 +155,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = mapImage.src;
   }
 
-  private hoverOnMarker(index, country):void {
+  public hoverOnMarker(index:number, country:any):void {
     if (!this.isDesktop) {
       return;
     }
@@ -165,7 +167,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onMarker = true;
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place) => {
+    this.lefSideCountries = this.places.filter((place:any):boolean => {
       return place.country === this.currentCountry;
     });
 
@@ -173,7 +175,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.markers = this.map.querySelectorAll('.marker');
 
-    this.places.forEach((place, i) => {
+    this.places.forEach((place:any, i:number) => {
       if (i !== index) {
         return;
       }
@@ -185,12 +187,12 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker, i) => {
+    Array.prototype.forEach.call(this.markers, (marker:HTMLElement, i:number):void => {
       if (i === index) {
         return;
       }
 
-      marker.style.opacity = 0.3;
+      marker.style.opacity = '0.3';
     });
 
     let img = new Image();
@@ -207,7 +209,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
         this.hoverPortraitTop = this.hoverPlace.top - portraitBox.offsetHeight;
         this.hoverPortraitLeft = this.hoverPlace.left - (portraitBox.offsetWidth - 15) / 2;
-        this.leftArrowTop = null;
+        this.leftArrowTop = void 0;
         this.shadowClass = {'shadow_to_left': true, 'shadow_to_right': false};
 
         if (this.hoverPortraitTop < 10) {
@@ -234,7 +236,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.hoverPlace.familyImg.background;
   };
 
-  private unHoverOnMarker(e):void {
+  public unHoverOnMarker():void {
     if (!this.isDesktop) {
       return;
     }
@@ -262,34 +264,34 @@ export class MapComponent implements OnInit, OnDestroy {
         return;
       }
 
-      Array.prototype.forEach.call(this.markers, (marker) => {
+      Array.prototype.forEach.call(this.markers, (marker:HTMLElement):void => {
         marker.style.opacity = '1';
       });
 
       this.seeAllHomes = false;
-      this.hoverPlace = null;
-      this.hoverPortraitTop = null;
-      this.hoverPortraitLeft = null;
-      this.markers = null;
+      this.hoverPlace = void 0;
+      this.hoverPortraitTop = void 0;
+      this.hoverPortraitLeft = void 0;
+      this.markers = void 0;
     }, 300);
   }
 
-  private openLeftSideBar():void {
+  public openLeftSideBar():void {
     this.isOpenLeftSide = true;
   }
 
-  private closeLeftSideBar(e) {
-    if (e.target.classList.contains('see-all') ||
-      e.target.classList.contains('see-all-span') ||
-      (!this.isDesktop && e.target.classList.contains('marker'))) {
+  public closeLeftSideBar(e:MouseEvent):void {
+    let el = e.target as HTMLElement;
+    if (el.classList.contains('see-all') ||
+      el.classList.contains('see-all-span') ||
+      (!this.isDesktop && el.classList.contains('marker'))) {
       this.onMarker = false;
       this.onThumb = false;
       this.seeAllHomes = false;
-      this.hoverPlace = null;
-      this.hoverPortraitTop = null;
-      this.hoverPortraitLeft = null;
-      this.unHoverOnMarker(e);
-
+      this.hoverPlace = void 0;
+      this.hoverPortraitTop = void 0;
+      this.hoverPortraitLeft = void 0;
+      this.unHoverOnMarker();
       return;
     }
 
@@ -297,17 +299,16 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onMarker = false;
     this.onThumb = false;
 
-    if (!e.target.classList.contains('marker')) {
-      this.unHoverOnMarker(e);
+    if (!el.classList.contains('marker')) {
+      this.unHoverOnMarker();
     }
   }
 
-  private clickOnMarker(e, index, country) {
+  public clickOnMarker(e:MouseEvent, index:number, country:any):void {
     if (this.isOpenLeftSide) {
       this.isOpenLeftSide = !this.isOpenLeftSide;
       this.closeLeftSideBar(e);
       this.hoverOnMarker(index, country);
-
       return;
     }
 
@@ -320,10 +321,10 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  private mobileClickOnMarker(country) {
+  public mobileClickOnMarker(country:any):void {
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place) => {
+    this.lefSideCountries = this.places.filter((place:any):boolean => {
       return place.country === this.currentCountry;
     });
 
@@ -332,11 +333,11 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  private thumbHover() {
+  public thumbHover():void {
     this.onThumb = true;
   }
 
-  private toUrl(image) {
+  public toUrl(image:string):string {
     return `url("${image}")`;
   }
 }

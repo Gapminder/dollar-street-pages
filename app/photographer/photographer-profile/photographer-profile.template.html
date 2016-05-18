@@ -1,12 +1,11 @@
 <div id="photographer-profile">
   <div class="header">
-    <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
-    <h2>{{photographer.firstName}} {{photographer.lastName}}</h2>
-
-    <div class="country" *ngIf="photographer.country && photographer.country.country">
-      <img src="/assets/img/grey-marker.svg" alt=""> {{photographer.country.alias || photographer.country.country}}
+    <div class="avatar-box">
+      <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
+      <div class="country" *ngIf="photographer.country && photographer.country.country">
+        <img src="/assets/img/white-marker.svg" alt=""> {{photographer.country.alias || photographer.country.country}}
+      </div>
     </div>
-
     <p class="description" *ngIf="photographer?.description">{{photographer.description}}</p>
   </div>
 
@@ -66,7 +65,12 @@
 
 <div id="mobile-photographer-profile" class="row" [ngClass]="{'open': isShowInfo}">
   <div class="image-container">
-    <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
+    <div class="avatar-box">
+      <img [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
+      <div class="country" *ngIf="photographer.country && photographer.country.country">
+        <img src="/assets/img/white-marker.svg" alt=""> {{photographer.country.alias || photographer.country.country}}
+      </div>
+    </div>
 
     <div class="social-network-container"
          *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
@@ -105,10 +109,6 @@
 
   <div class="photographer-description">
     <div class="photographer-description-header">
-      <div class="header">
-        <h2>{{photographer.firstName}} {{photographer.lastName}} <span *ngIf="photographer.country">
-          <img src="/assets/img/grey-marker.svg" alt=""> {{photographer.country.country}}</span></h2>
-      </div>
 
       <div class="count">
         <p class="home">

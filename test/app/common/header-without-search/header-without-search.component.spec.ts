@@ -1,13 +1,14 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
+  inject,
+  async,
   beforeEachProviders,
-  beforeEach,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {MockService} from '../../../app/common-mocks/mock.service.template';
@@ -20,7 +21,7 @@ describe('HeaderWithoutSearchComponent', () => {
   let mockHeaderService = new MockService();
   mockHeaderService.serviceName = 'HeaderService';
   mockHeaderService.getMethod = 'getDefaultThing';
-  mockHeaderService.fakeResponse = {err: null, data: res.data};
+  mockHeaderService.fakeResponse = {err: false, data: res.data};
   beforeEachProviders(() => {
     return [
       mockCommonDependency.getProviders(),
@@ -28,14 +29,14 @@ describe('HeaderWithoutSearchComponent', () => {
     ];
   });
   let context, fixture;
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb
       .createAsync(HeaderWithoutSearchComponent)
-      .then((fixtureInst) => {
+      .then((fixtureInst:any) => {
         fixture = fixtureInst;
         context = fixture.debugElement.componentInstance;
       });
-  }));
+  })));
   it('ngOnInit', () => {
     context.ngOnInit();
     expect(context.defaultThing).toEqual(res.data);

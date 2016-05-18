@@ -6,5 +6,5 @@ export let res = {
     'plural': 'Homes',
     'name': 'Home'
   },
-  'error': null
+  'error': undefined
 };

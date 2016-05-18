@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit, Inject} from '@angular/core';
+import {RouteParams} from '@angular/router-deprecated';
 
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {PhotographerProfileComponent} from './photographer-profile/photographer-profile.component';
@@ -21,11 +21,11 @@ export class PhotographerComponent implements OnInit {
   private routeParams:RouteParams;
   private photographerId:string;
 
-  constructor(@Inject(RouteParams) routeParams) {
+  public constructor(@Inject(RouteParams) routeParams) {
     this.routeParams = routeParams;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.photographerId = this.routeParams.get('id');
   }
 }

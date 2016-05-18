@@ -1,22 +1,21 @@
 import {
   it,
-  expect,
   describe,
   inject,
-  fakeAsync,
   beforeEachProviders,
-  tick,
-} from 'angular2/testing';
+  fakeAsync,
+  tick
+} from '@angular/core/testing';
 
-import {MockBackend} from 'angular2/http/testing';
-import {provide} from 'angular2/core';
+import {MockBackend} from '@angular/http/testing';
+import {provide} from '@angular/core';
 import {
   Http,
   ConnectionBackend,
   BaseRequestOptions,
   Response,
   ResponseOptions
-} from 'angular2/http';
+} from '@angular/http';
 
 import {config} from '../../../app/app.config.ts';
 
@@ -32,27 +31,27 @@ describe('PlaceStreetService', () => {
       PlaceStreetService,
       provide(
         Http, {
-          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions) => {
+          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions):Http => {
             return new Http(backend, defaultOptions);
           }, deps: [MockBackend, BaseRequestOptions]
         })
     ];
   });
-  it('getThingsByRegion', inject([PlaceStreetService, MockBackend], fakeAsync((placeStreetService,
-                                                                                    mockBackend) => {
-    var res;
-    mockBackend.connections.subscribe(connection => {
-      expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/slider/things?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);
-      let response = new ResponseOptions({
-        body: streetPlaceStr
+  it('getThingsByRegion', fakeAsync(inject([PlaceStreetService, MockBackend],
+    (placeStreetService:PlaceStreetService, mockBackend:MockBackend) => {
+      let res;
+      mockBackend.connections.subscribe((connection:any) => {
+        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/slider/things?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);
+        let response = new ResponseOptions({
+          body: streetPlaceStr
+        });
+        connection.mockRespond(new Response(response));
       });
-      connection.mockRespond(new Response(response));
-    });
-    placeStreetService.getThingsByRegion(`isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`).subscribe((_res) => {
-      res = _res;
-    });
-    tick();
-    expect(res.err).toBe(null);
-    expect(res.data.places.length).toBe(203);
-  })));
+      placeStreetService.getThingsByRegion(`isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`).subscribe((_res:any) => {
+        res = _res;
+      });
+      tick();
+      expect(!res.err).toBe(true);
+      expect(res.data.places.length).toBe(203);
+    })));
 });

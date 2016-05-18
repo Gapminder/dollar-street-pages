@@ -1,7 +1,5 @@
-import {Component, OnInit, OnDestroy, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
-
-import {Angulartics2On} from 'angulartics2/index';
+import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 let tpl = require('./concept.main.template.html');
 let style = require('./concept.main.css');
@@ -10,7 +8,7 @@ let style = require('./concept.main.css');
   selector: 'concept-main',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, Angulartics2On]
+  directives: [RouterLink]
 })
 
 export class ConceptMainComponent implements OnInit, OnDestroy {
@@ -27,11 +25,11 @@ export class ConceptMainComponent implements OnInit, OnDestroy {
   };
   private conceptMainServiceSubscribe:any;
 
-  constructor(@Inject('ConceptMainService') conceptMainService) {
+  public constructor(@Inject('ConceptMainService') conceptMainService) {
     this.conceptMainService = conceptMainService;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptThings({})
       .subscribe((res:any) => {
         if (res.err) {
@@ -47,7 +45,7 @@ export class ConceptMainComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.conceptMainServiceSubscribe.unsubscribe();
   }
 

@@ -60,7 +60,7 @@ export let initData = {
         'name': 'Bowl',
         'plural': 'Bowls',
         'empty': false,
-        'icon': null
+        'icon': undefined
       }, {
         '_id': '546ccf730f7ddf45c0179671',
         'name': 'Dish brush',
@@ -84,7 +84,7 @@ export let initData = {
         'name': 'Water source',
         'plural': 'Water sources',
         'empty': false,
-        'icon': null
+        'icon': undefined
       }]
     }, {
       '_id': 'Children',
@@ -192,7 +192,7 @@ export let initData = {
         'name': 'Spices',
         'plural': 'Spices',
         'empty': false,
-        'icon': null
+        'icon': undefined
       }, {
         '_id': '546ccf730f7ddf45c0179675',
         'name': 'Steam exit',
@@ -354,7 +354,7 @@ export let initData = {
         'name': 'Family icon',
         'plural': 'icons',
         'empty': false,
-        'icon': null
+        'icon': undefined
       }, {
         '_id': '54c6a24155c1f8dd4714b445',
         'name': 'Family snapshots',
@@ -384,7 +384,7 @@ export let initData = {
         'name': 'Pet food',
         'plural': 'Pet foods',
         'empty': true,
-        'icon': null
+        'icon': undefined
       }]
     }, {
       '_id': 'Hobby',
@@ -483,7 +483,7 @@ export let initData = {
         'name': 'Clothes',
         'plural': 'Clothes',
         'empty': true,
-        'icon': null
+        'icon': undefined
       }, {
         '_id': '54c7597cd93063bd47f31bc1',
         'name': 'Knife',
@@ -516,7 +516,7 @@ export let initData = {
         'name': 'Cleaning after toilet',
         'plural': 'Cleaning after toilet',
         'empty': false,
-        'icon': null
+        'icon': undefined
       }, {
         '_id': '560cf52bc6d52b89053b68b9',
         'name': 'Cleaning floors',
@@ -654,7 +654,7 @@ export let initData = {
         'name': 'Newspaper',
         'plural': 'Newspapers',
         'empty': false,
-        'icon': null
+        'icon': undefined
       }]
     }, {
       '_id': 'Other',
@@ -783,7 +783,7 @@ export let initData = {
         'name': 'Playground',
         'plural': 'Playgrounds',
         'empty': true,
-        'icon': null
+        'icon': undefined
       }]
     }, {
       '_id': 'Sleep',
@@ -1103,9 +1103,9 @@ export let initData = {
       'iconLight': 'http://static.dollarstreet.org.s3.amazonaws.com/thing/546ccf730f7ddf45c0179649/FFFFFF-546ccf730f7ddf45c0179649.svg'
     },
     'regions': ['Europe', 'America', 'Africa', 'Asia'],
-    'header': null
+    'header': undefined
   },
-  'error': null
+  'error': undefined
 };
 
 export let sliderInitData = {
@@ -1194,7 +1194,7 @@ export let sliderInitData = {
         '_id': '546ccf730f7ddf45c017967a',
         'name': 'Spices',
         'plural': 'Spices',
-        'icon': null
+        'icon': undefined
       }, {
         '_id': '546ccf730f7ddf45c0179673',
         'name': 'Stove',
@@ -1292,7 +1292,7 @@ export let sliderInitData = {
       }]
     }, {
       '_id': 'Family',
-      'things': [{'_id': '56d56ae7efde1cd41f5e0d35', 'name': 'Family icon', 'plural': 'icons', 'icon': null}]
+      'things': [{'_id': '56d56ae7efde1cd41f5e0d35', 'name': 'Family icon', 'plural': 'icons', 'icon': undefined}]
     }, {
       '_id': 'Home from outside',
       'things': [{
@@ -1602,7 +1602,7 @@ export let sliderInitData = {
         'icon': 'http://static.dollarstreet.org.s3.amazonaws.com/thing/546ccf730f7ddf45c0179665/FFFFFF-546ccf730f7ddf45c0179665.svg'
       }]
     }],
-    'countries': null,
+    'countries': undefined,
     'thing': {
       '_id': '546ccf730f7ddf45c0179649',
       'icon': '546ccf730f7ddf45c0179649.svg',
@@ -1612,7 +1612,7 @@ export let sliderInitData = {
       'iconDark': 'http://static.dollarstreet.org.s3.amazonaws.com/thing/546ccf730f7ddf45c0179649/2C4351-546ccf730f7ddf45c0179649.svg',
       'iconLight': 'http://static.dollarstreet.org.s3.amazonaws.com/thing/546ccf730f7ddf45c0179649/FFFFFF-546ccf730f7ddf45c0179649.svg'
     },
-    'regions': null,
+    'regions': undefined,
     'header': {
       '_id': '54be2720c4a0e60017efb08f',
       'country': 'Bangladesh',
@@ -1621,5 +1621,5 @@ export let sliderInitData = {
       'family': ['Bishash']
     }
   },
-  'error': null
+  'error': undefined
 };

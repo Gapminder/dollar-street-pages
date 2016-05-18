@@ -1,12 +1,14 @@
 import {
   it,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
@@ -26,21 +28,23 @@ describe('CountryInfoComponent', () => {
       countryInfoService.getProviders()
     ];
   });
-  it('CountryInfoComponent must init ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(CountryInfoComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      expect(context.placesQantity).toEqual(7);
-      expect(context.photosQantity).toEqual(1223);
-      countryInfoService.toInitState();
+  let context, fixture;
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(CountryInfoComponent).then((fixtureInst:any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
     });
-  }));
-  it('CountryInfoComponent must destroy ', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(CountryInfoComponent).then((fixture) => {
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(countryInfoService.countOfSubscribes).toBe(0);
-    });
-  }));
+  })));
+  it('CountryInfoComponent must init ', ()=> {
+    fixture.detectChanges();
+    expect(context.placesQantity).toEqual(7);
+    expect(context.photosQantity).toEqual(1223);
+    countryInfoService.toInitState();
+  });
+  it('CountryInfoComponent must destroy ', ()=> {
+    fixture.detectChanges();
+    fixture.destroy();
+    expect(countryInfoService.countOfSubscribes).toBe(0);
+  });
 });
 

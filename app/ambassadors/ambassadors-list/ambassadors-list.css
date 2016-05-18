@@ -1,6 +1,24 @@
 .ambassadors {
   margin: 0 auto;
   overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ambassadors > div {
+  width: 100%;
+}
+
+.ambassadors .teacher {
+  order: 0;
+}
+
+.ambassadors .writer {
+  order: 1;
+}
+
+.ambassadors .organisations {
+  order: 2;
 }
 
 .ambassadors * {
@@ -17,6 +35,7 @@
   clear: both;
   font-size: 28px;
   margin: 50px 0 16px 0;
+  text-transform: capitalize;
 }
 
 .ambassadors .ambassadors-peoples .ambassadors-people-box {
@@ -146,26 +165,31 @@
     width: calc(100% / 2);
     padding: 0 5px;
   }
-  .ambassadors .ambassadors-peoples{
+
+  .ambassadors .ambassadors-peoples {
     padding-top: 15px;
   }
+
   .ambassadors .ambassadors-peoples h2 {
     font-size: 20px;
-    margin:10px 0 5px -5px;
+    margin: 10px 0 5px -5px;
   }
 
   .ambassadors .ambassadors-peoples .ambassadors-organization .name,
   .ambassadors .ambassadors-peoples .ambassadors-people .name {
     font-size: 16px !important;
   }
+
   .ambassadors .ambassadors-peoples .ambassadors-organization .country,
   .ambassadors .ambassadors-peoples .ambassadors-people .country {
     font-size: 14px !important;
   }
+
   .ambassadors .ambassadors-peoples .ambassadors-organization .country img,
   .ambassadors .ambassadors-peoples .ambassadors-people .country img {
     width: 9px;
   }
+
   .ambassadors .ambassadors-peoples .ambassadors-organization .description,
   .ambassadors .ambassadors-peoples .ambassadors-people .description {
     font-size: 13px;

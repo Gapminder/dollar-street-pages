@@ -1,5 +1,5 @@
-import {Component, OnChanges, Input, Inject} from 'angular2/core';
-import {Router, RouterLink} from 'angular2/router';
+import {Component, OnChanges, Input, Inject} from '@angular/core';
+import {Router, RouterLink} from '@angular/router-deprecated';
 
 import {SocialShareButtons} from '../social_share_buttons/social-share-buttons.component.ts';
 
@@ -24,12 +24,12 @@ export class MainMenuComponent implements OnChanges {
   private router:Router;
   private placeComponent:boolean;
 
-  constructor(@Inject(Router) _router) {
-    this.router = _router;
+  public constructor(@Inject(Router) router:Router) {
+    this.router = router;
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
   }
 
-  ngOnChanges(changes) {
+  public ngOnChanges():void {
     if (this.defaultThing) {
       if (this.activeThing && this.placeComponent) {
         this.thing = this.activeThing;

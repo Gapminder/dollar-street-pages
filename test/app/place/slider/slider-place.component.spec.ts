@@ -1,25 +1,27 @@
 import {
   it,
-  xit,
   describe,
-  expect,
-  injectAsync,
+  async,
+  inject,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
-import {places, place, activeThing, streetPlacesData} from '../mocks/data.ts';
+import {activeThing, streetPlacesData} from '../mocks/data.ts';
 
 import {SliderPlaceComponent} from '../../../../app/place/slider/slider-place.component';
 
 /** todo: remove this crutch */
 interface ObjectCtor extends ObjectConstructor {
-  assign(target: any, ...sources: any[]): any;
+  assign(target:any, ...sources:any[]):any;
 }
-declare var Object: ObjectCtor;
-export let assign = Object.assign ? Object.assign : function(target: any, ...sources: any[]): any {
+declare var Object:ObjectCtor;
+export let assign = Object.assign ? Object.assign : function (target:any, ...sources:any[]):any {
   return;
 };
 
@@ -38,8 +40,7 @@ let setTimeoutMock = {
 };
 assign(window, ImageMock);
 assign(window, setTimeoutMock);
-/**
- * *************/
+/***************/
 
 describe('SliderMobilePlaceComponent', () => {
   let controllSlider = new MockService();
@@ -54,82 +55,75 @@ describe('SliderMobilePlaceComponent', () => {
       mockCommonDependency.getProviders()
     ];
   });
-  it('must init', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.currentPlace = currentPlace;
-      context.controllSlider = controllSlider;
-      context.activeThing = activeThing;
-      context.streetPlaces = streetPlaces;
-      context.routeParams.set('thing', '5477537786deda0b00d43be5');
-      context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
-      context.routeParams.set('place', '54b6866a38ef07015525f5be');
-      fixture.detectChanges();
-      expect(context.thing).toEqual('5477537786deda0b00d43be5');
-      expect(context.image).toEqual('54b6862f3755cbfb542c28cb');
-      expect(context.place).toEqual('54b6866a38ef07015525f5be');
-      expect(context.allPlaces.length).toEqual(5);
-      expect(context.position).toEqual(1);
-      expect(context.images.length).toEqual(3);
-      expect(context.chosenPlace.income).toEqual(10);
-      controllSlider.toInitState();
-      streetPlaces.toInitState();
+  let context, fixture;
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
+    return tcb.createAsync(SliderPlaceComponent).then((fixtureInst:any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
     });
-  }));
-  it('must destroy', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-      context.currentPlace = currentPlace;
-      context.controllSlider = controllSlider;
-      context.activeThing = activeThing;
-      context.streetPlaces = streetPlaces;
-      context.routeParams.set('thing', '5477537786deda0b00d43be5');
-      context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
-      context.routeParams.set('place', '54b6866a38ef07015525f5be');
-      fixture.detectChanges();
-      fixture.destroy();
-      expect(streetPlaces.countOfSubscribes).toEqual(0);
-      expect(controllSlider.countOfSubscribes).toEqual(0);
-    });
-  }));
-  it('slidePrev', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-
-      context.currentPlace = currentPlace;
-      context.controllSlider = controllSlider;
-      context.activeThing = activeThing;
-      context.streetPlaces = streetPlaces;
-      context.routeParams.set('thing', '5477537786deda0b00d43be5');
-      context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
-      context.routeParams.set('place', '54b6866a38ef07015525f5be');
-      fixture.detectChanges();
-      context.slidePrev();
-      expect(context.thing).toEqual('5477537786deda0b00d43be5');
-      expect(context.allPlaces.length).toEqual(5);
-      expect(context.position).toEqual(0);
-      expect(context.images.length).toEqual(3);
-      expect(context.chosenPlace.income).toEqual(1);
-    });
-  }));
-  it('slideNext', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(SliderPlaceComponent).then((fixture) => {
-      let context = fixture.debugElement.componentInstance;
-
-      context.currentPlace = currentPlace;
-      context.controllSlider = controllSlider;
-      context.activeThing = activeThing;
-      context.streetPlaces = streetPlaces;
-      context.routeParams.set('thing', '5477537786deda0b00d43be5');
-      context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
-      context.routeParams.set('place', '54b6866a38ef07015525f5be');
-      fixture.detectChanges();
-      context.slideNext();
-      expect(context.thing).toEqual('5477537786deda0b00d43be5');
-      expect(context.allPlaces.length).toEqual(5);
-      expect(context.position).toEqual(2);
-      expect(context.images.length).toEqual(3);
-      expect(context.chosenPlace.income).toEqual(133);
-    });
-  }));
+  })));
+  it('must init', ()=> {
+    context.currentPlace = currentPlace;
+    context.controllSlider = controllSlider;
+    context.activeThing = activeThing;
+    context.streetPlaces = streetPlaces;
+    context.routeParams.set('thing', '5477537786deda0b00d43be5');
+    context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
+    context.routeParams.set('place', '54b6866a38ef07015525f5be');
+    fixture.detectChanges();
+    expect(context.thing).toEqual('5477537786deda0b00d43be5');
+    expect(context.image).toEqual('54b6862f3755cbfb542c28cb');
+    expect(context.place).toEqual('54b6866a38ef07015525f5be');
+    expect(context.allPlaces.length).toEqual(5);
+    expect(context.position).toEqual(1);
+    expect(context.images.length).toEqual(3);
+    expect(context.chosenPlace.income).toEqual(10);
+    controllSlider.toInitState();
+    streetPlaces.toInitState();
+  });
+  it('must destroy', ()=> {
+    context.currentPlace = currentPlace;
+    context.controllSlider = controllSlider;
+    context.activeThing = activeThing;
+    context.streetPlaces = streetPlaces;
+    context.routeParams.set('thing', '5477537786deda0b00d43be5');
+    context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
+    context.routeParams.set('place', '54b6866a38ef07015525f5be');
+    fixture.detectChanges();
+    fixture.destroy();
+    expect(streetPlaces.countOfSubscribes).toEqual(0);
+    expect(controllSlider.countOfSubscribes).toEqual(0);
+  });
+  it('slidePrev', ()=> {
+    context.currentPlace = currentPlace;
+    context.controllSlider = controllSlider;
+    context.activeThing = activeThing;
+    context.streetPlaces = streetPlaces;
+    context.routeParams.set('thing', '5477537786deda0b00d43be5');
+    context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
+    context.routeParams.set('place', '54b6866a38ef07015525f5be');
+    fixture.detectChanges();
+    context.slidePrev();
+    expect(context.thing).toEqual('5477537786deda0b00d43be5');
+    expect(context.allPlaces.length).toEqual(5);
+    expect(context.position).toEqual(0);
+    expect(context.images.length).toEqual(3);
+    expect(context.chosenPlace.income).toEqual(1);
+  });
+  it('slideNext', ()=> {
+    context.currentPlace = currentPlace;
+    context.controllSlider = controllSlider;
+    context.activeThing = activeThing;
+    context.streetPlaces = streetPlaces;
+    context.routeParams.set('thing', '5477537786deda0b00d43be5');
+    context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
+    context.routeParams.set('place', '54b6866a38ef07015525f5be');
+    fixture.detectChanges();
+    context.slideNext();
+    expect(context.thing).toEqual('5477537786deda0b00d43be5');
+    expect(context.allPlaces.length).toEqual(5);
+    expect(context.position).toEqual(2);
+    expect(context.images.length).toEqual(3);
+    expect(context.chosenPlace.income).toEqual(133);
+  });
 });

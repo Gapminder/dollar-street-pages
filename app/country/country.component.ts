@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit, Inject} from '@angular/core';
+import {RouteParams} from '@angular/router-deprecated';
 
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {CountryInfoComponent} from './country-info/country-info.component';
@@ -20,15 +20,15 @@ let style = require('./country.css');
 })
 
 export class CountryComponent implements OnInit {
-  private title:string = 'Country';
+  private title:string;
   private routeParams:RouteParams;
   private countryId:string;
 
-  constructor(@Inject(RouteParams) routeParams) {
+  public constructor(@Inject(RouteParams) routeParams:RouteParams) {
     this.routeParams = routeParams;
   }
 
-  ngOnInit() {
+  public ngOnInit():void {
     this.countryId = this.routeParams.get('id');
   }
 }

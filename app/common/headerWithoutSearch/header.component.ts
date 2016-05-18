@@ -1,5 +1,5 @@
-import {Component, Inject, Input, OnInit, OnDestroy} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, Inject, Input, OnInit, OnDestroy} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 import {MainMenuComponent} from '../menu/menu.component';
 
 let tpl = require('./header.template.html');
@@ -15,16 +15,18 @@ let style = require('./header.css');
 export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
   @Input()
   private title:string;
+  @Input()
+  private subTitle:string;
 
   private defaultThing:any;
   private headerService:any;
   private headerServiceSibscribe:any;
 
-  constructor(@Inject('HeaderService') headerService) {
+  public constructor(@Inject('HeaderService') headerService:any) {
     this.headerService = headerService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.headerServiceSibscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
         if (res.err) {
@@ -35,7 +37,7 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy():void {
+  public ngOnDestroy():void {
     this.headerServiceSibscribe.unsubscribe();
   }
 }

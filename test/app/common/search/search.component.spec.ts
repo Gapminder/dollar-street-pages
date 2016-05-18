@@ -1,14 +1,14 @@
 import {
   it,
-  xit,
   describe,
-  xdescribe,
-  expect,
-  injectAsync,
-  beforeEach,
+  inject,
+  async,
   beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  beforeEach
+} from '@angular/core/testing';
+import {
+  TestComponentBuilder
+} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
@@ -35,18 +35,17 @@ describe('SearchComponent', () => {
   let context;
   let fixture;
 
-
-  beforeEach(injectAsync([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(SearchComponent, tmpl)
         .createAsync(SearchComponent)
-        .then((componentFixture) => {
+        .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
           context.chosenPlaces = chosenPlaces;
         });
     }
-  ));
+  )));
 
   it(' ngOnInit ngOnDestroy', () => {
     context.placeComponent = true;
@@ -70,8 +69,6 @@ describe('SearchComponent', () => {
     context.ngOnChanges({url: {currentValue: 'thing=5477537786deda0b00d43be5&place=54b6866a38ef07015525f5be&image=54b6862f3755cbfb542c28cb'}});
     expect(context.getInitData).toHaveBeenCalledWith();
   });
-
-
   it(' goToThing', () => {
     spyOn(context, 'goToThing').and.callThrough();
     context.paramsUrl = {
@@ -96,7 +93,7 @@ describe('SearchComponent', () => {
 
   it(' goToRegions', () => {
     spyOn(context, 'goToRegions').and.callThrough();
-    this.activeRegions = ['World'];
+    context.activeRegions = ['World'];
     context.paramsUrl = {
       thing: '5477537786deda0b00d43be5',
       place: '54b6866a38ef07015525f5be',
@@ -115,7 +112,7 @@ describe('SearchComponent', () => {
 
   it(' goToCountries', () => {
     spyOn(context, 'goToCountries').and.callThrough();
-    this.activeCountries = ['World'];
+    context.activeCountries = ['World'];
     context.paramsUrl = {
       thing: '5477537786deda0b00d43be5',
       place: '54b6866a38ef07015525f5be',

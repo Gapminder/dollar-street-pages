@@ -2,8 +2,7 @@
   <header [query]="query" *ngIf="isHover"
           (mouseenter)="isHover()"
           [chosenPlaces]="chosenPlaces"
-          (filter)="urlChanged($event)"
-          [hoverPlace]="hoverPlace"></header>
+          (filter)="urlChanged($event)"></header>
 
   <street [places]="streetPlaces"
           [thing]="thing"
@@ -18,7 +17,6 @@
                 [controllSlider]="controllSlider"
                 [activeThing]="activeThing"
                 [places]="sliderPlaces"></slider-place>
-
   <span class="custom-button"
         *ngIf="!isShowImagesFamily && !isDesktop"
         (click)="isShowImagesFamily = !isShowImagesFamily">

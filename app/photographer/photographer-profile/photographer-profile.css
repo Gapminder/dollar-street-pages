@@ -14,13 +14,22 @@
 
 #photographer-profile .header img {
   width: 100%;
-  margin-bottom: 15px;
 }
 
-#photographer-profile .header .country {
+#photographer-profile .header .avatar-box {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+#photographer-profile .header .avatar-box .country{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  color: white;
   font-size: 18px;
-  color: #767d86;
-  margin-bottom: 5px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
 }
 
 #photographer-profile .header .country img {
@@ -128,6 +137,23 @@
 
 #mobile-photographer-profile .image-container img {
   width: 100%;
+}
+#mobile-photographer-profile .image-container .avatar-box {
+  position: relative;
+}
+#mobile-photographer-profile .image-container .avatar-box .country{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+}
+#mobile-photographer-profile .image-container .avatar-box .country img{
+  width:10px;
+  vertical-align: middle;
 }
 
 #mobile-photographer-profile .social-network-container {

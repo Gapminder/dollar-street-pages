@@ -1,7 +1,10 @@
-import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from 'angular2/core';
-import {RouterLink, RouteParams, Location} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from '@angular/core';
+import {RouterLink, RouteParams} from '@angular/router-deprecated';
+import {Location} from '@angular/common';
 import {Observable} from 'rxjs/Observable';
-import {ReplaySubject} from 'rxjs/subject/ReplaySubject';
+import {fromEvent} from 'rxjs/observable/fromEvent';
+import {zip} from 'rxjs/observable/zip';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {PlaceMapComponent} from '../../common/place-map/place-map.component';
 
@@ -18,21 +21,19 @@ let style = require('./slider-mobile-place.css');
 })
 
 export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
-  @Input('places')
-  private streetPlaces:Observable<any>;
-  @Input('activeThing')
-  private activeThing:any;
-
-  @Output('currentPlace')
-  private currentPlace:EventEmitter<any> = new EventEmitter();
-  @Output('isShowAboutData')
-  private isShowAboutData:EventEmitter<any> = new EventEmitter();
-
   public allPlaces:any = [];
   public images:any = [];
   public position:any;
   public thing:any;
   public image:any;
+  @Input('places')
+  private streetPlaces:Observable<any>;
+  @Input('activeThing')
+  private activeThing:any;
+  @Output('currentPlace')
+  private currentPlace:EventEmitter<any> = new EventEmitter();
+  @Output('isShowAboutData')
+  private isShowAboutData:EventEmitter<any> = new EventEmitter();
   private routeParams:RouteParams;
   private location:Location;
   private arrowDisabled:boolean;
@@ -44,22 +45,25 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private streetPlacesSubscribe:any;
   private touchSubscribe:any;
   private zone:NgZone;
+  private math:any;
   private resizeSubscribe:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
   private showAboutData:boolean;
 
-  constructor(@Inject(RouteParams) routeParams,
-              @Inject(ElementRef) elementRef,
-              @Inject(NgZone) zone,
-              @Inject(Location) location) {
+  public constructor(@Inject(RouteParams) routeParams:RouteParams,
+                     @Inject(ElementRef) elementRef:ElementRef,
+                     @Inject(NgZone) zone:any,
+                     @Inject('Math') math:any,
+                     @Inject(Location) location:Location) {
     this.routeParams = routeParams;
     this.element = elementRef;
     this.location = location;
     this.zone = zone;
+    this.math = math;
   }
 
-  ngOnInit():void {
-    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places) => {
+  public ngOnInit():void {
+    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places:any):any => {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
       this.allPlaces = places;
@@ -71,21 +75,21 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
 
     this.swipe(sliderContainer);
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
-      .debounceTime(300).subscribe(() => {
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(300)
+      .subscribe(() => {
         this.resizeSlider();
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy():void {
     this.streetPlacesSubscribe.unsubscribe();
     this.touchSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
   }
 
-  protected init(position?:any) {
-    this.position = this.allPlaces.map(function (place:any) {
+  protected init(position?:any):void {
+    this.position = this.allPlaces.map((place:any):any=> {
       return place.image;
     }).indexOf(this.image);
     if (position || position === 0) {
@@ -120,13 +124,13 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     this.isShowAboutData.emit(true);
   }
 
-  protected resizeSlider() {
+  protected resizeSlider():void {
     this.slideWidth = window.innerWidth;
     let sliderHeight = $('.slider-mobile-slide:nth-child(2) img').height();
     this.sliderContainer.css({height: sliderHeight});
   }
 
-  protected slidePrev() {
+  protected slidePrev():void {
     if (this.arrowDisabled || this.position === 0) {
       return;
     }
@@ -158,7 +162,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     newPrevImage.src = this.images[0].background;
   }
 
-  protected slideNext() {
+  protected slideNext():void {
     if (this.arrowDisabled || this.allPlaces.length - 1 === this.position) {
       return;
     }
@@ -188,7 +192,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     newNextImage.src = this.images[2].background;
   }
 
-  protected cb(err, data) {
+  protected cb(err:any, data:any):void {
     if (err) {
       console.log(err);
       return;
@@ -211,22 +215,21 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     this.currentPlace.emit([this.chosenPlace]);
   };
 
-  swipe(sliderContainer:HTMLElement):void {
+  public swipe(sliderContainer:HTMLElement):void {
     if (!sliderContainer) {
       return;
     }
 
-    let touchStart = Observable.fromEvent(sliderContainer, 'touchstart');
-    let touchEnd = Observable.fromEvent(sliderContainer, 'touchend');
+    let touchStart = fromEvent(sliderContainer, 'touchstart');
+    let touchEnd = fromEvent(sliderContainer, 'touchend');
 
-    this.touchSubscribe = Observable
-      .zip(touchStart, touchEnd, (touchStartRes:any, touchEndRes:any) => {
-        let startX = touchStartRes.touches[0].clientX;
-        let endX = touchEndRes.changedTouches[0].clientX;
+    this.touchSubscribe = zip(touchStart, touchEnd, (touchStartRes:any, touchEndRes:any) => {
+      let startX = touchStartRes.touches[0].clientX;
+      let endX = touchEndRes.changedTouches[0].clientX;
 
-        return {startX, endX};
-      })
-      .subscribe((results) => {
+      return {startX, endX};
+    })
+      .subscribe((results:any) => {
         let startX = results.startX;
         let endX = results.endX;
 
@@ -262,7 +265,7 @@ function prevSliderActionAfterAnimation(places, images, position, cb) {
       images: images
     };
 
-    cb.apply(this, [null, res]);
+    cb.apply(this, [void 0, res]);
   };
 }
 
@@ -283,11 +286,11 @@ function nextSlideActionAfterAnimation(places, images, position, cb) {
       images: images
     };
 
-    cb.apply(this, [null, res]);
+    cb.apply(this, [void 0, res]);
   };
 }
 
-function animationSlider(shiftLeft, endAnimation) {
+function animationSlider(shiftLeft:any, endAnimation:any):any {
   $('.slider-mobile-wrapper .slider-mobile')
     .addClass('active')
     .css({
@@ -301,7 +304,7 @@ function animationSlider(shiftLeft, endAnimation) {
   setTimeout(endAnimation, 600);
 }
 
-function selectImagesForSlider(places, position) {
+function selectImagesForSlider(places:any, position:any):any[] {
   let arr = [];
   let index = 1;
 

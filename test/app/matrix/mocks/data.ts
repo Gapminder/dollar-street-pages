@@ -1,5 +1,5 @@
 export let places = {
-  err: null, places: [
+  err: undefined, places: [
     {
       _id: "54b6862f3755cbfb542c28cb",
       background: "http://static.dollarstreet.org.s3.amazonaws.com/media/Liberia 1/image/4c2c9365-4d30-4ea9-acdc-f7f2cb1daf29/devices-4c2c9365-4d30-4ea9-acdc-f7f2cb1daf29.jpg",

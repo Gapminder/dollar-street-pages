@@ -1,5 +1,11 @@
 'use strict';
 
+/// <reference path="../../../typings/require.d.ts"/>
+/// <reference path="../../../typings/main.d.ts"/>
+/// <reference path="../../../typings/protractor.d.ts"/>
+
+//TODO Need to reed about Typings and remove this temporary solution
+
 const MapPage = require('../Pages/MapPage.ts');
 const AbstractPage = require('../Pages/AbstractPage.ts');
 const dataProvider = require('../Data/DataProvider.ts');
@@ -172,6 +178,7 @@ describe('Matrix Page test', () => {
   using (dataProvider.matrixPageText, (data, description) => {
     it ('Check ' + description + ' on Matrix Page after selection thing', () => {
       matrixPage = new MatrixPage();
+      browser.ignoreSynchronization = false;
       matrixPage.getGlass().click();
       matrixPage.getThing(4).click();
       expect(data.element().getText()).toEqual(data.actualResult);

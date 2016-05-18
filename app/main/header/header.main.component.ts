@@ -1,5 +1,5 @@
-import {Component, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 
 import {SocialShareButtons} from '../../common/social_share_buttons/social-share-buttons.component.ts';
 
@@ -16,7 +16,7 @@ let style = require('./header.main.css');
 export class HeaderMainComponent {
   private urlChangeService:any;
 
-  constructor(@Inject('UrlChangeService') urlChangeService) {
+  public constructor(@Inject('UrlChangeService') urlChangeService) {
     this.urlChangeService = urlChangeService;
   }
 

@@ -5,24 +5,23 @@ import {MapComponent} from './map/map.component';
 import {AllPhotographersComponent} from './all-photographers/all-photographers.component';
 import {PhotographerComponent} from './photographer/photographer.component';
 import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
-import {SitemapComponent} from './sitemap/sitemap.component';
 import {CountryComponent} from './country/country.component';
+import {InfoComponent} from './info/info.component';
 
-export module config {
+export namespace config {
+  'use strict';
+   export let api = 'https://apidev.dollarstreet.org';
   // export let api = 'http://128.199.60.70';
   // export let api = 'http://stage.dollarstreet.org';
-  export let api = 'http://192.168.1.66';
-  //export let api = 'http://192.168.1.81';
+  // export let api = 'http://192.168.1.66';
+  // export let api = 'http://192.168.1.81';
+  // export let api = 'http://192.168.0.102';
 
   export let routes = [{
     path: '/main',
     name: 'Main',
     component: FirstComponent,
     useAsDefault: true
-  }, {
-    path: '/sitemap',
-    name: 'Sitemap',
-    component: SitemapComponent
   }, {
     path: '/matrix',
     name: 'Matrix',
@@ -51,5 +50,9 @@ export module config {
     path: '/country',
     name: 'Country',
     component: CountryComponent
+  }, {
+    path: '/info',
+    name: 'Info',
+    component: InfoComponent
   }];
 }

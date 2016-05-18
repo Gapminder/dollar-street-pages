@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {HeaderMainComponent} from './header/header.main.component';
 import {ConceptMainComponent} from './concept/concept.main.component';
 import {ComparisonMainComponent} from './comparison/comparison.main.component';

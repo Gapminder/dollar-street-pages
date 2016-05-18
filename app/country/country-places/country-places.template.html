@@ -1,10 +1,8 @@
 <div id="country-place">
-  <div class="place" *ngFor="#place of places">
+  <div class="place" *ngFor="let place of places">
     <div class="image">
       <img *ngIf="place.image" [src]="place.image"
            [routerLink]="['Place', {thing:  place.thing, place: place.placeId, image: place.imageId}]"
-           [angulartics2On]="'click'"
-           [angularticsEvent]="'go to place page from photographer page'"
            alt="">
     </div>
 
@@ -16,16 +14,17 @@
 
       <div class="country-income">
         <div class="income">
-          <span>${{place.income}}</span>
+          <span>${{math.round(place?.income)}}</span>
         </div>
 
         <div class="place-country">
           <p>
-            <img *ngIf="country.region === 'Africa'" src="/assets/img/africa.svg" alt="">
-            <img *ngIf="country.region === 'Europe'" src="/assets/img/europe.svg" alt="">
-            <img *ngIf="country.region === 'Asia'" src="/assets/img/asia.svg" alt="">
-            <img *ngIf="country.region === 'America'" src="/assets/img/america.svg" alt="">
-            <span>{{country.alias || country.country}}</span>
+            <!--<img *ngIf="country.region === 'Africa'" src="/assets/img/africa.svg" alt="">-->
+            <!--<img *ngIf="country.region === 'Europe'" src="/assets/img/europe.svg" alt="">-->
+            <!--<img *ngIf="country.region === 'Asia'" src="/assets/img/asia.svg" alt="">-->
+            <!--<img *ngIf="country.region === 'America'" src="/assets/img/america.svg" alt="">-->
+            <!--<span>{{country.alias || country.country}}</span>-->
+            <i class="fa fa-camera"></i><span>{{place.imagesCount || 0}}</span>
           </p>
         </div>
       </div>
@@ -34,8 +33,7 @@
     <div class="link">
       <a class="custom-button"
          [routerLink]="['Place', {thing: place.thing, place: place.placeId, image: place.imageId}]"
-         [angulartics2On]="'click'"
-         [angularticsEvent]="'go to place page from photographer page'">Visit family >></a>
+      >Visit family >></a>
     </div>
   </div>
 </div>

@@ -1,10 +1,9 @@
 export let photographers = {
-  err: null, data: {
+  err: false, data: {
     'countryList': [{
       'name': 'Albania', 'photographers': [{
         'name': 'AJ Sharma',
         'userId': '56e946c4d360263447ff6fad',
-        'avatar': null,
         'images': 289,
         'places': 4
       }]
@@ -13,7 +12,6 @@ export let photographers = {
         'name': 'Bangladesh', 'photographers': [{
         'name': 'Igor Nepipenko',
         'userId': '56e946c4d360263447ff6fad',
-        'avatar': null,
         'images': 289,
         'places': 4
       }]
@@ -22,13 +20,11 @@ export let photographers = {
         'name': 'Russia', 'photographers': [{
         'name': 'Igor Markov',
         'userId': '56e946c4d360263447ff6fad',
-        'avatar': null,
         'images': 289,
         'places': 4
       }, {
         'name': 'Igor Nepipenko',
         'userId': '56e946c4d360263447ff6fad',
-        'avatar': null,
         'images': 289,
         'places': 4
       }]
@@ -37,7 +33,6 @@ export let photographers = {
         'name': 'France', 'photographers': [{
         'name': 'Vladimir Loban',
         'userId': '56e946c4d360263447ff6fad',
-        'avatar': null,
         'images': 289,
         'places': 4
       }]
@@ -45,7 +40,6 @@ export let photographers = {
     'photographersList': [{
       'name': 'AJ Sharma',
       'userId': '56e946c4d360263447ff6fad',
-      'avatar': null,
       'images': 289,
       'places': 4
     }
@@ -53,21 +47,18 @@ export let photographers = {
       {
         'name': 'Igor Nepipenko',
         'userId': '56e946c4d360263447ff6fad',
-        'avatar': null,
         'images': 289,
         'places': 4
       },
       {
         'name': 'Igor Markov',
         'userId': '56e946c4d360263447ff6fad',
-        'avatar': null,
         'images': 289,
         'places': 4
       },
       {
         'name': 'Vladimir Loban',
         'userId': '56e946c4d360263447ff6fad',
-        'avatar': null,
         'images': 289,
         'places': 4
       }]

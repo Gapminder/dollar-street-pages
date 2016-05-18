@@ -93,6 +93,7 @@ sitemap,
 country,
 first-page,
 ambassadors,
+info-page,
 photographer,
 map-component {
   position: relative;
@@ -144,7 +145,7 @@ map-component {
 }
 
 .place-header search {
-  width: calc(100% - 250px) !important;
+  width: calc(100% - 180px) !important;
 }
 
 .place-header .matrix-icon {

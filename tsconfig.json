@@ -1,5 +1,5 @@
 {
-  "version": "1.7.5",
+  "version": "1.8.10",
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
@@ -8,19 +8,19 @@
     "removeComments": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noImplicitAny": false,
-    "listFiles": false,
-    "noLib": false
+    "listFiles": false
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "./app/main",
+    "./app/sitemap"
   ],
   "files": [
-    "./typings/browser/ambient/jasmine/jasmine.d.ts",
     "./node_modules/angular2/typings/browser.d.ts",
     "./typings/require.d.ts",
-    "./typings/tsd.d.ts",
-    "./app/index.ts",
+    "./typings/main.d.ts",
+    "./typings/index.d.ts",
+    "./app/boot.ts",
     "./app/app.component.ts",
     "./app/app.config.ts",
     "./app/common/social_share_buttons/social-share-buttons.service.ts",
@@ -44,16 +44,6 @@
     "./app/first/header/header.component.ts",
     "./app/first/similarities/similarities.component.ts",
     "./app/first/welcome/welcome.component.ts",
-    "./app/main/main.component.ts",
-    "./app/main/concept/concept.main.component.ts",
-    "./app/main/concept/concept.main.service.ts",
-    "./app/main/places/main.places.service.ts",
-    "./app/main/comparison/comparison.main.component.ts",
-    "./app/main/things/things.main.component.ts",
-    "./app/main/things/things.main.service.ts",
-    "./app/main/about/about.main.component.ts",
-    "./app/main/places/places.main.component.ts",
-    "./app/main/header/header.main.component.ts",
     "./app/matrix/matrix.component.ts",
     "./app/matrix/matrix.service.ts",
     "./app/matrix/matrix-images/matrix-images.component.ts",
@@ -77,7 +67,6 @@
     "./app/ambassadors/ambassadors.component.ts",
     "./app/ambassadors/ambassadors-list/ambassadors-list.component.ts",
     "./app/ambassadors/ambassadors-list/ambassadors-list.service.ts",
-    "./app/sitemap/sitemap.component.ts",
     "./app/country/country.component.ts",
     "./app/country/country-info/country-info.component.ts",
     "./app/country/country-info/country-info.service.ts",

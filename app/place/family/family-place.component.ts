@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from 'angular2/core';
-import {RouterLink} from 'angular2/router';
+import {Component, OnInit, OnDestroy, Input, Inject} from '@angular/core';
+import {RouterLink} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
@@ -29,18 +29,18 @@ export class FamilyPlaceComponent implements OnInit, OnDestroy {
   private zoom:number = isDesktop ? 5 : 3;
   private itemSize:number = window.innerWidth / this.zoom;
 
-  constructor(@Inject('FamilyPlaceService') familyPlaceService) {
+  public constructor(@Inject('FamilyPlaceService') familyPlaceService) {
     this.familyPlaceService = familyPlaceService;
   }
 
-  ngOnInit():void {
+  public ngOnInit():void {
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
         this.placeId = place._id;
         this.nextImages(10, this.placeId);
       });
   }
 
-  ngOnDestroy():void {
+  public ngOnDestroy():void {
     this.familyPlaceServiceSubscribe.unsubscribe();
     this.chosenPlacesSubscribe.unsubscribe();
   }
@@ -48,7 +48,7 @@ export class FamilyPlaceComponent implements OnInit, OnDestroy {
   nextImages(limit:number, placeId:string):void {
     let url = `isTrash=false&limit=${limit}&placeId=${placeId}&skip=0`;
     if (this.familyPlaceServiceSubscribe) {
-      this.familyPlaceServiceSubscribe = null;
+      this.familyPlaceServiceSubscribe = void 0;
     }
     this.familyPlaceServiceSubscribe = this.familyPlaceService.getPlaceFamilyImages(url)
       .subscribe((res:any) => {

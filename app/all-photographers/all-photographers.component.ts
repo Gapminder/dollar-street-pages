@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 
 import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
 import {PhotographersComponent} from './photographers/photographers.component';
@@ -15,5 +15,9 @@ let style = require('./all-photographers.css');
 })
 
 export class AllPhotographersComponent {
-  private title:string = 'Photographers';
+  private title:string;
+
+  public constructor() {
+    this.title = 'Photographers';
+  }
 }

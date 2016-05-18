@@ -5,7 +5,9 @@ node_modules
 npm-debug.log
 
 # builded files
-dist
+dist/*
+!dist/404.html
+!dist/CNAME
 
 #coverage
 coverage
