@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, OnDestroy, AfterViewChecked, NgZone} from '@angular/core';
+import {Component, Inject, OnInit, OnDestroy, AfterViewChecked, ElementRef, NgZone} from '@angular/core';
 import {RouteParams, RouterLink} from '@angular/router-deprecated';
 import {Subject} from 'rxjs/Subject';
 
@@ -39,6 +39,9 @@ export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
   public hoverPlace:Subject<any> = new Subject();
   public hoverHeader:Subject<any> = new Subject();
   public resizeSubscribe:any;
+  public positionLeft:number;
+  public positionTop:number;
+  public showMobileAboutData:boolean;
   private streetPlaces:Subject<any> = new Subject();
   private sliderPlaces:Subject<any> = new Subject();
   private chosenPlaces:Subject<any> = new Subject();
@@ -54,15 +57,17 @@ export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
   private activeThing:any = {};
   private currentPlace:any = {};
   private isDesktop:boolean = isDesktop;
-  private isShowImagesFamily:boolean = isDesktop;
+  private element:HTMLElement;
 
   public constructor(@Inject('PlaceStreetService') placeStreetService:any,
                      @Inject('UrlChangeService') urlChangeService:any,
+                     @Inject(ElementRef) element:any,
                      @Inject(RouteParams) routeParams:RouteParams,
                      @Inject(NgZone) zone:NgZone) {
     this.placeStreetService = placeStreetService;
     this.urlChangeService = urlChangeService;
     this.routeParams = routeParams;
+    this.element = element.nativeElement;
     this.zone = zone;
   }
 
@@ -147,10 +152,6 @@ export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
     this.chosenPlaces.next(this.currentPlace);
     this.hoverPlace.next(this.currentPlace);
 
-    if (!this.isDesktop) {
-      this.isShowImagesFamily = false;
-    }
-
     this.changeLocation(place[0], this.thing);
 
     this.zone.run(() => {
@@ -158,14 +159,34 @@ export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
     });
   }
 
-  public isShowAboutData(showAboutData:any):void {
-    this.showAboutData = showAboutData;
+  public isShowAboutData(elementData?:any):void {
+    if (elementData && (elementData.isDevice || elementData.fixed)) {
+      this.showMobileAboutData = true;
+      this.showAboutData = true;
+
+      return;
+    }
+
+    if (!elementData || !elementData.left || !elementData.top) {
+      this.showAboutData = false;
+
+      return;
+    }
+
+    let aboutDataContainer = this.element.querySelector('.about-data-container');
+
+    this.positionLeft = elementData.left + 28;
+    this.positionTop = elementData.top - (aboutDataContainer.clientHeight / 2);
+
+    this.showAboutData = true;
   }
 
   public closeAboutDataPopUp(event:MouseEvent):void {
     let el = event && event.target as HTMLElement;
+
     if (el.className.indexOf('closeMenu') !== -1) {
       this.showAboutData = false;
+      this.showMobileAboutData = false;
     }
   }
 

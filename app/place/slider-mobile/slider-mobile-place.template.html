@@ -21,25 +21,19 @@
     </div>
   </div>
 
-  <span class="custom-button"
-        [hidden]="showInfoFamily"
-        (click)="showInfoFamily = !showInfoFamily">
-    Info about family
-  </span>
-
-  <div *ngIf="showInfoFamily" class="slider-mobile-description-container">
+  <div class="slider-mobile-description-container">
     <div class="slider-mobile-family-images-container">
       <div class="slider-mobile-family-portrait">
-        <img *ngIf="chosenPlace.family"
-             [src]="chosenPlace.family.background"
-             [routerLink]="['Place', {thing: chosenPlace.family.thing, place: chosenPlace._id, image: chosenPlace.family._id}]"
+        <img *ngIf="chosenPlace?.family"
+             [src]="chosenPlace?.family.background"
+             [routerLink]="['Place', {thing: chosenPlace?.family.thing, place: chosenPlace?._id, image: chosenPlace?.family._id}]"
              alt="">
       </div>
 
       <div class="slider-mobile-family-house">
-        <img *ngIf="chosenPlace.house"
-             [src]="chosenPlace.house.background"
-             [routerLink]="['Place', {thing: chosenPlace.house.thing, place: chosenPlace._id, image: chosenPlace.house._id}]"
+        <img *ngIf="chosenPlace?.house"
+             [src]="chosenPlace?.house.background"
+             [routerLink]="['Place', {thing: chosenPlace?.house.thing, place: chosenPlace?._id, image: chosenPlace?.house._id}]"
              alt="">
       </div>
     </div>
@@ -49,9 +43,9 @@
         <span [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
           « All {{activeThing.plural}}
         </span>
-        <h2><span>{{math.round(chosenPlace.income)}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="chosenPlace.aboutData"
-                                               (click)="showInfo()"></span> {{chosenPlace.familyName}}
-          {{chosenPlace.familyName ? 'family' : ''}} in {{chosenPlace.country}}</h2>
+        <h2><span>{{math.round(chosenPlace?.income)}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="chosenPlace?.aboutData"
+                                               (click)="showInfo()"></span> {{chosenPlace?.familyName}}
+          {{chosenPlace?.familyName ? 'family' : ''}} in {{chosenPlace?.country}}</h2>
       </div>
 
       <div class="slider-mobile-family-map">
@@ -59,6 +53,6 @@
       </div>
     </div>
 
-    <p class="info" *ngIf="chosenPlace.familyInfoSummary">{{chosenPlace.familyInfoSummary}}</p>
+    <p class="info" *ngIf="chosenPlace?.familyInfoSummary">{{chosenPlace?.familyInfoSummary}}</p>
   </div>
 </div>
