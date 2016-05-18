@@ -2,7 +2,8 @@
 const path=require('path')
 const cwd = process.cwd();
 exports.config = {
- baseUrl: 'http://consumer.dollarstreet.org/',
+
+   baseUrl: 'http://consumer.dollarstreet.org/',
 
   specs: [
     path.resolve(cwd)+'/test-e2e/**/*.e2e.ts'
@@ -10,7 +11,7 @@ exports.config = {
   exclude: [],
 
   framework: 'jasmine',
-  
+
   allScriptsTimeout: 110000,
 
   jasmineNodeOpts: {
@@ -18,7 +19,7 @@ exports.config = {
     showColors: true,
     isVerbose: false,
     includeStackTrace: false,
-    //defaultTimeoutInterval: 30000
+    defaultTimeoutInterval: 30000
   },
   directConnect: true,
 

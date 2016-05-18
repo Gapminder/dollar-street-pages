@@ -18,6 +18,7 @@
   "files": [
     "./node_modules/angular2/typings/browser.d.ts",
     "./typings/require.d.ts",
+    "./typings/main.d.ts",
     "./typings/index.d.ts",
     "./app/boot.ts",
     "./app/app.component.ts",
