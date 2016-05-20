@@ -29,7 +29,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
   public chosenPlaces:Subject<any> = new Subject();
   public hoverPlace:Subject<any> = new Subject();
   public padding:Subject<any> = new Subject();
-  public hoverHeader:Subject<any> = new Subject();
+  // public hoverHeader:Subject<any> = new Subject();
   private placesArr:any[];
   private element:HTMLElement;
 
@@ -46,21 +46,20 @@ export class MatrixComponent implements OnInit, OnDestroy {
   private countries:string;
   private regions:string;
   private row:number;
-
+  private placesVal:any;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];
+  private filtredPlaces:any[];
   public loader:boolean = false;
   public isDraw:boolean = false;
-
-  private placesVal:any;
-
+  public filter:any;
   public matrixServiceSubscrib:any;
 
   public constructor(@Inject('MatrixService') matrixService,
-              @Inject(ElementRef) element,
-              @Inject('UrlChangeService') urlChangeService,
-              @Inject(RouteParams) routeParams) {
+                     @Inject(ElementRef) element,
+                     @Inject('UrlChangeService') urlChangeService,
+                     @Inject(RouteParams) routeParams) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
@@ -136,9 +135,9 @@ export class MatrixComponent implements OnInit, OnDestroy {
       this.urlChangeService.replaceState(`/matrix`, query);
     }
 
-    let clonePlaces = _.cloneDeep(this.placesArr);
+    let clonePlaces = _.cloneDeep(this.filtredPlaces);
     if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
-      this.chosenPlaces.next(clonePlaces.splice(this.row * this.zoom, this.zoom * this.visiblePlaces));
+      this.chosenPlaces.next(clonePlaces.splice((this.row-1)* this.zoom, this.zoom * this.visiblePlaces));
     }
   }
 
@@ -184,18 +183,11 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     this.visiblePlaces = row;
 
-    this.clonePlaces = _.cloneDeep(this.placesArr);
+    //this.clonePlaces = _.cloneDeep(this.filtredPlaces);
   }
 
   hoverPlaceS(place) {
     this.hoverPlace.next(place);
-  }
-
-  isHover() {
-    if (!this.isDesktop) {
-      return;
-    }
-    this.hoverHeader.next(void 0);
   }
 
   urlChanged(options):void {
@@ -218,9 +210,20 @@ export class MatrixComponent implements OnInit, OnDestroy {
           return;
         }
         this.placesVal = val.places;
-        this.matrixPlaces.next(val.places);
+
+
+        this.filtredPlaces = this.placesVal.filter((place:any):boolean=> {
+          if (!place) {
+            return void 0;
+          }
+          let low = this.filter.lowIncome ? this.filter.lowIncome : 0;
+          let upper = this.filter.hightIncome ? this.filter.hightIncome : 20000;
+          return place.income >= low && place.income <= upper;
+        });
+
+        this.matrixPlaces.next(this.filtredPlaces);
         this.placesArr = val.places;
-        this.clonePlaces = _.cloneDeep(this.placesArr);
+        this.clonePlaces = _.cloneDeep(this.filtredPlaces);
         if (search) {
           this.streetPlaces.next(this.placesVal);
           this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
@@ -229,6 +232,25 @@ export class MatrixComponent implements OnInit, OnDestroy {
         this.loader = true;
       });
   }
+
+  filterStreet(filter) {
+    this.filter = filter;
+    if (!this.placesVal) {
+      return;
+    }
+    this.filtredPlaces = this.placesVal.filter((place:any):boolean=> {
+      if (!place) {
+        return void 0;
+      }
+      let low = filter.lowIncome ? filter.lowIncome : 0;
+      let upper = filter.hightIncome ? filter.hightIncome : 20000;
+      return place.income >= low && place.income <= upper;
+    });
+    this.matrixPlaces.next(this.filtredPlaces);
+    this.clonePlaces = _.cloneDeep(this.filtredPlaces);
+    this.chosenPlaces.next(this.clonePlaces .splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+  }
+
 
   changeZoom(zoom) {
     this.urlChanged({query: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});

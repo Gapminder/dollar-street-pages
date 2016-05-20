@@ -81,17 +81,8 @@ describe('MatrixComponent', () => {
     context.hoverPlaceS(places.places[0]);
     expect(context.hoverPlace.next.calls.argsFor(0)).toEqual([places.places[0]]);
   });
-  it(' isHover', () => {
-    spyOn(context, 'isHover').and.callThrough();
-    spyOn(context.hoverHeader, 'next');
-    context.isDesktop = true;
-    context.isHover();
-    expect(context.hoverHeader.next.calls.argsFor(0)).toEqual([undefined]);
-    context.isDesktop = false;
-    context.isHover();
-    expect(context.hoverHeader.next.calls.count()).toEqual(1);
-  });
   it(' urlChanged and ngOnDestroy', () => {
+    context.filter = {lowIncome: 0, hightIncome: 15000};
     spyOn(context, 'urlChanged').and.callThrough();
     spyOn(context, 'parseUrl').and.callThrough();
     spyOn(context.urlChangeService, 'replaceState');

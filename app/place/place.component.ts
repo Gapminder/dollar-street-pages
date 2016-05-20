@@ -37,7 +37,6 @@ export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
   public windowHeight:number = window.innerHeight;
   public maxHeightPopUp:number = this.windowHeight * .95 - 91;
   public hoverPlace:Subject<any> = new Subject();
-  public hoverHeader:Subject<any> = new Subject();
   public resizeSubscribe:any;
   private streetPlaces:Subject<any> = new Subject();
   private sliderPlaces:Subject<any> = new Subject();
@@ -129,10 +128,6 @@ export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
     this.zone.run(() => {
       this.loader = false;
     });
-  }
-
-  public isHover():void {
-    this.hoverHeader.next(false);
   }
 
   public getStreetPlaces(thing:any):void {

@@ -2,19 +2,32 @@ const d3 = require('d3');
 const _ = require('lodash');
 const device = require('device.js')();
 const isDesktop = device.desktop();
+import {fromEvent} from 'rxjs/observable/fromEvent';
+import {Subject} from 'rxjs/Subject';
 
 export class StreetDrawService {
   public width:number;
   public height:number;
   public halfOfHeight:number;
+  public lowIncome:number = 0;
+  public hightIncome:number = 15000;
   private places:any[] = [];
-  private poorest:string = 'Poorest 3$';
+  private poorest:string = 'Poorest';
   private richest:string = 'Richest';
   private scale:any;
   private axisLabel:number[] = [30, 300, 3000];
   private svg:any;
   private incomeArr:any[] = [];
   private fullIncomeArr:any[] = [];
+
+  private mouseMoveSubscriber:any;
+  private mouseUpSubscriber:any;
+  private sliderRightBorder:number;
+  private sliderLeftBorder:number;
+  private sliderRightMove:boolean = false;
+  private sliderLeftMove:boolean = false;
+
+  private filter:Subject<any> = new Subject();
 
   public init():this {
     this.width = parseInt(this.svg.style('width'), 10);
@@ -23,8 +36,8 @@ export class StreetDrawService {
 
     this.scale = d3
       .scale.log()
-      .domain([1, 30, 300, 3000,15000])
-      .range([0,0.07 * this.width, 0.375 * this.width, 0.75 * this.width, 0.99 * this.width]);
+      .domain([1, 30, 300, 3000, 15000])
+      .range([0, 0.07 * this.width, 0.375 * this.width, 0.75 * this.width, 0.99 * this.width]);
 
     return this;
   }
@@ -39,6 +52,9 @@ export class StreetDrawService {
   };
 
   public onSvgHover(positionX:any, cb:any):void {
+    if (this.sliderLeftBorder > positionX || this.sliderRightBorder < positionX) {
+      return cb(void 0);
+    }
     this.hoverOnScalePoint(this.whatIsIncome(Math.round(positionX - 15)), cb);
   };
 
@@ -139,7 +155,6 @@ export class StreetDrawService {
         let point2 = `15,${ this.halfOfHeight - 4}`;
         let point3 = `${ this.width - 15},${ this.halfOfHeight - 4}`;
         let point4 = `${ this.width},${ this.halfOfHeight + 9}`;
-
         return `${point1} ${point2} ${point3} ${point4}`;
       })
       .style('fill', '#737b83');
@@ -192,8 +207,102 @@ export class StreetDrawService {
       .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
+    this.drawLeftSlider(this.lowIncome ? this.scale(this.lowIncome) : (25));
+    this.drawRightSlider(this.hightIncome ? this.scale(this.hightIncome)-15 : (this.width-25));
+
+    this.mouseMoveSubscriber = fromEvent(window, 'mousemove').filter((e:MouseEvent)=> {
+      return this.sliderLeftMove || this.sliderRightMove;
+    }).subscribe((e:MouseEvent)=> {
+      if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder&& e.pageX >= 30) {
+        this.svg.selectAll('polygon.left-scroll').remove('polygon.left-scroll');
+        this.svg.selectAll('rect.left-scroll-opacity-part').remove('rect.left-scroll-opacity-part');
+        this.lowIncome = this.scale.invert(e.pageX - 19.5);
+        return this.drawLeftSlider(e.pageX - 10);
+      }
+      if (this.sliderRightMove && e.pageX >= this.sliderLeftBorder&& e.pageX <= this.width) {
+        this.svg.selectAll('polygon.right-scroll').remove('polygon.right-scroll');
+        this.svg.selectAll('rect.right-scroll-opacity-part').remove('rect.tight-scroll-opacity-part');
+        this.hightIncome = this.scale.invert(e.pageX - 15);
+        return this.drawRightSlider(e.pageX - 20);
+      }
+    });
+
+    this.mouseUpSubscriber = fromEvent(window, 'mouseup').filter((e?:MouseEvent)=> {
+      return this.sliderLeftMove || this.sliderRightMove;
+    }).subscribe((e?:MouseEvent)=> {
+      this.sliderLeftMove = this.sliderRightMove = false;
+      this.filter.next({lowIncome: Math.round(this.lowIncome), hightIncome: Math.round(this.hightIncome)});
+    });
     return this;
   };
+
+  protected drawLeftSlider(x:number):this {
+    this.sliderLeftBorder = x + 20;
+    this.svg
+      .append('polygon')
+      .attr('class', 'left-scroll')
+      .attr('points', () => {
+        let point1 = `${x- 9},${ this.halfOfHeight + 10}`;
+        let point2 = `${x- 9},${ this.halfOfHeight - 5}`;
+        let point3 = `${x},${ this.halfOfHeight - 5}`;
+        let point4 = `${x},${ this.halfOfHeight + 10}`;
+        let point5 = `${x - 4.5},${ this.halfOfHeight + 10 + 5}`;
+        return `${point1} ${point2} ${point3} ${point4} ${point5}`;
+      })
+      .style('fill', '#515c65')
+      .style('cursor', 'pointer')
+      .attr('stroke-width', 1)
+      .attr('stroke', '#48545f')
+      .on('mousedown', (e?:MouseEvent):void=> {
+        this.sliderLeftMove = true;
+      });
+
+    this.svg
+      .append('rect')
+      .attr('class', 'left-scroll-opacity-part')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', x - 10)
+      .attr('height', 60)
+      .style('fill', 'white')
+      .style('opacity', '0.8');
+    return this;
+  };
+
+
+  protected drawRightSlider(x:number):this {
+    this.sliderRightBorder = x;
+    this.svg
+      .append('polygon')
+      .attr('class', 'right-scroll')
+      .attr('points', () => {
+        let point1 = `${x},${ this.halfOfHeight + 10}`;
+        let point2 = `${x},${ this.halfOfHeight - 5}`;
+        let point3 = `${x + 9},${ this.halfOfHeight - 5}`;
+        let point4 = `${x + 9},${ this.halfOfHeight + 10}`;
+        let point5 = `${x + 4.5},${ this.halfOfHeight + 10 + 5}`;
+        return `${point1} ${point2} ${point3} ${point4} ${point5}`;
+      })
+      .style('fill', '#515c65')
+      .style('cursor', 'pointer')
+      .attr('stroke-width', 1)
+      .attr('stroke', '#48545f')
+      .on('mousedown', (e?:MouseEvent):void=> {
+        this.sliderRightMove = true;
+      });
+
+    this.svg
+      .append('rect')
+      .attr('class', 'right-scroll-opacity-part')
+      .attr('x', x+9)
+      .attr('y', 0)
+      .attr('width', this.width - x - 1)
+      .attr('height', 60)
+      .style('fill', 'white')
+      .style('opacity', '0.8');
+    return this;
+  };
+
 
   protected hoverOnScalePoint(d:any, cb:any):void {
     if (!d) {
