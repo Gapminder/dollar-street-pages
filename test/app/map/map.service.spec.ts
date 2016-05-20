@@ -17,7 +17,7 @@ import {
   ResponseOptions
 } from '@angular/http';
 
-import {config} from '../../../app/app.config.ts';
+import {Config} from '../../../app/app.config.ts';
 
 import {MapService} from '../../../app/map/map.service.ts';
 
@@ -39,7 +39,7 @@ describe('MapService', () => {
     (mapService:MapService, mockBackend:MockBackend) => {
       let res;
       mockBackend.connections.subscribe((connection:any)=> {
-        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/map?thing=5477537786deda0b00d43be5`);
+        expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/map?thing=5477537786deda0b00d43be5`);
         /**
          * ToDo: change body of response
          * @type {ResponseOptions}

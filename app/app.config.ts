@@ -8,16 +8,16 @@ import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
 import {CountryComponent} from './country/country.component';
 import {InfoComponent} from './info/info.component';
 
-export namespace config {
+export class Config {
   'use strict';
-   export let api = 'https://apidev.dollarstreet.org';
+   public static api:string = 'https://apidev.dollarstreet.org';
   // export let api = 'http://128.199.60.70';
   // export let api = 'http://stage.dollarstreet.org';
   // export let api = 'http://192.168.1.66';
   // export let api = 'http://192.168.1.81';
   // export let api = 'http://192.168.0.102';
 
-  export let routes = [{
+  public static routes:any = [{
     path: '/main',
     name: 'Main',
     component: FirstComponent,
