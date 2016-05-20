@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {RouteConfig, Router, RouterOutlet} from '@angular/router-deprecated';
-import {config} from './app.config';
+import {Config} from './app.config';
 
 @Component({
   selector: 'consumer-app',
@@ -8,7 +8,7 @@ import {config} from './app.config';
   directives: [RouterOutlet]
 })
 
-@RouteConfig(config.routes)
+@RouteConfig(Config.routes)
 
 export class AppComponent {
   private type:string;

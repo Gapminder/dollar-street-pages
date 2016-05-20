@@ -17,7 +17,7 @@ import {
   ResponseOptions
 } from '@angular/http';
 
-import {config} from '../../../../app/app.config.ts';
+import {Config} from '../../../../app/app.config.ts';
 import {initData} from './mocks/data';
 import {SearchService} from '../../../../app/common/search/search.service';
 
@@ -39,7 +39,7 @@ describe('SearchService', () => {
     (searchService:SearchService, mockBackend:MockBackend):any => {
       let res;
       mockBackend.connections.subscribe((connection:any) => {
-        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/search?thing=5477537786deda0b00d43be5&place=54b6866a38ef07015525f5be&image=54b6862f3755cbfb542c28cb`);
+        expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/search?thing=5477537786deda0b00d43be5&place=54b6866a38ef07015525f5be&image=54b6862f3755cbfb542c28cb`);
         /**
          * ToDo: change body of response
          * @type {ResponseOptions}
