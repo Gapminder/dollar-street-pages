@@ -37,20 +37,21 @@
   font-weight: bold;
 }
 
-.custom-button {
-  display: block;
-  margin: 25px auto;
-  width: 250px;
-}
-
 footer {
   position: relative;
 }
 
 .about-data-container {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
+  z-index: 9999;
+}
+
+.about-data-container.open {
+  position: fixed;
+  top: 0 !important;
+  left: 0 !important;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, .6);
@@ -86,7 +87,6 @@ footer {
   position: absolute;
   top: 14px;
   right: 15px;
-  display: block;
   border-radius: 50%;
   width: 22px;
   height: 22px;
@@ -96,6 +96,11 @@ footer {
   line-height: 21px;
   text-align: center;
   cursor: pointer;
+  display: none;
+}
+
+.about-data-container.open .about-data-content span {
+  display: block;
 }
 
 .about-data-container .about-data-body {

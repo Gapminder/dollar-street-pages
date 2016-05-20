@@ -25,7 +25,7 @@ export class SearchFilter implements PipeTransform {
             _id: item._id,
             things: chain(item.things)
               .filter((thing:any) => {
-                return thing.name.toLowerCase().indexOf(text.toLowerCase()) !== -1;
+                return !thing.empty && thing.name.toLowerCase().indexOf(text.toLowerCase()) !== -1;
               }).value()
           };
         })

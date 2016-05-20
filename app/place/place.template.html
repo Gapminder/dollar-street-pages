@@ -15,13 +15,8 @@
                 [controllSlider]="controllSlider"
                 [activeThing]="activeThing"
                 [places]="sliderPlaces"></slider-place>
-  <span class="custom-button"
-        *ngIf="!isShowImagesFamily && !isDesktop"
-        (click)="isShowImagesFamily = !isShowImagesFamily">
-    See all images
-  </span>
 
-  <family-place [hidden]="!isShowImagesFamily" [chosenPlaces]="chosenPlaces"></family-place>
+  <family-place [chosenPlaces]="chosenPlaces"></family-place>
 
   <p class="photographer" [routerLink]="['Photographer', {id: currentPlace.photographer._id}]"
      *ngIf="currentPlace.photographer">Photographer: {{currentPlace.photographer.fullName}}</p>
@@ -32,8 +27,10 @@
 </div>
 
 <div class="about-data-container closeMenu"
-     [style.lineHeight.px]="windowHeight"
-     *ngIf="showAboutData"
+     [style.left.px]="showAboutData ? positionLeft : '-1000'"
+     [style.top.px]="showAboutData ? positionTop : '-1000'"
+     [style.lineHeight.px]="showMobileAboutData ? windowHeight : ''"
+     [ngClass]="{open: showMobileAboutData}"
      (click)="closeAboutDataPopUp($event)">
   <div class="about-data-content">
     <div class="about-data-header">
@@ -42,9 +39,9 @@
     </div>
 
     <div class="about-data-body" [style.maxHeight.px]="maxHeightPopUp">
-      <p>{{commonAboutData.description}}</p>
+      <p>{{commonAboutData?.description}}</p>
 
-      <p>{{currentPlace.aboutData}}</p>
+      <p>{{currentPlace?.aboutData}}</p>
     </div>
   </div>
 </div>
