@@ -71,7 +71,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
     this.regions = this.routeParams.get('regions');
-    //todo: row void 0
+    // todo: row void 0
     this.row = parseInt(this.routeParams.get('row'), 10);
     this.zoom = parseInt(this.routeParams.get('zoom'), 10);
 
@@ -113,7 +113,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
   stopScroll() {
     /**  each document usage breaks possible server side rendering*/
-    let scrollTop = document.body.scrollTop; //? body.scrollTop : ieScrollBody.scrollTop;
+    let scrollTop = document.body.scrollTop; // ? body.scrollTop : ieScrollBody.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
     if (isNaN(distance)) {
