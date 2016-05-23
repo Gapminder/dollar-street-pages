@@ -10,14 +10,12 @@ import {InfoComponent} from './info/info.component';
 import {ArticleComponent} from './article/article.component';
 
 export class Config {
-  'use strict';
-   public static api:string = 'https://apidev.dollarstreet.org';
-   // export let api = 'https://apidev.dollarstreet.org';
-  // export let api = 'http://128.199.60.70';
-  // export let api = 'http://stage.dollarstreet.org';
-  // export let api = 'http://192.168.1.66';
-  // export let api = 'http://192.168.1.81';
-  // export let api = 'http://192.168.0.102';
+  // public static api:string = 'https://apidev.dollarstreet.org';
+  // public static api:string = 'http://128.199.60.70';
+  // public static api:string = 'http://stage.dollarstreet.org';
+  public static api:string = 'http://192.168.1.66';
+  // public static api:string = 'http://192.168.1.81';
+  // public static api:string = 'http://192.168.0.102';
 
   public static routes:any = [{
     path: '/main',
