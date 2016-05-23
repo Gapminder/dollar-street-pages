@@ -8,6 +8,7 @@ import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
 import {CountryComponent} from './country/country.component';
 import {InfoComponent} from './info/info.component';
 import {ArticleComponent} from './article/article.component';
+import {BlogComponent} from './blog/blog.component';
 
 export class Config {
   // public static api:string = 'https://apidev.dollarstreet.org';
@@ -58,5 +59,9 @@ export class Config {
     path: '/article',
     name: 'Article',
     component: ArticleComponent
+  }, {
+    path: '/blog',
+    name: 'Blog',
+    component: BlogComponent
   }];
 }
