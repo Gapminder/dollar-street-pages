@@ -7,10 +7,12 @@ import {PhotographerComponent} from './photographer/photographer.component';
 import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
 import {CountryComponent} from './country/country.component';
 import {InfoComponent} from './info/info.component';
+import {ArticleComponent} from './article/article.component';
 
 export class Config {
   'use strict';
    public static api:string = 'https://apidev.dollarstreet.org';
+   // export let api = 'https://apidev.dollarstreet.org';
   // export let api = 'http://128.199.60.70';
   // export let api = 'http://stage.dollarstreet.org';
   // export let api = 'http://192.168.1.66';
@@ -54,5 +56,9 @@ export class Config {
     path: '/info',
     name: 'Info',
     component: InfoComponent
+  }, {
+    path: '/article',
+    name: 'Article',
+    component: ArticleComponent
   }];
 }

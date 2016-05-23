@@ -2,10 +2,20 @@
   <div class="search-title-container pull-left">
     <div class="search-title pull-left">
       <div class="pull-left">
-        <img class="search-title-thing-icon pull-left icon" *ngIf="!placeComponent"
-             [hidden]="!(activeThing && activeThing.iconDark)"
-             [src]="activeThing.iconDark"
-             [alt]="activeThing.name">
+        <div class="thing-icon-container pull-left" [ngClass]="{exist: activeThing.shortDescription}">
+          <img class="search-title-thing-icon icon" *ngIf="!placeComponent"
+               [hidden]="!(activeThing && activeThing.iconDark)"
+               [src]="activeThing.iconDark"
+               [alt]="activeThing.name">
+
+          <div class="thing-pop-up">
+            <span></span>
+            <div class="thing-pop-up-content">
+              <p>{{activeThing?.shortDescription}}<a [routerLink]="['Article', {id: activeThing._id}]">Read
+                more >></a></p>
+            </div>
+          </div>
+        </div>
 
         <div class="search-portrait-icon pull-left icon"
              *ngIf="placeComponent && header && header.icon"
