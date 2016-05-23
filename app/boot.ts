@@ -23,6 +23,7 @@ import {AmbassadorsListService} from './ambassadors/ambassadors-list/ambassadors
 import {SocialShareButtonsService} from './common/social_share_buttons/social-share-buttons.service';
 import {InfoContextService} from './info/info-context/info-context.service';
 import {ArticleService} from './article/article.service';
+import {BlogService} from './blog/blog.service';
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
@@ -44,6 +45,7 @@ bootstrap(AppComponent, [
   provide('SocialShareButtonsService', {useClass: SocialShareButtonsService}),
   provide('InfoContextService', {useClass: InfoContextService}),
   provide('ArticleService', {useClass: ArticleService}),
+  provide('BlogService', {useClass: BlogService}),
   provide('Math', {useClass: MathService}),
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);
