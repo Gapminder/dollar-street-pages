@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<div id="places" >
+<div id="places">
   <div class="container">
     <div class="row">
       <div class="col-md-12 places_header">
@@ -79,8 +79,8 @@
 
         <div class="hover_portrait_description">
           <div class="pull-left">
-            <span class="name">{{place.family}}s</span>
-            <span class="country">{{currentCountry}}</span>
+            <span class="name" *ngIf="place.family">{{place.family}} family</span>
+            <span class="country" *ngIf="currentCountry">{{currentCountry}}</span>
           </div>
 
           <div class="pull-right">
