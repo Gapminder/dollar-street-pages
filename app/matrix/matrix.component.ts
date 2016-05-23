@@ -58,9 +58,9 @@ export class MatrixComponent implements OnInit, OnDestroy {
   public matrixServiceSubscrib:any;
 
   public constructor(@Inject('MatrixService') matrixService,
-              @Inject(ElementRef) element,
-              @Inject('UrlChangeService') urlChangeService,
-              @Inject(RouteParams) routeParams) {
+                     @Inject(ElementRef) element,
+                     @Inject('UrlChangeService') urlChangeService,
+                     @Inject(RouteParams) routeParams) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
