@@ -20,7 +20,6 @@ let style = require('./country.css');
 })
 
 export class CountryComponent implements OnInit {
-  private title:string;
   private routeParams:RouteParams;
   private countryId:string;
 
