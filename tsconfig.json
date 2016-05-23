@@ -69,6 +69,8 @@
     "./app/country/country.component.ts",
     "./app/country/country-info/country-info.component.ts",
     "./app/country/country-info/country-info.service.ts",
+    "./app/article/article.component.ts",
+    "./app/article/article.service.ts",
     "./app/country/country-places/country-places.component.ts",
     "./app/country/country-places/country-places.service.ts"
   ]

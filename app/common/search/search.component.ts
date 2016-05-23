@@ -1,6 +1,7 @@
 import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from '@angular/core';
 import {Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
+import {RouterLink} from '@angular/router-deprecated';
 
 import {SearchFilter} from './thing-filter.pipe.ts';
 
@@ -21,6 +22,7 @@ if (isDesktop) {
   selector: 'search',
   template: tpl,
   styles: [desktopStyle, mobileStyle],
+  directives: [RouterLink],
   pipes: [SearchFilter]
 })
 
