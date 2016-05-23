@@ -132,7 +132,8 @@ export class MapComponent implements OnInit, OnDestroy {
         let equator = 0.545 * height;
 
         places.forEach((place:any) => {
-          let stepTop, stepRight;
+          let stepTop; 
+          let stepRight;
 
           if (place.lat > 0) {
             stepTop = equator / 75;
