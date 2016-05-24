@@ -112,7 +112,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
   }
 
   stopScroll() {
-    /**  each document usage breaks possible server side rendering*/
+    /** each document usage breaks possible server side rendering */
     let scrollTop = document.body.scrollTop; // ? body.scrollTop : ieScrollBody.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
@@ -154,7 +154,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
       bottomPadding = 0;
     }
 
-    /**use content\view child\childer*/
+    /** se content\view child\childer */
 
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
     let imagesContainer = this.element.querySelector('.images-container') as HTMLElement;
@@ -199,7 +199,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
   }
 
   urlChanged(options):void {
-    /**to remove things like this*/
+    /** to remove things like this */
     let {query, search} = options;
     this.query = query;
     let parseQuery = this.parseUrl(this.query);
