@@ -52,10 +52,10 @@ export class MatrixComponent implements OnInit, OnDestroy {
   private clonePlaces:any[];
   private placesVal:any;
 
-  public constructor(@Inject('MatrixService') matrixService,
-                     @Inject(ElementRef) element,
-                     @Inject('UrlChangeService') urlChangeService,
-                     @Inject(RouteParams) routeParams) {
+  public constructor(@Inject('MatrixService') matrixService:any,
+                     @Inject(ElementRef) element:ElementRef,
+                     @Inject('UrlChangeService') urlChangeService:any,
+                     @Inject(RouteParams) routeParams:RouteParams) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
@@ -89,12 +89,12 @@ export class MatrixComponent implements OnInit, OnDestroy {
     };
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     document.onscroll = void 0;
     this.matrixServiceSubscrib.unsubscribe();
   }
 
-  public ngAfterViewChecked() {
+  public ngAfterViewChecked():void {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
     if (this.footerHeight === footer.offsetHeight &&
@@ -107,7 +107,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
   }
 
     /** each document usage breaks possible server side rendering */
-  public stopScroll() {
+  public stopScroll():void {
     let scrollTop = document.body.scrollTop; // ? body.scrollTop : ieScrollBody.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
@@ -137,7 +137,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getPaddings() {
+  public getPaddings():void {
     let windowInnerWidth = window.innerWidth;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
@@ -182,11 +182,11 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.clonePlaces = _.cloneDeep(this.placesArr);
   }
 
-  public hoverPlaceS(place) {
+  public hoverPlaceS(place:any):void {
     this.hoverPlace.next(place);
   }
 
-  public isHover() {
+  public isHover():void {
     if (!this.isDesktop) {
       return;
     }
@@ -194,7 +194,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
   }
 
     /** to remove things like this */
-  public urlChanged(options):void {
+  public urlChanged(options:any):void {
     let {query, search} = options;
     this.query = query;
     let parseQuery = this.parseUrl(this.query);
@@ -207,7 +207,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     }
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
-      .subscribe((val) => {
+      .subscribe((val:any) => {
         if (val.err) {
           console.log(val.err);
           return;
@@ -225,7 +225,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
       });
   }
 
-  public changeZoom(zoom) {
+  public changeZoom(zoom:any):void {
     this.urlChanged({query: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
   };
 
