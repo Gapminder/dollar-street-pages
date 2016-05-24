@@ -137,7 +137,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     let clonePlaces = _.cloneDeep(this.filtredPlaces);
     if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
-      this.chosenPlaces.next(clonePlaces.splice((this.row-1)* this.zoom, this.zoom * this.visiblePlaces));
+      this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
     }
   }
 
@@ -166,6 +166,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
     if (this.clonePlaces) {
+      console.log('paddings')
       this.streetPlaces.next(this.placesVal);
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
     }
@@ -183,7 +184,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     this.visiblePlaces = row;
 
-    //this.clonePlaces = _.cloneDeep(this.filtredPlaces);
+    this.clonePlaces = _.cloneDeep(this.filtredPlaces);
   }
 
   hoverPlaceS(place) {
@@ -202,7 +203,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
       this.matrixServiceSubscrib.unsubscribe();
       this.matrixServiceSubscrib = void 0;
     }
-
+    this.filter.lowIncome=void 0;
+    this.filter.hightIncome=void 0;
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val) => {
         if (val.err) {
@@ -210,8 +212,6 @@ export class MatrixComponent implements OnInit, OnDestroy {
           return;
         }
         this.placesVal = val.places;
-
-
         this.filtredPlaces = this.placesVal.filter((place:any):boolean=> {
           if (!place) {
             return void 0;
@@ -224,10 +224,11 @@ export class MatrixComponent implements OnInit, OnDestroy {
         this.matrixPlaces.next(this.filtredPlaces);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.filtredPlaces);
-        if (search) {
-          this.streetPlaces.next(this.placesVal);
-          this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-        }
+        // if (search) {
+        //   console.log('search')
+        //   this.streetPlaces.next(this.placesVal);
+        //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+        // }
         this.zoom = +parseQuery.zoom;
         this.loader = true;
       });

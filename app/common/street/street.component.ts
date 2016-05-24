@@ -53,7 +53,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   private mouseMoveSubscriber:any;
   private math:any;
   private svg:SVGElement;
-  private isHovered:boolean=false;
+  private isHovered:boolean = false;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router)  router:Router,
@@ -71,12 +71,14 @@ export class StreetComponent implements OnInit, OnDestroy {
     this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
+        if (!chosenPlaces.length) {
+          return;
+        }
         this.street.set('chosenPlaces', chosenPlaces);
         if (this.controllSlider) {
           this.street.clearAndRedraw(chosenPlaces, true);
           return;
         }
-
         this.street.clearAndRedraw(chosenPlaces);
       });
 
@@ -88,10 +90,11 @@ export class StreetComponent implements OnInit, OnDestroy {
 
         if (!hoverPlace) {
           this.street.removeHouses('hover');
+          this.street.clearAndRedraw(this.street.chosenPlaces);
           return;
         }
         this.street.set('hoverPlace', hoverPlace);
-        this.street.clearAndRedraw(this.street.chosenPlaces);
+        this.street.removeHouses('chosen');
         this.street.drawHoverHouse(hoverPlace);
       });
 
@@ -112,6 +115,9 @@ export class StreetComponent implements OnInit, OnDestroy {
             })
             .compact()
             .value());
+        if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
+          this.street.clearAndRedraw(this.street.chosenPlaces);
+        }
       });
 
     this.street.filter.subscribe((filter:any):void=> {
