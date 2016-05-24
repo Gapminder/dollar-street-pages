@@ -99,7 +99,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.matrixServiceSubscrib.unsubscribe();
   }
 
-  ngAfterViewChecked() {
+  public ngAfterViewChecked() {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
     if (this.footerHeight === footer.offsetHeight &&
@@ -111,8 +111,8 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.getPaddings();
   }
 
-  stopScroll() {
     /** each document usage breaks possible server side rendering */
+  public stopScroll() {
     let scrollTop = document.body.scrollTop; // ? body.scrollTop : ieScrollBody.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
@@ -142,7 +142,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPaddings() {
+  public getPaddings() {
     let windowInnerWidth = window.innerWidth;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
@@ -172,7 +172,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     }
   }
 
-  getViewableRows(headerHeight:number):void {
+  public getViewableRows(headerHeight:number):void {
     let windowInnerHeight = window.innerHeight;
     let viewable = windowInnerHeight - headerHeight;
     let distance = viewable / (this.imageHeight + 2 * this.imageMargin);
@@ -187,19 +187,19 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.clonePlaces = _.cloneDeep(this.placesArr);
   }
 
-  hoverPlaceS(place) {
+  public hoverPlaceS(place) {
     this.hoverPlace.next(place);
   }
 
-  isHover() {
+  public isHover() {
     if (!this.isDesktop) {
       return;
     }
     this.hoverHeader.next(void 0);
   }
 
-  urlChanged(options):void {
     /** to remove things like this */
+  public urlChanged(options):void {
     let {query, search} = options;
     this.query = query;
     let parseQuery = this.parseUrl(this.query);
@@ -230,11 +230,11 @@ export class MatrixComponent implements OnInit, OnDestroy {
       });
   }
 
-  changeZoom(zoom) {
+  public changeZoom(zoom) {
     this.urlChanged({query: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
   };
 
-  parseUrl(url:string):any {
+  public parseUrl(url:string):any {
     url = '{\"' + url.replace(/&/g, '\",\"') + '\"}';
     url = url.replace(/=/g, '\":\"');
 
