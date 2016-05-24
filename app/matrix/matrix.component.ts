@@ -30,32 +30,27 @@ export class MatrixComponent implements OnInit, OnDestroy {
   public hoverPlace:Subject<any> = new Subject();
   public padding:Subject<any> = new Subject();
   public hoverHeader:Subject<any> = new Subject();
+  public loader:boolean = false;
+  public isDraw:boolean = false;
+  public matrixServiceSubscrib:any;
+
   private placesArr:any[];
   private element:HTMLElement;
-
   private rowEtalon:number = 0;
-
   private imageHeight:number;
   private footerHeight:number;
   private imageMargin:number;
   private visiblePlaces:number;
-
   private urlChangeService:any;
   private routeParams:RouteParams;
   private thing:string;
   private countries:string;
   private regions:string;
   private row:number;
-
   private zoom:number;
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];
-  public loader:boolean = false;
-  public isDraw:boolean = false;
-
   private placesVal:any;
-
-  public matrixServiceSubscrib:any;
 
   public constructor(@Inject('MatrixService') matrixService,
                      @Inject(ElementRef) element,
