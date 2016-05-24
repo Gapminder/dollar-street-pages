@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, ElementRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked} from '@angular/core';
 import {RouteParams} from '@angular/router-deprecated';
 import {Subject} from 'rxjs/Subject';
 
@@ -21,7 +21,7 @@ let style = require('./matrix.css');
   directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
 })
 
-export class MatrixComponent implements OnInit, OnDestroy {
+export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public query:string;
   public matrixService:any;
   public streetPlaces:Subject<any> = new Subject();
