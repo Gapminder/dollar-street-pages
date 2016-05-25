@@ -27,6 +27,7 @@ if (isDesktop) {
 })
 
 export class SearchComponent implements OnInit, OnDestroy, OnChanges {
+  protected tab:number = 0;
   @Input()
   private url:string;
   @Input('chosenPlaces')
@@ -57,10 +58,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   private isDesktop:boolean = isDesktop;
   private mobileTitle:string;
   private header:any;
-  private tab:number = 0;
   private init:boolean = true;
   private math:any;
-
   private chosenPlacesSubscribe:any;
   private searchServiceSubscribe:any;
 
