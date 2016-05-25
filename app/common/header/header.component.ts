@@ -64,15 +64,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.headerServiceSubscribe.unsubscribe();
   }
 
-  public urlTransfer(url) {
+  public urlTransfer(url:string):void {
     this.filter.emit(url);
   }
 
-  public activeThingTransfer(thing) {
+  public activeThingTransfer(thing:any):void {
     this.activeThing = thing;
   }
 
-  public goToMain() {
+  public goToMain():void {
     this.router.navigate(['Main']);
   }
 }
