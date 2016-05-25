@@ -20,7 +20,6 @@ let style = require('./matrix.css');
   styles: [style],
   directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
 })
-
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public query:string;
   public matrixService:any;
@@ -33,7 +32,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public loader:boolean = false;
   public isDraw:boolean = false;
   public matrixServiceSubscrib:any;
-
+  public loader:boolean = false;
+  public isDraw:boolean = false;
+  public filter:any;
+  public matrixServiceSubscrib:any;
   private placesArr:any[];
   private element:HTMLElement;
   private rowEtalon:number = 0;
@@ -47,10 +49,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private countries:string;
   private regions:string;
   private row:number;
+
+  private placesVal:any;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];
-  private placesVal:any;
+  private filtredPlaces:any[];
 
   public constructor(@Inject('MatrixService') matrixService:any,
                      @Inject(ElementRef) element:ElementRef,
@@ -106,9 +110,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.getPaddings();
   }
 
-    /** each document usage breaks possible server side rendering */
+  /** each document usage breaks possible server side rendering */
   public stopScroll():void {
-    let scrollTop = document.body.scrollTop; // ? body.scrollTop : ieScrollBody.scrollTop;
+    let scrollTop = document.body.scrollTop ? document.body.scrollTop : document.documentElement.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
     if (isNaN(distance)) {
@@ -131,9 +135,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.urlChangeService.replaceState(`/matrix`, query);
     }
 
-    let clonePlaces = _.cloneDeep(this.placesArr);
+    let clonePlaces = _.cloneDeep(this.filtredPlaces);
     if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
-      this.chosenPlaces.next(clonePlaces.splice(this.row * this.zoom, this.zoom * this.visiblePlaces));
+      this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
     }
   }
 
@@ -179,7 +183,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.visiblePlaces = row;
 
-    this.clonePlaces = _.cloneDeep(this.placesArr);
+    this.clonePlaces = _.cloneDeep(this.filtredPlaces);
   }
 
   public hoverPlaceS(place:any):void {
@@ -193,7 +197,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.hoverHeader.next(void 0);
   }
 
-    /** to remove things like this */
+  /** to remove things like this */
   public urlChanged(options:any):void {
     let {query, search} = options;
     this.query = query;
@@ -205,7 +209,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.matrixServiceSubscrib.unsubscribe();
       this.matrixServiceSubscrib = void 0;
     }
-
+    this.filter.lowIncome = void 0;
+    this.filter.hightIncome = void 0;
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val:any) => {
         if (val.err) {
@@ -213,16 +218,39 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           return;
         }
         this.placesVal = val.places;
-        this.matrixPlaces.next(val.places);
+        this.filtredPlaces = this.placesVal.filter((place:any):boolean=> {
+          if (!place) {
+            return void 0;
+          }
+          let low = this.filter.lowIncome ? this.filter.lowIncome : 0;
+          let upper = this.filter.hightIncome ? this.filter.hightIncome : 20000;
+          return place.income >= low && place.income <= upper;
+        });
+
+        this.matrixPlaces.next(this.filtredPlaces);
         this.placesArr = val.places;
-        this.clonePlaces = _.cloneDeep(this.placesArr);
-        if (search) {
-          this.streetPlaces.next(this.placesVal);
-          this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-        }
+        this.clonePlaces = _.cloneDeep(this.filtredPlaces);
         this.zoom = +parseQuery.zoom;
         this.loader = true;
       });
+  }
+
+  public filterStreet(filter:{lowIncome:number,hightIncome:number}):void {
+    this.filter = filter;
+    if (!this.placesVal) {
+      return;
+    }
+    this.filtredPlaces = this.placesVal.filter((place:any):boolean=> {
+      if (!place) {
+        return void 0;
+      }
+      let low = filter.lowIncome ? filter.lowIncome : 0;
+      let upper = filter.hightIncome ? filter.hightIncome : 20000;
+      return place.income >= low && place.income <= upper;
+    });
+    this.matrixPlaces.next(this.filtredPlaces);
+    this.clonePlaces = _.cloneDeep(this.filtredPlaces);
+    this.chosenPlaces.next(this.clonePlaces .splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
   }
 
   public changeZoom(zoom:any):void {
@@ -230,9 +258,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   };
 
   public parseUrl(url:string):any {
-    url = '{\"' + url.replace(/&/g, '\",\"') + '\"}';
-    url = url.replace(/=/g, '\":\"');
-
-    return JSON.parse(url);
+    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

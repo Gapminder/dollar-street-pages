@@ -1,14 +1,12 @@
 <div class="matrix-header main-header place-header">
-  <header [query]="query" *ngIf="isHover"
-          (mouseenter)="isHover()"
+  <header [query]="query"
           [chosenPlaces]="chosenPlaces"
           (filter)="urlChanged($event)"></header>
 
   <street [places]="streetPlaces"
           [thing]="thing"
           [controllSlider]="controllSlider"
-          [chosenPlaces]="chosenPlaces"
-          [hoverHeader]="hoverHeader"></street>
+          [chosenPlaces]="chosenPlaces"></street>
 </div>
 
 <div class="main">

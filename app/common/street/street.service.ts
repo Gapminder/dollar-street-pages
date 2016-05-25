@@ -2,19 +2,40 @@ const d3 = require('d3');
 const _ = require('lodash');
 const device = require('device.js')();
 const isDesktop = device.desktop();
+import {fromEvent} from 'rxjs/observable/fromEvent';
+import {Subject} from 'rxjs/Subject';
 
 export class StreetDrawService {
   public width:number;
   public height:number;
   public halfOfHeight:number;
+  public lowIncome:number = 0;
+  public hightIncome:number = 15000;
   private places:any[] = [];
-  private poorest:string = 'Poorest 3$';
+  private poorest:string = 'Poorest';
   private richest:string = 'Richest';
   private scale:any;
   private axisLabel:number[] = [30, 300, 3000];
   private svg:any;
   private incomeArr:any[] = [];
   private fullIncomeArr:any[] = [];
+
+  private mouseMoveSubscriber:any;
+  private mouseUpSubscriber:any;
+  private touchMoveSubscriber:any;
+  private touchUpSubscriber:any;
+  private sliderRightBorder:number;
+  private sliderLeftBorder:number;
+  private sliderRightMove:boolean = false;
+  private sliderLeftMove:boolean = false;
+  private leftScroll:any;
+  private rightScroll:any;
+  private leftScrollOpacity:any;
+  private rightScrollOpacity:any;
+  private leftScrollText:any;
+  private rightScrollText:any;
+
+  private filter:Subject<any> = new Subject();
 
   public init():this {
     this.width = parseInt(this.svg.style('width'), 10);
@@ -23,8 +44,8 @@ export class StreetDrawService {
 
     this.scale = d3
       .scale.log()
-      .domain([1, 30, 300, 3000,15000])
-      .range([0,0.07 * this.width, 0.375 * this.width, 0.75 * this.width, 0.99 * this.width]);
+      .domain([1, 30, 300, 3000, 15000])
+      .range([0, 0.07 * this.width, 0.375 * this.width, 0.75 * this.width, 0.99 * this.width]);
 
     return this;
   }
@@ -39,6 +60,9 @@ export class StreetDrawService {
   };
 
   public onSvgHover(positionX:any, cb:any):void {
+    if (this.sliderLeftBorder > positionX || this.sliderRightBorder < positionX) {
+      return cb(void 0);
+    }
     this.hoverOnScalePoint(this.whatIsIncome(Math.round(positionX - 15)), cb);
   };
 
@@ -139,7 +163,6 @@ export class StreetDrawService {
         let point2 = `15,${ this.halfOfHeight - 4}`;
         let point3 = `${ this.width - 15},${ this.halfOfHeight - 4}`;
         let point4 = `${ this.width},${ this.halfOfHeight + 9}`;
-
         return `${point1} ${point2} ${point3} ${point4}`;
       })
       .style('fill', '#737b83');
@@ -192,10 +215,190 @@ export class StreetDrawService {
       .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
+    this.drawLeftSlider(this.lowIncome ? this.scale(this.lowIncome) : (25), true);
+    this.drawRightSlider(this.hightIncome ? this.scale(this.hightIncome) - 15 : (this.width - 25), true);
+
+    if (this.mouseMoveSubscriber) {
+      this.mouseMoveSubscriber.unsubscribe();
+    }
+    this.mouseMoveSubscriber = fromEvent(window, 'mousemove').filter((e:MouseEvent)=> {
+      e.preventDefault();
+      //e.stopPropagation();
+      return this.sliderLeftMove || this.sliderRightMove;
+    }).subscribe((e:MouseEvent)=> {
+      e.preventDefault();
+      // e.stopPropagation();
+      if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder && e.pageX >= 30) {
+        return this.drawLeftSlider(e.pageX - 10);
+      }
+      if (this.sliderRightMove && e.pageX >= this.sliderLeftBorder && e.pageX <= this.width) {
+        return this.drawRightSlider(e.pageX - 20);
+      }
+    });
+
+    if (this.touchMoveSubscriber) {
+      this.touchMoveSubscriber.unsubscribe();
+    }
+    this.touchMoveSubscriber = fromEvent(window, 'touchmove').filter((e:TouchEvent)=> {
+      return this.sliderLeftMove || this.sliderRightMove;
+    }).subscribe((e:TouchEvent)=> {
+      let positionX = e.touches[0].pageX;
+
+      if (this.sliderLeftMove && positionX <= this.sliderRightBorder && positionX >= 30) {
+        return this.drawLeftSlider(positionX - 10);
+      }
+      if (this.sliderRightMove && positionX >= this.sliderLeftBorder && positionX <= this.width) {
+        return this.drawRightSlider(positionX - 20);
+      }
+    });
+
+    this.mouseUpSubscriber = fromEvent(window, 'mouseup').filter((e?:MouseEvent)=> {
+      return this.sliderLeftMove || this.sliderRightMove;
+    }).subscribe((e?:MouseEvent)=> {
+      e.preventDefault();
+      this.sliderLeftMove = this.sliderRightMove = false;
+      this.filter.next({lowIncome: Math.round(this.lowIncome), hightIncome: Math.round(this.hightIncome)});
+    });
+
+    this.touchUpSubscriber = fromEvent(window, 'touchend').filter((e?:TouchEvent)=> {
+      return this.sliderLeftMove || this.sliderRightMove;
+    }).subscribe((e?:TouchEvent)=> {
+      this.sliderLeftMove = this.sliderRightMove = false;
+      this.filter.next({lowIncome: Math.round(this.lowIncome), hightIncome: Math.round(this.hightIncome)});
+    });
     return this;
   };
 
-  protected hoverOnScalePoint(d:any, cb:any):void {
+  protected drawLeftSlider(x:number, init = false):this {
+    this.sliderLeftBorder = x + 20;
+    if (!this.leftScroll) {
+      this.leftScroll = this.svg
+        .append('polygon')
+        .attr('class', 'left-scroll')
+        .style('fill', '#515c65')
+        .style('cursor', 'pointer')
+        .attr('stroke-width', 1)
+        .attr('stroke', '#48545f')
+        .on('mousedown', (e?:MouseEvent):void=> {
+          d3.event.preventDefault();
+          this.sliderLeftMove = true
+        })
+        .on('touchstart', (e?:TouchEvent):void=> this.sliderLeftMove = true);
+    }
+
+    this.leftScroll
+      .attr('points', () => {
+        let point1 = `${x - 9},${ this.halfOfHeight + 10}`;
+        let point2 = `${x - 9},${ this.halfOfHeight - 5}`;
+        let point3 = `${x},${ this.halfOfHeight - 5}`;
+        let point4 = `${x},${ this.halfOfHeight + 10}`;
+        let point5 = `${x - 4.5},${ this.halfOfHeight + 10 + 5}`;
+        return `${point1} ${point2} ${point3} ${point4} ${point5}`;
+      });
+    if (!this.leftScrollOpacity) {
+      this.leftScrollOpacity = this.svg
+        .append('rect')
+        .attr('class', 'left-scroll-opacity-part')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('height', 60)
+        .style('fill', 'white')
+        .style('opacity', '0.8');
+    }
+    this.leftScrollOpacity
+      .attr('width', x - 10);
+
+    this.lowIncome = this.scale.invert(x);
+    if (init) {
+      return this;
+    }
+
+    this.drawScrollLabel(x, 'left-scroll-label');
+    return this;
+  };
+
+  protected drawRightSlider(x:number, init:boolean = false):this {
+    this.sliderRightBorder = x;
+
+    if (!this.rightScroll) {
+      this.rightScroll = this.svg
+        .append('polygon')
+        .attr('class', 'right-scroll')
+        .style('fill', '#515c65')
+        .style('cursor', 'pointer')
+        .attr('stroke-width', 1)
+        .attr('stroke', '#48545f')
+        .on('mousedown', ():void=> {
+          d3.event.preventDefault();
+          this.sliderRightMove = true;
+        })
+        .on('touchstart', ():void=> this.sliderRightMove = true);
+    }
+    this.rightScroll.attr('points', () => {
+      let point1 = `${x},${ this.halfOfHeight + 10}`;
+      let point2 = `${x},${ this.halfOfHeight - 5}`;
+      let point3 = `${x + 9},${ this.halfOfHeight - 5}`;
+      let point4 = `${x + 9},${ this.halfOfHeight + 10}`;
+      let point5 = `${x + 4.5},${ this.halfOfHeight + 10 + 5}`;
+      return `${point1} ${point2} ${point3} ${point4} ${point5}`;
+    });
+
+    if (!this.rightScrollOpacity) {
+      this.rightScrollOpacity = this.svg
+        .append('rect')
+        .attr('class', 'right-scroll-opacity-part')
+        .attr('y', 0)
+        .attr('height', 60)
+        .style('fill', 'white')
+        .style('opacity', '0.8');
+    }
+    this.rightScrollOpacity
+      .attr('x', x + 9)
+      .attr('width', this.width - x - 1);
+    this.hightIncome = this.scale.invert(x);
+    if (init) {
+      return this;
+    }
+
+    this.drawScrollLabel(x, 'right-scroll-label');
+
+    return this;
+  };
+
+  private drawScrollLabel(x:number, selector:string):this {
+    this.svg.selectAll('text.poorest').remove('text.poorest');
+    this.svg.selectAll('text.richest').remove('text.richest');
+    this.svg.selectAll('text.scale-label').remove('text.scale-label');
+    let incomeL = Math.ceil(this.lowIncome ? this.lowIncome : 0);
+    let incomeR = Math.ceil(this.hightIncome ? this.hightIncome : 15000);
+    let xL = this.scale(incomeL);
+    let xR = this.scale(incomeR);
+    if (!this.leftScrollText) {
+      this.leftScrollText = this.svg
+        .append('text')
+        .attr('class', 'left-scroll-label')
+        .text(`${incomeL}$`)
+        .attr('y', this.height - 5)
+        .attr('fill', '#767d86');
+    }
+    if (!this.rightScrollText) {
+      this.rightScrollText = this.svg
+        .append('text')
+        .attr('class', 'right-scroll-label')
+        .text(`${incomeR}$`)
+        .attr('y', this.height - 5)
+        .attr('fill', '#767d86');
+    }
+    this.rightScrollText
+      .text(`${incomeR}$`)
+      .attr('x', ()=> xR - this.rightScrollText[0][0].getBBox().width / 2);
+    this.leftScrollText
+      .text(`${incomeL}$`)
+      .attr('x', ()=> xL - this.leftScrollText[0][0].getBBox().width / 2);
+    return this;
+  };
+
+  private hoverOnScalePoint(d:any, cb:any):void {
     if (!d) {
       return;
     }
@@ -335,14 +538,12 @@ export class StreetDrawService {
     }
     this.removeHouses('hover');
     this.removeHouses('chosen');
-
     if (slider) {
       this.drawHoverHouse(places);
       return;
     }
 
     this.drawHouses(places);
-
     return this;
   };
 
@@ -358,6 +559,15 @@ export class StreetDrawService {
   };
 
   public clearSvg():this {
+    this.leftScroll = void 0;
+    this.rightScroll = void 0;
+    this.leftScrollOpacity = void 0;
+    this.rightScrollOpacity = void 0;
+    this.leftScrollText = void 0;
+    this.rightScrollText = void 0;
+    this.hightIncome = 15000;
+    this.lowIncome = 0;
+
     this.svg.selectAll('*').remove('*');
     return this;
   };

@@ -192,6 +192,12 @@ describe('StreetDrawService', () => {
     spyOn(d3Svg, 'style').and.callThrough();
 
     /** make this.height and this.width private*/
+
+    streetDrawService.lowIncome=0;
+    streetDrawService.hightIncome=0;
+    spyOn(streetDrawService, 'drawLeftSlider');
+    spyOn(streetDrawService, 'drawRightSlider');
+
     streetDrawService.height = 50;
     streetDrawService.width = 50;
     streetDrawService.halfOfHeight = streetDrawService.height / 2;
@@ -207,11 +213,11 @@ describe('StreetDrawService', () => {
 
 
     expect(d3Svg.selectAll).toHaveBeenCalledWith('text.poorest');
-    expect(d3Svg.data).toHaveBeenCalledWith(['Poorest 3$']);
+    expect(d3Svg.data).toHaveBeenCalledWith(['Poorest']);
     expect(d3Svg.enter).toHaveBeenCalled();
     expect(d3Svg.append).toHaveBeenCalledWith('text');
     expect(d3Svg.attr).toHaveBeenCalledWith('class', 'poorest');
-    expect(d3Svg.text).toHaveBeenCalledWith('Poorest 3$');
+    expect(d3Svg.text).toHaveBeenCalledWith('Poorest');
     expect(d3Svg.attr).toHaveBeenCalledWith('x', 0);
     expect(d3Svg.attr).toHaveBeenCalledWith('y', 45);
     expect(d3Svg.attr).toHaveBeenCalledWith('fill', '#767d86');

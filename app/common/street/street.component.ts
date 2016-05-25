@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ElementRef, Inject, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, Output, ElementRef, Inject, OnDestroy, EventEmitter} from '@angular/core';
 import {RouterLink, Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 import {fromEvent} from 'rxjs/observable/fromEvent';
@@ -21,8 +21,8 @@ let style = require('./street.css');
 export class StreetComponent implements OnInit, OnDestroy {
   @Input('thing')
   private thing:string;
-  @Input('hoverHeader')
-  private hoverHeader:Observable<any>;
+  // @Input('hoverHeader')
+  // private hoverHeader:Observable<any>;
   @Input('places')
   private places:Observable<any>;
   @Input('chosenPlaces')
@@ -31,6 +31,8 @@ export class StreetComponent implements OnInit, OnDestroy {
   private hoverPlace:Subject<any>;
   @Input('controllSlider')
   private controllSlider:Subject<any>;
+  @Output('filterStreet')
+  private filterStreet:EventEmitter = new EventEmitter;
 
   private street:any;
   private element:HTMLElement;
@@ -51,6 +53,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   private mouseMoveSubscriber:any;
   private math:any;
   private svg:SVGElement;
+  private isHovered:boolean = false;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router)  router:Router,
@@ -60,18 +63,22 @@ export class StreetComponent implements OnInit, OnDestroy {
     this.router = router;
     this.math = math;
     this.street = streetDrawService;
+
   }
 
   public ngOnInit():any {
+
     this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
+        if (!chosenPlaces.length) {
+          return;
+        }
         this.street.set('chosenPlaces', chosenPlaces);
         if (this.controllSlider) {
           this.street.clearAndRedraw(chosenPlaces, true);
           return;
         }
-
         this.street.clearAndRedraw(chosenPlaces);
       });
 
@@ -80,18 +87,15 @@ export class StreetComponent implements OnInit, OnDestroy {
           this.drawOnMap = !this.drawOnMap;
           return;
         }
+
         if (!hoverPlace) {
           this.street.removeHouses('hover');
+          this.street.clearAndRedraw(this.street.chosenPlaces);
           return;
         }
-
         this.street.set('hoverPlace', hoverPlace);
-        this.street.clearAndRedraw(this.street.chosenPlaces);
+        this.street.removeHouses('chosen');
         this.street.drawHoverHouse(hoverPlace);
-      });
-
-    this.hoverHeaderSubscribe = this.hoverHeader && this.hoverHeader.subscribe(() => {
-        this.thumbUnhover();
       });
 
     this.placesSubscribe = this.places && this.places.subscribe((places:any):void => {
@@ -111,8 +115,15 @@ export class StreetComponent implements OnInit, OnDestroy {
             })
             .compact()
             .value());
+        if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
+          this.street.clearAndRedraw(this.street.chosenPlaces);
+        }
       });
 
+    this.street.filter.subscribe((filter:any):void=> {
+      this.filterStreet.emit(filter);
+    });
+    this.street.filter.next({lowIncome: this.street.lowIncome, hightIncome: this.street.hightIncome});
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -139,9 +150,7 @@ export class StreetComponent implements OnInit, OnDestroy {
         this.street.clearAndRedraw(this.street.chosenPlaces);
       });
 
-    this.mouseMoveSubscriber = fromEvent(window, 'mousemove').filter((e:MouseEvent)=> {
-      return e.pageY > document.body.scrollTop+this.svg.getBoundingClientRect().bottom;
-    }).subscribe(()=> {
+    this.mouseMoveSubscriber = fromEvent(this.element.querySelector('.street-box'), 'mouseleave').subscribe(()=> {
       if (!this.onThumb && this.hoverPlace) {
         this.thumbUnhover();
       }
@@ -153,6 +162,10 @@ export class StreetComponent implements OnInit, OnDestroy {
       return;
     }
     this.street.onSvgHover(e.clientX, (options:any):void => {
+      if (!options) {
+        this.isThumbView = false;
+        return;
+      }
       let {places, left} = options;
       this.isThumbView = true;
       this.thumbPlaces = places;
@@ -205,9 +218,9 @@ export class StreetComponent implements OnInit, OnDestroy {
       this.chosenPlacesSubscribe.unsubscribe();
     }
 
-    if (this.hoverHeaderSubscribe) {
-      this.hoverHeaderSubscribe.unsubscribe();
-    }
+    // if (this.hoverHeaderSubscribe) {
+    //   this.hoverHeaderSubscribe.unsubscribe();
+    // }
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
     }

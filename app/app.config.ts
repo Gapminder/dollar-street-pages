@@ -11,10 +11,10 @@ import {ArticleComponent} from './article/article.component';
 import {BlogComponent} from './blog/blog.component';
 
 export class Config {
-  // public static api:string = 'https://apidev.dollarstreet.org';
+  public static api:string = 'https://apidev.dollarstreet.org';
   // public static api:string = 'http://128.199.60.70';
   // public static api:string = 'http://stage.dollarstreet.org';
-  public static api:string = 'http://192.168.1.66';
+  //public static api:string = 'http://192.168.1.66';
   // public static api:string = 'http://192.168.1.81';
   // public static api:string = 'http://192.168.0.102';
 
