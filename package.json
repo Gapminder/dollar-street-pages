@@ -48,6 +48,8 @@
     "firebase": "2.4.2",
     "jquery": "2.2.0",
     "lodash": "4.*",
+    "marked": "0.3.5",
+    "ng2-contentful": "valor-software/ng2-contentful#feat-upgrade-package-version",
     "rxjs": "5.0.0-beta.6",
     "zone.js": "0.6.12"
   },
