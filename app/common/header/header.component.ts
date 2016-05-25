@@ -20,16 +20,16 @@ let style = require('./header.css');
 
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input()
-  private query:string;
+  public query:string;
   @Input()
-  private thing:string;
+  public thing:string;
   @Input('hoverPlace')
-  private hoverPlace:Observable<any>;
+  public hoverPlace:Observable<any>;
   @Input('chosenPlaces')
-  private chosenPlaces:Observable<any>;
+  public chosenPlaces:Observable<any>;
+  public isDesktop:boolean = device.desktop();
   @Output()
   private filter:EventEmitter<any> = new EventEmitter();
-
   private activeThing:any;
   private defaultThing:any;
   private headerService:any;
@@ -38,7 +38,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private matrixComponent:boolean;
   private placeComponent:boolean;
   private mapComponent:boolean;
-  private isDesktop:boolean = device.desktop();
   private headerServiceSubscribe:any;
 
   public constructor(@Inject('HeaderService') headerService:any,
