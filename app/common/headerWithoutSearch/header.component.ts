@@ -14,9 +14,9 @@ let style = require('./header.css');
 
 export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
   @Input()
-  public title:string;
+  protected title:string;
   @Input()
-  public subTitle:string;
+  protected subTitle:string;
 
   private defaultThing:any;
   private headerService:any;
