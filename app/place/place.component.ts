@@ -24,7 +24,7 @@ let isDesktop = device.desktop();
   directives: [RouterLink, HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent, LoaderComponent]
 })
 
-export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
+export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
   public loader:boolean = false;
   public placeStreetServiceSubscribe:any;
   public getCommonAboutDataServiceSubscribe:any;
@@ -56,7 +56,6 @@ export class PlaceComponent implements OnInit, OnDestroy,AfterViewChecked {
   private showAboutData:boolean;
   private activeThing:any = {};
   private currentPlace:any = {};
-  private isDesktop:boolean = isDesktop;
   private element:HTMLElement;
 
   public constructor(@Inject('PlaceStreetService') placeStreetService:any,
