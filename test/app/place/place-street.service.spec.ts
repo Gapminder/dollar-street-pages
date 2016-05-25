@@ -17,7 +17,7 @@ import {
   ResponseOptions
 } from '@angular/http';
 
-import {config} from '../../../app/app.config.ts';
+import {Config} from '../../../app/app.config.ts';
 
 import {PlaceStreetService} from '../../../app/place/place-street.service';
 
@@ -41,7 +41,7 @@ describe('PlaceStreetService', () => {
     (placeStreetService:PlaceStreetService, mockBackend:MockBackend) => {
       let res;
       mockBackend.connections.subscribe((connection:any) => {
-        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/slider/things?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);
+        expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/slider/things?isTrash=false&limit=10&placeId=54b6862f3755cbfb542c28cb&skip=0`);
         let response = new ResponseOptions({
           body: streetPlaceStr
         });

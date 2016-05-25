@@ -223,9 +223,11 @@ export class StreetDrawService {
     }
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove').filter((e:MouseEvent)=> {
       e.preventDefault();
-      e.stopPropagation();
+      //e.stopPropagation();
       return this.sliderLeftMove || this.sliderRightMove;
     }).subscribe((e:MouseEvent)=> {
+      e.preventDefault();
+      // e.stopPropagation();
       if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder && e.pageX >= 30) {
         return this.drawLeftSlider(e.pageX - 10);
       }
@@ -253,6 +255,7 @@ export class StreetDrawService {
     this.mouseUpSubscriber = fromEvent(window, 'mouseup').filter((e?:MouseEvent)=> {
       return this.sliderLeftMove || this.sliderRightMove;
     }).subscribe((e?:MouseEvent)=> {
+      e.preventDefault();
       this.sliderLeftMove = this.sliderRightMove = false;
       this.filter.next({lowIncome: Math.round(this.lowIncome), hightIncome: Math.round(this.hightIncome)});
     });
@@ -276,7 +279,10 @@ export class StreetDrawService {
         .style('cursor', 'pointer')
         .attr('stroke-width', 1)
         .attr('stroke', '#48545f')
-        .on('mousedown', (e?:MouseEvent):void=> this.sliderLeftMove = true)
+        .on('mousedown', (e?:MouseEvent):void=> {
+          d3.event.preventDefault();
+          this.sliderLeftMove = true
+        })
         .on('touchstart', (e?:TouchEvent):void=> this.sliderLeftMove = true);
     }
 
@@ -300,7 +306,7 @@ export class StreetDrawService {
         .style('opacity', '0.8');
     }
     this.leftScrollOpacity
-      .attr('width', x - 10)
+      .attr('width', x - 10);
 
     this.lowIncome = this.scale.invert(x);
     if (init) {
@@ -311,8 +317,7 @@ export class StreetDrawService {
     return this;
   };
 
-
-  protected drawRightSlider(x:number, init = false):this {
+  protected drawRightSlider(x:number, init:boolean = false):this {
     this.sliderRightBorder = x;
 
     if (!this.rightScroll) {
@@ -323,7 +328,10 @@ export class StreetDrawService {
         .style('cursor', 'pointer')
         .attr('stroke-width', 1)
         .attr('stroke', '#48545f')
-        .on('mousedown', ():void=> this.sliderRightMove = true)
+        .on('mousedown', ():void=> {
+          d3.event.preventDefault();
+          this.sliderRightMove = true;
+        })
         .on('touchstart', ():void=> this.sliderRightMove = true);
     }
     this.rightScroll.attr('points', () => {
@@ -383,10 +391,10 @@ export class StreetDrawService {
     }
     this.rightScrollText
       .text(`${incomeR}$`)
-      .attr('x', ()=> xR - parseInt(this.rightScrollText.style('width'),10) / 2);
+      .attr('x', ()=> xR - this.rightScrollText[0][0].getBBox().width / 2);
     this.leftScrollText
       .text(`${incomeL}$`)
-      .attr('x', ()=> xL - parseInt(this.leftScrollText.style('width'),10) / 2);
+      .attr('x', ()=> xL - this.leftScrollText[0][0].getBBox().width / 2);
     return this;
   };
 

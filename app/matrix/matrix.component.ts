@@ -20,7 +20,6 @@ let style = require('./matrix.css');
   styles: [style],
   directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
 })
-
 export class MatrixComponent implements OnInit, OnDestroy {
   public query:string;
   public matrixService:any;
@@ -29,37 +28,38 @@ export class MatrixComponent implements OnInit, OnDestroy {
   public chosenPlaces:Subject<any> = new Subject();
   public hoverPlace:Subject<any> = new Subject();
   public padding:Subject<any> = new Subject();
-  // public hoverHeader:Subject<any> = new Subject();
+  public hoverHeader:Subject<any> = new Subject();
+  public loader:boolean = false;
+  public isDraw:boolean = false;
+  public matrixServiceSubscrib:any;
+  public loader:boolean = false;
+  public isDraw:boolean = false;
+  public filter:any;
+  public matrixServiceSubscrib:any;
   private placesArr:any[];
   private element:HTMLElement;
-
   private rowEtalon:number = 0;
-
   private imageHeight:number;
   private footerHeight:number;
   private imageMargin:number;
   private visiblePlaces:number;
-
   private urlChangeService:any;
   private routeParams:RouteParams;
   private thing:string;
   private countries:string;
   private regions:string;
   private row:number;
+
   private placesVal:any;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];
   private filtredPlaces:any[];
-  public loader:boolean = false;
-  public isDraw:boolean = false;
-  public filter:any;
-  public matrixServiceSubscrib:any;
 
-  public constructor(@Inject('MatrixService') matrixService,
-                     @Inject(ElementRef) element,
-                     @Inject('UrlChangeService') urlChangeService,
-                     @Inject(RouteParams) routeParams) {
+  public constructor(@Inject('MatrixService') matrixService:any,
+                     @Inject(ElementRef) element:ElementRef,
+                     @Inject('UrlChangeService') urlChangeService:any,
+                     @Inject(RouteParams) routeParams:RouteParams) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.routeParams = routeParams;
@@ -70,7 +70,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
     this.regions = this.routeParams.get('regions');
-    //todo: row void 0
+    // todo: row void 0
     this.row = parseInt(this.routeParams.get('row'), 10);
     this.zoom = parseInt(this.routeParams.get('zoom'), 10);
 
@@ -93,12 +93,12 @@ export class MatrixComponent implements OnInit, OnDestroy {
     };
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     document.onscroll = void 0;
     this.matrixServiceSubscrib.unsubscribe();
   }
 
-  ngAfterViewChecked() {
+  public ngAfterViewChecked():void {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
     if (this.footerHeight === footer.offsetHeight &&
@@ -110,9 +110,9 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.getPaddings();
   }
 
-  stopScroll() {
-    /**  each document usage breaks possible server side rendering*/
-    let scrollTop = document.body.scrollTop; //? body.scrollTop : ieScrollBody.scrollTop;
+  /** each document usage breaks possible server side rendering */
+  public stopScroll():void {
+    let scrollTop = document.body.scrollTop ? document.body.scrollTop : document.documentElement.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
     if (isNaN(distance)) {
@@ -141,7 +141,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPaddings() {
+  public getPaddings():void {
     let windowInnerWidth = window.innerWidth;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
@@ -153,7 +153,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
       bottomPadding = 0;
     }
 
-    /**use content\view child\childer*/
+    /** se content\view child\childer */
 
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
     let imagesContainer = this.element.querySelector('.images-container') as HTMLElement;
@@ -166,13 +166,12 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
     if (this.clonePlaces) {
-      console.log('paddings')
       this.streetPlaces.next(this.placesVal);
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
     }
   }
 
-  getViewableRows(headerHeight:number):void {
+  public getViewableRows(headerHeight:number):void {
     let windowInnerHeight = window.innerHeight;
     let viewable = windowInnerHeight - headerHeight;
     let distance = viewable / (this.imageHeight + 2 * this.imageMargin);
@@ -187,12 +186,19 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.clonePlaces = _.cloneDeep(this.filtredPlaces);
   }
 
-  hoverPlaceS(place) {
+  public hoverPlaceS(place:any):void {
     this.hoverPlace.next(place);
   }
 
-  urlChanged(options):void {
-    /**to remove things like this*/
+  public isHover():void {
+    if (!this.isDesktop) {
+      return;
+    }
+    this.hoverHeader.next(void 0);
+  }
+
+  /** to remove things like this */
+  public urlChanged(options:any):void {
     let {query, search} = options;
     this.query = query;
     let parseQuery = this.parseUrl(this.query);
@@ -203,10 +209,10 @@ export class MatrixComponent implements OnInit, OnDestroy {
       this.matrixServiceSubscrib.unsubscribe();
       this.matrixServiceSubscrib = void 0;
     }
-    this.filter.lowIncome=void 0;
-    this.filter.hightIncome=void 0;
+    this.filter.lowIncome = void 0;
+    this.filter.hightIncome = void 0;
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
-      .subscribe((val) => {
+      .subscribe((val:any) => {
         if (val.err) {
           console.log(val.err);
           return;
@@ -224,17 +230,12 @@ export class MatrixComponent implements OnInit, OnDestroy {
         this.matrixPlaces.next(this.filtredPlaces);
         this.placesArr = val.places;
         this.clonePlaces = _.cloneDeep(this.filtredPlaces);
-        // if (search) {
-        //   console.log('search')
-        //   this.streetPlaces.next(this.placesVal);
-        //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-        // }
         this.zoom = +parseQuery.zoom;
         this.loader = true;
       });
   }
 
-  filterStreet(filter) {
+  public filterStreet(filter:{lowIncome:number,hightIncome:number}):void {
     this.filter = filter;
     if (!this.placesVal) {
       return;
@@ -252,15 +253,11 @@ export class MatrixComponent implements OnInit, OnDestroy {
     this.chosenPlaces.next(this.clonePlaces .splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
   }
 
-
-  changeZoom(zoom) {
+  public changeZoom(zoom:any):void {
     this.urlChanged({query: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
   };
 
-  parseUrl(url:string):any {
-    url = '{\"' + url.replace(/&/g, '\",\"') + '\"}';
-    url = url.replace(/=/g, '\":\"');
-
-    return JSON.parse(url);
+  public parseUrl(url:string):any {
+    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

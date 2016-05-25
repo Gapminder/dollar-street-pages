@@ -1,0 +1,34 @@
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#article-content.container {
+  padding-top: 110px;
+}
+
+#article-content p {
+  margin: 0;
+  font-size: 18px;
+}
+
+
+@media (min-width: 768px) {
+  #article-content {
+    padding-bottom: 323px;
+  }
+}
+
+@media (max-width: 767px) {
+  #article-content {
+    padding-bottom: 244px;
+  }
+}
+
+@media (max-width: 600px) {
+  #article-content {
+    padding-bottom: 237px;
+  }
+}

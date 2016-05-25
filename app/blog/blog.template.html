@@ -1,0 +1,18 @@
+<div id="blog-page">
+  <header [title]="title"></header>
+
+  <div id="articles-container" class="container">
+    <div class="article-content" *ngFor="let article of articles">
+      <div class="icon-container">
+        <img *ngIf="article.thing.icon" [src]="article.thing.icon" alt="">
+      </div>
+
+      <div class="article-description">
+        <h3>{{article.thing.name}}</h3>
+        <p>{{article.shortDescription}}... <a [routerLink]="['Article', {id: article.thing._id}]">Read more >></a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer></footer>

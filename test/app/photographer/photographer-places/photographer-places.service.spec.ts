@@ -17,7 +17,7 @@ import {
   ResponseOptions
 } from '@angular/http';
 
-import {config} from '../../../../app/app.config.ts';
+import {Config} from '../../../../app/app.config.ts';
 
 import {PhotographerPlacesService} from '../../../../app/photographer/photographer-places/photographer-places.service';
 
@@ -39,7 +39,7 @@ describe('PhotographerPlacesService', () => {
     (photographerPlacesService:PhotographerPlacesService, mockBackend:MockBackend) => {
       let res;
       mockBackend.connections.subscribe((connection:any) => {
-        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/photographer-places?id=56ec091caf72e9437cbccfab`);
+        expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/photographer-places?id=56ec091caf72e9437cbccfab`);
         let response = new ResponseOptions({
           body: `{"success":true,"msg":[],"data":{"countries":[{"name":"India","region":"Asia","places":
         [{"image":"http://static.dollarstreet.org.s3.amazonaws.com/media/India 2/image/62f004cd-0ede-4a2c-bd57-6b8f4815baba/thumb-62f004cd-0ede-4a2c-bd57-6b8f4815baba.jpg",

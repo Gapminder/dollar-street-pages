@@ -22,6 +22,8 @@ import {PhotographerPlacesService} from './photographer/photographer-places/phot
 import {AmbassadorsListService} from './ambassadors/ambassadors-list/ambassadors-list.service';
 import {SocialShareButtonsService} from './common/social_share_buttons/social-share-buttons.service';
 import {InfoContextService} from './info/info-context/info-context.service';
+import {ArticleService} from './article/article.service';
+import {BlogService} from './blog/blog.service';
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
@@ -42,6 +44,8 @@ bootstrap(AppComponent, [
   provide('PhotographersService', {useClass: PhotographersService}),
   provide('SocialShareButtonsService', {useClass: SocialShareButtonsService}),
   provide('InfoContextService', {useClass: InfoContextService}),
+  provide('ArticleService', {useClass: ArticleService}),
+  provide('BlogService', {useClass: BlogService}),
   provide('Math', {useClass: MathService}),
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);

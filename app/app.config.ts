@@ -7,17 +7,18 @@ import {PhotographerComponent} from './photographer/photographer.component';
 import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
 import {CountryComponent} from './country/country.component';
 import {InfoComponent} from './info/info.component';
+import {ArticleComponent} from './article/article.component';
+import {BlogComponent} from './blog/blog.component';
 
-export namespace config {
-  'use strict';
-   export let api = 'https://apidev.dollarstreet.org';
-  // export let api = 'http://128.199.60.70';
-  // export let api = 'http://stage.dollarstreet.org';
-  // export let api = 'http://192.168.1.66';
-  // export let api = 'http://192.168.1.81';
-  // export let api = 'http://192.168.0.102';
+export class Config {
+  public static api:string = 'https://apidev.dollarstreet.org';
+  // public static api:string = 'http://128.199.60.70';
+  // public static api:string = 'http://stage.dollarstreet.org';
+  //public static api:string = 'http://192.168.1.66';
+  // public static api:string = 'http://192.168.1.81';
+  // public static api:string = 'http://192.168.0.102';
 
-  export let routes = [{
+  public static routes:any = [{
     path: '/main',
     name: 'Main',
     component: FirstComponent,
@@ -54,5 +55,13 @@ export namespace config {
     path: '/info',
     name: 'Info',
     component: InfoComponent
+  }, {
+    path: '/article',
+    name: 'Article',
+    component: ArticleComponent
+  }, {
+    path: '/blog',
+    name: 'Blog',
+    component: BlogComponent
   }];
 }
