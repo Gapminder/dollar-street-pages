@@ -20,14 +20,14 @@ let style = require('./header.css');
 
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input()
-  public query:string;
+  protected query:string;
   @Input()
-  public thing:string;
+  protected thing:string;
   @Input('hoverPlace')
-  public hoverPlace:Observable<any>;
+  protected hoverPlace:Observable<any>;
   @Input('chosenPlaces')
-  public chosenPlaces:Observable<any>;
-  public isDesktop:boolean = device.desktop();
+  protected chosenPlaces:Observable<any>;
+  protected isDesktop:boolean = device.desktop();
   @Output()
   private filter:EventEmitter<any> = new EventEmitter();
   private activeThing:any;
