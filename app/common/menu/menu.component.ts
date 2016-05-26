@@ -43,7 +43,9 @@ export class MainMenuComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnDestroy():void {
-    this.hoverPlaceSubscribe.unsubscribe();
+    if (this.hoverPlaceSubscribe) {
+      this.hoverPlaceSubscribe.unsubscribe();
+    }
   }
 
   public ngOnChanges():void {
