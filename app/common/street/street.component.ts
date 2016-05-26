@@ -20,9 +20,7 @@ let style = require('./street.css');
 
 export class StreetComponent implements OnInit, OnDestroy {
   @Input('thing')
-  private thing:string;
-  // @Input('hoverHeader')
-  // private hoverHeader:Observable<any>;
+  protected thing:string;
   @Input('places')
   private places:Observable<any>;
   @Input('chosenPlaces')
@@ -32,7 +30,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   @Input('controllSlider')
   private controllSlider:Subject<any>;
   @Output('filterStreet')
-  private filterStreet:EventEmitter = new EventEmitter;
+  private filterStreet:EventEmitter = new EventEmitter();
 
   private street:any;
   private element:HTMLElement;
@@ -49,11 +47,9 @@ export class StreetComponent implements OnInit, OnDestroy {
   private placesSubscribe:any;
   private hoverPlaceSubscribe:any;
   private chosenPlacesSubscribe:any;
-  private hoverHeaderSubscribe:any;
   private mouseMoveSubscriber:any;
   private math:any;
   private svg:SVGElement;
-  private isHovered:boolean = false;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router)  router:Router,
@@ -63,11 +59,9 @@ export class StreetComponent implements OnInit, OnDestroy {
     this.router = router;
     this.math = math;
     this.street = streetDrawService;
-
   }
 
   public ngOnInit():any {
-
     this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
@@ -218,9 +212,6 @@ export class StreetComponent implements OnInit, OnDestroy {
       this.chosenPlacesSubscribe.unsubscribe();
     }
 
-    // if (this.hoverHeaderSubscribe) {
-    //   this.hoverHeaderSubscribe.unsubscribe();
-    // }
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
     }

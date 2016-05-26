@@ -1,5 +1,6 @@
-import {Component, OnChanges, Input, Inject} from '@angular/core';
+import {Component, OnChanges, Input, Inject, OnInit, OnDestroy} from '@angular/core';
 import {Router, RouterLink} from '@angular/router-deprecated';
+import {Observable} from 'rxjs/Observable';
 
 import {SocialShareButtons} from '../social_share_buttons/social-share-buttons.component.ts';
 
@@ -13,20 +14,36 @@ let style = require('./menu.css');
   directives: [SocialShareButtons, RouterLink]
 })
 
-export class MainMenuComponent implements OnChanges {
+export class MainMenuComponent implements OnInit, OnDestroy, OnChanges {
+  protected isOpenMenu:boolean = false;
   @Input()
   private activeThing:string;
   @Input()
   private defaultThing:any;
+  @Input()
+  private hoverPlace:Observable<any>;
 
   private thing:any = {};
   private goToMatrix:any = {};
   private router:Router;
   private placeComponent:boolean;
+  private hoverPlaceSubscribe:any;
 
   public constructor(@Inject(Router) router:Router) {
     this.router = router;
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
+  }
+
+  public ngOnInit():void {
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe(() => {
+        if (this.isOpenMenu) {
+          this.isOpenMenu = false;
+        }
+      });
+  }
+
+  public ngOnDestroy():void {
+    this.hoverPlaceSubscribe.unsubscribe();
   }
 
   public ngOnChanges():void {
