@@ -1,12 +1,15 @@
 <div class="matrix-header main-header place-header">
   <header [query]="query"
           [chosenPlaces]="chosenPlaces"
-          (filter)="urlChanged($event)"></header>
+          (filter)="urlChanged($event)"
+          [hoverPlace]="hoverPlace"></header>
 
   <street [places]="streetPlaces"
           [thing]="thing"
           [controllSlider]="controllSlider"
-          [chosenPlaces]="chosenPlaces"></street>
+          [chosenPlaces]="chosenPlaces"
+          [hoverPlace]="hoverPlace">
+  </street>
 </div>
 
 <div class="main">
