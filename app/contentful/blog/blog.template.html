@@ -1,0 +1,26 @@
+<div id="blog-page">
+  <header [title]="title"></header>
+
+  <div id="articles-container" class="container">
+    <div class="row">
+      <div class="article-content col-md-3 col-sm-6 col-xs-12" *ngFor="let post of posts">
+        <div class="icon-container" *ngIf="post.fields.thumbnail" [routerLink]="['Post', {slug: post.fields.slug}]">
+          <img [gmContentfulSrcId]="post.fields.thumbnail.sys.id"
+               [fit]="'scale'"
+               alt="{{post.fields.title}}">
+        </div>
+
+        <div class="article-description">
+          <p class="date">{{post.fields.createdAt | gmToDate | date}}</p>
+          <h3 [routerLink]="['Post', {slug: post.fields.slug}]">{{post.fields.title}}</h3>
+          <p *ngIf="post.fields?.description">{{post.fields.description | slice:0:120}}... <a
+            [routerLink]="['Post', {slug: post.fields.slug}]">Read more >></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer></footer>
+
+<loader [hidden]="loader"></loader>

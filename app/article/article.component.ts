@@ -17,6 +17,7 @@ let style = require('./article.css');
 
 export class ArticleComponent implements OnInit, OnDestroy {
   public title:string;
+  public loader:boolean = false;
   private articleService:any;
   private articleServiceSubscribe:any;
   private article:any;
@@ -40,6 +41,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
         }
 
         this.article = val.data;
+        this.loader = true;
         this.title = 'Article about: ' + this.article.thing;
       });
   }

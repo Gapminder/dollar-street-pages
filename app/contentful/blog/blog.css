@@ -8,6 +8,9 @@ footer {
 #articles-container.container {
   padding-top: 110px;
   overflow: hidden;
+}
+
+#articles-container.container .row {
   display: flex;
   flex-wrap: wrap;
 }
@@ -18,26 +21,16 @@ footer {
 }
 
 #articles-container .article-content {
-  float: left;
-  width: 33%;
   margin-bottom: 50px;
-  padding-right: 15px;
 }
 
 #articles-container .article-content .icon-container {
-  float: left;
-  width: 42px;
-  min-height: 1px;
+  margin-bottom: 10px;
 }
 
 #articles-container .article-content .icon-container img {
   width: 100%;
-}
-
-#articles-container .article-content .article-description {
-  float: left;
-  width: calc(100% - 42px);
-  padding-left: 15px;
+  cursor: pointer;
 }
 
 #articles-container .article-description p,
@@ -48,7 +41,9 @@ footer {
 #articles-container .article-description h3 {
   color: #374551;
   font-size: 24px;
-  margin: 0 0 10px;
+  line-height: 24px;
+  margin: 5px 0;
+  cursor: pointer;
 }
 
 #articles-container .article-description p {
@@ -56,9 +51,19 @@ footer {
   font-size: 16px;
 }
 
+#articles-container .article-description p.date {
+  font-size: 14px;
+}
+
 #articles-container .article-description a {
   color: #0567bf;
   font-size: 16px;
+}
+
+@media (max-width: 1023px) {
+  #articles-container.container {
+    width: 100%;
+  }
 }
 
 @media (min-width: 768px) {
