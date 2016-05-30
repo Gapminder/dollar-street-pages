@@ -261,3 +261,10 @@
   margin-right: 7px;
   cursor: pointer;
 }
+
+.span-link {
+  cursor: pointer;
+  color: #0567bf;
+  font-weight: bold;
+  font-size: smaller;
+}

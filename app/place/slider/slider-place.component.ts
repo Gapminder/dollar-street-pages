@@ -31,12 +31,18 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   public image:any;
   public place:any;
   public fancyBoxImage:any;
+
+  protected openReadMore:boolean;
+  @Input('activeThing')
+  protected activeThing:any;
+  protected familyInfo:any;
+
   @Input('controllSlider')
   private controllSlider:Observable<any>;
   @Input('places')
   private streetPlaces:Observable<any>;
-  @Input('activeThing')
-  private activeThing:any;
+
+
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
   @Output('isShowAboutData')
@@ -208,6 +214,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     };
 
     newPrevImage.src = this.images[0].background;
+    this.openReadMore = false;
   }
 
   protected slideNext():void {
@@ -235,6 +242,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     };
 
     newNextImage.src = this.images[2].background;
+    this.openReadMore = false;
   }
 
   protected cb(err:any, data:any):void {

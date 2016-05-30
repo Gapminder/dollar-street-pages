@@ -26,10 +26,15 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   public position:any;
   public thing:any;
   public image:any;
+
+  protected openReadMore:boolean;
+  @Input('activeThing')
+  protected activeThing:any;
+  protected familyInfo:any;
+
   @Input('places')
   private streetPlaces:Observable<any>;
-  @Input('activeThing')
-  private activeThing:any;
+
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
   @Output('isShowAboutData')
@@ -156,8 +161,8 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
         animationSlider(shiftPrev, prevSlide);
       });
     };
-
     newPrevImage.src = this.images[0].background;
+    this.openReadMore = false;
   }
 
   protected slideNext():void {
@@ -187,6 +192,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     };
 
     newNextImage.src = this.images[2].background;
+    this.openReadMore = false;
   }
 
   protected cb(err:any, data:any):void {

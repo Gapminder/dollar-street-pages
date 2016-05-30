@@ -324,9 +324,10 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public getUnique(items:any):any {
-    let u = {}, a = [];
+    let u = {};
+    let a = [];
 
-    for (let i = 0, l = items.length; i < l; ++i) {
+    for (let i = 0; i < items.length; ++i) {
       if (u.hasOwnProperty(items[i])) {
         continue;
       }
