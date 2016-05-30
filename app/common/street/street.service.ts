@@ -215,6 +215,33 @@ export class StreetDrawService {
       .attr('y', this.height - 5)
       .attr('fill', '#767d86');
 
+    this.svg
+      .selectAll('image.scale-label22222')
+      .data(this.axisLabel)
+      .enter()
+      .append('svg:image')
+      .attr('class', 'scale-label22222')
+      .attr('xlink:href', '/assets/img/divider.svg')
+      .attr('y', 19)
+      .attr('width', 19)
+      .attr('height', 30)
+      .attr('x', (d:any) => {
+        let indent = 0;
+        let center = 11;
+
+        if ((d + '').length === 2) {
+          indent = 11;
+          center = 2;
+        }
+
+        if ((d + '').length === 3) {
+          indent = 15;
+          center = 7;
+        }
+
+        return this.scale(d) - indent + center;
+      });
+
     this.drawLeftSlider(this.lowIncome ? this.scale(this.lowIncome) : (25), true);
     this.drawRightSlider(this.hightIncome ? this.scale(this.hightIncome) - 15 : (this.width - 25), true);
 
@@ -223,7 +250,7 @@ export class StreetDrawService {
     }
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove').filter((e:MouseEvent)=> {
       e.preventDefault();
-      //e.stopPropagation();
+      // e.stopPropagation();
       return this.sliderLeftMove || this.sliderRightMove;
     }).subscribe((e:MouseEvent)=> {
       e.preventDefault();
@@ -269,7 +296,7 @@ export class StreetDrawService {
     return this;
   };
 
-  protected drawLeftSlider(x:number, init = false):this {
+  protected drawLeftSlider(x:number, init:boolean = false):this {
     this.sliderLeftBorder = x + 20;
     if (!this.leftScroll) {
       this.leftScroll = this.svg
@@ -279,11 +306,11 @@ export class StreetDrawService {
         .style('cursor', 'pointer')
         .attr('stroke-width', 1)
         .attr('stroke', '#48545f')
-        .on('mousedown', (e?:MouseEvent):void=> {
+        .on('mousedown', (e?:MouseEvent):void => {
           d3.event.preventDefault();
-          this.sliderLeftMove = true
+          this.sliderLeftMove = true;
         })
-        .on('touchstart', (e?:TouchEvent):void=> this.sliderLeftMove = true);
+        .on('touchstart', (e?:TouchEvent):void => this.sliderLeftMove = true);
     }
 
     this.leftScroll
@@ -442,7 +469,13 @@ export class StreetDrawService {
       .append('polygon')
       .attr('class', 'chosen')
       .attr('points', (datum:any):any => {
-        let point1, point2, point3, point4, point5, point6, point7;
+        let point1;
+        let point2;
+        let point3;
+        let point4;
+        let point5;
+        let point6;
+        let point7;
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
@@ -480,7 +513,13 @@ export class StreetDrawService {
       .append('polygon')
       .attr('class', 'hover')
       .attr('points', (datum:any):any => {
-        let point1, point2, point3, point4, point5, point6, point7;
+        let point1;
+        let point2;
+        let point3;
+        let point4;
+        let point5;
+        let point6;
+        let point7;
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
