@@ -192,6 +192,10 @@
   margin-top: 7px;
 }
 
+#mobile-search-popup .item[hidden] {
+  display: none;
+}
+
 @media (max-width: 992px) {
   #mobile-search {
     margin-top: 15px;
