@@ -239,3 +239,10 @@
     margin-right: 3px;
   }
 }
+
+.span-link {
+  cursor: pointer;
+  color: #0567bf;
+  font-weight: bold;
+  font-size: smaller;
+}

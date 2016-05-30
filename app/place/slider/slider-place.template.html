@@ -46,8 +46,10 @@
               </span>
             </div>
             <div class="slide-map pull-right">
-              <place-map [hoverPlace]="hoverPlace" *ngIf="hoverPlace"
-                         [routerLink]="['Map', {thing: activeThing?._id}]"></place-map>
+              <place-map [hoverPlace]="hoverPlace"
+                         *ngIf="hoverPlace"
+                         [routerLink]="['Map', {thing: activeThing?._id}]">
+              </place-map>
             </div>
           </div>
 
@@ -60,7 +62,14 @@
             {{image.familyName}} {{image.familyName ? 'family' : ''}} in {{image.country}}
           </h2>
 
-          <p *ngIf="image.familyInfoSummary">{{image.familyInfoSummary}}</p>
+          <p *ngIf="image.familyInfoSummary && !openReadMore">
+            {{image.familyInfoSummary}}
+            <span class="span-link" (click)="openReadMore = true" *ngIf="image.familyInfo && !openReadMore">Read more >></span>
+          </p>
+          <p *ngIf="image.familyInfo && openReadMore">
+            {{image.familyInfo}}
+            <span class="span-link" (click)="openReadMore = false" *ngIf="openReadMore">Read less <<</span>
+          </p>
         </div>
       </div>
     </div>

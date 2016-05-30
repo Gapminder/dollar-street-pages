@@ -43,16 +43,28 @@
         <span [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
           « All {{activeThing.plural}}
         </span>
-        <h2><span>{{math.round(chosenPlace?.income)}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="chosenPlace?.aboutData"
-                                               (click)="showInfo()"></span> {{chosenPlace?.familyName}}
+        <h2><span>{{math.round(chosenPlace?.income)}}$ <img src="/assets/img/info-button.svg" alt=""
+                                                            *ngIf="chosenPlace?.aboutData"
+                                                            (click)="showInfo()"></span>
+          {{chosenPlace?.familyName}}
           {{chosenPlace?.familyName ? 'family' : ''}} in {{chosenPlace?.country}}</h2>
       </div>
 
       <div class="slider-mobile-family-map">
-        <place-map [hoverPlace]="hoverPlace" [routerLink]="['Map',{thing:thing}]" *ngIf="hoverPlace"></place-map>
+        <place-map [hoverPlace]="hoverPlace"
+                   [routerLink]="['Map',{thing:thing}]"
+                   *ngIf="hoverPlace">
+        </place-map>
       </div>
     </div>
 
-    <p class="info" *ngIf="chosenPlace?.familyInfoSummary">{{chosenPlace?.familyInfoSummary}}</p>
+    <p *ngIf="chosenPlace?.familyInfoSummary && !openReadMore">
+      {{chosenPlace?.familyInfoSummary}}
+      <span class="span-link" (click)="openReadMore = true" *ngIf="chosenPlace?.familyInfo && !openReadMore">Read more >></span>
+    </p>
+    <p *ngIf="chosenPlace?.familyInfo && openReadMore">
+      {{chosenPlace?.familyInfo}}
+      <span class="span-link" (click)="openReadMore = false" *ngIf="openReadMore">Read less <<</span>
+    </p>
   </div>
 </div>
