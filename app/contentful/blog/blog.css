@@ -82,4 +82,8 @@ footer {
   #articles-container {
     padding-bottom: 237px;
   }
+
+  #articles-container.container {
+    padding-top: 60px;
+  }
 }
