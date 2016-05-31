@@ -12,6 +12,7 @@
   background-position: 50% 50%;
   background-size: cover;
   background-repeat: no-repeat;
+  vertical-align: bottom;
 }
 
 #mobile-search .open-modal-icon {
@@ -221,9 +222,19 @@
   }
 }
 
+@media (min-width: 601px) {
+  #mobile-search .thing-icon-container {
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 600px) {
   #mobile-search {
     margin-top: 12px;
+  }
+
+  #mobile-search .thing-icon-container .thing-pop-up-content {
+    width: 240px;
   }
 
   #mobile-search .title-container {
