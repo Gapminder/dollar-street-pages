@@ -50,6 +50,7 @@ export class StreetComponent implements OnInit, OnDestroy {
   private mouseMoveSubscriber:any;
   private math:any;
   private svg:SVGElement;
+  private showSlider:boolean;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router)  router:Router,
@@ -59,6 +60,7 @@ export class StreetComponent implements OnInit, OnDestroy {
     this.router = router;
     this.math = math;
     this.street = streetDrawService;
+    this.showSlider = this.router.hostComponent.name === 'MatrixComponent';
   }
 
   public ngOnInit():any {
@@ -96,7 +98,7 @@ export class StreetComponent implements OnInit, OnDestroy {
         this.street
           .clearSvg()
           .init()
-          .drawScale(places)
+          .drawScale(places, this.showSlider)
           .set('places', _.sortBy(places, 'income'))
           .set('fullIncomeArr', _
             .chain(this.street.places)
@@ -124,7 +126,7 @@ export class StreetComponent implements OnInit, OnDestroy {
         this.street
           .clearSvg()
           .init()
-          .drawScale(this.street.places)
+          .drawScale(this.street.places, this.showSlider)
           .set('places', _.sortBy(this.street.places, 'income'))
           .set('fullIncomeArr', _
             .chain(this.street.places)
