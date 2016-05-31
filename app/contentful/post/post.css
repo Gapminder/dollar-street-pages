@@ -50,4 +50,8 @@ footer {
   #post-container {
     padding-bottom: 237px;
   }
+
+  #post-container.container {
+    padding-top: 60px;
+  }
 }

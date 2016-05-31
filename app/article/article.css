@@ -14,7 +14,6 @@ footer {
   font-size: 18px;
 }
 
-
 @media (min-width: 768px) {
   #article-content {
     padding-bottom: 323px;
@@ -30,5 +29,9 @@ footer {
 @media (max-width: 600px) {
   #article-content {
     padding-bottom: 237px;
+  }
+
+  #article-content.container {
+    padding-top: 60px;
   }
 }

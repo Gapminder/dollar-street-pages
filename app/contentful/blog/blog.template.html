@@ -11,7 +11,7 @@
         </div>
 
         <div class="article-description">
-          <p class="date">{{post.fields.createdAt | gmToDate | date}}</p>
+          <p class="date" *ngIf="post.fields.createdAt">{{post.fields.createdAt | gmToDate | date}}</p>
           <h3 [routerLink]="['Post', {slug: post.fields.slug}]">{{post.fields.title}}</h3>
           <p *ngIf="post.fields?.description">{{post.fields.description | slice:0:120}}... <a
             [routerLink]="['Post', {slug: post.fields.slug}]">Read more >></a></p>

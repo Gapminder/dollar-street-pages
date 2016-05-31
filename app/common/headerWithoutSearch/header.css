@@ -22,10 +22,9 @@
 
 .header .heading {
   margin: 20px 0 0 20px;
-  display: inline-block;
-  line-height: 30px;
   font-size: 30px;
   color: #374551;
+  width: calc(100% - 185px);
 }
 
 .matrix-icon {
@@ -69,6 +68,7 @@
     font-size: 18px;
     margin: 12px 0 0 10px;
     line-height: 18px;
+    width: calc(100% - 110px);
   }
 
   .header .logo {
