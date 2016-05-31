@@ -90,7 +90,7 @@ export class StreetDrawService {
     return this.places[index];
   };
 
-  public drawScale(places:any):this {
+  public drawScale(places:any, isShowSlider:boolean):this {
     if (!places || !places.length) {
       return this;
     }
@@ -242,8 +242,10 @@ export class StreetDrawService {
         return this.scale(d) - indent + center;
       });
 
-    this.drawLeftSlider(this.lowIncome ? this.scale(this.lowIncome) : (25), true);
-    this.drawRightSlider(this.hightIncome ? this.scale(this.hightIncome) - 15 : (this.width - 25), true);
+    if (isShowSlider) {
+      this.drawLeftSlider(this.lowIncome ? this.scale(this.lowIncome) : (25), true);
+      this.drawRightSlider(this.hightIncome ? this.scale(this.hightIncome) - 15 : (this.width - 25), true);
+    }
 
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
