@@ -16,7 +16,9 @@
                (hoverPlace)="hoverPlaceS($event)"
                [padding]="padding"></matrix-images>
 
-<div class="zoom-column pull-right">
+<div class="zoom-column pull-right"
+     *ngIf="filtredPlaces.length">
+
   <button type="button"
           [disabled]="zoom === 2"
           (click)="changeZoom(zoom - 1)">

@@ -16,6 +16,16 @@
     </div>
   </div>
 
-  <row-loader [items]="currentPlaces" [field]="'background'" [itemHeight]="itemSize" [count]="zoom"></row-loader>
+  <row-loader [items]="currentPlaces"
+              [field]="'background'"
+              [itemHeight]="itemSize"
+              [count]="zoom">
+  </row-loader>
 </div>
 
+<div class="xl-text-c"
+     *ngIf="!currentPlaces?.length">
+  <p>
+    Sorry. There is no data by this query yet.
+  </p>
+</div>

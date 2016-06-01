@@ -21,6 +21,8 @@ let style = require('./matrix.css');
   directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
 })
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
+  protected filtredPlaces:any[] = [];
+
   public query:string;
   public matrixService:any;
   public streetPlaces:Subject<any> = new Subject();
@@ -54,7 +56,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private zoom:number;
   private isDesktop:boolean = device.desktop();
   private clonePlaces:any[];
-  private filtredPlaces:any[];
 
   public constructor(@Inject('MatrixService') matrixService:any,
                      @Inject(ElementRef) element:ElementRef,
@@ -101,6 +102,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngAfterViewChecked():void {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
+
+    if (!imgContent) {
+      return;
+    }
+
     if (this.footerHeight === footer.offsetHeight &&
       this.imageHeight === imgContent.offsetHeight || !this.element.querySelector('.image-content')) {
       return;
@@ -158,6 +164,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
     let imagesContainer = this.element.querySelector('.images-container') as HTMLElement;
     let imageContainer = this.element.querySelector('.image-content') as HTMLElement;
+
+    if (!imageContainer) {
+      return;
+    }
 
     matrixImages.style.paddingTop = `${header.offsetHeight}px`;
     imagesContainer.style.paddingBottom = `${bottomPadding}px`;

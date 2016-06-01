@@ -131,6 +131,12 @@
   display: block;
 }
 
+.xl-text-c {
+  text-align: center;
+  font-size: xx-large;
+  margin: 40px 0 50px 0
+}
+
 @media (min-width: 768px) {
   .place-image-box-country,
   .place-image-box-income {
