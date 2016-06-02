@@ -209,7 +209,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   /** to remove things like this */
   public urlChanged(options:any):void {
-    let {query, search} = options;
+    let {query} = options;
     this.query = query;
     let parseQuery = this.parseUrl(this.query);
     this.thing = parseQuery.thing;
