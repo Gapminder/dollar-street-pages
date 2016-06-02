@@ -20,7 +20,7 @@ module.exports = {
     'Facebook icon': {element: 'div[class*="header"] .fa.fa-facebook'},
     'Twitter icon': {element: 'div[class*="header"] .fa.fa-twitter'},
     'Google icon': {element: 'div[class*="header"] .fa.fa-google-plus'},
-    'Linkedin icon': {element: 'div[class*="header"] .fa.fa-linkedin'},
+    'Linkedin icon': {element: 'div[class*="header"] .fa.fa-linkedin'}
   },
   mainPageTextSubHeader:{
     'Welcome': {textCSS: 'div[class*="welcome-header"]>h1', actualResult: 'Welcome to Dollar Street'},
@@ -38,7 +38,7 @@ module.exports = {
     'Enter Luc Forsyth in Search field': {photographerQuery: 'Luc'},
     'Enter Amr Said  in Search field': {photographerQuery: 'Amr'},
     'Enter Ivan Guilbert in Search field': {photographerQuery: 'Iv'},
-    'Enter Alisia Sidorenko in Search field': {photographerQuery: 'Alis'},
+    'Enter Alisia Sidorenko in Search field': {photographerQuery: 'Alis'}
   },
   photographerPageBoolean: {
     'Name Photographer': {photographerDataCSS: '.heading'},
@@ -51,7 +51,7 @@ module.exports = {
     'Country Indonesia': {element: function () {return $('span[href$="55ef338d0d2b3c82037884d9"]'); }, actualResult: 'Indonesia'},
     'Country Lithuania': {element: function () {return $('span[href$="55ef338d0d2b3c820378844a"]'); }, actualResult: 'Lithuania'},
     'Country Rwanda': {element: function () {return $('span[href$="55ef338d0d2b3c82037884b9"]'); }, actualResult: 'Rwanda'},
-    'Sub-title -Home on the World Map-': {element: function () {return $('div[class*="search-text"]>span'); }, actualResult: 'Home on the World map'},
+    'Sub-title -Home on the World Map-': {element: function () {return $('div[class*="search-text"]>span'); }, actualResult: 'Home on the World map'}
   },
   photographersPageSearch:{
     'Input Bangladesh in Search field': {countryQuery: 'bang'},
@@ -62,10 +62,10 @@ module.exports = {
     'Input Kazakhstan in Search field': {countryQuery: 'kaza'},
     'Input Liberia in Search field': {countryQuery: 'libe'},
     'Input Mexico in Search field': {countryQuery: 'mexi'},
-    'Input Turkey in Search field': {countryQuery: 'tur'},
+    'Input Turkey in Search field': {countryQuery: 'tur'}
   },
   ambassadorsPageText:{
-    'H2 in header': {element: function () {return $('h2[class="heading"]'); }, actualResult: 'Ambassadors'},
+    'H2 in header': {element: function () {return $('h2[class="heading"]'); }, actualResult: 'Ambassadors'}
   },
   ambassadorsPageBoolean:{
     'Logo img in header': {element: function () {return $('.logo.pull-left>img'); }},
@@ -78,7 +78,7 @@ module.exports = {
     'Scale label 10 on Street Widget': {element: function () {return element.all(by.css('text[class="scale-label"]')).first(); }, actualResult: '30$'},
     'Scale label 100 on Street Widget': {element: function () {return element.all(by.css('text[class="scale-label"]')).last(); }, actualResult: '3000$'},
     'Zoom button +': {element: function () {return element.all(by.css('div[class="zoom-column pull-right"] b')).first(); }, actualResult: '+'},
-    'Zoom button -': {element: function () {return element.all(by.css('div[class="zoom-column pull-right"] b')).last(); }, actualResult: '-'},
+    'Zoom button -': {element: function () {return element.all(by.css('div[class="zoom-column pull-right"] b')).last(); }, actualResult: '-'}
   },
   matrixPageBoolean:{
     'Home icon in header': {element: function () {return $('.search-title-thing-icon.pull-left.icon'); }},
@@ -86,17 +86,17 @@ module.exports = {
     'Logo image in header': {element: function () {return $('.icon-container.pull-left>a>img'); }},
     'Map image in header': {element: function () {return $('.map.map_gray'); }},
     'Menu icon in header': {element: function () {return $('.unactive'); }},
-    'Street widget image': {element: function () {return $('polygon[class="road"]'); }},
+    'Street widget image': {element: function () {return $('polygon[class="road"]'); }}
   },
   matrixPageImages:{
     'Rectangles on Street Widget': {element: function () {return element.all(by.css('rect[class="point"]')); }},
     'Image content': {element: function () {return element.all(by.css('.image-content.column-5')); }},
     'Country content': {element: function () {return element.all(by.css('.place-image-box-country.pull-left')); }},
-    'Income content': {element: function () {return element.all(by.css('.place-image-box-income.pull-right')); }},
+    'Income content': {element: function () {return element.all(by.css('.place-image-box-income.pull-right')); }}
   },
   matrixPageSearchBoolean:{
     'Glass icon': {element: function () {return $('.search-input>img'); }},
-    'Close icon': {element: function () {return $('.close'); }},
+    'Close icon': {element: function () {return $('.close'); }}
   },
   matrixPageSearchText:{
     'Things header in Search': {element: function () {return element.all(by.css('.search-list-header>h3')).first(); }, actualResult: 'THINGS'},
@@ -107,6 +107,6 @@ module.exports = {
     'Region category -Europe- in Search': {element: function (){return $('.search-item-name.europe'); }, actualResult: 'Europe'},
     'Region category -Africa- in Search': {element: function (){return $('.search-item-name.africa'); }, actualResult: 'Africa'},
     'Region category -America- in Search': {element: function (){return $('.search-item-name.america'); }, actualResult: 'America'},
-    'Region category -Asia- in Search': {element: function (){return $('.search-item-name.asia'); }, actualResult: 'Asia'},
-  },
+    'Region category -Asia- in Search': {element: function (){return $('.search-item-name.asia'); }, actualResult: 'Asia'}
+  }
 };
