@@ -20,8 +20,8 @@ export class HeaderMainComponent {
     this.urlChangeService = urlChangeService;
   }
 
-  /** remove document and other things .This code is not pretty*/
-  animateScroll(selector, inc, duration, cb) {
+  /* remove document and other things .This code is not pretty*/
+  public animateScroll(selector, inc, duration, cb) {
     let elem = document.getElementById(selector);
     let startScroll = document.body.scrollTop;
     let endScroll = elem.offsetTop;
@@ -30,7 +30,7 @@ export class HeaderMainComponent {
     requestAnimationFrame(this.goToScroll(step, duration, inc, cb));
   }
 
-  goToScroll(step, duration, inc, cb) {
+  public goToScroll(step, duration, inc, cb) {
     return () => {
       let currentDuration = duration - inc;
 
@@ -44,7 +44,7 @@ export class HeaderMainComponent {
     };
   }
 
-  goToAbout(e) {
+  public goToAbout(e) {
     e.preventDefault();
 
     this.animateScroll('about', 20, 1000, () => {
@@ -52,7 +52,7 @@ export class HeaderMainComponent {
     });
   };
 
-  goToConcept(e) {
+  public goToConcept(e) {
     e.preventDefault();
 
     this.animateScroll('concept', 20, 1000, () => {
