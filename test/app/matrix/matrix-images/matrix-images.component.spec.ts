@@ -18,7 +18,7 @@ import {MatrixImagesComponent} from '../../../../app/matrix/matrix-images/matrix
 
 describe('MatrixImagesComponent', () => {
   let placesObservable = new MockService();
-  placesObservable.fakeResponse = places.places;
+  placesObservable.fakeResponse = places.data;
   let mockCommonDependency = new MockCommonDependency();
   beforeEachProviders(() => {
     return [
@@ -26,7 +26,9 @@ describe('MatrixImagesComponent', () => {
     ];
   });
 
-  let fixture, context;
+  let fixture;
+  let context;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(MatrixImagesComponent, '<div></div>')
@@ -43,16 +45,15 @@ describe('MatrixImagesComponent', () => {
   it('ngOnInit ngOnDestroy', () => {
     context.ngOnInit();
     expect(context.itemSize).toEqual(window.innerWidth / context.zoom);
-    expect(context.currentPlaces.length).toEqual(places.places.length);
     spyOn(context.placesSubscribe, 'unsubscribe');
     context.ngOnDestroy();
     expect(context.placesSubscribe.unsubscribe).toHaveBeenCalled();
   });
   it('hoverImage', () => {
     spyOn(context.hoverPlace, 'emit');
-    context.oldPlaceId = places.places[0]._id;
-    context.hoverImage(places.places[0]);
-    expect(context.hoverPlace.emit).toHaveBeenCalledWith(places.places[0]);
+    context.oldPlaceId = places.data.zoomPlaces[0]._id;
+    context.hoverImage(places.data.zoomPlaces[0]);
+    expect(context.hoverPlace.emit).toHaveBeenCalledWith(places.data.zoomPlaces[0]);
     context.isDesktop = false;
     context.hoverImage();
     expect(context.hoverPlace.emit).toHaveBeenCalled();
@@ -60,7 +61,7 @@ describe('MatrixImagesComponent', () => {
   });
   it('goToPlace', () => {
     spyOn(context.router, 'navigate');
-    let place = places.places[0];
+    let place = places.data.zoomPlaces[0];
     context.goToPlace(place);
     expect(context.router.navigate.calls.argsFor(0)[0]).toEqual(['Place', {
       thing: context.thing,
@@ -72,7 +73,7 @@ describe('MatrixImagesComponent', () => {
     context.goToPlace(place);
     expect(context.oldPlaceId).toEqual(place._id);
     context.isDesktop = false;
-    context.oldPlaceId =  place._id;
+    context.oldPlaceId = place._id;
     context.goToPlace(place);
     expect(context.router.navigate.calls.argsFor(1)[0]).toEqual(['Place', {
       thing: context.thing,

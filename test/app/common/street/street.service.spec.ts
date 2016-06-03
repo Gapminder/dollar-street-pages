@@ -81,8 +81,8 @@ describe('StreetDrawService', () => {
     streetDrawService.setSvg = document.createElement('svg');
     streetDrawService.init();
     expect(d3Svg.domain).toHaveBeenCalledWith([1, 30, 300, 3000, 15000]);
-    expect(d3Svg.range).toHaveBeenCalledWith([0, 0.07 * streetDrawService.width, 0.375 * streetDrawService.width,
-      0.75 * streetDrawService.width, 0.99 * streetDrawService.width]);
+    expect(d3Svg.range).toHaveBeenCalledWith([0, 0.07 * streetDrawService.width, 0.5 * streetDrawService.width,
+      0.92 * streetDrawService.width, 0.99 * streetDrawService.width]);
   });
 
   it('setSvg', () => {

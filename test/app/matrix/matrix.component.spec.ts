@@ -78,8 +78,8 @@ describe('MatrixComponent', () => {
   it(' hoverPlaceS', () => {
     spyOn(context, 'hoverPlaceS').and.callThrough();
     spyOn(context.hoverPlace, 'next');
-    context.hoverPlaceS(places.places[0]);
-    expect(context.hoverPlace.next.calls.argsFor(0)).toEqual([places.places[0]]);
+    context.hoverPlaceS(places.data.zoomPlaces[0]);
+    expect(context.hoverPlace.next.calls.argsFor(0)).toEqual([places.data.zoomPlaces[0]]);
   });
   it(' urlChanged and ngOnDestroy', () => {
     context.filter = {lowIncome: 0, hightIncome: 15000};
@@ -94,10 +94,9 @@ describe('MatrixComponent', () => {
     expect(context.parseUrl.calls.argsFor(0)).toEqual(['thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1']);
     expect(context.thing).toEqual('5477537786deda0b00d43be5');
     expect(context.urlChangeService.replaceState.calls.argsFor(0)).toEqual(['/matrix', 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1']);
-    expect(context.matrixService.getMatrixImages.calls.argsFor(0)).toEqual([context.query]);
-    expect(context.matrixPlaces.next.calls.argsFor(0)).toEqual([places.places]);
-    expect(context.placesArr).toEqual(places.places);
-    expect(context.clonePlaces.length).toEqual(places.places.length);
+    expect(context.matrixService.getMatrixImages.calls.argsFor(0)).toEqual([context.query + '&lowIncome=0&hightIncome=15000']);
+    expect(context.matrixPlaces.next.calls.argsFor(0)).toEqual([places.data.zoomPlaces]);
+    expect(context.placesArr).toEqual(places.data.zoomPlaces);
     expect(context.zoom).toEqual(5);
     expect(context.loader).toEqual(true);
 
