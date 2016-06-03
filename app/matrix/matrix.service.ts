@@ -14,7 +14,7 @@ export class MatrixService {
   public getMatrixImages(query:string):Observable<any> {
     return this.http.get(`${Config.api}/consumer/api/v1/things?${query}`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, places: parseRes.data};
+      return {err: parseRes.error, data: parseRes.data};
     });
   }
 }
