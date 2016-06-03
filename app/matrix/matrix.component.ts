@@ -34,10 +34,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public loader:boolean = false;
   public isDraw:boolean = false;
   public matrixServiceSubscrib:any;
-  public loader:boolean = false;
-  public isDraw:boolean = false;
   public filter:any;
-  public matrixServiceSubscrib:any;
   private placesArr:any[];
   private element:HTMLElement;
   private rowEtalon:number = 0;
