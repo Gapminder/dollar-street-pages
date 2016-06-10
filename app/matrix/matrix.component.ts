@@ -36,8 +36,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public matrixServiceSubscrib:any;
   public loader:boolean = false;
   public isDraw:boolean = false;
-  public filter:any;
+  public lowIncome:number;
+  public highIncome:number;
   public matrixServiceSubscrib:any;
+
   private placesArr:any[];
   private element:HTMLElement;
   private rowEtalon:number = 0;
@@ -51,7 +53,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private countries:string;
   private regions:string;
   private row:number;
-
   private placesVal:any;
   private zoom:number;
   private isDesktop:boolean = device.desktop();
@@ -74,20 +75,31 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     // todo: row void 0
     this.row = parseInt(this.routeParams.get('row'), 10);
     this.zoom = parseInt(this.routeParams.get('zoom'), 10);
+    this.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10);
+    this.highIncome = parseInt(this.routeParams.get('highIncome'), 10);
 
     if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-      this.zoom = 5;
+      this.zoom = 4;
     }
 
     if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
       this.zoom = 3;
     }
+
     this.thing = this.thing ? this.thing : '5477537786deda0b00d43be5';
-    this.zoom = this.zoom ? this.zoom : 5;
+    this.zoom = this.zoom ? this.zoom : 4;
     this.row = this.row ? this.row : 1;
     this.regions = this.regions ? this.regions : 'World';
+    this.lowIncome = this.lowIncome ? Math.abs(this.lowIncome) : 0;
+    this.highIncome = !this.highIncome || this.highIncome > 15000 ? 15000 : this.highIncome;
 
-    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}`;
+    if (this.lowIncome > this.highIncome) {
+      this.lowIncome = 0;
+    }
+
+    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+
+    this.urlChanged(this.query);
 
     document.onscroll = () => {
       this.stopScroll();
@@ -168,10 +180,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
 
-    if (this.clonePlaces) {
-      this.streetPlaces.next(this.placesVal);
-      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-    }
+    // if (this.clonePlaces) {
+    //   this.streetPlaces.next(this.placesVal);
+    //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+    // }
   }
 
   public getViewableRows(headerHeight:number):void {
@@ -197,26 +209,30 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (!this.isDesktop) {
       return;
     }
+
     this.hoverHeader.next(void 0);
   }
 
   /** to remove things like this */
   public urlChanged(options:any):void {
-    let {query} = options;
-    this.query = query;
-    let parseQuery = this.parseUrl(this.query);
+    let {url} = options;
 
+    if (url) {
+      this.query = url;
+    }
+
+    this.urlChangeService.replaceState(`/matrix`, `${this.query}`);
+
+    let parseQuery = this.parseUrl(this.query);
     this.thing = parseQuery.thing;
-    this.urlChangeService.replaceState(`/matrix`, `${query}`);
+    this.loader = false;
 
     if (this.matrixServiceSubscrib) {
       this.matrixServiceSubscrib.unsubscribe();
       this.matrixServiceSubscrib = void 0;
     }
 
-    query = query + '&lowIncome=' + this.filter.lowIncome + '&hightIncome=' + this.filter.hightIncome;
-
-    this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
+    this.matrixServiceSubscrib = this.matrixService.getMatrixImages(this.query)
       .subscribe((val:any) => {
         if (val.err) {
           console.log(val.err);
@@ -235,49 +251,17 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.clonePlaces = _.cloneDeep(this.filtredPlaces);
         this.zoom = +parseQuery.zoom;
         this.loader = true;
-
         this.streetPlaces.next(streetPlaces);
         this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-      });
-  }
 
-  public filterStreet(filter:{lowIncome:number, hightIncome:number}):void {
-    this.filter = filter;
-
-    if (!this.placesVal) {
-      return;
-    }
-
-    this.loader = false;
-
-    let query = this.query + '&lowIncome=' + this.filter.lowIncome + '&hightIncome=' + this.filter.hightIncome;
-
-    this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
-      .subscribe((val:any) => {
-        if (val.err) {
-          console.log(val.err);
-          return;
+        if (!this.filtredPlaces.length && (Number(parseQuery.lowIncome) !== 0 || Number(parseQuery.highIncome) !== 15000)) {
+          this.urlChanged({url: this.query.replace(/lowIncome\=\d*/, `lowIncome=0`).replace(/highIncome\=\d*/, `highIncome=15000`)});
         }
-
-        this.placesVal = val.data.zoomPlaces;
-        let streetPlaces = val.data.streetPlaces;
-
-        this.filtredPlaces = this.placesVal.filter((place:any):boolean=> {
-          return place;
-        });
-
-        this.matrixPlaces.next(this.filtredPlaces);
-        this.placesArr = val.data.zoomPlaces;
-        this.clonePlaces = _.cloneDeep(this.filtredPlaces);
-        this.loader = true;
-
-        this.streetPlaces.next(streetPlaces);
-        this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
       });
   }
 
   public changeZoom(zoom:any):void {
-    this.urlChanged({query: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
+    this.urlChanged({url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
   };
 
   public parseUrl(url:string):any {

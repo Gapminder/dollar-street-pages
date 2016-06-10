@@ -1,6 +1,7 @@
 matrix-images {
   display: block;
 }
+
 .matrix-header {
   z-index: 9995;
 }
@@ -66,7 +67,10 @@ matrix-images {
 }
 
 footer {
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 @media (max-width: 1200px) {
@@ -95,6 +99,18 @@ footer {
   }
 }
 
+@media (min-width: 768px) {
+  matrix-images {
+    padding-bottom: 230px;
+  }
+}
+
+@media (max-width: 767px) {
+  matrix-images {
+    padding-bottom: 190px;
+  }
+}
+
 @media (max-width: 600px) {
   .zoom-column {
     top: 107px;
@@ -104,5 +120,9 @@ footer {
   .zoom-column button {
     width: 26px;
     height: 26px;
+  }
+
+  matrix-images {
+    padding-bottom: 192px;
   }
 }

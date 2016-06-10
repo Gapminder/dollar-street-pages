@@ -4,15 +4,31 @@
       <div class="col-md-3 col-sm-3 f-social">
         <social-share-buttons></social-share-buttons>
       </div>
+
       <div class="col-md-6 col-sm-6 f-dollar-street">
-        <img src="/assets/img/logo-footer.png" alt="dollarstreet logo"/>
+        <img src="/assets/img/dollar-street.svg" alt="dollarstreet logo"/>
         <p class="logo_name">Dollar Street</p>
         <p>Powered by Gapminder</p>
       </div>
-      <div class="col-md-3 col-sm-3 f-creative-commons">
-        <a href="https://creativecommons.org/licenses/by/4.0" target="_blank">
-          <img src="/assets/img/cc-footer-licensia.svg" alt="">
-        </a>
+
+      <div class="col-md-3 col-sm-3 f-menu">
+        <ul>
+          <li>
+            <a [routerLink]="['Map']">Map</a>
+          </li>
+          <li>
+            <a [routerLink]="['Blog']">Blog</a>
+          </li>
+          <li>
+            <a [routerLink]="['Main']">First page</a>
+          </li>
+          <li>
+            <a [routerLink]="['Photographers']">Photographers</a>
+          </li>
+          <li>
+            <a [routerLink]="['Info']">About Dollar Street</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

@@ -9,8 +9,8 @@ export class StreetDrawService {
   public width:number;
   public height:number;
   public halfOfHeight:number;
-  public lowIncome:number = 0;
-  public hightIncome:number = 15000;
+  public lowIncome:number;
+  public highIncome:number;
   private poorest:string = 'Poorest';
   private richest:string = 'Richest';
   private scale:any;
@@ -49,7 +49,10 @@ export class StreetDrawService {
 
   private filter:Subject<any> = new Subject();
 
-  public init():this {
+  public init(lowIncome:any, highIncome:any):this {
+    this.lowIncome = lowIncome || 0;
+    this.highIncome = highIncome || 15000;
+
     this.width = parseInt(this.svg.style('width'), 10);
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
@@ -72,7 +75,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawScale(places:any, isShowSlider:boolean, lowIncome:number, hightIncome:number):this {
+  public drawScale(places:any, isShowSlider:boolean):this {
     if (!places || !places.length) {
       return this;
     }
@@ -230,11 +233,8 @@ export class StreetDrawService {
       });
 
     if (isShowSlider) {
-      this.lowIncome = lowIncome;
-      this.hightIncome = hightIncome;
-
-      this.drawLeftSlider(this.lowIncome ? this.scale(this.lowIncome) : (25), true);
-      this.drawRightSlider(this.hightIncome ? this.scale(this.hightIncome) - 5 : (this.width - 25), true);
+      this.drawLeftSlider(this.lowIncome && this.lowIncome > 3 ? this.scale(this.lowIncome) : (25), true);
+      this.drawRightSlider(this.highIncome && this.highIncome < 14975 ? this.scale(this.highIncome) : (this.width - 25), true);
     }
 
     if (this.mouseMoveSubscriber) {
@@ -283,7 +283,8 @@ export class StreetDrawService {
         e.preventDefault();
 
         this.sliderLeftMove = this.sliderRightMove = false;
-        this.filter.next({lowIncome: Math.round(this.lowIncome), hightIncome: Math.round(this.hightIncome)});
+
+        this.filter.next({lowIncome: Math.round(this.lowIncome), highIncome: Math.round(this.highIncome)});
       });
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
@@ -291,7 +292,7 @@ export class StreetDrawService {
         return this.sliderLeftMove || this.sliderRightMove;
       }).subscribe(()=> {
         this.sliderLeftMove = this.sliderRightMove = false;
-        this.filter.next({lowIncome: Math.round(this.lowIncome), hightIncome: Math.round(this.hightIncome)});
+        this.filter.next({lowIncome: Math.round(this.lowIncome), highIncome: Math.round(this.highIncome)});
       });
 
     return this;
@@ -452,7 +453,7 @@ export class StreetDrawService {
       .attr('x', x + 9)
       .attr('width', this.width - x - 1);
 
-    this.hightIncome = this.scale.invert(x);
+    this.highIncome = this.scale.invert(x);
 
     if (init) {
       return this;
@@ -503,8 +504,8 @@ export class StreetDrawService {
     this.rightScrollOpacity = void 0;
     this.leftScrollText = void 0;
     this.rightScrollText = void 0;
-    this.hightIncome = 15000;
-    this.lowIncome = 0;
+    // this.highIncome = 15000;
+    // this.lowIncome = 0;
 
     this.svg.selectAll('*').remove('*');
 
@@ -517,7 +518,7 @@ export class StreetDrawService {
     this.svg.selectAll('text.scale-label').attr('fill', '#767d86');
 
     let incomeL = Math.ceil(this.lowIncome ? this.lowIncome : 0);
-    let incomeR = Math.ceil(this.hightIncome ? this.hightIncome : 15000);
+    let incomeR = Math.ceil(this.highIncome ? this.highIncome : 15000);
 
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);

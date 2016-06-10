@@ -56,8 +56,7 @@ describe('PlaceComponent', () => {
     context.place = '54b6866a38ef07015525f5be';
     context.init = false;
     spyOn(context, 'urlChanged').and.callThrough();
-    context.urlChanged({_id: '5477537786deda0b00d43eee'});
-    expect(context.activeThing._id).toEqual('5477537786deda0b00d43eee');
+    context.urlChanged({url: 'thing=5477537786deda0b00d43eee&place=54b6866a38ef07015525f5be'});
     context.place = '54b6866a38ef07015525f5be';
     expect(context.thing).toEqual('5477537786deda0b00d43eee');
     expect(context.getStreetPlaces.calls.argsFor(1)).toEqual([`thing=5477537786deda0b00d43eee&place=54b6866a38ef07015525f5be&isSearch=true`]);

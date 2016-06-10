@@ -1,0 +1,40 @@
+<div id="countries-filter"
+     *ngIf="activeCountries"
+     [ngClass]="{'open-countries-filter': isOpenCountriesFilter}">
+  <div class="countries-filter-button"
+       (click)="openCountriesFilter(isOpenCountriesFilter)">
+    <span>{{activeCountries}}</span>
+    <span class="arrow"></span>
+  </div>
+
+  <div class="countries-filter-container">
+    <div class="regions-container" *ngFor="let location of locations">
+      <h3 class="title"
+          (click)="selectRegions(location)"
+          [ngClass]="{active: selectedRegions.indexOf(location.region) !== -1}">
+        <span class="selected">
+          <img src="/assets/img/check.png" alt="">
+        </span>
+        {{location.region}}
+      </h3>
+
+      <div class="countries-container">
+        <div class="country-content"
+             *ngFor="let country of location.countries"
+             [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
+             (click)="selectCountries(country, location.region)">
+          <span class="selected">
+            <img src="/assets/img/check.png" alt="">
+          </span>
+
+          <span class="name">{{country.country}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button type="button" (click)="goToLocation()">Apply</button>
+      <button type="button" (click)="closeFilter()">Close</button>
+    </div>
+  </div>
+</div>

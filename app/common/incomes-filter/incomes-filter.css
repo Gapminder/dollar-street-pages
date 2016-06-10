@@ -1,0 +1,100 @@
+#incomes-filter {
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+}
+
+#incomes-filter .incomes-filter-button {
+  background-color: #ccc;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+  min-width: 150px;
+  overflow: hidden;
+  text-align: center;
+  padding: 5px 20px 5px 5px;
+  position: relative;
+  cursor: pointer;
+}
+
+#incomes-filter .incomes-filter-button span.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #000;
+
+  position: absolute;
+  top: 11px;
+  right: 5px;
+}
+
+#incomes-filter.open-incomes-filter .incomes-filter-button span.arrow {
+  border-bottom: 8px solid #000;
+  border-top: 0 solid transparent;
+
+  position: absolute;
+  top: 11px;
+  right: 5px;
+}
+
+#incomes-filter .incomes-filter-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 350px;
+  background-color: #374551;
+  z-index: 10;
+  overflow: hidden;
+  display: none;
+}
+
+#incomes-filter.open-incomes-filter .incomes-filter-container {
+  display: block;
+}
+
+#incomes-filter .range-container {
+  padding: 15px;
+  overflow: hidden;
+}
+
+#incomes-filter .range-container .range-content {
+  width: calc(50% - 7.5px);
+  float: left;
+}
+
+#incomes-filter .range-container .range-content:first-child {
+  margin-right: 15px;
+}
+
+#incomes-filter .button-container {
+  width: 100%;
+  float: none;
+  clear: both;
+  padding: 0 15px 15px;
+  text-align: right;
+}
+
+#incomes-filter .button-container button {
+  border: 1px solid #FACD28;
+  background: none;
+  box-shadow: none;
+  border-radius: 2px;
+  color: #fff;
+  padding: 5px 20px;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+#incomes-filter .button-container button:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+#incomes-filter input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+#incomes-filter input::-webkit-outer-spin-button,
+#incomes-filter input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
