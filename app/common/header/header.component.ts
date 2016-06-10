@@ -3,8 +3,10 @@ import {RouterLink, Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
 import {MainMenuComponent} from '../menu/menu.component';
-import {SearchComponent} from '../search/search.component';
 import {PlaceMapComponent} from '../place-map/place-map.component';
+import {ThingsFilterComponent} from '../things-filter/things-filter.component';
+import {IncomesFilterComponent} from '../incomes-filter/incomes-filter.component';
+import {CountriesFilterComponent} from '../countries-filter/countries-filter.component';
 
 let device = require('device.js')();
 
@@ -15,7 +17,7 @@ let style = require('./header.css');
   selector: 'header',
   template: tpl,
   styles: [style],
-  directives: [SearchComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
+  directives: [ThingsFilterComponent, IncomesFilterComponent, CountriesFilterComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
@@ -27,7 +29,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   protected hoverPlace:Observable<any>;
   @Input('chosenPlaces')
   protected chosenPlaces:Observable<any>;
+  protected isOpenFilter:boolean = false;
   protected isDesktop:boolean = device.desktop();
+  protected header:any = {};
+  protected math:any;
   @Output()
   private filter:EventEmitter<any> = new EventEmitter();
   private activeThing:any;
@@ -39,11 +44,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private placeComponent:boolean;
   private mapComponent:boolean;
   private headerServiceSubscribe:any;
+  private headerTitleServiceSubscribe:any;
 
   public constructor(@Inject('HeaderService') headerService:any,
-                     @Inject(Router) router:Router) {
+                     @Inject(Router) router:Router,
+                     @Inject('Math') math:any) {
     this.headerService = headerService;
     this.router = router;
+    this.math = math;
 
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
@@ -58,14 +66,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
         this.defaultThing = res.data;
       });
+
+    if (this.placeComponent) {
+      this.headerTitleServiceSubscribe = this
+        .headerService
+        .getPlaceHeader(this.query)
+        .subscribe((res:any) => {
+          if (res.err) {
+            return res.err;
+          }
+
+          this.header = res.data;
+        });
+    }
   }
 
   public ngOnDestroy():void {
     this.headerServiceSubscribe.unsubscribe();
+
+    if (this.headerTitleServiceSubscribe) {
+      this.headerTitleServiceSubscribe.unsubscribe();
+    }
   }
 
-  public urlTransfer(url:string):void {
-    this.filter.emit(url);
+  public urlTransfer(data:any):void {
+    this.filter.emit(data);
   }
 
   public activeThingTransfer(thing:any):void {

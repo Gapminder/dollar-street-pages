@@ -19,7 +19,6 @@ let device = require('device.js')();
 })
 
 export class MapComponent implements OnInit, OnDestroy {
-
   public resizeSubscribe:any;
   public mapServiceSubscribe:any;
   public math:any;
@@ -71,28 +70,13 @@ export class MapComponent implements OnInit, OnDestroy {
   public ngOnInit():void {
     this.init = true;
     this.thing = this.routeParams.get('thing');
-    this.urlChanged(this.thing);
+    this.thing = this.thing ? this.thing : '5477537786deda0b00d43be5';
+
+    this.urlChanged({url: `thing=${this.thing}`});
   }
 
-  public urlChanged(thing:any):void {
-    this.thing = thing;
-    let query = `thing=${this.thing}`;
-
-    if (!thing) {
-      query = '';
-    }
-
-    if (thing && thing._id) {
-      if (this.init) {
-        this.init = false;
-
-        return;
-      }
-
-      query = `thing=${this.thing._id}`;
-    }
-
-    this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
+  public urlChanged(options:any):void {
+    this.mapServiceSubscribe = this.mapService.getMainPlaces(options.url)
       .subscribe((res:any):any => {
         if (res.err) {
           return res.err;

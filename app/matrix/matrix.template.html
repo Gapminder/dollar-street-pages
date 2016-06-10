@@ -1,20 +1,22 @@
 <div class="matrix-header main-header">
   <header [query]="query"
-          [hoverPlace]="hoverPlace"
-          (filter)="urlChanged($event)" [thing]="thing"></header>
-
-  <street [places]="streetPlaces"
           [thing]="thing"
-          [chosenPlaces]="chosenPlaces"
           [hoverPlace]="hoverPlace"
-          (filterStreet)="filterStreet($event)"></street>
+          (filter)="urlChanged($event)"></header>
+
+  <street [query]="query"
+          [thing]="thing"
+          [places]="streetPlaces"
+          [hoverPlace]="hoverPlace"
+          [chosenPlaces]="chosenPlaces"
+          (filterStreet)="urlChanged($event)"></street>
 </div>
 
-<matrix-images [places]="matrixPlaces"
+<matrix-images [zoom]="zoom"
                [thing]="thing"
-               [zoom]="zoom"
-               (hoverPlace)="hoverPlaceS($event)"
-               [padding]="padding"></matrix-images>
+               [padding]="padding"
+               [places]="matrixPlaces"
+               (hoverPlace)="hoverPlaceS($event)"></matrix-images>
 
 <div class="zoom-column pull-right"
      *ngIf="filtredPlaces.length">
@@ -33,4 +35,5 @@
 </div>
 
 <footer></footer>
+
 <loader [hidden]="loader"></loader>
