@@ -101,13 +101,13 @@ footer {
 
 @media (min-width: 768px) {
   matrix-images {
-    padding-bottom: 230px;
+    padding-bottom: 145px;
   }
 }
 
 @media (max-width: 767px) {
   matrix-images {
-    padding-bottom: 190px;
+    padding-bottom: 325px;
   }
 }
 
@@ -120,9 +120,5 @@ footer {
   .zoom-column button {
     width: 26px;
     height: 26px;
-  }
-
-  matrix-images {
-    padding-bottom: 192px;
   }
 }

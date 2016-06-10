@@ -495,19 +495,13 @@ footer {
 
 @media (min-width: 768px) {
   #places {
-    padding-bottom: 323px;
+    padding-bottom: 240px;
   }
 }
 
 @media (max-width: 767px) {
   #places {
-    padding-bottom: 244px;
-  }
-}
-
-@media (max-width: 600px) {
-  #places {
-    padding-bottom: 237px;
+    padding-bottom: 350px;
   }
 }
 
