@@ -28,22 +28,22 @@ describe('Main Page test', () => {
     footer.checkFooterText();
     footer.checkFooterImages();
   });
-  using(dataProvider.mainPageTextHeader, (data, description) => {
+  using(dataProvider.mainPageTextHeader, (data:any, description:String) => {
     it('Check the ' + description + ' on header Main Page' , () => {
       expect($(data.element).getText()).toEqual(data.actualResult);
     });
   });
-  using(dataProvider.mainPageBooleanHeader, (data, description) => {
+  using(dataProvider.mainPageBooleanHeader, (data:any, description:String) => {
     it('Check the ' + description + ' on header Main Page' , () => {
       expect($(data.element).isDisplayed()).toBeTruthy();
     });
   });
-  using(dataProvider.mainPageTextSubHeader, (data, description) => {
+  using(dataProvider.mainPageTextSubHeader, (data:any, description:String) => {
     it('Check the ' + description + ' on sub-header Main Page' , () => {
       expect($(data.textCSS).getText()).toEqual(data.actualResult);
     });
   });
-  using(dataProvider.mainPageBooleanImages, (data, description) => {
+  using(dataProvider.mainPageBooleanImages, (data:any, description:String) => {
     it('Check the ' + description + ' on image content Main Page' , () => {
       for (let i = 0; i < data.numberElems; i++) {
         expect(element.all(by.css(data.imgCSS)).get(i).isDisplayed()).toBeTruthy();
@@ -58,7 +58,7 @@ describe('Photographer Page test', () => {
     browser.wait(abstractPage.getEC.visibilityOf(photographersPage.getLastPhotographer()), abstractPage.getTimeout, photographersPage.setErrorMessage());
   });
   afterEach(() => {
-    using (dataProvider.photographerPageBoolean, (data) => {
+    using (dataProvider.photographerPageBoolean, (data:any) => {
       expect($(data.photographerDataCSS).isDisplayed()).toBeTruthy();
     });
   });
@@ -66,7 +66,7 @@ describe('Photographer Page test', () => {
     footer.checkFooterText();
     footer.checkFooterImages();
   });
-  using(dataProvider.photographersPageField, (data, description) => {
+  using(dataProvider.photographersPageField, (data:any, description:String) => {
     it('Check ' + description + ' on Photographer Page' , () => {
       photographersPage = new PhotographersPage();
       photographersPage.getSearchButton().sendKeys(data.photographerQuery + '\n');
@@ -87,7 +87,7 @@ describe('Map Page test', () => {
     footer.checkFooterText();
     footer.checkFooterImages();
   });
-  using(dataProvider.mapPageCountry, (data, description) => {
+  using(dataProvider.mapPageCountry, (data:any, description:String) => {
     it('Check ' + description + ' on Map page', () => {
       expect(data.element().getText()).toEqual(data.actualResult);
     });
@@ -104,7 +104,7 @@ describe('Photographers Page test', () => {
     footer.checkFooterText();
     footer.checkFooterImages();
   });
-  using(dataProvider.photographersPageSearch, (data, description) => {
+  using(dataProvider.photographersPageSearch, (data:any, description:String) => {
     it('Check ' + description + ' on Photographers page', () => {
       photographersPage = new PhotographersPage();
       photographersPage.getSearchButton().sendKeys(data.countryQuery);
@@ -124,12 +124,12 @@ describe('Ambassadors Page test', () => {
     footer.checkFooterText();
     footer.checkFooterImages();
   });
-  using (dataProvider.ambassadorsPageText, (data, description) => {
+  using (dataProvider.ambassadorsPageText, (data:any, description:String) => {
     it ('Check ' + description + ' on Ambassadors Page', () => {
       expect(data.element().getText()).toEqual(data.actualResult);
     });
   });
-  using (dataProvider.ambassadorsPageBoolean, (data, description) => {
+  using (dataProvider.ambassadorsPageBoolean, (data:any, description:String) => {
     it ('Check ' + description + ' on Ambassadors Page', () => {
       expect(data.element().isDisplayed()).toBeTruthy();
     });
@@ -144,30 +144,30 @@ describe('Matrix Page test', () => {
     footer.checkFooterText();
     footer.checkFooterImages();
   });
-  using (dataProvider.matrixPageText, (data, description) => {
+  using (dataProvider.matrixPageText, (data:any, description:String) => {
     it ('Check ' + description + ' on Matrix Page', () => {
       expect(data.element().getText()).toEqual(data.actualResult);
     });
   });
-  using (dataProvider.matrixPageBoolean, (data, description) => {
+  using (dataProvider.matrixPageBoolean, (data:any, description:String) => {
     it ('Check ' + description + ' on Matrix Page', () => {
       expect(data.element().isDisplayed()).toBeTruthy();
     });
   });
-  using (dataProvider.matrixPageImages, (data, description) => {
+  using (dataProvider.matrixPageImages, (data:any, description:String) => {
     it ('Check ' + description + ' on Matrix Page', () => {
       for (let i = 0; i < 15; i++) {
         expect(data.element().get(i).isDisplayed()).toBeTruthy();
       }});
   });
-  using (dataProvider.matrixPageSearchBoolean, (data, description) => {
+  using (dataProvider.matrixPageSearchBoolean, (data:any, description:String) => {
     it ('Check ' + description + ' on Matrix Page', () => {
       matrixPage = new MatrixPage();
       matrixPage.getGlass().click();
       expect(data.element().isPresent()).toBeTruthy();
     });
   });
-  using (dataProvider.matrixPageSearchText, (data, description) => {
+  using (dataProvider.matrixPageSearchText, (data:any, description:String) => {
     it ('Check ' + description + ' on Matrix Page', () => {
       matrixPage = new MatrixPage();
       matrixPage.getGlass().click();
@@ -175,7 +175,7 @@ describe('Matrix Page test', () => {
       matrixPage.getGlass().click();
     });
   });
-  using (dataProvider.matrixPageText, (data, description) => {
+  using (dataProvider.matrixPageText, (data:any, description:String) => {
     it ('Check ' + description + ' on Matrix Page after selection thing', () => {
       matrixPage = new MatrixPage();
       browser.ignoreSynchronization = false;
