@@ -1,0 +1,38 @@
+<div class="image-block">
+  <div class="row f-h">
+    <div class="col-md-8 f-h text-c bg-c-bl">
+      <img class="f-h" src="{{imageUrl}}">
+    </div>
+    <div class="col-md-4 f-h text-c">
+      Family Name:::
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          Family info:::
+        </div>
+        <div class="col-md-6">
+          <b>{{country}}</b>
+          <place-map [hoverPlace]="mapData">
+          </place-map>
+        </div>
+      </div>
+      <br>
+      <div class="text-c">
+        MiniStreet:::
+        <street-mini
+                [chosenPlace]="streetMiniData"
+                [activeIncomes]="activeIncomes">
+        </street-mini>
+      </div>
+      <br>
+      <div class="text-c">
+        Family Related Things:::
+      </div>
+      <br>
+      <div class="text-c">
+        Potential places:::
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
