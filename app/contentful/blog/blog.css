@@ -68,21 +68,17 @@ footer {
 
 @media (min-width: 768px) {
   #articles-container {
-    padding-bottom: 323px;
+    padding-bottom: 240px;
   }
 }
 
 @media (max-width: 767px) {
   #article-content {
-    padding-bottom: 244px;
+    padding-bottom: 350px;
   }
 }
 
 @media (max-width: 600px) {
-  #articles-container {
-    padding-bottom: 237px;
-  }
-
   #articles-container.container {
     padding-top: 60px;
   }

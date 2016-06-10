@@ -16,21 +16,17 @@ footer {
 
 @media (min-width: 768px) {
   #article-content {
-    padding-bottom: 323px;
+    padding-bottom: 240px;
   }
 }
 
 @media (max-width: 767px) {
   #article-content {
-    padding-bottom: 244px;
+    padding-bottom: 350px;
   }
 }
 
 @media (max-width: 600px) {
-  #article-content {
-    padding-bottom: 237px;
-  }
-
   #article-content.container {
     padding-top: 60px;
   }

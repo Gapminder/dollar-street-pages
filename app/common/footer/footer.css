@@ -108,4 +108,9 @@
   .share-button-container > div {
     padding: 2px;
   }
+
+  .f-menu ul {
+    text-align: center;
+    font-size: 14px;
+  }
 }
