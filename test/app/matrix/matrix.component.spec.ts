@@ -114,7 +114,10 @@ describe('MatrixComponent', () => {
     context.query = 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000';
     context.row = 1;
     context.changeZoom(4);
-    expect(context.urlChanged.calls.argsFor(0)).toEqual([{url: 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=4&row=1&lowIncome=0&highIncome=15000'}]);
+    expect(context.urlChanged.calls.argsFor(0)).toEqual([{
+      url: 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=4&row=1&lowIncome=0&highIncome=15000',
+      isZoom: true
+    }]);
   });
   it(' parseUrl', () => {
     spyOn(context, 'parseUrl').and.callThrough();
