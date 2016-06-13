@@ -6,7 +6,7 @@
     <img *ngIf="activeThing?.iconDark"
          [src]="activeThing?.iconDark"
          alt="Icon">
-    <span>{{activeThing?.thingName}}</span>
+    <span>{{activeThing?.plural || activeThing?.thingName}}</span>
     <span class="arrow"></span>
 
     <div class="thing-pop-up" *ngIf="activeThing.shortDescription && !isOpenThingsFilter">

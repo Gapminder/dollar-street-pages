@@ -215,13 +215,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   /** to remove things like this */
   public urlChanged(options:any):void {
-    let {url} = options;
+    let {url, isZoom} = options;
 
     if (url) {
-      this.query = url;
+      this.query = isZoom ? url.replace(/row\=\d*/, 'row=1') : url;
+      this.row = isZoom ? this.row : 1;
     }
 
-    this.urlChangeService.replaceState(`/matrix`, `${this.query}`);
+    this.urlChangeService.replaceState('/matrix', this.query);
 
     let parseQuery = this.parseUrl(this.query);
     this.thing = parseQuery.thing;
@@ -257,11 +258,22 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         if (!this.filtredPlaces.length && (Number(parseQuery.lowIncome) !== 0 || Number(parseQuery.highIncome) !== 15000)) {
           this.urlChanged({url: this.query.replace(/lowIncome\=\d*/, `lowIncome=0`).replace(/highIncome\=\d*/, `highIncome=15000`)});
         }
+
+        if (!isZoom) {
+          if (document.body.scrollTop) {
+            document.body.scrollTop = 0;
+          } else {
+            document.documentElement.scrollTop = 0;
+          }
+        }
       });
   }
 
   public changeZoom(zoom:any):void {
-    this.urlChanged({url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
+    this.urlChanged({
+      url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`),
+      isZoom: true
+    });
   };
 
   public parseUrl(url:string):any {
