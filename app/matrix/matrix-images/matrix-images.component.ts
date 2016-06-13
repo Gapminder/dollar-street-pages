@@ -2,7 +2,6 @@ import {Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDe
 import {Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
-
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
 
 const device = require('device.js')();
