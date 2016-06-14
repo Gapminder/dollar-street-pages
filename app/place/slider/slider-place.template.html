@@ -23,14 +23,12 @@
                 <span>{{activeThing.thingName}}</span>
               </div>
             </div>
-            <div class="slide-sidebar">
-              <img *ngIf="image.family"
-                   [src]="image.family.background"
+            <div *ngIf="image.family" class="slide-sidebar">
+              <img [src]="image.family.background"
                    [routerLink]="['Place', {thing: image.family.thing, place: image._id, image: image.family._id}]"
                    alt="Family portrait">
 
-              <img *ngIf="image.house"
-                   [src]="image.house.background"
+              <img [src]="image.house.background"
                    [routerLink]="['Place', {thing: image.house.thing, place: image._id, image: image.house._id}]"
                    alt="House type">
             </div>
