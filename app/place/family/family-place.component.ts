@@ -42,7 +42,10 @@ export class FamilyPlaceComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy():void {
     this.familyPlaceServiceSubscribe.unsubscribe();
-    this.chosenPlacesSubscribe.unsubscribe();
+
+    if (this.chosenPlacesSubscribe) {
+      this.chosenPlacesSubscribe.unsubscribe();
+    }
   }
 
   nextImages(limit:number, placeId:string):void {
