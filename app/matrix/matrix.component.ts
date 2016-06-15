@@ -33,9 +33,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public hoverHeader:Subject<any> = new Subject();
   public loader:boolean = false;
   public isDraw:boolean = false;
-  public matrixServiceSubscrib:any;
-  public loader:boolean = false;
-  public isDraw:boolean = false;
   public lowIncome:number;
   public highIncome:number;
   public matrixServiceSubscrib:any;
@@ -234,7 +231,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(this.query)
       .subscribe((val:any) => {
         if (val.err) {
-          console.log(1111111, val.err);
+          console.log(val.err);
           return;
         }
 

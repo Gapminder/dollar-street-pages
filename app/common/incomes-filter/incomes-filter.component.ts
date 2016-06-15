@@ -12,12 +12,12 @@ let style = require('./incomes-filter.css');
 export class IncomesFilterComponent implements OnChanges {
   protected isOpenIncomesFilter:boolean = false;
   protected title:string = 'all incomes';
-  protected range:{min:number; max:number;} = {};
+  protected range:{min:number; max:number;} = {min: 0, max: 0};
 
   @Input()
   protected activeFilter:string;
 
-  private cloneRange:{min:number; max:number;} = {};
+  private cloneRange:{min:number; max:number;} = {min: 0, max: 0};
 
   @Input()
   private url:string;
