@@ -1,13 +1,15 @@
 <div id="things-filter"
      *ngIf="activeThing.thingName"
      [ngClass]="{'open-things-filter': isOpenThingsFilter}">
-  <div class="things-filter-button"
-       (click)="openThingsFilter(isOpenThingsFilter)">
-    <img *ngIf="activeThing?.iconDark"
-         [src]="activeThing?.iconDark"
-         alt="Icon">
-    <span>{{activeThing?.plural || activeThing?.thingName}}</span>
-    <span class="arrow"></span>
+  <div class="things-filter-button">
+    <div class="things-filter-button-content"
+         (click)="openThingsFilter(isOpenThingsFilter)">
+      <img *ngIf="activeThing?.iconDark"
+           [src]="activeThing?.iconDark"
+           alt="Icon">
+      <span>{{placeComponent ? activeThing?.thingName : activeThing?.plural || activeThing?.thingName}}</span>
+      <span class="arrow"></span>
+    </div>
 
     <div class="thing-pop-up" *ngIf="activeThing.shortDescription && !isOpenThingsFilter">
       <span></span>

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnChanges, Inject, Input, Output, EventEmitter} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
+import {RouterLink, Router} from '@angular/router-deprecated';
 
 import {ThingsFilterPipe} from './things-filter.pipe';
 
@@ -20,15 +20,20 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected activeThing:any = {};
   protected search:{text:string;} = {text: ''};
   protected isOpenThingsFilter:boolean = false;
+  protected placeComponent:boolean;
   @Input()
   private url:string;
   @Output()
   private selectedFilter:EventEmitter<any> = new EventEmitter();
   private thingsFilterService:any;
   private thingsFilterServiceSubscribe:any;
+  private router:Router;
 
-  public constructor(@Inject('ThingsFilterService') thingsFilterService:any) {
+  public constructor(@Inject(Router) router:Router,
+                     @Inject('ThingsFilterService') thingsFilterService:any) {
     this.thingsFilterService = thingsFilterService;
+    this.router = router;
+    this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
   }
 
   protected openThingsFilter(isOpenThingsFilter:boolean):void {
