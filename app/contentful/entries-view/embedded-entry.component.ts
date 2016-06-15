@@ -16,7 +16,6 @@ import {Component, Input} from '@angular/core';
 })
 
 export class EmbeddedEntryComponent {
-  // noinspection TsLint
   @Input()
-  private entry;
+  protected entry:any;
 }

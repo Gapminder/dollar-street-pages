@@ -1,7 +1,7 @@
-var path = require('path');
+let path = require('path');
 
 // Helper functions
-var _root = path.resolve(__dirname, '..');
+let _root = path.resolve(__dirname, '..');
 
 console.log('root directory:', root());
 
@@ -31,9 +31,9 @@ function prependExt(extensions, args) {
 
 function packageSort(packages) {
   // packages = ['polyfills', 'vendor', 'main']
-  var len = packages.length - 1;
-  var first = packages[0];
-  var last = packages[len];
+  let len = packages.length - 1;
+  let first = packages[0];
+  let last = packages[len];
   return function sort(a, b) {
     // polyfills always first
     if (a.names[0] === first) {

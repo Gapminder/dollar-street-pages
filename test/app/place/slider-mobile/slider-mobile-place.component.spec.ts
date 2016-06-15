@@ -1,14 +1,5 @@
-import {
-  it,
-  describe,
-  async,
-  inject,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
+import {it, describe, async, inject, beforeEachProviders, beforeEach} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
@@ -20,7 +11,9 @@ import {SliderMobilePlaceComponent} from '../../../../app/place/slider-mobile/sl
 interface ObjectCtor extends ObjectConstructor {
   assign(target:any, ...sources:any[]):any;
 }
+
 declare var Object:ObjectCtor;
+
 export let assign = Object.assign ? Object.assign : function (target:any, ...sources:any[]):any {
   return;
 };
@@ -30,32 +23,35 @@ class Image {
     fn();
   }
 }
+
 let ImageMock = {
   Image: Image
 };
+
 let setTimeoutMock = {
   setTimeout: (fn, time) => {
     fn();
   }
 };
+
 assign(window, ImageMock);
 assign(window, setTimeoutMock);
-/***************/
 
 describe('SliderPlaceComponent', () => {
   let controllSlider = new MockService();
-  let streetPlaces = new MockService();
+  let places = new MockService();
   let currentPlace = new MockService();
   controllSlider.fakeResponse = 1;
-  streetPlaces.fakeResponse = streetPlacesData;
-  // currentPlace.fakeResponse = place;
+  places.fakeResponse = streetPlacesData;
   let mockCommonDependency = new MockCommonDependency();
+
   beforeEachProviders(() => {
-    return [
-      mockCommonDependency.getProviders()
-    ];
+    return [mockCommonDependency.getProviders()];
   });
-  let context, fixture;
+
+  let context;
+  let fixture;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb.createAsync(SliderMobilePlaceComponent).then((fixtureInst:any) => {
       fixture = fixtureInst;
@@ -68,7 +64,7 @@ describe('SliderPlaceComponent', () => {
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;
-    context.streetPlaces = streetPlaces;
+    context.places = places;
     context.routeParams.set('thing', '5477537786deda0b00d43be5');
     context.routeParams.set('image', '54b6866a38ef07015525f5be');
     context.routeParams.set('place', '54b6862f3755cbfb54asda3cb');
@@ -81,20 +77,20 @@ describe('SliderPlaceComponent', () => {
     expect(context.images.length).toEqual(3);
     expect(context.chosenPlace.income).toEqual(133);
     controllSlider.toInitState();
-    streetPlaces.toInitState();
+    places.toInitState();
   });
 
   it('must destroy', ()=> {
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;
-    context.streetPlaces = streetPlaces;
+    context.places = places;
     context.routeParams.set('thing', '5477537786deda0b00d43be5');
     context.routeParams.set('image', '54b6866a38ef07015525f5be');
     context.routeParams.set('place', '54b6862f3755cbfb54asda3cb');
     fixture.detectChanges();
     fixture.destroy();
-    expect(streetPlaces.countOfSubscribes).toEqual(0);
+    expect(places.countOfSubscribes).toEqual(0);
     expect(controllSlider.countOfSubscribes).toEqual(0);
   });
 
@@ -102,7 +98,7 @@ describe('SliderPlaceComponent', () => {
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;
-    context.streetPlaces = streetPlaces;
+    context.places = places;
     context.routeParams.set('thing', '5477537786deda0b00d43be5');
     context.routeParams.set('image', '54b6866a38ef07015525f5be');
     context.routeParams.set('place', '54b6862f3755cbfb54asda3cb');
@@ -118,7 +114,7 @@ describe('SliderPlaceComponent', () => {
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;
-    context.streetPlaces = streetPlaces;
+    context.places = places;
     context.routeParams.set('thing', '5477537786deda0b00d43be5');
     context.routeParams.set('image', '54b6866a38ef07015525f5be');
     context.routeParams.set('place', '54b6862f3755cbfb54asda3cb');

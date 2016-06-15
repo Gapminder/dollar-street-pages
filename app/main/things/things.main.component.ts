@@ -16,12 +16,12 @@ export class ThingsMainComponent implements OnInit, OnDestroy {
   public things:any[] = [];
   private thingsMainServiceSubscribe:any;
 
-  public constructor(@Inject('ThingsMainService') thingsMainService) {
+  public constructor(@Inject('ThingsMainService') thingsMainService:any) {
     this.thingsMainService = thingsMainService;
   }
 
   public ngOnInit():void {
-    this.thingsMainServiceSubscribe = this.thingsMainService.getMainThings({})
+    this.thingsMainServiceSubscribe = this.thingsMainService.getMainThings()
       .subscribe((res:any) => {
         if (res.err) {
           return res.err;
@@ -31,7 +31,7 @@ export class ThingsMainComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():any {
     this.thingsMainServiceSubscribe.unsubscribe();
   }
 }

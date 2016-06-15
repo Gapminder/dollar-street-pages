@@ -18,7 +18,7 @@ import {EmbeddedEntryComponent} from './embedded-entry.component';
 
 export class EntriesViewComponent implements OnInit {
   @Input()
-  private entries:any[];
+  protected entries:any[];
 
   public ngOnInit():void {
     for (let entry of this.entries) {

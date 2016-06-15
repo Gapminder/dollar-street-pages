@@ -14,18 +14,18 @@ let style = require('./photographer-places.css');
 })
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
-  @Input()
-  private photographerId:string;
-
-  private places:any = [];
-  private familyThingId:string;
-  private photographerPlacesService:any;
   public loader:boolean = false;
   public photographerPlacesServiceSubscribe:any;
   public math:any;
 
-  public constructor(@Inject('PhotographerPlacesService') photographerPlacesService,
-  @Inject('Math') math) {
+  @Input()
+  private photographerId:string;
+  private places:any = [];
+  private familyThingId:string;
+  private photographerPlacesService:any;
+
+  public constructor(@Inject('PhotographerPlacesService') photographerPlacesService:any,
+                     @Inject('Math') math:any) {
     this.photographerPlacesService = photographerPlacesService;
     this.math = math;
   }
@@ -44,7 +44,7 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     this.photographerPlacesServiceSubscribe.unsubscribe();
   }
 }
