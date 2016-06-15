@@ -219,7 +219,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val:any) => {
         if (val.err) {
-          console.log(val.err);
           return;
         }
 
@@ -255,7 +254,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(query)
       .subscribe((val:any) => {
         if (val.err) {
-          console.log(val.err);
           return;
         }
 

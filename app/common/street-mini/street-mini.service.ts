@@ -41,7 +41,7 @@ export class StreetMiniDrawService {
     this.scale = d3
       .scale.log()
       .domain([1, 30, 300, 3000, 15000])
-      .range([0, 0.07 * this.width, 0.5 * this.width, 0.92 * this.width, 0.99 * this.width]);
+      .range([20, 0.07 * this.width, 0.5 * this.width, 0.92 * this.width, 0.97 * this.width]);
     return this;
   }
 
@@ -55,14 +55,11 @@ export class StreetMiniDrawService {
     return this;
   };
 
-  public drawScale(places:any, isShowSlider:boolean, lowIncome:number, hightIncome:number):this {
-    // console.log('I am in draw Scale places', places);
-    // console.log('I am in draw Scale isShowSlider', isShowSlider);
-    // console.log('I am in draw Scale lowIncome', lowIncome);
-    // console.log('I am in draw Scale hightIncome', hightIncome);
+  public drawScale(places:any, lowestIncome:number, highestIncome:number):this {
     if (!places || !places.length) {
       return this;
     }
+
     d3.svg
       .axis()
       .scale(this.scale)
@@ -72,29 +69,51 @@ export class StreetMiniDrawService {
       })
       .tickSize(6, 0);
 
-    // this.svg
-    //   .selectAll('text.poorest')
-    //   .data([this.poorest])
-    //   .enter()
-    //   .append('text')
-    //   .attr('class', 'poorest')
-    //   .text(this.poorest)
-    //   .attr('x', 0)
-    //   .attr('y', this.height - 5)
-    //   .attr('fill', '#767d86');
-    //
-    // this.svg
-    //   .selectAll('text.richest')
-    //   .data([this.richest])
-    //   .enter()
-    //   .append('text')
-    //   .attr('class', 'richest')
-    //   .text(this.richest)
-    //   .attr('x', this.width - 40)
-    //   .attr('y', this.height - 5)
-    //   .attr('fill', '#767d86');
-
     if (isDesktop) {
+      // this.svg
+      //   .selectAll('text')
+      //   .data('lowestIncome')
+      //   .enter()
+      //   .append('text')
+      //   .text('$ '+ lowestIncome)
+      //   .attr('x', 0)
+      //   .attr('y', this.height - 15)
+      //   .attr('fill', '#767d86');
+      //
+      // this.svg
+      //   .selectAll('text')
+      //   .data('highestIncome')
+      //   .enter()
+      //   .append('text')
+      //   .text('$ '+ highestIncome)
+      //   .attr('x', this.width - 40)
+      //   .attr('y', this.height - 15)
+      //   .attr('fill', '#767d86');
+
+      this.svg
+        .append('polyline')
+        .style('stroke', 'black')
+        .style('fill', 'none')
+        .style('stroke-width', 1)
+        .style('stroke-linejoin', 'round')
+        // .attr('points', '0,30, 100,25, 200,10, 300,25, 600,20, 2000,15, 5000,5');
+        .attr('points', () => {
+          let point1 = `1,5`;
+          let point2 = `10,30`;
+          let point3 = `50,25`;
+          let point4 = `100,10`;
+          let point5 = `300,15`;
+          let point6 = `600,5`;
+          let point7 = `1000,50`;
+          let point8 = `2000,30`;
+          let point9 = `4000,5`;
+          let point10 = `6000,5`;
+          let point11 = `10000,5`;
+          let point12 = `15000,10`;
+
+          return `${point1} ${point2} ${point3} ${point4} ${point5} ${point6} ${point7} ${point8} ${point9} ${point10} ${point11} ${point12}`;
+        });
+
       this.svg
         .selectAll('rect.point')
         .data(places)
@@ -106,7 +125,7 @@ export class StreetMiniDrawService {
             return 0;
           }
 
-          return this.scale(d.income) - 4;
+          return this.scale(d) - 4;
         })
         .attr('y', this.halfOfHeight - 11)
         .attr('width', (d:any):any => {
@@ -182,8 +201,8 @@ export class StreetMiniDrawService {
       .data([income])
       .enter()
       .append('text')
-      .text(income)
-      .attr('x', this.scale(income) - 15)
+      .text('$ '+ income)
+      .attr('x', this.scale(income) - 20)
       .attr('y', this.height - 70)
       .attr('fill', '#767d86');
 
@@ -204,7 +223,6 @@ export class StreetMiniDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          console.log('scaleDatumIncome', scaleDatumIncome);
           point1 = `${scaleDatumIncome + roofX },${this.halfOfHeight - 1}`;
           point2 = `${scaleDatumIncome + roofX},${roofY}`;
           point3 = `${scaleDatumIncome - halfHouseWidth},${roofY}`;

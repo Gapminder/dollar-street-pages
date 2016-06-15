@@ -15,20 +15,16 @@ let style = require('./street-mini.css');
 
 export class StreetMiniComponent implements OnInit, OnDestroy {
 
-  @Input('chosenPlace')
-  private chosenPlace:Subject<any>;
-  @Input('incomesByCountry')
-  private incomesByCountry:Subject<any>;
+  @Input('streetMiniData')
+  private streetMiniData:Subject<any>;
 
   private street:any;
   private element:HTMLElement;
   private router:Router;
-
   private placesSubscribe:any;
-  private chosenPlaceSubscribe:any;
+  private streetMiniDataSubscribe:any;
   private math:any;
   private svg:SVGElement;
-  private showSlider:boolean = false;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router) router:Router,
@@ -44,19 +40,22 @@ export class StreetMiniComponent implements OnInit, OnDestroy {
 
     this.street.setSvg = this.svg = this.element.querySelector('.street-mini-box svg') as SVGElement;
 
-    this.chosenPlaceSubscribe = this.chosenPlace && this.chosenPlace.subscribe((chosenPlace:any):void => {
+    this.streetMiniDataSubscribe = this.streetMiniData && this.streetMiniData.subscribe((streetMiniData:any):void => {
+        let chosenPlace = streetMiniData.place;
+        let incomes = streetMiniData.incomes;
+        let maxIncome = Math.max(...incomes);
+        let minIncome = Math.min(...incomes);
+
         if (!chosenPlace) {
-          console.log('i am in IF !hoverPlace');
           this.street.removeHouses('hover');
           this.street.clearAndRedraw(this.street.chosenPlaces);
           return;
         }
-
         this.street
           .clearSvg()
           .init()
-          .drawScale([chosenPlace], this.showSlider, 0, 15000)
-          .set('places', _.sortBy([chosenPlace], 'income'))
+          .drawScale(incomes, minIncome, maxIncome)
+          .set('places', _.sortBy(incomes, 'income'))
           .set('fullIncomeArr', _
             .chain(this.street.places)
             .sortBy('income')
@@ -71,9 +70,7 @@ export class StreetMiniComponent implements OnInit, OnDestroy {
             .value());
 
         this.street.set('hoverPlace', chosenPlace);
-
         this.street.drawHoverHouse(chosenPlace);
-        console.log('STREET:::', this.street);
       });
   }
 
@@ -82,8 +79,8 @@ export class StreetMiniComponent implements OnInit, OnDestroy {
       this.placesSubscribe.unsubscribe();
     }
 
-    if (this.chosenPlaceSubscribe) {
-      this.chosenPlaceSubscribe.unsubscribe();
+    if (this.streetMiniDataSubscribe) {
+      this.streetMiniDataSubscribe.unsubscribe();
     }
   }
 }

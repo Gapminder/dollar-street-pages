@@ -12,10 +12,16 @@ export class FamilyInfoService {
   }
 
   public getFamilyInfo(query:any):Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/matrix/matrix-view-block/images?${query}`).map((res:any) => {
+    return this.http.get(`${Config.api}/consumer/api/v1/matrix-view-block/?${query}`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
-      console.log('DATA FAMILY SERVE', parseRes.data);
-      return {err: parseRes.error, images: parseRes.data};
+      return {err: parseRes.error, data: parseRes};
+    });
+  }
+
+  public getCountMatrixImages(query:string):Observable<any> {
+    return this.http.get(`${Config.api}/consumer/api/v1/things?${query}`).map((res:any) => {
+      let parseRes = JSON.parse(res._body);
+      return {err: parseRes.error, data: parseRes.data};
     });
   }
 }
