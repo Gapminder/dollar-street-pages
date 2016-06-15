@@ -22,9 +22,13 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected isOpenThingsFilter:boolean = false;
   protected placeComponent:boolean;
   @Input()
+  protected activeFilter:string;
+  @Input()
   private url:string;
   @Output()
   private selectedFilter:EventEmitter<any> = new EventEmitter();
+  @Output()
+  private activatedFilter:EventEmitter<any> = new EventEmitter();
   private thingsFilterService:any;
   private thingsFilterServiceSubscribe:any;
   private router:Router;
@@ -38,6 +42,8 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
 
   protected openThingsFilter(isOpenThingsFilter:boolean):void {
     this.isOpenThingsFilter = !isOpenThingsFilter;
+
+    this.activatedFilter.emit(this.isOpenThingsFilter ? 'things' : '');
   }
 
   protected goToThing(thing:any):void {
@@ -58,7 +64,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   }
 
   public ngOnChanges(changes:any):void {
-    if (changes.url.currentValue) {
+    if (changes.url && changes.url.currentValue) {
       if (this.thingsFilterServiceSubscribe) {
         this.thingsFilterServiceSubscribe.unsubscribe();
         this.thingsFilterServiceSubscribe = void 0;
@@ -76,6 +82,16 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
           this.otherThings = res.data.otherThings;
           this.activeThing = res.data.thing;
         });
+    }
+
+    if (
+      this.isOpenThingsFilter &&
+      changes.activeFilter &&
+      changes.activeFilter.currentValue &&
+      changes.activeFilter.currentValue !== 'things'
+    ) {
+      this.isOpenThingsFilter = false;
+      this.search = {text: ''};
     }
   }
 
