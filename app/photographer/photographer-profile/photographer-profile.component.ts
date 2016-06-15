@@ -36,7 +36,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
         }
 
         this.photographer = res.data;
-        this.getPhotographer.emit(`${this.photographer.firstName} ${this.photographer.lastName}`);
+        this.getPhotographer.emit(`Photographer: ${this.photographer.firstName} ${this.photographer.lastName}`);
       });
   }
 

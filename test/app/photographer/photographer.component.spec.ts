@@ -31,7 +31,6 @@ describe('PhotographerComponent', () => {
       });
   })));
   it('PhotographerComponent must init', () => {
-    expect(context.title).toEqual('Photographer');
     context.ngOnInit();
     expect(context.photographerId).toEqual('5477537786deda0b00d43be5');
   });
