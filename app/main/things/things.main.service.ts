@@ -11,7 +11,7 @@ export class ThingsMainService {
     this.http = http;
   }
 
-  public getMainThings(query:any):Observable<any> {
+  public getMainThings():Observable<any> {
     return this.http.get(`${Config.api}/consumer/api/v1/main/things`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
 

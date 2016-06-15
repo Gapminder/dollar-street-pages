@@ -33,16 +33,15 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   public fancyBoxImage:any;
 
   protected openReadMore:boolean;
+  protected familyInfo:any;
+
   @Input('activeThing')
   protected activeThing:any;
-  protected familyInfo:any;
 
   @Input('controllSlider')
   private controllSlider:Observable<any>;
   @Input('places')
-  private streetPlaces:Observable<any>;
-
-
+  private places:Observable<any>;
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
   @Output('isShowAboutData')
@@ -50,7 +49,6 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private routeParams:RouteParams;
   private location:Location;
   private popIsOpen:boolean;
-  private showAboutData:boolean;
   private arrowDisabled:boolean;
   private chosenPlace:any;
   private sliderHeight:any = {height: 0};
@@ -63,9 +61,9 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
   public constructor(@Inject(RouteParams) routeParams:RouteParams,
-              @Inject(Location) location:Location,
-              @Inject(NgZone) zone:NgZone,
-              @Inject('Math') math:any) {
+                     @Inject(Location) location:Location,
+                     @Inject(NgZone) zone:NgZone,
+                     @Inject('Math') math:any) {
     this.routeParams = routeParams;
     this.location = location;
     this.zone = zone;
@@ -73,7 +71,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit():void {
-    this.streetPlacesSubscribe = this.streetPlaces
+    this.streetPlacesSubscribe = this.places
       .subscribe((places:any) => {
         this.thing = this.routeParams.get('thing');
         this.image = this.routeParams.get('image');

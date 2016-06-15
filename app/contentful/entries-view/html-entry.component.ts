@@ -12,6 +12,6 @@ import {MarkdownPipe} from '../pipes/markdown.pipe';
 })
 
 export class HtmlEntryComponent {
-  // noinspection TsLint
-  @Input() private entry;
+  @Input()
+  protected entry:any;
 }

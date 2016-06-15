@@ -11,7 +11,7 @@ let style = require('./social-share-buttons.css');
   encapsulation: ViewEncapsulation.None
 })
 
-export class SocialShareButtons implements OnInit, OnDestroy {
+export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   public socialShareButtonsService:any;
   private location:Location;
   private urlChangeService:any;
