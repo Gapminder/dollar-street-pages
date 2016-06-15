@@ -76,7 +76,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 30px 8px 8px;
+  padding: 15px 8px 8px;
   font-size: 20px;
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
   z-index: 9;
@@ -84,21 +84,18 @@
 
 .place-image-box-country,
 .place-image-box-income {
-  position: absolute;
-  bottom: 0;
   color: white;
 }
 
-.place-image-box-country {
-  left: 0;
+.image-content.no-row .place-image-box-country,
+.image-content.no-row .place-image-box-income {
+  float: none !important;
+  padding: 0 !important;
+  display: block;
 }
 
 .place-image-box:hover {
   box-shadow: 0 0 0 5px #374551 inset;
-}
-
-.place-image-box-income {
-  right: 0;
 }
 
 .place-image-box-empty {
@@ -147,21 +144,21 @@
   display: block;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
+
   .place-image-box-country,
   .place-image-box-income {
-    padding: 10px;
-    font-size: 16px;
-    line-height: 16px;
+    padding: 3px;
+    font-size: 18px;
+    line-height: 18px;
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .place-image-box-country,
   .place-image-box-income {
-    padding: 13px;
-    font-size: 18px;
-    line-height: 18px;
+    font-size: 16px;
+    line-height: 16px;
   }
 }
 

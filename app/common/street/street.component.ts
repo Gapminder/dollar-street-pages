@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, ElementRef, Inject, OnDestroy, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, ElementRef, Inject, OnDestroy, OnChanges, EventEmitter} from '@angular/core';
 import {RouterLink, Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 import {fromEvent} from 'rxjs/observable/fromEvent';
@@ -16,9 +16,11 @@ let style = require('./street.css');
   directives: [RouterLink]
 })
 
-export class StreetComponent implements OnInit, OnDestroy {
+export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   @Input('thing')
   protected thing:string;
+  @Input('query')
+  private query:string;
   @Input('places')
   private places:Observable<any>;
   @Input('chosenPlaces')
@@ -57,7 +59,21 @@ export class StreetComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit():any {
+    let parseUrl:any;
+
+    if (this.query) {
+      parseUrl = this.parseUrl(this.query);
+    } else {
+      parseUrl = {
+        lowIncome: 0,
+        highIncome: 15000
+      };
+    }
+
     this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
+
+    this.street.set('lowIncome', parseUrl.lowIncome);
+    this.street.set('highIncome', parseUrl.highIncome);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
         if (!chosenPlaces.length) {
@@ -95,13 +111,10 @@ export class StreetComponent implements OnInit, OnDestroy {
       });
 
     this.placesSubscribe = this.places && this.places.subscribe((places:any):void => {
-        let lowIncome = this.street.lowIncome;
-        let hightIncome = this.street.hightIncome;
-
         this.street
           .clearSvg()
-          .init()
-          .drawScale(places, this.showSlider, lowIncome, hightIncome)
+          .init(this.street.lowIncome, this.street.highIncome)
+          .drawScale(places, this.showSlider)
           .set('places', _.sortBy(places, 'income'))
           .set('fullIncomeArr', _
             .chain(this.street.places)
@@ -121,18 +134,33 @@ export class StreetComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.street.filter.subscribe((filter:any):void=> {
-      this.filterStreet.emit(filter);
+    this.street.filter.subscribe((filter:any):void => {
+      let query:any;
+
+      if (this.query) {
+        query = this.parseUrl(this.query);
+      } else {
+        query = {};
+      }
+
+      query.lowIncome = filter.lowIncome;
+      query.highIncome = filter.highIncome;
+
+      if (filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+        return;
+      }
+
+      this.filterStreet.emit({url: this.objToQuery(query)});
     });
 
-    this.street.filter.next({lowIncome: this.street.lowIncome, hightIncome: this.street.hightIncome});
+    this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.street
           .clearSvg()
-          .init()
+          .init(this.street.lowIncome, this.street.highIncome)
           .drawScale(this.street.places, this.showSlider)
           .set('places', _.sortBy(this.street.places, 'income'))
           .set('fullIncomeArr', _
@@ -158,6 +186,15 @@ export class StreetComponent implements OnInit, OnDestroy {
       });
   }
 
+  public ngOnChanges(changes:any):void {
+    if (changes.query && changes.query.currentValue) {
+      let parseUrl = this.parseUrl(this.query);
+
+      this.street.set('lowIncome', parseUrl.lowIncome);
+      this.street.set('highIncome', parseUrl.highIncome);
+    }
+  }
+
   public ngOnDestroy():void {
     if (this.resize) {
       this.resize.unsubscribe();
@@ -178,5 +215,21 @@ export class StreetComponent implements OnInit, OnDestroy {
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
     }
+  }
+
+  private objToQuery(data:any):string {
+    return Object.keys(data).map((k:string) => {
+      return encodeURIComponent(k) + '=' + data[k];
+    }).join('&');
+  }
+
+  private parseUrl(url:string):any {
+    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
+    let query = JSON.parse(urlForParse);
+
+    query.regions = query.regions.split(',');
+    query.countries = query.countries.split(',');
+
+    return query;
   }
 }

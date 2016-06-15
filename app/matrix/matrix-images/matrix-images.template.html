@@ -2,14 +2,14 @@
   <div class="image-content column-{{zoom}}"
        *ngFor="let place of currentPlaces; #i = index"
        [ngStyle]="{'background-image':toUrl(place?.background),visibility:place?'visible':'hidden', order: i}"
-       [ngClass]="{active: prevPlaceId === place._id}"
+       [ngClass]="{'no-row': zoom > 5 || !isDesktop}"
        (mouseenter)="hoverImage(place)"
        (mouseleave)="hoverImage()"
        (click)="goToImageBlock(place, i)">
 
     <div class="image-description">
-      <span class="place-image-box-country pull-left">{{place?.country}}</span>
       <span class="place-image-box-income pull-right">{{math.round(place?.income)}}$</span>
+      <span class="place-image-box-country pull-left">{{place?.country}}</span>
     </div>
     <div class="mobile-hover" *ngIf="!isDesktop && (place?._id === oldPlaceId)">
       <div class="plus" (click)="goToPlace(place)">VISIT FAMILY >>

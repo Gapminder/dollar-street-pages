@@ -80,14 +80,13 @@ describe('MapComponent', () => {
     context.ngOnInit();
     expect(context.init).toEqual(true);
     expect(context.thing).toEqual('546ccf730f7ddf45c0179688');
-    expect(context.urlChanged).toHaveBeenCalledWith('546ccf730f7ddf45c0179688');
+    expect(context.urlChanged).toHaveBeenCalledWith({url: 'thing=546ccf730f7ddf45c0179688'});
   });
   it('urlChanged', () => {
     spyOn(context, 'urlChanged').and.callThrough();
     spyOn(context, 'setMarkersCoord');
     spyOn(context, 'urlChangeService');
-    context.urlChanged('546ccf730f7ddf45c0179688');
-    expect(context.thing).toEqual('546ccf730f7ddf45c0179688');
+    context.urlChanged({url: 'thing=546ccf730f7ddf45c0179688'});
     expect(context.query).toEqual('thing=546ccf730f7ddf45c0179688');
     expect(context.loader).toEqual(true);
     expect(context.places.length).toEqual(174);

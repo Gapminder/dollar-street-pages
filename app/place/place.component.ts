@@ -74,6 +74,7 @@ export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.place = this.routeParams.get('place');
     this.image = this.routeParams.get('image');
     this.query = `thing=${this.thing}&place=${this.place}&image=${this.image}`;
+
     this.getStreetPlaces(this.query);
 
     this.getCommonAboutDataServiceSubscribe = this.placeStreetService
@@ -122,13 +123,23 @@ export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.isScroll = true;
   }
 
-  public urlChanged(thing:any):void {
-    this.activeThing = thing;
+  public urlChanged(options:any):void {
     if (this.init) {
       return;
     }
-    this.thing = thing._id;
-    this.getStreetPlaces(`thing=${thing._id}&place=${this.place}&isSearch=true`);
+
+    let query = this.parseUrl(options.url);
+
+    this.thing = query.thing;
+
+    query.isSearch = true;
+
+    delete query.image;
+
+    this.query = `thing=${this.thing}&place=${this.place}&image=${this.image}`;
+
+    this.getStreetPlaces(this.objToQuery(query));
+
     this.zone.run(() => {
       this.loader = false;
     });
@@ -137,6 +148,7 @@ export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
   public getStreetPlaces(thing:any):void {
     this.placeStreetServiceSubscribe = this.placeStreetService.getThingsByRegion(thing).subscribe((res:any):any => {
       this.places = res.data.places;
+      this.activeThing = res.data.thing;
       this.sliderPlaces.next(this.places);
     });
   }
@@ -198,5 +210,26 @@ export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.routeParams.params = {'thing': thing, 'place': place._id, 'image': place.image};
 
     this.init = false;
+  }
+
+  private objToQuery(data:any):string {
+    return Object.keys(data).map((k:string) => {
+      return encodeURIComponent(k) + '=' + data[k];
+    }).join('&');
+  }
+
+  private parseUrl(url:string):any {
+    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
+    let query = JSON.parse(urlForParse);
+
+    if (query.regions) {
+      query.regions = query.regions.split(',');
+    }
+
+    if (query.countries) {
+      query.countries = query.countries.split(',');
+    }
+
+    return query;
   }
 }

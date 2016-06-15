@@ -20,12 +20,11 @@
               <img class="slide-img" [src]="image.background" alt="">
               <div class="thing-content">
                 <img [src]="activeThing.iconLight" alt="">
-                <span>{{activeThing.name}}</span>
+                <span>{{activeThing.thingName}}</span>
               </div>
             </div>
-            <div class="slide-sidebar">
-              <img *ngIf="image.family"
-                   [src]="image.family.background"
+            <div *ngIf="image.family" class="slide-sidebar">
+              <img [src]="image.family.background"
                    [routerLink]="['Place', {thing: image.family.thing, place: image._id, image: image.family._id}]"
                    alt="Family portrait">
 

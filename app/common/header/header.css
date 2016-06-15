@@ -23,10 +23,6 @@
   vertical-align: middle;
 }
 
-.header-content search {
-  width: calc(100% - 190px)
-}
-
 place-map {
   width: 71px;
   display: block;
@@ -49,6 +45,47 @@ place-map[hidden] {
   width: 100%;
 }
 
+.filters-container {
+  float: left;
+  margin-top: 11px;
+  width: calc(100% - 180px);
+}
+
+.filters-container things-filter,
+.filters-container .some-filter-container > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.filters-container .some-filter-container > span {
+  margin: 0 10px;
+  font-size: 18px;
+}
+
+.some-filter-container {
+  display: inline-block;
+}
+
+.place-title {
+  margin-top: -6px;
+  margin-right: 10px;
+}
+
+.place-title .icon {
+  background-size: cover;
+  background-position: 50% 50%;
+  border: 1px solid #ecf0f6;
+  width: 42px;
+  height: 42px;
+  margin: 0 10px 0 5px !important;
+}
+
+.place-title p {
+  line-height: 26px;
+  font-size: 26px;
+  margin: 7px 0 0;
+}
+
 @media (max-width: 1023px) {
   .header-content .icon-container img {
     width: 42px;
@@ -62,10 +99,6 @@ place-map[hidden] {
     width: 32px;
     height: 32px;
     margin: 5px;
-  }
-
-  .header-content search {
-    width: calc(100% - 127px) !important;
   }
 
   place-map {
