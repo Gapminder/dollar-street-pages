@@ -82,7 +82,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
     query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
 
-    this.selectedFilter.emit({url: this.objToQuery(query)});
+    this.selectedFilter.emit({url: this.objToQuery(query), isCountriesFilter: true});
     this.isOpenCountriesFilter = false;
   }
 
