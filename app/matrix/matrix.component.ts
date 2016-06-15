@@ -180,10 +180,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
 
-    // if (this.clonePlaces) {
-    //   this.streetPlaces.next(this.placesVal);
-    //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-    // }
+    if (this.clonePlaces) {
+      this.streetPlaces.next(this.placesVal);
+      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+    }
   }
 
   public getViewableRows(headerHeight:number):void {
@@ -243,7 +243,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.placesVal = val.data.zoomPlaces;
         let streetPlaces = val.data.streetPlaces;
 
-        this.filtredPlaces = this.placesVal.filter((place:any):boolean=> {
+        this.filtredPlaces = this.placesVal.filter((place:any):boolean => {
           return place;
         });
 

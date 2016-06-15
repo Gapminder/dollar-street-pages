@@ -13,10 +13,10 @@
                name="minIncome"
                type="number"
                min="0"
+               max="15000"
                placeholder="Enter low income"
                #low
-               [value]="range.min"
-               (keyup)="incomeFilter(low.value, high.value)">
+               [value]="range.min">
       </div>
 
       <div class="range-content">
@@ -24,16 +24,15 @@
                name="maxIncome"
                type="number"
                max="15000"
+               min="0"
                placeholder="Enter high income"
                #high
-               [min]="range.min + 10"
-               [value]="range.max"
-               (keyup)="incomeFilter(low.value, high.value)">
+               [value]="range.max">
       </div>
     </div>
 
     <div class="button-container">
-      <button type="button" (click)="applyFilter()">Apply</button>
+      <button type="button" (click)="applyFilter(low.value, high.value)">Apply</button>
       <button type="button" (click)="closeFilter()">Close</button>
     </div>
   </div>

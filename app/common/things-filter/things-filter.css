@@ -5,17 +5,20 @@
 }
 
 #things-filter .things-filter-button {
+  position: relative;
+}
+
+#things-filter .things-filter-button .things-filter-button-content {
   background-color: #ccc;
   border-radius: 2px;
   border: 1px solid #ddd;
   min-width: 150px;
   text-align: right;
   padding: 5px 20px 5px 5px;
-  position: relative;
   cursor: pointer;
 }
 
-#things-filter .things-filter-button img {
+#things-filter .things-filter-button .things-filter-button-content img {
   width: 20px;
   float: left;
   margin-right: 5px;
@@ -25,7 +28,7 @@
 
 }
 
-#things-filter .things-filter-button span.arrow {
+#things-filter .things-filter-button .things-filter-button-content span.arrow {
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
@@ -37,7 +40,7 @@
   right: 5px;
 }
 
-#things-filter.open-things-filter .things-filter-button span.arrow {
+#things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
   border-bottom: 8px solid #000;
   border-top: 0 solid transparent;
 

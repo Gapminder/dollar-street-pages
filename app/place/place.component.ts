@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, OnDestroy, AfterViewChecked, ElementRef, NgZone} from '@angular/core';
+import {Component, Inject, OnInit, OnDestroy, ElementRef, NgZone} from '@angular/core';
 import {RouteParams, RouterLink} from '@angular/router-deprecated';
 import {Subject} from 'rxjs/Subject';
 
@@ -24,11 +24,10 @@ let isDesktop = device.desktop();
   directives: [RouterLink, HeaderComponent, StreetComponent, isDesktop ? SliderPlaceComponent : SliderMobilePlaceComponent, FamilyPlaceComponent, FooterComponent, LoaderComponent]
 })
 
-export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class PlaceComponent implements OnInit, OnDestroy {
   public loader:boolean = false;
   public placeStreetServiceSubscribe:any;
   public getCommonAboutDataServiceSubscribe:any;
-  public isScroll:boolean;
   public places:any[];
   public placeStreetService:any;
   public urlChangeService:any;
@@ -107,22 +106,6 @@ export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.resizeSubscribe.unsubscribe();
   }
 
-  public ngAfterViewChecked():void {
-    if (!this.places || !this.places.length) {
-      return;
-    }
-
-    if (document.body.scrollHeight < document.body.clientHeight) {
-      return;
-    }
-
-    if (!this.isScroll) {
-      this.streetPlaces.next(this.places);
-    }
-
-    this.isScroll = true;
-  }
-
   public urlChanged(options:any):void {
     if (this.init) {
       return;
@@ -150,6 +133,7 @@ export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.places = res.data.places;
       this.activeThing = res.data.thing;
       this.sliderPlaces.next(this.places);
+      this.streetPlaces.next(this.places);
     });
   }
 
@@ -198,6 +182,7 @@ export class PlaceComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public changeLocation(place:any, thing:any):void {
     let query = `thing=${thing}&place=${place._id}&image=${place.image}`;
+    this.query = query;
     this.place = place._id;
     this.image = place.image;
 
