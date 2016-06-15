@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   @Input('chosenPlaces')
   protected chosenPlaces:Observable<any>;
   protected isOpenFilter:boolean = false;
+  protected activeFilter:string;
   protected isDesktop:boolean = device.desktop();
   protected header:any = {};
   protected math:any;
@@ -56,6 +57,10 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
     this.mapComponent = this.router.hostComponent.name === 'MapComponent';
+  }
+
+  protected setActiveFilter(selectedFilter:string):void {
+    this.activeFilter = selectedFilter;
   }
 
   public ngOnInit():void {

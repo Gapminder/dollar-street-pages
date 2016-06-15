@@ -1,7 +1,7 @@
 <div id="incomes-filter"
      [ngClass]="{'open-incomes-filter': isOpenIncomesFilter}">
   <div class="incomes-filter-button"
-       (click)="openIncomesFilter(isOpenIncomesFilter)">
+       (click)="openCloseIncomesFilter(isOpenIncomesFilter)">
     <span>{{title}}</span>
     <span class="arrow"></span>
   </div>
@@ -16,7 +16,7 @@
                max="15000"
                placeholder="Enter low income"
                #low
-               [value]="range.min">
+               [(ngModel)]="range.min">
       </div>
 
       <div class="range-content">
@@ -27,13 +27,13 @@
                min="0"
                placeholder="Enter high income"
                #high
-               [value]="range.max">
+               [(ngModel)]="range.max">
       </div>
     </div>
 
     <div class="button-container">
       <button type="button" (click)="applyFilter(low.value, high.value)">Apply</button>
-      <button type="button" (click)="closeFilter()">Close</button>
+      <button type="button" (click)="openCloseIncomesFilter(isOpenIncomesFilter)">Close</button>
     </div>
   </div>
 </div>

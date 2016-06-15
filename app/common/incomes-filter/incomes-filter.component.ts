@@ -13,15 +13,27 @@ export class IncomesFilterComponent implements OnChanges {
   protected isOpenIncomesFilter:boolean = false;
   protected title:string = 'all incomes';
   protected range:{min:number; max:number;} = {};
+
+  @Input()
+  protected activeFilter:string;
+
   private cloneRange:{min:number; max:number;} = {};
 
   @Input()
   private url:string;
   @Output()
   private selectedFilter:EventEmitter<any> = new EventEmitter();
+  @Output()
+  private activatedFilter:EventEmitter<any> = new EventEmitter();
 
-  protected openIncomesFilter(isOpenIncomesFilter:boolean):void {
+  protected openCloseIncomesFilter(isOpenIncomesFilter:boolean):void {
     this.isOpenIncomesFilter = !isOpenIncomesFilter;
+
+    if (!this.isOpenIncomesFilter) {
+      this.range = JSON.parse(JSON.stringify(this.cloneRange));
+    }
+
+    this.activatedFilter.emit(this.isOpenIncomesFilter ? 'incomes' : '');
   }
 
   protected applyFilter(minIncome:any, maxIncome:any):void {
@@ -61,14 +73,8 @@ export class IncomesFilterComponent implements OnChanges {
     this.selectedFilter.emit({url: this.objToQuery(query)});
   }
 
-  protected closeFilter():void {
-    this.isOpenIncomesFilter = false;
-
-    this.range = JSON.parse(JSON.stringify(this.cloneRange));
-  }
-
   public ngOnChanges(changes:any):void {
-    if (changes.url.currentValue) {
+    if (changes.url && changes.url.currentValue) {
       let query = this.parseUrl(this.url);
 
       this.range.min = Math.abs(query.lowIncome);
@@ -77,6 +83,15 @@ export class IncomesFilterComponent implements OnChanges {
       this.cloneRange = JSON.parse(JSON.stringify(this.range));
 
       this.title = this.getTitle(this.range);
+    }
+
+    if (
+      this.isOpenIncomesFilter &&
+      changes.activeFilter &&
+      changes.activeFilter.currentValue
+      && changes.activeFilter.currentValue !== 'incomes'
+    ) {
+      this.openCloseIncomesFilter(true);
     }
   }
 
