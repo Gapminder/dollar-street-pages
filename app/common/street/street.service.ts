@@ -380,7 +380,7 @@ export class StreetDrawService {
 
           this.sliderLeftMove = true;
         })
-        .on('touchstart', ():void => this.sliderLeftMove = true);
+        .on('touchstart', ():any => this.sliderLeftMove = true);
     }
 
     this.leftScroll
@@ -434,7 +434,7 @@ export class StreetDrawService {
           d3.event.preventDefault();
           this.sliderRightMove = true;
         })
-        .on('touchstart', ():void=> this.sliderRightMove = true);
+        .on('touchstart', ():any => this.sliderRightMove = true);
     }
 
     this.rightScroll.attr('points', () => {
