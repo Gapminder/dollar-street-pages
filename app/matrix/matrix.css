@@ -102,6 +102,7 @@ footer {
 @media (min-width: 768px) {
   matrix-images {
     padding-bottom: 145px;
+    padding-top: 112px;
   }
 }
 
