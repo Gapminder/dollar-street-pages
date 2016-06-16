@@ -21,7 +21,6 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   @Input()
   private photographerId:string;
   private places:any = [];
-  private familyThingId:string;
   private photographerPlacesService:any;
 
   public constructor(@Inject('PhotographerPlacesService') photographerPlacesService:any,
@@ -39,7 +38,6 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
         }
 
         this.places = res.data.places;
-        this.familyThingId = res.data.familyThingId;
         this.loader = true;
       });
   }

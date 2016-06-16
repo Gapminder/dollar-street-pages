@@ -21,7 +21,7 @@ let style = require('./matrix-images.css');
 export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   protected imageBlockLocation:any;
   protected indexViewBoxHouse:number;
-  
+
   @Input('places')
   private places:Observable<any>;
   @Input('thing')
@@ -46,7 +46,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private math:any;
   private familyData:any;
   private prevPlaceId:string;
-  
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router) router:Router,
@@ -76,8 +75,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public urlTransfer(url:string):void {
+    this.goToImageBlock(this.familyData, this.indexViewBoxHouse);
     this.filter.emit(url);
-    
   }
 
   protected hoverImage(place:any):void {

@@ -20,7 +20,5 @@ testing.setBaseTestProviders(
 
 Object.assign(global, testing);
 
-
-
 var testContext = require.context('../test', true, /\.spec\.ts/);
 testContext.keys().forEach(testContext);

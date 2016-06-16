@@ -29,8 +29,10 @@ describe('MatrixComponent', () => {
       matrixService.getProviders()
     ];
   });
+  
   let context;
   let fixture;
+  
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(MatrixComponent, tmpl)
@@ -38,7 +40,7 @@ describe('MatrixComponent', () => {
         .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
-          context.routeParams.set('thing', '5477537786deda0b00d43be5');
+          context.routeParams.set('thing', 'Home');
           context.routeParams.set('countries', 'World');
           context.routeParams.set('regions', 'World');
           context.routeParams.set('row', 1);
@@ -55,7 +57,7 @@ describe('MatrixComponent', () => {
   it('ngOnInit', () => {
     spyOn(context, 'ngOnInit').and.callThrough();
     context.ngOnInit();
-    expect(context.thing).toEqual('5477537786deda0b00d43be5');
+    expect(context.thing).toEqual('Home');
     expect(context.zoom).toEqual(5);
     expect(context.row).toEqual(1);
     expect(context.regions).toEqual('World');
@@ -93,11 +95,11 @@ describe('MatrixComponent', () => {
     spyOn(context.matrixPlaces, 'next');
     spyOn(context.matrixService, 'getMatrixImages').and.callThrough();
     spyOn(context, 'stopScroll');
-    context.urlChanged({url: 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000'});
-    expect(context.query).toEqual('thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000');
-    expect(context.parseUrl.calls.argsFor(0)).toEqual(['thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000']);
-    expect(context.thing).toEqual('5477537786deda0b00d43be5');
-    expect(context.urlChangeService.replaceState.calls.argsFor(0)).toEqual(['/matrix', 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000']);
+    context.urlChanged({url: 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000'});
+    expect(context.query).toEqual('thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000');
+    expect(context.parseUrl.calls.argsFor(0)).toEqual(['thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000']);
+    expect(context.thing).toEqual('Home');
+    expect(context.urlChangeService.replaceState.calls.argsFor(0)).toEqual(['/matrix', 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000']);
     expect(context.matrixService.getMatrixImages.calls.argsFor(0)).toEqual([context.query]);
     expect(context.matrixPlaces.next.calls.argsFor(0)).toEqual([places.data.zoomPlaces]);
     expect(context.placesArr).toEqual(places.data.zoomPlaces);
@@ -111,19 +113,19 @@ describe('MatrixComponent', () => {
   it(' changeZoom', () => {
     spyOn(context, 'changeZoom').and.callThrough();
     spyOn(context, 'urlChanged');
-    context.query = 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000';
+    context.query = 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000';
     context.row = 1;
     context.changeZoom(4);
     expect(context.urlChanged.calls.argsFor(0)).toEqual([{
-      url: 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=4&row=1&lowIncome=0&highIncome=15000',
+      url: 'thing=Home&countries=World&regions=World&zoom=4&row=1&lowIncome=0&highIncome=15000',
       isZoom: true
     }]);
   });
   it(' parseUrl', () => {
     spyOn(context, 'parseUrl').and.callThrough();
-    let url = 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000';
+    let url = 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000';
     let urlObj = context.parseUrl(url);
-    expect(urlObj.thing).toEqual('5477537786deda0b00d43be5');
+    expect(urlObj.thing).toEqual('Home');
     expect(urlObj.countries).toEqual('World');
     expect(urlObj.regions).toEqual('World');
     expect(urlObj.zoom).toEqual('5');

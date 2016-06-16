@@ -63,10 +63,12 @@ export class MatrixViewBlockComponent implements OnChanges {
     let placeId = this.place._id;
     let imageId = this.place.image;
     let thingId = this.thing;
+
     let url = `placeId=${placeId}&imageId=${imageId}&thingId=${thingId}`;
 
     this.imageUrl = this.place.background.replace('devices', 'desktops');
     this.country = this.place.country;
+
     this.mapData.next({region: this.place.region, lat: this.place.lat, lng: this.place.lng});
 
     if (this.familyInfoServiceSubscribe) {
@@ -81,28 +83,32 @@ export class MatrixViewBlockComponent implements OnChanges {
           console.log(res.err);
           return;
         }
+
         this.familyData = familyData;
         this.streetMiniData.next({place: this.place, incomes: familyData.income});
       });
 
     if (this.thing && this.place.country && this.zoom) {
-
       let urlCountry = `thing=${this.thing}&countries=${this.place.country}&regions=${'World'}&zoom=${this.zoom}&row=1&isViewBox=true`;
       let urlRegion = `thing=${this.thing}&countries=${'World'}&regions=${this.place.region}&zoom=${this.zoom}&row=1&isViewBox=true`;
+
       this.familyInfoServiceSubscribe = this.FamilyInfoService.getCountMatrixImages(urlCountry)
         .subscribe((val:any) => {
           if (val.err) {
             console.log(val.err);
             return;
           }
+
           this.placesPerCountry = val.data.zoomPlaces;
         });
+
       this.familyInfoServiceSubscribe = this.FamilyInfoService.getCountMatrixImages(urlRegion)
         .subscribe((val:any) => {
           if (val.err) {
             console.log(val.err);
             return;
           }
+
           this.placesPerRegion = val.data.zoomPlaces;
         });
     }
@@ -111,8 +117,10 @@ export class MatrixViewBlockComponent implements OnChanges {
   protected goToPlace(place:any):void {
     if (this.isDesktop) {
       this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
+
       return;
     }
+
     this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
   }
 
@@ -133,16 +141,20 @@ export class MatrixViewBlockComponent implements OnChanges {
       countryDirector = this.place.country;
       regionDirector = 'World';
     }
+
     if (place === 'region') {
-      countryDirector = 'World';
+      countryDirector = this.familyData.countries;
       regionDirector = this.place.region;
     }
+
     url = {url: `thing=${this.thing}&countries=${countryDirector}&regions=${regionDirector}&zoom=${this.zoom}&row=0&lowIncome=0&highIncome=15000`};
+
     this.thingsByIncomes.emit(url);
   }
 
   protected openPopUp():void {
     this.popIsOpen = true;
+
     let imgUrl = this.place.background.replace('devices', 'original');
     let newImage = new Image();
 
