@@ -1,4 +1,4 @@
-import {Component, Input, Output, Inject, OnInit, OnDestroy, EventEmitter} from '@angular/core';
+import {Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter} from '@angular/core';
 import {RouterLink, Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
@@ -20,7 +20,7 @@ let style = require('./header.css');
   directives: [ThingsFilterComponent, IncomesFilterComponent, CountriesFilterComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
 })
 
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   protected query:string;
   @Input()
@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input('chosenPlaces')
   protected chosenPlaces:Observable<any>;
   protected isOpenFilter:boolean = false;
+  protected activeFilter:string;
   protected isDesktop:boolean = device.desktop();
   protected header:any = {};
   protected math:any;
@@ -58,6 +59,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.mapComponent = this.router.hostComponent.name === 'MapComponent';
   }
 
+  protected setActiveFilter(selectedFilter:string):void {
+    this.activeFilter = selectedFilter;
+  }
+
   public ngOnInit():void {
     this.headerServiceSubscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
@@ -68,6 +73,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
 
     if (this.placeComponent) {
+      this.headerTitleServiceSubscribe = this
+        .headerService
+        .getPlaceHeader(this.query)
+        .subscribe((res:any) => {
+          if (res.err) {
+            return res.err;
+          }
+
+          this.header = res.data;
+        });
+    }
+  }
+
+  public ngOnChanges(changes:any):void {
+    if (
+      this.placeComponent &&
+      changes.query &&
+      typeof changes.query.previousValue === 'string' &&
+      typeof changes.query.currentValue === 'string'
+    ) {
+      let currentQuery = this.parseUrl(changes.query.currentValue);
+      let previousQuery = this.parseUrl(changes.query.previousValue);
+
+      if (currentQuery.place === previousQuery.place) {
+        return;
+      }
+
+      if (this.headerTitleServiceSubscribe) {
+        this.headerTitleServiceSubscribe.unsubscribe();
+      }
+
       this.headerTitleServiceSubscribe = this
         .headerService
         .getPlaceHeader(this.query)
@@ -99,5 +135,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public goToMain():void {
     this.router.navigate(['Main']);
+  }
+
+  private parseUrl(url:string):any {
+    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
+    let query = JSON.parse(urlForParse);
+
+    if (query.regions) {
+      query.regions = query.regions.split(',');
+    }
+
+    if (query.countries) {
+      query.countries = query.countries.split(',');
+    }
+
+    return query;
   }
 }

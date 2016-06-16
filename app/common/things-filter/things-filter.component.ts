@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnChanges, Inject, Input, Output, EventEmitter} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
+import {RouterLink, Router} from '@angular/router-deprecated';
 
 import {ThingsFilterPipe} from './things-filter.pipe';
 
@@ -20,19 +20,30 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected activeThing:any = {};
   protected search:{text:string;} = {text: ''};
   protected isOpenThingsFilter:boolean = false;
+  protected placeComponent:boolean;
+  @Input()
+  protected activeFilter:string;
   @Input()
   private url:string;
   @Output()
   private selectedFilter:EventEmitter<any> = new EventEmitter();
+  @Output()
+  private activatedFilter:EventEmitter<any> = new EventEmitter();
   private thingsFilterService:any;
   private thingsFilterServiceSubscribe:any;
+  private router:Router;
 
-  public constructor(@Inject('ThingsFilterService') thingsFilterService:any) {
+  public constructor(@Inject(Router) router:Router,
+                     @Inject('ThingsFilterService') thingsFilterService:any) {
     this.thingsFilterService = thingsFilterService;
+    this.router = router;
+    this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
   }
 
   protected openThingsFilter(isOpenThingsFilter:boolean):void {
     this.isOpenThingsFilter = !isOpenThingsFilter;
+
+    this.activatedFilter.emit(this.isOpenThingsFilter ? 'things' : '');
   }
 
   protected goToThing(thing:any):void {
@@ -53,7 +64,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   }
 
   public ngOnChanges(changes:any):void {
-    if (changes.url.currentValue) {
+    if (changes.url && changes.url.currentValue) {
       if (this.thingsFilterServiceSubscribe) {
         this.thingsFilterServiceSubscribe.unsubscribe();
         this.thingsFilterServiceSubscribe = void 0;
@@ -71,6 +82,16 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
           this.otherThings = res.data.otherThings;
           this.activeThing = res.data.thing;
         });
+    }
+
+    if (
+      this.isOpenThingsFilter &&
+      changes.activeFilter &&
+      changes.activeFilter.currentValue &&
+      changes.activeFilter.currentValue !== 'things'
+    ) {
+      this.isOpenThingsFilter = false;
+      this.search = {text: ''};
     }
   }
 

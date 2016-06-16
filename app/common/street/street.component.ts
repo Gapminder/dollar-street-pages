@@ -30,7 +30,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   @Input('controllSlider')
   private controllSlider:Subject<any>;
   @Output('filterStreet')
-  private filterStreet:EventEmitter = new EventEmitter();
+  private filterStreet:EventEmitter<any> = new EventEmitter();
 
   private street:any;
   private element:HTMLElement;

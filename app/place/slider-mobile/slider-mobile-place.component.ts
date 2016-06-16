@@ -33,7 +33,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   protected familyInfo:any;
 
   @Input('places')
-  private streetPlaces:Observable<any>;
+  private places:Observable<any>;
 
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
@@ -52,7 +52,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private math:any;
   private resizeSubscribe:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
-  private showAboutData:boolean;
 
   public constructor(@Inject(RouteParams) routeParams:RouteParams,
                      @Inject(ElementRef) elementRef:ElementRef,
@@ -67,7 +66,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit():void {
-    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places:any):any => {
+    this.streetPlacesSubscribe = this.places.subscribe((places:any):any => {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
       this.allPlaces = places;
@@ -251,7 +250,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   }
 }
 
-function prevSliderActionAfterAnimation(places, images, position, cb) {
+function prevSliderActionAfterAnimation(places:any, images:any, position:any, cb:any):any {
   return () => {
     let prevPlacePosition = position - 1;
 
@@ -272,7 +271,7 @@ function prevSliderActionAfterAnimation(places, images, position, cb) {
   };
 }
 
-function nextSlideActionAfterAnimation(places, images, position, cb) {
+function nextSlideActionAfterAnimation(places:any, images:any, position:any, cb:any):any {
   return () => {
     let nextPlacePosition = position + 1;
 

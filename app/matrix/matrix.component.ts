@@ -33,9 +33,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public hoverHeader:Subject<any> = new Subject();
   public loader:boolean = false;
   public isDraw:boolean = false;
-  public matrixServiceSubscrib:any;
-  public loader:boolean = false;
-  public isDraw:boolean = false;
   public lowIncome:number;
   public highIncome:number;
   public matrixServiceSubscrib:any;
@@ -180,10 +177,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     document.querySelector('body').scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
 
-    // if (this.clonePlaces) {
-    //   this.streetPlaces.next(this.placesVal);
-    //   this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-    // }
+    if (this.clonePlaces) {
+      this.streetPlaces.next(this.placesVal);
+      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+    }
   }
 
   public getViewableRows(headerHeight:number):void {
@@ -215,14 +212,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   /** to remove things like this */
   public urlChanged(options:any):void {
-    let {url, isZoom} = options;
+    let {url, isZoom, isCountriesFilter} = options;
 
     if (url) {
       this.query = isZoom ? url.replace(/row\=\d*/, 'row=1') : url;
       this.row = isZoom ? this.row : 1;
     }
-
-    this.urlChangeService.replaceState('/matrix', this.query);
 
     let parseQuery = this.parseUrl(this.query);
     this.thing = parseQuery.thing;
@@ -242,7 +237,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.placesVal = val.data.zoomPlaces;
         let streetPlaces = val.data.streetPlaces;
 
-        this.filtredPlaces = this.placesVal.filter((place:any):boolean=> {
+        this.filtredPlaces = this.placesVal.filter((place:any):boolean => {
           return place;
         });
 
@@ -251,12 +246,25 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.clonePlaces = _.cloneDeep(this.filtredPlaces);
         this.zoom = +parseQuery.zoom;
         this.loader = true;
+
+        let incomesArr = _
+          .chain(streetPlaces)
+          .map('income')
+          .sortBy()
+          .value();
+
         this.streetPlaces.next(streetPlaces);
         this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-        if (!this.filtredPlaces.length && (Number(parseQuery.lowIncome) !== 0 || Number(parseQuery.highIncome) !== 15000)) {
-          this.urlChanged({url: this.query.replace(/lowIncome\=\d*/, `lowIncome=0`).replace(/highIncome\=\d*/, `highIncome=15000`)});
+        if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== 0 || Number(parseQuery.highIncome) !== 15000)) {
+          this.query = this.query
+            .replace(/lowIncome\=\d*/, `lowIncome=${Math.floor(incomesArr[0] - 10)}`)
+            .replace(/highIncome\=\d*/, `highIncome=${Math.ceil(incomesArr[incomesArr.length - 1] + 10)}`);
+
+          this.urlChanged({url: this.query});
         }
+
+        this.urlChangeService.replaceState('/matrix', this.query);
 
         if (!isZoom) {
           if (document.body.scrollTop) {

@@ -156,6 +156,10 @@ map-component {
   margin-left: 20px !important;
 }
 
+#main-menu .share-button-container i {
+  color: #e0e7ef;
+}
+
 @supports (-webkit-line-clamp: 1) {
   .line-clamp:after {
     display: none !important;

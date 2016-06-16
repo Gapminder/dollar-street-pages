@@ -42,7 +42,7 @@ describe('PhotographerProfileComponent', () => {
     spyOn(context.getPhotographer, 'emit');
     context.ngOnInit();
     expect(context.photographer).toEqual(profile.data);
-    expect(context.getPhotographer.emit).toHaveBeenCalledWith(`${context.photographer.firstName} ${context.photographer.lastName}`);
+    expect(context.getPhotographer.emit).toHaveBeenCalledWith(`Photographer: ${context.photographer.firstName} ${context.photographer.lastName}`);
     spyOn(context.photographerProfileServiceSubscribe, 'unsubscribe');
     context.ngOnDestroy();
     expect(context.photographerProfileServiceSubscribe.unsubscribe).toHaveBeenCalled();

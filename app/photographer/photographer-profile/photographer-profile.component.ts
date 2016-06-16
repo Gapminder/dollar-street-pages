@@ -12,6 +12,8 @@ let style = require('./photographer-profile.css');
 })
 
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
+  protected isShowInfo:boolean = false;
+
   @Input()
   private photographerId:string;
   @Output()
@@ -20,9 +22,8 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   private photographer:any = {};
   private photographerProfileService:any;
   private photographerProfileServiceSubscribe:any;
-  private isShowInfo:boolean = false;
 
-  public constructor(@Inject('PhotographerProfileService') photographerProfileService) {
+  public constructor(@Inject('PhotographerProfileService') photographerProfileService:any) {
     this.photographerProfileService = photographerProfileService;
   }
 
@@ -36,7 +37,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
         }
 
         this.photographer = res.data;
-        this.getPhotographer.emit(`${this.photographer.firstName} ${this.photographer.lastName}`);
+        this.getPhotographer.emit(`Photographer: ${this.photographer.firstName} ${this.photographer.lastName}`);
       });
   }
 
@@ -44,7 +45,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
     this.photographerProfileServiceSubscribe.unsubscribe();
   }
 
-  isShowInfoMore(photographer:any):boolean {
+  protected isShowInfoMore(photographer:any):boolean {
     return photographer.company ||
       photographer.description ||
       photographer.google ||
@@ -53,7 +54,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
       photographer.linkedIn;
   }
 
-  isShowDescription(company:any):boolean {
+  protected isShowDescription(company:any):boolean {
     return company && (company.name || company.link);
   }
 }

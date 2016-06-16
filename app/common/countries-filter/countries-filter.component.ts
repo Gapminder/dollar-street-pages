@@ -17,11 +17,14 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   protected isOpenCountriesFilter:boolean = false;
   protected selectedRegions:string[] = [];
   protected selectedCountries:string[] = [];
-
+  @Input()
+  protected activeFilter:string;
   @Input()
   private url:string;
   @Output()
   private selectedFilter:EventEmitter<any> = new EventEmitter();
+  @Output()
+  private activatedFilter:EventEmitter<any> = new EventEmitter();
 
   private countriesFilterService:any;
   private countriesFilterServiceSubscribe:any;
@@ -33,8 +36,24 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.countriesFilterService = countriesFilterService;
   }
 
-  protected openCountriesFilter(isOpenCountriesFilter:boolean):void {
+  protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
+
+    this.activatedFilter.emit(this.isOpenCountriesFilter ? 'countries' : '');
+
+    if (!this.isOpenCountriesFilter) {
+      if (this.cloneSelectedRegions[0] !== 'World') {
+        this.selectedRegions = _.clone(this.cloneSelectedRegions);
+      } else {
+        this.selectedRegions.length = 0;
+      }
+
+      if (this.cloneSelectedCountries[0] !== 'World') {
+        this.selectedCountries = _.clone(this.cloneSelectedCountries);
+      } else {
+        this.selectedCountries.length = 0;
+      }
+    }
   }
 
   protected selectRegions(location:any):void {
@@ -82,14 +101,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
     query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
 
-    this.selectedFilter.emit({url: this.objToQuery(query)});
-    this.isOpenCountriesFilter = false;
-  }
-
-  protected closeFilter():void {
-    this.selectedRegions = _.clone(this.cloneSelectedRegions);
-    this.selectedCountries = _.clone(this.cloneSelectedCountries);
-
+    this.selectedFilter.emit({url: this.objToQuery(query), isCountriesFilter: true});
     this.isOpenCountriesFilter = false;
   }
 
@@ -98,7 +110,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   }
 
   public ngOnChanges(changes:any):void {
-    if (changes.url.currentValue) {
+    if (changes.url && changes.url.currentValue) {
       if (this.countriesFilterServiceSubscribe) {
         this.countriesFilterServiceSubscribe.unsubscribe();
         this.countriesFilterServiceSubscribe = void 0;
@@ -115,6 +127,15 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
           this.locations = res.data;
           this.setTitle(this.url);
         });
+    }
+
+    if (
+      this.isOpenCountriesFilter &&
+      changes.activeFilter &&
+      changes.activeFilter.currentValue &&
+      changes.activeFilter.currentValue !== 'countries'
+    ) {
+      this.openCloseCountriesFilter(true);
     }
   }
 

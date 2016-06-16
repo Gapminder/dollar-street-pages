@@ -1,14 +1,5 @@
-import {
-  it,
-  describe,
-  async,
-  inject,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
+import {it, describe, async, inject, beforeEachProviders, beforeEach} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
@@ -40,22 +31,22 @@ let setTimeoutMock = {
 };
 assign(window, ImageMock);
 assign(window, setTimeoutMock);
-/***************/
 
 describe('SliderMobilePlaceComponent', () => {
   let controllSlider = new MockService();
-  let streetPlaces = new MockService();
+  let places = new MockService();
   let currentPlace = new MockService();
   controllSlider.fakeResponse = 1;
-  streetPlaces.fakeResponse = streetPlacesData;
-  // currentPlace.fakeResponse = place;
+  places.fakeResponse = streetPlacesData;
   let mockCommonDependency = new MockCommonDependency();
+
   beforeEachProviders(() => {
-    return [
-      mockCommonDependency.getProviders()
-    ];
+    return [mockCommonDependency.getProviders()];
   });
-  let context, fixture;
+
+  let context;
+  let fixture;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb.createAsync(SliderPlaceComponent).then((fixtureInst:any) => {
       fixture = fixtureInst;
@@ -66,7 +57,7 @@ describe('SliderMobilePlaceComponent', () => {
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;
-    context.streetPlaces = streetPlaces;
+    context.places = places;
     context.routeParams.set('thing', '5477537786deda0b00d43be5');
     context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
     context.routeParams.set('place', '54b6866a38ef07015525f5be');
@@ -79,26 +70,26 @@ describe('SliderMobilePlaceComponent', () => {
     expect(context.images.length).toEqual(3);
     expect(context.chosenPlace.income).toEqual(10);
     controllSlider.toInitState();
-    streetPlaces.toInitState();
+    places.toInitState();
   });
   it('must destroy', ()=> {
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;
-    context.streetPlaces = streetPlaces;
+    context.places = places;
     context.routeParams.set('thing', '5477537786deda0b00d43be5');
     context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
     context.routeParams.set('place', '54b6866a38ef07015525f5be');
     fixture.detectChanges();
     fixture.destroy();
-    expect(streetPlaces.countOfSubscribes).toEqual(0);
+    expect(places.countOfSubscribes).toEqual(0);
     expect(controllSlider.countOfSubscribes).toEqual(0);
   });
   it('slidePrev', ()=> {
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;
-    context.streetPlaces = streetPlaces;
+    context.places = places;
     context.routeParams.set('thing', '5477537786deda0b00d43be5');
     context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
     context.routeParams.set('place', '54b6866a38ef07015525f5be');
@@ -114,7 +105,7 @@ describe('SliderMobilePlaceComponent', () => {
     context.currentPlace = currentPlace;
     context.controllSlider = controllSlider;
     context.activeThing = activeThing;
-    context.streetPlaces = streetPlaces;
+    context.places = places;
     context.routeParams.set('thing', '5477537786deda0b00d43be5');
     context.routeParams.set('image', '54b6862f3755cbfb542c28cb');
     context.routeParams.set('place', '54b6866a38ef07015525f5be');

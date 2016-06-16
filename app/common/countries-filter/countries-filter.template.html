@@ -2,7 +2,7 @@
      *ngIf="activeCountries"
      [ngClass]="{'open-countries-filter': isOpenCountriesFilter}">
   <div class="countries-filter-button"
-       (click)="openCountriesFilter(isOpenCountriesFilter)">
+       (click)="openCloseCountriesFilter(isOpenCountriesFilter)">
     <span>{{activeCountries}}</span>
     <span class="arrow"></span>
   </div>
@@ -34,7 +34,7 @@
 
     <div class="button-container">
       <button type="button" (click)="goToLocation()">Apply</button>
-      <button type="button" (click)="closeFilter()">Close</button>
+      <button type="button" (click)="openCloseCountriesFilter(isOpenCountriesFilter)">Close</button>
     </div>
   </div>
 </div>

@@ -2,7 +2,7 @@ import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {RouterLink} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
-import {SocialShareButtons} from '../social_share_buttons/social-share-buttons.component.ts';
+import {SocialShareButtonsComponent} from '../social_share_buttons/social-share-buttons.component.ts';
 
 let tpl = require('./menu.template.html');
 let style = require('./menu.css');
@@ -11,7 +11,7 @@ let style = require('./menu.css');
   selector: 'main-menu',
   template: tpl,
   styles: [style],
-  directives: [SocialShareButtons, RouterLink]
+  directives: [SocialShareButtonsComponent, RouterLink]
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {

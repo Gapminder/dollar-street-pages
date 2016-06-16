@@ -17,6 +17,6 @@ import {Component, Input} from '@angular/core';
 })
 // TODO: Substitute VideoEntryComponent with EmbeddedEntryComponent (later is more generic and allows to embed various types of content)
 export class VideoEntryComponent {
-  // noinspection TsLint
-  @Input() private entry;
+  @Input()
+  protected entry:any;
 }

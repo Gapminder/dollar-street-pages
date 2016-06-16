@@ -17,7 +17,6 @@ let style = require('./photographer.css');
 })
 
 export class PhotographerComponent implements OnInit {
-  public title:string = 'Photographer';
   private routeParams:RouteParams;
   private photographerId:string;
 
