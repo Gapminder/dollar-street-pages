@@ -23,18 +23,11 @@ export class MatrixViewBlockComponent implements OnChanges {
   public fancyBoxImage:any;
 
   protected imageUrl:string;
-  protected country:any;
-  protected familyName:string;
-  protected familyInfoSum:string;
-  protected homesInCountry:number;
-  protected relatedThings:any = [];
-  protected photographer:string;
-  protected photographerId:any;
-  protected showblock:boolean;
-  protected countryId:any;
-  protected thingName:any;
   protected placesPerCountry:number;
   protected placesPerRegion:number;
+  protected showblock:boolean;
+  protected country:any;
+  protected familyData:any = {};
 
   private popIsOpen:boolean;
   private mapData:ReplaySubject<any> = new ReplaySubject(0);
@@ -88,15 +81,7 @@ export class MatrixViewBlockComponent implements OnChanges {
           console.log(res.err);
           return;
         }
-
-        this.familyName = familyData.familyName;
-        this.countryId = familyData.countryId;
-        this.homesInCountry = familyData.familyCount;
-        this.thingName = familyData.thingName.plural || familyData.thingName.thingName;
-        this.familyInfoSum = familyData.familyData;
-        this.relatedThings = familyData.images;
-        this.photographer = familyData.photographer.name;
-        this.photographerId = familyData.photographer.id;
+        this.familyData = familyData;
         this.streetMiniData.next({place: this.place, incomes: familyData.income});
       });
 
@@ -143,7 +128,6 @@ export class MatrixViewBlockComponent implements OnChanges {
     let countryDirector:string;
     let regionDirector:string;
     let url;
-    // this.showblock = false;
 
     if (place === 'country') {
       countryDirector = this.place.country;
