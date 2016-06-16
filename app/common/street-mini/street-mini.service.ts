@@ -189,7 +189,7 @@ export class StreetMiniDrawService {
     if (!place) {
       return this;
     }
-    let income = place.income;
+    let income = Math.round(place.income);
     let fills = this.colors.fills;
     let fillsOfBorders = this.colors.fillsOfBorders;
     let halfHouseWidth = 12.5;

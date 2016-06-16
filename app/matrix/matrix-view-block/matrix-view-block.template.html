@@ -12,30 +12,33 @@
                           href=""
                           [routerLink]="['Photographer', {id: photographerId}]">
               {{photographer}}</a>
-              <a class="color-grey link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/"> CC by 4.0</a>
+              <a class="color-grey link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/"> CC by
+                4.0</a>
             </p>
           </div>
 
           <div class="col-md-4">
-            <img class="icon-bottom-image" src="../../assets/img/zoom%20custom%20icon.svg">
             <p>
-              <a class="color-grey" (click)="openPopUp()"> View full size </a>
+              <a class="color-grey" (click)="openPopUp()">
+                <img class="icon-bottom-image" src="../../assets/img/zoom%20custom%20icon.svg">
+                View full size
+              </a>
             </p>
           </div>
 
           <div class="col-md-4">
-            <img class="icon-bottom-image" src="../../assets/img/icon-download.svg">
+
             <p>
-              <a class="color-grey" [href]="imageUrl" download> Download image </a>
+              <a class="color-grey" [href]="imageUrl" download>
+                <img class="icon-bottom-image" src="../../assets/img/icon-download.svg">
+                Download image
+              </a>
             </p>
           </div>
         </div>
       </div>
     </div>
     <div class="col-md-3 f-h text-c">
-      <div *ngIf="!familyName" class="bold-text">
-        No data for family
-      </div>
       <div *ngIf="familyName" class="bold-text">
         {{familyName}} family
         <a class="pull-right close-button"

@@ -30,7 +30,7 @@ export class MatrixViewBlockComponent implements OnChanges {
   protected relatedThings:any = [];
   protected photographer:string;
   protected photographerId:any;
-  protected showblock:boolean = true;
+  protected showblock:boolean;
   protected countryId:any;
   protected thingName:any;
   protected placesPerCountry:number;
@@ -65,6 +65,7 @@ export class MatrixViewBlockComponent implements OnChanges {
   }
 
   public ngOnChanges():void {
+    this.showblock = true;
     let placeId = this.place._id;
     let imageId = this.place.image;
     let thingId = this.thing;
@@ -92,9 +93,9 @@ export class MatrixViewBlockComponent implements OnChanges {
           return;
         }
 
+        this.familyName = familyData.data.familyName;
         this.countryId = familyData.data.countryId;
         this.homesInCountry = familyData.data.familyCount;
-        this.familyName = familyData.data.familyName;
         this.thingName = familyData.data.thingName.plural || familyData.data.thingName.thingName;
         this.familyInfoSum = familyData.data.familyData;
         this.relatedThings = familyData.data.images;
@@ -144,7 +145,7 @@ export class MatrixViewBlockComponent implements OnChanges {
     let countryDirector:string;
     let regionDirector:string;
     let url;
-    this.showblock = false;
+    // this.showblock = false;
 
     if (place === 'country') {
       countryDirector = this.place.country;
@@ -154,7 +155,7 @@ export class MatrixViewBlockComponent implements OnChanges {
       countryDirector = 'World';
       regionDirector = this.place.region;
     }
-    url = {query: `thing=${this.thing}&countries=${countryDirector}&regions=${regionDirector}&zoom=${this.zoom}&row=0`};
+    url = {url: `thing=${this.thing}&countries=${countryDirector}&regions=${regionDirector}&zoom=${this.zoom}&row=0&lowIncome=0&highIncome=15000`};
     this.thingsByIncomes.emit(url);
   }
 
