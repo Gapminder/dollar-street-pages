@@ -70,7 +70,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public ngOnInit():void {
     this.init = true;
     this.thing = this.routeParams.get('thing');
-    this.thing = this.thing ? this.thing : '5477537786deda0b00d43be5';
+    this.thing = this.thing ? this.thing : 'Home';
 
     this.urlChanged({url: `thing=${this.thing}`});
   }

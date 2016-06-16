@@ -52,7 +52,7 @@ export let place = {
   house: {
     _id: "54b6866e3755cbfb542c28d4",
     background: "http://static.dollarstreet.org.s3.amazonaws.com/media/Liberia 1/image/5e7914b2-6041-4ffa-96d4-735cdb584d87/thumb-5e7914b2-6041-4ffa-96d4-735cdb584d87.jpg",
-    thing: "5477537786deda0b00d43be5"
+    thing: "Home"
   },
   image: "54b6866a38ef07015525f5be",
   income: 1,
@@ -108,7 +108,7 @@ export let streetPlacesData = [{
   house: {
     _id: "54b6866e3755cbfb542c28d4",
     background: '/assets/img/mock.jpg',
-    thing: "5477537786deda0b00d43be5"
+    thing: "Home"
   },
   image: "54b6866a38ef07785525f5be",
   income: 1,
@@ -133,7 +133,7 @@ export let streetPlacesData = [{
   house: {
     _id: "54b6866e3755cbfb542c28d4",
     background: '/assets/img/mock.jpg',
-    thing: "5477537786deda0b00d43be5"
+    thing: "Home"
   },
   image: "54b6866a38ef89015525f5be",
   income: 10,
@@ -159,7 +159,7 @@ export let streetPlacesData = [{
   house: {
     _id: "54b6866e3755cbfb542c28d4",
     background: '/assets/img/mock.jpg',
-    thing: "5477537786deda0b00d43be5"
+    thing: "Home"
   },
   image: "54b6866a38ef07015525f5be",
   income: 133,
@@ -185,7 +185,7 @@ export let streetPlacesData = [{
   house: {
     _id: "54b6866e3755cbfb542c28d4",
     background: '/assets/img/mock.jpg',
-    thing: "5477537786deda0b00d43be5"
+    thing: "Home"
   },
   image: "54b6866a38ef07015525f5be",
   income: 500,
@@ -211,7 +211,7 @@ export let streetPlacesData = [{
   house: {
     _id: "54b6866e3755cbfb542c28d4",
     background: '/assets/img/mock.jpg',
-    thing: "5477537786deda0b00d43be5"
+    thing: "Home"
   },
   image: "54b6866a38ef07015525f5be",
   income: 547,
@@ -249,7 +249,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b6866e3755cbfb542c28d4",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Liberia 1/image/5e7914b2-6041-4ffa-96d4-735cdb584d87/thumb-5e7914b2-6041-4ffa-96d4-735cdb584d87.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54afe95c80d862d9767cf32e",
@@ -272,7 +272,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54afea5080d862d9767cf35a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Burundi 3/image/830877d2-675c-41e0-81e3-4e02aed54b43/thumb-830877d2-675c-41e0-81e3-4e02aed54b43.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7b92fcb00419b4f4bfb48",
@@ -295,7 +295,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7bae0cb00419b4f4bfb91",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Malawi 6/image/cd04de58-bfbd-4c57-80ce-a48163a7894b/thumb-cd04de58-bfbd-4c57-80ce-a48163a7894b.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b6896d3755cbfb542c290d",
@@ -318,7 +318,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b68a8a5edc101155fa237a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Malawi 1/image/78dcefa9-2ce8-4039-aa76-83ae3decf20a/thumb-78dcefa9-2ce8-4039-aa76-83ae3decf20a.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "557036781e788ebf3eb00f99",
@@ -341,7 +341,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "557039921e788ebf3eb01061",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 12/image/6b6fe992-059e-4124-9b27-74883713296a/thumb-6b6fe992-059e-4124-9b27-74883713296a.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54afe2b1993307fb769cc634",
@@ -364,7 +364,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54afe45c0746a9cb7621e7c0",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Burundi 1/image/b9f89f64-b8cf-4625-863e-445148b0fcac/thumb-b9f89f64-b8cf-4625-863e-445148b0fcac.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54afe6bc80d862d9767cf2f5",
@@ -387,7 +387,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54afe732993307fb769cc68e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Burundi 2/image/e8f6a8bb-c6b6-40de-af36-29af476ceb45/thumb-e8f6a8bb-c6b6-40de-af36-29af476ceb45.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b927c4472e93d62d92654e",
@@ -410,7 +410,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b9296f472e93d62d926596",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Zimbabwe 3/image/f5f56ac3-a0ad-48f3-845d-ec79d522b31b/thumb-f5f56ac3-a0ad-48f3-845d-ec79d522b31b.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b664313755cbfb542c27f1",
@@ -433,7 +433,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b66bce5edc101155fa222e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Ivory Coast 5/image/c4111c47-6427-4481-89f2-980338d847e4/thumb-c4111c47-6427-4481-89f2-980338d847e4.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5477465186deda0b00d43a8e",
@@ -456,7 +456,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54774f3b86deda0b00d43b82",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Burkina Faso 1/image/9a586d10-38a0-463d-84b5-0d3f21d26f87/thumb-9a586d10-38a0-463d-84b5-0d3f21d26f87.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55701b7a264c39803ebfa785",
@@ -479,7 +479,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55701d8bf36434953e50478f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 10/image/438c7fb0-3633-47c1-9f94-14e4299457a9/thumb-438c7fb0-3633-47c1-9f94-14e4299457a9.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56098a94555bf97705720e39",
@@ -502,7 +502,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "56098b97555bf97705720e68",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Myanmar 3/image/002604a5-8945-45e9-a06a-45730e6bec1e/thumb-002604a5-8945-45e9-a06a-45730e6bec1e.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54afe0d1be3215e776813e3b",
@@ -525,7 +525,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54afe216be3215e776813e72",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Burkina Faso 6/image/40640ad8-1137-45b4-acba-e5835cd5152f/thumb-40640ad8-1137-45b4-acba-e5835cd5152f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7b6d5c302faad4f3aec44",
@@ -548,7 +548,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7b880cb00419b4f4bfb3d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Malawi 5/image/c4137ded-6466-4dee-aa0a-12f016e9fc1d/thumb-c4137ded-6466-4dee-aa0a-12f016e9fc1d.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b5413d38ef07015525f2c5",
@@ -571,7 +571,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b6494c38ef07015525f38d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Ivory Coast 1/image/17676e1d-719e-4127-80c6-b218e0c364c4/thumb-17676e1d-719e-4127-80c6-b218e0c364c4.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7b4b1c53d4fa64fb8909b",
@@ -612,7 +612,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b68cb63755cbfb542c297d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Malawi 2/image/a15d580f-4347-41bb-b27b-dd929a2b7c6f/thumb-a15d580f-4347-41bb-b27b-dd929a2b7c6f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b6883e38ef07015525f5e3",
@@ -635,7 +635,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b6888d38ef07015525f5ec",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Liberia 4/image/75b9b514-5af0-4ddf-ad39-eb503081b4c8/thumb-75b9b514-5af0-4ddf-ad39-eb503081b4c8.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b924f06eebabe42d39b93c",
@@ -658,7 +658,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b926fe02f7310b2e0bac29",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Zimbabwe 2/image/e9f609f4-1586-4244-a599-3d0eaa5e140a/thumb-e9f609f4-1586-4244-a599-3d0eaa5e140a.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b92ab002f7310b2e0bac93",
@@ -681,7 +681,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b92db703670af22d4fc615",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Zimbabwe 4/image/e71c16be-b26f-48bf-aaa4-023c612a9574/thumb-e71c16be-b26f-48bf-aaa4-023c612a9574.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7d4b0c302faad4f3aee2b",
@@ -704,7 +704,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7d52acb00419b4f4bfce7",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nepal 4/image/ec203725-ba61-419a-abb4-0af5a9e8a945/thumb-ec203725-ba61-419a-abb4-0af5a9e8a945.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b81a43c302faad4f3af276",
@@ -727,7 +727,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b81afacb00419b4f4c013e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Rwanda 3/image/7ce883e3-4321-4225-ab8f-2168f5c1e9e8/thumb-7ce883e3-4321-4225-ab8f-2168f5c1e9e8.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b81c42c53d4fa64fb89756",
@@ -750,7 +750,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b81cc025003a824f648e04",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Rwanda 4/image/407dd0da-3a4a-4658-b198-f54552a435f4/thumb-407dd0da-3a4a-4658-b198-f54552a435f4.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b4eb529f0c8d666e1ac327",
@@ -773,7 +773,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b4edee9f0c8d666e1ac38d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Haiti 3/image/9d53117a-1707-4313-8e4f-1aba9843c49e/thumb-9d53117a-1707-4313-8e4f-1aba9843c49e.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56056a7fcd8f1e9a207bb4f7",
@@ -814,7 +814,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "557042112369cdaa3ea68b15",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 13/image/a27076cc-6499-44d6-a84d-60ad3be86913/thumb-a27076cc-6499-44d6-a84d-60ad3be86913.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3a02bb1c479446e1df064",
@@ -837,7 +837,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3a34c9f0c8d666e1abf19",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 7/image/4d0edf14-f2b4-404f-a20b-cab26aa71125/thumb-4d0edf14-f2b4-404f-a20b-cab26aa71125.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5694d6807bf31bad44a2e700",
@@ -858,7 +858,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5694da717bf31bad44a2e755",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Palestine 1/image/934a796b-af4f-4b73-9848-4b8e8b8de0c5/thumb-934a796b-af4f-4b73-9848-4b8e8b8de0c5.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56057e486872a18820d195a7",
@@ -899,7 +899,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b9246302f7310b2e0babd1",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Zimbabwe 1/image/4afafca1-1333-4ea1-8767-7b846e1d33df/thumb-4afafca1-1333-4ea1-8767-7b846e1d33df.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56056fbc6872a18820d194cf",
@@ -940,7 +940,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5605653a604ce1ac2035fbe8",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bangladesh 4/image/78410954-4f28-4f33-b041-14a2ad6d7e3c/thumb-78410954-4f28-4f33-b041-14a2ad6d7e3c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7e963c302faad4f3aef7a",
@@ -981,7 +981,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "556f32d0264c39803ebfa691",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 8/image/6ed98db5-a6a5-4169-bd0b-6e53c2750c91/thumb-6ed98db5-a6a5-4169-bd0b-6e53c2750c91.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54afa49a0746a9cb7621e61e",
@@ -1004,7 +1004,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54afa6390746a9cb7621e66b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Burkina Faso 3/image/a80c46ab-94a6-4aa0-a686-22caa8a727d1/thumb-a80c46ab-94a6-4aa0-a686-22caa8a727d1.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7f93bc302faad4f3aefd5",
@@ -1027,7 +1027,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7fa96c302faad4f3af012",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nigeria 7/image/b4d46f95-f75b-4651-bdf3-f7428bb2723a/thumb-b4d46f95-f75b-4651-bdf3-f7428bb2723a.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7e39d25003a824f648a60",
@@ -1050,7 +1050,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7e41cc53d4fa64fb893b9",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nigeria 3/image/3337cdec-4395-44cb-b9eb-d25edf0afb71/thumb-3337cdec-4395-44cb-b9eb-d25edf0afb71.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "560575c06872a18820d19537",
@@ -1073,7 +1073,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5605769d604ce1ac2035fcd8",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bangladesh 9/image/339f90b3-71a1-4318-b2d8-13a053f6c72b/thumb-339f90b3-71a1-4318-b2d8-13a053f6c72b.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56098db9c6d52b89053b61cc",
@@ -1096,7 +1096,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "56098e11d918ffad05cee28f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Myanmar 4/image/59c0b293-4ab8-4c9e-9b22-2a97941b252e/thumb-59c0b293-4ab8-4c9e-9b22-2a97941b252e.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56056871cd8f1e9a207bb4bf",
@@ -1119,7 +1119,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5605690b6872a18820d1946e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bangladesh 5/image/57225d48-8148-4d3a-96cc-c257a1fa662c/thumb-57225d48-8148-4d3a-96cc-c257a1fa662c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54be2720c4a0e60017efb08f",
@@ -1142,7 +1142,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54be29966c9e7cf91e2ed916",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bangladesh 4/image/8fbad3b2-ebc2-4dfc-ab03-69b8d784c57d/thumb-8fbad3b2-ebc2-4dfc-ab03-69b8d784c57d.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "556f436a1e788ebf3eb00d1a",
@@ -1165,7 +1165,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "556f5095264c39803ebfa76a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 9/image/48e3f68d-22b9-4523-b346-1b771a720e92/thumb-48e3f68d-22b9-4523-b346-1b771a720e92.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b4f3beb1c479446e1df536",
@@ -1188,7 +1188,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b4f56757de10366ed13998",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Haiti 5/image/e8a01f1a-5795-4dd9-bf03-b742e010a752/thumb-e8a01f1a-5795-4dd9-bf03-b742e010a752.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b687863755cbfb542c28e8",
@@ -1211,7 +1211,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b687c03755cbfb542c28ef",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Liberia 3/image/bd4fe572-b858-44d6-a718-fb71a5a2dde0/thumb-bd4fe572-b858-44d6-a718-fb71a5a2dde0.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7bbadcb00419b4f4bfb9e",
@@ -1234,7 +1234,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7be2925003a824f64887b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Malawi 7/image/b7e3e801-03d0-4f56-a155-0ea2d11d7acf/thumb-b7e3e801-03d0-4f56-a155-0ea2d11d7acf.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7b14fc53d4fa64fb8904f",
@@ -1257,7 +1257,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7b368cb00419b4f4bfaa6",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Malawi 3/image/c33d655b-60cd-4d1a-9183-a1741320a510/thumb-c33d655b-60cd-4d1a-9183-a1741320a510.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b80a58c53d4fa64fb89587",
@@ -1280,7 +1280,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b80ab3c53d4fa64fb8958f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 6/image/1fa75abc-05ad-4f48-9365-02037058f25a/thumb-1fa75abc-05ad-4f48-9365-02037058f25a.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8d28c3b3a1d796520b038",
@@ -1303,7 +1303,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8d2b4a8e7aa6965778252",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Thailand 1/image/525f2c56-b4bb-4f10-9972-540f89562931/thumb-525f2c56-b4bb-4f10-9972-540f89562931.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b804c625003a824f648bdc",
@@ -1326,7 +1326,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b80518c53d4fa64fb89546",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 3/image/9a992df4-7ee8-4472-9f8a-675dc3b5e9e6/thumb-9a992df4-7ee8-4472-9f8a-675dc3b5e9e6.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3a4edb1c479446e1df07d",
@@ -1349,7 +1349,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3a52b57de10366ed13491",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 8/image/816d1954-a738-450c-846a-957928a2a639/thumb-816d1954-a738-450c-846a-957928a2a639.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7e6e6cb00419b4f4bfe08",
@@ -1372,7 +1372,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7e901c302faad4f3aef77",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nigeria 4/image/6c4e65c1-9132-4625-aac1-e020cfb1b369/thumb-6c4e65c1-9132-4625-aac1-e020cfb1b369.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8dfe93b3a1d796520b149",
@@ -1395,7 +1395,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8e1c8df5b17576526073f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Tunisia 3/image/39864290-baf9-4443-a774-84814f83f32f/thumb-39864290-baf9-4443-a774-84814f83f32f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "560c1ac5560dd0ac27fc40ab",
@@ -1418,7 +1418,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "560c1bc5c6d52b89053b6860",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Myanmar 7/image/ac0d35bf-1642-481b-bc82-d471980cbdd8/thumb-ac0d35bf-1642-481b-bc82-d471980cbdd8.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "560986d5555bf97705720e05",
@@ -1441,7 +1441,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "56098736427ad29b05294572",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Myanmar 2/image/0a1c1cc7-356f-4b80-8344-dd329cfeb237/thumb-0a1c1cc7-356f-4b80-8344-dd329cfeb237.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7d9c8cb00419b4f4bfd26",
@@ -1464,7 +1464,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7dc41cb00419b4f4bfd30",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nepal 7/image/de5e53d8-16f2-4e59-affc-285a16c2f843/thumb-de5e53d8-16f2-4e59-affc-285a16c2f843.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b53af93755cbfb542c254e",
@@ -1487,7 +1487,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b53b4105df73e5543191d4",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Indonesia 4/image/eb174e2b-f48b-4ad2-9274-fd8dd4be88dc/thumb-eb174e2b-f48b-4ad2-9274-fd8dd4be88dc.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "560573fecd8f1e9a207bb565",
@@ -1510,7 +1510,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "560574a56872a18820d19510",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bangladesh 8/image/736b0c68-4486-4346-81ce-17408caa08b9/thumb-736b0c68-4486-4346-81ce-17408caa08b9.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3a6c2a5a3d7566eb0038d",
@@ -1533,7 +1533,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3a72bb1c479446e1df09d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 9/image/c56f1e8a-df60-4581-b832-07941d04101d/thumb-c56f1e8a-df60-4581-b832-07941d04101d.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b64f5105df73e55431939e",
@@ -1556,7 +1556,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b651463755cbfb542c2771",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Ivory Coast 3/image/26ac78f7-0ee7-454a-b469-7d3536ef9d51/thumb-26ac78f7-0ee7-454a-b469-7d3536ef9d51.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5571a085125eea582cbd257b",
@@ -1579,7 +1579,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5571a5a3125eea582cbd2677",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Ukraine 3/image/1b379844-198c-494a-b109-844c60fe6051/thumb-1b379844-198c-494a-b109-844c60fe6051.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "560c1ff0722741ce27dcdf1a",
@@ -1602,7 +1602,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "560c2ac8144af7bc276977fd",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Myanmar 8/image/34c4caa9-a25e-457b-ab56-2c84c58b385c/thumb-34c4caa9-a25e-457b-ab56-2c84c58b385c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b64c345edc101155fa20ef",
@@ -1625,7 +1625,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b64e765edc101155fa2154",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Ivory Coast 2/image/97f04b07-94f5-4084-9d95-01731ed73266/thumb-97f04b07-94f5-4084-9d95-01731ed73266.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b4f73c9f0c8d666e1ac45e",
@@ -1648,7 +1648,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b4f96da5a3d7566eb008fe",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Haiti 6/image/90e7c0a9-12cd-40ad-8df6-92b8c37dd08e/thumb-90e7c0a9-12cd-40ad-8df6-92b8c37dd08e.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b816d8c53d4fa64fb896a5",
@@ -1671,7 +1671,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8181ac302faad4f3af23c",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Rwanda 1/image/82b1c9f6-4501-42b3-af39-4fc558e37c7d/thumb-82b1c9f6-4501-42b3-af39-4fc558e37c7d.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8023ac53d4fa64fb89509",
@@ -1694,7 +1694,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b80296c302faad4f3af070",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 1/image/ed8cdb0d-4ca2-4050-b798-7ad7274cdfad/thumb-ed8cdb0d-4ca2-4050-b798-7ad7274cdfad.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54773e2f86deda0b00d438c3",
@@ -1717,7 +1717,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5477448786deda0b00d43a55",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Colombia 3/image/b3afee88-5189-4f3b-a38c-ffccb886d944/thumb-b3afee88-5189-4f3b-a38c-ffccb886d944.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7d79c25003a824f648996",
@@ -1740,7 +1740,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7d7fbc53d4fa64fb892fd",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nepal 6/image/0875bee8-b572-45d1-9b02-40693cf036e9/thumb-0875bee8-b572-45d1-9b02-40693cf036e9.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b818f7c53d4fa64fb896dd",
@@ -1763,7 +1763,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b819bec53d4fa64fb89700",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Rwanda 2/image/70bab7cc-2c4e-459e-b7b9-b8b6c2b7dd07/thumb-70bab7cc-2c4e-459e-b7b9-b8b6c2b7dd07.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8ccfac53d4fa64fb8979c",
@@ -1786,7 +1786,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8ce923b3a1d796520afac",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/South Africa 2/image/917b7dc0-1937-47fb-9b8a-6884e7c22182/thumb-917b7dc0-1937-47fb-9b8a-6884e7c22182.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54af9f8d993307fb769cc481",
@@ -1809,7 +1809,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54afa124be3215e776813d16",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Burkina Faso 2/image/b0efff29-8e66-4543-be6f-5caa7c823bf1/thumb-b0efff29-8e66-4543-be6f-5caa7c823bf1.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7f660c53d4fa64fb8943c",
@@ -1832,7 +1832,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7f7d4c53d4fa64fb89466",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nigeria 6/image/142093bd-6631-4780-8859-b7a2740c91d6/thumb-142093bd-6631-4780-8859-b7a2740c91d6.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "560c1746144af7bc27697772",
@@ -1855,7 +1855,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "560c19f2144af7bc276977a3",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Myanmar 6/image/faebff70-a2ff-458f-8092-1ce1744c9277/thumb-faebff70-a2ff-458f-8092-1ce1744c9277.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8e543df5b1757652607c1",
@@ -1878,7 +1878,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b9117e03670af22d4fc3bb",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Tunisia 5/image/a3f17b68-e40e-453a-92e3-d490d7853c07/thumb-a3f17b68-e40e-453a-92e3-d490d7853c07.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3cf0bb1c479446e1df120",
@@ -1901,7 +1901,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3cf57a5a3d7566eb0042e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 6/image/7198946a-e38a-4ac7-a474-2236f6a39740/thumb-7198946a-e38a-4ac7-a474-2236f6a39740.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55705dea264c39803ebface7",
@@ -1924,7 +1924,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "557060f01e788ebf3eb01435",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 16/image/481c6253-54cd-4c51-b733-c4f4ae111d77/thumb-481c6253-54cd-4c51-b733-c4f4ae111d77.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7d2b525003a824f64894c",
@@ -1947,7 +1947,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7d38fc302faad4f3aee1c",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nepal 3/image/e491dc31-5c8a-45eb-8892-8c4654f36a49/thumb-e491dc31-5c8a-45eb-8892-8c4654f36a49.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3ca87b1c479446e1df0e1",
@@ -1970,7 +1970,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3cab557de10366ed134f6",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 3/image/059fa7e7-14d3-43a3-8d88-71792723b2b9/thumb-059fa7e7-14d3-43a3-8d88-71792723b2b9.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "557178e3125eea582cbd2134",
@@ -1993,7 +1993,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55717c06125eea582cbd2219",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Jordan 3/image/52e57aba-d307-47bb-a7e6-96895d71a0bd/thumb-52e57aba-d307-47bb-a7e6-96895d71a0bd.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b6414938ef07015525f2c6",
@@ -2016,7 +2016,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b641815edc101155fa201b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bangladesh 1/image/0c95da17-6100-4a35-b72f-171da0c0591c/thumb-0c95da17-6100-4a35-b72f-171da0c0591c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3de069f0c8d666e1ac0d1",
@@ -2039,7 +2039,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3e098b1c479446e1df27b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Colombia 2/image/2d53cb20-1ca8-40f8-8d7e-ad814fd86f1e/thumb-2d53cb20-1ca8-40f8-8d7e-ad814fd86f1e.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3daaf57de10366ed135ab",
@@ -2062,7 +2062,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3dd3757de10366ed1361f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Colombia 1/image/9240943f-9216-470c-83ce-4f26abb8fb93/thumb-9240943f-9216-470c-83ce-4f26abb8fb93.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8d3ecdf5b1757652605f8",
@@ -2085,7 +2085,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8d41a6a3b3a496537fe5a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Thailand 3/image/c5555adb-b2cc-4503-be69-299ef1cfd2d3/thumb-c5555adb-b2cc-4503-be69-299ef1cfd2d3.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b91c02472e93d62d92644e",
@@ -2108,7 +2108,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b91d086eebabe42d39b8a8",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Vietnam 2/image/92e869d9-a8cc-4d5a-a5eb-19e845a09a4b/thumb-92e869d9-a8cc-4d5a-a5eb-19e845a09a4b.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8e2a93b3a1d796520b1b3",
@@ -2131,7 +2131,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8e48c3b3a1d796520b206",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Tunisia 4/image/015fbb6a-6afd-48d4-9186-383dd2f79478/thumb-015fbb6a-6afd-48d4-9186-383dd2f79478.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b80380c53d4fa64fb89521",
@@ -2154,7 +2154,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b803f8c302faad4f3af08e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 2/image/46438061-4678-4c3d-a9da-0af50f9f0673/thumb-46438061-4678-4c3d-a9da-0af50f9f0673.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56091712604ce1ac2036097f",
@@ -2177,7 +2177,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "560917c56872a18820d19b3c",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Indonesia 11/image/8970b4a2-75e7-4afe-ac06-257a1d3f5303/thumb-8970b4a2-75e7-4afe-ac06-257a1d3f5303.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b65e235edc101155fa21b7",
@@ -2200,7 +2200,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b65ee83755cbfb542c2791",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Ivory Coast 4/image/2d58b712-4ecd-4a80-96ea-9b7a47f93bfc/thumb-2d58b712-4ecd-4a80-96ea-9b7a47f93bfc.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b6431405df73e55431925d",
@@ -2223,7 +2223,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b643533755cbfb542c25ec",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bangladesh 2/image/70ac4b72-0232-4565-bd1f-69cc2f93983c/thumb-70ac4b72-0232-4565-bd1f-69cc2f93983c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b80c3ccb00419b4f4bffce",
@@ -2246,7 +2246,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b80ca925003a824f648c60",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 8/image/bcc3aa7b-bc94-49dd-accb-ae9efeba616d/thumb-bcc3aa7b-bc94-49dd-accb-ae9efeba616d.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5570538c2369cdaa3ea68c21",
@@ -2269,7 +2269,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "557059c6f36434953e504c3d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 15/image/bea0d393-ebd8-49db-b61e-98faf4e0c3b0/thumb-bea0d393-ebd8-49db-b61e-98faf4e0c3b0.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5575f600f59550d43f443110",
@@ -2292,7 +2292,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55769e3bfb9a59a23f949f01",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 7/image/f11a7f52-080d-474b-af6f-238a3bea6b8f/thumb-f11a7f52-080d-474b-af6f-238a3bea6b8f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56057b4f6872a18820d19575",
@@ -2333,7 +2333,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7ceb125003a824f648923",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nepal 1/image/a1e688a3-e8ea-4377-a777-309f3367be30/thumb-a1e688a3-e8ea-4377-a777-309f3367be30.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "560911f56872a18820d19af1",
@@ -2356,7 +2356,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "56091290604ce1ac20360962",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Indonesia 10/image/20af8c9e-495c-4f2e-ba4c-f5388d94139b/thumb-20af8c9e-495c-4f2e-ba4c-f5388d94139b.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b80b32c53d4fa64fb8959d",
@@ -2379,7 +2379,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b80b7f25003a824f648c46",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 7/image/2e953e66-d4a5-4d53-a68f-1d29fbe6f45c/thumb-2e953e66-d4a5-4d53-a68f-1d29fbe6f45c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3c6c1a5a3d7566eb003d1",
@@ -2402,7 +2402,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3c6e157de10366ed134e4",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 2/image/368f2bb2-61f7-472a-9257-7678398ec030/thumb-368f2bb2-61f7-472a-9257-7678398ec030.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8d8aa6a3b3a496537fee5",
@@ -2425,7 +2425,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8da7adf5b1757652606da",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Tunisia 2/image/553342ba-51e5-465b-881f-0b32c9b1dd9f/thumb-553342ba-51e5-465b-881f-0b32c9b1dd9f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b683995edc101155fa22e1",
@@ -2448,7 +2448,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b683ba3755cbfb542c28a6",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Kenya 1/image/8dee925f-91b3-41a4-95f4-6758c2048fa4/thumb-8dee925f-91b3-41a4-95f4-6758c2048fa4.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "547c4bc9b787bd0b00dcfb5b",
@@ -2471,7 +2471,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "547c4f7fb787bd0b00dcfc9a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/South Africa 1/image/d66bb682-8736-4c85-901c-58d200f3090f/thumb-d66bb682-8736-4c85-901c-58d200f3090f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b80958c53d4fa64fb8956d",
@@ -2494,7 +2494,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b809c525003a824f648c1b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 5/image/db221487-c144-407e-a183-e3f66c635ffc/thumb-db221487-c144-407e-a183-e3f66c635ffc.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54be2ac36c9e7cf91e2ed92d",
@@ -2517,7 +2517,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54be2c718f6cdb1217b1dd91",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bolivia 3/image/930b4dd1-1e79-4600-8adc-d0375200eae7/thumb-930b4dd1-1e79-4600-8adc-d0375200eae7.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b920aa472e93d62d92649b",
@@ -2540,7 +2540,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b9215103670af22d4fc4ba",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Vietnam 4/image/fc577c38-58f6-44ba-945f-3c979c2ce193/thumb-fc577c38-58f6-44ba-945f-3c979c2ce193.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56092d1ca2a911bf204ea701",
@@ -2581,7 +2581,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8151125003a824f648d1e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 13/image/a2fbaebc-1053-43e2-8e17-df60d9dd2a6f/thumb-a2fbaebc-1053-43e2-8e17-df60d9dd2a6f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7c9bfc302faad4f3aeda6",
@@ -2604,7 +2604,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7c9f225003a824f6488ee",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Mexico 5/image/da51ac44-c7ca-4f41-8b89-85b58c823307/thumb-da51ac44-c7ca-4f41-8b89-85b58c823307.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8d1736a3b3a496537fe15",
@@ -2627,7 +2627,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8d1c96a3b3a496537fe22",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Sweden 5/image/5bdad8b1-8ac9-4628-927c-cb7e92e94123/thumb-5bdad8b1-8ac9-4628-927c-cb7e92e94123.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b39b6ea5a3d7566eb00326",
@@ -2668,7 +2668,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55d1ab0b3b5b8eee26c7964e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 24/image/c4f282b2-f1a3-4730-bcea-31f63ce5053f/thumb-c4f282b2-f1a3-4730-bcea-31f63ce5053f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8135525003a824f648cdd",
@@ -2691,7 +2691,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b81400c53d4fa64fb89658",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 12/image/b2162e7b-e8cd-4895-8fa5-d7a44e1700ea/thumb-b2162e7b-e8cd-4895-8fa5-d7a44e1700ea.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7dee3c53d4fa64fb89337",
@@ -2714,7 +2714,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7e0d2cb00419b4f4bfda2",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nigeria 1/image/52136cac-e8be-4e2e-a8fc-aa5ffe7364b5/thumb-52136cac-e8be-4e2e-a8fc-aa5ffe7364b5.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b520ed05df73e55431912b",
@@ -2737,7 +2737,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b521155edc101155fa1efd",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 4/image/480515b3-8e66-4cb0-b873-f98006c42bec/thumb-480515b3-8e66-4cb0-b873-f98006c42bec.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b51a173755cbfb542c2473",
@@ -2760,7 +2760,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b51a6d05df73e5543190f5",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 1/image/9843e230-3eaa-41b7-b535-697aeb38b7af/thumb-9843e230-3eaa-41b7-b535-697aeb38b7af.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5571882d2d54dcff2baec573",
@@ -2801,7 +2801,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b39488a5a3d7566eb002e0",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bolivia 2/image/01708b4c-3a27-4af3-adfe-b0fcb08a932a/thumb-01708b4c-3a27-4af3-adfe-b0fcb08a932a.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b805f8cb00419b4f4bff6d",
@@ -2824,7 +2824,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8065fc53d4fa64fb8955f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 4/image/99efcf99-c441-4284-98f8-34f23141364f/thumb-99efcf99-c441-4284-98f8-34f23141364f.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7c6b4c53d4fa64fb89222",
@@ -2860,7 +2860,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b919c76eebabe42d39b85b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/USA 5/image/877dc516-acb8-4f0a-9bc5-158b7f0ad008/thumb-877dc516-acb8-4f0a-9bc5-158b7f0ad008.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b91e7b472e93d62d926470",
@@ -2883,7 +2883,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b91f326eebabe42d39b8cd",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Vietnam 3/image/ec985c72-111f-4943-9708-245f35ad5305/thumb-ec985c72-111f-4943-9708-245f35ad5305.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b51b835edc101155fa1ed2",
@@ -2906,7 +2906,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b51bb05edc101155fa1eda",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 2/image/0e5c9440-2b05-46dc-858a-5558d2217baf/thumb-0e5c9440-2b05-46dc-858a-5558d2217baf.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5570484f264c39803ebfaadc",
@@ -2929,7 +2929,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55704e541e788ebf3eb01248",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 14/image/2ece1652-f2d3-4121-9c3a-b324fcba5384/thumb-2ece1652-f2d3-4121-9c3a-b324fcba5384.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b8d3336a3b3a496537fe42",
@@ -2952,7 +2952,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8d359df5b1757652605f0",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Thailand 2/image/897c8fac-b905-4cad-870b-8f33339d4509/thumb-897c8fac-b905-4cad-870b-8f33339d4509.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55715844125eea582cbd1f03",
@@ -2975,7 +2975,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55715d47a5d751682cc9a50b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Jordan 1/image/f06e0798-874f-4c42-b30c-8ffdbc3488a3/thumb-f06e0798-874f-4c42-b30c-8ffdbc3488a3.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "548efe940ad9d234652ac77b",
@@ -2998,7 +2998,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "548f04a4baa4b3380b43c1f5",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Bolivia 1/image/53431813-e079-4d91-b4c6-298deec296e3/thumb-53431813-e079-4d91-b4c6-298deec296e3.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55702c54f36434953e5047b9",
@@ -3021,7 +3021,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "557031bc1e788ebf3eb00f85",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 11/image/e93554fe-8ef6-45a9-a79e-0f8a45a16287/thumb-e93554fe-8ef6-45a9-a79e-0f8a45a16287.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3a95ea5a3d7566eb003aa",
@@ -3044,7 +3044,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3a97fa5a3d7566eb003af",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 10/image/c8c49142-02cf-43c8-9fee-a469ae971c93/thumb-c8c49142-02cf-43c8-9fee-a469ae971c93.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55cde3183e267d5067b1a3ab",
@@ -3085,7 +3085,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8d4c9df5b175765260610",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Thailand 4/image/6fbc8f9a-1c87-437f-88d4-9da40b4a90db/thumb-6fbc8f9a-1c87-437f-88d4-9da40b4a90db.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7d0c0c302faad4f3aedfb",
@@ -3108,7 +3108,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7d1e725003a824f64893e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nepal 2/image/cf167d06-f3e4-49f0-97d0-203c3bf58bb5/thumb-cf167d06-f3e4-49f0-97d0-203c3bf58bb5.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5571ad82125eea582cbd27b8",
@@ -3131,7 +3131,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5571ae4f77fa3d7747d00521",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Romania 2/image/ea468761-951d-4d6c-8336-733f1f3031ea/thumb-ea468761-951d-4d6c-8336-733f1f3031ea.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54afec49993307fb769cc6fb",
@@ -3154,7 +3154,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54afec9980d862d9767cf37b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 1/image/5825c8e6-a39f-4447-86a3-117f4e8f9a8c/thumb-5825c8e6-a39f-4447-86a3-117f4e8f9a8c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3d68ea5a3d7566eb00483",
@@ -3177,7 +3177,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3d6d5a5a3d7566eb0048e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 11/image/31dc0482-7597-41e0-b32b-c37126b562ed/thumb-31dc0482-7597-41e0-b32b-c37126b562ed.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54afedea993307fb769cc717",
@@ -3200,7 +3200,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54afee33993307fb769cc722",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 2/image/9b8347dd-e932-4a4d-b457-20378c55b3d8/thumb-9b8347dd-e932-4a4d-b457-20378c55b3d8.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54773b8786deda0b00d43837",
@@ -3223,7 +3223,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54773c5e86deda0b00d43864",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Turkey 1/image/fc1b6f97-bb90-44e5-aa56-9497beb008ea/thumb-fc1b6f97-bb90-44e5-aa56-9497beb008ea.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b51c593755cbfb542c24a5",
@@ -3246,7 +3246,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b51c885edc101155fa1eef",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 3/image/60d9228d-c1fe-4a5e-b95b-be773b400d27/thumb-60d9228d-c1fe-4a5e-b95b-be773b400d27.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b80db5c53d4fa64fb895d1",
@@ -3269,7 +3269,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b80e53cb00419b4f4bfff6",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 9/image/0814c4a1-63b7-4529-b65f-240eb3f8130a/thumb-0814c4a1-63b7-4529-b65f-240eb3f8130a.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55bb8eabf4e5fe8c0acd9b5e",
@@ -3292,7 +3292,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55bb9913ad8e19800a41e0a9",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Russia 1/image/4f91a87a-8e73-4c0b-b697-df913b02166c/thumb-4f91a87a-8e73-4c0b-b697-df913b02166c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b9149a472e93d62d9263dd",
@@ -3315,7 +3315,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b914eb02f7310b2e0baad3",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/USA 3/image/5fd8923b-c12f-40b6-82d8-6a90f69b78ad/thumb-5fd8923b-c12f-40b6-82d8-6a90f69b78ad.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b80f29cb00419b4f4c0011",
@@ -3338,7 +3338,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8119ac53d4fa64fb89615",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 10/image/f83aae96-2294-4c18-846f-b610ce743135/thumb-f83aae96-2294-4c18-846f-b610ce743135.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b398fca5a3d7566eb0030a",
@@ -3361,7 +3361,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3996bb1c479446e1df01e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 4/image/50e544a5-95fb-4abc-b801-7e66ef9f8dc2/thumb-50e544a5-95fb-4abc-b801-7e66ef9f8dc2.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5564770b398632ef199dcd39",
@@ -3384,7 +3384,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55648005398632ef199dcdf3",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Latvia 4/image/f94a99d9-34b7-474d-9ece-e159406a53aa/thumb-f94a99d9-34b7-474d-9ece-e159406a53aa.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5694df24e156d5d54430d5a1",
@@ -3405,7 +3405,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "56950339981a48ba4441712a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Palestine 2/image/62cc0194-3519-4eec-889a-1ba480bbc426/thumb-62cc0194-3519-4eec-889a-1ba480bbc426.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "557164e181375e0f2c132073",
@@ -3428,7 +3428,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5571682f81375e0f2c13217e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Jordan 2/image/76050982-517d-4c77-8d39-0da97adf3adf/thumb-76050982-517d-4c77-8d39-0da97adf3adf.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3e24da5a3d7566eb00594",
@@ -3451,7 +3451,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b4e0459f0c8d666e1ac28f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Egypt 1/image/1a76cea9-86d5-4ce8-af1a-5c6920f6d7f3/thumb-1a76cea9-86d5-4ce8-af1a-5c6920f6d7f3.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3d11f57de10366ed13563",
@@ -3474,7 +3474,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3d17e57de10366ed13573",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 9/image/0f104340-62d2-42e3-8133-3c203ce88d0e/thumb-0f104340-62d2-42e3-8133-3c203ce88d0e.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56091a9f6872a18820d19b59",
@@ -3497,7 +3497,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "56091bfca2a911bf204ea6e4",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Indonesia 12/image/d28ccca1-b8e8-4ddd-a802-0cca3aac5d66/thumb-d28ccca1-b8e8-4ddd-a802-0cca3aac5d66.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54ddd38f29e8457d28672fad",
@@ -3538,7 +3538,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8d810df5b17576526067e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Tunisia 1/image/8433c789-42e3-4822-b0df-37d9d478110e/thumb-8433c789-42e3-4822-b0df-37d9d478110e.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55d1b7b8ff69295c271978d1",
@@ -3561,7 +3561,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55d1badfff69295c27197906",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Tanzania 1/image/47a8733d-6343-4d37-88b2-91b5cb5f67bc/thumb-47a8733d-6343-4d37-88b2-91b5cb5f67bc.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5665de0c0da584217f5a9c41",
@@ -3584,7 +3584,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5665de549cddcdeb7eef8abc",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Korea, Republic of/image/328c883f-e7cb-4c83-94e0-227bf9e9de58/thumb-328c883f-e7cb-4c83-94e0-227bf9e9de58.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55d1a2ce31ba2203247b1b16",
@@ -3607,7 +3607,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55d1a3b131ba2203247b1b1d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 22/image/9308127d-508b-45d5-800c-ee6a56c973ab/thumb-9308127d-508b-45d5-800c-ee6a56c973ab.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "56096486427ad29b05294532",
@@ -3630,7 +3630,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "560977b6c6d52b89053b613a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Myanmar 1/image/756cbec4-ab6e-4afe-9191-31bbc10cbf39/thumb-756cbec4-ab6e-4afe-9191-31bbc10cbf39.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b526423755cbfb542c24c9",
@@ -3653,7 +3653,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b5269c3755cbfb542c24d4",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 5/image/d31853b1-c4a7-443a-b389-1a3c28ad0ab3/thumb-d31853b1-c4a7-443a-b389-1a3c28ad0ab3.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b39cf19f0c8d666e1abef4",
@@ -3676,7 +3676,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b39d42a5a3d7566eb0034e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 6/image/59ab13be-5814-4af0-9a1c-5e6d332dcc08/thumb-59ab13be-5814-4af0-9a1c-5e6d332dcc08.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b815afc302faad4f3af1e7",
@@ -3699,7 +3699,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8160ccb00419b4f4c00a4",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Romania 1/image/e2efb382-516e-49fe-96ce-0a9281bf8f0c/thumb-e2efb382-516e-49fe-96ce-0a9281bf8f0c.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5571a716652b161a6e6ee421",
@@ -3722,7 +3722,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5571a9fa125eea582cbd2799",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Ukraine 4/image/038a0a0d-ccbc-4e7b-86bd-bedd76467819/thumb-038a0a0d-ccbc-4e7b-86bd-bedd76467819.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54d1e6384e5d481411899d86",
@@ -3799,7 +3799,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b812e5c53d4fa64fb89639",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Philippines 11/image/36d185e0-3123-4e99-8e88-9f4c8c988f59/thumb-36d185e0-3123-4e99-8e88-9f4c8c988f59.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "547c7e6dd5ddd70b00a0c661",
@@ -3822,7 +3822,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "547c7f29d5ddd70b00a0c69d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 8/image/a8550ac6-b0f6-4b32-bff4-f66a6d3d8c27/thumb-a8550ac6-b0f6-4b32-bff4-f66a6d3d8c27.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b66ff35edc101155fa229c",
@@ -3840,7 +3840,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b682613755cbfb542c2894",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Kazakhstan 1/image/ba27bb35-9b60-40ff-bca5-4cb9da8af33a/thumb-ba27bb35-9b60-40ff-bca5-4cb9da8af33a.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55d1d0773b5b8eee26c796b0",
@@ -3863,7 +3863,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55d1f52031ba2203247b1c45",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Lithuania 1/image/d4e0a396-014b-4a9f-a22e-32845bdac600/thumb-d4e0a396-014b-4a9f-a22e-32845bdac600.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3cfbc57de10366ed13543",
@@ -3904,7 +3904,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b8d578df5b175765260620",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Thailand 5/image/5d5e6119-e55c-46a3-8e7b-51710aa9c01e/thumb-5d5e6119-e55c-46a3-8e7b-51710aa9c01e.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3d468a5a3d7566eb00470",
@@ -3927,7 +3927,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3d4aab1c479446e1df176",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 10/image/3f063c30-d903-4851-a10b-44444fbbf1ef/thumb-3f063c30-d903-4851-a10b-44444fbbf1ef.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7ddff25003a824f6489c7",
@@ -3950,7 +3950,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7de32cb00419b4f4bfd48",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nepal 8/image/556ee2ff-951f-4cce-8e0a-02625ef2d474/thumb-556ee2ff-951f-4cce-8e0a-02625ef2d474.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b397ccb1c479446e1deff3",
@@ -3973,7 +3973,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3982657de10366ed13413",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Cambodia 3/image/82327971-6e7c-481c-aa71-24c15fa76607/thumb-82327971-6e7c-481c-aa71-24c15fa76607.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "555f0b9a2c9de7b27ff7c3c0",
@@ -3996,7 +3996,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "555f0ff71772318e7fbbb55d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Latvia 1/image/b823f926-4474-41c0-becc-cedf38ef26b2/thumb-b823f926-4474-41c0-becc-cedf38ef26b2.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7c1d4c302faad4f3aed69",
@@ -4037,7 +4037,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b918db6eebabe42d39b843",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/USA 4/image/5429ca0e-9baa-4e99-b22d-158ba5653925/thumb-5429ca0e-9baa-4e99-b22d-158ba5653925.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "556476c7ea89dc0e1a500413",
@@ -4078,7 +4078,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b528385edc101155fa1f2d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/India 6/image/079c909d-93e7-4d29-8f03-dd54d44520d3/thumb-079c909d-93e7-4d29-8f03-dd54d44520d3.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5665e28e9cddcdeb7eef8b67",
@@ -4101,7 +4101,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5665e2c40da584217f5a9d32",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Korea, Rep. 5/image/208e68bd-4f57-4afb-938f-67058bc476c1/thumb-208e68bd-4f57-4afb-938f-67058bc476c1.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "555a03c3ab3ed6805faa29d3",
@@ -4124,7 +4124,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "555a0534456127925feb7a6a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Sweden 9/image/e9415731-3c78-4e10-b011-c88be8e0f8bd/thumb-e9415731-3c78-4e10-b011-c88be8e0f8bd.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7d69625003a824f64897c",
@@ -4147,7 +4147,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7d6e925003a824f648985",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Nepal 5/image/e57fe47b-a7cc-4f43-99b0-7b5724e06a2d/thumb-e57fe47b-a7cc-4f43-99b0-7b5724e06a2d.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b7cc65c53d4fa64fb89259",
@@ -4170,7 +4170,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b7ccf025003a824f648905",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Mexico 6/image/9d5b13c3-c72c-49d7-a765-b602b6e821c3/thumb-9d5b13c3-c72c-49d7-a765-b602b6e821c3.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "55d19e9231ba2203247b1af8",
@@ -4193,7 +4193,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55d1a07b3efe9e00273b0c95",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 21/image/4989ed16-14e4-48c1-b191-cbf4cd2f1260/thumb-4989ed16-14e4-48c1-b191-cbf4cd2f1260.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b90ab703670af22d4fc341",
@@ -4216,7 +4216,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b90efe6eebabe42d39b78f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/United Kingdom 1/image/37ec963d-f94b-4c88-acf6-b7761b6bada8/thumb-37ec963d-f94b-4c88-acf6-b7761b6bada8.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5665e132128222cf7e6c1efd",
@@ -4239,7 +4239,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5665e16d128222cf7e6c1f2c",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Korea, Rep. 4/image/b763d000-4def-4554-94ae-ffacf17bbc26/thumb-b763d000-4def-4554-94ae-ffacf17bbc26.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b912f7472e93d62d9263a7",
@@ -4262,7 +4262,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b9134703670af22d4fc3d3",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/USA 1/image/a7f8d5bd-daa7-4be3-9f58-506a8c29d5fa/thumb-a7f8d5bd-daa7-4be3-9f58-506a8c29d5fa.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "547c8567d5ddd70b00a0c6d1",
@@ -4285,7 +4285,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "547c8628d5ddd70b00a0c705",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Mexico 3/image/947c5e2a-9265-4537-b156-64581f52a714/thumb-947c5e2a-9265-4537-b156-64581f52a714.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "547723a486deda0b00d4379c",
@@ -4308,7 +4308,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "547737b686deda0b00d437a9",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Vietnam 5/image/156dba4b-a4ce-4e9e-a7c0-775a094bcfed/thumb-156dba4b-a4ce-4e9e-a7c0-775a094bcfed.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5665e3259cddcdeb7eef8b9d",
@@ -4349,7 +4349,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5665dee8128222cf7e6c1e9a",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Korea, Rep. 2/image/15a80e6e-37c9-4758-9fd6-294278cedabb/thumb-15a80e6e-37c9-4758-9fd6-294278cedabb.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "552eb4afb9092b3f2dbab2ee",
@@ -4372,7 +4372,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "552ebb09d0fbdb5f2d3f1555",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/France 3/image/c68de090-e83e-4ff7-a15d-f23b3a2eb2ae/thumb-c68de090-e83e-4ff7-a15d-f23b3a2eb2ae.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5571913377fa3d7747d0016d",
@@ -4395,7 +4395,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55719b6d125eea582cbd2549",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Ukraine 2/image/0f1e7c2e-fa12-4e29-999d-5a0b8fe2f6ad/thumb-0f1e7c2e-fa12-4e29-999d-5a0b8fe2f6ad.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b913f803670af22d4fc3e1",
@@ -4418,7 +4418,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b9142202f7310b2e0baabb",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/USA 2/image/da2b323f-a9fd-4dfe-8df3-cd076c8f7240/thumb-da2b323f-a9fd-4dfe-8df3-cd076c8f7240.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5547642987c83eb26cb2a12a",
@@ -4441,7 +4441,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55476d1f60e0f1806c9cbde4",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Kenya 2/image/413539c8-3030-480a-9405-2594578723ee/thumb-413539c8-3030-480a-9405-2594578723ee.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b3cc3257de10366ed13507",
@@ -4464,7 +4464,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b3cc7a57de10366ed13514",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 4/image/74d47c4b-870b-49fb-9dbe-2a2e9a98d6fe/thumb-74d47c4b-870b-49fb-9dbe-2a2e9a98d6fe.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54b4e3eaa5a3d7566eb006f0",
@@ -4487,7 +4487,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54b4e464b1c479446e1df3f0",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Egypt 2/image/2d8eeb84-8970-4037-b040-6f642bd34fd0/thumb-2d8eeb84-8970-4037-b040-6f642bd34fd0.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54785240be35740b009e81ae",
@@ -4510,7 +4510,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54785682be35740b009e822d",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Sweden 1/image/cb4a2197-0a7a-42cb-ba7d-dbf03defaadd/thumb-cb4a2197-0a7a-42cb-ba7d-dbf03defaadd.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "552eb3a607e829712d3a23b8",
@@ -4551,7 +4551,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "54e1e98346afcc91296c2651",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Sweden 8/image/d974ab79-68be-457c-921a-f128304ddab8/thumb-d974ab79-68be-457c-921a-f128304ddab8.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "555a102a456127925feb7a71",
@@ -4574,7 +4574,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "555a10bbab3ed6805faa2a0b",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Sweden 10/image/0e8f71de-5699-4be7-b854-2f2c51d4ab66/thumb-0e8f71de-5699-4be7-b854-2f2c51d4ab66.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5665dfb2128222cf7e6c1ec1",
@@ -4597,7 +4597,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5665dfd40da584217f5a9cb1",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Korea, Rep. 3/image/5d373a84-368a-46cc-a12f-b477c04ca5df/thumb-5d373a84-368a-46cc-a12f-b477c04ca5df.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "5571821aa5d751682cc9a72d",
@@ -4620,7 +4620,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5571853e81375e0f2c13236e",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Jordan 4/image/0c4b4500-13cd-4462-bb5b-7ff99362b80b/thumb-0c4b4500-13cd-4462-bb5b-7ff99362b80b.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54c8e693611e5f944fb3f17b",
@@ -4661,7 +4661,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55d20228ff69295c271979ca",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Sweden 11/image/541c4926-275b-43f1-ba22-5faef5abdf10/thumb-541c4926-275b-43f1-ba22-5faef5abdf10.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54ddc9bb58e67a6129fcee0f",
@@ -4720,7 +4720,7 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "55cdd3912ae4cb46676102ce",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/China 15/image/b7683018-9538-40e2-8924-8773f675bd95/thumb-b7683018-9538-40e2-8924-8773f675bd95.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }, {
       "_id": "54c8e344c34080c44f710855",
@@ -4761,9 +4761,9 @@ export let streetPlaceStr = `{
       "house": {
         "_id": "5564787aea89dc0e1a50042f",
         "background": "http://static.dollarstreet.org.s3.amazonaws.com/media/Latvia 2/image/e5edef1f-d9ae-467b-9969-5970c8a97217/thumb-e5edef1f-d9ae-467b-9969-5970c8a97217.jpg",
-        "thing": "5477537786deda0b00d43be5"
+        "thing": "Home"
       }
     }], "thing": {"_id": "546ccf730f7ddf45c0179658", "thingName": "Sofa", "icon": "546ccf730f7ddf45c0179658.svg"}
   },
   "error": false
-}`
+}`;

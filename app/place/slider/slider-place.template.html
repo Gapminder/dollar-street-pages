@@ -40,14 +40,14 @@
           <div class="slide-header">
             <div class="slide-button pull-left">
               <span
-                [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
+                [routerLink]="['Matrix', {thing: activeThing.thingName, countries: 'World', regions: 'World', zoom: 5, row: 1}]">
                 << All {{activeThing.plural}}
               </span>
             </div>
             <div class="slide-map pull-right">
               <place-map [hoverPlace]="hoverPlace"
                          *ngIf="hoverPlace"
-                         [routerLink]="['Map', {thing: activeThing?._id}]">
+                         [routerLink]="['Map', {thing: activeThing?.thingName}]">
               </place-map>
             </div>
           </div>
@@ -63,7 +63,8 @@
 
           <p *ngIf="image.familyInfoSummary && !openReadMore">
             {{image.familyInfoSummary}}
-            <span class="span-link" (click)="openReadMore = true" *ngIf="image.familyInfo && !openReadMore">Read more >></span>
+            <span class="span-link" (click)="openReadMore = true"
+                  *ngIf="image.familyInfo && !openReadMore">Read more >></span>
           </p>
           <p *ngIf="image.familyInfo && openReadMore">
             {{image.familyInfo}}
