@@ -66,6 +66,11 @@
   padding-top: 9.8%;
 }
 
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .image-description {
   position: absolute;
   bottom: 0;
@@ -97,7 +102,7 @@
   float: left;
   margin: 0 1px;
 }
-
+.image-content.active,
 .image-content:hover {
   box-shadow: 0 0 0 5px #374551 inset;
 }
@@ -134,7 +139,13 @@
   margin: 40px 0 50px 0
 }
 
+.matrix-view-block {
+  width: 100%;
+  display: block;
+}
+
 @media (min-width: 992px) {
+
   .place-image-box-country,
   .place-image-box-income {
     padding: 3px;

@@ -14,9 +14,11 @@
 
 <matrix-images [zoom]="zoom"
                [thing]="thing"
-               [padding]="padding"
                [places]="matrixPlaces"
-               (hoverPlace)="hoverPlaceS($event)"></matrix-images>
+               (hoverPlace)="hoverPlaceS($event)"
+               (filter)="urlChanged($event)"
+               [padding]="padding">
+</matrix-images>
 
 <div class="zoom-column pull-right"
      *ngIf="filtredPlaces.length">

@@ -3,6 +3,7 @@ import {Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
 
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
+import {MatrixViewBlockComponent} from '../matrix-view-block/matrix-view-block.component';
 
 const device = require('device.js')();
 const isDesktop = device.desktop();
@@ -14,19 +15,26 @@ let style = require('./matrix-images.css');
   selector: 'matrix-images',
   template: tpl,
   styles: [style],
-  directives: [RowLoaderComponent]
+  directives: [RowLoaderComponent, MatrixViewBlockComponent]
 })
 
 export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
+  protected imageBlockLocation:any;
+  protected indexViewBoxHouse:number;
+
   @Input('places')
   private places:Observable<any>;
   @Input('thing')
   private thing:string;
   @Input('zoom')
   private zoom:number;
+  @Input('showblock')
+  private showblock:boolean = false;
 
   @Output('hoverPlace')
   private hoverPlace:EventEmitter<any> = new EventEmitter();
+  @Output()
+  private filter:EventEmitter<any> = new EventEmitter();
 
   private isDesktop:boolean = isDesktop;
   private oldPlaceId:string;
@@ -36,10 +44,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private placesSubscribe:any;
   private itemSize:number;
   private math:any;
+  private familyData:any;
+  private prevPlaceId:string;
 
-  public constructor(@Inject(ElementRef) element,
-              @Inject(Router) router,
-              @Inject('Math') math) {
+  public constructor(@Inject(ElementRef) element:ElementRef,
+                     @Inject(Router) router:Router,
+                     @Inject('Math') math:any) {
     this.element = element.nativeElement;
     this.router = router;
     this.math = math;
@@ -47,32 +57,41 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit():any {
     this.itemSize = window.innerWidth / this.zoom;
-    this.placesSubscribe = this.places.subscribe((places) => {
+
+    this.placesSubscribe = this.places.subscribe((places:any) => {
+      this.showblock = false;
       this.currentPlaces = places;
     });
   }
 
-  public ngOnChanges(changes) {
+  public ngOnChanges(changes:any):void {
     if (changes.zoom) {
       this.itemSize = window.innerWidth / this.zoom;
     }
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     this.placesSubscribe.unsubscribe();
   }
 
-  hoverImage(place):void {
+  public urlTransfer(url:string):void {
+    this.goToImageBlock(this.familyData, this.indexViewBoxHouse);
+    this.filter.emit(url);
+  }
+
+  protected hoverImage(place:any):void {
     this.hoverPlace.emit(place);
+
     if (this.isDesktop) {
       return;
     }
+
     if (!place) {
       this.oldPlaceId = void 0;
     }
   }
 
-  goToPlace(place) {
+  protected goToPlace(place:any):void {
     if (this.isDesktop) {
       this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
       return;
@@ -86,7 +105,34 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
   }
 
-  toUrl(image) {
+  protected goToImageBlock(place:any, index:number):void {
+    this.indexViewBoxHouse = index;
+    let countByIndex:number = (this.indexViewBoxHouse + 1) % this.zoom;
+    let offset:number = this.zoom - countByIndex;
+
+    this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;
+
+    this.familyData = place;
+
+    if (!this.prevPlaceId) {
+      this.prevPlaceId = place._id;
+      this.showblock = !this.showblock;
+      return;
+    }
+
+    if (this.prevPlaceId === place._id) {
+      this.showblock = !this.showblock;
+
+      if (!this.showblock) {
+        this.prevPlaceId = '';
+      }
+    } else {
+      this.prevPlaceId = place._id;
+      this.showblock = true;
+    }
+  }
+
+  protected toUrl(image:any):string {
     return `url("${image}")`;
   }
 }

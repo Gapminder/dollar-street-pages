@@ -1,7 +1,7 @@
 sudo: required
 dist: trusty
 language: node_js
-# test with node 6.*
+# test with node 6.0.0*
 node_js:
   - "6"
 
