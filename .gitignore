@@ -18,7 +18,7 @@ app/**/*.js.map
 app/**/*.d.ts
 
 #ts typings
-typings/*
+typings
 !typings/require.d.ts
 
 .DS_Store
