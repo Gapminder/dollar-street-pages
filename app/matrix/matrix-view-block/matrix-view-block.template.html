@@ -1,0 +1,126 @@
+<div class="image-block" *ngIf="showblock">
+  <div class="row f-h">
+    <div class="col-md-9 f-h text-c bg-c-bl position-absolute">
+      <img class="f-h" src="{{imageUrl}}">
+      <div class="disp-none position-relative back-light">
+        <div class="image-options overflow-hidden back-with-opacity">
+
+          <div class="col-md-4 color-grey">
+            <img class="icon-bottom-image cc-link" src="../../assets/img/icon-cc.svg">
+            <p>
+              Photo by <a class="color-grey link"
+                          href=""
+                          [routerLink]="['Photographer', {id: photographerId}]">
+              {{photographer}}</a>
+              <a class="color-grey link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/"> CC by
+                4.0</a>
+            </p>
+          </div>
+
+          <div class="col-md-4">
+            <p>
+              <a class="color-grey" (click)="openPopUp()">
+                <img class="icon-bottom-image" src="../../assets/img/zoom%20custom%20icon.svg">
+                View full size
+              </a>
+            </p>
+          </div>
+
+          <div class="col-md-4">
+
+            <p>
+              <a class="color-grey" [href]="imageUrl" download>
+                <img class="icon-bottom-image" src="../../assets/img/icon-download.svg">
+                Download image
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 f-h text-c">
+      <div *ngIf="familyName" class="bold-text">
+        {{familyName}} family
+        <a class="pull-right close-button"
+           (click)="closeBlock()">
+        </a>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <div *ngIf="!familyInfoSum">
+            No family summary yet.
+          </div>
+          <div class="text-justify" *ngIf="familyInfoSum">
+            {{familyInfoSum}}
+          </div>
+        </div>
+        <div class="col-md-6  cursor"
+             [routerLink]="['Country', {id: countryId}]">
+          <div class="pull-left country-name">
+            <b [ngClass]="place.region">{{country}}</b>
+          </div>
+          <div class="pull-right"
+               *ngIf="!homesInCountry">
+            No homes yet
+          </div>
+          <div class="pull-right"
+               *ngIf="homesInCountry === 1">
+            {{homesInCountry}} home
+          </div>
+          <div class="pull-right"
+               *ngIf="homesInCountry > 1">
+            {{homesInCountry}} homes
+          </div>
+          <place-map class="backgr-col-wh" [hoverPlace]="mapData">
+          </place-map>
+        </div>
+      </div>
+      <br>
+      <div class="text-c">
+        <street-mini
+          [streetMiniData]="streetMiniData">
+        </street-mini>
+      </div>
+      <br>
+      <div class="mini-matrix-container">
+        <div class="mini-matrix" *ngFor="let thing of relatedThings;">
+          <img class="full-width cursor" src="{{thing.image}}"
+               (click)="goToPhotoOnFamilyPage(thing._id, place, thing.imageId)">
+        </div>
+        <div class="mini-matrix-link cursor flex-center"
+             (click)="goToPlace(place)">
+          Show all photos from this home
+        </div>
+      </div>
+      <br>
+      <div class="things-counter-container">
+        <div class="filter-links cursor" (click)="goToRelatedThingsIn('country')">
+          Show <b>{{thingName}}</b> by <b>all incomes</b> in <b>{{country}}</b>
+          <span class="pull-right things-counter">{{placesPerCountry}}</span>
+        </div>
+        <div class="filter-links cursor" (click)="goToRelatedThingsIn('region')">
+          Show <b>{{thingName}}</b> by <b>all incomes</b> in <b>{{place.region}}</b>
+          <span class="pull-right things-counter">{{placesPerRegion}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fancyBox-container" *ngIf="popIsOpen" (click)="fancyBoxClose()">
+    <div class="fancyBox-image" [hidden]="!fancyBoxImage" [ngStyle]="{'background-image': fancyBoxImage}"></div>
+
+    <div class="load" [hidden]="fancyBoxImage">
+      <div class="la-ball-spin la-dark la-2x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>

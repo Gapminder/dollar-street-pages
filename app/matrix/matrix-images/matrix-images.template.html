@@ -1,11 +1,12 @@
-<div class="images-container" *ngIf="currentPlaces?.length">
+<div class="images-container flex-container" *ngIf="currentPlaces?.length">
   <div class="image-content column-{{zoom}}"
-       *ngFor="let place of currentPlaces"
-       [ngStyle]="{'background-image':toUrl(place?.background),visibility:place?'visible':'hidden'}"
+       *ngFor="let place of currentPlaces; #i = index"
+       [ngStyle]="{'background-image':toUrl(place?.background),visibility:place?'visible':'hidden', order: i}"
        [ngClass]="{'no-row': zoom > 5 || !isDesktop}"
        (mouseenter)="hoverImage(place)"
        (mouseleave)="hoverImage()"
-       (click)="goToPlace(place)">
+       (click)="goToImageBlock(place, i)">
+
     <div class="image-description">
       <span class="place-image-box-income pull-right">{{math.round(place?.income)}}$</span>
       <span class="place-image-box-country pull-left">{{place?.country}}</span>
@@ -15,6 +16,15 @@
       </div>
     </div>
   </div>
+
+  <matrix-view-block  class="matrix-view-block"
+                      [place]="familyData"
+                      [thing]="thing"
+                      [zoom]="zoom"
+                      *ngIf="showblock"
+                      (thingsByIncomes)="urlTransfer($event)"
+                      [ngStyle]="{order: imageBlockLocation}">
+  </matrix-view-block>
 
   <row-loader [items]="currentPlaces"
               [field]="'background'"

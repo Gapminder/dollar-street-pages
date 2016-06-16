@@ -6,6 +6,7 @@ import {HTTP_PROVIDERS} from '@angular/http';
 
 import {AppComponent} from './app.component';
 import {StreetDrawService} from './common/street/street.service';
+import {StreetMiniDrawService} from './common/street-mini/street-mini.service';
 import {MathService} from './common/math-service/math-service';
 import {MatrixService} from './matrix/matrix.service';
 import {HeaderService} from './common/header/header.service';
@@ -25,6 +26,7 @@ import {AmbassadorsListService} from './ambassadors/ambassadors-list/ambassadors
 import {SocialShareButtonsService} from './common/social_share_buttons/social-share-buttons.service';
 import {InfoContextService} from './info/info-context/info-context.service';
 import {ArticleService} from './article/article.service';
+import {FamilyInfoService} from './matrix/matrix-view-block/matrix-view-block.service';
 
 import {ContenfulContent} from './contentful/contentful.service';
 import {ContentfulService} from 'ng2-contentful/src/index';
@@ -40,6 +42,7 @@ bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
   HTTP_PROVIDERS,
   provide('StreetDrawService', {useClass: StreetDrawService}),
+  provide('StreetMiniDrawService', {useClass: StreetMiniDrawService}),
   provide('MatrixService', {useClass: MatrixService}),
   provide('HeaderService', {useClass: HeaderService}),
   provide('SearchService', {useClass: SearchService}),
@@ -58,6 +61,7 @@ bootstrap(AppComponent, [
   provide('ArticleService', {useClass: ArticleService}),
   provide('ContenfulContent', {useClass: ContenfulContent}),
   provide('ContentfulService', {useClass: ContentfulService}),
+  provide('FamilyInfoService', {useClass: FamilyInfoService}),
   provide('ThingsFilterService', {useClass: ThingsFilterService}),
   provide('CountriesFilterService', {useClass: CountriesFilterService}),
   provide('Math', {useClass: MathService}),
