@@ -42,7 +42,6 @@ export class MatrixViewBlockComponent implements OnChanges {
   private FamilyInfoService:any;
   private router:Router;
   private isDesktop:boolean = isDesktop;
-  private paramsUrl:any;
   private matrixComponent:boolean;
   private zone:NgZone;
 
@@ -54,6 +53,8 @@ export class MatrixViewBlockComponent implements OnChanges {
   private thing:string;
   @Output('thingsByIncomes')
   private thingsByIncomes:EventEmitter<any> = new EventEmitter();
+  @Output('closeBigImageBlock')
+  private closeBigImageBlock:EventEmitter<any> = new EventEmitter();
 
   public constructor(@Inject('FamilyInfoService') FamilyInfoService:any,
                      @Inject(Router) router:Router,
@@ -71,12 +72,6 @@ export class MatrixViewBlockComponent implements OnChanges {
     let thingId = this.thing;
     let url = `placeId=${placeId}&imageId=${imageId}&thingId=${thingId}`;
 
-    this.paramsUrl = {
-      thing: this.thing,
-      countries: this.place.country,
-      regions: this.place.region
-    };
-
     this.imageUrl = this.place.background.replace('devices', 'desktops');
     this.country = this.place.country;
     this.mapData.next({region: this.place.region, lat: this.place.lat, lng: this.place.lng});
@@ -90,18 +85,19 @@ export class MatrixViewBlockComponent implements OnChanges {
       .subscribe((res:any) => {
         let familyData = res.data;
         if (res.err) {
+          console.log(res.err);
           return;
         }
 
-        this.familyName = familyData.data.familyName;
-        this.countryId = familyData.data.countryId;
-        this.homesInCountry = familyData.data.familyCount;
-        this.thingName = familyData.data.thingName.plural || familyData.data.thingName.thingName;
-        this.familyInfoSum = familyData.data.familyData;
-        this.relatedThings = familyData.data.images;
-        this.photographer = familyData.data.photographer.name;
-        this.photographerId = familyData.data.photographer.id;
-        this.streetMiniData.next({place: this.place, incomes: familyData.data.income});
+        this.familyName = familyData.familyName;
+        this.countryId = familyData.countryId;
+        this.homesInCountry = familyData.familyCount;
+        this.thingName = familyData.thingName.plural || familyData.thingName.thingName;
+        this.familyInfoSum = familyData.familyData;
+        this.relatedThings = familyData.images;
+        this.photographer = familyData.photographer.name;
+        this.photographerId = familyData.photographer.id;
+        this.streetMiniData.next({place: this.place, incomes: familyData.income});
       });
 
     if (this.thing && this.place.country && this.zoom) {
@@ -111,6 +107,7 @@ export class MatrixViewBlockComponent implements OnChanges {
       this.familyInfoServiceSubscribe = this.FamilyInfoService.getCountMatrixImages(urlCountry)
         .subscribe((val:any) => {
           if (val.err) {
+            console.log(val.err);
             return;
           }
           this.placesPerCountry = val.data.zoomPlaces;
@@ -118,6 +115,7 @@ export class MatrixViewBlockComponent implements OnChanges {
       this.familyInfoServiceSubscribe = this.FamilyInfoService.getCountMatrixImages(urlRegion)
         .subscribe((val:any) => {
           if (val.err) {
+            console.log(val.err);
             return;
           }
           this.placesPerRegion = val.data.zoomPlaces;
@@ -134,7 +132,7 @@ export class MatrixViewBlockComponent implements OnChanges {
   }
 
   protected closeBlock():void {
-    this.showblock = false;
+    this.closeBigImageBlock.emit({});
   }
 
   protected goToPhotoOnFamilyPage(thingId:any, place:any, imageId:any):void {

@@ -19,9 +19,9 @@ let style = require('./matrix-images.css');
 })
 
 export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
-
   protected imageBlockLocation:any;
-
+  protected indexViewBoxHouse:number;
+  
   @Input('places')
   private places:Observable<any>;
   @Input('thing')
@@ -46,6 +46,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private math:any;
   private familyData:any;
   private prevPlaceId:string;
+  
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router) router:Router,
@@ -57,6 +58,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit():any {
     this.itemSize = window.innerWidth / this.zoom;
+
     this.placesSubscribe = this.places.subscribe((places:any) => {
       this.showblock = false;
       this.currentPlaces = places;
@@ -75,13 +77,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   public urlTransfer(url:string):void {
     this.filter.emit(url);
+    
   }
 
-  hoverImage(place:any):void {
+  protected hoverImage(place:any):void {
     this.hoverPlace.emit(place);
+
     if (this.isDesktop) {
       return;
     }
+
     if (!place) {
       this.oldPlaceId = void 0;
     }
@@ -97,34 +102,38 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       this.oldPlaceId = place._id;
       return;
     }
+
     this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
   }
 
   protected goToImageBlock(place:any, index:number):void {
-    let countByIndex = (index + 1) % this.zoom;
-    let offset = this.zoom - countByIndex;
+    this.indexViewBoxHouse = index;
+    let countByIndex:number = (this.indexViewBoxHouse + 1) % this.zoom;
+    let offset:number = this.zoom - countByIndex;
 
-    if (!countByIndex) {
-      this.imageBlockLocation = index;
-    }
+    this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;
 
-    if (countByIndex) {
-      this.imageBlockLocation = offset + index;
-    }
+    this.familyData = place;
 
     if (!this.prevPlaceId) {
       this.prevPlaceId = place._id;
+      this.showblock = !this.showblock;
+      return;
     }
 
     if (this.prevPlaceId === place._id) {
       this.showblock = !this.showblock;
-    }
 
-    this.prevPlaceId = place._id;
-    this.familyData = place;
+      if (!this.showblock) {
+        this.prevPlaceId = '';
+      }
+    } else {
+      this.prevPlaceId = place._id;
+      this.showblock = true;
+    }
   }
 
-  toUrl(image:any):string {
+  protected toUrl(image:any):string {
     return `url("${image}")`;
   }
 }

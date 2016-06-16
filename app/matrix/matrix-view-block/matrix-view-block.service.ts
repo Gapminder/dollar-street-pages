@@ -14,7 +14,7 @@ export class FamilyInfoService {
   public getFamilyInfo(query:any):Observable<any> {
     return this.http.get(`${Config.api}/consumer/api/v1/matrix-view-block/?${query}`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, data: parseRes};
+      return {err: parseRes.error, data: parseRes.data};
     });
   }
 
