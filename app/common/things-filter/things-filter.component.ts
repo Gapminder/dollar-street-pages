@@ -52,7 +52,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     }
 
     let query = this.parseUrl(this.url);
-    query.thing = thing._id;
+    query.thing = thing.thingName;
 
     this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
     this.isOpenThingsFilter = false;

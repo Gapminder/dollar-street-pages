@@ -11,7 +11,7 @@
       <div id="slider-mobile-container"
            class="slider-mobile">
         <div class="slider-mobile-slide" *ngFor="let image of images; let i=index">
-          <img class="slider-mobile-slide-image" [src]="image.background" alt=""/>
+          <img class="slider-mobile-slide-image" alt="" [src]="image.background"/>
           <div class="thing-content">
             <img [src]="activeThing.iconLight" alt="">
             <span>{{activeThing.name}}</span>
@@ -40,7 +40,8 @@
 
     <div class="slider-mobile-family-description">
       <div class="slider-mobile-family-title">
-        <span [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
+        <span
+          [routerLink]="['Matrix', {thing: activeThing.thingName, countries:'World', regions: 'World', zoom: 5, row: 1}]">
           « All {{activeThing.plural}}
         </span>
         <h2><span>{{math.round(chosenPlace?.income)}}$ <img src="/assets/img/info-button.svg" alt=""
@@ -52,7 +53,7 @@
 
       <div class="slider-mobile-family-map">
         <place-map [hoverPlace]="hoverPlace"
-                   [routerLink]="['Map',{thing:thing}]"
+                   [routerLink]="['Map',{thing: activeThing?.thingName}]"
                    *ngIf="hoverPlace">
         </place-map>
       </div>
