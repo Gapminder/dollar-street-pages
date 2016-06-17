@@ -249,7 +249,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
       });
   }
 }
-
+/* tslint:disable */
 function prevSliderActionAfterAnimation(places:any, images:any, position:any, cb:any):any {
   return () => {
     let prevPlacePosition = position - 1;
@@ -291,7 +291,7 @@ function nextSlideActionAfterAnimation(places:any, images:any, position:any, cb:
     cb.apply(this, [void 0, res]);
   };
 }
-
+/* tslint:enable */
 function animationSlider(shiftLeft:any, endAnimation:any):any {
   $('.slider-mobile-wrapper .slider-mobile')
     .addClass('active')

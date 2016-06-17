@@ -285,7 +285,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
     this.fancyBoxImage = void 0;
   }
 }
-
+/* tslint:disable */
 function prevSliderActionAfterAnimation(places:any, images:any, position:number, cb:any):any {
   return () => {
     let prevPlacePosition = position - 1;
@@ -379,7 +379,7 @@ function setImageWidth(sliderHeight:number):void {
 
   setDescriptionsWidth(2);
 }
-
+/* tslint:enable */
 function setDescriptionsWidth(slideNumber:number):void {
   let slide = $('.slider-content .slide:nth-child(' + slideNumber + ')');
   let slideWidth = slide.find('.slide-wrapper').width();

@@ -27,6 +27,7 @@
     "e2e:bstack": ".config/tools/wait4tunnel.js && ./node_modules/.bin/protractor ./.config/protractor-browserstack.conf.js"
   },
   "pre-commit": [
+    "lint",
     "pre-commit-test"
   ],
   "dependencies": {
