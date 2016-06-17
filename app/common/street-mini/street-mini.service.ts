@@ -55,7 +55,7 @@ export class StreetMiniDrawService {
     return this;
   };
 
-  public drawScale(places:any, lowestIncome:number, highestIncome:number):this {
+  public drawScale(places:any):this {
     if (!places || !places.length) {
       return this;
     }
@@ -70,33 +70,12 @@ export class StreetMiniDrawService {
       .tickSize(6, 0);
 
     if (isDesktop) {
-      // this.svg
-      //   .selectAll('text')
-      //   .data('lowestIncome')
-      //   .enter()
-      //   .append('text')
-      //   .text('$ '+ lowestIncome)
-      //   .attr('x', 0)
-      //   .attr('y', this.height - 15)
-      //   .attr('fill', '#767d86');
-      //
-      // this.svg
-      //   .selectAll('text')
-      //   .data('highestIncome')
-      //   .enter()
-      //   .append('text')
-      //   .text('$ '+ highestIncome)
-      //   .attr('x', this.width - 40)
-      //   .attr('y', this.height - 15)
-      //   .attr('fill', '#767d86');
-
       this.svg
         .append('polyline')
         .style('stroke', 'black')
         .style('fill', 'none')
         .style('stroke-width', 1)
         .style('stroke-linejoin', 'round')
-        // .attr('points', '0,30, 100,25, 200,10, 300,25, 600,20, 2000,15, 5000,5');
         .attr('points', () => {
           let point1 = `1,5`;
           let point2 = `10,30`;

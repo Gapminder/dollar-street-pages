@@ -43,8 +43,6 @@ export class StreetMiniComponent implements OnInit, OnDestroy {
     this.streetMiniDataSubscribe = this.streetMiniData && this.streetMiniData.subscribe((streetMiniData:any):void => {
         let chosenPlace = streetMiniData.place;
         let incomes = streetMiniData.incomes;
-        let maxIncome = Math.max(...incomes);
-        let minIncome = Math.min(...incomes);
 
         if (!chosenPlace) {
           this.street.removeHouses('hover');
@@ -54,7 +52,7 @@ export class StreetMiniComponent implements OnInit, OnDestroy {
         this.street
           .clearSvg()
           .init()
-          .drawScale(incomes, minIncome, maxIncome)
+          .drawScale(incomes)
           .set('places', _.sortBy(incomes, 'income'))
           .set('fullIncomeArr', _
             .chain(this.street.places)

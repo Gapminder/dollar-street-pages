@@ -9,13 +9,12 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isProduction = (process.env.NODE_ENV || 'development') === 'production';
-const devtool = isProduction ? 'inline-source-map' : 'source-map';
+// const devtool = isProduction ? 'inline-source-map' : 'source-map';
 const dest = 'dist';
 const absDest = root(dest);
 
 const config = {
   debug: false,
-
   verbose: true,
   displayErrorDetails: true,
   context: __dirname,
@@ -31,9 +30,9 @@ const config = {
   },
 
   entry: {
-    'polyfills': './app/polyfills.ts',
-    'vendor': './app/vendor.ts',
-    'app': './app/boot.ts'
+    polyfills: './app/polyfills.ts',
+    vendor: './app/vendor.ts',
+    app: './app/boot.ts'
   },
 
   output: {

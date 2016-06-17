@@ -1,3 +1,4 @@
+/*eslint-disable*/
 let path = require('path');
 
 // Helper functions
@@ -55,7 +56,7 @@ function packageSort(packages) {
 function reverse(arr) {
   return arr.reverse();
 }
-
+/*eslint-enable*/
 exports.reverse = reverse;
 exports.hasProcessFlag = hasProcessFlag;
 exports.root = root;

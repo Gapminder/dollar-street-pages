@@ -1,6 +1,18 @@
-import {Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDestroy, OnChanges} from '@angular/core';
+import {
+  Component,
+  Input,
+  EventEmitter,
+  ElementRef,
+  Inject,
+  Output,
+  OnInit,
+  OnDestroy,
+  OnChanges,
+  NgZone
+} from '@angular/core';
 import {Router} from '@angular/router-deprecated';
 import {Observable} from 'rxjs/Observable';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
 import {MatrixViewBlockComponent} from '../matrix-view-block/matrix-view-block.component';
@@ -43,30 +55,47 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private element:HTMLElement;
   private placesSubscribe:any;
   private itemSize:number;
+  private imageHeight:number;
   private math:any;
   private familyData:any;
   private prevPlaceId:string;
+  private resizeSubscribe:any;
+  private zone:NgZone;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router) router:Router,
-                     @Inject('Math') math:any) {
+                     @Inject('Math') math:any,
+                     @Inject(NgZone) zone:NgZone) {
     this.element = element.nativeElement;
     this.router = router;
     this.math = math;
+    this.zone = zone;
   }
 
   public ngOnInit():any {
     this.itemSize = window.innerWidth / this.zoom;
+    this.imageHeight = window.innerWidth / this.zoom - window.innerWidth / 100;
 
     this.placesSubscribe = this.places.subscribe((places:any) => {
       this.showblock = false;
       this.currentPlaces = places;
     });
+
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(300)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.imageHeight = window.innerWidth / this.zoom - window.innerWidth / 100;
+        });
+      });
   }
 
   public ngOnChanges(changes:any):void {
     if (changes.zoom) {
-      this.itemSize = window.innerWidth / this.zoom;
+      this.zone.run(() => {
+        this.itemSize = window.innerWidth / this.zoom;
+        this.imageHeight = window.innerWidth / this.zoom - window.innerWidth / 100;
+      });
     }
   }
 

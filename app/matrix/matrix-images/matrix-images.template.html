@@ -1,7 +1,7 @@
 <div class="images-container flex-container" *ngIf="currentPlaces?.length">
   <div class="image-content column-{{zoom}}"
        *ngFor="let place of currentPlaces; let i = index"
-       [ngStyle]="{'background-image':toUrl(place?.background),visibility:place?'visible':'hidden', order: i}"
+       [ngStyle]="{'background-image': toUrl(place?.background), visibility: place ? 'visible' : 'hidden', order: i, height: imageHeight + 'px'}"
        [ngClass]="{'no-row': zoom > 5 || !isDesktop, active: prevPlaceId === place._id}"
        (mouseenter)="hoverImage(place)"
        (mouseleave)="hoverImage()"
@@ -24,7 +24,7 @@
                       [zoom]="zoom"
                       (thingsByIncomes)="urlTransfer($event)"
                       (closeBigImageBlock)="goToImageBlock(familyData, indexViewBoxHouse)"
-                      [ngStyle]="{order: imageBlockLocation}">
+                      [style.order]="imageBlockLocation">
   </matrix-view-block>
 
   <row-loader [items]="currentPlaces"
