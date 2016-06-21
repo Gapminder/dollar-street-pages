@@ -71,29 +71,6 @@ export class StreetMiniDrawService {
 
     if (isDesktop) {
       this.svg
-        .append('polyline')
-        .style('stroke', 'black')
-        .style('fill', 'none')
-        .style('stroke-width', 1)
-        .style('stroke-linejoin', 'round')
-        .attr('points', () => {
-          let point1 = `1,5`;
-          let point2 = `10,30`;
-          let point3 = `50,25`;
-          let point4 = `100,10`;
-          let point5 = `300,15`;
-          let point6 = `600,5`;
-          let point7 = `1000,50`;
-          let point8 = `2000,30`;
-          let point9 = `4000,5`;
-          let point10 = `6000,5`;
-          let point11 = `10000,5`;
-          let point12 = `15000,10`;
-
-          return `${point1} ${point2} ${point3} ${point4} ${point5} ${point6} ${point7} ${point8} ${point9} ${point10} ${point11} ${point12}`;
-        });
-
-      this.svg
         .selectAll('rect.point')
         .data(places)
         .enter()
