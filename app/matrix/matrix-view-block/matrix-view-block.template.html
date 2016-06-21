@@ -83,11 +83,11 @@
       </div>
       <br>
       <div class="things-counter-container">
-        <div class="filter-links cursor" (click)="goToRelatedThingsIn('country')">
+        <div class="filter-links-noborders cursor" (click)="goToRelatedThingsIn('country')">
           Show <b>{{familyData.thingName?.plural || familyData.thingName?.thingName}}</b> by <b>all incomes</b> in <b>{{country}}</b>
           <span class="pull-right things-counter">{{placesPerCountry}}</span>
         </div>
-        <div class="filter-links cursor" (click)="goToRelatedThingsIn('region')">
+        <div class="filter-links-noborders cursor" (click)="goToRelatedThingsIn('region')">
           Show <b>{{familyData.thingName?.plural || familyData.thingName?.thingName}}</b> by <b>all incomes</b> in <b>{{place.region}}</b>
           <span class="pull-right things-counter">{{placesPerRegion}}</span>
         </div>

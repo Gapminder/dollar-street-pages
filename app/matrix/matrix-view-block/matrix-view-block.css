@@ -1,7 +1,6 @@
 .image-block {
   padding: 5px 5px 5px 5px;
   margin: 5px 0 5px 0;
-  border-style: solid;
   width: 100%;
   display: block;
   clear: both;
@@ -198,6 +197,12 @@ display: inline-block;
 
 .filter-links {
   border: solid;
+  text-align: justify;
+  margin: 2px;
+  width: 100%;
+}
+
+.filter-links-noborders {
   text-align: justify;
   margin: 2px;
   width: 100%;
