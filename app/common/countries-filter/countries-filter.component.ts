@@ -153,7 +153,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
       if (countries.length > 2) {
-        this.activeCountries = countries.length + ' countries';
+        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
       } else {
         this.activeCountries = countries.join(' & ');
       }
