@@ -161,7 +161,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
       if (countries.length > 2) {
-        this.activeCountries = countries.length + ' countries';
+        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
       } else {
         this.activeCountries = countries.join(' & ');
       }
@@ -175,7 +175,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
 
     if (regions[0] !== 'World') {
       if (regions.length > 2) {
-        this.activeCountries = countries.length + ' countries';
+        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
       } else {
         let sumCountries:number = 0;
         let difference:string[] = [];
@@ -194,7 +194,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
 
         if (difference.length) {
           this.activeCountries = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + difference[0] : countries.length + ' countries';
+          + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
         } else {
           this.activeCountries = regions.join(' & ');
         }
@@ -211,7 +211,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     let concatLocations:string[] = regions.concat(countries);
 
     if (concatLocations.length > 2) {
-      this.activeCountries = concatLocations.length + ' countries';
+      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
     } else {
       this.activeCountries = concatLocations.join(' & ');
     }
