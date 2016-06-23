@@ -36,6 +36,13 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.countriesFilterService = countriesFilterService;
   }
 
+  protected clearAllCountries():void {
+    this.selectedRegions.length = 0;
+    this.selectedCountries.length = 0;
+    this.cloneSelectedCountries = ['World'];
+    this.cloneSelectedCountries = ['World'];
+  }
+
   protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
 
