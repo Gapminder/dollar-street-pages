@@ -22,6 +22,13 @@ let style = require('./matrix.css');
 })
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces:any[] = [];
+  protected textOnboard:string;
+  protected showOnboarding:boolean = true;
+  protected showOnboardingSwitcher:boolean = false;
+  protected switchOnQuickTour:boolean = false;
+  protected numberOfStep:number = 1;
+  protected baloonName:string;
+  protected baloonText:string;
 
   public query:string;
   public matrixService:any;
@@ -66,6 +73,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit():void {
+    this.textOnboard = '50 000 photoes of everyday things from over 200 homes around the world from the poorest to the richest.';
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
     this.regions = this.routeParams.get('regions');
@@ -285,5 +293,74 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public parseUrl(url:string):any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+  }
+
+  protected startQuickTour():void {
+    this.baloonName = 'The things we all have in common';
+    this.baloonText = 'You can filter images by objects. See how everyday objects compare by income or geography.';
+    this.showOnboarding = false;
+    this.showOnboardingSwitcher = true;
+    this.switchOnQuickTour = true;
+  }
+
+  protected step(step:boolean):void {
+    let thing = {
+      name: 'The things we all have in common',
+      text: 'You can filter images by objects. See how everyday objects compare by income or geography.'
+    };
+    let geography = {
+      name: 'How do objects compare in the world?',
+      text: 'You can filter by continents or specific country or countries.'
+    };
+    let income = {
+      name: 'Income',
+      text: 'You can choose the income interval of the homes you want to see.'
+    };
+    let street = {
+      name: 'The world as a street',
+      text: 'Poorest to the left and the richest to the right. You can drag the sliders to filter for income interval..'
+    };
+    let image = {
+      name: 'Visit a home',
+      text: 'Click the image to see a larger image and find out more about this family. All images under Creative Commons License.'
+    };
+
+    if (step) {
+      this.numberOfStep++;
+    }
+    if (!step) {
+      this.numberOfStep--;
+    }
+    if (this.numberOfStep === 1) {
+      this.baloonName = thing.name;
+      this.baloonText = thing.text;
+    }
+    if (this.numberOfStep === 2) {
+      this.baloonName = geography.name;
+      this.baloonText = geography.text;
+    }
+    if (this.numberOfStep === 3) {
+      this.baloonName = income.name;
+      this.baloonText = income.text;
+    }
+    if (this.numberOfStep === 4) {
+      this.baloonName = street.name;
+      this.baloonText = street.text;
+    }
+    if (this.numberOfStep === 5) {
+      this.baloonName = image.name;
+      this.baloonText = image.text;
+    }
+  }
+
+  protected switchOnOnboarding():void {
+    this.showOnboarding = true;
+    this.showOnboardingSwitcher = false;
+    this.switchOnQuickTour = false;
+  }
+
+  protected closeOnboarding():void {
+    this.showOnboarding = false;
+    this.showOnboardingSwitcher = true;
   }
 }
