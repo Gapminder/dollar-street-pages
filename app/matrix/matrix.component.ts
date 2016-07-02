@@ -29,6 +29,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected numberOfStep:number = 1;
   protected baloonName:string;
   protected baloonText:string;
+  protected baloonTips:any = {};
+  protected baloonPosition:any;
+  protected elPosition:any;
 
   public query:string;
   public matrixService:any;
@@ -43,6 +46,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public lowIncome:number;
   public highIncome:number;
   public matrixServiceSubscrib:any;
+  public matrixServiceOnboarding:any;
 
   private placesArr:any[];
   private element:HTMLElement;
@@ -73,7 +77,25 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit():void {
-    this.textOnboard = '50 000 photoes of everyday things from over 200 homes around the world from the poorest to the richest.';
+    if (window.localStorage && window.localStorage.getItem('onboarded')) {
+      this.showOnboarding = false;
+      this.showOnboardingSwitcher = true;
+    }
+
+    this.matrixServiceOnboarding = this.matrixService.getMatrixOnboardingTips()
+      .subscribe((val:any) => {
+        if (val.err) {
+          return;
+        }
+        let tips = val.data;
+
+        _.forEach(tips, (value:any):any => {
+          let name = value.name;
+          this.baloonTips[name] = value;
+        });
+        this.textOnboard = this.baloonTips.welcomeHeader.description;
+      });
+
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
     this.regions = this.routeParams.get('regions');
@@ -114,6 +136,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngOnDestroy():void {
     document.onscroll = void 0;
     this.matrixServiceSubscrib.unsubscribe();
+    this.matrixServiceOnboarding.unsubscribe();
   }
 
   public ngAfterViewChecked():void {
@@ -295,36 +318,44 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 
+  protected getCoords(querySelector:String, cb:any):any { // crossbrowser version
+    let box = this.element.querySelector(querySelector).getBoundingClientRect();
+
+    let body = document.body;
+    let docEl = document.documentElement;
+
+    let scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    let scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+    let clientTop = docEl.clientTop || body.clientTop || 0;
+    let clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+    let top = box.top + scrollTop - clientTop;
+    let left = box.left + scrollLeft - clientLeft;
+
+    cb({top: Math.round(top) + 40, left: Math.round(left) + 20});
+  }
+
   protected startQuickTour():void {
-    this.baloonName = 'The things we all have in common';
-    this.baloonText = 'You can filter images by objects. See how everyday objects compare by income or geography.';
     this.showOnboarding = false;
+    this.showOnboardingSwitcher = false;
+    window.localStorage.setItem('onboarded', 'true');
+    setTimeout(() => {
+      this.getCoords('things-filter', (data:any) => {
+        this.baloonPosition = data;
+        this.switchOnQuickTour = true;
+        this.baloonName = this.baloonTips.thing.header;
+        this.baloonText = this.baloonTips.thing.description;
+      });
+    });
+  }
+
+  protected closeQuickTour():void {
     this.showOnboardingSwitcher = true;
-    this.switchOnQuickTour = true;
+    this.switchOnQuickTour = false;
   }
 
   protected step(step:boolean):void {
-    let thing = {
-      name: 'The things we all have in common',
-      text: 'You can filter images by objects. See how everyday objects compare by income or geography.'
-    };
-    let geography = {
-      name: 'How do objects compare in the world?',
-      text: 'You can filter by continents or specific country or countries.'
-    };
-    let income = {
-      name: 'Income',
-      text: 'You can choose the income interval of the homes you want to see.'
-    };
-    let street = {
-      name: 'The world as a street',
-      text: 'Poorest to the left and the richest to the right. You can drag the sliders to filter for income interval..'
-    };
-    let image = {
-      name: 'Visit a home',
-      text: 'Click the image to see a larger image and find out more about this family. All images under Creative Commons License.'
-    };
-
     if (step) {
       this.numberOfStep++;
     }
@@ -332,24 +363,49 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.numberOfStep--;
     }
     if (this.numberOfStep === 1) {
-      this.baloonName = thing.name;
-      this.baloonText = thing.text;
+      setTimeout(() => {
+        this.getCoords('things-filter', (data:any) => {
+          this.baloonPosition = data;
+          this.baloonName = this.baloonTips.thing.header;
+          this.baloonText = this.baloonTips.thing.description;
+        });
+      });
     }
     if (this.numberOfStep === 2) {
-      this.baloonName = geography.name;
-      this.baloonText = geography.text;
+      setTimeout(() => {
+        this.getCoords('incomes-filter', (data:any) => {
+          this.baloonPosition = data;
+          this.baloonName = this.baloonTips.income.header;
+          this.baloonText = this.baloonTips.income.description;
+        });
+      });
     }
     if (this.numberOfStep === 3) {
-      this.baloonName = income.name;
-      this.baloonText = income.text;
+      setTimeout(() => {
+        this.getCoords('countries-filter', (data:any) => {
+          this.baloonPosition = data;
+          this.baloonName = this.baloonTips.geography.header;
+          this.baloonText = this.baloonTips.geography.description;
+        });
+      });
     }
     if (this.numberOfStep === 4) {
-      this.baloonName = street.name;
-      this.baloonText = street.text;
+      setTimeout(() => {
+        this.getCoords('.street-box', (data:any) => {
+          this.baloonPosition = data;
+          this.baloonName = this.baloonTips.street.header;
+          this.baloonText = this.baloonTips.street.description;
+        });
+      });
     }
     if (this.numberOfStep === 5) {
-      this.baloonName = image.name;
-      this.baloonText = image.text;
+      setTimeout(() => {
+        this.getCoords('.images-container', (data:any) => {
+          this.baloonPosition = data;
+          this.baloonName = this.baloonTips.image.header;
+          this.baloonText = this.baloonTips.image.description;
+        });
+      });
     }
   }
 
