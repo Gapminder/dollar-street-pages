@@ -21,8 +21,6 @@
                       *ngIf="showblock"
                       [place]="familyData"
                       [thing]="thing"
-                      [zoom]="zoom"
-                      (thingsByIncomes)="urlTransfer($event)"
                       (closeBigImageBlock)="goToImageBlock(familyData, indexViewBoxHouse)"
                       [style.order]="imageBlockLocation">
   </matrix-view-block>

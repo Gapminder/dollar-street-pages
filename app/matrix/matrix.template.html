@@ -15,8 +15,10 @@
 <matrix-images [zoom]="zoom"
                [thing]="thing"
                [places]="matrixPlaces"
+               [activeHouse]="activeHouse"
                (hoverPlace)="hoverPlaceS($event)"
                (filter)="urlChanged($event)"
+               (activeHouseOptions)="activeHouseOptions($event)"
                [padding]="padding">
 </matrix-images>
 
