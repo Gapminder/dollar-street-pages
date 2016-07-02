@@ -15,14 +15,17 @@
     <a class="onboard-button-ml" (click)="switchOnOnboarding()">Welcome wizard</a>
   </div>
 
-  <div class="quick-tour" *ngIf="switchOnQuickTour">
+
+  <div class="quick-tour"
+       [ngStyle]="{top: baloonPosition.top + 'px', left: baloonPosition.left + 'px'}"
+       *ngIf="switchOnQuickTour">
     <div class="text-center">{{numberOfStep}} of 5</div>
     <div class="qt-baloon-name">{{baloonName}}</div>
     <div class="qt-baloon-text">{{baloonText}}</div>
     <div class="text-center marg-5-px">
       <a class="onboard-button-ml" *ngIf="numberOfStep !== 1" (click)="step(false)">Back</a>
       <a class="onboard-button-ml" *ngIf="numberOfStep !== 5" (click)="step(true)">Next</a>
-      <a class="onboard-button-ml" *ngIf="numberOfStep === 5" (click)="switchOnQuickTour = false;">Close</a>
+      <a class="onboard-button-ml" *ngIf="numberOfStep === 5" (click)="closeQuickTour()">Close</a>
     </div>
 
   </div>
