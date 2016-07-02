@@ -363,6 +363,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.numberOfStep--;
     }
     if (this.numberOfStep === 1) {
+
       setTimeout(() => {
         this.getCoords('things-filter', (data:any) => {
           this.baloonPosition = data;

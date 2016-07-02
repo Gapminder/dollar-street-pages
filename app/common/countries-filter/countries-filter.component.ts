@@ -43,10 +43,8 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.cloneSelectedCountries = ['World'];
   }
 
-  protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
+  protected openCloseCountriesFilter(isOpenCountriesFilter:boolean, isOnChanges?:boolean):void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
-
-    this.activatedFilter.emit(this.isOpenCountriesFilter ? 'countries' : '');
 
     if (!this.isOpenCountriesFilter) {
       if (this.cloneSelectedRegions[0] !== 'World') {
@@ -60,6 +58,10 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
       } else {
         this.selectedCountries.length = 0;
       }
+    }
+
+    if (!isOnChanges) {
+      this.activatedFilter.emit(this.isOpenCountriesFilter ? 'countries' : '');
     }
   }
 
@@ -142,7 +144,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
       changes.activeFilter.currentValue &&
       changes.activeFilter.currentValue !== 'countries'
     ) {
-      this.openCloseCountriesFilter(true);
+      this.openCloseCountriesFilter(true, true);
     }
   }
 

@@ -26,14 +26,16 @@ export class IncomesFilterComponent implements OnChanges {
   @Output()
   private activatedFilter:EventEmitter<any> = new EventEmitter();
 
-  protected openCloseIncomesFilter(isOpenIncomesFilter:boolean):void {
+  protected openCloseIncomesFilter(isOpenIncomesFilter:boolean, isOnChanges?:boolean):void {
     this.isOpenIncomesFilter = !isOpenIncomesFilter;
 
     if (!this.isOpenIncomesFilter) {
       this.range = JSON.parse(JSON.stringify(this.cloneRange));
     }
 
-    this.activatedFilter.emit(this.isOpenIncomesFilter ? 'incomes' : '');
+    if (!isOnChanges) {
+      this.activatedFilter.emit(this.isOpenIncomesFilter ? 'incomes' : '');
+    }
   }
 
   protected applyFilter(minIncome:any, maxIncome:any):void {
@@ -91,7 +93,7 @@ export class IncomesFilterComponent implements OnChanges {
       changes.activeFilter.currentValue
       && changes.activeFilter.currentValue !== 'incomes'
     ) {
-      this.openCloseIncomesFilter(true);
+      this.openCloseIncomesFilter(true, true);
     }
   }
 
