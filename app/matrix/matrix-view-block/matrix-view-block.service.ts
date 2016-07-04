@@ -17,11 +17,4 @@ export class FamilyInfoService {
       return {err: parseRes.error, data: parseRes.data};
     });
   }
-
-  public getCountMatrixImages(query:string):Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/things?${query}`).map((res:any) => {
-      let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, data: parseRes.data};
-    });
-  }
 }

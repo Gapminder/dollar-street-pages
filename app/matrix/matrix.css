@@ -111,6 +111,7 @@ matrix-images {
   position: fixed;
   top: 126px;
   right: 16px;
+  z-index: 99;
 }
 
 .zoom-column button,
