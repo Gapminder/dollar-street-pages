@@ -29,9 +29,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected numberOfStep:number = 1;
   protected baloonName:string;
   protected baloonText:string;
+  protected baloonCCLinkHref:string;
+  protected baloonCCLinkText:string;
   protected baloonTips:any = {};
   protected baloonPosition:any;
-  protected elPosition:any;
 
   public query:string;
   public matrixService:any;
@@ -330,15 +331,19 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let clientTop = docEl.clientTop || body.clientTop || 0;
     let clientLeft = docEl.clientLeft || body.clientLeft || 0;
 
-    let top = box.top + scrollTop - clientTop;
+    let top = box.top;
     let left = box.left + scrollLeft - clientLeft;
 
+    if (querySelector === '.images-container') {
+      top = box.top + scrollTop - clientTop;
+    }
     cb({top: Math.round(top) + 40, left: Math.round(left) + 20});
   }
 
   protected startQuickTour():void {
     this.showOnboarding = false;
     this.showOnboardingSwitcher = false;
+    this.numberOfStep = 1;
     window.localStorage.setItem('onboarded', 'true');
     setTimeout(() => {
       this.getCoords('things-filter', (data:any) => {
@@ -363,7 +368,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.numberOfStep--;
     }
     if (this.numberOfStep === 1) {
-
       setTimeout(() => {
         this.getCoords('things-filter', (data:any) => {
           this.baloonPosition = data;
@@ -405,6 +409,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.baloonPosition = data;
           this.baloonName = this.baloonTips.image.header;
           this.baloonText = this.baloonTips.image.description;
+          this.baloonCCLinkText = this.baloonTips.image.link.text;
+          this.baloonCCLinkHref = this.baloonTips.image.link.href;
         });
       });
     }

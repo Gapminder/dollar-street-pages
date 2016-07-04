@@ -21,19 +21,21 @@
        *ngIf="switchOnQuickTour">
     <div class="text-center">{{numberOfStep}} of 5</div>
     <div class="qt-baloon-name">{{baloonName}}</div>
-    <div class="qt-baloon-text">{{baloonText}}</div>
+    <div class="qt-baloon-text">{{baloonText}}
+      <a href="{{baloonCCLinkHref}}" class="cc-link" target="_blank" *ngIf="numberOfStep === 5">{{baloonCCLinkText}}</a>
+    </div>
     <div class="text-center marg-5-px">
       <a class="onboard-button-ml" *ngIf="numberOfStep !== 1" (click)="step(false)">Back</a>
       <a class="onboard-button-ml" *ngIf="numberOfStep !== 5" (click)="step(true)">Next</a>
       <a class="onboard-button-ml" *ngIf="numberOfStep === 5" (click)="closeQuickTour()">Close</a>
     </div>
-
   </div>
 
   <header [query]="query"
           [thing]="thing"
           [hoverPlace]="hoverPlace"
-          (filter)="urlChanged($event)"></header>
+          (filter)="urlChanged($event)">
+  </header>
 
   <street [query]="query"
           [thing]="thing"

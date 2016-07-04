@@ -58,6 +58,10 @@ matrix-images {
   z-index: 600;
 }
 
+.cc-link {
+  color: #aed2d3;
+}
+
 .quick-tour:after {
   bottom: 100%;
   left: 20%;
