@@ -117,6 +117,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
       this.zoom = 4;
+
     }
 
     if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
