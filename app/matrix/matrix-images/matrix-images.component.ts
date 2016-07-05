@@ -34,10 +34,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   protected imageBlockLocation:any;
   protected indexViewBoxHouse:number;
 
+  @Input('query')
+  protected query:string;
+  @Input('thing')
+  protected thing:string;
   @Input('places')
   private places:Observable<any>;
-  @Input('thing')
-  private thing:string;
   @Input('activeHouse')
   private activeHouse:number;
   @Input('zoom')
@@ -125,7 +127,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   protected goToPlace(place:any):void {
     if (this.isDesktop) {
-      this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
+      this.router.navigate(['Home', this.parseUrl(`place=${place._id}&` + this.query)]);
       return;
     }
 
@@ -134,7 +136,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.router.navigate(['Place', {thing: this.thing, place: place._id, image: place.image}]);
+    this.router.navigate(['Home', this.parseUrl(`place=${place._id}&` + this.query)]);
   }
 
   protected goToImageBlock(place:any, index:number):void {
@@ -184,5 +186,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     let windowInnerWidth = window.innerWidth;
     let imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / this.zoom;
     document.body.scrollTop = (row - 1) * (this.imageHeight + imageMargin);
+  }
+
+  private parseUrl(url:string):any {
+    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

@@ -1,0 +1,52 @@
+<div class="home-description-container" [ngClass]="{'open-info': isOpenArticle}">
+  <div class="image-container">
+    <img [src]="home.image" alt="">
+  </div>
+  <div class="description-container">
+    <div class="home-info-container">
+      <div class="title-info">
+        <div class="left-title">
+          <p class="sub-title">Home of the</p>
+          <p class="title">{{home.familyName}} Family</p>
+        </div>
+
+        <div class="right-title">
+          <p class="sub-title">Household weekly income</p>
+          <p class="title">${{home.income}}</p>
+        </div>
+      </div>
+
+      <div class="family-info-container">
+        <div class="family-short-info">
+          {{home.familyInfoSummary}}
+        </div>
+        <div class="family-full-info">
+          {{home.familyInfo}}
+        </div>
+      </div>
+    </div>
+
+    <div class="home-country-container">
+      <div class="title-info">
+        <div class="left-title">
+          <p class="sub-title">Country</p>
+          <p class="title">{{home.country?.alias}}</p>
+        </div>
+      </div>
+
+      <div class="map-container" [routerLink]="['Country', {id: home.country?._id}]">
+        <place-map [hoverPlace]="mapData"></place-map>
+      </div>
+
+      <div class="go-to-matrix">
+        <p
+          [routerLink]="['Matrix', {thing: 'Home', countries: home.country?.alias, regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}]">
+          Show all homes in {{home.country?.alias}}<i class="fa fa-long-arrow-right"></i></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="show-info">
+  <span (click)="openInfo(isOpenArticle)"><i class="fa fa-caret-down" [ngClass]="{'fa-caret-up': isOpenArticle}"></i> {{isOpenArticle ? 'Close article' : 'Show article'}}</span>
+</div>

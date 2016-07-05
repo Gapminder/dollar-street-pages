@@ -11,7 +11,8 @@ describe('InfoComponent', () => {
     return [mockCommonDependency.getProviders()];
   });
 
-  let context, fixture;
+  let context;
+  let fixture;
 
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb.createAsync(InfoComponent).then((fixtureInst:any) => {
