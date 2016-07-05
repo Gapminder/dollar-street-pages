@@ -83,12 +83,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit():void {
+
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
     if (window.localStorage && window.localStorage.getItem('onboarded')) {
       this.showOnboarding = false;
       this.showOnboardingSwitcher = true;
+      document.body.className = 'wizard';
     }
 
     this.matrixServiceOnboarding = this.matrixService.getMatrixOnboardingTips()
@@ -379,7 +381,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected startQuickTour():void {
-    this.showOnboarding = false;
+    this.closeOnboarding();
     this.showOnboardingSwitcher = false;
     this.numberOfStep = 1;
     window.localStorage.setItem('onboarded', 'true');
@@ -455,12 +457,32 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected switchOnOnboarding():void {
+    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
+    let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
+    let header = this.element.querySelector('.matrix-header') as HTMLElement;
+    let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
+
     this.showOnboarding = true;
     this.showOnboardingSwitcher = false;
     this.switchOnQuickTour = false;
+
+    setTimeout(function():void {
+      matrixImages.style.paddingTop = `${header.offsetHeight}px`;
+      zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
+    }, 0);
   }
 
   protected closeOnboarding():void {
+    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
+    let header = this.element.querySelector('.matrix-header') as HTMLElement;
+    let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
+    let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
+    document.body.className = '';
+
+    setTimeout(function():void {
+      matrixImages.style.paddingTop = `${header.offsetHeight}px`;
+      zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
+    }, 0);
     this.showOnboarding = false;
     this.showOnboardingSwitcher = true;
   }

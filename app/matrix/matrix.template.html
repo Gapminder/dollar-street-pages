@@ -1,6 +1,6 @@
 <div class="matrix-header main-header">
 
-  <div class="matrix-onboard" *ngIf="showOnboarding">
+  <div class="matrix-onboard" [hidden]="!showOnboarding">
     <a class="pull-right close-button" (click)="closeOnboarding()">
     </a>
     <div class="font-large">Find out how people <span class="font-bold">really</span> live</div>
@@ -14,7 +14,6 @@
   <div class="button" *ngIf="showOnboardingSwitcher">
     <a class="onboard-button-ml" (click)="switchOnOnboarding()">Welcome wizard</a>
   </div>
-
 
   <div class="quick-tour"
        [ngStyle]="{top: baloonPosition.top + 'px', left: baloonPosition.left + 'px'}"
@@ -45,7 +44,8 @@
           (filterStreet)="urlChanged($event)"></street>
 </div>
 
-<matrix-images [zoom]="zoom"
+<matrix-images
+               [zoom]="zoom"
                [thing]="thing"
                [places]="matrixPlaces"
                [activeHouse]="activeHouse"
@@ -56,6 +56,7 @@
 </matrix-images>
 
 <div class="zoom-column pull-right"
+     [ngStyle]="{}"
      *ngIf="filtredPlaces.length">
 
   <button type="button"

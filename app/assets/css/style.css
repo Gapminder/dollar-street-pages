@@ -160,6 +160,14 @@ map-component {
   color: #e0e7ef;
 }
 
+body.onboarding .zoom-column {
+  top: 252px;
+}
+
+body.wizard .zoom-column {
+  top: 146px;
+}
+
 @supports (-webkit-line-clamp: 1) {
   .line-clamp:after {
     display: none !important;
