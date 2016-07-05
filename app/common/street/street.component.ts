@@ -17,6 +17,7 @@ let style = require('./street.css');
 })
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
+  public data:any;
   @Input('thing')
   protected thing:string;
   @Input('query')
@@ -33,9 +34,11 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private filterStreet:EventEmitter<any> = new EventEmitter();
 
   private street:any;
+  private streetSettingsService:any;
+  private streetData:any;
   private element:HTMLElement;
   private router:Router;
-
+  private StreetServiceSubscrib:any;
   private resize:any;
   private drawOnMap:boolean = false;
 
@@ -46,34 +49,23 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private math:any;
   private svg:SVGElement;
   private showSlider:boolean;
+  private placesArr:any;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(Router) router:Router,
                      @Inject('Math') math:any,
+                     @Inject('StreetSettingsService') streetSettingsService:any,
                      @Inject('StreetDrawService') streetDrawService:any) {
     this.element = element.nativeElement;
     this.router = router;
     this.math = math;
     this.street = streetDrawService;
+    this.streetSettingsService = streetSettingsService;
     this.showSlider = this.router.hostComponent.name === 'MatrixComponent';
   }
 
   public ngOnInit():any {
-    let parseUrl:any;
-
-    if (this.query) {
-      parseUrl = this.parseUrl(this.query);
-    } else {
-      parseUrl = {
-        lowIncome: 0,
-        highIncome: 15000
-      };
-    }
-
     this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
-
-    this.street.set('lowIncome', parseUrl.lowIncome);
-    this.street.set('highIncome', parseUrl.highIncome);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
         if (!chosenPlaces.length) {
@@ -111,27 +103,27 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       });
 
     this.placesSubscribe = this.places && this.places.subscribe((places:any):void => {
-        this.street
-          .clearSvg()
-          .init(this.street.lowIncome, this.street.highIncome)
-          .drawScale(places, this.showSlider)
-          .set('places', _.sortBy(places, 'income'))
-          .set('fullIncomeArr', _
-            .chain(this.street.places)
-            .sortBy('income')
-            .map((place:any) => {
-              if (!place) {
-                return void 0;
-              }
-
-              return this.street.scale(place.income);
-            })
-            .compact()
-            .value());
-
-        if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
-          this.street.clearAndRedraw(this.street.chosenPlaces);
+        this.placesArr = places;
+        if (!this.streetData) {
+          return;
         }
+
+        this.setDividers(this.placesArr, this.streetData);
+      });
+
+    this.StreetServiceSubscrib = this.streetSettingsService.getStreetSettings()
+      .subscribe((val:any) => {
+        if (val.err) {
+          return;
+        }
+
+        this.streetData = val.data;
+
+        if (!this.placesArr) {
+          return;
+        }
+
+        this.setDividers(this.placesArr, this.streetData);
       });
 
     this.street.filter.subscribe((filter:any):void => {
@@ -158,31 +150,11 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
-        this.street
-          .clearSvg()
-          .init(this.street.lowIncome, this.street.highIncome)
-          .drawScale(this.street.places, this.showSlider)
-          .set('places', _.sortBy(this.street.places, 'income'))
-          .set('fullIncomeArr', _
-            .chain(this.street.places)
-            .sortBy('income')
-            .map((place:any) => {
-              if (!place || !place.length) {
-                return;
-              }
-
-              return this.street.scale(place.income);
-            }).value()
-          )
-          .set('chosenPlaces', this.street.chosenPlaces);
-
-        if (this.controllSlider) {
-          this.street.clearAndRedraw(this.street.chosenPlaces, true);
-
+        if (!this.street.places) {
           return;
         }
 
-        this.street.clearAndRedraw(this.street.chosenPlaces);
+        this.setDividers(this.placesArr, this.streetData);
       });
   }
 
@@ -215,6 +187,35 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
     }
+
+    if (this.StreetServiceSubscrib) {
+      this.StreetServiceSubscrib.unsubscribe();
+    }
+  }
+
+  private setDividers(places:any, drawDividers:any):void {
+    this.street
+      .clearSvg()
+      .init(this.street.lowIncome, this.street.highIncome,this.streetData)
+      .drawScale(places, this.showSlider, false)
+      .set('places', _.sortBy(places, 'income'))
+      .set('fullIncomeArr', _
+        .chain(this.street.places)
+        .sortBy('income')
+        .map((place:any) => {
+          if (!place) {
+            return void 0;
+          }
+
+          return this.street.scale(place.income);
+        })
+        .compact()
+        .value())
+      .isDrawDividers(drawDividers);
+
+    if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
+      this.street.clearAndRedraw(this.street.chosenPlaces);
+    }
   }
 
   private objToQuery(data:any):string {
@@ -233,3 +234,4 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     return query;
   }
 }
+

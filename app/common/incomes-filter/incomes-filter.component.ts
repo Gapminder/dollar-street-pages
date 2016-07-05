@@ -1,4 +1,4 @@
-import {Component, OnChanges, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnChanges, Input, Output, Inject, EventEmitter} from '@angular/core';
 
 let tpl = require('./incomes-filter.template.html');
 let style = require('./incomes-filter.css');
@@ -25,9 +25,30 @@ export class IncomesFilterComponent implements OnChanges {
   private selectedFilter:EventEmitter<any> = new EventEmitter();
   @Output()
   private activatedFilter:EventEmitter<any> = new EventEmitter();
+  private streetSettingsService:any;
+  private streetData:any;
+  private StreetServiceSubscrib:any;
+
+  public constructor(@Inject('StreetSettingsService') streetSettingsService:any) {
+    this.streetSettingsService = streetSettingsService;
+  };
 
   protected openCloseIncomesFilter(isOpenIncomesFilter:boolean, isOnChanges?:boolean):void {
     this.isOpenIncomesFilter = !isOpenIncomesFilter;
+
+    if (this.StreetServiceSubscrib) {
+      this.StreetServiceSubscrib.unsubscribe();
+      this.StreetServiceSubscrib = void 0;
+    }
+
+    this.StreetServiceSubscrib = this.streetSettingsService.getStreetSettings()
+      .subscribe((val:any) => {
+        if (val.err) {
+          return;
+        }
+
+        this.streetData = val.data;
+      });
 
     if (!this.isOpenIncomesFilter) {
       this.range = JSON.parse(JSON.stringify(this.cloneRange));
@@ -37,15 +58,21 @@ export class IncomesFilterComponent implements OnChanges {
       this.activatedFilter.emit(this.isOpenIncomesFilter ? 'incomes' : '');
     }
   }
-
   protected applyFilter(minIncome:any, maxIncome:any):void {
+    let poor:any = 0;
+    let rich:any = 15000;
+    if (this.streetData) {
+      poor = this.streetData.poor;
+      rich = this.streetData.rich;
+    }
+
     this.isOpenIncomesFilter = false;
     let query = this.parseUrl(this.url);
 
     minIncome = Math.abs(minIncome);
-    maxIncome = Math.abs(maxIncome) <= 15000 ? Math.abs(maxIncome) : 15000;
+    maxIncome = Math.abs(maxIncome) <= rich ? Math.abs(maxIncome) : rich;
 
-    if (minIncome >= 15000) {
+    if (minIncome >= rich) {
       minIncome = maxIncome - 100;
     }
 
@@ -53,13 +80,13 @@ export class IncomesFilterComponent implements OnChanges {
       maxIncome = minIncome + 100;
     }
 
-    if (maxIncome > 15000 && minIncome > 14990) {
-      minIncome = 14900;
-      maxIncome = 15000;
+    if (maxIncome > rich && minIncome > (rich - 10)) {
+      minIncome = rich - 100;
+      maxIncome = rich;
     }
 
-    if (minIncome === 0 && minIncome >= maxIncome) {
-      minIncome = 0;
+    if (minIncome === poor && minIncome >= maxIncome) {
+      minIncome = poor;
       maxIncome = 100;
     }
 
@@ -98,17 +125,23 @@ export class IncomesFilterComponent implements OnChanges {
   }
 
   private getTitle(range:any):string {
+    let poor:any;
+    let rich:any;
+    if (this.streetData) {
+      poor = this.streetData.poor;
+      rich = this.streetData.rich;
+    }
     let title:string;
 
-    if (range.min > 0 && range.max < 15000) {
+    if (range.min > poor && range.max < rich) {
       title = 'incomes $' + range.min + ' - $' + range.max;
     }
 
-    if (range.min > 0 && range.max === 15000) {
+    if (range.min > poor && range.max === rich) {
       title = 'income over $' + range.min;
     }
 
-    if (range.min === 0 && range.max < 15000) {
+    if (range.min === poor && range.max < rich) {
       title = 'income lower $' + range.max;
     }
 
@@ -131,3 +164,4 @@ export class IncomesFilterComponent implements OnChanges {
     return query;
   }
 }
+

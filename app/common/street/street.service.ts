@@ -14,7 +14,7 @@ export class StreetDrawService {
   private poorest:string = 'Poorest';
   private richest:string = 'Richest';
   private scale:any;
-  private axisLabel:number[] = [30, 300, 3000];
+  private axisLabel:number[] = [];
   private svg:any;
   private incomeArr:any[] = [];
 
@@ -49,18 +49,17 @@ export class StreetDrawService {
 
   private filter:Subject<any> = new Subject();
 
-  public init(lowIncome:any, highIncome:any):this {
-    this.lowIncome = lowIncome || 0;
-    this.highIncome = highIncome || 15000;
-
+  public init(lowIncome:any, highIncome:any, drawDividers:any):this {
+    this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
+    this.lowIncome = lowIncome || drawDividers.poor;
+    this.highIncome = highIncome || drawDividers.rich;
     this.width = parseInt(this.svg.style('width'), 10);
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
-
     this.scale = d3
       .scale.log()
-      .domain([1, 30, 300, 3000, 15000])
-      .range([0, 0.07 * this.width, 0.5 * this.width, 0.92 * this.width, 0.99 * this.width]);
+      .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
+      .range([0, drawDividers.q1 / 1000 * this.width, drawDividers.q2 / 1000 * this.width, drawDividers.q3 / 1000 * this.width, 0.99 * this.width]);
 
     return this;
   }
@@ -75,116 +74,10 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawScale(places:any, isShowSlider:boolean):this {
-    let halfHouseWidth = 7;
-    let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 10;
-
-    if (!places || !places.length) {
-      return this;
+  public isDrawDividers(drawDividers:any):this {
+    if (!drawDividers.showDividers) {
+      return;
     }
-
-    d3.svg
-      .axis()
-      .scale(this.scale)
-      .orient('bottom')
-      .tickFormat(() => {
-        return void 0;
-      })
-      .tickSize(6, 0);
-
-    this.svg
-      .selectAll('text.poorest')
-      .data([this.poorest])
-      .enter()
-      .append('text')
-      .attr('class', 'poorest')
-      .text(this.poorest)
-      .attr('x', 0)
-      .attr('y', this.height - 5)
-      .attr('fill', '#767d86');
-
-    this.svg
-      .selectAll('text.richest')
-      .data([this.richest])
-      .enter()
-      .append('text')
-      .attr('class', 'richest')
-      .text(this.richest)
-      .attr('x', this.width - 52)
-      .attr('y', this.height - 5)
-      .attr('fill', '#767d86');
-
-    if (isDesktop) {
-      this.svg
-        .selectAll('polygon')
-        .data(places)
-        .enter()
-        .append('polygon')
-        .attr('class', 'point')
-        .attr('points', (datum:any):any => {
-          let point1;
-          let point2;
-          let point3;
-          let point4;
-          let point5;
-          let point6;
-          let point7;
-
-          if (datum) {
-            let scaleDatumIncome = this.scale(datum.income);
-            point1 = `${scaleDatumIncome + roofX },${this.halfOfHeight - 1}`;
-            point2 = `${scaleDatumIncome + roofX},${roofY}`;
-            point3 = `${scaleDatumIncome - halfHouseWidth},${roofY}`;
-            point4 = `${scaleDatumIncome},${this.halfOfHeight - 17}`;
-            point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
-            point6 = `${scaleDatumIncome - roofX },${roofY}`;
-            point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight - 1}`;
-          }
-
-          return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-        })
-        .attr('stroke-width', 1)
-        .style('fill', '#cfd2d6')
-        .style('opacity', '0.7');
-    }
-
-    this.svg
-      .append('polygon')
-      .attr('class', 'road')
-      .attr('points', () => {
-        let point1 = `0,${ this.halfOfHeight + 9}`;
-        let point2 = `15,${ this.halfOfHeight - 4}`;
-        let point3 = `${ this.width - 15},${ this.halfOfHeight - 4}`;
-        let point4 = `${ this.width},${ this.halfOfHeight + 9}`;
-
-        return `${point1} ${point2} ${point3} ${point4}`;
-      })
-      .style('fill', '#737b83');
-
-    this.svg
-      .append('line')
-      .attr('class', 'axis')
-      .attr('x1', 0)
-      .attr('y1', this.halfOfHeight + 10)
-      .attr('x2', this.width)
-      .attr('y2', this.halfOfHeight + 10)
-      .attr('stroke-width', 2)
-      .attr('stroke', '#505b65');
-
-    this.svg
-      .append('line')
-      .attr('class', 'dash')
-      .attr('x1', 18)
-      .attr('y1', this.halfOfHeight + 3)
-      .attr('x2', this.width - 9)
-      .attr('y2', this.halfOfHeight + 3)
-      .attr('stroke-dasharray', '8,8')
-      .attr('stroke-width', 1.5)
-      .attr('stroke', 'white');
-
-    this.incomeArr.length = 0;
 
     this.svg
       .selectAll('text.scale-label')
@@ -237,7 +130,113 @@ export class StreetDrawService {
 
         return this.scale(d) - indent + center;
       });
+    return this;
+  }
 
+  public drawScale(places:any, isShowSlider:boolean):this {
+    if (!places || !places.length) {
+      return this;
+    }
+
+    d3.svg
+      .axis()
+      .scale(this.scale)
+      .orient('bottom')
+      .tickFormat(() => {
+        return void 0;
+      })
+      .tickSize(6, 0);
+
+    this.svg
+      .selectAll('text.poorest')
+      .data([this.poorest])
+      .enter()
+      .append('text')
+      .attr('class', 'poorest')
+      .text(this.poorest)
+      .attr('x', 0)
+      .attr('y', this.height - 5)
+      .attr('fill', '#767d86');
+
+    this.svg
+      .selectAll('text.richest')
+      .data([this.richest])
+      .enter()
+      .append('text')
+      .attr('class', 'richest')
+      .text(this.richest)
+      .attr('x', this.width - 52)
+      .attr('y', this.height - 5)
+      .attr('fill', '#767d86');
+
+    if (isDesktop) {
+      this.svg
+        .selectAll('rect.point')
+        .data(places)
+        .enter()
+        .append('rect')
+        .attr('class', 'point')
+        .attr('x', (d:any):any => {
+          if (!d) {
+            return 0;
+          }
+
+          return this.scale(d.income) - 4;
+        })
+        .attr('y', this.halfOfHeight - 11)
+        .attr('width', (d:any):any => {
+          if (!d) {
+            return 0;
+          }
+
+          return 8;
+        })
+        .attr('height', (d:any):any => {
+          if (!d) {
+            return 0;
+          }
+
+          return 7;
+        })
+        .style('fill', '#cfd2d6')
+        .style('opacity', '0.7');
+    }
+
+    this.svg
+      .append('polygon')
+      .attr('class', 'road')
+      .attr('points', () => {
+        let point1 = `0,${ this.halfOfHeight + 9}`;
+        let point2 = `15,${ this.halfOfHeight - 4}`;
+        let point3 = `${ this.width - 15},${ this.halfOfHeight - 4}`;
+        let point4 = `${ this.width},${ this.halfOfHeight + 9}`;
+
+        return `${point1} ${point2} ${point3} ${point4}`;
+      })
+      .style('fill', '#737b83');
+
+    this.svg
+      .append('line')
+      .attr('class', 'axis')
+      .attr('x1', 0)
+      .attr('y1', this.halfOfHeight + 10)
+      .attr('x2', this.width)
+      .attr('y2', this.halfOfHeight + 10)
+      .attr('stroke-width', 2)
+      .attr('stroke', '#505b65');
+
+    this.svg
+      .append('line')
+      .attr('class', 'dash')
+      .attr('x1', 18)
+      .attr('y1', this.halfOfHeight + 3)
+      .attr('x2', this.width - 9)
+      .attr('y2', this.halfOfHeight + 3)
+      .attr('stroke-dasharray', '8,8')
+      .attr('stroke-width', 1.5)
+      .attr('stroke', 'white');
+
+    this.incomeArr.length = 0;
     if (isShowSlider) {
       this.drawLeftSlider(this.scale(Number(this.lowIncome) || 1), true);
       this.drawRightSlider(this.scale(this.highIncome), true);

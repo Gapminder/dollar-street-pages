@@ -11,6 +11,7 @@ import {MathService} from './common/math-service/math-service';
 import {MatrixService} from './matrix/matrix.service';
 import {HeaderService} from './common/header/header.service';
 import {SearchService} from './common/search/search.service';
+import {StreetSettingsService} from './common/street/street.settings.service';
 import {ThingsFilterService} from './common/things-filter/things-filter.service';
 import {CountriesFilterService} from './common/countries-filter/countries-filter.service';
 import {CountryInfoService} from './country/country-info/country-info.service';
@@ -46,6 +47,7 @@ bootstrap(AppComponent, [
   provide('MatrixService', {useClass: MatrixService}),
   provide('HeaderService', {useClass: HeaderService}),
   provide('SearchService', {useClass: SearchService}),
+  provide('StreetSettingsService', {useClass: StreetSettingsService}),
   provide('PlaceStreetService', {useClass: PlaceStreetService}),
   provide('FamilyPlaceService', {useClass: FamilyPlaceService}),
   provide('MapService', {useClass: MapService}),
@@ -67,4 +69,3 @@ bootstrap(AppComponent, [
   provide('Math', {useClass: MathService}),
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);
-
