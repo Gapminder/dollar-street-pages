@@ -14,7 +14,11 @@ export class StreetSettingsService {
   public getStreetSettings():Observable<any> {
     return this.http.get(`${Config.api}/consumer/api/v1/street-settings`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, data: parseRes.data[0]};
+      let data = parseRes.data[0];
+      if (data) {
+        return {err: parseRes.error, data: data};
+      }
+      return {err: parseRes.error};
     });
   }
 }
