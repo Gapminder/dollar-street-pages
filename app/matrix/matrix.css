@@ -58,6 +58,10 @@ matrix-images {
   z-index: 600;
 }
 
+.cc-link {
+  color: #aed2d3;
+}
+
 .quick-tour:after {
   bottom: 100%;
   left: 20%;
@@ -107,6 +111,7 @@ matrix-images {
   position: fixed;
   top: 126px;
   right: 16px;
+  z-index: 99;
 }
 
 .zoom-column button,

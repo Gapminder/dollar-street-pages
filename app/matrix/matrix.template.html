@@ -1,6 +1,6 @@
 <div class="matrix-header main-header">
 
-  <div class="matrix-onboard" *ngIf="showOnboarding">
+  <div class="matrix-onboard" [hidden]="!showOnboarding">
     <a class="pull-right close-button" (click)="closeOnboarding()">
     </a>
     <div class="font-large">Find out how people <span class="font-bold">really</span> live</div>
@@ -15,25 +15,26 @@
     <a class="onboard-button-ml" (click)="switchOnOnboarding()">Welcome wizard</a>
   </div>
 
-
   <div class="quick-tour"
        [ngStyle]="{top: baloonPosition.top + 'px', left: baloonPosition.left + 'px'}"
        *ngIf="switchOnQuickTour">
     <div class="text-center">{{numberOfStep}} of 5</div>
     <div class="qt-baloon-name">{{baloonName}}</div>
-    <div class="qt-baloon-text">{{baloonText}}</div>
+    <div class="qt-baloon-text">{{baloonText}}
+      <a href="{{baloonCCLinkHref}}" class="cc-link" target="_blank" *ngIf="numberOfStep === 5">{{baloonCCLinkText}}</a>
+    </div>
     <div class="text-center marg-5-px">
       <a class="onboard-button-ml" *ngIf="numberOfStep !== 1" (click)="step(false)">Back</a>
       <a class="onboard-button-ml" *ngIf="numberOfStep !== 5" (click)="step(true)">Next</a>
       <a class="onboard-button-ml" *ngIf="numberOfStep === 5" (click)="closeQuickTour()">Close</a>
     </div>
-
   </div>
 
   <header [query]="query"
           [thing]="thing"
           [hoverPlace]="hoverPlace"
-          (filter)="urlChanged($event)"></header>
+          (filter)="urlChanged($event)">
+  </header>
 
   <street [query]="query"
           [thing]="thing"
@@ -43,15 +44,19 @@
           (filterStreet)="urlChanged($event)"></street>
 </div>
 
-<matrix-images [zoom]="zoom"
+<matrix-images
+               [zoom]="zoom"
                [thing]="thing"
                [places]="matrixPlaces"
+               [activeHouse]="activeHouse"
                (hoverPlace)="hoverPlaceS($event)"
                (filter)="urlChanged($event)"
+               (activeHouseOptions)="activeHouseOptions($event)"
                [padding]="padding">
 </matrix-images>
 
 <div class="zoom-column pull-right"
+     [ngStyle]="{}"
      *ngIf="filtredPlaces.length">
 
   <button type="button"

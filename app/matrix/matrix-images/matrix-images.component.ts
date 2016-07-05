@@ -38,6 +38,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private places:Observable<any>;
   @Input('thing')
   private thing:string;
+  @Input('activeHouse')
+  private activeHouse:number;
   @Input('zoom')
   private zoom:number;
   @Input('showblock')
@@ -45,8 +47,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output('hoverPlace')
   private hoverPlace:EventEmitter<any> = new EventEmitter();
-  @Output()
-  private filter:EventEmitter<any> = new EventEmitter();
+  @Output('activeHouseOptions')
+  private activeHouseOptions:EventEmitter<any> = new EventEmitter();
 
   private isDesktop:boolean = isDesktop;
   private oldPlaceId:string;
@@ -75,10 +77,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnInit():any {
     this.itemSize = window.innerWidth / this.zoom;
     this.imageHeight = window.innerWidth / this.zoom - window.innerWidth / 100;
+    let isInit:boolean = true;
 
     this.placesSubscribe = this.places.subscribe((places:any) => {
       this.showblock = false;
       this.currentPlaces = places;
+
+      if (this.activeHouse && isInit) {
+        this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1);
+        isInit = false;
+      }
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -101,11 +109,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnDestroy():void {
     this.placesSubscribe.unsubscribe();
-  }
-
-  public urlTransfer(url:string):void {
-    this.goToImageBlock(this.familyData, this.indexViewBoxHouse);
-    this.filter.emit(url);
   }
 
   protected hoverImage(place:any):void {
@@ -146,6 +149,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.prevPlaceId) {
       this.prevPlaceId = place._id;
       this.showblock = !this.showblock;
+
+      this.changeUrl(Math.ceil((this.indexViewBoxHouse + 1) / this.zoom), this.indexViewBoxHouse + 1);
+
       return;
     }
 
@@ -155,13 +161,28 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       if (!this.showblock) {
         this.prevPlaceId = '';
       }
+
+      this.changeUrl(Math.ceil((this.indexViewBoxHouse + 1) / this.zoom));
     } else {
       this.prevPlaceId = place._id;
       this.showblock = true;
+
+      this.changeUrl(Math.ceil((this.indexViewBoxHouse + 1) / this.zoom), this.indexViewBoxHouse + 1);
     }
   }
 
   protected toUrl(image:any):string {
     return `url("${image}")`;
+  }
+
+  private changeUrl(row:number, activeHouseIndex?:number):void {
+    this.activeHouseOptions.emit({row: row, activeHouseIndex: activeHouseIndex});
+    this.goToRow(row);
+  }
+
+  private goToRow(row:number):void {
+    let windowInnerWidth = window.innerWidth;
+    let imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / this.zoom;
+    document.body.scrollTop = (row - 1) * (this.imageHeight + imageMargin);
   }
 }
