@@ -29,6 +29,8 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   private router:Router;
   private zone:NgZone;
 
+  @Input('query')
+  private query:any;
   @Input('place')
   private place:any;
   @Input('thing')
@@ -63,37 +65,13 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
       .subscribe((res:any) => {
         if (res.err) {
-          console.log(res.err);
+          console.error(res.err);
           return;
         }
 
         this.familyData = res.data;
-
-        this.familyData.goToPlaceData = {
-          thing: this.thing,
-          place: this.place._id,
-          image: this.place.image
-        };
-
+        this.familyData.goToPlaceData = this.parseUrl(`place=${this.place._id}&` + this.query);
         this.loader = true;
-
-        if (this.familyData.houseImage) {
-          this.familyData.goToPlaceData = {
-            thing: this.familyData.houseImage.thing,
-            place: this.place._id,
-            image: this.familyData.houseImage._id
-          };
-
-          return;
-        }
-
-        if (this.familyData.familyImage) {
-          this.familyData.goToPlaceData = {
-            thing: this.familyData.familyImage.thing,
-            place: this.place._id,
-            image: this.familyData.familyImage._id
-          };
-        }
       });
   }
 
@@ -125,5 +103,9 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   protected fancyBoxClose():void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
+  }
+
+  private parseUrl(url:string):any {
+    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

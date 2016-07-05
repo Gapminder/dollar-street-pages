@@ -15,8 +15,6 @@ import {ThingsFilterService} from './common/things-filter/things-filter.service'
 import {CountriesFilterService} from './common/countries-filter/countries-filter.service';
 import {CountryInfoService} from './country/country-info/country-info.service';
 import {CountryPlacesService} from './country/country-places/country-places.service';
-import {PlaceStreetService} from './place/place-street.service.ts';
-import {FamilyPlaceService} from './place/family/family-place.service';
 import {MapService} from './map/map.service';
 import {UrlChangeService} from './common/url-change/url-change.service';
 import {PhotographersService} from './all-photographers/photographers/photographers.service';
@@ -27,6 +25,8 @@ import {SocialShareButtonsService} from './common/social_share_buttons/social-sh
 import {InfoContextService} from './info/info-context/info-context.service';
 import {ArticleService} from './article/article.service';
 import {FamilyInfoService} from './matrix/matrix-view-block/matrix-view-block.service';
+import {HomeHeaderService} from './home/home-header/home-header.sevice';
+import {HomeMediaService} from './home/home-media/home-media.sevice';
 
 import {ContenfulContent} from './contentful/contentful.service';
 import {ContentfulService} from 'ng2-contentful/src/index';
@@ -46,8 +46,6 @@ bootstrap(AppComponent, [
   provide('MatrixService', {useClass: MatrixService}),
   provide('HeaderService', {useClass: HeaderService}),
   provide('SearchService', {useClass: SearchService}),
-  provide('PlaceStreetService', {useClass: PlaceStreetService}),
-  provide('FamilyPlaceService', {useClass: FamilyPlaceService}),
   provide('MapService', {useClass: MapService}),
   provide('UrlChangeService', {useClass: UrlChangeService}),
   provide('PhotographerProfileService', {useClass: PhotographerProfileService}),
@@ -64,6 +62,8 @@ bootstrap(AppComponent, [
   provide('FamilyInfoService', {useClass: FamilyInfoService}),
   provide('ThingsFilterService', {useClass: ThingsFilterService}),
   provide('CountriesFilterService', {useClass: CountriesFilterService}),
+  provide('HomeHeaderService', {useClass: HomeHeaderService}),
+  provide('HomeMediaService', {useClass: HomeMediaService}),
   provide('Math', {useClass: MathService}),
   provide(APP_BASE_HREF, {useValue: '/'})
 ]);

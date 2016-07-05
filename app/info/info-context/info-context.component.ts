@@ -22,7 +22,7 @@ export class InfoContextComponent implements OnInit, OnDestroy {
   public ngOnInit():void {
     this.infoContextServiceSubscribe = this.infoContextService.getInfo().subscribe((val:any) => {
       if (val.err) {
-        console.log(val.err);
+        console.error(val.err);
         return;
       }
 

@@ -1,0 +1,24 @@
+<div class="go-to-photographer-page">
+  <p>{{images.length}} photos <span
+    *ngIf="photographer">by <a [routerLink]="['Photographer', {id: photographer._id}]">{{photographer.firstName}} {{photographer.lastName}}</a></span>
+  </p>
+</div>
+
+<div class="family-things-container family-things-container-scroll">
+  <div class="family-images-container">
+    <div class="family-image-container"
+         *ngFor="let image of images">
+      <div class="family-image"
+           [ngStyle]="{'background-image':image.background}">
+
+        <div class="image-description">
+          <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
+
+          <span>{{image.thingName}}</span>
+        </div>
+      </div>
+    </div>
+
+    <row-loader [items]="images" [field]="'background'" [itemHeight]="itemSize" [count]="zoom"></row-loader>
+  </div>
+</div>

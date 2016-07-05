@@ -1,6 +1,6 @@
 import {FirstComponent} from './first/first.component';
 import {MatrixComponent} from './matrix/matrix.component';
-import {PlaceComponent} from './place/place.component';
+import {HomeComponent} from './home/home.component';
 import {MapComponent} from './map/map.component';
 import {AllPhotographersComponent} from './all-photographers/all-photographers.component';
 import {PhotographerComponent} from './photographer/photographer.component';
@@ -15,7 +15,8 @@ export class Config {
   // public static api:string = 'https://apidev.dollarstreet.org';
   // public static api:string = 'http://stage.dollarstreet.org';
   // public static api:string = 'http://128.199.60.70';
-  public static api:string = 'http://192.168.1.66';
+  // public static api:string = 'http://192.168.1.66';
+  public static api:string = 'http://192.168.1.145';
   // public static api:string = 'http://192.168.1.57';
   // public static api:string = 'http://192.168.1.147';
   // public static api:string = 'http://192.168.1.142';
@@ -31,9 +32,9 @@ export class Config {
     name: 'Matrix',
     component: MatrixComponent
   }, {
-    path: '/place',
-    name: 'Place',
-    component: PlaceComponent
+    path: '/home',
+    name: 'Home',
+    component: HomeComponent
   }, {
     path: '/map',
     name: 'Map',

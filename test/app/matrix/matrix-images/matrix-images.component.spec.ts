@@ -1,14 +1,5 @@
-import {
-  it,
-  describe,
-  async,
-  inject,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
+import {it, describe, async, inject, beforeEachProviders, beforeEach} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
 import {MockService} from '../../common-mocks/mock.service.template.ts';
@@ -39,6 +30,7 @@ describe('MatrixImagesComponent', () => {
           context.thing = '546ccf730f7ddf45c0179658';
           context.zoom = 5;
           context.places = placesObservable;
+          context.query = 'thing=Home&countries=World&regions=World&zoom=4&row=1&lowIncome=0&highIncome=15000';
         });
     }
   )));
@@ -63,11 +55,7 @@ describe('MatrixImagesComponent', () => {
     spyOn(context.router, 'navigate');
     let place = places.data.zoomPlaces[0];
     context.goToPlace(place);
-    expect(context.router.navigate.calls.argsFor(0)[0]).toEqual(['Place', {
-      thing: context.thing,
-      place: place._id,
-      image: place.image
-    }]);
+    expect(context.router.navigate.calls.argsFor(0)[0]).toEqual(['Home', context.parseUrl(`place=${place._id}&` + context.query)]);
     context.isDesktop = false;
     context.oldPlaceId = undefined;
     context.goToPlace(place);
@@ -75,11 +63,7 @@ describe('MatrixImagesComponent', () => {
     context.isDesktop = false;
     context.oldPlaceId = place._id;
     context.goToPlace(place);
-    expect(context.router.navigate.calls.argsFor(1)[0]).toEqual(['Place', {
-      thing: context.thing,
-      place: place._id,
-      image: place.image
-    }]);
+    expect(context.router.navigate.calls.argsFor(1)[0]).toEqual(['Home', context.parseUrl(`place=${place._id}&` + context.query)]);
   });
 
   it('toUrl', () => {

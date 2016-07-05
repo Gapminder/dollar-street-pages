@@ -298,11 +298,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
-      this.router.navigate(['Place', {
-        thing: this.hoverPlace.familyImg.thing,
-        place: this.hoverPlace._id,
-        image: this.hoverPlace.familyImg.imageId
-      }]);
+      this.router.navigate(['Home', {place: this.hoverPlace._id}]);
     }
   }
 
