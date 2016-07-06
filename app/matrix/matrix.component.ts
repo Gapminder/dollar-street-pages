@@ -22,7 +22,7 @@ let style = require('./matrix.css');
 })
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces:any[] = [];
-  protected textOnboard:string;
+  protected headerOnboard:string;
   protected showOnboarding:boolean = true;
   protected showOnboardingSwitcher:boolean = false;
   protected switchOnQuickTour:boolean = false;
@@ -92,15 +92,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceOnboarding = this.matrixService.getMatrixOnboardingTips()
       .subscribe((val:any) => {
         if (val.err) {
+          console.log(val.err);
+
           return;
         }
-        let tips = val.data;
 
-        _.forEach(tips, (value:any):any => {
-          let name = value.name;
-          this.baloonTips[name] = value;
-        });
-        this.textOnboard = this.baloonTips.welcomeHeader.description;
+        this.baloonTips = val.data;
+
+        this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
       });
 
     this.thing = this.routeParams.get('thing');
@@ -400,69 +399,45 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected step(step:boolean):void {
+    let baloonDirector:string;
+
     if (step) {
       this.numberOfStep++;
     }
     if (!step) {
       this.numberOfStep--;
     }
+
     if (this.numberOfStep === 1) {
-      setTimeout(() => {
-        this.getCoords('things-filter', (data:any) => {
-          this.baloonTip = {
-            position: data,
-            name: this.baloonTips.thing.header,
-            text: this.baloonTips.thing.description
-          };
-        });
-      });
+      baloonDirector = 'things-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
     }
+
     if (this.numberOfStep === 2) {
-      setTimeout(() => {
-        this.getCoords('incomes-filter', (data:any) => {
-          this.baloonTip = {
-            position: data,
-            name: this.baloonTips.income.header,
-            text: this.baloonTips.income.description
-          };
-        });
-      });
+      baloonDirector = 'incomes-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
     }
+
     if (this.numberOfStep === 3) {
-      setTimeout(() => {
-        this.getCoords('countries-filter', (data:any) => {
-          this.baloonTip = {
-            position: data,
-            name: this.baloonTips.geography.header,
-            text: this.baloonTips.geography.description
-          };
-        });
-      });
+      baloonDirector = 'countries-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'geography']);
     }
+
     if (this.numberOfStep === 4) {
-      setTimeout(() => {
-        this.getCoords('.street-box', (data:any) => {
-          this.baloonTip = {
-            position: data,
-            name: this.baloonTips.street.header,
-            text: this.baloonTips.street.description
-          };
-        });
-      });
+      baloonDirector = '.street-box';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'street']);
     }
+
     if (this.numberOfStep === 5) {
-      setTimeout(() => {
-        this.getCoords('.images-container', (data:any) => {
-          this.baloonTip = {
-            position: data,
-            name: this.baloonTips.image.header,
-            text: this.baloonTips.image.description,
-            ccLinkText: this.baloonTips.image.link.text,
-            ccLinkHref: this.baloonTips.image.link.href
-          };
-        });
-      });
+      baloonDirector = '.images-container';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'image']);
     }
+
+    setTimeout(() => {
+      this.getCoords(baloonDirector, (data:any) => {
+        this.baloonTip.position = data;
+      });
+    });
   }
 
   protected switchOnOnboarding(closeOnboarding:boolean):void {
