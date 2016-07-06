@@ -36,7 +36,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       .getArticle(`id=${this.thingId}`)
       .subscribe((val:any) => {
         if (val.err) {
-          console.log(val.err);
+          console.error(val.err);
           return;
         }
 

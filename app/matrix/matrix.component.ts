@@ -22,17 +22,13 @@ let style = require('./matrix.css');
 })
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces:any[] = [];
-  protected textOnboard:string;
+  protected headerOnboard:string;
   protected showOnboarding:boolean = true;
   protected showOnboardingSwitcher:boolean = false;
   protected switchOnQuickTour:boolean = false;
   protected numberOfStep:number = 1;
-  protected baloonName:string;
-  protected baloonText:string;
-  protected baloonCCLinkHref:string;
-  protected baloonCCLinkText:string;
   protected baloonTips:any = {};
-  protected baloonPosition:any;
+  protected baloonTip:any = {};
 
   public query:string;
   public matrixService:any;
@@ -96,6 +92,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib = this.matrixService.getStreetSettings(this.query)
       .subscribe((val:any) => {
         if (val.err) {
+          console.log(val.err);
+
           return;
         }
         this.streetData = val.data;
@@ -126,7 +124,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
           this.zoom = 4;
-
+          
         }
 
         if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
@@ -392,16 +390,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected startQuickTour():void {
-    this.closeOnboarding();
+    this.switchOnOnboarding(false);
     this.showOnboardingSwitcher = false;
     this.numberOfStep = 1;
     window.localStorage.setItem('onboarded', 'true');
+    this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
+    this.switchOnQuickTour = true;
+
     setTimeout(() => {
       this.getCoords('things-filter', (data:any) => {
-        this.baloonPosition = data;
-        this.switchOnQuickTour = true;
-        this.baloonName = this.baloonTips.thing.header;
-        this.baloonText = this.baloonTips.thing.description;
+        this.baloonTip.position = data;
       });
     });
   }
@@ -412,66 +410,63 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected step(step:boolean):void {
+    let baloonDirector:string;
+
     if (step) {
       this.numberOfStep++;
     }
     if (!step) {
       this.numberOfStep--;
     }
+
     if (this.numberOfStep === 1) {
-      setTimeout(() => {
-        this.getCoords('things-filter', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.thing.header;
-          this.baloonText = this.baloonTips.thing.description;
-        });
-      });
+      baloonDirector = 'things-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
     }
+
     if (this.numberOfStep === 2) {
-      setTimeout(() => {
-        this.getCoords('incomes-filter', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.income.header;
-          this.baloonText = this.baloonTips.income.description;
-        });
-      });
+      baloonDirector = 'incomes-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
     }
+
     if (this.numberOfStep === 3) {
-      setTimeout(() => {
-        this.getCoords('countries-filter', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.geography.header;
-          this.baloonText = this.baloonTips.geography.description;
-        });
-      });
+      baloonDirector = 'countries-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'geography']);
     }
+
     if (this.numberOfStep === 4) {
-      setTimeout(() => {
-        this.getCoords('.street-box', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.street.header;
-          this.baloonText = this.baloonTips.street.description;
-        });
-      });
+      baloonDirector = '.street-box';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'street']);
     }
+
     if (this.numberOfStep === 5) {
-      setTimeout(() => {
-        this.getCoords('.images-container', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.image.header;
-          this.baloonText = this.baloonTips.image.description;
-          this.baloonCCLinkText = this.baloonTips.image.link.text;
-          this.baloonCCLinkHref = this.baloonTips.image.link.href;
-        });
-      });
+      baloonDirector = '.images-container';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'image']);
     }
+
+    setTimeout(() => {
+      this.getCoords(baloonDirector, (data:any) => {
+        this.baloonTip.position = data;
+      });
+    });
   }
 
-  protected switchOnOnboarding():void {
+  protected switchOnOnboarding(closeOnboarding:boolean):void {
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
     let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
+
+    if (!closeOnboarding) {
+      document.body.className = '';
+      setTimeout(function ():void {
+        matrixImages.style.paddingTop = `${header.offsetHeight}px`;
+        zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
+      }, 0);
+      this.showOnboarding = false;
+      this.showOnboardingSwitcher = true;
+      return;
+    }
 
     this.showOnboarding = true;
     this.showOnboardingSwitcher = false;
@@ -497,4 +492,5 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.showOnboarding = false;
     this.showOnboardingSwitcher = true;
   }
+
 }

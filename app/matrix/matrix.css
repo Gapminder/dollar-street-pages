@@ -19,18 +19,16 @@ matrix-images {
   font-size: 30px;
 }
 
+.onboard-button-ml,
 .onboard-button-qt {
-  background-color: #ffc600;
+  background-color: white;
   color: black;
   border-radius: 15px;
   padding: 0 15px 0 15px;
 }
 
-.onboard-button-ml {
-  background-color: white;
-  color: black;
-  border-radius: 15px;
-  padding: 0 10px 0 10px;
+.onboard-button-qt {
+  background-color: #ffc600;
 }
 
 .onboard-buttons-container {
@@ -38,7 +36,7 @@ matrix-images {
 }
 
 .close-button {
-  background: url("http://2.bp.blogspot.com/-ZBOpbXR_WF4/U2hVGfkRmPI/AAAAAAAAAdQ/EsnudlMokFE/s1600/S5-Multi-Window-Close.png") no-repeat center center;
+  /*background: url("http://2.bp.blogspot.com/-ZBOpbXR_WF4/U2hVGfkRmPI/AAAAAAAAAdQ/EsnudlMokFE/s1600/S5-Multi-Window-Close.png") no-repeat center center;*/
   cursor: pointer;
   height: 15px;
   right: 10px;
@@ -85,11 +83,7 @@ matrix-images {
 }
 
 .qt-baloon-name {
-  font-weight: bold;
-}
-
-.qt-baloon-text {
-
+  font-family: 'Bariol Bold', sans-serif;
 }
 
 .matrix-header {

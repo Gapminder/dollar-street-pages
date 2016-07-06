@@ -74,7 +74,7 @@
     <div class="info-box-container">
       <div class="info-box"
            *ngFor="let place of lefSideCountries"
-           [routerLink]="['Place', {thing: place.familyImg.thing, place: place._id, image: place.familyImg.imageId}]">
+           [routerLink]="['Home', {place: place._id}]">
         <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
 
         <div class="hover_portrait_description">
