@@ -27,13 +27,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected showOnboardingSwitcher:boolean = false;
   protected switchOnQuickTour:boolean = false;
   protected numberOfStep:number = 1;
-  // protected baloonName:string;
-  // protected baloonText:string;
-  // protected baloonCCLinkHref:string;
-  // protected baloonCCLinkText:string;
   protected baloonTips:any = {};
   protected baloonTip:any = {};
-  // protected baloonPosition:any;
 
   public query:string;
   public matrixService:any;
