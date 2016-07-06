@@ -381,14 +381,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.showOnboardingSwitcher = false;
     this.numberOfStep = 1;
     window.localStorage.setItem('onboarded', 'true');
+    this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
+    this.switchOnQuickTour = true;
+
     setTimeout(() => {
       this.getCoords('things-filter', (data:any) => {
-        this.switchOnQuickTour = true;
-        this.baloonTip = {
-          position: data,
-          name: this.baloonTips.thing.header,
-          text: this.baloonTips.thing.description
-        };
+        this.baloonTip.position = data;
       });
     });
   }

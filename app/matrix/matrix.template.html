@@ -4,7 +4,7 @@
     <a class="pull-right close-button font-large" (click)="switchOnOnboarding(false)">x
     </a>
     <div class="font-large">Find out how people <span class="font-bold">really</span> live</div>
-    <div>{{headerOnboard.description}}</div>
+    <div>{{headerOnboard?.description}}</div>
     <div class="onboard-buttons-container">
       <a class="onboard-button-qt" (click)="startQuickTour()">Quick tour</a>
       <a class="onboard-button-ml" (click)="switchOnOnboarding(false)">Maybe later</a>
@@ -16,12 +16,12 @@
   </div>
 
   <div class="quick-tour"
-       [ngStyle]="{top: baloonTip.position.top + 'px', left: baloonTip.position.left + 'px'}"
+       [ngStyle]="{top: baloonTip.position?.top + 'px', left: baloonTip.position?.left + 'px'}"
        *ngIf="switchOnQuickTour">
     <div class="text-center">{{numberOfStep}} of 5</div>
-    <div class="qt-baloon-name">{{baloonTip.name}}</div>
-    <div class="qt-baloon-text">{{baloonTip.text}}
-      <a href="{{baloonTip.ccLinkHrefLinkHref}}" class="cc-link" target="_blank" *ngIf="numberOfStep === 5">{{baloonTip.ccLinkText}}</a>
+    <div class="qt-baloon-name">{{baloonTip?.header}}</div>
+    <div class="qt-baloon-text">{{baloonTip?.description}}
+      <a href="{{baloonTip?.ccLinkHrefLinkHref}}" class="cc-link" target="_blank" *ngIf="numberOfStep === 5">{{baloonTip?.ccLinkText}}</a>
     </div>
     <div class="text-center marg-5-px">
       <a class="onboard-button-ml" *ngIf="numberOfStep !== 1" (click)="step(false)">Back</a>
