@@ -15,8 +15,9 @@ export class AppComponent {
 
   public constructor(@Inject(Router) router:Router) {
     router.subscribe(() => {
-      document.body.scrollTop = 0;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     });
+
     this.type = 'app component';
   }
 }

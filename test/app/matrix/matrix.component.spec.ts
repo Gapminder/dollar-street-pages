@@ -49,8 +49,8 @@ describe('MatrixComponent', () => {
           context.routeParams.set('lowIncome', 0);
           context.routeParams.set('highIncome', 15000);
         })
-        .catch((e:Error)=> {
-          console.log(e);
+        .catch((err:Error)=> {
+          console.error(err);
         });
     }
   )));

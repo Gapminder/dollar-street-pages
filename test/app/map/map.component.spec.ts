@@ -1,14 +1,5 @@
-import {
-  it,
-  describe,
-  inject,
-  async,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
+import {it, describe, inject, async, beforeEachProviders, beforeEach} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services.ts';
 import {MockService} from '../common-mocks/mock.service.template.ts';
@@ -179,11 +170,7 @@ describe('MapComponent', () => {
     context.hoverPlace = mapdata.data.places[0];
     spyOn(context.router, 'navigate');
     context.clickOnMarker(e, 134, 'United Kingdom');
-    expect(context.router.navigate.calls.argsFor(0)).toEqual([['Place', {
-      thing: context.hoverPlace.familyImg.thing,
-      place: context.hoverPlace._id,
-      image: context.hoverPlace.familyImg.imageId
-    }]]);
+    expect(context.router.navigate.calls.argsFor(0)).toEqual([['Home', {place: context.hoverPlace._id}]]);
   });
   it('mobileClickOnMarker', () => {
     spyOn(context, 'mobileClickOnMarker').and.callThrough();

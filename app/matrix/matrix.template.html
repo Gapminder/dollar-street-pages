@@ -44,8 +44,9 @@
           (filterStreet)="urlChanged($event)"></street>
 </div>
 
-<matrix-images
-               [zoom]="zoom"
+<matrix-images [zoom]="zoom"
+               [query]="query"
+
                [thing]="thing"
                [places]="matrixPlaces"
                [activeHouse]="activeHouse"

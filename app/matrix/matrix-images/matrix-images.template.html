@@ -19,6 +19,7 @@
 
   <matrix-view-block  class="matrix-view-block"
                       *ngIf="showblock"
+                      [query]="query"
                       [place]="familyData"
                       [thing]="thing"
                       (closeBigImageBlock)="goToImageBlock(familyData, indexViewBoxHouse)"
