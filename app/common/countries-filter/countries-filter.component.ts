@@ -40,7 +40,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.selectedRegions.length = 0;
     this.selectedCountries.length = 0;
     this.cloneSelectedCountries = ['World'];
-    this.cloneSelectedCountries = ['World'];
+    this.cloneSelectedRegions = ['World'];
   }
 
   protected openCloseCountriesFilter(isOpenCountriesFilter:boolean, isOnChanges?:boolean):void {

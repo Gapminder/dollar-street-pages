@@ -27,12 +27,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected showOnboardingSwitcher:boolean = false;
   protected switchOnQuickTour:boolean = false;
   protected numberOfStep:number = 1;
-  protected baloonName:string;
-  protected baloonText:string;
-  protected baloonCCLinkHref:string;
-  protected baloonCCLinkText:string;
+  // protected baloonName:string;
+  // protected baloonText:string;
+  // protected baloonCCLinkHref:string;
+  // protected baloonCCLinkText:string;
   protected baloonTips:any = {};
-  protected baloonPosition:any;
+  protected baloonTip:any = {};
+  // protected baloonPosition:any;
 
   public query:string;
   public matrixService:any;
@@ -382,16 +383,18 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected startQuickTour():void {
-    this.closeOnboarding();
+    this.switchOnOnboarding(false);
     this.showOnboardingSwitcher = false;
     this.numberOfStep = 1;
     window.localStorage.setItem('onboarded', 'true');
     setTimeout(() => {
       this.getCoords('things-filter', (data:any) => {
-        this.baloonPosition = data;
         this.switchOnQuickTour = true;
-        this.baloonName = this.baloonTips.thing.header;
-        this.baloonText = this.baloonTips.thing.description;
+        this.baloonTip = {
+          position: data,
+          name: this.baloonTips.thing.header,
+          text: this.baloonTips.thing.description
+        };
       });
     });
   }
@@ -411,80 +414,86 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.numberOfStep === 1) {
       setTimeout(() => {
         this.getCoords('things-filter', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.thing.header;
-          this.baloonText = this.baloonTips.thing.description;
+          this.baloonTip = {
+            position: data,
+            name: this.baloonTips.thing.header,
+            text: this.baloonTips.thing.description
+          };
         });
       });
     }
     if (this.numberOfStep === 2) {
       setTimeout(() => {
         this.getCoords('incomes-filter', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.income.header;
-          this.baloonText = this.baloonTips.income.description;
+          this.baloonTip = {
+            position: data,
+            name: this.baloonTips.income.header,
+            text: this.baloonTips.income.description
+          };
         });
       });
     }
     if (this.numberOfStep === 3) {
       setTimeout(() => {
         this.getCoords('countries-filter', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.geography.header;
-          this.baloonText = this.baloonTips.geography.description;
+          this.baloonTip = {
+            position: data,
+            name: this.baloonTips.geography.header,
+            text: this.baloonTips.geography.description
+          };
         });
       });
     }
     if (this.numberOfStep === 4) {
       setTimeout(() => {
         this.getCoords('.street-box', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.street.header;
-          this.baloonText = this.baloonTips.street.description;
+          this.baloonTip = {
+            position: data,
+            name: this.baloonTips.street.header,
+            text: this.baloonTips.street.description
+          };
         });
       });
     }
     if (this.numberOfStep === 5) {
       setTimeout(() => {
         this.getCoords('.images-container', (data:any) => {
-          this.baloonPosition = data;
-          this.baloonName = this.baloonTips.image.header;
-          this.baloonText = this.baloonTips.image.description;
-          this.baloonCCLinkText = this.baloonTips.image.link.text;
-          this.baloonCCLinkHref = this.baloonTips.image.link.href;
+          this.baloonTip = {
+            position: data,
+            name: this.baloonTips.image.header,
+            text: this.baloonTips.image.description,
+            ccLinkText: this.baloonTips.image.link.text,
+            ccLinkHref: this.baloonTips.image.link.href
+          };
         });
       });
     }
   }
 
-  protected switchOnOnboarding():void {
+  protected switchOnOnboarding(closeOnboarding:boolean):void {
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
     let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
+
+    if (!closeOnboarding) {
+      document.body.className = '';
+      setTimeout(function ():void {
+        matrixImages.style.paddingTop = `${header.offsetHeight}px`;
+        zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
+      }, 0);
+      this.showOnboarding = false;
+      this.showOnboardingSwitcher = true;
+      return;
+    }
 
     this.showOnboarding = true;
     this.showOnboardingSwitcher = false;
     this.switchOnQuickTour = false;
 
-    setTimeout(function():void {
+    setTimeout(function ():void {
       matrixImages.style.paddingTop = `${header.offsetHeight}px`;
       zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
     }, 0);
-  }
-
-  protected closeOnboarding():void {
-    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
-    let header = this.element.querySelector('.matrix-header') as HTMLElement;
-    let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
-    let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
-    document.body.className = '';
-
-    setTimeout(function():void {
-      matrixImages.style.paddingTop = `${header.offsetHeight}px`;
-      zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
-    }, 0);
-    this.showOnboarding = false;
-    this.showOnboardingSwitcher = true;
   }
 }
