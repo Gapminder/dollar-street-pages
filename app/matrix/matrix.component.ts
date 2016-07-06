@@ -22,6 +22,13 @@ let style = require('./matrix.css');
 })
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces:any[] = [];
+  protected headerOnboard:string;
+  protected showOnboarding:boolean = true;
+  protected showOnboardingSwitcher:boolean = false;
+  protected switchOnQuickTour:boolean = false;
+  protected numberOfStep:number = 1;
+  protected baloonTips:any = {};
+  protected baloonTip:any = {};
 
   public query:string;
   public matrixService:any;
@@ -36,6 +43,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public lowIncome:number;
   public highIncome:number;
   public matrixServiceSubscrib:any;
+  public matrixServiceOnboarding:any;
 
   private placesArr:any[];
   private element:HTMLElement;
@@ -71,9 +79,28 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit():void {
+
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
+    if (window.localStorage && window.localStorage.getItem('onboarded')) {
+      this.showOnboarding = false;
+      this.showOnboardingSwitcher = true;
+      document.body.className = 'wizard';
+    }
+
+    this.matrixServiceOnboarding = this.matrixService.getMatrixOnboardingTips()
+      .subscribe((val:any) => {
+        if (val.err) {
+          console.log(val.err);
+
+          return;
+        }
+
+        this.baloonTips = val.data;
+
+        this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
+      });
 
     this.thing = this.routeParams.get('thing');
     this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
@@ -85,6 +112,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
       this.zoom = 4;
+
     }
 
     if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
@@ -126,6 +154,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     document.onscroll = void 0;
     this.matrixServiceSubscrib.unsubscribe();
+    this.matrixServiceOnboarding.unsubscribe();
   }
 
   public ngAfterViewChecked():void {
@@ -324,5 +353,115 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public parseUrl(url:string):any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+  }
+
+  protected getCoords(querySelector:String, cb:any):any { // crossbrowser version
+    let box = this.element.querySelector(querySelector).getBoundingClientRect();
+
+    let body = document.body;
+    let docEl = document.documentElement;
+
+    let scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    let scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+    let clientTop = docEl.clientTop || body.clientTop || 0;
+    let clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+    let top = box.top;
+    let left = box.left + scrollLeft - clientLeft;
+
+    if (querySelector === '.images-container') {
+      top = box.top + scrollTop - clientTop;
+    }
+    cb({top: Math.round(top) + 40, left: Math.round(left) + 20});
+  }
+
+  protected startQuickTour():void {
+    this.switchOnOnboarding(false);
+    this.showOnboardingSwitcher = false;
+    this.numberOfStep = 1;
+    window.localStorage.setItem('onboarded', 'true');
+    this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
+    this.switchOnQuickTour = true;
+
+    setTimeout(() => {
+      this.getCoords('things-filter', (data:any) => {
+        this.baloonTip.position = data;
+      });
+    });
+  }
+
+  protected closeQuickTour():void {
+    this.showOnboardingSwitcher = true;
+    this.switchOnQuickTour = false;
+  }
+
+  protected step(step:boolean):void {
+    let baloonDirector:string;
+
+    if (step) {
+      this.numberOfStep++;
+    }
+    if (!step) {
+      this.numberOfStep--;
+    }
+
+    if (this.numberOfStep === 1) {
+      baloonDirector = 'things-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
+    }
+
+    if (this.numberOfStep === 2) {
+      baloonDirector = 'incomes-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
+    }
+
+    if (this.numberOfStep === 3) {
+      baloonDirector = 'countries-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'geography']);
+    }
+
+    if (this.numberOfStep === 4) {
+      baloonDirector = '.street-box';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'street']);
+    }
+
+    if (this.numberOfStep === 5) {
+      baloonDirector = '.images-container';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'image']);
+    }
+
+    setTimeout(() => {
+      this.getCoords(baloonDirector, (data:any) => {
+        this.baloonTip.position = data;
+      });
+    });
+  }
+
+  protected switchOnOnboarding(closeOnboarding:boolean):void {
+    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
+    let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
+    let header = this.element.querySelector('.matrix-header') as HTMLElement;
+    let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
+
+    if (!closeOnboarding) {
+      document.body.className = '';
+      setTimeout(function ():void {
+        matrixImages.style.paddingTop = `${header.offsetHeight}px`;
+        zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
+      }, 0);
+      this.showOnboarding = false;
+      this.showOnboardingSwitcher = true;
+      return;
+    }
+
+    this.showOnboarding = true;
+    this.showOnboardingSwitcher = false;
+    this.switchOnQuickTour = false;
+
+    setTimeout(function ():void {
+      matrixImages.style.paddingTop = `${header.offsetHeight}px`;
+      zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
+    }, 0);
   }
 }

@@ -2,6 +2,90 @@ matrix-images {
   display: block;
 }
 
+.matrix-onboard {
+  background-color: #ecf0f6;
+  border-bottom: groove;
+  width: 100%;
+  padding: 15px;
+  font-family: 'Bariol Regular', sans-serif;
+  text-align: center;
+}
+
+.font-bold {
+  font-family: 'Bariol Bold', sans-serif;
+}
+
+.font-large {
+  font-size: 30px;
+}
+
+.onboard-button-ml,
+.onboard-button-qt {
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+  padding: 0 15px 0 15px;
+}
+
+.onboard-button-qt {
+  background-color: #ffc600;
+}
+
+.onboard-buttons-container {
+  margin-top: 10px;
+}
+
+.close-button {
+  /*background: url("http://2.bp.blogspot.com/-ZBOpbXR_WF4/U2hVGfkRmPI/AAAAAAAAAdQ/EsnudlMokFE/s1600/S5-Multi-Window-Close.png") no-repeat center center;*/
+  cursor: pointer;
+  height: 15px;
+  right: 10px;
+  top: 10px;
+  width: 15px;
+  z-index: 2;
+}
+
+.quick-tour {
+  background-color: #525e68;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  position: absolute;
+  width: 300px;
+  opacity: 0.95;
+  z-index: 600;
+}
+
+.cc-link {
+  color: #aed2d3;
+}
+
+.quick-tour:after {
+  bottom: 100%;
+  left: 20%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-bottom-color: #525e68;
+  border-width: 10px;
+  margin-left: -15px;
+}
+
+.marg-5-px {
+  margin-top: 5px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.qt-baloon-name {
+  font-family: 'Bariol Bold', sans-serif;
+}
+
 .matrix-header {
   z-index: 9995;
 }

@@ -21,6 +21,7 @@ describe('MatrixComponent', () => {
   let matrixService = new MockService();
   matrixService.serviceName = 'MatrixService';
   matrixService.getMethod = 'getMatrixImages';
+  matrixService.getMatrixOnboardingTips = 'getMatrixOnboardingTips';
   matrixService.fakeResponse = places;
   beforeEachProviders(() => {
     let mockCommonDependency = new MockCommonDependency();
@@ -58,6 +59,8 @@ describe('MatrixComponent', () => {
     spyOn(context, 'ngOnInit').and.callThrough();
     context.ngOnInit();
     expect(context.thing).toEqual('Home');
+    
+    
     expect(context.zoom).toEqual(5);
     expect(context.row).toEqual(1);
     expect(context.regions).toEqual('World');
