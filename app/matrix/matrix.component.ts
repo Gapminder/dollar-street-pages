@@ -44,7 +44,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public highIncome:number;
   public matrixServiceSubscrib:any;
   public matrixServiceOnboarding:any;
-
+  public streetData:any;
   private placesArr:any[];
   private element:HTMLElement;
   private rowEtalon:number = 0;
@@ -89,62 +89,75 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       document.body.className = 'wizard';
     }
 
-    this.matrixServiceOnboarding = this.matrixService.getMatrixOnboardingTips()
+    this.matrixServiceSubscrib = this.matrixService.getStreetSettings(this.query)
       .subscribe((val:any) => {
         if (val.err) {
           console.log(val.err);
 
           return;
         }
+        this.streetData = val.data;
+        if ('scrollRestoration' in history) {
+          this.windowHistory.scrollRestoration = 'manual';
+        }
+        this.matrixServiceOnboarding = this.matrixService.getMatrixOnboardingTips()
+          .subscribe((val:any) => {
+            if (val.err) {
+              return;
+            }
+            let tips = val.data;
 
-        this.baloonTips = val.data;
+            _.forEach(tips, (value:any):any => {
+              let name = value.name;
+              this.baloonTips[name] = value;
+            });
+            this.textOnboard = this.baloonTips.welcomeHeader.description;
+          });
 
-        this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
+        this.thing = this.routeParams.get('thing');
+        this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
+        this.regions = this.routeParams.get('regions');
+        this.zoom = parseInt(this.routeParams.get('zoom'), 10);
+        this.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10);
+        this.highIncome = parseInt(this.routeParams.get('highIncome'), 10);
+        this.activeHouse = parseInt(this.routeParams.get('activeHouse'), 10);
+
+        if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
+          this.zoom = 4;
+          
+        }
+
+        if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
+          this.zoom = 3;
+        }
+
+        // todo: row void 0
+        let getRow = parseInt(this.routeParams.get('row'), 10);
+
+        this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : getRow || 1;
+
+        this.thing = this.thing ? this.thing : 'Home';
+        this.zoom = this.zoom ? this.zoom : 4;
+        this.regions = this.regions ? this.regions : 'World';
+        this.lowIncome = this.lowIncome ? Math.abs(this.lowIncome) : 0;
+        this.highIncome = !this.highIncome || this.highIncome > val.data.rich ? val.data.rich : this.highIncome;
+
+        if (this.lowIncome > this.highIncome) {
+          this.lowIncome = 0;
+        }
+
+        this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+
+        if (this.activeHouse) {
+          this.query = this.query + `&activeHouse=${this.activeHouse}`;
+        }
+
+        this.urlChanged({isInit: true});
+
+        document.onscroll = () => {
+          this.stopScroll();
+        };
       });
-
-    this.thing = this.routeParams.get('thing');
-    this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
-    this.regions = this.routeParams.get('regions');
-    this.zoom = parseInt(this.routeParams.get('zoom'), 10);
-    this.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10);
-    this.highIncome = parseInt(this.routeParams.get('highIncome'), 10);
-    this.activeHouse = parseInt(this.routeParams.get('activeHouse'), 10);
-
-    if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-      this.zoom = 4;
-
-    }
-
-    if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
-      this.zoom = 3;
-    }
-
-    // todo: row void 0
-    let getRow = parseInt(this.routeParams.get('row'), 10);
-
-    this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : getRow || 1;
-
-    this.thing = this.thing ? this.thing : 'Home';
-    this.zoom = this.zoom ? this.zoom : 4;
-    this.regions = this.regions ? this.regions : 'World';
-    this.lowIncome = this.lowIncome ? Math.abs(this.lowIncome) : 0;
-    this.highIncome = !this.highIncome || this.highIncome > 15000 ? 15000 : this.highIncome;
-
-    if (this.lowIncome > this.highIncome) {
-      this.lowIncome = 0;
-    }
-
-    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
-
-    if (this.activeHouse) {
-      this.query = this.query + `&activeHouse=${this.activeHouse}`;
-    }
-
-    this.urlChanged({isInit: true});
-
-    document.onscroll = () => {
-      this.stopScroll();
-    };
   }
 
   public ngOnDestroy():void {
@@ -309,7 +322,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.streetPlaces.next(streetPlaces);
         this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-        if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== 0 || Number(parseQuery.highIncome) !== 15000)) {
+        if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== this.streetData.poor || Number(parseQuery.highIncome) !== this.streetData.rich)) {
           this.query = this.query
             .replace(/lowIncome\=\d*/, `lowIncome=${Math.floor(incomesArr[0] - 10)}`)
             .replace(/highIncome\=\d*/, `highIncome=${Math.ceil(incomesArr[incomesArr.length - 1] + 10)}`);
@@ -464,4 +477,20 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
     }, 0);
   }
+
+  protected closeOnboarding():void {
+    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
+    let header = this.element.querySelector('.matrix-header') as HTMLElement;
+    let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
+    let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
+    document.body.className = '';
+
+    setTimeout(function ():void {
+      matrixImages.style.paddingTop = `${header.offsetHeight}px`;
+      zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
+    }, 0);
+    this.showOnboarding = false;
+    this.showOnboardingSwitcher = true;
+  }
+
 }
