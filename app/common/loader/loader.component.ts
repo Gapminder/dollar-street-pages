@@ -14,8 +14,10 @@ export class LoaderComponent implements OnInit {
 
   public ngOnInit():void {
     let header = document.querySelector('.main-header');
+    let onboardingHeight = document.querySelector('.matrix-onboard');
+
     if (header) {
-      this.top = header.clientHeight;
+      this.top = header.clientHeight - onboardingHeight.clientHeight;
     }
   }
 }
