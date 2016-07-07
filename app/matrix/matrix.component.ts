@@ -135,13 +135,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.thing = this.thing ? this.thing : 'Home';
         this.zoom = this.zoom ? this.zoom : 4;
         this.regions = this.regions ? this.regions : 'World';
-        this.lowIncome = this.lowIncome ? Math.abs(this.lowIncome) : 0;
+        this.lowIncome = !this.lowIncome  || this.lowIncome > val.data.poor ? val.data.poor : this.lowIncome;
         this.highIncome = !this.highIncome || this.highIncome > val.data.rich ? val.data.rich : this.highIncome;
 
         if (this.lowIncome > this.highIncome) {
-          this.lowIncome = 0;
+          this.lowIncome = val.data.poor;
         }
-
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
 
         if (this.activeHouse) {
