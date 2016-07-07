@@ -123,6 +123,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
           return;
         }
 
+
         this.setDividers(this.placesArr, this.streetData);
       });
 
@@ -197,7 +198,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.street
       .clearSvg()
       .init(this.street.lowIncome, this.street.highIncome,this.streetData)
-      .drawScale(places, this.showSlider, false)
+      
       .set('places', _.sortBy(places, 'income'))
       .set('fullIncomeArr', _
         .chain(this.street.places)
@@ -211,7 +212,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         })
         .compact()
         .value())
-      .isDrawDividers(drawDividers);
+      .drawScale(places, this.showSlider, drawDividers)
 
     if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
       this.street.clearAndRedraw(this.street.chosenPlaces);
