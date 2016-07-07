@@ -115,7 +115,7 @@ describe('StreetComponent', () => {
   xit('onStreet', () => {
 
   });
-  it('ngOnDestroy', () => {
+  xit('ngOnDestroy', () => {
     context.resize = {
       unsubscribe: () => {
       }
@@ -132,9 +132,19 @@ describe('StreetComponent', () => {
       unsubscribe: () => {
       }
     };
+    context.mouseMoveSubscriber = {
+      unsubscribe: () => {
+      }
+    };
+    context.StreetServiceSubscrib = {
+      unsubscribe: () => {
+      }
+    };
     spyOn(context.resize, 'unsubscribe');
     spyOn(context.placesSubscribe, 'unsubscribe');
     spyOn(context.hoverPlaceSubscribe, 'unsubscribe');
     spyOn(context.chosenPlacesSubscribe, 'unsubscribe');
+    spyOn(context.mouseMoveSubscriber, 'unsubscribe');
+    spyOn(context.StreetServiceSubscrib, 'unsubscribe');
   });
 });

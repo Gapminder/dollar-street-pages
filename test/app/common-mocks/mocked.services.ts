@@ -14,8 +14,6 @@ import {CountryInfoService} from '../../../app/country/country-info/country-info
 import {CountryPlacesService} from '../../../app/country/country-places/country-places.service';
 import {MainPlacesService} from '../../../app/main/places/main.places.service.ts';
 import {ThingsMainService} from '../../../app/main/things/things.main.service';
-import {PlaceStreetService} from '../../../app/place/place-street.service.ts';
-import {FamilyPlaceService} from '../../../app/place/family/family-place.service';
 import {ConceptMainService} from '../../../app/main/concept/concept.main.service';
 import {MapService} from '../../../app/map/map.service';
 import {UrlChangeService} from '../../../app/common/url-change/url-change.service';
@@ -40,8 +38,6 @@ export class MockCommonDependency {
       provide('HeaderService', {useClass: HeaderService}),
       provide('SearchService', {useClass: SearchService}),
       provide('MainPlacesService', {useClass: MainPlacesService}),
-      provide('PlaceStreetService', {useClass: PlaceStreetService}),
-      provide('FamilyPlaceService', {useClass: FamilyPlaceService}),
       provide('MapService', {useClass: MapService}),
       provide('UrlChangeService', {useClass: UrlChangeService}),
       provide('PhotographerProfileService', {useClass: PhotographerProfileService}),
