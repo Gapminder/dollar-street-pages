@@ -390,7 +390,6 @@ export class StreetDrawService {
         .attr('stroke', '#48545f')
         .on('mousedown', ():void => {
           d3.event.preventDefault();
-
           this.sliderLeftMove = true;
         })
         .on('touchstart', ():any => this.sliderLeftMove = true);
@@ -533,15 +532,27 @@ export class StreetDrawService {
   };
 
   private drawScrollLabel():this {
-    this.svg.selectAll('text.poorest').attr('fill', '#767d86');
-    this.svg.selectAll('text.richest').attr('fill', '#767d86');
-    this.svg.selectAll('text.scale-label').attr('fill', '#767d86');
-
     let incomeL = Math.ceil(this.lowIncome ? this.lowIncome : 0);
     let incomeR = Math.ceil(this.highIncome ? this.highIncome : 15000);
 
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
+
+    if ((xR + 75) > this.width) {
+      this.svg.selectAll('text.richest').attr('fill', '#fff');
+    }
+    if ((xR + 75) < this.width) {
+      this.svg.selectAll('text.richest').attr('fill', '#767d86');
+    }
+
+    if (xL < 55) {
+      this.svg.selectAll('text.poorest').attr('fill', '#fff');
+    }
+    if (xL > 55) {
+      this.svg.selectAll('text.poorest').attr('fill', '#767d86');
+    }
+
+    this.svg.selectAll('text.scale-label').attr('fill', '#767d86');
 
     if (!this.leftScrollText) {
       this.leftScrollText = this.svg
