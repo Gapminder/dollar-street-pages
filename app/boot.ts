@@ -30,8 +30,8 @@ import {HomeHeaderService} from './home/home-header/home-header.sevice';
 import {HomeMediaService} from './home/home-media/home-media.sevice';
 
 import {ContenfulContent} from './contentful/contentful.service';
-import {ContentfulService} from 'ng2-contentful/src/index';
-import {Ng2ContentfulConfig} from 'ng2-contentful/src/index';
+import {ContentfulService} from 'ng2-contentful';
+import {Ng2ContentfulConfig} from 'ng2-contentful';
 
 Ng2ContentfulConfig.config = {
   accessToken: '7e33820119e63f72f286be1f474e89be6eafc4af751b2e91b93f130abc5a20a1',
