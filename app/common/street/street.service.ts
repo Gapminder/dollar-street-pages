@@ -298,7 +298,7 @@ export class StreetDrawService {
         this.sliderLeftMove = this.sliderRightMove = false;
 
         this.filter.next({
-          lowIncome: Math.round(this.lowIncome) === 1 ? 0 : Math.round(this.lowIncome),
+          lowIncome: Math.round(this.lowIncome),
           highIncome: Math.round(this.highIncome)
         });
       });
@@ -310,7 +310,7 @@ export class StreetDrawService {
         this.sliderLeftMove = this.sliderRightMove = false;
 
         this.filter.next({
-          lowIncome: Math.round(this.lowIncome) === 1 ? 0 : Math.round(this.lowIncome),
+          lowIncome: Math.round(this.lowIncome),
           highIncome: Math.round(this.highIncome)
         });
       });
@@ -538,7 +538,9 @@ export class StreetDrawService {
     this.svg.selectAll('text.scale-label').attr('fill', '#767d86');
 
     let incomeL = Math.ceil(this.lowIncome ? this.lowIncome : 0);
+
     let incomeR = Math.ceil(this.highIncome ? this.highIncome : 15000);
+
 
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
