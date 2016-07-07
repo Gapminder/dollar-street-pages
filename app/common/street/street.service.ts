@@ -134,11 +134,6 @@ export class StreetDrawService {
   }
 
   public drawScale(places:any, isShowSlider:boolean, drawDividers:any):this {
-
-    let halfHouseWidth = 7;
-    let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 10;
-
     if (!places || !places.length) {
       return this;
     }
@@ -176,34 +171,33 @@ export class StreetDrawService {
 
     if (isDesktop) {
       this.svg
-        .selectAll('polygon')
+        .selectAll('rect.point')
         .data(places)
         .enter()
-        .append('polygon')
+        .append('rect')
         .attr('class', 'point')
-        .attr('points', (datum:any):any => {
-        let point1;
-        let point2;
-        let point3;
-        let point4;
-        let point5;
-        let point6;
-        let point7;
+        .attr('x', (d:any):any => {
+          if (!d) {
+            return 0;
+          }
 
-        if (datum) {
-          let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${scaleDatumIncome + roofX },${this.halfOfHeight - 1}`;
-          point2 = `${scaleDatumIncome + roofX},${roofY}`;
-          point3 = `${scaleDatumIncome - halfHouseWidth},${roofY}`;
-          point4 = `${scaleDatumIncome},${this.halfOfHeight - 17}`;
-          point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
-          point6 = `${scaleDatumIncome - roofX },${roofY}`;
-          point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight - 1}`;
-        }
-        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-      })
-        .attr('stroke-width', 1)
+          return this.scale(d.income) - 4;
+        })
+        .attr('y', this.halfOfHeight - 11)
+        .attr('width', (d:any):any => {
+          if (!d) {
+            return 0;
+          }
+
+          return 8;
+        })
+        .attr('height', (d:any):any => {
+          if (!d) {
+            return 0;
+          }
+
+          return 7;
+        })
         .style('fill', '#cfd2d6')
         .style('opacity', '0.7');
     }
@@ -245,7 +239,7 @@ export class StreetDrawService {
     this.incomeArr.length = 0;
 
     this.isDrawDividers(drawDividers);
-
+    
     if (isShowSlider) {
       this.drawLeftSlider(this.scale(Number(this.lowIncome) || 1), true);
       this.drawRightSlider(this.scale(this.highIncome), true);
@@ -317,11 +311,9 @@ export class StreetDrawService {
       });
 
     return this;
-  }
-  ;
+  };
 
-  public
-  drawHoverHouse(place:any, gray:boolean = false):this {
+  public drawHoverHouse(place:any, gray:boolean = false):this {
     if (!place) {
       return this;
     }
@@ -378,11 +370,9 @@ export class StreetDrawService {
       });
 
     return this;
-  }
-  ;
+  };
 
-  protected
-  drawLeftSlider(x:number, init:boolean = false):this {
+  protected drawLeftSlider(x:number, init:boolean = false):this {
     this.sliderLeftBorder = x + 20;
 
     if (!this.leftScroll) {
@@ -435,11 +425,9 @@ export class StreetDrawService {
     this.drawScrollLabel();
 
     return this;
-  }
-  ;
+  };
 
-  protected
-  drawRightSlider(x:number, init:boolean = false):this {
+  protected drawRightSlider(x:number, init:boolean = false):this {
     this.sliderRightBorder = x;
 
     if (!this.rightScroll) {
@@ -489,11 +477,9 @@ export class StreetDrawService {
     this.drawScrollLabel();
 
     return this;
-  }
-  ;
+  };
 
-  public
-  clearAndRedraw(places:any, slider:boolean = false):this {
+  public clearAndRedraw(places:any, slider:boolean = false):this {
     if (!places || !places.length && !slider) {
       this.removeHouses('hover');
       this.removeHouses('chosen');
@@ -513,11 +499,9 @@ export class StreetDrawService {
     this.drawHouses(places);
 
     return this;
-  }
-  ;
+  };
 
-  public
-  removeHouses(selector:any):this {
+  public removeHouses(selector:any):this {
     this.svg.selectAll('rect.' + selector).remove('rect.' + selector);
     this.svg.selectAll('polygon.' + selector).remove('polygon.' + selector);
 
@@ -526,11 +510,9 @@ export class StreetDrawService {
     }
 
     return this;
-  }
-  ;
+  };
 
-  public
-  clearSvg():this {
+  public clearSvg():this {
     this.leftScroll = void 0;
     this.rightScroll = void 0;
     this.leftScrollOpacity = void 0;
@@ -543,11 +525,9 @@ export class StreetDrawService {
     this.svg.selectAll('*').remove('*');
 
     return this;
-  }
-  ;
+  };
 
-  private
-  drawScrollLabel():this {
+  private drawScrollLabel():this {
     this.svg.selectAll('text.poorest').attr('fill', '#767d86');
     this.svg.selectAll('text.richest').attr('fill', '#767d86');
     this.svg.selectAll('text.scale-label').attr('fill', '#767d86');
@@ -585,11 +565,9 @@ export class StreetDrawService {
       .attr('x', ()=> xL - this.leftScrollText[0][0].getBBox().width / 2);
 
     return this;
-  }
-  ;
+  };
 
-  private
-  drawHouses(places:any):this {
+  private drawHouses(places:any):this {
     if (!places || !places.length) {
       return this;
     }
@@ -630,6 +608,5 @@ export class StreetDrawService {
       .style('fill', '#374551');
 
     return this;
-  }
-  ;
+  };
 }
