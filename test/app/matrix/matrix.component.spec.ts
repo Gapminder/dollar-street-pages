@@ -55,8 +55,6 @@ describe('MatrixComponent', () => {
     expect(context.row).toEqual(1);
     expect(context.regions).toEqual('World');
     expect(context.countries).toEqual('World');
-    expect(context.lowIncome).toEqual(0);
-    expect(context.highIncome).toEqual(15000);
     expect(context.query).toEqual(`thing=${context.thing}&countries=${context.countries}&regions=${context.regions}&zoom=${context.zoom}&row=${context.row}&lowIncome=${context.lowIncome}&highIncome=${context.highIncome}`);
   });
 

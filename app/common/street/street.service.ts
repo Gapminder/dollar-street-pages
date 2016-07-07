@@ -243,7 +243,7 @@ export class StreetDrawService {
 
     this.incomeArr.length = 0;
 
-    this.isDrawDividers(drawDividers)
+    this.isDrawDividers(drawDividers);
 
     if (isShowSlider) {
       this.drawLeftSlider(this.scale(Number(this.lowIncome) || 1), true);
@@ -538,9 +538,7 @@ export class StreetDrawService {
     this.svg.selectAll('text.scale-label').attr('fill', '#767d86');
 
     let incomeL = Math.ceil(this.lowIncome ? this.lowIncome : 0);
-
     let incomeR = Math.ceil(this.highIncome ? this.highIncome : 15000);
-
 
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
@@ -617,5 +615,3 @@ export class StreetDrawService {
     return this;
   };
 }
-
-
