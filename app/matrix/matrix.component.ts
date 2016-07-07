@@ -1,7 +1,6 @@
 import {Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone} from '@angular/core';
 import {RouteParams} from '@angular/router-deprecated';
 import {Subject} from 'rxjs/Subject';
-
 import {MatrixImagesComponent} from './matrix-images/matrix-images.component';
 import {StreetComponent} from '../common/street/street.component';
 import {FooterComponent} from '../common/footer/footer.component';
@@ -366,7 +365,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 
-  protected getCoords(querySelector:String, cb:any):any {
+  protected getCoords(querySelector:string, cb:any):any {
     let box = this.element.querySelector(querySelector).getBoundingClientRect();
 
     let body = document.body;

@@ -7,7 +7,8 @@
     <div class="house-info-container">
       <div class="header-container">
         <p class="pull-left cursor-pointer"
-           [routerLink]="['Country', {id: familyData?.country?._id}]">{{familyData?.country?.country}}</p>
+           [routerLink]="['Country', {id: familyData?.country?._id}]">{{familyData?.country?.alias ||
+          familyData?.country?.country}}</p>
         <div class="pull-right">
           <p>$ {{math.round(place.income)}}</p>
           <a (click)="closeBlock()">x</a>
