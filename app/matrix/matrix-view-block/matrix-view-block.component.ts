@@ -70,7 +70,7 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
         }
 
         this.familyData = res.data;
-        this.familyData.goToPlaceData = this.parseUrl(`place=${this.place._id}&` + this.query);
+        this.familyData.goToPlaceData = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
         this.loader = true;
       });
   }
