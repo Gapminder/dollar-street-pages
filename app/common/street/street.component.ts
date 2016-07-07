@@ -198,7 +198,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.street
       .clearSvg()
       .init(this.street.lowIncome, this.street.highIncome,this.streetData)
-      
       .set('places', _.sortBy(places, 'income'))
       .set('fullIncomeArr', _
         .chain(this.street.places)

@@ -133,7 +133,7 @@ export class StreetDrawService {
     return this;
   }
 
-  public drawScale(places:any, isShowSlider:boolean):this {
+  public drawScale(places:any, isShowSlider:boolean, drawDividers:any):this {
     let halfHouseWidth = 7;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 10;
@@ -242,6 +242,9 @@ export class StreetDrawService {
       .attr('stroke', 'white');
 
     this.incomeArr.length = 0;
+
+    this.isDrawDividers(drawDividers)
+
     if (isShowSlider) {
       this.drawLeftSlider(this.scale(Number(this.lowIncome) || 1), true);
       this.drawRightSlider(this.scale(this.highIncome), true);
