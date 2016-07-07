@@ -1,11 +1,11 @@
 <div id="main-menu">
-  <div class="btn-group" [ngClass]="{open: isOpenMenu}" (click)="isOpenMenu = !isOpenMenu">
-    <span class="menu-icon">
+  <div class="btn-group" dropdown [(isOpen)]="isOpenMenu">
+    <a href class="menu-icon" dropdownToggle>
       <img class="unactive" src="/assets/img/bar-icon.svg" alt=""/>
       <img class="active" src="/assets/img/bar-icon-active.svg" alt=""/>
-    </span>
+    </a>
 
-    <div class="dropdown-menu">
+    <div class="dropdown-menu" dropdownMenu aria-labelledby="simple-dropdown">
       <ul class="header-menu-list">
         <li>
           <a [routerLink]="['Main']">First page</a>
