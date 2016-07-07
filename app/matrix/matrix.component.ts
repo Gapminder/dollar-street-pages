@@ -114,8 +114,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
         this.regions = this.routeParams.get('regions');
         this.zoom = parseInt(this.routeParams.get('zoom'), 10);
-        this.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10);
-        this.highIncome = parseInt(this.routeParams.get('highIncome'), 10);
+        this.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10) || val.data.poor;
+        this.highIncome = parseInt(this.routeParams.get('highIncome'), 10) || val.data.rich;
         this.activeHouse = parseInt(this.routeParams.get('activeHouse'), 10);
 
         if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
@@ -135,8 +135,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.thing = this.thing ? this.thing : 'Home';
         this.zoom = this.zoom ? this.zoom : 4;
         this.regions = this.regions ? this.regions : 'World';
-        this.lowIncome = this.lowIncome || this.lowIncome > val.data.poor ? this.lowIncome : val.data.poor  ;
-        this.highIncome = this.highIncome || this.highIncome > val.data.rich ? val.data.rich : this.highIncome;
+
+        this.lowIncome = this.lowIncome && this.lowIncome < val.data.poor ? val.data.poor : this.lowIncome;
+        this.highIncome = this.highIncome && this.highIncome > val.data.rich ? val.data.rich : this.highIncome;
 
         if (this.lowIncome > this.highIncome) {
           this.lowIncome = val.data.poor;

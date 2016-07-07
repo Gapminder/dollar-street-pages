@@ -49,7 +49,8 @@
     "lodash": "4.*",
     "marked": "0.3.5",
     "ng2-bootstrap": "1.0.17",
-    "ng2-contentful": "valor-software/ng2-contentful#feat-upgrade-package-version",
+    "ng2-contentful": "0.0.8-2",
+    "ng2-contentful-blog": "0.0.1-1",
     "rxjs": "5.0.0-beta.9",
     "zone.js": "0.6.12"
   },
