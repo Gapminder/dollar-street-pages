@@ -133,7 +133,10 @@ export class StreetDrawService {
     return this;
   }
 
-  public drawScale(places:any, isShowSlider:boolean, drawDividers:any):this {
+  public drawScale(places:any, isShowSlider:boolean):this {
+    let halfHouseWidth = 7;
+    let roofX = 2 - halfHouseWidth;
+    let roofY = this.halfOfHeight - 10;
     if (!places || !places.length) {
       return this;
     }
@@ -171,33 +174,35 @@ export class StreetDrawService {
 
     if (isDesktop) {
       this.svg
-        .selectAll('rect.point')
+        .selectAll('polygon')
         .data(places)
         .enter()
-        .append('rect')
+        .append('polygon')
         .attr('class', 'point')
-        .attr('x', (d:any):any => {
-          if (!d) {
-            return 0;
+        .attr('points', (datum:any):any => {
+          let point1;
+          let point2;
+          let point3;
+          let point4;
+          let point5;
+          let point6;
+          let point7;
+
+          if (datum) {
+            let scaleDatumIncome = this.scale(datum.income);
+            point1 = `${scaleDatumIncome + roofX },${this.halfOfHeight - 1}`;
+            point2 = `${scaleDatumIncome + roofX},${roofY}`;
+            point3 = `${scaleDatumIncome - halfHouseWidth},${roofY}`;
+            point4 = `${scaleDatumIncome},${this.halfOfHeight - 17}`;
+            point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
+            point6 = `${scaleDatumIncome - roofX },${roofY}`;
+            point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight - 1}`;
           }
 
-          return this.scale(d.income) - 4;
+          return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
+          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
         })
-        .attr('y', this.halfOfHeight - 11)
-        .attr('width', (d:any):any => {
-          if (!d) {
-            return 0;
-          }
-
-          return 8;
-        })
-        .attr('height', (d:any):any => {
-          if (!d) {
-            return 0;
-          }
-
-          return 7;
-        })
+        .attr('stroke-width', 1)
         .style('fill', '#cfd2d6')
         .style('opacity', '0.7');
     }
@@ -237,9 +242,6 @@ export class StreetDrawService {
       .attr('stroke', 'white');
 
     this.incomeArr.length = 0;
-
-    this.isDrawDividers(drawDividers);
-    
     if (isShowSlider) {
       this.drawLeftSlider(this.scale(Number(this.lowIncome) || 1), true);
       this.drawRightSlider(this.scale(this.highIncome), true);
@@ -610,3 +612,5 @@ export class StreetDrawService {
     return this;
   };
 }
+
+
