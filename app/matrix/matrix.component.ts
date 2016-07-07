@@ -135,8 +135,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.thing = this.thing ? this.thing : 'Home';
         this.zoom = this.zoom ? this.zoom : 4;
         this.regions = this.regions ? this.regions : 'World';
-        this.lowIncome = this.lowIncome  || this.lowIncome > val.data.poor ? this.lowIncome : val.data.poor  ;
-        this.highIncome = !this.highIncome || this.highIncome > val.data.rich ? val.data.rich : this.highIncome;
+        this.lowIncome = this.lowIncome || this.lowIncome > val.data.poor ? this.lowIncome : val.data.poor  ;
+        this.highIncome = this.highIncome || this.highIncome > val.data.rich ? val.data.rich : this.highIncome;
 
         if (this.lowIncome > this.highIncome) {
           this.lowIncome = val.data.poor;

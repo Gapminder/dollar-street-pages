@@ -17,7 +17,11 @@ export class LoaderComponent implements OnInit {
     let onboardingHeight = document.querySelector('.matrix-onboard');
 
     if (header) {
-      this.top = header.clientHeight - onboardingHeight.clientHeight;
+      this.top = header.clientHeight;
+
+      if (onboardingHeight) {
+        this.top = this.top - onboardingHeight.clientHeight;
+      }
     }
   }
 }
