@@ -1,4 +1,4 @@
-import {Component, OnChanges, Input, Output, Inject, EventEmitter} from '@angular/core';
+import {Component, OnInit, OnDestroy, OnChanges, Input, Output, Inject, EventEmitter} from '@angular/core';
 
 let tpl = require('./incomes-filter.template.html');
 let style = require('./incomes-filter.css');
@@ -9,7 +9,7 @@ let style = require('./incomes-filter.css');
   styles: [style]
 })
 
-export class IncomesFilterComponent implements OnChanges {
+export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
   protected isOpenIncomesFilter:boolean = false;
   protected title:string = 'all incomes';
   protected range:{min:number; max:number;} = {min: 0, max: 0};
@@ -27,28 +27,33 @@ export class IncomesFilterComponent implements OnChanges {
   private activatedFilter:EventEmitter<any> = new EventEmitter();
   private streetSettingsService:any;
   private streetData:any;
-  private StreetServiceSubscrib:any;
+  private streetServiceSubscribe:any;
 
   public constructor(@Inject('StreetSettingsService') streetSettingsService:any) {
     this.streetSettingsService = streetSettingsService;
-  };
+  }
 
-  protected openCloseIncomesFilter(isOpenIncomesFilter:boolean, isOnChanges?:boolean):void {
-    this.isOpenIncomesFilter = !isOpenIncomesFilter;
-
-    if (this.StreetServiceSubscrib) {
-      this.StreetServiceSubscrib.unsubscribe();
-      this.StreetServiceSubscrib = void 0;
-    }
-
-    this.StreetServiceSubscrib = this.streetSettingsService.getStreetSettings()
+  public ngOnInit():void {
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((val:any) => {
         if (val.err) {
           return;
         }
 
         this.streetData = val.data;
+
+        if (this.range) {
+          this.title = this.getTitle(this.range);
+        }
       });
+  }
+
+  public ngOnDestroy():void {
+    this.streetServiceSubscribe.unsubscribe();
+  }
+
+  protected openCloseIncomesFilter(isOpenIncomesFilter:boolean, isOnChanges?:boolean):void {
+    this.isOpenIncomesFilter = !isOpenIncomesFilter;
 
     if (!this.isOpenIncomesFilter) {
       this.range = JSON.parse(JSON.stringify(this.cloneRange));
@@ -58,6 +63,7 @@ export class IncomesFilterComponent implements OnChanges {
       this.activatedFilter.emit(this.isOpenIncomesFilter ? 'incomes' : '');
     }
   }
+
   protected applyFilter(minIncome:any, maxIncome:any):void {
     let poor:any = 0;
     let rich:any = 15000;
@@ -96,7 +102,9 @@ export class IncomesFilterComponent implements OnChanges {
     this.range.min = query.lowIncome;
     this.range.max = query.highIncome;
 
-    this.title = this.getTitle(this.range);
+    if (this.streetData) {
+      this.title = this.getTitle(this.range);
+    }
 
     this.cloneRange = JSON.parse(JSON.stringify(this.range));
     this.selectedFilter.emit({url: this.objToQuery(query)});
@@ -111,7 +119,9 @@ export class IncomesFilterComponent implements OnChanges {
 
       this.cloneRange = JSON.parse(JSON.stringify(this.range));
 
-      this.title = this.getTitle(this.range);
+      if (this.streetData) {
+        this.title = this.getTitle(this.range);
+      }
     }
 
     if (
@@ -125,12 +135,9 @@ export class IncomesFilterComponent implements OnChanges {
   }
 
   private getTitle(range:any):string {
-    let poor:any;
-    let rich:any;
-    if (this.streetData) {
-      poor = this.streetData.poor;
-      rich = this.streetData.rich;
-    }
+    let poor:number = this.streetData.poor;
+    let rich:number = this.streetData.rich;
+
     let title:string;
 
     if (range.min > poor && range.max < rich) {

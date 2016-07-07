@@ -32,10 +32,6 @@ export class MockService {
     this[name] = (url?:any, qyery?:any) => this;
   }
 
-  set getMatrixOnboardingTips(name) {
-    this[name] = (url?:any, qyery?:any) => this;
-  }
-
   get fakeResponse() {
     return this.response;
   }

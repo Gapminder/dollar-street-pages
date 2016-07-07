@@ -20,6 +20,7 @@ let style = require('./matrix.css');
   styles: [style],
   directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
 })
+
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces:any[] = [];
   protected headerOnboard:string;
@@ -43,7 +44,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public lowIncome:number;
   public highIncome:number;
   public matrixServiceSubscrib:any;
-  public matrixServiceOnboarding:any;
+  public matrixServiceOnboardingSubscribe:any;
   public streetData:any;
   private placesArr:any[];
   private element:HTMLElement;
@@ -65,6 +66,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private clonePlaces:any[];
   private zone:NgZone;
   private windowHistory:any = history;
+  private matrixServiceStreetSubscrib:any;
 
   public constructor(@Inject('MatrixService') matrixService:any,
                      @Inject(ElementRef) element:ElementRef,
@@ -79,40 +81,35 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit():void {
-
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
+
     if (window.localStorage && window.localStorage.getItem('onboarded')) {
       this.showOnboarding = false;
       this.showOnboardingSwitcher = true;
       document.body.className = 'wizard';
     }
 
-    this.matrixServiceSubscrib = this.matrixService.getStreetSettings(this.query)
+    this.matrixServiceOnboardingSubscribe = this.matrixService.getMatrixOnboardingTips()
+      .subscribe((val:any) => {
+        if (val.err) {
+          return;
+        }
+
+        this.baloonTips = val.data;
+        this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
+      });
+
+    this.matrixServiceStreetSubscrib = this.matrixService.getStreetSettings(this.query)
       .subscribe((val:any) => {
         if (val.err) {
           console.log(val.err);
 
           return;
         }
-        this.streetData = val.data;
-        if ('scrollRestoration' in history) {
-          this.windowHistory.scrollRestoration = 'manual';
-        }
-        this.matrixServiceOnboarding = this.matrixService.getMatrixOnboardingTips()
-          .subscribe((val:any) => {
-            if (val.err) {
-              return;
-            }
-            let tips = val.data;
 
-            _.forEach(tips, (value:any):any => {
-              let name = value.name;
-              this.baloonTips[name] = value;
-            });
-            this.textOnboard = this.baloonTips.welcomeHeader.description;
-          });
+        this.streetData = val.data;
 
         this.thing = this.routeParams.get('thing');
         this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
@@ -124,7 +121,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
           this.zoom = 4;
-          
+
         }
 
         if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
@@ -167,7 +164,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     document.onscroll = void 0;
     this.matrixServiceSubscrib.unsubscribe();
-    this.matrixServiceOnboarding.unsubscribe();
+    this.matrixServiceOnboardingSubscribe.unsubscribe();
+    this.matrixServiceStreetSubscrib.unsubscribe();
   }
 
   public ngAfterViewChecked():void {
@@ -368,7 +366,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 
-  protected getCoords(querySelector:String, cb:any):any { // crossbrowser version
+  protected getCoords(querySelector:String, cb:any):any {
     let box = this.element.querySelector(querySelector).getBoundingClientRect();
 
     let body = document.body;
@@ -477,20 +475,4 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
     }, 0);
   }
-
-  protected closeOnboarding():void {
-    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
-    let header = this.element.querySelector('.matrix-header') as HTMLElement;
-    let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
-    let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
-    document.body.className = '';
-
-    setTimeout(function ():void {
-      matrixImages.style.paddingTop = `${header.offsetHeight}px`;
-      zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
-    }, 0);
-    this.showOnboarding = false;
-    this.showOnboardingSwitcher = true;
-  }
-
 }

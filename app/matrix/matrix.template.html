@@ -1,8 +1,6 @@
 <div class="matrix-header main-header">
-
   <div class="matrix-onboard" [hidden]="!showOnboarding">
-    <a class="pull-right close-button font-large" (click)="switchOnOnboarding(false)">x
-    </a>
+    <a class="pull-right close-button font-large" (click)="switchOnOnboarding(false)">x</a>
     <div class="font-large">Find out how people <span class="font-bold">really</span> live</div>
     <div>{{headerOnboard?.description}}</div>
     <div class="onboard-buttons-container">
@@ -21,7 +19,7 @@
     <div class="text-center">{{numberOfStep}} of 5</div>
     <div class="qt-baloon-name">{{baloonTip?.header}}</div>
     <div class="qt-baloon-text">{{baloonTip?.description}}
-      <a href="{{baloonTip?.ccLinkHrefLinkHref}}" class="cc-link" target="_blank" *ngIf="numberOfStep === 5">{{baloonTip?.ccLinkText}}</a>
+      <a class="cc-link" target="_blank" *ngIf="numberOfStep === 5" [href]="baloonTip.link?.href">{{baloonTip.link?.text}}</a>
     </div>
     <div class="text-center marg-5-px">
       <a class="onboard-button-ml" *ngIf="numberOfStep !== 1" (click)="step(false)">Back</a>
@@ -56,8 +54,7 @@
                [padding]="padding">
 </matrix-images>
 
-<div class="zoom-column pull-right"
-     *ngIf="filtredPlaces.length">
+<div class="zoom-column pull-right" *ngIf="filtredPlaces.length">
 
   <button type="button"
           [disabled]="zoom === 2"
