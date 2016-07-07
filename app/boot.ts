@@ -12,6 +12,7 @@ import {MatrixService} from './matrix/matrix.service';
 import {HeaderService} from './common/header/header.service';
 import {SearchService} from './common/search/search.service';
 import {StreetSettingsService} from './common/street/street.settings.service';
+import {FooterService} from './common/footer/footer.service';
 import {ThingsFilterService} from './common/things-filter/things-filter.service';
 import {CountriesFilterService} from './common/countries-filter/countries-filter.service';
 import {CountryInfoService} from './country/country-info/country-info.service';
@@ -48,6 +49,7 @@ bootstrap(AppComponent, [
   provide('HeaderService', {useClass: HeaderService}),
   provide('SearchService', {useClass: SearchService}),
   provide('StreetSettingsService', {useClass: StreetSettingsService}),
+  provide('FooterService', {useClass: FooterService}),
   provide('MapService', {useClass: MapService}),
   provide('UrlChangeService', {useClass: UrlChangeService}),
   provide('PhotographerProfileService', {useClass: PhotographerProfileService}),
