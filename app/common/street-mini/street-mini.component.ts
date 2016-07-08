@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, ElementRef, Inject, OnDestroy} from '@angular/core';
-import {Router} from '@angular/router-deprecated';
-import {Subject} from 'rxjs/Subject';
+import { Component, OnInit, Input, ElementRef, Inject, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router-deprecated';
+import { Subject } from 'rxjs/Subject';
 
 const _ = require('lodash');
 

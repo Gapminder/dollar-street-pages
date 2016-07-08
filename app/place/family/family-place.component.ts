@@ -1,8 +1,7 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-
-import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
+import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 
 let tpl = require('./family-place.template.html');
 let style = require('./family-place.css');

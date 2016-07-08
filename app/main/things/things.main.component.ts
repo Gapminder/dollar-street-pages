@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
 
 let tpl = require('./things.main.template.html');
 let style = require('./things.main.css');

@@ -1,9 +1,7 @@
-import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from '@angular/core';
-import {Router} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-import {RouterLink} from '@angular/router-deprecated';
-
-import {SearchFilter} from './thing-filter.pipe.ts';
+import { Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges } from '@angular/core';
+import { Router, RouterLink } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { SearchFilter } from './thing-filter.pipe.ts';
 
 let tpl = '';
 let desktopStyle = require('./search.css');

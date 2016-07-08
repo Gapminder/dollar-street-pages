@@ -14,20 +14,14 @@
     </div>
 
     <things-filter [url]="query"
-                   [activeFilter]="activeFilter"
-                   (selectedFilter)="urlTransfer($event)"
-                   (activatedFilter)="setActiveFilter($event)"></things-filter>
+                   (selectedFilter)="urlTransfer($event)"></things-filter>
     <div class="some-filter-container" *ngIf="matrixComponent">
       <span>by</span>
       <incomes-filter [url]="query"
-                      [activeFilter]="activeFilter"
-                      (selectedFilter)="urlTransfer($event)"
-                      (activatedFilter)="setActiveFilter($event)"></incomes-filter>
+                      (selectedFilter)="urlTransfer($event)"></incomes-filter>
       <span>in</span>
       <countries-filter [url]="query"
-                        [activeFilter]="activeFilter"
-                        (selectedFilter)="urlTransfer($event)"
-                        (activatedFilter)="setActiveFilter($event)"></countries-filter>
+                        (selectedFilter)="urlTransfer($event)"></countries-filter>
     </div>
   </div>
 

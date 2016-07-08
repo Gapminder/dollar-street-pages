@@ -1,7 +1,6 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-
-import {LoaderComponent} from '../../common/loader/loader.component';
+import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { LoaderComponent } from '../../common/loader/loader.component';
 
 let tpl = require('./photographer-places.template.html');
 let style = require('./photographer-places.css');

@@ -1,11 +1,11 @@
-import {Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone} from '@angular/core';
-import {RouteParams} from '@angular/router-deprecated';
-import {Subject} from 'rxjs/Subject';
-import {MatrixImagesComponent} from './matrix-images/matrix-images.component';
-import {StreetComponent} from '../common/street/street.component';
-import {FooterComponent} from '../common/footer/footer.component';
-import {HeaderComponent} from '../common/header/header.component';
-import {LoaderComponent} from '../common/loader/loader.component';
+import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
+import { RouteParams } from '@angular/router-deprecated';
+import { Subject } from 'rxjs/Subject';
+import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
+import { StreetComponent } from '../common/street/street.component';
+import { FooterComponent } from '../common/footer/footer.component';
+import { HeaderComponent } from '../common/header/header.component';
+import { LoaderComponent } from '../common/loader/loader.component';
 
 let _ = require('lodash');
 let device = require('device.js')();

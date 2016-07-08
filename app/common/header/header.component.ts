@@ -1,12 +1,11 @@
-import {Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter} from '@angular/core';
-import {RouterLink, Router} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-
-import {MainMenuComponent} from '../menu/menu.component';
-import {PlaceMapComponent} from '../place-map/place-map.component';
-import {ThingsFilterComponent} from '../things-filter/things-filter.component';
-import {IncomesFilterComponent} from '../incomes-filter/incomes-filter.component';
-import {CountriesFilterComponent} from '../countries-filter/countries-filter.component';
+import { Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
+import { RouterLink, Router } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { MainMenuComponent } from '../menu/menu.component';
+import { PlaceMapComponent } from '../place-map/place-map.component';
+import { ThingsFilterComponent } from '../things-filter/things-filter.component';
+import { IncomesFilterComponent } from '../incomes-filter/incomes-filter.component';
+import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
 let device = require('device.js')();
 
@@ -30,7 +29,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   @Input('chosenPlaces')
   protected chosenPlaces:Observable<any>;
   protected isOpenFilter:boolean = false;
-  protected activeFilter:string;
   protected isDesktop:boolean = device.desktop();
   protected header:any = {};
   protected math:any;
@@ -57,10 +55,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
     this.mapComponent = this.router.hostComponent.name === 'MapComponent';
-  }
-
-  protected setActiveFilter(selectedFilter:string):void {
-    this.activeFilter = selectedFilter;
   }
 
   public ngOnInit():void {

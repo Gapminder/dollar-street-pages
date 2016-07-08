@@ -102,6 +102,7 @@
   float: left;
   margin: 0 1px;
 }
+
 .image-content.active,
 .image-content:hover {
   box-shadow: 0 0 0 5px #374551 inset;

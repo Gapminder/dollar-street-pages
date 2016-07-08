@@ -1,8 +1,7 @@
-import {Component, OnInit, Inject, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
-
-import {PlaceMapComponent} from '../../common/place-map/place-map.component';
+import { Component, OnInit, Inject, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { PlaceMapComponent } from '../../common/place-map/place-map.component';
 
 let tpl = require('./home-header.template.html');
 let style = require('./home-header.css');

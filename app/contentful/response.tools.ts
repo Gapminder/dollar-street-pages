@@ -1,4 +1,4 @@
-import {ContentfulCommon} from 'ng2-contentful/src';
+import { ContentfulCommon } from 'ng2-contentful';
 
 // this will be the part of ng2-contentful tools
 /**

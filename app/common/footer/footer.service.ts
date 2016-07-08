@@ -1,8 +1,7 @@
-import {Inject} from '@angular/core';
-import {Http} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-
-import {Config} from '../../app.config';
+import { Inject } from '@angular/core';
+import { Http } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Config } from '../../app.config';
 
 export class FooterService {
   public http:Http;
@@ -11,7 +10,7 @@ export class FooterService {
     this.http = http;
   }
 
-  public getFooterText ():Observable<any> {
+  public getFooter():Observable<any> {
     return this.http.get(`${Config.api}/consumer/api/v1/footer-text`).map((res:any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};

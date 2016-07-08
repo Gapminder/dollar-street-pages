@@ -1,11 +1,10 @@
-import {Component, Inject, OnInit, OnDestroy} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-
-import {HeaderWithoutSearchComponent} from '../../common/headerWithoutSearch/header.component';
-import {FooterComponent} from '../../common/footer/footer.component';
-import {LoaderComponent} from '../../common/loader/loader.component';
-import {ContentfulImageDirective} from '../contentful-image.directive';
-import {ToDatePipe} from '../pipes/to-date.pipe';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { HeaderWithoutSearchComponent } from '../../common/headerWithoutSearch/header.component';
+import { FooterComponent } from '../../common/footer/footer.component';
+import { LoaderComponent } from '../../common/loader/loader.component';
+import { ContentfulImageDirective } from '../contentful-image.directive';
+import { ToDatePipe } from '../pipes/to-date.pipe';
 
 let tpl = require('./blog.template.html');
 let style = require('./blog.css');

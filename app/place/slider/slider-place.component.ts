@@ -1,11 +1,10 @@
-import {Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input, NgZone} from '@angular/core';
-import {RouterLink, RouteParams} from '@angular/router-deprecated';
-import {Location} from '@angular/common';
-import {Observable} from 'rxjs/Observable';
-import {fromEvent} from 'rxjs/observable/fromEvent';
-
-import {PlaceMapComponent} from '../../common/place-map/place-map.component';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
+import { Component, OnInit, OnDestroy, Inject, EventEmitter, Output, Input, NgZone } from '@angular/core';
+import { RouterLink, RouteParams } from '@angular/router-deprecated';
+import { Location } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { PlaceMapComponent } from '../../common/place-map/place-map.component';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 let $ = require('jquery');
 

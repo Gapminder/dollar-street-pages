@@ -1,10 +1,9 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef, NgZone} from '@angular/core';
-import {RouterLink, RouteParams, Router} from '@angular/router-deprecated';
-import {fromEvent} from 'rxjs/observable/fromEvent';
-
-import {HeaderComponent} from '../common/header/header.component';
-import {LoaderComponent} from '../common/loader/loader.component';
-import {FooterComponent} from '../common/footer/footer.component';
+import { Component, OnInit, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
+import { RouterLink, RouteParams, Router } from '@angular/router-deprecated';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { HeaderComponent } from '../common/header/header.component';
+import { LoaderComponent } from '../common/loader/loader.component';
+import { FooterComponent } from '../common/footer/footer.component';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');

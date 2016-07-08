@@ -1,4 +1,4 @@
-import {Component, Input, Inject, NgZone, OnChanges} from '@angular/core';
+import { Component, Input, Inject, NgZone, OnChanges } from '@angular/core';
 let tpl = require('./row-loader.template.html');
 let style = require('./row-loader.css');
 

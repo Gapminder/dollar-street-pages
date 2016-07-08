@@ -2,17 +2,17 @@
   <defs>
     <style>
       .cls-1 {
-        fill: none;
-        stroke: #dddfe2;
-        stroke-linejoin: round;
-        stroke-width: 6px;
+      fill: none;
+      stroke: #dddfe2;
+      stroke-linejoin: round;
+      stroke-width: 6px;
       }
 
       .cls-2 {
-        font-size: 32px;
-        fill: #dddfe2;
-        font-family: Arial;
-        font-weight: 700;
+      font-size: 32px;
+      fill: #dddfe2;
+      font-family: Arial;
+      font-weight: 700;
       }
     </style>
   </defs>

@@ -1,6 +1,6 @@
-import {Component, Inject} from '@angular/core';
-import {RouteConfig, Router, RouterOutlet} from '@angular/router-deprecated';
-import {Config} from './app.config';
+import { Component, Inject } from '@angular/core';
+import { RouteConfig, Router, RouterOutlet } from '@angular/router-deprecated';
+import { Config } from './app.config';
 
 @Component({
   selector: 'consumer-app',

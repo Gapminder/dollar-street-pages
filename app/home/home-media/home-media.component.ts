@@ -1,7 +1,6 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-
-import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
+import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 
 let tpl = require('./home-media.template.html');
 let style = require('./home-media.css');

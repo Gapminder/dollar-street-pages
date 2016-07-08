@@ -1,8 +1,7 @@
-import {Inject} from '@angular/core';
-import {Http} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-
-import {Config} from '../app.config';
+import { Inject } from '@angular/core';
+import { Http } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Config } from '../app.config';
 
 export class MatrixService {
   public http:Http;
@@ -24,6 +23,7 @@ export class MatrixService {
       return {err: parseRes.error, data: parseRes.data};
     });
   }
+
   public getStreetSettings():Observable<any> {
     return this.http.get(`${Config.api}/consumer/api/v1/street-settings`).map((res:any) => {
       let parseRes = JSON.parse(res._body);

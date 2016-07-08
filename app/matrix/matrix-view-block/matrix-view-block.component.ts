@@ -1,8 +1,7 @@
-import {Component, Input, Output, OnChanges, Inject, EventEmitter, NgZone, OnDestroy} from '@angular/core';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {RouterLink, Router} from '@angular/router-deprecated';
-
-import {PlaceMapComponent} from '../../common/place-map/place-map.component';
+import { Component, Input, Output, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { RouterLink, Router } from '@angular/router-deprecated';
+import { PlaceMapComponent } from '../../common/place-map/place-map.component';
 
 let tpl = require('./matrix-view-block.template.html');
 let style = require('./matrix-view-block.css');

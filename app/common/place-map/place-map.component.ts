@@ -1,6 +1,6 @@
-import {Component, OnInit, OnDestroy, Input, Inject, ElementRef, NgZone} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {fromEvent} from 'rxjs/observable/fromEvent';
+import { Component, OnInit, OnDestroy, Input, Inject, ElementRef, NgZone } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./place-map.template.html');
 let style = require('./place-map.css');

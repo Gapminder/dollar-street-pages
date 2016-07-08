@@ -1,5 +1,5 @@
-import {Directive, Input, Inject, OnInit, ElementRef} from '@angular/core';
-import {URLSearchParams, Response} from '@angular/http';
+import { Directive, Input, Inject, OnInit, ElementRef } from '@angular/core';
+import { URLSearchParams, Response } from '@angular/http';
 
 @Directive({
   selector: '[gmContentfulSrcId]'

@@ -1,8 +1,18 @@
-import {Component, OnInit, Input, Output, ElementRef, Inject, OnDestroy, OnChanges, EventEmitter} from '@angular/core';
-import {RouterLink, Router} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-import {fromEvent} from 'rxjs/observable/fromEvent';
-import {Subject} from 'rxjs/Subject';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnChanges,
+  EventEmitter
+} from '@angular/core';
+import { RouterLink, Router } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subject } from 'rxjs/Subject';
 
 const _ = require('lodash');
 

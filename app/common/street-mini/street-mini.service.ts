@@ -157,7 +157,7 @@ export class StreetMiniDrawService {
       .data([income])
       .enter()
       .append('text')
-      .text('$ '+ income)
+      .text('$ ' + income)
       .attr('x', this.scale(income) - 20)
       .attr('y', this.height - 70)
       .attr('fill', '#767d86');

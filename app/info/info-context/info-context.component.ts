@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 let tpl = require('./info-context.template.html');
 let style = require('./info-context.css');
