@@ -8,10 +8,17 @@
 }
 
 .footer .f-social {
-  margin-top: 35px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.footer .f-gap {
+  font-size: 18px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 
 .footer .f-social .share-button-container {
   padding: 15px 0;
@@ -30,6 +37,12 @@
   width: 53px;
 }
 
+
+.footer .f-dollar-street .f-gap img {
+  margin-bottom: 5px;
+  width: 253px;
+}
+
 .footer .f-dollar-street p {
   margin: 0;
 }
@@ -45,7 +58,7 @@
   text-align: right;
 }
 
-.f-menu ul a {
+.footer .f-dollar-street .links a {
   color: #374551;
   font-size: 16px;
 }
