@@ -2,11 +2,14 @@ import {provide, ApplicationRef, NgZone} from '@angular/core';
 import {ROUTER_PRIMARY_COMPONENT, ROUTER_PROVIDERS, RouteParams} from '@angular/router-deprecated';
 import {APP_BASE_HREF} from '@angular/common';
 import {HTTP_PROVIDERS} from '@angular/http';
-import {MockNgZone,MockApplicationRef} from '@angular/core/testing';
+import {MockNgZone, MockApplicationRef} from '@angular/core/testing';
 
 import {AppComponent} from '../../../app/app.component';
 import {MathService} from '../../../app/common/math-service/math-service';
 import {StreetDrawService} from '../../../app/common/street/street.service';
+import {StreetSettingsService} from '../../../app/common/street/street.settings.service';
+import {HomeIncomeFilterService} from '../../../app/home/home-income-filter.service';
+import {FooterService} from '../../../app/common//footer/footer.service';
 import {MatrixService} from '../../../app/matrix/matrix.service';
 import {HeaderService} from '../../../app/common/header/header.service';
 import {SearchService} from '../../../app/common/search/search.service';
@@ -37,6 +40,9 @@ export class MockCommonDependency {
       provide('MatrixService', {useClass: MatrixService}),
       provide('HeaderService', {useClass: HeaderService}),
       provide('SearchService', {useClass: SearchService}),
+      provide('StreetSettingsService', {useClass: StreetSettingsService}),
+      provide('HomeIncomeFilterService', {useClass: HomeIncomeFilterService}),
+      provide('FooterService', {useClass: FooterService}),
       provide('MainPlacesService', {useClass: MainPlacesService}),
       provide('MapService', {useClass: MapService}),
       provide('UrlChangeService', {useClass: UrlChangeService}),

@@ -11,6 +11,7 @@ import { MatrixService } from './matrix/matrix.service';
 import { HeaderService } from './common/header/header.service';
 import { SearchService } from './common/search/search.service';
 import { StreetSettingsService } from './common/street/street.settings.service';
+import { HomeIncomeFilterService } from './home/home-income-filter.service';
 import { FooterService } from './common/footer/footer.service';
 import { ThingsFilterService } from './common/things-filter/things-filter.service';
 import { CountriesFilterService } from './common/countries-filter/countries-filter.service';
@@ -46,6 +47,7 @@ bootstrap(AppComponent, [
   provide('HeaderService', {useClass: HeaderService}),
   provide('SearchService', {useClass: SearchService}),
   provide('StreetSettingsService', {useClass: StreetSettingsService}),
+  provide('HomeIncomeFilterService', {useClass: HomeIncomeFilterService}),
   provide('FooterService', {useClass: FooterService}),
   provide('MapService', {useClass: MapService}),
   provide('UrlChangeService', {useClass: UrlChangeService}),

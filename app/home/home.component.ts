@@ -38,6 +38,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   private placeId:string;
   private routeParams:RouteParams;
   private urlParams:UrlParamsInterfase;
+private homeIncomeFilterService:any;
+private homeIncomeFilterServiceSubscribe:any;
+  private homeIncomeData:any;
+private rich:any;
+private poor:any;
   private router:Router;
   private countriesFilterService:any;
   private countriesFilterServiceSubscribe:any;
@@ -47,11 +52,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public constructor(@Inject(RouteParams) routeParams:RouteParams,
                      @Inject('CountriesFilterService') countriesFilterService:any,
+                     @Inject('HomeIncomeFilterService') homeIncomeFilterService:any,
                      @Inject(NgZone) zone:NgZone,
                      @Inject(Router) router:Router) {
     this.routeParams = routeParams;
     this.zone = zone;
     this.router = router;
+    this.homeIncomeFilterService = homeIncomeFilterService;
     this.countriesFilterService = countriesFilterService;
   }
 
@@ -72,14 +79,31 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.homeIncomeFilterServiceSubscribe = this.homeIncomeFilterService.getData()
+          .subscribe((val:any) => {
+             if (val.err) {
+               console.error(val.err);
+                return;
+              }
+             this.homeIncomeData = val.data;
+            });
+        if (this.homeIncomeData) {
+            this.poor = this.homeIncomeData.poor;
+            this.rich = this.homeIncomeData.rich;
+          }
+         if (!this.homeIncomeData) {
+            this.poor = 0;
+            this.rich = 15000;
+           }
+
     this.urlParams = {
       thing: this.routeParams.get('thing') ? decodeURI(this.routeParams.get('thing')) : 'Home',
       countries: this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World',
       regions: this.routeParams.get('regions') ? decodeURI(this.routeParams.get('regions')) : 'World',
       zoom: parseInt(this.routeParams.get('zoom'), 10) || 4,
       row: parseInt(this.routeParams.get('row'), 10) || 1,
-      lowIncome: parseInt(this.routeParams.get('lowIncome'), 10) || 0,
-      highIncome: parseInt(this.routeParams.get('highIncome'), 10) || 15000
+           lowIncome: parseInt(this.routeParams.get('lowIncome'), 10) || this.poor,
+      highIncome: parseInt(this.routeParams.get('highIncome'), 10) || this.rich
     };
 
     this.countriesFilterServiceSubscribe = this.countriesFilterService
@@ -127,17 +151,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getIncomeTitle(min:number, max:number):string {
+    let poor:number = this.homeIncomeData.poor;
+      let rich:number = this.homeIncomeData.rich;
     let title:string = 'all incomes';
 
-    if (min > 0 && max < 15000) {
+    if(min > poor && max < rich) {
       title = 'incomes $' + min + ' - $' + max;
     }
 
-    if (min > 0 && max === 15000) {
+    if (min > poor && max === rich) {
       title = 'income over $' + min;
     }
-
-    if (min === 0 && max < 15000) {
+    if (min === poor && max < rich) {
       title = 'income lower $' + max;
     }
 
