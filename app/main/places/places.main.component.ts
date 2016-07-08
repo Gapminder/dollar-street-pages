@@ -1,6 +1,6 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-import {fromEvent} from 'rxjs/observable/fromEvent';
+import { Component, OnInit, OnDestroy, Inject, ElementRef } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./places.main.template.html');
 let style = require('./places.main.css');

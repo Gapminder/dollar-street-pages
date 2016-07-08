@@ -10,12 +10,11 @@ import {
   OnChanges,
   NgZone
 } from '@angular/core';
-import {Router} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-import {fromEvent} from 'rxjs/observable/fromEvent';
-
-import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
-import {MatrixViewBlockComponent} from '../matrix-view-block/matrix-view-block.component';
+import { Router } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
+import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
 
 const device = require('device.js')();
 const isDesktop = device.desktop();

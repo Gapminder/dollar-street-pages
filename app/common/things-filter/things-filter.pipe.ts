@@ -1,5 +1,5 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {filter} from 'lodash';
+import { Pipe, PipeTransform } from '@angular/core';
+import { filter } from 'lodash';
 
 interface Thing {
   _id:string;

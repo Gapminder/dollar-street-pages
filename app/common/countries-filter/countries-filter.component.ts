@@ -1,4 +1,14 @@
-import {Component, OnDestroy, OnChanges, Inject, Input, Output, EventEmitter} from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnChanges,
+  Inject,
+  Input,
+  Output,
+  EventEmitter,
+  HostListener,
+  ElementRef
+} from '@angular/core';
 
 let _ = require('lodash');
 
@@ -18,13 +28,9 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   protected selectedRegions:string[] = [];
   protected selectedCountries:string[] = [];
   @Input()
-  protected activeFilter:string;
-  @Input()
   private url:string;
   @Output()
   private selectedFilter:EventEmitter<any> = new EventEmitter();
-  @Output()
-  private activatedFilter:EventEmitter<any> = new EventEmitter();
 
   private countriesFilterService:any;
   private countriesFilterServiceSubscribe:any;
@@ -32,8 +38,19 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   private cloneSelectedRegions:string[] = ['World'];
   private cloneSelectedCountries:string[] = ['World'];
 
-  public constructor(@Inject('CountriesFilterService') countriesFilterService:any) {
+  private element:ElementRef;
+
+  public constructor(@Inject('CountriesFilterService') countriesFilterService:any,
+                     @Inject(ElementRef) element:ElementRef) {
     this.countriesFilterService = countriesFilterService;
+    this.element = element;
+  }
+
+  @HostListener('document:click', ['$event'])
+  public isOutsideThingsFilterClick(event:Event):void {
+    if (!this.element.nativeElement.contains(event.target) && this.isOpenCountriesFilter) {
+      this.openCloseCountriesFilter(true);
+    }
   }
 
   protected clearAllCountries():void {
@@ -43,7 +60,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.cloneSelectedRegions = ['World'];
   }
 
-  protected openCloseCountriesFilter(isOpenCountriesFilter:boolean, isOnChanges?:boolean):void {
+  protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
 
     if (!this.isOpenCountriesFilter) {
@@ -58,10 +75,6 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
       } else {
         this.selectedCountries.length = 0;
       }
-    }
-
-    if (!isOnChanges) {
-      this.activatedFilter.emit(this.isOpenCountriesFilter ? 'countries' : '');
     }
   }
 
@@ -136,15 +149,6 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
           this.locations = res.data;
           this.setTitle(this.url);
         });
-    }
-
-    if (
-      this.isOpenCountriesFilter &&
-      changes.activeFilter &&
-      changes.activeFilter.currentValue &&
-      changes.activeFilter.currentValue !== 'countries'
-    ) {
-      this.openCloseCountriesFilter(true, true);
     }
   }
 

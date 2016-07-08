@@ -1,10 +1,9 @@
-import {Response} from '@angular/http';
-import {Inject} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-
-import {ContentfulConfig} from './constans';
-import {transformResponse} from './response.tools';
-import {ContentfulRequest, SearchItem} from 'ng2-contentful/src';
+import { Response } from '@angular/http';
+import { Inject } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { ContentfulConfig } from './constans';
+import { transformResponse } from './response.tools';
+import { ContentfulRequest, SearchItem } from 'ng2-contentful';
 
 /**
  * ContentfulContent works as a replacement for the original ng2-contentful library.

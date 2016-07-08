@@ -24,7 +24,7 @@
 
 <div id="mobile-country-info" class="row" [ngClass]="{'open': isShowInfo}">
   <div class="image-container">
-    <place-map [hoverPlace]="hoverPlace"  [routerLink]="['Map', {thing:thing}]"></place-map>
+    <place-map [hoverPlace]="hoverPlace" [routerLink]="['Map', {thing:thing}]"></place-map>
 
     <div class="more-info" *ngIf="country?.description">
         <span (click)="isShowInfo = !isShowInfo">

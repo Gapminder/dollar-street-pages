@@ -1,4 +1,15 @@
-import {Component, OnInit, OnDestroy, OnChanges, Input, Output, Inject, EventEmitter} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  OnChanges,
+  Input,
+  Output,
+  Inject,
+  EventEmitter,
+  ElementRef,
+  HostListener
+} from '@angular/core';
 
 let tpl = require('./incomes-filter.template.html');
 let style = require('./incomes-filter.css');
@@ -15,22 +26,19 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
   protected range:{min:number; max:number;} = {min: 0, max: 0};
 
   @Input()
-  protected activeFilter:string;
-
-  private cloneRange:{min:number; max:number;} = {min: 0, max: 0};
-
-  @Input()
   private url:string;
   @Output()
   private selectedFilter:EventEmitter<any> = new EventEmitter();
-  @Output()
-  private activatedFilter:EventEmitter<any> = new EventEmitter();
+  private cloneRange:{min:number; max:number;} = {min: 0, max: 0};
   private streetSettingsService:any;
   private streetData:any;
   private streetServiceSubscribe:any;
+  private element:ElementRef;
 
-  public constructor(@Inject('StreetSettingsService') streetSettingsService:any) {
+  public constructor(@Inject('StreetSettingsService') streetSettingsService:any,
+                     @Inject(ElementRef) element:ElementRef) {
     this.streetSettingsService = streetSettingsService;
+    this.element = element;
   }
 
   public ngOnInit():void {
@@ -52,15 +60,18 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
     this.streetServiceSubscribe.unsubscribe();
   }
 
-  protected openCloseIncomesFilter(isOpenIncomesFilter:boolean, isOnChanges?:boolean):void {
+  @HostListener('document:click', ['$event'])
+  public isOutsideIncomeFilterClick(event:Event):void {
+    if (!this.element.nativeElement.contains(event.target) && this.isOpenIncomesFilter) {
+      this.openCloseIncomesFilter(true);
+    }
+  }
+
+  protected openCloseIncomesFilter(isOpenIncomesFilter:boolean):void {
     this.isOpenIncomesFilter = !isOpenIncomesFilter;
 
     if (!this.isOpenIncomesFilter) {
       this.range = JSON.parse(JSON.stringify(this.cloneRange));
-    }
-
-    if (!isOnChanges) {
-      this.activatedFilter.emit(this.isOpenIncomesFilter ? 'incomes' : '');
     }
   }
 
@@ -122,15 +133,6 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
       if (this.streetData) {
         this.title = this.getTitle(this.range);
       }
-    }
-
-    if (
-      this.isOpenIncomesFilter &&
-      changes.activeFilter &&
-      changes.activeFilter.currentValue
-      && changes.activeFilter.currentValue !== 'incomes'
-    ) {
-      this.openCloseIncomesFilter(true, true);
     }
   }
 

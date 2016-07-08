@@ -1,9 +1,8 @@
-import {Component} from '@angular/core';
-
-import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
-import {InfoContextComponent} from './info-context/info-context.component';
-import {FooterComponent} from '../common/footer/footer.component';
-import {LoaderComponent} from '../common/loader/loader.component';
+import { Component } from '@angular/core';
+import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
+import { InfoContextComponent } from './info-context/info-context.component';
+import { FooterComponent } from '../common/footer/footer.component';
+import { LoaderComponent } from '../common/loader/loader.component';
 
 let tpl = require('./info.template.html');
 let style = require('./info.css');
@@ -16,9 +15,5 @@ let style = require('./info.css');
 })
 
 export class InfoComponent {
-  private title:string;
-
-  public constructor() {
-    this.title = 'Info';
-  }
+  protected title:string = 'Info';
 }

@@ -1,18 +1,18 @@
-import {FirstComponent} from './first/first.component';
-import {MatrixComponent} from './matrix/matrix.component';
-import {HomeComponent} from './home/home.component';
-import {MapComponent} from './map/map.component';
-import {AllPhotographersComponent} from './all-photographers/all-photographers.component';
-import {PhotographerComponent} from './photographer/photographer.component';
-import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
-import {CountryComponent} from './country/country.component';
-import {InfoComponent} from './info/info.component';
-import {ArticleComponent} from './article/article.component';
-import {BlogComponent} from './contentful/blog/blog.component';
-import {PostComponent} from './contentful/post/post.component';
+import { FirstComponent } from './first/first.component';
+import { MatrixComponent } from './matrix/matrix.component';
+import { HomeComponent } from './home/home.component';
+import { MapComponent } from './map/map.component';
+import { AllPhotographersComponent } from './all-photographers/all-photographers.component';
+import { PhotographerComponent } from './photographer/photographer.component';
+import { AmbassadorsComponent } from './ambassadors/ambassadors.component';
+import { CountryComponent } from './country/country.component';
+import { InfoComponent } from './info/info.component';
+import { ArticleComponent } from './article/article.component';
+import { BlogComponent } from './contentful/blog/blog.component';
+import { PostComponent } from './contentful/post/post.component';
 
 export class Config {
-  // public static api:string = 'https://apidev.dollarstreet.org';
+  public static api:string = 'https://apidev.dollarstreet.org';
   // public static api:string = 'http://stage.dollarstreet.org';
   // public static api:string = 'http://128.199.60.70';
   // public static api:string = 'http://192.168.1.66';

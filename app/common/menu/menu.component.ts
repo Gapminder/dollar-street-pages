@@ -1,9 +1,7 @@
-import {Component, Input, OnInit, OnDestroy} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-
-import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
-import {SocialShareButtonsComponent} from '../social_share_buttons/social-share-buttons.component.ts';
+import { Component, Input, OnInit, OnDestroy, HostListener, Inject, ElementRef } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 
 let tpl = require('./menu.template.html');
 let style = require('./menu.css');
@@ -12,15 +10,19 @@ let style = require('./menu.css');
   selector: 'main-menu',
   template: tpl,
   styles: [style],
-  directives: [SocialShareButtonsComponent, DROPDOWN_DIRECTIVES, RouterLink]
+  directives: [SocialShareButtonsComponent, RouterLink]
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
   protected isOpenMenu:boolean = false;
   @Input()
   private hoverPlace:Observable<any>;
-
   private hoverPlaceSubscribe:any;
+  private element:ElementRef;
+
+  public constructor(@Inject(ElementRef) element:ElementRef) {
+    this.element = element;
+  }
 
   public ngOnInit():void {
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe(() => {
@@ -33,6 +35,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public ngOnDestroy():void {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  public isOutsideMainMenuClick(event:Event):void {
+    if (!this.element.nativeElement.contains(event.target) && this.isOpenMenu) {
+      this.isOpenMenu = false;
     }
   }
 }

@@ -1,10 +1,9 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import {RouteParams} from '@angular/router-deprecated';
-
-import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
-import {PhotographerProfileComponent} from './photographer-profile/photographer-profile.component';
-import {PhotographerPlacesComponent} from './photographer-places/photographer-places.component';
-import {FooterComponent} from '../common/footer/footer.component';
+import { Component, OnInit, Inject } from '@angular/core';
+import { RouteParams } from '@angular/router-deprecated';
+import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
+import { PhotographerProfileComponent } from './photographer-profile/photographer-profile.component';
+import { PhotographerPlacesComponent } from './photographer-places/photographer-places.component';
+import { FooterComponent } from '../common/footer/footer.component';
 
 let tpl = require('./photographer.template.html');
 let style = require('./photographer.css');

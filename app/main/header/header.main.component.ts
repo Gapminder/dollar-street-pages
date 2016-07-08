@@ -1,7 +1,6 @@
-import {Component, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-
-import {SocialShareButtonsComponent} from '../../common/social_share_buttons/social-share-buttons.component.ts';
+import { Component, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { SocialShareButtonsComponent } from '../../common/social_share_buttons/social-share-buttons.component.ts';
 
 let tpl = require('./header.main.template.html');
 let style = require('./header.main.css');

@@ -2,10 +2,11 @@
   padding-top: 67px;
 }
 
-.hover_portrait{
-  min-width:164px;
-  min-height:203px;
+.hover_portrait {
+  min-width: 164px;
+  min-height: 203px;
 }
+
 #places .places_header {
   padding-top: 30px;
   padding-bottom: 20px;
@@ -223,7 +224,7 @@
     min-height: 220px;
   }
 
-  #places  .see_more_container .custom-button {
+  #places .see_more_container .custom-button {
     margin-top: 10px;
   }
 }

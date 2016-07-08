@@ -2,8 +2,8 @@ const d3 = require('d3');
 const device = require('device.js')();
 const isDesktop = device.desktop();
 
-import {fromEvent} from 'rxjs/observable/fromEvent';
-import {Subject} from 'rxjs/Subject';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subject } from 'rxjs/Subject';
 
 export class StreetDrawService {
   public width:number;

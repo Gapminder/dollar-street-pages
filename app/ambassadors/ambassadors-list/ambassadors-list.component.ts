@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, NgZone, Inject} from '@angular/core';
-import {fromEvent} from 'rxjs/observable/fromEvent';
+import { Component, OnInit, OnDestroy, NgZone, Inject } from '@angular/core';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./ambassadors-list.template.html');
 let style = require('./ambassadors-list.css');

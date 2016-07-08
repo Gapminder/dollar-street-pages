@@ -1,12 +1,11 @@
-import {Component, Inject, OnInit, OnDestroy, NgZone} from '@angular/core';
-import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
-import {fromEvent} from 'rxjs/observable/fromEvent';
-
-import {FooterComponent} from '../common/footer/footer.component';
-import {LoaderComponent} from '../common/loader/loader.component';
-import {MainMenuComponent} from '../common/menu/menu.component';
-import {HomeHeaderComponent} from './home-header/home-header.component';
-import {HomeMediaComponent} from './home-media/home-media.component';
+import { Component, Inject, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Router, RouteParams, RouterLink } from '@angular/router-deprecated';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { FooterComponent } from '../common/footer/footer.component';
+import { LoaderComponent } from '../common/loader/loader.component';
+import { MainMenuComponent } from '../common/menu/menu.component';
+import { HomeHeaderComponent } from './home-header/home-header.component';
+import { HomeMediaComponent } from './home-media/home-media.component';
 
 let _ = require('lodash');
 

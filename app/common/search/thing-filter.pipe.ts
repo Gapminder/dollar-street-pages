@@ -1,5 +1,5 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {filter, chain} from 'lodash';
+import { Pipe, PipeTransform } from '@angular/core';
+import { filter, chain } from 'lodash';
 @Pipe({
   name: 'SearchFilter'
 })

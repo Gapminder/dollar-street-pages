@@ -1,15 +1,14 @@
-import {Component, Inject, OnInit, OnDestroy, ElementRef, NgZone} from '@angular/core';
-import {RouteParams, RouterLink} from '@angular/router-deprecated';
-import {Subject} from 'rxjs/Subject';
-
-import {FooterComponent} from '../common/footer/footer.component';
-import {StreetComponent} from '../common/street/street.component';
-import {HeaderComponent} from '../common/header/header.component';
-import {SliderPlaceComponent} from './slider/slider-place.component.ts';
-import {SliderMobilePlaceComponent} from './slider-mobile/slider-mobile-place.component.ts';
-import {FamilyPlaceComponent} from './family/family-place.component.ts';
-import {LoaderComponent} from '../common/loader/loader.component';
-import {fromEvent} from 'rxjs/observable/fromEvent';
+import { Component, Inject, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import { RouteParams, RouterLink } from '@angular/router-deprecated';
+import { Subject } from 'rxjs/Subject';
+import { FooterComponent } from '../common/footer/footer.component';
+import { StreetComponent } from '../common/street/street.component';
+import { HeaderComponent } from '../common/header/header.component';
+import { SliderPlaceComponent } from './slider/slider-place.component.ts';
+import { SliderMobilePlaceComponent } from './slider-mobile/slider-mobile-place.component.ts';
+import { FamilyPlaceComponent } from './family/family-place.component.ts';
+import { LoaderComponent } from '../common/loader/loader.component';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./place.template.html');
 let style = require('./place.css');

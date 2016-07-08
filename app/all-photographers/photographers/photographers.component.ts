@@ -1,8 +1,7 @@
-import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-
-import {PhotographersFilter} from './photographers-filter.pipe.ts';
-import {LoaderComponent} from '../../common/loader/loader.component';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { PhotographersFilter } from './photographers-filter.pipe.ts';
+import { LoaderComponent } from '../../common/loader/loader.component';
 
 let tpl = require('./photographers.template.html');
 let style = require('./photographers.css');

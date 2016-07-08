@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Inject} from '@angular/core';
-import {DomSanitizationService, SafeResourceUrl} from '@angular/platform-browser';
+import { Component, OnInit, Input, Inject } from '@angular/core';
+import { DomSanitizationService, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'gm-embedded-entry',

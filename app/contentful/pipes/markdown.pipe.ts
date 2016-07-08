@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 let marked = require('marked');
 
@@ -7,7 +7,7 @@ let marked = require('marked');
 })
 
 export class MarkdownPipe implements PipeTransform {
-  public transform(value: any): string {
+  public transform(value:any):string {
     return marked(value);
   }
 }

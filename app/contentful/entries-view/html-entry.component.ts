@@ -1,5 +1,5 @@
-import {Component, ViewEncapsulation, Input} from '@angular/core';
-import {MarkdownPipe} from '../pipes/markdown.pipe';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
+import { MarkdownPipe } from '../pipes/markdown.pipe';
 
 @Component({
   selector: 'gm-html-entry',

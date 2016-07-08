@@ -58,7 +58,7 @@
         <ul class="countries">
           <li *ngFor="let country of list.countries">
             <span class="country-name"
-              [routerLink]="['Country', {id: country._id}]">{{country.name}}</span>
+                  [routerLink]="['Country', {id: country._id}]">{{country.name}}</span>
           </li>
         </ul>
       </div>
@@ -67,7 +67,8 @@
 
   <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
     <div class="header">
-      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} houses in {{currentCountry}}</p>
+      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} houses in
+        {{currentCountry}}</p>
       <span (click)="closeLeftSideBar($event)">x</span>
     </div>
 
