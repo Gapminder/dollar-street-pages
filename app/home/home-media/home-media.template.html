@@ -7,9 +7,12 @@
 <div class="family-things-container family-things-container-scroll">
   <div class="family-images-container">
     <div class="family-image-container"
-         *ngFor="let image of images">
+         *ngFor="let image of images; let i = index"
+         (click)="openMedia(image, i)"
+         [ngClass]="{active: image._id === prevImageId}"
+         [style.order]="i">
       <div class="family-image"
-           [ngStyle]="{'background-image':image.background}">
+           [ngStyle]="{'background-image': image.background}">
 
         <div class="image-description">
           <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
@@ -18,6 +21,10 @@
         </div>
       </div>
     </div>
+
+    <home-media-view-block *ngIf="showImageBlock"
+                           [imageData]="imageData"
+                           [style.order]="imageBlockLocation"></home-media-view-block>
 
     <row-loader [items]="images" [field]="'background'" [itemHeight]="itemSize" [count]="zoom"></row-loader>
   </div>

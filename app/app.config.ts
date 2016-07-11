@@ -18,7 +18,7 @@ export class Config {
   // public static api:string = 'http://192.168.1.66';
   // public static api:string = 'http://192.168.1.145';
   // public static api:string = 'http://192.168.1.57';
-  //  public static api:string = 'http://192.168.1.147';
+  // public static api:string = 'http://192.168.1.147';
   // public static api:string = 'http://192.168.1.142';
   // public static api:string = 'http://192.168.0.102';
 

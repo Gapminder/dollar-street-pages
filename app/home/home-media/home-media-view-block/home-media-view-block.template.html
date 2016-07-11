@@ -1,0 +1,69 @@
+<div class="view-image-block-container">
+  <div class="view-image-block-content">
+    <div class="view-image-container">
+      <img [src]="imageData.image">
+    </div>
+
+    <div class="house-info-container">
+      <div class="header-container">
+        <img [src]="imageData.thing.icon" alt="">
+        <span>{{imageData.thing.name}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="view-image-block-footer-container row">
+    <div class="col-md-4">
+      <img class="icon-bottom-image cc-link" src="../../assets/img/icon-cc.svg">
+      <p>Photo by <a class="color-grey link" [routerLink]="['Photographer', {id: imageData.photographer._id}]">
+        {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a>
+        <a class="color-grey link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/"> CC by 4.0</a>
+      </p>
+    </div>
+
+    <div class="col-md-4 text-center">
+      <a class="color-grey" (click)="openPopUp()">
+        <i class="fa fa-search-plus"></i> View fullscreen
+      </a>
+      <a class="color-grey" [href]="imageData.image.replace('desktops', 'original')" download>
+        <i class="fa fa-download"></i> Download image
+      </a>
+    </div>
+
+    <div class="col-md-4 text-right link-to-matrix">
+      <a
+        [routerLink]="['Matrix', {thing: imageData.thing.name, countries: 'World', regions: 'World', zoom: '4', row: '1'}]"><span>Related searches</span>{{imageData.thing.name}}
+        in the world >></a>
+    </div>
+  </div>
+
+  <div class="isLoad" [hidden]="loader">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+<div class="fancyBox-container" *ngIf="popIsOpen" (click)="fancyBoxClose()">
+  <div class="fancyBox-image" [hidden]="!fancyBoxImage" [ngStyle]="{'background-image': fancyBoxImage}"></div>
+
+  <div class="load" [hidden]="fancyBoxImage">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

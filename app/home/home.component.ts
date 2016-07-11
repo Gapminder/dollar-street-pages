@@ -18,8 +18,8 @@ interface UrlParamsInterfase {
   regions:string;
   zoom:number;
   row:number;
-  lowIncome:number;
-  highIncome:number;
+  lowIncome?:number;
+  highIncome?:number;
 }
 
 @Component({
@@ -65,19 +65,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   public ngOnInit():void {
     this.placeId = this.routeParams.get('place');
 
-    if (!this.placeId) {
-      this.router.navigate(['Matrix', {
-        thing: 'Home',
-        countries: 'World',
-        regions: 'World',
-        zoom: 4,
-        row: 1,
-        lowIncome: 0,
-        highIncome: 15000
-      }]);
-
-      return;
-    }
+    this.urlParams = {
+      thing: this.routeParams.get('thing') ? decodeURI(this.routeParams.get('thing')) : 'Home',
+      countries: this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World',
+      regions: this.routeParams.get('regions') ? decodeURI(this.routeParams.get('regions')) : 'World',
+      zoom: parseInt(this.routeParams.get('zoom'), 10) || 4,
+      row: parseInt(this.routeParams.get('row'), 10) || 1
+    };
 
     this.homeIncomeFilterServiceSubscribe = this.homeIncomeFilterService.getData()
       .subscribe((val:any) => {
@@ -85,26 +79,18 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.error(val.err);
           return;
         }
-        this.homeIncomeData = val.data;
-      });
-    if (this.homeIncomeData) {
-      this.poor = this.homeIncomeData.poor;
-      this.rich = this.homeIncomeData.rich;
-    }
-    if (!this.homeIncomeData) {
-      this.poor = 0;
-      this.rich = 15000;
-    }
 
-    this.urlParams = {
-      thing: this.routeParams.get('thing') ? decodeURI(this.routeParams.get('thing')) : 'Home',
-      countries: this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World',
-      regions: this.routeParams.get('regions') ? decodeURI(this.routeParams.get('regions')) : 'World',
-      zoom: parseInt(this.routeParams.get('zoom'), 10) || 4,
-      row: parseInt(this.routeParams.get('row'), 10) || 1,
-      lowIncome: parseInt(this.routeParams.get('lowIncome'), 10) || this.poor,
-      highIncome: parseInt(this.routeParams.get('highIncome'), 10) || this.rich
-    };
+        this.homeIncomeData = val.data;
+
+        this.poor = this.homeIncomeData.poor;
+        this.rich = this.homeIncomeData.rich;
+
+        if (!this.locations) {
+          return;
+        }
+
+        this.initData();
+      });
 
     this.countriesFilterServiceSubscribe = this.countriesFilterService
       .getCountries(`thing=${this.urlParams.thing}`)
@@ -115,13 +101,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.locations = res.data;
 
-        this.titles = {
-          thing: this.urlParams.thing,
-          countries: this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(',')),
-          income: this.getIncomeTitle(this.urlParams.lowIncome, this.urlParams.highIncome)
-        };
+        if (!this.homeIncomeData) {
+          return;
+        }
 
-        this.loader = true;
+        this.initData();
       });
 
     this.scrollSubscribe = fromEvent(document, 'scroll')
@@ -140,6 +124,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy():void {
     this.countriesFilterServiceSubscribe.unsubscribe();
+    this.homeIncomeFilterServiceSubscribe.unsubscribe();
 
     if (this.scrollSubscribe) {
       this.scrollSubscribe.unsubscribe();
@@ -148,6 +133,33 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   protected getFamilyData(familyData:any):void {
     this.familyData = familyData;
+  }
+
+  private initData():void {
+    this.urlParams.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10) || this.poor;
+    this.urlParams.highIncome = parseInt(this.routeParams.get('highIncome'), 10) || this.rich;
+
+    if (!this.placeId) {
+      this.router.navigate(['Matrix', {
+        thing: 'Home',
+        countries: 'World',
+        regions: 'World',
+        zoom: 4,
+        row: 1,
+        lowIncome: this.poor,
+        highIncome: this.rich
+      }]);
+
+      return;
+    }
+
+    this.titles = {
+      thing: this.urlParams.thing,
+      countries: this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(',')),
+      income: this.getIncomeTitle(this.urlParams.lowIncome, this.urlParams.highIncome)
+    };
+
+    this.loader = true;
   }
 
   private getIncomeTitle(min:number, max:number):string {

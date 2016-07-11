@@ -45,6 +45,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public matrixServiceSubscrib:any;
   public matrixServiceOnboardingSubscribe:any;
   public streetData:any;
+
   private placesArr:any[];
   private element:HTMLElement;
   private rowEtalon:number = 0;
@@ -84,6 +85,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
+    console.log(444444, this.routeParams.get('lowIncome'), this.routeParams.get('highIncome'));
 
     if (window.localStorage && window.localStorage.getItem('onboarded')) {
       this.showOnboarding = false;
@@ -101,7 +103,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
       });
 
-    this.matrixServiceStreetSubscrib = this.matrixService.getStreetSettings(this.query)
+    this.matrixServiceStreetSubscrib = this.matrixService.getStreetSettings()
       .subscribe((val:any) => {
         if (val.err) {
           console.log(val.err);
