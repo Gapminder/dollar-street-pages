@@ -12,9 +12,10 @@
     </div>
 
     <div class="thing-pop-up" *ngIf="activeThing.shortDescription && !isOpenThingsFilter">
-      <span></span>
       <div class="thing-pop-up-content">
-        <p>{{activeThing?.shortDescription}} <a [routerLink]="['Article', {id: activeThing._id}]">Read more >></a></p>
+        <p> {{activeThing?.shortDescription}}</p> <p *ngIf = "activeThing?.isShowReadMore">
+          <a [routerLink]="['Article', {id: activeThing._id}]">Read more >></a>
+        </p>
       </div>
     </div>
   </div>
