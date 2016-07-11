@@ -243,4 +243,3 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     return query;
   }
 }
-

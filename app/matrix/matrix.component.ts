@@ -67,6 +67,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private zone:NgZone;
   private windowHistory:any = history;
   private matrixServiceStreetSubscrib:any;
+  private streetPlacesData:any;
 
   public constructor(@Inject('MatrixService') matrixService:any,
                      @Inject(ElementRef) element:ElementRef,
@@ -239,7 +240,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     document.body.scrollTop = document.documentElement.scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
 
     if (this.clonePlaces) {
-      this.streetPlaces.next(this.placesVal);
+      this.streetPlaces.next(this.streetPlacesData);
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
     }
   }
@@ -300,7 +301,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.placesVal = val.data.zoomPlaces;
-        let streetPlaces = val.data.streetPlaces;
+        this.streetPlacesData = val.data.streetPlaces;
 
         this.filtredPlaces = this.placesVal.filter((place:any):boolean => {
           return place;
@@ -313,12 +314,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.loader = true;
 
         let incomesArr = _
-          .chain(streetPlaces)
+          .chain(this.streetPlacesData)
           .map('income')
           .sortBy()
           .value();
-
-        this.streetPlaces.next(streetPlaces);
+        this.streetPlaces.next(this.streetPlacesData);
         this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
         if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== this.streetData.poor || Number(parseQuery.highIncome) !== this.streetData.rich)) {
