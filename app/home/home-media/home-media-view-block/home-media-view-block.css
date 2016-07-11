@@ -1,0 +1,117 @@
+.view-image-block-container {
+  margin: .5%;
+  position: relative;
+}
+
+.view-image-block-content .house-info-container .header-container,
+.view-image-block-content {
+  overflow: hidden;
+}
+
+.view-image-block-content .house-info-container .header-container img {
+  width: 35px;
+  margin-right: 5px;
+}
+
+.view-image-block-content .house-info-container .header-container span {
+  font-size: 16px;
+  vertical-align: bottom;
+}
+
+.view-image-block-content > div {
+  float: left;
+}
+
+.view-image-block-content .view-image-container {
+  width: calc(100% - 315px);
+}
+
+.view-image-block-content .view-image-container img {
+  width: 100%;
+}
+
+.view-image-block-content .house-info-container {
+  width: 300px;
+  margin-left: 15px;
+}
+
+.view-image-block-footer-container {
+  display: flex;
+  align-items: center;
+}
+
+.view-image-block-footer-container p,
+.view-image-block-footer-container a {
+  color: #374551;
+  font-size: 16px;
+  margin: 0;
+}
+
+.view-image-block-footer-container img {
+  width: 25px;
+  float: left;
+  margin-right: 10px;
+}
+
+.view-image-block-footer-container .text-center a:first-child {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.view-image-block-container .isLoad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+}
+
+.view-image-block-container .isLoad > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.fancyBox-container {
+  position: fixed !important;
+  background-color: rgba(0, 0, 0, .7);
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+}
+
+.fancyBox-container,
+.fancyBox-container .load,
+.fancyBox-container .load-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.fancyBox-container .load {
+  width: 65px;
+  height: 65px;
+  margin: auto;
+}
+
+.fancyBox-container .fancyBox-image {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.link-to-matrix span {
+  display: block;
+  font-family: 'Bariol Bold', sans-serif;
+}
