@@ -53,7 +53,7 @@
           </div>
 
           <h2>
-            <span>{{math.round(image.income)}}$ <img id="about-info" src="/assets/img/info-button.svg" alt=""
+            <span>{{math.numberConvertation(image.income)}}$ <img id="about-info" src="/assets/img/info-button.svg" alt=""
                                                      *ngIf="image.aboutData"
                                                      (click)="showInfo($event, true)"
                                                      (mouseenter)="showInfo($event)"

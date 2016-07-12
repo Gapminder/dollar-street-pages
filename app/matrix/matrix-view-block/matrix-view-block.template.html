@@ -10,7 +10,7 @@
            [routerLink]="['Country', {id: familyData?.country?._id}]">{{familyData?.country?.alias ||
           familyData?.country?.country}}</p>
         <div class="pull-right">
-          <p>$ {{math.round(place.income)}}</p>
+          <p>$ {{math.numberConvertation(place.income)}}</p>
           <a (click)="closeBlock()">x</a>
         </div>
       </div>

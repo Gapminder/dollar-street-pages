@@ -10,7 +10,7 @@
            [ngStyle]="{'background-image': header.icon}"></div>
 
       <p class="pull-left">{{header.family ? header.family + ' family, ' : ''}}{{header.income ?
-        math.round(header.income) + '$, ' : ''}}{{header.country}}</p>
+        math.numberConvertation(header.income) + '$, ' : ''}}{{header.country}}</p>
     </div>
 
     <things-filter [url]="query"

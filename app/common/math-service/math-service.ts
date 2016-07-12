@@ -1,8 +1,8 @@
 export class MathService {
-  public round(income:number):number {
+  public numberConvertation(income:number):any {
     if (!income) {
       return 0;
     }
-    return Math.round(income);
+    return income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
 }
