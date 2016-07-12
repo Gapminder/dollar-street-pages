@@ -85,7 +85,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
-    console.log(444444, this.routeParams.get('lowIncome'), this.routeParams.get('highIncome'));
 
     if (window.localStorage && window.localStorage.getItem('onboarded')) {
       this.showOnboarding = false;

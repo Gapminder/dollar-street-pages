@@ -15,7 +15,6 @@ export class ThingsFilterService {
       .get(`${Config.api}/consumer/api/v1/things-filter?${query}`)
       .map((res:any) => {
         let parseRes = JSON.parse(res._body);
-
         return {err: parseRes.error, data: parseRes.data};
       });
   }
