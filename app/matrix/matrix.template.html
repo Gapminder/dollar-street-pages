@@ -1,16 +1,15 @@
 <div class="matrix-header main-header">
   <div class="matrix-onboard" [hidden]="!showOnboarding">
-    <a class="pull-right close-button font-large" (click)="switchOnOnboarding(false)">x</a>
-    <div class="font-large">Find out how people <span class="font-bold">really</span> live</div>
-    <div>{{headerOnboard?.description}}</div>
-    <div class="onboard-buttons-container">
-      <a class="onboard-button-qt" (click)="startQuickTour()">Quick tour</a>
-      <a class="onboard-button-ml" (click)="switchOnOnboarding(false)">Maybe later</a>
+    <a class="pull-right close-button font-large"
+       (click)="switchOnOnboarding(false)"></a>
+    <div class="font-large">Find out how people <span class="font-bold really-underline">really</span> live</div>
+    <div class="header-onboard-editable-text">{{headerOnboard?.description}}</div>
+    <div class="onboard-buttons-container onboard-button-text">
+      <a class="onboard-button-qt"
+         (click)="startQuickTour()"><span>Quick tour!</span></a>
+      <a class="onboard-button-ml"
+         (click)="switchOnOnboarding(false)">Maybe later!</a>
     </div>
-  </div>
-
-  <div class="button" *ngIf="showOnboardingSwitcher">
-    <a class="onboard-button-ml" (click)="switchOnOnboarding(true)">Welcome wizard</a>
   </div>
 
   <div class="quick-tour"

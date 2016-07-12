@@ -22,6 +22,10 @@
         <li>
           <a [routerLink]="['Blog']">Blog</a>
         </li>
+        <li>
+          <a [routerLink]="['Matrix']"
+             (click)="switchOnOnboardingFromMenu()">Welcome wizard</a>
+        </li>
       </ul>
 
       <social-share-buttons></social-share-buttons>

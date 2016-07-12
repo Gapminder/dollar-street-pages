@@ -38,6 +38,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
+  protected switchOnOnboardingFromMenu():void {
+    if (window.localStorage && window.localStorage.getItem('onboarded')) {
+      window.localStorage.removeItem('onboarded');
+    }
+    location.reload();
+  }
+
   @HostListener('document:click', ['$event'])
   public isOutsideMainMenuClick(event:Event):void {
     if (!this.element.nativeElement.contains(event.target) && this.isOpenMenu) {
