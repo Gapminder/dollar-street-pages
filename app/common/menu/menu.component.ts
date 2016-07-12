@@ -26,6 +26,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
                      @Inject(ElementRef) element:ElementRef) {
     this.element = element;
     this.router = router;
+    this.isMatrixComponent = this.router.hostComponent.name === 'MatrixComponent';
   }
 
   public ngOnInit():void {
@@ -43,7 +44,6 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   protected switchOnOnboardingFromMenu():void {
-    this.isMatrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     window.localStorage.removeItem('onboarded');
 
     if (this.isMatrixComponent) {
