@@ -24,7 +24,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces:any[] = [];
   protected headerOnboard:string;
   protected showOnboarding:boolean = true;
-  protected showOnboardingSwitcher:boolean = false;
   protected switchOnQuickTour:boolean = false;
   protected numberOfStep:number = 1;
   protected baloonTips:any = {};
@@ -88,7 +87,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (window.localStorage && window.localStorage.getItem('onboarded')) {
       this.showOnboarding = false;
-      this.showOnboardingSwitcher = true;
       document.body.className = 'wizard';
     }
 
@@ -389,7 +387,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   protected startQuickTour():void {
     this.switchOnOnboarding(false);
-    this.showOnboardingSwitcher = false;
     this.numberOfStep = 1;
     window.localStorage.setItem('onboarded', 'true');
     this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
@@ -403,7 +400,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected closeQuickTour():void {
-    this.showOnboardingSwitcher = true;
     this.switchOnQuickTour = false;
   }
 
@@ -462,12 +458,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
       }, 0);
       this.showOnboarding = false;
-      this.showOnboardingSwitcher = true;
       return;
     }
 
     this.showOnboarding = true;
-    this.showOnboardingSwitcher = false;
     this.switchOnQuickTour = false;
 
     setTimeout(function ():void {
