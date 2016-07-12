@@ -20,6 +20,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   private hoverPlaceSubscribe:any;
   private element:ElementRef;
   private router:Router;
+  private isMatrixComponent:boolean;
 
   public constructor(@Inject(Router) router:Router,
                      @Inject(ElementRef) element:ElementRef) {
@@ -42,13 +43,15 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   protected switchOnOnboardingFromMenu():void {
-    let ifOnMatrixPage = this.router.hostComponent.name === 'MatrixComponent';
-
-    if (ifOnMatrixPage) {
-      window.localStorage.removeItem('onboarded');
-      location.reload();
-    }
+    this.isMatrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     window.localStorage.removeItem('onboarded');
+
+    if (this.isMatrixComponent) {
+      location.reload();
+
+      return;
+    }
+
     this.router.navigate(['Matrix']);
   }
 
