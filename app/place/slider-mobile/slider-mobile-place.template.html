@@ -44,7 +44,7 @@
           [routerLink]="['Matrix', {thing: activeThing.thingName, countries:'World', regions: 'World', zoom: 4, row: 1}]">
           « All {{activeThing.plural}}
         </span>
-        <h2><span>{{math.round(chosenPlace?.income)}}$ <img src="/assets/img/info-button.svg" alt=""
+        <h2><span>{{math.numberConvertation(chosenPlace?.income)}}$ <img src="/assets/img/info-button.svg" alt=""
                                                             *ngIf="chosenPlace?.aboutData"
                                                             (click)="showInfo()"></span>
           {{chosenPlace?.familyName}}
