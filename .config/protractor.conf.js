@@ -19,22 +19,24 @@ exports.config = {
     showColors: true,
     isVerbose: false,
     includeStackTrace: false,
-    defaultTimeoutInterval: 30000
+    defaultTimeoutInterval: 500000
   },
   directConnect: true,
-
-  capabilities: {
-    'browserName': 'chrome',
-    'chromeOptions': {
-      'args': ['show-fps-counter=true']
+  
+  multiCapabilities: [
+    {
+      browserName: 'chrome',
+      shardTestFiles: true,
+      maxInstances: 1
     }
-  },
-
-  onPrepare: function() {
-    browser.ignoreSynchronization = true;
-  },
+    /*{
+      browserName: 'firefox',
+      shardTestFiles: true,
+      maxInstances: 4
+    }*/
+  ],
 
   seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.52.0.jar',
 
   useAllAngular2AppRoots: true
-};
+  };
