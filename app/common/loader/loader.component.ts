@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 let tpl = require('./loader.template.html');
 let style = require('./loader.css');
@@ -14,8 +14,14 @@ export class LoaderComponent implements OnInit {
 
   public ngOnInit():void {
     let header = document.querySelector('.main-header');
+    let onboardingHeight = document.querySelector('.matrix-onboard');
+
     if (header) {
       this.top = header.clientHeight;
+
+      if (onboardingHeight) {
+        this.top = this.top - onboardingHeight.clientHeight;
+      }
     }
   }
 }

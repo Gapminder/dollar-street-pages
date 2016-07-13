@@ -1,6 +1,6 @@
-import {Component, Inject, Input, OnInit, OnDestroy} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-import {MainMenuComponent} from '../menu/menu.component';
+import { Component, Inject, Input, OnInit, OnDestroy } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { MainMenuComponent } from '../menu/menu.component';
 
 let tpl = require('./header.template.html');
 let style = require('./header.css');
@@ -14,9 +14,9 @@ let style = require('./header.css');
 
 export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
   @Input()
-  private title:string;
+  protected title:string;
   @Input()
-  private subTitle:string;
+  protected subTitle:string;
 
   private defaultThing:any;
   private headerService:any;

@@ -1,10 +1,9 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import {RouteParams} from '@angular/router-deprecated';
-
-import {HeaderWithoutSearchComponent} from '../common/headerWithoutSearch/header.component';
-import {PhotographerProfileComponent} from './photographer-profile/photographer-profile.component';
-import {PhotographerPlacesComponent} from './photographer-places/photographer-places.component';
-import {FooterComponent} from '../common/footer/footer.component';
+import { Component, OnInit, Inject } from '@angular/core';
+import { RouteParams } from '@angular/router-deprecated';
+import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
+import { PhotographerProfileComponent } from './photographer-profile/photographer-profile.component';
+import { PhotographerPlacesComponent } from './photographer-places/photographer-places.component';
+import { FooterComponent } from '../common/footer/footer.component';
 
 let tpl = require('./photographer.template.html');
 let style = require('./photographer.css');
@@ -17,15 +16,14 @@ let style = require('./photographer.css');
 })
 
 export class PhotographerComponent implements OnInit {
-  private title:string = 'Photographer';
   private routeParams:RouteParams;
   private photographerId:string;
 
-  public constructor(@Inject(RouteParams) routeParams) {
+  public constructor(@Inject(RouteParams) routeParams:RouteParams) {
     this.routeParams = routeParams;
   }
 
-  public ngOnInit() {
+  public ngOnInit():void {
     this.photographerId = this.routeParams.get('id');
   }
 }

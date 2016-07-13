@@ -38,8 +38,7 @@ export let places = {
       'thing': '546ccf730f7ddf45c017962f',
       'country': 'India',
       'region': 'Asia'
-    }],
-    'familyThingId': '546ccf730f7ddf45c017962f'
+    }]
   },
   'error': false
 };

@@ -1,7 +1,7 @@
-import {Inject} from '@angular/core';
-import {Location} from '@angular/common';
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
+import { Inject } from '@angular/core';
+import { Location } from '@angular/common';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 export class UrlChangeService {
   public location:Location;

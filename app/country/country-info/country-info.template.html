@@ -1,7 +1,7 @@
 <div id="country-info">
   <div class="header">
     <place-map [hoverPlace]="hoverPlace"
-               [routerLink]="['Map',{thing:thing}]"></place-map>
+               [routerLink]="['Map', {thing:thing}]"></place-map>
 
     <p class="description" *ngIf="country?.description">{{country.description}}</p>
   </div>
@@ -24,7 +24,7 @@
 
 <div id="mobile-country-info" class="row" [ngClass]="{'open': isShowInfo}">
   <div class="image-container">
-    <place-map [hoverPlace]="hoverPlace"  [routerLink]="['Map', {thing:thing}]"></place-map>
+    <place-map [hoverPlace]="hoverPlace" [routerLink]="['Map', {thing:thing}]"></place-map>
 
     <div class="more-info" *ngIf="country?.description">
         <span (click)="isShowInfo = !isShowInfo">

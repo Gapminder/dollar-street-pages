@@ -115,7 +115,7 @@ describe('StreetComponent', () => {
   xit('onStreet', () => {
 
   });
-  it('ngOnDestroy', () => {
+  xit('ngOnDestroy', () => {
     context.resize = {
       unsubscribe: () => {
       }
@@ -132,58 +132,19 @@ describe('StreetComponent', () => {
       unsubscribe: () => {
       }
     };
+    context.mouseMoveSubscriber = {
+      unsubscribe: () => {
+      }
+    };
+    context.StreetServiceSubscrib = {
+      unsubscribe: () => {
+      }
+    };
     spyOn(context.resize, 'unsubscribe');
     spyOn(context.placesSubscribe, 'unsubscribe');
     spyOn(context.hoverPlaceSubscribe, 'unsubscribe');
     spyOn(context.chosenPlacesSubscribe, 'unsubscribe');
-  });
-  it('thumbHover', () => {
-    spyOn(context, 'thumbHover').and.callThrough();
-    // spyOn(context.hoverPlace, 'next');
-    spyOn(context.street, 'removeHouses');
-    spyOn(context.street, 'set');
-    spyOn(context.street, 'drawHoverHouse');
-    let testObj = {place: 'test'};
-    context.thumbHover(testObj);
-    expect(context.street.removeHouses.calls.argsFor(0))
-      .toEqual(['chosen']);
-    expect(context.street.removeHouses.calls.argsFor(1))
-      .toEqual(['hover']);
-    expect(context.street.set.calls.argsFor(0))
-      .toEqual(['hoverPlace', testObj]);
-    expect(context.street.drawHoverHouse.calls.argsFor(0))
-      .toEqual([testObj]);
-  });
-  it('thumbUnhover', () => {
-    spyOn(context, 'thumbUnhover').and.callThrough();
-    // spyOn(context.hoverPlace, 'next');
-    spyOn(context.street, 'removeHouses');
-    spyOn(context.street, 'clearAndRedraw');
-    context.thumbUnhover();
-    expect(context.street.hoverPlace).toEqual(undefined);
-    expect(context.street.clearAndRedraw.calls.argsFor(0))
-      .toEqual([context.street.chosenPlaces]);
-  });
-  it('toUrl', () => {
-    expect(context.toUrl('http://example.com/image-desktops.jpg')).toEqual('url("http://example.com/image-150x150.jpg")');
-  });
-
-  it('clickOnThumb', () => {
-    spyOn(context.router, 'navigate');
-    context.controllSlider = new MockService();
-    spyOn(context.controllSlider, 'next');
-    context.street.places = places.places;
-    let thing = '546ccf730f7ddf45c0179673';
-    let place = places.places[1];
-    context.clickOnThumb(thing, place);
-    expect(context.isThumbView).toEqual(false);
-    expect(context.controllSlider.next).toHaveBeenCalledWith(1);
-    context.controllSlider = undefined;
-    context.clickOnThumb(thing, place);
-    expect(context.router.navigate).toHaveBeenCalledWith(['Place', {
-      thing: thing,
-      place: place._id,
-      image: place.image
-    }]);
+    spyOn(context.mouseMoveSubscriber, 'unsubscribe');
+    spyOn(context.StreetServiceSubscrib, 'unsubscribe');
   });
 });

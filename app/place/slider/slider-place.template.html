@@ -10,6 +10,7 @@
             (click)="slideNext()"
             [hidden]="(position || position === 0) && allPlaces.length - 1 === position"></span>
   </div>
+
   <div class="slider-container">
     <div class="slider-content">
       <div class="slide" *ngFor="let image of images; let i=index">
@@ -19,12 +20,11 @@
               <img class="slide-img" [src]="image.background" alt="">
               <div class="thing-content">
                 <img [src]="activeThing.iconLight" alt="">
-                <span>{{activeThing.name}}</span>
+                <span>{{activeThing.thingName}}</span>
               </div>
             </div>
-            <div class="slide-sidebar">
-              <img *ngIf="image.family"
-                   [src]="image.family.background"
+            <div *ngIf="image.family" class="slide-sidebar">
+              <img [src]="image.family.background"
                    [routerLink]="['Place', {thing: image.family.thing, place: image._id, image: image.family._id}]"
                    alt="Family portrait">
 
@@ -40,30 +40,55 @@
           <div class="slide-header">
             <div class="slide-button pull-left">
               <span
-                [routerLink]="['Matrix', {thing: activeThing._id, countries:'World', rregion: 'World', zoom: 5, row: 1}]">
+                [routerLink]="['Matrix', {thing: activeThing.thingName, countries: 'World', regions: 'World', zoom: 4, row: 1}]">
                 << All {{activeThing.plural}}
               </span>
             </div>
             <div class="slide-map pull-right">
-              <place-map [hoverPlace]="hoverPlace"  *ngIf="hoverPlace"
-                         [routerLink]="['Map', {thing: activeThing?._id}]"></place-map>
+              <place-map [hoverPlace]="hoverPlace"
+                         *ngIf="hoverPlace"
+                         [routerLink]="['Map', {thing: activeThing?.thingName}]">
+              </place-map>
             </div>
           </div>
 
           <h2>
-            <span>{{math.round(image.income)}}$ <img src="/assets/img/info-button.svg" alt="" *ngIf="image.aboutData"
-                                         (click)="showInfo()"></span>
-            {{image.familyName}} {{image.familyName ?
-            'family' : ''}} in {{image.country}}
+            <span>{{math.round(image.income)}}$ <img id="about-info" src="/assets/img/info-button.svg" alt=""
+                                                     *ngIf="image.aboutData"
+                                                     (click)="showInfo($event, true)"
+                                                     (mouseenter)="showInfo($event)"
+                                                     (mouseleave)="showInfoUnhover()"></span>
+            {{image.familyName}} {{image.familyName ? 'family' : ''}} in {{image.country}}
           </h2>
 
-          <p *ngIf="image.familyInfoSummary">{{image.familyInfoSummary}}</p>
+          <p *ngIf="image.familyInfoSummary && !openReadMore">
+            {{image.familyInfoSummary}}
+            <span class="span-link" (click)="openReadMore = true"
+                  *ngIf="image.familyInfo && !openReadMore">Read more >></span>
+          </p>
+          <p *ngIf="image.familyInfo && openReadMore">
+            {{image.familyInfo}}
+            <span class="span-link" (click)="openReadMore = false" *ngIf="openReadMore">Read less <<</span>
+          </p>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="fancyBox-container" *ngIf="fancyBoxImage" (click)="fancyBoxClose()">
-    <div class="fancyBox-image" [ngStyle]="{'background-image':fancyBoxImage}"></div>
+  <div class="fancyBox-container" *ngIf="popIsOpen" (click)="fancyBoxClose()">
+    <div class="fancyBox-image" [hidden]="!fancyBoxImage" [ngStyle]="{'background-image': fancyBoxImage}"></div>
+
+    <div class="load" [hidden]="fancyBoxImage">
+      <div class="la-ball-spin la-dark la-2x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   </div>
 </div>

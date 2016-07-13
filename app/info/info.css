@@ -7,18 +7,12 @@ footer {
 
 @media (min-width: 768px) {
   #info-page {
-    padding-bottom: 323px;
+    padding-bottom: 250px;
   }
 }
 
 @media (max-width: 767px) {
   #info-page {
-    padding-bottom: 244px;
-  }
-}
-
-@media (max-width: 600px) {
-  #info-page {
-    padding-bottom: 237px;
+    padding-bottom: 350px;
   }
 }

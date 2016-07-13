@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
 
 let tpl = require('./concept.main.template.html');
 let style = require('./concept.main.css');
@@ -25,11 +25,11 @@ export class ConceptMainComponent implements OnInit, OnDestroy {
   };
   private conceptMainServiceSubscribe:any;
 
-  public constructor(@Inject('ConceptMainService') conceptMainService) {
+  public constructor(@Inject('ConceptMainService') conceptMainService:any) {
     this.conceptMainService = conceptMainService;
   }
 
-  public ngOnInit() {
+  public ngOnInit():void {
     this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptThings({})
       .subscribe((res:any) => {
         if (res.err) {
@@ -45,16 +45,16 @@ export class ConceptMainComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     this.conceptMainServiceSubscribe.unsubscribe();
   }
 
-  selectThing(thing:any) {
+  public selectThing(thing:any):void {
     this.activeThing = {_id: thing._id, plural: thing.plural, icon: thing.thingUrl};
     this.renderIncomePlot(thing);
   };
 
-  renderIncomePlot(thing:any) {
+  public renderIncomePlot(thing:any):void {
     if (this.conceptMainServiceSubscribe) {
       this.conceptMainServiceSubscribe.unsubscribe();
     }

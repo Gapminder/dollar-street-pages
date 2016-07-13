@@ -1,0 +1,10 @@
+<div id="article-page">
+  <header [title]="title"></header>
+
+  <div id="article-content" class="container">
+    <div class="content" [innerHtml]="article?.description"></div>
+  </div>
+</div>
+
+<footer></footer>
+<loader [hidden]="loader"></loader>

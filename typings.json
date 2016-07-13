@@ -6,7 +6,12 @@
   },
   "devDependencies": {},
   "ambientDependencies": {
-    "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#bc92442c075929849ec41d28ab618892ba493504",
     "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#83b88a031cc8f2006fd361bf0a0b548c3bcc8259"
+  },
+  "globalDependencies": {
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
+    "marked": "registry:dt/marked#0.0.0+20160325085301",
+    "require": "registry:dt/require#2.1.20+20160316155526"
   }
 }

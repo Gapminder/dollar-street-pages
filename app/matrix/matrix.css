@@ -1,6 +1,113 @@
 matrix-images {
   display: block;
 }
+
+.matrix-onboard {
+  background-color: #f4f5f5;
+  border-bottom: solid 1px #c6c7c9;
+  width: 100%;
+  padding: 15px;
+  font-family: 'Bariol Regular', sans-serif;
+  text-align: center;
+}
+
+.font-bold {
+  font-family: 'Bariol Bold', sans-serif;
+}
+
+.font-large {
+  height: 57px;
+  color: #2e4350;
+  font-size: 47px;
+  line-height: 55px;
+}
+
+.header-onboard-editable-text {
+  color: #2e4350;
+  font-size: 21px;
+  line-height: 29px;
+}
+
+.onboard-button-ml,
+.onboard-button-qt {
+  border: 1px solid #e4e6e7;
+  background-color: white;
+  color: black;
+  border-radius: 8px;
+  padding: 5px 32px;
+}
+
+.onboard-button-qt {
+  background-color: #f8ca45;
+  border: none;
+}
+
+.onboard-buttons-container {
+  margin-top: 10px;
+}
+
+.onboard-button-text {
+  color: #2e4350;
+  font-size: 24px;
+  line-height: 38px;
+}
+
+.really-underline {
+  background: url("../assets/img/underline.svg") no-repeat center center;
+  padding-bottom: 50px;
+}
+
+.close-button {
+  background: url("../assets/img/close-button.svg") no-repeat center center;
+  cursor: pointer;
+  height: 19px;
+  width: 19px;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+}
+
+.quick-tour {
+  background-color: #525e68;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  position: absolute;
+  width: 300px;
+  opacity: 0.95;
+  z-index: 600;
+}
+
+.cc-link {
+  color: #aed2d3;
+}
+
+.quick-tour:after {
+  bottom: 100%;
+  left: 20%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-bottom-color: #525e68;
+  border-width: 10px;
+  margin-left: -15px;
+}
+
+.marg-5-px {
+  margin-top: 5px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.qt-baloon-name {
+  font-family: 'Bariol Bold', sans-serif;
+}
+
 .matrix-header {
   z-index: 9995;
 }
@@ -20,6 +127,7 @@ matrix-images {
   position: fixed;
   top: 126px;
   right: 16px;
+  z-index: 99;
 }
 
 .zoom-column button,
@@ -66,7 +174,10 @@ matrix-images {
 }
 
 footer {
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 @media (max-width: 1200px) {
@@ -92,6 +203,19 @@ footer {
   .zoom-column button {
     width: 29px;
     height: 29px;
+  }
+}
+
+@media (min-width: 768px) {
+  matrix-images {
+    padding-bottom: 250px;
+    padding-top: 112px;
+  }
+}
+
+@media (max-width: 767px) {
+  matrix-images {
+    padding-bottom: 325px;
   }
 }
 

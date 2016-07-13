@@ -14,21 +14,14 @@ footer {
 
 @media (min-width: 768px) {
   ambassadors-list {
-    padding-bottom: 323px;
+    padding-bottom: 250px;
     display: block;
   }
 }
-
 
 @media (max-width: 767px) {
   ambassadors-list {
-    padding-bottom: 244px;
+    padding-bottom: 350px;
     display: block;
-  }
-}
-
-@media (max-width: 600px) {
-  ambassadors-list {
-    padding-bottom: 237px;
   }
 }

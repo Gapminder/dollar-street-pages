@@ -1,11 +1,21 @@
 <div id="mobile-search"
      [ngClass]="{'place-page': !matrixComponent}"
      [hidden]="!(activeThing && activeThing.iconDark)">
-  <img class="thing-icon pull-left"
+  <div class="thing-icon-container thing-icon pull-left"
        *ngIf="!placeComponent"
-       (click)="isOpen = !isOpen"
-       [src]="activeThing.iconDark"
-       [alt]="activeThing.name">
+       [ngClass]="{exist: activeThing.shortDescription}">
+    <img class="thing-icon icon"
+         [hidden]="!(activeThing && activeThing.iconDark)"
+         [src]="activeThing.iconDark"
+         [alt]="activeThing.name">
+
+    <div class="thing-pop-up">
+      <span></span>
+      <div class="thing-pop-up-content">
+        <p>{{activeThing?.shortDescription}}<a [routerLink]="['Article', {id: activeThing._id}]">Read more >></a></p>
+      </div>
+    </div>
+  </div>
 
   <div class="thing-icon pull-left"
        *ngIf="placeComponent && header && header.icon"
@@ -14,10 +24,12 @@
   <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="matrixComponent">{{mobileTitle}}</div>
 
   <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="placeComponent && header">
-    {{header.family[0] ? header.family[0]+', ':''}}{{header.income ? math.round(header.income) + '$, ':''}}{{header.country}}
+    {{header.family[0] ? header.family[0]+', ':''}}{{header.income ? math.round(header.income) + '$,
+    ':''}}{{header.country}}
   </div>
 
-  <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="mapComponent">{{activeThing.name}} <span>on the World map</span></div>
+  <div class="title-container line-clamp line-clamp-1 pull-left" *ngIf="mapComponent">{{activeThing.name}} <span>on the World map</span>
+  </div>
 
   <img class="open-modal-icon"
        src="/assets/img/search-icon.svg"
@@ -54,12 +66,9 @@
                    [src]="activeThing.iconLight" alt="activeThing.name">
             </div>
 
-            <div class="item-name">
-              {{activeThing.name}}
-            </div>
+            <div class="item-name">{{activeThing.name}}</div>
 
-            <div class="pointer"
-                 (click)="goToThing()">
+            <div class="pointer" (click)="goToThing()">
             </div>
           </div>
         </div>
@@ -73,12 +82,11 @@
                (click)="goToThing(thing)">
             <div class="item-icon">
               <img *ngIf="thing.icon"
-                   [src]="thing.icon" alt="thing.name">
+                   [src]="thing.icon"
+                   alt="thing.name">
             </div>
 
-            <div class="item-name">
-              {{thing.name}}
-            </div>
+            <div class="item-name">{{thing.name}}</div>
           </div>
         </div>
       </div>

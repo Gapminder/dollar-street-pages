@@ -1,30 +1,30 @@
-import {provide, ApplicationRef, NgZone} from '@angular/core';
-import {ROUTER_PRIMARY_COMPONENT, ROUTER_PROVIDERS, RouteParams} from '@angular/router-deprecated';
-import {APP_BASE_HREF} from '@angular/common';
-import {HTTP_PROVIDERS} from '@angular/http';
-import {MockNgZone,MockApplicationRef} from '@angular/core/testing';
-
-import {AppComponent} from '../../../app/app.component';
-import {MathService} from '../../../app/common/math-service/math-service';
-import {StreetDrawService} from '../../../app/common/street/street.service';
-import {MatrixService} from '../../../app/matrix/matrix.service';
-import {HeaderService} from '../../../app/common/header/header.service';
-import {SearchService} from '../../../app/common/search/search.service';
-import {CountryInfoService} from '../../../app/country/country-info/country-info.service';
-import {CountryPlacesService} from '../../../app/country/country-places/country-places.service';
-import {MainPlacesService} from '../../../app/main/places/main.places.service.ts';
-import {ThingsMainService} from '../../../app/main/things/things.main.service';
-import {PlaceStreetService} from '../../../app/place/place-street.service.ts';
-import {FamilyPlaceService} from '../../../app/place/family/family-place.service';
-import {ConceptMainService} from '../../../app/main/concept/concept.main.service';
-import {MapService} from '../../../app/map/map.service';
-import {UrlChangeService} from '../../../app/common/url-change/url-change.service';
-import {PhotographersService} from '../../../app/all-photographers/photographers/photographers.service';
-import {PhotographerProfileService} from '../../../app/photographer/photographer-profile/photographer-profile.service';
-import {PhotographerPlacesService} from '../../../app/photographer/photographer-places/photographer-places.service';
-import {AmbassadorsListService} from '../../../app/ambassadors/ambassadors-list/ambassadors-list.service';
-import {SocialShareButtonsService} from '../../../app/common/social_share_buttons/social-share-buttons.service';
-import {InfoContextService} from '../../../app/info/info-context/info-context.service';
+import { provide, ApplicationRef, NgZone } from '@angular/core';
+import { ROUTER_PRIMARY_COMPONENT, ROUTER_PROVIDERS, RouteParams } from '@angular/router-deprecated';
+import { APP_BASE_HREF } from '@angular/common';
+import { HTTP_PROVIDERS } from '@angular/http';
+import { MockNgZone, MockApplicationRef } from '@angular/core/testing';
+import { AppComponent } from '../../../app/app.component';
+import { MathService } from '../../../app/common/math-service/math-service';
+import { StreetDrawService } from '../../../app/common/street/street.service';
+import { HomeIncomeFilterService } from '../../../app/home/home-income-filter.service';
+import { StreetSettingsService } from '../../../app/common/street/street.settings.service';
+import { MatrixService } from '../../../app/matrix/matrix.service';
+import { HeaderService } from '../../../app/common/header/header.service';
+import { SearchService } from '../../../app/common/search/search.service';
+import { CountryInfoService } from '../../../app/country/country-info/country-info.service';
+import { CountryPlacesService } from '../../../app/country/country-places/country-places.service';
+import { MainPlacesService } from '../../../app/main/places/main.places.service.ts';
+import { ThingsMainService } from '../../../app/main/things/things.main.service';
+import { ConceptMainService } from '../../../app/main/concept/concept.main.service';
+import { MapService } from '../../../app/map/map.service';
+import { UrlChangeService } from '../../../app/common/url-change/url-change.service';
+import { PhotographersService } from '../../../app/all-photographers/photographers/photographers.service';
+import { PhotographerProfileService } from '../../../app/photographer/photographer-profile/photographer-profile.service';
+import { PhotographerPlacesService } from '../../../app/photographer/photographer-places/photographer-places.service';
+import { AmbassadorsListService } from '../../../app/ambassadors/ambassadors-list/ambassadors-list.service';
+import { SocialShareButtonsService } from '../../../app/common/social_share_buttons/social-share-buttons.service';
+import { InfoContextService } from '../../../app/info/info-context/info-context.service';
+import { FooterService } from '../../../app/common/footer/footer.service';
 
 export class MockCommonDependency {
   public getProviders():Array<any> {
@@ -39,9 +39,9 @@ export class MockCommonDependency {
       provide('MatrixService', {useClass: MatrixService}),
       provide('HeaderService', {useClass: HeaderService}),
       provide('SearchService', {useClass: SearchService}),
+      provide('StreetSettingsService', {useClass: StreetSettingsService}),
+      provide('HomeIncomeFilterService', {useClass: HomeIncomeFilterService}),
       provide('MainPlacesService', {useClass: MainPlacesService}),
-      provide('PlaceStreetService', {useClass: PlaceStreetService}),
-      provide('FamilyPlaceService', {useClass: FamilyPlaceService}),
       provide('MapService', {useClass: MapService}),
       provide('UrlChangeService', {useClass: UrlChangeService}),
       provide('PhotographerProfileService', {useClass: PhotographerProfileService}),
@@ -52,6 +52,7 @@ export class MockCommonDependency {
       provide('PhotographersService', {useClass: PhotographersService}),
       provide('SocialShareButtonsService', {useClass: SocialShareButtonsService}),
       provide('InfoContextService', {useClass: InfoContextService}),
+      provide('FooterService', {useClass: FooterService}),
       provide('Math', {useClass: MathService}),
       provide(APP_BASE_HREF, {useValue: '/'}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: AppComponent}),

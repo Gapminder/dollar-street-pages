@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 let tpl = require('./info-context.template.html');
 let style = require('./info-context.css');
@@ -22,7 +22,7 @@ export class InfoContextComponent implements OnInit, OnDestroy {
   public ngOnInit():void {
     this.infoContextServiceSubscribe = this.infoContextService.getInfo().subscribe((val:any) => {
       if (val.err) {
-        console.log(val.err);
+        console.error(val.err);
         return;
       }
 

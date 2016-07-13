@@ -1,0 +1,21 @@
+<svg id="icon" xmlns="http://www.w3.org/2000/svg" width="66" height="66" viewBox="0 0 66 66">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: none;
+      stroke: #dddfe2;
+      stroke-linejoin: round;
+      stroke-width: 6px;
+      }
+
+      .cls-2 {
+      font-size: 32px;
+      fill: #dddfe2;
+      font-family: Arial;
+      font-weight: 700;
+      }
+    </style>
+  </defs>
+  <circle class="cls-1" cx="33" cy="33" r="30"/>
+  <text id="сс" class="cls-2" x="15.228" y="41.405">сс</text>
+</svg>

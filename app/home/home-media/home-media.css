@@ -1,0 +1,181 @@
+.go-to-photographer-page {
+  margin: 0 .5%;
+}
+
+.go-to-photographer-page p {
+  margin: 0;
+}
+
+.go-to-photographer-page a {
+  color: #374551;
+  text-decoration: underline;
+}
+
+.family-things-container {
+  min-height: 450px;
+  padding-top: 15px;
+}
+
+.family-images-container {
+  display: flex;
+  flex-wrap: wrap;
+  vertical-align: top;
+  width: 100%;
+  min-height: 250px;
+  position: relative;
+}
+
+.family-images-container .family-image-container {
+  width: 24%;
+  margin: .5%;
+  float: left;
+  padding-top: 24%;
+  position: relative;
+  cursor: pointer;
+}
+
+.family-images-container .family-image-container.active {
+  box-shadow: 0 0 0 5px #374551 inset;
+}
+
+.family-images-container .family-image {
+  background-position: 50% 50%;
+  background-size: cover;
+}
+
+.family-images-container .family-image,
+#map-info-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1;
+}
+
+.family-things-container .image-description {
+  color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  padding: 30px 8px 8px;
+  font-size: 20px;
+  font-style: italic;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+}
+
+.family-things-container .image-description img {
+  float: left;
+  width: 30px;
+  margin: -8px 10px 0 0;
+}
+
+.family-image .hover-block {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -o-transition: all .2s ease-out;
+  transition: all .2s ease-out;
+  display: block;
+  opacity: 0;
+}
+
+.family-image:hover .hover-block {
+  opacity: 1;
+}
+
+.family-image .hover-block span {
+  width: 50px;
+  height: 50px;
+  line-height: 26px;
+  text-align: center;
+  font-size: 75px;
+  margin: auto;
+  color: white;
+}
+
+@media (max-width: 767px) {
+  .family-images-container .family-image-container {
+    padding-top: 32.33%;
+    width: 32.33%;
+  }
+
+  .family-things-container .image-description {
+    padding: 30px 8px 8px;
+    font-size: 14px;
+  }
+
+  .family-things-container .image-description img {
+    width: 16px;
+    margin: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .family-things-container .image-description {
+    padding: 30px 8px 8px;
+    font-size: 16px;
+  }
+
+  .family-things-container .image-description img {
+    width: 20px;
+    margin: 0 10px 0 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .family-things-container .image-description {
+    font-size: 20px;
+  }
+
+  .family-things-container .image-description img {
+    width: 30px;
+    margin: -8px 10px 0 0;
+  }
+}
+
+.hover-block {
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -o-transition: all .2s ease-out;
+  transition: all .2s ease-out;
+}
+
+.hover-block,
+.hover-block span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.hover-block span {
+  width: 50px;
+  height: 50px;
+  line-height: 26px;
+  text-align: center;
+  font-size: 75px;
+  margin: auto;
+  color: white;
+}
+
+.thumbViewPlace:hover .hover-block {
+  opacity: 1;
+}
+
+home-media-view-block {
+  display: block;
+  clear: both;
+  width: 100%;
+}

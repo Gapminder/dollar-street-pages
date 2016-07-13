@@ -1,6 +1,7 @@
 .slide-description .slide-header .slide-map {
   width: 100px;
 }
+
 .place-slider-wrapper {
   background-color: #ecf0f6;
   position: relative;
@@ -200,7 +201,7 @@
 
 .fancyBox-container {
   position: fixed !important;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .7);
   z-index: 9999;
   width: 100%;
   height: 100%;
@@ -260,4 +261,11 @@
   margin-left: -7px;
   margin-right: 7px;
   cursor: pointer;
+}
+
+.span-link {
+  cursor: pointer;
+  color: #0567bf;
+  font-weight: bold;
+  font-size: smaller;
 }

@@ -11,11 +11,6 @@
           <a [routerLink]="['Main']">First page</a>
         </li>
         <li>
-          <a [routerLink]="['Matrix', goToMatrix]">
-             {{thing && thing.plural}}
-          </a>
-        </li>
-        <li>
           <a [routerLink]="['Photographers']">Photographers</a>
         </li>
         <li>
@@ -23,6 +18,12 @@
         </li>
         <li>
           <a [routerLink]="['Info']">Info</a>
+        </li>
+        <li>
+          <a [routerLink]="['Blog']">Blog</a>
+        </li>
+        <li>
+          <a (click)="switchOnOnboardingFromMenu()">Welcome wizard</a>
         </li>
       </ul>
 

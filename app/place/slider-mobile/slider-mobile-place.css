@@ -167,16 +167,6 @@
   overflow: hidden;
 }
 
-.custom-button {
-  display: block;
-  margin: 25px auto;
-  width: 250px;
-}
-
-.custom-button[hidden] {
-  display: none;
-}
-
 .slider-mobile-wrapper .thing-content {
   position: absolute;
   bottom: 0;
@@ -248,4 +238,11 @@
     margin-left: -4px;
     margin-right: 3px;
   }
+}
+
+.span-link {
+  cursor: pointer;
+  color: #0567bf;
+  font-weight: bold;
+  font-size: smaller;
 }

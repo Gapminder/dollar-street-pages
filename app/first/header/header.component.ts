@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-
-import {SocialShareButtons} from '../../common/social_share_buttons/social-share-buttons.component.ts';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { SocialShareButtonsComponent } from '../../common/social_share_buttons/social-share-buttons.component.ts';
 
 let tpl = require('./header.template.html');
 let style = require('./header.css');
@@ -10,7 +9,7 @@ let style = require('./header.css');
   selector: 'header-first',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, SocialShareButtons]
+  directives: [RouterLink, SocialShareButtonsComponent]
 })
 
 export class HeaderFirstComponent {

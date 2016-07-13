@@ -1,8 +1,7 @@
-import {Inject} from '@angular/core';
-import {Http} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-
-import {config} from '../../app.config';
+import { Inject } from '@angular/core';
+import { Http } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Config } from '../../app.config';
 
 export class HeaderService {
   public http:any;
@@ -13,9 +12,19 @@ export class HeaderService {
 
   public getDefaultThing():Observable<any> {
     return this.http
-      .get(`${config.api}/consumer/api/v1/default-thing`)
+      .get(`${Config.api}/consumer/api/v1/default-thing`)
       .map((res:any) => {
         let parseRes = JSON.parse(res._body);
+        return {err: parseRes.error, data: parseRes.data};
+      });
+  }
+
+  public getPlaceHeader(query:string):Observable<any> {
+    return this.http
+      .get(`${Config.api}/consumer/api/v1/place-header?${query}`)
+      .map((res:any) => {
+        let parseRes = JSON.parse(res._body);
+
         return {err: parseRes.error, data: parseRes.data};
       });
   }

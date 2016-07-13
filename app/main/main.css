@@ -7,18 +7,12 @@ footer {
 
 @media (min-width: 768px) {
   .main {
-    padding-bottom: 323px;
+    padding-bottom: 250px;
   }
 }
 
 @media (max-width: 767px) {
   .main {
-    padding-bottom: 244px;
-  }
-}
-
-@media (max-width: 600px) {
-  .main {
-    padding-bottom: 237px;
+    padding-bottom: 350px;
   }
 }

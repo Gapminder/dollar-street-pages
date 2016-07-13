@@ -17,7 +17,7 @@ import {
   ResponseOptions
 } from '@angular/http';
 
-import {config} from '../../../../app/app.config.ts';
+import {Config} from '../../../../app/app.config.ts';
 
 import {PhotographerProfileService} from '../../../../app/photographer/photographer-profile/photographer-profile.service';
 
@@ -39,7 +39,7 @@ describe('PhotographersService', () => {
     (photographerProfileService:PhotographerProfileService, mockBackend:MockBackend) => {
       let res;
       mockBackend.connections.subscribe((connection:any) => {
-        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/photographer-profile?id=56ec091caf72e9437cbccfab`);
+        expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/photographer-profile?id=56ec091caf72e9437cbccfab`);
         let response = new ResponseOptions({
           body: `{"success":true,"msg":[],"data":{"_id":"56ec091caf72e9437cbccfab","username":"aj-sharma","lastName":"Sharma",
         "firstName":"AJ","email":"aj.sharma@dollarstreet.org","role":"photographer","__v":0,

@@ -1,0 +1,94 @@
+<div class="view-image-block-container" *ngIf="showblock">
+  <div class="view-image-block-content">
+    <div class="view-image-container">
+      <img [src]="place.background">
+    </div>
+
+    <div class="house-info-container">
+      <div class="header-container">
+        <p class="pull-left cursor-pointer"
+           [routerLink]="['Country', {id: familyData?.country?._id}]">{{familyData?.country?.alias ||
+          familyData?.country?.country}}</p>
+        <div class="pull-right">
+          <p>$ {{math.round(place.income)}}</p>
+          <a (click)="closeBlock()">x</a>
+        </div>
+      </div>
+
+      <div class="map-container" [routerLink]="['Country', {id: familyData?.country?._id}]">
+        <place-map [hoverPlace]="mapData"></place-map>
+      </div>
+
+      <div class="home-description-container">
+        <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family</h3>
+        <p class="text-justify" *ngIf="familyData?.familyData">
+          {{familyData?.familyData}}
+        </p>
+      </div>
+
+      <div class="images-container">
+        <div class="image-content" *ngIf="familyData?.familyImage">
+          <img [src]="familyData.familyImage.url" alt="Family portrait">
+        </div>
+        <div class="image-content" *ngIf="familyData?.houseImage">
+          <img [src]="familyData.houseImage.url" alt="House photo">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view-image-block-footer-container row">
+    <div class="col-md-4">
+      <img class="icon-bottom-image cc-link" src="../../assets/img/icon-cc.svg">
+      <p>Photo by <a class="color-grey link" [routerLink]="['Photographer', {id: familyData.photographer?.id}]">
+        {{familyData.photographer?.name}}</a>
+        <a class="color-grey link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/"> CC by 4.0</a>
+      </p>
+    </div>
+
+    <div class="col-md-4 text-center">
+      <a class="color-grey" (click)="openPopUp()">
+        <i class="fa fa-search-plus"></i>
+        View fullscreen
+      </a>
+      <a class="color-grey" [href]="place.background.replace('desktops', 'original')" download>
+        <i class="fa fa-download"></i>
+        Download image
+      </a>
+    </div>
+
+    <div class="col-md-4 text-right">
+      <a [routerLink]="['Home', familyData.goToPlaceData]">Visit this home >></a>
+    </div>
+  </div>
+
+  <div class="isLoad" [hidden]="loader">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+<div class="fancyBox-container" *ngIf="popIsOpen" (click)="fancyBoxClose()">
+  <div class="fancyBox-image" [hidden]="!fancyBoxImage" [ngStyle]="{'background-image': fancyBoxImage}"></div>
+
+  <div class="load" [hidden]="fancyBoxImage">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

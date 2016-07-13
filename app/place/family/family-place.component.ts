@@ -1,8 +1,7 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-
-import {RowLoaderComponent} from '../../common/row-loader/row-loader.component';
+import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 
 let tpl = require('./family-place.template.html');
 let style = require('./family-place.css');
@@ -18,6 +17,8 @@ const isDesktop = device.desktop();
 })
 
 export class FamilyPlaceComponent implements OnInit, OnDestroy {
+  protected itemSize:number = window.innerWidth / this.zoom;
+
   @Input('chosenPlaces')
   private chosenPlaces:Observable<any>;
 
@@ -27,14 +28,13 @@ export class FamilyPlaceComponent implements OnInit, OnDestroy {
   private familyPlaceServiceSubscribe:any;
   private chosenPlacesSubscribe:any;
   private zoom:number = isDesktop ? 5 : 3;
-  private itemSize:number = window.innerWidth / this.zoom;
 
-  public constructor(@Inject('FamilyPlaceService') familyPlaceService) {
+  public constructor(@Inject('FamilyPlaceService') familyPlaceService:any) {
     this.familyPlaceService = familyPlaceService;
   }
 
   public ngOnInit():void {
-    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place) => {
+    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((place:any) => {
         this.placeId = place._id;
         this.nextImages(10, this.placeId);
       });
@@ -42,14 +42,19 @@ export class FamilyPlaceComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy():void {
     this.familyPlaceServiceSubscribe.unsubscribe();
-    this.chosenPlacesSubscribe.unsubscribe();
+
+    if (this.chosenPlacesSubscribe) {
+      this.chosenPlacesSubscribe.unsubscribe();
+    }
   }
 
-  nextImages(limit:number, placeId:string):void {
+  private nextImages(limit:number, placeId:string):void {
     let url = `isTrash=false&limit=${limit}&placeId=${placeId}&skip=0`;
+
     if (this.familyPlaceServiceSubscribe) {
       this.familyPlaceServiceSubscribe = void 0;
     }
+
     this.familyPlaceServiceSubscribe = this.familyPlaceService.getPlaceFamilyImages(url)
       .subscribe((res:any) => {
         if (res.err) {

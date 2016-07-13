@@ -448,6 +448,10 @@
   font-size: 16px;
   display: block;
   color: #767d86;
+  margin-top: 13px;
+}
+
+.left-side-info .info-box .name + .country {
   margin-top: -7px;
 }
 
@@ -495,19 +499,13 @@ footer {
 
 @media (min-width: 768px) {
   #places {
-    padding-bottom: 323px;
+    padding-bottom: 250px;
   }
 }
 
 @media (max-width: 767px) {
   #places {
-    padding-bottom: 244px;
-  }
-}
-
-@media (max-width: 600px) {
-  #places {
-    padding-bottom: 237px;
+    padding-bottom: 350px;
   }
 }
 

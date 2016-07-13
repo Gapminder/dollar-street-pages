@@ -1,10 +1,11 @@
-import {Component, Input, Output, Inject, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import {RouterLink, Router} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-
-import {MainMenuComponent} from '../menu/menu.component';
-import {SearchComponent} from '../search/search.component';
-import {PlaceMapComponent} from '../place-map/place-map.component';
+import { Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
+import { RouterLink, Router } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { MainMenuComponent } from '../menu/menu.component';
+import { PlaceMapComponent } from '../place-map/place-map.component';
+import { ThingsFilterComponent } from '../things-filter/things-filter.component';
+import { IncomesFilterComponent } from '../incomes-filter/incomes-filter.component';
+import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
 let device = require('device.js')();
 
@@ -15,21 +16,24 @@ let style = require('./header.css');
   selector: 'header',
   template: tpl,
   styles: [style],
-  directives: [SearchComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
+  directives: [ThingsFilterComponent, IncomesFilterComponent, CountriesFilterComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
 })
 
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
-  private query:string;
+  protected query:string;
   @Input()
-  private thing:string;
+  protected thing:string;
   @Input('hoverPlace')
-  private hoverPlace:Observable<any>;
+  protected hoverPlace:Observable<any>;
   @Input('chosenPlaces')
-  private chosenPlaces:Observable<any>;
+  protected chosenPlaces:Observable<any>;
+  protected isOpenFilter:boolean = false;
+  protected isDesktop:boolean = device.desktop();
+  protected header:any = {};
+  protected math:any;
   @Output()
   private filter:EventEmitter<any> = new EventEmitter();
-
   private activeThing:any;
   private defaultThing:any;
   private headerService:any;
@@ -38,13 +42,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private matrixComponent:boolean;
   private placeComponent:boolean;
   private mapComponent:boolean;
-  private isDesktop:boolean = device.desktop();
   private headerServiceSubscribe:any;
+  private headerTitleServiceSubscribe:any;
 
   public constructor(@Inject('HeaderService') headerService:any,
-                     @Inject(Router) router:Router) {
+                     @Inject(Router) router:Router,
+                     @Inject('Math') math:any) {
     this.headerService = headerService;
     this.router = router;
+    this.math = math;
 
     this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
     this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
@@ -59,21 +65,84 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
         this.defaultThing = res.data;
       });
+
+    if (this.placeComponent) {
+      this.headerTitleServiceSubscribe = this
+        .headerService
+        .getPlaceHeader(this.query)
+        .subscribe((res:any) => {
+          if (res.err) {
+            return res.err;
+          }
+
+          this.header = res.data;
+        });
+    }
+  }
+
+  public ngOnChanges(changes:any):void {
+    if (
+      this.placeComponent &&
+      changes.query &&
+      typeof changes.query.previousValue === 'string' &&
+      typeof changes.query.currentValue === 'string'
+    ) {
+      let currentQuery = this.parseUrl(changes.query.currentValue);
+      let previousQuery = this.parseUrl(changes.query.previousValue);
+
+      if (currentQuery.place === previousQuery.place) {
+        return;
+      }
+
+      if (this.headerTitleServiceSubscribe) {
+        this.headerTitleServiceSubscribe.unsubscribe();
+      }
+
+      this.headerTitleServiceSubscribe = this
+        .headerService
+        .getPlaceHeader(this.query)
+        .subscribe((res:any) => {
+          if (res.err) {
+            return res.err;
+          }
+
+          this.header = res.data;
+        });
+    }
   }
 
   public ngOnDestroy():void {
     this.headerServiceSubscribe.unsubscribe();
+
+    if (this.headerTitleServiceSubscribe) {
+      this.headerTitleServiceSubscribe.unsubscribe();
+    }
   }
 
-  public urlTransfer(url) {
-    this.filter.emit(url);
+  public urlTransfer(data:any):void {
+    this.filter.emit(data);
   }
 
-  public activeThingTransfer(thing) {
+  public activeThingTransfer(thing:any):void {
     this.activeThing = thing;
   }
 
-  public goToMain() {
+  public goToMain():void {
     this.router.navigate(['Main']);
+  }
+
+  private parseUrl(url:string):any {
+    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
+    let query = JSON.parse(urlForParse);
+
+    if (query.regions) {
+      query.regions = query.regions.split(',');
+    }
+
+    if (query.countries) {
+      query.countries = query.countries.split(',');
+    }
+
+    return query;
   }
 }

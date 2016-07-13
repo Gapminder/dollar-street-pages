@@ -1,13 +1,5 @@
 .footer {
-  background: url('/assets/img/footer_bg.jpg');
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
   overflow: hidden;
-}
-
-.footer .container {
-  padding-bottom: 45px;
 }
 
 .footer[class$='f-*'] {
@@ -16,7 +8,15 @@
 }
 
 .footer .f-social {
-  margin-top: 80px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.footer .f-gap {
+  font-size: 18px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .footer .f-social .share-button-container {
@@ -24,36 +24,41 @@
 }
 
 .footer .f-dollar-street {
-  margin-top: 40px;
-  color: #fff;
   font-size: 18px;
   text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 8px;
 }
 
 .footer .f-dollar-street img {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   width: 53px;
 }
 
-.footer .f-dollar-street p.logo_name {
-  text-transform: uppercase;
+.footer .f-dollar-street .f-gap img {
+  margin-bottom: 5px;
+  width: 253px;
 }
 
-.footer .f-creative-commons {
-  margin-top: 90px;
-  text-align: right;
-}
-
-.footer .footer-bottom p {
+.footer .f-dollar-street p {
   margin: 0;
 }
 
-.footer .footer-bottom {
-  padding: 10px 0;
+.f-menu {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.f-menu ul {
+  padding: 0;
+  list-style: none;
+  text-align: right;
+}
+
+.footer .f-dollar-street .links a {
+  color: #374551;
   font-size: 16px;
-  text-align: center;
-  color: #ddd;
-  background-color: #303e4a;
 }
 
 @media (min-width: 1400px) {
@@ -63,7 +68,6 @@
 }
 
 @media (max-width: 991px) {
-  .footer .f-creative-commons,
   .footer .f-dollar-street,
   .footer .f-social {
     text-align: center;
@@ -83,11 +87,8 @@
 }
 
 @media (max-width: 767px) {
-  .footer .container {
-    padding-bottom: 15px;
-  }
-
-  .footer .f-creative-commons, .footer .f-dollar-street, .footer .f-social {
+  .footer .f-dollar-street,
+  .footer .f-social {
     margin-top: 12px;
   }
 
@@ -100,7 +101,6 @@
   }
 
   .footer .f-dollar-street img {
-    margin-bottom: 10px;
     width: 40px;
   }
 
@@ -116,10 +116,12 @@
     font-size: 12px;
   }
 
-  .f-creative-commons img {
-    width: 100px;
-  }
   .share-button-container > div {
     padding: 2px;
+  }
+
+  .f-menu ul {
+    text-align: center;
+    font-size: 14px;
   }
 }

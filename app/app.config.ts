@@ -1,23 +1,28 @@
-import {FirstComponent} from './first/first.component';
-import {MatrixComponent} from './matrix/matrix.component';
-import {PlaceComponent} from './place/place.component';
-import {MapComponent} from './map/map.component';
-import {AllPhotographersComponent} from './all-photographers/all-photographers.component';
-import {PhotographerComponent} from './photographer/photographer.component';
-import {AmbassadorsComponent} from './ambassadors/ambassadors.component';
-import {CountryComponent} from './country/country.component';
-import {InfoComponent} from './info/info.component';
+import { FirstComponent } from './first/first.component';
+import { MatrixComponent } from './matrix/matrix.component';
+import { HomeComponent } from './home/home.component';
+import { MapComponent } from './map/map.component';
+import { AllPhotographersComponent } from './all-photographers/all-photographers.component';
+import { PhotographerComponent } from './photographer/photographer.component';
+import { AmbassadorsComponent } from './ambassadors/ambassadors.component';
+import { CountryComponent } from './country/country.component';
+import { InfoComponent } from './info/info.component';
+import { ArticleComponent } from './article/article.component';
+import { BlogComponent } from './contentful/blog/blog.component';
+import { PostComponent } from './contentful/post/post.component';
 
-export namespace config {
-  'use strict';
-   export let api = 'https://apidev.dollarstreet.org';
-  // export let api = 'http://128.199.60.70';
-  // export let api = 'http://stage.dollarstreet.org';
-  // export let api = 'http://192.168.1.66';
-  // export let api = 'http://192.168.1.81';
-  // export let api = 'http://192.168.0.102';
+export class Config {
+  public static api:string = 'https://apidev.dollarstreet.org';
+  // public static api:string = 'http://stage.dollarstreet.org';
+  // public static api:string = 'http://128.199.60.70';
+  // public static api:string = 'http://192.168.1.66';
+  // public static api:string = 'http://192.168.1.145';
+  // public static api:string = 'http://192.168.1.57';
+  // public static api:string = 'http://192.168.1.147';
+  // public static api:string = 'http://192.168.1.142';
+  // public static api:string = 'http://192.168.0.102';
 
-  export let routes = [{
+  public static routes:any = [{
     path: '/main',
     name: 'Main',
     component: FirstComponent,
@@ -27,9 +32,9 @@ export namespace config {
     name: 'Matrix',
     component: MatrixComponent
   }, {
-    path: '/place',
-    name: 'Place',
-    component: PlaceComponent
+    path: '/home',
+    name: 'Home',
+    component: HomeComponent
   }, {
     path: '/map',
     name: 'Map',
@@ -54,5 +59,17 @@ export namespace config {
     path: '/info',
     name: 'Info',
     component: InfoComponent
+  }, {
+    path: '/article',
+    name: 'Article',
+    component: ArticleComponent
+  }, {
+    path: '/blog',
+    name: 'Blog',
+    component: BlogComponent
+  }, {
+    path: '/post',
+    name: 'Post',
+    component: PostComponent
   }];
 }

@@ -1,7 +1,6 @@
-import {Component, OnInit, OnDestroy, Input, Inject} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-
-import {LoaderComponent} from '../../common/loader/loader.component';
+import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { LoaderComponent } from '../../common/loader/loader.component';
 
 let tpl = require('./photographer-places.template.html');
 let style = require('./photographer-places.css');
@@ -14,18 +13,17 @@ let style = require('./photographer-places.css');
 })
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
-  @Input()
-  private photographerId:string;
-
-  private places:any = [];
-  private familyThingId:string;
-  private photographerPlacesService:any;
   public loader:boolean = false;
   public photographerPlacesServiceSubscribe:any;
   public math:any;
 
-  public constructor(@Inject('PhotographerPlacesService') photographerPlacesService,
-  @Inject('Math') math) {
+  @Input()
+  private photographerId:string;
+  private places:any = [];
+  private photographerPlacesService:any;
+
+  public constructor(@Inject('PhotographerPlacesService') photographerPlacesService:any,
+                     @Inject('Math') math:any) {
     this.photographerPlacesService = photographerPlacesService;
     this.math = math;
   }
@@ -39,12 +37,11 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
         }
 
         this.places = res.data.places;
-        this.familyThingId = res.data.familyThingId;
         this.loader = true;
       });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     this.photographerPlacesServiceSubscribe.unsubscribe();
   }
 }

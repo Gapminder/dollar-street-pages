@@ -17,7 +17,7 @@ import {
   ResponseOptions
 } from '@angular/http';
 
-import {config} from '../../../app/app.config.ts';
+import {Config} from '../../../app/app.config.ts';
 
 import {MapService} from '../../../app/map/map.service.ts';
 
@@ -39,7 +39,7 @@ describe('MapService', () => {
     (mapService:MapService, mockBackend:MockBackend) => {
       let res;
       mockBackend.connections.subscribe((connection:any)=> {
-        expect(connection.request.url).toBe(`${config.api}/consumer/api/v1/map?thing=5477537786deda0b00d43be5`);
+        expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/map?thing=Home`);
         /**
          * ToDo: change body of response
          * @type {ResponseOptions}
@@ -68,12 +68,12 @@ describe('MapService', () => {
         {"_id":"55ef338d0d2b3c8203788467","name":"United States"}],"letter":"U"},
         {"countries":[{"_id":"55ef338d0d2b3c82037884fc","name":"Viet Nam"}],"letter":"V"},
         {"countries":[{"_id":"55ef338d0d2b3c82037884cb","name":"Zimbabwe"}],"letter":"Z"}],
-        "thing":"5477537786deda0b00d43be5"},
+        "thing":"Home"},
         "error":false}`
         });
         connection.mockRespond(new Response(response));
       });
-      mapService.getMainPlaces('thing=5477537786deda0b00d43be5').subscribe((_res:any) => {
+      mapService.getMainPlaces('thing=Home').subscribe((_res:any) => {
         res = _res;
       });
       tick();

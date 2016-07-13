@@ -1,15 +1,5 @@
-import {
-  it,
-  describe,
-  async,
-  inject,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-
+import {it, describe, async, inject, beforeEachProviders, beforeEach} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services';
 import {MockService} from '../common-mocks/mock.service.template.ts';
 import {MatrixComponent} from '../../../app/matrix/matrix.component';
@@ -21,6 +11,8 @@ describe('MatrixComponent', () => {
   let matrixService = new MockService();
   matrixService.serviceName = 'MatrixService';
   matrixService.getMethod = 'getMatrixImages';
+  matrixService.getMethod = 'getMatrixOnboardingTips';
+  matrixService.getMethod = 'getStreetSettings';
   matrixService.fakeResponse = places;
   beforeEachProviders(() => {
     let mockCommonDependency = new MockCommonDependency();
@@ -29,8 +21,10 @@ describe('MatrixComponent', () => {
       matrixService.getProviders()
     ];
   });
+
   let context;
   let fixture;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(MatrixComponent, tmpl)
@@ -38,14 +32,16 @@ describe('MatrixComponent', () => {
         .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
-          context.routeParams.set('thing', '5477537786deda0b00d43be5');
+          context.routeParams.set('thing', 'Home');
           context.routeParams.set('countries', 'World');
           context.routeParams.set('regions', 'World');
           context.routeParams.set('row', 1);
           context.routeParams.set('zoom', 5);
+          context.routeParams.set('lowIncome', 0);
+          context.routeParams.set('highIncome', 15000);
         })
-        .catch((e:Error)=> {
-          console.log(e);
+        .catch((err:Error)=> {
+          console.error(err);
         });
     }
   )));
@@ -53,12 +49,13 @@ describe('MatrixComponent', () => {
   it('ngOnInit', () => {
     spyOn(context, 'ngOnInit').and.callThrough();
     context.ngOnInit();
-    expect(context.thing).toEqual('5477537786deda0b00d43be5');
+    expect(context.thing).toEqual('Home');
+
     expect(context.zoom).toEqual(5);
     expect(context.row).toEqual(1);
     expect(context.regions).toEqual('World');
     expect(context.countries).toEqual('World');
-    expect(context.query).toEqual(`thing=${context.thing}&countries=${context.countries}&regions=${context.regions}&zoom=${context.zoom}&row=${context.row}`);
+    expect(context.query).toEqual(`thing=${context.thing}&countries=${context.countries}&regions=${context.regions}&zoom=${context.zoom}&row=${context.row}&lowIncome=${context.lowIncome}&highIncome=${context.highIncome}`);
   });
 
   it(' ngAfterViewChecked', () => {
@@ -78,59 +75,60 @@ describe('MatrixComponent', () => {
   it(' hoverPlaceS', () => {
     spyOn(context, 'hoverPlaceS').and.callThrough();
     spyOn(context.hoverPlace, 'next');
-    context.hoverPlaceS(places.places[0]);
-    expect(context.hoverPlace.next.calls.argsFor(0)).toEqual([places.places[0]]);
+    context.hoverPlaceS(places.data.zoomPlaces[0]);
+    expect(context.hoverPlace.next.calls.argsFor(0)).toEqual([places.data.zoomPlaces[0]]);
   });
-  it(' isHover', () => {
-    spyOn(context, 'isHover').and.callThrough();
-    spyOn(context.hoverHeader, 'next');
-    context.isDesktop = true;
-    context.isHover();
-    expect(context.hoverHeader.next.calls.argsFor(0)).toEqual([undefined]);
-    context.isDesktop = false;
-    context.isHover();
-    expect(context.hoverHeader.next.calls.count()).toEqual(1);
-  });
-  it(' urlChanged and ngOnDestroy', () => {
+  xit(' urlChanged and ngOnDestroy', () => {
+    context.filter = {lowIncome: 0, hightIncome: 15000};
     spyOn(context, 'urlChanged').and.callThrough();
     spyOn(context, 'parseUrl').and.callThrough();
     spyOn(context.urlChangeService, 'replaceState');
     spyOn(context.matrixPlaces, 'next');
     spyOn(context.matrixService, 'getMatrixImages').and.callThrough();
     spyOn(context, 'stopScroll');
-    context.urlChanged({query: 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1'});
-    expect(context.query).toEqual('thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1');
-    expect(context.parseUrl.calls.argsFor(0)).toEqual(['thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1']);
-    expect(context.thing).toEqual('5477537786deda0b00d43be5');
-    expect(context.urlChangeService.replaceState.calls.argsFor(0)).toEqual(['/matrix', 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1']);
+    context.urlChanged({url: 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000'});
+    expect(context.query).toEqual('thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000');
+    expect(context.parseUrl.calls.argsFor(0)).toEqual(['thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000']);
+    expect(context.thing).toEqual('Home');
+    expect(context.urlChangeService.replaceState.calls.argsFor(0)).toEqual(['/matrix', 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000']);
     expect(context.matrixService.getMatrixImages.calls.argsFor(0)).toEqual([context.query]);
-    expect(context.matrixPlaces.next.calls.argsFor(0)).toEqual([places.places]);
-    expect(context.placesArr).toEqual(places.places);
-    expect(context.clonePlaces.length).toEqual(places.places.length);
+    expect(context.matrixPlaces.next.calls.argsFor(0)).toEqual([places.data.zoomPlaces]);
+    expect(context.placesArr).toEqual(places.data.zoomPlaces);
     expect(context.zoom).toEqual(5);
     expect(context.loader).toEqual(true);
 
     spyOn(context.matrixServiceSubscrib, 'unsubscribe');
+    spyOn(context.matrixServiceOnboardingSubscribe, 'unsubscribe');
+    // spyOn(context.matrixServiceStreetSubscrib, 'unsubscribe');
     context.ngOnDestroy();
     expect(context.matrixServiceSubscrib.unsubscribe).toHaveBeenCalled();
+    expect(context.matrixServiceOnboardingSubscribe.unsubscribe).toHaveBeenCalled();
+    // expect(context.matrixServiceStreetSubscrib.unsubscribe).toHaveBeenCalled();
   });
+
   it(' changeZoom', () => {
     spyOn(context, 'changeZoom').and.callThrough();
     spyOn(context, 'urlChanged');
-    context.query = 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1';
+    context.query = 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000';
     context.row = 1;
     context.changeZoom(4);
-    expect(context.urlChanged.calls.argsFor(0)).toEqual([{query: 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=4&row=1'}]);
+    expect(context.urlChanged.calls.argsFor(0)).toEqual([{
+      url: 'thing=Home&countries=World&regions=World&zoom=4&row=1&lowIncome=0&highIncome=15000',
+      isZoom: true
+    }]);
   });
+
   it(' parseUrl', () => {
     spyOn(context, 'parseUrl').and.callThrough();
-    let url = 'thing=5477537786deda0b00d43be5&countries=World&regions=World&zoom=5&row=1';
+    let url = 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000';
     let urlObj = context.parseUrl(url);
-    expect(urlObj.thing).toEqual('5477537786deda0b00d43be5');
+    expect(urlObj.thing).toEqual('Home');
     expect(urlObj.countries).toEqual('World');
     expect(urlObj.regions).toEqual('World');
     expect(urlObj.zoom).toEqual('5');
     expect(urlObj.row).toEqual('1');
+    expect(urlObj.lowIncome).toEqual('0');
+    expect(urlObj.highIncome).toEqual('15000');
   });
 });
 

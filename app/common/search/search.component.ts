@@ -1,8 +1,7 @@
-import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges} from '@angular/core';
-import {Router} from '@angular/router-deprecated';
-import {Observable} from 'rxjs/Observable';
-
-import {SearchFilter} from './thing-filter.pipe.ts';
+import { Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, OnChanges } from '@angular/core';
+import { Router, RouterLink } from '@angular/router-deprecated';
+import { Observable } from 'rxjs/Observable';
+import { SearchFilter } from './thing-filter.pipe.ts';
 
 let tpl = '';
 let desktopStyle = require('./search.css');
@@ -21,10 +20,12 @@ if (isDesktop) {
   selector: 'search',
   template: tpl,
   styles: [desktopStyle, mobileStyle],
+  directives: [RouterLink],
   pipes: [SearchFilter]
 })
 
 export class SearchComponent implements OnInit, OnDestroy, OnChanges {
+  protected tab:number = 0;
   @Input()
   private url:string;
   @Input('chosenPlaces')
@@ -55,10 +56,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   private isDesktop:boolean = isDesktop;
   private mobileTitle:string;
   private header:any;
-  private tab:number = 0;
   private init:boolean = true;
   private math:any;
-
   private chosenPlacesSubscribe:any;
   private searchServiceSubscribe:any;
 
@@ -323,9 +322,10 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public getUnique(items:any):any {
-    let u = {}, a = [];
+    let u = {};
+    let a = [];
 
-    for (let i = 0, l = items.length; i < l; ++i) {
+    for (let i = 0; i < items.length; ++i) {
       if (u.hasOwnProperty(items[i])) {
         continue;
       }

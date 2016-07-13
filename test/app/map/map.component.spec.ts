@@ -1,14 +1,5 @@
-import {
-  it,
-  describe,
-  inject,
-  async,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
+import {it, describe, inject, async, beforeEachProviders, beforeEach} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {MockCommonDependency} from '../../app/common-mocks/mocked.services.ts';
 import {MockService} from '../common-mocks/mock.service.template.ts';
@@ -80,14 +71,13 @@ describe('MapComponent', () => {
     context.ngOnInit();
     expect(context.init).toEqual(true);
     expect(context.thing).toEqual('546ccf730f7ddf45c0179688');
-    expect(context.urlChanged).toHaveBeenCalledWith('546ccf730f7ddf45c0179688');
+    expect(context.urlChanged).toHaveBeenCalledWith({url: 'thing=546ccf730f7ddf45c0179688'});
   });
   it('urlChanged', () => {
     spyOn(context, 'urlChanged').and.callThrough();
     spyOn(context, 'setMarkersCoord');
     spyOn(context, 'urlChangeService');
-    context.urlChanged('546ccf730f7ddf45c0179688');
-    expect(context.thing).toEqual('546ccf730f7ddf45c0179688');
+    context.urlChanged({url: 'thing=546ccf730f7ddf45c0179688'});
     expect(context.query).toEqual('thing=546ccf730f7ddf45c0179688');
     expect(context.loader).toEqual(true);
     expect(context.places.length).toEqual(174);
@@ -180,11 +170,7 @@ describe('MapComponent', () => {
     context.hoverPlace = mapdata.data.places[0];
     spyOn(context.router, 'navigate');
     context.clickOnMarker(e, 134, 'United Kingdom');
-    expect(context.router.navigate.calls.argsFor(0)).toEqual([['Place', {
-      thing: context.hoverPlace.familyImg.thing,
-      place: context.hoverPlace._id,
-      image: context.hoverPlace.familyImg.imageId
-    }]]);
+    expect(context.router.navigate.calls.argsFor(0)).toEqual([['Home', {place: context.hoverPlace._id}]]);
   });
   it('mobileClickOnMarker', () => {
     spyOn(context, 'mobileClickOnMarker').and.callThrough();

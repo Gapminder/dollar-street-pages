@@ -16,9 +16,6 @@
     "./app/sitemap"
   ],
   "files": [
-    "./node_modules/angular2/typings/browser.d.ts",
-    "./typings/require.d.ts",
-    "./typings/main.d.ts",
     "./typings/index.d.ts",
     "./app/boot.ts",
     "./app/app.component.ts",
@@ -47,12 +44,6 @@
     "./app/matrix/matrix.component.ts",
     "./app/matrix/matrix.service.ts",
     "./app/matrix/matrix-images/matrix-images.component.ts",
-    "./app/place/place.component.ts",
-    "./app/place/family/family-place.component.ts",
-    "./app/place/family/family-place.service.ts",
-    "./app/place/slider/slider-place.component.ts",
-    "./app/place/place-street.service.ts",
-    "./app/place/slider-mobile/slider-mobile-place.component.ts",
     "./app/map/map.service.ts",
     "./app/map/map.component.ts",
     "./app/all-photographers/all-photographers.component.ts",
@@ -70,6 +61,8 @@
     "./app/country/country.component.ts",
     "./app/country/country-info/country-info.component.ts",
     "./app/country/country-info/country-info.service.ts",
+    "./app/article/article.component.ts",
+    "./app/article/article.service.ts",
     "./app/country/country-places/country-places.component.ts",
     "./app/country/country-places/country-places.service.ts"
   ]

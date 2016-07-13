@@ -152,35 +152,35 @@ module.exports = {
     'Total Photos': {element: () => { return $('p[class="photo"]'); }},
     'Visit family': {element: () => { return element.all(by.css('a[class*="custom-button"]')).first();}}
   },
- /* placePageText:{
-    'Poorest header on Street Widget': {element: () => { return $('text[class="poorest"]'); }, actualResult: 'Poorest'},
-    'Richest header on Street Widget': {element: () => { return $('text[class="richest"]'); }, actualResult: 'Richest'},
-    'Scale label 30 on Street Widget': {element: () => { return element.all(by.css('text[class="scale-label"]')).first(); }, actualResult: '30$'},
-    'Scale label 300 on Street Widget': {element: () => { return element.all(by.css('text[class="scale-label"]')).get(1); }, actualResult: '300$'},
-    'Scale label 3000 on Street Widget': {element: () => { return element.all(by.css('text[class="scale-label"]')).last(); }, actualResult: '3000$'},
-    'Link -All Family portraits- near info about family': {element: () => { return element.all(by.css('.slide-button.pull-left>span')).get(1); }, actualResult: '<< All Family portraits'},
-    'Link -Read More- near info about Family': {element: () => { return element.all(by.css('div[class*="slide-descript"]  span[class*="span-link"]')).get(1); }, actualResult: 'Read more >>'},
-    'Thing name on the big image': {element: () => { return element.all(by.css('div[class*="image"]>div[class*="thing-content"]>span')).get(1); }, actualResult: 'Family portrait'}
-  },
-  placePageBoolean:{
-    'Little family image in header': {element: () => { return $('.icon.pull-left'); }},
-    'Menu icon in header': {element: () => { return $('.unactive'); }},
-    'Matrix icon in header': {element: () => { return $('div[class*="matrix-icon"] img'); }},
-    'Street widget image': {element: () => { return $('polygon[class="road"]'); }},
-    'First Divider on Street Widget': {element: () => { return element.all(by.css('image[class*="scale-label"]')).first(); }},
-    'Second Divider on Street Widget': {element: () => { return element.all(by.css('image[class*="scale-label"]')).get(1); }},
-    'Last Divider on Street Widget': {element: () => { return element.all(by.css('image[class*="scale-label"]')).last(); }},
-    'Home with region colour on the Street Widget': {element: () => {return $('polygon[class*="hover"]'); }},
-    'Big family image': {element: () => { return element.all(by.css('.slide-img')).get(1); }},
-    'First little family image': {element: () => { return element.all(by.css('.slide-sidebar>img')).get(2); }},
-    'Second little family image': {element: () => { return element.all(by.css('.slide-sidebar>img')).get(3); }},
-    'Text about family in header': {element: () => { return $('p[class="pull-left"]');},},
-    'Thing icon on the big family image': {element: () => { return element.all(by.css('div[class*="thingNameOnFilter-content"] img')); }},
-    'Map icon under the big family image': {element: () => { return element.all(by.css('img[class*="map_gray"]'));}},
-    'Marker on the map under the big family image': {element: () => { return element.all(by.css('img[class*="marker"]'));}},
-    //'Info button near the family income': {element: () => { return $('#about-info');}},
-    'Photographer name near the footer': {element: () => { return $('p[class*="photographer"]');}}
-  },*/
+  /* placePageText:{
+   'Poorest header on Street Widget': {element: () => { return $('text[class="poorest"]'); }, actualResult: 'Poorest'},
+   'Richest header on Street Widget': {element: () => { return $('text[class="richest"]'); }, actualResult: 'Richest'},
+   'Scale label 30 on Street Widget': {element: () => { return element.all(by.css('text[class="scale-label"]')).first(); }, actualResult: '30$'},
+   'Scale label 300 on Street Widget': {element: () => { return element.all(by.css('text[class="scale-label"]')).get(1); }, actualResult: '300$'},
+   'Scale label 3000 on Street Widget': {element: () => { return element.all(by.css('text[class="scale-label"]')).last(); }, actualResult: '3000$'},
+   'Link -All Family portraits- near info about family': {element: () => { return element.all(by.css('.slide-button.pull-left>span')).get(1); }, actualResult: '<< All Family portraits'},
+   'Link -Read More- near info about Family': {element: () => { return element.all(by.css('div[class*="slide-descript"]  span[class*="span-link"]')).get(1); }, actualResult: 'Read more >>'},
+   'Thing name on the big image': {element: () => { return element.all(by.css('div[class*="image"]>div[class*="thing-content"]>span')).get(1); }, actualResult: 'Family portrait'}
+   },
+   placePageBoolean:{
+   'Little family image in header': {element: () => { return $('.icon.pull-left'); }},
+   'Menu icon in header': {element: () => { return $('.unactive'); }},
+   'Matrix icon in header': {element: () => { return $('div[class*="matrix-icon"] img'); }},
+   'Street widget image': {element: () => { return $('polygon[class="road"]'); }},
+   'First Divider on Street Widget': {element: () => { return element.all(by.css('image[class*="scale-label"]')).first(); }},
+   'Second Divider on Street Widget': {element: () => { return element.all(by.css('image[class*="scale-label"]')).get(1); }},
+   'Last Divider on Street Widget': {element: () => { return element.all(by.css('image[class*="scale-label"]')).last(); }},
+   'Home with region colour on the Street Widget': {element: () => {return $('polygon[class*="hover"]'); }},
+   'Big family image': {element: () => { return element.all(by.css('.slide-img')).get(1); }},
+   'First little family image': {element: () => { return element.all(by.css('.slide-sidebar>img')).get(2); }},
+   'Second little family image': {element: () => { return element.all(by.css('.slide-sidebar>img')).get(3); }},
+   'Text about family in header': {element: () => { return $('p[class="pull-left"]');},},
+   'Thing icon on the big family image': {element: () => { return element.all(by.css('div[class*="thingNameOnFilter-content"] img')); }},
+   'Map icon under the big family image': {element: () => { return element.all(by.css('img[class*="map_gray"]'));}},
+   'Marker on the map under the big family image': {element: () => { return element.all(by.css('img[class*="marker"]'));}},
+   //'Info button near the family income': {element: () => { return $('#about-info');}},
+   'Photographer name near the footer': {element: () => { return $('p[class*="photographer"]');}}
+   },*/
   blogPageText:{
     'H2 -Blog-': {element: () => { return $('h2[class*="heading"]');}, actualResult: 'Blog'},
     'Read More near the first post': {element: () => { return element.all(by.css('div[class*="article-description"] a')).first();}, actualResult: 'Read more >>'},

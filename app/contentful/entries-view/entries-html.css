@@ -1,0 +1,22 @@
+.block-entry h2,
+.block-entry h3 {
+  font-size: 28px;
+}
+
+.block-entry p {
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+
+.block-entry li {
+  font-size: 20px;
+}
+
+.block-entry img {
+  width: 100%;
+}
+
+.block-entry a {
+  color: #f9cd28;
+  text-decoration: underline;
+}

@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<div id="places" >
+<div id="places">
   <div class="container">
     <div class="row">
       <div class="col-md-12 places_header">
@@ -58,7 +58,7 @@
         <ul class="countries">
           <li *ngFor="let country of list.countries">
             <span class="country-name"
-              [routerLink]="['Country', {id: country._id}]">{{country.name}}</span>
+                  [routerLink]="['Country', {id: country._id}]">{{country.name}}</span>
           </li>
         </ul>
       </div>
@@ -67,20 +67,21 @@
 
   <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
     <div class="header">
-      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} houses in {{currentCountry}}</p>
+      <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} houses in
+        {{currentCountry}}</p>
       <span (click)="closeLeftSideBar($event)">x</span>
     </div>
 
     <div class="info-box-container">
       <div class="info-box"
            *ngFor="let place of lefSideCountries"
-           [routerLink]="['Place', {thing: place.familyImg.thing, place: place._id, image: place.familyImg.imageId}]">
+           [routerLink]="['Home', {place: place._id}]">
         <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
 
         <div class="hover_portrait_description">
           <div class="pull-left">
-            <span class="name">{{place.family}}s</span>
-            <span class="country">{{currentCountry}}</span>
+            <span class="name" *ngIf="place.family">{{place.family}} family</span>
+            <span class="country" *ngIf="currentCountry">{{currentCountry}}</span>
           </div>
 
           <div class="pull-right">

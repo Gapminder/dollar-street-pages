@@ -1,12 +1,11 @@
-import {Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone} from '@angular/core';
-import {RouterLink, RouteParams} from '@angular/router-deprecated';
-import {Location} from '@angular/common';
-import {Observable} from 'rxjs/Observable';
-import {fromEvent} from 'rxjs/observable/fromEvent';
-import {zip} from 'rxjs/observable/zip';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
-
-import {PlaceMapComponent} from '../../common/place-map/place-map.component';
+import { Component, OnInit, OnDestroy, Input, Output, Inject, EventEmitter, ElementRef, NgZone } from '@angular/core';
+import { RouterLink, RouteParams } from '@angular/router-deprecated';
+import { Location } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { zip } from 'rxjs/observable/zip';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { PlaceMapComponent } from '../../common/place-map/place-map.component';
 
 let $ = require('jquery');
 
@@ -26,10 +25,15 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   public position:any;
   public thing:any;
   public image:any;
-  @Input('places')
-  private streetPlaces:Observable<any>;
+
+  protected openReadMore:boolean;
   @Input('activeThing')
-  private activeThing:any;
+  protected activeThing:any;
+  protected familyInfo:any;
+
+  @Input('places')
+  private places:Observable<any>;
+
   @Output('currentPlace')
   private currentPlace:EventEmitter<any> = new EventEmitter();
   @Output('isShowAboutData')
@@ -38,7 +42,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private location:Location;
   private arrowDisabled:boolean;
   private chosenPlace:any;
-  private showInfoFamily:boolean = false;
   private slideWidth:number = window.innerWidth;
   private sliderContainer:any;
   private element:ElementRef;
@@ -48,7 +51,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private math:any;
   private resizeSubscribe:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
-  private showAboutData:boolean;
 
   public constructor(@Inject(RouteParams) routeParams:RouteParams,
                      @Inject(ElementRef) elementRef:ElementRef,
@@ -63,7 +65,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit():void {
-    this.streetPlacesSubscribe = this.streetPlaces.subscribe((places:any):any => {
+    this.streetPlacesSubscribe = this.places.subscribe((places:any):any => {
       this.thing = this.routeParams.get('thing');
       this.image = this.routeParams.get('image');
       this.allPlaces = places;
@@ -121,7 +123,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   }
 
   protected showInfo():void {
-    this.isShowAboutData.emit(true);
+    this.isShowAboutData.emit({isDevice: true});
   }
 
   protected resizeSlider():void {
@@ -136,7 +138,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     }
 
     this.arrowDisabled = true;
-    this.showInfoFamily = false;
 
     if (this.position === 0) {
       this.position = this.allPlaces.length - 1;
@@ -158,8 +159,8 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
         animationSlider(shiftPrev, prevSlide);
       });
     };
-
     newPrevImage.src = this.images[0].background;
+    this.openReadMore = false;
   }
 
   protected slideNext():void {
@@ -168,7 +169,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     }
 
     this.arrowDisabled = true;
-    this.showInfoFamily = false;
 
     if (this.allPlaces.length - 1 === this.position) {
       this.position = 0;
@@ -190,6 +190,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
     };
 
     newNextImage.src = this.images[2].background;
+    this.openReadMore = false;
   }
 
   protected cb(err:any, data:any):void {
@@ -247,8 +248,8 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
       });
   }
 }
-
-function prevSliderActionAfterAnimation(places, images, position, cb) {
+/* tslint:disable */
+function prevSliderActionAfterAnimation(places:any, images:any, position:any, cb:any):any {
   return () => {
     let prevPlacePosition = position - 1;
 
@@ -269,7 +270,7 @@ function prevSliderActionAfterAnimation(places, images, position, cb) {
   };
 }
 
-function nextSlideActionAfterAnimation(places, images, position, cb) {
+function nextSlideActionAfterAnimation(places:any, images:any, position:any, cb:any):any {
   return () => {
     let nextPlacePosition = position + 1;
 
@@ -289,7 +290,7 @@ function nextSlideActionAfterAnimation(places, images, position, cb) {
     cb.apply(this, [void 0, res]);
   };
 }
-
+/* tslint:enable */
 function animationSlider(shiftLeft:any, endAnimation:any):any {
   $('.slider-mobile-wrapper .slider-mobile')
     .addClass('active')

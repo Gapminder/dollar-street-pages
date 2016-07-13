@@ -21,7 +21,7 @@
   position: relative;
 }
 
-#photographer-profile .header .avatar-box .country{
+#photographer-profile .header .avatar-box .country {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -138,10 +138,12 @@
 #mobile-photographer-profile .image-container img {
   width: 100%;
 }
+
 #mobile-photographer-profile .image-container .avatar-box {
   position: relative;
 }
-#mobile-photographer-profile .image-container .avatar-box .country{
+
+#mobile-photographer-profile .image-container .avatar-box .country {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -151,8 +153,9 @@
   font-size: 18px;
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
 }
-#mobile-photographer-profile .image-container .avatar-box .country img{
-  width:10px;
+
+#mobile-photographer-profile .image-container .avatar-box .country img {
+  width: 10px;
   vertical-align: middle;
 }
 

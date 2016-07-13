@@ -94,7 +94,11 @@ country,
 first-page,
 ambassadors,
 info-page,
+article-page,
+blog-page,
+post-page,
 photographer,
+matrix,
 map-component {
   position: relative;
   display: block;
@@ -150,6 +154,18 @@ map-component {
 
 .place-header .matrix-icon {
   margin-left: 20px !important;
+}
+
+#main-menu .share-button-container i {
+  color: #e0e7ef;
+}
+
+body.onboarding .zoom-column {
+  top: 252px;
+}
+
+body.wizard .zoom-column {
+  top: 146px;
 }
 
 @supports (-webkit-line-clamp: 1) {

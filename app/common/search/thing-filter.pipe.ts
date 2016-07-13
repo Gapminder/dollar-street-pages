@@ -1,5 +1,5 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {filter, chain} from 'lodash';
+import { Pipe, PipeTransform } from '@angular/core';
+import { filter, chain } from 'lodash';
 @Pipe({
   name: 'SearchFilter'
 })
@@ -7,14 +7,16 @@ import {filter, chain} from 'lodash';
 export class SearchFilter implements PipeTransform {
   public transform(...args:any[]):any {
     let [value, text, field, inside] = args;
+
     if (!text) {
       return value;
     }
+
     let newItems:any[];
 
     if (!inside) {
       newItems = filter(value, (item:any) => {
-        return field ? item.country.toLowerCase().indexOf(text.toLowerCase()) !== -1 : true;
+        return field ? !item.empty && item.country.toLowerCase().indexOf(text.toLowerCase()) !== -1 : true;
       });
     }
 
@@ -25,7 +27,7 @@ export class SearchFilter implements PipeTransform {
             _id: item._id,
             things: chain(item.things)
               .filter((thing:any) => {
-                return thing.name.toLowerCase().indexOf(text.toLowerCase()) !== -1;
+                return !thing.empty && thing.name.toLowerCase().indexOf(text.toLowerCase()) !== -1;
               }).value()
           };
         })

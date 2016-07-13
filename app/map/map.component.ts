@@ -1,10 +1,9 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef, NgZone} from '@angular/core';
-import {RouterLink, RouteParams, Router} from '@angular/router-deprecated';
-import {fromEvent} from 'rxjs/observable/fromEvent';
-
-import {HeaderComponent} from '../common/header/header.component';
-import {LoaderComponent} from '../common/loader/loader.component';
-import {FooterComponent} from '../common/footer/footer.component';
+import { Component, OnInit, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
+import { RouterLink, RouteParams, Router } from '@angular/router-deprecated';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { HeaderComponent } from '../common/header/header.component';
+import { LoaderComponent } from '../common/loader/loader.component';
+import { FooterComponent } from '../common/footer/footer.component';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');
@@ -19,7 +18,6 @@ let device = require('device.js')();
 })
 
 export class MapComponent implements OnInit, OnDestroy {
-
   public resizeSubscribe:any;
   public mapServiceSubscribe:any;
   public math:any;
@@ -71,28 +69,13 @@ export class MapComponent implements OnInit, OnDestroy {
   public ngOnInit():void {
     this.init = true;
     this.thing = this.routeParams.get('thing');
-    this.urlChanged(this.thing);
+    this.thing = this.thing ? this.thing : 'Home';
+
+    this.urlChanged({url: `thing=${this.thing}`});
   }
 
-  public urlChanged(thing:any):void {
-    this.thing = thing;
-    let query = `thing=${this.thing}`;
-
-    if (!thing) {
-      query = '';
-    }
-
-    if (thing && thing._id) {
-      if (this.init) {
-        this.init = false;
-
-        return;
-      }
-
-      query = `thing=${this.thing._id}`;
-    }
-
-    this.mapServiceSubscribe = this.mapService.getMainPlaces(query)
+  public urlChanged(options:any):void {
+    this.mapServiceSubscribe = this.mapService.getMainPlaces(options.url)
       .subscribe((res:any):any => {
         if (res.err) {
           return res.err;
@@ -132,7 +115,8 @@ export class MapComponent implements OnInit, OnDestroy {
         let equator = 0.545 * height;
 
         places.forEach((place:any) => {
-          let stepTop, stepRight;
+          let stepTop;
+          let stepRight;
 
           if (place.lat > 0) {
             stepTop = equator / 75;
@@ -313,11 +297,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
-      this.router.navigate(['Place', {
-        thing: this.hoverPlace.familyImg.thing,
-        place: this.hoverPlace._id,
-        image: this.hoverPlace.familyImg.imageId
-      }]);
+      this.router.navigate(['Home', {place: this.hoverPlace._id}]);
     }
   }
 

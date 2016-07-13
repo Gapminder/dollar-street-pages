@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 let tpl = require('./about.main.template.html');
 let style = require('./about.main.css');

@@ -1,4 +1,4 @@
-import {Component, Input, Inject, NgZone, OnChanges} from '@angular/core';
+import { Component, Input, Inject, NgZone, OnChanges } from '@angular/core';
 let tpl = require('./row-loader.template.html');
 let style = require('./row-loader.css');
 
@@ -10,8 +10,10 @@ let style = require('./row-loader.css');
 
 export class RowLoaderComponent implements OnChanges {
   @Input('items')
+  /* Disable tslint rule 'no-unused-variable'. Variable 'items' is used in 'ngOnChanges' */
+  /* tslint:disable:no-unused-variable */
   private items:any;
-
+  /* tslint:enable:no-unused-variable */
   @Input('itemHeight')
   private itemHeight:number;
 

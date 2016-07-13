@@ -1,0 +1,66 @@
+<div id="things-filter"
+     *ngIf="activeThing.thingName"
+     [ngClass]="{'open-things-filter': isOpenThingsFilter}">
+  <div class="things-filter-button">
+    <div class="things-filter-button-content"
+         (click)="openThingsFilter(isOpenThingsFilter)">
+      <img *ngIf="activeThing?.iconDark"
+           [src]="activeThing?.iconDark"
+           alt="Icon">
+      <span>{{placeComponent ? activeThing?.thingName : activeThing?.plural || activeThing?.thingName}}</span>
+      <span class="arrow"></span>
+    </div>
+
+    <div class="thing-pop-up" *ngIf="activeThing.shortDescription && !isOpenThingsFilter">
+      <div class="thing-pop-up-content">
+        <p> {{activeThing?.shortDescription}}
+          <a *ngIf = "activeThing?.isShowReadMore" [routerLink]="['Article', {id: activeThing._id}]">Read more >></a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="things-filter-container">
+    <div class="related-things-container">
+      <h3 class="title">Related things</h3>
+
+      <div class="related-things-content">
+        <div class="thing-content"
+             *ngFor="let thing of relatedThings | ThingsFilterPipe:search.text"
+             (click)="goToThing(thing)"
+             [ngClass]="{'empty': thing.empty}">
+          <div class="thing-icon-container">
+            <img class="thing-icon" [src]="thing.icon" alt="">
+          </div>
+
+          <span class="thing-name">{{thing.thingName}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="other-things-container">
+      <div class="things-search">
+        <input class="form-control"
+               type="search"
+               placeholder="Enter keyword"
+               [(ngModel)]="search.text">
+        <img src="/assets/img/search-icon.svg" alt="Search icon">
+      </div>
+
+      <div class="other-things-content">
+        <div class="thing-content"
+             *ngFor="let thing of otherThings | ThingsFilterPipe:search.text"
+             (click)="goToThing(thing)"
+             [ngClass]="{'empty': thing.empty}">
+          <div class="thing-icon-container">
+            <img class="thing-icon"
+                 [src]="thing.icon"
+                 [alt]="thing.thingName">
+          </div>
+
+          <span class="thing-name">{{thing.thingName}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

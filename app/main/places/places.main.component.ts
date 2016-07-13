@@ -1,6 +1,6 @@
-import {Component, OnInit, OnDestroy, Inject, ElementRef} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-import {fromEvent} from 'rxjs/observable/fromEvent';
+import { Component, OnInit, OnDestroy, Inject, ElementRef } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./places.main.template.html');
 let style = require('./places.main.css');
@@ -27,15 +27,15 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
   private resizeSubscribe:any;
   private placeServiceSubscribe:any;
 
-  public constructor(@Inject('MainPlacesService') placeService,
-              @Inject(ElementRef) element) {
+  public constructor(@Inject('MainPlacesService') placeService:any,
+                     @Inject(ElementRef) element:ElementRef) {
     this.placeService = placeService;
     this.element = element;
   }
 
   public ngOnInit():void {
     this.placeServiceSubscribe = this.placeService.getMainPlaces()
-      .subscribe((res) => {
+      .subscribe((res:any) => {
         if (res.err) {
           return res.err;
         }
@@ -53,52 +53,19 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     this.resizeSubscribe.unsubscribe();
     this.placeServiceSubscribe.unsubscribe();
   }
 
-  setMarkersCoord(places) {
-    let img = new Image();
-    let mapImage = this.element.nativeElement.querySelector('.map');
-
-    img.onload = () => {
-      let width = mapImage.offsetWidth;
-      let height = mapImage.offsetHeight;
-      let greenwich = 0.439 * width;
-      let equator = 0.545 * height;
-
-      places.forEach((place:any) => {
-        let stepTop, stepRight;
-
-        if (place.lat > 0) {
-          stepTop = equator / 75;
-        } else {
-          stepTop = (height - equator) / 75;
-        }
-
-        if (place.lng < 0) {
-          stepRight = greenwich / 130;
-        } else {
-          stepRight = (width - greenwich) / 158;
-        }
-
-        place.left = place.lng * stepRight + greenwich;
-        place.top = equator - place.lat * stepTop - 23;
-      });
-    };
-
-    img.src = mapImage.src;
-  }
-
-  private hoverOnMarker(index):void {
+  protected hoverOnMarker(index:any):void {
     if (!isDesktop) {
       return;
     }
 
     this.markers = this.map.querySelectorAll('.marker');
 
-    this.places.forEach((place, i) => {
+    this.places.forEach((place:any, i:any) => {
       if (i !== index) {
         return;
       }
@@ -106,7 +73,7 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
       this.hoverPlace = place;
     });
 
-    Array.prototype.forEach.call(this.markers, (marker, i) => {
+    Array.prototype.forEach.call(this.markers, (marker:any, i:any) => {
       if (i === index) {
         return;
       }
@@ -131,7 +98,7 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
     }
   }
 
-  private unHoverOnMarker():void {
+  protected unHoverOnMarker():void {
     if (!isDesktop) {
       return;
     }
@@ -140,22 +107,21 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
     this.hoverPortraitTop = void 0;
     this.hoverPortraitLeft = void 0;
 
-    Array.prototype.forEach.call(this.markers, (marker) => {
+    Array.prototype.forEach.call(this.markers, (marker:any) => {
       marker.style.opacity = '1';
     });
 
     this.markers = void 0;
   }
 
-
-  private hoverOnFamily(index):void {
+  protected hoverOnFamily(index:any):void {
     if (!isDesktop) {
       return;
     }
 
     this.markers = this.map.querySelectorAll('.marker');
 
-    Array.prototype.forEach.call(this.markers, (marker, i) => {
+    Array.prototype.forEach.call(this.markers, (marker:any, i:any) => {
       if (i === index) {
         return;
       }
@@ -164,15 +130,49 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
     });
   };
 
-  private unHoverOnFamily():void {
+  protected unHoverOnFamily():void {
     if (!isDesktop) {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker) => {
+    Array.prototype.forEach.call(this.markers, (marker:any) => {
       marker.style.opacity = '1';
     });
 
     this.markers = void 0;
   };
+
+  private setMarkersCoord(places:any):void {
+    let img = new Image();
+    let mapImage = this.element.nativeElement.querySelector('.map');
+
+    img.onload = () => {
+      let width = mapImage.offsetWidth;
+      let height = mapImage.offsetHeight;
+      let greenwich = 0.439 * width;
+      let equator = 0.545 * height;
+
+      places.forEach((place:any) => {
+        let stepTop;
+        let stepRight;
+
+        if (place.lat > 0) {
+          stepTop = equator / 75;
+        } else {
+          stepTop = (height - equator) / 75;
+        }
+
+        if (place.lng < 0) {
+          stepRight = greenwich / 130;
+        } else {
+          stepRight = (width - greenwich) / 158;
+        }
+
+        place.left = place.lng * stepRight + greenwich;
+        place.top = equator - place.lat * stepTop - 23;
+      });
+    };
+
+    img.src = mapImage.src;
+  }
 }

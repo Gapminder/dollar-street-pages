@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject, ElementRef, NgZone, OnDestroy} from '@angular/core';
-import {fromEvent} from 'rxjs/observable/fromEvent';
+import { Component, OnInit, Inject, ElementRef, NgZone, OnDestroy } from '@angular/core';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./about.template.html');
 let style = require('./about.css');
@@ -13,18 +13,19 @@ const proportion:number = 1.777;
 })
 
 export class AboutComponent implements OnInit, OnDestroy {
+  private resizeSubscribe:any;
   private element:any;
   private videoContainer:HTMLElement;
   private videosIframes:any;
   private zone:NgZone;
-  public resizeSubscribe:any;
 
-  public constructor(@Inject(ElementRef) element, @Inject(NgZone) zone) {
+  public constructor(@Inject(ElementRef) element:ElementRef,
+                     @Inject(NgZone) zone:NgZone) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
 
-  public ngOnInit() {
+  public ngOnInit():void {
     this.videosIframes = this.element.querySelectorAll('.video-container iframe');
 
     this.setVideosSize();
@@ -38,11 +39,11 @@ export class AboutComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy():void {
     this.resizeSubscribe.unsubscribe();
   }
 
-  setVideosSize() {
+  private setVideosSize():void {
     if (!this.videosIframes || !this.videosIframes.length) {
       return;
     }

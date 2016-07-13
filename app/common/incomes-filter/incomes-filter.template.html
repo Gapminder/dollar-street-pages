@@ -1,0 +1,39 @@
+<div id="incomes-filter"
+     [ngClass]="{'open-incomes-filter': isOpenIncomesFilter}">
+  <div class="incomes-filter-button"
+       (click)="openCloseIncomesFilter(isOpenIncomesFilter)">
+    <span>{{title}}</span>
+    <span class="arrow"></span>
+  </div>
+
+  <div class="incomes-filter-container">
+    <div class="range-container">
+      <div class="range-content">
+        <input class="form-control"
+               name="minIncome"
+               type="number"
+               [min]="minIncome"
+               [max]="maxIncome"
+               placeholder="Enter low income"
+               #low
+               [(ngModel)]="range.min">
+      </div>
+
+      <div class="range-content">
+        <input class="form-control"
+               name="maxIncome"
+               type="number"
+               [min]="minIncome"
+               [max]="maxIncome"
+               placeholder="Enter high income"
+               #high
+               [(ngModel)]="range.max">
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button type="button" (click)="applyFilter(low.value, high.value)">Apply</button>
+      <button type="button" (click)="openCloseIncomesFilter(isOpenIncomesFilter)">Close</button>
+    </div>
+  </div>
+</div>
