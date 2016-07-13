@@ -10,6 +10,7 @@ gulp.paths = {
     '!typings/**/*',
     '!test/**/*',
     '!dist/**/*',
+    '!app/**/*.d.ts',
     '!test-e2e/**/*',
     '!**/*.{ts,coffee}.js'
   ]
