@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, NgZone, Inject } from '@angular/core';
+import { Component, Input, Inject, Output, OnChanges, NgZone, EventEmitter } from '@angular/core';
 import { RouterLink } from '@angular/router-deprecated';
 
 let tpl = require('./home-media-view-block.template.html');
@@ -11,7 +11,7 @@ let style = require('./home-media-view-block.css');
   directives: [RouterLink]
 })
 
-export class HomeMediaViewBlockComponent implements OnInit {
+export class HomeMediaViewBlockComponent implements OnChanges {
   protected loader:boolean = false;
   protected popIsOpen:boolean = false;
   protected fancyBoxImage:string;
@@ -19,22 +19,29 @@ export class HomeMediaViewBlockComponent implements OnInit {
   @Input('imageData')
   private imageData:any;
 
+  @Output('closeBigImageBlock')
+  private closeBigImageBlock:EventEmitter<any> = new EventEmitter();
+
   private zone:NgZone;
 
   public constructor(@Inject(NgZone) zone:NgZone) {
     this.zone = zone;
   }
 
-  public ngOnInit():void {
-    let image:any = new Image();
+  public ngOnChanges(changes:any):void {
+    if (changes.imageData) {
+      this.loader = false;
 
-    image.onload = () => {
-      this.zone.run(() => {
-        this.loader = true;
-      });
-    };
+      let image:any = new Image();
 
-    image.src = this.imageData.image;
+      image.onload = () => {
+        this.zone.run(() => {
+          this.loader = true;
+        });
+      };
+
+      image.src = this.imageData.image;
+    }
   }
 
   protected openPopUp():void {
@@ -55,6 +62,10 @@ export class HomeMediaViewBlockComponent implements OnInit {
   protected fancyBoxClose():void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
+  }
+
+  protected closeImageBlock():void {
+    this.closeBigImageBlock.emit({});
   }
 }
 

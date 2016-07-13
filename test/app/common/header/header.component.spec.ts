@@ -15,7 +15,7 @@ import {MockService} from '../../../app/common-mocks/mock.service.template';
 import {HeaderComponent} from '../../../../app/common/header/header.component';
 import {thing} from './mocks/data.ts';
 
-describe('FooterComponent', () => {
+describe('HeaderComponent', () => {
   let headerService = new MockService();
   headerService.serviceName = 'HeaderService';
   headerService.getMethod = 'getDefaultThing';
@@ -55,10 +55,5 @@ describe('FooterComponent', () => {
     let thing = {_id: '5477537786deda0b00d43be5', plural: 'Tools', name: 'Tool'};
     context.activeThingTransfer(thing);
     expect(context.activeThing).toEqual(thing);
-  });
-  it('goToMain', () => {
-    spyOn(context.router, 'navigate');
-    context.goToMain();
-    expect(context.router.navigate).toHaveBeenCalledWith(['Main']);
   });
 });

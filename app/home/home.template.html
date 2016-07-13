@@ -1,53 +1,21 @@
 <div class="header-container">
-  <div class="container">
-    <a [routerLink]="['Main']" class="logo pull-left">
-      <img src="/assets/img/dollar-street.svg" alt="">
-    </a>
+  <a [routerLink]="['Matrix']" class="logo pull-left">
+    <img src="/assets/img/dollar-street.svg" alt="">
+  </a>
 
-    <p class="heading pull-left">
-      <i class="fa fa-arrow-up" [routerLink]="['Matrix', urlParams]"></i>
-      <span>{{titles?.thing}}</span> by <span>{{titles?.income}}</span> in <span>{{titles?.countries}}</span>
-    </p>
+  <p class="heading pull-left" [routerLink]="['Matrix', urlParams]">
+    <img src="/assets/img/back-icon.svg" alt="Back">
+    {{titles?.thing}} in {{titles?.countries}}
+  </p>
 
-    <main-menu class="pull-right"></main-menu>
-
-    <div class="matrix-icon pull-right">
-      <a [routerLink]="['Matrix']">
-        <img src="/assets/img/dark-matrix-icon.svg" alt="">
-      </a>
-    </div>
-  </div>
+  <main-menu class="pull-right"></main-menu>
 </div>
 
-<div class="header-container fixed" [style.top.px]="headerMenuPosition">
-  <div class="container">
-    <a [routerLink]="['Main']" class="logo pull-left">
-      <img src="/assets/img/dollar-street.svg" alt="">
-    </a>
+<home-header [placeId]="placeId"></home-header>
 
-    <p class="heading pull-left">
-      <span *ngIf="familyData?.familyName">{{familyData.familyName}} family</span> in
-      <span>{{familyData?.country}}</span>
-      <span>${{familyData?.income}}</span>
-    </p>
-
-    <main-menu class="pull-right"></main-menu>
-
-    <div class="matrix-icon pull-right">
-      <a [routerLink]="['Matrix']">
-        <img src="/assets/img/dark-matrix-icon.svg" alt="">
-      </a>
-    </div>
-  </div>
-</div>
-
-<home-header [placeId]="placeId" (transferFamilyData)="getFamilyData($event)"></home-header>
-<home-media [placeId]="placeId"></home-media>
-
-<p class="go-to-back">
-  <span [routerLink]="['Matrix', urlParams]"><i class="fa fa-arrow-up" [routerLink]="['Matrix', urlParams]"></i> Back to {{titles.thing}} by {{titles.income}} in
-  {{titles.countries}}</span>
-</p>
+<home-media [placeId]="placeId"
+            [activeImageIndex]="activeImageIndex"
+            (activeImageOptions)="activeImageOptions($event)"></home-media>
 
 <loader [hidden]="loader"></loader>
 <footer></footer>

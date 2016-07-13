@@ -27,8 +27,8 @@ import { SocialShareButtonsService } from './common/social_share_buttons/social-
 import { InfoContextService } from './info/info-context/info-context.service';
 import { ArticleService } from './article/article.service';
 import { FamilyInfoService } from './matrix/matrix-view-block/matrix-view-block.service';
-import { HomeHeaderService } from './home/home-header/home-header.sevice';
-import { HomeMediaService } from './home/home-media/home-media.sevice';
+import { HomeHeaderService } from './home/home-header/home-header.service';
+import { HomeMediaService } from './home/home-media/home-media.service';
 import { ContenfulContent } from './contentful/contentful.service';
 import { ContentfulService, Ng2ContentfulConfig } from 'ng2-contentful';
 

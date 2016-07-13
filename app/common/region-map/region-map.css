@@ -1,0 +1,18 @@
+#map-content {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+#map-content .map {
+  width: 100%;
+}
+
+#map-content .map.active {
+  display: block;
+}
+
+#map-content .marker {
+  position: absolute;
+  width: 15px;
+}

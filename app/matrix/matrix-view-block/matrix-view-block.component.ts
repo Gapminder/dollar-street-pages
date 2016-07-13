@@ -1,7 +1,6 @@
 import { Component, Input, Output, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { RouterLink, Router } from '@angular/router-deprecated';
-import { PlaceMapComponent } from '../../common/place-map/place-map.component';
+import { RegionMapComponent } from '../../common/region-map/region-map.component';
 
 let tpl = require('./matrix-view-block.template.html');
 let style = require('./matrix-view-block.css');
@@ -10,7 +9,7 @@ let style = require('./matrix-view-block.css');
   selector: 'matrix-view-block',
   template: tpl,
   styles: [style],
-  directives: [PlaceMapComponent, RouterLink]
+  directives: [RegionMapComponent, RouterLink]
 })
 
 export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
@@ -23,7 +22,7 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   protected math:any;
 
   private popIsOpen:boolean;
-  private mapData:ReplaySubject<any> = new ReplaySubject(0);
+  private mapData:any;
   private familyInfoService:any;
   private router:Router;
   private zone:NgZone;
@@ -55,7 +54,7 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
 
     this.place.background = this.place.background.replace('devices', 'desktops');
 
-    this.mapData.next({region: this.place.region, lat: this.place.lat, lng: this.place.lng});
+    this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();

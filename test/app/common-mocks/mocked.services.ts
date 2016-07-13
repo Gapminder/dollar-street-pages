@@ -7,6 +7,8 @@ import { AppComponent } from '../../../app/app.component';
 import { MathService } from '../../../app/common/math-service/math-service';
 import { StreetDrawService } from '../../../app/common/street/street.service';
 import { HomeIncomeFilterService } from '../../../app/home/home-income-filter.service';
+import { HomeHeaderService } from '../../../app/home/home-header/home-header.service';
+import { HomeMediaService } from '../../../app/home/home-media/home-media.service';
 import { StreetSettingsService } from '../../../app/common/street/street.settings.service';
 import { MatrixService } from '../../../app/matrix/matrix.service';
 import { HeaderService } from '../../../app/common/header/header.service';
@@ -41,6 +43,8 @@ export class MockCommonDependency {
       provide('SearchService', {useClass: SearchService}),
       provide('StreetSettingsService', {useClass: StreetSettingsService}),
       provide('HomeIncomeFilterService', {useClass: HomeIncomeFilterService}),
+      provide('HomeHeaderService', {useClass: HomeHeaderService}),
+      provide('HomeMediaService', {useClass: HomeMediaService}),
       provide('MainPlacesService', {useClass: MainPlacesService}),
       provide('MapService', {useClass: MapService}),
       provide('UrlChangeService', {useClass: UrlChangeService}),

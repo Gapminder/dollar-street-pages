@@ -1,19 +1,6 @@
-.go-to-photographer-page {
-  margin: 0 .5%;
-}
-
-.go-to-photographer-page p {
-  margin: 0;
-}
-
-.go-to-photographer-page a {
-  color: #374551;
-  text-decoration: underline;
-}
-
 .family-things-container {
   min-height: 450px;
-  padding-top: 15px;
+  padding: 16px;
 }
 
 .family-images-container {
@@ -26,16 +13,12 @@
 }
 
 .family-images-container .family-image-container {
-  width: 24%;
-  margin: .5%;
+  width: calc(25% - 16px);
+  margin: 8px;
   float: left;
-  padding-top: 24%;
+  padding-top: calc(25% - 16px);
   position: relative;
   cursor: pointer;
-}
-
-.family-images-container .family-image-container.active {
-  box-shadow: 0 0 0 5px #374551 inset;
 }
 
 .family-images-container .family-image {
@@ -43,8 +26,7 @@
   background-size: cover;
 }
 
-.family-images-container .family-image,
-#map-info-canvas {
+.family-images-container .family-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -52,7 +34,6 @@
   bottom: 0;
   width: 100% !important;
   height: 100% !important;
-  z-index: -1;
 }
 
 .family-things-container .image-description {
