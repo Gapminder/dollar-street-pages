@@ -16,7 +16,7 @@
       </div>
 
       <div class="map-container" [routerLink]="['Country', {id: familyData?.country?._id}]">
-        <place-map [hoverPlace]="mapData"></place-map>
+        <region-map [mapData]="mapData"></region-map>
       </div>
 
       <div class="home-description-container">

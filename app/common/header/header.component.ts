@@ -127,10 +127,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.activeThing = thing;
   }
 
-  public goToMain():void {
-    this.router.navigate(['Main']);
-  }
-
   private parseUrl(url:string):any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);

@@ -1,15 +1,8 @@
-<div class="go-to-photographer-page">
-  <p>{{images.length}} photos <span
-    *ngIf="photographer">by <a [routerLink]="['Photographer', {id: photographer._id}]">{{photographer.firstName}} {{photographer.lastName}}</a></span>
-  </p>
-</div>
-
 <div class="family-things-container family-things-container-scroll">
   <div class="family-images-container">
     <div class="family-image-container"
          *ngFor="let image of images; let i = index"
          (click)="openMedia(image, i)"
-         [ngClass]="{active: image._id === prevImageId}"
          [style.order]="i">
       <div class="family-image"
            [ngStyle]="{'background-image': image.background}">
@@ -24,7 +17,8 @@
 
     <home-media-view-block *ngIf="showImageBlock"
                            [imageData]="imageData"
-                           [style.order]="imageBlockLocation"></home-media-view-block>
+                           [style.order]="imageBlockLocation"
+                           (closeBigImageBlock)="openMedia(activeImage, indexViewBoxImage)"></home-media-view-block>
 
     <row-loader [items]="images" [field]="'background'" [itemHeight]="itemSize" [count]="zoom"></row-loader>
   </div>

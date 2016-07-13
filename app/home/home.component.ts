@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouteParams, RouterLink } from '@angular/router-deprecated';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import { FooterComponent } from '../common/footer/footer.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { MainMenuComponent } from '../common/menu/menu.component';
@@ -12,7 +11,7 @@ let _ = require('lodash');
 let tpl = require('./home.template.html');
 let style = require('./home.css');
 
-interface UrlParamsInterfase {
+interface UrlParamsInterface {
   thing:string;
   countries:string;
   regions:string;
@@ -32,12 +31,10 @@ interface UrlParamsInterfase {
 export class HomeComponent implements OnInit, OnDestroy {
   protected loader:boolean = false;
   protected titles:any = {};
-  protected familyData:any = {};
-  protected headerMenuPosition:number = -60;
 
   private placeId:string;
   private routeParams:RouteParams;
-  private urlParams:UrlParamsInterfase;
+  private urlParams:UrlParamsInterface;
   private homeIncomeFilterService:any;
   private homeIncomeFilterServiceSubscribe:any;
   private homeIncomeData:any;
@@ -47,23 +44,24 @@ export class HomeComponent implements OnInit, OnDestroy {
   private countriesFilterService:any;
   private countriesFilterServiceSubscribe:any;
   private locations:any[];
-  private zone:NgZone;
-  private scrollSubscribe:any;
+  private activeImageIndex:number;
+  private urlChangeService:any;
 
   public constructor(@Inject(RouteParams) routeParams:RouteParams,
                      @Inject('CountriesFilterService') countriesFilterService:any,
                      @Inject('HomeIncomeFilterService') homeIncomeFilterService:any,
-                     @Inject(NgZone) zone:NgZone,
+                     @Inject('UrlChangeService') urlChangeService:any,
                      @Inject(Router) router:Router) {
     this.routeParams = routeParams;
-    this.zone = zone;
     this.router = router;
     this.homeIncomeFilterService = homeIncomeFilterService;
     this.countriesFilterService = countriesFilterService;
+    this.urlChangeService = urlChangeService;
   }
 
   public ngOnInit():void {
     this.placeId = this.routeParams.get('place');
+    this.activeImageIndex = parseInt(this.routeParams.get('activeImage'), 10);
 
     this.urlParams = {
       thing: this.routeParams.get('thing') ? decodeURI(this.routeParams.get('thing')) : 'Home',
@@ -107,32 +105,32 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.initData();
       });
-
-    this.scrollSubscribe = fromEvent(document, 'scroll')
-      .subscribe(() => {
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-
-        this.zone.run(() => {
-          if (scrollTop > 100) {
-            this.headerMenuPosition = 0;
-          } else {
-            this.headerMenuPosition = -60;
-          }
-        });
-      });
   }
 
   public ngOnDestroy():void {
     this.countriesFilterServiceSubscribe.unsubscribe();
     this.homeIncomeFilterServiceSubscribe.unsubscribe();
-
-    if (this.scrollSubscribe) {
-      this.scrollSubscribe.unsubscribe();
-    }
   }
 
-  protected getFamilyData(familyData:any):void {
-    this.familyData = familyData;
+  protected activeImageOptions(options:{activeImageIndex?:number;}):void {
+    let {activeImageIndex} = options;
+
+    if (activeImageIndex === this.activeImageIndex) {
+      return;
+    }
+
+    let url:string = location.search
+      .replace('?', '')
+      .replace(/&activeImage\=\d*/, '');
+
+    if (activeImageIndex) {
+      this.activeImageIndex = activeImageIndex;
+      url = url + `&activeImage=${activeImageIndex}`;
+    } else {
+      this.activeImageIndex = void 0;
+    }
+
+    this.urlChangeService.replaceState('/home', url);
   }
 
   private initData():void {

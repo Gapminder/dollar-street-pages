@@ -1,15 +1,15 @@
 #main-menu .menu-icon {
   display: block;
-  width: 50px;
-  height: 50px;
+  width: 71px;
+  height: 87px;
   font-size: 38px;
   text-align: center;
   cursor: pointer;
 }
 
 #main-menu .menu-icon img {
-  width: 28px;
-  height: 26px;
+  width: 27px;
+  height: 21px;
   display: none;
   position: absolute;
   top: 0;
