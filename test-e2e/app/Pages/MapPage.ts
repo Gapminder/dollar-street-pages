@@ -2,14 +2,15 @@
 
 const data = require('../Data/DataProvider.ts');
 const using = require('jasmine-data-provider');
+const AbstractPage = require('../Pages/AbstractPage.ts');
 let mapImage = $('.map-color');
-let AngularSitemapPage = function() {
-    this.setMapErrorMessage = (name) => { return name + ' on Map Page is not loaded'; };
-    this.getMapImage = () => {return mapImage; }; };
+let countryLinks = element.all(by.css('.country-name'));
 
-AngularSitemapPage.prototype = Object.create({}, {
-    getEC: { get: () => { return protractor.ExpectedConditions; }},
-    getTimeout: { get: () => 10000},
-});
-
-module.exports = AngularSitemapPage;
+let MapPage = function() {
+  this.setMapErrorMessage = (name) => { return name + ' on Map Page is not loaded'; };
+  this.getMapImage = () => {return mapImage; };
+  this.getCountryLink = (id) =>{return $('span[href*="' + id + '"]'); };
+  this.getCountry = () => {return countryLinks;};
+};
+MapPage.prototype = Object.create(AbstractPage.prototype);
+module.exports = MapPage;
