@@ -12,10 +12,15 @@
       <h3 class="title"
           (click)="selectRegions(location)"
           [ngClass]="{active: selectedRegions.indexOf(location.region) !== -1}">
-        <span class="selected">
-          <img src="/assets/img/check.png" alt="">
+          <span class="not-selected">
+            <img src="/assets/img/empty-check.png" alt="">
+          </span>
+          <span class="selected">
+            <img src="/assets/img/check-icon.svg" alt="">
+          </span>
+        <span class="regions-names">
+          {{location.region}}
         </span>
-        {{location.region}}
       </h3>
 
       <div class="countries-container">
@@ -23,19 +28,23 @@
              *ngFor="let country of location.countries"
              [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
              (click)="selectCountries(country, location.region)">
-          <span class="selected">
-            <img src="/assets/img/check.png" alt="">
-          </span>
 
-          <span class="name">{{country.country}}</span>
+          <span class="not-selected">
+            <img src="/assets/img/empty-check.png" alt="">
+          </span>
+          <span class="selected">
+            <img src="/assets/img/check-icon.svg" alt="">
+          </span>
+          <span class="name">
+            {{country.country}}
+          </span>
         </div>
       </div>
     </div>
 
     <div class="button-container">
-      <button class="pull-left" type="button" (click)="clearAllCountries()">Clear all countries</button>
-      <button type="button" (click)="goToLocation()">Apply</button>
-      <button type="button" (click)="openCloseCountriesFilter(isOpenCountriesFilter)">Close</button>
+      <button type="button" (click)="clearAllCountries()"><img src="/assets/img/clear-all-icon.svg">Clear all</button>
+      <button type="button" (click)="goToLocation()"><img src="/assets/img/apply-icon.svg">Apply</button>
     </div>
   </div>
 </div>

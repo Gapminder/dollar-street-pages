@@ -3,6 +3,7 @@
   vertical-align: top;
   width: 100%;
   background-color: white;
+  margin-top: 5px;
 }
 
 .header-content .icon-container {
@@ -11,9 +12,9 @@
 }
 
 .header-content .icon-container img {
-  width: 42px;
-  height: 42px;
-  margin: 5px 10px;
+  width: 53px;
+  height: 53px;
+  margin: 9px 15px 10px 9px;
   cursor: pointer;
 }
 
@@ -59,7 +60,9 @@ place-map[hidden] {
 
 .filters-container .some-filter-container > span {
   margin: 0 10px;
-  font-size: 18px;
+  font-size: 32px;
+  color: #727a82;
+  line-height: 20px;
 }
 
 .some-filter-container {

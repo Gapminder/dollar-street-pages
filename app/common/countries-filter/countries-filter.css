@@ -5,15 +5,18 @@
 }
 
 #countries-filter .countries-filter-button {
-  background-color: #ccc;
-  border-radius: 2px;
-  border: 1px solid #ddd;
+  background-color: white;
+  border: 1px solid #e4e6e7;
+  border-radius: 8px;
   min-width: 150px;
   overflow: hidden;
   text-align: center;
-  padding: 5px 20px 5px 5px;
+  padding: 13px 35px 13px 13px;
   position: relative;
   cursor: pointer;
+  color: #2e4350;
+  font-size: 32px;
+  line-height: 20px;
 }
 
 #countries-filter .countries-filter-button span.arrow {
@@ -22,30 +25,30 @@
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 8px solid #000;
-
   position: absolute;
-  top: 11px;
-  right: 5px;
+  top: 20px;
+  right: 10px;
 }
 
 #countries-filter.open-countries-filter .countries-filter-button span.arrow {
   border-bottom: 8px solid #000;
   border-top: 0 solid transparent;
-
   position: absolute;
-  top: 11px;
-  right: 5px;
+  top: 20px;
+  right: 10px;
 }
 
 #countries-filter .countries-filter-container {
+  background-color: white;
+  border: 1px solid #e4e6e7;
+  box-shadow: 0 0 10px rgba(46, 67, 80, 0.1);
   position: absolute;
   top: 100%;
-  left: -240px;
-  width: 630px;
-  background-color: #374551;
+  margin-top: 5px;
+  width: 787px;
   z-index: 10;
   overflow: hidden;
-  height: 500px;
+  height: 569px;
   display: none;
 }
 
@@ -54,25 +57,25 @@
 }
 
 #countries-filter .regions-container {
+  border: 1px solid #e4e6e7;
   width: 25%;
-  padding: 15px;
+  padding: 15px 5px 0 11px;
   float: left;
   height: calc(100% - 50px);
 }
 
 #countries-filter .regions-container .title {
-  color: #fff;
-  font-size: 21px;
+  color: #384651;
+  font-size: 24px;
+  line-height: 20px;
   margin: 7px 0 20px;
   cursor: pointer;
-  text-transform: uppercase;
 }
 
 #countries-filter .regions-container .country-content {
   overflow: hidden;
   position: relative;
   padding: 6px 0 12px 0;
-  border-top: 1px solid #303E4A;
   margin: 0;
   cursor: pointer;
 }
@@ -83,9 +86,10 @@
 }
 
 #countries-filter .regions-container span.name {
-  color: #fff;
-  margin-top: 5px;
+  color: #384651;
   font-size: 20px;
+  line-height: 17px;
+  margin-top: 5px;
   display: block;
   width: calc(100% - 20px);
   float: right;
@@ -108,14 +112,13 @@
 }
 
 #countries-filter .button-container button {
-  border: 1px solid #FACD28;
+  color: #2e4350;
+  font-size: 24px;
+  line-height: 20px;
+  border: 0;
   background: none;
   box-shadow: none;
-  border-radius: 2px;
-  color: #fff;
   padding: 5px 20px;
-  font-size: 16px;
-  margin-left: 10px;
 }
 
 #countries-filter .button-container button:focus {
@@ -123,16 +126,23 @@
   outline: none;
 }
 
-#countries-filter .title .selected,
-#countries-filter .country-content .selected {
-  width: 10px;
-  float: left;
-  margin-top: 16px;
-  margin-right: 10px;
+#countries-filter .button-container img {
+  width: 24px;
+  margin: 10px 5px 15px 0;
 }
 
-#countries-filter .title .selected {
-  margin-top: 9px;
+#countries-filter .title .selected,
+#countries-filter .country-content .selected {
+  width: 15px;
+  height: 11px;
+  float: left;
+  margin: 8px 1px;
+  display: block;
+  position: absolute;
+}
+
+#countries-filter .title .regions-names {
+  margin-left: 10px;
 }
 
 #countries-filter .title .selected img,
@@ -144,4 +154,40 @@
 #countries-filter .title.active .selected img,
 #countries-filter .country-content.active .selected img {
   display: block;
+}
+
+#countries-filter .title .not-selected,
+#countries-filter .country-content .not-selected {
+  width: 13px;
+  float: left;
+}
+
+#countries-filter .title .not-selected img {
+  width: 100%;
+  margin-top: 0;
+}
+
+#countries-filter .country-content .not-selected img {
+  width: 100%;
+  margin-top: 5px;
+}
+
+#countries-filter .title.active .not-selected img,
+#countries-filter .country-content.active .not-selected img {
+  display: block;
+  margin-top: 8px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/*::-webkit-scrollbar-track {*/
+/*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+/*border-radius: 10px;*/
+/*}*/
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #ced1d5;;
 }
