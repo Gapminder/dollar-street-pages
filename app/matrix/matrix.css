@@ -139,20 +139,21 @@ matrix-images {
 }
 
 .zoom-column button {
-  width: 33px;
-  height: 33px;
-  background: #525E68;
+  width: 28px;
+  height: 28px;
+  background: white;
   border: none;
+  opacity: .8;
   border-radius: 50%;
   margin-right: 3px;
   box-shadow: 0.574px 0.819px 2.88px 0.12px rgba(0, 0, 0, 0.2);
-  padding: 0 6px;
+  padding-top: 5px;
 }
 
 .zoom-column button b {
-  color: #fff;
+  color: #2e4350;
   line-height: 0;
-  font-size: 22px;
+  font-size: 28px;
 }
 
 .zoom-column button:hover {

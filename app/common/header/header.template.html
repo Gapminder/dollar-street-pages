@@ -16,12 +16,12 @@
     <things-filter [url]="query"
                    (selectedFilter)="urlTransfer($event)"></things-filter>
     <div class="some-filter-container" *ngIf="matrixComponent">
-      <span>by</span>
-      <incomes-filter [url]="query"
-                      (selectedFilter)="urlTransfer($event)"></incomes-filter>
       <span>in</span>
       <countries-filter [url]="query"
                         (selectedFilter)="urlTransfer($event)"></countries-filter>
+      <span>by</span>
+      <incomes-filter [url]="query"
+                      (selectedFilter)="urlTransfer($event)"></incomes-filter>
     </div>
   </div>
 

@@ -143,15 +143,15 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
     let title:string;
 
     if (range.min > poor && range.max < rich) {
-      title = 'incomes $' + range.min + ' - $' + range.max;
+      title = ' $ ' + range.min + ' – ' + range.max;
     }
 
     if (range.min > poor && range.max === rich) {
-      title = 'income over $' + range.min;
+      title = 'income over $ ' + range.min;
     }
 
     if (range.min === poor && range.max < rich) {
-      title = 'income lower $' + range.max;
+      title = 'income lower $ ' + range.max;
     }
 
     return title || 'all incomes';
