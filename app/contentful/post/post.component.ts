@@ -6,6 +6,7 @@ import { LoaderComponent } from '../../common/loader/loader.component';
 import { ContentfulImageDirective } from '../contentful-image.directive';
 import { EntriesViewComponent } from '../entries-view/entries-view.component';
 import { ToDatePipe } from '../pipes/to-date.pipe';
+import { FooterSpaceDirective } from '../../common/footer-space/footer-space.directive';
 
 let tpl = require('./post.template.html');
 let style = require('./post.css');
@@ -14,7 +15,7 @@ let style = require('./post.css');
   selector: 'post-page',
   template: tpl,
   styles: [style],
-  directives: [EntriesViewComponent, ContentfulImageDirective, RouterLink, HeaderWithoutSearchComponent, FooterComponent, LoaderComponent],
+  directives: [EntriesViewComponent, ContentfulImageDirective, RouterLink, HeaderWithoutSearchComponent, FooterComponent, LoaderComponent, FooterSpaceDirective],
   pipes: [ToDatePipe]
 })
 

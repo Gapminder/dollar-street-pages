@@ -6,6 +6,7 @@ import { StreetComponent } from '../common/street/street.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let _ = require('lodash');
 let device = require('device.js')();
@@ -17,7 +18,7 @@ let style = require('./matrix.css');
   selector: 'matrix',
   template: tpl,
   styles: [style],
-  directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
+  directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent, FooterSpaceDirective]
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {

@@ -1,127 +1,103 @@
-.footer {
-  overflow: hidden;
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
-.footer[class$='f-*'] {
-  width: 33%;
+.footer {
+  overflow: hidden;
+  padding: 0 24px 55px;
+}
+
+.footer > div {
   float: left;
 }
 
-.footer .f-social {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.footer .cc-container,
+.footer .social-share-buttons-container {
+  margin-top: 5px;
+  width: calc((100% - 430px) / 2);
 }
 
-.footer .f-gap {
-  font-size: 18px;
+.footer .description-container {
+  width: 430px;
+}
+
+.footer .cc-container img {
+  height: 30px;
+}
+
+.footer .logo-container img {
+  width: 42px;
+}
+
+.footer .logo-container p {
+  color: #2e4350;
+  font-size: 35px;
+  margin: 13px 0 18px;
+  line-height: 26px;
+}
+
+.footer .logo-container p span {
+  font-family: 'Bariol Bold', sans-serif;
+}
+
+.footer .links {
+  line-height: 20px;
+  margin-bottom: 16px;
+}
+
+.footer .links a {
+  color: #2e4350;
+  font-size: 21px;
+}
+
+.footer .links .dividers:before {
+  content: "";
+  width: 1px;
+  display: inline-block;
+  height: 22px;
+  background-color: #2e4350;
+  margin: 0 10px -5px 5px;
+}
+
+.footer .links .dividers:after {
+  content: "";
+  width: 1px;
+  display: inline-block;
+  height: 22px;
+  background-color: #2e4350;
+  margin: 0 5px -5px 10px;
+}
+
+.footer .description-content {
+  opacity: 0.7;
+  color: #2e4350;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.footer .description-container {
   text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
 
-.footer .f-social .share-button-container {
-  padding: 15px 0;
-}
-
-.footer .f-dollar-street {
-  font-size: 18px;
-  text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-top: 8px;
-}
-
-.footer .f-dollar-street img {
-  margin-bottom: 5px;
-  width: 53px;
-}
-
-.footer .f-dollar-street .f-gap img {
-  margin-bottom: 5px;
-  width: 253px;
-}
-
-.footer .f-dollar-street p {
-  margin: 0;
-}
-
-.f-menu {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.f-menu ul {
+.footer .social-share-buttons-container .share-button-container {
   padding: 0;
-  list-style: none;
   text-align: right;
 }
 
-.footer .f-dollar-street .links a {
-  color: #374551;
-  font-size: 16px;
+.footer .share-button {
+  width: 32px;
+  display: inline-block;
+  float: none;
+  margin-left: 16px;
 }
 
-@media (min-width: 1400px) {
-  .container {
-    width: 1400px;
-  }
+.footer .gapminder {
+  margin-top: 21px;
 }
 
-@media (max-width: 991px) {
-  .footer .f-dollar-street,
-  .footer .f-social {
-    text-align: center;
-  }
-}
-
-@media (min-width: 1024px) {
-  .footer .share-button-container .share-button {
-    text-align: left !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .footer .share-button-container .share-button {
-    text-align: left !important;
-  }
-}
-
-@media (max-width: 767px) {
-  .footer .f-dollar-street,
-  .footer .f-social {
-    margin-top: 12px;
-  }
-
-  .share-button-container .share-button i {
-    font-size: 22px;
-  }
-
-  .footer .f-social .share-button-container {
-    padding: 0;
-  }
-
-  .footer .f-dollar-street img {
-    width: 40px;
-  }
-
-  .footer .f-dollar-street p {
-    margin: 0;
-  }
-
-  .footer .f-dollar-street p.logo_name {
-    font-size: 14px;
-  }
-
-  .footer .f-dollar-street p.logo_name + p {
-    font-size: 12px;
-  }
-
-  .share-button-container > div {
-    padding: 2px;
-  }
-
-  .f-menu ul {
-    text-align: center;
-    font-size: 14px;
-  }
+.footer .gapminder img {
+  height: 20px;
 }

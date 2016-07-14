@@ -10,13 +10,6 @@
   cursor: pointer;
 }
 
-.share-button-container .share-button i {
-  font-size: 26px;
-  color: #374551;
-}
-
-@media (max-width: 600px) {
-  .share-button-container .share-button i {
-    font-size: 18px;
-  }
+.share-button-container .share-button img {
+  width: 32px;
 }

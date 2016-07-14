@@ -4,6 +4,7 @@ import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/head
 import { PhotographerProfileComponent } from './photographer-profile/photographer-profile.component';
 import { PhotographerPlacesComponent } from './photographer-places/photographer-places.component';
 import { FooterComponent } from '../common/footer/footer.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./photographer.template.html');
 let style = require('./photographer.css');
@@ -12,7 +13,7 @@ let style = require('./photographer.css');
   selector: 'photographer',
   template: tpl,
   styles: [style],
-  directives: [HeaderWithoutSearchComponent, PhotographerProfileComponent, PhotographerPlacesComponent, FooterComponent]
+  directives: [HeaderWithoutSearchComponent, PhotographerProfileComponent, PhotographerPlacesComponent, FooterComponent, FooterSpaceDirective]
 })
 
 export class PhotographerComponent implements OnInit {

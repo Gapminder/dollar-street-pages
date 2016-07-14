@@ -4,6 +4,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { FooterComponent } from '../common/footer/footer.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');
@@ -14,7 +15,7 @@ let device = require('device.js')();
   selector: 'map-component',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, HeaderComponent, LoaderComponent, FooterComponent]
+  directives: [RouterLink, HeaderComponent, LoaderComponent, FooterComponent, FooterSpaceDirective]
 })
 
 export class MapComponent implements OnInit, OnDestroy {

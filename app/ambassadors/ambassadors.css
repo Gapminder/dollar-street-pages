@@ -4,24 +4,3 @@ ambassadors-list {
   overflow: hidden;
   display: block;
 }
-
-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-@media (min-width: 768px) {
-  ambassadors-list {
-    padding-bottom: 250px;
-    display: block;
-  }
-}
-
-@media (max-width: 767px) {
-  ambassadors-list {
-    padding-bottom: 350px;
-    display: block;
-  }
-}

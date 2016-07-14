@@ -173,13 +173,6 @@ matrix-images {
   color: #374551 !important;
 }
 
-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
 @media (max-width: 1200px) {
   .zoom-column {
     top: 140px;
@@ -208,14 +201,7 @@ footer {
 
 @media (min-width: 768px) {
   matrix-images {
-    padding-bottom: 250px;
     padding-top: 112px;
-  }
-}
-
-@media (max-width: 767px) {
-  matrix-images {
-    padding-bottom: 325px;
   }
 }
 
