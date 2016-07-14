@@ -5,6 +5,7 @@ import { FooterComponent } from '../../common/footer/footer.component';
 import { LoaderComponent } from '../../common/loader/loader.component';
 import { ContentfulImageDirective } from '../contentful-image.directive';
 import { ToDatePipe } from '../pipes/to-date.pipe';
+import { FooterSpaceDirective } from '../../common/footer-space/footer-space.directive';
 
 let tpl = require('./blog.template.html');
 let style = require('./blog.css');
@@ -13,7 +14,7 @@ let style = require('./blog.css');
   selector: 'blog-page',
   template: tpl,
   styles: [style],
-  directives: [ContentfulImageDirective, RouterLink, HeaderWithoutSearchComponent, FooterComponent, LoaderComponent],
+  directives: [ContentfulImageDirective, RouterLink, HeaderWithoutSearchComponent, FooterComponent, LoaderComponent, FooterSpaceDirective],
   pipes: [ToDatePipe]
 })
 

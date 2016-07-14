@@ -1,21 +1,24 @@
-<div class="header-container">
-  <a [routerLink]="['Matrix']" class="logo pull-left">
-    <img src="/assets/img/dollar-street.svg" alt="">
-  </a>
+<div class="pages-container" footerSpace>
+  <div class="header-container">
+    <a [routerLink]="['Matrix']" class="logo pull-left">
+      <img src="/assets/img/dollar-street.svg" alt="">
+    </a>
 
-  <p class="heading pull-left" [routerLink]="['Matrix', urlParams]">
-    <img src="/assets/img/back-icon.svg" alt="Back">
-    {{titles?.thing}} in {{titles?.countries}}
-  </p>
+    <p class="heading pull-left" [routerLink]="['Matrix', urlParams]">
+      <img src="/assets/img/back-icon.svg" alt="Back">
+      {{titles?.thing}} in {{titles?.countries}}
+    </p>
 
-  <main-menu class="pull-right"></main-menu>
+    <main-menu class="pull-right"></main-menu>
+  </div>
+
+  <home-header [placeId]="placeId"></home-header>
+
+  <home-media [placeId]="placeId"
+              [activeImageIndex]="activeImageIndex"
+              (activeImageOptions)="activeImageOptions($event)"></home-media>
 </div>
 
-<home-header [placeId]="placeId"></home-header>
-
-<home-media [placeId]="placeId"
-            [activeImageIndex]="activeImageIndex"
-            (activeImageOptions)="activeImageOptions($event)"></home-media>
+<footer></footer>
 
 <loader [hidden]="loader"></loader>
-<footer></footer>

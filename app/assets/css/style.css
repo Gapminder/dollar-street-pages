@@ -88,18 +88,7 @@ html, body, body > div[ui-view] {
   background-color: transparent;
 }
 
-main,
-sitemap,
-country,
-first-page,
-ambassadors,
-info-page,
-article-page,
-blog-page,
-post-page,
-photographer,
-matrix,
-map-component {
+consumer-app > *:not(router-outlet):not(photographers) {
   position: relative;
   display: block;
   min-height: 100%;

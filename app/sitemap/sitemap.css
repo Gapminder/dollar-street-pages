@@ -37,22 +37,3 @@ ul#sitemap li li a:hover {
   background-color: #fff;
   color: #057fac;
 }
-
-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-@media (min-width: 768px) {
-  .sitemap {
-    padding-bottom: 250px;
-  }
-}
-
-@media (max-width: 767px) {
-  .sitemap {
-    padding-bottom: 350px;
-  }
-}

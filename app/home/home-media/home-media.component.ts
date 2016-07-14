@@ -46,7 +46,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private resizeSubscribe:any;
   private zone:NgZone;
   private imageHeight:number;
-  private windowHistory:any = history;
   private footerHeight:any;
   private imageOffsetHeight:any;
   private isInit:boolean = true;
@@ -59,10 +58,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit():void {
-    if ('scrollRestoration' in history) {
-      this.windowHistory.scrollRestoration = 'manual';
-    }
-
     if (window.innerWidth < 1024) {
       this.zoom = 3;
     }
@@ -126,10 +121,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
-
-    if ('scrollRestoration' in history) {
-      this.windowHistory.scrollRestoration = 'auto';
-    }
   }
 
   protected openMedia(image:any, index:number):void {
@@ -190,9 +181,11 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   private goToRow(row:number):void {
-    let header = document.querySelector('.home-description-container') as HTMLElement;
+    let header = document.querySelector('.header-container') as HTMLElement;
+    let homeDescription = document.querySelector('.home-description-container') as HTMLElement;
     let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
+    let headerHeight:number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
-    document.body.scrollTop = (row - 1) * this.imageHeight + header.offsetHeight - shortFamilyInfo.offsetHeight + 16;
+    document.body.scrollTop = (row - 1) * this.imageHeight + headerHeight + 16;
   }
 }

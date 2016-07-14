@@ -5,6 +5,7 @@ import { LoaderComponent } from '../common/loader/loader.component';
 import { MainMenuComponent } from '../common/menu/menu.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { HomeMediaComponent } from './home-media/home-media.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let _ = require('lodash');
 
@@ -25,7 +26,15 @@ interface UrlParamsInterface {
   selector: 'home',
   template: tpl,
   styles: [style],
-  directives: [HomeHeaderComponent, HomeMediaComponent, FooterComponent, LoaderComponent, RouterLink, MainMenuComponent]
+  directives: [
+    HomeHeaderComponent,
+    HomeMediaComponent,
+    FooterComponent,
+    LoaderComponent,
+    RouterLink,
+    MainMenuComponent,
+    FooterSpaceDirective
+  ]
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
@@ -46,6 +55,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private locations:any[];
   private activeImageIndex:number;
   private urlChangeService:any;
+  private windowHistory:any = history;
 
   public constructor(@Inject(RouteParams) routeParams:RouteParams,
                      @Inject('CountriesFilterService') countriesFilterService:any,
@@ -62,6 +72,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   public ngOnInit():void {
     this.placeId = this.routeParams.get('place');
     this.activeImageIndex = parseInt(this.routeParams.get('activeImage'), 10);
+
+    if (!isNaN(this.activeImageIndex) && 'scrollRestoration' in history) {
+      this.windowHistory.scrollRestoration = 'manual';
+    }
 
     this.urlParams = {
       thing: this.routeParams.get('thing') ? decodeURI(this.routeParams.get('thing')) : 'Home',
@@ -110,6 +124,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   public ngOnDestroy():void {
     this.countriesFilterServiceSubscribe.unsubscribe();
     this.homeIncomeFilterServiceSubscribe.unsubscribe();
+
+    if ('scrollRestoration' in history) {
+      this.windowHistory.scrollRestoration = 'auto';
+    }
   }
 
   protected activeImageOptions(options:{activeImageIndex?:number;}):void {

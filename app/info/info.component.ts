@@ -3,6 +3,7 @@ import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/head
 import { InfoContextComponent } from './info-context/info-context.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { LoaderComponent } from '../common/loader/loader.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./info.template.html');
 let style = require('./info.css');
@@ -11,7 +12,7 @@ let style = require('./info.css');
   selector: 'info-page',
   template: tpl,
   styles: [style],
-  directives: [HeaderWithoutSearchComponent, InfoContextComponent, FooterComponent, LoaderComponent]
+  directives: [HeaderWithoutSearchComponent, InfoContextComponent, FooterComponent, LoaderComponent, FooterSpaceDirective]
 })
 
 export class InfoComponent {
