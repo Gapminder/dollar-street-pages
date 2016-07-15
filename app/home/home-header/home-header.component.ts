@@ -30,15 +30,18 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private homeHeaderService:any;
   private homeHeaderServiceSubscribe:any;
   private scrollSubscribe:any;
+  private math:any;
   private resizeSubscribe:any;
   private zone:NgZone;
   private element:ElementRef;
 
   public constructor(@Inject('HomeHeaderService') homeHeaderService:any,
                      @Inject(ElementRef) element:ElementRef,
+                     @Inject('Math') math:any,
                      @Inject(NgZone) zone:NgZone) {
     this.homeHeaderService = homeHeaderService;
     this.zone = zone;
+    this.math = math;
     this.element = element;
   }
 

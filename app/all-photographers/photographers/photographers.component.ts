@@ -19,13 +19,16 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   private photographersByCountry:any[];
   private photographersByName:any[];
   private search:any;
+  private math:any;
   private loader:boolean;
   private photographersServiceSubscribe:any;
 
-  public constructor(@Inject('PhotographersService') photographersService:any) {
+  public constructor(@Inject('PhotographersService') photographersService:any,
+                     @Inject('Math') math:any) {
     this.photographersService = photographersService;
     this.photographersByCountry = [];
     this.photographersByName = [];
+    this.math = math;
     this.search = {text: ''};
     this.loader = false;
   }
