@@ -35,9 +35,9 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private places:Observable<any>;
 
   @Output('currentPlace')
-  private currentPlace:EventEmitter<any> = new EventEmitter();
+  private currentPlace:EventEmitter<any> = new EventEmitter<any>();
   @Output('isShowAboutData')
-  private isShowAboutData:EventEmitter<any> = new EventEmitter();
+  private isShowAboutData:EventEmitter<any> = new EventEmitter<any>();
   private routeParams:RouteParams;
   private location:Location;
   private arrowDisabled:boolean;

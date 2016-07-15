@@ -20,6 +20,10 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   protected familyData:any = {};
   protected loader:boolean = false;
   protected math:any;
+  protected markerPositionLeft:number;
+
+  @Input('positionInRow')
+  protected positionInRow:any;
 
   private popIsOpen:boolean;
   private mapData:any;
@@ -34,7 +38,7 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   @Input('thing')
   private thing:string;
   @Output('closeBigImageBlock')
-  private closeBigImageBlock:EventEmitter<any> = new EventEmitter();
+  private closeBigImageBlock:EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(@Inject('FamilyInfoService') familyInfoService:any,
                      @Inject(Router) router:Router,
@@ -51,9 +55,11 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
     this.showblock = true;
 
     let url = `placeId=${this.place._id}&thingId=${this.thing}`;
+    let parseUrl:any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
+    let imageWidth:number = (window.innerWidth - 36) / parseUrl.zoom;
 
-    this.place.background = this.place.background.replace('devices', 'desktops');
-
+    this.markerPositionLeft = imageWidth * (this.positionInRow || parseUrl.zoom) - (imageWidth / 2 + 33);
+    this.place.background = 'url("' + this.place.background.replace('devices', 'desktops') + '")';
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 
     if (this.familyInfoServiceSubscribe) {
@@ -68,7 +74,12 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
         }
 
         this.familyData = res.data;
-        this.familyData.goToPlaceData = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
+
+        if (this.familyData.familyData && this.familyData.familyData.length > 300) {
+          this.familyData.familyData = this.familyData.familyData.slice(0, 300) + '...';
+        }
+
+        this.familyData.goToPlaceData = parseUrl;
         this.loader = true;
       });
   }
@@ -86,12 +97,12 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   protected openPopUp():void {
     this.popIsOpen = true;
 
-    let imgUrl = this.place.background.replace('desktops', 'original');
+    let imgUrl = this.place.background.replace('desktops', 'original').replace('url("', '').replace('")', '');
     let newImage = new Image();
 
     newImage.onload = () => {
       this.zone.run(() => {
-        this.fancyBoxImage = 'url("' + imgUrl + '")';
+        this.fancyBoxImage = this.place.background;
       });
     };
 

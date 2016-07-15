@@ -8,8 +8,8 @@
        (click)="goToImageBlock(place, i)">
 
     <div class="image-description">
-      <span class="place-image-box-income pull-right">{{math.round(place?.income)}}$</span>
-      <span class="place-image-box-country pull-left">{{place?.country}}</span>
+      <span class="place-image-box-income">{{math.round(place?.income)}}$</span>
+      <span class="place-image-box-country">{{place?.country}}</span>
     </div>
 
     <div class="mobile-hover" *ngIf="!isDesktop && (place?._id === oldPlaceId)">
@@ -22,6 +22,7 @@
                      [query]="query"
                      [place]="familyData"
                      [thing]="thing"
+                     [positionInRow]="positionInRow"
                      (closeBigImageBlock)="goToImageBlock(familyData, indexViewBoxHouse)"
                      [style.order]="imageBlockLocation">
   </matrix-view-block>

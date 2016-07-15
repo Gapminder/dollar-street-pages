@@ -33,7 +33,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   @Input()
   private url:string;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
   private thingsFilterService:any;
   private thingsFilterServiceSubscribe:any;
   private router:Router;

@@ -17,7 +17,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   @Input()
   private photographerId:string;
   @Output()
-  private getPhotographer:EventEmitter<any> = new EventEmitter();
+  private getPhotographer:EventEmitter<any> = new EventEmitter<any>();
 
   private photographer:any = {};
   private photographerProfileService:any;

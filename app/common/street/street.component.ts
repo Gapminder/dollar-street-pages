@@ -41,7 +41,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   @Input('controllSlider')
   private controllSlider:Subject<any>;
   @Output('filterStreet')
-  private filterStreet:EventEmitter<any> = new EventEmitter();
+  private filterStreet:EventEmitter<any> = new EventEmitter<any>();
 
   private street:any;
   private streetSettingsService:any;
@@ -76,6 +76,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit():any {
     this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
+    this.street.set('isInit', true);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
         if (!chosenPlaces.length) {
@@ -101,8 +102,15 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
           return;
         }
 
+        if (!this.street.scale && this.street.isInit) {
+          this.street.set('hoverPlace', hoverPlace);
+
+          return;
+        }
+
         if (!hoverPlace) {
           this.street.removeHouses('hover');
+          this.street.set('hoverPlace', undefined);
           this.street.clearAndRedraw(this.street.chosenPlaces);
 
           return;

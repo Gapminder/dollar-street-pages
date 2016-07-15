@@ -1,6 +1,6 @@
 .family-things-container {
   min-height: 450px;
-  padding: 16px;
+  padding: 18px;
 }
 
 .family-images-container {
@@ -13,10 +13,10 @@
 }
 
 .family-images-container .family-image-container {
-  width: calc(25% - 16px);
-  margin: 8px;
+  width: calc(25% - 12px);
+  margin: 6px;
   float: left;
-  padding-top: calc(25% - 16px);
+  padding-top: calc(25% - 12px);
   position: relative;
   cursor: pointer;
 }
