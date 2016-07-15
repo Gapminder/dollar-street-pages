@@ -136,6 +136,11 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  private fillSpaces(income:any):string {
+    let roundIncome = income;
+    return roundIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+  };
+
   private getTitle(range:any):string {
     let poor:number = this.streetData.poor;
     let rich:number = this.streetData.rich;
@@ -143,15 +148,15 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
     let title:string;
 
     if (range.min > poor && range.max < rich) {
-      title = ' $ ' + range.min + ' – ' + range.max;
+      title = ' $ ' + this.fillSpaces(range.min) + ' – ' + this.fillSpaces(range.max);
     }
 
     if (range.min > poor && range.max === rich) {
-      title = 'income over $ ' + range.min;
+      title = 'income over $ ' + this.fillSpaces(range.min);
     }
 
     if (range.min === poor && range.max < rich) {
-      title = 'income lower $ ' + range.max;
+      title = 'income lower $ ' + this.fillSpaces(range.max);
     }
 
     return title || 'all incomes';
