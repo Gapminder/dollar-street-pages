@@ -21,10 +21,13 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   private photographer:any = {};
   private photographerProfileService:any;
+  private math:any;
   private photographerProfileServiceSubscribe:any;
 
-  public constructor(@Inject('PhotographerProfileService') photographerProfileService:any) {
+  public constructor(@Inject('PhotographerProfileService') photographerProfileService:any,
+                     @Inject('Math') math:any) {
     this.photographerProfileService = photographerProfileService;
+    this.math = math;
   }
 
   public ngOnInit():void {

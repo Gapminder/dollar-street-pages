@@ -50,6 +50,7 @@ export class StreetDrawService {
   private filter:Subject<any> = new Subject();
 
   public init(lowIncome:any, highIncome:any, drawDividers:any):this {
+
     this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
@@ -86,7 +87,7 @@ export class StreetDrawService {
       .append('text')
       .attr('class', 'scale-label')
       .text((d:any) => {
-        return d + '$';
+        return this.fillSpaces(d) + '$';
       })
       .attr('x', (d:any) => {
         let indent = 0;
@@ -266,7 +267,7 @@ export class StreetDrawService {
       }
 
       if (this.sliderRightMove && e.pageX >= this.sliderLeftBorder && e.pageX <= this.width) {
-        return this.drawRightSlider(e.pageX - 20);
+        return this.drawRightSlider(e.pageX);
       }
     });
 
@@ -285,7 +286,7 @@ export class StreetDrawService {
         }
 
         if (this.sliderRightMove && positionX >= this.sliderLeftBorder && positionX <= this.width) {
-          return this.drawRightSlider(positionX - 20);
+          return this.drawRightSlider(positionX);
         }
       });
 
@@ -523,20 +524,26 @@ export class StreetDrawService {
     this.rightScrollOpacity = void 0;
     this.leftScrollText = void 0;
     this.rightScrollText = void 0;
-    // this.highIncome = 15000;
-    // this.lowIncome = 0;
 
     this.svg.selectAll('*').remove('*');
 
     return this;
   };
 
+  private fillSpaces(income:any):string {
+    let roundIncome = income;
+    return roundIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+  };
+
   private drawScrollLabel():this {
-    let incomeL = Math.ceil(this.lowIncome ? this.lowIncome : 0);
-    let incomeR = Math.ceil(this.highIncome ? this.highIncome : 15000);
+    let incomeL:any = Math.ceil(this.lowIncome ? this.lowIncome : 0);
+    let incomeR:any = Math.ceil(this.highIncome ? this.highIncome : 15000);
 
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
+
+    incomeL = this.fillSpaces(incomeL);
+    incomeR = this.fillSpaces(incomeR);
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');

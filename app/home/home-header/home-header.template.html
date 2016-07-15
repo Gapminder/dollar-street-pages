@@ -12,7 +12,7 @@
 
         <div class="right-title">
           <p class="sub-title">Household monthly income</p>
-          <p class="title">${{home.income}} <img class="about-info-image"
+          <p class="title">${{math.round(home.income)}} <img class="about-info-image"
                                                  src="/assets/img/info-button.svg"
                                                  alt=""
                                                  *ngIf="home.aboutData"
@@ -75,7 +75,7 @@
 
         <div class="right-title">
           <p class="sub-title">Household monthly income</p>
-          <p class="title">${{home.income}}<img class="about-info-image"
+          <p class="title">${{math.round(home.income)}}<img class="about-info-image"
                                                 src="/assets/img/info-button.svg"
                                                 alt=""
                                                 *ngIf="home.aboutData"
