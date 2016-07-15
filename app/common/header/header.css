@@ -6,6 +6,10 @@
   margin-top: 5px;
 }
 
+.header-content main-menu {
+  height: 71px;
+}
+
 .header-content .icon-container {
   position: relative;
   z-index: 500;

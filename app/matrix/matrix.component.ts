@@ -88,7 +88,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (window.localStorage && window.localStorage.getItem('onboarded')) {
       this.showOnboarding = false;
-      document.body.className = 'wizard';
+      document.body.className = '';
     }
 
     this.matrixServiceOnboardingSubscribe = this.matrixService.getMatrixOnboardingTips()
@@ -382,12 +382,19 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (querySelector === '.images-container') {
       top = box.top + scrollTop - clientTop;
+      left = box.left + scrollLeft - clientLeft + 40;
     }
-    cb({top: Math.round(top) + 40, left: Math.round(left) + 20});
+
+    if (querySelector === '.street-box') {
+      top = box.top + scrollTop - clientTop - 7;
+      left = box.left + scrollLeft - clientLeft + 40;
+    }
+
+    cb({top: Math.round(top) + 66, left: Math.round(left) - 20});
   }
 
   protected startQuickTour():void {
-    this.switchOnOnboarding(false);
+    this.switchOffOnboarding();
     this.numberOfStep = 1;
     window.localStorage.setItem('onboarded', 'true');
     this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
@@ -420,13 +427,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     if (this.numberOfStep === 2) {
-      baloonDirector = 'incomes-filter';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
+      baloonDirector = 'countries-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'geography']);
     }
 
     if (this.numberOfStep === 3) {
-      baloonDirector = 'countries-filter';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'geography']);
+      baloonDirector = 'incomes-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
     }
 
     if (this.numberOfStep === 4) {
@@ -446,28 +453,18 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
-  protected switchOnOnboarding(closeOnboarding:boolean):void {
+  protected switchOffOnboarding():void {
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
     let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
 
-    if (!closeOnboarding) {
-      document.body.className = '';
-      setTimeout(function ():void {
-        matrixImages.style.paddingTop = `${header.offsetHeight}px`;
-        zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
-      }, 0);
-      this.showOnboarding = false;
-      return;
-    }
-
-    this.showOnboarding = true;
-    this.switchOnQuickTour = false;
+    document.body.className = '';
 
     setTimeout(function ():void {
       matrixImages.style.paddingTop = `${header.offsetHeight}px`;
       zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
     }, 0);
+    this.showOnboarding = false;
   }
 }

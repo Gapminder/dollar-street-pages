@@ -2,29 +2,29 @@
   <div class="matrix-header main-header">
     <div class="matrix-onboard" [hidden]="!showOnboarding">
       <a class="pull-right close-button font-large"
-         (click)="switchOnOnboarding(false)"></a>
+         (click)="switchOffOnboarding()"></a>
       <div class="font-large">Find out how people <span class="font-bold really-underline">really </span>live</div>
       <div class="header-onboard-editable-text">{{headerOnboard?.description}}</div>
       <div class="onboard-buttons-container onboard-button-text">
         <a class="onboard-button-qt"
            (click)="startQuickTour()"><span>Quick tour!</span></a>
         <a class="onboard-button-ml"
-           (click)="switchOnOnboarding(false)">Maybe later!</a>
+           (click)="switchOffOnboarding()">Maybe later!</a>
       </div>
     </div>
 
     <div class="quick-tour"
          [ngStyle]="{top: baloonTip.position?.top + 'px', left: baloonTip.position?.left + 'px'}"
          *ngIf="switchOnQuickTour">
-      <div class="text-center">{{numberOfStep}} of 5</div>
+      <div class="onboarding-steps">{{numberOfStep}} of 5</div>
       <div class="qt-baloon-name">{{baloonTip?.header}}</div>
       <div class="qt-baloon-text">{{baloonTip?.description}}
         <a class="cc-link" target="_blank" *ngIf="numberOfStep === 5" [href]="baloonTip.link?.href">{{baloonTip.link?.text}}</a>
       </div>
-      <div class="text-center marg-5-px">
-        <a class="onboard-button-ml" *ngIf="numberOfStep !== 1" (click)="step(false)">Back</a>
-        <a class="onboard-button-ml" *ngIf="numberOfStep !== 5" (click)="step(true)">Next</a>
-        <a class="onboard-button-ml" *ngIf="numberOfStep === 5" (click)="closeQuickTour()">Close</a>
+      <div class="text-center marg-15-px onboard-step-button">
+        <a *ngIf="numberOfStep !== 1" (click)="step(false)">BACK</a>
+        <a *ngIf="numberOfStep !== 5" (click)="step(true)">NEXT</a>
+        <a *ngIf="numberOfStep === 5" (click)="closeQuickTour()">CLOSE</a>
       </div>
     </div>
 

@@ -150,11 +150,7 @@ consumer-app > *:not(router-outlet):not(photographers) {
 }
 
 body.onboarding .zoom-column {
-  top: 252px;
-}
-
-body.wizard .zoom-column {
-  top: 146px;
+  top: 312px;
 }
 
 @supports (-webkit-line-clamp: 1) {
