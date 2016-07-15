@@ -26,7 +26,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private videosQantity:any;
   private hoverPlace:Subject<any> = new Subject();
   @Output()
-  private getCountry:EventEmitter<any> = new EventEmitter();
+  private getCountry:EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(@Inject('CountryInfoService') countryInfoService:any) {
     this.countryInfoService = countryInfoService;

@@ -44,14 +44,14 @@
 
   <matrix-images [zoom]="zoom"
                  [query]="query"
-
                  [thing]="thing"
+                 [padding]="padding"
                  [places]="matrixPlaces"
                  [activeHouse]="activeHouse"
-                 (hoverPlace)="hoverPlaceS($event)"
+                 [clearActiveHomeViewBox]="clearActiveHomeViewBox"
                  (filter)="urlChanged($event)"
-                 (activeHouseOptions)="activeHouseOptions($event)"
-                 [padding]="padding">
+                 (hoverPlace)="hoverPlaceS($event)"
+                 (activeHouseOptions)="activeHouseOptions($event)">
   </matrix-images>
 
   <div class="zoom-column pull-right" *ngIf="filtredPlaces.length">

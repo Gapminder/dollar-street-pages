@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   protected header:any = {};
   protected math:any;
   @Output()
-  private filter:EventEmitter<any> = new EventEmitter();
+  private filter:EventEmitter<any> = new EventEmitter<any>();
   private activeThing:any;
   private defaultThing:any;
   private headerService:any;

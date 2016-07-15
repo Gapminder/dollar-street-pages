@@ -33,9 +33,9 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   private defaultThing:any;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  private selectedThing:EventEmitter<any> = new EventEmitter();
+  private selectedThing:EventEmitter<any> = new EventEmitter<any>();
 
   private paramsUrl:any;
   private router:Router;

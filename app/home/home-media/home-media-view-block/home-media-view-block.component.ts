@@ -20,7 +20,7 @@ export class HomeMediaViewBlockComponent implements OnChanges {
   private imageData:any;
 
   @Output('closeBigImageBlock')
-  private closeBigImageBlock:EventEmitter<any> = new EventEmitter();
+  private closeBigImageBlock:EventEmitter<any> = new EventEmitter<any>();
 
   private zone:NgZone;
 

@@ -28,7 +28,7 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   private url:string;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
   private cloneRange:{min:number; max:number;} = {min: 0, max: 0};
   private streetSettingsService:any;
   private streetData:any;

@@ -30,7 +30,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   @Input()
   private url:string;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
 
   private countriesFilterService:any;
   private countriesFilterServiceSubscribe:any;
