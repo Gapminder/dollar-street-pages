@@ -79,7 +79,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapServiceSubscribe = this.mapService.getMainPlaces(options.url)
       .subscribe((res:any):any => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.places = res.data.places;
@@ -106,7 +107,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public setMarkersCoord(places:any):void {
     let img = new Image();
-    let mapImage = this.element.querySelector('.map-color');
+    let mapImage:HTMLImageElement = this.element.querySelector('.map-color');
 
     img.onload = () => {
       this.zone.run(() => {

@@ -25,13 +25,15 @@ export class AmbassadorsListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit():void {
-    this.ambassadorsListSubscribe = this.ambassadorsListService.getAmbassadors({}).subscribe((res:any) => {
-      if (res.err) {
-        return res.err;
-      }
+    this.ambassadorsListSubscribe = this.ambassadorsListService.getAmbassadors()
+      .subscribe((res:any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
 
-      this.ambassadorsList = res.data;
-    });
+        this.ambassadorsList = res.data;
+      });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)

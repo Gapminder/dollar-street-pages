@@ -1,8 +1,7 @@
-import {it, describe, async, inject, beforeEachProviders, beforeEach} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../app/common-mocks/mocked.services';
-import {InfoComponent} from '../../../app/info/info.component';
+import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
+import { InfoComponent } from '../../../app/info/info.component';
 
 describe('InfoComponent', () => {
   beforeEachProviders(() => {

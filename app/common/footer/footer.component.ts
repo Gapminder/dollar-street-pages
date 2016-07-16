@@ -26,8 +26,10 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.footerServiceSubscribe = this.footerService.getFooter()
       .subscribe((val:any) => {
         if (val.err) {
+          console.error(val.err);
           return;
         }
+
         this.footerData = val.data;
       });
   }

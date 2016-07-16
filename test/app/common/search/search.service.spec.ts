@@ -1,25 +1,10 @@
-import {
-  it,
-  describe,
-  beforeEachProviders,
-  tick,
-  inject,
-  fakeAsync
-} from '@angular/core/testing';
-
-import {MockBackend} from '@angular/http/testing';
-import {provide} from '@angular/core';
-import {
-  Http,
-  ConnectionBackend,
-  BaseRequestOptions,
-  Response,
-  ResponseOptions
-} from '@angular/http';
-
-import {Config} from '../../../../app/app.config.ts';
-import {initData} from './mocks/data';
-import {SearchService} from '../../../../app/common/search/search.service';
+import { it, describe, beforeEachProviders, tick, inject, fakeAsync } from '@angular/core/testing';
+import { MockBackend } from '@angular/http/testing';
+import { provide } from '@angular/core';
+import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
+import { Config } from '../../../../app/app.config.ts';
+import { initData } from './mocks/data';
+import { SearchService } from '../../../../app/common/search/search.service';
 
 describe('SearchService', () => {
   beforeEachProviders(() => {
@@ -51,8 +36,8 @@ describe('SearchService', () => {
       });
       searchService.getSearchInitData('thing=5477537786deda0b00d43be5&place=54b6866a38ef07015525f5be&image=54b6862f3755cbfb542c28cb')
         .subscribe((_res:any) => {
-        res = _res;
-      });
+          res = _res;
+        });
       tick();
       expect(!res.err).toBe(true);
       expect(res.data.categories.length).toBe(27);

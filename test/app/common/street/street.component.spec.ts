@@ -1,21 +1,10 @@
-import {
-  it,
-  describe,
-  async,
-  inject,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-
-import {provide} from '@angular/core';
-
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services.ts';
-import {MockService} from '../../common-mocks/mock.service.template.ts';
-import {StreetComponent} from '../../../../app/common/street/street.component';
-import {places} from './mocks/data.ts';
+import { describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { provide } from '@angular/core';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services.ts';
+import { MockService } from '../../common-mocks/mock.service.template.ts';
+import { StreetComponent } from '../../../../app/common/street/street.component';
+import { places } from './mocks/data.ts';
 
 class StreetDrawServiceMock {
   public width:number;
@@ -29,31 +18,31 @@ class StreetDrawServiceMock {
   public set setSvg(element:HTMLElement) {
   }
 
-  public set(key, val):this {
+  public set(key:any, val:any):this {
     this[key] = val;
     return this;
   };
 
-  public onSvgHover(positionX, cb) {
+  public onSvgHover(positionX:any, cb:any):any {
   };
 
-  public drawScale(places) {
+  public drawScale(places:any):any {
     return this;
   };
 
-  public drawHouses(places):this {
+  public drawHouses(places:any):this {
     return this;
   };
 
-  public drawHoverHouse(place, gray = false):this {
+  public drawHoverHouse(place:any, gray:any = false):this {
     return this;
   };
 
-  public clearAndRedraw(places, slider = false):this {
+  public clearAndRedraw(places:any, slider:any = false):this {
     return this;
   };
 
-  public removeHouses(selector):this {
+  public removeHouses(selector:any):this {
     return this;
   };
 
@@ -73,15 +62,15 @@ describe('StreetComponent', () => {
       provide('StreetDrawService', {useClass: StreetDrawServiceMock})
     ];
   });
+
   let context;
   let fixture;
 
-
-  beforeEach(async(inject([TestComponentBuilder], (tcb) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(StreetComponent, `<div></div>`)
         .createAsync(StreetComponent)
-        .then((componentFixture) => {
+        .then((componentFixture:any) => {
           fixture = componentFixture;
           context = componentFixture.debugElement.componentInstance;
         });

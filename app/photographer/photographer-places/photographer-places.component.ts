@@ -33,7 +33,8 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
       .getPhotographerPlaces(`id=${this.photographerId}`)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.places = res.data.places;

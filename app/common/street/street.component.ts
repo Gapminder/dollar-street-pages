@@ -130,12 +130,13 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       });
 
     this.StreetServiceSubscrib = this.streetSettingsService.getStreetSettings()
-      .subscribe((val:any) => {
-        if (val.err) {
+      .subscribe((res:any) => {
+        if (res.err) {
+          console.error(res.err);
           return;
         }
 
-        this.streetData = val.data;
+        this.streetData = res.data;
 
         if (!this.placesArr) {
           return;

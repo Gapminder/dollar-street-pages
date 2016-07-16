@@ -1,15 +1,7 @@
-import {
-  it,
-  inject,
-  async,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
-import {FooterComponent} from '../../../../app/common/footer/footer.component';
+import { it, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { FooterComponent } from '../../../../app/common/footer/footer.component';
 
 xdescribe('FooterComponent', () => {
   beforeEachProviders(() => {
@@ -18,7 +10,11 @@ xdescribe('FooterComponent', () => {
       mockCommonDependency.getProviders()
     ];
   });
-  let context, fixture, nativeElement;
+
+  let context;
+  let fixture;
+  let nativeElement;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb.createAsync(FooterComponent).then((fixtureInst:any) => {
       fixture = fixtureInst;
@@ -26,6 +22,7 @@ xdescribe('FooterComponent', () => {
       nativeElement = fixture.debugElement.nativeElement;
     });
   })));
+
   it('FooterComponent must init', ()=> {
     expect(nativeElement.querySelector('.footer .logo_name').innerHTML).toEqual('Dollar Street');
   });

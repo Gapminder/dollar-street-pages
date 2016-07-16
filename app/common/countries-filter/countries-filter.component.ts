@@ -143,7 +143,8 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
         .getCountries(this.url)
         .subscribe((res:any) => {
           if (res.err) {
-            return res.err;
+            console.error(res.err);
+            return;
           }
 
           this.locations = res.data;

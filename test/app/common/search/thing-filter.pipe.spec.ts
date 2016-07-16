@@ -1,10 +1,6 @@
-import {
-  it,
-  describe
-} from '@angular/core/testing';
-
-import {SearchFilter} from '../../../../app/common/search/thing-filter.pipe';
-import {initData} from './mocks/data';
+import { it, describe } from '@angular/core/testing';
+import { SearchFilter } from '../../../../app/common/search/thing-filter.pipe';
+import { initData } from './mocks/data';
 
 describe('SearchFilter', () => {
   let pipe:SearchFilter = new SearchFilter();

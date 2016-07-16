@@ -81,7 +81,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit():any {
-    this.itemSize = window.innerWidth / this.zoom;
+    this.itemSize = (window.innerWidth - 36) / this.zoom;
     this.imageHeight = (window.innerWidth - 36) / this.zoom - 12;
     let isInit:boolean = true;
 
@@ -118,7 +118,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnChanges(changes:any):void {
     if (changes.zoom) {
       this.zone.run(() => {
-        this.itemSize = window.innerWidth / this.zoom;
+        this.itemSize = (window.innerWidth - 36) / this.zoom;
         this.imageHeight = (window.innerWidth - 36) / this.zoom - 12;
       });
     }

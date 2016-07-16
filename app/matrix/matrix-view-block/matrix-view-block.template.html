@@ -8,7 +8,8 @@
         <p class="pull-left">
           <span>$ {{math.round(place.income)}}</span>
           <span class="cursor-pointer"
-                [routerLink]="['Country', {id: familyData?.country?._id}]">{{familyData?.country?.alias || familyData?.country?.country}}</span></p>
+                [routerLink]="['Country', {id: familyData?.country?._id}]">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+        </p>
         <div class="pull-right">
           <img src="../../assets/img/close-button.svg" alt="" (click)="closeBlock()">
         </div>
@@ -56,7 +57,8 @@
       </div>
     </div>
     <div class="description-footer-container">
-      <a [routerLink]="['Home', familyData.goToPlaceData]">Visit this home <img src="/assets/img/arrow-right-icon.svg" alt=""></a>
+      <a [routerLink]="['Home', familyData.goToPlaceData]">Visit this home <img src="/assets/img/arrow-right-icon.svg"
+                                                                                alt=""></a>
     </div>
   </div>
 

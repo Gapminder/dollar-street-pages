@@ -34,11 +34,13 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit():void {
-    this.photographersServiceSubscribe = this.photographersService.getPhotographers({})
+    this.photographersServiceSubscribe = this.photographersService.getPhotographers()
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
+
         this.photographersByCountry = res.data.countryList;
         this.photographersByName = res.data.photographersList;
         this.loader = true;

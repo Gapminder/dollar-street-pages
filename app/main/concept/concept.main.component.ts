@@ -33,12 +33,13 @@ export class ConceptMainComponent implements OnInit, OnDestroy {
     this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptThings({})
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.things = res.things;
 
-        let lastThing = this.things[this.things.length - 1];
+        let lastThing:any = this.things[this.things.length - 1];
 
         this.activeThing = {_id: lastThing._id, plural: lastThing.plural, icon: lastThing.thingUrl};
         this.renderIncomePlot(this.activeThing);
@@ -62,7 +63,8 @@ export class ConceptMainComponent implements OnInit, OnDestroy {
     this.conceptMainServiceSubscribe = this.conceptMainService.getMainConceptImages({thingId: thing._id})
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.images = res.images;
