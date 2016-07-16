@@ -50,7 +50,8 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
       .getHomeHeaderData(`placeId=${this.placeId}`)
       .subscribe((res:any):any => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.home = res.data;

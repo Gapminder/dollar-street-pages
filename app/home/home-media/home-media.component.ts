@@ -62,13 +62,13 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.zoom = 3;
     }
 
-    this.itemSize = window.innerWidth / this.zoom;
-    this.imageHeight = (window.innerWidth - 36) / this.zoom;
+    this.itemSize = this.imageHeight = (window.innerWidth - 36) / this.zoom;
 
     this.familyPlaceServiceSubscribe = this.homeMediaService.getHomeMedia(`placeId=${this.placeId}`)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.images = res.data.images;

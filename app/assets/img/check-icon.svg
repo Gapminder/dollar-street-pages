@@ -2,10 +2,12 @@
   <defs>
     <style>
       .cls-1 {
-        fill: #384550;
-        fill-rule: evenodd;
+      fill: #384550;
+      fill-rule: evenodd;
       }
     </style>
   </defs>
-  <path id="check_icon" data-name="check icon" class="cls-1" d="M729.462,904l-16.41,16.6-8.245-8.337L702,915.1,712.783,926,732,906.566Zm0.974,0.985" transform="translate(-702 -904)"/>
+  <path id="check_icon" data-name="check icon" class="cls-1"
+        d="M729.462,904l-16.41,16.6-8.245-8.337L702,915.1,712.783,926,732,906.566Zm0.974,0.985"
+        transform="translate(-702 -904)"/>
 </svg>

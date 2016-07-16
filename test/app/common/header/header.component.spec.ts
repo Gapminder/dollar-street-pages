@@ -1,19 +1,9 @@
-import {
-  it,
-  describe,
-  inject,
-  async,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
-import {MockService} from '../../../app/common-mocks/mock.service.template';
-import {HeaderComponent} from '../../../../app/common/header/header.component';
-import {thing} from './mocks/data.ts';
+import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { MockService } from '../../../app/common-mocks/mock.service.template';
+import { HeaderComponent } from '../../../../app/common/header/header.component';
+import { thing } from './mocks/data.ts';
 
 describe('HeaderComponent', () => {
   let headerService = new MockService();
@@ -27,7 +17,10 @@ describe('HeaderComponent', () => {
       headerService.getProviders()
     ];
   });
-  let fixture, context;
+
+  let fixture;
+  let context;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(HeaderComponent, `<div></div>`)

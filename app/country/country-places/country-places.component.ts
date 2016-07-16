@@ -32,7 +32,8 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
     this.countryPlacesServiceSubscribe = this.countryPlacesService.getCountryPlaces(`id=${this.countryId}`)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.country = res.data.country;

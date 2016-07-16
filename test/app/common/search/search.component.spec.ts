@@ -1,19 +1,9 @@
-import {
-  it,
-  describe,
-  inject,
-  async,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
-import {MockService} from '../../common-mocks/mock.service.template.ts';
-import {SearchComponent} from '../../../../app/common/search/search.component';
-import {initData, sliderInitData} from './mocks/data.ts';
+import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { MockService } from '../../common-mocks/mock.service.template.ts';
+import { SearchComponent } from '../../../../app/common/search/search.component';
+import { initData, sliderInitData } from './mocks/data.ts';
 let tmpl = require('./mocks/mock.search.template.html');
 describe('SearchComponent', () => {
   let place = {

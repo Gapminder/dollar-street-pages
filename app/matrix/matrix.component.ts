@@ -93,12 +93,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     this.matrixServiceOnboardingSubscribe = this.matrixService.getMatrixOnboardingTips()
-      .subscribe((val:any) => {
-        if (val.err) {
+      .subscribe((res:any) => {
+        if (res.err) {
+          console.error(res.err);
           return;
         }
 
-        this.baloonTips = val.data;
+        this.baloonTips = res.data;
         this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
       });
 
@@ -297,6 +298,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(this.query)
       .subscribe((val:any) => {
         if (val.err) {
+          console.error(val.err);
           return;
         }
 
@@ -368,19 +370,19 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected getCoords(querySelector:string, cb:any):any {
-    let box = this.element.querySelector(querySelector).getBoundingClientRect();
+    let box:any = this.element.querySelector(querySelector).getBoundingClientRect();
 
-    let body = document.body;
-    let docEl = document.documentElement;
+    let body:HTMLElement = document.body;
+    let docEl:HTMLElement = document.documentElement;
 
-    let scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    let scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    let scrollTop:number = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    let scrollLeft:number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-    let clientTop = docEl.clientTop || body.clientTop || 0;
-    let clientLeft = docEl.clientLeft || body.clientLeft || 0;
+    let clientTop:number = docEl.clientTop || body.clientTop || 0;
+    let clientLeft:number = docEl.clientLeft || body.clientLeft || 0;
 
-    let top = box.top;
-    let left = box.left + scrollLeft - clientLeft;
+    let top:number = box.top;
+    let left:number = box.left + scrollLeft - clientLeft;
 
     if (querySelector === '.images-container') {
       top = box.top + scrollTop - clientTop;

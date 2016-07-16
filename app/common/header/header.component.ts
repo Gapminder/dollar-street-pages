@@ -7,7 +7,7 @@ import { ThingsFilterComponent } from '../things-filter/things-filter.component'
 import { IncomesFilterComponent } from '../incomes-filter/incomes-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
-let device = require('device.js')();
+let device:{desktop:Function} = require('device.js')();
 
 let tpl = require('./header.template.html');
 let style = require('./header.css');
@@ -16,7 +16,14 @@ let style = require('./header.css');
   selector: 'header',
   template: tpl,
   styles: [style],
-  directives: [ThingsFilterComponent, IncomesFilterComponent, CountriesFilterComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
+  directives: [
+    ThingsFilterComponent,
+    IncomesFilterComponent,
+    CountriesFilterComponent,
+    MainMenuComponent,
+    PlaceMapComponent,
+    RouterLink
+  ]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
@@ -61,8 +68,10 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.headerServiceSubscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
+
         this.defaultThing = res.data;
       });
 
@@ -72,7 +81,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
         .getPlaceHeader(this.query)
         .subscribe((res:any) => {
           if (res.err) {
-            return res.err;
+            console.error(res.err);
+            return;
           }
 
           this.header = res.data;
@@ -103,7 +113,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
         .getPlaceHeader(this.query)
         .subscribe((res:any) => {
           if (res.err) {
-            return res.err;
+            console.error(res.err);
+            return;
           }
 
           this.header = res.data;

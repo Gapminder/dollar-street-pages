@@ -3,7 +3,8 @@
     <div class="family-image-container"
          *ngFor="let image of images; let i = index"
          (click)="openMedia(image, i)"
-         [style.order]="i">
+         [style.order]="i"
+         [style.height.px]="imageHeight - 12">
       <div class="family-image"
            [ngStyle]="{'background-image': image.background}">
 

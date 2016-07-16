@@ -89,7 +89,8 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
         .getThings(this.url)
         .subscribe((res:any) => {
           if (res.err) {
-            return res.err;
+            console.error(res.err);
+            return;
           }
 
           this.relatedThings = res.data.relatedThings;

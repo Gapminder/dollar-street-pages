@@ -16,7 +16,6 @@
   width: calc(25% - 12px);
   margin: 6px;
   float: left;
-  padding-top: calc(25% - 12px);
   position: relative;
   cursor: pointer;
 }

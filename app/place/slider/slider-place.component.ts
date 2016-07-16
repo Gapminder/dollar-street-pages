@@ -244,7 +244,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
 
   protected cb(err:any, data:any):void {
     if (err) {
-      console.log(err);
+      console.error(err);
       return;
     }
 

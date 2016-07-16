@@ -43,12 +43,13 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
 
   public ngOnInit():void {
     this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((val:any) => {
-        if (val.err) {
+      .subscribe((res:any) => {
+        if (res.err) {
+          console.error(res.err);
           return;
         }
 
-        this.streetData = val.data;
+        this.streetData = res.data;
 
         if (this.range) {
           this.title = this.getTitle(this.range);
@@ -136,11 +137,6 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private fillSpaces(income:any):string {
-    let roundIncome = income;
-    return roundIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
-  };
-
   private getTitle(range:any):string {
     let poor:number = this.streetData.poor;
     let rich:number = this.streetData.rich;
@@ -177,5 +173,9 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
 
     return query;
   }
+
+  private fillSpaces(income:any):string {
+    return income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+  };
 }
 

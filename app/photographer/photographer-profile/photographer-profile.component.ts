@@ -19,7 +19,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   @Output()
   private getPhotographer:EventEmitter<any> = new EventEmitter<any>();
 
-  private photographer:any = {};
+  private photographer:{firstName?:string, lastName?:string} = {};
   private photographerProfileService:any;
   private math:any;
   private photographerProfileServiceSubscribe:any;
@@ -36,7 +36,8 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
     this.photographerProfileServiceSubscribe = this.photographerProfileService.getPhotographerProfile(query)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.photographer = res.data;

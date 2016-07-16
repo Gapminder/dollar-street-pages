@@ -1,11 +1,9 @@
-import {it, describe, async, inject, beforeEachProviders, beforeEach} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
-import {MockService} from '../../common-mocks/mock.service.template.ts';
-import {places} from '../mocks/data.ts';
-
-import {MatrixImagesComponent} from '../../../../app/matrix/matrix-images/matrix-images.component';
+import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../common-mocks/mocked.services.ts';
+import { MockService } from '../../common-mocks/mock.service.template.ts';
+import { places } from '../mocks/data.ts';
+import { MatrixImagesComponent } from '../../../../app/matrix/matrix-images/matrix-images.component';
 
 describe('MatrixImagesComponent', () => {
   let placesObservable = new MockService();
@@ -36,7 +34,7 @@ describe('MatrixImagesComponent', () => {
   )));
   it('ngOnInit ngOnDestroy', () => {
     context.ngOnInit();
-    expect(context.itemSize).toEqual(window.innerWidth / context.zoom);
+    expect(context.itemSize).toEqual((window.innerWidth - 36) / context.zoom);
     spyOn(context.placesSubscribe, 'unsubscribe');
     context.ngOnDestroy();
     expect(context.placesSubscribe.unsubscribe).toHaveBeenCalled();
