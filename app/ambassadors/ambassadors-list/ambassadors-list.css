@@ -17,8 +17,12 @@
   order: 1;
 }
 
-.ambassadors .organisations {
+.ambassadors .supporters {
   order: 2;
+}
+
+.ambassadors .organisations {
+  order: 3;
 }
 
 .ambassadors * {

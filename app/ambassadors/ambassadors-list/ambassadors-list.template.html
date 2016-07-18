@@ -1,7 +1,7 @@
 <div class="ambassadors container">
   <div class="ambassadors-peoples"
        *ngFor="let ambassadors of ambassadorsList; let i = index;"
-       [ngClass]="{'organisations': ambassadors._id === 'organisation', writers: ambassadors._id === 'writer', theachers: ambassadors._id === 'teacher'}">
+       [ngClass]="{'organisations': ambassadors._id === 'organisation', writers: ambassadors._id === 'writer', theachers: ambassadors._id === 'teacher', supporters: ambassadors._id === 'supporter'}">
     <h2>{{ambassadors._id}}s</h2>
 
     <div class="ambassadors-people-box">
