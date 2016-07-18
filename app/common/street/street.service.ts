@@ -2,8 +2,8 @@ const d3 = require('d3');
 const device = require('device.js')();
 const isDesktop = device.desktop();
 
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subject } from 'rxjs/Subject';
+import {fromEvent} from 'rxjs/observable/fromEvent';
+import {Subject} from 'rxjs/Subject';
 
 export class StreetDrawService {
   public width:number;
@@ -51,7 +51,6 @@ export class StreetDrawService {
   private filter:Subject<any> = new Subject();
 
   public init(lowIncome:any, highIncome:any, drawDividers:any):this {
-
     this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
@@ -103,7 +102,7 @@ export class StreetDrawService {
 
         return this.scale(d) - indent;
       })
-      .attr('y', this.height - 5)
+      .attr('y', this.height- 2)
       .attr('fill', '#767d86');
 
     this.svg
@@ -112,10 +111,10 @@ export class StreetDrawService {
       .enter()
       .append('svg:image')
       .attr('class', 'scale-label22222')
-      .attr('xlink:href', '/assets/img/divider.svg')
-      .attr('y', 19)
+      .attr('xlink:href', '/assets/img/divider1.svg')
+      .attr('y', 24)
       .attr('width', 19)
-      .attr('height', 30)
+      .attr('height', 24)
       .attr('x', (d:any) => {
         let indent = 0;
         let center = 11;
@@ -160,7 +159,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 0)
-      .attr('y', this.height - 5)
+      .attr('y', this.height - 2)
       .attr('fill', '#767d86');
 
     this.svg
@@ -171,7 +170,7 @@ export class StreetDrawService {
       .attr('class', 'richest')
       .text(this.richest)
       .attr('x', this.width - 52)
-      .attr('y', this.height - 5)
+      .attr('y', this.height - 2)
       .attr('fill', '#767d86');
 
     if (isDesktop) {
@@ -206,41 +205,53 @@ export class StreetDrawService {
         })
         .attr('stroke-width', 1)
         .style('fill', '#cfd2d6')
-        .style('opacity', '0.7');
+        .style('opacity', '2.5');
     }
 
     this.svg
       .append('polygon')
       .attr('class', 'road')
+      .attr('height', '14px')
       .attr('points', () => {
-        let point1 = `0,${ this.halfOfHeight + 9}`;
-        let point2 = `15,${ this.halfOfHeight - 4}`;
-        let point3 = `${ this.width - 15},${ this.halfOfHeight - 4}`;
-        let point4 = `${ this.width},${ this.halfOfHeight + 9}`;
-
+        let point1 = `0,${ this.halfOfHeight + 11}`;
+        let point2 = `30,${ this.halfOfHeight - 4}`;
+        let point3 = `${ this.width - 30},${ this.halfOfHeight - 4}`;
+        let point4 = `${ this.width},${ this.halfOfHeight +11}`;
         return `${point1} ${point2} ${point3} ${point4}`;
       })
       .style('fill', '#737b83');
 
     this.svg
       .append('line')
-      .attr('class', 'axis')
+      .attr('class', 'whiteline')
+      .attr('height', '1px')
       .attr('x1', 0)
-      .attr('y1', this.halfOfHeight + 10)
+      .attr('y1', this.halfOfHeight + 11)
       .attr('x2', this.width)
-      .attr('y2', this.halfOfHeight + 10)
+      .attr('y2', this.halfOfHeight + 11)
       .attr('stroke-width', 2)
+      .attr('stroke', '#dde2e5');
+
+    this.svg
+      .append('line')
+      .attr('class', 'axis')
+      .attr('height', '3px')
+      .attr('x1', 0)
+      .attr('y1', this.halfOfHeight + 13)
+      .attr('x2', this.width)
+      .attr('y2', this.halfOfHeight + 13)
+      .attr('stroke-width', 3)
       .attr('stroke', '#505b65');
 
     this.svg
       .append('line')
       .attr('class', 'dash')
-      .attr('x1', 18)
+      .attr('x1', 24)
       .attr('y1', this.halfOfHeight + 3)
       .attr('x2', this.width - 9)
       .attr('y2', this.halfOfHeight + 3)
-      .attr('stroke-dasharray', '8,8')
-      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '17')
+      .attr('stroke-width', 2)
       .attr('stroke', 'white');
 
     this.incomeArr.length = 0;
@@ -504,7 +515,6 @@ export class StreetDrawService {
 
     this.drawHouses(places);
     this.drawHoverHouse(this.hoverPlace);
-
     return this;
   };
 
@@ -526,12 +536,13 @@ export class StreetDrawService {
     this.rightScrollOpacity = void 0;
     this.leftScrollText = void 0;
     this.rightScrollText = void 0;
+    // this.highIncome = 15000;
+    // this.lowIncome = 0;
 
     this.svg.selectAll('*').remove('*');
 
     return this;
   };
-
   private fillSpaces(income:any):string {
     let roundIncome = income;
     return roundIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
@@ -568,7 +579,7 @@ export class StreetDrawService {
         .append('text')
         .attr('class', 'left-scroll-label')
         .text(`${incomeL}$`)
-        .attr('y', this.height - 5)
+        .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
 
@@ -577,7 +588,7 @@ export class StreetDrawService {
         .append('text')
         .attr('class', 'right-scroll-label')
         .text(`${incomeR}$`)
-        .attr('y', this.height - 5)
+        .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
 
