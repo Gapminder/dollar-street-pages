@@ -54,18 +54,19 @@
                  [padding]="padding">
   </matrix-images>
 
-  <div class="zoom-column pull-right" *ngIf="filtredPlaces.length">
+  <!--src="../assets/img/minus.svg"-->
+<div class="zoom-column pull-right" *ngIf="filtredPlaces.length">
 
     <button type="button"
+            class="increase"
             [disabled]="zoom === 2"
             (click)="changeZoom(zoom - 1)">
-      <b>+</b>
     </button>
 
     <button type="button"
+            class="decrease"
             [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
             (click)="changeZoom(zoom + 1)">
-      <b>-</b>
     </button>
   </div>
 </div>
