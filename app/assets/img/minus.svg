@@ -1,0 +1,16 @@
+<svg id="minus" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 56 56">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        opacity: 0.8;
+      }
+
+      .cls-2 {
+        fill: #2e4350;
+      }
+    </style>
+  </defs>
+  <circle id="Ellipse_2_copy" data-name="Ellipse 2 copy" class="cls-1" cx="28" cy="28" r="28"/>
+  <rect id="Rectangle_8_copy" data-name="Rectangle 8 copy" class="cls-2" x="12" y="26" width="32" height="4"/>
+</svg>
