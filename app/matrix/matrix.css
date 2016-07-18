@@ -160,36 +160,29 @@ matrix-images {
   z-index: 99;
 }
 
+.zoom-column button {
+  width: 28px;
+  height: 28px;
+  background-size: 28px 28px!important;
+  border: none;
+  border-radius: 50%;
+  outline: 0;
+}
+
 .zoom-column button[disabled] {
   cursor: not-allowed;
   opacity: .5;
 }
 
 .zoom-column .increase {
-  width: 28px;
-  height: 28px;
   background: url("../assets/img/zoom-plus.svg") no-repeat center center;
-  background-size: 28px 28px;
-  border: none;
-  border-radius: 50%;
-  margin-right: 3px;
-  outline: 0;
+  margin-right: 5px;
 }
 
 .zoom-column .decrease {
-  width: 28px;
-  height: 28px;
   background: url("../assets/img/minus.svg") no-repeat center center;
-  background-size: 28px 28px;
-  border: none;
-  border-radius: 50%;
-  margin-right: 3px;
-  outline: 0;
+  margin-right: 20px;
 }
-
-/*.zoom-column button[disabled] b {*/
-  /*color: #374551 !important;*/
-/*}*/
 
 @media (max-width: 1200px) {
   .zoom-column {
