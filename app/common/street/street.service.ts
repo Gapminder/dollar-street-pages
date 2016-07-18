@@ -32,6 +32,7 @@ export class StreetDrawService {
   private rightScrollOpacity:any;
   private leftScrollText:any;
   private rightScrollText:any;
+  private hoverPlace:any;
   private colors:{fills:any, fillsOfBorders:any} = {
     fills: {
       Europe: '#FFE800',
@@ -502,6 +503,7 @@ export class StreetDrawService {
     }
 
     this.drawHouses(places);
+    this.drawHoverHouse(this.hoverPlace);
 
     return this;
   };

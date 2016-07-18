@@ -33,7 +33,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   @Input()
   private url:string;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
   private thingsFilterService:any;
   private thingsFilterServiceSubscribe:any;
   private router:Router;
@@ -89,7 +89,8 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
         .getThings(this.url)
         .subscribe((res:any) => {
           if (res.err) {
-            return res.err;
+            console.error(res.err);
+            return;
           }
 
           this.relatedThings = res.data.relatedThings;

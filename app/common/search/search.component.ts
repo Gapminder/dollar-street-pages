@@ -33,9 +33,9 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   private defaultThing:any;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  private selectedThing:EventEmitter<any> = new EventEmitter();
+  private selectedThing:EventEmitter<any> = new EventEmitter<any>();
 
   private paramsUrl:any;
   private router:Router;
@@ -238,8 +238,10 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     this.searchServiceSubscribe = this.searchService.getSearchInitData(url)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
+
         this.countries = res.data.countries;
         this.categories = res.data.categories;
         this.regions = res.data.regions;
@@ -274,7 +276,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     this.searchServiceSubscribe = this.searchService.getSearchInitData(url)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.header = res.data.header;
@@ -282,7 +285,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  public  toUrl(image:any):string {
+  public toUrl(image:any):string {
     return `url("${image}")`;
   }
 

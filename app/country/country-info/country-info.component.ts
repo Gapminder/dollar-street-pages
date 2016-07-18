@@ -26,7 +26,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private videosQantity:any;
   private hoverPlace:Subject<any> = new Subject();
   @Output()
-  private getCountry:EventEmitter<any> = new EventEmitter();
+  private getCountry:EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(@Inject('CountryInfoService') countryInfoService:any) {
     this.countryInfoService = countryInfoService;
@@ -37,8 +37,10 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
     this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}`)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
+
         this.country = res.data.country;
         let country = this.country.alias || this.country.country;
         this.getCountry.emit(country);

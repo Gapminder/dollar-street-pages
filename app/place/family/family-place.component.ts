@@ -58,8 +58,10 @@ export class FamilyPlaceComponent implements OnInit, OnDestroy {
     this.familyPlaceServiceSubscribe = this.familyPlaceService.getPlaceFamilyImages(url)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
+
         this.images = res.images;
       });
   }

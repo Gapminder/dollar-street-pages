@@ -24,7 +24,8 @@ export class ThingsMainComponent implements OnInit, OnDestroy {
     this.thingsMainServiceSubscribe = this.thingsMainService.getMainThings()
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.things = res.things;

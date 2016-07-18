@@ -37,7 +37,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private activeImageIndex:number;
 
   @Output('activeImageOptions')
-  private activeImageOptions:EventEmitter<any> = new EventEmitter();
+  private activeImageOptions:EventEmitter<any> = new EventEmitter<any>();
 
   private prevImageId:string;
   private homeMediaService:any;
@@ -62,13 +62,13 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.zoom = 3;
     }
 
-    this.itemSize = window.innerWidth / this.zoom;
-    this.imageHeight = (window.innerWidth - 32) / this.zoom;
+    this.itemSize = this.imageHeight = (window.innerWidth - 36) / this.zoom;
 
     this.familyPlaceServiceSubscribe = this.homeMediaService.getHomeMedia(`placeId=${this.placeId}`)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.images = res.data.images;
@@ -79,7 +79,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
-          this.imageHeight = (window.innerWidth - 32) / this.zoom;
+          this.imageHeight = (window.innerWidth - 36) / this.zoom;
         });
       });
   }
@@ -186,6 +186,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
     let headerHeight:number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
-    document.body.scrollTop = (row - 1) * this.imageHeight + headerHeight + 16;
+    document.body.scrollTop = (row - 1) * this.imageHeight + headerHeight + 18;
   }
 }

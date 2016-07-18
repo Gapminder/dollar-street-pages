@@ -1,4 +1,5 @@
-<div class="search-container" [ngClass]="{'place-page': !matrixComponent, 'map-page': mapComponent}"  style="width:1400px">
+<div class="search-container" [ngClass]="{'place-page': !matrixComponent, 'map-page': mapComponent}"
+     style="width:1400px">
   <div class="search-title-container pull-left">
     <div class="search-title pull-left">
       <div class="pull-left">
@@ -47,7 +48,8 @@
                     <h3>THINGS</h3>
                   </div>
                   <ul class="search-list-categories default-position-top">
-                    <li [hidden]="activeThing.name && activeThing.name.toLowerCase().indexOf(search.text.toLowerCase()) === -1">
+                    <li
+                      [hidden]="activeThing.name && activeThing.name.toLowerCase().indexOf(search.text.toLowerCase()) === -1">
                       <div class="category-name">
                         <span>{{activeThing.category}}</span>
                       </div>
@@ -73,27 +75,27 @@
                       </ul>
                     </li>
                     <!--<li *ngFor="let category of categories | SearchFilter:search.text:'name':true">-->
-                      <!--<div class="category-name">-->
-                        <!--<span>{{category._id}}</span>-->
-                      <!--</div>-->
-                      <!--<ul class="search-items-container">-->
-                        <!--<li *ngFor="let thing of category.things "-->
-                            <!--[ngClass]="{'no-pass': thing.empty}"-->
-                            <!--(click)="goToThing(thing._id)">-->
+                    <!--<div class="category-name">-->
+                    <!--<span>{{category._id}}</span>-->
+                    <!--</div>-->
+                    <!--<ul class="search-items-container">-->
+                    <!--<li *ngFor="let thing of category.things "-->
+                    <!--[ngClass]="{'no-pass': thing.empty}"-->
+                    <!--(click)="goToThing(thing._id)">-->
 
-                          <!--<div class="search-item">-->
-                            <!--<div class="search-item-icon">-->
-                              <!--<img *ngIf="thing.icon"-->
-                                   <!--[src]="thing.icon" alt="thing.name">-->
-                            <!--</div>-->
-                              <!--<span class="search-item-name">-->
-                                <!--<span class="thing-button">-->
-                                  <!--{{thing.name}}-->
-                                <!--</span>-->
-                              <!--</span>-->
-                          <!--</div>-->
-                        <!--</li>-->
-                      <!--</ul>-->
+                    <!--<div class="search-item">-->
+                    <!--<div class="search-item-icon">-->
+                    <!--<img *ngIf="thing.icon"-->
+                    <!--[src]="thing.icon" alt="thing.name">-->
+                    <!--</div>-->
+                    <!--<span class="search-item-name">-->
+                    <!--<span class="thing-button">-->
+                    <!--{{thing.name}}-->
+                    <!--</span>-->
+                    <!--</span>-->
+                    <!--</div>-->
+                    <!--</li>-->
+                    <!--</ul>-->
                     <!--</li>-->
                   </ul>
                 </div>
@@ -119,24 +121,24 @@
                       </div>
                       <ul class="search-items-container regions">
                         <!--<li *ngFor="let region of regions | SearchFilter:search.text:undefined"-->
-                            <!--[ngClass]="{active: activeRegions.indexOf(region) !== -1}"-->
-                            <!--(click)="goToRegions(region)">-->
-                          <!--<div class="search-item">-->
-                            <!--<div class="search-item-icon">-->
-                              <!--<img *ngIf="region === 'Africa'" src="/assets/img/africa.svg" alt="">-->
-                              <!--<img *ngIf="region === 'Europe'" src="/assets/img/europe.svg" alt="">-->
-                              <!--<img *ngIf="region === 'Asia'" src="/assets/img/asia.svg" alt="">-->
-                              <!--<img *ngIf="region === 'America'" src="/assets/img/america.svg" alt="">-->
-                            <!--</div>-->
+                        <!--[ngClass]="{active: activeRegions.indexOf(region) !== -1}"-->
+                        <!--(click)="goToRegions(region)">-->
+                        <!--<div class="search-item">-->
+                        <!--<div class="search-item-icon">-->
+                        <!--<img *ngIf="region === 'Africa'" src="/assets/img/africa.svg" alt="">-->
+                        <!--<img *ngIf="region === 'Europe'" src="/assets/img/europe.svg" alt="">-->
+                        <!--<img *ngIf="region === 'Asia'" src="/assets/img/asia.svg" alt="">-->
+                        <!--<img *ngIf="region === 'America'" src="/assets/img/america.svg" alt="">-->
+                        <!--</div>-->
 
-                            <!--<span class="search-item-name"-->
-                                  <!--[ngClass]="region.toLowerCase()">-->
-                              <!--{{region}}-->
-                              <!--<span class="pointer">-->
-                                <!--<img class="close" src="/assets/img/close.png" width="7" height="7" alt="">-->
-                              <!--</span>-->
-                            <!--</span>-->
-                          <!--</div>-->
+                        <!--<span class="search-item-name"-->
+                        <!--[ngClass]="region.toLowerCase()">-->
+                        <!--{{region}}-->
+                        <!--<span class="pointer">-->
+                        <!--<img class="close" src="/assets/img/close.png" width="7" height="7" alt="">-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
                         <!--</li>-->
                       </ul>
                     </li>
@@ -147,17 +149,17 @@
                       </div>
                       <ul class="search-items-container regions">
                         <!--<li *ngFor="let location of countries | SearchFilter:search.text:'country'"-->
-                            <!--[ngClass]="{active: activeCountries.indexOf(location.country) !== -1, 'no-pass': location.empty}"-->
-                            <!--(click)="goToCountries(location)">-->
-                          <!--<div class="search-item">-->
-                            <!--<span class="search-item-name">-->
-                              <!--{{location.country}}-->
-                            <!--</span>-->
-                            <!--<span class="pointer">-->
-                              <!--<img class="checked" src="/assets/img/check.png">-->
-                              <!--<img class="close" src="/assets/img/close.png">-->
-                            <!--</span>-->
-                          <!--</div>-->
+                        <!--[ngClass]="{active: activeCountries.indexOf(location.country) !== -1, 'no-pass': location.empty}"-->
+                        <!--(click)="goToCountries(location)">-->
+                        <!--<div class="search-item">-->
+                        <!--<span class="search-item-name">-->
+                        <!--{{location.country}}-->
+                        <!--</span>-->
+                        <!--<span class="pointer">-->
+                        <!--<img class="checked" src="/assets/img/check.png">-->
+                        <!--<img class="close" src="/assets/img/close.png">-->
+                        <!--</span>-->
+                        <!--</div>-->
                         <!--</li>-->
                       </ul>
                     </li>

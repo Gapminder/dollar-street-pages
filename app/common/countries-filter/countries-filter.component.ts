@@ -30,7 +30,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   @Input()
   private url:string;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
 
   private countriesFilterService:any;
   private countriesFilterServiceSubscribe:any;
@@ -143,7 +143,8 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
         .getCountries(this.url)
         .subscribe((res:any) => {
           if (res.err) {
-            return res.err;
+            console.error(res.err);
+            return;
           }
 
           this.locations = res.data;

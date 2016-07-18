@@ -108,7 +108,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getCountries(`thing=${this.urlParams.thing}`)
       .subscribe((res:any):any => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.locations = res.data;

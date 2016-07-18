@@ -29,6 +29,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected numberOfStep:number = 1;
   protected baloonTips:any = {};
   protected baloonTip:any = {};
+  public clearActiveHomeViewBox:Subject<any> = new Subject();
 
   public query:string;
   public matrixService:any;
@@ -92,19 +93,20 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     this.matrixServiceOnboardingSubscribe = this.matrixService.getMatrixOnboardingTips()
-      .subscribe((val:any) => {
-        if (val.err) {
+      .subscribe((res:any) => {
+        if (res.err) {
+          console.error(res.err);
           return;
         }
 
-        this.baloonTips = val.data;
+        this.baloonTips = res.data;
         this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
       });
 
     this.matrixServiceStreetSubscrib = this.matrixService.getStreetSettings()
       .subscribe((val:any) => {
         if (val.err) {
-          console.log(val.err);
+          console.error(val.err);
 
           return;
         }
@@ -128,10 +130,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.zoom = 3;
         }
 
-        // todo: row void 0
-        let getRow = parseInt(this.routeParams.get('row'), 10);
+        let getRow = parseInt(this.routeParams.get('row'), 10) || 1;
 
-        this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : getRow || 1;
+        this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : getRow;
 
         this.thing = this.thing ? this.thing : 'Home';
         this.zoom = this.zoom ? this.zoom : 4;
@@ -218,7 +219,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public getPaddings():void {
-    let windowInnerWidth = window.innerWidth;
+    let windowInnerWidth = window.innerWidth - 36;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
 
@@ -235,7 +236,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.getViewableRows(header.offsetHeight);
 
-    document.body.scrollTop = document.documentElement.scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
+    document.body.scrollTop = document.documentElement.scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin) + 18;
 
     if (this.clonePlaces) {
       this.streetPlaces.next(this.streetPlacesData);
@@ -281,6 +282,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (!isInit) {
       this.query = this.query.replace(/&activeHouse\=\d*/, '');
       this.activeHouse = void 0;
+      this.hoverPlace.next(undefined);
+      this.clearActiveHomeViewBox.next(true);
     }
 
     let parseQuery = this.parseUrl(this.query);
@@ -295,6 +298,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(this.query)
       .subscribe((val:any) => {
         if (val.err) {
+          console.error(val.err);
           return;
         }
 
@@ -366,19 +370,19 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected getCoords(querySelector:string, cb:any):any {
-    let box = this.element.querySelector(querySelector).getBoundingClientRect();
+    let box:any = this.element.querySelector(querySelector).getBoundingClientRect();
 
-    let body = document.body;
-    let docEl = document.documentElement;
+    let body:HTMLElement = document.body;
+    let docEl:HTMLElement = document.documentElement;
 
-    let scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    let scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    let scrollTop:number = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    let scrollLeft:number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-    let clientTop = docEl.clientTop || body.clientTop || 0;
-    let clientLeft = docEl.clientLeft || body.clientLeft || 0;
+    let clientTop:number = docEl.clientTop || body.clientTop || 0;
+    let clientLeft:number = docEl.clientLeft || body.clientLeft || 0;
 
-    let top = box.top;
-    let left = box.left + scrollLeft - clientLeft;
+    let top:number = box.top;
+    let left:number = box.left + scrollLeft - clientLeft;
 
     if (querySelector === '.images-container') {
       top = box.top + scrollTop - clientTop;

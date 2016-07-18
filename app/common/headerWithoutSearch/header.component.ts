@@ -30,7 +30,8 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
     this.headerServiceSibscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.defaultThing = res.data;

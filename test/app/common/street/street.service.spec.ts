@@ -1,12 +1,5 @@
-import {
-  it,
-  describe,
-  inject,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-
-import {StreetDrawService} from '../../../../app/common/street/street.service';
+import { it, describe, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { StreetDrawService } from '../../../../app/common/street/street.service';
 
 describe('StreetDrawService', () => {
   let streetDrawService:StreetDrawService;
@@ -62,8 +55,7 @@ describe('StreetDrawService', () => {
         },
       };
     })
-  )
-  ;
+  );
 
   it('init', () => {
     spyOn(d3.scale, 'log').and.returnValue(d3Svg);
@@ -79,7 +71,16 @@ describe('StreetDrawService', () => {
     };
     spyOn(d3, 'select').and.returnValue(svg);
     streetDrawService.setSvg = document.createElement('svg');
-    streetDrawService.init(0, 15000, {poor: 0, low: 30, medium: 300, high: 3000, rich: 15000, q1: 70, q2: 500, q3: 400});
+    streetDrawService.init(0, 15000, {
+      poor: 0,
+      low: 30,
+      medium: 300,
+      high: 3000,
+      rich: 15000,
+      q1: 70,
+      q2: 500,
+      q3: 400
+    });
     expect(d3Svg.domain).toHaveBeenCalledWith([0, 30, 300, 3000, 15000]);
     expect(d3Svg.range).toHaveBeenCalledWith([0, 70, 500, 400, 990]);
   });
@@ -192,8 +193,8 @@ describe('StreetDrawService', () => {
 
     /** make this.height and this.width private*/
 
-    streetDrawService.lowIncome=0;
-    streetDrawService.hightIncome=0;
+    streetDrawService.lowIncome = 0;
+    streetDrawService.hightIncome = 0;
     spyOn(streetDrawService, 'drawLeftSlider');
     spyOn(streetDrawService, 'drawRightSlider');
 

@@ -1,20 +1,9 @@
-import {
-  it,
-  describe,
-  async,
-  inject,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
-import {MockService} from '../../../app/common-mocks/mock.service.template';
-import {profile} from '../mocks/data.ts';
-
-import {PhotographerProfileComponent} from '../../../../app/photographer/photographer-profile/photographer-profile.component';
+import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { MockService } from '../../../app/common-mocks/mock.service.template';
+import { profile } from '../mocks/data.ts';
+import { PhotographerProfileComponent } from '../../../../app/photographer/photographer-profile/photographer-profile.component';
 
 describe('PhotographerProfileComponent', () => {
   let mockPhotographerProfileService = new MockService();
@@ -29,7 +18,11 @@ describe('PhotographerProfileComponent', () => {
       mockPhotographerProfileService.getProviders()
     ];
   });
-  let context, fixture, nativeElement;
+
+  let context;
+  let fixture;
+  let nativeElement;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb.createAsync(PhotographerProfileComponent).then((fixtureInst:any) => {
       fixture = fixtureInst;
@@ -37,6 +30,7 @@ describe('PhotographerProfileComponent', () => {
       nativeElement = fixture.debugElement.nativeElement;
     });
   })));
+
   it(' ngOnInit, ngOnDestroy', ()=> {
     context.getPhotographer = getPhotographer;
     spyOn(context.getPhotographer, 'emit');
@@ -47,6 +41,7 @@ describe('PhotographerProfileComponent', () => {
     context.ngOnDestroy();
     expect(context.photographerProfileServiceSubscribe.unsubscribe).toHaveBeenCalled();
   });
+
   it('isShowInfoMore', ()=> {
     let photographer:any = {company: 'company'};
     expect(context.isShowInfoMore(photographer)).toEqual('company');
@@ -61,6 +56,7 @@ describe('PhotographerProfileComponent', () => {
     photographer = {linkedIn: 'linkedIn'};
     expect(context.isShowInfoMore(photographer)).toEqual('linkedIn');
   });
+
   it('isShowDescription', ()=> {
     let company:any = {name: 'name'};
     expect(context.isShowDescription(company)).toEqual('name');

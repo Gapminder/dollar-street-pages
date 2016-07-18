@@ -1,46 +1,49 @@
-import {provide} from '@angular/core';
-export class MockService {
-  private response;
-  private name:string;
-  public countOfSubscribes:number = 0;
+import { provide } from '@angular/core';
 
-  subscribe(callback):this {
+export class MockService {
+  public countOfSubscribes:number = 0;
+  private response:any;
+  private name:string;
+
+  public subscribe(callback:any):this {
     this.countOfSubscribes++;
     callback(this.fakeResponse);
     return this;
   }
 
-  unsubscribe():void {
+  public unsubscribe():void {
     this.countOfSubscribes--;
   }
 
-  emit():this {
+  public emit():this {
     return;
   }
-  next():this {
+
+  public next():this {
     return;
   }
-  set serviceName(name:string) {
+
+  public set serviceName(name:string) {
     this.name = name;
   }
 
-  getProviders():Array<any> {
+  public getProviders():Array<any> {
     return [provide(this.name, {useValue: this})];
   }
 
-  set getMethod(name) {
+  public set getMethod(name:any) {
     this[name] = (url?:any, qyery?:any) => this;
   }
 
-  get fakeResponse() {
+  public get fakeResponse():any {
     return this.response;
   }
 
-  set fakeResponse(response) {
+  public set fakeResponse(response:any) {
     this.response = response;
   }
 
-  public toInitState() {
+  public toInitState():any {
     this.countOfSubscribes = 0;
   }
 }

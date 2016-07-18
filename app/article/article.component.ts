@@ -3,6 +3,7 @@ import { RouteParams } from '@angular/router-deprecated';
 import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { LoaderComponent } from '../common/loader/loader.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./article.template.html');
 let style = require('./article.css');
@@ -11,7 +12,7 @@ let style = require('./article.css');
   selector: 'article-page',
   template: tpl,
   styles: [style],
-  directives: [HeaderWithoutSearchComponent, FooterComponent, LoaderComponent]
+  directives: [HeaderWithoutSearchComponent, FooterComponent, LoaderComponent, FooterSpaceDirective]
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {

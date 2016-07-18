@@ -37,7 +37,8 @@ export class PlacesMainComponent implements OnInit, OnDestroy {
     this.placeServiceSubscribe = this.placeService.getMainPlaces()
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.map = this.element.nativeElement.querySelector('.mapBox');

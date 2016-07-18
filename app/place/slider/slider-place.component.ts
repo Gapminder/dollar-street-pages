@@ -42,9 +42,9 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   @Input('places')
   private places:Observable<any>;
   @Output('currentPlace')
-  private currentPlace:EventEmitter<any> = new EventEmitter();
+  private currentPlace:EventEmitter<any> = new EventEmitter<any>();
   @Output('isShowAboutData')
-  private isShowAboutData:EventEmitter<any> = new EventEmitter();
+  private isShowAboutData:EventEmitter<any> = new EventEmitter<any>();
   private routeParams:RouteParams;
   private location:Location;
   private popIsOpen:boolean;
@@ -244,7 +244,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
 
   protected cb(err:any, data:any):void {
     if (err) {
-      console.log(err);
+      console.error(err);
       return;
     }
 

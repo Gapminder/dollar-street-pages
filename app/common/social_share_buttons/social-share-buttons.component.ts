@@ -48,7 +48,8 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl(query)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.url = res.url;
