@@ -175,12 +175,12 @@ matrix-images {
 }
 
 .zoom-column .increase {
-  background: url("../assets/img/zoom-plus.svg") no-repeat center center;
+  background: url("/assets/img/zoom-plus.svg") no-repeat center center;
   margin-right: 5px;
 }
 
 .zoom-column .decrease {
-  background: url("../assets/img/minus.svg") no-repeat center center;
+  background: url("/assets/img/minus.svg") no-repeat center center;
   margin-right: 20px;
 }
 
