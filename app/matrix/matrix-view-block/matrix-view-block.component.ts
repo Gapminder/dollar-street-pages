@@ -59,7 +59,7 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
     let imageWidth:number = (window.innerWidth - 36) / parseUrl.zoom;
 
     this.markerPositionLeft = imageWidth * (this.positionInRow || parseUrl.zoom) - (imageWidth / 2 + 33);
-    this.place.background = 'url("' + this.place.background.replace('devices', 'desktops') + '")';
+    this.place.background = this.place.background.replace('devices', 'desktops');
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 
     if (this.familyInfoServiceSubscribe) {
@@ -97,12 +97,12 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   protected openPopUp():void {
     this.popIsOpen = true;
 
-    let imgUrl = this.place.background.replace('desktops', 'original').replace('url("', '').replace('")', '');
+    let imgUrl = this.place.background.replace('desktops', 'original');
     let newImage = new Image();
 
     newImage.onload = () => {
       this.zone.run(() => {
-        this.fancyBoxImage = this.place.background;
+        this.fancyBoxImage = 'url("' + imgUrl + '")';
       });
     };
 

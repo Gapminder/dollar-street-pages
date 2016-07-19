@@ -1,7 +1,9 @@
 <div class="view-image-block-container" *ngIf="showblock">
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
   <div class="view-image-block-content">
-    <div class="view-image-container" [ngStyle]="{'background-image': place.background}"></div>
+    <div class="view-image-container">
+      <img [src]="place.background">
+    </div>
 
     <div class="house-info-container">
       <div class="header-container">
