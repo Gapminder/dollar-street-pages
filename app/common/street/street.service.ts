@@ -435,11 +435,11 @@ export class StreetDrawService {
 
     this.leftScroll
       .attr('points', () => {
-        let point1 = `${ x - 9},${ this.halfOfHeight + 12}`;
-        let point2 = `${ x - 9},${ this.halfOfHeight - 5}`;
-        let point3 = `${  x },${ this.halfOfHeight - 5}`;
-        let point4 = `${  x },${ this.halfOfHeight + 12}`;
-        let point5 = `${  x - 4.5},${ this.halfOfHeight + 12 + 5}`;
+        let point1 = `${x - 9},${ this.halfOfHeight + 12}`;
+        let point2 = `${x - 9},${ this.halfOfHeight - 5}`;
+        let point3 = `${x},${ this.halfOfHeight - 5}`;
+        let point4 = `${x},${ this.halfOfHeight + 12}`;
+        let point5 = `${x - 4.5},${ this.halfOfHeight + 12 + 5}`;
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
@@ -485,8 +485,8 @@ export class StreetDrawService {
     }
 
     this.rightScroll.attr('points', () => {
-      let point1 = `${x },${ this.halfOfHeight + 12}`;
-      let point2 = `${x },${ this.halfOfHeight - 5}`;
+      let point1 = `${x},${ this.halfOfHeight + 12}`;
+      let point2 = `${x},${ this.halfOfHeight - 5}`;
       let point3 = `${x + 9},${ this.halfOfHeight - 5}`;
       let point4 = `${x + 9},${ this.halfOfHeight + 12}`;
       let point5 = `${x + 4.5},${ this.halfOfHeight + 12 + 5}`;
