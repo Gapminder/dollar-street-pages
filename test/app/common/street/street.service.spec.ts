@@ -82,7 +82,7 @@ describe('StreetDrawService', () => {
       q3: 400
     });
     expect(d3Svg.domain).toHaveBeenCalledWith([0, 30, 300, 3000, 15000]);
-    expect(d3Svg.range).toHaveBeenCalledWith([0, 70, 500, 400, 990]);
+    expect(d3Svg.range).toHaveBeenCalledWith([18.8, 70, 500, 400, 980.5]);
   });
 
   it('setSvg', () => {

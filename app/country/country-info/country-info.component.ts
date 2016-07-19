@@ -1,7 +1,7 @@
-import {Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
-import {PlaceMapComponent} from '../../common/place-map/place-map.component';
-import {Subject} from 'rxjs/Subject';
+import { Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output } from '@angular/core';
+import { RouterLink } from '@angular/router-deprecated';
+import { PlaceMapComponent } from '../../common/place-map/place-map.component';
+import { Subject } from 'rxjs/Subject';
 
 let tpl = require('./country-info.template.html');
 let style = require('./country-info.css');
