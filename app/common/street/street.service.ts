@@ -73,7 +73,7 @@ export class StreetDrawService {
     this.scale = d3
       .scale.log()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
-      .range([15 / 1000 * this.width, drawDividers.q1 / 1000 * this.width, drawDividers.q2 / 1000 * this.width, drawDividers.q3 / 1000 * this.width, 0.9805 * this.width]);
+      .range([18.8 / 1000 * this.width, drawDividers.q1 / 1000 * this.width, drawDividers.q2 / 1000 * this.width, drawDividers.q3 / 1000 * this.width, 0.9805 * this.width]);
 
     return this;
   }
@@ -116,7 +116,7 @@ export class StreetDrawService {
       .attr('class', (d:any) => {
         return 'scale-label' + d;
       })
-      .attr('y', this.height - 2)
+      .attr('y', this.height)
       .attr('fill', '#767d86');
 
     this.svg
@@ -173,7 +173,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 0)
-      .attr('y', this.height - 2)
+      .attr('y', this.height )
       .attr('fill', '#767d86');
 
     this.svg
@@ -184,7 +184,7 @@ export class StreetDrawService {
       .attr('class', 'richest')
       .text(this.richest)
       .attr('x', this.width - 52)
-      .attr('y', this.height - 2)
+      .attr('y', this.height )
       .attr('fill', '#767d86');
 
     if (isDesktop) {
@@ -205,13 +205,13 @@ export class StreetDrawService {
 
           if (datum) {
             let scaleDatumIncome = this.scale(datum.income);
-            point1 = `${scaleDatumIncome + roofX },${this.halfOfHeight - 1}`;
+            point1 = `${scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
             point2 = `${scaleDatumIncome + roofX},${roofY}`;
             point3 = `${scaleDatumIncome - halfHouseWidth},${roofY}`;
             point4 = `${scaleDatumIncome},${this.halfOfHeight - 17}`;
             point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
             point6 = `${scaleDatumIncome - roofX },${roofY}`;
-            point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight - 1}`;
+            point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
           }
 
           return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
@@ -219,7 +219,7 @@ export class StreetDrawService {
         })
         .attr('stroke-width', 1)
         .style('fill', '#cfd2d6')
-        .style('opacity', '2.5');
+        .style('opacity', '0.7');
     }
 
     this.svg
@@ -233,7 +233,7 @@ export class StreetDrawService {
         let point4 = `${ this.width},${ this.halfOfHeight + 11}`;
         return `${point1} ${point2} ${point3} ${point4}`;
       })
-      .style('fill', '#737b83');
+      .style('fill', '#727a82');
 
     this.svg
       .append('line')
@@ -255,13 +255,13 @@ export class StreetDrawService {
       .attr('x2', this.width)
       .attr('y2', this.halfOfHeight + 13)
       .attr('stroke-width', 3)
-      .attr('stroke', '#505b65');
+      .attr('stroke', '#525c64');
 
     this.svg
       .append('line')
       .attr('class', 'dash')
       .attr('x1', 24)
-      .attr('y1', this.halfOfHeight + 3)
+      .attr('y1', this.halfOfHeight + 4)
       .attr('x2', this.width - 9)
       .attr('y2', this.halfOfHeight + 3)
       .attr('stroke-dasharray', '17')
@@ -354,7 +354,7 @@ export class StreetDrawService {
     let fillsOfBorders = this.colors.fillsOfBorders;
     let halfHouseWidth = 12.5;
     let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 15;
+    let roofY = this.halfOfHeight - 15 - 1;
 
     this.svg
       .selectAll('polygon.hover')
@@ -373,13 +373,13 @@ export class StreetDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${scaleDatumIncome + roofX },${this.halfOfHeight - 1}`;
+          point1 = `${scaleDatumIncome + roofX },${this.halfOfHeight - 1 - 1}`;
           point2 = `${scaleDatumIncome + roofX},${roofY}`;
           point3 = `${scaleDatumIncome - halfHouseWidth},${roofY}`;
-          point4 = `${scaleDatumIncome},${this.halfOfHeight - 26}`;
+          point4 = `${scaleDatumIncome},${this.halfOfHeight - 26 - 1}`;
           point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
           point6 = `${scaleDatumIncome - roofX },${roofY}`;
-          point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight - 1}`;
+          point7 = `${scaleDatumIncome - roofX },${this.halfOfHeight - 1 - 1}`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
@@ -413,7 +413,7 @@ export class StreetDrawService {
         .attr('class', 'left-scroll-opacity-part')
         .attr('x', 0)
         .attr('y', 0)
-        .attr('height', 48)
+        .attr('height', 64)
         .style('fill', 'white')
         .style('opacity', '0.8');
     }
@@ -464,7 +464,7 @@ export class StreetDrawService {
         .append('rect')
         .attr('class', 'right-scroll-opacity-part')
         .attr('y', 0)
-        .attr('height', 48)
+        .attr('height', 64)
         .style('fill', 'white')
         .style('opacity', '0.8');
     }
@@ -494,7 +494,7 @@ export class StreetDrawService {
     });
     this.rightScrollOpacity
       .attr('x', x + 9)
-      .attr('width', this.width - x - 1);
+      .attr('width', this.width - x - 1.2);
 
     this.highIncome = this.scale.invert(x);
 
@@ -633,7 +633,7 @@ export class StreetDrawService {
 
     let halfHouseWidth = 10;
     let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 12;
+    let roofY = this.halfOfHeight - 12 - 1;
 
     this.svg.selectAll('polygon.chosen')
       .data(places)
@@ -651,19 +651,20 @@ export class StreetDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${ scaleDatumIncome + roofX},${this.halfOfHeight - 1}`;
+          point1 = `${ scaleDatumIncome + roofX},${this.halfOfHeight - 1 - 1}`;
           point2 = `${scaleDatumIncome + roofX},${roofY}`;
           point3 = `${scaleDatumIncome - halfHouseWidth },${roofY}`;
-          point4 = `${scaleDatumIncome },${ this.halfOfHeight - 21}`;
+          point4 = `${scaleDatumIncome },${ this.halfOfHeight - 21 - 1}`;
           point5 = `${scaleDatumIncome + halfHouseWidth },${roofY}`;
           point6 = `${scaleDatumIncome - roofX },${ roofY}`;
-          point7 = `${scaleDatumIncome - roofX },${ this.halfOfHeight - 1}`;
+          point7 = `${scaleDatumIncome - roofX },${ this.halfOfHeight - 1 - 1}`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke', '#303e4a')
+      .attr('stroke-width',1)
       .style('fill', '#374551');
 
     return this;
