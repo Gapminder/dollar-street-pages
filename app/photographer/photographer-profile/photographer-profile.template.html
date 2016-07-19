@@ -113,15 +113,15 @@
 
       <div class="count">
         <p class="home">
-          <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{photographer.placesCount || 0}}</span>
+          <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{math.round(photographer.placesCount) || 0}}</span>
         </p>
 
         <p class="photo">
-          <i class="fa fa-camera"></i> Total Photos: <span>{{photographer.imagesCount || 0}}</span>
+          <i class="fa fa-camera"></i> Total Photos: <span>{{math.round(photographer.imagesCount) || 0}}</span>
         </p>
 
         <p class="camera" *ngIf="photographer.video">
-          <i class="fa fa-video-camera"></i> Total Videos: <span>{{photographer.video || 0}}</span>
+          <i class="fa fa-video-camera"></i> Total Videos: <span>{{math.round(photographer.video) || 0}}</span>
         </p>
       </div>
     </div>
