@@ -21,6 +21,10 @@ export class StreetDrawService {
   private thirdDiv:any;
   private firstDiv:any;
   private secondDiv:any;
+  private q1:any;
+  private q2:any;
+  private q3:any;
+  private rich:any;
   private mouseUpSubscriber:any;
   private touchMoveSubscriber:any;
   private touchUpSubscriber:any;
@@ -57,6 +61,10 @@ export class StreetDrawService {
     this.firstDiv = drawDividers.low;
     this.secondDiv = drawDividers.medium;
     this.thirdDiv = drawDividers.high;
+    this.q1 = drawDividers.q1;
+    this.q2 = drawDividers.q2;
+    this.q3 = drawDividers.q3;
+    this.rich = drawDividers.rich;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
     this.width = parseInt(this.svg.style('width'), 10);
@@ -552,24 +560,24 @@ export class StreetDrawService {
   private drawScrollLabel():this {
     let incomeL:any = Math.ceil(this.lowIncome ? this.lowIncome : 0);
     let incomeR:any = Math.ceil(this.highIncome ? this.highIncome : 15000);
-
+    if (incomeR > this.rich) {
+      incomeR = this.rich;
+    }
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    if (((this.firstDiv / 4) < incomeR) && (incomeR < this.firstDiv + (this.firstDiv / 5)) || ((this.firstDiv / 4) < incomeL) && (incomeL < this.firstDiv + (this.firstDiv / 5))) {
+    if (((this.q1 / 1000 * this.width) < xR + 45) && ((this.q1 / 1000 * this.width) + 45 > xR) || ((this.q1 / 1000 * this.width) < xL + 45) && ((this.q1 / 1000 * this.width) + 45 > xL )) {
       this.svg.selectAll('text.scale-label' + this.firstDiv).attr('fill', '#fff');
-
     } else {
       this.svg.selectAll('text.scale-label' + this.firstDiv).attr('fill', '#767d86');
     }
-
-    if (((this.secondDiv * 0.8 ) < incomeR) && (incomeR < 1.2 * this.secondDiv  ) || ((this.secondDiv * 0.8 ) < incomeL) && (incomeL < 1.2 * this.secondDiv  )) {
+    if (((this.q2 / 1000 * this.width) < xR + 64) && ((this.q2 / 1000 * this.width) + 75 > xR) || ((this.q2 / 1000 * this.width) < xL + 64) && ((this.q2 / 1000 * this.width) + 75 > xL )) {
       this.svg.selectAll('text.scale-label' + this.secondDiv).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.secondDiv).attr('fill', '#767d86');
     }
 
-    if (((this.thirdDiv * 0.8 ) < incomeR) && (incomeR < 1.3 * this.thirdDiv) || ((this.thirdDiv * 0.8 ) < incomeL) && (incomeL < 1.3 * this.thirdDiv)) {
+    if (((this.q3 / 1000 * this.width) < xR + 62) && ((this.q3 / 1000 * this.width) + 78 > xR) || ((this.q3 / 1000 * this.width) < xL + 64) && ((this.q3 / 1000 * this.width) + 75 > xL )) {
       this.svg.selectAll('text.scale-label' + this.thirdDiv).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.thirdDiv).attr('fill', '#767d86');
@@ -577,7 +585,6 @@ export class StreetDrawService {
 
     incomeL = this.fillSpaces(incomeL);
     incomeR = this.fillSpaces(incomeR);
-
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');
     }
@@ -614,7 +621,7 @@ export class StreetDrawService {
 
     this.leftScrollText
       .text(`${incomeL}$`)
-      .attr('x', ()=> xL - this.leftScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xL - 10 - this.leftScrollText[0][0].getBBox().width / 2);
 
     return this;
   };
