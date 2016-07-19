@@ -390,7 +390,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     if (querySelector === '.street-box') {
-      top = box.top + scrollTop - clientTop - 7;
+      top = box.top - clientTop - 7;
       left = box.left + scrollLeft - clientLeft + 40;
     }
 
