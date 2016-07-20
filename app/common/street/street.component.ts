@@ -156,8 +156,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
       query.lowIncome = filter.lowIncome;
       query.highIncome = filter.highIncome;
-
-      if (filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+      if (!filter.lowIncome && !this.street.lowIncome && !filter.highIncome && !this.street.highIncome) {
         return;
       }
 

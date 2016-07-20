@@ -325,8 +325,10 @@ export class StreetDrawService {
         this.sliderLeftMove = this.sliderRightMove = false;
 
         if (this.highIncome > this.rich) {
+
           this.highIncome = this.rich;
         }
+
         this.filter.next({
           lowIncome: Math.round(this.lowIncome),
           highIncome: Math.round(this.highIncome)
