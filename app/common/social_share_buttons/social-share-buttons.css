@@ -13,3 +13,17 @@
 .share-button-container .share-button img {
   width: 32px;
 }
+
+.footer social-share-buttons .dark,
+main-menu social-share-buttons .light {
+  display: block;
+}
+
+.footer social-share-buttons .light,
+main-menu social-share-buttons .dark{
+  display: none;
+}
+
+main-menu social-share-buttons .light{
+  margin-left: 10px;
+}
