@@ -30,6 +30,7 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   @Input('activeThing')
   protected activeThing:any;
   protected familyInfo:any;
+  protected math:any;
 
   @Input('places')
   private places:Observable<any>;
@@ -48,7 +49,6 @@ export class SliderMobilePlaceComponent implements OnInit, OnDestroy {
   private streetPlacesSubscribe:any;
   private touchSubscribe:any;
   private zone:NgZone;
-  private math:any;
   private resizeSubscribe:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 

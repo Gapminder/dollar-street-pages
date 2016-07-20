@@ -14,7 +14,7 @@ let style = require('./street-mini.css');
 })
 
 export class StreetMiniComponent implements OnInit, OnDestroy {
-
+  protected math:any;
   @Input('streetMiniData')
   private streetMiniData:Subject<any>;
 
@@ -23,7 +23,6 @@ export class StreetMiniComponent implements OnInit, OnDestroy {
   private router:Router;
   private placesSubscribe:any;
   private streetMiniDataSubscribe:any;
-  private math:any;
   private svg:SVGElement;
 
   public constructor(@Inject(ElementRef) element:ElementRef,

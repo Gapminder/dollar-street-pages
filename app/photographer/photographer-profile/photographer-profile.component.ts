@@ -13,6 +13,7 @@ let style = require('./photographer-profile.css');
 
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
   protected isShowInfo:boolean = false;
+  protected math:any;
 
   @Input()
   private photographerId:string;
@@ -21,7 +22,6 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   private photographer:{firstName?:string, lastName?:string} = {};
   private photographerProfileService:any;
-  private math:any;
   private photographerProfileServiceSubscribe:any;
 
   public constructor(@Inject('PhotographerProfileService') photographerProfileService:any,

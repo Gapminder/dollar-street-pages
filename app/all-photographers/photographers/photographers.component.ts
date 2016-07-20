@@ -15,11 +15,11 @@ let style = require('./photographers.css');
 })
 
 export class PhotographersComponent implements OnInit, OnDestroy {
+  protected math:any;
   private photographersService:any;
   private photographersByCountry:any[];
   private photographersByName:any[];
   private search:any;
-  private math:any;
   private loader:boolean;
   private photographersServiceSubscribe:any;
 

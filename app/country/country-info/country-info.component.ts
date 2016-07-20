@@ -15,6 +15,7 @@ let style = require('./country-info.css');
 
 export class CountryInfoComponent implements OnInit, OnDestroy {
   @Input()
+  protected math:any;
   private countryId:string;
   private isShowInfo:boolean;
   private country:any;
@@ -28,8 +29,9 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   @Output()
   private getCountry:EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(@Inject('CountryInfoService') countryInfoService:any) {
+  public constructor(@Inject('CountryInfoService') countryInfoService:any, @Inject('Math') math:any) {
     this.countryInfoService = countryInfoService;
+    this.math = math;
     this.isShowInfo = false;
   }
 
