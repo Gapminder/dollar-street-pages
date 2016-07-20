@@ -15,12 +15,12 @@ let style = require('./country-info.css');
 
 export class CountryInfoComponent implements OnInit, OnDestroy {
   @Input()
+  protected math:any;
   private countryId:string;
   private isShowInfo:boolean;
   private country:any;
   private countryInfoService:any;
   private thing:any;
-  private math:any;
   private countryInfoServiceSubscribe:any;
   private placesQantity:any;
   private photosQantity:any;

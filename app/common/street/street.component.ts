@@ -28,6 +28,7 @@ let style = require('./street.css');
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   public data:any;
+  protected math:any;
   @Input('thing')
   protected thing:string;
   @Input('query')
@@ -56,7 +57,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private hoverPlaceSubscribe:any;
   private chosenPlacesSubscribe:any;
   private mouseMoveSubscriber:any;
-  private math:any;
   private svg:SVGElement;
   private showSlider:boolean;
   private placesArr:any;

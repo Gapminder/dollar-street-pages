@@ -34,6 +34,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   protected imageBlockLocation:any;
   protected indexViewBoxHouse:number;
   protected positionInRow:number;
+  protected math:any;
 
   @Input('query')
   protected query:string;
@@ -63,7 +64,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private placesSubscribe:any;
   private itemSize:number;
   private imageHeight:number;
-  private math:any;
   private familyData:any;
   private prevPlaceId:string;
   private resizeSubscribe:any;

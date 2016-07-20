@@ -18,13 +18,7 @@ export class StreetDrawService {
   private svg:any;
   private incomeArr:any[] = [];
   private mouseMoveSubscriber:any;
-  private thirdDiv:any;
-  private firstDiv:any;
-  private secondDiv:any;
-  private lowDividerCoord:any;
-  private mediumDividerCoord:any;
-  private highDividerCoord:any;
-  private rich:any;
+  private dividersData:any;
   private mouseUpSubscriber:any;
   private touchMoveSubscriber:any;
   private touchUpSubscriber:any;
@@ -58,13 +52,7 @@ export class StreetDrawService {
 
   public init(lowIncome:any, highIncome:any, drawDividers:any):this {
     this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
-    this.firstDiv = drawDividers.low;
-    this.secondDiv = drawDividers.medium;
-    this.thirdDiv = drawDividers.high;
-    this.lowDividerCoord = drawDividers.lowDividerCoord;
-    this.mediumDividerCoord = drawDividers.mediumDividerCoord;
-    this.highDividerCoord = drawDividers.highDividerCoord;
-    this.rich = drawDividers.rich;
+    this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
     this.width = parseInt(this.svg.style('width'), 10);
@@ -324,9 +312,9 @@ export class StreetDrawService {
 
         this.sliderLeftMove = this.sliderRightMove = false;
 
-        if (this.highIncome > this.rich) {
+        if (this.highIncome > this.dividersData.rich) {
 
-          this.highIncome = this.rich;
+          this.highIncome = this.dividersData.rich;
         }
 
         this.filter.next({
@@ -341,8 +329,8 @@ export class StreetDrawService {
       }).subscribe(()=> {
         this.sliderLeftMove = this.sliderRightMove = false;
 
-        if (this.highIncome > this.rich) {
-          this.highIncome = this.rich;
+        if (this.highIncome > this.dividersData.rich) {
+          this.highIncome = this.dividersData.rich;
         }
 
         this.filter.next({
@@ -569,27 +557,27 @@ export class StreetDrawService {
   private drawScrollLabel():this {
     let incomeL:any = Math.ceil(this.lowIncome ? this.lowIncome : 0);
     let incomeR:any = Math.ceil(this.highIncome ? this.highIncome : 15000);
-    if (incomeR > this.rich) {
-      incomeR = this.rich;
+    if (incomeR > this.dividersData.rich) {
+      incomeR = this.dividersData.rich;
     }
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    if (((this.lowDividerCoord / 1000 * this.width) < xR + 45) && ((this.lowDividerCoord / 1000 * this.width) + 45 > xR) || ((this.lowDividerCoord / 1000 * this.width) < xL + 45) && ((this.lowDividerCoord / 1000 * this.width) + 45 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.firstDiv).attr('fill', '#fff');
+    if (((this.dividersData.lowDividerCoord / 1000 * this.width) < xR + 45) && ((this.dividersData.lowDividerCoord / 1000 * this.width) + 45 > xR) || ((this.dividersData.lowDividerCoord / 1000 * this.width) < xL + 45) && ((this.dividersData.lowDividerCoord / 1000 * this.width) + 45 > xL )) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#fff');
     } else {
-      this.svg.selectAll('text.scale-label' + this.firstDiv).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#767d86');
     }
-    if (((this.mediumDividerCoord / 1000 * this.width) < xR + 64) && ((this.mediumDividerCoord / 1000 * this.width) + 75 > xR) || ((this.mediumDividerCoord / 1000 * this.width) < xL + 64) && ((this.mediumDividerCoord / 1000 * this.width) + 75 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.secondDiv).attr('fill', '#fff');
+    if (((this.dividersData.mediumDividerCoord / 1000 * this.width) < xR + 64) && ((this.dividersData.mediumDividerCoord / 1000 * this.width) + 75 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * this.width) < xL + 64) && ((this.dividersData.mediumDividerCoord / 1000 * this.width) + 75 > xL )) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#fff');
     } else {
-      this.svg.selectAll('text.scale-label' + this.secondDiv).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#767d86');
     }
 
-    if (((this.highDividerCoord / 1000 * this.width) < xR + 62) && ((this.highDividerCoord / 1000 * this.width) + 78 > xR) || ((this.highDividerCoord / 1000 * this.width) < xL + 64) && ((this.highDividerCoord / 1000 * this.width) + 75 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.thirdDiv).attr('fill', '#fff');
+    if (((this.dividersData.highDividerCoord / 1000 * this.width) < xR + 62) && ((this.dividersData.highDividerCoord / 1000 * this.width) + 78 > xR) || ((this.dividersData.highDividerCoord / 1000 * this.width) < xL + 64) && ((this.dividersData.highDividerCoord / 1000 * this.width) + 75 > xL )) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#fff');
     } else {
-      this.svg.selectAll('text.scale-label' + this.thirdDiv).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
     }
 
     incomeL = this.fillSpaces(incomeL);
