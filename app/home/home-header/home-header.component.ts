@@ -17,6 +17,7 @@ let style = require('./home-header.css');
 export class HomeHeaderComponent implements OnInit, OnDestroy {
   protected home:any = {};
   protected mapData:any;
+  protected math:any;
   protected isOpenArticle:boolean = false;
   protected familyShortInfoPosition:number = -88;
   protected isShowAboutData:boolean = false;
@@ -30,7 +31,6 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private homeHeaderService:any;
   private homeHeaderServiceSubscribe:any;
   private scrollSubscribe:any;
-  private math:any;
   private resizeSubscribe:any;
   private zone:NgZone;
   private element:ElementRef;

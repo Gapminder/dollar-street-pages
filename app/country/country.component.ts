@@ -24,11 +24,12 @@ let style = require('./country.css');
 
 export class CountryComponent implements OnInit {
   protected title:string;
+  protected math:any;
   private routeParams:RouteParams;
   private countryId:string;
-
-  public constructor(@Inject(RouteParams) routeParams:RouteParams) {
+  public constructor(@Inject(RouteParams) routeParams:RouteParams,@Inject('Math') math:any) {
     this.routeParams = routeParams;
+    this.math = math;
   }
 
   public ngOnInit():void {

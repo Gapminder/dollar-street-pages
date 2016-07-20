@@ -33,6 +33,7 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
 
   protected openReadMore:boolean;
   protected familyInfo:any;
+  protected math:any;
 
   @Input('activeThing')
   protected activeThing:any;
@@ -56,7 +57,6 @@ export class SliderPlaceComponent implements OnInit, OnDestroy {
   private resizeSubscibe:any;
   private keyUpSubscribe:any;
   private zone:NgZone;
-  private math:any;
   private hoverPlace:ReplaySubject<any> = new ReplaySubject(0);
 
   public constructor(@Inject(RouteParams) routeParams:RouteParams,
