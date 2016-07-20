@@ -173,7 +173,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 0)
-      .attr('y', this.height )
+      .attr('y', this.height)
       .attr('fill', '#767d86');
 
     this.svg
@@ -184,7 +184,7 @@ export class StreetDrawService {
       .attr('class', 'richest')
       .text(this.richest)
       .attr('x', this.width - 52)
-      .attr('y', this.height )
+      .attr('y', this.height)
       .attr('fill', '#767d86');
 
     if (isDesktop) {
@@ -324,6 +324,9 @@ export class StreetDrawService {
 
         this.sliderLeftMove = this.sliderRightMove = false;
 
+        if (this.highIncome > this.rich) {
+          this.highIncome = this.rich;
+        }
         this.filter.next({
           lowIncome: Math.round(this.lowIncome),
           highIncome: Math.round(this.highIncome)
@@ -335,6 +338,10 @@ export class StreetDrawService {
         return this.sliderLeftMove || this.sliderRightMove;
       }).subscribe(()=> {
         this.sliderLeftMove = this.sliderRightMove = false;
+
+        if (this.highIncome > this.rich) {
+          this.highIncome = this.rich;
+        }
 
         this.filter.next({
           lowIncome: Math.round(this.lowIncome),
@@ -664,7 +671,7 @@ export class StreetDrawService {
         point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke', '#303e4a')
-      .attr('stroke-width',1)
+      .attr('stroke-width', 1)
       .style('fill', '#374551');
 
     return this;
