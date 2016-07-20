@@ -77,9 +77,9 @@ describe('StreetDrawService', () => {
       medium: 300,
       high: 3000,
       rich: 15000,
-      q1: 70,
-      q2: 500,
-      q3: 400
+      lowDividerCoord: 70,
+      mediumDividerCoord: 500,
+      highDividerCoord: 400
     });
     expect(d3Svg.domain).toHaveBeenCalledWith([0, 30, 300, 3000, 15000]);
     expect(d3Svg.range).toHaveBeenCalledWith([18.8, 70, 500, 400, 980.5]);
