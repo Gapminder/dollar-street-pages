@@ -32,7 +32,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
     this.urlEvents = this.urlChangeService
       .getUrlEvents()
-      // .debounceTime(300)
+      .debounceTime(1000)
       .subscribe(() => {
         this.getUrl();
       });
@@ -44,7 +44,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   }
 
   public getUrl():void {
-    let query = `url=${this.location.path()}`;
+    let query = {url: this.location.path()};
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl(query)
       .subscribe((res:any) => {
         if (res.err) {
