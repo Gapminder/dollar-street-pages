@@ -21,9 +21,9 @@ export class StreetDrawService {
   private thirdDiv:any;
   private firstDiv:any;
   private secondDiv:any;
-  private q1:any;
-  private q2:any;
-  private q3:any;
+  private lowDividerCoord:any;
+  private mediumDividerCoord:any;
+  private highDividerCoord:any;
   private rich:any;
   private mouseUpSubscriber:any;
   private touchMoveSubscriber:any;
@@ -61,9 +61,9 @@ export class StreetDrawService {
     this.firstDiv = drawDividers.low;
     this.secondDiv = drawDividers.medium;
     this.thirdDiv = drawDividers.high;
-    this.q1 = drawDividers.q1;
-    this.q2 = drawDividers.q2;
-    this.q3 = drawDividers.q3;
+    this.lowDividerCoord = drawDividers.lowDividerCoord;
+    this.mediumDividerCoord = drawDividers.mediumDividerCoord;
+    this.highDividerCoord = drawDividers.highDividerCoord;
     this.rich = drawDividers.rich;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
@@ -73,7 +73,7 @@ export class StreetDrawService {
     this.scale = d3
       .scale.log()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
-      .range([18.8 / 1000 * this.width, drawDividers.q1 / 1000 * this.width, drawDividers.q2 / 1000 * this.width, drawDividers.q3 / 1000 * this.width, 0.9805 * this.width]);
+      .range([18.8 / 1000 * this.width, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, 0.9805 * this.width]);
 
     return this;
   }
@@ -566,18 +566,18 @@ export class StreetDrawService {
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    if (((this.q1 / 1000 * this.width) < xR + 45) && ((this.q1 / 1000 * this.width) + 45 > xR) || ((this.q1 / 1000 * this.width) < xL + 45) && ((this.q1 / 1000 * this.width) + 45 > xL )) {
+    if (((this.lowDividerCoord / 1000 * this.width) < xR + 45) && ((this.lowDividerCoord / 1000 * this.width) + 45 > xR) || ((this.lowDividerCoord / 1000 * this.width) < xL + 45) && ((this.lowDividerCoord / 1000 * this.width) + 45 > xL )) {
       this.svg.selectAll('text.scale-label' + this.firstDiv).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.firstDiv).attr('fill', '#767d86');
     }
-    if (((this.q2 / 1000 * this.width) < xR + 64) && ((this.q2 / 1000 * this.width) + 75 > xR) || ((this.q2 / 1000 * this.width) < xL + 64) && ((this.q2 / 1000 * this.width) + 75 > xL )) {
+    if (((this.mediumDividerCoord / 1000 * this.width) < xR + 64) && ((this.mediumDividerCoord / 1000 * this.width) + 75 > xR) || ((this.mediumDividerCoord / 1000 * this.width) < xL + 64) && ((this.mediumDividerCoord / 1000 * this.width) + 75 > xL )) {
       this.svg.selectAll('text.scale-label' + this.secondDiv).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.secondDiv).attr('fill', '#767d86');
     }
 
-    if (((this.q3 / 1000 * this.width) < xR + 62) && ((this.q3 / 1000 * this.width) + 78 > xR) || ((this.q3 / 1000 * this.width) < xL + 64) && ((this.q3 / 1000 * this.width) + 75 > xL )) {
+    if (((this.highDividerCoord / 1000 * this.width) < xR + 62) && ((this.highDividerCoord / 1000 * this.width) + 78 > xR) || ((this.highDividerCoord / 1000 * this.width) < xL + 64) && ((this.highDividerCoord / 1000 * this.width) + 75 > xL )) {
       this.svg.selectAll('text.scale-label' + this.thirdDiv).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.thirdDiv).attr('fill', '#767d86');
