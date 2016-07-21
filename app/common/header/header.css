@@ -3,7 +3,6 @@
   vertical-align: top;
   width: 100%;
   background-color: white;
-  margin-top: 5px;
 }
 
 .header-content main-menu {
@@ -32,7 +31,6 @@ place-map {
   width: 71px;
   display: block;
   float: left;
-  margin-top: 5px;
 }
 
 place-map[hidden] {
@@ -48,6 +46,11 @@ place-map[hidden] {
 
 .matrix-icon img {
   width: 100%;
+}
+
+.map-menu-content .matrix-icon {
+  margin-left: -15px;
+  margin-top: 16px;
 }
 
 .filters-container {
