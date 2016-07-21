@@ -14,8 +14,8 @@ let style = require('./country-info.css');
 })
 
 export class CountryInfoComponent implements OnInit, OnDestroy {
-  @Input()
   protected math:any;
+  @Input()
   private countryId:string;
   private isShowInfo:boolean;
   private country:any;

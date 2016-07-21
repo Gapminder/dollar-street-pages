@@ -82,7 +82,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       countries: this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World',
       regions: this.routeParams.get('regions') ? decodeURI(this.routeParams.get('regions')) : 'World',
       zoom: parseInt(this.routeParams.get('zoom'), 10) || 4,
-      row: parseInt(this.routeParams.get('row'), 10) || 1
+      row: parseInt(this.routeParams.get('row'), 10) || 1,
+      lowIncome:  parseInt(this.routeParams.get('lowIncome'), 10) || 0,
+      highIncome:  parseInt(this.routeParams.get('highIncome'), 10) || 15000
     };
 
     this.homeIncomeFilterServiceSubscribe = this.homeIncomeFilterService.getData()
