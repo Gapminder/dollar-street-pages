@@ -11,6 +11,7 @@ export class StreetDrawService {
   public halfOfHeight:number;
   public lowIncome:number;
   public highIncome:number;
+  public streetOffset:number;
   private poorest:string = 'Poorest';
   private richest:string = 'Richest';
   private scale:any;
@@ -57,14 +58,14 @@ export class StreetDrawService {
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
-    this.width = parseInt(this.svg.style('width'), 10) - 60;
+    this.streetOffset = 60;
+    this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
     this.scale = d3
       .scale.log()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
-      .range([18.8 / 1000 * this.width, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, 0.9805 * this.width]);
-
+      .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
     return this;
   }
 
@@ -173,7 +174,7 @@ export class StreetDrawService {
       .append('text')
       .attr('class', 'richest')
       .text(this.richest)
-      .attr('x', this.width + 60 - 40)
+      .attr('x', this.width + this.streetOffset - 40)
       .attr('y', this.height)
       .attr('fill', '#767d86');
 
@@ -195,13 +196,13 @@ export class StreetDrawService {
 
           if (datum) {
             let scaleDatumIncome = this.scale(datum.income);
-            point1 = `${30 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
-            point2 = `${30 + scaleDatumIncome + roofX},${roofY}`;
-            point3 = `${30 + scaleDatumIncome - halfHouseWidth},${roofY}`;
-            point4 = `${30 + scaleDatumIncome},${this.halfOfHeight - 17}`;
-            point5 = `${30 + scaleDatumIncome + halfHouseWidth },${roofY}`;
-            point6 = `${30 + scaleDatumIncome - roofX },${roofY}`;
-            point7 = `${30 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
+            point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
+            point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
+            point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth},${roofY}`;
+            point4 = `${this.streetOffset / 2 + scaleDatumIncome},${this.halfOfHeight - 17}`;
+            point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
+            point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${roofY}`;
+            point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
           }
 
           return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
@@ -219,8 +220,8 @@ export class StreetDrawService {
       .attr('points', () => {
         let point1 = `0,${ this.halfOfHeight + 11}`;
         let point2 = `30,${ this.halfOfHeight - 4}`;
-        let point3 = `${ this.width + 60 - 30},${ this.halfOfHeight - 4}`;
-        let point4 = `${ this.width + 60},${ this.halfOfHeight + 11}`;
+        let point3 = `${ this.width + this.streetOffset - this.streetOffset / 2},${ this.halfOfHeight - 4}`;
+        let point4 = `${ this.width + this.streetOffset},${ this.halfOfHeight + 11}`;
         return `${point1} ${point2} ${point3} ${point4}`;
       })
       .style('fill', '#727a82');
@@ -231,7 +232,7 @@ export class StreetDrawService {
       .attr('height', '1px')
       .attr('x1', 0)
       .attr('y1', this.halfOfHeight + 11)
-      .attr('x2', this.width + 60)
+      .attr('x2', this.width + this.streetOffset)
       .attr('y2', this.halfOfHeight + 11)
       .attr('stroke-width', 2)
       .attr('stroke', '#dde2e5');
@@ -242,7 +243,7 @@ export class StreetDrawService {
       .attr('height', '3px')
       .attr('x1', 0)
       .attr('y1', this.halfOfHeight + 13)
-      .attr('x2', this.width + 60)
+      .attr('x2', this.width + this.streetOffset)
       .attr('y2', this.halfOfHeight + 13)
       .attr('stroke-width', 3)
       .attr('stroke', '#525c64');
@@ -252,7 +253,7 @@ export class StreetDrawService {
       .attr('class', 'dash')
       .attr('x1', 24)
       .attr('y1', this.halfOfHeight + 4)
-      .attr('x2', this.width + 60 - 9)
+      .attr('x2', this.width + this.streetOffset - 9)
       .attr('y2', this.halfOfHeight + 3)
       .attr('stroke-dasharray', '17')
       .attr('stroke-width', 2)
@@ -369,13 +370,13 @@ export class StreetDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${scaleDatumIncome + 30 + roofX },${this.halfOfHeight - 1 - 1}`;
-          point2 = `${scaleDatumIncome + 30 + roofX},${roofY}`;
-          point3 = `${scaleDatumIncome + 30 - halfHouseWidth},${roofY}`;
-          point4 = `${scaleDatumIncome + 30 },${this.halfOfHeight - 26 - 1}`;
-          point5 = `${scaleDatumIncome + 30 + halfHouseWidth },${roofY}`;
-          point6 = `${scaleDatumIncome + 30 - roofX },${roofY}`;
-          point7 = `${scaleDatumIncome + 30 - roofX },${this.halfOfHeight - 1 - 1}`;
+          point1 = `${scaleDatumIncome + this.streetOffset / 2 + roofX },${this.halfOfHeight - 1 - 1}`;
+          point2 = `${scaleDatumIncome + this.streetOffset / 2 + roofX},${roofY}`;
+          point3 = `${scaleDatumIncome + this.streetOffset / 2 - halfHouseWidth},${roofY}`;
+          point4 = `${scaleDatumIncome + this.streetOffset / 2 },${this.halfOfHeight - 26 - 1}`;
+          point5 = `${scaleDatumIncome + this.streetOffset / 2 + halfHouseWidth },${roofY}`;
+          point6 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${roofY}`;
+          point7 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${this.halfOfHeight - 1 - 1}`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
@@ -416,7 +417,7 @@ export class StreetDrawService {
 
     if (!this.leftScrollOpacityLabels) {
       this.leftScrollOpacityLabels = this.svg;
-      if (x < 52) {
+      if (x < 16) {
         this.leftScrollOpacityLabels
           .append('rect')
           .attr('class', 'left-scroll-opacity-part2')
@@ -424,7 +425,7 @@ export class StreetDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', x + 30)
+          .attr('width', x + this.streetOffset / 2)
           .style('opacity', '0.1');
       } else {
 
@@ -435,7 +436,7 @@ export class StreetDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', x + 30)
+          .attr('width', x + this.streetOffset / 2)
           .style('opacity', '0.8');
       }
     }
@@ -457,16 +458,16 @@ export class StreetDrawService {
 
     this.leftScroll
       .attr('points', () => {
-        let point1 = `${x + 30 - 9},${ this.halfOfHeight + 12}`;
-        let point2 = `${x + 30 - 9},${ this.halfOfHeight - 5}`;
-        let point3 = `${x + 30 },${ this.halfOfHeight - 5}`;
-        let point4 = `${x + 30 },${ this.halfOfHeight + 12}`;
-        let point5 = `${x + 30 - 4.5},${ this.halfOfHeight + 12 + 5}`;
+        let point1 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight + 12}`;
+        let point2 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5}`;
+        let point3 = `${x + this.streetOffset / 2 },${ this.halfOfHeight - 5}`;
+        let point4 = `${x + this.streetOffset / 2 },${ this.halfOfHeight + 12}`;
+        let point5 = `${x + this.streetOffset / 2 - 4.5},${ this.halfOfHeight + 12 + 5}`;
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
     this.leftScrollOpacityStreet
-      .attr('width', x + 30);
+      .attr('width', x + this.streetOffset / 2);
 
     this.lowIncome = this.scale.invert(x);
 
@@ -495,7 +496,7 @@ export class StreetDrawService {
     if (!this.rightScrollOpacityLabels) {
 
       this.rightScrollOpacityLabels = this.svg;
-      if (x + 75 > this.width + 60) {
+      if (x + 75 > this.width + this.streetOffset) {
         this.rightScrollOpacityLabels
           .append('rect')
           .attr('class', 'right-scroll-opacity-part2')
@@ -503,7 +504,7 @@ export class StreetDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', this.width - x + 60)
+          .attr('width', this.width - x + this.streetOffset)
           .style('opacity', '0.1');
       } else {
 
@@ -514,7 +515,7 @@ export class StreetDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', this.width - x + 60)
+          .attr('width', this.width - x + this.streetOffset)
           .style('opacity', '0.8');
       }
     }
@@ -534,16 +535,16 @@ export class StreetDrawService {
     }
 
     this.rightScroll.attr('points', () => {
-      let point1 = `${x + 30},${ this.halfOfHeight + 12}`;
-      let point2 = `${x + 30},${ this.halfOfHeight - 5}`;
-      let point3 = `${x + 30 + 9},${ this.halfOfHeight - 5}`;
-      let point4 = `${x + 30 + 9},${ this.halfOfHeight + 12}`;
-      let point5 = `${x + 30 + 4.5},${ this.halfOfHeight + 12 + 5}`;
+      let point1 = `${x + this.streetOffset / 2},${ this.halfOfHeight + 12}`;
+      let point2 = `${x + this.streetOffset / 2},${ this.halfOfHeight - 5}`;
+      let point3 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight - 5}`;
+      let point4 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight + 12}`;
+      let point5 = `${x + this.streetOffset / 2 + 4.5},${ this.halfOfHeight + 12 + 5}`;
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });
     this.rightScrollOpacityStreet
-      .attr('x', x + 30 + 1)
-      .attr('width', this.width + 30 - x);
+      .attr('x', x + this.streetOffset / 2 + 1.5)
+      .attr('width', this.width + this.streetOffset / 2 - x);
 
     this.highIncome = this.scale.invert(x);
 
@@ -617,18 +618,18 @@ export class StreetDrawService {
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    if (((this.dividersData.lowDividerCoord / 1000 * (this.width + 30)) < xR + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + 30)) + 45 > xR) || ((this.dividersData.lowDividerCoord / 1000 * (this.width + 30)) < xL + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + 30)) + 45 > xL )) {
+    if (((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 45 > xR) || ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 45 > xL )) {
       this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#767d86');
     }
-    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + 30)) < xR + 110) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + 30)) + 25 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + 30)) < xL + 95) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + 30)) + 15 > xL )) {
+    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 110) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 25 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 95) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 15 > xL )) {
       this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#767d86');
     }
 
-    if (((this.dividersData.highDividerCoord / 1000 * (this.width + 30)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + 30)) + 15 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + 30)) < xL + 134) && ((this.dividersData.highDividerCoord / 1000 * (this.width + 30)) > xL )) {
+    if (((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 15 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 134) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) > xL )) {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
@@ -668,11 +669,11 @@ export class StreetDrawService {
     }
     this.rightScrollText
       .text(`${incomeR}$`)
-      .attr('x', ()=> xR + 30 - 10 - this.rightScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xR + this.streetOffset / 2 - 10 - this.rightScrollText[0][0].getBBox().width / 2);
 
     this.leftScrollText
       .text(`${incomeL}$`)
-      .attr('x', ()=> xL + 30 - 10 - this.leftScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xL + this.streetOffset / 2 - 10 - this.leftScrollText[0][0].getBBox().width / 2);
 
     return this;
   };
@@ -702,13 +703,13 @@ export class StreetDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${30 + scaleDatumIncome + roofX},${this.halfOfHeight - 1 - 1}`;
-          point2 = `${30 + scaleDatumIncome + roofX},${roofY}`;
-          point3 = `${30 + scaleDatumIncome - halfHouseWidth },${roofY}`;
-          point4 = `${30 + scaleDatumIncome },${ this.halfOfHeight - 21 - 1}`;
-          point5 = `${30 + scaleDatumIncome + halfHouseWidth },${roofY}`;
-          point6 = `${30 + scaleDatumIncome - roofX },${ roofY}`;
-          point7 = `${30 + scaleDatumIncome - roofX },${ this.halfOfHeight - 1 - 1}`;
+          point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${this.halfOfHeight - 1 - 1}`;
+          point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
+          point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth },${roofY}`;
+          point4 = `${this.streetOffset / 2 + scaleDatumIncome },${ this.halfOfHeight - 21 - 1}`;
+          point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
+          point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${ roofY}`;
+          point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${ this.halfOfHeight - 1 - 1}`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +

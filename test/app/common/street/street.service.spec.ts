@@ -82,7 +82,7 @@ describe('StreetDrawService', () => {
       highDividerCoord: 400
     });
     expect(d3Svg.domain).toHaveBeenCalledWith([0, 30, 300, 3000, 15000]);
-    expect(d3Svg.range).toHaveBeenCalledWith([ 17.672, 65.80000000000001, 470, 376, 921.6700000000001 ]);
+    expect(d3Svg.range).toHaveBeenCalledWith([ 0, 65.80000000000001, 470, 376, 940  ]);
   });
 
   it('setSvg', () => {
