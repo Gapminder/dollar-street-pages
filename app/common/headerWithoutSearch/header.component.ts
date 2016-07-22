@@ -45,12 +45,7 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
   }
 
   protected goToMatrixPage():void {
-    if (this.matrixComponent) {
-      location.reload();
-
-      return;
-    }
-
+    location.reload();
     this.router.navigate(['Matrix']);
   }
 

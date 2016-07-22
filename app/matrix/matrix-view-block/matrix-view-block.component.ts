@@ -26,6 +26,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @Input('positionInRow')
   protected positionInRow:any;
 
+  private privateZoom:any;
   private resizeSubscribe:any;
   private popIsOpen:boolean;
   private mapData:any;
@@ -57,10 +58,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
-          let parseUrl:any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
-          let imageWidth:number = (window.innerWidth - 36) / parseUrl.zoom;
+          let imageWidth:number = (window.innerWidth - 36) / this.privateZoom;
 
-          this.markerPositionLeft = imageWidth * (this.positionInRow || parseUrl.zoom) - (imageWidth / 2 + 33);
+          this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 33);
         });
       });
   }
@@ -71,9 +71,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     let url = `placeId=${this.place._id}&thingId=${this.thing}`;
     let parseUrl:any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
-    let imageWidth:number = (window.innerWidth - 36) / parseUrl.zoom;
+    this.privateZoom = parseUrl.zoom;
+    let imageWidth:number = (window.innerWidth - 36) / this.privateZoom;
 
-    this.markerPositionLeft = imageWidth * (this.positionInRow || parseUrl.zoom) - (imageWidth / 2 + 33);
+    this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 33);
     this.place.background = this.place.background.replace('devices', 'desktops');
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 
@@ -100,6 +101,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnDestroy():void {
+    this.resizeSubscribe.unsubscribe();
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
