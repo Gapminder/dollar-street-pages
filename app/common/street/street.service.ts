@@ -28,8 +28,10 @@ export class StreetDrawService {
   private sliderLeftMove:boolean = false;
   private leftScroll:any;
   private rightScroll:any;
-  private leftScrollOpacity:any;
-  private rightScrollOpacity:any;
+  private leftScrollOpacityStreet:any;
+  private leftScrollOpacityLabels:any;
+  private rightScrollOpacityLabels:any;
+  private rightScrollOpacityStreet:any;
   private leftScrollText:any;
   private rightScrollText:any;
   private hoverPlace:any;
@@ -259,9 +261,8 @@ export class StreetDrawService {
     this.incomeArr.length = 0;
 
     this.isDrawDividers(drawDividers);
-
     if (isShowSlider) {
-      this.drawLeftSlider(this.scale(Number(this.lowIncome) || 1), true);
+      this.drawLeftSlider(this.scale(this.lowIncome), true);
       this.drawRightSlider(this.scale(this.highIncome), true);
     }
 
@@ -275,7 +276,6 @@ export class StreetDrawService {
       return this.sliderLeftMove || this.sliderRightMove;
     }).subscribe((e:MouseEvent)=> {
       e.preventDefault();
-
       if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder && e.pageX >= 30) {
         return this.drawLeftSlider(e.pageX);
       }
@@ -294,7 +294,6 @@ export class StreetDrawService {
         return this.sliderLeftMove || this.sliderRightMove;
       }).subscribe((e:TouchEvent)=> {
         let positionX = e.touches[0].pageX;
-
         if (this.sliderLeftMove && positionX <= this.sliderRightBorder && positionX >= 30) {
           return this.drawLeftSlider(positionX);
         }
@@ -314,7 +313,7 @@ export class StreetDrawService {
 
         if (this.highIncome > this.dividersData.rich) {
 
-          this.highIncome = this.dividersData.rich;
+          this.highIncome = this.dividersData.rich + 0.002;
         }
 
         this.filter.next({
@@ -330,7 +329,7 @@ export class StreetDrawService {
         this.sliderLeftMove = this.sliderRightMove = false;
 
         if (this.highIncome > this.dividersData.rich) {
-          this.highIncome = this.dividersData.rich;
+          this.highIncome = this.dividersData.rich + 0.002;
         }
 
         this.filter.next({
@@ -404,15 +403,40 @@ export class StreetDrawService {
   protected drawLeftSlider(x:number, init:boolean = false):this {
     this.sliderLeftBorder = x;
 
-    if (!this.leftScrollOpacity) {
-      this.leftScrollOpacity = this.svg
+    if (!this.leftScrollOpacityStreet) {
+      this.leftScrollOpacityStreet = this.svg
         .append('rect')
         .attr('class', 'left-scroll-opacity-part')
         .attr('x', 0)
         .attr('y', 0)
-        .attr('height', 64)
+        .attr('height', 50)
         .style('fill', 'white')
         .style('opacity', '0.8');
+    }
+
+    if (!this.leftScrollOpacityLabels) {
+      this.leftScrollOpacityLabels = this.svg;
+      if (x < 52) {
+        this.leftScrollOpacityLabels
+          .append('rect')
+          .attr('class', 'left-scroll-opacity-part2')
+          .attr('x', 0)
+          .attr('y', 50)
+          .attr('height', 15)
+          .style('fill', 'white')
+          .attr('width', x)
+          .style('opacity', '0.1');
+      } else {
+        this.leftScrollOpacityLabels
+          .append('rect')
+          .attr('class', 'left-scroll-opacity-part2')
+          .attr('x', 0)
+          .attr('y', 50)
+          .attr('height', 15)
+          .style('fill', 'white')
+          .attr('width', x)
+          .style('opacity', '0.8');
+      }
     }
 
     if (!this.leftScroll) {
@@ -420,6 +444,7 @@ export class StreetDrawService {
         .append('polygon')
         .attr('class', 'left-scroll')
         .style('fill', '#515c65')
+        .attr('x', 41)
         .style('cursor', 'pointer')
         .attr('stroke-width', 1)
         .attr('stroke', '#48545f')
@@ -440,9 +465,8 @@ export class StreetDrawService {
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
-    this.leftScrollOpacity
+    this.leftScrollOpacityStreet
       .attr('width', x);
-
     this.lowIncome = this.scale.invert(x);
 
     if (init) {
@@ -456,14 +480,41 @@ export class StreetDrawService {
 
   protected drawRightSlider(x:number, init:boolean = false):this {
     this.sliderRightBorder = x;
-    if (!this.rightScrollOpacity) {
-      this.rightScrollOpacity = this.svg
+    if (!this.rightScrollOpacityStreet) {
+      this.rightScrollOpacityStreet = this.svg
         .append('rect')
         .attr('class', 'right-scroll-opacity-part')
         .attr('y', 0)
-        .attr('height', 64)
+        .attr('height', 50)
         .style('fill', 'white')
         .style('opacity', '0.8');
+    }
+
+    if (!this.rightScrollOpacityLabels) {
+
+      this.rightScrollOpacityLabels = this.svg;
+      if (x + 75 > this.width) {
+        this.rightScrollOpacityLabels
+          .append('rect')
+          .attr('class', 'right-scroll-opacity-part2')
+          .attr('x', x + 9)
+          .attr('y', 50)
+          .attr('height', 15)
+          .style('fill', 'white')
+          .attr('width', this.width - x - 1.2)
+          .style('opacity', '0.1');
+      } else {
+
+        this.rightScrollOpacityLabels
+          .append('rect')
+          .attr('class', 'right-scroll-opacity-part2')
+          .attr('x', x + 9)
+          .attr('y', 50)
+          .attr('height', 15)
+          .style('fill', 'white')
+          .attr('width', this.width - x - 1.2)
+          .style('opacity', '0.8');
+      }
     }
 
     if (!this.rightScroll) {
@@ -489,7 +540,7 @@ export class StreetDrawService {
       let point5 = `${x + 4.5},${ this.halfOfHeight + 12 + 5}`;
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });
-    this.rightScrollOpacity
+    this.rightScrollOpacityStreet
       .attr('x', x + 9)
       .attr('width', this.width - x - 1.2);
 
@@ -540,8 +591,10 @@ export class StreetDrawService {
   public clearSvg():this {
     this.leftScroll = void 0;
     this.rightScroll = void 0;
-    this.leftScrollOpacity = void 0;
-    this.rightScrollOpacity = void 0;
+    this.leftScrollOpacityStreet = void 0;
+    this.leftScrollOpacityLabels = void 0;
+    this.rightScrollOpacityLabels = void 0;
+    this.rightScrollOpacityStreet = void 0;
     this.leftScrollText = void 0;
     this.rightScrollText = void 0;
 
