@@ -9,6 +9,8 @@ matrix-images {
   padding: 15px;
   font-family: 'Bariol Regular', sans-serif;
   text-align: center;
+  min-height: 0;
+  display: none;
 }
 
 .font-bold {
