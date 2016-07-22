@@ -43,6 +43,11 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
+  protected goToMatrixPage():void {
+    location.reload();
+    this.router.navigate(['Matrix']);
+  }
+
  protected switchOnOnboardingFromMenu():void {
     window.localStorage.removeItem('onboarded');
 

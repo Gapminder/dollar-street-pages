@@ -1,6 +1,7 @@
-import { Component, Input, Output, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
+import { Component, Input, Output, OnInit, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
 import { RouterLink, Router } from '@angular/router-deprecated';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./matrix-view-block.template.html');
 let style = require('./matrix-view-block.css');
@@ -12,7 +13,7 @@ let style = require('./matrix-view-block.css');
   directives: [RegionMapComponent, RouterLink]
 })
 
-export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
+export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public familyInfoServiceSubscribe:any;
   public fancyBoxImage:any;
 
@@ -25,6 +26,7 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   @Input('positionInRow')
   protected positionInRow:any;
 
+  private resizeSubscribe:any;
   private popIsOpen:boolean;
   private mapData:any;
   private familyInfoService:any;
@@ -48,6 +50,19 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
     this.router = router;
     this.zone = zone;
     this.math = math;
+  }
+
+  public ngOnInit():void {
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          let parseUrl:any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
+          let imageWidth:number = (window.innerWidth - 36) / parseUrl.zoom;
+
+          this.markerPositionLeft = imageWidth * (this.positionInRow || parseUrl.zoom) - (imageWidth / 2 + 33);
+        });
+      });
   }
 
   public ngOnChanges():void {

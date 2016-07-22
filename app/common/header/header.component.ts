@@ -138,6 +138,11 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.activeThing = thing;
   }
 
+  protected goToMatrixPage():void {
+    location.reload();
+    this.router.navigate(['Matrix']);
+  }
+
   private parseUrl(url:string):any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);
