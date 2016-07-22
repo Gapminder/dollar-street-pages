@@ -1,6 +1,6 @@
 <div class="header main-header header-without-search">
   <div class="container">
-    <a [routerLink]="['Matrix']" class="logo pull-left">
+    <a (click)="goToMatrixPage()" class="logo pull-left">
       <img src="/assets/img/dollar-street.svg" alt="">
     </a>
 
@@ -9,7 +9,7 @@
     <main-menu class="pull-right"></main-menu>
 
     <div class="matrix-icon pull-right">
-      <a [routerLink]="['Matrix']">
+      <a (click)="goToMatrixPage()">
         <img src="/assets/img/dark-matrix-icon.svg" alt="">
       </a>
     </div>

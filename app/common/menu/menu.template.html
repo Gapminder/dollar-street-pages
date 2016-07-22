@@ -2,13 +2,13 @@
   <div class="btn-group" [ngClass]="{open: isOpenMenu}" (click)="isOpenMenu = !isOpenMenu">
     <span class="menu-icon">
       <img class="unactive" src="/assets/img/gamburger-menu-icon.svg" alt=""/>
-      <img class="active" src="/assets/img/bar-icon-active.svg" alt=""/>
+      <img class="active" src="/assets/img/gamburger-menu-white-icon.svg" alt=""/>
     </span>
 
     <div class="dropdown-menu">
       <ul class="header-menu-list">
         <li>
-          <a [routerLink]="['Matrix']">First page</a>
+          <a (click)="goToMatrixPage()">First page</a>
         </li>
         <li>
           <a [routerLink]="['Photographers']">Photographers</a>

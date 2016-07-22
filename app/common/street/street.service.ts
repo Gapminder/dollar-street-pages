@@ -63,7 +63,7 @@ export class StreetDrawService {
     this.scale = d3
       .scale.log()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
-      .range([0, drawDividers.lowDividerCoord / 1000 * (this.width - 60), drawDividers.mediumDividerCoord / 1000 * (this.width - 60), drawDividers.highDividerCoord / 1000 * (this.width - 60), this.width]);
+      .range([18.8 / 1000 * this.width, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, 0.9805 * this.width]);
 
     return this;
   }
@@ -261,9 +261,8 @@ export class StreetDrawService {
     this.incomeArr.length = 0;
 
     this.isDrawDividers(drawDividers);
-
     if (isShowSlider) {
-      this.drawLeftSlider(this.scale(Number(this.lowIncome) || 1), true);
+      this.drawLeftSlider(this.scale(this.lowIncome), true);
       this.drawRightSlider(this.scale(this.highIncome), true);
     }
 

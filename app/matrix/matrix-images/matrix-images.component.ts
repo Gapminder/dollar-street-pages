@@ -221,7 +221,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     let windowInnerWidth = window.innerWidth;
     let imageMargin = (windowInnerWidth - 36 - this.imageHeight * this.zoom) / this.zoom;
 
-    document.body.scrollTop = (row - 1) * (this.imageHeight + imageMargin) + 18;
+    document.body.scrollTop = document.documentElement.scrollTop = (row - 1) * (this.imageHeight + imageMargin) + 18;
   }
 
   private parseUrl(url:string):any {

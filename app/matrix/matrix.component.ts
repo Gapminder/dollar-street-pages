@@ -236,7 +236,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.getViewableRows(header.offsetHeight);
 
-    document.body.scrollTop = document.documentElement.scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin) + 18;
+    document.body.scrollTop = document.documentElement.scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
 
     if (this.clonePlaces) {
       this.streetPlaces.next(this.streetPlacesData);
