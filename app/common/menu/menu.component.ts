@@ -43,7 +43,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected switchOnOnboardingFromMenu():void {
+ protected switchOnOnboardingFromMenu():void {
     window.localStorage.removeItem('onboarded');
 
     if (this.isMatrixComponent) {
