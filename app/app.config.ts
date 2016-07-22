@@ -11,16 +11,16 @@ import { BlogComponent } from './contentful/blog/blog.component';
 import { PostComponent } from './contentful/post/post.component';
 
 export class Config {
-  public static api:string = 'https://apidev.dollarstreet.org';
+  // public static api:string = 'https://apidev.dollarstreet.org';
   // public static api:string = 'http://stage.dollarstreet.org';
   // public static api:string = 'http://128.199.60.70';
   // public static api:string = 'http://192.168.1.66';
   // public static api:string = 'http://192.168.1.145';
   // public static api:string = 'http://192.168.1.148';
   // public static api:string = 'http://192.168.1.57';
-  //  public static api:string = 'http://192.168.1.147';
   // public static api:string = 'http://192.168.1.142';
   // public static api:string = 'http://192.168.0.102';
+   public static api:string = 'http://192.168.1.147';
 
   public static routes:any = [{
     path: '/matrix',
