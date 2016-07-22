@@ -82,7 +82,7 @@ describe('StreetDrawService', () => {
       highDividerCoord: 400
     });
     expect(d3Svg.domain).toHaveBeenCalledWith([0, 30, 300, 3000, 15000]);
-    expect(d3Svg.range).toHaveBeenCalledWith([18.8, 70, 500, 400, 980.5]);
+    expect(d3Svg.range).toHaveBeenCalledWith([ 0, 65.80000000000001, 470, 376, 940  ]);
   });
 
   it('setSvg', () => {
@@ -194,7 +194,7 @@ describe('StreetDrawService', () => {
     /** make this.height and this.width private*/
 
     streetDrawService.lowIncome = 0;
-    streetDrawService.hightIncome = 0;
+    streetDrawService.highIncome = 0;
     spyOn(streetDrawService, 'drawLeftSlider');
     spyOn(streetDrawService, 'drawRightSlider');
 

@@ -163,7 +163,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
       this.filterStreet.emit({url: this.objToQuery(query)});
     });
-
     this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
     this.resize = fromEvent(window, 'resize')
