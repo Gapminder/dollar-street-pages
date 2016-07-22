@@ -20,7 +20,6 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
 
   private defaultThing:any;
   private headerService:any;
-  private matrixComponent:boolean;
   private headerServiceSibscribe:any;
   private router:Router;
 
@@ -28,8 +27,6 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
                      @Inject(Router) router:Router) {
     this.router = router;
     this.headerService = headerService;
-
-    this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
   }
 
   public ngOnInit():void {
