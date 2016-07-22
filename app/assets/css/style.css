@@ -153,6 +153,10 @@ body.onboarding .zoom-column {
   top: 312px;
 }
 
+.onboarding .matrix-onboard {
+  display: block !important;
+}
+
 @supports (-webkit-line-clamp: 1) {
   .line-clamp:after {
     display: none !important;

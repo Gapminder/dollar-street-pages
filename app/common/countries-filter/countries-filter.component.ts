@@ -80,6 +80,12 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
 
   protected selectRegions(location:any):void {
     let index = this.selectedRegions.indexOf(location.region);
+    let getEmptyCountries = _.map(location.countries, 'empty');
+
+    if (_.uniq(getEmptyCountries).length === 1) {
+      return;
+    }
+
     let getCountriesName = _.map(location.countries, 'country');
 
     if (index !== -1) {

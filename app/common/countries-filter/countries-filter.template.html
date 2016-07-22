@@ -12,14 +12,14 @@
       <h3 class="title"
           (click)="selectRegions(location)"
           [ngClass]="{active: selectedRegions.indexOf(location.region) !== -1}">
-          <span class="not-selected">
+        <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
-          </span>
+        </span>
         <span class="selected">
             <img src="/assets/img/check-icon.svg" alt="">
-          </span>
+        </span>
         <span class="regions-names">
-          {{location.region}}
+            {{location.region}}
         </span>
       </h3>
 
@@ -28,7 +28,6 @@
              *ngFor="let country of location.countries"
              [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
              (click)="selectCountries(country, location.region)">
-
           <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
           </span>

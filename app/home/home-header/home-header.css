@@ -251,8 +251,8 @@
   margin: 0;
 }
 
-.about-data-container .about-data-body p:first-child {
-  margin-bottom: 20px;
+.about-data-container .about-data-body p + p {
+  margin-top: 20px;
 }
 
 .rotate {
