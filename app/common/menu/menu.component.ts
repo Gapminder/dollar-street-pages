@@ -21,6 +21,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   private element:ElementRef;
   private router:Router;
   private isMatrixComponent:boolean;
+  private window:Window = window;
 
   public constructor(@Inject(Router) router:Router,
                      @Inject(ElementRef) element:ElementRef) {
@@ -44,18 +45,25 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   protected goToMatrixPage():void {
-    location.reload();
-    this.router.navigate(['Matrix']);
-  }
-
- protected switchOnOnboardingFromMenu():void {
-    window.localStorage.removeItem('onboarded');
-
     if (this.isMatrixComponent) {
-      location.reload();
+      this.window.location.href = this.window.location.origin;
 
       return;
     }
+
+    this.router.navigate(['Matrix']);
+  }
+
+  protected switchOnOnboardingFromMenu():void {
+    this.window.localStorage.removeItem('onboarded');
+
+    if (this.isMatrixComponent) {
+      this.window.location.href = this.window.location.origin;
+
+      return;
+    }
+
+    console.log(1111111);
 
     this.router.navigate(['Matrix']);
   }

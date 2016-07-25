@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink, Router } from '@angular/router-deprecated';
+import { RouterLink } from '@angular/router-deprecated';
 import { MainMenuComponent } from '../menu/menu.component';
 
 let tpl = require('./header.template.html');
@@ -20,17 +20,14 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
 
   private defaultThing:any;
   private headerService:any;
-  private headerServiceSibscribe:any;
-  private router:Router;
+  private headerServiceSubscribe:any;
 
-  public constructor(@Inject('HeaderService') headerService:any,
-                     @Inject(Router) router:Router) {
-    this.router = router;
+  public constructor(@Inject('HeaderService') headerService:any) {
     this.headerService = headerService;
   }
 
   public ngOnInit():void {
-    this.headerServiceSibscribe = this.headerService.getDefaultThing()
+    this.headerServiceSubscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
         if (res.err) {
           console.error(res.err);
@@ -41,12 +38,7 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
       });
   }
 
-  protected goToMatrixPage():void {
-    location.reload();
-    this.router.navigate(['Matrix']);
-  }
-
   public ngOnDestroy():void {
-    this.headerServiceSibscribe.unsubscribe();
+    this.headerServiceSubscribe.unsubscribe();
   }
 }

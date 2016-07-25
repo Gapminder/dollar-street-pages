@@ -30,10 +30,19 @@ export class ContenfulContent {
       .map((response:any) => response.items);
   }
 
-  public getPosts():Observable<any[]> {
-    return this.getLatestItems(
-      this.getRawNodePagesByParams(), 10000)
-      .map((response:any) => response.items);
+  public getPosts(cb: (value: any) => void): void {
+    this.getTagBySlug('dollarstreet').subscribe((tag: any) => {
+      return this.contentful
+        .create()
+        .searchEntries(ContentfulConfig.CONTENTFUL_NODE_PAGE_TYPE_ID, {
+          param: 'fields.tags.sys.id',
+          value: tag.items[0].sys.id
+        })
+        .include(3)
+        .commit()
+        .map((response: Response) => transformResponse<any>(response.json(), 2))
+        .subscribe(cb);
+    });
   }
 
   /**
@@ -77,5 +86,17 @@ export class ContenfulContent {
       .create()
       .searchEntries(
         ContentfulConfig.CONTENTFUL_NODE_PAGE_TYPE_ID, ...searchItems);
+  }
+
+  private getTagBySlug(slug: string): Observable<any> {
+    return this.contentful
+      .create()
+      .getEntryBySlug(
+        'tag',
+        slug
+      )
+      .include(2)
+      .commit()
+      .map((response: Response) => response.json());
   }
 }

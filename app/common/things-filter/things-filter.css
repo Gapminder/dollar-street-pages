@@ -79,17 +79,16 @@
 
 #things-filter .things-filter-container > div {
   float: left;
-  /*width: 100%;*/
   padding: 12px;
   height: 100%;
 }
 
-#things-filter .related-things-content {
-  width: 240px;
+#things-filter .things-filter-container .related-things-container {
+  width: 260px;
 }
 
 #things-filter .other-things-container {
-  width: 317px;
+  width: calc(100% - 260px);
 }
 
 #things-filter .thing-content {

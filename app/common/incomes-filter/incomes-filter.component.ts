@@ -77,12 +77,8 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   protected applyFilter(minIncome:any, maxIncome:any):void {
-    let poor:any = 0;
-    let rich:any = 15000;
-    if (this.streetData) {
-      poor = this.streetData.poor;
-      rich = this.streetData.rich;
-    }
+    let poor:any = this.streetData.poor;
+    let rich:any = this.streetData.rich;
 
     this.isOpenIncomesFilter = false;
     let query = this.parseUrl(this.url);
@@ -107,6 +103,9 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
       minIncome = poor;
       maxIncome = 100;
     }
+
+    minIncome = minIncome < poor ? poor : minIncome;
+    maxIncome = maxIncome > rich ? rich : maxIncome;
 
     query.lowIncome = minIncome;
     query.highIncome = maxIncome;

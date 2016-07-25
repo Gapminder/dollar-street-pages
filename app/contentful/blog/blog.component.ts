@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router-deprecated';
 import { HeaderWithoutSearchComponent } from '../../common/headerWithoutSearch/header.component';
 import { FooterComponent } from '../../common/footer/footer.component';
@@ -18,27 +18,21 @@ let style = require('./blog.css');
   pipes: [ToDatePipe]
 })
 
-export class BlogComponent implements OnInit, OnDestroy {
+export class BlogComponent implements OnInit {
   public title:string = 'Blog';
   public posts:any;
   public loader:boolean = false;
   private contentfulService:any;
-  private contentfulServiceSubscribe:any;
 
   public constructor(@Inject('ContenfulContent') contentfulService:any) {
     this.contentfulService = contentfulService;
   }
 
   public ngOnInit():void {
-    this.contentfulServiceSubscribe = this.contentfulService
-      .getPosts()
-      .subscribe((posts:any) => {
+    this.contentfulService
+      .getPosts((posts:any) => {
         this.posts = posts;
         this.loader = true;
       });
-  }
-
-  public ngOnDestroy():void {
-    this.contentfulServiceSubscribe.unsubscribe();
   }
 }

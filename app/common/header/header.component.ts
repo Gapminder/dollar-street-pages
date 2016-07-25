@@ -45,6 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   private defaultThing:any;
   private headerService:any;
   private router:Router;
+  private window:Window = window;
 
   private matrixComponent:boolean;
   private placeComponent:boolean;
@@ -139,7 +140,12 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   protected goToMatrixPage():void {
-    location.reload();
+    if (this.matrixComponent) {
+      this.window.location.href = this.window.location.origin;
+
+      return;
+    }
+
     this.router.navigate(['Matrix']);
   }
 
