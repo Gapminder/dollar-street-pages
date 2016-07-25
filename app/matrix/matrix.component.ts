@@ -90,6 +90,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (window.localStorage && window.localStorage.getItem('onboarded')) {
       this.showOnboarding = false;
       document.body.className = '';
+    } else {
+      document.body.className = 'onboarding';
     }
 
     this.matrixServiceOnboardingSubscribe = this.matrixService.getMatrixOnboardingTips()

@@ -32,8 +32,8 @@ describe('HeaderWithoutSearchComponent', () => {
   it('ngOnInit', () => {
     context.ngOnInit();
     expect(context.defaultThing).toEqual(res.data);
-    spyOn(context.headerServiceSibscribe, 'unsubscribe');
+    spyOn(context.headerServiceSubscribe, 'unsubscribe');
     context.ngOnDestroy();
-    expect(context.headerServiceSibscribe.unsubscribe).toHaveBeenCalled();
+    expect(context.headerServiceSubscribe.unsubscribe).toHaveBeenCalled();
   });
 });
