@@ -278,12 +278,16 @@ export class StreetDrawService {
     }).subscribe((e:MouseEvent)=> {
       e.preventDefault();
 
-      if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder && e.pageX >= 40) {
-        return this.drawLeftSlider(e.pageX - 40);
+      if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 5 && e.pageX >= 50) {
+        return this.drawLeftSlider(e.pageX - 45);
       }
 
-      if (this.sliderRightMove && e.pageX >= this.sliderLeftBorder && e.pageX <= this.width + 40) {
-        return this.drawRightSlider(e.pageX - 40);
+      if (this.sliderRightMove && e.pageX <= this.width + 60) {
+        if (this.sliderLeftBorder + 50 >= e.pageX) {
+          return this.drawRightSlider(this.sliderLeftBorder + 40);
+        } else {
+          return this.drawRightSlider(e.pageX - 56);
+        }
       }
     });
 
@@ -296,13 +300,12 @@ export class StreetDrawService {
         return this.sliderLeftMove || this.sliderRightMove;
       }).subscribe((e:TouchEvent)=> {
         let positionX = e.touches[0].pageX;
-
-        if (this.sliderLeftMove && positionX <= this.sliderRightBorder && positionX >= 40) {
-          return this.drawLeftSlider(positionX - 40);
+        if (this.sliderLeftMove && positionX <= this.sliderRightBorder && positionX >= 30) {
+          return this.drawLeftSlider(positionX - 30);
         }
 
-        if (this.sliderRightMove && positionX >= this.sliderLeftBorder && positionX <= this.width + 40) {
-          return this.drawRightSlider(positionX - 40);
+        if (this.sliderRightMove && positionX >= this.sliderLeftBorder && positionX <= this.width - 30) {
+          return this.drawRightSlider(positionX - 30);
         }
       });
 
@@ -408,7 +411,7 @@ export class StreetDrawService {
       this.leftScrollOpacityStreet = this.svg
         .append('rect')
         .attr('class', 'left-scroll-opacity-part')
-        .attr('x',-2)
+        .attr('x', -2)
         .attr('y', 0)
         .attr('height', 50)
         .style('fill', 'white')
@@ -623,13 +626,13 @@ export class StreetDrawService {
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#767d86');
     }
-    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 110) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 25 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 95) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 15 > xL )) {
+    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 55 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 55 > xL )) {
       this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#767d86');
     }
 
-    if (((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 15 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 134) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) > xL )) {
+    if (((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 65 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 65 > xL )) {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
