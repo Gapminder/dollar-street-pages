@@ -284,13 +284,11 @@ export class StreetDrawService {
 
       if (this.sliderRightMove && e.pageX <= this.width + 60) {
         if (this.sliderLeftBorder + 50 >= e.pageX) {
-          return this.drawRightSlider(this.sliderLeftBorder + 40)
+          return this.drawRightSlider(this.sliderLeftBorder + 40);
         } else {
           return this.drawRightSlider(e.pageX - 56);
         }
       }
-
-
     });
 
     if (this.touchMoveSubscriber) {
