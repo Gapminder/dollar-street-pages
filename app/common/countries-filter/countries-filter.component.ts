@@ -81,8 +81,9 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   protected selectRegions(location:any):void {
     let index = this.selectedRegions.indexOf(location.region);
     let getEmptyCountries = _.map(location.countries, 'empty');
+    let uniqEmptyCountries = _.uniq(getEmptyCountries);
 
-    if (_.uniq(getEmptyCountries).length === 1) {
+    if (uniqEmptyCountries.length === 1 && uniqEmptyCountries[0] === true) {
       return;
     }
 
