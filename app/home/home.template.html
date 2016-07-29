@@ -1,10 +1,10 @@
 <div class="pages-container" footerSpace>
   <div class="header-container">
-    <a [routerLink]="['Matrix']" class="logo pull-left">
+    <a [routerLink]="['/matrix']" [queryParams]="{}" class="logo pull-left">
       <img src="/assets/img/dollar-street.svg" alt="">
     </a>
 
-    <p class="heading pull-left" [routerLink]="['Matrix', urlParams]">
+    <p class="heading pull-left" [routerLink]="['/matrix']" [queryParams]="urlParams">
       <img src="/assets/img/back-icon.svg" alt="Back">
       {{titles?.thing}} in {{titles?.countries}}
     </p>

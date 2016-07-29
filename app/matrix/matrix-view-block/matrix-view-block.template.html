@@ -10,14 +10,17 @@
         <p class="pull-left">
           <span>$ {{math.round(place.income)}}</span>
           <span class="cursor-pointer"
-                [routerLink]="['Country', {id: familyData?.country?._id}]">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+                [routerLink]="['/country', familyData?.country?._id]"
+                [queryParams]="{}">{{familyData?.country?.alias || familyData?.country?.country}}</span>
         </p>
         <div class="pull-right">
           <img src="../../assets/img/close-button.svg" alt="" (click)="closeBlock()">
         </div>
       </div>
 
-      <div class="map-container" [routerLink]="['Country', {id: familyData?.country?._id}]">
+      <div class="map-container"
+           [routerLink]="['/country', familyData?.country?._id]"
+           [queryParams]="{}">
         <region-map [mapData]="mapData"></region-map>
       </div>
 
@@ -43,7 +46,9 @@
     <div class="image-footer-container">
       <div class="photographer-container">
         <p><img src="/assets/img/cc-icon-small.svg">
-          Photo by <a [routerLink]="['Photographer', {id: familyData.photographer?.id}]">
+          Photo by <a *ngIf="familyData?.photographer?.id"
+                      [routerLink]="['/photographer', familyData.photographer.id]"
+                      [queryParams]="{}">
             {{familyData.photographer?.name}}</a>
           <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> CC BY 4.0 How to credit</a>
         </p>
@@ -58,9 +63,10 @@
         </a>
       </div>
     </div>
-    <div class="description-footer-container">
-      <a [routerLink]="['Home', familyData.goToPlaceData]">Visit this home <img src="/assets/img/arrow-right-icon.svg"
-                                                                                alt=""></a>
+    <div class="description-footer-container" *ngIf="familyData.goToPlaceData">
+      <a [routerLink]="['/home']" [queryParams]="familyData.goToPlaceData">Visit this home <img
+        src="/assets/img/arrow-right-icon.svg"
+        alt=""></a>
     </div>
   </div>
 

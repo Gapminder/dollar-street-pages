@@ -9,10 +9,11 @@ import {
   OnChanges,
   EventEmitter
 } from '@angular/core';
-import { RouterLink, Router } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
+import { Subscriber } from 'rxjs/Rx';
 
 const _ = require('lodash');
 
@@ -23,7 +24,7 @@ let style = require('./street.css');
   selector: 'street',
   template: tpl,
   styles: [style],
-  directives: [RouterLink]
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
@@ -48,30 +49,29 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private streetSettingsService:any;
   private streetData:any;
   private element:HTMLElement;
-  private router:Router;
-  private StreetServiceSubscrib:any;
+  private activatedRoute:ActivatedRoute;
+  private StreetServiceSubscrib:Subscriber;
   private resize:any;
   private drawOnMap:boolean = false;
 
-  private placesSubscribe:any;
-  private hoverPlaceSubscribe:any;
-  private chosenPlacesSubscribe:any;
-  private mouseMoveSubscriber:any;
+  private placesSubscribe:Subscriber;
+  private hoverPlaceSubscribe:Subscriber;
+  private chosenPlacesSubscribe:Subscriber;
   private svg:SVGElement;
   private showSlider:boolean;
   private placesArr:any;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
-                     @Inject(Router) router:Router,
+                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
                      @Inject('Math') math:any,
                      @Inject('StreetSettingsService') streetSettingsService:any,
                      @Inject('StreetDrawService') streetDrawService:any) {
     this.element = element.nativeElement;
-    this.router = router;
+    this.activatedRoute = activatedRoute;
     this.math = math;
     this.street = streetDrawService;
     this.streetSettingsService = streetSettingsService;
-    this.showSlider = this.router.hostComponent.name === 'MatrixComponent';
+    this.showSlider = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
   public ngOnInit():any {
@@ -200,10 +200,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.chosenPlacesSubscribe) {
       this.chosenPlacesSubscribe.unsubscribe();
-    }
-
-    if (this.mouseMoveSubscriber) {
-      this.mouseMoveSubscriber.unsubscribe();
     }
 
     if (this.StreetServiceSubscrib) {

@@ -10,7 +10,7 @@ import {
   OnChanges,
   NgZone
 } from '@angular/core';
-import { Router } from '@angular/router-deprecated';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
@@ -160,7 +160,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   protected goToPlace(place:any):void {
     if (this.isDesktop) {
-      this.router.navigate(['Home', this.parseUrl(`place=${place._id}&` + this.query)]);
+      this.router.navigate(['/home'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
       return;
     }
 
@@ -169,7 +169,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.router.navigate(['Home', this.parseUrl(`place=${place._id}&` + this.query)]);
+    this.router.navigate(['/home'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
   }
 
   protected goToImageBlock(place:any, index:number):void {

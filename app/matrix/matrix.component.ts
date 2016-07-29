@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
-import { RouteParams } from '@angular/router-deprecated';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
+import { Subscriber } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
 import { FooterComponent } from '../common/footer/footer.component';
@@ -43,8 +44,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public isDraw:boolean = false;
   public lowIncome:number;
   public highIncome:number;
-  public matrixServiceSubscrib:any;
-  public matrixServiceOnboardingSubscribe:any;
+  public matrixServiceSubscrib:Subscriber;
+  public matrixServiceOnboardingSubscribe:Subscriber;
   public streetData:any;
 
   private placesArr:any[];
@@ -55,7 +56,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imageMargin:number;
   private visiblePlaces:number;
   private urlChangeService:any;
-  private routeParams:RouteParams;
+  private router:Router;
   private thing:string;
   private countries:string;
   private regions:string;
@@ -67,22 +68,37 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private clonePlaces:any[];
   private zone:NgZone;
   private windowHistory:any = history;
-  private matrixServiceStreetSubscrib:any;
+  private matrixServiceStreetSubscrib:Subscriber;
   private streetPlacesData:any;
+  private queryParamsSubscribe:any;
 
   public constructor(@Inject('MatrixService') matrixService:any,
                      @Inject(ElementRef) element:ElementRef,
                      @Inject('UrlChangeService') urlChangeService:any,
-                     @Inject(RouteParams) routeParams:RouteParams,
+                     @Inject(Router) router:Router,
                      @Inject(NgZone) zone:NgZone) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
-    this.routeParams = routeParams;
+    this.router = router;
     this.urlChangeService = urlChangeService;
     this.zone = zone;
   }
 
   public ngOnInit():void {
+    this.queryParamsSubscribe = this.router
+      .routerState
+      .queryParams
+      .subscribe((params:any) => {
+        this.thing = params.thing;
+        this.countries = params.countries ? decodeURI(params.countries) : 'World';
+        this.regions = params.regions ? decodeURI(params.regions) : 'World';
+        this.zoom = parseInt(params.zoom, 10);
+        this.lowIncome = parseInt(params.lowIncome, 10);
+        this.highIncome = parseInt(params.highIncome, 10);
+        this.activeHouse = parseInt(params.activeHouse, 10);
+        this.row = parseInt(params.row, 10) || 1;
+      });
+
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
@@ -114,14 +130,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.streetData = val.data;
-
-        this.thing = this.routeParams.get('thing');
-        this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
-        this.regions = this.routeParams.get('regions');
-        this.zoom = parseInt(this.routeParams.get('zoom'), 10);
-        this.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10) || val.data.poor;
-        this.highIncome = parseInt(this.routeParams.get('highIncome'), 10) || val.data.rich;
-        this.activeHouse = parseInt(this.routeParams.get('activeHouse'), 10);
+        this.lowIncome = this.lowIncome ? this.lowIncome : this.streetData.poor;
+        this.highIncome = this.highIncome ? this.highIncome : this.streetData.rich;
 
         if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
           this.zoom = 4;
@@ -132,9 +142,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.zoom = 3;
         }
 
-        let getRow = parseInt(this.routeParams.get('row'), 10) || 1;
-
-        this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : getRow;
+        this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
 
         this.thing = this.thing ? this.thing : 'Home';
         this.zoom = this.zoom ? this.zoom : 4;
@@ -169,6 +177,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib.unsubscribe();
     this.matrixServiceOnboardingSubscribe.unsubscribe();
     this.matrixServiceStreetSubscrib.unsubscribe();
+    this.queryParamsSubscribe.unsubscribe();
   }
 
   public ngAfterViewChecked():void {
@@ -181,8 +190,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.footerHeight === footer.offsetHeight &&
       this.imageHeight === imgContent.offsetHeight || !this.element.querySelector('.image-content')) {
+
       return;
     }
+
     this.imageHeight = imgContent.offsetHeight;
     this.footerHeight = footer.offsetHeight;
     this.getPaddings();
@@ -467,10 +478,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     document.body.className = '';
 
-    setTimeout(function ():void {
+    setTimeout(():void => {
       matrixImages.style.paddingTop = `${header.offsetHeight}px`;
       zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
     }, 0);
+
     this.showOnboarding = false;
   }
 }

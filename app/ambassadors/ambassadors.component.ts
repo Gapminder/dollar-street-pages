@@ -16,9 +16,5 @@ let style = require('./ambassadors.css');
 })
 
 export class AmbassadorsComponent {
-  private title:string;
-
-  public constructor() {
-    this.title = 'Ambassadors';
-  }
+  protected title:string = 'Ambassadors';
 }

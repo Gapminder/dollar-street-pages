@@ -7,6 +7,7 @@ export class PhotographersFilter implements PipeTransform {
   public transform(...args:any[]):any[] {
     let [value, text, countries, nested] = args;
     let photographersArr = [];
+
     countries = JSON.parse(JSON.stringify(countries));
 
     if (!text) {

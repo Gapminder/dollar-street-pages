@@ -10,6 +10,7 @@ import {
   AfterViewChecked
 } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber } from 'rxjs/Rx';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { HomeMediaViewBlockComponent } from './home-media-view-block/home-media-view-block.component';
 
@@ -42,7 +43,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private prevImageId:string;
   private homeMediaService:any;
   private images:any = [];
-  private familyPlaceServiceSubscribe:any;
+  private familyPlaceServiceSubscribe:Subscriber;
   private resizeSubscribe:any;
   private zone:NgZone;
   private imageHeight:number;

@@ -62,10 +62,12 @@ export class StreetDrawService {
     this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
+
     this.scale = d3
       .scale.log()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
       .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
+
     return this;
   }
 

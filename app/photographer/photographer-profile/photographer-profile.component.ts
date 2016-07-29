@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Inject, Output, EventEmitter } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./photographer-profile.template.html');
 let style = require('./photographer-profile.css');
@@ -7,8 +7,7 @@ let style = require('./photographer-profile.css');
 @Component({
   selector: 'photographer-profile',
   template: tpl,
-  styles: [style],
-  directives: [RouterLink]
+  styles: [style]
 })
 
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
@@ -22,7 +21,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   private photographer:{firstName?:string, lastName?:string} = {};
   private photographerProfileService:any;
-  private photographerProfileServiceSubscribe:any;
+  private photographerProfileServiceSubscribe:Subscriber;
 
   public constructor(@Inject('PhotographerProfileService') photographerProfileService:any,
                      @Inject('Math') math:any) {

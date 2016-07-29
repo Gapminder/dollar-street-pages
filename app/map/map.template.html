@@ -59,7 +59,8 @@
           <ul class="countries">
             <li *ngFor="let country of list.countries">
             <span class="country-name"
-                  [routerLink]="['Country', {id: country._id}]">{{country.name}}</span>
+                  [routerLink]="['/country', country._id]"
+                  [queryParams]="{}">{{country.name}}</span>
             </li>
           </ul>
         </div>
@@ -76,7 +77,8 @@
       <div class="info-box-container">
         <div class="info-box"
              *ngFor="let place of lefSideCountries"
-             [routerLink]="['Home', {place: place._id}]">
+             [routerLink]="['/home']"
+             [queryParams]="{place: place._id}">
           <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
 
           <div class="hover_portrait_description">

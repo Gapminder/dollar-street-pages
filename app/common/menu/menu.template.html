@@ -8,22 +8,27 @@
     <div class="dropdown-menu">
       <ul class="header-menu-list">
         <li>
-          <a (click)="goToMatrixPage()">First page</a>
+          <a (click)="goToMatrixPage()">Home</a>
         </li>
         <li>
-          <a [routerLink]="['Photographers']">Photographers</a>
+          <a [routerLink]="['/photographers']"
+             [queryParams]="{}">Photographers</a>
         </li>
         <li>
-          <a [routerLink]="['Map']">Map</a>
+          <a [routerLink]="['/map']"
+             [queryParams]="{}">Map</a>
         </li>
         <li>
-          <a [routerLink]="['Info']">Info</a>
+          <a [routerLink]="['/info']"
+             [queryParams]="{}">About</a>
         </li>
         <li>
-          <a [routerLink]="['Blog']">Blog</a>
+          <a [routerLink]="['/blog']"
+             [queryParams]="{}">Blog</a>
         </li>
         <li>
-          <a [routerLink]="['Ambassadors']">Ambassadors</a>
+          <a [routerLink]="['/ambassadors']"
+             [queryParams]="{}">Ambassadors</a>
         </li>
         <li>
           <a (click)="switchOnOnboardingFromMenu()">Welcome wizard</a>

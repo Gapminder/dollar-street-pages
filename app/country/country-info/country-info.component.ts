@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import { PlaceMapComponent } from '../../common/place-map/place-map.component';
 import { Subject } from 'rxjs/Subject';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./country-info.template.html');
 let style = require('./country-info.css');
@@ -10,7 +11,7 @@ let style = require('./country-info.css');
   selector: 'country-info',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, PlaceMapComponent]
+  directives: [ROUTER_DIRECTIVES, PlaceMapComponent]
 })
 
 export class CountryInfoComponent implements OnInit, OnDestroy {
@@ -21,7 +22,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private country:any;
   private countryInfoService:any;
   private thing:any;
-  private countryInfoServiceSubscribe:any;
+  private countryInfoServiceSubscribe:Subscriber;
   private placesQantity:any;
   private photosQantity:any;
   private videosQantity:any;
@@ -44,8 +45,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         }
 
         this.country = res.data.country;
-        let country = this.country.alias || this.country.country;
-        this.getCountry.emit(country);
+        this.getCountry.emit(this.country.alias || this.country.country);
         this.hoverPlace.next(res.data.country);
         this.thing = res.data.thing;
         this.placesQantity = res.data.places;

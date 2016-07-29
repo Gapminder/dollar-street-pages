@@ -1,0 +1,12 @@
+{
+  "NODE_PAGE_TYPE_ID": "article",
+  "TAG_TYPE_ID": "tag",
+  "VIDEO_TYPE_ID": "video",
+  "HTML_TYPE_ID": "html",
+  "EMBEDDED_TYPE_ID": "embedded",
+  "PROFILE_TYPE_ID": "profile",
+  "CONTRIBUTION_TYPE_ID": "contribution",
+  "HEADER_TYPE_ID": "header",
+  "FOOTER_TYPE_ID": "footer",
+  "VIZABI_TYPE_ID": "vizabi"
+}

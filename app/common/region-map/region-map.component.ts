@@ -11,10 +11,11 @@ let style = require('./region-map.css');
 })
 
 export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
+  protected markerPosition:any = {};
+
   @Input('mapData')
   private mapData:any;
 
-  private markerPosition:any = {};
   private mapImage:any;
   private element:ElementRef;
   private zone:NgZone;
