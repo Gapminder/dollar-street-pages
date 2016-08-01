@@ -40,6 +40,12 @@ body {
   color: #374551;
 }
 
+body.draggingSliders #chart * {
+  cursor: -webkit-grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: grabbing !important;
+}
+
 a:focus,
 input:focus {
   outline: 0;

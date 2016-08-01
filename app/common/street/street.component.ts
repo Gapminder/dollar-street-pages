@@ -40,8 +40,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private chosenPlaces:Observable<any>;
   @Input('hoverPlace')
   private hoverPlace:Subject<any>;
-  @Input('controllSlider')
-  private controllSlider:Subject<any>;
   @Output('filterStreet')
   private filterStreet:EventEmitter<any> = new EventEmitter<any>();
 
@@ -80,18 +78,13 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
         if (!chosenPlaces.length) {
+          this.street.set('chosenPlaces', []);
           this.street.clearAndRedraw(chosenPlaces);
+
           return;
         }
 
         this.street.set('chosenPlaces', chosenPlaces);
-
-        if (this.controllSlider) {
-          this.street.clearAndRedraw(chosenPlaces, true);
-
-          return;
-        }
-
         this.street.clearAndRedraw(chosenPlaces);
       });
 
@@ -163,6 +156,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
       this.filterStreet.emit({url: this.objToQuery(query)});
     });
+
     this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
     this.resize = fromEvent(window, 'resize')
