@@ -74,10 +74,24 @@ place-map[hidden] {
   margin: 0 10px 0 5px !important;
 }
 
+.filters-container .some-filter-container .income-title-mobile {
+  display: none;
+}
+
 .place-title p {
   line-height: 26px;
   font-size: 26px;
   margin: 7px 0 0;
+}
+
+@media (max-width: 1230px) {
+  .filters-container .some-filter-container .income-title-mobile {
+    display: inline-block
+  }
+
+  .filters-container .some-filter-container .income-title-desktop {
+    display: none;
+  }
 }
 
 @media (max-width: 1023px) {
