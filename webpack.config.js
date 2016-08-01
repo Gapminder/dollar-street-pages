@@ -89,9 +89,7 @@ const config = {
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: helpers.reverse(['polyfills', 'vendor'])
-    }),
+    new webpack.optimize.CommonsChunkPlugin({name: helpers.reverse(['polyfills', 'vendor'])}),
     // static assets
     //new CopyWebpackPlugin([{from: 'demo/favicon.ico', to: 'favicon.ico'}]),
     new CopyWebpackPlugin([{from: 'app/assets', to: 'assets'}]),
