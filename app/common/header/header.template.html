@@ -10,9 +10,8 @@
       <span>in</span>
       <countries-filter [url]="query"
                         (selectedFilter)="urlTransfer($event)"></countries-filter>
-      <span>by</span>
-      <incomes-filter [url]="query"
-                      (selectedFilter)="urlTransfer($event)"></incomes-filter>
+      <span class="income-title-desktop">by income</span>
+      <span class="income-title-mobile">by $</span>
     </div>
   </div>
 

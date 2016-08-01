@@ -5,7 +5,6 @@ import { Subscriber } from 'rxjs/Rx';
 import { MainMenuComponent } from '../menu/menu.component';
 import { PlaceMapComponent } from '../place-map/place-map.component';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
-import { IncomesFilterComponent } from '../incomes-filter/incomes-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
 let device:{desktop:Function} = require('device.js')();
@@ -20,7 +19,6 @@ let style = require('./header.css');
   directives: [
     ROUTER_DIRECTIVES,
     ThingsFilterComponent,
-    IncomesFilterComponent,
     CountriesFilterComponent,
     MainMenuComponent,
     PlaceMapComponent
