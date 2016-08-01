@@ -399,8 +399,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (querySelector === '.income-title-desktop') {
       top = box.top - clientTop - 14;
-      left = box.left + scrollLeft - clientLeft;
-
     }
 
     if (querySelector === '.images-container') {
