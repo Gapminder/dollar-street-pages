@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { RouteParams } from '@angular/router-deprecated';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { CountryInfoComponent } from './country-info/country-info.component';
 import { CountryPlacesComponent } from './country-places/country-places.component.ts';
@@ -22,17 +22,27 @@ let style = require('./country.css');
   ]
 })
 
-export class CountryComponent implements OnInit {
+export class CountryComponent implements OnInit, OnDestroy {
   protected title:string;
   protected math:any;
-  private routeParams:RouteParams;
-  private countryId:string;
-  public constructor(@Inject(RouteParams) routeParams:RouteParams,@Inject('Math') math:any) {
-    this.routeParams = routeParams;
+  protected countryId:string;
+  private activatedRoute:ActivatedRoute;
+  private queryParamsSubscribe:any;
+
+  public constructor(@Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
+                     @Inject('Math') math:any) {
+    this.activatedRoute = activatedRoute;
     this.math = math;
   }
 
   public ngOnInit():void {
-    this.countryId = this.routeParams.get('id');
+    this.queryParamsSubscribe = this.activatedRoute.params
+      .subscribe((params:any) => {
+        this.countryId = params.id;
+      });
+  }
+
+  public ngOnDestroy():void {
+    this.queryParamsSubscribe.unsubscribe();
   }
 }

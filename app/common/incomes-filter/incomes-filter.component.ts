@@ -10,6 +10,7 @@ import {
   ElementRef,
   HostListener
 } from '@angular/core';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./incomes-filter.template.html');
 let style = require('./incomes-filter.css');
@@ -32,7 +33,7 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
   private cloneRange:{min:number; max:number;} = {min: 0, max: 0};
   private streetSettingsService:any;
   private streetData:any;
-  private streetServiceSubscribe:any;
+  private streetServiceSubscribe:Subscriber;
   private element:ElementRef;
 
   public constructor(@Inject('StreetSettingsService') streetSettingsService:any,
@@ -177,4 +178,3 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
     return income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   };
 }
-

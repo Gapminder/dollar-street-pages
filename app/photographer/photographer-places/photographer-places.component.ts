@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import { LoaderComponent } from '../../common/loader/loader.component';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./photographer-places.template.html');
 let style = require('./photographer-places.css');
@@ -9,12 +10,12 @@ let style = require('./photographer-places.css');
   selector: 'photographer-places',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, LoaderComponent]
+  directives: [ROUTER_DIRECTIVES, LoaderComponent]
 })
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   public loader:boolean = false;
-  public photographerPlacesServiceSubscribe:any;
+  public photographerPlacesServiceSubscribe:Subscriber;
   public math:any;
 
   @Input()

@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, Inject, ElementRef } from '@angular/core';
-import { RouterLink, Router } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./menu.template.html');
 let style = require('./menu.css');
@@ -10,24 +11,27 @@ let style = require('./menu.css');
   selector: 'main-menu',
   template: tpl,
   styles: [style],
-  directives: [SocialShareButtonsComponent, RouterLink]
+  directives: [SocialShareButtonsComponent, ROUTER_DIRECTIVES]
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
   protected isOpenMenu:boolean = false;
   @Input()
   private hoverPlace:Observable<any>;
-  private hoverPlaceSubscribe:any;
+  private hoverPlaceSubscribe:Subscriber;
   private element:ElementRef;
   private router:Router;
+  private activatedRoute:ActivatedRoute;
   private isMatrixComponent:boolean;
   private window:Window = window;
 
   public constructor(@Inject(Router) router:Router,
+                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
                      @Inject(ElementRef) element:ElementRef) {
     this.element = element;
     this.router = router;
-    this.isMatrixComponent = this.router.hostComponent.name === 'MatrixComponent';
+    this.activatedRoute = activatedRoute;
+    this.isMatrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
   public ngOnInit():void {
@@ -51,7 +55,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.router.navigate(['Matrix']);
+    this.router.navigate(['/matrix'], {queryParams: {}});
   }
 
   protected switchOnOnboardingFromMenu():void {
@@ -63,9 +67,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(1111111);
-
-    this.router.navigate(['Matrix']);
+    this.router.navigate(['/matrix'], {queryParams: {}});
   }
 
   @HostListener('document:click', ['$event'])

@@ -1,5 +1,5 @@
 import { Component, Input, Inject, Output, OnChanges, NgZone, EventEmitter } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 let tpl = require('./home-media-view-block.template.html');
 let style = require('./home-media-view-block.css');
@@ -8,7 +8,7 @@ let style = require('./home-media-view-block.css');
   selector: 'home-media-view-block',
   template: tpl,
   styles: [style],
-  directives: [RouterLink]
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class HomeMediaViewBlockComponent implements OnChanges {
@@ -68,4 +68,3 @@ export class HomeMediaViewBlockComponent implements OnChanges {
     this.closeBigImageBlock.emit({});
   }
 }
-

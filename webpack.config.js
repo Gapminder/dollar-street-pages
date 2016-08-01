@@ -2,6 +2,7 @@
 'use strict';
 const helpers = require('./helpers');
 
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -12,6 +13,10 @@ const isProduction = (process.env.NODE_ENV || 'development') === 'production';
 // const devtool = isProduction ? 'inline-source-map' : 'source-map';
 const dest = 'dist';
 const absDest = root(dest);
+
+const contentfulDevConfig = JSON.parse(
+  fs.readFileSync('./contentful-dev.json') // eslint-disable-line no-sync
+);
 
 const config = {
   debug: false,
@@ -94,6 +99,14 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       chunksSortMode: helpers.packageSort(['polyfills', 'vendor', 'app'])
+    }),
+    new webpack.DefinePlugin({
+      CONTENTFUL_ACCESS_TOKEN:
+      JSON.stringify(process.env.CONTENTFUL_ACCESS_TOKEN) || JSON.stringify(contentfulDevConfig.accessToken),
+      CONTENTFUL_SPACE_ID:
+      JSON.stringify(process.env.CONTENTFUL_SPACE_ID) || JSON.stringify(contentfulDevConfig.spaceId),
+      CONTENTFUL_HOST:
+      JSON.stringify(process.env.CONTENTFUL_HOST) || JSON.stringify(contentfulDevConfig.host)
     })
   ]
 };

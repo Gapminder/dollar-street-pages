@@ -1,5 +1,6 @@
 import { Component, Inject, Input, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Subscriber } from 'rxjs/Rx';
 import { MainMenuComponent } from '../menu/menu.component';
 
 let tpl = require('./header.template.html');
@@ -9,7 +10,7 @@ let style = require('./header.css');
   selector: 'header',
   template: tpl,
   styles: [style],
-  directives: [MainMenuComponent, RouterLink]
+  directives: [MainMenuComponent, ROUTER_DIRECTIVES]
 })
 
 export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
@@ -20,7 +21,7 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
 
   private defaultThing:any;
   private headerService:any;
-  private headerServiceSubscribe:any;
+  private headerServiceSubscribe:Subscriber;
 
   public constructor(@Inject('HeaderService') headerService:any) {
     this.headerService = headerService;

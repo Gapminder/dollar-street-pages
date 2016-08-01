@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, OnDestroy, Input, NgZone, ElementRef } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber } from 'rxjs/Rx';
 import { PlaceMapComponent } from '../../common/place-map/place-map.component';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
 
@@ -11,7 +12,7 @@ let style = require('./home-header.css');
   selector: 'home-header',
   template: tpl,
   styles: [style],
-  directives: [PlaceMapComponent, RegionMapComponent, RouterLink]
+  directives: [PlaceMapComponent, RegionMapComponent, ROUTER_DIRECTIVES]
 })
 
 export class HomeHeaderComponent implements OnInit, OnDestroy {
@@ -29,7 +30,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   @Input('placeId')
   private placeId:string;
   private homeHeaderService:any;
-  private homeHeaderServiceSubscribe:any;
+  private homeHeaderServiceSubscribe:Subscriber;
   private scrollSubscribe:any;
   private resizeSubscribe:any;
   private zone:NgZone;

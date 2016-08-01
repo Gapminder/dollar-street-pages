@@ -9,7 +9,8 @@ import {
   ElementRef,
   HostListener
 } from '@angular/core';
-import { RouterLink, Router } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Subscriber } from 'rxjs/Rx';
 import { ThingsFilterPipe } from './things-filter.pipe';
 
 let tpl = require('./things-filter.template.html');
@@ -19,7 +20,7 @@ let style = require('./things-filter.css');
   selector: 'things-filter',
   template: tpl,
   styles: [style],
-  directives: [RouterLink],
+  directives: [ROUTER_DIRECTIVES],
   pipes: [ThingsFilterPipe]
 })
 
@@ -29,23 +30,21 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected activeThing:any = {};
   protected search:{text:string;} = {text: ''};
   protected isOpenThingsFilter:boolean = false;
-  protected placeComponent:boolean;
   @Input()
   private url:string;
   @Output()
   private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
   private thingsFilterService:any;
-  private thingsFilterServiceSubscribe:any;
-  private router:Router;
+  private thingsFilterServiceSubscribe:Subscriber;
+  private activatedRoute:ActivatedRoute;
   private element:ElementRef;
 
-  public constructor(@Inject(Router) router:Router,
+  public constructor(@Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
                      @Inject(ElementRef) element:ElementRef,
                      @Inject('ThingsFilterService') thingsFilterService:any) {
     this.thingsFilterService = thingsFilterService;
-    this.router = router;
+    this.activatedRoute = activatedRoute;
     this.element = element;
-    this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
   }
 
   @HostListener('document:click', ['$event'])
@@ -81,7 +80,6 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     if (changes.url && changes.url.currentValue) {
       if (this.thingsFilterServiceSubscribe) {
         this.thingsFilterServiceSubscribe.unsubscribe();
-        this.thingsFilterServiceSubscribe = void 0;
       }
 
       this.thingsFilterServiceSubscribe = this

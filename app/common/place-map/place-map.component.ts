@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Inject, ElementRef, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./place-map.template.html');
 let style = require('./place-map.css');
@@ -12,16 +13,16 @@ let style = require('./place-map.css');
 })
 
 export class PlaceMapComponent implements OnInit,OnDestroy {
+  protected region:string;
+  protected markerPosition:any = {};
+
   @Input()
   private hoverPlace:Observable<any>;
-
-  private region:string;
-  private markerPosition:any = {};
   private mapImage:any;
   private element:ElementRef;
   private zone:NgZone;
   private place:any;
-  private hoverPlaceSubscribe:any;
+  private hoverPlaceSubscribe:Subscriber;
   private resizeSubscriber:any;
 
   public constructor(@Inject(ElementRef) element:ElementRef,

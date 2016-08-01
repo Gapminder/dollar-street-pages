@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { RouteParams } from '@angular/router-deprecated';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { PhotographerProfileComponent } from './photographer-profile/photographer-profile.component';
 import { PhotographerPlacesComponent } from './photographer-places/photographer-places.component';
@@ -13,18 +13,33 @@ let style = require('./photographer.css');
   selector: 'photographer',
   template: tpl,
   styles: [style],
-  directives: [HeaderWithoutSearchComponent, PhotographerProfileComponent, PhotographerPlacesComponent, FooterComponent, FooterSpaceDirective]
+  directives: [
+    HeaderWithoutSearchComponent,
+    PhotographerProfileComponent,
+    PhotographerPlacesComponent,
+    FooterComponent,
+    FooterSpaceDirective
+  ]
 })
 
-export class PhotographerComponent implements OnInit {
-  private routeParams:RouteParams;
-  private photographerId:string;
+export class PhotographerComponent implements OnInit, OnDestroy {
+  protected photographerId:string;
 
-  public constructor(@Inject(RouteParams) routeParams:RouteParams) {
-    this.routeParams = routeParams;
+  private activatedRoute:ActivatedRoute;
+  private queryParamsSubscribe:any;
+
+  public constructor(@Inject(ActivatedRoute) activatedRoute:ActivatedRoute) {
+    this.activatedRoute = activatedRoute;
   }
 
   public ngOnInit():void {
-    this.photographerId = this.routeParams.get('id');
+    this.queryParamsSubscribe = this.activatedRoute.params
+      .subscribe((params:any) => {
+        this.photographerId = params.id;
+      });
+  }
+
+  public ngOnDestroy():void {
+    this.queryParamsSubscribe.unsubscribe();
   }
 }

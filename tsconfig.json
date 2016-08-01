@@ -12,8 +12,7 @@
   },
   "exclude": [
     "node_modules",
-    "./app/main",
-    "./app/sitemap"
+    "./app/first"
   ],
   "files": [
     "./typings/index.d.ts",
@@ -30,9 +29,6 @@
     "./app/common/header/header.component.ts",
     "./app/common/headerWithoutSearch/header.component.ts",
     "./app/common/menu/menu.component.ts",
-    "./app/common/search/search.component.ts",
-    "./app/common/search/search.service.ts",
-    "./app/common/search/thing-filter.pipe.ts",
     "./app/common/loader/loader.component.ts",
     "./app/common/row-loader/row-loader.component.ts",
     "./app/common/place-map/place-map.component.ts",

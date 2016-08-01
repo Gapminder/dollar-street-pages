@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone, Inject } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./ambassadors-list.template.html');
 let style = require('./ambassadors-list.css');
@@ -12,14 +13,15 @@ let style = require('./ambassadors-list.css');
 
 export class AmbassadorsListComponent implements OnInit, OnDestroy {
   private ambassadorsListService:any;
-  private ambassadorsListSubscribe:any;
+  private ambassadorsListSubscribe:Subscriber;
   private ambassadorsList:any;
   private showedBlock:number;
   private resizeSubscribe:any;
   private zone:NgZone;
   private columnsRow:number = 6;
 
-  public constructor(@Inject('AmbassadorsListService') ambassadorsListService:any, @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject('AmbassadorsListService') ambassadorsListService:any,
+                     @Inject(NgZone) zone:NgZone) {
     this.ambassadorsListService = ambassadorsListService;
     this.zone = zone;
   }

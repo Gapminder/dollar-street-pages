@@ -1,7 +1,8 @@
 import { Component, Input, Output, OnInit, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
-import { RouterLink, Router } from '@angular/router-deprecated';
-import { RegionMapComponent } from '../../common/region-map/region-map.component';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber } from 'rxjs/Rx';
+import { RegionMapComponent } from '../../common/region-map/region-map.component';
 
 let tpl = require('./matrix-view-block.template.html');
 let style = require('./matrix-view-block.css');
@@ -10,11 +11,11 @@ let style = require('./matrix-view-block.css');
   selector: 'matrix-view-block',
   template: tpl,
   styles: [style],
-  directives: [RegionMapComponent, RouterLink]
+  directives: [RegionMapComponent, ROUTER_DIRECTIVES]
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  public familyInfoServiceSubscribe:any;
+  public familyInfoServiceSubscribe:Subscriber;
   public fancyBoxImage:any;
 
   protected showblock:boolean;
@@ -31,8 +32,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private popIsOpen:boolean;
   private mapData:any;
   private familyInfoService:any;
-  private router:Router;
   private zone:NgZone;
+  private router:Router;
 
   @Input('query')
   private query:any;
@@ -44,12 +45,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private closeBigImageBlock:EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(@Inject('FamilyInfoService') familyInfoService:any,
-                     @Inject(Router) router:Router,
                      @Inject('Math') math:any,
-                     @Inject(NgZone) zone:NgZone) {
+                     @Inject(NgZone) zone:NgZone,
+                     @Inject(Router) router:Router) {
     this.familyInfoService = familyInfoService;
-    this.router = router;
     this.zone = zone;
+    this.router = router;
     this.math = math;
   }
 
@@ -102,6 +103,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   public ngOnDestroy():void {
     this.resizeSubscribe.unsubscribe();
+
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
     }

@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouteParams, RouterLink } from '@angular/router-deprecated';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from '../common/footer/footer.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { MainMenuComponent } from '../common/menu/menu.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { HomeMediaComponent } from './home-media/home-media.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
+import { Subscriber } from 'rxjs/Rx';
 
 let _ = require('lodash');
 
@@ -31,7 +32,7 @@ interface UrlParamsInterface {
     HomeMediaComponent,
     FooterComponent,
     LoaderComponent,
-    RouterLink,
+    ROUTER_DIRECTIVES,
     MainMenuComponent,
     FooterSpaceDirective
   ]
@@ -42,27 +43,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   protected titles:any = {};
 
   private placeId:string;
-  private routeParams:RouteParams;
   private urlParams:UrlParamsInterface;
   private homeIncomeFilterService:any;
-  private homeIncomeFilterServiceSubscribe:any;
+  private homeIncomeFilterServiceSubscribe:Subscriber;
   private homeIncomeData:any;
   private rich:any;
   private poor:any;
   private router:Router;
   private countriesFilterService:any;
-  private countriesFilterServiceSubscribe:any;
+  private countriesFilterServiceSubscribe:Subscriber;
   private locations:any[];
   private activeImageIndex:number;
   private urlChangeService:any;
   private windowHistory:any = history;
+  private queryParamsSubscribe:any;
 
-  public constructor(@Inject(RouteParams) routeParams:RouteParams,
-                     @Inject('CountriesFilterService') countriesFilterService:any,
+  public constructor(@Inject('CountriesFilterService') countriesFilterService:any,
                      @Inject('HomeIncomeFilterService') homeIncomeFilterService:any,
                      @Inject('UrlChangeService') urlChangeService:any,
                      @Inject(Router) router:Router) {
-    this.routeParams = routeParams;
     this.router = router;
     this.homeIncomeFilterService = homeIncomeFilterService;
     this.countriesFilterService = countriesFilterService;
@@ -70,22 +69,27 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit():void {
-    this.placeId = this.routeParams.get('place');
-    this.activeImageIndex = parseInt(this.routeParams.get('activeImage'), 10);
+    this.queryParamsSubscribe = this.router
+      .routerState
+      .queryParams
+      .subscribe((params:any) => {
+        this.placeId = params.place;
+        this.activeImageIndex = parseInt(params.activeImage, 10);
+
+        this.urlParams = {
+          thing: params.thing ? decodeURI(params.thing) : 'Home',
+          countries: params.countries ? decodeURI(params.countries) : 'World',
+          regions: params.regions ? decodeURI(params.regions) : 'World',
+          zoom: parseInt(params.zoom, 10) || 4,
+          row: parseInt(params.row, 10) || 1,
+          lowIncome: parseInt(params.lowIncome, 10),
+          highIncome: parseInt(params.highIncome, 10)
+        };
+      });
 
     if (!isNaN(this.activeImageIndex) && 'scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
-
-    this.urlParams = {
-      thing: this.routeParams.get('thing') ? decodeURI(this.routeParams.get('thing')) : 'Home',
-      countries: this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World',
-      regions: this.routeParams.get('regions') ? decodeURI(this.routeParams.get('regions')) : 'World',
-      zoom: parseInt(this.routeParams.get('zoom'), 10) || 4,
-      row: parseInt(this.routeParams.get('row'), 10) || 1,
-      lowIncome:  parseInt(this.routeParams.get('lowIncome'), 10) || 0,
-      highIncome:  parseInt(this.routeParams.get('highIncome'), 10) || 15000
-    };
 
     this.homeIncomeFilterServiceSubscribe = this.homeIncomeFilterService.getData()
       .subscribe((val:any) => {
@@ -125,6 +129,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy():void {
+    this.queryParamsSubscribe.unsubscribe();
     this.countriesFilterServiceSubscribe.unsubscribe();
     this.homeIncomeFilterServiceSubscribe.unsubscribe();
 
@@ -155,11 +160,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initData():void {
-    this.urlParams.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10) || this.poor;
-    this.urlParams.highIncome = parseInt(this.routeParams.get('highIncome'), 10) || this.rich;
+    this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
+    this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
 
     if (!this.placeId) {
-      this.router.navigate(['Matrix', {
+      this.router.navigate(['/matrix', {
         thing: 'Home',
         countries: 'World',
         regions: 'World',

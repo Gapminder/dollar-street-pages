@@ -1,6 +1,7 @@
 import { Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
-import { RouterLink, Router } from '@angular/router-deprecated';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Rx';
 import { MainMenuComponent } from '../menu/menu.component';
 import { PlaceMapComponent } from '../place-map/place-map.component';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
@@ -17,12 +18,12 @@ let style = require('./header.css');
   template: tpl,
   styles: [style],
   directives: [
+    ROUTER_DIRECTIVES,
     ThingsFilterComponent,
     IncomesFilterComponent,
     CountriesFilterComponent,
     MainMenuComponent,
-    PlaceMapComponent,
-    RouterLink
+    PlaceMapComponent
   ]
 })
 
@@ -45,24 +46,23 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   private defaultThing:any;
   private headerService:any;
   private router:Router;
+  private activatedRoute:ActivatedRoute;
   private window:Window = window;
 
   private matrixComponent:boolean;
-  private placeComponent:boolean;
-  private mapComponent:boolean;
-  private headerServiceSubscribe:any;
-  private headerTitleServiceSubscribe:any;
+  private headerServiceSubscribe:Subscriber;
+  private headerTitleServiceSubscribe:Subscriber;
 
   public constructor(@Inject('HeaderService') headerService:any,
                      @Inject(Router) router:Router,
+                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
                      @Inject('Math') math:any) {
     this.headerService = headerService;
     this.router = router;
+    this.activatedRoute = activatedRoute;
     this.math = math;
 
-    this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
-    this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
-    this.mapComponent = this.router.hostComponent.name === 'MapComponent';
+    this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
   public ngOnInit():void {
@@ -75,25 +75,10 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
         this.defaultThing = res.data;
       });
-
-    if (this.placeComponent) {
-      this.headerTitleServiceSubscribe = this
-        .headerService
-        .getPlaceHeader(this.query)
-        .subscribe((res:any) => {
-          if (res.err) {
-            console.error(res.err);
-            return;
-          }
-
-          this.header = res.data;
-        });
-    }
   }
 
   public ngOnChanges(changes:any):void {
     if (
-      this.placeComponent &&
       changes.query &&
       typeof changes.query.previousValue === 'string' &&
       typeof changes.query.currentValue === 'string'
@@ -146,7 +131,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.router.navigate(['Matrix']);
+    this.router.navigate(['/matrix'], {queryParams: {}});
   }
 
   private parseUrl(url:string):any {

@@ -10,6 +10,9 @@ let style = require('./row-loader.css');
 })
 
 export class RowLoaderComponent implements OnChanges {
+  protected top:number = 0;
+  protected isShow:boolean = true;
+
   @Input('items')
   protected items:any;
   @Input('itemHeight')
@@ -21,8 +24,6 @@ export class RowLoaderComponent implements OnChanges {
 
   private zone:NgZone;
   private item:number = 0;
-  private top:number = 0;
-  private isShow:boolean = true;
   private cloneItems:any;
 
   public constructor(@Inject(NgZone) zone:NgZone) {
