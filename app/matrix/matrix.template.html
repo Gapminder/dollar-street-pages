@@ -16,7 +16,14 @@
     <div class="quick-tour"
          [ngStyle]="{top: baloonTip.position?.top + 'px', left: baloonTip.position?.left + 'px'}"
          *ngIf="switchOnQuickTour">
-      <div class="onboarding-steps">{{numberOfStep}} of 5</div>
+
+      <div class="position-relative">
+        <div class="onboarding-steps">{{numberOfStep}} of 5</div>
+        <a class="pull-right close-button-light"
+           (click)="closeQuickTour()">
+        </a>
+      </div>
+
       <div class="qt-baloon-name">{{baloonTip?.header}}</div>
       <div class="qt-baloon-text">{{baloonTip?.description}}
         <a class="cc-link" target="_blank" *ngIf="numberOfStep === 5" [href]="baloonTip.link?.href">{{baloonTip.link?.text}}</a>
@@ -54,7 +61,7 @@
                  (activeHouseOptions)="activeHouseOptions($event)">
   </matrix-images>
 
-<div class="zoom-column pull-right" *ngIf="filtredPlaces.length">
+  <div class="zoom-column pull-right" *ngIf="filtredPlaces.length">
 
     <button type="button"
             class="increase"
