@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
@@ -48,6 +49,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public matrixServiceOnboardingSubscribe:Subscriber;
   public streetData:any;
 
+  private resizeSubscribe:any;
   private placesArr:any[];
   private element:HTMLElement;
   private rowEtalon:number = 0;
@@ -85,6 +87,36 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit():void {
+
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          let thingContainer:any = this.element.querySelector('things-filter');
+          let countriesFilter:any = this.element.querySelector('countries-filter');
+          let filtersContainer:any = this.element.querySelector('.filters-container');
+          let incomeContainer:any = this.element.querySelector('.income-title-container');
+          let filtersBlockWidth = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
+
+          setTimeout(():void => {
+            this.element.querySelector('.income-title-container').classList.remove('incomeby');
+          }, 0);
+
+          if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
+            setTimeout(():void => {
+              this.element.querySelector('.income-title-container').classList.remove('incomeby');
+            }, 0);
+
+          }
+
+          if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 175) {
+            setTimeout(():void => {
+              this.element.querySelector('.income-title-container').classList.add('incomeby');
+            }, 0);
+          }
+        });
+      });
+
     this.queryParamsSubscribe = this.router
       .routerState
       .queryParams
@@ -183,6 +215,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngAfterViewChecked():void {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
+    let thingContainer:any = this.element.querySelector('things-filter');
+    let incomeContainer:any = this.element.querySelector('.income-title-container');
+    let countriesFilter:any = this.element.querySelector('countries-filter');
+    let filtersContainer:any = this.element.querySelector('.filters-container');
+    let filtersBlockWidth = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
 
     if (!imgContent) {
       return;
@@ -197,6 +234,22 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.imageHeight = imgContent.offsetHeight;
     this.footerHeight = footer.offsetHeight;
     this.getPaddings();
+
+    setTimeout(():void => {
+      this.element.querySelector('.income-title-container').classList.remove('incomeby');
+    }, 0);
+
+    if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
+      setTimeout(():void => {
+        this.element.querySelector('.income-title-container').classList.remove('incomeby');
+      }, 0);
+    }
+
+    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 175) {
+      setTimeout(():void => {
+        this.element.querySelector('.income-title-container').classList.add('incomeby');
+      }, 0);
+    }
   }
 
   /** each document usage breaks possible server side rendering */
@@ -285,6 +338,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public urlChanged(options:any):void {
+    let thingContainer:any = this.element.querySelector('things-filter');
+    let countriesFilter:any = this.element.querySelector('countries-filter');
+    let incomeContainer:any = this.element.querySelector('.income-title-container');
+    let filtersContainer:any = this.element.querySelector('.filters-container');
+    let filtersBlockWidth = thingContainer.offsetWidth + countriesFilter.offsetWidth + 30;
     let {url, isZoom, isCountriesFilter, isInit} = options;
 
     if (url) {
@@ -313,6 +371,22 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         if (val.err) {
           console.error(val.err);
           return;
+        }
+
+        setTimeout(():void => {
+          this.element.querySelector('.income-title-container').classList.remove('incomeby');
+        }, 0);
+
+        if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
+          setTimeout(():void => {
+            this.element.querySelector('.income-title-container').classList.remove('incomeby');
+          }, 0);
+        }
+
+        if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 175) {
+          setTimeout(():void => {
+            this.element.querySelector('.income-title-container').classList.add('incomeby');
+          }, 0);
         }
 
         this.placesVal = val.data.zoomPlaces;
