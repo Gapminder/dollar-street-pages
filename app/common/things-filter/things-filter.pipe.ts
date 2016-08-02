@@ -23,7 +23,6 @@ export class ThingsFilterPipe implements PipeTransform {
     }
 
     return filter(value, (item:Thing) => {
-      console.log('jhfjjfjf',item)
       return !item.empty && item.plural.toLowerCase().indexOf(text.toLowerCase()) !== -1;
     });
   }
