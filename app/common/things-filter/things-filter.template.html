@@ -1,5 +1,5 @@
 <div id="things-filter"
-     *ngIf="activeThing.thingName"
+     *ngIf="activeThing.plural"
      [ngClass]="{'open-things-filter': isOpenThingsFilter}">
   <div class="things-filter-button">
     <div class="things-filter-button-content"
@@ -35,7 +35,7 @@
             <img class="thing-icon" [src]="thing.icon" alt="">
           </div>
 
-          <span class="thing-name">{{thing.thingName}}</span>
+          <span class="thing-name">{{thing.plural}}</span>
         </div>
       </div>
     </div>
@@ -57,10 +57,10 @@
           <div class="thing-icon-container">
             <img class="thing-icon"
                  [src]="thing.icon"
-                 [alt]="thing.thingName">
+                 [alt]="thing.plural">
           </div>
 
-          <span class="thing-name">{{thing.thingName}}</span>
+          <span class="thing-name">{{thing.plural}}</span>
         </div>
       </div>
     </div>

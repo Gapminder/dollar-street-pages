@@ -2,7 +2,7 @@
   <div class="place" *ngFor="let place of places">
     <div class="image">
       <img *ngIf="place.image" [src]="place.image"
-           [routerLink]="['/home']"
+           [routerLink]="['/family']"
            [queryParams]="{place: place.placeId}"
            alt="">
     </div>
@@ -32,7 +32,7 @@
 
     <div class="link">
       <a class="custom-button"
-         [routerLink]="['/home']"
+         [routerLink]="['/family']"
          [queryParams]="{place: place.placeId}">Visit family >></a>
     </div>
   </div>

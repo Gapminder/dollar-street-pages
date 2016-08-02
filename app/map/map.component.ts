@@ -76,7 +76,7 @@ export class MapComponent implements OnInit, OnDestroy {
       .routerState
       .queryParams
       .subscribe((params:any) => {
-        this.thing = params.thing ? params.thing : 'Home';
+        this.thing = params.thing ? params.thing : 'Families';
 
         this.urlChanged({url: `thing=${this.thing}`});
       });
@@ -307,7 +307,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
-      this.router.navigate(['/home'], {queryParams: {place: this.hoverPlace._id}});
+      this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }
 

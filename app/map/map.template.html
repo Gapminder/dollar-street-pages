@@ -77,7 +77,7 @@
       <div class="info-box-container">
         <div class="info-box"
              *ngFor="let place of lefSideCountries"
-             [routerLink]="['/home']"
+             [routerLink]="['/family']"
              [queryParams]="{place: place._id}">
           <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
 

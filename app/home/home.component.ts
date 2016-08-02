@@ -24,7 +24,7 @@ interface UrlParamsInterface {
 }
 
 @Component({
-  selector: 'home',
+  selector: 'family',
   template: tpl,
   styles: [style],
   directives: [
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.activeImageIndex = parseInt(params.activeImage, 10);
 
         this.urlParams = {
-          thing: params.thing ? decodeURI(params.thing) : 'Home',
+          thing: params.thing ? decodeURI(params.thing) : 'Families',
           countries: params.countries ? decodeURI(params.countries) : 'World',
           regions: params.regions ? decodeURI(params.regions) : 'World',
           zoom: parseInt(params.zoom, 10) || 4,
@@ -156,7 +156,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.activeImageIndex = void 0;
     }
 
-    this.urlChangeService.replaceState('/home', url);
+    this.urlChangeService.replaceState('/family', url);
   }
 
   private initData():void {
@@ -165,7 +165,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (!this.placeId) {
       this.router.navigate(['/matrix', {
-        thing: 'Home',
+        thing: 'Families',
         countries: 'World',
         regions: 'World',
         zoom: 4,

@@ -144,7 +144,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
 
-        this.thing = this.thing ? this.thing : 'Home';
+        this.thing = this.thing ? this.thing : 'Families';
         this.zoom = this.zoom ? this.zoom : 4;
         this.regions = this.regions ? this.regions : 'World';
 
