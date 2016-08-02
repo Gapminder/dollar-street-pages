@@ -30,6 +30,8 @@ import { HomeMediaService } from './home/home-media/home-media.service';
 import { ContentfulService, Ng2ContentfulConfig } from 'ng2-contentful';
 import { BlogComponent } from './blog/blog.component';
 import { appInjector, GAPMINDER_PROVIDERS, ContentfulImageDirective } from 'ng2-contentful-blog';
+import { Angulartics2 } from 'angulartics2';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { Config } from './app.config';
 
 const ContentfulConfig = require('./contentTypeIds.json');
@@ -43,10 +45,11 @@ Ng2ContentfulConfig.config = {
   space: CONTENTFUL_SPACE_ID,
   host: CONTENTFUL_HOST
 };
-// [queryParams]="{}"
+
 bootstrap(AppComponent, [
   HTTP_PROVIDERS,
   GAPMINDER_PROVIDERS,
+  Angulartics2,
   provideRouter(Config.routes),
   {provide: 'StreetDrawService', useClass: StreetDrawService},
   {provide: 'MatrixService', useClass: MatrixService},
@@ -71,6 +74,7 @@ bootstrap(AppComponent, [
   {provide: 'CountriesFilterService', useClass: CountriesFilterService},
   {provide: 'HomeHeaderService', useClass: HomeHeaderService},
   {provide: 'HomeMediaService', useClass: HomeMediaService},
+  {provide: 'Angulartics2GoogleAnalytics', useClass: Angulartics2GoogleAnalytics},
   {provide: 'Math', useClass: MathService},
   {provide: 'Routes', useValue: Config.routes},
   {provide: 'DefaultArticleComponent', useValue: BlogComponent},

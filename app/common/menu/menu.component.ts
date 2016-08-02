@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, Inject, ElementRef } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 import { Subscriber } from 'rxjs/Rx';
+import { Angulartics2On } from 'angulartics2';
+import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 
 let tpl = require('./menu.template.html');
 let style = require('./menu.css');
@@ -11,7 +12,7 @@ let style = require('./menu.css');
   selector: 'main-menu',
   template: tpl,
   styles: [style],
-  directives: [SocialShareButtonsComponent, ROUTER_DIRECTIVES]
+  directives: [Angulartics2On, SocialShareButtonsComponent, ROUTER_DIRECTIVES]
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
@@ -24,13 +25,16 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   private activatedRoute:ActivatedRoute;
   private isMatrixComponent:boolean;
   private window:Window = window;
+  private angulartics2GoogleAnalytics:any;
 
   public constructor(@Inject(Router) router:Router,
                      @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
-                     @Inject(ElementRef) element:ElementRef) {
+                     @Inject(ElementRef) element:ElementRef,
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics:any) {
     this.element = element;
     this.router = router;
     this.activatedRoute = activatedRoute;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.isMatrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
@@ -48,18 +52,12 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected goToMatrixPage():void {
-    if (this.isMatrixComponent) {
-      this.window.location.href = this.window.location.origin;
+  protected goToMatrixPage(removeStorage?:boolean):void {
+    this.angulartics2GoogleAnalytics.eventTrack('Matrix page');
 
-      return;
+    if (removeStorage) {
+      this.window.localStorage.removeItem('onboarded');
     }
-
-    this.router.navigate(['/matrix'], {queryParams: {}});
-  }
-
-  protected switchOnOnboardingFromMenu():void {
-    this.window.localStorage.removeItem('onboarded');
 
     if (this.isMatrixComponent) {
       this.window.location.href = this.window.location.origin;
