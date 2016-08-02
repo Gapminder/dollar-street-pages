@@ -68,6 +68,10 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.router.navigate(['/matrix'], {queryParams: {}});
   }
 
+  protected goToGapminder():void {
+    this.window.open('https://www.gapminder.org', '_blank');
+  }
+
   @HostListener('document:click', ['$event'])
   public isOutsideMainMenuClick(event:Event):void {
     if (!this.element.nativeElement.contains(event.target) && this.isOpenMenu) {
