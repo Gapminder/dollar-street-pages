@@ -397,13 +397,17 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let top:number = box.top;
     let left:number = box.left + scrollLeft - clientLeft;
 
+    if (querySelector === '.income-title-desktop') {
+      top = box.top - clientTop - 14;
+    }
+
     if (querySelector === '.images-container') {
       top = box.top + scrollTop - clientTop;
       left = box.left + scrollLeft - clientLeft + 40;
     }
 
     if (querySelector === '.street-box') {
-      top = box.top - clientTop - 7;
+      top = box.top - clientTop - 3;
       left = box.left + scrollLeft - clientLeft + 40;
     }
 
@@ -449,7 +453,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     if (this.numberOfStep === 3) {
-      baloonDirector = 'incomes-filter';
+      baloonDirector = '.income-title-desktop';
       this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
     }
 

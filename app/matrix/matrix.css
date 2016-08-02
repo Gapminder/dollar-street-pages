@@ -92,6 +92,21 @@ matrix-images {
   z-index: 2;
 }
 
+.position-relative {
+  position: relative;
+}
+
+.close-button-light {
+  background: url("../assets/img/close.png") no-repeat center center;
+  cursor: pointer;
+  height: 19px;
+  width: 19px;
+  right: -10px;
+  top: 0;
+  position: absolute;
+  z-index: 2;
+}
+
 .quick-tour {
   width: 456px;
   background-color: #2e4350;
@@ -166,7 +181,7 @@ matrix-images {
 .zoom-column button {
   width: 28px;
   height: 28px;
-  background-size: 28px 28px!important;
+  background-size: 28px 28px !important;
   border: none;
   border-radius: 50%;
   outline: 0;

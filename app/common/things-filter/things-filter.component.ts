@@ -38,13 +38,16 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   private thingsFilterServiceSubscribe:Subscriber;
   private activatedRoute:ActivatedRoute;
   private element:ElementRef;
+  private angulartics2GoogleAnalytics:any;
 
   public constructor(@Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
                      @Inject(ElementRef) element:ElementRef,
-                     @Inject('ThingsFilterService') thingsFilterService:any) {
+                     @Inject('ThingsFilterService') thingsFilterService:any,
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics:any) {
     this.thingsFilterService = thingsFilterService;
     this.activatedRoute = activatedRoute;
     this.element = element;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   @HostListener('document:click', ['$event'])
@@ -64,6 +67,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
       return;
     }
 
+    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.thingName}`);
     let query = this.parseUrl(this.url);
     query.thing = thing.plural;
 

@@ -11,31 +11,36 @@
           <a (click)="goToMatrixPage()">Home</a>
         </li>
         <li>
-          <a [routerLink]="['/photographers']"
-             [queryParams]="{}">Photographers</a>
-        </li>
-        <li>
-          <a [routerLink]="['/map']"
-             [queryParams]="{}">Map</a>
+          <a (click)="goToMatrixPage(true)">Quick guide</a>
         </li>
         <li>
           <a [routerLink]="['/info']"
-             [queryParams]="{}">About</a>
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="About page">About</a>
         </li>
         <li>
           <a [routerLink]="['/blog']"
-             [queryParams]="{}">Blog</a>
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Blog page">Blog</a>
         </li>
         <li>
-          <a [routerLink]="['/ambassadors']"
-             [queryParams]="{}">Ambassadors</a>
+          <a [routerLink]="['/map']"
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Map page">Map</a>
+        </li>
+        <li class="social-share-container">
+          <div class="social-share-content">
+            <span>Share: </span>
+            <social-share-buttons></social-share-buttons>
+          </div>
         </li>
         <li>
-          <a (click)="switchOnOnboardingFromMenu()">Welcome wizard</a>
+          <a (click)="goToGapminder()">More from gapminder >></a>
         </li>
       </ul>
-
-      <social-share-buttons></social-share-buttons>
     </div>
   </div>
 </div>

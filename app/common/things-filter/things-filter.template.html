@@ -28,7 +28,7 @@
 
       <div class="related-things-content">
         <div class="thing-content"
-             *ngFor="let thing of relatedThings | ThingsFilterPipe:search.text"
+             *ngFor="let thing of relatedThings"
              (click)="goToThing(thing)"
              [ngClass]="{'empty': thing.empty}">
           <div class="thing-icon-container">
