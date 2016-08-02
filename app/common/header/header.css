@@ -84,14 +84,13 @@ place-map[hidden] {
   margin: 7px 0 0;
 }
 
-@media (max-width: 1230px) {
-  .filters-container .some-filter-container .income-title-mobile {
-    display: inline-block
-  }
-
-  .filters-container .some-filter-container .income-title-desktop {
-    display: none;
-  }
+.filters-container .income-title-container.incomeby .income-title + .income-title,
+.filters-container .income-title {
+  display: none;
+}
+.filters-container .income-title-container.incomeby .income-title,
+.filters-container .income-title + .income-title {
+display: inline-block
 }
 
 @media (max-width: 1023px) {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
@@ -48,6 +49,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public matrixServiceOnboardingSubscribe:Subscriber;
   public streetData:any;
 
+  private resizeSubscribe:any;
   private placesArr:any[];
   private element:HTMLElement;
   private rowEtalon:number = 0;
@@ -85,6 +87,15 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit():void {
+
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.interactiveIncomeText();
+        });
+      });
+
     this.queryParamsSubscribe = this.router
       .routerState
       .queryParams
@@ -168,7 +179,37 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
+  public interactiveIncomeText():void {
+    let thingContainer = this.element.querySelector('things-filter') as HTMLElement;
+    let countriesFilter = this.element.querySelector('countries-filter') as HTMLElement;
+    let filtersContainer = this.element.querySelector('.filters-container') as HTMLElement;
+    let incomeContainer = this.element.querySelector('.income-title-container') as HTMLElement;
+    let filtersBlockWidth:number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
+
+    setTimeout(():void => {
+      incomeContainer.classList.remove('incomeby');
+    }, 0);
+
+    if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
+      setTimeout(():void => {
+        incomeContainer.classList.remove('incomeby');
+      }, 0);
+
+    }
+
+    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 175) {
+      setTimeout(():void => {
+        incomeContainer.classList.add('incomeby');
+      }, 0);
+    }
+  }
+
   public ngOnDestroy():void {
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
     }
@@ -314,6 +355,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           console.error(val.err);
           return;
         }
+
+        this.interactiveIncomeText();
 
         this.placesVal = val.data.zoomPlaces;
         this.streetPlacesData = val.data.streetPlaces;
