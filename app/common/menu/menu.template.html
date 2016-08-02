@@ -11,16 +11,7 @@
           <a (click)="goToMatrixPage()">Home</a>
         </li>
         <li>
-          <a [routerLink]="['/photographers']"
-             [queryParams]="{}"
-             angulartics2On="click"
-             angularticsEvent="Photographers page">Photographers</a>
-        </li>
-        <li>
-          <a [routerLink]="['/map']"
-             [queryParams]="{}"
-             angulartics2On="click"
-             angularticsEvent="Map page">Map</a>
+          <a (click)="goToMatrixPage(true)">Quick guide</a>
         </li>
         <li>
           <a [routerLink]="['/info']"
@@ -35,17 +26,21 @@
              angularticsEvent="Blog page">Blog</a>
         </li>
         <li>
-          <a [routerLink]="['/ambassadors']"
+          <a [routerLink]="['/map']"
              [queryParams]="{}"
              angulartics2On="click"
-             angularticsEvent="Ambassadors page">Ambassadors</a>
+             angularticsEvent="Map page">Map</a>
+        </li>
+        <li class="social-share-container">
+          <div class="social-share-content">
+            <span>Share: </span>
+            <social-share-buttons></social-share-buttons>
+          </div>
         </li>
         <li>
-          <a (click)="goToMatrixPage(true)">Welcome wizard</a>
+          <a (click)="goToGapminder()">More from gapminder >></a>
         </li>
       </ul>
-
-      <social-share-buttons></social-share-buttons>
     </div>
   </div>
 </div>
