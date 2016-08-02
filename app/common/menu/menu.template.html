@@ -12,26 +12,36 @@
         </li>
         <li>
           <a [routerLink]="['/photographers']"
-             [queryParams]="{}">Photographers</a>
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Photographers page">Photographers</a>
         </li>
         <li>
           <a [routerLink]="['/map']"
-             [queryParams]="{}">Map</a>
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Map page">Map</a>
         </li>
         <li>
           <a [routerLink]="['/info']"
-             [queryParams]="{}">About</a>
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="About page">About</a>
         </li>
         <li>
           <a [routerLink]="['/blog']"
-             [queryParams]="{}">Blog</a>
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Blog page">Blog</a>
         </li>
         <li>
           <a [routerLink]="['/ambassadors']"
-             [queryParams]="{}">Ambassadors</a>
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Ambassadors page">Ambassadors</a>
         </li>
         <li>
-          <a (click)="switchOnOnboardingFromMenu()">Welcome wizard</a>
+          <a (click)="goToMatrixPage(true)">Welcome wizard</a>
         </li>
       </ul>
 
