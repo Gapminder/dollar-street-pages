@@ -1,37 +1,57 @@
 'use strict';
 
-const data = require('../Data/DataProvider.ts');
-const using = require('jasmine-data-provider');
-const AbstractPage = require('../Pages/AbstractPage.ts');
-let photographerName = element.all(by.css('.photographer-card>h3'));
-let photographerPortrait = element.all(by.css('.photographer-portrait'));
-let camerasIcon = element.all(by.css('.fa.fa-camera'));
-let homesIcon = element.all(by.css('.photographer-material>span>img'));
-let lastPhotographer = $('.photographer-card[href="/photographer?id=56ec0917af72e9437cbccf93"]');
-let searchFieldElement = $('#search');
-let foundPhotographer = $('.photographer-card>h3');
-let familiesIcon = $('.place');
+import { AbstractPage } from '../Pages/AbstractPage';
+import { element, by, $ } from 'protractor/globals';
+import { ElementArrayFinder, ElementFinder } from 'protractor/built/index';
 
-let PhotographersPage = function () {
-  this.getSearchButton = () => {
-    return searchFieldElement; };
-  this.isDisplayedPhotographerName = () => {
-    return photographerName.isDisplayed(); };
-  this.isDisplayedPhotographerPortrait = () => {
-    return photographerPortrait.isDisplayed(); };
-  this.isDisplayedCamerasIcon = () => {
-    return camerasIcon.isDisplayed(); };
-  this.isDisplayedHomesIcon = () => {
-    return homesIcon.isDisplayed(); };
-  this.getLastPhotographer = () => {
-    return lastPhotographer; };
-  this.setErrorMessage = () => {
-    return 'Last photographer on Photographers Page is not loaded'; };
-  this.getFoundPhotographer = () => {
-    return foundPhotographer; };
-  this.getFamiliesIcon = () => {
-    return familiesIcon; };
-  this.setFamilyErrorMessage = (name) => { return name + 'Families on Photographer Page is not loaded'; };
-};
+export class PhotographersPage {
+  public static photographerName:ElementArrayFinder = element.all(by.css('.photographer-card>h3'));
+  public static photographerPortrait:ElementArrayFinder = element.all(by.css('.photographer-portrait'));
+  public static camerasIcon:ElementArrayFinder = element.all(by.css('.fa.fa-camera'));
+  public static homesIcon:ElementArrayFinder = element.all(by.css('.photographer-material>span>img'));
+  public static lastPhotographer:ElementArrayFinder = element.all(by.css('.photographer-portrait'));
+  public static searchFieldElement:ElementFinder = $('#search');
+  public static foundPhotographer:ElementFinder = $('.photographer-card>h3');
+  public static familiesIcon:ElementFinder = $('.place');
+
+  public static getSearchButton():ElementFinder {
+    return this.searchFieldElement;
+  };
+
+  public static isDisplayedPhotographerName():boolean {
+    return this.photographerName.isDisplayed();
+  };
+
+  public static isDisplayedPhotographerPortrait():boolean {
+    return this.photographerPortrait.isDisplayed();
+  };
+
+  public static isDisplayedCamerasIcon():boolean {
+    return this.camerasIcon.isDisplayed();
+  };
+
+  public static isDisplayedHomesIcon():boolean {
+    return this.homesIcon.isDisplayed();
+  };
+
+  public static getLastPhotographer():ElementFinder {
+    return this.lastPhotographer.last();
+  };
+
+  public static setErrorMessage():string {
+    return 'Last photographer on Photographers Page is not loaded';
+  };
+
+  public static getFoundPhotographer():ElementFinder {
+    return this.foundPhotographer;
+  };
+
+  public static getFamiliesIcon():ElementFinder {
+    return this.familiesIcon;
+  };
+
+  public static setFamilyErrorMessage(name:string):string {
+    return name + 'Families on Photographer Page is not loaded';
+  };
+}
 PhotographersPage.prototype = Object.create(AbstractPage.prototype);
-module.exports = PhotographersPage;

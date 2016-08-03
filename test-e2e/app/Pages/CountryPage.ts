@@ -1,29 +1,52 @@
 'use strict';
 
-const data = require('../Data/DataProvider.ts');
-const using = require('jasmine-data-provider');
-const AbstractPage = require('../Pages/AbstractPage.ts');
-let countryName = $('h2[class*="heading"]');
-let numberOfFamilies = $('p[class="home"] span[class="pull-right"]');
-let numberOfPhotos = $('p[class="photo"] span[class="pull-right"]');
-let numberOfFamiliesEach = element.all(by.css('.custom-button'));
-let numberOfPhotosEachFamily = element.all(by.css('.place-country>p>span'));
-let bigMap = $('div[class*="header"] img[class*="map map_gray"]');
-let markerOnMap = $('div[class*="header"] img[class*="marker"]');
-let familyImage = element.all(by.css('div[class="image"] img')).first();
-let linkVisitFamily = element.all(by.css('div[class*="link"] a[class*="custom-button"]')).first();
+import { AbstractPage } from './AbstractPage';
+import { element, by, $ } from 'protractor/globals';
+import { ElementFinder, ElementArrayFinder } from 'protractor/built/index';
 
-let CountryPage = function () {
-  this.getCountryName = () => { return countryName.getText(); };
-  this.getNumberOfFamilies = () => { return numberOfFamilies.getText(); };
-  this.countNumberOfFamilies = () => { return numberOfFamiliesEach.count().then((count) => {return count.toString(); }); };
-  this.count = () => { return numberOfPhotosEachFamily.count();};
-  this.getBigMap = () => {return bigMap;};
-  this.getMarkerOnMap = () => { return markerOnMap;};
-  this.getFamilyImage = () => { return familyImage;};
-  this.getLinkVisitFamily = () => {return linkVisitFamily;};
+export class CountryPage {
+  public static countryName:ElementFinder = $('h2[class*="heading"]');
+  public static numberOfFamilies:ElementFinder = $('p[class="home"] span[class="pull-right"]');
+  public static numberOfPhotos:ElementFinder = $('p[class="photo"] span[class="pull-right"]');
+  public static numberOfFamiliesEach:ElementArrayFinder = element.all(by.css('.custom-button'));
+  public static numberOfPhotosEachFamily:ElementArrayFinder = element.all(by.css('.place-country>p>span'));
+  public static bigMap:ElementFinder = $('div[class*="header"] img[class*="map map_gray"]');
+  public static markerOnMap:ElementFinder = $('div[class*="header"] img[class*="marker"]');
+  public static familyImage:ElementFinder = element.all(by.css('div[class="image"] img')).first();
+  public static linkVisitFamily:ElementFinder = element.all(by.css('div[class*="link"] a[class*="custom-button"]')).first();
 
-};
+  public static getCountryName():string {
+    return this.countryName.getText();
+  };
 
+  public static getNumberOfFamilies():string {
+    return this.numberOfFamilies.getText();
+  };
+
+  public static countNumberOfFamilies():string {
+    return this.numberOfFamiliesEach.count().then((count:number):string => {
+      return count.toString();
+    });
+  };
+
+  public static count():number {
+    return this.numberOfPhotosEachFamily.count();
+  };
+
+  public static getBigMap():ElementFinder {
+    return this.bigMap;
+  };
+
+  public static getMarkerOnMap():ElementFinder {
+    return this.markerOnMap;
+  };
+
+  public static getFamilyImage():ElementFinder {
+    return this.familyImage;
+  };
+
+  public static getLinkVisitFamily():ElementFinder {
+    return this.linkVisitFamily;
+  };
+}
 CountryPage.prototype = Object.create(AbstractPage.prototype);
-module.exports = CountryPage;

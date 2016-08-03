@@ -1,25 +1,25 @@
 'use strict';
 
-const dataProvider = require('../Data/DataProvider.ts');
-const FooterPage = require('../Pages/FooterPage.ts');
-const using = require('jasmine-data-provider');
-const MapPage = require('../Pages/MapPage.ts');
-let footer = new FooterPage();
+import { DataProvider } from '../Data/DataProvider';
+import { FooterPage } from '../Pages/FooterPage';
+import { AbstractPage } from '../Pages/AbstractPage';
+let using = require('jasmine-data-provider');
+import { browser } from 'protractor/globals';
+import { MapPage } from '../Pages/MapPage';
 
 describe('Map Page test', () => {
-    let mapPage = new MapPage();
-    beforeAll(() => {
-        browser.get('/map');
-        browser.wait(mapPage.getEC.visibilityOf(mapPage.getMapImage()), mapPage.getTimeout, mapPage.setMapErrorMessage());
-        browser.sleep(2000);
+  beforeAll(() => {
+    browser.get('/map');
+    browser.wait(AbstractPage.getEC().visibilityOf(MapPage.getMapImage()), AbstractPage.getTimeout(), MapPage.setMapErrorMessage('Map Image'));
+    browser.sleep(2000);
+  });
+  afterAll(() => {
+    FooterPage.checkFooterText();
+    FooterPage.checkFooterImages();
+  });
+  using(DataProvider.mapPageCountry, (data:any, description:any) => {
+    it('Check ' + description + ' on Map page', () => {
+      expect(data.element().getText()).toEqual(data.actualResult);
     });
-    afterAll(() => {
-        footer.checkFooterText();
-        footer.checkFooterImages();
-    });
-    using(dataProvider.mapPageCountry, (data, description) => {
-        it('Check ' + description + ' on Map page', () => {
-            expect(data.element().getText()).toEqual(data.actualResult);
-        });
-    });
+  });
 });

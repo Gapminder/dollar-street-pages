@@ -1,31 +1,29 @@
 'use strict';
 
-const dataProvider = require('../Data/DataProvider.ts');
-const FooterPage = require('../Pages/FooterPage.ts');
-const using = require('jasmine-data-provider');
-const PhotographersPage = require('../Pages/PhotographersPage.ts');
-let footer = new FooterPage();
-let photographersPage;
+import { DataProvider } from '../Data/DataProvider';
+import { AbstractPage } from '../Pages/AbstractPage';
+import { FooterPage } from '../Pages/FooterPage';
+let using = require('jasmine-data-provider');
+import { browser } from 'protractor/globals';
+import { PhotographersPage } from '../Pages/PhotographersPage';
 
 describe('Photographers Page test', () => {
-    photographersPage = new PhotographersPage();
-    beforeAll(() => {
-        browser.get('/photographers');
-        browser.wait(photographersPage.getEC.visibilityOf(photographersPage.getLastPhotographer()), photographersPage.getTimeout, photographersPage.setErrorMessage());
+  beforeAll(() => {
+    browser.get('/photographers');
+    browser.wait(AbstractPage.getEC().visibilityOf(PhotographersPage.getLastPhotographer()), AbstractPage.getTimeout(), PhotographersPage.setErrorMessage());
+  });
+  afterAll(() => {
+    FooterPage.checkFooterText();
+    FooterPage.checkFooterImages();
+  });
+  using(DataProvider.photographersPageSearch, (data:any, description:string) => {
+    it('Check ' + description + ' on Photographers page', () => {
+      PhotographersPage.getSearchButton().sendKeys(data.countryQuery);
+      expect(PhotographersPage.isDisplayedPhotographerName()).toBeTruthy();
+      expect(PhotographersPage.isDisplayedPhotographerPortrait()).toBeTruthy();
+      expect(PhotographersPage.isDisplayedHomesIcon()).toBeTruthy();
+      expect(PhotographersPage.isDisplayedCamerasIcon()).toBeTruthy();
+      PhotographersPage.getSearchButton().clear();
     });
-    afterAll(() => {
-        footer.checkFooterText();
-        footer.checkFooterImages();
-    });
-    using(dataProvider.photographersPageSearch, (data, description) => {
-        it('Check ' + description + ' on Photographers page', () => {
-            photographersPage = new PhotographersPage();
-            photographersPage.getSearchButton().sendKeys(data.countryQuery);
-            expect(photographersPage.isDisplayedPhotographerName()).toBeTruthy();
-            expect(photographersPage.isDisplayedPhotographerPortrait()).toBeTruthy();
-            expect(photographersPage.isDisplayedHomesIcon()).toBeTruthy();
-            expect(photographersPage.isDisplayedCamerasIcon()).toBeTruthy();
-            photographersPage.getSearchButton().clear();
-        });
-    });
+  });
 });
