@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Subscriber } from 'rxjs/Rx';
-import { BubbleComponent } from './bubble/bubble.comonent';
+import { BubbleComponent } from './bubble/bubble.component';
 
 let _ = require('lodash');
 
@@ -57,9 +57,7 @@ export class GuideComponent implements OnInit, OnDestroy {
 
   protected close():void {
     this.isShowGuide = false;
-  }
-
-  protected closeBubble():void {
     this.isShowBubble = false;
+    this.startQuickGuide.emit({});
   }
 }
