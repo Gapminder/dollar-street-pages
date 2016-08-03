@@ -11,6 +11,7 @@ import { HeaderService } from './common/header/header.service';
 import { StreetSettingsService } from './common/street/street.settings.service';
 import { HomeIncomeFilterService } from './home/home-income-filter.service';
 import { FooterService } from './common/footer/footer.service';
+import { GuideService } from './common/guide/guide.service';
 import { ThingsFilterService } from './common/things-filter/things-filter.service';
 import { CountriesFilterService } from './common/countries-filter/countries-filter.service';
 import { CountryInfoService } from './country/country-info/country-info.service';
@@ -57,6 +58,7 @@ bootstrap(AppComponent, [
   {provide: 'StreetSettingsService', useClass: StreetSettingsService},
   {provide: 'HomeIncomeFilterService', useClass: HomeIncomeFilterService},
   {provide: 'FooterService', useClass: FooterService},
+  {provide: 'GuideService', useClass: GuideService},
   {provide: 'MapService', useClass: MapService},
   {provide: 'UrlChangeService', useClass: UrlChangeService},
   {provide: 'PhotographerProfileService', useClass: PhotographerProfileService},
