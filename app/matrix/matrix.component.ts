@@ -1,11 +1,14 @@
 import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
-import { RouteParams } from '@angular/router-deprecated';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let _ = require('lodash');
 let device = require('device.js')();
@@ -17,7 +20,7 @@ let style = require('./matrix.css');
   selector: 'matrix',
   template: tpl,
   styles: [style],
-  directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent]
+  directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent, FooterSpaceDirective]
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
@@ -28,6 +31,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected numberOfStep:number = 1;
   protected baloonTips:any = {};
   protected baloonTip:any = {};
+  public clearActiveHomeViewBox:Subject<any> = new Subject();
 
   public query:string;
   public matrixService:any;
@@ -41,10 +45,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public isDraw:boolean = false;
   public lowIncome:number;
   public highIncome:number;
-  public matrixServiceSubscrib:any;
-  public matrixServiceOnboardingSubscribe:any;
+  public matrixServiceSubscrib:Subscriber;
+  public matrixServiceOnboardingSubscribe:Subscriber;
   public streetData:any;
 
+  private resizeSubscribe:any;
   private placesArr:any[];
   private element:HTMLElement;
   private rowEtalon:number = 0;
@@ -53,7 +58,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imageMargin:number;
   private visiblePlaces:number;
   private urlChangeService:any;
-  private routeParams:RouteParams;
+  private router:Router;
   private thing:string;
   private countries:string;
   private regions:string;
@@ -65,58 +70,79 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private clonePlaces:any[];
   private zone:NgZone;
   private windowHistory:any = history;
-  private matrixServiceStreetSubscrib:any;
+  private matrixServiceStreetSubscrib:Subscriber;
   private streetPlacesData:any;
+  private queryParamsSubscribe:any;
 
   public constructor(@Inject('MatrixService') matrixService:any,
                      @Inject(ElementRef) element:ElementRef,
                      @Inject('UrlChangeService') urlChangeService:any,
-                     @Inject(RouteParams) routeParams:RouteParams,
+                     @Inject(Router) router:Router,
                      @Inject(NgZone) zone:NgZone) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
-    this.routeParams = routeParams;
+    this.router = router;
     this.urlChangeService = urlChangeService;
     this.zone = zone;
   }
 
   public ngOnInit():void {
+
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.interactiveIncomeText();
+        });
+      });
+
+    this.queryParamsSubscribe = this.router
+      .routerState
+      .queryParams
+      .subscribe((params:any) => {
+        this.thing = params.thing;
+        this.countries = params.countries ? decodeURI(params.countries) : 'World';
+        this.regions = params.regions ? decodeURI(params.regions) : 'World';
+        this.zoom = parseInt(params.zoom, 10);
+        this.lowIncome = parseInt(params.lowIncome, 10);
+        this.highIncome = parseInt(params.highIncome, 10);
+        this.activeHouse = parseInt(params.activeHouse, 10);
+        this.row = parseInt(params.row, 10) || 1;
+      });
+
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
     if (window.localStorage && window.localStorage.getItem('onboarded')) {
       this.showOnboarding = false;
-      document.body.className = 'wizard';
+      document.body.className = '';
+    } else {
+      document.body.className = 'onboarding';
     }
 
     this.matrixServiceOnboardingSubscribe = this.matrixService.getMatrixOnboardingTips()
-      .subscribe((val:any) => {
-        if (val.err) {
+      .subscribe((res:any) => {
+        if (res.err) {
+          console.error(res.err);
           return;
         }
 
-        this.baloonTips = val.data;
+        this.baloonTips = res.data;
         this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
       });
 
     this.matrixServiceStreetSubscrib = this.matrixService.getStreetSettings()
       .subscribe((val:any) => {
         if (val.err) {
-          console.log(val.err);
+          console.error(val.err);
 
           return;
         }
 
         this.streetData = val.data;
-
-        this.thing = this.routeParams.get('thing');
-        this.countries = this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World';
-        this.regions = this.routeParams.get('regions');
-        this.zoom = parseInt(this.routeParams.get('zoom'), 10);
-        this.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10) || val.data.poor;
-        this.highIncome = parseInt(this.routeParams.get('highIncome'), 10) || val.data.rich;
-        this.activeHouse = parseInt(this.routeParams.get('activeHouse'), 10);
+        this.lowIncome = this.lowIncome ? this.lowIncome : this.streetData.poor;
+        this.highIncome = this.highIncome ? this.highIncome : this.streetData.rich;
 
         if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
           this.zoom = 4;
@@ -127,12 +153,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.zoom = 3;
         }
 
-        // todo: row void 0
-        let getRow = parseInt(this.routeParams.get('row'), 10);
+        this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
 
-        this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : getRow || 1;
-
-        this.thing = this.thing ? this.thing : 'Home';
+        this.thing = this.thing ? this.thing : 'Families';
         this.zoom = this.zoom ? this.zoom : 4;
         this.regions = this.regions ? this.regions : 'World';
 
@@ -156,7 +179,37 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
+  public interactiveIncomeText():void {
+    let thingContainer = this.element.querySelector('things-filter') as HTMLElement;
+    let countriesFilter = this.element.querySelector('countries-filter') as HTMLElement;
+    let filtersContainer = this.element.querySelector('.filters-container') as HTMLElement;
+    let incomeContainer = this.element.querySelector('.income-title-container') as HTMLElement;
+    let filtersBlockWidth:number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
+
+    setTimeout(():void => {
+      incomeContainer.classList.remove('incomeby');
+    }, 0);
+
+    if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
+      setTimeout(():void => {
+        incomeContainer.classList.remove('incomeby');
+      }, 0);
+
+    }
+
+    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 175) {
+      setTimeout(():void => {
+        incomeContainer.classList.add('incomeby');
+      }, 0);
+    }
+  }
+
   public ngOnDestroy():void {
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
     }
@@ -165,6 +218,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib.unsubscribe();
     this.matrixServiceOnboardingSubscribe.unsubscribe();
     this.matrixServiceStreetSubscrib.unsubscribe();
+    this.queryParamsSubscribe.unsubscribe();
   }
 
   public ngAfterViewChecked():void {
@@ -177,8 +231,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.footerHeight === footer.offsetHeight &&
       this.imageHeight === imgContent.offsetHeight || !this.element.querySelector('.image-content')) {
+
       return;
     }
+
     this.imageHeight = imgContent.offsetHeight;
     this.footerHeight = footer.offsetHeight;
     this.getPaddings();
@@ -217,7 +273,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public getPaddings():void {
-    let windowInnerWidth = window.innerWidth;
+    let windowInnerWidth = window.innerWidth - 36;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
 
@@ -280,6 +336,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (!isInit) {
       this.query = this.query.replace(/&activeHouse\=\d*/, '');
       this.activeHouse = void 0;
+      this.hoverPlace.next(undefined);
+      this.clearActiveHomeViewBox.next(true);
     }
 
     let parseQuery = this.parseUrl(this.query);
@@ -294,8 +352,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(this.query)
       .subscribe((val:any) => {
         if (val.err) {
+          console.error(val.err);
           return;
         }
+
+        this.interactiveIncomeText();
 
         this.placesVal = val.data.zoomPlaces;
         this.streetPlacesData = val.data.streetPlaces;
@@ -365,28 +426,39 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected getCoords(querySelector:string, cb:any):any {
-    let box = this.element.querySelector(querySelector).getBoundingClientRect();
+    let box:any = this.element.querySelector(querySelector).getBoundingClientRect();
 
-    let body = document.body;
-    let docEl = document.documentElement;
+    let body:HTMLElement = document.body;
+    let docEl:HTMLElement = document.documentElement;
 
-    let scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    let scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    let scrollTop:number = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    let scrollLeft:number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-    let clientTop = docEl.clientTop || body.clientTop || 0;
-    let clientLeft = docEl.clientLeft || body.clientLeft || 0;
+    let clientTop:number = docEl.clientTop || body.clientTop || 0;
+    let clientLeft:number = docEl.clientLeft || body.clientLeft || 0;
 
-    let top = box.top;
-    let left = box.left + scrollLeft - clientLeft;
+    let top:number = box.top;
+    let left:number = box.left + scrollLeft - clientLeft;
+
+    if (querySelector === '.income-title-desktop') {
+      top = box.top - clientTop - 14;
+    }
 
     if (querySelector === '.images-container') {
       top = box.top + scrollTop - clientTop;
+      left = box.left + scrollLeft - clientLeft + 40;
     }
-    cb({top: Math.round(top) + 40, left: Math.round(left) + 20});
+
+    if (querySelector === '.street-box') {
+      top = box.top - clientTop - 3;
+      left = box.left + scrollLeft - clientLeft + 40;
+    }
+
+    cb({top: Math.round(top) + 66, left: Math.round(left) - 20});
   }
 
   protected startQuickTour():void {
-    this.switchOnOnboarding(false);
+    this.switchOffOnboarding();
     this.numberOfStep = 1;
     window.localStorage.setItem('onboarded', 'true');
     this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
@@ -419,13 +491,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     if (this.numberOfStep === 2) {
-      baloonDirector = 'incomes-filter';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
+      baloonDirector = 'countries-filter';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'geography']);
     }
 
     if (this.numberOfStep === 3) {
-      baloonDirector = 'countries-filter';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'geography']);
+      baloonDirector = '.income-title-desktop';
+      this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
     }
 
     if (this.numberOfStep === 4) {
@@ -445,28 +517,19 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
-  protected switchOnOnboarding(closeOnboarding:boolean):void {
+  protected switchOffOnboarding():void {
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
     let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
 
-    if (!closeOnboarding) {
-      document.body.className = '';
-      setTimeout(function ():void {
-        matrixImages.style.paddingTop = `${header.offsetHeight}px`;
-        zoomButtons.style.paddingTop = `${onboard.offsetHeight + 20}px`;
-      }, 0);
-      this.showOnboarding = false;
-      return;
-    }
+    document.body.className = '';
 
-    this.showOnboarding = true;
-    this.switchOnQuickTour = false;
-
-    setTimeout(function ():void {
+    setTimeout(():void => {
       matrixImages.style.paddingTop = `${header.offsetHeight}px`;
       zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
     }, 0);
+
+    this.showOnboarding = false;
   }
 }

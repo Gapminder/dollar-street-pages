@@ -1,20 +1,9 @@
-import {
-  it,
-  describe,
-  async,
-  inject,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../common-mocks/mocked.services.ts';
-import {MockService} from '../../common-mocks/mock.service.template.ts';
-import {info} from '../mocks/data.ts';
-
-import {CountryInfoComponent} from '../../../../app/country/country-info/country-info.component';
+import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../common-mocks/mocked.services.ts';
+import { MockService } from '../../common-mocks/mock.service.template.ts';
+import { info } from '../mocks/data.ts';
+import { CountryInfoComponent } from '../../../../app/country/country-info/country-info.component';
 
 describe('CountryInfoComponent', () => {
   let countryInfoService = new MockService();
@@ -28,19 +17,24 @@ describe('CountryInfoComponent', () => {
       countryInfoService.getProviders()
     ];
   });
-  let context, fixture;
+
+  let context;
+  let fixture;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb.createAsync(CountryInfoComponent).then((fixtureInst:any) => {
       fixture = fixtureInst;
       context = fixture.debugElement.componentInstance;
     });
   })));
+
   it('CountryInfoComponent must init ', ()=> {
     fixture.detectChanges();
     expect(context.placesQantity).toEqual(7);
     expect(context.photosQantity).toEqual(1223);
     countryInfoService.toInitState();
   });
+
   it('CountryInfoComponent must destroy ', ()=> {
     fixture.detectChanges();
     fixture.destroy();

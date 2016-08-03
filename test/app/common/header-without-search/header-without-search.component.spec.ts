@@ -1,20 +1,9 @@
-import {
-  it,
-  describe,
-  inject,
-  async,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
-import {MockService} from '../../../app/common-mocks/mock.service.template';
-import {res} from './mocks/data.ts';
-
-import {HeaderWithoutSearchComponent} from '../../../../app/common/headerWithoutSearch/header.component';
+import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { MockService } from '../../../app/common-mocks/mock.service.template';
+import { res } from './mocks/data.ts';
+import { HeaderWithoutSearchComponent } from '../../../../app/common/headerWithoutSearch/header.component';
 
 describe('HeaderWithoutSearchComponent', () => {
   let mockCommonDependency = new MockCommonDependency();
@@ -28,7 +17,10 @@ describe('HeaderWithoutSearchComponent', () => {
       mockHeaderService.getProviders()
     ];
   });
-  let context, fixture;
+
+  let context;
+  let fixture;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb
       .createAsync(HeaderWithoutSearchComponent)
@@ -40,8 +32,8 @@ describe('HeaderWithoutSearchComponent', () => {
   it('ngOnInit', () => {
     context.ngOnInit();
     expect(context.defaultThing).toEqual(res.data);
-    spyOn(context.headerServiceSibscribe, 'unsubscribe');
+    spyOn(context.headerServiceSubscribe, 'unsubscribe');
     context.ngOnDestroy();
-    expect(context.headerServiceSibscribe.unsubscribe).toHaveBeenCalled();
+    expect(context.headerServiceSubscribe.unsubscribe).toHaveBeenCalled();
   });
 });

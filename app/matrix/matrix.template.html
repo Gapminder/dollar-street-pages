@@ -1,71 +1,80 @@
-<div class="matrix-header main-header">
-  <div class="matrix-onboard" [hidden]="!showOnboarding">
-    <a class="pull-right close-button font-large"
-       (click)="switchOnOnboarding(false)"></a>
-    <div class="font-large">Find out how people <span class="font-bold really-underline">really </span>live</div>
-    <div class="header-onboard-editable-text">{{headerOnboard?.description}}</div>
-    <div class="onboard-buttons-container onboard-button-text">
-      <a class="onboard-button-qt"
-         (click)="startQuickTour()"><span>Quick tour!</span></a>
-      <a class="onboard-button-ml"
-         (click)="switchOnOnboarding(false)">Maybe later!</a>
+<div class="pages-container" footerSpace>
+  <div class="matrix-header main-header">
+    <div class="matrix-onboard" [hidden]="!showOnboarding">
+      <a class="pull-right close-button font-large"
+         (click)="switchOffOnboarding()"></a>
+      <div class="font-large">Find out how people <span class="font-bold really-underline">really </span>live</div>
+      <div class="header-onboard-editable-text">{{headerOnboard?.description}}</div>
+      <div class="onboard-buttons-container onboard-button-text">
+        <a class="onboard-button-qt"
+           (click)="startQuickTour()"><span>Quick tour!</span></a>
+        <a class="onboard-button-ml"
+           (click)="switchOffOnboarding()">Maybe later!</a>
+      </div>
     </div>
+
+    <div class="quick-tour"
+         [ngStyle]="{top: baloonTip.position?.top + 'px', left: baloonTip.position?.left + 'px'}"
+         *ngIf="switchOnQuickTour">
+
+      <div class="position-relative">
+        <div class="onboarding-steps">{{numberOfStep}} of 5</div>
+        <span class="pull-right close-button-light"
+           (click)="closeQuickTour()">
+        </span>
+      </div>
+
+      <div class="qt-baloon-name">{{baloonTip?.header}}</div>
+      <div class="qt-baloon-text">{{baloonTip?.description}}
+        <a class="cc-link" target="_blank" *ngIf="numberOfStep === 5" [href]="baloonTip.link?.href">{{baloonTip.link?.text}}</a>
+      </div>
+      <div class="text-center marg-15-px onboard-step-button">
+        <a *ngIf="numberOfStep !== 1" (click)="step(false)">BACK</a>
+        <a *ngIf="numberOfStep !== 5" (click)="step(true)">NEXT</a>
+        <a *ngIf="numberOfStep === 5" (click)="closeQuickTour()">CLOSE</a>
+      </div>
+    </div>
+
+    <header [query]="query"
+            [thing]="thing"
+            [hoverPlace]="hoverPlace"
+            (filter)="urlChanged($event)">
+    </header>
+
+    <street [query]="query"
+            [thing]="thing"
+            [places]="streetPlaces"
+            [hoverPlace]="hoverPlace"
+            [chosenPlaces]="chosenPlaces"
+            (filterStreet)="urlChanged($event)"></street>
   </div>
 
-  <div class="quick-tour"
-       [ngStyle]="{top: baloonTip.position?.top + 'px', left: baloonTip.position?.left + 'px'}"
-       *ngIf="switchOnQuickTour">
-    <div class="text-center">{{numberOfStep}} of 5</div>
-    <div class="qt-baloon-name">{{baloonTip?.header}}</div>
-    <div class="qt-baloon-text">{{baloonTip?.description}}
-      <a class="cc-link" target="_blank" *ngIf="numberOfStep === 5" [href]="baloonTip.link?.href">{{baloonTip.link?.text}}</a>
-    </div>
-    <div class="text-center marg-5-px">
-      <a class="onboard-button-ml" *ngIf="numberOfStep !== 1" (click)="step(false)">Back</a>
-      <a class="onboard-button-ml" *ngIf="numberOfStep !== 5" (click)="step(true)">Next</a>
-      <a class="onboard-button-ml" *ngIf="numberOfStep === 5" (click)="closeQuickTour()">Close</a>
-    </div>
+  <matrix-images [zoom]="zoom"
+                 [query]="query"
+                 [thing]="thing"
+                 [padding]="padding"
+                 [places]="matrixPlaces"
+                 [activeHouse]="activeHouse"
+                 [clearActiveHomeViewBox]="clearActiveHomeViewBox"
+                 (filter)="urlChanged($event)"
+                 (hoverPlace)="hoverPlaceS($event)"
+                 (activeHouseOptions)="activeHouseOptions($event)">
+  </matrix-images>
+
+  <div class="zoom-column pull-right" *ngIf="filtredPlaces.length">
+
+    <button type="button"
+            class="increase"
+            [disabled]="zoom === 2"
+            (click)="changeZoom(zoom - 1)">
+    </button>
+
+    <button type="button"
+            class="decrease"
+            [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
+            (click)="changeZoom(zoom + 1)">
+    </button>
   </div>
-
-  <header [query]="query"
-          [thing]="thing"
-          [hoverPlace]="hoverPlace"
-          (filter)="urlChanged($event)">
-  </header>
-
-  <street [query]="query"
-          [thing]="thing"
-          [places]="streetPlaces"
-          [hoverPlace]="hoverPlace"
-          [chosenPlaces]="chosenPlaces"
-          (filterStreet)="urlChanged($event)"></street>
-</div>
-
-<matrix-images [zoom]="zoom"
-               [query]="query"
-
-               [thing]="thing"
-               [places]="matrixPlaces"
-               [activeHouse]="activeHouse"
-               (hoverPlace)="hoverPlaceS($event)"
-               (filter)="urlChanged($event)"
-               (activeHouseOptions)="activeHouseOptions($event)"
-               [padding]="padding">
-</matrix-images>
-
-<div class="zoom-column pull-right" *ngIf="filtredPlaces.length">
-
-  <button type="button"
-          [disabled]="zoom === 2"
-          (click)="changeZoom(zoom - 1)">
-    <b>+</b>
-  </button>
-
-  <button type="button"
-          [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
-          (click)="changeZoom(zoom + 1)">
-    <b>-</b>
-  </button>
 </div>
 
 <footer></footer>

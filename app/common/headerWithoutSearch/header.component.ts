@@ -1,5 +1,7 @@
 import { Component, Inject, Input, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Subscriber } from 'rxjs/Rx';
+import { Angulartics2On } from 'angulartics2';
 import { MainMenuComponent } from '../menu/menu.component';
 
 let tpl = require('./header.template.html');
@@ -9,7 +11,7 @@ let style = require('./header.css');
   selector: 'header',
   template: tpl,
   styles: [style],
-  directives: [MainMenuComponent, RouterLink]
+  directives: [MainMenuComponent, ROUTER_DIRECTIVES, Angulartics2On]
 })
 
 export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
@@ -20,17 +22,18 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
 
   private defaultThing:any;
   private headerService:any;
-  private headerServiceSibscribe:any;
+  private headerServiceSubscribe:Subscriber;
 
   public constructor(@Inject('HeaderService') headerService:any) {
     this.headerService = headerService;
   }
 
   public ngOnInit():void {
-    this.headerServiceSibscribe = this.headerService.getDefaultThing()
+    this.headerServiceSubscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.defaultThing = res.data;
@@ -38,6 +41,6 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy():void {
-    this.headerServiceSibscribe.unsubscribe();
+    this.headerServiceSubscribe.unsubscribe();
   }
 }

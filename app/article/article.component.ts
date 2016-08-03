@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { RouteParams } from '@angular/router-deprecated';
+import { ActivatedRoute } from '@angular/router';
 import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { LoaderComponent } from '../common/loader/loader.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./article.template.html');
 let style = require('./article.css');
@@ -11,25 +13,30 @@ let style = require('./article.css');
   selector: 'article-page',
   template: tpl,
   styles: [style],
-  directives: [HeaderWithoutSearchComponent, FooterComponent, LoaderComponent]
+  directives: [HeaderWithoutSearchComponent, FooterComponent, LoaderComponent, FooterSpaceDirective]
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {
-  public title:string;
-  public loader:boolean = false;
+  protected title:string;
+  protected loader:boolean = false;
   private articleService:any;
-  private articleServiceSubscribe:any;
+  private articleServiceSubscribe:Subscriber;
   private article:any;
   private thingId:string;
-  private routeParams:RouteParams;
+  private activatedRoute:ActivatedRoute;
+  private queryParamsSubscribe:any;
 
-  public constructor(@Inject('ArticleService') articleService:any, @Inject(RouteParams) routeParams:RouteParams) {
+  public constructor(@Inject('ArticleService') articleService:any,
+                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute) {
     this.articleService = articleService;
-    this.routeParams = routeParams;
+    this.activatedRoute = activatedRoute;
   }
 
   public ngOnInit():void {
-    this.thingId = this.routeParams.get('id');
+    this.queryParamsSubscribe = this.activatedRoute.params
+      .subscribe((params:any) => {
+        this.thingId = params.id;
+      });
 
     this.articleServiceSubscribe = this.articleService
       .getArticle(`id=${this.thingId}`)
@@ -46,6 +53,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy():void {
+    this.queryParamsSubscribe.unsubscribe();
     this.articleServiceSubscribe.unsubscribe();
   }
 }

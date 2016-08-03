@@ -1,18 +1,19 @@
-import { Component, Inject, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { Router, RouteParams, RouterLink } from '@angular/router-deprecated';
-import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from '../common/footer/footer.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { MainMenuComponent } from '../common/menu/menu.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { HomeMediaComponent } from './home-media/home-media.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
+import { Subscriber } from 'rxjs/Rx';
 
 let _ = require('lodash');
 
 let tpl = require('./home.template.html');
 let style = require('./home.css');
 
-interface UrlParamsInterfase {
+interface UrlParamsInterface {
   thing:string;
   countries:string;
   regions:string;
@@ -23,55 +24,72 @@ interface UrlParamsInterfase {
 }
 
 @Component({
-  selector: 'home',
+  selector: 'family',
   template: tpl,
   styles: [style],
-  directives: [HomeHeaderComponent, HomeMediaComponent, FooterComponent, LoaderComponent, RouterLink, MainMenuComponent]
+  directives: [
+    HomeHeaderComponent,
+    HomeMediaComponent,
+    FooterComponent,
+    LoaderComponent,
+    ROUTER_DIRECTIVES,
+    MainMenuComponent,
+    FooterSpaceDirective
+  ]
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
   protected loader:boolean = false;
   protected titles:any = {};
-  protected familyData:any = {};
-  protected headerMenuPosition:number = -60;
 
   private placeId:string;
-  private routeParams:RouteParams;
-  private urlParams:UrlParamsInterfase;
+  private urlParams:UrlParamsInterface;
   private homeIncomeFilterService:any;
-  private homeIncomeFilterServiceSubscribe:any;
+  private homeIncomeFilterServiceSubscribe:Subscriber;
   private homeIncomeData:any;
   private rich:any;
   private poor:any;
   private router:Router;
   private countriesFilterService:any;
-  private countriesFilterServiceSubscribe:any;
+  private countriesFilterServiceSubscribe:Subscriber;
   private locations:any[];
-  private zone:NgZone;
-  private scrollSubscribe:any;
+  private activeImageIndex:number;
+  private urlChangeService:any;
+  private windowHistory:any = history;
+  private queryParamsSubscribe:any;
 
-  public constructor(@Inject(RouteParams) routeParams:RouteParams,
-                     @Inject('CountriesFilterService') countriesFilterService:any,
+  public constructor(@Inject('CountriesFilterService') countriesFilterService:any,
                      @Inject('HomeIncomeFilterService') homeIncomeFilterService:any,
-                     @Inject(NgZone) zone:NgZone,
+                     @Inject('UrlChangeService') urlChangeService:any,
                      @Inject(Router) router:Router) {
-    this.routeParams = routeParams;
-    this.zone = zone;
     this.router = router;
     this.homeIncomeFilterService = homeIncomeFilterService;
     this.countriesFilterService = countriesFilterService;
+    this.urlChangeService = urlChangeService;
   }
 
   public ngOnInit():void {
-    this.placeId = this.routeParams.get('place');
+    this.queryParamsSubscribe = this.router
+      .routerState
+      .queryParams
+      .subscribe((params:any) => {
+        this.placeId = params.place;
+        this.activeImageIndex = parseInt(params.activeImage, 10);
 
-    this.urlParams = {
-      thing: this.routeParams.get('thing') ? decodeURI(this.routeParams.get('thing')) : 'Home',
-      countries: this.routeParams.get('countries') ? decodeURI(this.routeParams.get('countries')) : 'World',
-      regions: this.routeParams.get('regions') ? decodeURI(this.routeParams.get('regions')) : 'World',
-      zoom: parseInt(this.routeParams.get('zoom'), 10) || 4,
-      row: parseInt(this.routeParams.get('row'), 10) || 1
-    };
+        this.urlParams = {
+          thing: params.thing ? decodeURI(params.thing) : 'Families',
+          countries: params.countries ? decodeURI(params.countries) : 'World',
+          regions: params.regions ? decodeURI(params.regions) : 'World',
+          zoom: parseInt(params.zoom, 10) || 4,
+          row: parseInt(params.row, 10) || 1,
+          lowIncome: parseInt(params.lowIncome, 10),
+          highIncome: parseInt(params.highIncome, 10)
+        };
+      });
+
+    if (!isNaN(this.activeImageIndex) && 'scrollRestoration' in history) {
+      this.windowHistory.scrollRestoration = 'manual';
+    }
 
     this.homeIncomeFilterServiceSubscribe = this.homeIncomeFilterService.getData()
       .subscribe((val:any) => {
@@ -96,7 +114,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getCountries(`thing=${this.urlParams.thing}`)
       .subscribe((res:any):any => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.locations = res.data;
@@ -107,41 +126,46 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.initData();
       });
-
-    this.scrollSubscribe = fromEvent(document, 'scroll')
-      .subscribe(() => {
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-
-        this.zone.run(() => {
-          if (scrollTop > 100) {
-            this.headerMenuPosition = 0;
-          } else {
-            this.headerMenuPosition = -60;
-          }
-        });
-      });
   }
 
   public ngOnDestroy():void {
+    this.queryParamsSubscribe.unsubscribe();
     this.countriesFilterServiceSubscribe.unsubscribe();
     this.homeIncomeFilterServiceSubscribe.unsubscribe();
 
-    if (this.scrollSubscribe) {
-      this.scrollSubscribe.unsubscribe();
+    if ('scrollRestoration' in history) {
+      this.windowHistory.scrollRestoration = 'auto';
     }
   }
 
-  protected getFamilyData(familyData:any):void {
-    this.familyData = familyData;
+  protected activeImageOptions(options:{activeImageIndex?:number;}):void {
+    let {activeImageIndex} = options;
+
+    if (activeImageIndex === this.activeImageIndex) {
+      return;
+    }
+
+    let url:string = location.search
+      .replace('?', '')
+      .replace(/&activeImage\=\d*/, '');
+
+    if (activeImageIndex) {
+      this.activeImageIndex = activeImageIndex;
+      url = url + `&activeImage=${activeImageIndex}`;
+    } else {
+      this.activeImageIndex = void 0;
+    }
+
+    this.urlChangeService.replaceState('/family', url);
   }
 
   private initData():void {
-    this.urlParams.lowIncome = parseInt(this.routeParams.get('lowIncome'), 10) || this.poor;
-    this.urlParams.highIncome = parseInt(this.routeParams.get('highIncome'), 10) || this.rich;
+    this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
+    this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
 
     if (!this.placeId) {
-      this.router.navigate(['Matrix', {
-        thing: 'Home',
+      this.router.navigate(['/matrix', {
+        thing: 'Families',
         countries: 'World',
         regions: 'World',
         zoom: 4,

@@ -1,35 +1,19 @@
 <div class="header-content">
   <div class="icon-container pull-left">
-    <a [routerLink]="['Main']"><img src="/assets/img/dollar-street.svg" alt=""/></a>
+    <a (click)="goToMatrixPage()"><img src="/assets/img/dollar-street.svg" alt=""/></a>
   </div>
 
   <div class="filters-container">
-    <div class="place-title pull-left" *ngIf="placeComponent && header">
-      <div class="icon pull-left"
-           *ngIf="header.icon"
-           [ngStyle]="{'background-image': header.icon}"></div>
-
-      <p class="pull-left">{{header.family ? header.family + ' family, ' : ''}}{{header.income ?
-        math.round(header.income) + '$, ' : ''}}{{header.country}}</p>
-    </div>
-
     <things-filter [url]="query"
                    (selectedFilter)="urlTransfer($event)"></things-filter>
-    <div class="some-filter-container" *ngIf="matrixComponent">
-      <span>by</span>
-      <incomes-filter [url]="query"
-                      (selectedFilter)="urlTransfer($event)"></incomes-filter>
+    <div class="some-filter-container incomeby" *ngIf="matrixComponent">
       <span>in</span>
       <countries-filter [url]="query"
                         (selectedFilter)="urlTransfer($event)"></countries-filter>
-    </div>
-  </div>
-
-  <div class="map-menu-content">
-    <div class="matrix-icon" *ngIf="placeComponent || mapComponent">
-      <a [routerLink]="['Matrix']">
-        <img src="/assets/img/dark-matrix-icon.svg" alt="">
-      </a>
+      <span class="income-title-container">
+        <span class="income-title">by $</span>
+        <span class="income-title">by income</span>
+      </span>
     </div>
   </div>
 

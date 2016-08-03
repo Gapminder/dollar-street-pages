@@ -1,20 +1,9 @@
-import {
-  it,
-  describe,
-  inject,
-  async,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
-import {MockService} from '../../../app/common-mocks/mock.service.template';
-import {ambassadors} from '../mocks/data.ts';
-
-import {AmbassadorsListComponent} from '../../../../app/ambassadors/ambassadors-list/ambassadors-list.component';
+import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { MockService } from '../../../app/common-mocks/mock.service.template';
+import { ambassadors } from '../mocks/data.ts';
+import { AmbassadorsListComponent } from '../../../../app/ambassadors/ambassadors-list/ambassadors-list.component';
 
 describe('PhotographersComponent', () => {
   let mockAmbassadorsService = new MockService();
@@ -28,7 +17,11 @@ describe('PhotographersComponent', () => {
       mockAmbassadorsService.getProviders()
     ];
   });
-  let context, fixture, nativeElement;
+
+  let context;
+  let fixture;
+  let nativeElement;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb.createAsync(AmbassadorsListComponent).then((fixtureInst:any) => {
       fixture = fixtureInst;
@@ -36,17 +29,12 @@ describe('PhotographersComponent', () => {
       nativeElement = fixture.debugElement.nativeElement;
     });
   })));
+
   it('AmbassadorsComponent must init ', ()=> {
     fixture.detectChanges();
     expect(context.ambassadorsList.length).toEqual(3);
   });
-  // it('AmbassadorsComponent people render by right title ', ()=> {
-  //   fixture.detectChanges();
-  //   let sectionHeaders = nativeElement.querySelectorAll('.ambassadors-peoples h2');
-  //   expect(sectionHeaders[0].innerHTML).toEqual('Teachers');
-  //   expect(sectionHeaders[1].innerHTML).toEqual('Writers');
-  //   expect(sectionHeaders[2].innerHTML).toEqual('Organisations');
-  // });
+
   it('AmbassadorsComponent show more ', ()=> {
     fixture.detectChanges();
     let sections = nativeElement.querySelectorAll('.ambassadors-peoples:first-child .ambassadors-people');

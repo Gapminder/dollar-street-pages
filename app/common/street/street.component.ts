@@ -9,10 +9,11 @@ import {
   OnChanges,
   EventEmitter
 } from '@angular/core';
-import { RouterLink, Router } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
+import { Subscriber } from 'rxjs/Rx';
 
 const _ = require('lodash');
 
@@ -23,11 +24,12 @@ let style = require('./street.css');
   selector: 'street',
   template: tpl,
   styles: [style],
-  directives: [RouterLink]
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   public data:any;
+  protected math:any;
   @Input('thing')
   protected thing:string;
   @Input('query')
@@ -38,59 +40,51 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private chosenPlaces:Observable<any>;
   @Input('hoverPlace')
   private hoverPlace:Subject<any>;
-  @Input('controllSlider')
-  private controllSlider:Subject<any>;
   @Output('filterStreet')
-  private filterStreet:EventEmitter<any> = new EventEmitter();
+  private filterStreet:EventEmitter<any> = new EventEmitter<any>();
 
   private street:any;
   private streetSettingsService:any;
   private streetData:any;
   private element:HTMLElement;
-  private router:Router;
-  private StreetServiceSubscrib:any;
+  private activatedRoute:ActivatedRoute;
+  private StreetServiceSubscrib:Subscriber;
   private resize:any;
   private drawOnMap:boolean = false;
 
-  private placesSubscribe:any;
-  private hoverPlaceSubscribe:any;
-  private chosenPlacesSubscribe:any;
-  private mouseMoveSubscriber:any;
-  private math:any;
+  private placesSubscribe:Subscriber;
+  private hoverPlaceSubscribe:Subscriber;
+  private chosenPlacesSubscribe:Subscriber;
   private svg:SVGElement;
   private showSlider:boolean;
   private placesArr:any;
 
   public constructor(@Inject(ElementRef) element:ElementRef,
-                     @Inject(Router) router:Router,
+                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
                      @Inject('Math') math:any,
                      @Inject('StreetSettingsService') streetSettingsService:any,
                      @Inject('StreetDrawService') streetDrawService:any) {
     this.element = element.nativeElement;
-    this.router = router;
+    this.activatedRoute = activatedRoute;
     this.math = math;
     this.street = streetDrawService;
     this.streetSettingsService = streetSettingsService;
-    this.showSlider = this.router.hostComponent.name === 'MatrixComponent';
+    this.showSlider = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
   public ngOnInit():any {
     this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
+    this.street.set('isInit', true);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
         if (!chosenPlaces.length) {
+          this.street.set('chosenPlaces', []);
           this.street.clearAndRedraw(chosenPlaces);
+
           return;
         }
 
         this.street.set('chosenPlaces', chosenPlaces);
-
-        if (this.controllSlider) {
-          this.street.clearAndRedraw(chosenPlaces, true);
-
-          return;
-        }
-
         this.street.clearAndRedraw(chosenPlaces);
       });
 
@@ -101,8 +95,15 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
           return;
         }
 
+        if (!this.street.scale && this.street.isInit) {
+          this.street.set('hoverPlace', hoverPlace);
+
+          return;
+        }
+
         if (!hoverPlace) {
           this.street.removeHouses('hover');
+          this.street.set('hoverPlace', undefined);
           this.street.clearAndRedraw(this.street.chosenPlaces);
 
           return;
@@ -122,12 +123,13 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       });
 
     this.StreetServiceSubscrib = this.streetSettingsService.getStreetSettings()
-      .subscribe((val:any) => {
-        if (val.err) {
+      .subscribe((res:any) => {
+        if (res.err) {
+          console.error(res.err);
           return;
         }
 
-        this.streetData = val.data;
+        this.streetData = res.data;
 
         if (!this.placesArr) {
           return;
@@ -192,10 +194,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.chosenPlacesSubscribe) {
       this.chosenPlacesSubscribe.unsubscribe();
-    }
-
-    if (this.mouseMoveSubscriber) {
-      this.mouseMoveSubscriber.unsubscribe();
     }
 
     if (this.StreetServiceSubscrib) {

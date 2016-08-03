@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./social-share-buttons.html');
 let style = require('./social-share-buttons.css');
@@ -17,7 +18,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   private urlChangeService:any;
   private url:string;
   private urlEvents:any;
-  private socialShareButtonsServiceSubscribe:any;
+  private socialShareButtonsServiceSubscribe:Subscriber;
 
   public constructor(@Inject('SocialShareButtonsService') socialShareButtonsService:any,
                      @Inject('UrlChangeService') urlChangeService:any,
@@ -32,7 +33,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
     this.urlEvents = this.urlChangeService
       .getUrlEvents()
-      // .debounceTime(300)
+      .debounceTime(1000)
       .subscribe(() => {
         this.getUrl();
       });
@@ -44,18 +45,20 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   }
 
   public getUrl():void {
-    let query = `url=${this.location.path()}`;
+    let query = {url: this.location.path()};
+
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl(query)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.url = res.url;
       });
   }
 
-  public openPopUp(originalUrl:string):void {
+  protected openPopUp(originalUrl:string):void {
     let left = (window.innerWidth - 490) / 2;
     let popupWin = window.open(originalUrl + this.url, 'contacts', 'location, width=490, height=368, top=100, left=' + left);
     popupWin.focus();

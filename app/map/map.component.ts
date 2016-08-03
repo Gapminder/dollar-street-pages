@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
-import { RouterLink, RouteParams, Router } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber } from 'rxjs/Rx';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { FooterComponent } from '../common/footer/footer.component';
+import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');
@@ -14,12 +16,12 @@ let device = require('device.js')();
   selector: 'map-component',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, HeaderComponent, LoaderComponent, FooterComponent]
+  directives: [ROUTER_DIRECTIVES, HeaderComponent, LoaderComponent, FooterComponent, FooterSpaceDirective]
 })
 
 export class MapComponent implements OnInit, OnDestroy {
   public resizeSubscribe:any;
-  public mapServiceSubscribe:any;
+  public mapServiceSubscribe:Subscriber;
   public math:any;
   public loader:boolean = false;
   public needChangeUrl:boolean = false;
@@ -36,7 +38,6 @@ export class MapComponent implements OnInit, OnDestroy {
   private thing:any;
   private urlChangeService:any;
   private query:string;
-  private routeParams:any;
   private currentCountry:string;
   private lefSideCountries:any;
   private seeAllHomes:boolean = false;
@@ -46,21 +47,23 @@ export class MapComponent implements OnInit, OnDestroy {
   private isOpenLeftSide:boolean = false;
   private init:boolean;
   private router:Router;
+  private activatedRoute:ActivatedRoute;
   private isDesktop:boolean = device.desktop();
   private zone:NgZone;
   private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
+  private queryParamsSubscribe:any;
 
   public constructor(@Inject('MapService') placeService:any,
                      @Inject(ElementRef) element:ElementRef,
-                     @Inject(RouteParams) routeParams:RouteParams,
                      @Inject(Router) router:Router,
+                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
                      @Inject(NgZone) zone:NgZone,
                      @Inject('UrlChangeService') urlChangeService:any,
                      @Inject('Math') math:any) {
     this.mapService = placeService;
     this.element = element.nativeElement;
-    this.routeParams = routeParams;
     this.router = router;
+    this.activatedRoute = activatedRoute;
     this.zone = zone;
     this.math = math;
     this.urlChangeService = urlChangeService;
@@ -68,17 +71,23 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public ngOnInit():void {
     this.init = true;
-    this.thing = this.routeParams.get('thing');
-    this.thing = this.thing ? this.thing : 'Home';
 
-    this.urlChanged({url: `thing=${this.thing}`});
+    this.queryParamsSubscribe = this.router
+      .routerState
+      .queryParams
+      .subscribe((params:any) => {
+        this.thing = params.thing ? params.thing : 'Families';
+
+        this.urlChanged({url: `thing=${this.thing}`});
+      });
   }
 
   public urlChanged(options:any):void {
     this.mapServiceSubscribe = this.mapService.getMainPlaces(options.url)
       .subscribe((res:any):any => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.places = res.data.places;
@@ -101,11 +110,12 @@ export class MapComponent implements OnInit, OnDestroy {
   public ngOnDestroy():void {
     this.mapServiceSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
+    this.queryParamsSubscribe.unsubscribe();
   }
 
   public setMarkersCoord(places:any):void {
     let img = new Image();
-    let mapImage = this.element.querySelector('.map-color');
+    let mapImage:HTMLImageElement = this.element.querySelector('.map-color');
 
     img.onload = () => {
       this.zone.run(() => {
@@ -297,7 +307,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
-      this.router.navigate(['Home', {place: this.hoverPlace._id}]);
+      this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }
 

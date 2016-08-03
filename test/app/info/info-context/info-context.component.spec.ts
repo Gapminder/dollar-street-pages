@@ -1,11 +1,9 @@
-import {it, describe, async, inject, beforeEachProviders, beforeEach} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
-import {MockService} from '../../../app/common-mocks/mock.service.template';
-import {infoContext} from './mocks/data.ts';
-
-import {InfoContextComponent} from '../../../../app/info/info-context/info-context.component';
+import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { MockService } from '../../../app/common-mocks/mock.service.template';
+import { infoContext } from './mocks/data.ts';
+import { InfoContextComponent } from '../../../../app/info/info-context/info-context.component';
 
 describe('PhotographerPlacesComponent', () => {
   let mockInfoService = new MockService();
@@ -22,7 +20,9 @@ describe('PhotographerPlacesComponent', () => {
     ];
   });
 
-  let context, fixture, nativeElement;
+  let context;
+  let fixture;
+  let nativeElement;
 
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
     return tcb.createAsync(InfoContextComponent).then((fixtureInst:any) => {

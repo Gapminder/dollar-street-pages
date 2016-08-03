@@ -7,15 +7,13 @@ import { AppComponent } from '../../../app/app.component';
 import { MathService } from '../../../app/common/math-service/math-service';
 import { StreetDrawService } from '../../../app/common/street/street.service';
 import { HomeIncomeFilterService } from '../../../app/home/home-income-filter.service';
+import { HomeHeaderService } from '../../../app/home/home-header/home-header.service';
+import { HomeMediaService } from '../../../app/home/home-media/home-media.service';
 import { StreetSettingsService } from '../../../app/common/street/street.settings.service';
 import { MatrixService } from '../../../app/matrix/matrix.service';
 import { HeaderService } from '../../../app/common/header/header.service';
-import { SearchService } from '../../../app/common/search/search.service';
 import { CountryInfoService } from '../../../app/country/country-info/country-info.service';
 import { CountryPlacesService } from '../../../app/country/country-places/country-places.service';
-import { MainPlacesService } from '../../../app/main/places/main.places.service.ts';
-import { ThingsMainService } from '../../../app/main/things/things.main.service';
-import { ConceptMainService } from '../../../app/main/concept/concept.main.service';
 import { MapService } from '../../../app/map/map.service';
 import { UrlChangeService } from '../../../app/common/url-change/url-change.service';
 import { PhotographersService } from '../../../app/all-photographers/photographers/photographers.service';
@@ -34,14 +32,12 @@ export class MockCommonDependency {
       provide(RouteParams, {useClass: MockRouteParams}),
       provide(NgZone, {useClass: MockNgZone}),
       provide('StreetDrawService', {useClass: StreetDrawService}),
-      provide('ConceptMainService', {useClass: ConceptMainService}),
-      provide('ThingsMainService', {useClass: ThingsMainService}),
       provide('MatrixService', {useClass: MatrixService}),
       provide('HeaderService', {useClass: HeaderService}),
-      provide('SearchService', {useClass: SearchService}),
       provide('StreetSettingsService', {useClass: StreetSettingsService}),
       provide('HomeIncomeFilterService', {useClass: HomeIncomeFilterService}),
-      provide('MainPlacesService', {useClass: MainPlacesService}),
+      provide('HomeHeaderService', {useClass: HomeHeaderService}),
+      provide('HomeMediaService', {useClass: HomeMediaService}),
       provide('MapService', {useClass: MapService}),
       provide('UrlChangeService', {useClass: UrlChangeService}),
       provide('PhotographerProfileService', {useClass: PhotographerProfileService}),

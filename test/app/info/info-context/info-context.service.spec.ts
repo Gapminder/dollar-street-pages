@@ -1,12 +1,9 @@
-import {it, describe, beforeEachProviders, tick, inject, fakeAsync} from '@angular/core/testing';
-
-import {MockBackend} from '@angular/http/testing';
-import {provide} from '@angular/core';
-import {Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions} from '@angular/http';
-
-import {Config} from '../../../../app/app.config.ts';
-
-import {InfoContextService} from '../../../../app/info/info-context/info-context.service';
+import { it, describe, beforeEachProviders, tick, inject, fakeAsync } from '@angular/core/testing';
+import { MockBackend } from '@angular/http/testing';
+import { provide } from '@angular/core';
+import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
+import { Config } from '../../../../app/app.config.ts';
+import { InfoContextService } from '../../../../app/info/info-context/info-context.service';
 
 describe('InfoContextService', () => {
   beforeEachProviders(() => {

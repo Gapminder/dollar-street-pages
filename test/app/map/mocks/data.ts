@@ -1,6 +1,3 @@
-/**
- * Created by igor on 3/30/16.
- */
 export let mapdata = {
   'success': true,
   'msg': [],

@@ -12,8 +12,7 @@
   },
   "exclude": [
     "node_modules",
-    "./app/main",
-    "./app/sitemap"
+    "./app/first"
   ],
   "files": [
     "./typings/index.d.ts",
@@ -30,17 +29,10 @@
     "./app/common/header/header.component.ts",
     "./app/common/headerWithoutSearch/header.component.ts",
     "./app/common/menu/menu.component.ts",
-    "./app/common/search/search.component.ts",
-    "./app/common/search/search.service.ts",
-    "./app/common/search/thing-filter.pipe.ts",
     "./app/common/loader/loader.component.ts",
     "./app/common/row-loader/row-loader.component.ts",
     "./app/common/place-map/place-map.component.ts",
-    "./app/first/first.component.ts",
-    "./app/first/about/about.component.ts",
-    "./app/first/header/header.component.ts",
-    "./app/first/similarities/similarities.component.ts",
-    "./app/first/welcome/welcome.component.ts",
+    "./app/common/region-map/region-map.component.ts",
     "./app/matrix/matrix.component.ts",
     "./app/matrix/matrix.service.ts",
     "./app/matrix/matrix-images/matrix-images.component.ts",
@@ -64,6 +56,13 @@
     "./app/article/article.component.ts",
     "./app/article/article.service.ts",
     "./app/country/country-places/country-places.component.ts",
-    "./app/country/country-places/country-places.service.ts"
+    "./app/country/country-places/country-places.service.ts",
+    "./app/home/home.component.ts",
+    "./app/home/home-income-filter.service.ts",
+    "./app/home/home-header/home-header.component.ts",
+    "./app/home/home-header/home-header.service.ts",
+    "./app/home/home-media/home-media.component.ts",
+    "./app/home/home-media/home-media.service.ts",
+    "./app/home/home-media/home-media-view-block/home-media-view-block.component.ts"
   ]
 }

@@ -30,7 +30,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   @Input()
   private url:string;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter();
+  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
 
   private countriesFilterService:any;
   private countriesFilterServiceSubscribe:any;
@@ -80,6 +80,13 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
 
   protected selectRegions(location:any):void {
     let index = this.selectedRegions.indexOf(location.region);
+    let getEmptyCountries = _.map(location.countries, 'empty');
+    let uniqEmptyCountries = _.uniq(getEmptyCountries);
+
+    if (uniqEmptyCountries.length === 1 && uniqEmptyCountries[0] === true) {
+      return;
+    }
+
     let getCountriesName = _.map(location.countries, 'country');
 
     if (index !== -1) {
@@ -143,7 +150,8 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
         .getCountries(this.url)
         .subscribe((res:any) => {
           if (res.err) {
-            return res.err;
+            console.error(res.err);
+            return;
           }
 
           this.locations = res.data;

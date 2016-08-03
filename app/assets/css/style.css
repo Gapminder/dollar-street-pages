@@ -40,6 +40,12 @@ body {
   color: #374551;
 }
 
+body.draggingSliders #chart * {
+  cursor: -webkit-grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: grabbing !important;
+}
+
 a:focus,
 input:focus {
   outline: 0;
@@ -88,18 +94,7 @@ html, body, body > div[ui-view] {
   background-color: transparent;
 }
 
-main,
-sitemap,
-country,
-first-page,
-ambassadors,
-info-page,
-article-page,
-blog-page,
-post-page,
-photographer,
-matrix,
-map-component {
+consumer-app > *:not(router-outlet):not(photographers) {
   position: relative;
   display: block;
   min-height: 100%;
@@ -161,11 +156,11 @@ map-component {
 }
 
 body.onboarding .zoom-column {
-  top: 252px;
+  top: 312px;
 }
 
-body.wizard .zoom-column {
-  top: 146px;
+.onboarding .matrix-onboard {
+  display: block !important;
 }
 
 @supports (-webkit-line-clamp: 1) {

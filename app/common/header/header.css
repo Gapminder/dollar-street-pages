@@ -5,15 +5,19 @@
   background-color: white;
 }
 
+.header-content main-menu {
+  height: 71px;
+}
+
 .header-content .icon-container {
   position: relative;
   z-index: 500;
 }
 
 .header-content .icon-container img {
-  width: 42px;
-  height: 42px;
-  margin: 5px 10px;
+  width: 53px;
+  height: 53px;
+  margin: 9px 15px 10px 18px;
   cursor: pointer;
 }
 
@@ -27,22 +31,10 @@ place-map {
   width: 71px;
   display: block;
   float: left;
-  margin-top: 5px;
 }
 
 place-map[hidden] {
   display: none;
-}
-
-.matrix-icon {
-  width: 37px;
-  margin-top: 6px;
-  margin-left: 30px;
-  float: left;
-}
-
-.matrix-icon img {
-  width: 100%;
 }
 
 .filters-container {
@@ -59,7 +51,9 @@ place-map[hidden] {
 
 .filters-container .some-filter-container > span {
   margin: 0 10px;
-  font-size: 18px;
+  font-size: 32px;
+  color: #727a82;
+  line-height: 20px;
 }
 
 .some-filter-container {
@@ -80,10 +74,23 @@ place-map[hidden] {
   margin: 0 10px 0 5px !important;
 }
 
+.filters-container .some-filter-container .income-title-mobile {
+  display: none;
+}
+
 .place-title p {
   line-height: 26px;
   font-size: 26px;
   margin: 7px 0 0;
+}
+
+.filters-container .income-title-container.incomeby .income-title + .income-title,
+.filters-container .income-title {
+  display: none;
+}
+.filters-container .income-title-container.incomeby .income-title,
+.filters-container .income-title + .income-title {
+display: inline-block
 }
 
 @media (max-width: 1023px) {
@@ -104,10 +111,5 @@ place-map[hidden] {
   place-map {
     width: 54px;
     margin-top: 7px;
-  }
-
-  .matrix-icon {
-    width: 25px;
-    margin-left: 25px !important;
   }
 }

@@ -1,7 +1,8 @@
-import { Component, Input, Output, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { RouterLink, Router } from '@angular/router-deprecated';
-import { PlaceMapComponent } from '../../common/place-map/place-map.component';
+import { Component, Input, Output, OnInit, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber } from 'rxjs/Rx';
+import { RegionMapComponent } from '../../common/region-map/region-map.component';
 
 let tpl = require('./matrix-view-block.template.html');
 let style = require('./matrix-view-block.css');
@@ -10,23 +11,29 @@ let style = require('./matrix-view-block.css');
   selector: 'matrix-view-block',
   template: tpl,
   styles: [style],
-  directives: [PlaceMapComponent, RouterLink]
+  directives: [RegionMapComponent, ROUTER_DIRECTIVES]
 })
 
-export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
-  public familyInfoServiceSubscribe:any;
+export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
+  public familyInfoServiceSubscribe:Subscriber;
   public fancyBoxImage:any;
 
   protected showblock:boolean;
   protected familyData:any = {};
   protected loader:boolean = false;
   protected math:any;
+  protected markerPositionLeft:number;
 
+  @Input('positionInRow')
+  protected positionInRow:any;
+
+  private privateZoom:any;
+  private resizeSubscribe:any;
   private popIsOpen:boolean;
-  private mapData:ReplaySubject<any> = new ReplaySubject(0);
+  private mapData:any;
   private familyInfoService:any;
-  private router:Router;
   private zone:NgZone;
+  private router:Router;
 
   @Input('query')
   private query:any;
@@ -35,16 +42,28 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
   @Input('thing')
   private thing:string;
   @Output('closeBigImageBlock')
-  private closeBigImageBlock:EventEmitter<any> = new EventEmitter();
+  private closeBigImageBlock:EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(@Inject('FamilyInfoService') familyInfoService:any,
-                     @Inject(Router) router:Router,
                      @Inject('Math') math:any,
-                     @Inject(NgZone) zone:NgZone) {
+                     @Inject(NgZone) zone:NgZone,
+                     @Inject(Router) router:Router) {
     this.familyInfoService = familyInfoService;
-    this.router = router;
     this.zone = zone;
+    this.router = router;
     this.math = math;
+  }
+
+  public ngOnInit():void {
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          let imageWidth:number = (window.innerWidth - 36) / this.privateZoom;
+
+          this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 33);
+        });
+      });
   }
 
   public ngOnChanges():void {
@@ -52,10 +71,13 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
     this.showblock = true;
 
     let url = `placeId=${this.place._id}&thingId=${this.thing}`;
+    let parseUrl:any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
+    this.privateZoom = parseUrl.zoom;
+    let imageWidth:number = (window.innerWidth - 36) / this.privateZoom;
 
+    this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 33);
     this.place.background = this.place.background.replace('devices', 'desktops');
-
-    this.mapData.next({region: this.place.region, lat: this.place.lat, lng: this.place.lng});
+    this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
@@ -69,12 +91,19 @@ export class MatrixViewBlockComponent implements OnChanges, OnDestroy {
         }
 
         this.familyData = res.data;
-        this.familyData.goToPlaceData = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
+
+        if (this.familyData.familyData && this.familyData.familyData.length > 300) {
+          this.familyData.familyData = this.familyData.familyData.slice(0, 300) + '...';
+        }
+
+        this.familyData.goToPlaceData = parseUrl;
         this.loader = true;
       });
   }
 
   public ngOnDestroy():void {
+    this.resizeSubscribe.unsubscribe();
+
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
     }

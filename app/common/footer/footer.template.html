@@ -1,37 +1,44 @@
 <div class="footer">
-  <div class="container">
-    <div class="row">
+  <div class="cc-container">
+    <a href="https://creativecommons.org/licenses/by/4.0/"
+       target="_blank"
+       angulartics2On="click"
+       angularticsEvent="Moved to CreativeCommons">
+      <img src="/assets/img/creative-commons.svg" alt="cc logo"/>
+    </a>
+  </div>
 
-      <div class="col-md-3 col-sm-3 f-menu">
-        <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-          <img src="/assets/img/cc-footer-licensia.svg" alt="cc logo"/>
-        </a>
-      </div>
+  <div class="description-container">
+    <div class="logo-container">
+      <img src="/assets/img/dollar-street.svg" alt="DollarStreet logo"/>
+      <p>Dollar Street</p>
+    </div>
 
-      <div class="col-md-6 col-sm-6 f-dollar-street">
-        <img src="/assets/img/dollar-street.svg" alt="dollarstreet logo"/>
-        <p class="logo_name">Dollar Street</p>
-        <div class="links">
-          <a [routerLink]="['Info']">About </a> |
+    <div class="links">
+      <a [routerLink]="['/info']"
+         [queryParams]="{}"
+         angulartics2On="click"
+         angularticsEvent="About page">About </a>
+      <a class="dividers" [routerLink]="['/photographers']"
+         [queryParams]="{}"
+         angulartics2On="click"
+         angularticsEvent="Photographers page">Our Photographers</a>
+      <a [routerLink]="['/info']" [queryParams]="{}"
+         angulartics2On="click"
+         angularticsEvent="How to reuse photos">How to reuse photos</a>
+    </div>
 
-          <a [routerLink]="['Photographers']">Our Photographers</a> |
-
-          <a [routerLink]="['Home']">How to reuse photos</a>
-
-
-        </div>
-        {{footerData.text}}
-        <div class="f-gap"><img src="https://www.gapminder.org/wp-content/themes/gapminder/images/logo.png"></div>
-
-      </div>
-
-
-      <div class="col-md-3 col-sm-3 f-social">
-        <social-share-buttons></social-share-buttons>
-      </div>
+    <div class="description-content">{{footerData.text}}</div>
+    <div class="gapminder">
+      <a href="https://www.gapminder.org" target="_blank"
+         angulartics2On="click"
+         angularticsEvent="Moved to Gapminder">
+        <img src="/assets/img/gapminder-logo.png" alt="Gapminder">
+      </a>
     </div>
   </div>
+
+  <div class="social-share-buttons-container">
+    <social-share-buttons></social-share-buttons>
+  </div>
 </div>
-
-
-

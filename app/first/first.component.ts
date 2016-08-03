@@ -16,6 +16,4 @@ let style = require('./first.css');
   directives: [HeaderFirstComponent, WelcomeComponent, AboutComponent, SimilaritiesComponent, FooterComponent, LoaderComponent]
 })
 
-export class FirstComponent {
-}
-
+// export class FirstComponent {}

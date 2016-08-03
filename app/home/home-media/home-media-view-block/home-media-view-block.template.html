@@ -1,39 +1,50 @@
 <div class="view-image-block-container">
+  <div class="active-house house-{{imageData.index}}"></div>
   <div class="view-image-block-content">
     <div class="view-image-container">
-      <img [src]="imageData.image">
+      <div class="view-image-content">
+        <img [src]="imageData.image">
+      </div>
+
+      <div class="image-footer-container">
+        <div class="photographer-container">
+          <p><img src="/assets/img/cc-icon-small.svg">
+            Photo by <a [routerLink]="['/photographer', imageData.photographer._id]" [queryParams]="{}">
+              {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a>
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> CC by 4.0 How to credit</a>
+          </p>
+        </div>
+
+        <div class="zoom-download-container">
+          <a (click)="openPopUp()">
+            <img src="/assets/img/fullsize-icon.svg" alt=""> View fullsize
+          </a>
+          <a class="download" [href]="imageData.image.replace('desktops', 'original')" download>
+            <img src="/assets/img/download-icon.svg" alt=""> Download image
+          </a>
+        </div>
+      </div>
     </div>
 
     <div class="house-info-container">
       <div class="header-container">
-        <img [src]="imageData.thing.icon" alt="">
-        <span>{{imageData.thing.name}}</span>
+        <div class="thing-container">
+          <img [src]="imageData.thing.icon" alt="">
+          <span>{{imageData.thing.thingName}}</span>
+        </div>
+
+        <div class="close-block" (click)="closeImageBlock()">
+          <img src="/assets/img/close-button.svg" alt="">
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="view-image-block-footer-container row">
-    <div class="col-md-4">
-      <img class="icon-bottom-image cc-link" src="../../assets/img/icon-cc.svg">
-      <p>Photo by <a class="color-grey link" [routerLink]="['Photographer', {id: imageData.photographer._id}]">
-        {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a>
-        <a class="color-grey link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/"> CC by 4.0</a>
-      </p>
-    </div>
-
-    <div class="col-md-4 text-center">
-      <a class="color-grey" (click)="openPopUp()">
-        <i class="fa fa-search-plus"></i> View fullscreen
-      </a>
-      <a class="color-grey" [href]="imageData.image.replace('desktops', 'original')" download>
-        <i class="fa fa-download"></i> Download image
-      </a>
-    </div>
-
-    <div class="col-md-4 text-right link-to-matrix">
-      <a
-        [routerLink]="['Matrix', {thing: imageData.thing.name, countries: 'World', regions: 'World', zoom: '4', row: '1'}]"><span>Related searches</span>{{imageData.thing.name}}
-        in the world >></a>
+      <div class="thing-footer-container">
+        <span>Related searches</span>
+        <a
+          [routerLink]="['/matrix']"
+          [queryParams]="{thing: imageData.thing.name, countries: 'World', regions: 'World', zoom: '4', row: '1'}">
+          {{imageData.thing.name}} in the world <img src="/assets/img/arrow-right-icon.svg" alt=""></a>
+      </div>
     </div>
   </div>
 

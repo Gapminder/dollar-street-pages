@@ -1,10 +1,9 @@
-import {it, describe, inject, async, beforeEachProviders, beforeEach} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
-
-import {MockCommonDependency} from '../../app/common-mocks/mocked.services.ts';
-import {MockService} from '../common-mocks/mock.service.template.ts';
-import {mapdata} from './mocks/data.ts';
-import {MapComponent} from '../../../app/map/map.component';
+import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../app/common-mocks/mocked.services.ts';
+import { MockService } from '../common-mocks/mock.service.template.ts';
+import { mapdata } from './mocks/data.ts';
+import { MapComponent } from '../../../app/map/map.component';
 
 /** todo: remove this crutch */
 interface ObjectCreator extends ObjectConstructor {
@@ -16,7 +15,7 @@ export let assign = Object.assign ? Object.assign : function (target:any, ...sou
 };
 
 class Image {
-  set onload(fn) {
+  public set onload(fn:any) {
     fn();
   }
 }
@@ -24,14 +23,13 @@ let ImageMock = {
   Image: Image
 };
 let setTimeoutMock = {
-  setTimeout: (fn, time) => {
+  setTimeout: (fn:any):any => {
     fn();
   }
 };
 
 assign(window, ImageMock);
 assign(window, setTimeoutMock);
-/****************/
 
 let tmpl = require('./mocks/map.template.html');
 

@@ -1,13 +1,13 @@
 import { Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
-import { RouterLink, Router } from '@angular/router-deprecated';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Rx';
 import { MainMenuComponent } from '../menu/menu.component';
 import { PlaceMapComponent } from '../place-map/place-map.component';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
-import { IncomesFilterComponent } from '../incomes-filter/incomes-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
-let device = require('device.js')();
+let device:{desktop:Function} = require('device.js')();
 
 let tpl = require('./header.template.html');
 let style = require('./header.css');
@@ -16,7 +16,13 @@ let style = require('./header.css');
   selector: 'header',
   template: tpl,
   styles: [style],
-  directives: [ThingsFilterComponent, IncomesFilterComponent, CountriesFilterComponent, MainMenuComponent, PlaceMapComponent, RouterLink]
+  directives: [
+    ROUTER_DIRECTIVES,
+    ThingsFilterComponent,
+    CountriesFilterComponent,
+    MainMenuComponent,
+    PlaceMapComponent
+  ]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
@@ -33,56 +39,47 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   protected header:any = {};
   protected math:any;
   @Output()
-  private filter:EventEmitter<any> = new EventEmitter();
+  private filter:EventEmitter<any> = new EventEmitter<any>();
   private activeThing:any;
   private defaultThing:any;
   private headerService:any;
   private router:Router;
+  private activatedRoute:ActivatedRoute;
+  private window:Window = window;
+  private angulartics2GoogleAnalytics:any;
 
   private matrixComponent:boolean;
-  private placeComponent:boolean;
-  private mapComponent:boolean;
-  private headerServiceSubscribe:any;
-  private headerTitleServiceSubscribe:any;
+  private headerServiceSubscribe:Subscriber;
+  private headerTitleServiceSubscribe:Subscriber;
 
   public constructor(@Inject('HeaderService') headerService:any,
                      @Inject(Router) router:Router,
-                     @Inject('Math') math:any) {
+                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
+                     @Inject('Math') math:any,
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics:any) {
     this.headerService = headerService;
     this.router = router;
+    this.activatedRoute = activatedRoute;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.math = math;
 
-    this.matrixComponent = this.router.hostComponent.name === 'MatrixComponent';
-    this.placeComponent = this.router.hostComponent.name === 'PlaceComponent';
-    this.mapComponent = this.router.hostComponent.name === 'MapComponent';
+    this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
   public ngOnInit():void {
     this.headerServiceSubscribe = this.headerService.getDefaultThing()
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
+
         this.defaultThing = res.data;
       });
-
-    if (this.placeComponent) {
-      this.headerTitleServiceSubscribe = this
-        .headerService
-        .getPlaceHeader(this.query)
-        .subscribe((res:any) => {
-          if (res.err) {
-            return res.err;
-          }
-
-          this.header = res.data;
-        });
-    }
   }
 
   public ngOnChanges(changes:any):void {
     if (
-      this.placeComponent &&
       changes.query &&
       typeof changes.query.previousValue === 'string' &&
       typeof changes.query.currentValue === 'string'
@@ -103,7 +100,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
         .getPlaceHeader(this.query)
         .subscribe((res:any) => {
           if (res.err) {
-            return res.err;
+            console.error(res.err);
+            return;
           }
 
           this.header = res.data;
@@ -127,8 +125,16 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.activeThing = thing;
   }
 
-  public goToMain():void {
-    this.router.navigate(['Main']);
+  protected goToMatrixPage():void {
+    this.angulartics2GoogleAnalytics.eventTrack('Matrix page');
+
+    if (this.matrixComponent) {
+      this.window.location.href = this.window.location.origin;
+
+      return;
+    }
+
+    this.router.navigate(['/matrix'], {queryParams: {}});
   }
 
   private parseUrl(url:string):any {

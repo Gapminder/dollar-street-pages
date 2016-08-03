@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Subscriber } from 'rxjs/Rx';
 import { LoaderComponent } from '../../common/loader/loader.component';
 
 let tpl = require('./country-places.template.html');
@@ -9,12 +10,12 @@ let style = require('./country-places.css');
   selector: 'country-places',
   template: tpl,
   styles: [style],
-  directives: [RouterLink, LoaderComponent]
+  directives: [ROUTER_DIRECTIVES, LoaderComponent]
 })
 
 export class CountryPlacesComponent implements OnInit, OnDestroy {
   public loader:boolean = false;
-  public countryPlacesServiceSubscribe:any;
+  public countryPlacesServiceSubscribe:Subscriber;
   public math:any;
   @Input()
   private countryId:string;
@@ -32,7 +33,8 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
     this.countryPlacesServiceSubscribe = this.countryPlacesService.getCountryPlaces(`id=${this.countryId}`)
       .subscribe((res:any) => {
         if (res.err) {
-          return res.err;
+          console.error(res.err);
+          return;
         }
 
         this.country = res.data.country;

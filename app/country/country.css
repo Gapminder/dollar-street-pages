@@ -2,28 +2,9 @@
   padding-top: 120px;
 }
 
-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
 @media (min-width: 1400px) {
   .container {
     width: 1400px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding-bottom: 250px;
-  }
-}
-
-@media (max-width: 767px) {
-  .container {
-    padding-bottom: 350px;
   }
 }
 

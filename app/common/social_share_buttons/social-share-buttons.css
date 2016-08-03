@@ -1,22 +1,26 @@
 .share-button-container {
   overflow: hidden;
-  padding: 15px 10px;
 }
 
 .share-button-container > div {
   float: left;
-  width: 25%;
+  margin-left: 16px;
   text-align: center;
   cursor: pointer;
 }
 
 .share-button-container .share-button i {
-  font-size: 26px;
+  font-size: 24px;
   color: #374551;
 }
 
-@media (max-width: 600px) {
-  .share-button-container .share-button i {
-    font-size: 18px;
-  }
+main-menu social-share-buttons {
+  width: calc(100% - 42px);
+  display: block;
+  float: right;
+}
+
+main-menu social-share-buttons .share-button-container .share-button i {
+  color: #edf0f5;
+  font-size: 24px;
 }

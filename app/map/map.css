@@ -1,7 +1,6 @@
 .map-header {
   background-color: #fff;
   border-bottom: 2px solid #f9cd28;
-  padding: 5px 0;
   position: fixed;
   width: 100%;
   top: 0;
@@ -355,11 +354,11 @@
 
 .left-side-info {
   position: fixed;
-  height: calc(100% - 64px);
+  height: calc(100% - 74px);
   width: 324px;
   background-color: #f3fafc;
   z-index: 9999;
-  top: 64px;
+  top: 74px;
   -webkit-transition: all 0.5s ease-out;
   -moz-transition: all 0.5s ease-out;
   -o-transition: all 0.5s ease-out;
@@ -484,28 +483,9 @@
   background-color: #1e2c37;
 }
 
-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
 @media (min-width: 1400px) {
   .container {
     width: 1400px;
-  }
-}
-
-@media (min-width: 768px) {
-  #places {
-    padding-bottom: 250px;
-  }
-}
-
-@media (max-width: 767px) {
-  #places {
-    padding-bottom: 350px;
   }
 }
 

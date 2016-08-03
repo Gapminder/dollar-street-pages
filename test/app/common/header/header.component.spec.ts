@@ -1,21 +1,11 @@
-import {
-  it,
-  describe,
-  inject,
-  async,
-  beforeEachProviders,
-  beforeEach
-} from '@angular/core/testing';
-import {
-  TestComponentBuilder
-} from '@angular/compiler/testing';
+import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
+import { TestComponentBuilder } from '@angular/compiler/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { MockService } from '../../../app/common-mocks/mock.service.template';
+import { HeaderComponent } from '../../../../app/common/header/header.component';
+import { thing } from './mocks/data.ts';
 
-import {MockCommonDependency} from '../../../app/common-mocks/mocked.services';
-import {MockService} from '../../../app/common-mocks/mock.service.template';
-import {HeaderComponent} from '../../../../app/common/header/header.component';
-import {thing} from './mocks/data.ts';
-
-describe('FooterComponent', () => {
+describe('HeaderComponent', () => {
   let headerService = new MockService();
   headerService.serviceName = 'HeaderService';
   headerService.getMethod = 'getDefaultThing';
@@ -27,7 +17,10 @@ describe('FooterComponent', () => {
       headerService.getProviders()
     ];
   });
-  let fixture, context;
+
+  let fixture;
+  let context;
+
   beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
       return tcb
         .overrideTemplate(HeaderComponent, `<div></div>`)
@@ -55,10 +48,5 @@ describe('FooterComponent', () => {
     let thing = {_id: '5477537786deda0b00d43be5', plural: 'Tools', name: 'Tool'};
     context.activeThingTransfer(thing);
     expect(context.activeThing).toEqual(thing);
-  });
-  it('goToMain', () => {
-    spyOn(context.router, 'navigate');
-    context.goToMain();
-    expect(context.router.navigate).toHaveBeenCalledWith(['Main']);
   });
 });

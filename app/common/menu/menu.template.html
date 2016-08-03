@@ -1,33 +1,46 @@
 <div id="main-menu">
   <div class="btn-group" [ngClass]="{open: isOpenMenu}" (click)="isOpenMenu = !isOpenMenu">
     <span class="menu-icon">
-      <img class="unactive" src="/assets/img/bar-icon.svg" alt=""/>
-      <img class="active" src="/assets/img/bar-icon-active.svg" alt=""/>
+      <img class="unactive" src="/assets/img/gamburger-menu-icon.svg" alt=""/>
+      <img class="active" src="/assets/img/gamburger-menu-white-icon.svg" alt=""/>
     </span>
 
     <div class="dropdown-menu">
       <ul class="header-menu-list">
         <li>
-          <a [routerLink]="['Main']">First page</a>
+          <a (click)="goToMatrixPage()">Home</a>
         </li>
         <li>
-          <a [routerLink]="['Photographers']">Photographers</a>
+          <a (click)="goToMatrixPage(true)">Quick guide</a>
         </li>
         <li>
-          <a [routerLink]="['Map']">Map</a>
+          <a [routerLink]="['/info']"
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="About page">About</a>
         </li>
         <li>
-          <a [routerLink]="['Info']">Info</a>
+          <a [routerLink]="['/blog']"
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Blog page">Blog</a>
         </li>
         <li>
-          <a [routerLink]="['Blog']">Blog</a>
+          <a [routerLink]="['/map']"
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Map page">Map</a>
+        </li>
+        <li class="social-share-container">
+          <div class="social-share-content">
+            <span>Share: </span>
+            <social-share-buttons></social-share-buttons>
+          </div>
         </li>
         <li>
-          <a (click)="switchOnOnboardingFromMenu()">Welcome wizard</a>
+          <a (click)="goToGapminder()">More from gapminder >></a>
         </li>
       </ul>
-
-      <social-share-buttons></social-share-buttons>
     </div>
   </div>
 </div>

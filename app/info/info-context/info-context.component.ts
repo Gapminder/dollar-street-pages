@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./info-context.template.html');
 let style = require('./info-context.css');
@@ -12,7 +13,7 @@ let style = require('./info-context.css');
 
 export class InfoContextComponent implements OnInit, OnDestroy {
   private infoContextService:any;
-  private infoContextServiceSubscribe:any;
+  private infoContextServiceSubscribe:Subscriber;
   private info:any;
 
   public constructor(@Inject('InfoContextService') infoContextService:any) {
@@ -34,4 +35,3 @@ export class InfoContextComponent implements OnInit, OnDestroy {
     this.infoContextServiceSubscribe.unsubscribe();
   }
 }
-

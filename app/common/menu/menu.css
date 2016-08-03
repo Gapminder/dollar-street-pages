@@ -1,15 +1,15 @@
 #main-menu .menu-icon {
   display: block;
-  width: 50px;
-  height: 50px;
+  width: 71px;
+  height: 71px;
   font-size: 38px;
   text-align: center;
   cursor: pointer;
 }
 
 #main-menu .menu-icon img {
-  width: 28px;
-  height: 26px;
+  width: 27px;
+  height: 21px;
   display: none;
   position: absolute;
   top: 0;
@@ -49,7 +49,7 @@
   padding: 0;
   border-radius: 0;
   box-shadow: none;
-  width: 240px;
+  width: 232px;
 }
 
 #main-menu .open .dropdown-menu ul {
@@ -65,20 +65,42 @@
   -o-transition: all .2s ease-out;
   transition: all .2s ease-out;
 }
+#main-menu .open .dropdown-menu li div {
+  padding: 12px 20px;
+  overflow: hidden;
+}
 
 #main-menu .open .dropdown-menu li a {
   text-transform: uppercase;
-  color: #fff;
-  font-size: 20px;
+  color: #edf0f5;
+  font-size: 18px;
   display: block;
-  padding: 15px 20px;
+  padding: 14px 20px;
 }
 
-#main-menu .open .dropdown-menu li:hover {
+#main-menu .open .dropdown-menu li div span {
+  display: inline-block;
+  width: 42px;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #edf0f5;
+  margin-top: 5px;
+  line-height: 14px;
+  float: left;
+}
+
+#main-menu .open .dropdown-menu li:last-child a {
+  font-size: 14px;
+  text-decoration: underline;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+#main-menu .open .dropdown-menu li:hover:not(.social-share-container) {
   background-color: #3d4b58;
 }
 
-#main-menu .share-button-container i {
+#main-menu .open .dropdown-menu li:hover a {
   color: #fff;
 }
 

@@ -1,12 +1,12 @@
 <div class="ambassadors container">
   <div class="ambassadors-peoples"
        *ngFor="let ambassadors of ambassadorsList; let i = index;"
-       [ngClass]="{'organisations': ambassadors._id === 'organisation', writers: ambassadors._id === 'writer', theachers: ambassadors._id === 'teacher'}">
+       [ngClass]="{'organizations': ambassadors._id === 'organization', writers: ambassadors._id === 'writer', theachers: ambassadors._id === 'teacher', supporters: ambassadors._id === 'supporter'}">
     <h2>{{ambassadors._id}}s</h2>
 
     <div class="ambassadors-people-box">
       <div *ngFor="let ambassador of ambassadors.ambassadors"
-           [ngClass]="ambassadors._id !== 'organisation' ? {'ambassadors-people': true, show: i === showedBlock}:
+           [ngClass]="ambassadors._id !== 'organization' ? {'ambassadors-people': true, show: i === showedBlock}:
            {'ambassadors-organization show': true}">
         <img [src]="ambassador.avatar || 'assets/img/ambassador.svg'" alt="">
         <p class="name">{{ambassador.name}}</p>
@@ -16,7 +16,7 @@
     </div>
 
     <span class="custom-button"
-          *ngIf="ambassadors._id !== 'organisation' && ambassadors.ambassadors.length > columnsRow"
+          *ngIf="ambassadors._id !== 'organization' && ambassadors.ambassadors.length > columnsRow"
           (click)="show(i)">{{i === showedBlock ? 'View Less <<' : 'View More >>'}}</span>
   </div>
 </div>

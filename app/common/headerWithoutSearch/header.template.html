@@ -1,17 +1,15 @@
 <div class="header main-header header-without-search">
   <div class="container">
-    <a [routerLink]="['Main']" class="logo pull-left">
+    <a [routerLink]="['/matrix']"
+       [queryParams]="{}"
+       angulartics2On="click"
+       angularticsEvent="Matrix page"
+       class="logo pull-left">
       <img src="/assets/img/dollar-street.svg" alt="">
     </a>
 
     <h2 class="heading line-clamp line-clamp-1 pull-left">{{title}}{{subTitle?': '+subTitle:''}}</h2>
 
     <main-menu class="pull-right"></main-menu>
-
-    <div class="matrix-icon pull-right">
-      <a [routerLink]="['Matrix']">
-        <img src="/assets/img/dark-matrix-icon.svg" alt="">
-      </a>
-    </div>
   </div>
 </div>

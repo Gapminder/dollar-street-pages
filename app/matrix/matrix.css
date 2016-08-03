@@ -9,10 +9,21 @@ matrix-images {
   padding: 15px;
   font-family: 'Bariol Regular', sans-serif;
   text-align: center;
+  min-height: 0;
+  display: none;
 }
 
 .font-bold {
   font-family: 'Bariol Bold', sans-serif;
+}
+
+.onboarding-steps {
+  opacity: 0.6;
+  color: white;
+  font-family: 'Bariol Bold', sans-serif;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: center;
 }
 
 .font-large {
@@ -28,8 +39,18 @@ matrix-images {
   line-height: 29px;
 }
 
-.onboard-button-ml,
-.onboard-button-qt {
+.onboard-step-button > a {
+  background-color: white;
+  border-radius: 14px;
+  padding: 5px 18px;
+  text-align: center;
+  color: #2e4350;
+  font-family: 'Bariol Bold', sans-serif;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.onboard-button-ml {
   border: 1px solid #e4e6e7;
   background-color: white;
   color: black;
@@ -38,6 +59,10 @@ matrix-images {
 }
 
 .onboard-button-qt {
+  color: black;
+  border-radius: 8px;
+  padding: 5px 32px;
+  margin-right: 7px;
   background-color: #f8ca45;
   border: none;
 }
@@ -67,15 +92,31 @@ matrix-images {
   z-index: 2;
 }
 
-.quick-tour {
-  background-color: #525e68;
-  border-radius: 10px;
-  color: white;
-  padding: 10px;
+.position-relative {
+  position: relative;
+}
+
+.close-button-light {
+  background: url("../assets/img/close.png") no-repeat center center;
+  cursor: pointer;
+  height: 19px;
+  width: 19px;
+  right: -10px;
+  top: 0;
   position: absolute;
-  width: 300px;
+  z-index: 2;
+}
+
+.quick-tour {
+  width: 456px;
+  background-color: #2e4350;
+  border-radius: 21px;
+  color: white;
+  padding: 10px 25px 16px 30px;
+  position: absolute;
   opacity: 0.95;
   z-index: 600;
+  box-shadow: 3px 5px 18px rgba(52, 56, 59, 0.56);
 }
 
 .cc-link {
@@ -83,21 +124,19 @@ matrix-images {
 }
 
 .quick-tour:after {
-  bottom: 100%;
-  left: 20%;
-  border: solid transparent;
   content: " ";
+  bottom: 100%;
+  left: 15%;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 15px solid #2e4350;
   height: 0;
   width: 0;
   position: absolute;
-  pointer-events: none;
-  border-bottom-color: #525e68;
-  border-width: 10px;
-  margin-left: -15px;
 }
 
-.marg-5-px {
-  margin-top: 5px;
+.marg-15-px {
+  margin-top: 15px;
 }
 
 .text-center {
@@ -105,7 +144,16 @@ matrix-images {
 }
 
 .qt-baloon-name {
+  color: white;
   font-family: 'Bariol Bold', sans-serif;
+  font-size: 24px;
+  line-height: 26px;
+}
+
+.qt-baloon-text {
+  color: white;
+  font-size: 20px;
+  line-height: 26px;
 }
 
 .matrix-header {
@@ -125,59 +173,33 @@ matrix-images {
 
 .zoom-column {
   position: fixed;
-  top: 126px;
+  top: 146px;
   right: 16px;
   z-index: 99;
 }
 
-.zoom-column button,
-.zoom-column button b {
-  -webkit-transition: all .2s ease-out;
-  -moz-transition: all .2s ease-out;
-  -o-transition: all .2s ease-out;
-  transition: all .2s ease-out;
-}
-
 .zoom-column button {
-  width: 33px;
-  height: 33px;
-  background: #525E68;
+  width: 28px;
+  height: 28px;
+  background-size: 28px 28px !important;
   border: none;
   border-radius: 50%;
-  margin-right: 3px;
-  box-shadow: 0.574px 0.819px 2.88px 0.12px rgba(0, 0, 0, 0.2);
-  padding: 0 6px;
-}
-
-.zoom-column button b {
-  color: #fff;
-  line-height: 0;
-  font-size: 22px;
-}
-
-.zoom-column button:hover {
-  background-color: #374551;
-}
-
-.zoom-column button:hover b {
-  color: #fff;
+  outline: 0;
 }
 
 .zoom-column button[disabled] {
-  background: #9babb8 !important;
   cursor: not-allowed;
-  opacity: .7;
+  opacity: .5;
 }
 
-.zoom-column button[disabled] b {
-  color: #374551 !important;
+.zoom-column .increase {
+  background: url("/assets/img/zoom-plus.svg") no-repeat center center;
+  margin-right: 5px;
 }
 
-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.zoom-column .decrease {
+  background: url("/assets/img/minus.svg") no-repeat center center;
+  margin-right: 20px;
 }
 
 @media (max-width: 1200px) {
@@ -208,14 +230,7 @@ footer {
 
 @media (min-width: 768px) {
   matrix-images {
-    padding-bottom: 250px;
     padding-top: 112px;
-  }
-}
-
-@media (max-width: 767px) {
-  matrix-images {
-    padding-bottom: 325px;
   }
 }
 
