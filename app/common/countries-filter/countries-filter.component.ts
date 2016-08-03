@@ -9,6 +9,7 @@ import {
   HostListener,
   ElementRef
 } from '@angular/core';
+import { CountriesFilterPipe } from './countries-filter.pipe';
 
 let _ = require('lodash');
 
@@ -18,7 +19,8 @@ let style = require('./countries-filter.css');
 @Component({
   selector: 'countries-filter',
   template: tpl,
-  styles: [style]
+  styles: [style],
+  pipes: [CountriesFilterPipe]
 })
 
 export class CountriesFilterComponent implements OnDestroy, OnChanges {
@@ -53,15 +55,18 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     }
   }
 
-  protected clearAllCountries():void {
-    this.selectedRegions.length = 0;
-    this.selectedCountries.length = 0;
-    this.cloneSelectedCountries = ['World'];
-    this.cloneSelectedRegions = ['World'];
-  }
-
   protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
+
+    if (this.selectedCountries.length !== 0 || this.selectedRegions.length !== 0) {
+      this.hideCheckAllCountries();
+    } else {this.showCheckAllCountries();}
+
+    if (this.isOpenCountriesFilter) {
+      setTimeout(() => {
+        this.element.nativeElement.querySelector('.autofocus').focus();
+      });
+    }
 
     if (!this.isOpenCountriesFilter) {
       if (this.cloneSelectedRegions[0] !== 'World') {
@@ -78,7 +83,34 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     }
   }
 
+  protected showCheckAllCountries():void {
+    let incomeContainer = this.element.nativeElement.querySelector('.all-selected') as HTMLElement;
+    setTimeout(():void => {
+      incomeContainer.classList.remove('hide');
+    }, 0);
+  }
+
+  protected hideCheckAllCountries():void {
+    let incomeContainer = this.element.nativeElement.querySelector('.all-selected') as HTMLElement;
+    setTimeout(():void => {
+      incomeContainer.classList.add('hide');
+    }, 0);
+  }
+
+  protected cancelCountriesFilter():void {
+    this.openCloseCountriesFilter(true);
+  }
+
+  protected clearAllCountries():void {
+    this.showCheckAllCountries();
+    this.selectedRegions.length = 0;
+    this.selectedCountries.length = 0;
+  }
+
   protected selectRegions(location:any):void {
+
+    this.hideCheckAllCountries();
+
     let index = this.selectedRegions.indexOf(location.region);
     let getEmptyCountries = _.map(location.countries, 'empty');
     let uniqEmptyCountries = _.uniq(getEmptyCountries);
@@ -103,6 +135,9 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   }
 
   protected selectCountries(country:any, region:string):void {
+
+    this.hideCheckAllCountries();
+
     let indexCountry = this.selectedCountries.indexOf(country.country);
 
     if (indexCountry === -1 && country.empty) {
