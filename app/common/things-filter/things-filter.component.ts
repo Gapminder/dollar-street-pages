@@ -69,7 +69,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
 
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.thingName}`);
     let query = this.parseUrl(this.url);
-    query.thing = thing.thingName;
+    query.thing = thing.plural;
 
     this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
     this.isOpenThingsFilter = false;

@@ -1,5 +1,5 @@
 <div id="things-filter"
-     *ngIf="activeThing.thingName"
+     *ngIf="activeThing.plural"
      [ngClass]="{'open-things-filter': isOpenThingsFilter}">
   <div class="things-filter-button">
     <div class="things-filter-button-content"
@@ -28,14 +28,14 @@
 
       <div class="related-things-content">
         <div class="thing-content"
-             *ngFor="let thing of relatedThings | ThingsFilterPipe:search.text"
+             *ngFor="let thing of relatedThings"
              (click)="goToThing(thing)"
              [ngClass]="{'empty': thing.empty}">
           <div class="thing-icon-container">
             <img class="thing-icon" [src]="thing.icon" alt="">
           </div>
 
-          <span class="thing-name">{{thing.thingName}}</span>
+          <span class="thing-name">{{thing.plural}}</span>
         </div>
       </div>
     </div>
@@ -57,10 +57,10 @@
           <div class="thing-icon-container">
             <img class="thing-icon"
                  [src]="thing.icon"
-                 [alt]="thing.thingName">
+                 [alt]="thing.plural">
           </div>
 
-          <span class="thing-name">{{thing.thingName}}</span>
+          <span class="thing-name">{{thing.plural}}</span>
         </div>
       </div>
     </div>

@@ -160,7 +160,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   protected goToPlace(place:any):void {
     if (this.isDesktop) {
-      this.router.navigate(['/home'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
+      this.router.navigate(['/family'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
       return;
     }
 
@@ -169,7 +169,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.router.navigate(['/home'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
+    this.router.navigate(['/family'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
   }
 
   protected goToImageBlock(place:any, index:number):void {

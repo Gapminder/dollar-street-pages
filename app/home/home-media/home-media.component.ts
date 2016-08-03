@@ -134,7 +134,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.imageData.index = !countByIndex ? this.zoom : countByIndex;
     this.imageData.thing = {
-      name: image.thingName,
+      name: image.plural,
       icon: image.thingIcon.replace('FFFFFF', '2C4351')
     };
 
