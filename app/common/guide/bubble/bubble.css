@@ -1,0 +1,225 @@
+.bubbles-container {
+  width: 456px;
+  background-color: rgba(55, 69, 81, .97);
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  z-index: 600;
+  color: #fff;
+  text-align: center;
+  zoom: 1;
+
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+
+  -webkit-transition: all .4s ease-out;
+  -moz-transition: all .4s ease-out;
+  -o-transition: all .4s ease-out;
+  transition: all .4s ease-out;
+}
+
+.bubbles-container.close-bubble {
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+}
+
+.bubbles-container .bubbles-content {
+  padding: 13px 27px 20px;
+}
+
+.bubbles-container:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 15px solid rgba(55, 69, 81, .97);
+  position: absolute;
+  top: -15px;
+  left: 25px;
+}
+
+.bubbles-container.center:before {
+  left: 216px;
+}
+
+.bubbles-container.last:before {
+  border-left: 0;
+  border-top: 12px solid transparent;
+  border-right: 15px solid rgba(55, 69, 81, .97);
+  border-bottom: 12px solid transparent;
+  position: absolute;
+  top: 25px;
+  left: -15px;
+}
+
+.bubbles-container.none:before {
+  border: 0;
+}
+
+.bubbles-container .bubbles-steps {
+  color: #aab0b7;
+  font-size: 16px;
+}
+
+.bubbles-container .bubbles-title {
+  font-size: 24px;
+  line-height: 26px;
+  margin: 15px 0 0;
+  font-weight: 400;
+}
+
+.bubbles-container .bubbles-description {
+  font-size: 20px;
+  line-height: 24px;
+  font-family: 'Bariol Light', sans-serif;
+}
+
+.bubbles-container .welcome {
+  font-size: 24px;
+  font-family: 'Bariol Light', sans-serif;
+  margin: 35px 0 25px;
+}
+
+.bubbles-container .welcome img {
+  width: 21px;
+  margin-top: -4px;
+}
+
+.bubbles-container .bubbles-description a {
+  color: #aed2d3;
+}
+
+.bubbles-container .button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.bubbles-container .button-container .back {
+  color: #edf0f5;
+  font-size: 16px;
+  text-transform: uppercase;
+  float: left;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.bubbles-container .button-container button {
+  background-color: white;
+  border-radius: 14px;
+  color: #2e4350;
+  font-size: 16px;
+  font-family: 'Bariol Bold', sans-serif;
+  box-shadow: none;
+  outline: none;
+  border: 0;
+  padding: 3px 14px;
+  text-transform: uppercase;
+}
+
+.bubbles-container .button-container .back + button {
+  margin-left: -52px;
+}
+
+.bubbles-container .footer-container {
+  border-top: 1px solid #949aae;
+  margin-top: 5px;
+  padding: 15px 27px 20px;
+}
+
+.bubbles-container .footer-container p {
+  font-size: 16px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.bubbles-container .footer-container social-share-buttons {
+  display: block;
+  width: 148px;
+  margin: 10px auto;
+}
+
+.bubbles-container .footer-container social-share-buttons .share-button:first-child {
+  margin: 0;
+}
+
+.bubbles-container .footer-container social-share-buttons i {
+  color: #edf0f5;
+  font-size: 28px;
+}
+
+.bubbles-container .footer-container a {
+  color: #fff;
+  font-size: 14px;
+}
+
+.bubbles-container .close-bubble {
+  width: 13px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+}
+
+.street-label {
+  background-color: white;
+  position: absolute;
+  top: -1000px;
+  z-index: 600;
+
+  -webkit-transition: all .4s ease-out;
+  -moz-transition: all .4s ease-out;
+  -o-transition: all .4s ease-out;
+  transition: all .4s ease-out;
+}
+
+.street-label span {
+  border: 3px solid #374551;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #374551;
+  font-size: 20px;
+  text-transform: uppercase;
+  padding: 4px 34px;
+  display: inline-block;
+}
+
+.street-label.poorest-label {
+  border-radius: 0 15px 15px 15px;
+  left: 24px;
+}
+
+.street-label.richest-label {
+  border-radius: 15px 0 15px 15px;
+  right: 24px;
+  left: auto;
+}
+
+.slider-label {
+  border: 5px solid #374551;
+  border-radius: 15px;
+  background-color: transparent;
+  position: absolute;
+  top: -1000px;
+  z-index: 600;
+  padding: 29px 38px;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -o-transition: all .2s ease-out;
+  transition: all .2s ease-out;
+}
+
+.slider-label.left-slider {
+  left: 8px;
+}
+
+.slider-label.right-slider {
+  right: 8px;
+}

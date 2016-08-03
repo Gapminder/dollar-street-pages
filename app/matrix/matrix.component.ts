@@ -8,6 +8,7 @@ import { StreetComponent } from '../common/street/street.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
+import { GuideComponent } from '../common/guide/guide.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let _ = require('lodash');
@@ -20,17 +21,18 @@ let style = require('./matrix.css');
   selector: 'matrix',
   template: tpl,
   styles: [style],
-  directives: [MatrixImagesComponent, HeaderComponent, StreetComponent, FooterComponent, LoaderComponent, FooterSpaceDirective]
+  directives: [
+    GuideComponent,
+    HeaderComponent,
+    StreetComponent,
+    MatrixImagesComponent,
+    FooterComponent,
+    FooterSpaceDirective,
+    LoaderComponent]
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces:any[] = [];
-  protected headerOnboard:string;
-  protected showOnboarding:boolean = true;
-  protected switchOnQuickTour:boolean = false;
-  protected numberOfStep:number = 1;
-  protected baloonTips:any = {};
-  protected baloonTip:any = {};
   public clearActiveHomeViewBox:Subject<any> = new Subject();
 
   public query:string;
@@ -46,7 +48,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public lowIncome:number;
   public highIncome:number;
   public matrixServiceSubscrib:Subscriber;
-  public matrixServiceOnboardingSubscribe:Subscriber;
   public streetData:any;
 
   private resizeSubscribe:any;
@@ -113,24 +114,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
-
-    if (window.localStorage && window.localStorage.getItem('onboarded')) {
-      this.showOnboarding = false;
-      document.body.className = '';
-    } else {
-      document.body.className = 'onboarding';
-    }
-
-    this.matrixServiceOnboardingSubscribe = this.matrixService.getMatrixOnboardingTips()
-      .subscribe((res:any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.baloonTips = res.data;
-        this.headerOnboard = _.find(this.baloonTips, ['name', 'welcomeHeader']);
-      });
 
     this.matrixServiceStreetSubscrib = this.matrixService.getStreetSettings()
       .subscribe((val:any) => {
@@ -216,7 +199,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     document.onscroll = void 0;
     this.matrixServiceSubscrib.unsubscribe();
-    this.matrixServiceOnboardingSubscribe.unsubscribe();
     this.matrixServiceStreetSubscrib.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
   }
@@ -421,115 +403,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   };
 
-  public parseUrl(url:string):any {
-    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
-  }
-
-  protected getCoords(querySelector:string, cb:any):any {
-    let box:any = this.element.querySelector(querySelector).getBoundingClientRect();
-
-    let body:HTMLElement = document.body;
-    let docEl:HTMLElement = document.documentElement;
-
-    let scrollTop:number = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    let scrollLeft:number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
-
-    let clientTop:number = docEl.clientTop || body.clientTop || 0;
-    let clientLeft:number = docEl.clientLeft || body.clientLeft || 0;
-
-    let top:number = box.top;
-    let left:number = box.left + scrollLeft - clientLeft;
-
-    if (querySelector === '.income-title-desktop') {
-      top = box.top - clientTop - 14;
-    }
-
-    if (querySelector === '.images-container') {
-      top = box.top + scrollTop - clientTop;
-      left = box.left + scrollLeft - clientLeft + 40;
-    }
-
-    if (querySelector === '.street-box') {
-      top = box.top - clientTop - 3;
-      left = box.left + scrollLeft - clientLeft + 40;
-    }
-
-    cb({top: Math.round(top) + 66, left: Math.round(left) - 20});
-  }
-
-  protected startQuickTour():void {
-    this.switchOffOnboarding();
-    this.numberOfStep = 1;
-    window.localStorage.setItem('onboarded', 'true');
-    this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
-    this.switchOnQuickTour = true;
-
+  protected startQuickGuide():void {
     setTimeout(() => {
-      this.getCoords('things-filter', (data:any) => {
-        this.baloonTip.position = data;
-      });
-    });
-  }
-
-  protected closeQuickTour():void {
-    this.switchOnQuickTour = false;
-  }
-
-  protected step(step:boolean):void {
-    let baloonDirector:string;
-
-    if (step) {
-      this.numberOfStep++;
-    }
-    if (!step) {
-      this.numberOfStep--;
-    }
-
-    if (this.numberOfStep === 1) {
-      baloonDirector = 'things-filter';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'thing']);
-    }
-
-    if (this.numberOfStep === 2) {
-      baloonDirector = 'countries-filter';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'geography']);
-    }
-
-    if (this.numberOfStep === 3) {
-      baloonDirector = '.income-title-desktop';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'income']);
-    }
-
-    if (this.numberOfStep === 4) {
-      baloonDirector = '.street-box';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'street']);
-    }
-
-    if (this.numberOfStep === 5) {
-      baloonDirector = '.images-container';
-      this.baloonTip = _.find(this.baloonTips, ['name', 'image']);
-    }
-
-    setTimeout(() => {
-      this.getCoords(baloonDirector, (data:any) => {
-        this.baloonTip.position = data;
-      });
-    });
-  }
-
-  protected switchOffOnboarding():void {
-    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
-    let zoomButtons = this.element.querySelector('.zoom-column') as HTMLElement;
-    let header = this.element.querySelector('.matrix-header') as HTMLElement;
-    let onboard = this.element.querySelector('.matrix-onboard') as HTMLElement;
-
-    document.body.className = '';
-
-    setTimeout(():void => {
-      matrixImages.style.paddingTop = `${header.offsetHeight}px`;
-      zoomButtons.style.paddingTop = `${onboard.offsetHeight}px`;
+      this.getPaddings();
     }, 0);
+  }
 
-    this.showOnboarding = false;
+  private parseUrl(url:string):any {
+    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }
