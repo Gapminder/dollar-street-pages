@@ -1,39 +1,6 @@
 <div class="pages-container" footerSpace>
   <div class="matrix-header main-header">
-    <div class="matrix-onboard" [hidden]="!showOnboarding">
-      <a class="pull-right close-button font-large"
-         (click)="switchOffOnboarding()"></a>
-      <div class="font-large">Find out how people <span class="font-bold really-underline">really </span>live</div>
-      <div class="header-onboard-editable-text">{{headerOnboard?.description}}</div>
-      <div class="onboard-buttons-container onboard-button-text">
-        <a class="onboard-button-qt"
-           (click)="startQuickTour()"><span>Quick tour!</span></a>
-        <a class="onboard-button-ml"
-           (click)="switchOffOnboarding()">Maybe later!</a>
-      </div>
-    </div>
-
-    <div class="quick-tour"
-         [ngStyle]="{top: baloonTip.position?.top + 'px', left: baloonTip.position?.left + 'px'}"
-         *ngIf="switchOnQuickTour">
-
-      <div class="position-relative">
-        <div class="onboarding-steps">{{numberOfStep}} of 5</div>
-        <span class="pull-right close-button-light"
-           (click)="closeQuickTour()">
-        </span>
-      </div>
-
-      <div class="qt-baloon-name">{{baloonTip?.header}}</div>
-      <div class="qt-baloon-text">{{baloonTip?.description}}
-        <a class="cc-link" target="_blank" *ngIf="numberOfStep === 5" [href]="baloonTip.link?.href">{{baloonTip.link?.text}}</a>
-      </div>
-      <div class="text-center marg-15-px onboard-step-button">
-        <a *ngIf="numberOfStep !== 1" (click)="step(false)">BACK</a>
-        <a *ngIf="numberOfStep !== 5" (click)="step(true)">NEXT</a>
-        <a *ngIf="numberOfStep === 5" (click)="closeQuickTour()">CLOSE</a>
-      </div>
-    </div>
+    <quick-guide (startQuickGuide)="startQuickGuide($event)"></quick-guide>
 
     <header [query]="query"
             [thing]="thing"

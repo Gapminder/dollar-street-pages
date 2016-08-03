@@ -200,7 +200,7 @@ export class StreetDrawService {
       .append('text')
       .attr('class', 'richest')
       .text(this.richest)
-      .attr('x', this.width + this.streetOffset - 40)
+      .attr('x', this.width + this.streetOffset - 50)
       .attr('y', this.height)
       .attr('fill', '#767d86');
 

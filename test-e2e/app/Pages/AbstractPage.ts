@@ -1,17 +1,19 @@
 'use strict';
 
-const data = require('../Data/DataProvider.ts');
-const using = require('jasmine-data-provider');
-let loader = element.all(by.css('.loader img'));
+import { protractor, element, by } from 'protractor/globals';
+import { ProtractorExpectedConditions, ElementArrayFinder, ElementFinder } from 'protractor/built/index';
 
-let AbstractPage = function() {
-    this.setElementErrorMessage = (name) => { return name + ' link on Sitemap is not loaded'; };
-};
+export class AbstractPage {
+  public static loader:ElementArrayFinder = element.all(by.css('.loader img'));
+  public static getEC():ProtractorExpectedConditions {
+    return protractor.ExpectedConditions;
+  }
 
-AbstractPage.prototype = Object.create({}, {
-    getEC: { get: () => { return protractor.ExpectedConditions; }},
-    getTimeout: { get: () => 10000},
-    getLoader: { get: () => loader.first()}
-});
+  public static getTimeout():number {
+    return 10000;
+  }
 
-module.exports = AbstractPage;
+  public static getLoader():ElementFinder {
+    return this.loader.first();
+  }
+}
