@@ -59,7 +59,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
 
-    this.showCheckAllCountries(!(this.selectedCountries.length || this.selectedRegions.length));
+    this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
     if (this.isOpenCountriesFilter) {
       setTimeout(() => {
@@ -82,22 +82,18 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     }
   }
 
-  protected showCheckAllCountries(show:boolean):void {
-    this.showSelected = show;
-  }
-
   protected cancelCountriesFilter():void {
     this.openCloseCountriesFilter(true);
   }
 
   protected clearAllCountries():void {
-    this.showCheckAllCountries(true);
+    this.showSelected = true;
     this.selectedRegions.length = 0;
     this.selectedCountries.length = 0;
   }
 
   protected selectRegions(location:any):void {
-    this.showCheckAllCountries(false);
+    this.showSelected = false;
 
     let index = this.selectedRegions.indexOf(location.region);
     let getEmptyCountries = _.map(location.countries, 'empty');
@@ -123,7 +119,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   }
 
   protected selectCountries(country:any, region:string):void {
-    this.showCheckAllCountries(false);
+    this.showSelected = false;
 
     let indexCountry = this.selectedCountries.indexOf(country.country);
 
