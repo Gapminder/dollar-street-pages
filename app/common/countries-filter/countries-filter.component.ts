@@ -25,6 +25,7 @@ let style = require('./countries-filter.css');
 
 export class CountriesFilterComponent implements OnDestroy, OnChanges {
   protected activeCountries:string;
+  protected showSelected:boolean;
   protected locations:any[];
   protected isOpenCountriesFilter:boolean = false;
   protected selectedRegions:string[] = [];
@@ -58,9 +59,11 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
 
-    if (this.selectedCountries.length !== 0 || this.selectedRegions.length !== 0) {
-      this.hideCheckAllCountries();
-    } else {this.showCheckAllCountries();}
+    if (this.selectedCountries.length || this.selectedRegions.length) {
+      this.showCheckAllCountries(false);
+    } else {
+      this.showCheckAllCountries(true);
+    }
 
     if (this.isOpenCountriesFilter) {
       setTimeout(() => {
@@ -83,18 +86,8 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     }
   }
 
-  protected showCheckAllCountries():void {
-    let incomeContainer = this.element.nativeElement.querySelector('.all-selected') as HTMLElement;
-    setTimeout(():void => {
-      incomeContainer.classList.remove('hide');
-    }, 0);
-  }
-
-  protected hideCheckAllCountries():void {
-    let incomeContainer = this.element.nativeElement.querySelector('.all-selected') as HTMLElement;
-    setTimeout(():void => {
-      incomeContainer.classList.add('hide');
-    }, 0);
+  protected showCheckAllCountries(show:boolean):void {
+    this.showSelected = show;
   }
 
   protected cancelCountriesFilter():void {
@@ -102,14 +95,13 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   }
 
   protected clearAllCountries():void {
-    this.showCheckAllCountries();
+    this.showCheckAllCountries(true);
     this.selectedRegions.length = 0;
     this.selectedCountries.length = 0;
   }
 
   protected selectRegions(location:any):void {
-
-    this.hideCheckAllCountries();
+    this.showCheckAllCountries(false);
 
     let index = this.selectedRegions.indexOf(location.region);
     let getEmptyCountries = _.map(location.countries, 'empty');
@@ -135,8 +127,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   }
 
   protected selectCountries(country:any, region:string):void {
-
-    this.hideCheckAllCountries();
+    this.showCheckAllCountries(false);
 
     let indexCountry = this.selectedCountries.indexOf(country.country);
 
@@ -167,6 +158,9 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
 
     this.selectedFilter.emit({url: this.objToQuery(query), isCountriesFilter: true});
     this.isOpenCountriesFilter = false;
+
+    this.cloneSelectedCountries = ['World'];
+    this.cloneSelectedRegions = ['World'];
   }
 
   public ngOnDestroy():void {
