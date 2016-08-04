@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, Output, Inject, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
 import { SocialShareButtonsComponent } from '../../social_share_buttons/social-share-buttons.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { EventEmitter } from '@angular/compiler/src/facade/async';
 
 let _ = require('lodash');
 
@@ -17,28 +16,43 @@ let style = require('./bubble.css');
 })
 
 export class BubbleComponent implements OnInit, OnDestroy {
-  protected step:number = 1;
-  protected bubble:any = {};
-  protected windowInnerWidth:number = window.innerWidth;
-  protected position:any = {left: this.windowInnerWidth / 2 - 228, top: -1000};
-  protected isCloseBubble:boolean = false;
+  protected step: number = 1;
+  protected bubble: any = {};
+  protected windowInnerWidth: number = window.innerWidth;
+  protected position: any = {left: this.windowInnerWidth / 2 - 228, top: -1000};
+  protected isCloseBubble: boolean = false;
 
   @Input('bubbles')
-  private bubbles:any[];
-  @Output('closeBubble')
-  private closeBubble:EventEmitter<any> = new EventEmitter<any>();
-  private keyUpSubscribe:any;
-  private element:HTMLElement;
+  private bubbles: any[];
+  private keyUpSubscribe: any;
+  private element: HTMLElement;
+  private zone: NgZone;
+  private resizeSubscribe: any;
 
-  public constructor(@Inject(ElementRef) element:ElementRef) {
+  public constructor(@Inject(ElementRef) element: ElementRef,
+                     @Inject(NgZone) zone: NgZone) {
     this.element = element.nativeElement;
+    this.zone = zone;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.getBubble(this.step);
 
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          if (this.isCloseBubble) {
+            return;
+          }
+
+          this.windowInnerWidth = window.innerWidth;
+          this.getBubble(this.step);
+        });
+      });
+
     this.keyUpSubscribe = fromEvent(document, 'keyup')
-      .subscribe((e:KeyboardEvent) => {
+      .subscribe((e: KeyboardEvent) => {
         if (this.isCloseBubble) {
           return;
         }
@@ -53,11 +67,15 @@ export class BubbleComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.keyUpSubscribe.unsubscribe();
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
   }
 
-  protected back():void {
+  protected back(): void {
     if (this.step === 1) {
       return;
     }
@@ -66,7 +84,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     this.getBubble(this.step);
   }
 
-  protected next():void {
+  protected next(): void {
     if (this.step === this.bubbles.length) {
       return;
     }
@@ -75,18 +93,14 @@ export class BubbleComponent implements OnInit, OnDestroy {
     this.getBubble(this.step);
   }
 
-  protected close():void {
-    this.closeBubble.emit({});
-  }
-
-  protected finish():void {
+  protected finish(): void {
     this.getBubble(6);
 
     localStorage.setItem('quick-guide', 'true');
   }
 
-  private getBubble(step:number):void {
-    let baloonDirector:string;
+  private getBubble(step: number): void {
+    let baloonDirector: string;
 
     if (step === 1) {
       baloonDirector = '.street-box';
@@ -118,18 +132,35 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
 
     setTimeout(() => {
-      this.getCoords(baloonDirector, (data:any) => {
-        if (step === 1 || step === 4 || step === 5) {
-          data.left = this.windowInnerWidth / 2 - 228;
+      this.getCoords(baloonDirector, (data: any) => {
+        let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
+        let baloonWidth: number = baloonElement.width;
+        let baloonHeight: number = baloonElement.height;
+
+        data.top += data.height;
+
+        if (step === 1 || step === 4) {
+          data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
+        }
+
+        if (step === 2) {
+          data.top += 17;
+          data.left -= 7;
         }
 
         if (step === 3) {
-          data.left = data.left - 125;
+          data.top += 17;
+          data.left = data.left - baloonWidth / 2 + data.width / 2;
+        }
+
+        if (step === 5) {
+          data.top -= data.height;
+          data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
         }
 
         if (step === 6) {
-          data.top = (data.top - data.height / 2) - 198.5;
-          data.left = (data.left + data.width / 2) - 228;
+          data.top = (data.top - data.height / 2) - baloonHeight / 2;
+          data.left = (data.left + data.width / 2) - baloonWidth / 2;
           this.isCloseBubble = true;
         }
 
@@ -138,35 +169,18 @@ export class BubbleComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getCoords(querySelector:string, cb:any):any {
-    let box:any = document.querySelector(querySelector).getBoundingClientRect();
+  private getCoords(querySelector: string, cb: any): any {
+    let box: any = document.querySelector(querySelector).getBoundingClientRect();
 
-    let body:HTMLElement = document.body;
-    let docEl:HTMLElement = document.documentElement;
+    let body: HTMLElement = document.body;
+    let docEl: HTMLElement = document.documentElement;
 
-    let scrollTop:number = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    let scrollLeft:number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    let scrollLeft: number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    let clientLeft: number = docEl.clientLeft || body.clientLeft || 0;
 
-    let clientTop:number = docEl.clientTop || body.clientTop || 0;
-    let clientLeft:number = docEl.clientLeft || body.clientLeft || 0;
+    let top: number = box.top;
+    let left: number = box.left + scrollLeft - clientLeft;
 
-    let top:number = box.top;
-    let left:number = box.left + scrollLeft - clientLeft;
-
-    if (querySelector === '.income-title-desktop') {
-      top = box.top - clientTop - 14;
-    }
-
-    if (querySelector === '.images-container') {
-      top = box.top + scrollTop - clientTop;
-      left = box.left + scrollLeft - clientLeft + 40;
-    }
-
-    if (querySelector === '.street-box') {
-      top = box.top - clientTop - 3;
-      left = box.left + scrollLeft - clientLeft + 40;
-    }
-
-    cb({top: Math.round(top) + 66, left: Math.round(left) - 20, width: box.width, height: box.height});
+    cb({top: Math.round(top), left: Math.round(left), width: box.width, height: box.height});
   }
 }

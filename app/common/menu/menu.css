@@ -104,6 +104,10 @@
   color: #fff;
 }
 
+#main-menu .open .dropdown-menu li div.social-share-content {
+  padding: 19px 20px;
+}
+
 @media (max-width: 600px) {
   #main-menu .menu-icon {
     width: 30px;

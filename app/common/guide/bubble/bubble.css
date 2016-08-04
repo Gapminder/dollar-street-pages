@@ -55,7 +55,7 @@
   border-right: 15px solid rgba(55, 69, 81, .97);
   border-bottom: 12px solid transparent;
   position: absolute;
-  top: 25px;
+  top: 50px;
   left: -15px;
 }
 
@@ -84,7 +84,7 @@
 .bubbles-container .welcome {
   font-size: 24px;
   font-family: 'Bariol Light', sans-serif;
-  margin: 35px 0 25px;
+  margin: 30px 0 25px;
 }
 
 .bubbles-container .welcome img {
@@ -121,6 +121,7 @@
   border: 0;
   padding: 3px 14px;
   text-transform: uppercase;
+  line-height: 23px;
 }
 
 .bubbles-container .button-container .back + button {
@@ -130,7 +131,7 @@
 .bubbles-container .footer-container {
   border-top: 1px solid #949aae;
   margin-top: 5px;
-  padding: 15px 27px 20px;
+  padding: 15px 27px 10px;
 }
 
 .bubbles-container .footer-container p {
@@ -171,7 +172,7 @@
   background-color: white;
   position: absolute;
   top: -1000px;
-  z-index: 600;
+  z-index: 98;
 
   -webkit-transition: all .4s ease-out;
   -moz-transition: all .4s ease-out;
@@ -207,7 +208,7 @@
   background-color: transparent;
   position: absolute;
   top: -1000px;
-  z-index: 600;
+  z-index: 98;
   padding: 29px 38px;
 
   -webkit-transition: all .2s ease-out;
