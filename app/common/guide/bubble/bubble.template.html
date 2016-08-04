@@ -23,22 +23,22 @@
 
     <a target="_blank"
        *ngIf="step === bubbles.length"
-       [href]="baloonTip?.link?.href">{{bubble?.link?.text}}</a>
+       [href]="bubble?.link?.href">{{bubble?.link?.text}}</a>
   </div>
 
-  <img class="close-bubble" src="/assets/img/close-button-bubbles.svg" alt="" (click)="close()">
+  <img class="close-bubble" src="/assets/img/close-button-bubbles.svg" alt="" (click)="getBubble(6)">
 </div>
 
-<div class="street-label poorest-label" *ngIf="step === 1" [style.top.px]="position.top - 10">
+<div class="street-label poorest-label" *ngIf="step === 1" [style.top.px]="position.top - 15">
   <span>Poorest</span>
 </div>
 
-<div class="street-label richest-label" *ngIf="step === 1" [style.top.px]="position.top - 10">
+<div class="street-label richest-label" *ngIf="step === 1" [style.top.px]="position.top - 15">
   <span>Richest</span>
 </div>
 
-<div class="slider-label left-slider" *ngIf="step === 4" [style.top.px]="position.top - 60">
+<div class="slider-label left-slider" *ngIf="step === 4" [style.top.px]="position.top - 65">
 </div>
 
-<div class="slider-label right-slider" *ngIf="step === 4" [style.top.px]="position.top - 60">
+<div class="slider-label right-slider" *ngIf="step === 4" [style.top.px]="position.top - 65">
 </div>

@@ -57,7 +57,6 @@ export class GuideComponent implements OnInit, OnDestroy {
 
   protected close():void {
     this.isShowGuide = false;
-    this.isShowBubble = false;
     this.startQuickGuide.emit({});
   }
 }
