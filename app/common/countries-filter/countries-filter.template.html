@@ -8,6 +8,32 @@
   </div>
 
   <div class="countries-filter-container">
+    <div class="title">Select countries
+       <img class="close-button pull-right"
+            src="../../assets/img/close-button.svg"
+            (click)="cancelCountriesFilter()"
+            alt="Close">
+    </div>
+
+    <div>
+      <span class="all-not-selected">
+         <img src="/assets/img/empty-check.png" alt="">
+      </span>
+      <span *ngIf="showSelected" class="all-selected">
+         <img src="/assets/img/check-icon.svg" alt="">
+      </span>
+
+      <span class="all-filter" (click)="clearAllCountries()">Show all countries</span>
+
+      <div class="countries-search">
+        <input class="form-control autofocus"
+               type="search"
+               placeholder="Search country"
+               [(ngModel)]="search">
+        <img src="/assets/img/search-icon.svg" alt="Search icon">
+      </div>
+    </div>
+
     <div class="regions-container" *ngFor="let location of locations">
       <h3 class="title"
           (click)="selectRegions(location)"
@@ -25,7 +51,7 @@
 
       <div class="countries-container">
         <div class="country-content"
-             *ngFor="let country of location.countries"
+             *ngFor="let country of location.countries | CountriesFilterPipe:search"
              [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
              (click)="selectCountries(country, location.region)">
           <span class="not-selected">
@@ -42,8 +68,8 @@
     </div>
 
     <div class="button-container">
-      <button type="button" (click)="clearAllCountries()"><img src="/assets/img/clear-all-icon.svg">Clear all</button>
-      <button type="button" (click)="goToLocation()"><img src="/assets/img/apply-icon.svg">Apply</button>
+      <button class="cancel" type="button" (click)="cancelCountriesFilter()">Cancel</button>
+      <button type="button" (click)="goToLocation()"><img src="/assets/img/apply-icon.svg">Ok</button>
     </div>
   </div>
 </div>
