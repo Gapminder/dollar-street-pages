@@ -51,6 +51,7 @@
   background: url("/assets/img/underline.svg") no-repeat 100% 90%;
   padding: 0 4px 0 2px;
   margin: 0 -4px 0 -2px;
+  background-size: 100%;
 }
 
 .quick-guide-container .button-container {
@@ -74,7 +75,7 @@
 }
 
 .quick-guide-container > img {
-  width: 18px;
+  width: 19px;
   position: absolute;
   top: 22px;
   right: 22px;

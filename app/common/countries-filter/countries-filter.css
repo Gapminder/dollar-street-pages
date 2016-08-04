@@ -46,9 +46,9 @@
   top: 100%;
   margin-top: 5px;
   width: 787px;
-  z-index: 10;
-  /*overflow: hidden;*/
-  height: 585px;
+  z-index: 99;
+  overflow: hidden;
+  height: 569px;
   display: none;
 }
 
