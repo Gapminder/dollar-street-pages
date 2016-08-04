@@ -59,11 +59,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
 
-    if (this.selectedCountries.length || this.selectedRegions.length) {
-      this.showCheckAllCountries(false);
-    } else {
-      this.showCheckAllCountries(true);
-    }
+    this.showCheckAllCountries(!(this.selectedCountries.length || this.selectedRegions.length));
 
     if (this.isOpenCountriesFilter) {
       setTimeout(() => {
