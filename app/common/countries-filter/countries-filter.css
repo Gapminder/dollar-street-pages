@@ -46,9 +46,8 @@
   top: 100%;
   margin-top: 5px;
   width: 787px;
+  height: 575px;
   z-index: 99;
-  overflow: hidden;
-  height: 569px;
   display: none;
 }
 
@@ -59,9 +58,9 @@
 #countries-filter .regions-container {
   border: 1px solid #e4e6e7;
   width: 25%;
-  padding: 7px 5px 15px 11px;
+  padding: 7px 5px 5px 11px;
   float: left;
-  height: calc(100% - 158px);
+  height: calc(100% - 155px);
 }
 
 #countries-filter .regions-container .title {
@@ -80,12 +79,12 @@
 }
 
 #countries-filter .all-filter {
-   color: #374551;
-   font-size: 24px;
-   line-height: 20px;
-   margin: 0 20px 0 40px;
-   cursor: pointer;
- }
+  color: #374551;
+  font-size: 24px;
+  line-height: 20px;
+  margin: 0 20px 0 40px;
+  cursor: pointer;
+}
 
 #countries-filter .countries-search {
   width: 300px;
@@ -186,7 +185,7 @@
   width: 100%;
   float: none;
   clear: both;
-  padding: 2px 2px 15px 15px;
+  /*padding: 2px 2px 15px 15px;*/
   text-align: right;
 }
 
