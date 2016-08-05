@@ -71,7 +71,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy {
 
   public scrollTop(e: MouseEvent): void {
     e.preventDefault();
-    this.animateScroll('goTo', 20, 1000);
+    this.animateScroll('scrollBackToTop', 20, 1000);
   };
 
   private getScrollTop(): number {
