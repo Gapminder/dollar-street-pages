@@ -1,18 +1,19 @@
 'use strict';
 
-const dataProvider = require('../Data/DataProvider.ts');
-const using = require('jasmine-data-provider');
+import { DataProvider } from '../Data/DataProvider';
+import { $ } from 'protractor/globals';
+import { using } from 'rxjs/observable/using';
 
-let FooterTests = function () {
-  this.checkFooterText = () => {
-    using(dataProvider.footerTextInfo, (data) => {
+export class FooterPage {
+  public static checkFooterText():any {
+    using(DataProvider.footerTextInfo, (data:any) => {
       expect(data.element().getText()).toEqual(data.actualResult);
     });
   };
-  this.checkFooterImages = () => {
-    using(dataProvider.footerBooleanInfo, (data) => {
+
+  public static checkFooterImages():any {
+    using(DataProvider.footerBooleanInfo, (data:any) => {
       expect($(data.logoCSS).isDisplayed()).toBeTruthy();
     });
   };
-};
-module.exports = FooterTests;
+}

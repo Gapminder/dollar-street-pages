@@ -1,0 +1,21 @@
+<div class="quick-guide-container" *ngIf="isShowGuide">
+  <div class="quick-guide-content">
+    <div class="logo-container">
+      <img src="/assets/img/dollar-street.svg" alt="Logo">
+    </div>
+
+    <div class="quick-guide-description-container">
+      <h1>Dollar Street</h1>
+      <p *ngIf="description">{{description}}</p>
+      <h2>See how people <span>really</span> live</h2>
+      <div class="button-container">
+        <button class="bg-orange" type="button" (click)="openQuickGuide()">Quick tour</button>
+        <button type="button" (click)="close()">Maybe later</button>
+      </div>
+    </div>
+  </div>
+
+  <img (click)="close()" src="/assets/img/close-button.svg" alt="">
+</div>
+
+<bubble *ngIf="isShowBubble" [bubbles]="bubbles"></bubble>

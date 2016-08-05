@@ -1,0 +1,83 @@
+.quick-guide-container {
+  background: #f2fafc linear-gradient(to top, #f2fafc 0%, #dbf0f5 100%);
+  border-bottom: 1px solid #c6c7c9;
+  padding: 50px 0;
+}
+
+.quick-guide-container .quick-guide-content {
+  width: 940px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.quick-guide-container .logo-container {
+  width: 258px;
+  float: left;
+}
+
+.quick-guide-container .logo-container img {
+  width: 100%;
+}
+
+.quick-guide-container .quick-guide-description-container {
+  width: calc(100% - 368px);
+  float: right;
+  margin-left: 110px;
+  text-align: center;
+}
+
+.quick-guide-container h1 {
+  font-size: 48px;
+  line-height: 48px;
+  margin: -6px 0 0;
+  text-transform: uppercase;
+  font-family: 'Bariol Bold', sans-serif;
+}
+
+.quick-guide-container p {
+  font-size: 21px;
+  line-height: 29px;
+  margin: 14px 0 13px;
+}
+
+.quick-guide-container h2 {
+  font-size: 36px;
+  line-height: 36px;
+  margin: 0;
+}
+
+.quick-guide-container h2 span {
+  font-family: 'Bariol Bold', sans-serif;
+  background: url("/assets/img/underline.svg") no-repeat 100% 90%;
+  padding: 0 4px 0 2px;
+  margin: 0 -4px 0 -2px;
+  background-size: 100%;
+}
+
+.quick-guide-container .button-container {
+  margin-top: 22px;
+}
+
+.quick-guide-container button {
+  background-color: #fff;
+  border: 1px solid #e4e6e7;
+  border-radius: 8px;
+  font-size: 24px;
+  box-shadow: none;
+  outline: none;
+  padding: 4px 35px;
+}
+
+.quick-guide-container button.bg-orange {
+  background-color: #f8ca45;
+  border: 0;
+  margin-right: 11px;
+}
+
+.quick-guide-container > img {
+  width: 19px;
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  cursor: pointer;
+}

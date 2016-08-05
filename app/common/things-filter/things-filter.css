@@ -67,8 +67,8 @@
   top: 100%;
   margin-top: 5px;
   left: 0;
-  width: 844px;
-  z-index: 10;
+  width: 584px;
+  z-index: 99;
   overflow: hidden;
   height: 517px;
   display: none;

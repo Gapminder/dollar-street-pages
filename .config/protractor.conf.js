@@ -1,14 +1,13 @@
 'use strict';
-const path=require('path')
-const cwd = process.cwd();
+
 exports.config = {
 
-   baseUrl: 'http://consumer.dollarstreet.org/',
+   baseUrl: 'https://ds-dev-consumer.firebaseapp.com/',
 
   specs: [
-    path.resolve(cwd)+'/test-e2e/**/*.e2e.ts'
+    '../test-e2e/**/*.e2e.js'
   ],
-  exclude: [],
+  exclude: ['../test-e2e/**/BlogPageTests.e2e.js'],
 
   framework: 'jasmine',
 
@@ -22,7 +21,7 @@ exports.config = {
     defaultTimeoutInterval: 500000
   },
   directConnect: true,
-  
+
   multiCapabilities: [
     {
       browserName: 'chrome',
@@ -36,7 +35,7 @@ exports.config = {
     }*/
   ],
 
-  seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.52.0.jar',
+ // seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.52.0.jar',
 
   useAllAngular2AppRoots: true
   };

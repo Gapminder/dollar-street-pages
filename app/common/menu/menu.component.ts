@@ -56,7 +56,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.angulartics2GoogleAnalytics.eventTrack('Matrix page');
 
     if (removeStorage) {
-      this.window.localStorage.removeItem('onboarded');
+      this.window.localStorage.removeItem('quick-guide');
     }
 
     if (this.isMatrixComponent) {

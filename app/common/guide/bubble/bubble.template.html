@@ -1,0 +1,44 @@
+<div class="bubbles-container"
+     [ngClass]="{last: step === 5, none: step === 4, center: step === 1 || step === 3, 'close-bubble': isCloseBubble}"
+     [style.top.px]="position.top"
+     [style.left.px]="position.left">
+  <div class="bubbles-content">
+    <p class="bubbles-steps">{{step}} of {{bubbles.length}}</p>
+    <h3 class="bubbles-title">{{bubble?.header}}</h3>
+    <p class="bubbles-description">{{bubble?.description}}</p>
+
+    <p class="welcome" *ngIf="step === 5">Welcome to Dollar Street! <img src="/assets/img/smile.png" alt=""></p>
+
+    <div class="button-container">
+      <span class="back" *ngIf="step !== 1" (click)="back()"><< Back</span>
+      <button type="button" *ngIf="step !== 5" (click)="next()">Next >></button>
+      <button type="button" *ngIf="step === 5" (click)="finish()">Ready to start</button>
+    </div>
+  </div>
+
+  <div class="footer-container" *ngIf="step === 5">
+    <p>Share</p>
+
+    <social-share-buttons></social-share-buttons>
+
+    <a target="_blank"
+       *ngIf="step === bubbles.length"
+       [href]="bubble?.link?.href">{{bubble?.link?.text}}</a>
+  </div>
+
+  <img class="close-bubble" src="/assets/img/close-button-bubbles.svg" alt="" (click)="getBubble(6)">
+</div>
+
+<div class="street-label poorest-label" *ngIf="step === 1" [style.top.px]="position.top - 15">
+  <span>Poorest</span>
+</div>
+
+<div class="street-label richest-label" *ngIf="step === 1" [style.top.px]="position.top - 15">
+  <span>Richest</span>
+</div>
+
+<div class="slider-label left-slider" *ngIf="step === 4" [style.top.px]="position.top - 65">
+</div>
+
+<div class="slider-label right-slider" *ngIf="step === 4" [style.top.px]="position.top - 65">
+</div>

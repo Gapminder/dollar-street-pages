@@ -1,35 +1,33 @@
 'use strict';
 
-const dataProvider = require('../Data/DataProvider.ts');
-const FooterPage = require('../Pages/FooterPage.ts');
-const using = require('jasmine-data-provider');
-const PhotographersPage = require('../Pages/PhotographersPage.ts');
-let footer = new FooterPage();
-let photographersPage;
+import { DataProvider } from '../Data/DataProvider';
+import { AbstractPage } from '../Pages/AbstractPage';
+import { FooterPage } from '../Pages/FooterPage';
+let using = require('jasmine-data-provider');
+import { browser, $ } from 'protractor/globals';
+import { PhotographersPage } from '../Pages/PhotographersPage';
 
-browser.manage().window().maximize();
+browser.driver.manage().window().maximize();
 
 describe('Photographer Page test', () => {
-    photographersPage = new PhotographersPage();
-    beforeEach(() => {
-        browser.get('/photographers');
-        browser.wait(photographersPage.getEC.visibilityOf(photographersPage.getLastPhotographer()), photographersPage.getTimeout, photographersPage.setErrorMessage());
+  beforeEach(() => {
+    browser.get('/photographers');
+    browser.wait(AbstractPage.getEC().visibilityOf(PhotographersPage.getLastPhotographer()), AbstractPage.getTimeout(), PhotographersPage.setErrorMessage());
+  });
+  afterEach(() => {
+    using(DataProvider.photographerPageBoolean, (data:any) => {
+      expect($(data.photographerDataCSS).isDisplayed()).toBeTruthy();
     });
-    afterEach(() => {
-        using (dataProvider.photographerPageBoolean, (data) => {
-            expect($(data.photographerDataCSS).isDisplayed()).toBeTruthy();
-        });
+  });
+  afterAll(() => {
+    FooterPage.checkFooterText();
+    FooterPage.checkFooterImages();
+  });
+  using(DataProvider.photographersPageField, (data:any, description:string) => {
+    it('Check ' + description + ' on Photographer Page', () => {
+      PhotographersPage.getSearchButton().sendKeys(data.photographerQuery + '\n');
+      PhotographersPage.getFoundPhotographer().click();
+      browser.wait(AbstractPage.getEC().visibilityOf(PhotographersPage.getFamiliesIcon()), AbstractPage.getTimeout(), PhotographersPage.setFamilyErrorMessage(description));
     });
-    afterAll(() => {
-        footer.checkFooterText();
-        footer.checkFooterImages();
-    });
-    using(dataProvider.photographersPageField, (data, description) => {
-        it('Check ' + description + ' on Photographer Page' , () => {
-            photographersPage = new PhotographersPage();
-            photographersPage.getSearchButton().sendKeys(data.photographerQuery + '\n');
-            photographersPage.getFoundPhotographer().click();
-            browser.wait(photographersPage.getEC.visibilityOf(photographersPage.getFamiliesIcon()), photographersPage.getTimeout, photographersPage.setFamilyErrorMessage(description));
-        });
-    });
+  });
 });
