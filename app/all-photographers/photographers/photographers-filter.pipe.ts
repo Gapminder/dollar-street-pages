@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'PhotographersFilter'
 })
 export class PhotographersFilter implements PipeTransform {
-  public transform(...args:any[]):any[] {
+  public transform(...args: any[]): any[] {
     let [value, text, countries, nested] = args;
     let photographersArr = [];
 
@@ -14,16 +14,16 @@ export class PhotographersFilter implements PipeTransform {
       return value;
     }
 
-    let items:any = value;
-    let newItems:any;
+    let items: any = value;
+    let newItems: any;
 
-    newItems = countries.filter((country:any) => {
-      let photographers = country.photographers.filter((photographer:any) => {
+    newItems = countries.filter((country: any) => {
+      let photographers = country.photographers.filter((photographer: any) => {
         return photographer.name.toLowerCase().indexOf(text.toLowerCase()) !== -1;
       });
 
       if (photographers.length) {
-        photographersArr.push(...photographers.map((photographer:any) => {
+        photographersArr.push(...photographers.map((photographer: any) => {
           return photographer.name;
         }));
 
@@ -33,7 +33,7 @@ export class PhotographersFilter implements PipeTransform {
       }
 
       if (country.name.toLowerCase().indexOf(text.toLowerCase()) !== -1) {
-        photographersArr.push(...country.photographers.map((photographer:any) => {
+        photographersArr.push(...country.photographers.map((photographer: any) => {
           return photographer.name;
         }));
 
@@ -44,7 +44,7 @@ export class PhotographersFilter implements PipeTransform {
     });
 
     if (!nested) {
-      newItems = items.filter((photographer:any) => {
+      newItems = items.filter((photographer: any) => {
         return photographersArr.indexOf(photographer.name) !== -1;
       });
     }

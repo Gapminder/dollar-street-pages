@@ -2,12 +2,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { filter } from 'lodash';
 
 interface Thing {
-  _id:string;
-  empty:boolean;
-  icon:string;
-  plural:string;
-  thingCategory:string[];
-  thingName:string;
+  _id: string;
+  empty: boolean;
+  icon: string;
+  plural: string;
+  thingCategory: string[];
+  thingName: string;
 }
 
 @Pipe({
@@ -15,14 +15,14 @@ interface Thing {
 })
 
 export class ThingsFilterPipe implements PipeTransform {
-  public transform(...args:any[]):any {
+  public transform(...args: any[]): any {
     let [value, text] = args;
 
     if (!text) {
       return value;
     }
 
-    return filter(value, (item:Thing) => {
+    return filter(value, (item: Thing) => {
       return !item.empty && item.plural.toLowerCase().indexOf(text.toLowerCase()) !== -1;
     });
   }

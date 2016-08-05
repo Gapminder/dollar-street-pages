@@ -2,6 +2,7 @@
   <div class="image-container">
     <img [src]="home.image" alt="">
   </div>
+
   <div class="description-container">
     <div class="home-info-container">
       <div class="title-info">
@@ -11,7 +12,7 @@
         </div>
 
         <div class="right-title">
-          <p class="sub-title">Household monthly income</p>
+          <p class="sub-title">Monthly income</p>
           <p class="title">${{math.round(home.income)}} <img class="about-info-image"
                                                              src="/assets/img/info-button.svg"
                                                              alt=""
@@ -70,28 +71,17 @@
     <div class="home-info-container">
       <div class="title-info">
         <div class="left-title">
-          <p class="sub-title">Home of</p>
-          <p class="title">{{home.familyName}} family</p>
+          <p class="title">{{home.familyName}} family, {{home.country?.alias}}</p>
         </div>
 
         <div class="right-title">
-          <p class="sub-title">Household monthly income</p>
-          <p class="title">${{math.round(home.income)}}<img class="about-info-image"
+          <p class="title">${{math.round(home.income)}}<span>/month</span><img class="about-info-image"
                                                             src="/assets/img/info-button.svg"
                                                             alt=""
                                                             *ngIf="home.aboutData"
                                                             (click)="showAboutData($event, true)"
                                                             (mouseenter)="showAboutData($event)"
                                                             (mouseleave)="showAboutData()"></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="home-country-container">
-      <div class="title-info">
-        <div class="right-title">
-          <p class="sub-title">Country</p>
-          <p class="title">{{home.country?.alias}}</p>
         </div>
       </div>
     </div>

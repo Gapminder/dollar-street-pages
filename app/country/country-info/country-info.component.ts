@@ -15,30 +15,30 @@ let style = require('./country-info.css');
 })
 
 export class CountryInfoComponent implements OnInit, OnDestroy {
-  protected math:any;
+  protected math: any;
   @Input()
-  private countryId:string;
-  private isShowInfo:boolean;
-  private country:any;
-  private countryInfoService:any;
-  private thing:any;
-  private countryInfoServiceSubscribe:Subscriber;
-  private placesQantity:any;
-  private photosQantity:any;
-  private videosQantity:any;
-  private hoverPlace:Subject<any> = new Subject();
+  private countryId: string;
+  private isShowInfo: boolean;
+  private country: any;
+  private countryInfoService: any;
+  private thing: any;
+  private countryInfoServiceSubscribe: Subscriber;
+  private placesQantity: any;
+  private photosQantity: any;
+  private videosQantity: any;
+  private hoverPlace: Subject<any> = new Subject();
   @Output()
-  private getCountry:EventEmitter<any> = new EventEmitter<any>();
+  private getCountry: EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(@Inject('CountryInfoService') countryInfoService:any, @Inject('Math') math:any) {
+  public constructor(@Inject('CountryInfoService') countryInfoService: any, @Inject('Math') math: any) {
     this.countryInfoService = countryInfoService;
     this.math = math;
     this.isShowInfo = false;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}`)
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -54,7 +54,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.countryInfoServiceSubscribe.unsubscribe();
   }
 }

@@ -23,23 +23,23 @@ let style = require('./photographer.css');
 })
 
 export class PhotographerComponent implements OnInit, OnDestroy {
-  protected photographerId:string;
+  protected photographerId: string;
 
-  private activatedRoute:ActivatedRoute;
-  private queryParamsSubscribe:any;
+  private activatedRoute: ActivatedRoute;
+  private queryParamsSubscribe: any;
 
-  public constructor(@Inject(ActivatedRoute) activatedRoute:ActivatedRoute) {
+  public constructor(@Inject(ActivatedRoute) activatedRoute: ActivatedRoute) {
     this.activatedRoute = activatedRoute;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.queryParamsSubscribe = this.activatedRoute.params
-      .subscribe((params:any) => {
+      .subscribe((params: any) => {
         this.photographerId = params.id;
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.queryParamsSubscribe.unsubscribe();
   }
 }

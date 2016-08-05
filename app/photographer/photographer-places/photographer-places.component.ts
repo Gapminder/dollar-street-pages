@@ -14,25 +14,25 @@ let style = require('./photographer-places.css');
 })
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
-  public loader:boolean = false;
-  public photographerPlacesServiceSubscribe:Subscriber;
-  public math:any;
+  public loader: boolean = false;
+  public photographerPlacesServiceSubscribe: Subscriber;
+  public math: any;
 
   @Input()
-  private photographerId:string;
-  private places:any = [];
-  private photographerPlacesService:any;
+  private photographerId: string;
+  private places: any = [];
+  private photographerPlacesService: any;
 
-  public constructor(@Inject('PhotographerPlacesService') photographerPlacesService:any,
-                     @Inject('Math') math:any) {
+  public constructor(@Inject('PhotographerPlacesService') photographerPlacesService: any,
+                     @Inject('Math') math: any) {
     this.photographerPlacesService = photographerPlacesService;
     this.math = math;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.photographerPlacesServiceSubscribe = this.photographerPlacesService
       .getPhotographerPlaces(`id=${this.photographerId}`)
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -43,7 +43,7 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.photographerPlacesServiceSubscribe.unsubscribe();
   }
 }

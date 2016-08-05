@@ -32,54 +32,54 @@ let style = require('./matrix.css');
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
-  protected filtredPlaces:any[] = [];
-  public clearActiveHomeViewBox:Subject<any> = new Subject();
+  protected filtredPlaces: any[] = [];
+  public clearActiveHomeViewBox: Subject<any> = new Subject();
 
-  public query:string;
-  public matrixService:any;
-  public streetPlaces:Subject<any> = new Subject();
-  public matrixPlaces:Subject<any> = new Subject();
-  public chosenPlaces:Subject<any> = new Subject();
-  public hoverPlace:Subject<any> = new Subject();
-  public padding:Subject<any> = new Subject();
-  public hoverHeader:Subject<any> = new Subject();
-  public loader:boolean = false;
-  public isDraw:boolean = false;
-  public lowIncome:number;
-  public highIncome:number;
-  public matrixServiceSubscrib:Subscriber;
-  public streetData:any;
+  public query: string;
+  public matrixService: any;
+  public streetPlaces: Subject<any> = new Subject();
+  public matrixPlaces: Subject<any> = new Subject();
+  public chosenPlaces: Subject<any> = new Subject();
+  public hoverPlace: Subject<any> = new Subject();
+  public padding: Subject<any> = new Subject();
+  public hoverHeader: Subject<any> = new Subject();
+  public loader: boolean = false;
+  public isDraw: boolean = false;
+  public lowIncome: number;
+  public highIncome: number;
+  public matrixServiceSubscrib: Subscriber;
+  public streetData: any;
 
-  private resizeSubscribe:any;
-  private placesArr:any[];
-  private element:HTMLElement;
-  private rowEtalon:number = 0;
-  private imageHeight:number;
-  private footerHeight:number;
-  private imageMargin:number;
-  private visiblePlaces:number;
-  private urlChangeService:any;
-  private router:Router;
-  private thing:string;
-  private countries:string;
-  private regions:string;
-  private row:number;
-  private activeHouse:number;
-  private placesVal:any;
-  private zoom:number;
-  private isDesktop:boolean = device.desktop();
-  private clonePlaces:any[];
-  private zone:NgZone;
-  private windowHistory:any = history;
-  private matrixServiceStreetSubscrib:Subscriber;
-  private streetPlacesData:any;
-  private queryParamsSubscribe:any;
+  private resizeSubscribe: any;
+  private placesArr: any[];
+  private element: HTMLElement;
+  private rowEtalon: number = 0;
+  private imageHeight: number;
+  private footerHeight: number;
+  private imageMargin: number;
+  private visiblePlaces: number;
+  private urlChangeService: any;
+  private router: Router;
+  private thing: string;
+  private countries: string;
+  private regions: string;
+  private row: number;
+  private activeHouse: number;
+  private placesVal: any;
+  private zoom: number;
+  private isDesktop: boolean = device.desktop();
+  private clonePlaces: any[];
+  private zone: NgZone;
+  private windowHistory: any = history;
+  private matrixServiceStreetSubscrib: Subscriber;
+  private streetPlacesData: any;
+  private queryParamsSubscribe: any;
 
-  public constructor(@Inject('MatrixService') matrixService:any,
-                     @Inject(ElementRef) element:ElementRef,
-                     @Inject('UrlChangeService') urlChangeService:any,
-                     @Inject(Router) router:Router,
-                     @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject('MatrixService') matrixService: any,
+                     @Inject(ElementRef) element: ElementRef,
+                     @Inject('UrlChangeService') urlChangeService: any,
+                     @Inject(Router) router: Router,
+                     @Inject(NgZone) zone: NgZone) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.router = router;
@@ -87,7 +87,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.zone = zone;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -100,7 +100,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.queryParamsSubscribe = this.router
       .routerState
       .queryParams
-      .subscribe((params:any) => {
+      .subscribe((params: any) => {
         this.thing = params.thing;
         this.countries = params.countries ? decodeURI(params.countries) : 'World';
         this.regions = params.regions ? decodeURI(params.regions) : 'World';
@@ -116,7 +116,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     this.matrixServiceStreetSubscrib = this.matrixService.getStreetSettings()
-      .subscribe((val:any) => {
+      .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
 
@@ -162,32 +162,32 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
-  public interactiveIncomeText():void {
+  public interactiveIncomeText(): void {
     let thingContainer = this.element.querySelector('things-filter') as HTMLElement;
     let countriesFilter = this.element.querySelector('countries-filter') as HTMLElement;
     let filtersContainer = this.element.querySelector('.filters-container') as HTMLElement;
     let incomeContainer = this.element.querySelector('.income-title-container') as HTMLElement;
-    let filtersBlockWidth:number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
+    let filtersBlockWidth: number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
 
-    setTimeout(():void => {
+    setTimeout((): void => {
       incomeContainer.classList.remove('incomeby');
     }, 0);
 
     if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
-      setTimeout(():void => {
+      setTimeout((): void => {
         incomeContainer.classList.remove('incomeby');
       }, 0);
 
     }
 
     if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 175) {
-      setTimeout(():void => {
+      setTimeout((): void => {
         incomeContainer.classList.add('incomeby');
       }, 0);
     }
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
 
     if (this.resizeSubscribe.unsubscribe) {
       this.resizeSubscribe.unsubscribe();
@@ -203,7 +203,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.queryParamsSubscribe.unsubscribe();
   }
 
-  public ngAfterViewChecked():void {
+  public ngAfterViewChecked(): void {
     let footer = this.element.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
 
@@ -223,7 +223,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   /** each document usage breaks possible server side rendering */
-  public stopScroll():void {
+  public stopScroll(): void {
     let scrollTop = document.body.scrollTop ? document.body.scrollTop : document.documentElement.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
@@ -254,7 +254,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public getPaddings():void {
+  public getPaddings(): void {
     let windowInnerWidth = window.innerWidth - 36;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
@@ -280,7 +280,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public getViewableRows(headerHeight:number):void {
+  public getViewableRows(headerHeight: number): void {
     let windowInnerHeight = window.innerHeight;
     let viewable = windowInnerHeight - headerHeight;
     let distance = viewable / (this.imageHeight + 2 * this.imageMargin);
@@ -295,11 +295,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.clonePlaces = _.cloneDeep(this.filtredPlaces);
   }
 
-  public hoverPlaceS(place:any):void {
+  public hoverPlaceS(place: any): void {
     this.hoverPlace.next(place);
   }
 
-  public isHover():void {
+  public isHover(): void {
     if (!this.isDesktop) {
       return;
     }
@@ -307,7 +307,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.hoverHeader.next(void 0);
   }
 
-  public urlChanged(options:any):void {
+  public urlChanged(options: any): void {
     let {url, isZoom, isCountriesFilter, isInit} = options;
 
     if (url) {
@@ -332,7 +332,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     this.matrixServiceSubscrib = this.matrixService.getMatrixImages(this.query)
-      .subscribe((val:any) => {
+      .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
           return;
@@ -343,7 +343,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.placesVal = val.data.zoomPlaces;
         this.streetPlacesData = val.data.streetPlaces;
 
-        this.filtredPlaces = this.placesVal.filter((place:any):boolean => {
+        this.filtredPlaces = this.placesVal.filter((place: any): boolean => {
           return place;
         });
 
@@ -381,7 +381,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
-  public activeHouseOptions(options:any):void {
+  public activeHouseOptions(options: any): void {
     let {row, activeHouseIndex} = options;
 
     this.query = this.query.replace(/row\=\d*/, `row=${row}`).replace(/&activeHouse\=\d*/, '');
@@ -396,20 +396,20 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.urlChangeService.replaceState('/matrix', this.query);
   }
 
-  public changeZoom(zoom:any):void {
+  public changeZoom(zoom: any): void {
     this.urlChanged({
       url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`),
       isZoom: true
     });
   };
 
-  protected startQuickGuide():void {
+  protected startQuickGuide(): void {
     setTimeout(() => {
       this.getPaddings();
     }, 0);
   }
 
-  private parseUrl(url:string):any {
+  private parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

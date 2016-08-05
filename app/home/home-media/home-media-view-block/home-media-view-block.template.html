@@ -3,47 +3,64 @@
   <div class="view-image-block-content">
     <div class="view-image-container">
       <div class="view-image-content">
-        <img [src]="imageData.image">
+        <img (click)="openPopUp()" [src]="imageData.image">
       </div>
 
       <div class="image-footer-container">
         <div class="photographer-container">
           <p><img src="/assets/img/cc-icon-small.svg">
             Photo by <a [routerLink]="['/photographer', imageData.photographer._id]" [queryParams]="{}">
-              {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a>
-            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> CC by 4.0 How to credit</a>
+              {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> for Dollar Street
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> (CC BY 4.0)</a>
           </p>
         </div>
 
         <div class="zoom-download-container">
-          <a (click)="openPopUp()">
-            <img src="/assets/img/fullsize-icon.svg" alt=""> View fullsize
-          </a>
           <a class="download" [href]="imageData.image.replace('desktops', 'original')" download>
-            <img src="/assets/img/download-icon.svg" alt=""> Download image
+            <img src="/assets/img/download-icon.svg" alt=""> Download
+          </a>
+
+          <a (click)="openPopUp()">
+            <img src="/assets/img/fullsize-icon.svg" alt=""> Fullsize
           </a>
         </div>
       </div>
     </div>
 
     <div class="house-info-container">
-      <div class="header-container">
-        <div class="thing-container">
+      <div class="house-info-content">
+        <div class="header-container">
           <img [src]="imageData.thing.icon" alt="">
           <span>{{imageData.thing.thingName}}</span>
         </div>
 
-        <div class="close-block" (click)="closeImageBlock()">
-          <img src="/assets/img/close-button.svg" alt="">
+        <p *ngIf="article?.shortDescription">{{article.shortDescription}} <a
+          *ngIf="article?.isDescription"
+          [routerLink]="['/article', imageData.thing._id]"
+          [queryParams]="{}">Read more >></a></p>
+
+        <div class="thing-button-container">
+          <p>Related searches</p>
+          <a
+            [routerLink]="['/matrix']"
+            [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1'}">
+            {{imageData.thing.thingName}} in {{country?.name}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+            src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+          <a
+            [routerLink]="['/matrix']"
+            [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1'}">
+            {{imageData.thing.thingName}} in {{country?.region}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+            src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+          <a
+            [routerLink]="['/matrix']"
+            [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1'}">
+            {{imageData.thing.thingName}} in the world <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+            src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
         </div>
       </div>
 
-      <div class="thing-footer-container">
-        <span>Related searches</span>
-        <a
-          [routerLink]="['/matrix']"
-          [queryParams]="{thing: imageData.thing.name, countries: 'World', regions: 'World', zoom: '4', row: '1'}">
-          {{imageData.thing.name}} in the world <img src="/assets/img/arrow-right-icon.svg" alt=""></a>
+      <div class="close-block" (click)="closeImageBlock()">
+        <img src="/assets/img/close-button.svg" alt="">
       </div>
     </div>
   </div>

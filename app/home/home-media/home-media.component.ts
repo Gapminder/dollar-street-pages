@@ -25,40 +25,40 @@ let style = require('./home-media.css');
 })
 
 export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
-  protected zoom:number = 4;
-  protected itemSize:number;
-  protected imageData:any = {};
-  protected imageBlockLocation:number;
-  protected showImageBlock:boolean = false;
-  protected activeImage:any;
+  protected zoom: number = 4;
+  protected itemSize: number;
+  protected imageData: any = {};
+  protected imageBlockLocation: number;
+  protected showImageBlock: boolean = false;
+  protected activeImage: any;
 
   @Input('placeId')
-  private placeId:string;
+  private placeId: string;
   @Input('activeImageIndex')
-  private activeImageIndex:number;
+  private activeImageIndex: number;
 
   @Output('activeImageOptions')
-  private activeImageOptions:EventEmitter<any> = new EventEmitter<any>();
+  private activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
-  private prevImageId:string;
-  private homeMediaService:any;
-  private images:any = [];
-  private familyPlaceServiceSubscribe:Subscriber;
-  private resizeSubscribe:any;
-  private zone:NgZone;
-  private imageHeight:number;
-  private footerHeight:any;
-  private imageOffsetHeight:any;
-  private isInit:boolean = true;
-  private indexViewBoxImage:number;
+  private prevImageId: string;
+  private homeMediaService: any;
+  private images: any = [];
+  private familyPlaceServiceSubscribe: Subscriber;
+  private resizeSubscribe: any;
+  private zone: NgZone;
+  private imageHeight: number;
+  private footerHeight: any;
+  private imageOffsetHeight: any;
+  private isInit: boolean = true;
+  private indexViewBoxImage: number;
 
-  public constructor(@Inject('HomeMediaService') homeMediaService:any,
-                     @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject('HomeMediaService') homeMediaService: any,
+                     @Inject(NgZone) zone: NgZone) {
     this.homeMediaService = homeMediaService;
     this.zone = zone;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     if (window.innerWidth < 1024) {
       this.zoom = 3;
     }
@@ -66,7 +66,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.itemSize = this.imageHeight = (window.innerWidth - 36) / this.zoom;
 
     this.familyPlaceServiceSubscribe = this.homeMediaService.getHomeMedia(`placeId=${this.placeId}`)
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -85,7 +85,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
-  public ngAfterViewChecked():void {
+  public ngAfterViewChecked(): void {
     if (!this.activeImageIndex || !this.isInit) {
       this.isInit = false;
 
@@ -116,7 +116,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.familyPlaceServiceSubscribe.unsubscribe();
 
     if (this.resizeSubscribe) {
@@ -124,17 +124,20 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  protected openMedia(image:any, index:number):void {
+  protected openMedia(image: any, index: number): void {
     this.activeImage = image;
     this.indexViewBoxImage = index;
-    let countByIndex:number = (this.indexViewBoxImage + 1) % this.zoom;
-    let offset:number = this.zoom - countByIndex;
+    let countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
+    let offset: number = this.zoom - countByIndex;
 
     this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
 
     this.imageData.index = !countByIndex ? this.zoom : countByIndex;
+    this.imageData.placeId = this.placeId;
     this.imageData.thing = {
-      name: image.plural,
+      _id: image.thing,
+      plural: image.plural,
+      thingName: image.thingName,
       icon: image.thingIcon.replace('FFFFFF', '2C4351')
     };
 
@@ -170,7 +173,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  private changeUrl(row?:number, activeImageIndex?:number):void {
+  private changeUrl(row?: number, activeImageIndex?: number): void {
     if (!row && !activeImageIndex) {
       this.activeImageOptions.emit({});
 
@@ -181,11 +184,11 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.goToRow(row);
   }
 
-  private goToRow(row:number):void {
+  private goToRow(row: number): void {
     let header = document.querySelector('.header-container') as HTMLElement;
     let homeDescription = document.querySelector('.home-description-container') as HTMLElement;
     let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
-    let headerHeight:number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
+    let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
     document.body.scrollTop = document.documentElement.scrollTop = (row - 1) * this.imageHeight + headerHeight + 18;
   }

@@ -15,5 +15,5 @@ let style = require('./all-photographers.css');
 })
 
 export class AllPhotographersComponent {
-  protected title:string = 'Photographers';
+  protected title: string = 'Photographers';
 }

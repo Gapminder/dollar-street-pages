@@ -15,65 +15,65 @@ let style = require('./matrix-view-block.css');
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  public familyInfoServiceSubscribe:Subscriber;
-  public fancyBoxImage:any;
+  public familyInfoServiceSubscribe: Subscriber;
+  public fancyBoxImage: any;
 
-  protected showblock:boolean;
-  protected familyData:any = {};
-  protected loader:boolean = false;
-  protected math:any;
-  protected markerPositionLeft:number;
+  protected showblock: boolean;
+  protected familyData: any = {};
+  protected loader: boolean = false;
+  protected math: any;
+  protected markerPositionLeft: number;
 
   @Input('positionInRow')
-  protected positionInRow:any;
+  protected positionInRow: any;
 
-  private privateZoom:any;
-  private resizeSubscribe:any;
-  private popIsOpen:boolean;
-  private mapData:any;
-  private familyInfoService:any;
-  private zone:NgZone;
-  private router:Router;
+  private privateZoom: any;
+  private resizeSubscribe: any;
+  private popIsOpen: boolean;
+  private mapData: any;
+  private familyInfoService: any;
+  private zone: NgZone;
+  private router: Router;
 
   @Input('query')
-  private query:any;
+  private query: any;
   @Input('place')
-  private place:any;
+  private place: any;
   @Input('thing')
-  private thing:string;
+  private thing: string;
   @Output('closeBigImageBlock')
-  private closeBigImageBlock:EventEmitter<any> = new EventEmitter<any>();
+  private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(@Inject('FamilyInfoService') familyInfoService:any,
-                     @Inject('Math') math:any,
-                     @Inject(NgZone) zone:NgZone,
-                     @Inject(Router) router:Router) {
+  public constructor(@Inject('FamilyInfoService') familyInfoService: any,
+                     @Inject('Math') math: any,
+                     @Inject(NgZone) zone: NgZone,
+                     @Inject(Router) router: Router) {
     this.familyInfoService = familyInfoService;
     this.zone = zone;
     this.router = router;
     this.math = math;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
-          let imageWidth:number = (window.innerWidth - 36) / this.privateZoom;
+          let imageWidth: number = (window.innerWidth - 36) / this.privateZoom;
 
           this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 33);
         });
       });
   }
 
-  public ngOnChanges():void {
+  public ngOnChanges(): void {
     this.loader = false;
     this.showblock = true;
 
     let url = `placeId=${this.place._id}&thingId=${this.thing}`;
-    let parseUrl:any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
+    let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
     this.privateZoom = parseUrl.zoom;
-    let imageWidth:number = (window.innerWidth - 36) / this.privateZoom;
+    let imageWidth: number = (window.innerWidth - 36) / this.privateZoom;
 
     this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 33);
     this.place.background = this.place.background.replace('devices', 'desktops');
@@ -84,7 +84,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -101,7 +101,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.resizeSubscribe.unsubscribe();
 
     if (this.familyInfoServiceSubscribe) {
@@ -109,11 +109,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  protected closeBlock():void {
+  protected closeBlock(): void {
     this.closeBigImageBlock.emit({});
   }
 
-  protected openPopUp():void {
+  protected openPopUp(): void {
     this.popIsOpen = true;
 
     let imgUrl = this.place.background.replace('desktops', 'original');
@@ -128,12 +128,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     newImage.src = imgUrl;
   };
 
-  protected fancyBoxClose():void {
+  protected fancyBoxClose(): void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
   }
 
-  private parseUrl(url:string):any {
+  private parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

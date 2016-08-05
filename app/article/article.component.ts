@@ -17,30 +17,30 @@ let style = require('./article.css');
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {
-  protected title:string;
-  protected loader:boolean = false;
-  private articleService:any;
-  private articleServiceSubscribe:Subscriber;
-  private article:any;
-  private thingId:string;
-  private activatedRoute:ActivatedRoute;
-  private queryParamsSubscribe:any;
+  protected title: string;
+  protected loader: boolean = false;
+  private articleService: any;
+  private articleServiceSubscribe: Subscriber;
+  private article: any;
+  private thingId: string;
+  private activatedRoute: ActivatedRoute;
+  private queryParamsSubscribe: any;
 
-  public constructor(@Inject('ArticleService') articleService:any,
-                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute) {
+  public constructor(@Inject('ArticleService') articleService: any,
+                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute) {
     this.articleService = articleService;
     this.activatedRoute = activatedRoute;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.queryParamsSubscribe = this.activatedRoute.params
-      .subscribe((params:any) => {
+      .subscribe((params: any) => {
         this.thingId = params.id;
       });
 
     this.articleServiceSubscribe = this.articleService
       .getArticle(`id=${this.thingId}`)
-      .subscribe((val:any) => {
+      .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
           return;
@@ -52,7 +52,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.queryParamsSubscribe.unsubscribe();
     this.articleServiceSubscribe.unsubscribe();
   }

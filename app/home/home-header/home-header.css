@@ -1,6 +1,6 @@
 .home-description-container {
   overflow: hidden;
-  padding: 113px 25px 25px;
+  padding: 86px 22px 20px;
   background-color: #f6f7f8;
   border-bottom: 1px solid #c6c7c9;
 }
@@ -55,12 +55,12 @@
 }
 
 .title-info .title {
-  color: #2e4350;
+  color: #374551;
   font-size: 32px;
 }
 
 .title-info .sub-title {
-  color: #2e4350;
+  color: #374551;
   font-size: 18px;
   margin-top: -5px;
 }
@@ -79,9 +79,10 @@
 }
 
 .home-description-container .family-info-container {
-  color: #2e4350;
+  color: #374551;
   font-size: 20px;
   text-align: justify;
+  line-height: 25px;
 }
 
 .home-description-container.open-info .go-to-matrix,
@@ -95,9 +96,8 @@
 
 .show-info {
   margin: 25px 0 2px;
-  color: #35424d;
+  color: #374551;
   font-size: 20px;
-  line-height: 14px;
 }
 
 .show-info span {
@@ -128,7 +128,7 @@
 
 .short-family-info-container {
   overflow: hidden;
-  padding: 10px 25px;
+  padding: 8px 22px;
   background-color: #f6f7f8;
   border-bottom: 1px solid #c6c7c9;
   position: fixed;
@@ -144,8 +144,8 @@
 }
 
 .short-family-info-container .image-container {
-  width: 53px;
-  margin-right: 20px;
+  width: 48px;
+  margin-right: 24px;
   float: left;
 }
 
@@ -159,10 +159,23 @@
 }
 
 .short-family-info-container .title-info .title {
-  color: #2e4350;
+  color: #374551;
+  font-size: 28px;
+}
+
+.short-family-info-container .left-title {
+  margin-top: 3px;
+}
+
+.short-family-info-container .right-title .title {
   font-size: 32px;
-  margin-top: -6px;
-  margin-bottom: -6px;
+  line-height: 32px;
+  margin-top: 10px;
+}
+
+.short-family-info-container .right-title .title span {
+  font-size: 18px;
+  line-height: 18px;
 }
 
 .about-info-image {
@@ -173,7 +186,7 @@
 }
 
 .short-family-info-container .about-info-image {
-  margin: 8px 0 0 7px;
+  margin: 0 0 0 7px;
 }
 
 .about-data-container {

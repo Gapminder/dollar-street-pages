@@ -12,23 +12,23 @@ let style = require('./ambassadors-list.css');
 })
 
 export class AmbassadorsListComponent implements OnInit, OnDestroy {
-  private ambassadorsListService:any;
-  private ambassadorsListSubscribe:Subscriber;
-  private ambassadorsList:any;
-  private showedBlock:number;
-  private resizeSubscribe:any;
-  private zone:NgZone;
-  private columnsRow:number = 6;
+  private ambassadorsListService: any;
+  private ambassadorsListSubscribe: Subscriber;
+  private ambassadorsList: any;
+  private showedBlock: number;
+  private resizeSubscribe: any;
+  private zone: NgZone;
+  private columnsRow: number = 6;
 
-  public constructor(@Inject('AmbassadorsListService') ambassadorsListService:any,
-                     @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject('AmbassadorsListService') ambassadorsListService: any,
+                     @Inject(NgZone) zone: NgZone) {
     this.ambassadorsListService = ambassadorsListService;
     this.zone = zone;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.ambassadorsListSubscribe = this.ambassadorsListService.getAmbassadors()
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -54,12 +54,12 @@ export class AmbassadorsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.ambassadorsListSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
   }
 
-  public show(i:number):void {
+  public show(i: number): void {
     if (this.showedBlock === i) {
       this.showedBlock = void 0;
       return;

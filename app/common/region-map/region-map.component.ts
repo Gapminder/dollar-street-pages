@@ -11,41 +11,41 @@ let style = require('./region-map.css');
 })
 
 export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
-  protected markerPosition:any = {};
+  protected markerPosition: any = {};
 
   @Input('mapData')
-  private mapData:any;
+  private mapData: any;
 
-  private mapImage:any;
-  private element:ElementRef;
-  private zone:NgZone;
-  private resizeSubscriber:any;
+  private mapImage: any;
+  private element: ElementRef;
+  private zone: NgZone;
+  private resizeSubscriber: any;
 
-  public constructor(@Inject(ElementRef) element:ElementRef,
-                     @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject(ElementRef) element: ElementRef,
+                     @Inject(NgZone) zone: NgZone) {
     this.element = element;
     this.zone = zone;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.resizeSubscriber = fromEvent(window, 'resize').subscribe(()=> {
       this.draw(this.mapData);
     });
   }
 
-  public ngOnChanges(changes:any):void {
+  public ngOnChanges(changes: any): void {
     if (changes.mapData) {
       this.draw(this.mapData);
     }
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     if (this.resizeSubscriber) {
       this.resizeSubscriber.unsubscribe();
     }
   }
 
-  public draw(place:any):void {
+  public draw(place: any): void {
     let img = new Image();
 
     this.mapImage = this.element.nativeElement.querySelector('.map');
@@ -59,7 +59,7 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
     img.src = this.mapImage.src;
   }
 
-  public drawMarker(place:any, mapImage:any):void {
+  public drawMarker(place: any, mapImage: any): void {
     let stepTop;
     let stepRight;
     let widthOfMap = mapImage.offsetWidth;
@@ -86,8 +86,8 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
     this.mapImage.src = this.getMapImage(place.region);
   }
 
-  private getMapImage(region:string):string {
-    let url:string;
+  private getMapImage(region: string): string {
+    let url: string;
 
     if (region === 'Africa') {
       url = '/assets/img/map-africa.png';

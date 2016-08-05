@@ -2,71 +2,74 @@
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
   <div class="view-image-block-content">
     <div class="view-image-container">
-      <img [src]="place.background">
+      <img (click)="openPopUp()" [src]="place.background">
     </div>
 
     <div class="house-info-container">
-      <div class="header-container">
-        <p class="pull-left">
-          <span>$ {{math.round(place.income)}}</span>
-          <span class="cursor-pointer"
-                [routerLink]="['/country', familyData?.country?._id]"
-                [queryParams]="{}">{{familyData?.country?.alias || familyData?.country?.country}}</span>
-        </p>
-        <div class="pull-right">
-          <img src="../../assets/img/close-button.svg" alt="" (click)="closeBlock()">
+      <div class="house-info-content">
+        <div class="header-container">$ {{math.round(place.income)}}<span>/month</span></div>
+
+        <div class="home-description-container">
+          <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family, <span class="cursor-pointer"
+                                                                                            [routerLink]="['/country', familyData?.country?._id]"
+                                                                                            [queryParams]="{}">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+          </h3>
+
+          <p class="text-justify" *ngIf="familyData?.familyData">
+            {{familyData.familyData}}
+          </p>
+
+          <a *ngIf="familyData.goToPlaceData"
+             [routerLink]="['/family']"
+             [queryParams]="familyData.goToPlaceData">Visit this home <img src="/assets/img/arrow-right-icon.svg"
+                                                                           alt=""><img
+            src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+        </div>
+
+        <div class="images-container"
+             *ngIf="familyData.goToPlaceData"
+             [routerLink]="['/family']"
+             [queryParams]="familyData.goToPlaceData">
+          <div class="image-content" *ngIf="familyData?.familyImage">
+            <img [src]="familyData.familyImage.url" alt="Family portrait">
+          </div>
+
+          <div class="image-content" *ngIf="familyData?.houseImage">
+            <img [src]="familyData.houseImage.url" alt="House photo">
+          </div>
+        </div>
+
+        <div class="map-container"
+             [routerLink]="['/country', familyData?.country?._id]"
+             [queryParams]="{}">
+          <region-map [mapData]="mapData"></region-map>
         </div>
       </div>
 
-      <div class="map-container"
-           [routerLink]="['/country', familyData?.country?._id]"
-           [queryParams]="{}">
-        <region-map [mapData]="mapData"></region-map>
-      </div>
-
-      <div class="home-description-container">
-        <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family</h3>
-        <p class="text-justify" *ngIf="familyData?.familyData">
-          {{familyData.familyData}}
-        </p>
-      </div>
-
-      <div class="images-container">
-        <div class="image-content" *ngIf="familyData?.familyImage">
-          <img [src]="familyData.familyImage.url" alt="Family portrait">
-        </div>
-        <div class="image-content" *ngIf="familyData?.houseImage">
-          <img [src]="familyData.houseImage.url" alt="House photo">
-        </div>
+      <div class="close-container">
+        <img src="/assets/img/close-button.svg" alt="" (click)="closeBlock()">
       </div>
     </div>
   </div>
 
   <div class="view-image-block-footer-container">
-    <div class="image-footer-container">
-      <div class="photographer-container">
-        <p><img src="/assets/img/cc-icon-small.svg">
-          Photo by <a *ngIf="familyData?.photographer?.id"
-                      [routerLink]="['/photographer', familyData.photographer.id]"
-                      [queryParams]="{}">
-            {{familyData.photographer?.name}}</a>
-          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> CC BY 4.0 How to credit</a>
-        </p>
-      </div>
-
-      <div class="zoom-download-container">
-        <span (click)="openPopUp()">
-          <img src="/assets/img/fullsize-icon.svg" alt=""> View fullsize
-        </span>
-        <a class="download" download [href]="place.background.replace('desktops', 'original')">
-          <img src="/assets/img/download-icon.svg" alt=""> Download image
-        </a>
-      </div>
+    <div class="photographer-container">
+      <p><img src="/assets/img/cc-icon-small.svg">
+        Photo by <a *ngIf="familyData?.photographer?.id"
+                    [routerLink]="['/photographer', familyData.photographer.id]"
+                    [queryParams]="{}">
+          {{familyData.photographer?.name}}</a> for Dollar Street <a
+          href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
+      </p>
     </div>
-    <div class="description-footer-container" *ngIf="familyData.goToPlaceData">
-      <a [routerLink]="['/family']" [queryParams]="familyData.goToPlaceData">Visit this home <img
-        src="/assets/img/arrow-right-icon.svg"
-        alt=""></a>
+
+    <div class="zoom-download-container">
+      <a class="download" download [href]="place.background.replace('desktops', 'original')">
+        <img src="/assets/img/download-icon.svg" alt=""> Download
+      </a>
+      <span (click)="openPopUp()">
+        <img src="/assets/img/fullsize-icon.svg" alt=""> Fullsize
+      </span>
     </div>
   </div>
 

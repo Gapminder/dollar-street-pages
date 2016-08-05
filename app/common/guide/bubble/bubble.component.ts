@@ -123,7 +123,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
 
     if (step === 5) {
-      baloonDirector = '.images-container';
+      baloonDirector = '.matrix-header';
       this.bubble = _.find(this.bubbles, ['name', 'image']);
     }
 
@@ -154,7 +154,6 @@ export class BubbleComponent implements OnInit, OnDestroy {
         }
 
         if (step === 5) {
-          data.top -= data.height;
           data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
         }
 

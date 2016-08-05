@@ -16,21 +16,21 @@ let style = require('./header.css');
 
 export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
   @Input()
-  protected title:string;
+  protected title: string;
   @Input()
-  protected subTitle:string;
+  protected subTitle: string;
 
-  private defaultThing:any;
-  private headerService:any;
-  private headerServiceSubscribe:Subscriber;
+  private defaultThing: any;
+  private headerService: any;
+  private headerServiceSubscribe: Subscriber;
 
-  public constructor(@Inject('HeaderService') headerService:any) {
+  public constructor(@Inject('HeaderService') headerService: any) {
     this.headerService = headerService;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.headerServiceSubscribe = this.headerService.getDefaultThing()
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -40,7 +40,7 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.headerServiceSubscribe.unsubscribe();
   }
 }

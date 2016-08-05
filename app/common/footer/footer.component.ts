@@ -16,17 +16,17 @@ let style = require('./footer.css');
 })
 
 export class FooterComponent implements OnInit, OnDestroy {
-  protected footerData:any = {};
-  private footerService:any;
-  private footerServiceSubscribe:Subscriber;
+  protected footerData: any = {};
+  private footerService: any;
+  private footerServiceSubscribe: Subscriber;
 
-  public constructor(@Inject('FooterService') footerService:any) {
+  public constructor(@Inject('FooterService') footerService: any) {
     this.footerService = footerService;
   }
 
-  public ngOnInit():any {
+  public ngOnInit(): any {
     this.footerServiceSubscribe = this.footerService.getFooter()
-      .subscribe((val:any) => {
+      .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
           return;
@@ -36,7 +36,7 @@ export class FooterComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.footerServiceSubscribe.unsubscribe();
   }
 }

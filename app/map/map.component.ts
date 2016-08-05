@@ -20,46 +20,46 @@ let device = require('device.js')();
 })
 
 export class MapComponent implements OnInit, OnDestroy {
-  public resizeSubscribe:any;
-  public mapServiceSubscribe:Subscriber;
-  public math:any;
-  public loader:boolean = false;
-  public needChangeUrl:boolean = false;
+  public resizeSubscribe: any;
+  public mapServiceSubscribe: Subscriber;
+  public math: any;
+  public loader: boolean = false;
+  public needChangeUrl: boolean = false;
 
-  private mapService:any;
-  private places:any[] = [];
-  private countries:any[] = [];
-  private element:any;
-  private map:HTMLImageElement;
-  private hoverPlace:any = void 0;
-  private markers:any;
-  private hoverPortraitTop:any;
-  private hoverPortraitLeft:any;
-  private thing:any;
-  private urlChangeService:any;
-  private query:string;
-  private currentCountry:string;
-  private lefSideCountries:any;
-  private seeAllHomes:boolean = false;
-  private leftArrowTop:any;
-  private onThumb:boolean = false;
-  private onMarker:boolean = false;
-  private isOpenLeftSide:boolean = false;
-  private init:boolean;
-  private router:Router;
-  private activatedRoute:ActivatedRoute;
-  private isDesktop:boolean = device.desktop();
-  private zone:NgZone;
-  private shadowClass:{'shadow_to_left':boolean, 'shadow_to_right':boolean};
-  private queryParamsSubscribe:any;
+  private mapService: any;
+  private places: any[] = [];
+  private countries: any[] = [];
+  private element: any;
+  private map: HTMLImageElement;
+  private hoverPlace: any = void 0;
+  private markers: any;
+  private hoverPortraitTop: any;
+  private hoverPortraitLeft: any;
+  private thing: any;
+  private urlChangeService: any;
+  private query: string;
+  private currentCountry: string;
+  private lefSideCountries: any;
+  private seeAllHomes: boolean = false;
+  private leftArrowTop: any;
+  private onThumb: boolean = false;
+  private onMarker: boolean = false;
+  private isOpenLeftSide: boolean = false;
+  private init: boolean;
+  private router: Router;
+  private activatedRoute: ActivatedRoute;
+  private isDesktop: boolean = device.desktop();
+  private zone: NgZone;
+  private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
+  private queryParamsSubscribe: any;
 
-  public constructor(@Inject('MapService') placeService:any,
-                     @Inject(ElementRef) element:ElementRef,
-                     @Inject(Router) router:Router,
-                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
-                     @Inject(NgZone) zone:NgZone,
-                     @Inject('UrlChangeService') urlChangeService:any,
-                     @Inject('Math') math:any) {
+  public constructor(@Inject('MapService') placeService: any,
+                     @Inject(ElementRef) element: ElementRef,
+                     @Inject(Router) router: Router,
+                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+                     @Inject(NgZone) zone: NgZone,
+                     @Inject('UrlChangeService') urlChangeService: any,
+                     @Inject('Math') math: any) {
     this.mapService = placeService;
     this.element = element.nativeElement;
     this.router = router;
@@ -69,22 +69,22 @@ export class MapComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.init = true;
 
     this.queryParamsSubscribe = this.router
       .routerState
       .queryParams
-      .subscribe((params:any) => {
+      .subscribe((params: any) => {
         this.thing = params.thing ? params.thing : 'Families';
 
         this.urlChanged({url: `thing=${this.thing}`});
       });
   }
 
-  public urlChanged(options:any):void {
+  public urlChanged(options: any): void {
     this.mapServiceSubscribe = this.mapService.getMainPlaces(options.url)
-      .subscribe((res:any):any => {
+      .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -107,15 +107,15 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.mapServiceSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
   }
 
-  public setMarkersCoord(places:any):void {
+  public setMarkersCoord(places: any): void {
     let img = new Image();
-    let mapImage:HTMLImageElement = this.element.querySelector('.map-color');
+    let mapImage: HTMLImageElement = this.element.querySelector('.map-color');
 
     img.onload = () => {
       this.zone.run(() => {
@@ -124,7 +124,7 @@ export class MapComponent implements OnInit, OnDestroy {
         let greenwich = 0.439 * width;
         let equator = 0.545 * height;
 
-        places.forEach((place:any) => {
+        places.forEach((place: any) => {
           let stepTop;
           let stepRight;
 
@@ -149,7 +149,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = mapImage.src;
   }
 
-  public hoverOnMarker(index:number, country:any):void {
+  public hoverOnMarker(index: number, country: any): void {
     if (!this.isDesktop) {
       return;
     }
@@ -161,7 +161,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onMarker = true;
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place:any):boolean => {
+    this.lefSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;
     });
 
@@ -169,7 +169,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.markers = this.map.querySelectorAll('.marker');
 
-    this.places.forEach((place:any, i:number) => {
+    this.places.forEach((place: any, i: number) => {
       if (i !== index) {
         return;
       }
@@ -181,7 +181,7 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker:HTMLElement, i:number):void => {
+    Array.prototype.forEach.call(this.markers, (marker: HTMLElement, i: number): void => {
       if (i === index) {
         return;
       }
@@ -230,7 +230,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.hoverPlace.familyImg.background;
   };
 
-  public unHoverOnMarker():void {
+  public unHoverOnMarker(): void {
     if (!this.isDesktop) {
       return;
     }
@@ -258,7 +258,7 @@ export class MapComponent implements OnInit, OnDestroy {
         return;
       }
 
-      Array.prototype.forEach.call(this.markers, (marker:HTMLElement):void => {
+      Array.prototype.forEach.call(this.markers, (marker: HTMLElement): void => {
         marker.style.opacity = '1';
       });
 
@@ -270,11 +270,11 @@ export class MapComponent implements OnInit, OnDestroy {
     }, 300);
   }
 
-  public openLeftSideBar():void {
+  public openLeftSideBar(): void {
     this.isOpenLeftSide = true;
   }
 
-  public closeLeftSideBar(e:MouseEvent):void {
+  public closeLeftSideBar(e: MouseEvent): void {
     let el = e.target as HTMLElement;
     if (el.classList.contains('see-all') ||
       el.classList.contains('see-all-span') ||
@@ -298,7 +298,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public clickOnMarker(e:MouseEvent, index:number, country:any):void {
+  public clickOnMarker(e: MouseEvent, index: number, country: any): void {
     if (this.isOpenLeftSide) {
       this.isOpenLeftSide = !this.isOpenLeftSide;
       this.closeLeftSideBar(e);
@@ -311,10 +311,10 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public mobileClickOnMarker(country:any):void {
+  public mobileClickOnMarker(country: any): void {
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place:any):boolean => {
+    this.lefSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;
     });
 
@@ -323,11 +323,11 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public thumbHover():void {
+  public thumbHover(): void {
     this.onThumb = true;
   }
 
-  public toUrl(image:string):string {
+  public toUrl(image: string): string {
     return `url("${image}")`;
   }
 }

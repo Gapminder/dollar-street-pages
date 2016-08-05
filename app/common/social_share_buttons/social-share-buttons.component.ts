@@ -13,22 +13,22 @@ let style = require('./social-share-buttons.css');
 })
 
 export class SocialShareButtonsComponent implements OnInit, OnDestroy {
-  public socialShareButtonsService:any;
-  private location:Location;
-  private urlChangeService:any;
-  private url:string;
-  private urlEvents:any;
-  private socialShareButtonsServiceSubscribe:Subscriber;
+  public socialShareButtonsService: any;
+  private location: Location;
+  private urlChangeService: any;
+  private url: string;
+  private urlEvents: any;
+  private socialShareButtonsServiceSubscribe: Subscriber;
 
-  public constructor(@Inject('SocialShareButtonsService') socialShareButtonsService:any,
-                     @Inject('UrlChangeService') urlChangeService:any,
-                     @Inject(Location) location:Location) {
+  public constructor(@Inject('SocialShareButtonsService') socialShareButtonsService: any,
+                     @Inject('UrlChangeService') urlChangeService: any,
+                     @Inject(Location) location: Location) {
     this.socialShareButtonsService = socialShareButtonsService;
     this.urlChangeService = urlChangeService;
     this.location = location;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.getUrl();
 
     this.urlEvents = this.urlChangeService
@@ -39,16 +39,16 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.urlEvents.unsubscribe();
     this.socialShareButtonsServiceSubscribe.unsubscribe();
   }
 
-  public getUrl():void {
+  public getUrl(): void {
     let query = {url: this.location.path()};
 
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl(query)
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -58,7 +58,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
       });
   }
 
-  protected openPopUp(originalUrl:string):void {
+  protected openPopUp(originalUrl: string): void {
     let left = (window.innerWidth - 490) / 2;
     let popupWin = window.open(originalUrl + this.url, 'contacts', 'location, width=490, height=368, top=100, left=' + left);
     popupWin.focus();

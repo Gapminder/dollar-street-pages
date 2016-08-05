@@ -28,6 +28,7 @@ import { ArticleService } from './article/article.service';
 import { FamilyInfoService } from './matrix/matrix-view-block/matrix-view-block.service';
 import { HomeHeaderService } from './home/home-header/home-header.service';
 import { HomeMediaService } from './home/home-media/home-media.service';
+import { HomeMediaViewBlockService } from './home/home-media/home-media-view-block/home-media-view-block.service';
 import { ContentfulService, Ng2ContentfulConfig } from 'ng2-contentful';
 import { BlogComponent } from './blog/blog.component';
 import { appInjector, GAPMINDER_PROVIDERS, ContentfulImageDirective } from 'ng2-contentful-blog';
@@ -36,9 +37,9 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
 import { Config } from './app.config';
 
 const ContentfulConfig = require('./contentTypeIds.json');
-declare var CONTENTFUL_ACCESS_TOKEN:string;
-declare var CONTENTFUL_SPACE_ID:string;
-declare var CONTENTFUL_HOST:string;
+declare var CONTENTFUL_ACCESS_TOKEN: string;
+declare var CONTENTFUL_SPACE_ID: string;
+declare var CONTENTFUL_HOST: string;
 
 // contentful config
 Ng2ContentfulConfig.config = {
@@ -76,6 +77,7 @@ bootstrap(AppComponent, [
   {provide: 'CountriesFilterService', useClass: CountriesFilterService},
   {provide: 'HomeHeaderService', useClass: HomeHeaderService},
   {provide: 'HomeMediaService', useClass: HomeMediaService},
+  {provide: 'HomeMediaViewBlockService', useClass: HomeMediaViewBlockService},
   {provide: 'Angulartics2GoogleAnalytics', useClass: Angulartics2GoogleAnalytics},
   {provide: 'Math', useClass: MathService},
   {provide: 'Routes', useValue: Config.routes},
@@ -84,7 +86,7 @@ bootstrap(AppComponent, [
   {provide: 'ContentfulTypeIds', useValue: ContentfulConfig},
   {provide: APP_BASE_HREF, useValue: '/'}
 ]).then(
-  (appRef:ComponentRef<any>) => {
+  (appRef: ComponentRef<any>) => {
     appInjector(appRef.injector);
   }
 );

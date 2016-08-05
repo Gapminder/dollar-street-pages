@@ -15,47 +15,47 @@ let style = require('./guide.css');
 })
 
 export class GuideComponent implements OnInit, OnDestroy {
-  protected isShowGuide:boolean = !Boolean(localStorage.getItem('quick-guide'));
-  protected description:string;
-  protected bubbles:any[];
-  protected isShowBubble:boolean = false;
+  protected isShowGuide: boolean = !Boolean(localStorage.getItem('quick-guide'));
+  protected description: string;
+  protected bubbles: any[];
+  protected isShowBubble: boolean = false;
 
-  private guideService:any;
-  private guideServiceSubscribe:Subscriber;
+  private guideService: any;
+  private guideServiceSubscribe: Subscriber;
 
   @Output('startQuickGuide')
-  private startQuickGuide:EventEmitter<any> = new EventEmitter<any>();
+  private startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(@Inject('GuideService') guideService:any) {
+  public constructor(@Inject('GuideService') guideService: any) {
     this.guideService = guideService;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.guideServiceSubscribe = this.guideService.getGuide()
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
         }
 
-        let welcomeHeader:any = _.find(res.data, ['name', 'welcomeHeader']);
+        let welcomeHeader: any = _.find(res.data, ['name', 'welcomeHeader']);
 
         this.description = welcomeHeader.description;
         this.bubbles = _.difference(res.data, [welcomeHeader]);
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.guideServiceSubscribe.unsubscribe();
   }
 
-  protected openQuickGuide():void {
+  protected openQuickGuide(): void {
     this.isShowGuide = false;
     this.isShowBubble = true;
     this.startQuickGuide.emit({});
   }
 
-  protected close():void {
+  protected close(): void {
     this.isShowGuide = false;
     this.startQuickGuide.emit({});
   }
