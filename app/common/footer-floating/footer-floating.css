@@ -1,7 +1,7 @@
 
 .floatfooter {
   overflow: hidden;
-  padding: 0 24px 0;
+  padding: 0 22px;
   position: fixed;
   background-color: white;
   border-top: 1px solid #e0ebf9;
@@ -39,7 +39,7 @@
 }
 
 .floatfooter .social-share-buttons-container .share-button-container {
-  display: inline-flex;
+  display: inline;
 }
 
 .floatfooter .share-button {

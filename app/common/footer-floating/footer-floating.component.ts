@@ -56,17 +56,9 @@ export class FloatFooterComponent implements OnInit, OnDestroy {
     this.animateScroll('scrollBackToTop', 20, 1000);
   };
 
-  private getScrollTop():number {
-    if (document.body.scrollTop) {
-      return document.body.scrollTop;
-    }
-
-    return document.documentElement.scrollTop;
-  }
-
   private animateScroll(id:string, inc:number, duration:number):any {
     const elem = document.getElementById(id);
-    const startScroll = this.getScrollTop();
+    const startScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const endScroll = elem.offsetTop;
     const step = (endScroll - startScroll) / duration * inc;
     window.requestAnimationFrame(this.goToScroll(step, duration, inc));
