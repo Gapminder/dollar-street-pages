@@ -1,3 +1,9 @@
+.close-button {
+  width: 15px;
+  margin: -6px 3px 0 0;
+  cursor: pointer;
+}
+
 #things-filter {
   display: inline-block;
   position: relative;
@@ -67,7 +73,7 @@
   top: 100%;
   margin-top: 5px;
   left: 0;
-  width: 844px;
+  width: 768px;
   z-index: 99;
   overflow: hidden;
   height: 517px;
@@ -88,16 +94,16 @@
 }
 
 #things-filter .things-filter-container .related-things-container {
-  width: 260px;
+  width: 226px;
 }
 
 #things-filter .things-filter-container .popular-things-container {
-  width: 260px;
+  width: 226px;
 }
 
 
 #things-filter .other-things-container {
-  width: calc(100% - 520px);
+  width: calc(100% - 452px);
 }
 
 #things-filter .thing-content {

@@ -63,6 +63,10 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     this.isOpenThingsFilter = !isOpenThingsFilter;
   }
 
+  protected cancelThingsFilter():void {
+    this.openThingsFilter(true);
+  }
+
   protected goToThing(thing:any):void {
     if (thing.empty) {
       return;
