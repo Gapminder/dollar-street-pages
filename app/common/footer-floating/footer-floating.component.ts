@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation, ElementRef, Inject, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { Subscriber } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 import { Angulartics2On } from 'angulartics2';
@@ -19,16 +18,12 @@ let style = require('./footer-floating.css');
 export class FloatFooterComponent implements OnInit, OnDestroy {
   protected footerData:any = {};
 
-  private footerService:any;
   private zone:NgZone;
-  private footerServiceSubscribe:Subscriber;
   private element:HTMLElement;
   private scrollSubscribe:any;
 
-  public constructor(@Inject('FooterService') footerService:any,
-                     @Inject(ElementRef) element:ElementRef,
+  public constructor(@Inject(ElementRef) element:ElementRef,
                      @Inject(NgZone) zone:NgZone) {
-    this.footerService = footerService;
     this.element = element.nativeElement;
     this.zone = zone;
   }
@@ -41,40 +36,27 @@ export class FloatFooterComponent implements OnInit, OnDestroy {
         this.zone.run(() => {
           let floatFooterContainer = this.element.querySelector('.floatfooter') as HTMLElement;
 
-          if (floatFooterContainer) {
-            floatFooterContainer.classList.add('show-float-footer');
+          floatFooterContainer.classList.add('show-float-footer');
 
-            if (!scrollTop) {
-              floatFooterContainer.classList.remove('show-float-footer');
-            }
+          if (!scrollTop) {
+            floatFooterContainer.classList.remove('show-float-footer');
           }
         });
-      });
-
-    this.footerServiceSubscribe = this.footerService.getFooter()
-      .subscribe((val:any) => {
-        if (val.err) {
-          console.error(val.err);
-          return;
-        }
-        this.footerData = val.data;
       });
   }
 
   public ngOnDestroy():void {
-    this.footerServiceSubscribe.unsubscribe();
-
     if (this.scrollSubscribe) {
       this.scrollSubscribe.unsubscribe();
     }
   }
 
-  public scrollTop(e: MouseEvent): void {
+  public scrollTop(e:MouseEvent):void {
     e.preventDefault();
     this.animateScroll('scrollBackToTop', 20, 1000);
   };
 
-  private getScrollTop(): number {
+  private getScrollTop():number {
     if (document.body.scrollTop) {
       return document.body.scrollTop;
     }
@@ -82,7 +64,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy {
     return document.documentElement.scrollTop;
   }
 
-  private animateScroll(id: string, inc: number, duration: number): any {
+  private animateScroll(id:string, inc:number, duration:number):any {
     const elem = document.getElementById(id);
     const startScroll = this.getScrollTop();
     const endScroll = elem.offsetTop;
@@ -90,7 +72,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy {
     window.requestAnimationFrame(this.goToScroll(step, duration, inc));
   }
 
-  private goToScroll(step: number, duration: number, inc: number): any {
+  private goToScroll(step:number, duration:number, inc:number):any {
     return () => {
       const currentDuration = duration - inc;
 
@@ -103,7 +85,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy {
     };
   }
 
-  private incScrollTop(step: number): void {
+  private incScrollTop(step:number):void {
     if (document.body.scrollTop) {
       document.body.scrollTop += step;
     } else {
