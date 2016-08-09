@@ -26,6 +26,7 @@ let style = require('./things-filter.css');
 
 export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected relatedThings:any[];
+  protected popularThings:any[];
   protected otherThings:any[];
   protected activeThing:any = {};
   protected search:{text:string;} = {text: ''};
@@ -96,6 +97,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
           }
 
           this.relatedThings = res.data.relatedThings;
+          this.popularThings = res.data.popularThings;
           this.otherThings = res.data.otherThings;
           this.activeThing = res.data.thing;
         });

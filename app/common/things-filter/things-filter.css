@@ -1,3 +1,9 @@
+.close-button {
+  width: 15px;
+  margin: -6px 3px 0 0;
+  cursor: pointer;
+}
+
 #things-filter {
   display: inline-block;
   position: relative;
@@ -42,28 +48,37 @@
   right: 10px;
 }
 
+
+#things-filter.open-things-filter .things-filter-button .things-filter-button-content {
+  box-shadow: 0 0 10px rgba(55, 69, 81, 0.1)
+}
+
 #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
   border-bottom: 8px solid #000;
   border-top: 0 solid transparent;
-
   position: absolute;
   top: 20px;
   right: 10px;
 }
 
+
+
 #things-filter .things-filter-container .related-things-container {
+  border-right: 1px solid #e4e6e7;
+}
+
+#things-filter .things-filter-container .popular-things-container {
   border-right: 1px solid #e4e6e7;
 }
 
 #things-filter .things-filter-container {
   background-color: white;
   border: 1px solid #e4e6e7;
-  box-shadow: 0 0 10px rgba(46, 67, 80, 0.1);
-  position: absolute;
+  box-shadow: 0 0 10px rgba(55, 69, 81, 0.1);  position: absolute;
   top: 100%;
   margin-top: 5px;
   left: 0;
-  width: 584px;
+  width: 768px;
   z-index: 99;
   overflow: hidden;
   height: 517px;
@@ -71,30 +86,34 @@
 }
 
 #things-filter .things-filter-container .title {
-  color: #737b83;
+  color: #767d86;
   font-size: 24px;
   line-height: 20px;
-  margin: 5px 0 15px;
+  margin: 20px 10px 15px;
 }
 
 #things-filter .things-filter-container > div {
   float: left;
-  padding: 12px;
   height: 100%;
 }
 
 #things-filter .things-filter-container .related-things-container {
-  width: 260px;
+  width: 226px;
 }
 
+#things-filter .things-filter-container .popular-things-container {
+  width: 226px;
+}
+
+
 #things-filter .other-things-container {
-  width: calc(100% - 260px);
+  width: calc(100% - 452px);
 }
 
 #things-filter .thing-content {
+  padding:5px 11px 5px  11px;
   overflow: hidden;
   position: relative;
-  margin: 0;
   cursor: pointer;
 }
 
@@ -102,9 +121,15 @@
   cursor: default;
 }
 
-#things-filter .thing-content .thing-icon-container {
+#things-filter .thing-content:hover {
+  cursor: pointer;
+  background-color: #f4f5f5;
+}
+
+
+#things-filter .thing-content .thing-icon-container  {
   float: left;
-  width: 30px;
+  width: 28px;
   margin-right: 15px;
   position: relative;
   min-height: 28px;
@@ -113,14 +138,14 @@
 #things-filter .thing-content img {
   position: absolute;
   top: 0;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
 }
 
 #things-filter .thing-content span {
   color: #374551;
   font-size: 22px;
-  line-height: 40px;
+  line-height: 30px;
   display: block;
   float: left;
   width: calc(100% - 50px);
@@ -132,13 +157,20 @@
 
 #things-filter .things-search {
   position: relative;
-  margin-bottom: 15px;
+  margin: 15px 5px 15px 6px;
+}
+
+#things-filter .things-search input:focus {
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(0,0,0,.12);
 }
 
 #things-filter .things-search input {
-  font-size: 16px;
+  font-size: 18px;
   color: #767d86;
-  padding-left: 35px;
+  font-weight:400;
+  line-height:10px;
+  padding-left: 20px;
+  padding-bottom: 3px;
   background-color: white;
   border: 1px solid #ced1d5;
   border-radius: 16px;
@@ -155,12 +187,20 @@
 
 #things-filter .related-things-content {
   overflow-y: auto;
-  height: calc(100% - 40px);
+  height: calc(100% - 58px);
+  margin-right:4px;
+}
+
+#things-filter .popular-things-content {
+  overflow-y: auto;
+  height: calc(100% - 58px);
+  margin-right:4px;
 }
 
 #things-filter .other-things-content {
   overflow-y: auto;
-  height: calc(100% - 90px);
+  height: calc(100% - 108px);
+  margin-right:4px;
 }
 
 #things-filter.open-things-filter .things-filter-container {
@@ -226,7 +266,9 @@
   color: #5f6a74;
   margin-bottom: 0;
 }
-
+#countries-filter .countries-search input:focus {
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(0,0,0,.12);
+}
 .things-filter-button .thing-pop-up-content p a {
   color: #0567bf;
   font-family: 'Bariol Regular', sans-serif;
