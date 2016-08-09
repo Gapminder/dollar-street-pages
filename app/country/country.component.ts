@@ -4,6 +4,7 @@ import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/head
 import { CountryInfoComponent } from './country-info/country-info.component';
 import { CountryPlacesComponent } from './country-places/country-places.component.ts';
 import { FooterComponent } from '../common/footer/footer.component';
+import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./country.template.html');
@@ -18,6 +19,7 @@ let style = require('./country.css');
     CountryInfoComponent,
     CountryPlacesComponent,
     FooterComponent,
+    FloatFooterComponent,
     FooterSpaceDirective
   ]
 })
