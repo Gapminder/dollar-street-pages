@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
-import { Subject } from 'rxjs/Rx';
+import { Subject, Subscription } from 'rxjs/Rx';
 
 const device = require('device.js')();
 const isDesktop = device.desktop();
@@ -61,14 +61,15 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private router: Router;
   private currentPlaces: any = [];
   private element: HTMLElement;
-  private placesSubscribe: any;
+  private placesSubscribe: Subscription;
   private itemSize: number;
   private imageHeight: number;
   private familyData: any;
   private prevPlaceId: string;
-  private resizeSubscribe: any;
+  private resizeSubscribe: Subscription;
   private zone: NgZone;
-  private clearActiveHomeViewBoxSubscribe: any;
+  private clearActiveHomeViewBoxSubscribe: Subscription;
+  private imageMargin: number = 10;
 
   public constructor(@Inject(ElementRef) element: ElementRef,
                      @Inject(Router) router: Router,
@@ -81,8 +82,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): any {
-    this.itemSize = (window.innerWidth - 36) / this.zoom;
-    this.imageHeight = (window.innerWidth - 36) / this.zoom - 12;
+    this.itemSize = (window.innerWidth - 34) / this.zoom;
+    this.imageHeight = (window.innerWidth - 34) / this.zoom - this.imageMargin;
     let isInit: boolean = true;
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
@@ -99,7 +100,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
-          this.imageHeight = (window.innerWidth - 36) / this.zoom - 12;
+          this.imageHeight = (window.innerWidth - 34) / this.zoom - this.imageMargin;
         });
       });
 
@@ -118,14 +119,32 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnChanges(changes: any): void {
     if (changes.zoom) {
       this.zone.run(() => {
-        this.itemSize = (window.innerWidth - 36) / this.zoom;
-        this.imageHeight = (window.innerWidth - 36) / this.zoom - 12;
+        switch (this.zoom) {
+          case 6:
+          case 7:
+          case 8:
+            this.imageMargin = 5;
+            break;
+          case 9:
+          case 10:
+            this.imageMargin = 2;
+            break;
+          default:
+            this.imageMargin = 10;
+        }
+
+        this.itemSize = (window.innerWidth - 34) / this.zoom;
+        this.imageHeight = (window.innerWidth - 34) / this.zoom - this.imageMargin;
       });
     }
   }
 
   public ngOnDestroy(): void {
     this.placesSubscribe.unsubscribe();
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
 
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
@@ -179,7 +198,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
     this.imageBlockLocation = this.positionInRow ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;
 
-    this.familyData = place;
+    this.familyData = JSON.parse(JSON.stringify(place));
 
     if (!this.prevPlaceId) {
       this.prevPlaceId = place._id;
@@ -214,14 +233,15 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
     this.activeHouseOptions.emit({row: row, activeHouseIndex: activeHouseIndex});
     this.hoverPlace.emit(undefined);
     this.hoverPlace.emit(this.familyData);
+
     this.goToRow(row);
   }
 
   private goToRow(row: number): void {
     let windowInnerWidth = window.innerWidth;
-    let imageMargin = (windowInnerWidth - 36 - this.imageHeight * this.zoom) / this.zoom;
+    let imageMargin = (windowInnerWidth - 34 - this.imageHeight * this.zoom) / this.zoom;
 
-    document.body.scrollTop = document.documentElement.scrollTop = (row - 1) * (this.imageHeight + imageMargin) + 18;
+    document.body.scrollTop = document.documentElement.scrollTop = row * (this.imageHeight + imageMargin) - 60;
   }
 
   private parseUrl(url: string): any {

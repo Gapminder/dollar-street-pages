@@ -193,12 +193,12 @@
 
 .street-label.poorest-label {
   border-radius: 0 15px 15px 15px;
-  left: 24px;
+  left: 22px;
 }
 
 .street-label.richest-label {
   border-radius: 15px 0 15px 15px;
-  right: 24px;
+  right: 22px;
   left: auto;
 }
 

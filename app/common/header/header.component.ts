@@ -49,8 +49,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   private angulartics2GoogleAnalytics: any;
 
   private matrixComponent: boolean;
-  private headerServiceSubscribe: Subscriber;
-  private headerTitleServiceSubscribe: Subscriber;
+  private headerServiceSubscribe: Subscriber<any>;
+  private headerTitleServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject('HeaderService') headerService: any,
                      @Inject(Router) router: Router,

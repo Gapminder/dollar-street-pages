@@ -106,7 +106,17 @@ const config = {
       CONTENTFUL_HOST:
       JSON.stringify(process.env.CONTENTFUL_HOST) || JSON.stringify(contentfulDevConfig.host)
     })
-  ]
+  ],
+  devServer: {
+    contentBase: dest,
+    publicPath: '/',
+    noInfo: true,
+    hot: true,
+    inline: true,
+    host: '0.0.0.0',
+    historyApiFallback: true,
+    devtool: 'eval'
+  }
 };
 
 function pushPlugins(conf) {

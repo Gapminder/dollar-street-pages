@@ -33,7 +33,7 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
   private cloneRange: {min: number; max: number;} = {min: 0, max: 0};
   private streetSettingsService: any;
   private streetData: any;
-  private streetServiceSubscribe: Subscriber;
+  private streetServiceSubscribe: Subscriber<any>;
   private element: ElementRef;
 
   public constructor(@Inject('StreetSettingsService') streetSettingsService: any,

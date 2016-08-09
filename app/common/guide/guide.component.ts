@@ -21,7 +21,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   protected isShowBubble: boolean = false;
 
   private guideService: any;
-  private guideServiceSubscribe: Subscriber;
+  private guideServiceSubscribe: Subscriber<any>;
 
   @Output('startQuickGuide')
   private startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
@@ -58,5 +58,6 @@ export class GuideComponent implements OnInit, OnDestroy {
   protected close(): void {
     this.isShowGuide = false;
     this.startQuickGuide.emit({});
+    localStorage.setItem('quick-guide', 'true');
   }
 }

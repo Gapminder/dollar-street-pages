@@ -45,13 +45,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   private placeId: string;
   private urlParams: UrlParamsInterface;
   private homeIncomeFilterService: any;
-  private homeIncomeFilterServiceSubscribe: Subscriber;
+  private homeIncomeFilterServiceSubscribe: Subscriber<any>;
   private homeIncomeData: any;
   private rich: any;
   private poor: any;
   private router: Router;
   private countriesFilterService: any;
-  private countriesFilterServiceSubscribe: Subscriber;
+  private countriesFilterServiceSubscribe: Subscriber<any>;
   private locations: any[];
   private activeImageIndex: number;
   private urlChangeService: any;

@@ -1,6 +1,6 @@
 .family-things-container {
   min-height: 450px;
-  padding: 17px;
+  padding: 15px 17px;
 }
 
 .family-images-container {
@@ -23,6 +23,7 @@
 .family-images-container .family-image {
   background-position: 50% 50%;
   background-size: cover;
+  box-shadow: 0.6px 0.8px 2.9px 0.1px rgba(0, 0, 0, 0.2);
 }
 
 .family-images-container .family-image {
@@ -50,8 +51,6 @@
 
 .family-things-container .image-description img {
   float: left;
-  width: 30px;
-  margin: -8px 10px 0 0;
 }
 
 .family-image .hover-block {
@@ -82,12 +81,14 @@
   color: white;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .family-images-container .family-image-container {
-    padding-top: 32.33%;
-    width: 32.33%;
+    width: calc(33.33% - 10px);
+    margin: 5px;
   }
+}
 
+@media (max-width: 767px) {
   .family-things-container .image-description {
     padding: 30px 8px 8px;
     font-size: 14px;
@@ -118,7 +119,7 @@
 
   .family-things-container .image-description img {
     width: 30px;
-    margin: -8px 10px 0 0;
+    margin: -8px 7px 0 0;
   }
 }
 

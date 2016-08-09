@@ -21,7 +21,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   private photographer: {firstName?: string, lastName?: string} = {};
   private photographerProfileService: any;
-  private photographerProfileServiceSubscribe: Subscriber;
+  private photographerProfileServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject('PhotographerProfileService') photographerProfileService: any,
                      @Inject('Math') math: any) {

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, Inject, ElementRef } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { Angulartics2On } from 'angulartics2';
 import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 
@@ -19,7 +19,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   protected isOpenMenu: boolean = false;
   @Input()
   private hoverPlace: Observable<any>;
-  private hoverPlaceSubscribe: Subscriber;
+  private hoverPlaceSubscribe: Subscription;
   private element: ElementRef;
   private router: Router;
   private activatedRoute: ActivatedRoute;

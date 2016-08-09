@@ -13,7 +13,7 @@ let style = require('./ambassadors-list.css');
 
 export class AmbassadorsListComponent implements OnInit, OnDestroy {
   private ambassadorsListService: any;
-  private ambassadorsListSubscribe: Subscriber;
+  private ambassadorsListSubscribe: Subscriber<any>;
   private ambassadorsList: any;
   private showedBlock: number;
   private resizeSubscribe: any;

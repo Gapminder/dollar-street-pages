@@ -15,7 +15,7 @@ let style = require('./country-places.css');
 
 export class CountryPlacesComponent implements OnInit, OnDestroy {
   public loader: boolean = false;
-  public countryPlacesServiceSubscribe: Subscriber;
+  public countryPlacesServiceSubscribe: Subscriber<any>;
   public math: any;
   @Input()
   private countryId: string;

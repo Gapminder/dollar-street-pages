@@ -54,4 +54,19 @@ export class Config {
     component: RoutesGatewayComponent,
     canActivate: [RoutesGatewayGuard]
   }];
+
+  public static getCoordinates(querySelector: string, cb: any): any {
+    let box: any = document.querySelector(querySelector).getBoundingClientRect();
+
+    let body: HTMLElement = document.body;
+    let docEl: HTMLElement = document.documentElement;
+
+    let scrollLeft: number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    let clientLeft: number = docEl.clientLeft || body.clientLeft || 0;
+
+    let top: number = box.top;
+    let left: number = box.left + scrollLeft - clientLeft;
+
+    cb({top: Math.round(top), left: Math.round(left), width: box.width, height: box.height});
+  }
 }

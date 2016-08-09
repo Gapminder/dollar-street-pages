@@ -55,35 +55,32 @@
       <div class="go-to-matrix">
         <a
           [routerLink]="['/matrix']"
-          [queryParams]="{thing: 'Families', countries: home.country?.alias, regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}">
-          Show all families in {{home.country?.alias}} <img src="/assets/img/arrow-right-icon.svg" alt=""></a>
+          [queryParams]="{thing: 'Homes', countries: home.country?.alias, regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}">
+          All homes in {{home.country?.alias}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+          src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       </div>
     </div>
   </div>
 </div>
 
-<div class="short-family-info-container" [style.top.px]="familyShortInfoPosition">
+<div class="short-family-info-container" [style.top.px]="familyShortInfoPosition" (click)="scrollToStart($event)">
   <div class="image-container">
     <img [src]="home.image" alt="">
   </div>
 
   <div class="description-container">
-    <div class="home-info-container">
-      <div class="title-info">
-        <div class="left-title">
-          <p class="title">{{home.familyName}} family, {{home.country?.alias}}</p>
-        </div>
+    <div class="left-title">
+      <p class="title">{{home.familyName}} family, {{home.country?.alias}}</p>
+    </div>
 
-        <div class="right-title">
-          <p class="title">${{math.round(home.income)}}<span>/month</span><img class="about-info-image"
-                                                            src="/assets/img/info-button.svg"
-                                                            alt=""
-                                                            *ngIf="home.aboutData"
-                                                            (click)="showAboutData($event, true)"
-                                                            (mouseenter)="showAboutData($event)"
-                                                            (mouseleave)="showAboutData()"></p>
-        </div>
-      </div>
+    <div class="right-title">
+      <p class="title">${{math.round(home.income)}}<span>/month</span><img class="short-about-info-image"
+                                                                           src="/assets/img/info-button.svg"
+                                                                           alt=""
+                                                                           *ngIf="home.aboutData"
+                                                                           (click)="showAboutData($event, true)"
+                                                                           (mouseenter)="showAboutData($event)"
+                                                                           (mouseleave)="showAboutData()"></p>
     </div>
   </div>
 </div>

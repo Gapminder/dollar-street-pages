@@ -35,7 +35,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   protected posts: any[] = [];
   protected loader: boolean = false;
   private contentfulContentService: any;
-  private contentfulContentServiceSubscribe: Subscriber;
+  private contentfulContentServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject(ContenfulContent) contenfulContent: ContenfulContent) {
     this.contentfulContentService = contenfulContent;

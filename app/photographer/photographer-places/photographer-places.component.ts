@@ -15,7 +15,7 @@ let style = require('./photographer-places.css');
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   public loader: boolean = false;
-  public photographerPlacesServiceSubscribe: Subscriber;
+  public photographerPlacesServiceSubscribe: Subscriber<any>;
   public math: any;
 
   @Input()

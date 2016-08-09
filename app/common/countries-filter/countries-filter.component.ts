@@ -7,9 +7,14 @@ import {
   Output,
   EventEmitter,
   HostListener,
-  ElementRef
+  ElementRef,
+  OnInit,
+  NgZone
 } from '@angular/core';
 import { CountriesFilterPipe } from './countries-filter.pipe';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs';
+import { Config } from '../../app.config';
 
 let _ = require('lodash');
 
@@ -23,13 +28,14 @@ let style = require('./countries-filter.css');
   pipes: [CountriesFilterPipe]
 })
 
-export class CountriesFilterComponent implements OnDestroy, OnChanges {
+export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected activeCountries: string;
   protected showSelected: boolean;
   protected locations: any[];
   protected isOpenCountriesFilter: boolean = false;
   protected selectedRegions: string[] = [];
   protected selectedCountries: string[] = [];
+  protected positionLeft: number = 0;
   @Input()
   private url: string;
   @Output()
@@ -42,11 +48,25 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
   private cloneSelectedCountries: string[] = ['World'];
 
   private element: ElementRef;
+  private zone: NgZone;
+  private resizeSubscribe: Subscription;
 
   public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
-                     @Inject(ElementRef) element: ElementRef) {
+                     @Inject(ElementRef) element: ElementRef,
+                     @Inject(NgZone) zone: NgZone) {
     this.countriesFilterService = countriesFilterService;
     this.element = element;
+    this.zone = zone;
+  }
+
+  public ngOnInit(): void {
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.setPosition();
+        });
+      });
   }
 
   @HostListener('document:click', ['$event'])
@@ -62,6 +82,8 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
     if (this.isOpenCountriesFilter) {
+      this.setPosition();
+
       setTimeout(() => {
         this.element.nativeElement.querySelector('.autofocus').focus();
       });
@@ -157,6 +179,10 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
 
   public ngOnDestroy(): void {
     this.countriesFilterServiceSubscribe.unsubscribe();
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
   }
 
   public ngOnChanges(changes: any): void {
@@ -274,5 +300,15 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     query.countries = query.countries.split(',');
 
     return query;
+  }
+
+  private setPosition(): void {
+    Config.getCoordinates('countries-filter', (data: any) => {
+      if (data.left + 787 + 10 > window.innerWidth) {
+        this.positionLeft = data.left + 787 - window.innerWidth + 10;
+      } else {
+        this.positionLeft = 0;
+      }
+    });
   }
 }

@@ -1,4 +1,4 @@
-<div class="view-image-block-container" *ngIf="showblock">
+<div class="view-image-block-container zoom-{{privateZoom}}" *ngIf="showblock">
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
   <div class="view-image-block-content">
     <div class="view-image-container">
@@ -15,7 +15,7 @@
                                                                                             [queryParams]="{}">{{familyData?.country?.alias || familyData?.country?.country}}</span>
           </h3>
 
-          <p class="text-justify" *ngIf="familyData?.familyData">
+          <p *ngIf="familyData?.familyData">
             {{familyData.familyData}}
           </p>
 
@@ -55,7 +55,7 @@
   <div class="view-image-block-footer-container">
     <div class="photographer-container">
       <p><img src="/assets/img/cc-icon-small.svg">
-        Photo by <a *ngIf="familyData?.photographer?.id"
+        Photo: <a *ngIf="familyData?.photographer?.id"
                     [routerLink]="['/photographer', familyData.photographer.id]"
                     [queryParams]="{}">
           {{familyData.photographer?.name}}</a> for Dollar Street <a

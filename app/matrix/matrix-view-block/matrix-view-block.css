@@ -1,6 +1,6 @@
 .view-image-block-container {
   position: relative;
-  padding: 12px 6px 0;
+  padding: 13px 5px 0;
 }
 
 .view-image-block-content {
@@ -51,10 +51,12 @@
 
 .view-image-block-content .house-info-container .close-container img {
   width: 100%;
+  cursor: pointer;
 }
 
 .view-image-block-content .house-info-container .header-container {
   margin-bottom: 15px;
+  margin-right: 10px;
   color: #374551;
   font-size: 32px;
   line-height: 32px;
@@ -87,7 +89,7 @@
 }
 
 .home-description-container h3 {
-  margin: 0 0 5px;
+  margin: 0 0 15px;
   color: #374551;
   font-size: 28px;
 }
@@ -105,10 +107,11 @@
   color: #374551;
   font-size: 20px;
   font-family: 'Bariol Light', sans-serif;
-  padding: 4px 14px;
+  padding: 8px 14px;
   position: relative;
   margin: 0;
   background-color: transparent;
+  line-height: 20px;
 }
 
 .home-description-container a:hover {
@@ -119,7 +122,7 @@
 .home-description-container a img {
   width: 16px;
   position: absolute;
-  top: 11px;
+  top: calc(50% - 8px);
   right: 16px;
   opacity: 1;
 }
@@ -172,7 +175,6 @@ place-map {
 }
 
 .view-image-block-footer-container > div {
-  width: 50%;
   float: left;
 }
 
@@ -181,14 +183,19 @@ place-map {
   width: 225px;
 }
 
+.photographer-container {
+  width: calc(100% - 225px);
+}
+
+
+.photographer-container p {
+  margin: 3px 0 0;
+}
+
 .photographer-container img {
   width: 16px;
   margin-top: -4px;
   margin-right: 4px;
-}
-
-.photographer-container {
-  width: calc(100% - 225px);
 }
 
 .photographer-container a,
@@ -258,10 +265,32 @@ place-map {
 .active-house {
   width: 0;
   height: 0;
-  border-left: 33px solid transparent;
-  border-right: 33px solid transparent;
-  border-bottom: 25px solid #fff;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 17px solid #fff;
   position: absolute;
-  top: -31px;
+  top: -17px;
   z-index: 9;
+}
+
+.zoom-6,
+.zoom-7,
+.zoom-8 {
+  padding: 13px 2.5px 0;
+}
+
+.zoom-9,
+.zoom-10 {
+  padding: 13px 1px 0;
+}
+
+.zoom-6 .active-house,
+.zoom-7 .active-house,
+.zoom-8 .active-house {
+  top: -15px;
+}
+
+.zoom-9 .active-house,
+.zoom-10 .active-house {
+  top: -13px;
 }

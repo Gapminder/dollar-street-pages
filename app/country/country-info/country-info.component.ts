@@ -22,7 +22,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private country: any;
   private countryInfoService: any;
   private thing: any;
-  private countryInfoServiceSubscribe: Subscriber;
+  private countryInfoServiceSubscribe: Subscriber<any>;
   private placesQantity: any;
   private photosQantity: any;
   private videosQantity: any;

@@ -23,7 +23,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   private photographersService: any;
   private search: any;
   private loader: boolean;
-  private photographersServiceSubscribe: Subscriber;
+  private photographersServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject('PhotographersService') photographersService: any,
                      @Inject('Math') math: any) {

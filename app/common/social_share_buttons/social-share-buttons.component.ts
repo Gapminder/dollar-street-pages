@@ -18,7 +18,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   private urlChangeService: any;
   private url: string;
   private urlEvents: any;
-  private socialShareButtonsServiceSubscribe: Subscriber;
+  private socialShareButtonsServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject('SocialShareButtonsService') socialShareButtonsService: any,
                      @Inject('UrlChangeService') urlChangeService: any,

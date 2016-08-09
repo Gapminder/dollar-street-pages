@@ -22,7 +22,7 @@ export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {
 
   private defaultThing: any;
   private headerService: any;
-  private headerServiceSubscribe: Subscriber;
+  private headerServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject('HeaderService') headerService: any) {
     this.headerService = headerService;

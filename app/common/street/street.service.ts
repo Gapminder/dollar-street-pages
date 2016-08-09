@@ -6,7 +6,7 @@ const d3 = require('d3');
 const device = require('device.js')();
 const isDesktop = device.desktop();
 
-interface DrawDividersInterface {
+export interface DrawDividersInterface {
   showDividers: boolean;
   low: number;
   medium: number;

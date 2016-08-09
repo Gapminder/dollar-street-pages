@@ -21,7 +21,7 @@ let device = require('device.js')();
 
 export class MapComponent implements OnInit, OnDestroy {
   public resizeSubscribe: any;
-  public mapServiceSubscribe: Subscriber;
+  public mapServiceSubscribe: Subscriber<any>;
   public math: any;
   public loader: boolean = false;
   public needChangeUrl: boolean = false;

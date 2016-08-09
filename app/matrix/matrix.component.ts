@@ -47,7 +47,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public isDraw: boolean = false;
   public lowIncome: number;
   public highIncome: number;
-  public matrixServiceSubscrib: Subscriber;
+  public matrixServiceSubscrib: Subscriber<any>;
   public streetData: any;
 
   private resizeSubscribe: any;
@@ -71,7 +71,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private clonePlaces: any[];
   private zone: NgZone;
   private windowHistory: any = history;
-  private matrixServiceStreetSubscrib: Subscriber;
+  private matrixServiceStreetSubscrib: Subscriber<any>;
   private streetPlacesData: any;
   private queryParamsSubscribe: any;
 
@@ -88,7 +88,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
-
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -255,7 +254,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public getPaddings(): void {
-    let windowInnerWidth = window.innerWidth - 36;
+    let windowInnerWidth = window.innerWidth - 34;
     let header = this.element.querySelector('.matrix-header') as HTMLElement;
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
 
@@ -272,7 +271,15 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.getViewableRows(header.offsetHeight);
 
-    document.body.scrollTop = document.documentElement.scrollTop = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
+    this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
+
+    let scrollTo: number = (this.row - 1) * (imageContainer.offsetHeight + 2 * this.imageMargin);
+
+    if (this.activeHouse) {
+      scrollTo = this.row * (imageContainer.offsetHeight + 2 * this.imageMargin) - 60;
+    }
+
+    document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
 
     if (this.clonePlaces) {
       this.streetPlaces.next(this.streetPlacesData);
@@ -358,6 +365,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           .map('income')
           .sortBy()
           .value();
+
         this.streetPlaces.next(this.streetPlacesData);
         this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 

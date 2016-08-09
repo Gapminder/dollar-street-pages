@@ -31,41 +31,6 @@
 
 .header-container .heading img {
   width: 14px;
-  margin: -9px 8px 0 27px;
+  margin: 0 8px -3px 27px;
   vertical-align: baseline;
-}
-
-@media (max-width: 1023px) {
-  .header-container .logo {
-    margin-top: 9px;
-    width: 42px;
-  }
-
-  .header-container .heading {
-    margin: 15px 0 0 15px;
-  }
-
-  .matrix-icon {
-    margin-top: 11px;
-  }
-}
-
-@media (max-width: 600px) {
-  .header-container .heading {
-    font-size: 18px;
-    margin: 12px 0 0 10px;
-    line-height: 18px;
-    width: calc(100% - 110px);
-  }
-
-  .header-container .logo {
-    margin-top: 5px;
-    width: 32px;
-  }
-
-  .matrix-icon {
-    width: 25px;
-    margin-top: 8px;
-    margin-right: 5px;
-  }
 }

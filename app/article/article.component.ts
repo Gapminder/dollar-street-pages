@@ -20,7 +20,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   protected title: string;
   protected loader: boolean = false;
   private articleService: any;
-  private articleServiceSubscribe: Subscriber;
+  private articleServiceSubscribe: Subscriber<any>;
   private article: any;
   private thingId: string;
   private activatedRoute: ActivatedRoute;

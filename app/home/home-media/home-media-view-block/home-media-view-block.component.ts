@@ -27,7 +27,7 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
 
   private zone: NgZone;
   private viewBlockService: any;
-  private viewBlockServiceSubscribe: Subscriber;
+  private viewBlockServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject(NgZone) zone: NgZone,
                      @Inject('HomeMediaViewBlockService') viewBlockService: any) {
@@ -37,6 +37,7 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
 
   public ngOnChanges(changes: any): void {
     if (changes.imageData) {
+      this.country = void 0;
       this.loader = false;
       let isImageLoaded: boolean = false;
       let image: any = new Image();
@@ -67,6 +68,10 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
 
           this.country = res.data.country;
           this.article = res.data.article;
+
+          if (this.article && this.article.shortDescription.length > 700) {
+            this.article.shortDescription = this.article.shortDescription.slice(0, 700) + '...';
+          }
 
           if (isImageLoaded) {
             this.loader = true;

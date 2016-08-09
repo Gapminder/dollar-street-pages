@@ -4,6 +4,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber } from 'rxjs/Rx';
 import { PlaceMapComponent } from '../../common/place-map/place-map.component';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
+import { Config } from '../../app.config';
 
 let tpl = require('./home-header.template.html');
 let style = require('./home-header.css');
@@ -30,7 +31,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   @Input('placeId')
   private placeId: string;
   private homeHeaderService: any;
-  private homeHeaderServiceSubscribe: Subscriber;
+  private homeHeaderServiceSubscribe: Subscriber<any>;
   private scrollSubscribe: any;
   private resizeSubscribe: any;
   private zone: NgZone;
@@ -114,6 +115,10 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   }
 
   protected showAboutData(event: MouseEvent, fixed: boolean): void {
+    if (fixed) {
+      event.preventDefault();
+    }
+
     if (!arguments.length) {
       this.isShowAboutData = false;
 
@@ -128,30 +133,56 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     }
 
     let aboutDataContainer = this.element.querySelector('.about-data-container') as HTMLElement;
+    let targetElement = event.target as HTMLElement;
 
-    let position = this.getCoords(event.target);
+    Config.getCoordinates(`.${targetElement.className}`, (data: any) => {
+      this.aboutDataPosition.left = data.left - aboutDataContainer.clientWidth + 28;
+      this.aboutDataPosition.top = data.top + 28;
 
-    this.aboutDataPosition.left = position.left - aboutDataContainer.clientWidth + 28;
-    this.aboutDataPosition.top = position.top + 28;
-
-    this.isShowAboutData = true;
+      this.isShowAboutData = true;
+    });
   }
 
-  protected getCoords(element: any): {left: number; top: number} {
-    let box = element.getBoundingClientRect();
+  protected scrollToStart(event: MouseEvent): void {
+    let targetElement = event.target as HTMLElement;
 
-    let body = document.body;
-    let docEl = document.documentElement;
+    if (targetElement.className === 'short-about-info-image') {
+      return;
+    }
 
-    let scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    let scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    event.preventDefault();
 
-    let clientTop = docEl.clientTop || body.clientTop || 0;
-    let clientLeft = docEl.clientLeft || body.clientLeft || 0;
+    this.animateScroll('scrollBackToTop', 20, 1000);
+  }
 
-    let top = box.top + scrollTop - clientTop;
-    let left = box.left + scrollLeft - clientLeft;
+  private animateScroll(id: string, inc: number, duration: number): any {
+    const elem = document.getElementById(id);
+    const startScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const endScroll = elem.offsetTop;
+    const step = (endScroll - startScroll) / duration * inc;
 
-    return {left: Math.round(left), top: Math.round(top)};
+    window.requestAnimationFrame(this.goToScroll(step, duration, inc));
+  }
+
+  private goToScroll(step: number, duration: number, inc: number): any {
+    return () => {
+      const currentDuration = duration - inc;
+
+      this.incScrollTop(step);
+
+      if (currentDuration < inc) {
+        return;
+      }
+
+      window.requestAnimationFrame(this.goToScroll(step, currentDuration, inc));
+    };
+  }
+
+  private incScrollTop(step: number): void {
+    if (document.body.scrollTop) {
+      document.body.scrollTop += step;
+    } else {
+      document.documentElement.scrollTop += step;
+    }
   }
 }

@@ -13,7 +13,7 @@ let style = require('./info-context.css');
 
 export class InfoContextComponent implements OnInit, OnDestroy {
   private infoContextService: any;
-  private infoContextServiceSubscribe: Subscriber;
+  private infoContextServiceSubscribe: Subscriber<any>;
   private info: any;
 
   public constructor(@Inject('InfoContextService') infoContextService: any) {

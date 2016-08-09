@@ -15,7 +15,7 @@ let style = require('./matrix-view-block.css');
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  public familyInfoServiceSubscribe: Subscriber;
+  public familyInfoServiceSubscribe: Subscriber<any>;
   public fancyBoxImage: any;
 
   protected showblock: boolean;
@@ -34,6 +34,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private familyInfoService: any;
   private zone: NgZone;
   private router: Router;
+  private containerPadding: number;
+  private widthScroll: number;
 
   @Input('query')
   private query: any;
@@ -59,9 +61,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
-          let imageWidth: number = (window.innerWidth - 36) / this.privateZoom;
+          let imageWidth: number = (window.innerWidth - 34 - this.containerPadding * 2 - this.widthScroll) / this.privateZoom;
 
-          this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 33);
+          this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
         });
       });
   }
@@ -73,9 +75,19 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     let url = `placeId=${this.place._id}&thingId=${this.thing}`;
     let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
     this.privateZoom = parseUrl.zoom;
-    let imageWidth: number = (window.innerWidth - 36) / this.privateZoom;
 
-    this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 33);
+    setTimeout(() => {
+      this.widthScroll = window.innerWidth - document.body.offsetWidth;
+
+      let imagesContainer = document.querySelector('.flex-container') as HTMLElement;
+      let paddingLeft: string = window.getComputedStyle(imagesContainer).getPropertyValue('padding-left');
+      this.containerPadding = parseFloat(paddingLeft);
+
+      let imageWidth: number = (window.innerWidth - 34 - this.containerPadding * 2 - this.widthScroll) / this.privateZoom;
+
+      this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
+    }, 0);
+
     this.place.background = this.place.background.replace('devices', 'desktops');
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 

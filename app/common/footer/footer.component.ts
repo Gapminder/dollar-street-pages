@@ -18,7 +18,7 @@ let style = require('./footer.css');
 export class FooterComponent implements OnInit, OnDestroy {
   protected footerData: any = {};
   private footerService: any;
-  private footerServiceSubscribe: Subscriber;
+  private footerServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject('FooterService') footerService: any) {
     this.footerService = footerService;

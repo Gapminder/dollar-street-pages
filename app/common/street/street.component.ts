@@ -13,7 +13,7 @@ import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 
 const _ = require('lodash');
 
@@ -48,13 +48,13 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private streetData: any;
   private element: HTMLElement;
   private activatedRoute: ActivatedRoute;
-  private StreetServiceSubscrib: Subscriber;
+  private StreetServiceSubscrib: Subscriber<any>;
   private resize: any;
   private drawOnMap: boolean = false;
 
-  private placesSubscribe: Subscriber;
-  private hoverPlaceSubscribe: Subscriber;
-  private chosenPlacesSubscribe: Subscriber;
+  private placesSubscribe: Subscription;
+  private hoverPlaceSubscribe: Subscription;
+  private chosenPlacesSubscribe: Subscription;
   private svg: SVGElement;
   private showSlider: boolean;
   private placesArr: any;

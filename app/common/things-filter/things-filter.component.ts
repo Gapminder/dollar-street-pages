@@ -35,7 +35,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   @Output()
   private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
   private thingsFilterService: any;
-  private thingsFilterServiceSubscribe: Subscriber;
+  private thingsFilterServiceSubscribe: Subscriber<any>;
   private activatedRoute: ActivatedRoute;
   private element: ElementRef;
   private angulartics2GoogleAnalytics: any;
