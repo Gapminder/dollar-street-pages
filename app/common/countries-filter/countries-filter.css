@@ -19,6 +19,10 @@
   line-height: 20px;
 }
 
+#countries-filter.open-countries-filter .countries-filter-button {
+  box-shadow: 0 0 10px rgba(46, 67, 80, 0.1);
+}
+
 #countries-filter .countries-filter-button span.arrow {
   width: 0;
   height: 0;
@@ -58,7 +62,7 @@
 #countries-filter .regions-container {
   border: 1px solid #e4e6e7;
   width: 25%;
-  padding: 7px 5px 5px 11px;
+  padding: 7px 5px 5px 0;
   float: left;
   height: calc(100% - 155px);
 }
@@ -67,7 +71,8 @@
   color: #384651;
   font-size: 24px;
   line-height: 20px;
-  margin: 7px 0 20px;
+  margin: 0;
+  padding: 9px 11px 13px 11px;
   cursor: pointer;
 }
 
@@ -118,49 +123,65 @@
   width: 18px;
 }
 
-#countries-filter .all-selected {
-  width: 22px;
-  height: 11px;
+#countries-filter .pointer-search-container {
+  padding: 0 11px;
+  width: 100%;
+}
+
+
+#countries-filter .pointer-container {
+  width: 222px;
   float: left;
-  margin: 3px 3px;
-  display: block;
-  position: absolute;
+  margin-top: 5px;
+  cursor: pointer;
 }
 
-#countries-filter .all-not-selected {
-  width: 13px;
-  height: 11px;
-  float: left;
-  margin: 4px 1px;
-  display: block;
-  position: absolute;
-}
-
-#countries-filter .all-not-selected .hide {
-  display: none;
-}
-
-#countries-filter .all-selected img{
-  margin-left: 11px;
-  width: 22px;
-}
-
-#countries-filter .all-not-selected img{
+#countries-filter .pointer-container div {
   width: 20px;
-  margin-left: 11px;
+  position: relative;
+  display: inline-block;
+  vertical-align: super;
+  margin-right: 8px;
+}
+
+#countries-filter .pointer-container img {
+  width: 100%;
+}
+
+#countries-filter .pointer-container .check {
+  width: 22px;
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  opacity: 0;
+}
+
+#countries-filter .pointer-container .active {
+  opacity: 1;
+}
+
+#countries-filter .pointer-container span {
+  color: #384651;
+  font-size: 24px;
+  line-height: 10px;
 }
 
 #countries-filter .regions-container .country-content {
   overflow: hidden;
   position: relative;
-  padding: 6px 0 12px 0;
-  margin: 0;
+  padding: 6px 0 12px 11px;
+  margin-right: 7px;
   cursor: pointer;
 }
 
 #countries-filter .regions-container .countries-container {
   height: calc(100% - 50px);
   overflow-y: auto;
+  margin-top: 5px;
+}
+
+#countries-filter .regions-container .countries-container :hover {
+  background-color: #f4f5f5;
 }
 
 #countries-filter .regions-container span.name {
@@ -185,7 +206,6 @@
   width: 100%;
   float: none;
   clear: both;
-  /*padding: 2px 2px 15px 15px;*/
   text-align: right;
 }
 
@@ -221,6 +241,10 @@
 
 #countries-filter .title .regions-names {
   margin-left: 6px;
+}
+
+#countries-filter .regions-container h3:hover {
+  background-color: #f4f5f5;
 }
 
 #countries-filter .title .selected img,
