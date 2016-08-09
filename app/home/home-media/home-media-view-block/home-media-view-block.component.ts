@@ -89,7 +89,6 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
 
     let imgUrl = this.imageData.image.replace('desktops', 'original');
     let newImage = new Image();
-
     newImage.onload = () => {
       this.zone.run(() => {
         this.fancyBoxImage = 'url("' + imgUrl + '")';

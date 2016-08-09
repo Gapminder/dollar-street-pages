@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from '../common/footer/footer.component';
+import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { MainMenuComponent } from '../common/menu/menu.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
@@ -31,6 +32,7 @@ interface UrlParamsInterface {
     HomeHeaderComponent,
     HomeMediaComponent,
     FooterComponent,
+    FloatFooterComponent,
     LoaderComponent,
     ROUTER_DIRECTIVES,
     MainMenuComponent,

@@ -9,6 +9,7 @@ import {
 } from 'ng2-contentful-blog/index';
 import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { FooterComponent } from '../common/footer/footer.component';
+import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
@@ -25,6 +26,7 @@ let style = require('./blog.css');
     ContentfulImageDirective,
     HeaderWithoutSearchComponent,
     FooterComponent,
+    FloatFooterComponent,
     LoaderComponent,
     FooterSpaceDirective,
     ROUTER_DIRECTIVES

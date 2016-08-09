@@ -10,20 +10,22 @@
   <div class="countries-filter-container" [style.left.px]="-positionLeft">
     <div class="title">Select countries
       <img class="close-button pull-right"
-           src="../../assets/img/close-button.svg"
+           src="/assets/img/close-button.svg"
            (click)="cancelCountriesFilter()"
            alt="Close">
     </div>
 
-    <div>
-      <span class="all-not-selected">
-         <img src="/assets/img/empty-check.png" alt="">
-      </span>
-      <span *ngIf="showSelected" class="all-selected">
-         <img src="/assets/img/check-icon.svg" alt="">
-      </span>
-
-      <span class="all-filter" (click)="clearAllCountries()">Show all countries</span>
+    <div class="pointer-search-container">
+      <div class="pointer-container" (click)="clearAllCountries()">
+        <div>
+          <img src="/assets/img/empty-check.png"
+               alt="">
+          <img class="check" src="/assets/img/check-icon.svg"
+               alt=""
+               [ngClass]="{active: showSelected}">
+        </div>
+        <span>Show all countries</span>
+      </div>
 
       <div class="countries-search">
         <input class="form-control autofocus"

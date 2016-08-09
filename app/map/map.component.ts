@@ -5,6 +5,7 @@ import { Subscriber } from 'rxjs/Rx';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { FooterComponent } from '../common/footer/footer.component';
+import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./map.template.html');
@@ -16,7 +17,13 @@ let device = require('device.js')();
   selector: 'map-component',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, HeaderComponent, LoaderComponent, FooterComponent, FooterSpaceDirective]
+  directives: [
+    ROUTER_DIRECTIVES,
+    HeaderComponent,
+    LoaderComponent,
+    FooterComponent,
+    FloatFooterComponent,
+    FooterSpaceDirective]
 })
 
 export class MapComponent implements OnInit, OnDestroy {

@@ -14,6 +14,12 @@
   color: #374551;
 }
 
+floatfooter .share-button-container .share-button i {
+  font-size: 28px;
+  line-height: 44px;
+  color: #fcc037;
+}
+
 main-menu social-share-buttons {
   width: calc(100% - 42px);
   display: block;

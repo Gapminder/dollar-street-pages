@@ -6,6 +6,7 @@ import { Subscriber } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
 import { FooterComponent } from '../common/footer/footer.component';
+import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { GuideComponent } from '../common/guide/guide.component';
@@ -27,6 +28,7 @@ let style = require('./matrix.css');
     StreetComponent,
     MatrixImagesComponent,
     FooterComponent,
+    FloatFooterComponent,
     FooterSpaceDirective,
     LoaderComponent]
 })
