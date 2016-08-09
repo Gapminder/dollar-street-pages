@@ -13,11 +13,11 @@ import { RoutesGatewayComponent, RoutesGatewayGuard } from 'ng2-contentful-blog'
 export class Config {
   // public static api:string = 'https://apidev.dollarstreet.org';
   // public static api:string = 'http://stage.dollarstreet.org';
-  // public static api:string = 'http://192.168.1.148';
+  // public static api: string = 'http://192.168.1.148';
   // public static api:string = 'http://192.168.1.57';
    public static api:string = 'http://192.168.1.147';
 
-  public static routes:RouterConfig = [{
+  public static routes: RouterConfig = [{
     path: '',
     pathMatch: 'full',
     redirectTo: 'matrix'
@@ -54,4 +54,19 @@ export class Config {
     component: RoutesGatewayComponent,
     canActivate: [RoutesGatewayGuard]
   }];
+
+  public static getCoordinates(querySelector: string, cb: any): any {
+    let box: any = document.querySelector(querySelector).getBoundingClientRect();
+
+    let body: HTMLElement = document.body;
+    let docEl: HTMLElement = document.documentElement;
+
+    let scrollLeft: number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    let clientLeft: number = docEl.clientLeft || body.clientLeft || 0;
+
+    let top: number = box.top;
+    let left: number = box.left + scrollLeft - clientLeft;
+
+    cb({top: Math.round(top), left: Math.round(left), width: box.width, height: box.height});
+  }
 }

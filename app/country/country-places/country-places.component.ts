@@ -14,24 +14,24 @@ let style = require('./country-places.css');
 })
 
 export class CountryPlacesComponent implements OnInit, OnDestroy {
-  public loader:boolean = false;
-  public countryPlacesServiceSubscribe:Subscriber;
-  public math:any;
+  public loader: boolean = false;
+  public countryPlacesServiceSubscribe: Subscriber<any>;
+  public math: any;
   @Input()
-  private countryId:string;
-  private places:any = [];
-  private country:any;
-  private countryPlacesService:any;
+  private countryId: string;
+  private places: any = [];
+  private country: any;
+  private countryPlacesService: any;
 
-  public constructor(@Inject('CountryPlacesService') countryPlacesService:any,
-                     @Inject('Math') math:any) {
+  public constructor(@Inject('CountryPlacesService') countryPlacesService: any,
+                     @Inject('Math') math: any) {
     this.countryPlacesService = countryPlacesService;
     this.math = math;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.countryPlacesServiceSubscribe = this.countryPlacesService.getCountryPlaces(`id=${this.countryId}`)
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -43,7 +43,7 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.countryPlacesServiceSubscribe.unsubscribe();
   }
 }

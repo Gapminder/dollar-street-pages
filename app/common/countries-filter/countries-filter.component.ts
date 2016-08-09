@@ -7,9 +7,14 @@ import {
   Output,
   EventEmitter,
   HostListener,
-  ElementRef
+  ElementRef,
+  OnInit,
+  NgZone
 } from '@angular/core';
 import { CountriesFilterPipe } from './countries-filter.pipe';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs';
+import { Config } from '../../app.config';
 
 let _ = require('lodash');
 
@@ -23,45 +28,62 @@ let style = require('./countries-filter.css');
   pipes: [CountriesFilterPipe]
 })
 
-export class CountriesFilterComponent implements OnDestroy, OnChanges {
-  protected activeCountries:string;
-  protected showSelected:boolean;
-  protected locations:any[];
-  protected isOpenCountriesFilter:boolean = false;
-  protected selectedRegions:string[] = [];
-  protected selectedCountries:string[] = [];
+export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
+  protected activeCountries: string;
+  protected showSelected: boolean;
+  protected locations: any[];
+  protected isOpenCountriesFilter: boolean = false;
+  protected selectedRegions: string[] = [];
+  protected selectedCountries: string[] = [];
+  protected positionLeft: number = 0;
   @Input()
-  private url:string;
+  private url: string;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
+  private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
-  private countriesFilterService:any;
-  private countriesFilterServiceSubscribe:any;
+  private countriesFilterService: any;
+  private countriesFilterServiceSubscribe: any;
 
-  private cloneSelectedRegions:string[] = ['World'];
-  private cloneSelectedCountries:string[] = ['World'];
+  private cloneSelectedRegions: string[] = ['World'];
+  private cloneSelectedCountries: string[] = ['World'];
 
-  private element:ElementRef;
+  private element: ElementRef;
+  private zone: NgZone;
+  private resizeSubscribe: Subscription;
 
-  public constructor(@Inject('CountriesFilterService') countriesFilterService:any,
-                     @Inject(ElementRef) element:ElementRef) {
+  public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
+                     @Inject(ElementRef) element: ElementRef,
+                     @Inject(NgZone) zone: NgZone) {
     this.countriesFilterService = countriesFilterService;
     this.element = element;
+    this.zone = zone;
+  }
+
+  public ngOnInit(): void {
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.setPosition();
+        });
+      });
   }
 
   @HostListener('document:click', ['$event'])
-  public isOutsideThingsFilterClick(event:Event):void {
+  public isOutsideThingsFilterClick(event: Event): void {
     if (!this.element.nativeElement.contains(event.target) && this.isOpenCountriesFilter) {
       this.openCloseCountriesFilter(true);
     }
   }
 
-  protected openCloseCountriesFilter(isOpenCountriesFilter:boolean):void {
+  protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
 
     this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
     if (this.isOpenCountriesFilter) {
+      this.setPosition();
+
       setTimeout(() => {
         this.element.nativeElement.querySelector('.autofocus').focus();
       });
@@ -82,17 +104,17 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     }
   }
 
-  protected cancelCountriesFilter():void {
+  protected cancelCountriesFilter(): void {
     this.openCloseCountriesFilter(true);
   }
 
-  protected clearAllCountries():void {
+  protected clearAllCountries(): void {
     this.showSelected = true;
     this.selectedRegions.length = 0;
     this.selectedCountries.length = 0;
   }
 
-  protected selectRegions(location:any):void {
+  protected selectRegions(location: any): void {
     this.showSelected = false;
 
     let index = this.selectedRegions.indexOf(location.region);
@@ -118,7 +140,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.selectedCountries = _.union(this.selectedCountries.concat(getCountriesName));
   }
 
-  protected selectCountries(country:any, region:string):void {
+  protected selectCountries(country: any, region: string): void {
     this.showSelected = false;
 
     let indexCountry = this.selectedCountries.indexOf(country.country);
@@ -142,7 +164,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.selectedCountries.push(country.country);
   }
 
-  protected goToLocation():void {
+  protected goToLocation(): void {
     let query = this.parseUrl(this.url);
 
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
@@ -155,11 +177,15 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.cloneSelectedRegions = ['World'];
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.countriesFilterServiceSubscribe.unsubscribe();
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
   }
 
-  public ngOnChanges(changes:any):void {
+  public ngOnChanges(changes: any): void {
     if (changes.url && changes.url.currentValue) {
       if (this.countriesFilterServiceSubscribe) {
         this.countriesFilterServiceSubscribe.unsubscribe();
@@ -169,7 +195,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
       this.countriesFilterServiceSubscribe = this
         .countriesFilterService
         .getCountries(this.url)
-        .subscribe((res:any) => {
+        .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);
             return;
@@ -181,11 +207,11 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     }
   }
 
-  private setTitle(url:string):void {
-    let query:any = this.parseUrl(url);
+  private setTitle(url: string): void {
+    let query: any = this.parseUrl(url);
 
-    let regions:string[] = query.regions;
-    let countries:string[] = query.countries;
+    let regions: string[] = query.regions;
+    let countries: string[] = query.countries;
 
     if (regions[0] === 'World' && countries[0] === 'World') {
       this.activeCountries = 'the world';
@@ -211,11 +237,11 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
       if (regions.length > 2) {
         this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
       } else {
-        let sumCountries:number = 0;
-        let difference:string[] = [];
-        let regionCountries:string[] = [];
+        let sumCountries: number = 0;
+        let difference: string[] = [];
+        let regionCountries: string[] = [];
 
-        _.forEach(this.locations, (location:any) => {
+        _.forEach(this.locations, (location: any) => {
           if (regions.indexOf(location.region) !== -1) {
             regionCountries = regionCountries.concat(_.map(location.countries, 'country'));
             sumCountries = +location.countries.length;
@@ -242,7 +268,7 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
       return;
     }
 
-    let concatLocations:string[] = regions.concat(countries);
+    let concatLocations: string[] = regions.concat(countries);
 
     if (concatLocations.length > 2) {
       this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
@@ -255,18 +281,18 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     this.cloneSelectedLocations(regions, countries);
   }
 
-  private cloneSelectedLocations(regions:any[], countries:any[]):void {
+  private cloneSelectedLocations(regions: any[], countries: any[]): void {
     this.cloneSelectedRegions = _.clone(regions);
     this.cloneSelectedCountries = _.clone(countries);
   }
 
-  private objToQuery(data:any):string {
-    return Object.keys(data).map((k:string) => {
+  private objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
   }
 
-  private parseUrl(url:string):any {
+  private parseUrl(url: string): any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);
 
@@ -274,5 +300,15 @@ export class CountriesFilterComponent implements OnDestroy, OnChanges {
     query.countries = query.countries.split(',');
 
     return query;
+  }
+
+  private setPosition(): void {
+    Config.getCoordinates('countries-filter', (data: any) => {
+      if (data.left + 787 + 10 > window.innerWidth) {
+        this.positionLeft = data.left + 787 - window.innerWidth + 10;
+      } else {
+        this.positionLeft = 0;
+      }
+    });
   }
 }

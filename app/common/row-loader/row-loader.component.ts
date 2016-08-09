@@ -10,27 +10,27 @@ let style = require('./row-loader.css');
 })
 
 export class RowLoaderComponent implements OnChanges {
-  protected top:number = 0;
-  protected isShow:boolean = true;
+  protected top: number = 0;
+  protected isShow: boolean = true;
 
   @Input('items')
-  protected items:any;
+  protected items: any;
   @Input('itemHeight')
-  private itemHeight:number;
+  private itemHeight: number;
   @Input('field')
-  private field:string;
+  private field: string;
   @Input('count')
-  private count:number;
+  private count: number;
 
-  private zone:NgZone;
-  private item:number = 0;
-  private cloneItems:any;
+  private zone: NgZone;
+  private item: number = 0;
+  private cloneItems: any;
 
-  public constructor(@Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject(NgZone) zone: NgZone) {
     this.zone = zone;
   }
 
-  public ngOnChanges(changes:any):void {
+  public ngOnChanges(changes: any): void {
     if (!changes.items || !changes.items.currentValue && !changes.items.currentValue.length) {
       return;
     }
@@ -46,7 +46,7 @@ export class RowLoaderComponent implements OnChanges {
     });
   }
 
-  public isUploadItem(item:number):void {
+  public isUploadItem(item: number): void {
     if (item > this.cloneItems.length - 1) {
       this.isShow = false;
 

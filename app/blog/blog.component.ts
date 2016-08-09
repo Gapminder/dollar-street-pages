@@ -34,27 +34,27 @@ let style = require('./blog.css');
 })
 
 export class BlogComponent implements OnInit, OnDestroy {
-  protected posts:any[] = [];
-  protected loader:boolean = false;
-  private contentfulContentService:any;
-  private contentfulContentServiceSubscribe:Subscriber;
+  protected posts: any[] = [];
+  protected loader: boolean = false;
+  private contentfulContentService: any;
+  private contentfulContentServiceSubscribe: Subscriber<any>;
 
-  public constructor(@Inject(ContenfulContent) contenfulContent:ContenfulContent) {
+  public constructor(@Inject(ContenfulContent) contenfulContent: ContenfulContent) {
     this.contentfulContentService = contenfulContent;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.contentfulContentServiceSubscribe = this.contentfulContentService
       .getTagsBySlug('dollarstreet')
-      .map((tags:ContentfulTagPage[]) => _.map(tags, 'sys.id'))
-      .mergeMap((tagSysIds:any) => this.contentfulContentService.getArticlesByTag(tagSysIds))
-      .subscribe((articles:ContentfulNodePage[]) => {
+      .map((tags: ContentfulTagPage[]) => _.map(tags, 'sys.id'))
+      .mergeMap((tagSysIds: any) => this.contentfulContentService.getArticlesByTag(tagSysIds))
+      .subscribe((articles: ContentfulNodePage[]) => {
         this.posts = articles;
         this.loader = true;
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.contentfulContentServiceSubscribe.unsubscribe();
   }
 }

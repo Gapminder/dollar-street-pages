@@ -11,29 +11,29 @@ let style = require('./photographer-profile.css');
 })
 
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
-  protected isShowInfo:boolean = false;
-  protected math:any;
+  protected isShowInfo: boolean = false;
+  protected math: any;
 
   @Input()
-  private photographerId:string;
+  private photographerId: string;
   @Output()
-  private getPhotographer:EventEmitter<any> = new EventEmitter<any>();
+  private getPhotographer: EventEmitter<any> = new EventEmitter<any>();
 
-  private photographer:{firstName?:string, lastName?:string} = {};
-  private photographerProfileService:any;
-  private photographerProfileServiceSubscribe:Subscriber;
+  private photographer: {firstName?: string, lastName?: string} = {};
+  private photographerProfileService: any;
+  private photographerProfileServiceSubscribe: Subscriber<any>;
 
-  public constructor(@Inject('PhotographerProfileService') photographerProfileService:any,
-                     @Inject('Math') math:any) {
+  public constructor(@Inject('PhotographerProfileService') photographerProfileService: any,
+                     @Inject('Math') math: any) {
     this.photographerProfileService = photographerProfileService;
     this.math = math;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     let query = `id=${this.photographerId}`;
 
     this.photographerProfileServiceSubscribe = this.photographerProfileService.getPhotographerProfile(query)
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -44,11 +44,11 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.photographerProfileServiceSubscribe.unsubscribe();
   }
 
-  protected isShowInfoMore(photographer:any):boolean {
+  protected isShowInfoMore(photographer: any): boolean {
     return photographer.company ||
       photographer.description ||
       photographer.google ||
@@ -57,7 +57,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
       photographer.linkedIn;
   }
 
-  protected isShowDescription(company:any):boolean {
+  protected isShowDescription(company: any): boolean {
     return company && (company.name || company.link);
   }
 }

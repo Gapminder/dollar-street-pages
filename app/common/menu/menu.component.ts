@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, Inject, ElementRef } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { Angulartics2On } from 'angulartics2';
 import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 
@@ -16,21 +16,21 @@ let style = require('./menu.css');
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
-  protected isOpenMenu:boolean = false;
+  protected isOpenMenu: boolean = false;
   @Input()
-  private hoverPlace:Observable<any>;
-  private hoverPlaceSubscribe:Subscriber;
-  private element:ElementRef;
-  private router:Router;
-  private activatedRoute:ActivatedRoute;
-  private isMatrixComponent:boolean;
-  private window:Window = window;
-  private angulartics2GoogleAnalytics:any;
+  private hoverPlace: Observable<any>;
+  private hoverPlaceSubscribe: Subscription;
+  private element: ElementRef;
+  private router: Router;
+  private activatedRoute: ActivatedRoute;
+  private isMatrixComponent: boolean;
+  private window: Window = window;
+  private angulartics2GoogleAnalytics: any;
 
-  public constructor(@Inject(Router) router:Router,
-                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
-                     @Inject(ElementRef) element:ElementRef,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics:any) {
+  public constructor(@Inject(Router) router: Router,
+                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+                     @Inject(ElementRef) element: ElementRef,
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.element = element;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -38,7 +38,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.isMatrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe(() => {
         if (this.isOpenMenu) {
           this.isOpenMenu = false;
@@ -46,13 +46,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
     }
   }
 
-  protected goToMatrixPage(removeStorage?:boolean):void {
+  protected goToMatrixPage(removeStorage?: boolean): void {
     this.angulartics2GoogleAnalytics.eventTrack('Matrix page');
 
     if (removeStorage) {
@@ -68,12 +68,12 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.router.navigate(['/matrix'], {queryParams: {}});
   }
 
-  protected goToGapminder():void {
+  protected goToGapminder(): void {
     this.window.open('https://www.gapminder.org', '_blank');
   }
 
   @HostListener('document:click', ['$event'])
-  public isOutsideMainMenuClick(event:Event):void {
+  public isOutsideMainMenuClick(event: Event): void {
     if (!this.element.nativeElement.contains(event.target) && this.isOpenMenu) {
       this.isOpenMenu = false;
     }

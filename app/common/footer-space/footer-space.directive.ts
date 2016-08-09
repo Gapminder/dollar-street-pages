@@ -3,18 +3,18 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 
 @Directive({selector: '[footerSpace]'})
 export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy {
-  private footerHeight:number;
-  private element:HTMLElement;
-  private zone:NgZone;
-  private resizeSubscribe:any;
+  private footerHeight: number;
+  private element: HTMLElement;
+  private zone: NgZone;
+  private resizeSubscribe: any;
 
-  public constructor(@Inject(ElementRef) element:ElementRef,
-                     @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject(ElementRef) element: ElementRef,
+                     @Inject(NgZone) zone: NgZone) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
@@ -24,15 +24,15 @@ export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy
       });
   }
 
-  public ngAfterViewChecked():void {
+  public ngAfterViewChecked(): void {
     this.setFooterSpace();
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.resizeSubscribe.unsubscribe();
   }
 
-  private setFooterSpace():void {
+  private setFooterSpace(): void {
     let footer = document.querySelector('footer') as HTMLElement;
 
     if (!footer) {

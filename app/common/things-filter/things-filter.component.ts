@@ -32,19 +32,19 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected search:{text:string;} = {text: ''};
   protected isOpenThingsFilter:boolean = false;
   @Input()
-  private url:string;
+  private url: string;
   @Output()
-  private selectedFilter:EventEmitter<any> = new EventEmitter<any>();
-  private thingsFilterService:any;
-  private thingsFilterServiceSubscribe:Subscriber;
-  private activatedRoute:ActivatedRoute;
-  private element:ElementRef;
-  private angulartics2GoogleAnalytics:any;
+  private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+  private thingsFilterService: any;
+  private thingsFilterServiceSubscribe: Subscriber<any>;
+  private activatedRoute: ActivatedRoute;
+  private element: ElementRef;
+  private angulartics2GoogleAnalytics: any;
 
-  public constructor(@Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
-                     @Inject(ElementRef) element:ElementRef,
-                     @Inject('ThingsFilterService') thingsFilterService:any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics:any) {
+  public constructor(@Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+                     @Inject(ElementRef) element: ElementRef,
+                     @Inject('ThingsFilterService') thingsFilterService: any,
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.thingsFilterService = thingsFilterService;
     this.activatedRoute = activatedRoute;
     this.element = element;
@@ -52,18 +52,18 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   }
 
   @HostListener('document:click', ['$event'])
-  public isOutsideThingsFilterClick(event:Event):void {
+  public isOutsideThingsFilterClick(event: Event): void {
     if (!this.element.nativeElement.contains(event.target) && this.isOpenThingsFilter) {
       this.isOpenThingsFilter = false;
       this.search = {text: ''};
     }
   }
 
-  protected openThingsFilter(isOpenThingsFilter:boolean):void {
+  protected openThingsFilter(isOpenThingsFilter: boolean): void {
     this.isOpenThingsFilter = !isOpenThingsFilter;
   }
 
-  protected goToThing(thing:any):void {
+  protected goToThing(thing: any): void {
     if (thing.empty) {
       return;
     }
@@ -77,11 +77,11 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     this.search = {text: ''};
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.thingsFilterServiceSubscribe.unsubscribe();
   }
 
-  public ngOnChanges(changes:any):void {
+  public ngOnChanges(changes: any): void {
     if (changes.url && changes.url.currentValue) {
       if (this.thingsFilterServiceSubscribe) {
         this.thingsFilterServiceSubscribe.unsubscribe();
@@ -90,7 +90,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
       this.thingsFilterServiceSubscribe = this
         .thingsFilterService
         .getThings(this.url)
-        .subscribe((res:any) => {
+        .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);
             return;
@@ -104,13 +104,13 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     }
   }
 
-  private objToQuery(data:any):string {
-    return Object.keys(data).map((k:string) => {
+  private objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
   }
 
-  private parseUrl(url:string):any {
+  private parseUrl(url: string): any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);
 

@@ -12,16 +12,16 @@ let style = require('./info-context.css');
 })
 
 export class InfoContextComponent implements OnInit, OnDestroy {
-  private infoContextService:any;
-  private infoContextServiceSubscribe:Subscriber;
-  private info:any;
+  private infoContextService: any;
+  private infoContextServiceSubscribe: Subscriber<any>;
+  private info: any;
 
-  public constructor(@Inject('InfoContextService') infoContextService:any) {
+  public constructor(@Inject('InfoContextService') infoContextService: any) {
     this.infoContextService = infoContextService;
   }
 
-  public ngOnInit():void {
-    this.infoContextServiceSubscribe = this.infoContextService.getInfo().subscribe((val:any) => {
+  public ngOnInit(): void {
+    this.infoContextServiceSubscribe = this.infoContextService.getInfo().subscribe((val: any) => {
       if (val.err) {
         console.error(val.err);
         return;
@@ -31,7 +31,7 @@ export class InfoContextComponent implements OnInit, OnDestroy {
     });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.infoContextServiceSubscribe.unsubscribe();
   }
 }

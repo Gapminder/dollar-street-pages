@@ -12,8 +12,8 @@
 }
 
 .header-container .logo {
-  margin: 17px 0;
-  width: 53px;
+  margin: 9px 0;
+  width: 46px;
   display: block;
 }
 
@@ -22,51 +22,15 @@
 }
 
 .header-container .heading {
-  color: #2e4350;
-  font-size: 32px;
   cursor: pointer;
   display: inline-block;
-  line-height: 32px;
-  margin: 28px 0 0;
+  margin: 13px 0 0;
+  color: #374551;
+  font-size: 28px;
 }
 
 .header-container .heading img {
   width: 14px;
-  margin: 0 25px;
+  margin: 0 8px -3px 27px;
   vertical-align: baseline;
-}
-
-@media (max-width: 1023px) {
-  .header-container .logo {
-    margin-top: 9px;
-    width: 42px;
-  }
-
-  .header-container .heading {
-    margin: 15px 0 0 15px;
-  }
-
-  .matrix-icon {
-    margin-top: 11px;
-  }
-}
-
-@media (max-width: 600px) {
-  .header-container .heading {
-    font-size: 18px;
-    margin: 12px 0 0 10px;
-    line-height: 18px;
-    width: calc(100% - 110px);
-  }
-
-  .header-container .logo {
-    margin-top: 5px;
-    width: 32px;
-  }
-
-  .matrix-icon {
-    width: 25px;
-    margin-top: 8px;
-    margin-right: 5px;
-  }
 }

@@ -1,17 +1,18 @@
 .quick-guide-container {
-  background: #f2fafc linear-gradient(to top, #f2fafc 0%, #dbf0f5 100%);
+  background: #d5eaf6 url("/assets/img/clouds.jpg") center center no-repeat;
   border-bottom: 1px solid #c6c7c9;
-  padding: 50px 0;
+  padding: 50px 0 0;
+  background-size: auto 100%;
 }
 
 .quick-guide-container .quick-guide-content {
-  width: 940px;
+  width: 707px;
   margin: 0 auto;
   overflow: hidden;
 }
 
 .quick-guide-container .logo-container {
-  width: 258px;
+  width: 133px;
   float: left;
 }
 
@@ -20,9 +21,9 @@
 }
 
 .quick-guide-container .quick-guide-description-container {
-  width: calc(100% - 368px);
+  width: calc(100% - 175px);
   float: right;
-  margin-left: 110px;
+  margin-left: 42px;
   text-align: center;
 }
 

@@ -1,6 +1,6 @@
 <div class="images-container" *ngIf="currentPlaces?.length">
-  <div class="flex-container">
-    <div class="image-content column-{{zoom}}"
+  <div class="flex-container column-{{zoom}}">
+    <div class="image-content"
          *ngFor="let place of currentPlaces; let i = index"
          [ngStyle]="{'background-image': toUrl(place?.background), visibility: place ? 'visible' : 'hidden', order: i, height: imageHeight + 'px'}"
          [ngClass]="{'no-row': zoom > 5 || !isDesktop, active: prevPlaceId === place._id}"

@@ -4,7 +4,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 let tpl = require('./about.template.html');
 let style = require('./about.css');
 
-const proportion:number = 1.777;
+const proportion: number = 1.777;
 
 @Component({
   selector: 'about',
@@ -13,19 +13,19 @@ const proportion:number = 1.777;
 })
 
 export class AboutComponent implements OnInit, OnDestroy {
-  private resizeSubscribe:any;
-  private element:any;
-  private videoContainer:HTMLElement;
-  private videosIframes:any;
-  private zone:NgZone;
+  private resizeSubscribe: any;
+  private element: any;
+  private videoContainer: HTMLElement;
+  private videosIframes: any;
+  private zone: NgZone;
 
-  public constructor(@Inject(ElementRef) element:ElementRef,
-                     @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject(ElementRef) element: ElementRef,
+                     @Inject(NgZone) zone: NgZone) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.videosIframes = this.element.querySelectorAll('.video-container iframe');
 
     this.setVideosSize();
@@ -39,11 +39,11 @@ export class AboutComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.resizeSubscribe.unsubscribe();
   }
 
-  private setVideosSize():void {
+  private setVideosSize(): void {
     if (!this.videosIframes || !this.videosIframes.length) {
       return;
     }

@@ -7,7 +7,7 @@
     <span class="arrow"></span>
   </div>
 
-  <div class="countries-filter-container">
+  <div class="countries-filter-container" [style.left.px]="-positionLeft">
     <div class="title">Select countries
       <img class="close-button pull-right"
            src="/assets/img/close-button.svg"
@@ -18,11 +18,11 @@
     <div class="pointer-search-container">
       <div class="pointer-container" (click)="clearAllCountries()">
         <div>
-           <img src="/assets/img/empty-check.png"
-                alt="">
-           <img class="check" src="/assets/img/check-icon.svg"
-                alt=""
-                [ngClass]="{active: showSelected}">
+          <img src="/assets/img/empty-check.png"
+               alt="">
+          <img class="check" src="/assets/img/check-icon.svg"
+               alt=""
+               [ngClass]="{active: showSelected}">
         </div>
         <span>Show all countries</span>
       </div>

@@ -4,6 +4,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber } from 'rxjs/Rx';
 import { PlaceMapComponent } from '../../common/place-map/place-map.component';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
+import { Config } from '../../app.config';
 
 let tpl = require('./home-header.template.html');
 let style = require('./home-header.css');
@@ -16,40 +17,45 @@ let style = require('./home-header.css');
 })
 
 export class HomeHeaderComponent implements OnInit, OnDestroy {
-  protected home:any = {};
-  protected mapData:any;
-  protected math:any;
-  protected isOpenArticle:boolean = false;
-  protected familyShortInfoPosition:number = -88;
-  protected isShowAboutData:boolean = false;
-  protected isShowAboutDataFullScreen:boolean = false;
-  protected aboutDataPosition:{left?:number;top?:number;} = {};
-  protected windowHeight:number = window.innerHeight;
-  protected maxHeightPopUp:number = this.windowHeight * .95 - 91;
+  protected home: any = {};
+  protected mapData: any;
+  protected math: any;
+  protected isOpenArticle: boolean = false;
+  protected familyShortInfoPosition: number = -88;
+  protected isShowAboutData: boolean = false;
+  protected isShowAboutDataFullScreen: boolean = false;
+  protected aboutDataPosition: {left?: number;top?: number;} = {};
+  protected windowHeight: number = window.innerHeight;
+  protected maxHeightPopUp: number = this.windowHeight * .95 - 91;
 
   @Input('placeId')
-  private placeId:string;
-  private homeHeaderService:any;
-  private homeHeaderServiceSubscribe:Subscriber;
-  private scrollSubscribe:any;
-  private resizeSubscribe:any;
-  private zone:NgZone;
-  private element:ElementRef;
+  private placeId: string;
+  private homeHeaderService: any;
+  private homeHeaderServiceSubscribe: Subscriber<any>;
+  private scrollSubscribe: any;
+  private resizeSubscribe: any;
+  private zone: NgZone;
+  private element: HTMLElement;
+  private headerElement: HTMLElement;
+  private headerHeight: number;
 
-  public constructor(@Inject('HomeHeaderService') homeHeaderService:any,
-                     @Inject(ElementRef) element:ElementRef,
-                     @Inject('Math') math:any,
-                     @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject('HomeHeaderService') homeHeaderService: any,
+                     @Inject(ElementRef) element: ElementRef,
+                     @Inject('Math') math: any,
+                     @Inject(NgZone) zone: NgZone) {
     this.homeHeaderService = homeHeaderService;
     this.zone = zone;
     this.math = math;
-    this.element = element;
+    this.element = element.nativeElement;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
+    this.headerElement = document.querySelector('.header-container') as HTMLElement;
+    this.headerHeight = this.headerElement.offsetHeight;
+
     this.homeHeaderServiceSubscribe = this.homeHeaderService
       .getHomeHeaderData(`placeId=${this.placeId}`)
-      .subscribe((res:any):any => {
+      .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -65,9 +71,9 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
         this.zone.run(() => {
           if (scrollTop > 200) {
-            this.familyShortInfoPosition = 88;
+            this.familyShortInfoPosition = this.headerHeight;
           } else {
-            this.familyShortInfoPosition = -88;
+            this.familyShortInfoPosition = -this.headerHeight;
           }
         });
       });
@@ -78,11 +84,12 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
         this.zone.run(() => {
           this.windowHeight = window.innerHeight;
           this.maxHeightPopUp = this.windowHeight * .95 - 91;
+          this.headerHeight = this.headerElement.offsetHeight;
         });
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.homeHeaderServiceSubscribe.unsubscribe();
 
     if (this.resizeSubscribe) {
@@ -94,11 +101,11 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected openInfo(isOpenArticle:boolean):void {
+  protected openInfo(isOpenArticle: boolean): void {
     this.isOpenArticle = !isOpenArticle;
   }
 
-  protected closeAboutDataPopUp(event:MouseEvent):void {
+  protected closeAboutDataPopUp(event: MouseEvent): void {
     let el = event && event.target as HTMLElement;
 
     if (el.className.indexOf('closeMenu') !== -1) {
@@ -107,7 +114,11 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected showAboutData(event:MouseEvent, fixed:boolean):void {
+  protected showAboutData(event: MouseEvent, fixed: boolean): void {
+    if (fixed) {
+      event.preventDefault();
+    }
+
     if (!arguments.length) {
       this.isShowAboutData = false;
 
@@ -121,31 +132,57 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let aboutDataContainer:HTMLElement = this.element.nativeElement.querySelector('.about-data-container');
+    let aboutDataContainer = this.element.querySelector('.about-data-container') as HTMLElement;
+    let targetElement = event.target as HTMLElement;
 
-    let position = this.getCoords(event.target);
+    Config.getCoordinates(`.${targetElement.className}`, (data: any) => {
+      this.aboutDataPosition.left = data.left - aboutDataContainer.clientWidth + 28;
+      this.aboutDataPosition.top = data.top + 28;
 
-    this.aboutDataPosition.left = position.left - aboutDataContainer.clientWidth + 28;
-    this.aboutDataPosition.top = position.top + 28;
-
-    this.isShowAboutData = true;
+      this.isShowAboutData = true;
+    });
   }
 
-  protected getCoords(element:any):{left:number; top:number} {
-    let box = element.getBoundingClientRect();
+  protected scrollToStart(event: MouseEvent): void {
+    let targetElement = event.target as HTMLElement;
 
-    let body = document.body;
-    let docEl = document.documentElement;
+    if (targetElement.className === 'short-about-info-image') {
+      return;
+    }
 
-    let scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    let scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+    event.preventDefault();
 
-    let clientTop = docEl.clientTop || body.clientTop || 0;
-    let clientLeft = docEl.clientLeft || body.clientLeft || 0;
+    this.animateScroll('scrollBackToTop', 20, 1000);
+  }
 
-    let top = box.top + scrollTop - clientTop;
-    let left = box.left + scrollLeft - clientLeft;
+  private animateScroll(id: string, inc: number, duration: number): any {
+    const elem = document.getElementById(id);
+    const startScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const endScroll = elem.offsetTop;
+    const step = (endScroll - startScroll) / duration * inc;
 
-    return {left: Math.round(left), top: Math.round(top)};
+    window.requestAnimationFrame(this.goToScroll(step, duration, inc));
+  }
+
+  private goToScroll(step: number, duration: number, inc: number): any {
+    return () => {
+      const currentDuration = duration - inc;
+
+      this.incScrollTop(step);
+
+      if (currentDuration < inc) {
+        return;
+      }
+
+      window.requestAnimationFrame(this.goToScroll(step, currentDuration, inc));
+    };
+  }
+
+  private incScrollTop(step: number): void {
+    if (document.body.scrollTop) {
+      document.body.scrollTop += step;
+    } else {
+      document.documentElement.scrollTop += step;
+    }
   }
 }

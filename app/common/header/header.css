@@ -88,9 +88,10 @@ place-map[hidden] {
 .filters-container .income-title {
   display: none;
 }
+
 .filters-container .income-title-container.incomeby .income-title,
 .filters-container .income-title + .income-title {
-display: inline-block
+  display: inline-block
 }
 
 @media (max-width: 1023px) {

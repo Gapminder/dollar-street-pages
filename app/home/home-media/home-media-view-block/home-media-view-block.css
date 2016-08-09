@@ -1,15 +1,6 @@
 .view-image-block-container {
-  margin: 6px 6px 18px;
+  margin: 5px 5px 0;
   position: relative;
-  height: 705px;
-}
-
-.view-image-block-content {
-  height: 100%;
-}
-
-.view-image-block-content > div {
-  height: 100%;
 }
 
 .view-image-block-content .house-info-container .header-container,
@@ -17,9 +8,14 @@
   overflow: hidden;
 }
 
+.view-image-block-content .house-info-container .header-container {
+  margin-bottom: 15px;
+  margin-right: 10px;
+}
+
 .view-image-block-content .house-info-container .header-container img {
-  width: 27px;
-  margin-right: 15px;
+  width: 30px;
+  margin-right: 9px;
   vertical-align: baseline;
 }
 
@@ -33,12 +29,11 @@
 }
 
 .view-image-block-content .view-image-container {
-  width: calc(75% - 4px);
-  height: 100%;
+  width: calc(100% - 329px);
 }
 
 .view-image-block-content .view-image-container .view-image-content {
-  height: calc(100% - 40px);
+  height: 705px;
   background-color: #e4e7ea;
   padding: 12px;
   box-shadow: 0 0 5px #ddd inset;
@@ -52,28 +47,36 @@
 .view-image-block-content .view-image-container .view-image-content img {
   max-height: 100%;
   max-width: 100%;
+  cursor: pointer;
 }
 
 .view-image-block-content .view-image-container .image-footer-container {
   overflow: hidden;
-  margin-top: 12px;
+  margin-top: 5px;
 }
 
 .view-image-block-content .image-footer-container > div {
-  width: 50%;
   float: left;
 }
 
 .view-image-block-content .image-footer-container a {
-  color: #35424d;
+  color: #374551;
   font-size: 20px;
+}
+
+.view-image-block-content .image-footer-container .photographer-container {
+  width: calc(100% - 225px);
 }
 
 .view-image-block-content .image-footer-container .photographer-container a,
 .view-image-block-content .image-footer-container .photographer-container p {
-  color: #35424d;
+  color: #374551;
   font-size: 16px;
   margin: 0;
+}
+
+.view-image-block-content .image-footer-container .photographer-container p {
+  margin-top: 3px;
 }
 
 .view-image-block-content .image-footer-container .photographer-container img {
@@ -82,6 +85,11 @@
 
 .view-image-block-content .image-footer-container .zoom-download-container {
   text-align: right;
+  width: 225px;
+}
+
+.view-image-block-content .zoom-download-container a.download img {
+  margin-top: -7px;
 }
 
 .view-image-block-content .zoom-download-container a:last-child img {
@@ -90,47 +98,87 @@
 
 .view-image-block-content .image-footer-container img {
   width: 17px;
+  margin-right: 2px;
 }
 
-.view-image-block-content .image-footer-container .zoom-download-container a {
+.view-image-block-content .image-footer-container .zoom-download-container a.download {
   display: inline-block;
   margin-right: 20px;
 }
 
-.view-image-block-content .image-footer-container .zoom-download-container a:first-child {
-  margin-right: 37px;
-}
-
 .view-image-block-content .house-info-container {
-  width: calc(25% - 12px);
-  margin-left: 16px;
-  position: relative;
+  width: 319px;
+  margin-left: 10px;
 }
 
-.view-image-block-content .thing-footer-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.view-image-block-content .house-info-container > div {
+  float: left;
+}
+
+.view-image-block-content .house-info-container .house-info-content {
+  width: 300px;
+}
+
+.view-image-block-content .house-info-container .house-info-content > p {
+  font-size: 16px;
+  color: #767d86;
+}
+
+.view-image-block-content .house-info-container .house-info-content > p a {
+  color: #b04514;
+}
+
+.view-image-block-content .house-info-container .close-block {
+  width: 19px;
+}
+
+.view-image-block-content .house-info-container .close-block img {
   width: 100%;
+  cursor: pointer;
 }
 
-.view-image-block-content .thing-footer-container span {
-  color: #35424d;
-  font-family: 'Bariol Bold', sans-serif;
+.thing-button-container {
+  margin-top: 50px;
+}
+
+.thing-button-container p {
+  color: #374551;
   font-size: 20px;
+  margin: 0;
+}
+
+.thing-button-container a {
   display: block;
-}
-
-.view-image-block-content .thing-footer-container a {
-  color: #35424d;
+  border: 1px solid #374551;
+  color: #374551;
   font-size: 20px;
+  font-family: 'Bariol Light', sans-serif;
+  padding: 4px 35px 4px 14px;
+  position: relative;
+  margin: 9px 0 0;
+  background-color: transparent;
 }
 
-.view-image-block-content .thing-footer-container a img {
+.thing-button-container a:hover {
+  background-color: #374551;
+  color: #fff;
+}
+
+.thing-button-container a img {
   width: 16px;
-  float: right;
-  margin-top: 6px;
+  position: absolute;
+  top: calc(50% - 8px);
+  right: 16px;
+  opacity: 1;
+}
+
+.thing-button-container a img:last-child,
+.thing-button-container a:hover img:first-child {
+  opacity: 0;
+}
+
+.thing-button-container a:hover img:last-child {
+  opacity: 1;
 }
 
 .view-image-block-container .isLoad {
@@ -189,42 +237,26 @@
 .active-house {
   width: 0;
   height: 0;
-  border-left: 33px solid transparent;
-  border-right: 33px solid transparent;
-  border-bottom: 25px solid #fff;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 17px solid #fff;
   position: absolute;
-  top: -37px;
-  z-index: 7;
+  top: -22px;
+  z-index: 9;
 }
 
 .active-house.house-1 {
-  left: calc(((100% / 4) / 2) - 20px);
+  left: calc(((100% / 4) / 2) - 16px);
 }
 
 .active-house.house-2 {
-  left: calc(((100% / 4) / 2) + (100% / 4) - 33px);
+  left: calc(((100% / 4) / 2) + (100% / 4) - 16px);
 }
 
 .active-house.house-3 {
-  left: calc(((100% / 4) / 2) + (100% / 4 * 2) - 33px);
+  left: calc(((100% / 4) / 2) + (100% / 4 * 2) - 16px);
 }
 
 .active-house.house-4 {
-  left: calc(((100% / 4) / 2) + (100% / 4 * 3) - 33px);
-}
-
-.view-image-block-content .house-info-container .header-container .thing-container {
-  float: left;
-  width: calc(100% - 29px);
-}
-
-.view-image-block-content .house-info-container .header-container .close-block {
-  float: right;
-  margin-top: 6px;
-  cursor: pointer;
-}
-
-.view-image-block-content .house-info-container .header-container .close-block img {
-  width: 19px;
-  margin: 0;
+  left: calc(((100% / 4) / 2) + (100% / 4 * 3) - 16px);
 }

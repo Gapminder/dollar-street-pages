@@ -23,5 +23,5 @@ let style = require('./info.css');
 })
 
 export class InfoComponent {
-  protected title:string = 'Info';
+  protected title: string = 'Info';
 }

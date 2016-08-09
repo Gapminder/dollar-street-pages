@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Inject, ElementRef, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 
 let tpl = require('./place-map.template.html');
 let style = require('./place-map.css');
@@ -13,26 +13,26 @@ let style = require('./place-map.css');
 })
 
 export class PlaceMapComponent implements OnInit,OnDestroy {
-  protected region:string;
-  protected markerPosition:any = {};
+  protected region: string;
+  protected markerPosition: any = {};
 
   @Input()
-  private hoverPlace:Observable<any>;
-  private mapImage:any;
-  private element:ElementRef;
-  private zone:NgZone;
-  private place:any;
-  private hoverPlaceSubscribe:Subscriber;
-  private resizeSubscriber:any;
+  private hoverPlace: Observable<any>;
+  private mapImage: any;
+  private element: ElementRef;
+  private zone: NgZone;
+  private place: any;
+  private hoverPlaceSubscribe: Subscription;
+  private resizeSubscriber: any;
 
-  public constructor(@Inject(ElementRef) element:ElementRef,
-                     @Inject(NgZone) zone:NgZone) {
+  public constructor(@Inject(ElementRef) element: ElementRef,
+                     @Inject(NgZone) zone: NgZone) {
     this.element = element;
     this.zone = zone;
   }
 
-  public ngOnInit():void {
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place:any) => {
+  public ngOnInit(): void {
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((place: any) => {
         this.place = place;
         this.draw(this.place);
       });
@@ -43,7 +43,7 @@ export class PlaceMapComponent implements OnInit,OnDestroy {
 
   }
 
-  public draw(place:any):void {
+  public draw(place: any): void {
     if (!place) {
       this.region = void 0;
       return;
@@ -60,7 +60,7 @@ export class PlaceMapComponent implements OnInit,OnDestroy {
     img.src = this.mapImage.src;
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
     }
@@ -69,7 +69,7 @@ export class PlaceMapComponent implements OnInit,OnDestroy {
     }
   }
 
-  public drawMarker(place:any, mapImage:any):void {
+  public drawMarker(place: any, mapImage: any): void {
     let stepTop;
     let stepRight;
     let widthOfMap = mapImage.offsetWidth;

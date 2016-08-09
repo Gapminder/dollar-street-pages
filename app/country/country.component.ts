@@ -25,26 +25,26 @@ let style = require('./country.css');
 })
 
 export class CountryComponent implements OnInit, OnDestroy {
-  protected title:string;
-  protected math:any;
-  protected countryId:string;
-  private activatedRoute:ActivatedRoute;
-  private queryParamsSubscribe:any;
+  protected title: string;
+  protected math: any;
+  protected countryId: string;
+  private activatedRoute: ActivatedRoute;
+  private queryParamsSubscribe: any;
 
-  public constructor(@Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
-                     @Inject('Math') math:any) {
+  public constructor(@Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+                     @Inject('Math') math: any) {
     this.activatedRoute = activatedRoute;
     this.math = math;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.queryParamsSubscribe = this.activatedRoute.params
-      .subscribe((params:any) => {
+      .subscribe((params: any) => {
         this.countryId = params.id;
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.queryParamsSubscribe.unsubscribe();
   }
 }

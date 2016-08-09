@@ -13,7 +13,7 @@ import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 
 const _ = require('lodash');
 
@@ -28,42 +28,42 @@ let style = require('./street.css');
 })
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
-  public data:any;
-  protected math:any;
+  public data: any;
+  protected math: any;
   @Input('thing')
-  protected thing:string;
+  protected thing: string;
   @Input('query')
-  private query:string;
+  private query: string;
   @Input('places')
-  private places:Observable<any>;
+  private places: Observable<any>;
   @Input('chosenPlaces')
-  private chosenPlaces:Observable<any>;
+  private chosenPlaces: Observable<any>;
   @Input('hoverPlace')
-  private hoverPlace:Subject<any>;
+  private hoverPlace: Subject<any>;
   @Output('filterStreet')
-  private filterStreet:EventEmitter<any> = new EventEmitter<any>();
+  private filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
-  private street:any;
-  private streetSettingsService:any;
-  private streetData:any;
-  private element:HTMLElement;
-  private activatedRoute:ActivatedRoute;
-  private StreetServiceSubscrib:Subscriber;
-  private resize:any;
-  private drawOnMap:boolean = false;
+  private street: any;
+  private streetSettingsService: any;
+  private streetData: any;
+  private element: HTMLElement;
+  private activatedRoute: ActivatedRoute;
+  private StreetServiceSubscrib: Subscriber<any>;
+  private resize: any;
+  private drawOnMap: boolean = false;
 
-  private placesSubscribe:Subscriber;
-  private hoverPlaceSubscribe:Subscriber;
-  private chosenPlacesSubscribe:Subscriber;
-  private svg:SVGElement;
-  private showSlider:boolean;
-  private placesArr:any;
+  private placesSubscribe: Subscription;
+  private hoverPlaceSubscribe: Subscription;
+  private chosenPlacesSubscribe: Subscription;
+  private svg: SVGElement;
+  private showSlider: boolean;
+  private placesArr: any;
 
-  public constructor(@Inject(ElementRef) element:ElementRef,
-                     @Inject(ActivatedRoute) activatedRoute:ActivatedRoute,
-                     @Inject('Math') math:any,
-                     @Inject('StreetSettingsService') streetSettingsService:any,
-                     @Inject('StreetDrawService') streetDrawService:any) {
+  public constructor(@Inject(ElementRef) element: ElementRef,
+                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+                     @Inject('Math') math: any,
+                     @Inject('StreetSettingsService') streetSettingsService: any,
+                     @Inject('StreetDrawService') streetDrawService: any) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -72,11 +72,11 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.showSlider = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
-  public ngOnInit():any {
+  public ngOnInit(): any {
     this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
     this.street.set('isInit', true);
 
-    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces:any):void => {
+    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
         if (!chosenPlaces.length) {
           this.street.set('chosenPlaces', []);
           this.street.clearAndRedraw(chosenPlaces);
@@ -88,7 +88,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         this.street.clearAndRedraw(chosenPlaces);
       });
 
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace:any):void => {
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace: any): void => {
         if (this.drawOnMap) {
           this.drawOnMap = !this.drawOnMap;
 
@@ -113,7 +113,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         this.street.drawHoverHouse(hoverPlace);
       });
 
-    this.placesSubscribe = this.places && this.places.subscribe((places:any):void => {
+    this.placesSubscribe = this.places && this.places.subscribe((places: any): void => {
         this.placesArr = places;
         if (!this.streetData) {
           return;
@@ -123,7 +123,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       });
 
     this.StreetServiceSubscrib = this.streetSettingsService.getStreetSettings()
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -138,8 +138,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         this.setDividers(this.placesArr, this.streetData);
       });
 
-    this.street.filter.subscribe((filter:any):void => {
-      let query:any;
+    this.street.filter.subscribe((filter: any): void => {
+      let query: any;
 
       if (this.query) {
         query = this.parseUrl(this.query);
@@ -170,7 +170,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  public ngOnChanges(changes:any):void {
+  public ngOnChanges(changes: any): void {
     if (changes.query && changes.query.currentValue) {
       let parseUrl = this.parseUrl(this.query);
 
@@ -179,7 +179,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     if (this.resize) {
       this.resize.unsubscribe();
     }
@@ -201,7 +201,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private setDividers(places:any, drawDividers:any):void {
+  private setDividers(places: any, drawDividers: any): void {
     this.street
       .clearSvg()
       .init(this.street.lowIncome, this.street.highIncome, this.streetData)
@@ -209,7 +209,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       .set('fullIncomeArr', _
         .chain(this.street.places)
         .sortBy('income')
-        .map((place:any) => {
+        .map((place: any) => {
           if (!place) {
             return void 0;
           }
@@ -225,13 +225,13 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private objToQuery(data:any):string {
-    return Object.keys(data).map((k:string) => {
+  private objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
   }
 
-  private parseUrl(url:string):any {
+  private parseUrl(url: string): any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);
 

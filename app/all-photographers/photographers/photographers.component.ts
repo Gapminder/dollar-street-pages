@@ -16,17 +16,17 @@ let style = require('./photographers.css');
 })
 
 export class PhotographersComponent implements OnInit, OnDestroy {
-  protected math:any;
-  protected photographersByCountry:any[];
-  protected photographersByName:any[];
+  protected math: any;
+  protected photographersByCountry: any[];
+  protected photographersByName: any[];
 
-  private photographersService:any;
-  private search:any;
-  private loader:boolean;
-  private photographersServiceSubscribe:Subscriber;
+  private photographersService: any;
+  private search: any;
+  private loader: boolean;
+  private photographersServiceSubscribe: Subscriber<any>;
 
-  public constructor(@Inject('PhotographersService') photographersService:any,
-                     @Inject('Math') math:any) {
+  public constructor(@Inject('PhotographersService') photographersService: any,
+                     @Inject('Math') math: any) {
     this.photographersService = photographersService;
     this.photographersByCountry = [];
     this.photographersByName = [];
@@ -35,9 +35,9 @@ export class PhotographersComponent implements OnInit, OnDestroy {
     this.loader = false;
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     this.photographersServiceSubscribe = this.photographersService.getPhotographers()
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
@@ -49,11 +49,11 @@ export class PhotographersComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy():void {
+  public ngOnDestroy(): void {
     this.photographersServiceSubscribe.unsubscribe();
   }
 
-  public toggleLeftSide(e:Event):void {
+  public toggleLeftSide(e: Event): void {
     let element = e.target as HTMLElement;
     let parent = element.parentNode as HTMLElement;
     parent.classList.toggle('show');

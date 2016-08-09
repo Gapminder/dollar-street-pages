@@ -22,5 +22,5 @@ let style = require('./ambassadors.css');
 })
 
 export class AmbassadorsComponent {
-  protected title:string = 'Ambassadors';
+  protected title: string = 'Ambassadors';
 }

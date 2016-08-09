@@ -2,6 +2,8 @@ import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, Inject, Element
 import { SocialShareButtonsComponent } from '../../social_share_buttons/social-share-buttons.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
+import { Config } from '../../../app.config';
+
 let _ = require('lodash');
 
 let tpl = require('./bubble.template.html');
@@ -123,7 +125,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
 
     if (step === 5) {
-      baloonDirector = '.images-container';
+      baloonDirector = '.matrix-header';
       this.bubble = _.find(this.bubbles, ['name', 'image']);
     }
 
@@ -132,7 +134,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
 
     setTimeout(() => {
-      this.getCoords(baloonDirector, (data: any) => {
+      Config.getCoordinates(baloonDirector, (data: any) => {
         let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
         let baloonWidth: number = baloonElement.width;
         let baloonHeight: number = baloonElement.height;
@@ -154,7 +156,6 @@ export class BubbleComponent implements OnInit, OnDestroy {
         }
 
         if (step === 5) {
-          data.top -= data.height;
           data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
         }
 
@@ -167,20 +168,5 @@ export class BubbleComponent implements OnInit, OnDestroy {
         this.position = data;
       });
     });
-  }
-
-  private getCoords(querySelector: string, cb: any): any {
-    let box: any = document.querySelector(querySelector).getBoundingClientRect();
-
-    let body: HTMLElement = document.body;
-    let docEl: HTMLElement = document.documentElement;
-
-    let scrollLeft: number = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
-    let clientLeft: number = docEl.clientLeft || body.clientLeft || 0;
-
-    let top: number = box.top;
-    let left: number = box.left + scrollLeft - clientLeft;
-
-    cb({top: Math.round(top), left: Math.round(left), width: box.width, height: box.height});
   }
 }
