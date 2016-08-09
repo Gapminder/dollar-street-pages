@@ -24,7 +24,7 @@
 
   <div class="things-filter-container">
     <div class="related-things-container">
-      <h3 class="title">Related things</h3>
+      <h3 class="title">Related</h3>
 
       <div class="related-things-content">
         <div class="thing-content"
@@ -41,7 +41,7 @@
     </div>
 
     <div class="popular-things-container">
-      <h3 class="title">Popular things</h3>
+      <h3 class="title">Popular</h3>
 
       <div class="popular-things-content">
         <div class="thing-content"
@@ -62,13 +62,14 @@
       <h3 class="title">All topics
         <img class="close-button pull-right"
              src="../../assets/img/close-button.svg"
-             (click)="cancelThingsFilter()"
+             (click)="openThingsFilter(true)"
              alt="Close">
       </h3>
 
       <div class="things-search">
         <input class="form-control"
                type="search"
+               placeholder="Search things"
                [(ngModel)]="search.text">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
