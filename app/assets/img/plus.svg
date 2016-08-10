@@ -1,17 +1,11 @@
-<svg id="plus" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 32 28">
   <defs>
     <style>
       .cls-1 {
-      fill: #fff;
-      opacity: 0.8;
-      }
-
-      .cls-2 {
-      fill: #2e4350;
+      fill: #374551;
       }
     </style>
   </defs>
-  <circle class="cls-1" cx="28" cy="28" r="28"/>
-  <rect id="Rectangle_8_copy_2" data-name="Rectangle 8 copy 2" class="cls-2" x="12" y="26" width="32" height="4"/>
-  <rect id="Rectangle_8_copy_3" data-name="Rectangle 8 copy 3" class="cls-2" x="26" y="14" width="4" height="28"/>
+  <rect id="Rectangle_8_copy_2" data-name="Rectangle 8 copy 2" class="cls-1" y="12" width="32" height="4"/>
+  <rect id="Rectangle_8_copy_3" data-name="Rectangle 8 copy 3" class="cls-1" x="14" width="4" height="28"/>
 </svg>

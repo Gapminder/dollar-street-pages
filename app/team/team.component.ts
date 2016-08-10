@@ -1,26 +1,26 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
-import { AmbassadorsListComponent } from './ambassadors-list/ambassadors-list.component';
+import { TeamListComponent } from './team-list/team-list.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
-let tpl = require('./ambassadors.template.html');
-let style = require('./ambassadors.css');
+let tpl = require('./team.template.html');
+let style = require('./team.css');
 
 @Component({
-  selector: 'ambassadors',
+  selector: 'team',
   template: tpl,
   encapsulation: ViewEncapsulation.None,
   styles: [style],
   directives: [
     HeaderWithoutSearchComponent,
-    AmbassadorsListComponent,
+    TeamListComponent,
     FooterComponent,
     FloatFooterComponent,
     FooterSpaceDirective]
 })
 
-export class AmbassadorsComponent {
-  protected title: string = 'Ambassadors';
+export class TeamComponent {
+  protected title: string = 'Dollar Street Team';
 }

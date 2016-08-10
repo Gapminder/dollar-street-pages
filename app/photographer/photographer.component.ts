@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { PhotographerProfileComponent } from './photographer-profile/photographer-profile.component';
 import { PhotographerPlacesComponent } from './photographer-places/photographer-places.component';
@@ -26,7 +27,7 @@ export class PhotographerComponent implements OnInit, OnDestroy {
   protected photographerId: string;
 
   private activatedRoute: ActivatedRoute;
-  private queryParamsSubscribe: any;
+  private queryParamsSubscribe: Subscription;
 
   public constructor(@Inject(ActivatedRoute) activatedRoute: ActivatedRoute) {
     this.activatedRoute = activatedRoute;

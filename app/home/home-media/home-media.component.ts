@@ -10,7 +10,7 @@ import {
   AfterViewChecked
 } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { HomeMediaViewBlockComponent } from './home-media-view-block/home-media-view-block.component';
 
@@ -45,7 +45,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private homeMediaService: any;
   private images: any = [];
   private familyPlaceServiceSubscribe: Subscriber<any>;
-  private resizeSubscribe: any;
+  private resizeSubscribe: Subscription;
   private zone: NgZone;
   private imageHeight: number;
   private footerHeight: any;
@@ -60,7 +60,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
-    this.itemSize = this.imageHeight = (window.innerWidth - 30) / this.zoom;
+    this.itemSize = this.imageHeight = (window.innerWidth - 34) / this.zoom;
 
     this.familyPlaceServiceSubscribe = this.homeMediaService.getHomeMedia(`placeId=${this.placeId}`)
       .subscribe((res: any) => {
@@ -78,7 +78,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       .subscribe(() => {
         this.zone.run(() => {
           this.zoom = window.innerWidth < 1024 ? 3 : 4;
-          this.imageHeight = (window.innerWidth - 30) / this.zoom;
+          this.imageHeight = (window.innerWidth - 34) / this.zoom;
 
           if (this.indexViewBoxImage) {
             let countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
@@ -87,7 +87,9 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.imageData.index = !countByIndex ? this.zoom : countByIndex;
             this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
 
-            this.goToRow(Math.ceil((this.indexViewBoxImage + 1) / this.zoom));
+            this.zone.run(() => {
+              this.goToRow(Math.ceil((this.indexViewBoxImage + 1) / this.zoom));
+            });
           }
         });
       });

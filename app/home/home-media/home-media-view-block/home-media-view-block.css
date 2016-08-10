@@ -165,9 +165,9 @@
 }
 
 .thing-button-container a img {
-  width: 16px;
+  height: 15px;
   position: absolute;
-  top: calc(50% - 8px);
+  top: calc(50% - 7.5px);
   right: 16px;
   opacity: 1;
 }

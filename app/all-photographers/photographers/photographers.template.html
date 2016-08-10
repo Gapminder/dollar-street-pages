@@ -5,11 +5,10 @@
         <div class="search-input">
           <span class="sort-country" (click)="toggleLeftSide($event)">Sort by country</span>
           <input id="search"
-                 class="form-control"
                  type="search"
                  placeholder="Search..."
                  [(ngModel)]="search.text">
-          <img alt="" src="/assets/img/search-icon.svg">
+          <img src="/assets/img/search-icon.svg" alt="Search icon">
         </div>
         <ul class="photographers-country">
           <li class="country-card"

@@ -1,71 +1,47 @@
-
-.floatfooter {
+.float-footer-container {
   overflow: hidden;
-  padding: 0 22px;
-  position: fixed;
-  background-color: white;
+  padding: 9px 22px;
+  background-color: #fff;
   border-top: 1px solid #e0ebf9;
-  bottom: -100%;
+
+  position: fixed;
   left: 0;
   right: 0;
-  z-index: 10;
-  -webkit-transition: all .5s ease-out .2s;
-  -moz-transition: bottom .5s ease-out .2s;
-  -o-transition: bottom .5s ease-out .2s;
-  transition: all .5s ease-out .2s;
+  bottom: -100%;
+  z-index: 99;
+
+  -webkit-transition: bottom .5s ease;
+  -moz-transition: bottom .5s ease;
+  -o-transition: bottom .5s ease;
+  transition: bottom .5s ease;
 }
 
-.show-float-footer {
-  bottom: 0 !important;
+.float-footer-container.show-float-footer {
+  bottom: 0;
 }
 
-.share-text {
+.float-footer-container span {
   color: #767d86;
   font-size: 18px;
-  line-height: 30px;
-}
-
-.back-to-top {
-  color: #767d86;
-  font-size: 20px;
-  line-height: 17px;
-  float: right;
+  float: left;
+  margin: 2px 0 -2px;
   cursor: pointer;
-  margin-top: 10px;
 }
 
-.floatfooter .social-share-buttons-container {
-  width: 100%;
-}
-
-.floatfooter .social-share-buttons-container .share-button-container {
-  display: inline;
-}
-
-.floatfooter .share-button {
-  width: 32px;
+.float-footer-container social-share-buttons {
   display: inline-block;
-  float: none;
-  margin-left: 6px;
+  vertical-align: top;
+  margin-bottom: -3px;
 }
 
-.scroll-top {
+.float-footer-container .back-to-top {
   color: #767d86;
   font-size: 18px;
-  line-height: 30px;
   float: right;
-  cursor: pointer;
-  margin-top: 7px;
-  background: none;
-  border: none;
-  outline: none;
 }
 
-.scroll-top i {
-  font-size: 25px;
-  font-weight: bold;
-}
-
-social-share-buttons .share-button-container .share-button .orange {
-  color: #fcc037 !important;
+.float-footer-container .back-to-top i {
+  color: #767d86;
+  font-size: 22px;
+  margin-left: 4px;
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, OnDestroy, Input, Inject, ElementRef, NgZone } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs';
 
 let tpl = require('./region-map.template.html');
 let style = require('./region-map.css');
@@ -19,7 +20,7 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
   private mapImage: any;
   private element: ElementRef;
   private zone: NgZone;
-  private resizeSubscriber: any;
+  private resizeSubscriber: Subscription;
 
   public constructor(@Inject(ElementRef) element: ElementRef,
                      @Inject(NgZone) zone: NgZone) {
