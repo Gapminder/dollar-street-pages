@@ -10,22 +10,36 @@
 
   <div class="description-container">
     <div class="logo-container">
-      <img src="/assets/img/dollar-street.svg" alt="DollarStreet logo"/>
-      <p>Dollar Street</p>
+      <img src="/assets/img/dollar-street.svg" (click)="scrollTop($event)" alt="DollarStreet logo"/>
+      <p>DOLLAR STREET</p>
     </div>
 
     <div class="links">
-      <a [routerLink]="['/info']"
+      <a [routerLink]="['/matrix']"
+         [queryParams]="{}"
+         angulartics2On="click"
+         angularticsEvent="Home page">Home </a>
+
+      <a class="dividers" [routerLink]="['/info']"
          [queryParams]="{}"
          angulartics2On="click"
          angularticsEvent="About page">About </a>
-      <a class="dividers" [routerLink]="['/photographers']"
+
+      <a [routerLink]="['/blog']"
          [queryParams]="{}"
          angulartics2On="click"
-         angularticsEvent="Photographers page">Our Photographers</a>
-      <a [routerLink]="['/info']" [queryParams]="{}"
+         angularticsEvent="Blog page">Blog </a>
+
+      <a class="dividers" [routerLink]="['/team']"
+         [queryParams]="{}"
          angulartics2On="click"
-         angularticsEvent="How to reuse photos">How to reuse photos</a>
+         angularticsEvent="DollarStreet team page">Team </a>
+
+      <a [routerLink]="['/photographers']"
+         [queryParams]="{}"
+         angulartics2On="click"
+         angularticsEvent="Photographers page">Photographers </a>
+
     </div>
 
     <div class="description-content">{{footerData.text}}</div>
@@ -36,9 +50,20 @@
         <img src="/assets/img/gapminder-logo.png" alt="Gapminder">
       </a>
     </div>
+
+    <div class="valor">
+      <div class="developed">Developed by</div>
+
+      <a class="valor-name" href="http://valor-software.com" target="_blank"
+         angulartics2On="click"
+         angularticsEvent="Moved to Valor Software">
+        Valor-Software
+      </a>
+    </div>
+
   </div>
 
-  <div class="social-share-buttons-container">
-    <social-share-buttons></social-share-buttons>
+  <div class="social-follow-buttons-container">
+    <social-follow-buttons></social-follow-buttons>
   </div>
 </div>

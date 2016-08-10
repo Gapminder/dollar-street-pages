@@ -6,8 +6,9 @@ footer {
 }
 
 .footer {
+  position: relative;
   overflow: hidden;
-  padding: 0 24px 55px;
+  padding: 0 24px 60px;
 }
 
 .footer > div {
@@ -16,6 +17,11 @@ footer {
 
 .footer .cc-container,
 .footer .social-share-buttons-container {
+  margin-top: 5px;
+  width: calc((100% - 430px) / 2);
+}
+
+.footer .social-follow-buttons-container {
   margin-top: 5px;
   width: calc((100% - 430px) / 2);
 }
@@ -29,17 +35,15 @@ footer {
 }
 
 .footer .logo-container img {
-  width: 42px;
+  cursor:pointer;
+  width: 46px;
 }
 
 .footer .logo-container p {
-  color: #2e4350;
-  font-size: 35px;
+  color: #374551;
+  font-size: 30px;
   margin: 13px 0 18px;
   line-height: 26px;
-}
-
-.footer .logo-container p span {
   font-family: 'Bariol Bold', sans-serif;
 }
 
@@ -49,7 +53,7 @@ footer {
 }
 
 .footer .links a {
-  color: #2e4350;
+  color: #374551;
   font-size: 21px;
 }
 
@@ -59,7 +63,7 @@ footer {
   display: inline-block;
   height: 22px;
   background-color: #2e4350;
-  margin: 0 10px -5px 5px;
+  margin: 0 15px -5px 10px;
 }
 
 .footer .links .dividers:after {
@@ -68,12 +72,11 @@ footer {
   display: inline-block;
   height: 22px;
   background-color: #2e4350;
-  margin: 0 5px -5px 10px;
+  margin: 0 10px -5px 10px;
 }
 
 .footer .description-content {
-  opacity: 0.7;
-  color: #2e4350;
+  color: #767d86;
   font-size: 16px;
   line-height: 20px;
 }
@@ -85,13 +88,56 @@ footer {
 .footer .social-share-buttons-container .share-button-container {
   padding: 0;
   text-align: right;
+  margin-top: 10px;
+}
+
+.footer .social-follow-buttons-container .follow-button-container {
+  padding: 0;
+  text-align: right;
+  margin-top: 10px;
 }
 
 .footer .share-button {
   width: 32px;
   display: inline-block;
   float: none;
-  margin-left: 16px;
+  margin-left: 10px;
+}
+
+.footer .follow-button {
+  width: 32px;
+  display: inline-block;
+  float: none;
+  margin-left: 10px;
+}
+
+.footer .follow {
+
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 13px;
+  vertical-align: middle ;
+  margin-right: 11px;
+  color: #374551;
+
+}
+
+.footer .valor {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 15px;
+  text-align: right;
+  position:absolute;
+  right:20px;
+  bottom:60px;
+}
+
+.footer .valor .developed {
+  color: #767d86;
+}
+
+.footer .valor .valor-name {
+  color: #e7464d;
 }
 
 .footer .gapminder {
@@ -99,5 +145,6 @@ footer {
 }
 
 .footer .gapminder img {
-  height: 20px;
+  width: 188px;
+  height: 27px;
 }

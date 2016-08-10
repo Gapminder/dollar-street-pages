@@ -1,0 +1,15 @@
+.follow-button-container {
+  overflow: hidden;
+}
+
+.follow-button-container > div {
+  float: none;
+  margin-left: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.follow-button-container .follow-button i {
+  font-size: 24px;
+  color: #374551;
+}
