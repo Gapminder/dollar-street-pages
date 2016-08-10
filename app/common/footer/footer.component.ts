@@ -38,12 +38,16 @@ export class FooterComponent implements OnInit, OnDestroy {
       });
   }
 
-  public scrollTop(e:MouseEvent):void {
+  public ngOnDestroy(): void {
+    this.footerServiceSubscribe.unsubscribe();
+  }
+
+  public scrollTop(e: MouseEvent): void {
     e.preventDefault();
     this.animateScroll('scrollBackToTop', 20, 1000);
   };
 
-  private animateScroll(id:string, inc:number, duration:number):any {
+  private animateScroll(id: string, inc: number, duration: number): any {
     const elem = document.getElementById(id);
     const startScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const endScroll = elem.offsetTop;
@@ -51,7 +55,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     window.requestAnimationFrame(this.goToScroll(step, duration, inc));
   }
 
-  private goToScroll(step:number, duration:number, inc:number):any {
+  private goToScroll(step: number, duration: number, inc: number): any {
     return () => {
       const currentDuration = duration - inc;
 
@@ -64,7 +68,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     };
   }
 
-  private incScrollTop(step:number):void {
+  private incScrollTop(step: number): void {
     if (document.body.scrollTop) {
       document.body.scrollTop += step;
     } else {
@@ -72,8 +76,4 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  public ngOnDestroy(): void {
-    this.footerServiceSubscribe.unsubscribe();
-  }
 }

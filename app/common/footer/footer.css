@@ -21,6 +21,11 @@ footer {
   width: calc((100% - 430px) / 2);
 }
 
+.footer .social-follow-buttons-container {
+  margin-top: 5px;
+  width: calc((100% - 430px) / 2);
+}
+
 .footer .description-container {
   width: 430px;
 }
@@ -89,7 +94,20 @@ footer {
   margin-top: 10px;
 }
 
+.footer .social-follow-buttons-container .follow-button-container {
+  padding: 0;
+  text-align: right;
+  margin-top: 10px;
+}
+
 .footer .share-button {
+  width: 32px;
+  display: inline-block;
+  float: none;
+  margin-left: 10px;
+}
+
+.footer .follow-button {
   width: 32px;
   display: inline-block;
   float: none;
@@ -119,6 +137,10 @@ footer {
 
 .footer .valor .developed {
   color: #767d86;
+}
+
+.footer .valor .valor-name {
+  color: #e7464d;
 }
 
 .footer .gapminder {
