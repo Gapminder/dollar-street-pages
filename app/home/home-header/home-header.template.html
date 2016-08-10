@@ -55,8 +55,8 @@
       <div class="go-to-matrix">
         <a
           [routerLink]="['/matrix']"
-          [queryParams]="{thing: 'Homes', countries: home.country?.alias, regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}">
-          All homes in {{home.country?.alias}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+          [queryParams]="{thing: home.thing, countries: home.country?.alias, regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}">
+          All families in {{home.country?.alias}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
           src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       </div>
     </div>

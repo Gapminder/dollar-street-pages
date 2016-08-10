@@ -3,7 +3,6 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Rx';
 import { MainMenuComponent } from '../menu/menu.component';
-import { PlaceMapComponent } from '../place-map/place-map.component';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
@@ -20,8 +19,7 @@ let style = require('./header.css');
     ROUTER_DIRECTIVES,
     ThingsFilterComponent,
     CountriesFilterComponent,
-    MainMenuComponent,
-    PlaceMapComponent
+    MainMenuComponent
   ]
 })
 

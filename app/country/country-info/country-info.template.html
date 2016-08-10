@@ -1,7 +1,9 @@
 <div id="country-info">
   <div class="header">
-    <place-map [hoverPlace]="hoverPlace"
-               [routerLink]="['/map']" [queryParams]="{thing: thing}"></place-map>
+    <region-map *ngIf="mapData"
+                [mapData]="mapData"
+                [routerLink]="['/map']"
+                [queryParams]="{thing: thing}"></region-map>
 
     <p class="description" *ngIf="country?.description">{{country.description}}</p>
   </div>
@@ -25,7 +27,10 @@
 
 <div id="mobile-country-info" class="row" [ngClass]="{'open': isShowInfo}">
   <div class="image-container">
-    <place-map [hoverPlace]="hoverPlace" [routerLink]="['/map']" [queryParams]="{thing: thing}"></place-map>
+    <region-map *ngIf="mapData"
+                [mapData]="mapData"
+                [routerLink]="['/map']"
+                [queryParams]="{thing: thing}"></region-map>
 
     <div class="more-info" *ngIf="country?.description">
         <span (click)="isShowInfo = !isShowInfo">
@@ -39,7 +44,7 @@
     <div class="country-description-header">
 
       <div class="count">
-        <p class="home" *ngIf="placesQantity">
+        <p class="home" *ngIf="placesQuantity">
           <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{placesQantity || 0}}</span>
         </p>
 

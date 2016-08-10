@@ -1,7 +1,7 @@
 import { Component, Input, Output, OnInit, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
 
 let tpl = require('./matrix-view-block.template.html');
@@ -28,7 +28,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected positionInRow: any;
 
   private privateZoom: any;
-  private resizeSubscribe: any;
+  private resizeSubscribe: Subscription;
   private popIsOpen: boolean;
   private mapData: any;
   private familyInfoService: any;

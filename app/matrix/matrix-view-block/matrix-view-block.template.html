@@ -27,22 +27,26 @@
         </div>
 
         <div class="images-container"
-             *ngIf="familyData.goToPlaceData"
-             [routerLink]="['/family']"
-             [queryParams]="familyData.goToPlaceData">
-          <div class="image-content" *ngIf="familyData?.familyImage">
+             *ngIf="familyData.goToPlaceData">
+          <div class="image-content"
+               *ngIf="familyData?.familyImage"
+               [routerLink]="['/family']"
+               [queryParams]="familyData.goToPlaceData">
             <img [src]="familyData.familyImage.url" alt="Family portrait">
           </div>
 
-          <div class="image-content" *ngIf="familyData?.houseImage">
+          <div class="image-content"
+               *ngIf="familyData?.houseImage"
+               [routerLink]="['/family']"
+               [queryParams]="familyData.goToPlaceData">
             <img [src]="familyData.houseImage.url" alt="House photo">
           </div>
         </div>
 
-        <div class="map-container"
-             [routerLink]="['/country', familyData?.country?._id]"
-             [queryParams]="{}">
-          <region-map [mapData]="mapData"></region-map>
+        <div class="map-container">
+          <region-map [routerLink]="['/country', familyData?.country?._id]"
+                      [queryParams]="{}"
+                      [mapData]="mapData"></region-map>
         </div>
       </div>
 

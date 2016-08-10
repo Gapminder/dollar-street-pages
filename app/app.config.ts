@@ -1,5 +1,5 @@
 import { AllPhotographersComponent } from './all-photographers/all-photographers.component';
-import { AmbassadorsComponent } from './ambassadors/ambassadors.component';
+import { TeamComponent } from './team/team.component';
 import { ArticleComponent } from './article/article.component';
 import { CountryComponent } from './country/country.component';
 import { HomeComponent } from './home/home.component';
@@ -11,9 +11,9 @@ import { RouterConfig } from '@angular/router';
 import { RoutesGatewayComponent, RoutesGatewayGuard } from 'ng2-contentful-blog';
 
 export class Config {
-   public static api:string = 'https://apidev.dollarstreet.org';
+  // public static api:string = 'https://apidev.dollarstreet.org';
   // public static api:string = 'http://stage.dollarstreet.org';
-  // public static api: string = 'http://192.168.1.148';
+  public static api: string = 'http://192.168.1.148';
   // public static api:string = 'http://192.168.1.57';
   // public static api:string = 'http://192.168.1.147';
 
@@ -39,7 +39,7 @@ export class Config {
     component: PhotographerComponent
   }, {
     path: 'team',
-    component: AmbassadorsComponent
+    component: TeamComponent
   }, {
     path: 'country/:id',
     component: CountryComponent

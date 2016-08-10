@@ -4,7 +4,7 @@ import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/head
 import { FooterComponent } from '../common/footer/footer.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 
 let tpl = require('./article.template.html');
 let style = require('./article.css');
@@ -24,7 +24,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   private article: any;
   private thingId: string;
   private activatedRoute: ActivatedRoute;
-  private queryParamsSubscribe: any;
+  private queryParamsSubscribe: Subscription;
 
   public constructor(@Inject('ArticleService') articleService: any,
                      @Inject(ActivatedRoute) activatedRoute: ActivatedRoute) {

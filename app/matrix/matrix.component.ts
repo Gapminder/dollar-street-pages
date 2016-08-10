@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZ
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
 import { FooterComponent } from '../common/footer/footer.component';
@@ -35,6 +35,7 @@ let style = require('./matrix.css');
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces: any[] = [];
+  protected zoomPositionFixed: boolean = false;
   public clearActiveHomeViewBox: Subject<any> = new Subject();
 
   public query: string;
@@ -44,15 +45,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public chosenPlaces: Subject<any> = new Subject();
   public hoverPlace: Subject<any> = new Subject();
   public padding: Subject<any> = new Subject();
-  public hoverHeader: Subject<any> = new Subject();
   public loader: boolean = false;
-  public isDraw: boolean = false;
   public lowIncome: number;
   public highIncome: number;
-  public matrixServiceSubscrib: Subscriber<any>;
+  public matrixServiceSubscribe: Subscriber<any>;
   public streetData: any;
 
-  private resizeSubscribe: any;
+  private resizeSubscribe: Subscription;
   private placesArr: any[];
   private element: HTMLElement;
   private rowEtalon: number = 0;
@@ -73,9 +72,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private clonePlaces: any[];
   private zone: NgZone;
   private windowHistory: any = history;
-  private matrixServiceStreetSubscrib: Subscriber<any>;
+  private matrixServiceStreetSubscribe: Subscriber<any>;
   private streetPlacesData: any;
-  private queryParamsSubscribe: any;
+  private queryParamsSubscribe: Subscription;
+  private windowInnerHeight: number = window.innerHeight;
 
   public constructor(@Inject('MatrixService') matrixService: any,
                      @Inject(ElementRef) element: ElementRef,
@@ -94,6 +94,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
+          this.windowInnerHeight = window.innerHeight;
+
           this.interactiveIncomeText();
         });
       });
@@ -116,7 +118,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    this.matrixServiceStreetSubscrib = this.matrixService.getStreetSettings()
+    this.matrixServiceStreetSubscribe = this.matrixService.getStreetSettings()
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
@@ -178,7 +180,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       setTimeout((): void => {
         incomeContainer.classList.remove('incomeby');
       }, 0);
-
     }
 
     if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 175) {
@@ -189,7 +190,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnDestroy(): void {
-
     if (this.resizeSubscribe.unsubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
@@ -199,8 +199,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     document.onscroll = void 0;
-    this.matrixServiceSubscrib.unsubscribe();
-    this.matrixServiceStreetSubscrib.unsubscribe();
+    this.matrixServiceSubscribe.unsubscribe();
+    this.matrixServiceStreetSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
   }
 
@@ -220,11 +220,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.imageHeight = imgContent.offsetHeight;
     this.footerHeight = footer.offsetHeight;
+
+    this.setZoomButtonPosition();
     this.getPaddings();
   }
 
   /** each document usage breaks possible server side rendering */
   public stopScroll(): void {
+    this.setZoomButtonPosition();
     let scrollTop = document.body.scrollTop ? document.body.scrollTop : document.documentElement.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
@@ -290,8 +293,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public getViewableRows(headerHeight: number): void {
-    let windowInnerHeight = window.innerHeight;
-    let viewable = windowInnerHeight - headerHeight;
+    let viewable = this.windowInnerHeight - headerHeight;
     let distance = viewable / (this.imageHeight + 2 * this.imageMargin);
     let rest = distance % 1;
     let row = distance - rest;
@@ -306,14 +308,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public hoverPlaceS(place: any): void {
     this.hoverPlace.next(place);
-  }
-
-  public isHover(): void {
-    if (!this.isDesktop) {
-      return;
-    }
-
-    this.hoverHeader.next(void 0);
   }
 
   public urlChanged(options: any): void {
@@ -335,12 +329,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.thing = parseQuery.thing;
     this.loader = false;
 
-    if (this.matrixServiceSubscrib) {
-      this.matrixServiceSubscrib.unsubscribe();
-      this.matrixServiceSubscrib = void 0;
+    if (this.matrixServiceSubscribe) {
+      this.matrixServiceSubscribe.unsubscribe();
+      this.matrixServiceSubscribe = void 0;
     }
 
-    this.matrixServiceSubscrib = this.matrixService.getMatrixImages(this.query)
+    this.matrixServiceSubscribe = this.matrixService.getMatrixImages(this.query)
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
@@ -421,5 +415,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+  }
+
+  private setZoomButtonPosition(): void {
+    let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
+    let containerHeight: number = this.element.offsetHeight - this.footerHeight + 45;
+
+    this.zone.run(() => {
+      this.zoomPositionFixed = scrollTop > containerHeight;
+    });
   }
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { PlaceMapComponent } from '../../common/place-map/place-map.component';
-import { Subject } from 'rxjs/Subject';
+import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./country-info.template.html');
@@ -11,22 +10,24 @@ let style = require('./country-info.css');
   selector: 'country-info',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, PlaceMapComponent]
+  directives: [ROUTER_DIRECTIVES, RegionMapComponent]
 })
 
 export class CountryInfoComponent implements OnInit, OnDestroy {
   protected math: any;
+  protected mapData: any;
+  protected isShowInfo: boolean;
+  protected country: any;
+  protected thing: any;
+  protected placesQuantity: any;
+  protected photosQuantity: any;
+  protected videosQuantity: any;
+
   @Input()
   private countryId: string;
-  private isShowInfo: boolean;
-  private country: any;
   private countryInfoService: any;
-  private thing: any;
   private countryInfoServiceSubscribe: Subscriber<any>;
-  private placesQantity: any;
-  private photosQantity: any;
-  private videosQantity: any;
-  private hoverPlace: Subject<any> = new Subject();
+
   @Output()
   private getCountry: EventEmitter<any> = new EventEmitter<any>();
 
@@ -45,12 +46,12 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         }
 
         this.country = res.data.country;
-        this.getCountry.emit(this.country.alias || this.country.country);
-        this.hoverPlace.next(res.data.country);
+        this.mapData = res.data.country;
         this.thing = res.data.thing;
-        this.placesQantity = res.data.places;
-        this.photosQantity = res.data.images;
-        this.videosQantity = res.data.video;
+        this.placesQuantity = res.data.places;
+        this.photosQuantity = res.data.images;
+        this.videosQuantity = res.data.video;
+        this.getCountry.emit(this.country.alias || this.country.country);
       });
   }
 

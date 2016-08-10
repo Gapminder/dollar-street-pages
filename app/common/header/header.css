@@ -27,16 +27,6 @@
   vertical-align: middle;
 }
 
-place-map {
-  width: 71px;
-  display: block;
-  float: left;
-}
-
-place-map[hidden] {
-  display: none;
-}
-
 .filters-container {
   float: left;
   margin-top: 11px;
@@ -107,10 +97,5 @@ place-map[hidden] {
     width: 32px;
     height: 32px;
     margin: 5px;
-  }
-
-  place-map {
-    width: 54px;
-    margin-top: 7px;
   }
 }

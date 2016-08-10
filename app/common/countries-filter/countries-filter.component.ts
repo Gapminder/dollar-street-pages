@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { CountriesFilterPipe } from './countries-filter.pipe';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs';
+import { Subscription, Subscriber } from 'rxjs';
 import { Config } from '../../app.config';
 
 let _ = require('lodash');
@@ -42,7 +42,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
   private countriesFilterService: any;
-  private countriesFilterServiceSubscribe: any;
+  private countriesFilterServiceSubscribe: Subscriber<any>;
 
   private cloneSelectedRegions: string[] = ['World'];
   private cloneSelectedCountries: string[] = ['World'];

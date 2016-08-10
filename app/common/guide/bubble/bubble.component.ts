@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
 import { SocialShareButtonsComponent } from '../../social_share_buttons/social-share-buttons.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
+import { Subscription } from 'rxjs';
 import { Config } from '../../../app.config';
 
 let _ = require('lodash');
@@ -26,10 +26,10 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
   @Input('bubbles')
   private bubbles: any[];
-  private keyUpSubscribe: any;
+  private keyUpSubscribe: Subscription;
   private element: HTMLElement;
   private zone: NgZone;
-  private resizeSubscribe: any;
+  private resizeSubscribe: Subscription;
 
   public constructor(@Inject(ElementRef) element: ElementRef,
                      @Inject(NgZone) zone: NgZone) {

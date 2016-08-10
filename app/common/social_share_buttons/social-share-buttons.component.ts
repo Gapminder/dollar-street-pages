@@ -13,11 +13,11 @@ let style = require('./social-share-buttons.css');
 })
 
 export class SocialShareButtonsComponent implements OnInit, OnDestroy {
-  public socialShareButtonsService: any;
+  private socialShareButtonsService: any;
   private location: Location;
   private urlChangeService: any;
   private url: string;
-  private urlEvents: any;
+  private urlEvents: Subscriber<any>;
   private socialShareButtonsServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject('SocialShareButtonsService') socialShareButtonsService: any,

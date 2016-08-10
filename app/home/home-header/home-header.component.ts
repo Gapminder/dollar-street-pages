@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject, OnDestroy, Input, NgZone, ElementRef } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber } from 'rxjs/Rx';
-import { PlaceMapComponent } from '../../common/place-map/place-map.component';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Config } from '../../app.config';
 
@@ -13,7 +12,7 @@ let style = require('./home-header.css');
   selector: 'home-header',
   template: tpl,
   styles: [style],
-  directives: [PlaceMapComponent, RegionMapComponent, ROUTER_DIRECTIVES]
+  directives: [RegionMapComponent, ROUTER_DIRECTIVES]
 })
 
 export class HomeHeaderComponent implements OnInit, OnDestroy {
@@ -32,12 +31,13 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private placeId: string;
   private homeHeaderService: any;
   private homeHeaderServiceSubscribe: Subscriber<any>;
-  private scrollSubscribe: any;
-  private resizeSubscribe: any;
+  private scrollSubscribe: Subscription;
+  private resizeSubscribe: Subscription;
   private zone: NgZone;
   private element: HTMLElement;
   private headerElement: HTMLElement;
   private headerHeight: number;
+  private headerContentHeight: number;
 
   public constructor(@Inject('HomeHeaderService') homeHeaderService: any,
                      @Inject(ElementRef) element: ElementRef,
@@ -52,6 +52,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
     this.headerHeight = this.headerElement.offsetHeight;
+    this.headerContentHeight = this.element.offsetHeight;
 
     this.homeHeaderServiceSubscribe = this.homeHeaderService
       .getHomeHeaderData(`placeId=${this.placeId}`)
@@ -70,7 +71,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
         let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
         this.zone.run(() => {
-          if (scrollTop > 200) {
+          if (scrollTop > this.element.offsetHeight - this.headerHeight) {
             this.familyShortInfoPosition = this.headerHeight;
           } else {
             this.familyShortInfoPosition = -this.headerHeight;
@@ -85,6 +86,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
           this.windowHeight = window.innerHeight;
           this.maxHeightPopUp = this.windowHeight * .95 - 91;
           this.headerHeight = this.headerElement.offsetHeight;
+          this.headerContentHeight = this.element.offsetHeight;
         });
       });
   }

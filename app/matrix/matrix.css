@@ -19,18 +19,25 @@ matrix-images {
 
 .zoom-column {
   position: fixed;
-  top: 146px;
-  right: 16px;
-  z-index: 99;
+  right: 32px;
+  bottom: 52px;
+  z-index: 10;
+}
+
+.zoom-column.stop {
+  position: absolute;
+  bottom: 325px;
 }
 
 .zoom-column button {
   width: 28px;
   height: 28px;
-  background-size: 28px 28px !important;
   border: none;
   border-radius: 50%;
   outline: 0;
+  box-shadow: 0 0 3.9px 0.1px rgba(0, 0, 0, 0.32);
+  background: rgba(255, 255, 255, 0.8) center center no-repeat;
+  background-size: 16px auto !important;
 }
 
 .zoom-column button[disabled] {
@@ -39,55 +46,16 @@ matrix-images {
 }
 
 .zoom-column .increase {
-  background: url("/assets/img/zoom-plus.svg") no-repeat center center;
-  margin-right: 5px;
+  background-image: url("/assets/img/plus.svg");
+  margin-right: 8px;
 }
 
 .zoom-column .decrease {
-  background: url("/assets/img/minus.svg") no-repeat center center;
-  margin-right: 20px;
-}
-
-@media (max-width: 1200px) {
-  .zoom-column {
-    top: 140px;
-    right: 20px;
-  }
-}
-
-@media (max-width: 992px) {
-  .zoom-column {
-    top: 140px;
-    right: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .zoom-column {
-    top: 135px;
-    right: 14px;
-  }
-
-  .zoom-column button {
-    width: 29px;
-    height: 29px;
-  }
+  background-image: url("/assets/img/minus.svg");
 }
 
 @media (min-width: 768px) {
   matrix-images {
     padding-top: 112px;
-  }
-}
-
-@media (max-width: 600px) {
-  .zoom-column {
-    top: 107px;
-    right: 4px;
-  }
-
-  .zoom-column button {
-    width: 26px;
-    height: 26px;
   }
 }

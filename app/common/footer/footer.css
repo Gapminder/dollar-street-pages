@@ -6,12 +6,10 @@ footer {
 }
 
 .footer {
-  position: relative;
   overflow: hidden;
-  padding: 0 24px 60px;
 }
 
-.footer > div {
+.footer .container > div {
   float: left;
 }
 
@@ -147,4 +145,27 @@ footer {
 .footer .gapminder img {
   width: 188px;
   height: 27px;
+}
+
+.footer .container {
+  position: relative;
+  padding-bottom: 60px;
+}
+
+family .footer .container,
+matrix .footer .container {
+  width: 100% !important;
+  padding: 0 22px 60px;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    width: 1400px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .container {
+    width: 100%;
+  }
 }

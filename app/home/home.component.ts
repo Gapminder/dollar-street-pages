@@ -7,7 +7,7 @@ import { MainMenuComponent } from '../common/menu/menu.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { HomeMediaComponent } from './home-media/home-media.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 
 let _ = require('lodash');
 
@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private activeImageIndex: number;
   private urlChangeService: any;
   private windowHistory: any = history;
-  private queryParamsSubscribe: any;
+  private queryParamsSubscribe: Subscription;
 
   public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
                      @Inject('HomeIncomeFilterService') homeIncomeFilterService: any,

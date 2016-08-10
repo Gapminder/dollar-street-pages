@@ -1,6 +1,8 @@
 .view-image-block-container {
   position: relative;
   padding: 13px 5px 0;
+  background-color: #fff;
+  z-index: 11;
 }
 
 .view-image-block-content {
@@ -120,9 +122,9 @@
 }
 
 .home-description-container a img {
-  width: 16px;
+  height: 15px;
   position: absolute;
-  top: calc(50% - 8px);
+  top: calc(50% - 7.5px);
   right: 16px;
   opacity: 1;
 }
@@ -161,11 +163,6 @@
 
 .images-container > div:first-child {
   margin-right: 4px;
-}
-
-place-map {
-  display: block;
-  clear: both;
 }
 
 .view-image-block-footer-container {

@@ -74,7 +74,6 @@
   text-align: right;
 }
 
-.go-to-matrix,
 .family-full-info {
   display: none;
 }
@@ -86,7 +85,6 @@
   line-height: 25px;
 }
 
-.home-description-container.open-info .go-to-matrix,
 .home-description-container.open-info .family-full-info {
   display: block;
 }
@@ -118,9 +116,9 @@
   display: block;
   border: 1px solid #374551;
   color: #374551;
-  font-size: 16px;
+  font-size: 20px;
   font-family: 'Bariol Light', sans-serif;
-  padding: 4px 25px 4px 6px;
+  padding: 4px 35px 4px 14px;
   position: relative;
   margin: 9px 0 0;
   background-color: transparent;
@@ -132,10 +130,10 @@
 }
 
 .go-to-matrix img {
-  width: 16px;
+  height: 15px;
   position: absolute;
-  top: calc(50% - 8px);
-  right: 6px;
+  top: calc(50% - 7.5px);
+  right: 16px;
   opacity: 1;
 }
 
@@ -156,7 +154,7 @@
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 11;
+  z-index: 20;
   cursor: pointer;
 
   -webkit-transition: top .5s ease;

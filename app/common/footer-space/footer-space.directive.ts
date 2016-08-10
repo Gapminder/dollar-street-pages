@@ -1,12 +1,13 @@
 import { Directive, ElementRef, Inject, OnInit, AfterViewChecked, OnDestroy, NgZone } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs';
 
 @Directive({selector: '[footerSpace]'})
 export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy {
   private footerHeight: number;
   private element: HTMLElement;
   private zone: NgZone;
-  private resizeSubscribe: any;
+  private resizeSubscribe: Subscription;
 
   public constructor(@Inject(ElementRef) element: ElementRef,
                      @Inject(NgZone) zone: NgZone) {

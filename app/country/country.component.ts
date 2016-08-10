@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { CountryInfoComponent } from './country-info/country-info.component';
 import { CountryPlacesComponent } from './country-places/country-places.component.ts';
@@ -29,7 +30,7 @@ export class CountryComponent implements OnInit, OnDestroy {
   protected math: any;
   protected countryId: string;
   private activatedRoute: ActivatedRoute;
-  private queryParamsSubscribe: any;
+  private queryParamsSubscribe: Subscription;
 
   public constructor(@Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
                      @Inject('Math') math: any) {

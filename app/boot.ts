@@ -21,7 +21,7 @@ import { UrlChangeService } from './common/url-change/url-change.service';
 import { PhotographersService } from './all-photographers/photographers/photographers.service';
 import { PhotographerProfileService } from './photographer/photographer-profile/photographer-profile.service';
 import { PhotographerPlacesService } from './photographer/photographer-places/photographer-places.service';
-import { AmbassadorsListService } from './ambassadors/ambassadors-list/ambassadors-list.service';
+import { TeamListService } from './team/team-list/team-list.service';
 import { SocialShareButtonsService } from './common/social_share_buttons/social-share-buttons.service';
 import { InfoContextService } from './info/info-context/info-context.service';
 import { ArticleService } from './article/article.service';
@@ -64,7 +64,7 @@ bootstrap(AppComponent, [
   {provide: 'UrlChangeService', useClass: UrlChangeService},
   {provide: 'PhotographerProfileService', useClass: PhotographerProfileService},
   {provide: 'PhotographerPlacesService', useClass: PhotographerPlacesService},
-  {provide: 'AmbassadorsListService', useClass: AmbassadorsListService},
+  {provide: 'TeamListService', useClass: TeamListService},
   {provide: 'CountryInfoService', useClass: CountryInfoService},
   {provide: 'CountryPlacesService', useClass: CountryPlacesService},
   {provide: 'PhotographersService', useClass: PhotographersService},
