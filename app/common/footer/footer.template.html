@@ -10,11 +10,8 @@
 
   <div class="description-container">
     <div class="logo-container">
-      <div (click)="scrollTop($event)">
-        <img src="/assets/img/dollar-street.svg" alt="DollarStreet logo"/>
-      </div>
-
-      <p style = "font-family:'Bariol Bold','serif'">DOLLAR STREET</p>
+      <img src="/assets/img/dollar-street.svg" (click)="scrollTop($event)" alt="DollarStreet logo"/>
+      <p>DOLLAR STREET</p>
     </div>
 
     <div class="links">
@@ -33,7 +30,7 @@
          angulartics2On="click"
          angularticsEvent="Blog page">Blog </a>
 
-      <a class="dividers"[routerLink]="['/team']"
+      <a class="dividers" [routerLink]="['/team']"
          [queryParams]="{}"
          angulartics2On="click"
          angularticsEvent="DollarStreet team page">Team </a>
