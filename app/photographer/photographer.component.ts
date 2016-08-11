@@ -6,6 +6,7 @@ import { PhotographerProfileComponent } from './photographer-profile/photographe
 import { PhotographerPlacesComponent } from './photographer-places/photographer-places.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
+import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 
 let tpl = require('./photographer.template.html');
 let style = require('./photographer.css');
@@ -19,7 +20,8 @@ let style = require('./photographer.css');
     PhotographerProfileComponent,
     PhotographerPlacesComponent,
     FooterComponent,
-    FooterSpaceDirective
+    FooterSpaceDirective,
+    FloatFooterComponent
   ]
 })
 

@@ -37,17 +37,22 @@
   background-color: #e4e7ea;
   padding: 12px;
   box-shadow: 0 0 5px #ddd inset;
-
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  text-align: center;
 }
 
 .view-image-block-content .view-image-container .view-image-content img {
   max-height: 100%;
   max-width: 100%;
   cursor: pointer;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 12px;
 }
 
 .view-image-block-content .view-image-container .image-footer-container {
@@ -259,4 +264,10 @@
 
 .active-house.house-4 {
   left: calc(((100% / 4) / 2) + (100% / 4 * 3) - 16px);
+}
+
+@media (max-width: 1280px) {
+  .view-image-block-content .view-image-container .view-image-content {
+    height: 625px;
+  }
 }

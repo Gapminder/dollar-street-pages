@@ -91,11 +91,12 @@
 
 #country-place .link {
   margin-top: 42px;
+  float: right !important;
 }
 
 @media (max-width: 1399px) {
   #country-place .place .place-description {
-    width: calc(100% - 337px);
+    width: calc(100% - 340px);
     margin: 43px 20px 0 58px;
   }
 }

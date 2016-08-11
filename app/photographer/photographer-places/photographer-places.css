@@ -89,11 +89,12 @@
 
 #photographer-places .link {
   margin-top: 42px;
+  float: right !important;
 }
 
 @media (max-width: 1399px) {
   #photographer-places .place .place-description {
-    width: calc(100% - 337px);
+    width: calc(100% - 340px);
     margin: 43px 20px 0 58px;
   }
 }
@@ -101,6 +102,10 @@
 @media (max-width: 1199px) {
   #photographer-places .place-description .family h3 {
     font-size: 22px;
+  }
+
+  #photographer-places .place-description .place-country {
+    padding-left: 15px;
   }
 }
 
