@@ -69,8 +69,8 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
           this.country = res.data.country;
           this.article = res.data.article;
 
-          if (this.article && this.article.shortDescription.length > 700) {
-            this.article.shortDescription = this.article.shortDescription.slice(0, 700) + '...';
+          if (this.article && this.article.shortDescription.length > 600) {
+            this.article.shortDescription = this.article.shortDescription.slice(0, 600) + '...';
           }
 
           if (isImageLoaded) {

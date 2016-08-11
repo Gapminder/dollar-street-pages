@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { FooterComponent } from '../common/footer/footer.component';
@@ -28,7 +28,7 @@ let device = require('device.js')();
 
 export class MapComponent implements OnInit, OnDestroy {
   public resizeSubscribe: Subscription;
-  public mapServiceSubscribe: Subscriber<any>;
+  public mapServiceSubscribe: Subscription;
   public math: any;
   public loader: boolean = false;
   public needChangeUrl: boolean = false;

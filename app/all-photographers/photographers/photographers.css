@@ -178,6 +178,16 @@
   }
 }
 
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .col-md-2 {
+    width: 25%;
+  }
+
+  .col-md-10 {
+    width: 75%;
+  }
+}
+
 @media (max-width: 1023px) {
   .container {
     width: 100%;

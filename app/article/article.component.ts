@@ -4,7 +4,8 @@ import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/head
 import { FooterComponent } from '../common/footer/footer.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
+import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 
 let tpl = require('./article.template.html');
 let style = require('./article.css');
@@ -13,14 +14,20 @@ let style = require('./article.css');
   selector: 'article-page',
   template: tpl,
   styles: [style],
-  directives: [HeaderWithoutSearchComponent, FooterComponent, LoaderComponent, FooterSpaceDirective]
+  directives: [
+    HeaderWithoutSearchComponent,
+    FooterComponent,
+    LoaderComponent,
+    FooterSpaceDirective,
+    FloatFooterComponent
+  ]
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {
   protected title: string;
   protected loader: boolean = false;
   private articleService: any;
-  private articleServiceSubscribe: Subscriber<any>;
+  private articleServiceSubscribe: Subscription;
   private article: any;
   private thingId: string;
   private activatedRoute: ActivatedRoute;
