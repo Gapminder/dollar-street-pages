@@ -93,6 +93,7 @@ footer {
   padding: 0;
   text-align: right;
   margin-top: 10px;
+  margin-right: -4px;
 }
 
 .footer .share-button {
@@ -126,7 +127,7 @@ footer {
   line-height: 15px;
   text-align: right;
   position:absolute;
-  right:20px;
+  right:22px;
   bottom:60px;
 }
 
@@ -134,8 +135,14 @@ footer {
   color: #767d86;
 }
 
+
 .footer .valor .valor-name {
   color: #e7464d;
+}
+
+.footer .valor .valor-name:hover {
+  color: #d41511;
+  text-decoration:underline;
 }
 
 .footer .gapminder {
