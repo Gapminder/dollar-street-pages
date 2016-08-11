@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation, Inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 import { SocialFollowButtonsComponent } from '../social-follow-buttons/social-follow-buttons.component.ts';
 import { Angulartics2On } from 'angulartics2';
 
@@ -12,7 +11,7 @@ let style = require('./footer.css');
   selector: 'footer',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, SocialShareButtonsComponent, SocialFollowButtonsComponent, Angulartics2On],
+  directives: [ROUTER_DIRECTIVES, SocialFollowButtonsComponent, Angulartics2On],
   encapsulation: ViewEncapsulation.None
 })
 
