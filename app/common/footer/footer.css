@@ -13,14 +13,12 @@ footer {
   float: left;
 }
 
-.footer .cc-container,
-.footer .social-share-buttons-container {
-  margin-top: 5px;
+.footer .cc-container {
+  margin-top: 8px;
   width: calc((100% - 430px) / 2);
 }
 
 .footer .social-follow-buttons-container {
-  margin-top: 5px;
   width: calc((100% - 430px) / 2);
 }
 
@@ -33,7 +31,7 @@ footer {
 }
 
 .footer .logo-container img {
-  cursor:pointer;
+  cursor: pointer;
   width: 46px;
 }
 
@@ -83,58 +81,26 @@ footer {
   text-align: center;
 }
 
-.footer .social-share-buttons-container .share-button-container {
-  padding: 0;
-  text-align: right;
-  margin-top: 10px;
-}
-
-.footer .social-follow-buttons-container .follow-button-container {
-  padding: 0;
-  text-align: right;
-  margin-top: 10px;
-  margin-right: -4px;
-}
-
-.footer .share-button {
-  width: 32px;
-  display: inline-block;
-  float: none;
-  margin-left: 10px;
-}
-
-.footer .follow-button {
-  width: 32px;
-  display: inline-block;
-  float: none;
-  margin-left: 10px;
-}
-
-.footer .follow {
-
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 13px;
-  vertical-align: middle ;
-  margin-right: 11px;
-  color: #374551;
-
-}
-
 .footer .valor {
   font-size: 14px;
   font-weight: 400;
   line-height: 15px;
   text-align: right;
-  position:absolute;
-  right:22px;
-  bottom:60px;
+  position: absolute;
+  right: 16px;
+  bottom: 60px;
+}
+
+
+family .footer .valor,
+matrix .footer .valor {
+  right: 22px;
+  bottom: 60px;
 }
 
 .footer .valor .developed {
   color: #767d86;
 }
-
 
 .footer .valor .valor-name {
   color: #e7464d;
@@ -142,7 +108,7 @@ footer {
 
 .footer .valor .valor-name:hover {
   color: #d41511;
-  text-decoration:underline;
+  text-decoration: underline;
 }
 
 .footer .gapminder {

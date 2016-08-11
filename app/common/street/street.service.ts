@@ -190,7 +190,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 0)
-      .attr('y', this.height)
+      .attr('y', this.height - 3)
       .attr('fill', '#767d86');
 
     this.svg
@@ -201,7 +201,7 @@ export class StreetDrawService {
       .attr('class', 'richest')
       .text(this.richest)
       .attr('x', this.width + this.streetOffset - 50)
-      .attr('y', this.height)
+      .attr('y', this.height - 3)
       .attr('fill', '#767d86');
 
     if (isDesktop) {

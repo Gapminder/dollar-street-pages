@@ -11,9 +11,9 @@ import { RouterConfig } from '@angular/router';
 import { RoutesGatewayComponent, RoutesGatewayGuard } from 'ng2-contentful-blog';
 
 export class Config {
-   // public static api:string = 'https://apidev.dollarstreet.org';
+   public static api:string = 'https://apidev.dollarstreet.org';
   // public static api:string = 'http://stage.dollarstreet.org';
-  public static api: string = 'http://192.168.1.148';
+  // public static api: string = 'http://192.168.1.148';
   // public static api:string = 'http://192.168.1.57';
   // public static api:string = 'http://192.168.1.147';
 
