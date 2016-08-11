@@ -94,7 +94,7 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
       url = '/assets/img/map-africa.png';
     }
 
-    if (region === 'America') {
+    if (region === 'The Americas') {
       url = '/assets/img/map-america.png';
     }
 
