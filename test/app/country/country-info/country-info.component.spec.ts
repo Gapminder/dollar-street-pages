@@ -30,8 +30,8 @@ describe('CountryInfoComponent', () => {
 
   it('CountryInfoComponent must init ', ()=> {
     fixture.detectChanges();
-    expect(context.placesQantity).toEqual(7);
-    expect(context.photosQantity).toEqual(1223);
+    expect(context.placesQuantity).toEqual(7);
+    expect(context.photosQuantity).toEqual(1223);
     countryInfoService.toInitState();
   });
 
