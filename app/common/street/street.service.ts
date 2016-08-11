@@ -59,13 +59,13 @@ export class StreetDrawService {
     fills: {
       Europe: '#FFE800',
       Africa: '#15B0D1',
-      America: '#B1E826',
+      'The Americas': '#B1E826',
       Asia: '#F23373'
     },
     fillsOfBorders: {
       Europe: '#dbc700',
       Africa: '#119ab7',
-      America: '#96c61d',
+      'The Americas': '#96c61d',
       Asia: '#bc1950'
     }
   };

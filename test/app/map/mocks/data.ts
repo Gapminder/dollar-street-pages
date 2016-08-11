@@ -354,7 +354,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Serifen',
       'locationId': '55ef338d0d2b3c8203788477',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 18.971187,
       'lng': -72.285215,
       'familyImg': {
@@ -519,7 +519,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Pierro',
       'locationId': '55ef338d0d2b3c8203788477',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 18.971187,
       'lng': -72.285215,
       'familyImg': {
@@ -774,7 +774,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Florence',
       'locationId': '55ef338d0d2b3c8203788477',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 18.971187,
       'lng': -72.285215,
       'familyImg': {
@@ -804,7 +804,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Aluardo Bello',
       'locationId': '55ef338d0d2b3c820378846c',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 4.570868,
       'lng': -74.297333,
       'familyImg': {
@@ -819,7 +819,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Aluarado Bello',
       'locationId': '55ef338d0d2b3c820378846c',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 4.570868,
       'lng': -74.297333,
       'familyImg': {
@@ -1044,7 +1044,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Iquira Collo',
       'locationId': '55ef338d0d2b3c820378846c',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 4.570868,
       'lng': -74.297333,
       'familyImg': {
@@ -1059,7 +1059,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Iquira Collo',
       'locationId': '55ef338d0d2b3c820378846c',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 4.570868,
       'lng': -74.297333,
       'familyImg': {
@@ -1074,7 +1074,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Collo Ocoro',
       'locationId': '55ef338d0d2b3c820378846c',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 4.570868,
       'lng': -74.297333,
       'familyImg': {
@@ -1089,7 +1089,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Collo Ocoro',
       'locationId': '55ef338d0d2b3c820378846c',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 4.570868,
       'lng': -74.297333,
       'familyImg': {
@@ -1344,7 +1344,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Eucinar',
       'locationId': '55ef338d0d2b3c8203788469',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': -16.290154,
       'lng': -63.58865299999999,
       'familyImg': {
@@ -1359,7 +1359,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Eucinar',
       'locationId': '55ef338d0d2b3c8203788469',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': -16.290154,
       'lng': -63.58865299999999,
       'familyImg': {
@@ -1404,7 +1404,7 @@ export let mapdata = {
       'photographer': 'Jose Ramirez',
       'family': 'Pereyra',
       'locationId': '55ef338d0d2b3c8203788479',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 23.634501,
       'lng': -102.552784,
       'familyImg': {
@@ -1524,7 +1524,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Kjapa',
       'locationId': '55ef338d0d2b3c8203788469',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': -16.290154,
       'lng': -63.58865299999999,
       'familyImg': {
@@ -1539,7 +1539,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Kjapa',
       'locationId': '55ef338d0d2b3c8203788469',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': -16.290154,
       'lng': -63.58865299999999,
       'familyImg': {
@@ -1629,7 +1629,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Poma',
       'locationId': '55ef338d0d2b3c8203788469',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': -16.290154,
       'lng': -63.58865299999999,
       'familyImg': {
@@ -1644,7 +1644,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Poma',
       'locationId': '55ef338d0d2b3c8203788469',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': -16.290154,
       'lng': -63.58865299999999,
       'familyImg': {
@@ -1854,7 +1854,7 @@ export let mapdata = {
       'photographer': 'Stacy White',
       'family': 'White',
       'locationId': '55ef338d0d2b3c8203788467',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 37.09024,
       'lng': -95.712891,
       'familyImg': {
@@ -1899,7 +1899,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Hadley',
       'locationId': '55ef338d0d2b3c8203788467',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 37.09024,
       'lng': -95.712891,
       'familyImg': {
@@ -2229,7 +2229,7 @@ export let mapdata = {
       'photographer': 'Lucia Rodrigez Mota',
       'family': 'Fuentes Jaimes',
       'locationId': '55ef338d0d2b3c8203788479',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 23.634501,
       'lng': -102.552784,
       'familyImg': {
@@ -2244,7 +2244,7 @@ export let mapdata = {
       'photographer': 'Kevin Downs',
       'family': 'Robinson',
       'locationId': '55ef338d0d2b3c8203788467',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 37.09024,
       'lng': -95.712891,
       'familyImg': {
@@ -2304,7 +2304,7 @@ export let mapdata = {
       'photographer': 'Jose Ramirez',
       'family': 'Ramirez Sanchez',
       'locationId': '55ef338d0d2b3c8203788479',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 23.634501,
       'lng': -102.552784,
       'familyImg': {
@@ -2334,7 +2334,7 @@ export let mapdata = {
       'photographer': 'Cameron Carlson',
       'family': 'Carlson',
       'locationId': '55ef338d0d2b3c8203788467',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 37.09024,
       'lng': -95.712891,
       'familyImg': {
@@ -2349,7 +2349,7 @@ export let mapdata = {
       'photographer': 'Lucia Rodrigez Mota',
       'family': 'Martinez Rodrigez',
       'locationId': '55ef338d0d2b3c8203788479',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 23.634501,
       'lng': -102.552784,
       'familyImg': {
@@ -2409,7 +2409,7 @@ export let mapdata = {
       'photographer': 'Anna Graboowska',
       'family': 'Floridia/Grabowski',
       'locationId': '55ef338d0d2b3c8203788467',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 37.09024,
       'lng': -95.712891,
       'familyImg': {
@@ -2544,7 +2544,7 @@ export let mapdata = {
       'photographer': 'Zoriah Miller',
       'family': 'Howard',
       'locationId': '55ef338d0d2b3c8203788467',
-      'region': 'America',
+      'region': 'The Americas',
       'lat': 37.09024,
       'lng': -95.712891,
       'familyImg': {
