@@ -25,16 +25,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   private activatedRoute: ActivatedRoute;
   private isMatrixComponent: boolean;
   private window: Window = window;
-  private angulartics2GoogleAnalytics: any;
 
   public constructor(@Inject(Router) router: Router,
                      @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
-                     @Inject(ElementRef) element: ElementRef,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
+                     @Inject(ElementRef) element: ElementRef) {
     this.element = element;
     this.router = router;
     this.activatedRoute = activatedRoute;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.isMatrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
@@ -53,8 +50,6 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   protected goToMatrixPage(removeStorage?: boolean): void {
-    this.angulartics2GoogleAnalytics.eventTrack('Matrix page');
-
     if (removeStorage) {
       this.window.localStorage.removeItem('quick-guide');
     }

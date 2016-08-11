@@ -10,6 +10,7 @@
 #photographer-profile p.description {
   font-size: 14px;
   color: #767d86;
+  word-wrap: break-word;
 }
 
 #photographer-profile .header img {
@@ -117,6 +118,7 @@
   font-size: 13px;
   display: block;
   margin: 7px 0 0;
+  word-wrap: break-word;
 }
 
 #mobile-photographer-profile {
