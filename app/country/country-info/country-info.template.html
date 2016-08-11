@@ -9,18 +9,18 @@
   </div>
 
   <div class="main">
-    <p class="home" *ngIf="placesQantity">
+    <p class="home" *ngIf="placesQuantity">
       <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span
-      class="pull-right">{{math.round(placesQantity) || 0}}</span>
+      class="pull-right">{{math.round(placesQuantity) || 0}}</span>
     </p>
 
     <p class="photo">
-      <i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{math.round(photosQantity) || 0}}</span>
+      <i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{math.round(photosQuantity) || 0}}</span>
     </p>
 
-    <p class="camera" *ngIf="videosQantity">
+    <p class="camera" *ngIf="videosQuantity">
       <i class="fa fa-video-camera"></i> Total Videos: <span
-      class="pull-right">{{math.round(videosQantity) || 0}}</span>
+      class="pull-right">{{math.round(videosQuantity) || 0}}</span>
     </p>
   </div>
 </div>
@@ -45,15 +45,15 @@
 
       <div class="count">
         <p class="home" *ngIf="placesQuantity">
-          <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{placesQantity || 0}}</span>
+          <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{placesQuantity || 0}}</span>
         </p>
 
         <p class="photo">
-          <i class="fa fa-camera"></i> Total Photos: <span>{{photosQantity || 0}}</span>
+          <i class="fa fa-camera"></i> Total Photos: <span>{{photosQuantity || 0}}</span>
         </p>
 
-        <p class="camera" *ngIf="videosQantity">
-          <i class="fa fa-video-camera"></i> Total Videos: <span>{{videosQantity || 0}}</span>
+        <p class="camera" *ngIf="videosQuantity">
+          <i class="fa fa-video-camera"></i> Total Videos: <span>{{videosQuantity || 0}}</span>
         </p>
       </div>
     </div>
