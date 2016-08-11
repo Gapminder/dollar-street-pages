@@ -138,6 +138,21 @@ footer {
   color: #e7464d;
 }
 
+.footer .valor .developed:hover {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 15px;
+  /* Text style for "Developed" */
+  color: #767d86;
+}
+
+.footer .valor .valor-name:hover {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 15px;
+  text-decoration:underline;
+}
+
 .footer .gapminder {
   margin-top: 21px;
 }

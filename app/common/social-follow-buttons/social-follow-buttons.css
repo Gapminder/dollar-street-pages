@@ -4,7 +4,6 @@
 
 .follow-button-container > div {
   float: none;
-  margin-left: 16px;
   text-align: center;
   cursor: pointer;
 }
