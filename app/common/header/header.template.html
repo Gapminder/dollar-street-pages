@@ -5,7 +5,9 @@
 
   <div class="filters-container">
     <things-filter [url]="query"
-                   (selectedFilter)="urlTransfer($event)"></things-filter>
+                   (selectedFilter)="urlTransfer($event)">
+    </things-filter>
+    <div class="map-things-text" *ngIf="mapComponent">on the World map</div>
     <div class="some-filter-container incomeby" *ngIf="matrixComponent">
       <span>in</span>
       <countries-filter [url]="query"

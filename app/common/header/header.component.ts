@@ -46,6 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   private window: Window = window;
 
   private matrixComponent: boolean;
+  private mapComponent: boolean;
   private headerServiceSubscribe: Subscriber<any>;
   private headerTitleServiceSubscribe: Subscriber<any>;
 
@@ -59,6 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.math = math;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
+    this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
   }
 
   public ngOnInit(): void {

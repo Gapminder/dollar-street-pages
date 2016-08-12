@@ -1,6 +1,6 @@
 .map-header {
   background-color: #fff;
-  border-bottom: 2px solid #f9cd28;
+  border-bottom: 1px solid #ffce00;
   position: fixed;
   width: 100%;
   top: 0;
@@ -14,7 +14,7 @@
 }
 
 .map-header .logo img {
-  width: 45px;
+  width: 46px;
 }
 
 .map-header .menu {
