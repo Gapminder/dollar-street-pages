@@ -68,7 +68,7 @@
 
 .team-container .team-peoples .team-people-box .name {
   font-size: 20px;
-  margin-top: 5px;
+  margin-top: 10px;
   line-height: 22px;
   margin-bottom: 4px;
 }
@@ -80,6 +80,7 @@
 .team-container .team-peoples .team-people-box .country {
   color: #767d86;
   font-size: 18px;
+  margin: -5px 0 0;
 }
 
 .team-container .team-peoples .team-people-box .country img {
@@ -88,7 +89,7 @@
 }
 
 .team-container .team-peoples .team-people-box .description {
-  margin-top: 4px;
+  margin-top: 10px;
   font-size: 16px;
 }
 

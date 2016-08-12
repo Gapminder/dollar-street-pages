@@ -139,10 +139,6 @@ consumer-app > *:not(router-outlet):not(photographers) {
   max-height: calc(16px * 1.42857143 * 2);
 }
 
-.place-header search {
-  width: calc(100% - 180px) !important;
-}
-
 .place-header .matrix-icon {
   margin-left: 20px !important;
 }
@@ -170,10 +166,6 @@ consumer-app > *:not(router-outlet):not(photographers) {
 
   .map-header .matrix-icon {
     margin-top: 11px !important;
-  }
-
-  .place-header .header-content search {
-    width: calc(100% - 167px) !important;
   }
 
   .place-header .matrix-icon {
