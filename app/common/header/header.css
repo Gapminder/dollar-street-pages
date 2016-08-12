@@ -6,7 +6,7 @@
 }
 
 .header-content main-menu {
-  height: 71px;
+  height: 65px;
 }
 
 .header-content .icon-container {
@@ -15,9 +15,9 @@
 }
 
 .header-content .icon-container img {
-  width: 53px;
-  height: 53px;
-  margin: 9px 15px 10px 18px;
+  width: 46px;
+  height: 46px;
+  margin: 9px 27px 9px 0;
   cursor: pointer;
 }
 
@@ -40,9 +40,9 @@
 }
 
 .filters-container .some-filter-container > span {
-  margin: 0 10px;
-  font-size: 32px;
-  color: #727a82;
+  margin: 0 9px 0 10px;
+  font-size: 28px;
+  color: #767d86;
   line-height: 20px;
 }
 
@@ -84,18 +84,12 @@
   display: inline-block
 }
 
-@media (max-width: 1023px) {
-  .header-content .icon-container img {
-    width: 42px;
-    height: 42px;
-    margin: 9px 8px 0;
-  }
-}
-
-@media (max-width: 600px) {
-  .header-content .icon-container img {
-    width: 32px;
-    height: 32px;
-    margin: 5px;
-  }
+.map-things-text {
+  margin-left: 11px;
+  font-size: 28px;
+  color: #767d86;
+  line-height: 20px;
+  display: inline-block;
+  padding-top: 10px;
+  vertical-align: top;
 }

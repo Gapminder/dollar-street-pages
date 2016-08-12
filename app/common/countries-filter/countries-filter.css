@@ -7,15 +7,15 @@
 #countries-filter .countries-filter-button {
   background-color: white;
   border: 1px solid #e4e6e7;
-  border-radius: 8px;
+  border-radius: 6px;
   min-width: 150px;
   overflow: hidden;
   text-align: center;
-  padding: 13px 35px 13px 13px;
+  padding: 9px 35px 10px 14px;
   position: relative;
   cursor: pointer;
-  color: #2e4350;
-  font-size: 32px;
+  color: #374551;
+  font-size: 28px;
   line-height: 20px;
 }
 
@@ -28,18 +28,18 @@
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 8px solid #000;
+  border-top: 7px solid #374551;
   position: absolute;
-  top: 20px;
-  right: 10px;
+  top: 18px;
+  right: 11px;
 }
 
 #countries-filter.open-countries-filter .countries-filter-button span.arrow {
-  border-bottom: 8px solid #000;
+  border-bottom: 7px solid #374551;
   border-top: 0 solid transparent;
   position: absolute;
-  top: 20px;
-  right: 10px;
+  top: 18px;
+  right: 11px;
 }
 
 #countries-filter .countries-filter-container {

@@ -106,10 +106,6 @@ consumer-app > *:not(router-outlet):not(photographers) {
   margin-left: 35px;
 }
 
-.header-without-search .menu-icon {
-  height: 70px !important;
-}
-
 .line-clamp {
   display: block;
   display: -webkit-box;
@@ -213,4 +209,8 @@ consumer-app > *:not(router-outlet):not(photographers) {
   .place-header .menu-icon {
     height: 42px !important;
   }
+}
+
+matrix .matrix-header header {
+  margin-left: 22px !important;
 }

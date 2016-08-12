@@ -1,6 +1,6 @@
 .header {
   background-color: #fff;
-  border-bottom: 2px solid #f9cd28;
+  border-bottom: 1px solid #ffce00;
   position: fixed;
   width: 100%;
   top: 0;
@@ -10,9 +10,9 @@
 }
 
 .header .logo {
-  width: 53px;
-  height: 53px;
-  margin: 9px 15px 10px 9px;
+  width: 46px;
+  height: 46px;
+  margin: 9px 27px 9px 0;
   cursor: pointer;
   display: block;
 }
@@ -22,10 +22,11 @@
 }
 
 .header .heading {
-  font-size: 30px;
+  font-size: 28px;
   color: #374551;
   width: calc(100% - 195px);
   padding-bottom: 1px !important;
+  margin-top: 17px;
 }
 
 .matrix-icon {

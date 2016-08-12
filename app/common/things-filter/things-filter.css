@@ -17,20 +17,20 @@
 #things-filter .things-filter-button .things-filter-button-content {
   background-color: white;
   border: 1px solid #e4e6e7;
-  border-radius: 8px;
+  border-radius: 6px;
   min-width: 150px;
   text-align: right;
-  padding: 13px 35px 13px 13px;
+  padding: 9px 35px 10px 14px;
   cursor: pointer;
-  color: #2e4350;
-  font-size: 32px;
+  color: #374551;
+  font-size: 28px;
   line-height: 20px;
 }
 
 #things-filter .things-filter-button .things-filter-button-content img {
-  width: 30px;
+  width: 25px;
   float: left;
-  margin: -5px 13px 5px 0;
+  margin: -3px 10px 0 0;
 }
 
 #things-filter .things-filter-button span {
@@ -42,10 +42,10 @@
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 8px solid #000;
+  border-top: 7px solid #374551;
   position: absolute;
-  top: 20px;
-  right: 10px;
+  top: 18px;
+  right: 11px;
 }
 
 #things-filter.open-things-filter .things-filter-button .things-filter-button-content {
@@ -53,11 +53,11 @@
 }
 
 #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
-  border-bottom: 8px solid #000;
+  border-bottom: 7px solid #374551;
   border-top: 0 solid transparent;
   position: absolute;
-  top: 20px;
-  right: 10px;
+  top: 18px;
+  right: 11px;
 }
 
 #things-filter .things-filter-container .related-things-container {
