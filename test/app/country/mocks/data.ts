@@ -6,7 +6,7 @@ export let places = {
       country: 'United States',
       lat: 37.09024,
       lng: -95.712891,
-      region: 'America'
+      region: 'The Americas'
     },
     places: [
       {
@@ -45,8 +45,8 @@ export let info = {
       country: 'United States',
       lat: 37.09024,
       lng: -95.712891,
-      region: 'America',
-      description: 'The U.S. is a country of 50 states covering a vast swath of North America, with Alaska in the extreme Northwest and Hawaii extending the nation’s presence into the Pacific Ocean. Major cities include New York, a global finance and culture center, and Washington, DC, the capital, both on the Atlantic Coast; Los Angeles, famed for filmmaking, on the Pacific Coast; and the Midwestern metropolis Chicago.'
+      region: 'The Americas',
+      description: 'The U.S. is a country of 50 states covering a vast swath of North The Americas, with Alaska in the extreme Northwest and Hawaii extending the nation’s presence into the Pacific Ocean. Major cities include New York, a global finance and culture center, and Washington, DC, the capital, both on the Atlantic Coast; Los Angeles, famed for filmmaking, on the Pacific Coast; and the Midwestern metropolis Chicago.'
     },
     places: 7,
     images: 1223

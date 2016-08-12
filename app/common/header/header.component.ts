@@ -44,7 +44,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   private router: Router;
   private activatedRoute: ActivatedRoute;
   private window: Window = window;
-  private angulartics2GoogleAnalytics: any;
 
   private matrixComponent: boolean;
   private mapComponent: boolean;
@@ -54,12 +53,10 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   public constructor(@Inject('HeaderService') headerService: any,
                      @Inject(Router) router: Router,
                      @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
-                     @Inject('Math') math: any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
+                     @Inject('Math') math: any) {
     this.headerService = headerService;
     this.router = router;
     this.activatedRoute = activatedRoute;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.math = math;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
@@ -126,8 +123,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   protected goToMatrixPage(): void {
-    this.angulartics2GoogleAnalytics.eventTrack('Matrix page');
-
     if (this.matrixComponent) {
       this.window.location.href = this.window.location.origin;
 

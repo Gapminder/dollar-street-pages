@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 import { PhotographersFilter } from './photographers-filter.pipe.ts';
 import { LoaderComponent } from '../../common/loader/loader.component';
-import { Subscriber } from 'rxjs/Rx';
 
 let tpl = require('./photographers.template.html');
 let style = require('./photographers.css');
@@ -23,7 +23,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   private photographersService: any;
   private search: any;
   private loader: boolean;
-  private photographersServiceSubscribe: Subscriber<any>;
+  private photographersServiceSubscribe: Subscription;
 
   public constructor(@Inject('PhotographersService') photographersService: any,
                      @Inject('Math') math: any) {
@@ -36,6 +36,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     this.photographersServiceSubscribe = this.photographersService.getPhotographers()
       .subscribe((res: any) => {
         if (res.err) {

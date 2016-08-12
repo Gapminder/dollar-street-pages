@@ -59,13 +59,13 @@ export class StreetDrawService {
     fills: {
       Europe: '#FFE800',
       Africa: '#15B0D1',
-      America: '#B1E826',
+      'The Americas': '#B1E826',
       Asia: '#F23373'
     },
     fillsOfBorders: {
       Europe: '#dbc700',
       Africa: '#119ab7',
-      America: '#96c61d',
+      'The Americas': '#96c61d',
       Asia: '#bc1950'
     }
   };
@@ -190,7 +190,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 0)
-      .attr('y', this.height)
+      .attr('y', this.height - 3)
       .attr('fill', '#767d86');
 
     this.svg
@@ -201,7 +201,7 @@ export class StreetDrawService {
       .attr('class', 'richest')
       .text(this.richest)
       .attr('x', this.width + this.streetOffset - 50)
-      .attr('y', this.height)
+      .attr('y', this.height - 3)
       .attr('fill', '#767d86');
 
     if (isDesktop) {

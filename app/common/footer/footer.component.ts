@@ -1,9 +1,7 @@
 import { Component, ViewEncapsulation, Inject, OnInit, OnDestroy } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { Subscriber } from 'rxjs/Rx';
-import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 import { SocialFollowButtonsComponent } from '../social-follow-buttons/social-follow-buttons.component.ts';
-
 import { Angulartics2On } from 'angulartics2';
 
 let tpl = require('./footer.template.html');
@@ -13,17 +11,24 @@ let style = require('./footer.css');
   selector: 'footer',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, SocialShareButtonsComponent, SocialFollowButtonsComponent, Angulartics2On],
+  directives: [ROUTER_DIRECTIVES, SocialFollowButtonsComponent, Angulartics2On],
   encapsulation: ViewEncapsulation.None
 })
 
 export class FooterComponent implements OnInit, OnDestroy {
   protected footerData: any = {};
   private footerService: any;
-  private footerServiceSubscribe: Subscriber<any>;
+  private footerServiceSubscribe: Subscription;
+  private window: Window = window;
+  private isMatrixComponent: boolean;
+  private router: Router;
 
-  public constructor(@Inject('FooterService') footerService: any) {
+  public constructor(@Inject('FooterService') footerService: any,
+                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+                     @Inject(Router) router: Router) {
     this.footerService = footerService;
+    this.isMatrixComponent = activatedRoute.snapshot.url[0].path === 'matrix';
+    this.router = router;
   }
 
   public ngOnInit(): any {
@@ -42,8 +47,19 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.footerServiceSubscribe.unsubscribe();
   }
 
+  protected goToMatrixPage(): void {
+    if (this.isMatrixComponent) {
+      this.window.location.href = this.window.location.origin;
+
+      return;
+    }
+
+    this.router.navigate(['/matrix'], {queryParams: {}});
+  }
+
   public scrollTop(e: MouseEvent): void {
     e.preventDefault();
+
     this.animateScroll('scrollBackToTop', 20, 1000);
   };
 
@@ -52,6 +68,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     const startScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const endScroll = elem.offsetTop;
     const step = (endScroll - startScroll) / duration * inc;
+
     window.requestAnimationFrame(this.goToScroll(step, duration, inc));
   }
 
@@ -64,6 +81,7 @@ export class FooterComponent implements OnInit, OnDestroy {
       if (currentDuration < inc) {
         return;
       }
+
       window.requestAnimationFrame(this.goToScroll(step, currentDuration, inc));
     };
   }
@@ -75,5 +93,4 @@ export class FooterComponent implements OnInit, OnDestroy {
       document.documentElement.scrollTop += step;
     }
   }
-
 }

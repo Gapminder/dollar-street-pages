@@ -16,10 +16,7 @@
       </div>
 
       <div class="links">
-        <a [routerLink]="['/matrix']"
-           [queryParams]="{}"
-           angulartics2On="click"
-           angularticsEvent="Home page">Home </a>
+        <a (click)="goToMatrixPage()">Home </a>
 
         <a class="dividers" [routerLink]="['/info']"
            [queryParams]="{}"
@@ -54,7 +51,6 @@
 
       <div class="valor">
         <div class="developed">Developed by</div>
-
         <a class="valor-name" href="http://valor-software.com" target="_blank"
            angulartics2On="click"
            angularticsEvent="Moved to Valor Software">
