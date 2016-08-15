@@ -43,7 +43,7 @@ interface UrlParamsInterface {
 export class HomeComponent implements OnInit, OnDestroy {
   protected loader: boolean = false;
   protected titles: any = {};
-
+  protected Angulartics2GoogleAnalytics:any;
   private placeId: string;
   private urlParams: UrlParamsInterface;
   private homeIncomeFilterService: any;
@@ -63,8 +63,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
                      @Inject('HomeIncomeFilterService') homeIncomeFilterService: any,
                      @Inject('UrlChangeService') urlChangeService: any,
-                     @Inject(Router) router: Router) {
+                     @Inject(Router) router: Router,
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+
     this.router = router;
+    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
     this.homeIncomeFilterService = homeIncomeFilterService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
@@ -176,6 +179,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         highIncome: this.rich
       }]);
 
+      this.Angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from Home page `);
+
       return;
     }
 
@@ -209,7 +214,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private getCountriesTitle(regions: string[], countries: string[]): string {
     let title: string;
-
     if (regions[0] === 'World' && countries[0] === 'World') {
       return 'the world';
     }

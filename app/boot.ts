@@ -32,7 +32,7 @@ import { HomeMediaViewBlockService } from './home/home-media/home-media-view-blo
 import { ContentfulService, Ng2ContentfulConfig } from 'ng2-contentful';
 import { BlogComponent } from './blog/blog.component';
 import { appInjector, GAPMINDER_PROVIDERS, ContentfulImageDirective } from 'ng2-contentful-blog';
-import { Angulartics2 } from 'angulartics2';
+import { Angulartics2, Angulartics2On } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { Config } from './app.config';
 
@@ -83,6 +83,7 @@ bootstrap(AppComponent, [
   {provide: 'Routes', useValue: Config.routes},
   {provide: 'DefaultArticleComponent', useValue: BlogComponent},
   {provide: PLATFORM_DIRECTIVES, useValue: ContentfulImageDirective, multi: true},
+  {provide: PLATFORM_DIRECTIVES, useValue: Angulartics2On, multi: true},
   {provide: 'ContentfulTypeIds', useValue: ContentfulConfig},
   {provide: APP_BASE_HREF, useValue: '/'}
 ]).then(

@@ -10,9 +10,11 @@
         <div class="header-container">$ {{math.round(place.income)}}<span>/month</span></div>
 
         <div class="home-description-container">
-          <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family, <span class="cursor-pointer"
+          <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family, <span style="cursor:pointer"
                                                                                             [routerLink]="['/country', familyData?.country?._id]"
-                                                                                            [queryParams]="{}">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+                                                                                            [queryParams]="{}"
+                                                                                            angulartics2On="click"
+                                                                                            angularticsEvent="From Matrix page to {{familyData.country.country}} page ">{{familyData?.country?.alias || familyData?.country?.country}}</span>
           </h3>
 
           <p *ngIf="familyData?.familyData">
@@ -21,8 +23,10 @@
 
           <a *ngIf="familyData.goToPlaceData"
              [routerLink]="['/family']"
-             [queryParams]="familyData.goToPlaceData">Visit this home <img src="/assets/img/arrow-right-icon.svg"
-                                                                           alt=""><img
+             [queryParams]="familyData.goToPlaceData"
+             angulartics2On="click"
+             angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">Visit this home <img src="/assets/img/arrow-right-icon.svg"
+                                                                alt=""><img
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
         </div>
 
@@ -31,14 +35,18 @@
           <div class="image-content"
                *ngIf="familyData?.familyImage"
                [routerLink]="['/family']"
-               [queryParams]="familyData.goToPlaceData">
+               [queryParams]="familyData.goToPlaceData"
+               angulartics2On="click"
+               angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
             <img [src]="familyData.familyImage.url" alt="Family portrait">
           </div>
 
           <div class="image-content"
                *ngIf="familyData?.houseImage"
                [routerLink]="['/family']"
-               [queryParams]="familyData.goToPlaceData">
+               [queryParams]="familyData.goToPlaceData"
+               angulartics2On="click"
+               angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
             <img [src]="familyData.houseImage.url" alt="House photo">
           </div>
         </div>
@@ -46,7 +54,9 @@
         <div class="map-container">
           <region-map [routerLink]="['/country', familyData?.country?._id]"
                       [queryParams]="{}"
-                      [mapData]="mapData"></region-map>
+                      [mapData]="mapData"
+                      angulartics2On="click"
+                      angularticsEvent="From Matrix page to {{familyData.country?.country}} page"></region-map>
         </div>
       </div>
 
@@ -60,8 +70,10 @@
     <div class="photographer-container">
       <p><img src="/assets/img/cc-icon-small.svg">
         Photo: <a *ngIf="familyData?.photographer?.id"
-                    [routerLink]="['/photographer', familyData.photographer.id]"
-                    [queryParams]="{}">
+                  [routerLink]="['/photographer', familyData.photographer.id]"
+                  [queryParams]="{}"
+                  angulartics2On="click"
+                  angularticsEvent="From Matrix page to {{familyData.photographer.name}} Photographer profile">
           {{familyData.photographer?.name}}</a> for Dollar Street <a
           href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
       </p>

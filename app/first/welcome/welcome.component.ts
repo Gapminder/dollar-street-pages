@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 let tpl = require('./welcome.template.html');
 let style = require('./welcome.css');
@@ -8,7 +8,7 @@ let style = require('./welcome.css');
   selector: 'welcome',
   template: tpl,
   styles: [style],
-  directives: [RouterLink]
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class WelcomeComponent {

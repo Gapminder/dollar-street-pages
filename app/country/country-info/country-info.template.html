@@ -3,7 +3,9 @@
     <region-map *ngIf="mapData"
                 [mapData]="mapData"
                 [routerLink]="['/map']"
-                [queryParams]="{thing: thing}"></region-map>
+                [queryParams]="{thing: thing}"
+                angulartics2On="click"
+                angularticsEvent="From {{country.country}} country page to Map page"></region-map>
 
     <p class="description" *ngIf="country?.description">{{country.description}}</p>
   </div>
@@ -30,7 +32,9 @@
     <region-map *ngIf="mapData"
                 [mapData]="mapData"
                 [routerLink]="['/map']"
-                [queryParams]="{thing: thing}"></region-map>
+                [queryParams]="{thing: thing}"
+                angulartics2On="click"
+                angularticsEvent="From {{country.country}} country page to Map page"></region-map>
 
     <div class="more-info" *ngIf="country?.description">
         <span (click)="isShowInfo = !isShowInfo">

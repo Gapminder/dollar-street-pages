@@ -2,9 +2,11 @@
   <div class="place" *ngFor="let place of places">
     <div class="image">
       <img *ngIf="place.image" [src]="place.image"
-           [routerLink]="['/family']" [queryParams]="{place: place.placeId}"
+           [routerLink]="['/family']" [queryParams]="{place: place.placeId}" angulartics2On="click"
+           angularticsEvent="Moved from {{place._id}} country page to {{place.family}} family place page"
            alt="">
     </div>
+
 
     <div class="place-description">
       <div class="family">
@@ -25,7 +27,8 @@
 
     <div class="link">
       <a class="custom-button"
-         [routerLink]="['/family']" [queryParams]="{place: place.placeId}">Visit family >></a>
+         [routerLink]="['/family']" [queryParams]="{place: place.placeId}" angulartics2On="click"
+         angularticsEvent="Place page">Visit family >></a>
     </div>
   </div>
 </div>

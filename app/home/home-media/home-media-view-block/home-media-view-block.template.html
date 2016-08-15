@@ -9,7 +9,8 @@
       <div class="image-footer-container">
         <div class="photographer-container">
           <p><img src="/assets/img/cc-icon-small.svg">
-            Photo: <a [routerLink]="['/photographer', imageData.photographer._id]" [queryParams]="{}">
+            Photo: <a [routerLink]="['/photographer', imageData.photographer._id]" [queryParams]="{}"  angulartics2On="click"
+                      angularticsEvent="Photographer profile">
               {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> for Dollar Street
             <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> (CC BY 4.0)</a>
           </p>
@@ -37,23 +38,31 @@
         <p *ngIf="article?.shortDescription">{{article.shortDescription}} <a
           *ngIf="article?.isDescription"
           [routerLink]="['/article', imageData.thing._id]"
-          [queryParams]="{}">Read more >></a></p>
+          [queryParams]="{}"
+          angulartics2On="click"
+          angularticsEvent="Article page">Read more >></a></p>
 
         <div class="thing-button-container">
           <p>Related searches</p>
           <a
             [routerLink]="['/matrix']"
-            [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1'}">
+            [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1'}"
+            angulartics2On="click"
+            angularticsEvent="Matrix page">
             {{imageData.thing.plural}} in {{country?.name}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
           <a
             [routerLink]="['/matrix']"
-            [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1'}">
+            [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1'}"
+            angulartics2On="click"
+            angularticsEvent="Matrix page">
             {{imageData.thing.plural}} in {{country?.region}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
           <a
             [routerLink]="['/matrix']"
-            [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1'}">
+            [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1'}"
+            angulartics2On="click"
+            angularticsEvent="Matrix page">
             {{imageData.thing.plural}} in the World <img src="/assets/img/arrow-right-icon.svg" alt=""><img
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
         </div>

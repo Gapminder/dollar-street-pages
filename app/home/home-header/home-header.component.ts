@@ -26,6 +26,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   protected aboutDataPosition: {left?: number;top?: number;} = {};
   protected windowHeight: number = window.innerHeight;
   protected maxHeightPopUp: number = this.windowHeight * .95 - 91;
+  protected Angulartics2GoogleAnalytics:any;
 
   @Input('placeId')
   private placeId: string;
@@ -42,7 +43,9 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   public constructor(@Inject('HomeHeaderService') homeHeaderService: any,
                      @Inject(ElementRef) element: ElementRef,
                      @Inject('Math') math: any,
-                     @Inject(NgZone) zone: NgZone) {
+                     @Inject(NgZone) zone: NgZone,
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
     this.homeHeaderService = homeHeaderService;
     this.zone = zone;
     this.math = math;

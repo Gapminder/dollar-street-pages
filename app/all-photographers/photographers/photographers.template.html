@@ -19,7 +19,9 @@
                 <li
                   *ngFor="let photographer of country.photographers"
                   [routerLink]="['/photographer', photographer.userId]"
-                  [queryParams]="{}">
+                  [queryParams]="{}"
+                  angulartics2On="click"
+                  angularticsEvent="From photographers page to profile page of the photographer {{photographer.name}}">
                   {{photographer.name}}
                   <span class="photographer-places">{{math.round(photographer.places)}}</span>
                 </li>
@@ -33,7 +35,9 @@
         <div class="photographer-card"
              *ngFor="let photographer of photographersByName | PhotographersFilter:search.text:photographersByCountry"
              [routerLink]="['/photographer', photographer.userId]"
-             [queryParams]="{}">
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="From photographers page to profile page of the photographer {{photographer.name}}">
           <div class="photographer-portrait"
                [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/empty-photographer.jpg)'}">
             <div class="photographer-material">

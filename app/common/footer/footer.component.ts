@@ -2,7 +2,6 @@ import { Component, ViewEncapsulation, Inject, OnInit, OnDestroy } from '@angula
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { SocialFollowButtonsComponent } from '../social-follow-buttons/social-follow-buttons.component.ts';
-import { Angulartics2On } from 'angulartics2';
 
 let tpl = require('./footer.template.html');
 let style = require('./footer.css');
@@ -11,12 +10,13 @@ let style = require('./footer.css');
   selector: 'footer',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, SocialFollowButtonsComponent, Angulartics2On],
+  directives: [ROUTER_DIRECTIVES, SocialFollowButtonsComponent],
   encapsulation: ViewEncapsulation.None
 })
 
 export class FooterComponent implements OnInit, OnDestroy {
   protected footerData: any = {};
+  protected Angulartics2GoogleAnalytics:any;
   private footerService: any;
   private footerServiceSubscribe: Subscription;
   private window: Window = window;
@@ -25,10 +25,12 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   public constructor(@Inject('FooterService') footerService: any,
                      @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
-                     @Inject(Router) router: Router) {
+                     @Inject(Router) router: Router,
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
     this.footerService = footerService;
     this.isMatrixComponent = activatedRoute.snapshot.url[0].path === 'matrix';
     this.router = router;
+    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): any {
@@ -50,6 +52,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   protected goToMatrixPage(): void {
     if (this.isMatrixComponent) {
       this.window.location.href = this.window.location.origin;
+      this.Angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from footer `);
 
       return;
     }

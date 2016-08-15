@@ -16,7 +16,9 @@
         <p> {{activeThing?.shortDescription}}
           <a *ngIf="activeThing?.isShowReadMore"
              [routerLink]="['/article', activeThing._id]"
-             [queryParams]="{}">Read more >></a>
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Move to Article about {{activeThing.thingName}} page with Read More button ">Read more >></a>
         </p>
       </div>
     </div>

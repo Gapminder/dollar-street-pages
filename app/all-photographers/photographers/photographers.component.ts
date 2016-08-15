@@ -19,18 +19,20 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   protected math: any;
   protected photographersByCountry: any[];
   protected photographersByName: any[];
-
+  protected Angulartics2GoogleAnalytics: any;
   private photographersService: any;
   private search: any;
   private loader: boolean;
   private photographersServiceSubscribe: Subscription;
 
   public constructor(@Inject('PhotographersService') photographersService: any,
-                     @Inject('Math') math: any) {
+                     @Inject('Math') math: any,
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
     this.photographersService = photographersService;
     this.photographersByCountry = [];
     this.photographersByName = [];
     this.math = math;
+    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
     this.search = {text: ''};
     this.loader = false;
   }
