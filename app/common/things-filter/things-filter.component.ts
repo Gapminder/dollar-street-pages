@@ -67,7 +67,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     if (thing.empty) {
       return;
     }
-    this.Angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.thingName}, countries - ${thing.countries}, zoom - ${thing.zoom} `);
+    this.Angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.thingName} `);
     let query = this.parseUrl(this.url);
     query.thing = thing.plural;
 
