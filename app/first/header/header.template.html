@@ -8,12 +8,16 @@
       </div>
 
       <div class="menu pull-left">
-        <a
-          [routerLink]="['/matrix', {thing: 'Families', countries: 'World', regions: 'World', zoom: '4', row: '1'}]">Homes</a>
-        <a [routerLink]="['/map', {thing: 'Families'}]">Map</a>
-        <a [routerLink]="['/photographers']">Photographers</a>
-        <a [routerLink]="['/team']">Dollar Street Team</a>
-        <a [routerLink]="['/blog']">Blog</a>
+        <a [routerLink]="['/matrix', {thing: 'Families', countries: 'World', regions: 'World', zoom: '4', row: '1'}]" angulartics2On="click"
+           angularticsEvent="From Header to Matrix page">Homes</a>
+        <a [routerLink]="['/map', {thing: 'Families'}]" angulartics2On="click"
+           angularticsEvent="From Header to Map page">Map</a>
+        <a [routerLink]="['/photographers']" angulartics2On="click"
+           angularticsEvent="From Header to Photographers page">Photographers</a>
+        <a [routerLink]="['/team']" angulartics2On="click"
+           angularticsEvent="From Header to DS team page">Dollar Street Team</a>
+        <a [routerLink]="['/blog']" angulartics2On="click"
+           angularticsEvent="From Header to Blog page">Blog</a>
       </div>
 
       <div class="social-share-buttons-container pull-right">

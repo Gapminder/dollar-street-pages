@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Inject, Output, EventEmitter } from '@angular/core';
 import { Subscriber } from 'rxjs/Rx';
-
 let tpl = require('./photographer-profile.template.html');
 let style = require('./photographer-profile.css');
 
@@ -13,7 +12,7 @@ let style = require('./photographer-profile.css');
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
   protected isShowInfo: boolean = false;
   protected math: any;
-
+  protected Angulartics2GoogleAnalytics: any;
   @Input()
   private photographerId: string;
   @Output()
@@ -24,9 +23,11 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   private photographerProfileServiceSubscribe: Subscriber<any>;
 
   public constructor(@Inject('PhotographerProfileService') photographerProfileService: any,
-                     @Inject('Math') math: any) {
+                     @Inject('Math') math: any,
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
     this.photographerProfileService = photographerProfileService;
     this.math = math;
+    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): void {

@@ -35,6 +35,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   protected indexViewBoxHouse: number;
   protected positionInRow: number;
   protected math: any;
+  protected Angulartics2GoogleAnalytics: any;
 
   @Input('query')
   protected query: string;
@@ -74,10 +75,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   public constructor(@Inject(ElementRef) element: ElementRef,
                      @Inject(Router) router: Router,
                      @Inject('Math') math: any,
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any,
                      @Inject(NgZone) zone: NgZone) {
     this.element = element.nativeElement;
     this.router = router;
     this.math = math;
+    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
     this.zone = zone;
   }
 
@@ -179,6 +182,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
 
   protected goToPlace(place: any): void {
     if (this.isDesktop) {
+      this.Angulartics2GoogleAnalytics.eventTrack(`Go to  Place page from Matrix page `);
       this.router.navigate(['/family'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
       return;
     }
@@ -187,6 +191,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
       this.oldPlaceId = place._id;
       return;
     }
+    this.Angulartics2GoogleAnalytics.eventTrack(`Go to  Place page from Matrix page `);
 
     this.router.navigate(['/family'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
   }

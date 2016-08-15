@@ -60,7 +60,9 @@
             <li *ngFor="let country of list.countries">
             <span class="country-name"
                   [routerLink]="['/country', country._id]"
-                  [queryParams]="{}">{{country.name}}</span>
+                  [queryParams]="{}"
+                  angulartics2On="click"
+                  angularticsEvent="From Map page to {{country.name}} country page">{{country.name}}</span>
             </li>
           </ul>
         </div>
@@ -73,12 +75,13 @@
           {{currentCountry}}</p>
         <span (click)="closeLeftSideBar($event)">x</span>
       </div>
-
-      <div class="info-box-container">
+       <div class="info-box-container">
         <div class="info-box"
              *ngFor="let place of lefSideCountries"
              [routerLink]="['/family']"
-             [queryParams]="{place: place._id}">
+             [queryParams]="{place: place._id}"
+             angulartics2On="click"
+             angularticsEvent="From map page to {{place.family}} family place page">
           <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
 
           <div class="hover_portrait_description">

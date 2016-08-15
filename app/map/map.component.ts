@@ -23,7 +23,8 @@ let device = require('device.js')();
     LoaderComponent,
     FooterComponent,
     FloatFooterComponent,
-    FooterSpaceDirective]
+    FooterSpaceDirective
+  ]
 })
 
 export class MapComponent implements OnInit, OnDestroy {
@@ -32,7 +33,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public math: any;
   public loader: boolean = false;
   public needChangeUrl: boolean = false;
-
+  protected Angulartics2GoogleAnalytics: any;
   private mapService: any;
   private places: any[] = [];
   private countries: any[] = [];
@@ -66,12 +67,14 @@ export class MapComponent implements OnInit, OnDestroy {
                      @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
                      @Inject(NgZone) zone: NgZone,
                      @Inject('UrlChangeService') urlChangeService: any,
-                     @Inject('Math') math: any) {
+                     @Inject('Math') math: any,
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
     this.mapService = placeService;
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.zone = zone;
+    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
     this.math = math;
     this.urlChangeService = urlChangeService;
   }
@@ -312,8 +315,8 @@ export class MapComponent implements OnInit, OnDestroy {
       this.hoverOnMarker(index, country);
       return;
     }
-
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
+      this.Angulartics2GoogleAnalytics.eventTrack(`Look at  ` + this.hoverPlace.family +  ` place from ` + this.hoverPlace.country  + ` with map page`);
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }

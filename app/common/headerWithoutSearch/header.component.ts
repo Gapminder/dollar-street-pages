@@ -1,7 +1,6 @@
 import { Component, Inject, Input, OnInit, OnDestroy } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Subscriber } from 'rxjs/Rx';
-import { Angulartics2On } from 'angulartics2';
 import { MainMenuComponent } from '../menu/menu.component';
 
 let tpl = require('./header.template.html');
@@ -11,7 +10,7 @@ let style = require('./header.css');
   selector: 'header',
   template: tpl,
   styles: [style],
-  directives: [MainMenuComponent, ROUTER_DIRECTIVES, Angulartics2On]
+  directives: [MainMenuComponent, ROUTER_DIRECTIVES]
 })
 
 export class HeaderWithoutSearchComponent implements OnInit, OnDestroy {

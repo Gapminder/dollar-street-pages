@@ -34,29 +34,35 @@
 
   <div class="footer-profile"
        *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
-
     <a target="_blank"
        *ngIf="photographer.company && photographer.company.name && photographer.company.link"
        [href]="photographer.company.link">{{photographer.company.link.replace('http://', '')}}</a>
-
     <div class="social-network-container">
       <a *ngIf="photographer.google"
          [href]="photographer.google"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Google+ account"
          target="_blank">
         <i class="fa fa-google-plus-square"></i>
       </a>
       <a *ngIf="photographer.facebook"
          [href]="photographer.facebook"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Facebook account"
          target="_blank">
         <i class="fa fa-facebook-square"></i>
       </a>
       <a *ngIf="photographer.twitter"
          [href]="photographer.twitter"
+               angulartics2On="click"
+               angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}} Twitter account"
          target="_blank">
         <i class="fa fa-twitter-square"></i>
       </a>
       <a *ngIf="photographer.linkedIn"
          [href]="photographer.linkedIn"
+               angulartics2On="click"
+               angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Linkedin account"
          target="_blank">
         <i class="fa fa-linkedin-square"></i>
       </a>
@@ -77,24 +83,32 @@
          *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
       <a *ngIf="photographer.google"
          [href]="photographer.google"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Google+ account by mobile"
          target="_blank">
         <i class="fa fa-google-plus-square"></i>
       </a>
 
       <a *ngIf="photographer.facebook"
          [href]="photographer.facebook"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Facebook account by mobile"
          target="_blank">
         <i class="fa fa-facebook-square"></i>
       </a>
 
       <a *ngIf="photographer.twitter"
          [href]="photographer.twitter"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}} Twitter account by mobile"
          target="_blank">
         <i class="fa fa-twitter-square"></i>
       </a>
 
       <a *ngIf="photographer.linkedIn"
          [href]="photographer.linkedIn"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Linkedin account by mobile"
          target="_blank">
         <i class="fa fa-linkedin-square"></i>
       </a>

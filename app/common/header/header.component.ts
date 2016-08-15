@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   protected isDesktop: boolean = device.desktop();
   protected header: any = {};
   protected math: any;
+  protected Angulartics2GoogleAnalytics: any;
   @Output()
   private filter: EventEmitter<any> = new EventEmitter<any>();
   private activeThing: any;
@@ -53,11 +54,14 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   public constructor(@Inject('HeaderService') headerService: any,
                      @Inject(Router) router: Router,
                      @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
-                     @Inject('Math') math: any) {
+                     @Inject('Math') math: any,
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+
     this.headerService = headerService;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
+    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
@@ -128,7 +132,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
       return;
     }
-
+    this.Angulartics2GoogleAnalytics.pageTrack(`From header to Matrix page`);
     this.router.navigate(['/matrix'], {queryParams: {}});
   }
 
