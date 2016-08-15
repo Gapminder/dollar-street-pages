@@ -1,0 +1,38 @@
+<div id="blog-page" footerSpace>
+  <header [title]="title"></header>
+
+  <div id="articles-container" class="container margin-bottom-35">
+    <div class="row">
+      <div class="margin-top-35" *ngIf="listNodePage && listNodePage.length">
+        <div class="dynamic-item col-md-4 col-sm-6  col-xs-12 margin-bottom-35"
+             *ngFor="let item of listNodePage">
+          <a *ngIf="item.fields.thumbnail && item.fields.url" [routerLink]="[item.fields.url]"
+             angulartics2On="click"
+             angularticsEvent="{{item.fields.title}}"
+             class="dynamic-wrap-img">
+            <!--<span class="play"><i class="fa fa-play"></i></span>-->
+            <img [gmContentfulSrcId]="item.fields.thumbnail.sys.id"
+                 alt="{{item.fields.title}}">
+          </a>
+
+          <div class="date-info">{{item.fields.createdAt | gmToDate | date}}</div>
+
+          <a *ngIf="item.fields.url" [routerLink]="[item.fields.url]"
+             angulartics2On="click"
+             angularticsEvent="{{item.fields.title}}"
+             class="post-title">
+            {{item.fields.title}}
+          </a>
+
+          <p class="post-p">{{item.fields.description}}... <a *ngIf="item.fields.url"
+                                                              [routerLink]="[item.fields.url]">Read more >></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer></footer>
+<float-footer></float-footer>
+
+<loader [hidden]="listNodePage && listNodePage.length"></loader>

@@ -52,6 +52,12 @@ input:focus {
   text-decoration: none;
 }
 
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .custom-button,
 a {
   -webkit-transition: all .2s ease-out;
@@ -145,6 +151,118 @@ consumer-app > *:not(router-outlet):not(photographers) {
 
 #main-menu .share-button-container i {
   color: #e0e7ef;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.date-info {
+  font-size: 14px;
+  color: #767d86;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.post-title {
+  color: #374551;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.post-p {
+  font-size: 16px;
+  color: #767d86;
+}
+
+.post-head {
+  position: relative;
+  color: #374551;
+  font-size: 38px;
+  line-height: 1.2;
+  z-index: 1;
+  overflow: hidden;
+  margin: 60px 0 40px;
+}
+
+.post-head:after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+  height: 1px;
+  background: #eff2f6;
+  z-index: -1;
+  position: relative;
+  vertical-align: middle;
+  left: 20px;
+  margin: 0 -100% 0 0;
+}
+
+.link-view-more {
+  color: #374551;
+  font-size: 18px;
+  display: inline-block;
+  text-decoration: underline;
+}
+/* btn */
+.btn-yellow {
+  color: #374551;
+  font-size: 18px;
+  line-height: 40px;
+  font-family: 'Bariol Bold', sans-serif;
+  background-color: #ffc300;
+  border: 1px solid #f1b902;
+  border-radius: 2px;
+  padding: 0 10px;
+  text-align: center;
+  min-width: 160px;
+}
+/* form input (text or search) */
+.text {
+  background-color: #fff;
+  border-radius: 2px;
+  border: 1px solid #edf0f5;
+  font-size: 18px;
+  line-height: 20px;
+  padding: 10px 15px;
+}
+/* indent */
+.margin-top-0 {
+  margin-top: 0;
+}
+
+.margin-top-15 {
+  margin-top: 15px;
+}
+
+.margin-top-50 {
+  margin-top: 50px;
+}
+
+.margin-top-35 {
+  margin-top: 35px;
+}
+
+.margin-bottom-35 {
+  margin-bottom: 35px;
+}
+
+.margin-bottom-100 {
+  margin-bottom: 100px;
+}
+
+gm-entries-view h3 {
+  color: #374551;
+  font-family: 'Bariol Regular', sans-serif;
+  font-size: 28px;
+  line-height: 30px;
+}
+
+gm-entries-view p {
+  color: #374551;
+  font-family: 'Bariol Regular', sans-serif;
+  font-size: 20px;
+  line-height: 30px;
 }
 
 @supports (-webkit-line-clamp: 1) {

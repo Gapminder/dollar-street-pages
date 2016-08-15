@@ -162,6 +162,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.selectedCountries.push(country.country);
+
+    let regionObject = _.find(this.locations, {region: region});
+    let regionCountries = _.map(regionObject.countries, 'country');
+
+    if (!_.difference(regionCountries, this.selectedCountries).length) {
+      this.selectedRegions.push(region);
+    }
   }
 
   protected goToLocation(): void {
