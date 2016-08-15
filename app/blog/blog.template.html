@@ -1,20 +1,64 @@
-<div id="blog-page" footerSpace>
+<div id="blog-page" footerSpace [class.article-page]="isArticle">
   <header [title]="title"></header>
 
-  <div id="articles-container" class="container">
+  <div id="articles-container" class="container" [class.margin-bottom-100]="isArticle && !content?.related">
     <div class="row">
-      <div class="article-content col-md-3 col-sm-6 col-xs-12" *ngFor="let post of posts">
-        <div class="icon-container" *ngIf="post.fields.thumbnail" [routerLink]="[post.fields.url]">
-          <img [gmContentfulSrcId]="post.fields.thumbnail.sys.id"
-               [fit]="'scale'"
-               alt="{{post.fields.title}}">
+      <div class="dynamic-details col-md-12" *ngIf="content">
+        <h1>{{ content.title }}</h1>
+
+        <p class="small-description" *ngIf="content.description">{{content.description}}</p>
+
+        <p class="date-info margin-top-0" *ngIf="content.createdAt">
+          <i class="fa fa-calendar" aria-hidden="true"></i>
+          {{ content.createdAt | gmToDate | date }}
+        </p>
+
+        <div class="entry-content" *ngIf="content.entries">
+          <gm-entries-view [entries]="content.entries"></gm-entries-view>
         </div>
 
-        <div class="article-description">
-          <p class="date" *ngIf="post.fields.createdAt">{{post.fields.createdAt | date}}</p>
-          <h3 [routerLink]="[post.fields.url]">{{post.fields.title}}</h3>
-          <p *ngIf="post.fields?.description">{{post.fields.description | slice:0:120}}... <a>Read more >></a></p>
+        <div class="dynamic-list row">
+          <div class="dynamic-item col-md-4 col-sm-4 margin-bottom-35" *ngFor="let child of children">
+            <a class="dynamic-wrap-img"
+               *ngIf="child.fields.thumbnail"
+               [routerLink]="[routesManager.getRouteName(urlPath + '/'+ child.fields.slug)]"
+               angulartics2On="click"
+               angularticsEvent="{{child.fields.title}}">
+              <img [gmContentfulSrcId]="child.fields.thumbnail.sys.id"
+                   alt="{{child.fields.title}}">
+            </a>
+
+            <div class="date-info">{{child.fields.createdAt | gmToDate | date}}</div>
+
+            <a class="post-title"
+               [routerLink]="[routesManager.getRouteName(urlPath + '/'+ child.fields.slug)]"
+               angulartics2On="click"
+               angularticsEvent="{{child.fields.title}}">
+              {{child.fields.title}}
+            </a>
+
+            <p class="post-p">{{child.fields.description}}... <a
+              [routerLink]="[routesManager.getRouteName(urlPath + '/'+ child.fields.slug)]">Read more >></a>
+            </p>
+          </div>
         </div>
+
+        <!-- TAGS -->
+        <div class="row tags-container">
+          <div class="col-md-12">
+            <gm-tags *ngIf="content.tags" [tags]="content.tags"></gm-tags>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related-container container margin-bottom-100" *ngIf="content?.related"
+       [class.margin-bottom-35]="content?.related">
+    <div class="row">
+      <div class="col-md-12 margin-top-35">
+        <gm-related [relatedItems]="content.related"
+                    [relatedLocation]="true"></gm-related>
       </div>
     </div>
   </div>
@@ -24,3 +68,4 @@
 <float-footer></float-footer>
 
 <loader [hidden]="loader"></loader>
+

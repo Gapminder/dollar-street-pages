@@ -114,7 +114,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       .routerState
       .queryParams
       .subscribe((params: any) => {
-        this.thing = params.thing;
+        this.thing = params.thing || 'Families';
         this.countries = params.countries ? decodeURI(params.countries) : 'World';
         this.regions = params.regions ? decodeURI(params.regions) : 'World';
         this.zoom = parseInt(params.zoom, 10);

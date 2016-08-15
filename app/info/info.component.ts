@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { InfoContextComponent } from './info-context/info-context.component';
+import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { LoaderComponent } from '../common/loader/loader.component';

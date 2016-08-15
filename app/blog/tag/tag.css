@@ -1,14 +1,13 @@
 #blog-page {
   padding-top: 125px;
 }
-
 .dynamic-details {
   font-family: 'Bariol Regular', sans-serif;
 }
 
 .dynamic-details h1 {
   font-size: 38px;
-  margin: 0 0 5px;
+  margin: 0 0 10px;
 }
 
 .dynamic-details ul li {
@@ -29,6 +28,13 @@
   font-style: italic;
   color: #767d86;
   line-height: 30px;
+}
+
+.date-info {
+  font-family: 'Bariol Light', sans-serif;
+  font-size: 14px;
+  color: #767d86;
+  margin-top: 10px;
 }
 
 .dynamic-item {
@@ -117,12 +123,12 @@
 }
 
 #blog-page .dynamic-details h1,
-#blog-page .dynamic-details > .date-info {
+#blog-page .dynamic-details .date-info {
   display: none;
 }
 
 #blog-page.article-page .dynamic-details h1,
-#blog-page.article-page .dynamic-details > .date-info {
+#blog-page.article-page .dynamic-details .date-info {
   display: block;
 }
 

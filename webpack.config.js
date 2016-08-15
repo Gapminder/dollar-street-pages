@@ -47,15 +47,6 @@ const config = {
     chunkFilename: '[id].chunk.js'
   },
 
-  // our Development Server configs
-  /*devServer: {
-   inline: true,
-   colors: true,
-   historyApiFallback: true,
-   contentBase: dest,
-   //publicPath: dest,
-   watchOptions: {aggregateTimeout: 300, poll: 1000}
-   },*/
   module: {
     loaders: [
       // support markdown

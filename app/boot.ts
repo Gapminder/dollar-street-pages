@@ -36,6 +36,7 @@ import { Angulartics2, Angulartics2On } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { Config } from './app.config';
 
+const Constants = require('./constants.json');
 const ContentfulConfig = require('./contentTypeIds.json');
 declare var CONTENTFUL_ACCESS_TOKEN: string;
 declare var CONTENTFUL_SPACE_ID: string;
@@ -49,9 +50,9 @@ Ng2ContentfulConfig.config = {
 };
 
 bootstrap(AppComponent, [
+  Angulartics2,
   HTTP_PROVIDERS,
   GAPMINDER_PROVIDERS,
-  Angulartics2,
   provideRouter(Config.routes),
   {provide: 'StreetDrawService', useClass: StreetDrawService},
   {provide: 'MatrixService', useClass: MatrixService},
@@ -85,6 +86,7 @@ bootstrap(AppComponent, [
   {provide: PLATFORM_DIRECTIVES, useValue: ContentfulImageDirective, multi: true},
   {provide: PLATFORM_DIRECTIVES, useValue: Angulartics2On, multi: true},
   {provide: 'ContentfulTypeIds', useValue: ContentfulConfig},
+  {provide: 'Constants', useValue: Constants},
   {provide: APP_BASE_HREF, useValue: '/'}
 ]).then(
   (appRef: ComponentRef<any>) => {
