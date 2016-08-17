@@ -112,3 +112,57 @@
     right: 20px;
   }
 }
+
+@media (max-width: 768px) {
+  .quick-guide-container .quick-guide-content {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .quick-guide-container .logo-container {
+    display: none;
+  }
+
+  .quick-guide-container {
+    width: 100%;
+    text-align: center;
+  }
+
+  .quick-guide-container .quick-guide-description-container {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+
+  .quick-guide-container > img {
+    top: 10px;
+    right: 10px;
+  }
+
+  .quick-guide-container h1 {
+    font-size: 32px;
+  }
+
+  .quick-guide-container h2 {
+    font-size: 27px;
+    margin-top: 15px;
+  }
+
+  .quick-guide-container p {
+    margin: 0 10px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .quick-guide-container .button-container {
+    margin: 31px 0 65px;
+  }
+
+  .quick-guide-container button {
+    font-size: 20px;
+    padding: 4px 25px;
+  }
+}
+
+
