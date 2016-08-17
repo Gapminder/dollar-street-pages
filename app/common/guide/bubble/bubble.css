@@ -224,3 +224,28 @@
 .slider-label.right-slider {
   right: 8px;
 }
+
+@media (max-width: 1024px) {
+  .bubbles-container {
+    margin-left: 5px;
+  }
+
+  .bubbles-container .bubbles-content {
+    padding: 12px 22px 20px;
+  }
+
+  .street-label.poorest-label {
+    left: 5px;
+  }
+
+  .street-label.richest-label {
+    right: 5px;
+  }
+
+  .street-label span {
+    font-size: 18px;
+    line-height: 13px;
+    padding: 10px 28px;
+  }
+
+}
