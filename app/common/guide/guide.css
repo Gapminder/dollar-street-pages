@@ -60,6 +60,7 @@
 }
 
 .quick-guide-container button {
+  color: #374551;
   background-color: #fff;
   border: 1px solid #e4e6e7;
   border-radius: 8px;
@@ -81,4 +82,33 @@
   top: 22px;
   right: 22px;
   cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .quick-guide-container {
+    width: 100%;
+  }
+
+  .quick-guide-container h1 {
+    font-size: 42px;
+    line-height: 48px;
+  }
+
+  .quick-guide-container h2 {
+    font-size: 34px;
+  }
+
+  .quick-guide-container p {
+    margin: 18px 30px 23px;
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .quick-guide-container .button-container {
+    margin-top: 31px;
+  }
+
+  .quick-guide-container > img {
+    right: 20px;
+  }
 }
