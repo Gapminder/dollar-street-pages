@@ -12,11 +12,11 @@ import { RoutesGatewayComponent, RoutesGatewayGuard } from 'ng2-contentful-blog'
 import { ArticleTagComponent } from './blog/tag/tag.component';
 
 export class Config {
-   public static api: string = 'https://apidev.dollarstreet.org';
+  // public static api: string = 'https://apidev.dollarstreet.org';
   // public static api:string = 'http://stage.dollarstreet.org';
   // public static api: string = 'http://192.168.1.148';
   // public static api:string = 'http://192.168.1.57';
-  // public static api:string = 'http://192.168.1.147';
+   public static api:string = 'http://192.168.1.147';
 
   public static routes: RouterConfig = [
     {path: '', pathMatch: 'full', redirectTo: 'matrix'},

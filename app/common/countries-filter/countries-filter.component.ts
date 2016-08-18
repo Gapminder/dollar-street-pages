@@ -32,6 +32,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected activeCountries: string;
   protected showSelected: boolean;
   protected locations: any[];
+  protected search: {text: string;} = {text: ''};
   protected isOpenCountriesFilter: boolean = false;
   protected selectedRegions: string[] = [];
   protected selectedCountries: string[] = [];
@@ -72,13 +73,14 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   @HostListener('document:click', ['$event'])
   public isOutsideThingsFilterClick(event: Event): void {
     if (!this.element.nativeElement.contains(event.target) && this.isOpenCountriesFilter) {
+      this.search = {text: ''};
       this.openCloseCountriesFilter(true);
     }
   }
 
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
-
+    this.search = {text: ''};
     this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
     if (this.isOpenCountriesFilter) {
@@ -182,6 +184,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.cloneSelectedCountries = ['World'];
     this.cloneSelectedRegions = ['World'];
+    this.search = {text: ''};
   }
 
   public ngOnDestroy(): void {
