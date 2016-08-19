@@ -1,15 +1,4 @@
-import {
-  Component,
-  Input,
-  EventEmitter,
-  ElementRef,
-  Inject,
-  Output,
-  OnInit,
-  OnDestroy,
-  OnChanges,
-  NgZone
-} from '@angular/core';
+import { Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
@@ -30,7 +19,7 @@ let style = require('./matrix-images.css');
   directives: [RowLoaderComponent, MatrixViewBlockComponent]
 })
 
-export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
+export class MatrixImagesComponent implements OnInit, OnDestroy {
   protected imageBlockLocation: any;
   protected indexViewBoxHouse: number;
   protected positionInRow: number;
@@ -70,7 +59,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   private resizeSubscribe: Subscription;
   private zone: NgZone;
   private clearActiveHomeViewBoxSubscribe: Subscription;
-  private imageMargin: number = 10;
+  private imageMargin: number;
 
   public constructor(@Inject(ElementRef) element: ElementRef,
                      @Inject(Router) router: Router,
@@ -85,8 +74,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): any {
-    this.itemSize = (window.innerWidth - 34) / this.zoom;
-    this.imageHeight = (window.innerWidth - 34) / this.zoom - this.imageMargin;
     let isInit: boolean = true;
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
@@ -97,13 +84,17 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
         this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1);
         isInit = false;
       }
+
+      setTimeout(() => {
+        this.getImageHeight();
+      });
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
-          this.imageHeight = (window.innerWidth - 34) / this.zoom - this.imageMargin;
+          this.getImageHeight();
         });
       });
 
@@ -117,29 +108,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
           this.showblock = void 0;
         }
       });
-  }
-
-  public ngOnChanges(changes: any): void {
-    if (changes.zoom) {
-      this.zone.run(() => {
-        switch (this.zoom) {
-          case 6:
-          case 7:
-          case 8:
-            this.imageMargin = 5;
-            break;
-          case 9:
-          case 10:
-            this.imageMargin = 2;
-            break;
-          default:
-            this.imageMargin = 10;
-        }
-
-        this.itemSize = (window.innerWidth - 34) / this.zoom;
-        this.imageHeight = (window.innerWidth - 34) / this.zoom - this.imageMargin;
-      });
-    }
   }
 
   public ngOnDestroy(): void {
@@ -243,13 +211,26 @@ export class MatrixImagesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private goToRow(row: number): void {
-    let windowInnerWidth = window.innerWidth;
-    let imageMargin = (windowInnerWidth - 34 - this.imageHeight * this.zoom) / this.zoom;
-
-    document.body.scrollTop = document.documentElement.scrollTop = row * (this.imageHeight + imageMargin) - 60;
+    document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize - 60;
   }
 
   private parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+  }
+
+  private getImageHeight(): void {
+    let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
+    let imgContent = this.element.querySelector('.image-content') as HTMLElement;
+
+    let widthScroll: number = window.innerWidth - document.body.offsetWidth;
+
+    let imageMarginLeft: string = window.getComputedStyle(imgContent).getPropertyValue('margin-left');
+    let boxPaddingLeft: string = window.getComputedStyle(boxContainer).getPropertyValue('padding-left');
+
+    this.imageMargin = parseFloat(imageMarginLeft) * 2;
+    let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
+
+    this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
+    this.itemSize = this.imageHeight + this.imageMargin;
   }
 }

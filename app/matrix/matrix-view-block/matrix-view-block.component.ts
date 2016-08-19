@@ -1,16 +1,34 @@
-import { Component, Input, Output, OnInit, OnChanges, Inject, EventEmitter, NgZone, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  OnInit,
+  OnChanges,
+  Inject,
+  EventEmitter,
+  NgZone,
+  OnDestroy,
+  ElementRef
+} from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber, Subscription } from 'rxjs/Rx';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
+import { Config } from '../../../app/app.config';
+
+let device = require('device.js')();
+let isDesktop = device.desktop();
+
+let tplMobile = require('./mobile/matrix-view-block-mobile.template.html');
+let styleMobile = require('./mobile/matrix-view-block-mobile.css');
 
 let tpl = require('./matrix-view-block.template.html');
 let style = require('./matrix-view-block.css');
 
 @Component({
   selector: 'matrix-view-block',
-  template: tpl,
-  styles: [style],
+  template: isDesktop ? tpl : tplMobile,
+  styles: [isDesktop ? style : styleMobile],
   directives: [RegionMapComponent, ROUTER_DIRECTIVES]
 })
 
@@ -23,6 +41,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected loader: boolean = false;
   protected math: any;
   protected markerPositionLeft: number;
+  protected api: string = Config.api;
 
   @Input('positionInRow')
   protected positionInRow: any;
@@ -34,8 +53,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private familyInfoService: any;
   private zone: NgZone;
   private router: Router;
-  private containerPadding: number;
+  private boxContainerPadding: number;
   private widthScroll: number;
+  private element: HTMLElement;
+  private boxContainer: HTMLElement;
 
   @Input('query')
   private query: any;
@@ -49,22 +70,20 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public constructor(@Inject('FamilyInfoService') familyInfoService: any,
                      @Inject('Math') math: any,
                      @Inject(NgZone) zone: NgZone,
+                     @Inject(ElementRef) element: ElementRef,
                      @Inject(Router) router: Router) {
     this.familyInfoService = familyInfoService;
     this.zone = zone;
     this.router = router;
     this.math = math;
+    this.element = element.nativeElement;
   }
 
   public ngOnInit(): void {
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
-        this.zone.run(() => {
-          let imageWidth: number = (window.innerWidth - 34 - this.containerPadding * 2 - this.widthScroll) / this.privateZoom;
-
-          this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
-        });
+        this.zone.run(() => this.setMarkerPosition());
       });
   }
 
@@ -76,17 +95,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
     this.privateZoom = parseUrl.zoom;
 
-    setTimeout(() => {
-      this.widthScroll = window.innerWidth - document.body.offsetWidth;
-
-      let imagesContainer = document.querySelector('.flex-container') as HTMLElement;
-      let paddingLeft: string = window.getComputedStyle(imagesContainer).getPropertyValue('padding-left');
-      this.containerPadding = parseFloat(paddingLeft);
-
-      let imageWidth: number = (window.innerWidth - 34 - this.containerPadding * 2 - this.widthScroll) / this.privateZoom;
-
-      this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
-    }, 0);
+    setTimeout(() => this.setMarkerPosition(), 0);
 
     this.place.background = this.place.background.replace('devices', 'desktops');
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
@@ -147,5 +156,17 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   private parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+  }
+
+  private setMarkerPosition(): void {
+    this.widthScroll = window.innerWidth - document.body.offsetWidth;
+
+    this.boxContainer = this.element.querySelector('.view-image-block-container') as HTMLElement;
+    let paddingLeft: string = window.getComputedStyle(this.boxContainer).getPropertyValue('padding-left');
+    this.boxContainerPadding = parseFloat(paddingLeft);
+
+    let imageWidth: number = (this.boxContainer.offsetWidth - this.boxContainerPadding * 2 - this.widthScroll) / this.privateZoom;
+
+    this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
   }
 }

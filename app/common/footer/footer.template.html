@@ -40,28 +40,34 @@
 
       </div>
 
-      <div class="description-content">{{footerData.text}}</div>
-      <div class="gapminder">
-        <a href="https://www.gapminder.org" target="_blank"
-           angulartics2On="click"
-           angularticsEvent="Moved from footer to  Gapminder">
-          <img src="/assets/img/gapminder-logo.png" alt="Gapminder">
-        </a>
+      <div class="description-content">
+        {{footerData.text}}
+        <p>All images under <a href="https://creativecommons.org/licenses/by/4.0/"
+                               target="_blank"
+                               angulartics2On="click"
+                               angularticsEvent="Moved from footer to CreativeCommons">Creative Commons</a> Licence.</p>
       </div>
-
-      <div class="valor">
-        <div class="developed">Developed by</div>
-        <a class="valor-name" href="http://valor-software.com" target="_blank"
-           angulartics2On="click"
-           angularticsEvent="Moved from footer to Valor Software">
-          Valor-Software
-        </a>
-      </div>
-
     </div>
 
     <div class="social-follow-buttons-container">
       <social-follow-buttons></social-follow-buttons>
+    </div>
+
+    <div class="gapminder">
+      <a href="https://www.gapminder.org" target="_blank"
+         angulartics2On="click"
+         angularticsEvent="Moved from footer to  Gapminder">
+        <img src="/assets/img/gapminder-logo.png" alt="Gapminder">
+      </a>
+    </div>
+
+    <div class="valor">
+      <div class="developed">Developed by</div>
+      <a class="valor-name" href="http://valor-software.com" target="_blank"
+         angulartics2On="click"
+         angularticsEvent="Moved from footer to Valor Software">
+        Valor-Software
+      </a>
     </div>
   </div>
 </div>

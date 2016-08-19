@@ -108,15 +108,22 @@
   padding: 19px 20px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1023px) {
   #main-menu .menu-icon {
-    width: 30px;
-    height: 32px;
+    width: 53px;
+    height: 55px;
+  }
+}
+
+@media (max-width: 767px) {
+  #main-menu .menu-icon {
+    width: 43px;
+    height: 56px;
   }
 
   #main-menu .menu-icon img {
-    width: 19px;
-    height: 19px;
+    width: 23px;
+    height: 18px;
   }
 
   #main-menu .open .dropdown-menu {
