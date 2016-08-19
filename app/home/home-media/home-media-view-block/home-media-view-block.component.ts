@@ -2,7 +2,7 @@ import { Component, Input, Inject, Output, OnChanges, OnDestroy, NgZone, EventEm
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Config } from '../../../app.config';
+import { Config, ImageResolutionInterface } from '../../../app.config';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -37,6 +37,7 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
   private zone: NgZone;
   private viewBlockService: any;
   private viewBlockServiceSubscribe: Subscription;
+  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
 
   public constructor(@Inject(NgZone) zone: NgZone,
                      @Inject('HomeMediaViewBlockService') viewBlockService: any) {
@@ -96,7 +97,7 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
   protected openPopUp(): void {
     this.popIsOpen = true;
 
-    let imgUrl = this.imageData.image.replace('desktops', 'original');
+    let imgUrl = this.imageData.image.replace(this.imageResolution.expand, this.imageResolution.full);
     let newImage = new Image();
 
     newImage.onload = () => {

@@ -7,13 +7,16 @@
             [hoverPlace]="hoverPlace"
             (filter)="urlChanged($event)">
     </header>
+    <div class="street-container">
+      <street [query]="query"
+              [thing]="thing"
+              [places]="streetPlaces"
+              [hoverPlace]="hoverPlace"
+              [chosenPlaces]="chosenPlaces"
+              (filterStreet)="urlChanged($event)"></street>
 
-    <street [query]="query"
-            [thing]="thing"
-            [places]="streetPlaces"
-            [hoverPlace]="hoverPlace"
-            [chosenPlaces]="chosenPlaces"
-            (filterStreet)="urlChanged($event)"></street>
+      <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
+    </div>
   </div>
 
   <matrix-images [zoom]="zoom"

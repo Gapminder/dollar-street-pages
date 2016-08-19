@@ -15,6 +15,7 @@ import { Subscriber, Subscription } from 'rxjs/Rx';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { HomeMediaViewBlockComponent } from './home-media-view-block/home-media-view-block.component';
 import { LoaderComponent } from '../../common/loader/loader.component';
+import { Config, ImageResolutionInterface } from '../../app.config';
 
 let tpl = require('./home-media.template.html');
 let style = require('./home-media.css');
@@ -59,6 +60,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private windowInnerWidth: number = window.innerWidth;
   private element: HTMLElement;
   private imageMargin: number;
+  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
 
   public constructor(@Inject('HomeMediaService') homeMediaService: any,
                      @Inject(NgZone) zone: NgZone,
@@ -77,7 +79,8 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.zoom = 2;
     }
 
-    this.familyPlaceServiceSubscribe = this.homeMediaService.getHomeMedia(`placeId=${this.placeId}`)
+    this.familyPlaceServiceSubscribe = this.homeMediaService
+      .getHomeMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -190,7 +193,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     };
 
     this.imageData.image = image.background
-      .replace('thumb', 'desktops')
+      .replace(this.imageResolution.image, this.imageResolution.expand)
       .replace('url("', '')
       .replace('")', '');
 
