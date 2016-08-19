@@ -31,7 +31,7 @@
         <input class="form-control autofocus"
                type="search"
                placeholder="Search country"
-               [(ngModel)]="search.text">
+               [(ngModel)]="search">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
     </div>
@@ -53,7 +53,7 @@
 
       <div class="countries-container">
         <div class="country-content"
-             *ngFor="let country of location.countries | CountriesFilterPipe:search.text"
+             *ngFor="let country of location.countries | CountriesFilterPipe:search"
              [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
              (click)="selectCountries(country, location.region)">
           <span class="not-selected">
