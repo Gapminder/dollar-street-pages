@@ -139,6 +139,8 @@ export class BubbleComponent implements OnInit, OnDestroy {
         let baloonWidth: number = baloonElement.width;
         let baloonHeight: number = baloonElement.height;
 
+        console.log('data::: ', data);
+
         data.top += data.height;
 
         if (step === 1 || step === 4) {

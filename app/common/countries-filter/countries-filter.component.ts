@@ -18,13 +18,19 @@ import { Config } from '../../app.config';
 
 let _ = require('lodash');
 
+let device = require('device.js')();
+let isDesktop = device.desktop();
+
+let tplMobile = require('./countries-filter-mobile/countries-filter-mobile.template.html');
+let styleMobile = require('./countries-filter-mobile/countries-filter-mobile.css');
+
 let tpl = require('./countries-filter.template.html');
 let style = require('./countries-filter.css');
 
 @Component({
   selector: 'countries-filter',
-  template: tpl,
-  styles: [style],
+  template: isDesktop ? tpl : tplMobile,
+  styles: isDesktop ? [style] : [styleMobile],
   pipes: [CountriesFilterPipe]
 })
 
@@ -32,6 +38,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected activeCountries: string;
   protected showSelected: boolean;
   protected locations: any[];
+  protected countries: any[];
   protected isOpenCountriesFilter: boolean = false;
   protected selectedRegions: string[] = [];
   protected selectedCountries: string[] = [];
@@ -78,6 +85,16 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
+
+    if (!this.isOpenCountriesFilter && !isDesktop) {
+      document.body.classList.remove('hideScroll');
+    }
+
+    if (this.isOpenCountriesFilter && !isDesktop) {
+      let tabContent = this.element.nativeElement.querySelector('.countries-container') as HTMLElement;
+      document.body.classList.add('hideScroll');
+      tabContent.scrollTop = 0;
+    }
 
     this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
@@ -209,6 +226,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           }
 
           this.locations = res.data;
+          this.countries = _
+            .chain(res.data)
+            .map('countries').flatten().sortBy('country').value();
+          console.log('Countries', this.countries);
           this.setTitle(this.url);
         });
     }
