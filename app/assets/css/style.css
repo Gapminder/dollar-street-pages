@@ -145,10 +145,6 @@ consumer-app > *:not(router-outlet):not(photographers) {
   max-height: calc(16px * 1.42857143 * 2);
 }
 
-.place-header .matrix-icon {
-  margin-left: 20px !important;
-}
-
 #main-menu .share-button-container i {
   color: #e0e7ef;
 }
@@ -204,6 +200,7 @@ consumer-app > *:not(router-outlet):not(photographers) {
   display: inline-block;
   text-decoration: underline;
 }
+
 /* btn */
 .btn-yellow {
   color: #374551;
@@ -217,6 +214,7 @@ consumer-app > *:not(router-outlet):not(photographers) {
   text-align: center;
   min-width: 160px;
 }
+
 /* form input (text or search) */
 .text {
   background-color: #fff;
@@ -226,6 +224,7 @@ consumer-app > *:not(router-outlet):not(photographers) {
   line-height: 20px;
   padding: 10px 15px;
 }
+
 /* indent */
 .margin-top-0 {
   margin-top: 0;
@@ -271,22 +270,17 @@ gm-entries-view p {
   }
 }
 
+matrix .matrix-header header {
+  margin-left: 22px !important;
+}
+
 @media (max-width: 1023px) {
   .custom-button {
     padding: 5px 20px;
     font-size: 16px;
   }
 
-  .map-header .menu-icon,
-  .header-without-search .menu-icon {
-    height: 60px !important;
-  }
-
-  .map-header .matrix-icon {
-    margin-top: 11px !important;
-  }
-
-  .place-header .matrix-icon {
+  matrix .matrix-header header {
     margin-left: 10px !important;
   }
 }
@@ -307,20 +301,7 @@ gm-entries-view p {
     padding: 0 0 0 8px;
   }
 
-  .map-header .matrix-icon {
-    margin-top: 8px !important;
-  }
-
-  .matrix-header .matrix-icon {
-    margin-top: 9px !important;
-  }
-
-  matrix .matrix-header .menu-icon,
-  .place-header .menu-icon {
+  matrix .matrix-header .menu-icon {
     height: 42px !important;
   }
-}
-
-matrix .matrix-header header {
-  margin-left: 22px !important;
 }

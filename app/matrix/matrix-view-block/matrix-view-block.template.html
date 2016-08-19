@@ -80,7 +80,7 @@
     </div>
 
     <div class="zoom-download-container">
-      <a class="download" download [href]="place.background.replace('desktops', 'original')">
+      <a class="download" target="_blank" [href]="api + '/consumer/api/v1/download-image/' + place.image">
         <img src="/assets/img/download-icon.svg" alt=""> Download
       </a>
       <span (click)="openPopUp()">

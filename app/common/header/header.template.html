@@ -7,7 +7,7 @@
     <things-filter [url]="query"
                    (selectedFilter)="urlTransfer($event)">
     </things-filter>
-    <div class="map-things-text" *ngIf="mapComponent">on the World map</div>
+    <span class="map-things-text" *ngIf="mapComponent">on the World map</span>
     <div class="some-filter-container incomeby" *ngIf="matrixComponent">
       <span>in</span>
       <countries-filter [url]="query"

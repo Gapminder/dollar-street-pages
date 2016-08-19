@@ -154,11 +154,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
           this.zoom = 4;
-
         }
 
-        if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
+        let windowInnerWidth: number = window.innerWidth;
+
+        if (!this.isDesktop && windowInnerWidth > 767) {
           this.zoom = 3;
+        }
+
+        if (!this.isDesktop && windowInnerWidth <= 767) {
+          this.zoom = 2;
         }
 
         this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
@@ -400,12 +405,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           + ` regions=` + this.selectedRegions + ` zoom=` + dataForTitle.zoom + ` incomes=` + dataForTitle.lowIncome + `-` + dataForTitle.highIncome);
         this.urlChangeService.replaceState('/matrix', this.query);
 
-        if (!isZoom) {
-          if (document.body.scrollTop) {
-            document.body.scrollTop = 0;
-          } else {
-            document.documentElement.scrollTop = 0;
-          }
+        if (document.body.scrollTop) {
+          document.body.scrollTop = 0;
+        } else {
+          document.documentElement.scrollTop = 0;
         }
       });
   }

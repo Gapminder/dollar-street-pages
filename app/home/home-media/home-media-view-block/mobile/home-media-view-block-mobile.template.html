@@ -1,0 +1,105 @@
+<div class="view-image-block-container">
+  <div class="active-house house-{{imageData.index}}"></div>
+
+  <div class="view-image-container">
+    <img (click)="openPopUp()" [src]="imageData.image">
+    <div class="close-box-container" (click)="closeImageBlock()">
+      <span class="close-box">
+        <img src="/assets/img/close-button-bubbles.svg" alt="x">
+      </span>
+    </div>
+
+    <div class="view-image-block-footer-container">
+      <div class="photographer-container">
+        <p><img src="/assets/img/cc-icon-small.svg">
+          Photo: <a [routerLink]="['/photographer', imageData.photographer._id]"
+                    [queryParams]="{}"
+                    angulartics2On="click"
+                    angularticsEvent="Photographer profile">
+            {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> for <span class="tablet">
+            Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
+          </span>
+          <span class="mobile">DS</span>
+        </p>
+      </div>
+
+      <div class="download-container">
+        <a target="_blank" [href]="api + '/consumer/api/v1/download-image/' + imageData.imageId">
+          <img src="/assets/img/download-icon.svg" alt="">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="house-info-container">
+    <div class="home-description-container">
+      <div class="thing-container">
+        <div class="thing-content">
+          <img [src]="imageData.thing.icon" alt="">
+          <h3>{{imageData.thing.thingName}}</h3>
+        </div>
+
+        <div class="thing-description" *ngIf="article?.shortDescription">
+          <p>{{article.shortDescription}} <a
+            *ngIf="article?.isDescription"
+            [routerLink]="['/article', imageData.thing._id]"
+            [queryParams]="{}"
+            angulartics2On="click"
+            angularticsEvent="Article page">Read more >></a></p>
+        </div>
+      </div>
+
+      <a class="link"
+         [routerLink]="['/matrix']"
+         [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1'}"
+         angulartics2On="click"
+         angularticsEvent="Matrix page">
+        {{imageData.thing.plural}} in {{country?.name}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+      <a class="link"
+         [routerLink]="['/matrix']"
+         [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1'}"
+         angulartics2On="click"
+         angularticsEvent="Matrix page">
+        {{imageData.thing.plural}} in {{country?.region}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+      <a class="link"
+         [routerLink]="['/matrix']"
+         [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1'}"
+         angulartics2On="click"
+         angularticsEvent="Matrix page">
+        {{imageData.thing.plural}} in the World <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+    </div>
+  </div>
+
+  <div class="isLoad" [hidden]="loader">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+<div class="fancyBox-container" *ngIf="popIsOpen" (click)="fancyBoxClose()">
+  <div class="fancyBox-image" [hidden]="!fancyBoxImage" [ngStyle]="{'background-image': fancyBoxImage}"></div>
+
+  <div class="load" [hidden]="fancyBoxImage">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

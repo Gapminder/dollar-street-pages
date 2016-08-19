@@ -4,7 +4,7 @@
          *ngFor="let image of images; let i = index"
          (click)="openMedia(image, i)"
          [style.order]="i"
-         [style.height.px]="imageHeight - 10">
+         [style.height.px]="imageHeight">
       <div class="family-image"
            [ngStyle]="{'background-image': image.background}">
 
@@ -24,3 +24,5 @@
     <row-loader [items]="images" [field]="'background'" [itemHeight]="itemSize" [count]="zoom"></row-loader>
   </div>
 </div>
+
+<loader [hidden]="loader"></loader>
