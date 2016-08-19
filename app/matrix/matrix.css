@@ -54,6 +54,29 @@ matrix-images {
   background-image: url("/assets/img/minus.svg");
 }
 
+.street-container {
+  position: relative;
+}
+
+.street-container > * {
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+}
+
+.street-container street {
+  position: relative;
+  z-index: 1;
+}
+
+.street-container street-mobile {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 @media (min-width: 768px) {
   matrix-images {
     padding-top: 112px;

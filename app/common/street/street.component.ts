@@ -13,7 +13,7 @@ import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 
 const _ = require('lodash');
 
@@ -48,7 +48,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private streetData: any;
   private element: HTMLElement;
   private activatedRoute: ActivatedRoute;
-  private StreetServiceSubscrib: Subscriber<any>;
+  private StreetServiceSubscrib: Subscription;
   private resize: any;
   private drawOnMap: boolean = false;
 

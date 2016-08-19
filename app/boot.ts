@@ -5,6 +5,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { HTTP_PROVIDERS } from '@angular/http';
 import { AppComponent } from './app.component';
 import { StreetDrawService } from './common/street/street.service';
+import { StreetMobileDrawService } from './common/street-mobile/street-mobile.service';
 import { MathService } from './common/math-service/math-service';
 import { MatrixService } from './matrix/matrix.service';
 import { HeaderService } from './common/header/header.service';
@@ -55,6 +56,7 @@ bootstrap(AppComponent, [
   GAPMINDER_PROVIDERS,
   provideRouter(Config.routes),
   {provide: 'StreetDrawService', useClass: StreetDrawService},
+  {provide: 'StreetMobileDrawService', useClass: StreetMobileDrawService},
   {provide: 'MatrixService', useClass: MatrixService},
   {provide: 'HeaderService', useClass: HeaderService},
   {provide: 'StreetSettingsService', useClass: StreetSettingsService},
