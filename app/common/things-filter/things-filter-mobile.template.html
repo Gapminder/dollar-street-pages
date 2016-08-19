@@ -1,0 +1,75 @@
+<div id="things-filter"
+     *ngIf="activeThing"
+     [ngClass]="{'open-things-filter': isOpenThingsFilter}">
+  <div class="things-filter-button">
+    <div class="things-filter-button-content"
+         (click)="openThingsFilter(isOpenThingsFilter)">
+      <img *ngIf="activeThing?.iconDark"
+           [src]="activeThing?.iconDark"
+           alt="Icon">
+      <span>{{activeThing?.plural || activeThing?.thingName}}</span>
+      <span class="arrow"></span>
+    </div>
+  </div>
+
+  <div class="container-filter" *ngIf="isOpenThingsFilter">
+
+    <div class="thing-filter-header">
+      <div class="thing-filter-header-content">
+        <img *ngIf="activeThing?.iconDark"
+             [src]="activeThing?.iconDark"
+             alt="Icon">
+        <span>{{activeThing?.plural || activeThing?.thingName}}</span>
+
+      </div>
+      <img class="close-button pull-right"
+           src="/assets/img/close-button.svg"
+           (click)="openThingsFilter(true)"
+           alt="Close">
+    </div>
+
+    <div class="search-container" [hidden]="activeColumn !== 'all'">
+      <div class="things-search">
+        <input class="form-control"
+               type="search"
+               placeholder="Search things"
+               [(ngModel)]="search.text">
+        <img src="/assets/img/search-icon.svg" alt="Search icon">
+      </div>
+    </div>
+    <div class="tabs-header-container">
+      <span (click)="setActiveThingsColumn('related')" [class.active]="activeColumn === 'related'">Related</span>
+      <span (click)="setActiveThingsColumn('popular')" [class.active]="activeColumn === 'popular'">Popular</span>
+      <span (click)="setActiveThingsColumn('all')" [class.active]="activeColumn === 'all'">All topics</span>
+    </div>
+    <div class="tabs-content-container">
+      <div class="things-content">
+        <div class="thing-content"
+             *ngFor="let thing of things | ThingsFilterPipe:search.text"
+             (click)="goToThing(thing)"
+             [ngClass]="{'empty': thing.empty}">
+          <img class="thing-icon-container" [src]="thing.icon" alt="">
+          <span class="thing-name">{{thing.plural}}</span>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!--
+    <div class="thing-pop-up" *ngIf="activeThing.shortDescription && !isOpenThingsFilter">
+      <div class="thing-pop-up-content">
+        <p> {{activeThing?.shortDescription}}
+          <a *ngIf="activeThing?.isShowReadMore"
+             [routerLink]="['/article', activeThing._id]"
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Move to Article about {{activeThing.thingName}} page with Read More button ">Read more >></a>
+        </p>
+      </div>
+    </div>
+  -->
+
+</div>

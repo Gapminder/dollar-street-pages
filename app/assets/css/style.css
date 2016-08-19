@@ -83,6 +83,13 @@ html, body, body > div[ui-view] {
   z-index: 1000 !important;
 }
 
+.hideScroll {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  position: fixed;
+}
+
 .custom-button {
   background-color: #374551;
   font-family: 'Bariol Light', sans-serif;

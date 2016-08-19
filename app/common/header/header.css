@@ -99,3 +99,23 @@
     font-size: 24px;
   }
 }
+
+@media (max-width: 767px) {
+  .filters-container {
+    float: left;
+    margin-top: 11px;
+    width: calc(100% - 30px);
+  }
+
+  .filters-container things-filter,
+  .filters-container .some-filter-container > * {
+    display: inline-block;
+    vertical-align: middle;
+    width:100%;
+  }
+
+  .header-content .icon-container {
+    display:none;
+  }
+
+}
