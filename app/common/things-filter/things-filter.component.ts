@@ -24,7 +24,7 @@ let style = require('./things-filter.css');
 @Component({
   selector: 'things-filter',
   template: isDesktop ? tpl : tplMobile,
-  styles: isDesktop ? [style] : [styleMobile],
+  styles: [isDesktop ? style : styleMobile],
   directives: [ROUTER_DIRECTIVES],
   pipes: [ThingsFilterPipe]
 })
@@ -67,10 +67,9 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   }
 
   protected openThingsFilter(isOpenThingsFilter: boolean): void {
-    let element = document.getElementById('scrollBackToTop');
     this.isOpenThingsFilter = !isOpenThingsFilter;
     if (!this.isOpenThingsFilter && !isDesktop) {
-      element.className = element.className.replace( /(?:^|\s)hideScroll(?!\S)/g , '' );
+      document.body.classList.remove('hideScroll');
     }
 
     this.search = {text: ''};
@@ -78,7 +77,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     if (this.isOpenThingsFilter && !isDesktop) {
       this.things = this.relatedThings;
       this.activeColumn = 'related';
-      element.className += 'hideScroll';
+      document.body.classList.add('hideScroll');
     }
   }
 
@@ -93,27 +92,28 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
 
     this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
     this.isOpenThingsFilter = false;
-    let element = document.getElementById('scrollBackToTop');
-    element.style.overflow = '';
+    document.body.classList.remove('hideScroll');
     this.search = {text: ''};
   }
 
   protected setActiveThingsColumn(column: string): void {
     this.activeColumn = column;
     this.search = {text: ''};
-    if (column === 'related') {
-      this.things = this.relatedThings;
-    }
     let tabContent = this.element.querySelector('.tabs-content-container') as HTMLElement;
-    if (column === 'popular') {
-      this.things = this.popularThings;
-    }
-
-    if (column === 'all') {
-      this.things = this.otherThings;
+    switch (column) {
+      case 'related' :
+        this.things = this.relatedThings;
+        break;
+      case 'popular' :
+        this.things = this.popularThings;
+        break;
+      case 'all' :
+        this.things = this.otherThings;
+        break;
+      default:
+        this.things = this.relatedThings;
     }
     tabContent.scrollTop = 0;
-
   }
 
   public ngOnDestroy(): void {

@@ -1,5 +1,5 @@
 <div id="things-filter"
-     *ngIf="activeThing.plural"
+     *ngIf="activeThing"
      [ngClass]="{'open-things-filter': isOpenThingsFilter}">
   <div class="things-filter-button">
     <div class="things-filter-button-content"
@@ -12,9 +12,9 @@
     </div>
   </div>
 
-  <div class="container-filter">
+  <div class="container-filter" *ngIf="isOpenThingsFilter">
 
-    <div class="thing-filter-header"  *ngIf="isOpenThingsFilter">
+    <div class="thing-filter-header">
       <div class="thing-filter-header-content">
         <img *ngIf="activeThing?.iconDark"
              [src]="activeThing?.iconDark"
