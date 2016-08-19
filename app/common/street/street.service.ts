@@ -3,8 +3,6 @@ import { Subject } from 'rxjs/Subject';
 import { Inject } from '@angular/core';
 
 const d3 = require('d3');
-const device = require('device.js')();
-const isDesktop = device.desktop();
 
 export interface DrawDividersInterface {
   showDividers: boolean;
@@ -204,40 +202,38 @@ export class StreetDrawService {
       .attr('y', this.height - 3)
       .attr('fill', '#767d86');
 
-    if (isDesktop) {
-      this.svg
-        .selectAll('polygon')
-        .data(places)
-        .enter()
-        .append('polygon')
-        .attr('class', 'point')
-        .attr('points', (datum: any): any => {
-          let point1;
-          let point2;
-          let point3;
-          let point4;
-          let point5;
-          let point6;
-          let point7;
+    this.svg
+      .selectAll('polygon')
+      .data(places)
+      .enter()
+      .append('polygon')
+      .attr('class', 'point')
+      .attr('points', (datum: any): any => {
+        let point1;
+        let point2;
+        let point3;
+        let point4;
+        let point5;
+        let point6;
+        let point7;
 
-          if (datum) {
-            let scaleDatumIncome = this.scale(datum.income);
-            point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
-            point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
-            point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth},${roofY}`;
-            point4 = `${this.streetOffset / 2 + scaleDatumIncome},${this.halfOfHeight - 17}`;
-            point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
-            point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${roofY}`;
-            point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
-          }
+        if (datum) {
+          let scaleDatumIncome = this.scale(datum.income);
+          point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
+          point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
+          point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth},${roofY}`;
+          point4 = `${this.streetOffset / 2 + scaleDatumIncome},${this.halfOfHeight - 17}`;
+          point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
+          point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${roofY}`;
+          point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
+        }
 
-          return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-        })
-        .attr('stroke-width', 1)
-        .style('fill', '#cfd2d6')
-        .style('opacity', '0.7');
-    }
+        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
+        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+      })
+      .attr('stroke-width', 1)
+      .style('fill', '#cfd2d6')
+      .style('opacity', '0.7');
 
     this.svg
       .append('polygon')

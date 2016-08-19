@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from '../common/footer/footer.component';
 import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
-import { LoaderComponent } from '../common/loader/loader.component';
 import { MainMenuComponent } from '../common/menu/menu.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { HomeMediaComponent } from './home-media/home-media.component';
@@ -33,7 +32,6 @@ interface UrlParamsInterface {
     HomeMediaComponent,
     FooterComponent,
     FloatFooterComponent,
-    LoaderComponent,
     ROUTER_DIRECTIVES,
     MainMenuComponent,
     FooterSpaceDirective
@@ -41,9 +39,8 @@ interface UrlParamsInterface {
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
-  protected loader: boolean = false;
   protected titles: any = {};
-  protected Angulartics2GoogleAnalytics:any;
+  protected Angulartics2GoogleAnalytics: any;
   private placeId: string;
   private urlParams: UrlParamsInterface;
   private homeIncomeFilterService: any;
@@ -65,7 +62,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                      @Inject('UrlChangeService') urlChangeService: any,
                      @Inject(Router) router: Router,
                      @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
-
     this.router = router;
     this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
     this.homeIncomeFilterService = homeIncomeFilterService;
@@ -74,6 +70,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+
     this.queryParamsSubscribe = this.router
       .routerState
       .queryParams
@@ -189,8 +187,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       countries: this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(',')),
       income: this.getIncomeTitle(this.urlParams.lowIncome, this.urlParams.highIncome)
     };
-
-    this.loader = true;
   }
 
   private getIncomeTitle(min: number, max: number): string {

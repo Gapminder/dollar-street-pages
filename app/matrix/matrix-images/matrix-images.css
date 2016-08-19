@@ -96,31 +96,6 @@
   display: block;
 }
 
-.mobile-hover .plus,
-.mobile-hover {
-  position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-}
-
-.mobile-hover .plus {
-  color: white;
-  margin: auto;
-  height: 15px;
-  text-align: center;
-  display: inline-block;
-}
-
-.mobile-hover {
-  background-color: rgba(0, 0, 0, .5);
-}
-
-.mobile-hover.active {
-  display: block;
-}
-
 .xl-text-c {
   text-align: center;
   font-size: xx-large;
@@ -132,7 +107,7 @@
   display: block;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1023px) {
   .place-image-box-country {
     font-size: 20px;
     line-height: 20px;
@@ -170,22 +145,39 @@
   }
 }
 
-@media (max-width: 600px) {
-  .mobile-hover .plus {
-    height: 17px;
-    font-size: 12px;
+@media (max-width: 1023px) {
+  .place-image-box-country {
+    font-size: 18px;
+    line-height: 20px;
   }
 
-  .image-content:hover {
-    box-shadow: 0 0 0 2px #374551 inset;
+  .place-image-box-income {
+    font-size: 16px;
+    line-height: 24px;
   }
 
-  .mobile-hover,
-  .mobile-hover .plus {
-    position: absolute;
-    top: 2px;
-    bottom: 2px;
-    left: 2px;
-    right: 2px;
+  .images-container {
+    overflow: hidden;
+    padding: 0 5px 25px;
+  }
+}
+
+@media (max-width: 767px) {
+  .flex-container.column-2 .image-content {
+    width: calc(50% - 5px);
+  }
+
+  .image-content {
+    margin: 2.5px;
+  }
+
+  .place-image-box-income {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .place-image-box-country {
+    font-size: 14px;
+    line-height: 14px;
   }
 }

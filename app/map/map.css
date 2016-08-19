@@ -496,6 +496,10 @@
     -webkit-columns: 4;
     columns: 4;
   }
+
+  .map-header .container {
+    padding: 0 0 0 10px;
+  }
 }
 
 @media (max-width: 991px) {

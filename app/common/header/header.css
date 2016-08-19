@@ -5,10 +5,6 @@
   background-color: white;
 }
 
-.header-content main-menu {
-  height: 65px;
-}
-
 .header-content .icon-container {
   position: relative;
   z-index: 500;
@@ -34,11 +30,13 @@
 }
 
 .filters-container things-filter,
+.filters-container > span,
 .filters-container .some-filter-container > * {
   display: inline-block;
   vertical-align: middle;
 }
 
+.filters-container > span,
 .filters-container .some-filter-container > span {
   margin: 0 9px 0 10px;
   font-size: 28px;
@@ -84,14 +82,22 @@
   display: inline-block
 }
 
-.map-things-text {
-  margin-left: 11px;
-  font-size: 28px;
-  color: #767d86;
-  line-height: 20px;
-  display: inline-block;
-  padding-top: 10px;
-  vertical-align: top;
+@media (max-width: 1023px) {
+  .header-content .icon-container img {
+    width: 42px;
+    height: 42px;
+    margin: 7px 14px 7px 0;
+  }
+
+  .filters-container {
+    margin-top: 11px;
+  }
+
+  .filters-container > span,
+  .filters-container .some-filter-container > span {
+    margin: 0 11px;
+    font-size: 24px;
+  }
 }
 
 @media (max-width: 767px) {

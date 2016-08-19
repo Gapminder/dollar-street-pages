@@ -1,14 +1,22 @@
 import { Component, Input, Inject, Output, OnChanges, OnDestroy, NgZone, EventEmitter } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { Subscriber } from 'rxjs';
+import { Subscription } from 'rxjs';
+
+import { Config } from '../../../app.config';
+
+let device = require('device.js')();
+let isDesktop = device.desktop();
+
+let tplMobile = require('./mobile/home-media-view-block-mobile.template.html');
+let styleMobile = require('./mobile/home-media-view-block-mobile.css');
 
 let tpl = require('./home-media-view-block.template.html');
 let style = require('./home-media-view-block.css');
 
 @Component({
   selector: 'home-media-view-block',
-  template: tpl,
-  styles: [style],
+  template: isDesktop ? tpl : tplMobile,
+  styles: [isDesktop ? style : styleMobile],
   directives: [ROUTER_DIRECTIVES]
 })
 
@@ -18,6 +26,7 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
   protected fancyBoxImage: string;
   protected country: any;
   protected article: any;
+  protected api: string = Config.api;
 
   @Input('imageData')
   private imageData: any;
@@ -27,7 +36,7 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
 
   private zone: NgZone;
   private viewBlockService: any;
-  private viewBlockServiceSubscribe: Subscriber<any>;
+  private viewBlockServiceSubscribe: Subscription;
 
   public constructor(@Inject(NgZone) zone: NgZone,
                      @Inject('HomeMediaViewBlockService') viewBlockService: any) {
@@ -89,6 +98,7 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
 
     let imgUrl = this.imageData.image.replace('desktops', 'original');
     let newImage = new Image();
+
     newImage.onload = () => {
       this.zone.run(() => {
         this.fancyBoxImage = 'url("' + imgUrl + '")';
