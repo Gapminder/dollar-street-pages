@@ -68,10 +68,9 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
 
   protected openThingsFilter(isOpenThingsFilter: boolean): void {
     let element = document.getElementById('scrollBackToTop');
-
     this.isOpenThingsFilter = !isOpenThingsFilter;
     if (!this.isOpenThingsFilter && !isDesktop) {
-      element.style.overflow = '';
+      element.className = element.className.replace( /(?:^|\s)hideScroll(?!\S)/g , '' );
     }
 
     this.search = {text: ''};
@@ -79,7 +78,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     if (this.isOpenThingsFilter && !isDesktop) {
       this.things = this.relatedThings;
       this.activeColumn = 'related';
-      element.style.overflow = 'hidden';
+      element.className += 'hideScroll';
     }
   }
 

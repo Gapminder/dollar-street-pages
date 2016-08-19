@@ -12,7 +12,6 @@
   overflow: hidden;
 }
 
-
 #things-filter .tabs-header-container {
   border-bottom: 1px solid #e4e6e7;
   padding: 0 20px;
@@ -34,7 +33,7 @@
   width: 100%;
   position: absolute;
   bottom: 0;
-  left:  0;
+  left: 0;
   right: 0;
   background-color: #ffcb34;
 }
@@ -66,7 +65,7 @@
   min-width: 150px;
   text-align: left;
   padding: 16px 35px 20px 20px;
-  color: #394451;
+  color: #374551;
   font-size: 24px;
   line-height: 20px;
   border-bottom: 1px solid #c6c7c9;
@@ -89,7 +88,7 @@
   min-width: 150px;
   text-align: right;
   padding: 9px 35px 10px 14px;
-  color: #394451;
+  color: #374551;
   font-size: 24px;
   line-height: 20px;
   overflow: hidden;
@@ -150,6 +149,13 @@
   padding: 0px 11px 4px 24px;
   position: relative;
   border-bottom: 1px solid #e4e6e7;
+  width: 100%;
+}
+
+#things-filter .thing-content:last-child {
+  padding: 0px 11px 4px 24px;
+  position: relative;
+  border-bottom: 0;
   width: 100%;
 }
 
@@ -315,7 +321,7 @@
     position: relative;
     vertical-align: bottom;
     overflow: hidden;
-    width:100%
+    width: 100%
   }
 
   #things-filter .tabs-header-container {
@@ -327,7 +333,7 @@
     color: #767d86;
     font-size: 24px;
     font-weight: 400;
-    line-height: 20px;
+    line-height: 30px;
     display: inline-block;
     padding: 10px 14px;
     position: relative;
@@ -339,7 +345,7 @@
     width: 100%;
     position: absolute;
     bottom: 0;
-    left:  0;
+    left: 0;
     right: 0;
     background-color: #ffcb34;
   }
@@ -370,8 +376,8 @@
   #things-filter .thing-filter-header .thing-filter-header-content {
     min-width: 150px;
     text-align: left;
-    padding: 16px 35px 18px 8px;
-    color: #394451;
+    padding: 18px 35px 14px 8px;
+    color: #374551;
     font-size: 24px;
     line-height: 20px;
     border-bottom: 1px solid #c6c7c9;
@@ -388,7 +394,7 @@
 
   #things-filter .things-filter-button {
     position: relative;
-    width:100%
+    width: 100%
   }
 
   #things-filter .things-filter-button .things-filter-button-content {
@@ -396,8 +402,8 @@
     border: 1px solid #e4e6e7;
     border-radius: 6px;
     text-align: left;
-    padding: 5px 29px 8px 12px;
-    color: #394451;
+    padding: 7px 29px 6px 12px;
+    color: #374551;
     font-size: 24px;
     overflow: hidden;
     white-space: nowrap;
@@ -424,7 +430,7 @@
     position: absolute;
     top: 18px;
     right: 11px;
-    display:none;
+    display: none;
   }
 
   #things-filter.open-things-filter .things-filter-button .things-filter-button-content {
@@ -437,7 +443,7 @@
     position: absolute;
     top: 18px;
     right: 11px;
-    display:none;
+    display: none;
 
   }
 
@@ -464,6 +470,13 @@
     width: 100%;
   }
 
+  #things-filter .thing-content:last-child {
+    padding: 2px 18px 12px 12px;
+    position: relative;
+    border-bottom: 1px solid #e4e6e7;;
+    width: 100%;
+  }
+
   #things-filter .thing-content.empty {
   }
 
@@ -478,7 +491,15 @@
 
   #things-filter .thing-content .thing-apply-icon {
     position: absolute;
-    top: calc(50% - 9px);
+    top: calc(50% - 10px);
+    right: 8px;
+    width: 20px;
+    height: 20px;
+  }
+
+  #things-filter .thing-content .thing-apply-icon:last-child {
+    position: absolute;
+    top: calc(50% - 11px);
     right: 8px;
     width: 20px;
     height: 20px;
@@ -621,7 +642,7 @@
     color: #767d86;
     font-size: 24px;
     font-weight: 400;
-    line-height: 20px;
+    line-height: 30px;
     display: inline-block;
     padding: 10px 10px;
     position: relative;
