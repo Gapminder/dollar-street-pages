@@ -225,7 +225,7 @@
   right: 8px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .bubbles-container {
     margin-left: 5px;
   }
