@@ -5,12 +5,14 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber, Subscription } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
+import { StreetMobileComponent } from '../common/street-mobile/street-mobile.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { GuideComponent } from '../common/guide/guide.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
+import { Config, ImageResolutionInterface } from '../app.config';
 
 let _ = require('lodash');
 let device = require('device.js')();
@@ -26,6 +28,7 @@ let style = require('./matrix.css');
     GuideComponent,
     HeaderComponent,
     StreetComponent,
+    StreetMobileComponent,
     MatrixImagesComponent,
     FooterComponent,
     FloatFooterComponent,
@@ -82,6 +85,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private streetPlacesData: any;
   private queryParamsSubscribe: Subscription;
   private windowInnerHeight: number = window.innerHeight;
+  private imageResolution: ImageResolutionInterface;
 
   public constructor(@Inject('MatrixService') matrixService: any,
                      @Inject(ElementRef) element: ElementRef,
@@ -154,11 +158,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
           this.zoom = 4;
-
         }
 
-        if (!this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 3)) {
+        let windowInnerWidth: number = window.innerWidth;
+
+        if (!this.isDesktop && windowInnerWidth > 767) {
           this.zoom = 3;
+        }
+
+        if (!this.isDesktop && windowInnerWidth <= 767) {
+          this.zoom = 2;
         }
 
         this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
@@ -185,6 +194,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.stopScroll();
         };
       });
+
+    this.imageResolution = Config.getImageResolution();
   }
 
   public interactiveIncomeText(): void {
@@ -333,81 +344,82 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public urlChanged(options: any): void {
-    let {url, isZoom, isCountriesFilter, isInit} = options;
+    this.zone.run(() => {
+      let {url, isZoom, isCountriesFilter, isInit} = options;
 
-    if (url) {
-      this.query = isZoom ? url.replace(/row\=\d*/, 'row=1') : url;
-      this.row = isZoom ? this.row : 1;
-    }
+      if (url) {
+        this.query = isZoom ? url.replace(/row\=\d*/, 'row=1') : url;
+        this.row = isZoom ? this.row : 1;
+      }
 
-    if (!isInit) {
-      this.query = this.query.replace(/&activeHouse\=\d*/, '');
-      this.activeHouse = void 0;
-      this.hoverPlace.next(undefined);
-      this.clearActiveHomeViewBox.next(true);
-    }
+      if (!isInit) {
+        this.query = this.query.replace(/&activeHouse\=\d*/, '');
+        this.activeHouse = void 0;
+        this.hoverPlace.next(undefined);
+        this.clearActiveHomeViewBox.next(true);
+      }
 
-    let parseQuery = this.parseUrl(this.query);
-    this.thing = parseQuery.thing;
-    this.loader = false;
+      let parseQuery = this.parseUrl(this.query);
+      this.thing = parseQuery.thing;
+      this.loader = false;
 
-    if (this.matrixServiceSubscribe) {
-      this.matrixServiceSubscribe.unsubscribe();
-      this.matrixServiceSubscribe = void 0;
-    }
+      if (this.matrixServiceSubscribe) {
+        this.matrixServiceSubscribe.unsubscribe();
+        this.matrixServiceSubscribe = void 0;
+      }
 
-    this.matrixServiceSubscribe = this.matrixService.getMatrixImages(this.query)
-      .subscribe((val: any) => {
-        if (val.err) {
-          console.error(val.err);
-          return;
-        }
+      this.matrixServiceSubscribe = this.matrixService
+        .getMatrixImages(this.query + `&resolution=${this.imageResolution.image}`)
+        .subscribe((val: any) => {
+          if (val.err) {
+            console.error(val.err);
+            return;
+          }
 
-        this.interactiveIncomeText();
+          this.interactiveIncomeText();
 
-        this.placesVal = val.data.zoomPlaces;
-        this.streetPlacesData = val.data.streetPlaces;
+          this.placesVal = val.data.zoomPlaces;
+          this.streetPlacesData = val.data.streetPlaces;
 
-        this.filtredPlaces = this.placesVal.filter((place: any): boolean => {
-          return place;
-        });
+          this.filtredPlaces = this.placesVal.filter((place: any): boolean => {
+            return place;
+          });
 
-        this.matrixPlaces.next(this.filtredPlaces);
-        this.placesArr = val.data.zoomPlaces;
-        this.clonePlaces = _.cloneDeep(this.filtredPlaces);
-        this.zoom = +parseQuery.zoom;
-        this.loader = true;
+          this.matrixPlaces.next(this.filtredPlaces);
+          this.placesArr = val.data.zoomPlaces;
+          this.clonePlaces = _.cloneDeep(this.filtredPlaces);
+          this.zoom = +parseQuery.zoom;
+          this.loader = true;
 
-        let incomesArr = _
-          .chain(this.streetPlacesData)
-          .map('income')
-          .sortBy()
-          .value();
+          let incomesArr = _
+            .chain(this.streetPlacesData)
+            .map('income')
+            .sortBy()
+            .value();
 
-        this.streetPlaces.next(this.streetPlacesData);
-        this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+          this.streetPlaces.next(this.streetPlacesData);
+          this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-        if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== this.streetData.poor || Number(parseQuery.highIncome) !== this.streetData.rich)) {
-          this.query = this.query
-            .replace(/lowIncome\=\d*/, `lowIncome=${Math.floor(incomesArr[0] - 10)}`)
-            .replace(/highIncome\=\d*/, `highIncome=${Math.ceil(incomesArr[incomesArr.length - 1] + 10)}`);
+          if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== this.streetData.poor || Number(parseQuery.highIncome) !== this.streetData.rich)) {
+            this.query = this.query
+              .replace(/lowIncome\=\d*/, `lowIncome=${Math.floor(incomesArr[0] - 10)}`)
+              .replace(/highIncome\=\d*/, `highIncome=${Math.ceil(incomesArr[incomesArr.length - 1] + 10)}`);
 
-          this.urlChanged({url: this.query});
-        }
-        let dataForTitle = this.parseUrl(this.query);
-        this.buildTitle(dataForTitle);
-        this.Angulartics2GoogleAnalytics.eventTrack(`Change filters to ` + `thing=` + dataForTitle.thing + ` countries=` + this.selectedCountries
-          + ` regions=` + this.selectedRegions + ` zoom=` + dataForTitle.zoom + ` incomes=` + dataForTitle.lowIncome + `-` + dataForTitle.highIncome);
-        this.urlChangeService.replaceState('/matrix', this.query);
+            this.urlChanged({url: this.query});
+          }
+          let dataForTitle = this.parseUrl(this.query);
+          this.buildTitle(dataForTitle);
+          this.Angulartics2GoogleAnalytics.eventTrack(`Change filters to ` + `thing=` + dataForTitle.thing + ` countries=` + this.selectedCountries
+            + ` regions=` + this.selectedRegions + ` zoom=` + dataForTitle.zoom + ` incomes=` + dataForTitle.lowIncome + `-` + dataForTitle.highIncome);
+          this.urlChangeService.replaceState('/matrix', this.query);
 
-        if (!isZoom) {
           if (document.body.scrollTop) {
             document.body.scrollTop = 0;
           } else {
             document.documentElement.scrollTop = 0;
           }
-        }
-      });
+        });
+    });
   }
 
   public buildTitle(query: any): any {

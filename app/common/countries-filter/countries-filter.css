@@ -30,7 +30,7 @@
   border-right: 5px solid transparent;
   border-top: 7px solid #374551;
   position: absolute;
-  top: 18px;
+  top: calc(50% - 3.5px);
   right: 11px;
 }
 
@@ -328,3 +328,9 @@
 
 /* IE */
 
+@media (max-width: 1023px) {
+  #countries-filter .countries-filter-button {
+    font-size: 24px;
+    padding: 6px 30px 6px 11px;
+  }
+}

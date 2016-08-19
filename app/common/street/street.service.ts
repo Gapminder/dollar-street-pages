@@ -3,8 +3,9 @@ import { Subject } from 'rxjs/Subject';
 import { Inject } from '@angular/core';
 
 const d3 = require('d3');
-const device = require('device.js')();
-const isDesktop = device.desktop();
+
+let device = require('device.js')();
+let isDesktop = device.desktop();
 
 export interface DrawDividersInterface {
   showDividers: boolean;
@@ -164,7 +165,7 @@ export class StreetDrawService {
     return this;
   }
 
-  public drawScale(places: any, isShowSlider: boolean, drawDividers: any): this {
+  public drawScale(places: any, drawDividers: any): this {
     let halfHouseWidth = 7;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 10;
@@ -321,10 +322,8 @@ export class StreetDrawService {
 
     this.isDrawDividers(drawDividers);
 
-    if (isShowSlider) {
-      this.drawLeftSlider(this.scale(this.lowIncome), true);
-      this.drawRightSlider(this.scale(this.highIncome), true);
-    }
+    this.drawLeftSlider(this.scale(this.lowIncome), true);
+    this.drawRightSlider(this.scale(this.highIncome), true);
 
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
@@ -384,16 +383,47 @@ export class StreetDrawService {
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
       .filter(()=> {
-        return this.sliderLeftMove || this.sliderRightMove;
+        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
       }).subscribe((e: TouchEvent)=> {
         let positionX = e.touches[0].pageX;
 
-        if (this.sliderLeftMove && positionX <= this.sliderRightBorder && positionX >= 30) {
-          return this.drawLeftSlider(positionX - 30);
+        if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
+          document.body.classList.add('draggingSliders');
+
+          if (!this.distanceDraggingLeftSlider) {
+            this.distanceDraggingLeftSlider = positionX - 45 - this.sliderLeftBorder;
+          }
+
+          if (!this.distanceDraggingRightSlider) {
+            this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 56);
+          }
+
+          if (
+            positionX - this.distanceDraggingRightSlider <= this.sliderRightBorder + 5 &&
+            positionX - this.distanceDraggingLeftSlider >= 50 &&
+            positionX + this.distanceDraggingRightSlider <= this.width + 60) {
+            this.chosenPlaces = [];
+            this.removeHouses('chosen');
+
+            this.drawLeftSlider(positionX - 45 - this.distanceDraggingLeftSlider);
+            this.drawRightSlider(positionX - 56 + this.distanceDraggingRightSlider);
+
+            return;
+          }
+
+          return;
         }
 
-        if (this.sliderRightMove && positionX >= this.sliderLeftBorder && positionX <= this.width - 30) {
-          return this.drawRightSlider(positionX - 30);
+        if (this.sliderLeftMove && positionX <= this.sliderRightBorder + 5 && positionX >= 50) {
+          return this.drawLeftSlider(positionX - 45);
+        }
+
+        if (this.sliderRightMove && positionX <= this.width + 60) {
+          if (this.sliderLeftBorder + 50 >= positionX) {
+            return this.drawRightSlider(this.sliderLeftBorder + 40);
+          } else {
+            return this.drawRightSlider(positionX - 56);
+          }
         }
       });
 

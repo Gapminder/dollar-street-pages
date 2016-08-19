@@ -29,16 +29,6 @@
   margin-top: 17px;
 }
 
-.matrix-icon {
-  width: 37px;
-  margin-top: 16px;
-  margin-right: 10px;
-}
-
-.matrix-icon img {
-  width: 100%;
-}
-
 @media (min-width: 1400px) {
   .container {
     width: 1400px;
@@ -48,39 +38,31 @@
 @media (max-width: 1023px) {
   .container {
     width: 100%;
-    padding: 0 0 0 8px;
+    padding: 0 0 0 10px;
   }
 
   .header .logo {
-    margin-top: 9px;
+    margin: 7px 14px 7px 0;
     width: 42px;
+    height: 42px;
   }
 
   .header .heading {
-    margin: 15px 0 0 15px;
-  }
-
-  .matrix-icon {
-    margin-top: 11px;
+    margin: 16px 0 0 0;
+    font-size: 24px;
   }
 }
 
 @media (max-width: 600px) {
-  .header .heading {
-    font-size: 18px;
-    margin: 12px 0 0 10px;
-    line-height: 18px;
-    width: calc(100% - 110px);
-  }
-
   .header .logo {
     margin-top: 5px;
     width: 32px;
   }
 
-  .matrix-icon {
-    width: 25px;
-    margin-top: 8px;
-    margin-right: 5px;
+  .header .heading {
+    font-size: 18px;
+    margin: 12px 0 0 10px;
+    line-height: 18px;
+    width: calc(100% - 110px);
   }
 }

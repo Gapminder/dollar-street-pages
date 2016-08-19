@@ -8,7 +8,12 @@
       <div class="title-info">
         <div class="left-title">
           <p class="sub-title">Home of</p>
-          <p class="title">{{home.familyName}} family</p>
+          <p class="title desktop">{{home.familyName}} family</p>
+          <p class="title mobile">{{home.familyName}}, <a *ngIf="home.country"
+                                                          [routerLink]="['/country', home.country?._id]"
+                                                          [queryParams]="{}"
+                                                          angulartics2On="click"
+                                                          angularticsEvent="From Home page to {{home.country?.alias}} country page">{{home.country?.alias}}</a></p>
         </div>
 
         <div class="right-title">
@@ -21,6 +26,10 @@
                                                              (mouseenter)="showAboutData($event)"
                                                              (mouseleave)="showAboutData()"></p>
         </div>
+      </div>
+
+      <div class="image-container mobile">
+        <img [src]="home.image" alt="">
       </div>
 
       <div class="family-info-container">
@@ -47,7 +56,10 @@
           <p class="title">{{home.country?.alias}}</p>
         </div>
       </div>
-      <div class="map-container" [routerLink]="['/country', home.country?._id]" [queryParams]="{}" angulartics2On="click"
+      <div class="map-container"
+           [routerLink]="['/country', home.country?._id]"
+           [queryParams]="{}"
+           angulartics2On="click"
            angularticsEvent="From Home page to {{home.country?.alias}} country page">
         <region-map *ngIf="mapData" [mapData]="mapData"></region-map>
       </div>
@@ -72,7 +84,8 @@
 
   <div class="description-container">
     <div class="left-title">
-      <p class="title">{{home.familyName}} family, {{home.country?.alias}}</p>
+      <p class="title desktop">{{home.familyName}} family, {{home.country?.alias}}</p>
+      <p class="title mobile">{{home.familyName}}, {{home.country?.alias}}</p>
     </div>
 
     <div class="right-title">

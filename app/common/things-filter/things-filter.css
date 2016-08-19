@@ -44,7 +44,7 @@
   border-right: 5px solid transparent;
   border-top: 7px solid #374551;
   position: absolute;
-  top: 18px;
+  top: calc(50% - 3.5px);
   right: 11px;
 }
 
@@ -309,4 +309,16 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: #ced1d5;;
+}
+
+@media (max-width: 1023px) {
+  #things-filter .things-filter-button .things-filter-button-content {
+    font-size: 24px;
+    padding: 6px 30px 6px 11px;
+  }
+
+  #things-filter .things-filter-button .things-filter-button-content img {
+    width: 23px;
+    margin: -3px 9px 0 0;
+  }
 }

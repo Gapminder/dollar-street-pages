@@ -79,6 +79,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   @HostListener('document:click', ['$event'])
   public isOutsideThingsFilterClick(event: Event): void {
     if (!this.element.nativeElement.contains(event.target) && this.isOpenCountriesFilter) {
+
       this.openCloseCountriesFilter(true);
     }
   }

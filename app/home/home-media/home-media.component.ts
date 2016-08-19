@@ -7,12 +7,15 @@ import {
   Inject,
   EventEmitter,
   NgZone,
-  AfterViewChecked
+  AfterViewChecked,
+  ElementRef
 } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber, Subscription } from 'rxjs/Rx';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { HomeMediaViewBlockComponent } from './home-media-view-block/home-media-view-block.component';
+import { LoaderComponent } from '../../common/loader/loader.component';
+import { Config, ImageResolutionInterface } from '../../app.config';
 
 let tpl = require('./home-media.template.html');
 let style = require('./home-media.css');
@@ -21,11 +24,12 @@ let style = require('./home-media.css');
   selector: 'home-media',
   template: tpl,
   styles: [style],
-  directives: [HomeMediaViewBlockComponent, RowLoaderComponent]
+  directives: [HomeMediaViewBlockComponent, RowLoaderComponent, LoaderComponent]
 })
 
 export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
-  protected zoom: number = window.innerWidth < 1024 ? 3 : 4;
+  protected loader: boolean = false;
+  protected zoom: number = 4;
 
   protected itemSize: number;
   protected imageData: any = {};
@@ -48,21 +52,35 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private resizeSubscribe: Subscription;
   private zone: NgZone;
   private imageHeight: number;
-  private footerHeight: any;
+  private footerHeight: number;
+  private headerHeight: number;
   private imageOffsetHeight: any;
   private isInit: boolean = true;
   private indexViewBoxImage: number;
+  private windowInnerWidth: number = window.innerWidth;
+  private element: HTMLElement;
+  private imageMargin: number;
+  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
 
   public constructor(@Inject('HomeMediaService') homeMediaService: any,
-                     @Inject(NgZone) zone: NgZone) {
+                     @Inject(NgZone) zone: NgZone,
+                     @Inject(ElementRef) element: ElementRef) {
     this.homeMediaService = homeMediaService;
     this.zone = zone;
+    this.element = element.nativeElement;
   }
 
   public ngOnInit(): void {
-    this.itemSize = this.imageHeight = (window.innerWidth - 34) / this.zoom;
+    if (this.windowInnerWidth > 767 && this.windowInnerWidth < 1024) {
+      this.zoom = 3;
+    }
 
-    this.familyPlaceServiceSubscribe = this.homeMediaService.getHomeMedia(`placeId=${this.placeId}`)
+    if (this.windowInnerWidth <= 767) {
+      this.zoom = 2;
+    }
+
+    this.familyPlaceServiceSubscribe = this.homeMediaService
+      .getHomeMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -73,12 +91,37 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.imageData.photographer = res.data.photographer;
       });
 
+    let platform = navigator.platform;
+    let nAgt = navigator.userAgent;
+    let verOffset = nAgt.indexOf('Safari');
+    let isSafari = false;
+
+    if (platform === 'iPhone' || platform === 'iPod' || platform === 'iPad') {
+      if (verOffset !== -1) {
+        isSafari = true;
+      }
+    }
+
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
-          this.zoom = window.innerWidth < 1024 ? 3 : 4;
-          this.imageHeight = (window.innerWidth - 34) / this.zoom;
+          if (isSafari && this.windowInnerWidth === window.innerWidth) {
+            return;
+          }
+
+          this.zoom = 4;
+          this.windowInnerWidth = window.innerWidth;
+
+          if (this.windowInnerWidth > 767 && this.windowInnerWidth < 1024) {
+            this.zoom = 3;
+          }
+
+          if (this.windowInnerWidth <= 767) {
+            this.zoom = 2;
+          }
+
+          this.getImageHeight();
 
           if (this.indexViewBoxImage) {
             let countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
@@ -87,42 +130,39 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.imageData.index = !countByIndex ? this.zoom : countByIndex;
             this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
 
-            this.zone.run(() => {
-              this.goToRow(Math.ceil((this.indexViewBoxImage + 1) / this.zoom));
-            });
+            this.zone.run(() => this.goToRow(Math.ceil((this.indexViewBoxImage + 1) / this.zoom)));
           }
         });
       });
   }
 
   public ngAfterViewChecked(): void {
-    if (!this.activeImageIndex || !this.isInit) {
-      this.isInit = false;
-
-      return;
-    }
-
     let footer = document.querySelector('.footer') as HTMLElement;
     let imgContent = document.querySelector('.family-image-container') as HTMLElement;
+    let headerContainer = document.querySelector('.header-container') as HTMLElement;
 
     if (!imgContent) {
       return;
     }
 
-    if (this.footerHeight === footer.offsetHeight &&
+    if (this.headerHeight === headerContainer.offsetHeight && this.footerHeight === footer.offsetHeight &&
       this.imageOffsetHeight === imgContent.offsetHeight || !document.querySelector('.family-image-container')) {
       return;
     }
 
+    this.headerHeight = headerContainer.offsetHeight;
     this.footerHeight = footer.offsetHeight;
     this.imageOffsetHeight = imgContent.offsetHeight;
 
-    if (this.isInit) {
+    setTimeout(() => {
+      this.getImageHeight();
+      this.loader = true;
+    });
+
+    if (this.activeImageIndex && this.isInit) {
       this.isInit = false;
 
-      setTimeout(() => {
-        this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1);
-      });
+      setTimeout(() => this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1));
     }
   }
 
@@ -144,6 +184,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.imageData.index = !countByIndex ? this.zoom : countByIndex;
     this.imageData.placeId = this.placeId;
+    this.imageData.imageId = image._id;
     this.imageData.thing = {
       _id: image.thing,
       plural: image.plural,
@@ -152,7 +193,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     };
 
     this.imageData.image = image.background
-      .replace('thumb', 'desktops')
+      .replace(this.imageResolution.image, this.imageResolution.expand)
       .replace('url("', '')
       .replace('")', '');
 
@@ -200,6 +241,22 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
     let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
-    document.body.scrollTop = document.documentElement.scrollTop = row * this.imageHeight + headerHeight + 15 - 60;
+    document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize + headerHeight - 45;
+  }
+
+  private getImageHeight(): void {
+    let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
+    let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
+
+    let widthScroll: number = window.innerWidth - document.body.offsetWidth;
+
+    let imageMarginLeft: string = window.getComputedStyle(imgContent).getPropertyValue('margin-left');
+    let boxPaddingLeft: string = window.getComputedStyle(boxContainer).getPropertyValue('padding-left');
+
+    this.imageMargin = parseFloat(imageMarginLeft) * 2;
+    let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
+
+    this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
+    this.itemSize = this.imageHeight + this.imageMargin;
   }
 }

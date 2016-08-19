@@ -1,0 +1,656 @@
+
+.close-button {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+}
+
+#things-filter {
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+  overflow: hidden;
+}
+
+#things-filter .tabs-header-container {
+  border-bottom: 1px solid #e4e6e7;
+  padding: 0 20px;
+}
+
+#things-filter .tabs-header-container span {
+  color: #767d86;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 30px;
+  display: inline-block;
+  padding: 10px 10px;
+  position: relative;
+}
+
+#things-filter .tabs-header-container span.active:before {
+  content: "";
+  height: 2px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffcb34;
+}
+
+#things-filter .tabs-header-container span.active {
+  color: #374551;
+}
+
+#things-filter .container-filter {
+  display: none;
+  overflow: hidden;
+}
+
+#things-filter.open-things-filter .container-filter {
+  overflow: hidden;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  display: block;
+  z-index: 500;
+  height: 100%;
+}
+
+#things-filter .thing-filter-header .thing-filter-header-content {
+  min-width: 150px;
+  text-align: left;
+  padding: 16px 35px 20px 20px;
+  color: #374551;
+  font-size: 24px;
+  line-height: 20px;
+  border-bottom: 1px solid #c6c7c9;
+}
+
+#things-filter .thing-filter-header .thing-filter-header-content img {
+  width: 25px;
+  float: left;
+  margin: -3px 10px 0 0;
+}
+
+#things-filter .things-filter-button {
+  position: relative;
+}
+
+#things-filter .things-filter-button .things-filter-button-content {
+  background-color: white;
+  border: 1px solid #e4e6e7;
+  border-radius: 6px;
+  min-width: 150px;
+  text-align: right;
+  padding: 9px 35px 10px 14px;
+  color: #374551;
+  font-size: 24px;
+  line-height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#things-filter .things-filter-button .things-filter-button-content img {
+  width: 25px;
+  float: left;
+  margin: -3px 10px 0 0;
+}
+
+#things-filter .things-filter-button span {
+
+}
+
+#things-filter .things-filter-button .things-filter-button-content span.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid #374551;
+  position: absolute;
+  top: 18px;
+  right: 11px;
+}
+
+#things-filter.open-things-filter .things-filter-button .things-filter-button-content {
+  box-shadow: 0 0 10px rgba(55, 69, 81, 0.1)
+}
+
+#things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
+  border-bottom: 7px solid #374551;
+  border-top: 0 solid transparent;
+  position: absolute;
+  top: 18px;
+  right: 11px;
+}
+
+#things-filter .thing-filter-header {
+  width: 100%;
+  height: 55px;
+  background-color: #f6f7f8;
+}
+
+#things-filter .tabs-content-container {
+  position: relative;
+  height: calc(100% - 160px);
+  overflow-y: auto;
+}
+
+#things-filter .search-container[hidden] + .tabs-header-container + .tabs-content-container {
+  height: calc(100% - 96px);
+}
+
+#things-filter .thing-content {
+  padding: 0px 11px 4px 24px;
+  position: relative;
+  border-bottom: 1px solid #e4e6e7;
+  width: 100%;
+}
+
+#things-filter .thing-content:last-child {
+  padding: 0px 11px 4px 24px;
+  position: relative;
+  border-bottom: 0;
+  width: 100%;
+}
+
+#things-filter .thing-content.empty {
+}
+
+#things-filter .thing-content:hover {
+  background-color: #f4f5f5;
+}
+
+#things-filter .thing-content .thing-icon-container {
+  position: relative;
+  top: 12px;
+}
+
+#things-filter .thing-content .thing-apply-icon {
+  position: absolute;
+  top: calc(50% - 12px);
+  right: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+#things-filter .thing-content .thing-apply-icon img {
+  position: relative;
+  top: 0;
+  width: 20px;
+  height: 20px;
+}
+
+#things-filter .thing-content img {
+  position: relative;
+  top: 0;
+  width: 24px;
+  height: 24px;
+}
+
+#things-filter .thing-content span {
+  color: #374551;
+  font-size: 22px;
+  line-height: 30px;
+  display: block;
+  width: calc(100% - 50px);
+  margin-top: -14px;
+  margin-bottom: 3px;
+  margin-left: 35px;
+}
+
+#things-filter .thing-content.empty span {
+  color: #a9a9a9;
+}
+
+#things-filter .things-search {
+  position: relative;
+  margin: 15px 20px 5px;
+}
+
+#things-filter .things-search input:focus {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
+}
+
+#things-filter .things-search input {
+  font-size: 18px;
+  color: #767d86;
+  padding: 3px 35px 3px 20px;
+  background-color: white;
+  border: 1px solid #9c9fa4;
+  border-radius: 16px;
+  text-align: left;
+  width: 100%;
+}
+
+#things-filter .things-search img {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  width: 18px;
+}
+
+#things-filter.open-things-filter .things-filter-container {
+  display: block;
+}
+
+.things-filter-button .thing-pop-up {
+  position: absolute;
+  top: 100%;
+  left: -7px;
+  z-index: 999;
+  padding-top: 3px;
+  display: none;
+  text-align: left;
+}
+
+.things-filter-button:hover .thing-pop-up {
+  display: block;
+}
+
+.things-filter-button.exist:hover .thing-pop-up {
+  display: block;
+}
+
+.things-filter-button .thing-pop-up span {
+  width: 50px;
+  height: 10px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+.things-filter-button .thing-pop-up span:after {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: white;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: 5px;
+  left: 0;
+  right: 0;
+  box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+  margin: auto;
+}
+
+.things-filter-button .thing-pop-up-content {
+  width: 450px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 20px 15px;
+  box-shadow: 0px 2px 12.04px 1.96px rgba(0, 0, 0, 0.28);
+}
+
+.things-filter-button .thing-pop-up-content p {
+  font-family: 'Bariol Light', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #5f6a74;
+  margin-bottom: 0;
+}
+
+#countries-filter .countries-search input:focus {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
+}
+
+.things-filter-button .thing-pop-up-content p a {
+  color: #0567bf;
+  font-family: 'Bariol Regular', sans-serif;
+}
+
+@media (max-width: 767px) {
+
+  .close-button {
+    position: absolute;
+    top: 18px;
+    right: 8px;
+  }
+
+  #things-filter {
+    display: inline-block;
+    position: relative;
+    vertical-align: bottom;
+    overflow: hidden;
+    width: 100%
+  }
+
+  #things-filter .tabs-header-container {
+    border-bottom: 1px solid #e4e6e7;
+    padding: 0 20px;
+  }
+
+  #things-filter .tabs-header-container span {
+    color: #767d86;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 30px;
+    display: inline-block;
+    padding: 10px 14px;
+    position: relative;
+  }
+
+  #things-filter .tabs-header-container span.active:before {
+    content: "";
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffcb34;
+  }
+
+  #things-filter .tabs-header-container span.active {
+    color: #374551;
+  }
+
+  #things-filter .container-filter {
+    display: none;
+    overflow: hidden;
+  }
+
+  #things-filter.open-things-filter .container-filter {
+    overflow: hidden;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    width: 100%;
+    background-color: white;
+    display: block;
+    z-index: 500;
+    height: 100%;
+  }
+
+  #things-filter .thing-filter-header .thing-filter-header-content {
+    min-width: 150px;
+    text-align: left;
+    padding: 18px 35px 14px 8px;
+    color: #374551;
+    font-size: 24px;
+    line-height: 20px;
+    border-bottom: 1px solid #c6c7c9;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  #things-filter .thing-filter-header .thing-filter-header-content img {
+    width: 25px;
+    float: left;
+    margin: -3px 10px 0 0;
+  }
+
+  #things-filter .things-filter-button {
+    position: relative;
+    width: 100%
+  }
+
+  #things-filter .things-filter-button .things-filter-button-content {
+    background-color: white;
+    border: 1px solid #e4e6e7;
+    border-radius: 6px;
+    text-align: left;
+    padding: 7px 29px 6px 12px;
+    color: #374551;
+    font-size: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 20px;
+  }
+
+  #things-filter .things-filter-button .things-filter-button-content img {
+    width: 23px;
+    float: left;
+    margin: -3px 9px 0 0;
+  }
+
+  #things-filter .things-filter-button span {
+
+  }
+
+  #things-filter .things-filter-button .things-filter-button-content span.arrow {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid #374551;
+    position: absolute;
+    top: 18px;
+    right: 11px;
+    display: none;
+  }
+
+  #things-filter.open-things-filter .things-filter-button .things-filter-button-content {
+    box-shadow: 0 0 10px rgba(55, 69, 81, 0.1)
+  }
+
+  #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
+    border-bottom: 7px solid #374551;
+    border-top: 0 solid transparent;
+    position: absolute;
+    top: 18px;
+    right: 11px;
+    display: none;
+
+  }
+
+  #things-filter .thing-filter-header {
+    width: 100%;
+    height: 55px;
+    background-color: #f6f7f8;
+  }
+
+  #things-filter .tabs-content-container {
+    position: relative;
+    height: calc(100% - 150px);
+    overflow-y: auto;
+  }
+
+  #things-filter .search-container[hidden] + .tabs-header-container + .tabs-content-container {
+    height: calc(100% - 96px);
+  }
+
+  #things-filter .thing-content {
+    padding: 0px 18px 4px 12px;
+    position: relative;
+    border-bottom: 1px solid #e4e6e7;
+    width: 100%;
+  }
+
+  #things-filter .thing-content:last-child {
+    padding: 2px 18px 12px 12px;
+    position: relative;
+    border-bottom: 1px solid #e4e6e7;;
+    width: 100%;
+  }
+
+  #things-filter .thing-content.empty {
+  }
+
+  #things-filter .thing-content:hover {
+    background-color: #f4f5f5;
+  }
+
+  #things-filter .thing-content .thing-icon-container {
+    position: relative;
+    top: 12px;
+  }
+
+  #things-filter .thing-content .thing-apply-icon {
+    position: absolute;
+    top: calc(50% - 10px);
+    right: 8px;
+    width: 20px;
+    height: 20px;
+  }
+
+  #things-filter .thing-content .thing-apply-icon:last-child {
+    position: absolute;
+    top: calc(50% - 11px);
+    right: 8px;
+    width: 20px;
+    height: 20px;
+  }
+
+  #things-filter .thing-content .thing-apply-icon img {
+    position: relative;
+    top: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  #things-filter .thing-content img {
+    position: relative;
+    top: 0;
+    width: 24px;
+    height: 24px;
+  }
+
+  #things-filter .thing-content span {
+    color: #374551;
+    font-size: 22px;
+    line-height: 30px;
+    display: block;
+    width: calc(100% - 50px);
+    margin-top: -14px;
+    margin-bottom: 3px;
+    margin-left: 35px;
+  }
+
+  #things-filter .thing-content.empty span {
+    color: #a9a9a9;
+  }
+
+  #things-filter .things-search {
+    position: relative;
+    margin: 15px 8px 5px;
+  }
+
+  #things-filter .things-search input:focus {
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
+  }
+
+  #things-filter .things-search input {
+    font-size: 18px;
+    color: #767d86;
+    padding: 3px 35px 3px 20px;
+    background-color: white;
+    border: 1px solid #9c9fa4;
+    border-radius: 16px;
+    text-align: left;
+    width: 100%;
+  }
+
+  #things-filter .things-search img {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+    width: 18px;
+  }
+
+  #things-filter.open-things-filter .things-filter-container {
+    display: block;
+  }
+
+  .things-filter-button .thing-pop-up {
+    position: absolute;
+    top: 100%;
+    left: -7px;
+    z-index: 999;
+    padding-top: 3px;
+    display: none;
+    text-align: left;
+  }
+
+  .things-filter-button:hover .thing-pop-up {
+    display: block;
+  }
+
+  .things-filter-button.exist:hover .thing-pop-up {
+    display: block;
+  }
+
+  .things-filter-button .thing-pop-up span {
+    width: 50px;
+    height: 10px;
+    position: relative;
+    overflow: hidden;
+    display: block;
+  }
+
+  .things-filter-button .thing-pop-up span:after {
+    content: "";
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    background: white;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    top: 5px;
+    left: 0;
+    right: 0;
+    box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+    margin: auto;
+  }
+
+  .things-filter-button .thing-pop-up-content {
+    width: 450px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 20px 15px;
+    box-shadow: 0px 2px 12.04px 1.96px rgba(0, 0, 0, 0.28);
+  }
+
+  .things-filter-button .thing-pop-up-content p {
+    font-family: 'Bariol Light', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #5f6a74;
+    margin-bottom: 0;
+  }
+
+  #countries-filter .countries-search input:focus {
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
+  }
+
+  .things-filter-button .thing-pop-up-content p a {
+    color: #0567bf;
+    font-family: 'Bariol Regular', sans-serif;
+  }
+
+}
+
+@media (max-width: 568px) {
+
+  #things-filter .tabs-header-container span {
+    color: #767d86;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 30px;
+    display: inline-block;
+    padding: 10px 10px;
+    position: relative;
+  }
+
+  #things-filter .tabs-header-container {
+    border-bottom: 1px solid #e4e6e7;
+    padding: 0 10px;
+  }
+
+}
