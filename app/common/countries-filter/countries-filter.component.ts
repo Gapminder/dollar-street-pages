@@ -39,6 +39,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected showSelected: boolean;
   protected locations: any[];
   protected countries: any[];
+  protected search: string = '';
   protected isOpenCountriesFilter: boolean = false;
   protected selectedRegions: string[] = [];
   protected selectedCountries: string[] = [];
@@ -81,11 +82,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.element.nativeElement.contains(event.target) && this.isOpenCountriesFilter) {
 
       this.openCloseCountriesFilter(true);
+      this.search = '';
     }
   }
 
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
+    this.search = '';
 
     if (!this.isOpenCountriesFilter && !isDesktop) {
       document.body.classList.remove('hideScroll');
@@ -93,8 +96,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.isOpenCountriesFilter && !isDesktop) {
       let tabContent = this.element.nativeElement.querySelector('.countries-container') as HTMLElement;
+      setTimeout(() => {
+        tabContent.scrollTop = 0;
+      }, 0);
       document.body.classList.add('hideScroll');
-      tabContent.scrollTop = 0;
     }
 
     this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
@@ -102,9 +107,11 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.isOpenCountriesFilter) {
       this.setPosition();
 
-      setTimeout(() => {
-        this.element.nativeElement.querySelector('.autofocus').focus();
-      });
+      if (isDesktop) {
+        setTimeout(() => {
+          this.element.nativeElement.querySelector('.autofocus').focus();
+        });
+      }
     }
 
     if (!this.isOpenCountriesFilter) {
@@ -124,16 +131,19 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected cancelCountriesFilter(): void {
     this.openCloseCountriesFilter(true);
+    this.search = '';
   }
 
   protected clearAllCountries(): void {
     this.showSelected = true;
     this.selectedRegions.length = 0;
     this.selectedCountries.length = 0;
+    this.search = '';
   }
 
   protected selectRegions(location: any): void {
     this.showSelected = false;
+    this.search = '';
 
     let index = this.selectedRegions.indexOf(location.region);
     let getEmptyCountries = _.map(location.countries, 'empty');
@@ -191,6 +201,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected goToLocation(): void {
     let query = this.parseUrl(this.url);
+    document.body.classList.remove('hideScroll');
+
+    this.search = '';
 
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
     query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
@@ -211,6 +224,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnChanges(changes: any): void {
+    this.search = '';
     if (changes.url && changes.url.currentValue) {
       if (this.countriesFilterServiceSubscribe) {
         this.countriesFilterServiceSubscribe.unsubscribe();
@@ -229,8 +243,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.locations = res.data;
           this.countries = _
             .chain(res.data)
-            .map('countries').flatten().sortBy('country').value();
-          console.log('Countries', this.countries);
+            .map('countries')
+            .flatten()
+            .sortBy('country')
+            .value();
           this.setTitle(this.url);
         });
     }

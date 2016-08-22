@@ -28,7 +28,7 @@
       </div>
 
       <div class="countries-search">
-        <input class="form-control autofocus"
+        <input class="form-control"
                type="search"
                placeholder="Search country"
                [(ngModel)]="search">
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-
+    <div class="underline-k">
     <div class="regions-container" *ngFor="let location of locations">
       <h3 class="title"
           (click)="selectRegions(location)"
@@ -52,13 +52,13 @@
         </span>
       </h3>
     </div>
+    </div>
 
     <div class="countries-container">
       <div class="country-content"
            *ngFor="let country of countries | CountriesFilterPipe:search"
            [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
-           (click)="selectCountries(country, location.region)">
-
+           (click)="selectCountries(country, country.region)">
           <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
           </span>
@@ -74,7 +74,8 @@
 
     <div class="button-container">
       <button class="cancel" type="button" (click)="cancelCountriesFilter()">Cancel</button>
-      <button type="button" (click)="goToLocation()"><img src="/assets/img/apply-icon.svg">Ok</button>
+      <button type="button" (click)="goToLocation()"><img src="../../../assets/img/apply.svg">Ok</button>
     </div>
   </div>
 </div>
+
