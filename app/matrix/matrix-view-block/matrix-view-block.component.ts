@@ -14,7 +14,7 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber, Subscription } from 'rxjs/Rx';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
-import { Config } from '../../../app/app.config';
+import { Config, ImageResolutionInterface } from '../../../app/app.config';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -66,6 +66,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private thing: string;
   @Output('closeBigImageBlock')
   private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
+  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
 
   public constructor(@Inject('FamilyInfoService') familyInfoService: any,
                      @Inject('Math') math: any,
@@ -97,7 +98,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     setTimeout(() => this.setMarkerPosition(), 0);
 
-    this.place.background = this.place.background.replace('devices', 'desktops');
+    this.place.background = this.place.background.replace(this.imageResolution.image, this.imageResolution.expand);
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 
     if (this.familyInfoServiceSubscribe) {
@@ -137,7 +138,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected openPopUp(): void {
     this.popIsOpen = true;
 
-    let imgUrl = this.place.background.replace('desktops', 'original');
+    let imgUrl = this.place.background.replace(this.imageResolution.expand, this.imageResolution.full);
     let newImage = new Image();
 
     newImage.onload = () => {
