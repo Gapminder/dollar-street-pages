@@ -5,11 +5,24 @@
   right: 15px;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/*::-webkit-scrollbar-track {*/
+/*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+/*border-radius: 10px;*/
+/*}*/
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #ced1d5;;
+}
+
 #things-filter {
   display: inline-block;
   position: relative;
   vertical-align: bottom;
-  overflow: hidden;
 }
 
 #things-filter .tabs-header-container {
@@ -44,11 +57,9 @@
 
 #things-filter .container-filter {
   display: none;
-  overflow: hidden;
 }
 
 #things-filter.open-things-filter .container-filter {
-  overflow: hidden;
   top: 0;
   bottom: 0;
   left: 0;
@@ -66,6 +77,7 @@
   text-align: left;
   padding: 16px 35px 20px 20px;
   color: #374551;
+  height:55px;
   font-size: 24px;
   line-height: 20px;
   border-bottom: 1px solid #c6c7c9;
@@ -143,6 +155,7 @@
 
 #things-filter .search-container[hidden] + .tabs-header-container + .tabs-content-container {
   height: calc(100% - 96px);
+  overflow-y: auto;
 }
 
 #things-filter .thing-content {
@@ -320,7 +333,6 @@
     display: inline-block;
     position: relative;
     vertical-align: bottom;
-    overflow: hidden;
     width: 100%
   }
 
@@ -356,11 +368,9 @@
 
   #things-filter .container-filter {
     display: none;
-    overflow: hidden;
   }
 
   #things-filter.open-things-filter .container-filter {
-    overflow: hidden;
     top: 0;
     bottom: 0;
     left: 0;
@@ -379,6 +389,7 @@
     padding: 18px 35px 14px 8px;
     color: #374551;
     font-size: 24px;
+    height:55px;
     line-height: 20px;
     border-bottom: 1px solid #c6c7c9;
     overflow: hidden;
@@ -461,6 +472,7 @@
 
   #things-filter .search-container[hidden] + .tabs-header-container + .tabs-content-container {
     height: calc(100% - 96px);
+    overflow-y: auto;
   }
 
   #things-filter .thing-content {

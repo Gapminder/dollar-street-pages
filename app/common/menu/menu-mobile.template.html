@@ -5,42 +5,72 @@
       <img class="active" src="/assets/img/gamburger-menu-white-icon.svg" alt=""/>
     </span>
 
-    <div class="dropdown-menu">
-      <ul class="header-menu-list">
+    <div class="container-menu" *ngIf="isOpenMenu">
+
+      <div class="menu-header">
+        <div class="menu-header-content">
+          <img src="/assets/img/dollar-street.svg"
+               alt="DollarStreet logo">
+          <span>Dollar Street</span>
+
+        </div>
+        <img class="close-button pull-right"
+             src="/assets/img/close-button.svg"
+             (click)="openMenu(true)"
+             alt="Close">
+      </div>
+
+
+      <ul class="menu-list">
         <li>
           <a (click)="goToMatrixPage()">Home</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
           <a (click)="goToMatrixPage(true)">Quick guide</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
           <a [routerLink]="['/info']"
              [queryParams]="{}"
              angulartics2On="click"
              angularticsEvent="From menu to About page">About</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
           <a [routerLink]="['/blog']"
              [queryParams]="{}"
              angulartics2On="click"
              angularticsEvent="From menu to Blog page">Blog</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
           <a [routerLink]="['/map']"
              [queryParams]="{}"
              angulartics2On="click"
              angularticsEvent="From menu to Map page">Map</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
+
         <li class="social-share-container">
           <div class="social-share-content">
-            <span>Share: </span>
+            <div class="share-text">
+              Share:
+            </div>
             <social-share-buttons></social-share-buttons>
           </div>
         </li>
-        <li>
+
+        <div class="gapminder-img">
+          <img src="/assets/img/gapminder-logo.png"
+               alt="Gapminder logo">
+        </div>
+        <div class="gapminder">
           <a (click)="goToGapminder()">More from gapminder >></a>
-        </li>
+        </div>
+
       </ul>
     </div>
+
   </div>
 </div>

@@ -1,0 +1,197 @@
+.close-button {
+  position: absolute;
+  top: 18px;
+  right: 10px;
+}
+
+#main-menu .open .container-menu {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  display: block;
+  z-index: 500;
+  height: 100%;
+  overflow-y: auto;
+}
+
+#main-menu .menu-header {
+  width: 100%;
+  height: 55px;
+  background-color: #f6f7f8;
+}
+
+#main-menu .menu-header .menu-header-content {
+  min-width: 150px;
+  text-align: left;
+  padding: 18px 35px 16px 20px;
+  color: #374551;
+  font-size: 24px;
+  line-height: 20px;
+  border-bottom: 1px solid #c6c7c9;
+}
+
+#main-menu .menu-header .menu-header-content img {
+  width: 41px;
+  float: left;
+  margin: -11px 8px 0 -13px;
+}
+
+#main-menu .menu-header .menu-header-content span {
+  margin-top: 10px;
+}
+
+#main-menu .menu-icon {
+  display: block;
+  width: 23px;
+  height: 18px;
+  text-align: center;
+}
+
+#main-menu .menu-icon img {
+  width: 23px;
+  height: 18px;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+#main-menu .menu-icon img.unactive {
+  display: block;
+}
+
+#main-menu > div {
+  float: right;
+  z-index: 99;
+}
+
+#main-menu .open .menu-icon {
+  background-color: #374551;
+}
+
+#main-menu .open img.unactive {
+  display: none;
+}
+
+/*#main-menu .open .dropdown-menu {
+  background-color: #374551;
+  left: inherit;
+  right: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  width: 232px;
+}*/
+
+#main-menu .open ul {
+  padding: 0;
+  margin: 0;
+}
+
+#main-menu .open li {
+  list-style: none;
+  border-bottom: 1px solid #e4e6e7;
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -o-transition: all .2s ease-out;
+  transition: all .2s ease-out;
+}
+
+#main-menu .open li div {
+  padding: 9px 18px 6px;
+  overflow: hidden;
+}
+
+#main-menu .open li a {
+  color: #374551;
+  font-size: 22px;
+  line-height: 21px;
+  display: block;
+  padding: 14px 20px 13px 8px;
+}
+
+#main-menu .open li .thing-apply-icon {
+  position: absolute;
+  margin-top: -33px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+}
+
+#main-menu .open .gapminder a {
+  font-size: 14px;
+  border-bottom: 0;
+  color: #374551;
+  text-transform: uppercase;
+  text-decoration: underline;
+  line-height: 27px
+}
+
+#main-menu .open .gapminder {
+  text-align: center;
+  margin-top: 3px;
+}
+
+#main-menu .open .gapminder-img {
+  text-align: center;
+}
+
+#main-menu .open .gapminder-img img {
+  margin-top: 40px;
+  width: 188px;
+  height: 27px;
+}
+
+#main-menu .open li.social-share-container {
+  padding: 10px 0 9px;
+}
+
+#main-menu .open li div.social-share-content {
+  text-align: center;
+  padding: 0 !important;
+}
+
+#main-menu .open .share-text {
+  display: inline-block;
+  font-size: 14px;
+  color: #374551;
+  text-transform: uppercase;
+  padding: 0 !important;
+  margin-right: 10px;
+  margin-top: 8px;
+  line-height: 14px;
+}
+
+#main-menu social-share-buttons {
+  vertical-align: top;
+}
+
+/*@media (max-width: 767px) {
+  #main-menu .menu-icon {
+    width: 43px;
+    height: 56px;
+  }
+
+  #main-menu .menu-icon img {
+    width: 23px;
+    height: 18px;
+  }
+
+  #main-menu .open .dropdown-menu {
+    width: 180px;
+  }
+
+  #main-menu .open .dropdown-menu li a {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}*/

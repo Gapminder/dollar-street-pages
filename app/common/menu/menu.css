@@ -113,9 +113,13 @@
     width: 53px;
     height: 55px;
   }
+
+  #main-menu .open .dropdown-menu li div.social-share-content {
+    padding: 19px 19px;
+  }
 }
 
-@media (max-width: 767px) {
+/*@media (max-width: 767px) {
   #main-menu .menu-icon {
     width: 43px;
     height: 56px;
@@ -134,4 +138,4 @@
     font-size: 14px;
     padding: 10px 15px;
   }
-}
+}*/

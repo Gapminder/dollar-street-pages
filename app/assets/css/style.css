@@ -152,10 +152,6 @@ consumer-app > *:not(router-outlet):not(photographers) {
   max-height: calc(16px * 1.42857143 * 2);
 }
 
-#main-menu .share-button-container i {
-  color: #e0e7ef;
-}
-
 .text-center {
   text-align: center;
 }
