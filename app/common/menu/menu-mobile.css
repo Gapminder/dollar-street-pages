@@ -18,30 +18,25 @@
   overflow-y: auto;
 }
 
-#main-menu .menu-header {
-  width: 100%;
-  height: 55px;
-  background-color: #f6f7f8;
-}
-
-#main-menu .menu-header .menu-header-content {
+#main-menu .menu-header-content {
   min-width: 150px;
   text-align: left;
-  padding: 18px 35px 16px 20px;
   color: #374551;
   font-size: 24px;
   line-height: 20px;
   border-bottom: 1px solid #c6c7c9;
+  background-color: #f6f7f8;
 }
 
-#main-menu .menu-header .menu-header-content img {
+#main-menu .menu-header-content img {
   width: 41px;
-  float: left;
-  margin: -11px 8px 0 -13px;
+  margin: 7px 0px 7px 7px
 }
 
-#main-menu .menu-header .menu-header-content span {
-  margin-top: 10px;
+#main-menu .menu-header-content span {
+  display:inline-block;
+  margin-top: 12px;
+  vertical-align: middle;
 }
 
 #main-menu .menu-icon {
