@@ -99,7 +99,7 @@
   border-radius: 6px;
   min-width: 150px;
   text-align: right;
-  padding: 9px 35px 10px 14px;
+  padding: 7px 35px 4px 14px;
   color: #374551;
   font-size: 24px;
   line-height: 20px;
@@ -426,6 +426,7 @@
     width: 23px;
     float: left;
     margin: -3px 9px 0 0;
+    position: static;
   }
 
   #things-filter .things-filter-button span {
