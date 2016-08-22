@@ -30,7 +30,7 @@ let style = require('./countries-filter.css');
 @Component({
   selector: 'countries-filter',
   template: isDesktop ? tpl : tplMobile,
-  styles: isDesktop ? [style] : [styleMobile],
+  styles: [isDesktop ? style : styleMobile],
   pipes: [CountriesFilterPipe]
 })
 
