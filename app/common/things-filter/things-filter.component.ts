@@ -38,7 +38,6 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected activeThing: any = {};
   protected search: {text: string;} = {text: ''};
   protected isOpenThingsFilter: boolean = false;
-  protected isOpenKeyboard: boolean = false;
   protected activeColumn: string = '';
   protected Angulartics2GoogleAnalytics: any;
   protected things: any = [];
@@ -113,13 +112,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
         break;
       case 'all' :
 
-        let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
-        this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
-          .subscribe((e: KeyboardEvent) => {
-            if (e.keyCode === 13) {
-              inputElement.blur();
-            }
-          });
+        this.hideKeyboard();
 
         this.things = this.otherThings;
         break;
@@ -129,17 +122,27 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     tabContent.scrollTop = 0;
   }
 
-  protected hideKeyboard(isShow: boolean): void {
-    this.isOpenKeyboard = !isShow;
-    let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
-    if (this.isOpenKeyboard && !isDesktop) {
-      inputElement.blur();
+  protected hideKeyboard(): void {
+
+    if (this.keyUpSubscribe) {
+      this.keyUpSubscribe.unsubscribe();
     }
+
+    let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+    this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
+      .subscribe((e: KeyboardEvent) => {
+        if (e.keyCode === 13) {
+          inputElement.blur();
+        }
+      });
   }
 
   public ngOnDestroy(): void {
     this.thingsFilterServiceSubscribe.unsubscribe();
-    this.keyUpSubscribe.unsubscribe();
+    if (this.keyUpSubscribe) {
+      this.keyUpSubscribe.unsubscribe();
+    }
+
   }
 
   public ngOnChanges(changes: any): void {

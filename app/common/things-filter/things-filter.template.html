@@ -1,5 +1,5 @@
 <div id="things-filter"
-     *ngIf="activeThing"
+     *ngIf="activeThing?.plural || activeThing?.thingName"
      [ngClass]="{'open-things-filter': isOpenThingsFilter}">
   <div class="things-filter-button">
     <div class="things-filter-button-content"
