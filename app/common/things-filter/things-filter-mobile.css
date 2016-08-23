@@ -5,11 +5,19 @@
   right: 15px;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #ced1d5;;
+}
+
 #things-filter {
   display: inline-block;
   position: relative;
   vertical-align: bottom;
-  overflow: hidden;
 }
 
 #things-filter .tabs-header-container {
@@ -44,11 +52,9 @@
 
 #things-filter .container-filter {
   display: none;
-  overflow: hidden;
 }
 
 #things-filter.open-things-filter .container-filter {
-  overflow: hidden;
   top: 0;
   bottom: 0;
   left: 0;
@@ -66,6 +72,7 @@
   text-align: left;
   padding: 16px 35px 20px 20px;
   color: #374551;
+  height:55px;
   font-size: 24px;
   line-height: 20px;
   border-bottom: 1px solid #c6c7c9;
@@ -87,7 +94,7 @@
   border-radius: 6px;
   min-width: 150px;
   text-align: right;
-  padding: 9px 35px 10px 14px;
+  padding: 7px 35px 4px 14px;
   color: #374551;
   font-size: 24px;
   line-height: 20px;
@@ -143,6 +150,7 @@
 
 #things-filter .search-container[hidden] + .tabs-header-container + .tabs-content-container {
   height: calc(100% - 96px);
+  overflow-y: auto;
 }
 
 #things-filter .thing-content {
@@ -153,7 +161,7 @@
 }
 
 #things-filter .thing-content:last-child {
-  padding: 0px 11px 4px 24px;
+  padding: 2px 18px 12px 24px;
   position: relative;
   border-bottom: 0;
   width: 100%;
@@ -320,13 +328,7 @@
     display: inline-block;
     position: relative;
     vertical-align: bottom;
-    overflow: hidden;
     width: 100%
-  }
-
-  #things-filter .tabs-header-container {
-    border-bottom: 1px solid #e4e6e7;
-    padding: 0 20px;
   }
 
   #things-filter .tabs-header-container span {
@@ -339,46 +341,13 @@
     position: relative;
   }
 
-  #things-filter .tabs-header-container span.active:before {
-    content: "";
-    height: 2px;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #ffcb34;
-  }
-
-  #things-filter .tabs-header-container span.active {
-    color: #374551;
-  }
-
-  #things-filter .container-filter {
-    display: none;
-    overflow: hidden;
-  }
-
-  #things-filter.open-things-filter .container-filter {
-    overflow: hidden;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: fixed;
-    width: 100%;
-    background-color: white;
-    display: block;
-    z-index: 500;
-    height: 100%;
-  }
-
   #things-filter .thing-filter-header .thing-filter-header-content {
     min-width: 150px;
     text-align: left;
     padding: 18px 35px 14px 8px;
     color: #374551;
     font-size: 24px;
+    height:55px;
     line-height: 20px;
     border-bottom: 1px solid #c6c7c9;
     overflow: hidden;
@@ -386,11 +355,7 @@
     text-overflow: ellipsis;
   }
 
-  #things-filter .thing-filter-header .thing-filter-header-content img {
-    width: 25px;
-    float: left;
-    margin: -3px 10px 0 0;
-  }
+
 
   #things-filter .things-filter-button {
     position: relative;
@@ -415,36 +380,15 @@
     width: 23px;
     float: left;
     margin: -3px 9px 0 0;
+    position: static;
   }
 
   #things-filter .things-filter-button span {
-
   }
 
-  #things-filter .things-filter-button .things-filter-button-content span.arrow {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 7px solid #374551;
-    position: absolute;
-    top: 18px;
-    right: 11px;
-    display: none;
-  }
-
-  #things-filter.open-things-filter .things-filter-button .things-filter-button-content {
-    box-shadow: 0 0 10px rgba(55, 69, 81, 0.1)
-  }
 
   #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
-    border-bottom: 7px solid #374551;
-    border-top: 0 solid transparent;
-    position: absolute;
-    top: 18px;
-    right: 11px;
     display: none;
-
   }
 
   #things-filter .thing-filter-header {
@@ -457,10 +401,6 @@
     position: relative;
     height: calc(100% - 150px);
     overflow-y: auto;
-  }
-
-  #things-filter .search-container[hidden] + .tabs-header-container + .tabs-content-container {
-    height: calc(100% - 96px);
   }
 
   #things-filter .thing-content {
@@ -482,11 +422,6 @@
 
   #things-filter .thing-content:hover {
     background-color: #f4f5f5;
-  }
-
-  #things-filter .thing-content .thing-icon-container {
-    position: relative;
-    top: 12px;
   }
 
   #things-filter .thing-content .thing-apply-icon {
@@ -519,28 +454,9 @@
     height: 24px;
   }
 
-  #things-filter .thing-content span {
-    color: #374551;
-    font-size: 22px;
-    line-height: 30px;
-    display: block;
-    width: calc(100% - 50px);
-    margin-top: -14px;
-    margin-bottom: 3px;
-    margin-left: 35px;
-  }
-
-  #things-filter .thing-content.empty span {
-    color: #a9a9a9;
-  }
-
   #things-filter .things-search {
     position: relative;
     margin: 15px 8px 5px;
-  }
-
-  #things-filter .things-search input:focus {
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
   }
 
   #things-filter .things-search input {

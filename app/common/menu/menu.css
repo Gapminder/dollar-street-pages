@@ -113,25 +113,9 @@
     width: 53px;
     height: 55px;
   }
-}
 
-@media (max-width: 767px) {
-  #main-menu .menu-icon {
-    width: 43px;
-    height: 56px;
-  }
-
-  #main-menu .menu-icon img {
-    width: 23px;
-    height: 18px;
-  }
-
-  #main-menu .open .dropdown-menu {
-    width: 180px;
-  }
-
-  #main-menu .open .dropdown-menu li a {
-    font-size: 14px;
-    padding: 10px 15px;
+  #main-menu .open .dropdown-menu li div.social-share-content {
+    padding: 19px 19px;
   }
 }
+

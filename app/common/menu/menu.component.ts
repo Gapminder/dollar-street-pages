@@ -4,23 +4,29 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Rx';
 import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 
+let device = require('device.js')();
+let isMobile = device.mobile();
+
+let tplMobile = require('./menu-mobile.template.html');
+let styleMobile = require('./menu-mobile.css');
+
 let tpl = require('./menu.template.html');
 let style = require('./menu.css');
 
 @Component({
   selector: 'main-menu',
-  template: tpl,
-  styles: [style],
+  template: isMobile ? tplMobile : tpl,
+  styles: [isMobile ? styleMobile : style],
   directives: [SocialShareButtonsComponent, ROUTER_DIRECTIVES]
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
   protected isOpenMenu: boolean = false;
-  protected Angulartics2GoogleAnalytics:any;
+  protected Angulartics2GoogleAnalytics: any;
   @Input()
   private hoverPlace: Observable<any>;
   private hoverPlaceSubscribe: Subscription;
-  private element: ElementRef;
+  private element: HTMLElement;
   private router: Router;
   private activatedRoute: ActivatedRoute;
   private isMatrixComponent: boolean;
@@ -30,7 +36,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
                      @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
                      @Inject(ElementRef) element: ElementRef,
                      @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
-    this.element = element;
+    this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
@@ -48,6 +54,18 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
+    }
+  }
+
+  protected openMenu(isOpenMenu: boolean): void {
+    this.isOpenMenu = !isOpenMenu;
+
+    if (this.isOpenMenu && isMobile) {
+      document.body.classList.add('hideScroll');
+    }
+
+    if (!this.isOpenMenu && isMobile) {
+      document.body.classList.remove('hideScroll');
     }
   }
 
@@ -72,8 +90,8 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('document:click', ['$event'])
-  public isOutsideMainMenuClick(event: Event): void {
-    if (!this.element.nativeElement.contains(event.target) && this.isOpenMenu) {
+  public isOutsideMainMenuClick(event: any): void {
+    if (!this.element.contains(event.target) && this.isOpenMenu) {
       this.isOpenMenu = false;
     }
   }

@@ -11,21 +11,64 @@
 
 .share-button-container .share-button i {
   font-size: 24px;
-  color: #374551;
+  color: #e0e7ef;
+
 }
 
 main-menu social-share-buttons {
-  width: calc(100% - 42px);
-  display: block;
-  float: right;
+  display: inline-block;
 }
 
-main-menu social-share-buttons .share-button-container .share-button i {
-  color: #edf0f5;
-  font-size: 24px;
-}
 
 float-footer .share-button-container .share-button i {
   font-size: 28px;
   color: #ffcf43;
+}
+
+@media (max-width: 1023px) {
+  main-menu social-share-buttons .share-button-container .share-button i {
+    color: #edf0f5;
+    font-size: 24px;
+    height: 22px;
+    width:22px
+  }
+
+}
+
+@media (max-width: 767px) {
+  main-menu social-share-buttons .share-button-container .share-button i {
+    color: #374551;
+    font-size: 28px;
+    height: 28px;
+    width:28px
+  }
+
+  .share-button-container > div:first-child  {
+    margin-left: 14px;
+    text-align: center;
+  }
+  .share-button-container > div {
+    margin-left: 28px;
+    text-align: center;
+  }
+
+}
+
+@media (max-width: 568px) {
+  main-menu social-share-buttons .share-button-container .share-button i {
+    color: #374551;
+    font-size: 28px;
+    height: 28px;
+    width:28px
+  }
+
+  .share-button-container > div:first-child  {
+    margin-left: 0px;
+    text-align: center;
+  }
+  .share-button-container > div {
+    margin-left: 24px;
+    text-align: center;
+  }
+
 }
