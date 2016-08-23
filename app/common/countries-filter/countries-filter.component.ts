@@ -239,6 +239,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnChanges(changes: any): void {
     this.search = '';
+
     if (changes.url && changes.url.currentValue) {
       if (this.countriesFilterServiceSubscribe) {
         this.countriesFilterServiceSubscribe.unsubscribe();
@@ -255,12 +256,16 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           }
 
           this.locations = res.data;
-          this.countries = _
-            .chain(res.data)
-            .map('countries')
-            .flatten()
-            .sortBy('country')
-            .value();
+
+          if (!isDesktop) {
+            this.countries = _
+              .chain(res.data)
+              .map('countries')
+              .flatten()
+              .sortBy('country')
+              .value();
+          }
+
           this.setTitle(this.url);
         });
     }
