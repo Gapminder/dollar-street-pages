@@ -10,8 +10,9 @@ import {
   HostListener
 } from '@angular/core';
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
-import { Subscriber } from 'rxjs/Rx';
 import { ThingsFilterPipe } from './things-filter.pipe';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscriber, Subscription } from 'rxjs/Rx';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -21,6 +22,7 @@ let styleMobile = require('./things-filter-mobile.css');
 
 let tpl = require('./things-filter.template.html');
 let style = require('./things-filter.css');
+
 @Component({
   selector: 'things-filter',
   template: isDesktop ? tpl : tplMobile,
@@ -36,6 +38,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected activeThing: any = {};
   protected search: {text: string;} = {text: ''};
   protected isOpenThingsFilter: boolean = false;
+  protected isOpenKeyboard: boolean = false;
   protected activeColumn: string = '';
   protected Angulartics2GoogleAnalytics: any;
   protected things: any = [];
@@ -45,6 +48,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
   private thingsFilterService: any;
   private thingsFilterServiceSubscribe: Subscriber<any>;
+  private keyUpSubscribe: Subscription;
   private activatedRoute: ActivatedRoute;
   private element: HTMLElement;
 
@@ -108,6 +112,15 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
         this.things = this.popularThings;
         break;
       case 'all' :
+
+        let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+        this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
+          .subscribe((e: KeyboardEvent) => {
+            if (e.keyCode === 13) {
+              inputElement.blur();
+            }
+          });
+
         this.things = this.otherThings;
         break;
       default:
@@ -116,8 +129,17 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     tabContent.scrollTop = 0;
   }
 
+  protected hideKeyboard(isShow: boolean): void {
+    this.isOpenKeyboard = !isShow;
+    let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+    if (this.isOpenKeyboard && !isDesktop) {
+      inputElement.blur();
+    }
+  }
+
   public ngOnDestroy(): void {
     this.thingsFilterServiceSubscribe.unsubscribe();
+    this.keyUpSubscribe.unsubscribe();
   }
 
   public ngOnChanges(changes: any): void {

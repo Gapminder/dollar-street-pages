@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div class="container-filter" *ngIf="isOpenThingsFilter">
+  <div class="container-filter">
 
     <div class="thing-filter-header">
       <div class="thing-filter-header-content">
@@ -34,7 +34,7 @@
                type="search"
                placeholder="Search things"
                [(ngModel)]="search.text">
-        <img src="/assets/img/search-icon.svg" alt="Search icon">
+        <img src="/assets/img/search-icon.svg" alt="Search icon"  (click)="hideKeyboard(isOpenThingsFilter)">
       </div>
     </div>
     <div class="tabs-header-container">
