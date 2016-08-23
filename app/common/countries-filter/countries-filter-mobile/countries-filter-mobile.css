@@ -362,6 +362,10 @@
 /* IE */
 
 @media (max-width: 767px) {
+  #countries-filter .countries-search input {
+    padding: 0 30px;
+  }
+
   #countries-filter .regions-container:nth-child(odd) {
     width: 40%;
   }
@@ -375,11 +379,19 @@
     padding: 0 8px;
   }
 
+  #countries-filter .countries-container {
+    height: calc(100% - 298px);
+  }
+
   .country-content {
     padding: 10px 8px;
   }
 
   #countries-filter .title {
     padding: 18px 8px;
+  }
+
+  #countries-filter .button-container button {
+    padding: 5px 40px 0 40px;
   }
 }

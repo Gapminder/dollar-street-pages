@@ -228,7 +228,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnDestroy(): void {
     this.countriesFilterServiceSubscribe.unsubscribe();
 
-    if (this.keyUpSubscribe.unsubscribe) {
+    if (this.keyUpSubscribe) {
       this.keyUpSubscribe.unsubscribe();
     }
 
