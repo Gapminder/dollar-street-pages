@@ -41,7 +41,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
         }
 
         this.photographer = res.data;
-        this.getPhotographer.emit(`Photographer: ${this.photographer.firstName} ${this.photographer.lastName}`);
+        this.getPhotographer.emit(`${this.photographer.firstName} ${this.photographer.lastName}`);
       });
   }
 
@@ -56,9 +56,5 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
       photographer.facebook ||
       photographer.twitter ||
       photographer.linkedIn;
-  }
-
-  protected isShowDescription(company: any): boolean {
-    return company && (company.name || company.link);
   }
 }

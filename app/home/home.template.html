@@ -15,10 +15,11 @@
     <main-menu class="pull-right"></main-menu>
   </div>
 
-  <home-header [placeId]="placeId"></home-header>
+  <home-header [placeId]="placeId" (familyExpandBlock)="isOpenFamilyExpandBlock($event)"></home-header>
 
   <home-media [placeId]="placeId"
               [activeImageIndex]="activeImageIndex"
+              [openFamilyExpandBlock]="openFamilyExpandBlock"
               (activeImageOptions)="activeImageOptions($event)"></home-media>
 </div>
 

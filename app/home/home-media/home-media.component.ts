@@ -11,11 +11,12 @@ import {
   ElementRef
 } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { HomeMediaViewBlockComponent } from './home-media-view-block/home-media-view-block.component';
 import { LoaderComponent } from '../../common/loader/loader.component';
 import { Config, ImageResolutionInterface } from '../../app.config';
+import * as _ from 'lodash';
 
 let tpl = require('./home-media.template.html');
 let style = require('./home-media.css');
@@ -42,14 +43,18 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input('activeImageIndex')
   private activeImageIndex: number;
 
+  @Input('openFamilyExpandBlock')
+  private openFamilyExpandBlock: Observable<any>;
+
   @Output('activeImageOptions')
   private activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
   private prevImageId: string;
   private homeMediaService: any;
   private images: any = [];
-  private familyPlaceServiceSubscribe: Subscriber<any>;
+  private familyPlaceServiceSubscribe: Subscription;
   private resizeSubscribe: Subscription;
+  private openFamilyExpandBlockSubscribe: Subscription;
   private zone: NgZone;
   private imageHeight: number;
   private footerHeight: number;
@@ -71,6 +76,24 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
+    this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this
+        .openFamilyExpandBlock
+        .subscribe((data: any): void => {
+          let familyImageIndex: number = 0;
+
+          let familyImage: any = _.find(this.images, (image: any, index: number) => {
+            if (image.thing === data.thingId) {
+              familyImageIndex = index;
+
+              return image;
+            }
+          });
+
+          if (familyImage) {
+            this.openMedia(familyImage, familyImageIndex);
+          }
+        });
+
     if (this.windowInnerWidth > 767 && this.windowInnerWidth < 1024) {
       this.zoom = 3;
     }
@@ -171,6 +194,10 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.openFamilyExpandBlockSubscribe) {
+      this.openFamilyExpandBlockSubscribe.unsubscribe();
     }
   }
 

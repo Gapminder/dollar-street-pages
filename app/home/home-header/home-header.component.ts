@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy, Input, NgZone, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscriber, Subscription } from 'rxjs/Rx';
@@ -26,7 +26,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   protected aboutDataPosition: {left?: number;top?: number;} = {};
   protected windowHeight: number = window.innerHeight;
   protected maxHeightPopUp: number = this.windowHeight * .95 - 91;
-  protected Angulartics2GoogleAnalytics:any;
+  protected Angulartics2GoogleAnalytics: any;
 
   @Input('placeId')
   private placeId: string;
@@ -39,6 +39,9 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private headerElement: HTMLElement;
   private headerHeight: number;
   private headerContentHeight: number;
+
+  @Output('familyExpandBlock')
+  private familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(@Inject('HomeHeaderService') homeHeaderService: any,
                      @Inject(ElementRef) element: ElementRef,
@@ -150,14 +153,19 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
   protected scrollToStart(event: MouseEvent): void {
     let targetElement = event.target as HTMLElement;
+    let elementClassName: string = targetElement.className;
 
-    if (targetElement.className === 'short-about-info-image') {
+    if (elementClassName === 'short-about-info-image' || elementClassName === 'portrait') {
       return;
     }
 
     event.preventDefault();
 
     this.animateScroll('scrollBackToTop', 20, 1000);
+  }
+
+  protected openExpandBlock(): void {
+    this.familyExpandBlock.emit({thingId: this.home.familyThingId});
   }
 
   private animateScroll(id: string, inc: number, duration: number): any {

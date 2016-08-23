@@ -6,7 +6,7 @@ import { MainMenuComponent } from '../common/menu/menu.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { HomeMediaComponent } from './home-media/home-media.component';
 import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscriber, Subscription, Subject } from 'rxjs/Rx';
 
 let _ = require('lodash');
 
@@ -40,7 +40,7 @@ interface UrlParamsInterface {
 
 export class HomeComponent implements OnInit, OnDestroy {
   protected titles: any = {};
-  protected Angulartics2GoogleAnalytics: any;
+  protected openFamilyExpandBlock: Subject<any> = new Subject<any>();
   private placeId: string;
   private urlParams: UrlParamsInterface;
   private homeIncomeFilterService: any;
@@ -56,14 +56,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   private urlChangeService: any;
   private windowHistory: any = history;
   private queryParamsSubscribe: Subscription;
+  private angulartics2GoogleAnalytics: any;
 
   public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
                      @Inject('HomeIncomeFilterService') homeIncomeFilterService: any,
                      @Inject('UrlChangeService') urlChangeService: any,
                      @Inject(Router) router: Router,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.router = router;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.homeIncomeFilterService = homeIncomeFilterService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
@@ -162,6 +163,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.urlChangeService.replaceState('/family', url);
   }
 
+  protected isOpenFamilyExpandBlock(data: any): void {
+    this.openFamilyExpandBlock.next(data);
+  }
+
   private initData(): void {
     this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
     this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
@@ -177,7 +182,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         highIncome: this.rich
       }]);
 
-      this.Angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from Home page `);
+      this.angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from Home page `);
 
       return;
     }
