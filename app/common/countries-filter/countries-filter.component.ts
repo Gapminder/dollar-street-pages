@@ -87,12 +87,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  protected unfocus(): void {
-    if (!isDesktop) {
-        this.element.nativeElement.querySelector('.autofocus').blur();
-    }
-  }
-
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
     this.search = '';
@@ -233,6 +227,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnDestroy(): void {
     this.countriesFilterServiceSubscribe.unsubscribe();
+
+    if (this.keyUpSubscribe.unsubscribe) {
+      this.keyUpSubscribe.unsubscribe();
+    }
 
     if (this.resizeSubscribe.unsubscribe) {
       this.resizeSubscribe.unsubscribe();

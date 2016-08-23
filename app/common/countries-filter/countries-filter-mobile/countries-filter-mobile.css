@@ -97,6 +97,8 @@
   margin-bottom: 16px;
 }
 
+
+
 #countries-filter .all-filter {
   color: #374551;
   font-size: 24px;
@@ -359,3 +361,25 @@
 
 /* IE */
 
+@media (max-width: 767px) {
+  #countries-filter .regions-container:nth-child(odd) {
+    width: 40%;
+  }
+
+  #countries-filter .regions-container:nth-child(even) {
+    width: 60%;
+  }
+
+  #countries-filter .regions-container,
+  #countries-filter .pointer-search-container {
+    padding: 0 8px;
+  }
+
+  .country-content {
+    padding: 10px 8px;
+  }
+
+  #countries-filter .title {
+    padding: 18px 8px;
+  }
+}
