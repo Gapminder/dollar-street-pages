@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 
 let tpl = require('./country-info.template.html');
 let style = require('./country-info.css');
@@ -19,19 +19,20 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   protected isShowInfo: boolean;
   protected country: any;
   protected thing: any;
-  protected placesQuantity: any;
-  protected photosQuantity: any;
-  protected videosQuantity: any;
+  protected placesQuantity: number;
+  protected photosQuantity: number;
+  protected videosQuantity: number;
 
   @Input()
   private countryId: string;
   private countryInfoService: any;
-  private countryInfoServiceSubscribe: Subscriber<any>;
+  private countryInfoServiceSubscribe: Subscription;
 
   @Output()
   private getCountry: EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(@Inject('CountryInfoService') countryInfoService: any, @Inject('Math') math: any) {
+  public constructor(@Inject('CountryInfoService') countryInfoService: any,
+                     @Inject('Math') math: any) {
     this.countryInfoService = countryInfoService;
     this.math = math;
     this.isShowInfo = false;

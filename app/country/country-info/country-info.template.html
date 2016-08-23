@@ -1,79 +1,60 @@
-<div id="country-info">
-  <div class="header">
-    <region-map *ngIf="mapData"
-                [mapData]="mapData"
-                [routerLink]="['/map']"
-                [queryParams]="{thing: thing}"
-                angulartics2On="click"
-                angularticsEvent="From {{country.country}} country page to Map page"></region-map>
+<div id="item-profile">
+  <div class="item-profile-header">
+    <div class="box-container">
+      <region-map *ngIf="mapData"
+                  [mapData]="mapData"
+                  [routerLink]="['/map']"
+                  [queryParams]="{thing: thing}"
+                  angulartics2On="click"
+                  angularticsEvent="From {{country.country}} country page to Map page"></region-map>
+    </div>
 
     <p class="description" *ngIf="country?.description">{{country.description}}</p>
   </div>
-
-  <div class="main">
-    <p class="home" *ngIf="placesQuantity">
-      <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span
-      class="pull-right">{{math.round(placesQuantity) || 0}}</span>
-    </p>
-
-    <p class="photo">
-      <i class="fa fa-camera"></i> Total Photos: <span class="pull-right">{{math.round(photosQuantity) || 0}}</span>
-    </p>
-
-    <p class="camera" *ngIf="videosQuantity">
-      <i class="fa fa-video-camera"></i> Total Videos: <span
-      class="pull-right">{{math.round(videosQuantity) || 0}}</span>
-    </p>
-  </div>
 </div>
 
-<div id="mobile-country-info" class="row" [ngClass]="{'open': isShowInfo}">
-  <div class="image-container">
+<div id="item-profile-mobile" [ngClass]="{'open': isShowInfo}">
+  <div class="box-container">
     <region-map *ngIf="mapData"
                 [mapData]="mapData"
                 [routerLink]="['/map']"
                 [queryParams]="{thing: thing}"
                 angulartics2On="click"
                 angularticsEvent="From {{country.country}} country page to Map page"></region-map>
-
-    <div class="more-info" *ngIf="country?.description">
-        <span (click)="isShowInfo = !isShowInfo">
-          <span [hidden]="isShowInfo">More Info »</span>
-          <span [hidden]="!isShowInfo">Hide Info »</span>
-        </span>
-    </div>
   </div>
 
-  <div class="country-description">
-    <div class="country-description-header">
+  <div class="item-description">
+    <div class="item-description-header">
+      <div class="home">
+        <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{math.round(placesQuantity)}}</span>
+      </div>
 
-      <div class="count">
-        <p class="home" *ngIf="placesQuantity">
-          <img src="/assets/img/house-icon.png" alt=""> Visited Families: <span>{{placesQuantity || 0}}</span>
-        </p>
+      <div class="photo">
+        <i class="fa fa-camera"></i> Total Photos: <span>{{math.round(photosQuantity)}}</span>
+      </div>
 
-        <p class="photo">
-          <i class="fa fa-camera"></i> Total Photos: <span>{{photosQuantity || 0}}</span>
-        </p>
+      <div class="camera" *ngIf="videosQuantity">
+        <i class="fa fa-video-camera"></i> Total Videos: <span>{{math.round(videosQuantity)}}</span>
+      </div>
 
-        <p class="camera" *ngIf="videosQuantity">
-          <i class="fa fa-video-camera"></i> Total Videos: <span>{{videosQuantity || 0}}</span>
+      <div class="more-info"
+           *ngIf="country?.description">
+        <p (click)="isShowInfo = !isShowInfo">
+          <img src="/assets/img/read-more-icon.svg" alt="">
+          <span>{{!isShowInfo ? 'Show details' : 'Hide details'}}</span>
         </p>
       </div>
     </div>
 
-    <div class="country-description-footer"
+    <div class="item-description-footer"
          *ngIf="country?.description">
-      <div class="company-description line-clamp"
-           [ngClass]="{'line-clamp-2': !isShowInfo}"
-           *ngIf="country?.description">{{country.description}}
-      </div>
+      <div class="company-description line-clamp">{{country.description}}</div>
 
       <div class="more-info">
-        <span (click)="isShowInfo = !isShowInfo">
-          <span [hidden]="isShowInfo">More Info »</span>
-          <span [hidden]="!isShowInfo">Hide Info »</span>
-        </span>
+        <p (click)="isShowInfo = !isShowInfo">
+          <img src="/assets/img/read-more-icon.svg" alt="">
+          <span>{{!isShowInfo ? 'Show details' : 'Hide details'}}</span>
+        </p>
       </div>
     </div>
   </div>

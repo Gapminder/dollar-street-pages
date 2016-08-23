@@ -11,19 +11,16 @@
 @media (max-width: 1023px) {
   .container {
     width: 100%;
-    padding-top: 62px;
+    padding: 57px 0 0;
+  }
+
+  .container .row {
+    margin: 0;
   }
 
   .container .row > div {
     float: none;
     width: 100%;
-    padding-right: 8px;
-    padding-left: 8px;
-  }
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding-top: 44px;
+    padding: 0;
   }
 }

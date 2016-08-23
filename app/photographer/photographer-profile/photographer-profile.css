@@ -1,28 +1,28 @@
-#photographer-profile {
+#item-profile {
   color: #374551;
   font-size: 18px;
 }
 
-#photographer-profile p {
+#item-profile p {
   margin: 0;
 }
 
-#photographer-profile p.description {
+#item-profile p.description {
   font-size: 14px;
   color: #767d86;
   word-wrap: break-word;
 }
 
-#photographer-profile .header img {
+#item-profile .item-profile-header img {
   width: 100%;
 }
 
-#photographer-profile .header .avatar-box {
+#item-profile .item-profile-header .box-container {
   margin-bottom: 15px;
   position: relative;
 }
 
-#photographer-profile .header .avatar-box .country {
+#item-profile .item-profile-header .box-container .country {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -33,87 +33,87 @@
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
 }
 
-#photographer-profile .header .country img {
+#item-profile .item-profile-header .country img {
   width: 10px;
   margin: -5px 0 0;
 }
 
-#photographer-profile .main {
+#item-profile .main {
   border-top: 1px solid #e2e6ec;
   border-bottom: 1px solid #e2e6ec;
   margin: 15px 0;
   padding: 7px 0;
 }
 
-#photographer-profile .main i {
+#item-profile .main i {
   color: #767d86;
   margin-right: 2px;
 }
 
-#photographer-profile .main .photo {
+#item-profile .main .photo {
   margin: 10px 0;
 }
 
-#photographer-profile .main .home img {
+#item-profile .main .home img {
   width: 13px;
   margin-top: -6px;
   margin-right: 2px;
 }
 
-#photographer-profile .main .photo i {
+#item-profile .main .photo i {
   font-size: 13px;
 }
 
-#photographer-profile .main .camera i {
+#item-profile .main .camera i {
   font-size: 14px;
 }
 
-#photographer-profile .main span {
+#item-profile .main span {
   font-size: 14px;
   color: #767d86;
   margin-top: 5px;
 }
 
-#photographer-profile .footer-profile + .footer-profile {
+#item-profile .footer-profile + .footer-profile {
   border-top: 1px solid #e2e6ec;
   padding-top: 15px;
   margin-top: 11px;
 }
 
-#photographer-profile .footer-profile h3,
-#photographer-profile .header h2 {
+#item-profile .footer-profile h3,
+#item-profile .item-profile-header h2 {
   font-family: 'Bariol Bold', sans-serif;
   font-size: 18px;
   margin: 0 0 5px;
   text-transform: uppercase;
 }
 
-#photographer-profile .footer-profile h3 {
+#item-profile .footer-profile h3 {
   font-size: 14px;
   margin-bottom: 5px;
 }
 
-#photographer-profile .header p {
+#item-profile .item-profile-header p {
   color: #767d86;
 }
 
-#photographer-profile .footer-profile .social-network-container {
+#item-profile .footer-profile .social-network-container {
   margin-top: 7px;
 }
 
-#photographer-profile .footer-profile .social-network-container a {
+#item-profile .footer-profile .social-network-container a {
   color: #374551;
   font-size: 20px;
   display: inline-block;
   margin-right: 15px;
 }
 
-#photographer-profile .organisation p {
+#item-profile .organisation p {
   color: #727982;
   font-size: 16px;
 }
 
-#photographer-profile .footer-profile > a {
+#item-profile .footer-profile > a {
   color: #374551;
   font-size: 13px;
   display: block;
@@ -121,314 +121,263 @@
   word-wrap: break-word;
 }
 
-#mobile-photographer-profile {
-  background-color: #f4fafb;
-  margin: 0 -8px 20px;
-  padding: 20px 15px;
+#item-profile-mobile {
   display: none;
-  position: relative;
-}
-
-#mobile-photographer-profile > div {
-  float: left;
-}
-
-#mobile-photographer-profile .image-container {
-  width: 172px;
-}
-
-#mobile-photographer-profile .image-container img {
-  width: 100%;
-}
-
-#mobile-photographer-profile .image-container .avatar-box {
-  position: relative;
-}
-
-#mobile-photographer-profile .image-container .avatar-box .country {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  text-align: center;
-  color: white;
-  font-size: 18px;
-  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
-}
-
-#mobile-photographer-profile .image-container .avatar-box .country img {
-  width: 10px;
-  vertical-align: middle;
-}
-
-#mobile-photographer-profile .social-network-container {
-  text-align: center;
-  display: none;
-}
-
-#mobile-photographer-profile .social-network-container a {
-  display: inline-block;
-  margin: 10px 10px 0;
-}
-
-#mobile-photographer-profile .social-network-container i {
-  font-size: 20px;
-  color: #3a4550;
-}
-
-#mobile-photographer-profile .photographer-description {
-  width: calc(100% - 172px);
-  padding-left: 20px;
-}
-
-#mobile-photographer-profile .photographer-description h2 {
-  color: #3a4550;
-  font-size: 18px;
-  font-family: 'Bariol Bold', sans-serif;
-  line-height: 20px;
-  text-transform: uppercase;
-  margin: -4px 0 20px;
-}
-
-#mobile-photographer-profile .photographer-description h2 span {
-  color: #767d86;
-  font-size: 18px;
-  font-family: 'Bariol Regular', sans-serif;
-  text-transform: capitalize;
-  display: inline-block;
-  margin-left: 20px;
-}
-
-#mobile-photographer-profile .photographer-description h2 span img {
-  width: 10px;
-  margin-top: -6px;
-}
-
-#mobile-photographer-profile .count {
-  overflow: hidden;
+  padding: 20px 10px;
   margin-bottom: 20px;
+  overflow: hidden;
 }
 
-#mobile-photographer-profile .count p {
+#item-profile-mobile.open {
+  box-shadow: 0 2px 3.9px 0.1px rgba(0, 0, 0, 0.14);
+}
+
+#item-profile-mobile .box-container {
+  width: 175px;
+  margin-right: 20px;
   float: left;
-  width: 33.33%;
-  margin: 0;
+}
+
+#item-profile-mobile .box-container .box-image-container {
+  position: relative;
+}
+
+#item-profile-mobile .box-container .box-image-container > img {
+  width: 100%;
+  border-radius: 3px;
+}
+
+#item-profile-mobile .box-container .country {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  color: #fff;
+  font-size: 18px;
+  padding: 2px 5px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+  text-align: center;
+}
+
+#item-profile-mobile .box-container .country img {
+  width: 10px;
+  margin-top: -5px;
+}
+
+#item-profile-mobile .item-description {
+  width: calc(100% - 195px);
+  float: right;
+}
+
+#item-profile-mobile .item-description-header {
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+#item-profile-mobile .item-description-header > div {
+  width: 33%;
+  float: left;
   font-size: 16px;
 }
 
-#mobile-photographer-profile .count p i {
-  color: #767d86;
-  margin-right: 5px;
-}
-
-#mobile-photographer-profile .count p.home img {
+#item-profile-mobile .item-description-header img {
   width: 13px;
   margin-top: -5px;
 }
 
-#mobile-photographer-profile .count p.photo i {
+#item-profile-mobile .item-description-header i {
   font-size: 13px;
+  color: #767d86;
 }
 
-#mobile-photographer-profile .count p.camera i {
-  font-size: 15px;
-}
-
-#mobile-photographer-profile .count p span {
+#item-profile-mobile .item-description-header span {
   color: #767d86;
   font-size: 14px;
 }
 
-#mobile-photographer-profile .photographer-description-footer .company-container {
-  overflow: hidden;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #e3e6eb;
+#item-profile-mobile .item-description-footer .company-description {
+  color: #767d86;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+#item-profile-mobile .more-info {
+  margin-top: 15px;
+}
+
+#item-profile-mobile .item-description-header .more-info {
   display: none;
 }
 
-#mobile-photographer-profile .photographer-description-footer .company-container > div {
+#item-profile-mobile .more-info p {
+  margin: 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+#item-profile-mobile .more-info img {
+  width: 11px;
+  margin-top: -5px;
+}
+
+#item-profile-mobile .more-info span {
+  font-size: 18px;
+  color: #374551;
+}
+
+#item-profile-mobile.open .more-info img {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+#item-profile-mobile .company-container {
+  overflow: hidden;
+  background-color: #fff;
+  padding: 15px 0 0;
+  border-top: 1px solid #e3e6eb;
+  margin-top: 15px;
+  display: none;
+}
+
+#item-profile-mobile.open .company-container {
+  display: block;
+}
+
+#item-profile-mobile .company-container > div {
   float: left;
   width: 50%;
 }
 
-#mobile-photographer-profile .photographer-description-footer .company-container h3 {
+#item-profile-mobile .company-container h3 {
+  margin: 0 0 10px;
   font-size: 14px;
-  text-transform: uppercase;
   font-family: 'Bariol Bold', sans-serif;
-  margin-top: 0;
+  text-transform: uppercase;
 }
 
-#mobile-photographer-profile .photographer-description-footer p {
-  color: #727982;
+#item-profile-mobile .company-container .social-network-container {
+  margin-bottom: 3px;
+}
+
+#item-profile-mobile .company-container .social-network-container i {
+  color: #374551;
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+#item-profile-mobile .company-container p {
   font-size: 16px;
+  color: #767d86;
   margin: 0;
 }
 
-#mobile-photographer-profile .photographer-description-footer a {
-  color: #3a4550;
-  font-size: 14px;
-  padding-top: 4px;
-}
-
-#mobile-photographer-profile .more-info {
-  color: #eec74e;
-  font-size: 16px;
-  margin-top: 15px;
-}
-
-#mobile-photographer-profile .more-info span {
-  cursor: pointer;
-}
-
-#mobile-photographer-profile .image-container .more-info {
-  display: none;
-  margin-top: 3px;
-}
-
-#mobile-photographer-profile.open .company-container,
-#mobile-photographer-profile.open .social-network-container {
-  display: block !important;
+#item-profile-mobile .company-container p a {
+  font-size: 13px;
+  color: #374551;
 }
 
 @media (max-width: 1200px) {
-  #photographer-profile {
+  #item-profile {
     font-size: 14px;
   }
 
-  #photographer-profile .main .home i {
+  #item-profile .main .home i {
     font-size: 12px;
   }
 
-  #photographer-profile .main .photo i {
+  #item-profile .main .photo i {
     font-size: 10px;
   }
 
-  #photographer-profile .main .camera i {
+  #item-profile .main .camera i {
     font-size: 11px;
   }
 
-  #photographer-profile .main span {
+  #item-profile .main span {
     margin-top: 1px;
   }
 }
 
 @media (max-width: 1023px) {
-  #photographer-profile {
+  #item-profile {
     display: none;
   }
 
-  #mobile-photographer-profile {
+  #item-profile-mobile {
     display: block;
-  }
-
-  #mobile-photographer-profile .photographer-description-footer .company-description {
-    color: #747d87;
-  }
-
-  #mobile-photographer-profile .photographer-description-footer .company-container h3 {
-    margin-bottom: 5px;
   }
 }
 
-@media (max-width: 600px) {
-  #mobile-photographer-profile {
-    padding: 10px 8px;
+@media (max-width: 767px) {
+  #item-profile-mobile {
+    padding: 15px 5px 0;
+    margin-bottom: 25px;
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  #mobile-photographer-profile .image-container {
-    width: 130px;
+  #item-profile-mobile.open {
+    box-shadow: none;
   }
 
-  #mobile-photographer-profile .photographer-description {
-    width: calc(100% - 130px);
+  #item-profile-mobile .box-container {
+    width: 140px;
+    margin-right: 10px;
   }
 
-  #mobile-photographer-profile .photographer-description h2 {
+  #item-profile-mobile .item-description {
+    width: calc(100% - 150px);
+  }
+
+  #item-profile-mobile .item-description-header {
+    position: relative;
+    height: 100%;
+  }
+
+  #item-profile-mobile .item-description-header > div {
+    width: 100%;
     font-size: 14px;
     margin-bottom: 10px;
   }
 
-  #mobile-photographer-profile .photographer-description h2 span {
-    display: block;
-    margin: 0;
-    font-size: 14px;
-  }
-
-  #mobile-photographer-profile .photographer-description h2 span img {
-    width: 9px;
-  }
-
-  #mobile-photographer-profile .count {
-    margin: 0;
-  }
-
-  #mobile-photographer-profile .count p {
-    width: 100%;
-    float: none;
-    margin-bottom: 3px;
-    font-size: 14px;
-  }
-
-  #mobile-photographer-profile .more-info {
-    font-size: 14px;
-  }
-
-  #mobile-photographer-profile .count p.home img {
-    margin-right: 6px;
-  }
-
-  #mobile-photographer-profile .count p span {
+  #item-profile-mobile .item-description-header span {
     font-size: 13px;
   }
 
-  #mobile-photographer-profile .photographer-description .more-info {
-    display: none;
-  }
-
-  #mobile-photographer-profile .image-container .more-info {
+  #item-profile-mobile .item-description-header .more-info {
     display: block;
-    margin-top: 5px;
-  }
-
-  #mobile-photographer-profile .social-network-container {
-    text-align: left;
-  }
-
-  #mobile-photographer-profile .social-network-container a {
-    margin: 10px 0 0 17px;
-  }
-
-  #mobile-photographer-profile .social-network-container a:first-child {
-    margin: 10px 0 0;
-  }
-
-  #mobile-photographer-profile .photographer-description-footer {
-    display: none;
     position: absolute;
-    top: 96%;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+  }
+
+  #item-profile-mobile .item-description-header .more-info span {
+    font-size: 15px;
+  }
+
+  #item-profile-mobile .item-description-footer,
+  #item-profile-mobile .item-description-footer .more-info {
+    display: none;
+  }
+
+  #item-profile-mobile.open .item-description-footer {
+    display: block;
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
-    background-color: #f4fafb;
-    z-index: 9;
-    padding: 0 8px 15px;
+    background: #fff;
+    z-index: 1;
+    padding: 15px 5px;
+    box-shadow: 0 2px 3.9px 0.1px rgba(0, 0, 0, 0.14);
   }
 
-  #mobile-photographer-profile.open .photographer-description-footer {
-    display: block;
-    box-shadow: 0 4px 5.3px 0.7px rgba(0, 0, 0, 0.24);
-  }
-
-  #mobile-photographer-profile .company-description {
-    font-size: 13px;
-  }
-
-  #mobile-photographer-profile .photographer-description-footer .company-container {
-    margin-top: 10px;
-    padding-top: 10px;
-  }
-
-  #mobile-photographer-profile .photographer-description-footer .company-container h3 {
-    margin-bottom: 0;
+  #item-profile-mobile .box-container .country {
+    font-size: 14px;
   }
 }

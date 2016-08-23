@@ -13,6 +13,7 @@
 .home-description-container .image-container {
   width: 252px;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .home-description-container .image-container.mobile {
