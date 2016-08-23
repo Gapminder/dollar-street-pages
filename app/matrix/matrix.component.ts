@@ -39,15 +39,15 @@ let style = require('./matrix.css');
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces: any[] = [];
   protected zoomPositionFixed: boolean = false;
-  public clearActiveHomeViewBox: Subject<any> = new Subject();
+  public clearActiveHomeViewBox: Subject<any> = new Subject<any>();
 
   public query: string;
   public matrixService: any;
-  public streetPlaces: Subject<any> = new Subject();
-  public matrixPlaces: Subject<any> = new Subject();
-  public chosenPlaces: Subject<any> = new Subject();
-  public hoverPlace: Subject<any> = new Subject();
-  public padding: Subject<any> = new Subject();
+  public streetPlaces: Subject<any> = new Subject<any>();
+  public matrixPlaces: Subject<any> = new Subject<any>();
+  public chosenPlaces: Subject<any> = new Subject<any>();
+  public hoverPlace: Subject<any> = new Subject<any>();
+  public padding: Subject<any> = new Subject<any>();
   public loader: boolean = false;
   public lowIncome: number;
   public highIncome: number;

@@ -22,4 +22,8 @@
     text-align: center;
     margin-top: 24px;
   }
+
+  .follow-button-container .follow-text {
+    font-size: 16px;
+  }
 }

@@ -4,3 +4,9 @@ team-list {
   overflow: hidden;
   display: block;
 }
+
+@media (max-width: 1023px) {
+  team-list {
+    padding-top: 57px;
+  }
+}

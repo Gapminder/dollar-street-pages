@@ -119,6 +119,7 @@ consumer-app > *:not(router-outlet):not(photographers) {
   margin-left: 35px;
 }
 
+<<<<<<< HEAD
 .line-clamp {
   display: block;
   display: -webkit-box;
@@ -150,6 +151,10 @@ consumer-app > *:not(router-outlet):not(photographers) {
 .line-clamp-1 {
   -webkit-line-clamp: 1;
   max-height: calc(16px * 1.42857143 * 2);
+=======
+#main-menu .share-button-container i {
+  color: #e0e7ef;
+>>>>>>> 02f451e667d0836d8efe5ef859120a93cd8aec60
 }
 
 .text-center {
@@ -267,6 +272,44 @@ gm-entries-view p {
   line-height: 30px;
 }
 
+.line-clamp {
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  position: relative;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 !important;
+}
+
+.line-clamp:after {
+  content: '';
+  text-align: right;
+  top: 0;
+  right: 0;
+  width: 25%;
+  display: block;
+  position: absolute;
+  height: calc(16px * 1.42857143);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+}
+
+.line-clamp-1 {
+  -webkit-line-clamp: 1;
+  max-height: calc(16px * 1.42857143);
+}
+
+.line-clamp-3 {
+  -webkit-line-clamp: 3;
+  max-height: calc(14px * 1.42857143 * 3);
+}
+
+.line-clamp-3:after {
+  top: calc(14px * 1.42857143 * 2);
+  height: calc(14px * 1.42857143);
+}
+
 @supports (-webkit-line-clamp: 1) {
   .line-clamp:after {
     display: none !important;
@@ -288,23 +331,10 @@ matrix .matrix-header header {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
   svg .poorest,
   svg .richest,
   svg .scale-label {
     font-size: 12px;
-  }
-
-  .map-header .menu-icon,
-  .header-without-search .menu-icon {
-    height: 42px !important;
-  }
-
-  .map-header .container {
-    padding: 0 0 0 8px;
-  }
-
-  matrix .matrix-header .menu-icon {
-    height: 42px !important;
   }
 }

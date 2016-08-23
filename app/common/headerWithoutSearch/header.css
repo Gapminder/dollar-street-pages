@@ -53,16 +53,15 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
   .header .logo {
-    margin-top: 5px;
-    width: 32px;
+    width: 35px;
+    height: 35px;
+    margin: 10px 8px 10px 0;
   }
 
   .header .heading {
-    font-size: 18px;
-    margin: 12px 0 0 10px;
-    line-height: 18px;
-    width: calc(100% - 110px);
+    margin: 15px 0 0;
+    width: calc(100% - 90px);
   }
 }
