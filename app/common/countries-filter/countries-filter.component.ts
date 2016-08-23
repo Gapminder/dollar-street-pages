@@ -58,6 +58,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   private element: ElementRef;
   private zone: NgZone;
   private resizeSubscribe: Subscription;
+  private keyUpSubscribe: Subscription;
 
   public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
                      @Inject(ElementRef) element: ElementRef,
@@ -86,6 +87,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  protected unfocus(): void {
+    if (!isDesktop) {
+        this.element.nativeElement.querySelector('.autofocus').blur();
+    }
+  }
+
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
     this.search = '';
@@ -96,6 +103,15 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.isOpenCountriesFilter && !isDesktop) {
       let tabContent = this.element.nativeElement.querySelector('.countries-container') as HTMLElement;
+      let inputElement = this.element.nativeElement.querySelector('.form-control') as HTMLInputElement;
+
+      this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
+        .subscribe((e: KeyboardEvent) => {
+          if (e.keyCode === 13) {
+            inputElement.blur();
+          }
+        });
+
       setTimeout(() => {
         tabContent.scrollTop = 0;
       }, 0);

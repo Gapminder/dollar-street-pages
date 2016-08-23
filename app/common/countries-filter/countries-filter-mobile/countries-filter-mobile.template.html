@@ -32,7 +32,7 @@
                type="search"
                placeholder="Search country"
                [(ngModel)]="search">
-        <img src="/assets/img/search-icon.svg" alt="Search icon">
+        <img src="/assets/img/search-icon.svg" (click)="unfocus()" alt="Search icon">
       </div>
     </div>
 
