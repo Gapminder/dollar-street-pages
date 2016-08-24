@@ -119,3 +119,13 @@
   }
 
 }
+
+@media (max-width: 767px) {
+  .header-content .icon-container {
+    display: none;
+  }
+
+  .header-content main-menu {
+    display: none;
+  }
+}
