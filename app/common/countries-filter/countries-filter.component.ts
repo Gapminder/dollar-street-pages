@@ -55,7 +55,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   private cloneSelectedRegions: string[] = ['World'];
   private cloneSelectedCountries: string[] = ['World'];
 
-  private element: ElementRef;
+  private element: HTMLElement;
   private zone: NgZone;
   private resizeSubscribe: Subscription;
   private keyUpSubscribe: Subscription;
@@ -64,7 +64,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
                      @Inject(ElementRef) element: ElementRef,
                      @Inject(NgZone) zone: NgZone) {
     this.countriesFilterService = countriesFilterService;
-    this.element = element;
+    this.element = element.nativeElement;
     this.zone = zone;
   }
 
@@ -79,8 +79,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   @HostListener('document:click', ['$event'])
-  public isOutsideThingsFilterClick(event: Event): void {
-    if (!this.element.nativeElement.contains(event.target) && this.isOpenCountriesFilter) {
+  public isOutsideThingsFilterClick(event: any): void {
+    if (!this.element.contains(event.target) && this.isOpenCountriesFilter) {
 
       this.openCloseCountriesFilter(true);
       this.search = '';
@@ -96,8 +96,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     if (this.isOpenCountriesFilter && !isDesktop) {
-      let tabContent = this.element.nativeElement.querySelector('.countries-container') as HTMLElement;
-      let inputElement = this.element.nativeElement.querySelector('.form-control') as HTMLInputElement;
+      let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
+      let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
 
       this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
         .subscribe((e: KeyboardEvent) => {
@@ -119,7 +119,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
       if (isDesktop) {
         setTimeout(() => {
-          this.element.nativeElement.querySelector('.autofocus').focus();
+          (this.element.querySelector('.autofocus') as HTMLInputElement).focus();
         });
       }
     }
