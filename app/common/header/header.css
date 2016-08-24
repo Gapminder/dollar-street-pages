@@ -121,6 +121,10 @@
 }
 
 @media (max-width: 767px) {
+  .filters-container .some-filter-container {
+    display: block;
+  }
+
   .header-content .icon-container {
     display: none;
   }
