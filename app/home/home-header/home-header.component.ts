@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Config } from '../../app.config';
 
@@ -31,7 +31,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   @Input('placeId')
   private placeId: string;
   private homeHeaderService: any;
-  private homeHeaderServiceSubscribe: Subscriber<any>;
+  private homeHeaderServiceSubscribe: Subscription;
   private scrollSubscribe: Subscription;
   private resizeSubscribe: Subscription;
   private zone: NgZone;

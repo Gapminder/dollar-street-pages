@@ -1,12 +1,8 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { CountryInfoComponent } from './country-info/country-info.component';
 import { CountryPlacesComponent } from './country-places/country-places.component.ts';
-import { FooterComponent } from '../common/footer/footer.component';
-import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
-import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./country.template.html');
 let style = require('./country.css');
@@ -16,12 +12,8 @@ let style = require('./country.css');
   template: tpl,
   styles: [style],
   directives: [
-    HeaderWithoutSearchComponent,
     CountryInfoComponent,
-    CountryPlacesComponent,
-    FooterComponent,
-    FloatFooterComponent,
-    FooterSpaceDirective
+    CountryPlacesComponent
   ]
 })
 
@@ -31,15 +23,19 @@ export class CountryComponent implements OnInit, OnDestroy {
   protected countryId: string;
   private activatedRoute: ActivatedRoute;
   private queryParamsSubscribe: Subscription;
+  private titleHeaderService: any;
 
-  public constructor(@Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
-                     @Inject('Math') math: any) {
+  public constructor(activatedRoute: ActivatedRoute,
+                     @Inject('Math') math: any,
+                     @Inject('TitleHeaderService') titleHeaderService: any) {
     this.activatedRoute = activatedRoute;
+    this.titleHeaderService = titleHeaderService;
     this.math = math;
   }
 
   public ngOnInit(): void {
-    this.queryParamsSubscribe = this.activatedRoute.params
+    this.queryParamsSubscribe = this.activatedRoute
+      .params
       .subscribe((params: any) => {
         this.countryId = params.id;
       });
@@ -47,5 +43,9 @@ export class CountryComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.queryParamsSubscribe.unsubscribe();
+  }
+
+  protected setTitle(title: string): void {
+    this.titleHeaderService.setTitle(title);
   }
 }

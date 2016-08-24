@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { LoaderComponent } from '../../common/loader/loader.component';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 
 let tpl = require('./photographer-places.template.html');
 let style = require('./photographer-places.css');
@@ -14,8 +14,8 @@ let style = require('./photographer-places.css');
 })
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
-  public loader: boolean = false;
-  public photographerPlacesServiceSubscribe: Subscriber<any>;
+  public loader: boolean = true;
+  public photographerPlacesServiceSubscribe: Subscription;
   public math: any;
 
   @Input()
@@ -39,7 +39,7 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
         }
 
         this.places = res.data.places;
-        this.loader = true;
+        this.loader = false;
       });
   }
 

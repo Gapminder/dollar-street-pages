@@ -1,7 +1,8 @@
 import { Component, ViewEncapsulation, Inject, OnInit, OnDestroy } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Router, ROUTER_DIRECTIVES, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { SocialFollowButtonsComponent } from '../social-follow-buttons/social-follow-buttons.component.ts';
+import * as _ from 'lodash';
 
 let tpl = require('./footer.template.html');
 let style = require('./footer.css');
@@ -16,24 +17,44 @@ let style = require('./footer.css');
 
 export class FooterComponent implements OnInit, OnDestroy {
   protected footerData: any = {};
-  protected Angulartics2GoogleAnalytics:any;
+  protected Angulartics2GoogleAnalytics: any;
   private footerService: any;
   private footerServiceSubscribe: Subscription;
   private window: Window = window;
   private isMatrixComponent: boolean;
   private router: Router;
+  private routerEventsSubscribe: Subscription;
+  private page: string;
 
-  public constructor(@Inject('FooterService') footerService: any,
-                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
-                     @Inject(Router) router: Router,
+  public constructor(router: Router,
+                     @Inject('FooterService') footerService: any,
                      @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
     this.footerService = footerService;
-    this.isMatrixComponent = activatedRoute.snapshot.url[0].path === 'matrix';
     this.router = router;
     this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): any {
+    this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        let activePage: string = event
+          .urlAfterRedirects
+          .split('?')
+          .shift();
+
+        this.isMatrixComponent = activePage === '/matrix';
+
+        activePage = _.compact(activePage.split('/')).shift();
+
+        if (activePage !== this.page) {
+          document.body.classList.add(activePage);
+          document.body.classList.remove(this.page);
+        }
+
+        this.page = activePage;
+      }
+    });
+
     this.footerServiceSubscribe = this.footerService.getFooter()
       .subscribe((val: any) => {
         if (val.err) {
@@ -46,13 +67,15 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.routerEventsSubscribe.unsubscribe();
     this.footerServiceSubscribe.unsubscribe();
   }
 
   protected goToMatrixPage(): void {
+    this.Angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from footer `);
+
     if (this.isMatrixComponent) {
       this.window.location.href = this.window.location.origin;
-      this.Angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from footer `);
 
       return;
     }

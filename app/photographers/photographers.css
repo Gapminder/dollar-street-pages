@@ -3,7 +3,6 @@
   height: 100%;
 }
 
-#photographers .container,
 #photographers .row,
 #photographers .left-side-bar {
   height: 100%;
@@ -176,12 +175,6 @@
   font-family: 'Bariol Regular', sans-serif;
 }
 
-@media (min-width: 1400px) {
-  .container {
-    width: 1400px;
-  }
-}
-
 @media (max-width: 1199px) and (min-width: 1024px) {
   .col-md-2 {
     width: 25%;
@@ -193,15 +186,11 @@
 }
 
 @media (max-width: 1023px) {
-  .container {
-    width: 100%;
-  }
-
   #photographers {
     padding-top: 120px;
   }
 
-  .container .row > div {
+  #photographers .row > div {
     float: none;
     width: 100%;
   }

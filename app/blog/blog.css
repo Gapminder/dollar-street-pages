@@ -1,7 +1,3 @@
-#blog-page {
-  padding-top: 125px;
-}
-
 .dynamic-details {
   font-family: 'Bariol Regular', sans-serif;
 }
@@ -44,6 +40,9 @@
   border: 1px solid #dce3ec;
   position: relative;
   display: block;
+  height: 240px;
+  background-position: 50% 50%;
+  background-size: cover;
 }
 
 .dynamic-wrap-img img {
@@ -126,6 +125,7 @@
   display: block;
 }
 
-#blog-page.article-page #articles-container.container {
-  width: 745px;
+#blog-page.article-page #articles-container {
+  width: 768px;
+  margin: 0 auto;
 }

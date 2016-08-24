@@ -29,7 +29,7 @@ let style = require('./home-media.css');
 })
 
 export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
-  protected loader: boolean = false;
+  protected loader: boolean = true;
   protected zoom: number = 4;
 
   protected itemSize: number;
@@ -179,8 +179,8 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     setTimeout(() => {
       this.getImageHeight();
-      this.loader = true;
-    });
+      this.loader = false;
+    }, 0);
 
     if (this.activeImageIndex && this.isInit) {
       this.isInit = false;

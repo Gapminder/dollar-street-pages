@@ -17,8 +17,8 @@
 
 main-menu social-share-buttons {
   display: inline-block;
+  vertical-align: top;
 }
-
 
 float-footer .share-button-container .share-button i {
   font-size: 28px;

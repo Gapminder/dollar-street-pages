@@ -1,24 +1,20 @@
-.container {
-  padding-top: 120px;
-}
-
-@media (min-width: 1400px) {
-  .container {
-    width: 1400px;
-  }
+.country-container {
+  margin-top: 66px;
+  padding-top: 61px;
+  padding-bottom: 70px;
 }
 
 @media (max-width: 1023px) {
-  .container {
-    width: 100%;
-    padding: 57px 0 0;
+  .country-container {
+    padding-top: 57px;
+    padding-bottom: 35px;
   }
 
-  .container .row {
+  .country-container.row {
     margin: 0;
   }
 
-  .container .row > div {
+  .country-container.row > div {
     float: none;
     width: 100%;
     padding: 0;

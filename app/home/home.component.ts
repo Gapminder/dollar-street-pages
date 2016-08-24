@@ -1,12 +1,9 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
-import { FooterComponent } from '../common/footer/footer.component';
-import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { MainMenuComponent } from '../common/menu/menu.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { HomeMediaComponent } from './home-media/home-media.component';
-import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
-import { Subscriber, Subscription, Subject } from 'rxjs/Rx';
+import { Subscription, Subject } from 'rxjs/Rx';
 
 let _ = require('lodash');
 
@@ -30,11 +27,8 @@ interface UrlParamsInterface {
   directives: [
     HomeHeaderComponent,
     HomeMediaComponent,
-    FooterComponent,
-    FloatFooterComponent,
     ROUTER_DIRECTIVES,
-    MainMenuComponent,
-    FooterSpaceDirective
+    MainMenuComponent
   ]
 })
 
@@ -44,13 +38,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   private placeId: string;
   private urlParams: UrlParamsInterface;
   private homeIncomeFilterService: any;
-  private homeIncomeFilterServiceSubscribe: Subscriber<any>;
+  private homeIncomeFilterServiceSubscribe: Subscription;
   private homeIncomeData: any;
   private rich: any;
   private poor: any;
   private router: Router;
   private countriesFilterService: any;
-  private countriesFilterServiceSubscribe: Subscriber<any>;
+  private countriesFilterServiceSubscribe: Subscription;
   private locations: any[];
   private activeImageIndex: number;
   private urlChangeService: any;
@@ -71,8 +65,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-
     this.queryParamsSubscribe = this.router
       .routerState
       .queryParams

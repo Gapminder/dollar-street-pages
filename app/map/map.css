@@ -483,12 +483,6 @@
   background-color: #1e2c37;
 }
 
-@media (min-width: 1400px) {
-  .container {
-    width: 1400px;
-  }
-}
-
 @media (max-width: 1023px) {
   .countries-list {
     -moz-column-count: 4;

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Inject, ElementRef } from '@angular/core'
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { PhotographersFilter } from './photographers-filter.pipe.ts';
-import { LoaderComponent } from '../../common/loader/loader.component';
+import { LoaderComponent } from '../common/loader/loader.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./photographers.template.html');
@@ -12,7 +12,7 @@ let device = require('device.js')();
 const isDesktop: boolean = device.desktop();
 
 @Component({
-  selector: 'photographers-list',
+  selector: 'photographers',
   template: tpl,
   styles: [style],
   directives: [ROUTER_DIRECTIVES, LoaderComponent],
@@ -26,29 +26,31 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   protected Angulartics2GoogleAnalytics: any;
   private photographersService: any;
   private search: any;
-  private loader: boolean;
+  private loader: boolean = true;
   private photographersServiceSubscribe: Subscription;
   private keyUpSubscribe: Subscription;
   private element: HTMLElement;
+  private titleHeaderService: any;
 
   public constructor(element: ElementRef,
                      @Inject('PhotographersService') photographersService: any,
                      @Inject('Math') math: any,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any,
+                     @Inject('TitleHeaderService') titleHeaderService: any) {
     this.photographersService = photographersService;
     this.photographersByCountry = [];
     this.photographersByName = [];
     this.math = math;
     this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
     this.search = {text: ''};
-    this.loader = false;
     this.element = element.nativeElement;
+    this.titleHeaderService = titleHeaderService;
   }
 
   public ngOnInit(): void {
     let searchInput = this.element.querySelector('#search') as HTMLInputElement;
+    this.titleHeaderService.setTitle('Photographers');
 
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
     this.photographersServiceSubscribe = this.photographersService.getPhotographers()
       .subscribe((res: any) => {
         if (res.err) {
@@ -58,7 +60,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
 
         this.photographersByCountry = res.data.countryList;
         this.photographersByName = res.data.photographersList;
-        this.loader = true;
+        this.loader = false;
       });
 
     this.keyUpSubscribe = fromEvent(searchInput, 'keyup')

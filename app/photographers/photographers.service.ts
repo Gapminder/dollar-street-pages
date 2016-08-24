@@ -1,7 +1,7 @@
 import { Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Config } from '../../app.config';
+import { Config } from '../app.config';
 
 export class PhotographersService {
   public http: Http;

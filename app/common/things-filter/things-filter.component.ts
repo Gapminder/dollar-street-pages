@@ -12,7 +12,7 @@ import {
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { ThingsFilterPipe } from './things-filter.pipe';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -46,7 +46,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   @Output()
   private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
   private thingsFilterService: any;
-  private thingsFilterServiceSubscribe: Subscriber<any>;
+  private thingsFilterServiceSubscribe: Subscription;
   private keyUpSubscribe: Subscription;
   private activatedRoute: ActivatedRoute;
   private element: HTMLElement;

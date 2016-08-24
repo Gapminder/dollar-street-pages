@@ -1,9 +1,6 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
-import { TeamListComponent } from './team-list/team-list.component';
-import { FooterComponent } from '../common/footer/footer.component';
-import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
-import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { LoaderComponent } from '../common/loader/loader.component';
+import { Subscription } from 'rxjs';
 
 let tpl = require('./team.template.html');
 let style = require('./team.css');
@@ -11,16 +8,40 @@ let style = require('./team.css');
 @Component({
   selector: 'team',
   template: tpl,
-  encapsulation: ViewEncapsulation.None,
   styles: [style],
-  directives: [
-    HeaderWithoutSearchComponent,
-    TeamListComponent,
-    FooterComponent,
-    FloatFooterComponent,
-    FooterSpaceDirective]
+  directives: [LoaderComponent]
 })
 
-export class TeamComponent {
-  protected title: string = 'Dollar Street Team';
+export class TeamComponent implements OnInit, OnDestroy {
+  protected isLoaded: boolean = true;
+  protected teamList: any;
+
+  private teamService: any;
+  private teamSubscribe: Subscription;
+  private titleHeaderService: any;
+
+  public constructor(@Inject('TitleHeaderService') titleHeaderService: any,
+                     @Inject('TeamService') teamService: any) {
+    this.titleHeaderService = titleHeaderService;
+    this.teamService = teamService;
+  }
+
+  public ngOnInit(): void {
+    this.titleHeaderService.setTitle('Info');
+
+    this.teamSubscribe = this.teamService.getTeam()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.teamList = res.data;
+        this.isLoaded = false;
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.teamSubscribe.unsubscribe();
+  }
 }

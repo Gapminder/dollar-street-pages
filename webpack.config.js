@@ -14,8 +14,10 @@ const isProduction = (process.env.NODE_ENV || 'development') === 'production';
 const dest = 'dist';
 const absDest = root(dest);
 
+const contentfulJson = isProduction ? 'contentful-stage.json' : './contentful-dev.json';
+
 const contentfulDevConfig = JSON.parse(
-  fs.readFileSync('./contentful-dev.json') // eslint-disable-line no-sync
+  fs.readFileSync(contentfulJson) // eslint-disable-line no-sync
 );
 
 const config = {
@@ -90,12 +92,11 @@ const config = {
       chunksSortMode: helpers.packageSort(['polyfills', 'vendor', 'app'])
     }),
     new webpack.DefinePlugin({
-      CONTENTFUL_ACCESS_TOKEN:
-      JSON.stringify(process.env.CONTENTFUL_ACCESS_TOKEN) || JSON.stringify(contentfulDevConfig.accessToken),
-      CONTENTFUL_SPACE_ID:
-      JSON.stringify(process.env.CONTENTFUL_SPACE_ID) || JSON.stringify(contentfulDevConfig.spaceId),
-      CONTENTFUL_HOST:
-      JSON.stringify(process.env.CONTENTFUL_HOST) || JSON.stringify(contentfulDevConfig.host)
+      CONTENTFUL_ACCESS_TOKEN: JSON.stringify(process.env.CONTENTFUL_ACCESS_TOKEN) ||
+      JSON.stringify(contentfulDevConfig.accessToken),
+      CONTENTFUL_SPACE_ID: JSON.stringify(process.env.CONTENTFUL_SPACE_ID) ||
+      JSON.stringify(contentfulDevConfig.spaceId),
+      CONTENTFUL_HOST: JSON.stringify(process.env.CONTENTFUL_HOST) || JSON.stringify(contentfulDevConfig.host)
     })
   ],
   devServer: {
@@ -115,20 +116,12 @@ function pushPlugins(conf) {
     return;
   }
 
-  conf.plugins.push(conf.plugins, [
-    //production only
+  conf.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       mangle: false,
       comments: false,
-      compress: {
-        screw_ie8: true
-        //warnings: false,
-        //drop_debugger: false
-      }
-      //verbose: true,
-      //beautify: false,
-      //quote_style: 3
+      compress: {screw_ie8: true}
     }),
     new CompressionPlugin({
       asset: '{file}.gz',
@@ -137,7 +130,7 @@ function pushPlugins(conf) {
       threshold: 10240,
       minRatio: 0.8
     })
-  ]);
+  );
 }
 
 pushPlugins(config);
