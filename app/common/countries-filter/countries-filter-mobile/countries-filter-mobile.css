@@ -8,15 +8,14 @@
   background-color: white;
   border: 1px solid #e4e6e7;
   border-radius: 6px;
-  min-width: 150px;
-  overflow: hidden;
-  text-align: center;
-  padding: 8px 30px 7px 11px;
+  min-width: 125px;
+  padding: 7px 30px 6px 11px;
   position: relative;
   cursor: pointer;
   color: #374551;
   font-size: 24px;
   line-height: 20px;
+  overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -362,6 +361,19 @@
 /* IE */
 
 @media (max-width: 767px) {
+  #countries-filter {
+    width: calc(100% - 60px);
+  }
+
+  #countries-filter .countries-filter-button {
+    min-width: 100%;
+  }
+
+  #countries-filter .countries-filter-button span.arrow,
+  #countries-filter.open-countries-filter .countries-filter-button span.arrow {
+    display: none;
+  }
+
   #countries-filter .countries-search input {
     padding: 0 30px;
   }
