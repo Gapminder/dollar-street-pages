@@ -18,13 +18,19 @@ import { Config } from '../../app.config';
 
 let _ = require('lodash');
 
+let device = require('device.js')();
+let isDesktop = device.desktop();
+
+let tplMobile = require('./countries-filter-mobile/countries-filter-mobile.template.html');
+let styleMobile = require('./countries-filter-mobile/countries-filter-mobile.css');
+
 let tpl = require('./countries-filter.template.html');
 let style = require('./countries-filter.css');
 
 @Component({
   selector: 'countries-filter',
-  template: tpl,
-  styles: [style],
+  template: isDesktop ? tpl : tplMobile,
+  styles: [isDesktop ? style : styleMobile],
   pipes: [CountriesFilterPipe]
 })
 
@@ -32,6 +38,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected activeCountries: string;
   protected showSelected: boolean;
   protected locations: any[];
+  protected countries: any[];
+  protected search: string = '';
   protected isOpenCountriesFilter: boolean = false;
   protected selectedRegions: string[] = [];
   protected selectedCountries: string[] = [];
@@ -47,15 +55,16 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   private cloneSelectedRegions: string[] = ['World'];
   private cloneSelectedCountries: string[] = ['World'];
 
-  private element: ElementRef;
+  private element: HTMLElement;
   private zone: NgZone;
   private resizeSubscribe: Subscription;
+  private keyUpSubscribe: Subscription;
 
   public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
                      @Inject(ElementRef) element: ElementRef,
                      @Inject(NgZone) zone: NgZone) {
     this.countriesFilterService = countriesFilterService;
-    this.element = element;
+    this.element = element.nativeElement;
     this.zone = zone;
   }
 
@@ -70,23 +79,49 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   @HostListener('document:click', ['$event'])
-  public isOutsideThingsFilterClick(event: Event): void {
-    if (!this.element.nativeElement.contains(event.target) && this.isOpenCountriesFilter) {
+  public isOutsideThingsFilterClick(event: any): void {
+    if (!this.element.contains(event.target) && this.isOpenCountriesFilter) {
 
       this.openCloseCountriesFilter(true);
+      this.search = '';
     }
   }
 
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
+    this.search = '';
+
+    if (!this.isOpenCountriesFilter && !isDesktop) {
+      document.body.classList.remove('hideScroll');
+    }
+
+    if (this.isOpenCountriesFilter && !isDesktop) {
+      let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
+      let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+
+      this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
+        .subscribe((e: KeyboardEvent) => {
+          if (e.keyCode === 13) {
+            inputElement.blur();
+          }
+        });
+
+      setTimeout(() => {
+        tabContent.scrollTop = 0;
+      }, 0);
+      document.body.classList.add('hideScroll');
+    }
+
     this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
     if (this.isOpenCountriesFilter) {
       this.setPosition();
 
-      setTimeout(() => {
-        this.element.nativeElement.querySelector('.autofocus').focus();
-      });
+      if (isDesktop) {
+        setTimeout(() => {
+          (this.element.querySelector('.autofocus') as HTMLInputElement).focus();
+        });
+      }
     }
 
     if (!this.isOpenCountriesFilter) {
@@ -106,16 +141,19 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected cancelCountriesFilter(): void {
     this.openCloseCountriesFilter(true);
+    this.search = '';
   }
 
   protected clearAllCountries(): void {
     this.showSelected = true;
     this.selectedRegions.length = 0;
     this.selectedCountries.length = 0;
+    this.search = '';
   }
 
   protected selectRegions(location: any): void {
     this.showSelected = false;
+    this.search = '';
 
     let index = this.selectedRegions.indexOf(location.region);
     let getEmptyCountries = _.map(location.countries, 'empty');
@@ -173,6 +211,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected goToLocation(): void {
     let query = this.parseUrl(this.url);
+    document.body.classList.remove('hideScroll');
+
+    this.search = '';
 
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
     query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
@@ -187,12 +228,18 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnDestroy(): void {
     this.countriesFilterServiceSubscribe.unsubscribe();
 
+    if (this.keyUpSubscribe) {
+      this.keyUpSubscribe.unsubscribe();
+    }
+
     if (this.resizeSubscribe.unsubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
   }
 
   public ngOnChanges(changes: any): void {
+    this.search = '';
+
     if (changes.url && changes.url.currentValue) {
       if (this.countriesFilterServiceSubscribe) {
         this.countriesFilterServiceSubscribe.unsubscribe();
@@ -209,6 +256,16 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           }
 
           this.locations = res.data;
+
+          if (!isDesktop) {
+            this.countries = _
+              .chain(res.data)
+              .map('countries')
+              .flatten()
+              .sortBy('country')
+              .value();
+          }
+
           this.setTitle(this.url);
         });
     }

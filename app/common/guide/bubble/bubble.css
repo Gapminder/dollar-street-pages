@@ -249,3 +249,38 @@
   }
 
 }
+
+@media (max-width: 767px) {
+  .bubbles-container {
+    width: calc(100% - 10px);
+    margin: 0;
+    left: 5px !important;
+  }
+
+  /*.bubbles-container.things {*/
+    /*top: 40px !important;*/
+  /*}*/
+
+  .bubbles-container:before {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 16px solid rgba(55, 69, 81, .97);
+    position: absolute;
+    top: -15px;
+    left: calc(100% * .46);
+  }
+
+  .bubbles-container.center:before {
+    border-left: 25px solid transparent !important;
+    border-right: 25px solid transparent !important;
+    border-bottom: 40px solid rgba(55, 69, 81, .97) !important;
+    top: -39px !important;
+    left: calc(100% * .42) !important;
+  }
+
+  .street-label span {
+    font-size: 16px;
+    line-height: 13px;
+    padding: 8px 15px;
+  }
+}
