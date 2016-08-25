@@ -9,7 +9,7 @@
     </things-filter>
     <span class="map-things-text" *ngIf="mapComponent">on the World map</span>
     <div class="some-filter-container incomeby" *ngIf="matrixComponent">
-      <span>in</span>
+      <span class="mobile-ver">in</span>
       <countries-filter [url]="query"
                         (selectedFilter)="urlTransfer($event)"></countries-filter>
       <span class="income-title-container">

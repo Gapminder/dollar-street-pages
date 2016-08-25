@@ -96,8 +96,6 @@
   margin-bottom: 16px;
 }
 
-
-
 #countries-filter .all-filter {
   color: #374551;
   font-size: 24px;
@@ -360,9 +358,10 @@
 
 /* IE */
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   #countries-filter {
-    width: calc(100% - 60px);
+    width: 100%;
+    margin: 6px 0;
   }
 
   #countries-filter .countries-filter-button {

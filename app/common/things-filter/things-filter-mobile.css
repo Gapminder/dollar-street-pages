@@ -72,7 +72,7 @@
   text-align: left;
   padding: 16px 35px 20px 20px;
   color: #374551;
-  height:55px;
+  height: 55px;
   font-size: 24px;
   line-height: 20px;
   border-bottom: 1px solid #c6c7c9;
@@ -347,15 +347,13 @@
     padding: 18px 35px 14px 8px;
     color: #374551;
     font-size: 24px;
-    height:55px;
+    height: 55px;
     line-height: 20px;
     border-bottom: 1px solid #c6c7c9;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-
-
 
   #things-filter .things-filter-button {
     position: relative;
@@ -386,8 +384,11 @@
   #things-filter .things-filter-button span {
   }
 
+   #things-filter .things-filter-button .things-filter-button-content span.arrow {
+    display: none;
+  }
 
-  #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
+   #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
     display: none;
   }
 

@@ -1,10 +1,10 @@
 <div class="bubbles-container"
      [ngClass]="{
-        last: step === 5,
-        none: step === 4,
         center: step === 1,
         things: step === 2,
         geo: step === 3,
+        none: step === 4,
+        last: step === 5,
         'close-bubble': isCloseBubble}"
      [style.top.px]="position.top"
      [style.left.px]="position.left">

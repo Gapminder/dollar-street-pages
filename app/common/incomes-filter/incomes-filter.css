@@ -143,3 +143,7 @@
 #incomes-filter input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
+
+@media (max-width: 599px) {
+
+}
