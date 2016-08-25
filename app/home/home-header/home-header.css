@@ -1,3 +1,11 @@
+.close-button {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
 .home-description-container {
   overflow: hidden;
   padding: 86px 22px 20px;
@@ -9,6 +17,7 @@
 .home-description-container > div {
   float: left;
 }
+
 
 .home-description-container .image-container {
   width: 252px;
@@ -287,8 +296,8 @@
   top: 14px;
   right: 15px;
   border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   background-color: #dde4ef;
   color: #5f6a74;
   font-size: 14px;

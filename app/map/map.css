@@ -1,3 +1,11 @@
+.close-button {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
 .map-header {
   background-color: #fff;
   border-bottom: 1px solid #ffce00;
@@ -490,16 +498,59 @@
 }
 
 @media (max-width: 1023px) {
+
+  .container {
+    padding: 0 10px;
+  }
+
+  #places .places_header {
+    padding-top: 0;
+    padding-bottom: 20px;
+  }
+
+  #places .mapBox {
+    padding: 0 !important;
+  }
+
+  #places .mapBox .mapBoxContainer {
+    max-height: 445px;
+    max-width: 748px;
+  }
+
   .countries-list {
+    margin-bottom: 50px;
+    font-size: 18px;
+    color: #374551;
     -moz-column-count: 4;
     -moz-columns: 4;
     -webkit-columns: 4;
     columns: 4;
   }
 
-  .map-header .container {
-    padding: 0 0 0 10px;
+  .countries-list .country {
+    display: block;
+    margin-left: 14px;
   }
+
+  .left-side-info {
+    position: fixed;
+    height: calc(100% - 56px);
+    width: 324px;
+    background-color: white;
+    z-index: 9999;
+    top: 58px;
+  }
+
+  .left-side-info .header {
+    background-color: #f6f7f8;
+    position: relative;
+  }
+
+  .left-side-info .info-box-container {
+    padding: 0 20px;
+    height: calc(100% - 54px);
+  }
+
 }
 
 @media (max-width: 991px) {
@@ -510,7 +561,64 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 599px) {
+
+  .container {
+    padding: 0 15px;
+  }
+
+  #places .places_header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  #places .mapBox {
+    padding: 0 !important;
+  }
+
+  #places .mapBox .mapBoxContainer {
+    max-height: 223px;
+    max-width: 365px;
+  }
+
+  .countries-list {
+    margin-bottom: 50px;
+    font-size: 18px;
+    color: #374551;
+    -moz-column-count: 2;
+    -moz-columns: 2;
+    -webkit-columns: 2;
+    columns: 2;
+  }
+
+  .countries-list .country {
+    display: block;
+    margin-left: 14px;
+  }
+
+  .left-side-info {
+    height: calc(100% - 56px);
+    background-color: white;
+    z-index: 9999;
+    top: 69px;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    width: 100%;
+  }
+
+  .left-side-info .header {
+    background-color: #f6f7f8;
+    position: relative;
+  }
+
+  .left-side-info .info-box-container {
+    padding: 0 20px;
+    height: calc(100% - 54px);
+  }
+}
+
+/*@media (max-width: 600px) {
   #places .familyPortraits .portrait {
     width: calc(50% - 15px);
     padding-top: calc(50% - 15px);
@@ -538,9 +646,9 @@
     font-size: 16px;
     line-height: 42px;
   }
-}
+}*/
 
-@media (max-width: 480px) {
+/*@media (max-width: 480px) {
   #places {
     padding-top: 42px;
   }
@@ -598,3 +706,4 @@
     margin: 0 0 20px;
   }
 }
+*/

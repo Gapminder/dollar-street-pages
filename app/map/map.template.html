@@ -18,20 +18,20 @@
                    *ngFor="let place of places; let i = index"
                    [style.left.px]="place.left"
                    [style.top.px]="place.top"
-                   (mouseenter)="hoverOnMarker(i, place.country)"
+                   (mouseenter)="isDesktop ? hoverOnMarker(i, place.country) : hoverOnMarkerTablet(i, place.country)"
                    (mouseleave)="unHoverOnMarker($event)"
                    (click)="isDesktop ? clickOnMarker($event, i, place.country) : mobileClickOnMarker(place.country)">
               <div class="hover_portrait"
-                   [hidden]="!hoverPlace"
+                   [hidden]="!hoverPlace && isDesktop "
                    [ngClass]="shadowClass"
                    [style.top.px]="hoverPortraitTop"
                    [style.left.px]="hoverPortraitLeft"
                    (mouseenter)="thumbHover()"
                    (mouseleave)="unHoverOnMarker($event)">
-                <div class="hover_portrait_box">
+                <div class="hover_portrait_box" *ngIf="isDesktop">
                   <img [src]="hoverPlace ? hoverPlace.familyImg.background : ''" alt="">
 
-                  <div class="hover_portrait_description" *ngIf="hoverPlace">
+                  <div class="hover_portrait_description" *ngIf="hoverPlace && isDesktop">
                     <div class="pull-left info">
                       <span class="name line-clamp line-clamp-1">{{hoverPlace.family}} {{hoverPlace.family ? 'family' : ''}}</span>
                       <span class="country line-clamp line-clamp-1">{{hoverPlace.country}}</span>
@@ -69,13 +69,19 @@
       </div>
     </div>
 
+
     <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
       <div class="header">
-        <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} houses in
+        <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} Families in
           {{currentCountry}}</p>
-        <span (click)="closeLeftSideBar($event)">x</span>
+        <span>
+              <img class="close-button pull-right"
+                   src="/assets/img/close-button.svg"
+                   (click)="closeLeftSideBar($event)"
+                   alt="Close">
+        </span>
       </div>
-       <div class="info-box-container">
+      <div class="info-box-container">
         <div class="info-box"
              *ngFor="let place of lefSideCountries"
              [routerLink]="['/family']"
