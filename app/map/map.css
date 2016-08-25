@@ -487,7 +487,14 @@
   background-color: #ced1d5;;
 }
 
+@media (min-width: 1400px) {
+  .container {
+    width: 1400px;
+  }
+}
+
 @media (max-width: 1023px) {
+
   .container {
     padding: 0 10px;
   }
@@ -587,9 +594,9 @@
 
   .left-side-info {
     height: 100%;
-    width: 100%;
-    right: 0;
     top: 0;
+    right: 0;
+    width: 100%;
   }
 
   .left-side-info .header {
@@ -602,4 +609,3 @@
     height: calc(100% - 54px);
   }
 }
-

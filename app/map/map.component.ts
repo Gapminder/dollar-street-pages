@@ -384,7 +384,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.angulartics2GoogleAnalytics.eventTrack(`Look at  the only one place from ` + country + ` with map page`);
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
-
   }
 
   public thumbHover(): void {
