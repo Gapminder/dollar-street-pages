@@ -13,7 +13,8 @@
                                                           [routerLink]="['/country', home.country?._id]"
                                                           [queryParams]="{}"
                                                           angulartics2On="click"
-                                                          angularticsEvent="From Home page to {{home.country?.alias}} country page">{{home.country?.alias}}</a></p>
+                                                          angularticsEvent="From Home page to {{home.country?.alias}} country page">{{home.country?.alias}}</a>
+          </p>
         </div>
 
         <div class="right-title">
@@ -70,7 +71,7 @@
           [queryParams]="{thing: home.thing, countries: home.country?.alias, regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
           angulartics2On="click"
           angularticsEvent="From Home page to Matrix page">
-          All families in {{home.country?.alias}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+          All families in {{countryName}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
           src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       </div>
     </div>
@@ -109,7 +110,11 @@
   <div class="about-data-content">
     <div class="about-data-header">
       <h3>About the data</h3>
-      <span class="closeMenu">x</span>
+      <span class="closeMenu">
+               <img class="close-button pull-right"
+                    src="/assets/img/close-button.svg"
+                    alt="Close">
+       </span>
     </div>
 
     <div class="about-data-body" [style.maxHeight.px]="maxHeightPopUp">

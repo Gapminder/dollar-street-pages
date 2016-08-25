@@ -79,6 +79,10 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
     }
+
+    if (isMobile) {
+      document.body.classList.remove('hideScroll');
+    }
   }
 
   protected openMenu(isOpenMenu: boolean): void {
@@ -94,7 +98,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   protected goToMatrixPage(removeStorage?: boolean): void {
+
+    if (isMobile) {
+      document.body.classList.remove('hideScroll');
+    }
+
     if (removeStorage) {
+
       this.window.localStorage.removeItem('quick-guide');
       this.angulartics2GoogleAnalytics.eventTrack(`Go to Quick Guide from menu `);
     } else {

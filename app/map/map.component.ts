@@ -51,6 +51,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private router: Router;
   private activatedRoute: ActivatedRoute;
   private isDesktop: boolean = device.desktop();
+  private isMobile: boolean = device.mobile();
   private zone: NgZone;
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
@@ -235,8 +236,50 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.hoverPlace.familyImg.background;
   };
 
+  public hoverOnMarkerTablet(index: number, country: any): void {
+    if (this.isMobile || this.isDesktop) {
+      return;
+    }
+
+    if (this.isOpenLeftSide) {
+      return;
+    }
+
+    this.onMarker = true;
+    this.currentCountry = country;
+
+    this.lefSideCountries = this.places.filter((place: any): boolean => {
+      return place.country === this.currentCountry;
+    });
+
+    this.seeAllHomes = this.lefSideCountries.length > 1;
+
+    this.markers = this.map.querySelectorAll('.marker');
+
+    this.places.forEach((place: any, i: number) => {
+      if (i !== index) {
+        return;
+      }
+
+      this.hoverPlace = place;
+    });
+
+    if (!this.hoverPlace) {
+      return;
+    }
+
+    Array.prototype.forEach.call(this.markers, (marker: HTMLElement, i: number): void => {
+      if (i === index) {
+        return;
+      }
+
+      marker.style.opacity = '0.3';
+    });
+
+  };
+
   public unHoverOnMarker(): void {
-    if (!this.isDesktop) {
+    if (this.isMobile || this.isDesktop) {
       return;
     }
 
@@ -277,9 +320,15 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public openLeftSideBar(): void {
     this.isOpenLeftSide = true;
+
+    if (this.isMobile) {
+      document.body.classList.add('hideScroll');
+    }
   }
 
   public closeLeftSideBar(e: MouseEvent): void {
+    let infoBoxContainer = this.element.querySelector('.info-box-container') as HTMLElement;
+    infoBoxContainer.scrollTop = 0;
     let el = e.target as HTMLElement;
     if (el.classList.contains('see-all') ||
       el.classList.contains('see-all-span') ||
@@ -297,6 +346,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.isOpenLeftSide = false;
     this.onMarker = false;
     this.onThumb = false;
+    if (this.isMobile) {
+      document.body.classList.remove('hideScroll');
+    }
 
     if (!el.classList.contains('marker')) {
       this.unHoverOnMarker();
@@ -310,6 +362,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.hoverOnMarker(index, country);
       return;
     }
+
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
       this.angulartics2GoogleAnalytics.eventTrack(`Look at  ` + this.hoverPlace.family + ` place from ` + this.hoverPlace.country + ` with map page`);
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
@@ -326,6 +379,12 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.lefSideCountries && this.lefSideCountries.length) {
       this.openLeftSideBar();
     }
+
+    if (this.lefSideCountries && this.lefSideCountries.length === 1) {
+      this.angulartics2GoogleAnalytics.eventTrack(`Look at  the only one place from ` + country + ` with map page`);
+      this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
+    }
+
   }
 
   public thumbHover(): void {

@@ -27,7 +27,6 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
   protected country: any;
   protected article: any;
   protected api: string = Config.api;
-
   @Input('imageData')
   private imageData: any;
 

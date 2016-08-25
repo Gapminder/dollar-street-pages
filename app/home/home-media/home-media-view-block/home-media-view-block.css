@@ -169,6 +169,16 @@
   color: #fff;
 }
 
+.thing-button-container a span:not(.in) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: calc(50% - 12px);
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+
 .thing-button-container a img {
   height: 15px;
   position: absolute;

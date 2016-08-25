@@ -19,6 +19,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   protected home: any = {};
   protected mapData: any;
   protected math: any;
+  protected countryName: any;
   protected isOpenArticle: boolean = false;
   protected familyShortInfoPosition: number = -88;
   protected isShowAboutData: boolean = false;
@@ -70,6 +71,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
         this.home = res.data;
         this.mapData = this.home.country;
+        this.truncCountryName(this.home.country);
       });
 
     this.scrollSubscribe = fromEvent(document, 'scroll')
@@ -163,6 +165,22 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
     this.animateScroll('scrollBackToTop', 20, 1000);
   }
+
+  protected truncCountryName(countryData: any): any {
+    switch (countryData.alias) {
+      case 'South Africa' :
+        this.countryName = 'SA';
+        break;
+      case 'United States' :
+        this.countryName = 'USA';
+            break;
+      case 'United Kingdom' :
+        this.countryName = 'UK';
+        break;
+      default :
+        this.countryName = countryData.alias.slice(0, 7) + '...';
+    }
+   }
 
   protected openExpandBlock(): void {
     this.familyExpandBlock.emit({thingId: this.home.familyThingId});
