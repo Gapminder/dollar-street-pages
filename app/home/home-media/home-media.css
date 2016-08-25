@@ -100,7 +100,7 @@ home-media-view-block {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .family-things-container {
     padding: 2.5px;
   }

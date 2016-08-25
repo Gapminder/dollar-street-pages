@@ -38,7 +38,7 @@ import { Angulartics2, Angulartics2On } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { Config } from './app.config';
 
-const Constants = require('./constants.json');
+const Constants = require('./constants');
 const ContentfulConfig = require('./contentTypeIds.json');
 declare var CONTENTFUL_ACCESS_TOKEN: string;
 declare var CONTENTFUL_SPACE_ID: string;

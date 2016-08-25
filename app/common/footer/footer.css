@@ -205,7 +205,7 @@ footer {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .footer .container {
     width: 100%;
     padding: 25px 5px 51px !important;

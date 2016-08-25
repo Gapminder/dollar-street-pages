@@ -307,7 +307,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   #item-profile-mobile {
     padding: 15px 5px 0;
     margin-bottom: 25px;

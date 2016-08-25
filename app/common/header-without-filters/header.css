@@ -27,6 +27,10 @@
   width: calc(100% - 195px);
   padding-bottom: 1px !important;
   margin-top: 17px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 @media (min-width: 1400px) {
@@ -53,7 +57,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .header .logo {
     width: 35px;
     height: 35px;

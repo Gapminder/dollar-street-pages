@@ -97,6 +97,10 @@ svg circle {
   z-index: 1000 !important;
 }
 
+matrix {
+  display: block;
+}
+
 .hideScroll {
   height: 100%;
   overflow: hidden;
@@ -221,7 +225,7 @@ svg circle {
 }
 
 .margin-bottom-35 {
-  margin-bottom: 35px;
+  margin-bottom: 35px !important;
 }
 
 .margin-bottom-100 {
@@ -325,12 +329,38 @@ body.matrix #main-menu .menu-icon {
   body.photographers #app-container {
     margin-bottom: 30px;
   }
+
+  .blog #app-container.container {
+    padding-top: 87px !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   svg .poorest,
   svg .richest,
   svg .scale-label {
     font-size: 12px;
+  }
+
+  .blog #app-container.container {
+    padding-top: 77px !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .block-entry h2 {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .block-entry h3 {
+    font-size: 20px !important;
+  }
+
+  gm-entries-view p {
+    font-size: 16px;
+    line-height: 20px;
   }
 }

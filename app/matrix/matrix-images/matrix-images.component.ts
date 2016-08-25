@@ -80,14 +80,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.showblock = false;
       this.currentPlaces = places;
 
-      if (this.activeHouse && isInit) {
-        this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1);
-        isInit = false;
-      }
-
       setTimeout(() => {
         this.getImageHeight();
-      });
+      }, 0);
+
+      if (this.activeHouse && isInit) {
+        setTimeout(() => {
+          this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1);
+          isInit = false;
+        }, 0);
+      }
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')

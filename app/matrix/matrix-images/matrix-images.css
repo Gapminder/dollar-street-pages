@@ -162,7 +162,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .flex-container.column-2 .image-content {
     width: calc(50% - 5px);
   }

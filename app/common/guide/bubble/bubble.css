@@ -250,7 +250,7 @@
 
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .bubbles-container {
     width: calc(100% - 10px);
     margin: 0;

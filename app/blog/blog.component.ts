@@ -92,6 +92,10 @@ export class BlogComponent implements OnInit {
 
     this.content = article.fields;
 
+    this.content.tags = _.filter(this.content.tags, (tag: ContentfulTagPage)=> {
+      return !_.includes(this.constants.EXCLUDED_TAGS, tag.fields.slug);
+    });
+
     this.contentfulContentService.getChildrenOfArticle(article.sys.id)
       .do((articles: ContentfulNodePage[]) => this.addRoutes(articles))
       .subscribe((children: ContentfulNodePage[]) => {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { Subscription } from 'rxjs/Rx';
@@ -10,7 +10,8 @@ let style = require('./article.css');
   selector: 'article-page',
   template: tpl,
   styles: [style],
-  directives: [LoaderComponent]
+  directives: [LoaderComponent],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {

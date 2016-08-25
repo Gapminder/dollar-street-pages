@@ -47,7 +47,10 @@ export class AppComponent implements OnInit, OnDestroy {
           .split('?')
           .shift();
 
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        if (activePage !== '/matrix') {
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+        }
+
         this.isVisibleHeader = !(activePage === '/matrix' || activePage === '/family' || activePage === '/map');
       }
     });

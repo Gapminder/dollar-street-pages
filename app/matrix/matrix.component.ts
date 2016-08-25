@@ -156,11 +156,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         let windowInnerWidth: number = window.innerWidth;
 
-        if (!this.isDesktop && windowInnerWidth > 767) {
+        if (!this.isDesktop && windowInnerWidth > 599) {
           this.zoom = 3;
         }
 
-        if (!this.isDesktop && windowInnerWidth <= 767) {
+        if (!this.isDesktop && windowInnerWidth <= 599) {
           this.zoom = 2;
         }
 
@@ -254,6 +254,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   /** each document usage breaks possible server side rendering */
   public stopScroll(): void {
+    if (!this.imageHeight) {
+      return;
+    }
+
     this.setZoomButtonPosition();
     let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
@@ -509,7 +513,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private setZoomButtonPosition(): void {
     let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
-    let containerHeight: number = this.element.offsetHeight - this.footerHeight + 45;
+    let containerHeight: number = this.element.offsetHeight + 30;
 
     this.zone.run(() => {
       this.zoomPositionFixed = scrollTop > containerHeight;
