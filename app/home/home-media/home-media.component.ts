@@ -29,7 +29,7 @@ let style = require('./home-media.css');
 })
 
 export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
-  protected loader: boolean = false;
+  protected loader: boolean = true;
   protected zoom: number = 4;
 
   protected itemSize: number;
@@ -94,11 +94,11 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
           }
         });
 
-    if (this.windowInnerWidth > 767 && this.windowInnerWidth < 1024) {
+    if (this.windowInnerWidth > 599 && this.windowInnerWidth < 1024) {
       this.zoom = 3;
     }
 
-    if (this.windowInnerWidth <= 767) {
+    if (this.windowInnerWidth <= 599) {
       this.zoom = 2;
     }
 
@@ -136,11 +136,11 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.zoom = 4;
           this.windowInnerWidth = window.innerWidth;
 
-          if (this.windowInnerWidth > 767 && this.windowInnerWidth < 1024) {
+          if (this.windowInnerWidth > 599 && this.windowInnerWidth < 1024) {
             this.zoom = 3;
           }
 
-          if (this.windowInnerWidth <= 767) {
+          if (this.windowInnerWidth <= 599) {
             this.zoom = 2;
           }
 
@@ -179,8 +179,8 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     setTimeout(() => {
       this.getImageHeight();
-      this.loader = true;
-    });
+      this.loader = false;
+    }, 0);
 
     if (this.activeImageIndex && this.isInit) {
       this.isInit = false;

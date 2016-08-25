@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Inject, Output, EventEmitter } from '@angular/core';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 let tpl = require('./photographer-profile.template.html');
 let style = require('./photographer-profile.css');
 
@@ -20,7 +20,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   private photographer: {firstName?: string, lastName?: string} = {};
   private photographerProfileService: any;
-  private photographerProfileServiceSubscribe: Subscriber<any>;
+  private photographerProfileServiceSubscribe: Subscription;
 
   public constructor(@Inject('PhotographerProfileService') photographerProfileService: any,
                      @Inject('Math') math: any,
@@ -41,7 +41,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
         }
 
         this.photographer = res.data;
-        this.getPhotographer.emit(`${this.photographer.firstName} ${this.photographer.lastName}`);
+        this.getPhotographer.emit(`<span class="sub-title">Photographer:</span> ${this.photographer.firstName} ${this.photographer.lastName}`);
       });
   }
 

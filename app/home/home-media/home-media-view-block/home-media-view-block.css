@@ -297,7 +297,7 @@
 }
 
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .active-house.house-1 {
     left: calc(((100% / 2) / 2) - 16px);
   }

@@ -1,5 +1,5 @@
 footer {
-  position: absolute;
+  position: absolute !important;
   bottom: 0;
   left: 0;
   right: 0;
@@ -100,8 +100,8 @@ footer {
   bottom: 60px;
 }
 
-family .footer .valor,
-matrix .footer .valor {
+.family .footer .valor,
+.matrix .footer .valor {
   right: 22px;
   bottom: 60px;
 }
@@ -136,8 +136,8 @@ matrix .footer .valor {
   padding-bottom: 60px;
 }
 
-family .footer .container,
-matrix .footer .container {
+.family .footer .container,
+.matrix .footer .container {
   width: 100% !important;
   padding: 0 22px 60px;
 }
@@ -194,7 +194,7 @@ matrix .footer .container {
   }
 
   .footer .gapminder {
-    width: 440px;
+    width: 100%;
     margin: 30px auto 0;
 
     -webkit-box-ordinal-group: 3;
@@ -205,7 +205,7 @@ matrix .footer .container {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .footer .container {
     width: 100%;
     padding: 25px 5px 51px !important;

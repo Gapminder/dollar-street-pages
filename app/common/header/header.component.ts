@@ -1,7 +1,7 @@
 import { Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { MainMenuComponent } from '../menu/menu.component';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
@@ -48,8 +48,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
   private matrixComponent: boolean;
   private mapComponent: boolean;
-  private headerServiceSubscribe: Subscriber<any>;
-  private headerTitleServiceSubscribe: Subscriber<any>;
+  private headerServiceSubscribe: Subscription;
+  private headerTitleServiceSubscribe: Subscription;
 
   public constructor(@Inject('HeaderService') headerService: any,
                      @Inject(Router) router: Router,

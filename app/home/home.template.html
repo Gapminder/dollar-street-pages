@@ -1,27 +1,22 @@
-<div class="pages-container" footerSpace>
-  <div class="header-container">
-    <a [routerLink]="['/matrix']" [queryParams]="{}" class="logo pull-left" angulartics2On="click"
-       angularticsEvent="From Place page to Matrix page (Thing:{{urlParams.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}}
+<div class="header-container">
+  <a [routerLink]="['/matrix']" [queryParams]="{}" class="logo pull-left" angulartics2On="click"
+     angularticsEvent="From Place page to Matrix page (Thing:{{urlParams.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}}
            Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
-      <img src="/assets/img/dollar-street.svg" alt="">
-    </a>
-    <p class="heading pull-left" [routerLink]="['/matrix']" [queryParams]="urlParams" angulartics2On="click"
-       angularticsEvent="From Place page to Matrix page (Thing:{{urlParams.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}}
+    <img src="/assets/img/dollar-street.svg" alt="">
+  </a>
+  <p class="heading pull-left" [routerLink]="['/matrix']" [queryParams]="urlParams" angulartics2On="click"
+     angularticsEvent="From Place page to Matrix page (Thing:{{urlParams.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}}
        Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
-      <img src="/assets/img/back-icon.svg" alt="Back">
-      {{titles?.thing}} in {{titles?.countries}}
-    </p>
+    <img src="/assets/img/back-icon.svg" alt="Back">
+    {{titles?.thing}} in {{titles?.countries}}
+  </p>
 
-    <main-menu class="pull-right"></main-menu>
-  </div>
-
-  <home-header [placeId]="placeId" (familyExpandBlock)="isOpenFamilyExpandBlock($event)"></home-header>
-
-  <home-media [placeId]="placeId"
-              [activeImageIndex]="activeImageIndex"
-              [openFamilyExpandBlock]="openFamilyExpandBlock"
-              (activeImageOptions)="activeImageOptions($event)"></home-media>
+  <main-menu class="pull-right"></main-menu>
 </div>
 
-<footer></footer>
-<float-footer></float-footer>
+<home-header [placeId]="placeId" (familyExpandBlock)="isOpenFamilyExpandBlock($event)"></home-header>
+
+<home-media [placeId]="placeId"
+            [activeImageIndex]="activeImageIndex"
+            [openFamilyExpandBlock]="openFamilyExpandBlock"
+            (activeImageOptions)="activeImageOptions($event)"></home-media>

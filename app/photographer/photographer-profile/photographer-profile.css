@@ -278,6 +278,7 @@
 #item-profile-mobile .company-container p a {
   font-size: 13px;
   color: #374551;
+  word-break: break-all;
 }
 
 @media (max-width: 1200px) {
@@ -312,7 +313,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   #item-profile-mobile {
     padding: 15px 5px 0;
     margin-bottom: 25px;

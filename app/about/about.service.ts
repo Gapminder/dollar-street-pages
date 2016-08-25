@@ -1,9 +1,9 @@
 import { Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Config } from '../../app.config';
+import { Config } from '../app.config';
 
-export class InfoContextService {
+export class AboutService {
   public http: Http;
 
   public constructor(@Inject(Http) http: Http) {

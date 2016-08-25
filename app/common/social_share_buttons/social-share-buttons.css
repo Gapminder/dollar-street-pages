@@ -17,8 +17,8 @@
 
 main-menu social-share-buttons {
   display: inline-block;
+  vertical-align: top;
 }
-
 
 float-footer .share-button-container .share-button i {
   font-size: 28px;
@@ -35,7 +35,7 @@ float-footer .share-button-container .share-button i {
 
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   main-menu social-share-buttons .share-button-container .share-button i {
     color: #374551;
     font-size: 28px;

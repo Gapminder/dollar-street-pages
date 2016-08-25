@@ -1,6 +1,6 @@
 import { Component, OnDestroy, Inject, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 
 let tpl = require('./social-share-buttons.html');
 let style = require('./social-share-buttons.css');
@@ -16,7 +16,7 @@ export class SocialShareButtonsComponent implements OnDestroy {
   private socialShareButtonsService: any;
   private location: Location;
   private url: string;
-  private socialShareButtonsServiceSubscribe: Subscriber<any>;
+  private socialShareButtonsServiceSubscribe: Subscription;
   private locationPath: string;
 
   public constructor(@Inject('SocialShareButtonsService') socialShareButtonsService: any,

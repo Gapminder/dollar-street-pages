@@ -479,16 +479,12 @@
 
 .left-side-info ::-webkit-scrollbar {
   width: 6px;
-}
-
-.left-side-info ::-webkit-scrollbar-track {
-  border-radius: 10px;
-  background-color: #303e4a;
+  margin: 0;
 }
 
 .left-side-info ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: #1e2c37;
+  border-radius: 4px;
+  background-color: #ced1d5;;
 }
 
 @media (min-width: 1400px) {
@@ -597,13 +593,9 @@
   }
 
   .left-side-info {
-    height: calc(100% - 56px);
-    background-color: white;
-    z-index: 9999;
-    top: 69px;
-    bottom: 0;
+    height: 100%;
+    top: 0;
     right: 0;
-    position: fixed;
     width: 100%;
   }
 
@@ -617,4 +609,3 @@
     height: calc(100% - 54px);
   }
 }
-

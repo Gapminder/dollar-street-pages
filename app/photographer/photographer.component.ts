@@ -1,12 +1,8 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
 import { PhotographerProfileComponent } from './photographer-profile/photographer-profile.component';
 import { PhotographerPlacesComponent } from './photographer-places/photographer-places.component';
-import { FooterComponent } from '../common/footer/footer.component';
-import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
-import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 
 let tpl = require('./photographer.template.html');
 let style = require('./photographer.css');
@@ -16,12 +12,8 @@ let style = require('./photographer.css');
   template: tpl,
   styles: [style],
   directives: [
-    HeaderWithoutSearchComponent,
     PhotographerProfileComponent,
-    PhotographerPlacesComponent,
-    FooterComponent,
-    FooterSpaceDirective,
-    FloatFooterComponent
+    PhotographerPlacesComponent
   ]
 })
 
@@ -29,10 +21,13 @@ export class PhotographerComponent implements OnInit, OnDestroy {
   protected photographerId: string;
 
   private activatedRoute: ActivatedRoute;
+  private titleHeaderService: any;
   private queryParamsSubscribe: Subscription;
 
-  public constructor(@Inject(ActivatedRoute) activatedRoute: ActivatedRoute) {
+  public constructor(activatedRoute: ActivatedRoute,
+                     @Inject('TitleHeaderService') titleHeaderService: any) {
     this.activatedRoute = activatedRoute;
+    this.titleHeaderService = titleHeaderService;
   }
 
   public ngOnInit(): void {
@@ -44,5 +39,9 @@ export class PhotographerComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.queryParamsSubscribe.unsubscribe();
+  }
+
+  protected setTitle(title: string): void {
+    this.titleHeaderService.setTitle(title);
   }
 }

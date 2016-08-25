@@ -28,3 +28,6 @@ app/.DS_Store
 test-e2e/app/**/*.js
 test-e2e/app/**/*.js.map
 test-e2e/app/**/*.d.ts
+
+#js Contentfull constants
+!app/constants.js

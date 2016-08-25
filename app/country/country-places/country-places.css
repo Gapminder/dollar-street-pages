@@ -154,7 +154,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   #country-place {
     padding: 0 5px;
   }
