@@ -27,7 +27,6 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
   protected country: any;
   protected article: any;
   protected api: string = Config.api;
-
   @Input('imageData')
   private imageData: any;
 
@@ -78,14 +77,6 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
 
           this.country = res.data.country;
           this.article = res.data.article;
-
-          if (this.country && this.country.name.length > 10) {
-            this.country.name = this.country.name.slice(0, 10) + '...';
-          }
-
-          if (this.imageData.thing.plural && this.imageData.thing.plural.length > 16) {
-            this.imageData.thing.plural = this.imageData.thing.plural.slice(0, 16) + '...';
-          }
 
           if (this.article && this.article.shortDescription.length > 600) {
             this.article.shortDescription = this.article.shortDescription.slice(0, 600) + '...';
