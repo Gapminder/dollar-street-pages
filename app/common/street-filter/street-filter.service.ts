@@ -4,9 +4,6 @@ import { Inject } from '@angular/core';
 
 const d3 = require('d3');
 
-let device = require('device.js')();
-let isDesktop: boolean = device.desktop();
-
 export interface DrawDividersInterface {
   showDividers: boolean;
   low: number;
@@ -19,22 +16,19 @@ export interface DrawDividersInterface {
   highDividerCoord: number;
 }
 
-export class StreetDrawService {
+export class StreetFilterDrawService {
   public width: number;
   public height: number;
   public halfOfHeight: number;
   public lowIncome: number;
   public highIncome: number;
   public streetOffset: number;
-  public chosenPlaces: any;
-  private poorest: string = 'POOREST';
-  private richest: string = 'RICHEST';
   private scale: any;
   private axisLabel: number[] = [];
   private svg: any;
   private incomeArr: any[] = [];
   private mouseMoveSubscriber: any;
-  private dividersData: DrawDividersInterface;
+  private dividersData: any;
   private mouseUpSubscriber: any;
   private touchMoveSubscriber: any;
   private touchUpSubscriber: any;
@@ -53,24 +47,8 @@ export class StreetDrawService {
   private rightScrollOpacityLabels: any;
   private leftScrollText: any;
   private rightScrollText: any;
-  private hoverPlace: any;
   private math: any;
   private filter: Subject<any> = new Subject<any>();
-  private windowInnerWidth: number = window.innerWidth;
-  private colors: {fills: any, fillsOfBorders: any} = {
-    fills: {
-      Europe: '#FFE800',
-      Africa: '#15B0D1',
-      'The Americas': '#B1E826',
-      Asia: '#F23373'
-    },
-    fillsOfBorders: {
-      Europe: '#dbc700',
-      Africa: '#119ab7',
-      'The Americas': '#96c61d',
-      Asia: '#bc1950'
-    }
-  };
 
   public constructor(@Inject('Math') math: any) {
     this.math = math;
@@ -85,7 +63,6 @@ export class StreetDrawService {
     this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
-    this.windowInnerWidth = window.innerWidth;
 
     this.scale = d3
       .scale.log()
@@ -186,61 +163,37 @@ export class StreetDrawService {
       .tickSize(6, 0);
 
     this.svg
-      .selectAll('text.poorest')
-      .data([this.poorest])
+      .selectAll('polygon')
+      .data(places)
       .enter()
-      .append('text')
-      .attr('class', 'poorest')
-      .text(this.poorest)
-      .attr('x', 0)
-      .attr('y', this.height - 3)
-      .attr('fill', '#767d86');
+      .append('polygon')
+      .attr('class', 'point')
+      .attr('points', (datum: any): any => {
+        let point1;
+        let point2;
+        let point3;
+        let point4;
+        let point5;
+        let point6;
+        let point7;
 
-    this.svg
-      .selectAll('text.richest')
-      .data([this.richest])
-      .enter()
-      .append('text')
-      .attr('class', 'richest')
-      .text(this.richest)
-      .attr('x', this.width + this.streetOffset - 50)
-      .attr('y', this.height - 3)
-      .attr('fill', '#767d86');
+        if (datum) {
+          let scaleDatumIncome = this.scale(datum.income);
+          point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
+          point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
+          point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth},${roofY}`;
+          point4 = `${this.streetOffset / 2 + scaleDatumIncome},${this.halfOfHeight - 17}`;
+          point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
+          point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${roofY}`;
+          point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
+        }
 
-    if (isDesktop) {
-      this.svg
-        .selectAll('polygon')
-        .data(places)
-        .enter()
-        .append('polygon')
-        .attr('class', 'point')
-        .attr('points', (datum: any): any => {
-          let point1;
-          let point2;
-          let point3;
-          let point4;
-          let point5;
-          let point6;
-          let point7;
-
-          if (datum) {
-            let scaleDatumIncome = this.scale(datum.income);
-            point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
-            point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
-            point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth},${roofY}`;
-            point4 = `${this.streetOffset / 2 + scaleDatumIncome},${this.halfOfHeight - 17}`;
-            point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
-            point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${roofY}`;
-            point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
-          }
-
-          return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-        })
-        .attr('stroke-width', 1)
-        .style('fill', '#cfd2d6')
-        .style('opacity', '0.7');
-    }
+        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
+        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+      })
+      .attr('stroke-width', 1)
+      .style('fill', '#cfd2d6')
+      .style('opacity', '0.7');
 
     this.svg
       .append('polygon')
@@ -325,7 +278,7 @@ export class StreetDrawService {
     this.isDrawDividers(drawDividers);
 
     this.drawLeftSlider(this.scale(this.lowIncome), true);
-    this.drawRightSlider(this.scale(this.highIncome), true);
+    this.drawRightSlider(this.scale(this.highIncome));
 
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
@@ -335,7 +288,7 @@ export class StreetDrawService {
       .filter((e: MouseEvent) => {
         e.preventDefault();
 
-        return this.windowInnerWidth >= 600 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
+        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
       }).subscribe((e: MouseEvent)=> {
         e.preventDefault();
 
@@ -354,8 +307,6 @@ export class StreetDrawService {
             e.pageX - this.distanceDraggingRightSlider <= this.sliderRightBorder + 5 &&
             e.pageX - this.distanceDraggingLeftSlider >= 50 &&
             e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
-            this.chosenPlaces = [];
-            this.removeHouses('chosen');
 
             this.drawLeftSlider(e.pageX - 45 - this.distanceDraggingLeftSlider);
             this.drawRightSlider(e.pageX - 56 + this.distanceDraggingRightSlider);
@@ -385,7 +336,7 @@ export class StreetDrawService {
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
       .filter(()=> {
-        return this.windowInnerWidth >= 600 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
+        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
       }).subscribe((e: TouchEvent)=> {
         let positionX = e.touches[0].pageX;
 
@@ -404,8 +355,6 @@ export class StreetDrawService {
             positionX - this.distanceDraggingRightSlider <= this.sliderRightBorder + 5 &&
             positionX - this.distanceDraggingLeftSlider >= 50 &&
             positionX + this.distanceDraggingRightSlider <= this.width + 60) {
-            this.chosenPlaces = [];
-            this.removeHouses('chosen');
 
             this.drawLeftSlider(positionX - 45 - this.distanceDraggingLeftSlider);
             this.drawRightSlider(positionX - 56 + this.distanceDraggingRightSlider);
@@ -431,7 +380,7 @@ export class StreetDrawService {
 
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
       .filter(()=> {
-        return this.windowInnerWidth >= 566 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
+        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
       }).subscribe((e?: MouseEvent)=> {
         e.preventDefault();
 
@@ -452,7 +401,7 @@ export class StreetDrawService {
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
       .filter(()=> {
-        return this.windowInnerWidth >= 566 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
+        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
       }).subscribe(()=> {
         this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
         this.distanceDraggingLeftSlider = 0;
@@ -472,70 +421,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawHoverHouse(place: any, gray: boolean = false): this {
-    if (!place) {
-      return this;
-    }
-
-    let fills = this.colors.fills;
-    let fillsOfBorders = this.colors.fillsOfBorders;
-    let halfHouseWidth = 12.5;
-    let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 15 - 1;
-
-    this.svg
-      .selectAll('polygon.hover')
-      .data([place])
-      .enter()
-      .append('polygon')
-      .attr('class', 'hover')
-      .attr('points', (datum: any): any => {
-        let point1;
-        let point2;
-        let point3;
-        let point4;
-        let point5;
-        let point6;
-        let point7;
-
-        if (datum) {
-          let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${scaleDatumIncome + this.streetOffset / 2 + roofX },${this.halfOfHeight - 1 - 1}`;
-          point2 = `${scaleDatumIncome + this.streetOffset / 2 + roofX},${roofY}`;
-          point3 = `${scaleDatumIncome + this.streetOffset / 2 - halfHouseWidth},${roofY}`;
-          point4 = `${scaleDatumIncome + this.streetOffset / 2 },${this.halfOfHeight - 26 - 1}`;
-          point5 = `${scaleDatumIncome + this.streetOffset / 2 + halfHouseWidth },${roofY}`;
-          point6 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${roofY}`;
-          point7 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${this.halfOfHeight - 1 - 1}`;
-        }
-
-        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-      })
-      .attr('stroke-width', 1)
-      .attr('stroke', (datum: any): any => {
-        if (gray) {
-          return '#303e4a';
-        }
-
-        return !datum ? void 0 : fillsOfBorders[datum.region];
-      })
-      .style('fill', (datum: any): any => {
-        if (gray) {
-          return '#374551';
-        }
-
-        return !datum ? void 0 : fills[datum.region];
-      });
-
-    return this;
-  };
-
   protected drawLeftSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566 && Math.floor(this.lowIncome) === this.dividersData.poor) {
-      return;
-    }
-
     this.sliderLeftBorder = x;
 
     if (!this.leftScrollOpacityStreet) {
@@ -592,19 +478,11 @@ export class StreetDrawService {
 
     this.leftScroll
       .attr('points', () => {
-        let point1 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight + 12}`;
-        let point2 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5}`;
-        let point3 = `${x + this.streetOffset / 2 },${ this.halfOfHeight - 5}`;
+        let point1 = `${x + this.streetOffset / 2 - 11},${ this.halfOfHeight + 12}`;
+        let point2 = `${x + this.streetOffset / 2 - 11},${ this.halfOfHeight - 7.5}`;
+        let point3 = `${x + this.streetOffset / 2 },${ this.halfOfHeight - 7.5}`;
         let point4 = `${x + this.streetOffset / 2 },${ this.halfOfHeight + 12}`;
-        let point5 = `${x + this.streetOffset / 2 - 4.5},${ this.halfOfHeight + 12 + 5}`;
-
-        if (this.windowInnerWidth <= 566) {
-          point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14}`;
-          point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5}`;
-          point3 = `${x + 2 + this.streetOffset / 2 },${ this.halfOfHeight + 14 - 5}`;
-          point4 = `${x + 2 + this.streetOffset / 2 },${ this.halfOfHeight + 14}`;
-          point5 = `${x + 2 + this.streetOffset / 2 - 4.5},${ this.halfOfHeight + 14 + 5}`;
-        }
+        let point5 = `${x + this.streetOffset / 2 - 5.5},${ this.halfOfHeight + 12 + 7.5}`;
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
@@ -623,11 +501,7 @@ export class StreetDrawService {
     return this;
   };
 
-  protected drawRightSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566 && Math.floor(this.highIncome) === this.dividersData.rich) {
-      return;
-    }
-
+  protected drawRightSlider(x: number): this {
     this.sliderRightBorder = x;
 
     if (!this.rightScrollOpacityStreet) {
@@ -684,18 +558,10 @@ export class StreetDrawService {
 
     this.rightScroll.attr('points', () => {
       let point1 = `${x + this.streetOffset / 2},${ this.halfOfHeight + 12}`;
-      let point2 = `${x + this.streetOffset / 2},${ this.halfOfHeight - 5}`;
-      let point3 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight - 5}`;
-      let point4 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight + 12}`;
-      let point5 = `${x + this.streetOffset / 2 + 4.5},${ this.halfOfHeight + 12 + 5}`;
-
-      if (this.windowInnerWidth <= 566) {
-        point1 = `${x - 2 + this.streetOffset / 2},${ this.halfOfHeight + 14}`;
-        point2 = `${x - 2 + this.streetOffset / 2},${ this.halfOfHeight + 14 - 5}`;
-        point3 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14 - 5}`;
-        point4 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14}`;
-        point5 = `${x - 2 + this.streetOffset / 2 + 4.5},${ this.halfOfHeight + 14 + 5}`;
-      }
+      let point2 = `${x + this.streetOffset / 2},${ this.halfOfHeight - 7.5}`;
+      let point3 = `${x + this.streetOffset / 2 + 11},${ this.halfOfHeight - 7.5}`;
+      let point4 = `${x + this.streetOffset / 2 + 11},${ this.halfOfHeight + 12}`;
+      let point5 = `${x + this.streetOffset / 2 + 5.5},${ this.halfOfHeight + 12 + 7.5}`;
 
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });
@@ -706,39 +572,7 @@ export class StreetDrawService {
 
     this.highIncome = this.scale.invert(x);
 
-    if (init) {
-      return this;
-    }
-
     this.drawScrollLabel();
-
-    return this;
-  };
-
-  public clearAndRedraw(places: any): this {
-    if (!places || !places.length) {
-      this.removeHouses('hover');
-      this.removeHouses('chosen');
-
-      return this;
-    }
-
-    this.removeHouses('hover');
-    this.removeHouses('chosen');
-
-    this.drawHouses(places);
-    this.drawHoverHouse(this.hoverPlace);
-
-    return this;
-  };
-
-  public removeHouses(selector: any): this {
-    this.svg.selectAll('rect.' + selector).remove();
-    this.svg.selectAll('polygon.' + selector).remove();
-
-    if (selector === 'chosen') {
-      this.svg.selectAll('polygon.chosenLine').remove();
-    }
 
     return this;
   };
@@ -811,7 +645,7 @@ export class StreetDrawService {
         .append('text')
         .attr('class', 'left-scroll-label')
         .text(`${incomeL}$`)
-        .attr('y', this.height)
+        .attr('y', 10)
         .attr('fill', '#767d86');
     }
 
@@ -820,61 +654,17 @@ export class StreetDrawService {
         .append('text')
         .attr('class', 'right-scroll-label')
         .text(`${incomeR}$`)
-        .attr('y', this.height)
+        .attr('y', 10)
         .attr('fill', '#767d86');
     }
 
     this.rightScrollText
       .text(`${incomeR}$`)
-      .attr('x', ()=> xR + this.streetOffset / 2 + 4.5 - this.rightScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xR + this.streetOffset / 2 + 5.5 - this.rightScrollText[0][0].getBBox().width / 2);
 
     this.leftScrollText
       .text(`${incomeL}$`)
-      .attr('x', ()=> xL + this.streetOffset / 2 - 4.5 - this.leftScrollText[0][0].getBBox().width / 2);
-
-    return this;
-  };
-
-  private drawHouses(places: any): this {
-    if (!places || !places.length) {
-      return this;
-    }
-
-    let halfHouseWidth = 10;
-    let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 12 - 1;
-
-    this.svg.selectAll('polygon.chosen')
-      .data(places)
-      .enter()
-      .append('polygon')
-      .attr('class', 'chosen')
-      .attr('points', (datum: any): any => {
-        let point1;
-        let point2;
-        let point3;
-        let point4;
-        let point5;
-        let point6;
-        let point7;
-
-        if (datum) {
-          let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${this.halfOfHeight - 1 - 1}`;
-          point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
-          point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth },${roofY}`;
-          point4 = `${this.streetOffset / 2 + scaleDatumIncome },${ this.halfOfHeight - 21 - 1}`;
-          point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
-          point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${ roofY}`;
-          point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${ this.halfOfHeight - 1 - 1}`;
-        }
-
-        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-      })
-      .attr('stroke', '#303e4a')
-      .attr('stroke-width', 1)
-      .style('fill', '#374551');
+      .attr('x', ()=> xL + this.streetOffset / 2 - 5.5 - this.leftScrollText[0][0].getBBox().width / 2);
 
     return this;
   };
