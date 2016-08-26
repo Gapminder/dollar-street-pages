@@ -53,25 +53,12 @@
         <i class="fa fa-video-camera"></i> Total Videos: <span>{{math.round(videosQuantity)}}</span>
       </div>
 
-      <div class="more-info"
-           *ngIf="country?.description">
-        <p (click)="isShowInfo = !isShowInfo">
-          <img src="/assets/img/read-more-icon.svg" alt="">
-          <span>{{!isShowInfo ? 'Show details' : 'Hide details'}}</span>
-        </p>
-      </div>
     </div>
 
     <div class="item-description-footer"
          *ngIf="country?.description">
       <div class="company-description line-clamp">{{country.description}}</div>
 
-      <div class="more-info">
-        <p (click)="isShowInfo = !isShowInfo">
-          <img src="/assets/img/read-more-icon.svg" alt="">
-          <span>{{!isShowInfo ? 'Show details' : 'Hide details'}}</span>
-        </p>
-      </div>
     </div>
   </div>
 </div>

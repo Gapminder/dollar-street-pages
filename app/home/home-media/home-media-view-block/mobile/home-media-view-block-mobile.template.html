@@ -52,21 +52,21 @@
          [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        {{imageData.thing.plural}} in {{country?.name}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{countryName}}</span> <img src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
          [routerLink]="['/matrix']"
          [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        {{imageData.thing.plural}} in {{country?.region}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{country?.region}}</span> <img src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
          [routerLink]="['/matrix']"
          [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        {{imageData.thing.plural}} in the World <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>the World</span>  <img src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
     </div>
   </div>

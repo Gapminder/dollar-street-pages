@@ -27,7 +27,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.titleHeaderService.setTitle('Team');
+    this.titleHeaderService.setTitle('Dollar Street Team');
 
     this.teamSubscribe = this.teamService.getTeam()
       .subscribe((res: any) => {

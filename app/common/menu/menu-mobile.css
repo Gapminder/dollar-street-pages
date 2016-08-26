@@ -13,7 +13,7 @@
   width: 100%;
   background-color: white;
   display: block;
-  z-index: 500;
+  z-index: 666;
   height: 100%;
   overflow-y: auto;
 }

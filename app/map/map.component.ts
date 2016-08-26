@@ -279,7 +279,7 @@ export class MapComponent implements OnInit, OnDestroy {
   };
 
   public unHoverOnMarker(): void {
-    if (this.isMobile || this.isDesktop) {
+    if (this.isMobile) {
       return;
     }
 

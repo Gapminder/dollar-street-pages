@@ -120,19 +120,28 @@
   position: relative;
   margin: 15px 0 0;
   background-color: transparent;
-  line-height: 20px;
 }
+
 
 .home-description-container a.link:hover {
   background-color: #374551;
   color: #fff;
 }
 
+.home-description-container a.link span:not(.in) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: calc(49% - 12px);
+  display: inline-block;
+  vertical-align: bottom;
+}
+
 .home-description-container a.link img {
   height: 15px;
   position: absolute;
   top: calc(50% - 7.5px);
-  right: 16px;
+  right: 4px;
   opacity: 1;
 }
 

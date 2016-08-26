@@ -173,14 +173,18 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
         break;
       case 'United States' :
         this.countryName = 'USA';
-            break;
+        break;
       case 'United Kingdom' :
         this.countryName = 'UK';
         break;
       default :
-        this.countryName = countryData.alias.slice(0, 7) + '...';
+        if (countryData.alias.length > 10) {
+          this.countryName = countryData.alias.slice(0, 8) + '...';
+        } else {
+          this.countryName = countryData.alias;
+        }
     }
-   }
+  }
 
   protected openExpandBlock(): void {
     this.familyExpandBlock.emit({thingId: this.home.familyThingId});

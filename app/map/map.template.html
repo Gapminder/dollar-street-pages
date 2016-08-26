@@ -19,7 +19,7 @@
                (mouseenter)="isDesktop ? hoverOnMarker(i, place.country) : hoverOnMarkerTablet(i, place.country)"
                (mouseleave)="unHoverOnMarker($event)"
                (click)="isDesktop ? clickOnMarker($event, i, place.country) : mobileClickOnMarker(place.country)">
-          <div class="hover_portrait"
+          <div class="hover_portrait" *ngIf="hoverPlace && isDesktop"
                [hidden]="!hoverPlace && isDesktop "
                [ngClass]="shadowClass"
                [style.top.px]="hoverPortraitTop"
