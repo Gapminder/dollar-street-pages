@@ -47,14 +47,6 @@ body {
 }
 
 body.photographers #app-container {
-  padding-bottom: 0 !important;
-}
-
-body.photographers footer {
-  position: static !important;
-}
-
-body.photographers #app-container {
   margin-bottom: 70px;
 }
 
@@ -310,6 +302,14 @@ body.matrix #main-menu .menu-icon {
     padding-left: 0;
     padding-right: 0;
   }
+
+  body.photographers #app-container {
+    padding-bottom: 0 !important;
+  }
+
+  body.photographers footer {
+    position: static !important;
+  }
 }
 
 @media (max-width: 1023px) {
@@ -327,7 +327,7 @@ body.matrix #main-menu .menu-icon {
   }
 
   body.photographers #app-container {
-    margin-bottom: 30px;
+    margin-bottom: 0;
   }
 
   .blog #app-container.container {

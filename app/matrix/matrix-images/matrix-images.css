@@ -163,6 +163,11 @@
 }
 
 @media (max-width: 599px) {
+  .images-container {
+    overflow: hidden;
+    padding: 0 2.5px 10px;
+  }
+
   .flex-container.column-2 .image-content {
     width: calc(50% - 5px);
   }

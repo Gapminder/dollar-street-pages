@@ -9,10 +9,12 @@ import { StreetMobileComponent } from '../common/street-mobile/street-mobile.com
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { GuideComponent } from '../common/guide/guide.component';
+import { IncomeFilterComponent } from '../common/income-filter/income-filter.component';
 import { Config, ImageResolutionInterface } from '../app.config';
 
 let _ = require('lodash');
 let device = require('device.js')();
+let isMobile: boolean = device.mobile();
 
 let tpl = require('./matrix.template.html');
 let style = require('./matrix.css');
@@ -27,12 +29,14 @@ let style = require('./matrix.css');
     StreetComponent,
     StreetMobileComponent,
     MatrixImagesComponent,
-    LoaderComponent]
+    LoaderComponent,
+    IncomeFilterComponent]
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces: any[] = [];
   protected zoomPositionFixed: boolean = false;
+  protected isOpenIncomeFilter: boolean = false;
   public clearActiveHomeViewBox: Subject<any> = new Subject<any>();
 
   public query: string;
@@ -505,6 +509,29 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     setTimeout(() => {
       this.getPaddings();
     }, 0);
+  }
+
+  protected openIncomeFilter(): void {
+    if (!isMobile) {
+      return;
+    }
+
+    this.isOpenIncomeFilter = true;
+  }
+
+  protected getResponse(params: any): void {
+    if (params.lowIncome && params.highIncome) {
+      this.query = this.query
+        .replace(/lowIncome\=\d*/, `lowIncome=${params.lowIncome}`)
+        .replace(/highIncome\=\d*/, `highIncome=${params.highIncome}`);
+
+      this.lowIncome = params.lowIncome;
+      this.highIncome = params.highIncome;
+
+      this.urlChanged({url: this.query});
+    }
+
+    this.isOpenIncomeFilter = false;
   }
 
   private parseUrl(url: string): any {

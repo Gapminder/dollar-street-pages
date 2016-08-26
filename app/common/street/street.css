@@ -16,3 +16,9 @@
     margin: -5px 10px 0;
   }
 }
+
+@media (max-width: 599px) {
+  .street-box {
+    margin: -5px 5px 0;
+  }
+}

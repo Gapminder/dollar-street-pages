@@ -4,7 +4,8 @@
   <header [query]="query"
           [thing]="thing"
           [hoverPlace]="hoverPlace"
-          (filter)="urlChanged($event)">
+          (filter)="urlChanged($event)"
+          (isOpenIncomeFilter)="openIncomeFilter($event)">
   </header>
   <div class="street-container">
     <street [query]="query"
@@ -16,6 +17,12 @@
 
     <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
   </div>
+
+  <income-filter *ngIf="isOpenIncomeFilter"
+                 [places]="streetPlacesData"
+                 [lowIncome]="lowIncome"
+                 [highIncome]="highIncome"
+                 (sendResponse)="getResponse($event)"></income-filter>
 </div>
 
 <matrix-images [zoom]="zoom"
