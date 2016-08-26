@@ -345,6 +345,9 @@
 
   .short-family-info-container .description-container .left-title .title.mobile,
   .title-info .title.mobile {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     display: block;
   }
 
