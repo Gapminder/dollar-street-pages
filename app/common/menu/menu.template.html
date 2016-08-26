@@ -8,28 +8,19 @@
     <div class="dropdown-menu">
       <ul class="header-menu-list">
         <li>
-          <a (click)="goToMatrixPage()">Home</a>
+          <a (click)="goToPage('/matrix')">Home</a>
         </li>
         <li>
-          <a (click)="goToMatrixPage(true)">Quick guide</a>
+          <a (click)="goToPage('/matrix', true)">Quick guide</a>
         </li>
         <li>
-          <a [routerLink]="['/about']"
-             [queryParams]="{}"
-             angulartics2On="click"
-             angularticsEvent="From menu to About page">About</a>
+          <a (click)="goToPage('/about')">About</a>
         </li>
         <li>
-          <a [routerLink]="['/blog']"
-             [queryParams]="{}"
-             angulartics2On="click"
-             angularticsEvent="From menu to Blog page">Blog</a>
+          <a (click)="goToPage('/blog')">Blog</a>
         </li>
         <li>
-          <a [routerLink]="['/map']"
-             [queryParams]="{}"
-             angulartics2On="click"
-             angularticsEvent="From menu to Map page">Map</a>
+          <a (click)="goToPage('/map')">Map</a>
         </li>
         <li class="social-share-container">
           <div class="social-share-content">
@@ -38,7 +29,7 @@
           </div>
         </li>
         <li>
-          <a (click)="goToGapminder()">More from gapminder >></a>
+          <a (click)="goToPage('https://www.gapminder.org')">More from gapminder >></a>
         </li>
       </ul>
     </div>

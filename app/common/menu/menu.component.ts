@@ -97,36 +97,37 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected goToMatrixPage(removeStorage?: boolean): void {
+  protected goToPage(url: string, removeStorage?: boolean): void {
+    switch (url) {
+      case '/matrix':
+        this.goToMatrixPage(removeStorage);
 
-    if (isMobile) {
-      document.body.classList.remove('hideScroll');
+        break;
+      case '/about':
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to About page');
+        this.router.navigate([url], {queryParams: {}});
+
+        break;
+      case '/blog':
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page');
+        this.router.navigate([url], {queryParams: {}});
+
+        break;
+      case '/map':
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page');
+        this.router.navigate([url], {queryParams: {}});
+
+        break;
+      case 'https://www.gapminder.org':
+        this.angulartics2GoogleAnalytics.eventTrack(`Go to Gapminder.org from menu `);
+        this.window.open(url, '_blank');
+
+        break;
+      default:
+        this.goToMatrixPage();
     }
 
-    if (removeStorage) {
-
-      this.window.localStorage.removeItem('quick-guide');
-      this.angulartics2GoogleAnalytics.eventTrack(`Go to Quick Guide from menu `);
-    } else {
-      this.angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from menu `);
-    }
-
-    console.log(1111111, this.isMatrixComponent);
-
-    if (this.isMatrixComponent) {
-      this.window.location.href = this.window.location.origin;
-
-      return;
-    }
-
-    console.log(222222, this.isMatrixComponent);
-
-    this.router.navigate(['/matrix'], {queryParams: {}});
-  }
-
-  protected goToGapminder(): void {
-    this.angulartics2GoogleAnalytics.eventTrack(`Go to Gapminder.org from menu `);
-    this.window.open('https://www.gapminder.org', '_blank');
+    this.isOpenMenu = false;
   }
 
   @HostListener('document:click', ['$event'])
@@ -134,5 +135,26 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     if (!this.element.contains(event.target) && this.isOpenMenu) {
       this.isOpenMenu = false;
     }
+  }
+
+  private goToMatrixPage(removeStorage?: boolean): void {
+    if (isMobile) {
+      document.body.classList.remove('hideScroll');
+    }
+
+    if (removeStorage) {
+      this.window.localStorage.removeItem('quick-guide');
+      this.angulartics2GoogleAnalytics.eventTrack(`Go to Quick Guide from menu `);
+    } else {
+      this.angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from menu `);
+    }
+
+    if (this.isMatrixComponent) {
+      this.window.location.href = this.window.location.origin;
+
+      return;
+    }
+
+    this.router.navigate(['/matrix'], {queryParams: {}});
   }
 }
