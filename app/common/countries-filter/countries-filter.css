@@ -202,6 +202,11 @@
   color: #a9a9a9;
 }
 
+#countries-filter .regions-container .empty  {
+  cursor: default;
+  color: #a9a9a9 ;
+}
+
 #countries-filter .button-container {
   width: 100%;
   float: none;
