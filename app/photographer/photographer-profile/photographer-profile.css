@@ -176,7 +176,7 @@
 }
 
 #item-profile-mobile .item-description-header > div {
-  width: 33%;
+  width: 100%;
   float: left;
   font-size: 16px;
 }
@@ -311,6 +311,14 @@
   #item-profile-mobile {
     display: block;
   }
+
+  #item-profile-mobile .item-description-header > div {
+    width: 41%;
+    float: left;
+    font-size: 16px;
+  }
+
+
 }
 
 @media (max-width: 599px) {

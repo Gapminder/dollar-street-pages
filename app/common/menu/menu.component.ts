@@ -98,6 +98,11 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   protected goToPage(url: string, removeStorage?: boolean): void {
+
+    if (isMobile) {
+      document.body.classList.remove('hideScroll');
+    }
+
     switch (url) {
       case '/matrix':
         this.goToMatrixPage(removeStorage);

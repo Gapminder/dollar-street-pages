@@ -597,6 +597,14 @@
     top: 0;
     right: 0;
     width: 100%;
+    -webkit-transition: all 0s ease-out;
+    -moz-transition: all 0s ease-out;
+    -o-transition: all 0s ease-out;
+    transition: all 0s ease-out;
+  }
+
+  .left-side-info {
+
   }
 
   .left-side-info .header {

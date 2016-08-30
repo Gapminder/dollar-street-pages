@@ -154,6 +154,10 @@
     margin: 37px 20px 0 58px;
   }
 
+  #photographer-places .place-description .family > span {
+    margin-left:-15px;
+  }
+
   #photographer-places .place {
     margin-bottom: 20px;
   }
@@ -162,6 +166,7 @@
     width: 50% !important;
     margin-top: -6px;
     overflow: visible;
+    margin-left: 25px;
   }
 
   #photographer-places .country-income .income {
@@ -187,8 +192,15 @@
     margin: 0 !important;
   }
 
+  #photographer-places .place-description .family {
+    margin-left:-25px;
+  }
+
   #photographer-places .place-description .family h3 {
     margin-top: 4px;
+    margin-left: -15px;
+    word-break: normal;
+
   }
 
   #photographer-places .place-description .place-country img {
@@ -243,12 +255,16 @@
     position: relative;
   }
 
+
+
   #photographer-places .place .place-description .family {
     min-height: 20px;
+    margin-left: 0;
   }
 
   #photographer-places .place-description .family h3 {
     margin-top: 0;
+    margin-left: 0
   }
 
   #photographer-places .place .place-description .country-income,
