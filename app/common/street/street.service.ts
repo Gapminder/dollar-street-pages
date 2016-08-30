@@ -25,7 +25,7 @@ export class StreetDrawService {
   public halfOfHeight: number;
   public lowIncome: number;
   public highIncome: number;
-  public streetOffset: number;
+  public streetOffset: number = 60;
   public chosenPlaces: any;
   private poorest: string = 'POOREST';
   private richest: string = 'RICHEST';
@@ -77,7 +77,6 @@ export class StreetDrawService {
   }
 
   public init(lowIncome: any, highIncome: any, drawDividers: DrawDividersInterface): this {
-    this.streetOffset = 60;
     this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
