@@ -34,6 +34,8 @@ export class CountryComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.titleHeaderService.setTitle('');
+
     this.queryParamsSubscribe = this.activatedRoute
       .params
       .subscribe((params: any) => {
