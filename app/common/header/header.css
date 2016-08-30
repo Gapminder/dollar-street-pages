@@ -29,6 +29,10 @@
   width: calc(100% - 180px);
 }
 
+.filters-container things-filter {
+  margin-bottom: 5px;
+}
+
 .filters-container things-filter,
 .filters-container > span,
 .filters-container .some-filter-container > * {
@@ -46,6 +50,7 @@
 
 .some-filter-container {
   display: inline-block;
+  vertical-align: top;
 }
 
 .place-title {
@@ -84,7 +89,7 @@
 
 @media (max-width: 1023px) {
   .filters-container {
-    width: calc(100% - 110px);
+    width: calc(100% - 105px);
   }
 
   .header-content .icon-container img {
@@ -97,10 +102,11 @@
     margin-top: 11px;
   }
 
-  .filters-container > span,
-  .filters-container .some-filter-container > span {
+  .filters-container .some-filter-container > span,
+  .filters-container > span {
     margin: 0 11px;
     font-size: 24px;
+    vertical-align: sub;
   }
 }
 

@@ -213,7 +213,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       }, 0);
     }
 
-    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 175) {
+    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 150) {
       setTimeout((): void => {
         incomeContainer.classList.add('incomeby');
       }, 0);
