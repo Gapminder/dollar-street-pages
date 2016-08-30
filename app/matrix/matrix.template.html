@@ -7,15 +7,23 @@
           (filter)="urlChanged($event)"
           (isOpenIncomeFilter)="openIncomeFilter($event)">
   </header>
-  <div class="street-container">
-    <street [query]="query"
-            [thing]="thing"
-            [places]="streetPlaces"
-            [hoverPlace]="hoverPlace"
-            [chosenPlaces]="chosenPlaces"
-            (filterStreet)="urlChanged($event)"></street>
 
-    <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
+  <div class="street-and-title-container">
+    <div class="street-container">
+      <div class="short-title">
+        {{thing}} <span>in</span> {{activeCountries}} <span>by $</span>
+      </div>
+      <div class="street-content">
+        <street [query]="query"
+                [thing]="thing"
+                [places]="streetPlaces"
+                [hoverPlace]="hoverPlace"
+                [chosenPlaces]="chosenPlaces"
+                (filterStreet)="urlChanged($event)"></street>
+
+        <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
+      </div>
+    </div>
   </div>
 
   <income-filter *ngIf="!isDesktop && isOpenIncomeFilter"
