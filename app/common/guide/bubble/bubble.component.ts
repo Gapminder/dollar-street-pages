@@ -108,11 +108,6 @@ export class BubbleComponent implements OnInit, OnDestroy {
     let baloonDirector: string;
 
     if (step === 1) {
-      //
-      // if (isMobile) {
-      //   this.position = {left: this.windowInnerWidth / 2 - 175, top: -1000};
-      // }
-
       baloonDirector = '.street-box';
       this.bubble = _.find(this.bubbles, ['name', 'street']);
     }

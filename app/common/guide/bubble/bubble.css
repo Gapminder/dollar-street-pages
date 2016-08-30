@@ -290,10 +290,6 @@
     top: 180px !important;
   }
 
-  /*.bubbles-container.center {*/
-    /*top: 180px !important;*/
-  /*}*/
-
   .bubbles-container.things {
     top: 50px !important;
     left: 5px !important;
@@ -377,5 +373,9 @@
 
   .bubbles-container .footer-container social-share-buttons {
     width: 170px;
+  }
+
+  .bubbles-container .footer-container social-share-buttons .share-button:first-child {
+    margin-left: 14px;
   }
 }
