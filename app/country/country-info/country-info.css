@@ -171,7 +171,7 @@
 }
 
 #item-profile-mobile .item-description-header > div {
-  width: 33%;
+  width: 41%;
   float: left;
   font-size: 16px;
 }
@@ -307,7 +307,7 @@
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 600px) {
   #item-profile-mobile {
     padding: 15px 5px 0;
     margin-bottom: 25px;
