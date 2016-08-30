@@ -47,7 +47,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
-          if (this.isCloseBubble) {
+          if (this.isCloseBubble || this.windowInnerWidth === window.innerWidth) {
             return;
           }
 
