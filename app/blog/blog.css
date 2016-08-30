@@ -1,7 +1,3 @@
-#blog-page {
-  padding-top: 125px;
-}
-
 .dynamic-details {
   font-family: 'Bariol Regular', sans-serif;
 }
@@ -32,18 +28,21 @@
 }
 
 .dynamic-item {
-  margin-bottom: 70px;
+  margin-bottom: 80px !important;
   float: none;
   display: inline-block;
   vertical-align: top;
 }
 
 .dynamic-wrap-img {
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
-  border: 1px solid #dce3ec;
+  border: 1px solid #edf0f5;
   position: relative;
   display: block;
+  height: 240px;
+  background-position: 50% 50%;
+  background-size: cover;
 }
 
 .dynamic-wrap-img img {
@@ -89,6 +88,7 @@
 .post-p {
   font-size: 16px;
   color: #767d86;
+  margin: 0;
 }
 
 .post-p a {
@@ -112,8 +112,17 @@
   color: #394753;
 }
 
+.dynamic-list {
+  margin-bottom: 20px;
+}
+
 .tags-container {
   margin-top: 35px;
+  margin-bottom: 100px;
+}
+
+.dynamic-list + .tags-container {
+  margin-top: 0;
 }
 
 #blog-page .dynamic-details h1,
@@ -121,11 +130,72 @@
   display: none;
 }
 
+#blog-page.article-page .date-info {
+  text-transform: capitalize;
+}
+
 #blog-page.article-page .dynamic-details h1,
 #blog-page.article-page .dynamic-details > .date-info {
   display: block;
 }
 
-#blog-page.article-page #articles-container.container {
-  width: 745px;
+#blog-page.article-page #articles-container {
+  width: 730px;
+  margin: 0 auto 70px !important;
+}
+
+@media (max-width: 1023px) {
+  .dynamic-item.col-md-4 {
+    width: 50%;
+    margin-bottom: 35px !important;
+    padding: 0 10px;
+  }
+
+  #blog-page.article-page #articles-container {
+    width: 100%;
+  }
+
+  .dynamic-details h1 {
+    font-size: 34px;
+  }
+
+  .dynamic-details .small-description {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .dynamic-list.row {
+    margin: 0;
+  }
+
+  .article-page {
+    margin: 0 10px;
+  }
+
+  #blog-page.article-page #articles-container {
+    width: 100%;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 599px) {
+  .dynamic-item.col-md-4 {
+    width: 100%;
+    margin-bottom: 35px !important;
+    padding: 0 5px;
+  }
+
+  .article-page {
+    margin: 0 5px;
+  }
+
+  .dynamic-details h1 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .dynamic-details .small-description {
+    font-size: 16px;
+    line-height: 22px;
+  }
 }

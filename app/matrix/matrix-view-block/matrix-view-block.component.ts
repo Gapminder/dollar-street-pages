@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Config, ImageResolutionInterface } from '../../../app/app.config';
 
@@ -33,7 +33,7 @@ let style = require('./matrix-view-block.css');
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  public familyInfoServiceSubscribe: Subscriber<any>;
+  public familyInfoServiceSubscribe: Subscription;
   public fancyBoxImage: any;
 
   protected showblock: boolean;

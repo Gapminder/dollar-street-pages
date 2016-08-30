@@ -1,7 +1,7 @@
 #main-menu .menu-icon {
   display: block;
-  width: 71px;
-  height: 65px;
+  width: 62px;
+  height: 62px;
   text-align: center;
   cursor: pointer;
 }
@@ -110,8 +110,8 @@
 
 @media (max-width: 1023px) {
   #main-menu .menu-icon {
-    width: 53px;
-    height: 55px;
+    width: 47px;
+    height: 56px;
   }
 
   #main-menu .open .dropdown-menu li div.social-share-content {

@@ -34,10 +34,20 @@
   font-style: normal;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   font-family: 'Bariol Regular', sans-serif;
   overflow-x: hidden;
   color: #374551;
+  position: relative;
+  min-height: 100%;
+}
+
+body.photographers #app-container {
+  margin-bottom: 70px;
 }
 
 body.draggingSliders #chart * {
@@ -75,12 +85,12 @@ svg circle {
   cursor: pointer;
 }
 
-html, body, body > div[ui-view] {
-  height: 100%;
-}
-
 .main-header {
   z-index: 1000 !important;
+}
+
+matrix {
+  display: block;
 }
 
 .hideScroll {
@@ -107,20 +117,10 @@ html, body, body > div[ui-view] {
   background-color: transparent;
 }
 
-consumer-app > *:not(router-outlet):not(photographers) {
-  position: relative;
-  display: block;
-  min-height: 100%;
-}
-
 .first-page.header .social-share-buttons-container i {
   color: #767d86;
   font-size: 26px;
   margin-left: 35px;
-}
-
-#main-menu .share-button-container i {
-  color: #e0e7ef;
 }
 
 .text-center {
@@ -217,7 +217,7 @@ consumer-app > *:not(router-outlet):not(photographers) {
 }
 
 .margin-bottom-35 {
-  margin-bottom: 35px;
+  margin-bottom: 35px !important;
 }
 
 .margin-bottom-100 {
@@ -286,6 +286,32 @@ matrix .matrix-header header {
   margin-left: 22px !important;
 }
 
+body.family #main-menu .menu-icon,
+body.matrix #main-menu .menu-icon {
+  width: 72px;
+}
+
+@media (min-width: 1024px) {
+  body.photographers,
+  body.photographers #app-container,
+  body.photographers consumer-app {
+    height: 100%;
+  }
+
+  body.photographers #app-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  body.photographers #app-container {
+    padding-bottom: 0 !important;
+  }
+
+  body.photographers footer {
+    position: static !important;
+  }
+}
+
 @media (max-width: 1023px) {
   .custom-button {
     padding: 5px 20px;
@@ -295,12 +321,46 @@ matrix .matrix-header header {
   matrix .matrix-header header {
     margin-left: 10px !important;
   }
+
+  .header.header-without-search .heading .sub-title {
+    display: none;
+  }
+
+  body.photographers #app-container {
+    margin-bottom: 0;
+  }
+
+  .blog #app-container.container {
+    padding-top: 87px !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   svg .poorest,
   svg .richest,
   svg .scale-label {
     font-size: 12px;
+  }
+
+  .blog #app-container.container {
+    padding-top: 77px !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .block-entry h2 {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .block-entry h3 {
+    font-size: 20px !important;
+  }
+
+  gm-entries-view p {
+    font-size: 16px;
+    line-height: 20px;
   }
 }

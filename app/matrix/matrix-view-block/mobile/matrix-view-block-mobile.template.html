@@ -4,14 +4,12 @@
   <div class="view-image-container">
     <img (click)="openPopUp()" [src]="place.background">
     <div class="close-box-container" (click)="closeBlock()">
-      <span class="close-box">
-        <img src="/assets/img/close-button-bubbles.svg" alt="x">
-      </span>
+      <img class="close-box" src="/assets/img/close-button-mobile.svg" alt="x">
     </div>
 
     <div class="view-image-block-footer-container">
       <div class="photographer-container">
-        <p><img src="/assets/img/cc-icon-small.svg">
+        <p><img src="/assets/img/cc-icon-small-white.svg">
           Photo: <a *ngIf="familyData?.photographer?.id"
                     [routerLink]="['/photographer', familyData.photographer.id]"
                     [queryParams]="{}"
@@ -26,7 +24,7 @@
 
       <div class="download-container">
         <a target="_blank" [href]="api + '/consumer/api/v1/download-image/' + place.image">
-          <img src="/assets/img/download-icon.svg" alt="">
+          <img src="/assets/img/download-icon-white.svg" alt="">
         </a>
       </div>
     </div>

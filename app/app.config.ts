@@ -1,15 +1,14 @@
-import { AllPhotographersComponent } from './all-photographers/all-photographers.component';
+import { PhotographersComponent } from './photographers/photographers.component';
 import { TeamComponent } from './team/team.component';
 import { ArticleComponent } from './article/article.component';
 import { CountryComponent } from './country/country.component';
 import { HomeComponent } from './home/home.component';
-import { InfoComponent } from './info/info.component';
+import { AboutComponent } from './about/about.component';
 import { MapComponent } from './map/map.component';
 import { MatrixComponent } from './matrix/matrix.component';
 import { PhotographerComponent } from './photographer/photographer.component';
 import { RouterConfig } from '@angular/router';
-import { RoutesGatewayComponent, RoutesGatewayGuard } from 'ng2-contentful-blog';
-import { ArticleTagComponent } from './blog/tag/tag.component';
+import { RoutesGatewayComponent, RoutesGatewayGuard, TagComponent } from 'ng2-contentful-blog';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -25,20 +24,20 @@ export class Config {
   // public static api:string = 'http://stage.dollarstreet.org';
   // public static api: string = 'http://192.168.1.148';
   // public static api:string = 'http://192.168.1.57';
-  // public static api:string = 'http://192.168.1.147';
+ //  public static api:string = 'http://192.168.1.147';
 
   public static routes: RouterConfig = [
     {path: '', pathMatch: 'full', redirectTo: 'matrix'},
     {path: 'matrix', component: MatrixComponent, terminal: true},
     {path: 'family', component: HomeComponent},
     {path: 'map', component: MapComponent},
-    {path: 'photographers', component: AllPhotographersComponent},
+    {path: 'photographers', component: PhotographersComponent},
     {path: 'photographer/:id', component: PhotographerComponent},
     {path: 'team', component: TeamComponent},
     {path: 'country/:id', component: CountryComponent},
-    {path: 'info', component: InfoComponent},
+    {path: 'about', component: AboutComponent},
     {path: 'article/:id', component: ArticleComponent},
-    {path: 'tag/:tag', component: ArticleTagComponent},
+    {path: 'tag/:tag', component: TagComponent},
     {path: '**', component: RoutesGatewayComponent, canActivate: [RoutesGatewayGuard]}
   ];
 

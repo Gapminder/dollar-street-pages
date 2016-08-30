@@ -14,11 +14,7 @@ import {
   ContributorsComponent
 } from 'ng2-contentful-blog/index';
 import { RawRoute } from 'ng2-contentful-blog/components/routes-gateway/routes-manager.service';
-import { HeaderWithoutSearchComponent } from '../common/headerWithoutSearch/header.component';
-import { FooterComponent } from '../common/footer/footer.component';
-import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { LoaderComponent } from '../common/loader/loader.component';
-import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 import * as _ from 'lodash';
 
 let tpl = require('./blog.template.html');
@@ -34,20 +30,13 @@ let style = require('./blog.css');
     ROUTER_DIRECTIVES,
     TagsComponent,
     ContributorsComponent,
-    HeaderWithoutSearchComponent,
-    FooterComponent,
-    FloatFooterComponent,
-    LoaderComponent,
-    FooterSpaceDirective
+    LoaderComponent
   ],
   pipes: [ToDatePipe]
 })
 
 export class BlogComponent implements OnInit {
-  /* tslint:disable:no-unused-variable */
-  private title: string = 'Blog';
-  /* tslint:enable:no-unused-variable */
-  private loader: boolean = false;
+  private loader: boolean = true;
   private isArticle: boolean;
 
   private content: NodePageContent;
@@ -59,12 +48,14 @@ export class BlogComponent implements OnInit {
   private contentfulContentService: ContenfulContent;
   private routesManager: RoutesManagerService;
   private constants: any;
+  private titleHeaderService: any;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
                      routesManager: RoutesManagerService,
+                     contentfulContentService: ContenfulContent,
                      @Inject('Constants') constants: any,
-                     contentfulContentService: ContenfulContent) {
+                     @Inject('TitleHeaderService') titleHeaderService: any) {
     this.router = router;
     this.contentfulContentService = contentfulContentService;
     this.routesManager = routesManager;
@@ -73,9 +64,12 @@ export class BlogComponent implements OnInit {
 
     let snapshotUrl: any = this.activatedRoute.snapshot.url;
     this.isArticle = snapshotUrl.length > 1 && (snapshotUrl[0].path === 'blog' || snapshotUrl[0].path === 'answers' || snapshotUrl[0].path === 'videos');
+    this.titleHeaderService = titleHeaderService;
   }
 
   public ngOnInit(): void {
+    this.titleHeaderService.setTitle('Blog');
+
     this.activatedRoute.url
       .subscribe((urls: UrlPathWithParams[]) => {
         this.urlPath = urls.map((value: UrlPathWithParams) => value.path).join('/');
@@ -98,11 +92,15 @@ export class BlogComponent implements OnInit {
 
     this.content = article.fields;
 
+    this.content.tags = _.filter(this.content.tags, (tag: ContentfulTagPage)=> {
+      return !_.includes(this.constants.EXCLUDED_TAGS, tag.fields.slug);
+    });
+
     this.contentfulContentService.getChildrenOfArticle(article.sys.id)
       .do((articles: ContentfulNodePage[]) => this.addRoutes(articles))
       .subscribe((children: ContentfulNodePage[]) => {
         this.children = children;
-        this.loader = true;
+        this.loader = false;
       });
   }
 

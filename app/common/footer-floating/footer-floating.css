@@ -52,7 +52,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .float-footer-container {
     padding: 9px 5px;
   }

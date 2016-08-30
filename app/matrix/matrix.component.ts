@@ -2,20 +2,19 @@ import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZ
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
 import { StreetMobileComponent } from '../common/street-mobile/street-mobile.component';
-import { FooterComponent } from '../common/footer/footer.component';
-import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
 import { GuideComponent } from '../common/guide/guide.component';
-import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
+import { IncomeFilterComponent } from '../common/income-filter/income-filter.component';
 import { Config, ImageResolutionInterface } from '../app.config';
 
 let _ = require('lodash');
 let device = require('device.js')();
+let isMobile: boolean = device.mobile();
 
 let tpl = require('./matrix.template.html');
 let style = require('./matrix.css');
@@ -30,15 +29,14 @@ let style = require('./matrix.css');
     StreetComponent,
     StreetMobileComponent,
     MatrixImagesComponent,
-    FooterComponent,
-    FloatFooterComponent,
-    FooterSpaceDirective,
-    LoaderComponent]
+    LoaderComponent,
+    IncomeFilterComponent]
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected filtredPlaces: any[] = [];
   protected zoomPositionFixed: boolean = false;
+  protected isOpenIncomeFilter: boolean = false;
   public clearActiveHomeViewBox: Subject<any> = new Subject<any>();
 
   public query: string;
@@ -51,7 +49,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public loader: boolean = false;
   public lowIncome: number;
   public highIncome: number;
-  public matrixServiceSubscribe: Subscriber<any>;
+  public matrixServiceSubscribe: Subscription;
   public Angulartics2GoogleAnalytics: any;
   public streetData: any;
   public selectedCountries: any;
@@ -81,7 +79,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private countriesFilterService: any;
   private countriesFilterServiceSubscribe: any;
   private windowHistory: any = history;
-  private matrixServiceStreetSubscribe: Subscriber<any>;
+  private matrixServiceStreetSubscribe: Subscription;
   private streetPlacesData: any;
   private queryParamsSubscribe: Subscription;
   private windowInnerHeight: number = window.innerHeight;
@@ -162,11 +160,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         let windowInnerWidth: number = window.innerWidth;
 
-        if (!this.isDesktop && windowInnerWidth > 767) {
+        if (!this.isDesktop && windowInnerWidth > 599) {
           this.zoom = 3;
         }
 
-        if (!this.isDesktop && windowInnerWidth <= 767) {
+        if (!this.isDesktop && windowInnerWidth <= 599) {
           this.zoom = 2;
         }
 
@@ -238,7 +236,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngAfterViewChecked(): void {
-    let footer = this.element.querySelector('.footer') as HTMLElement;
+    let footer = document.querySelector('.footer') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
 
     if (!imgContent) {
@@ -260,8 +258,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   /** each document usage breaks possible server side rendering */
   public stopScroll(): void {
+    if (!this.imageHeight) {
+      return;
+    }
+
     this.setZoomButtonPosition();
-    let scrollTop = document.body.scrollTop ? document.body.scrollTop : document.documentElement.scrollTop;
+    let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     let distance = scrollTop / (this.imageHeight + 2 * this.imageMargin);
 
     if (isNaN(distance)) {
@@ -509,13 +511,36 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }, 0);
   }
 
+  protected openIncomeFilter(): void {
+    if (!isMobile) {
+      return;
+    }
+
+    this.isOpenIncomeFilter = true;
+  }
+
+  protected getResponse(params: any): void {
+    if (params.lowIncome && params.highIncome) {
+      this.query = this.query
+        .replace(/lowIncome\=\d*/, `lowIncome=${params.lowIncome}`)
+        .replace(/highIncome\=\d*/, `highIncome=${params.highIncome}`);
+
+      this.lowIncome = params.lowIncome;
+      this.highIncome = params.highIncome;
+
+      this.urlChanged({url: this.query});
+    }
+
+    this.isOpenIncomeFilter = false;
+  }
+
   private parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 
   private setZoomButtonPosition(): void {
     let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
-    let containerHeight: number = this.element.offsetHeight - this.footerHeight + 45;
+    let containerHeight: number = this.element.offsetHeight + 30;
 
     this.zone.run(() => {
       this.zoomPositionFixed = scrollTop > containerHeight;

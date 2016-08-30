@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { BubbleComponent } from './bubble/bubble.component';
 
 let _ = require('lodash');
@@ -21,7 +21,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   protected isShowBubble: boolean = false;
 
   private guideService: any;
-  private guideServiceSubscribe: Subscriber<any>;
+  private guideServiceSubscribe: Subscription;
 
   @Output('startQuickGuide')
   private startQuickGuide: EventEmitter<any> = new EventEmitter<any>();

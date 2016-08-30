@@ -1,7 +1,5 @@
-<div id="blog-page" footerSpace [class.article-page]="isArticle">
-  <header [title]="title"></header>
-
-  <div id="articles-container" class="container" [class.margin-bottom-100]="isArticle && !content?.related">
+<div id="blog-page" [class.article-page]="isArticle">
+  <div id="articles-container" [class.margin-bottom-35]="isArticle && !content?.related">
     <div class="row">
       <div class="dynamic-details col-md-12" *ngIf="content">
         <h1>{{ content.title }}</h1>
@@ -17,16 +15,14 @@
           <gm-entries-view [entries]="content.entries"></gm-entries-view>
         </div>
 
-        <div class="dynamic-list row">
-          <div class="dynamic-item col-md-4 col-sm-4 margin-bottom-35" *ngFor="let child of children">
+        <div class="dynamic-list row" *ngIf="children?.length">
+          <div class="dynamic-item col-md-4 margin-bottom-35" *ngFor="let child of children">
             <a class="dynamic-wrap-img"
                *ngIf="child.fields.thumbnail"
                [routerLink]="[routesManager.getRouteName(urlPath + '/'+ child.fields.slug)]"
                angulartics2On="click"
-               angularticsEvent="{{child.fields.title}}">
-              <img [gmContentfulSrcId]="child.fields.thumbnail.sys.id"
-                   [height]="300"
-                   alt="{{child.fields.title}}">
+               angularticsEvent="{{child.fields.title}}"
+               [gmContentfulSrcId]="child.fields.thumbnail.sys.id" [height]="300">
             </a>
 
             <div class="date-info">{{child.fields.createdAt | gmToDate | date}}</div>
@@ -38,23 +34,21 @@
               {{child.fields.title}}
             </a>
 
-            <p class="post-p">{{child.fields.description}}... <a
-              [routerLink]="[routesManager.getRouteName(urlPath + '/'+ child.fields.slug)]">Read more >></a>
-            </p>
+            <p class="post-p">{{child.fields.description}}</p>
           </div>
         </div>
 
         <!-- TAGS -->
-        <div class="row tags-container">
+        <div class="row tags-container" *ngIf="content.tags.length">
           <div class="col-md-12">
-            <gm-tags *ngIf="content.tags" [tags]="content.tags"></gm-tags>
+            <gm-tags [tags]="content.tags"></gm-tags>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="related-container container margin-bottom-100" *ngIf="content?.related"
+  <div class="related-container margin-bottom-100" *ngIf="content?.related"
        [class.margin-bottom-35]="content?.related">
     <div class="row">
       <div class="col-md-12 margin-top-35">
@@ -65,8 +59,5 @@
   </div>
 </div>
 
-<footer></footer>
-<float-footer></float-footer>
-
-<loader [hidden]="loader"></loader>
+<loader *ngIf="loader"></loader>
 

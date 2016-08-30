@@ -1,18 +1,9 @@
-<div class="pages-container" footerSpace>
-  <header [title]="title"></header>
+<div class="country-container row">
+  <div class="col-md-2">
+    <country-info [countryId]="countryId" (getCountry)="setTitle($event)"></country-info>
+  </div>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-2">
-        <country-info [countryId]="countryId" (getCountry)="title=$event"></country-info>
-      </div>
-
-      <div class="col-md-10">
-        <country-places [countryId]="countryId"></country-places>
-      </div>
-    </div>
+  <div class="col-md-10">
+    <country-places [countryId]="countryId"></country-places>
   </div>
 </div>
-
-<footer></footer>
-<float-footer></float-footer>

@@ -25,9 +25,9 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
   protected popIsOpen: boolean = false;
   protected fancyBoxImage: string;
   protected country: any;
+  protected countryName: any;
   protected article: any;
   protected api: string = Config.api;
-
   @Input('imageData')
   private imageData: any;
 
@@ -79,6 +79,8 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
           this.country = res.data.country;
           this.article = res.data.article;
 
+          this.truncCountryName(this.country);
+
           if (this.article && this.article.shortDescription.length > 600) {
             this.article.shortDescription = this.article.shortDescription.slice(0, 600) + '...';
           }
@@ -112,6 +114,22 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
   protected fancyBoxClose(): void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
+  }
+
+  protected truncCountryName(countryData: any): any {
+    switch (countryData.name) {
+      case 'South Africa' :
+        this.countryName = 'SA';
+        break;
+      case 'United States' :
+        this.countryName = 'USA';
+        break;
+      case 'United Kingdom' :
+        this.countryName = 'UK';
+        break;
+      default :
+        this.countryName = countryData.name;
+    }
   }
 
   protected closeImageBlock(): void {

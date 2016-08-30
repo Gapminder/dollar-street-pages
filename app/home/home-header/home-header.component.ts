@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscriber, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Config } from '../../app.config';
 
@@ -19,6 +19,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   protected home: any = {};
   protected mapData: any;
   protected math: any;
+  protected countryName: any;
   protected isOpenArticle: boolean = false;
   protected familyShortInfoPosition: number = -88;
   protected isShowAboutData: boolean = false;
@@ -31,7 +32,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   @Input('placeId')
   private placeId: string;
   private homeHeaderService: any;
-  private homeHeaderServiceSubscribe: Subscriber<any>;
+  private homeHeaderServiceSubscribe: Subscription;
   private scrollSubscribe: Subscription;
   private resizeSubscribe: Subscription;
   private zone: NgZone;
@@ -70,6 +71,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
         this.home = res.data;
         this.mapData = this.home.country;
+        this.truncCountryName(this.home.country);
       });
 
     this.scrollSubscribe = fromEvent(document, 'scroll')
@@ -162,6 +164,26 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     event.preventDefault();
 
     this.animateScroll('scrollBackToTop', 20, 1000);
+  }
+
+  protected truncCountryName(countryData: any): any {
+    switch (countryData.alias) {
+      case 'South Africa' :
+        this.countryName = 'SA';
+        break;
+      case 'United States' :
+        this.countryName = 'USA';
+        break;
+      case 'United Kingdom' :
+        this.countryName = 'UK';
+        break;
+      default :
+        if (countryData.alias.length > 10) {
+          this.countryName = countryData.alias.slice(0, 8) + '...';
+        } else {
+          this.countryName = countryData.alias;
+        }
+    }
   }
 
   protected openExpandBlock(): void {

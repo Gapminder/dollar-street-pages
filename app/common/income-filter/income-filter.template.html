@@ -1,0 +1,22 @@
+<div class="income-filter-container">
+  <div class="income-filter-header-container">
+    <span>Select income range</span>
+    <img class="close-button pull-right"
+         src="/assets/img/close-button.svg"
+         (click)="closeFilter(true)"
+         alt="Close">
+  </div>
+
+  <div class="streets-container">
+    <street [places]="places"
+            [lowIncome]="lowIncome"
+            [highIncome]="highIncome"
+            (filterStreet)="getFilter($event)"></street>
+  </div>
+
+  <div class="income-filter-button-container">
+    <button type="button" (click)="showAll()">Show all</button>
+    <button type="button" (click)="closeFilter()"><img src="/assets/img/apply.svg">Ok</button>
+    <button type="button" (click)="closeFilter(true)">Cancel</button>
+  </div>
+</div>

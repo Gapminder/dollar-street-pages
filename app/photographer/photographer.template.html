@@ -1,19 +1,10 @@
-<div class="pages-container" footerSpace>
-  <header [title]="subTitle"></header>
+<div class="photographer-container row">
+  <div class="col-md-2">
+    <photographer-profile [photographerId]="photographerId"
+                          (getPhotographer)="setTitle($event)"></photographer-profile>
+  </div>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-2">
-        <photographer-profile [photographerId]="photographerId"
-                              (getPhotographer)="subTitle=$event"></photographer-profile>
-      </div>
-
-      <div class="col-md-10">
-        <photographer-places [photographerId]="photographerId"></photographer-places>
-      </div>
-    </div>
+  <div class="col-md-10">
+    <photographer-places [photographerId]="photographerId"></photographer-places>
   </div>
 </div>
-
-<footer></footer>
-<float-footer></float-footer>

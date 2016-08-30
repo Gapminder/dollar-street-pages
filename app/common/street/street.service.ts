@@ -5,7 +5,7 @@ import { Inject } from '@angular/core';
 const d3 = require('d3');
 
 let device = require('device.js')();
-let isDesktop = device.desktop();
+let isDesktop: boolean = device.desktop();
 
 export interface DrawDividersInterface {
   showDividers: boolean;
@@ -34,7 +34,7 @@ export class StreetDrawService {
   private svg: any;
   private incomeArr: any[] = [];
   private mouseMoveSubscriber: any;
-  private dividersData: any;
+  private dividersData: DrawDividersInterface;
   private mouseUpSubscriber: any;
   private touchMoveSubscriber: any;
   private touchUpSubscriber: any;
@@ -55,7 +55,8 @@ export class StreetDrawService {
   private rightScrollText: any;
   private hoverPlace: any;
   private math: any;
-  private filter: Subject<any> = new Subject();
+  private filter: Subject<any> = new Subject<any>();
+  private windowInnerWidth: number = window.innerWidth;
   private colors: {fills: any, fillsOfBorders: any} = {
     fills: {
       Europe: '#FFE800',
@@ -84,6 +85,7 @@ export class StreetDrawService {
     this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
+    this.windowInnerWidth = window.innerWidth;
 
     this.scale = d3
       .scale.log()
@@ -333,7 +335,7 @@ export class StreetDrawService {
       .filter((e: MouseEvent) => {
         e.preventDefault();
 
-        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
+        return this.windowInnerWidth >= 600 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
       }).subscribe((e: MouseEvent)=> {
         e.preventDefault();
 
@@ -383,7 +385,7 @@ export class StreetDrawService {
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
       .filter(()=> {
-        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
+        return this.windowInnerWidth >= 600 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
       }).subscribe((e: TouchEvent)=> {
         let positionX = e.touches[0].pageX;
 
@@ -429,7 +431,7 @@ export class StreetDrawService {
 
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
       .filter(()=> {
-        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
+        return this.windowInnerWidth >= 566 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
       }).subscribe((e?: MouseEvent)=> {
         e.preventDefault();
 
@@ -450,7 +452,7 @@ export class StreetDrawService {
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
       .filter(()=> {
-        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
+        return this.windowInnerWidth >= 566 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
       }).subscribe(()=> {
         this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
         this.distanceDraggingLeftSlider = 0;
@@ -530,8 +532,12 @@ export class StreetDrawService {
   };
 
   protected drawLeftSlider(x: number, init: boolean = false): this {
+    if (this.windowInnerWidth <= 566 && Math.floor(this.lowIncome) === this.dividersData.poor) {
+      return;
+    }
+
     this.sliderLeftBorder = x;
-    // console.log(x);
+
     if (!this.leftScrollOpacityStreet) {
       this.leftScrollOpacityStreet = this.svg
         .append('rect')
@@ -592,6 +598,14 @@ export class StreetDrawService {
         let point4 = `${x + this.streetOffset / 2 },${ this.halfOfHeight + 12}`;
         let point5 = `${x + this.streetOffset / 2 - 4.5},${ this.halfOfHeight + 12 + 5}`;
 
+        if (this.windowInnerWidth <= 566) {
+          point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14}`;
+          point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5}`;
+          point3 = `${x + 2 + this.streetOffset / 2 },${ this.halfOfHeight + 14 - 5}`;
+          point4 = `${x + 2 + this.streetOffset / 2 },${ this.halfOfHeight + 14}`;
+          point5 = `${x + 2 + this.streetOffset / 2 - 4.5},${ this.halfOfHeight + 14 + 5}`;
+        }
+
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
 
@@ -610,6 +624,10 @@ export class StreetDrawService {
   };
 
   protected drawRightSlider(x: number, init: boolean = false): this {
+    if (this.windowInnerWidth <= 566 && Math.floor(this.highIncome) === this.dividersData.rich) {
+      return;
+    }
+
     this.sliderRightBorder = x;
 
     if (!this.rightScrollOpacityStreet) {
@@ -670,6 +688,14 @@ export class StreetDrawService {
       let point3 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight - 5}`;
       let point4 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight + 12}`;
       let point5 = `${x + this.streetOffset / 2 + 4.5},${ this.halfOfHeight + 12 + 5}`;
+
+      if (this.windowInnerWidth <= 566) {
+        point1 = `${x - 2 + this.streetOffset / 2},${ this.halfOfHeight + 14}`;
+        point2 = `${x - 2 + this.streetOffset / 2},${ this.halfOfHeight + 14 - 5}`;
+        point3 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14 - 5}`;
+        point4 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14}`;
+        point5 = `${x - 2 + this.streetOffset / 2 + 4.5},${ this.halfOfHeight + 14 + 5}`;
+      }
 
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });
@@ -800,11 +826,11 @@ export class StreetDrawService {
 
     this.rightScrollText
       .text(`${incomeR}$`)
-      .attr('x', ()=> xR + this.streetOffset / 2 - 10 - this.rightScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xR + this.streetOffset / 2 + 4.5 - this.rightScrollText[0][0].getBBox().width / 2);
 
     this.leftScrollText
       .text(`${incomeL}$`)
-      .attr('x', ()=> xL + this.streetOffset / 2 - 10 - this.leftScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xL + this.streetOffset / 2 - 4.5 - this.leftScrollText[0][0].getBBox().width / 2);
 
     return this;
   };

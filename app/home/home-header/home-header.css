@@ -1,3 +1,11 @@
+.close-button {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
 .home-description-container {
   overflow: hidden;
   padding: 86px 22px 20px;
@@ -9,6 +17,7 @@
 .home-description-container > div {
   float: left;
 }
+
 
 .home-description-container .image-container {
   width: 252px;
@@ -127,7 +136,7 @@
   color: #374551;
   font-size: 20px;
   font-family: 'Bariol Light', sans-serif;
-  padding: 4px 35px 4px 14px;
+  padding: 4px 35px 4px 8px;
   position: relative;
   margin: 9px 0 0;
   background-color: transparent;
@@ -142,7 +151,7 @@
   height: 15px;
   position: absolute;
   top: calc(50% - 7.5px);
-  right: 16px;
+  right: 4px;
   opacity: 1;
 }
 
@@ -287,8 +296,8 @@
   top: 14px;
   right: 15px;
   border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   background-color: #dde4ef;
   color: #5f6a74;
   font-size: 14px;
@@ -336,6 +345,9 @@
 
   .short-family-info-container .description-container .left-title .title.mobile,
   .title-info .title.mobile {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     display: block;
   }
 
@@ -440,14 +452,13 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   .home-description-container {
     padding: 67px 5px 5px;
     background-color: #fff;
     border-bottom: 0;
   }
 
-  .short-family-info-container,
   .home-description-container .image-container {
     display: none;
   }
@@ -462,14 +473,11 @@
 
   .title-info .title {
     font-size: 20px;
+    line-height: 25px;
   }
 
   .title-info .right-title .title {
     font-size: 22px;
-  }
-
-  .title-info .title {
-    line-height: 25px;
   }
 
   .home-description-container .image-container.mobile {
@@ -507,5 +515,44 @@
 
   .about-info-image {
     margin-top: 0;
+  }
+
+  .short-family-info-container {
+    padding: 15px 5px;
+  }
+
+  .short-family-info-container .image-container {
+    display: none;
+  }
+
+  .short-family-info-container .description-container {
+    width: 100%;
+  }
+
+  .short-family-info-container .description-container > div {
+    margin: 0 !important;
+  }
+
+  .short-family-info-container .description-container .left-title {
+    width: calc(100% - 110px) !important;
+  }
+
+  .short-family-info-container .description-container .right-title {
+    width: 110px !important;
+  }
+
+  .short-family-info-container .description-container .left-title .title.mobile {
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .short-family-info-container .description-container .right-title .title {
+    font-size: 22px;
+    line-height: 24px;
+    margin: 0;
+  }
+
+  .short-family-info-container .description-container .right-title .title span {
+    display: none;
   }
 }

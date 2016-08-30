@@ -1,12 +1,13 @@
 import { Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { MainMenuComponent } from '../menu/menu.component';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
-let device: {desktop: Function} = require('device.js')();
+let device: {desktop: Function; mobile: Function} = require('device.js')();
+let isMobile: boolean = device.mobile();
 
 let tpl = require('./header.template.html');
 let style = require('./header.css');
@@ -30,15 +31,15 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   protected thing: string;
   @Input('hoverPlace')
   protected hoverPlace: Observable<any>;
-  @Input('chosenPlaces')
-  protected chosenPlaces: Observable<any>;
   protected isOpenFilter: boolean = false;
   protected isDesktop: boolean = device.desktop();
   protected header: any = {};
   protected math: any;
-  protected Angulartics2GoogleAnalytics: any;
+  protected angulartics2GoogleAnalytics: any;
   @Output()
   private filter: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  private isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
   private activeThing: any;
   private defaultThing: any;
   private headerService: any;
@@ -48,20 +49,19 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
   private matrixComponent: boolean;
   private mapComponent: boolean;
-  private headerServiceSubscribe: Subscriber<any>;
-  private headerTitleServiceSubscribe: Subscriber<any>;
+  private headerServiceSubscribe: Subscription;
+  private headerTitleServiceSubscribe: Subscription;
 
   public constructor(@Inject('HeaderService') headerService: any,
                      @Inject(Router) router: Router,
                      @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
                      @Inject('Math') math: any,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
-
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.headerService = headerService;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
@@ -118,6 +118,14 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  protected openIncomeFilter(): void {
+    if (!isMobile) {
+      return;
+    }
+
+    this.isOpenIncomeFilter.emit({});
+  }
+
   public urlTransfer(data: any): void {
     this.filter.emit(data);
   }
@@ -132,7 +140,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
       return;
     }
-    this.Angulartics2GoogleAnalytics.pageTrack(`From header to Matrix page`);
+
+    this.angulartics2GoogleAnalytics.pageTrack(`From header to Matrix page`);
     this.router.navigate(['/matrix'], {queryParams: {}});
   }
 

@@ -84,12 +84,13 @@
 #photographer-places .place-description .place-country img {
   width: 19px;
   float: left;
+  margin-right: 7px;
 }
 
 #photographer-places .place-description .place-country span {
   display: inline-block;
   float: left;
-  width: calc(100% - 19px);
+  width: calc(100% - 26px);
   vertical-align: top;
   line-height: 20px;
 }
@@ -195,7 +196,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   #photographer-places {
     padding: 0 5px;
   }

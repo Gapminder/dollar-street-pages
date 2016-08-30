@@ -4,9 +4,6 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Rx';
 import { HeaderComponent } from '../common/header/header.component';
 import { LoaderComponent } from '../common/loader/loader.component';
-import { FooterComponent } from '../common/footer/footer.component';
-import { FloatFooterComponent } from '../common/footer-floating/footer-floating.component';
-import { FooterSpaceDirective } from '../common/footer-space/footer-space.directive';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');
@@ -20,10 +17,7 @@ let device = require('device.js')();
   directives: [
     ROUTER_DIRECTIVES,
     HeaderComponent,
-    LoaderComponent,
-    FooterComponent,
-    FloatFooterComponent,
-    FooterSpaceDirective
+    LoaderComponent
   ]
 })
 
@@ -31,9 +25,9 @@ export class MapComponent implements OnInit, OnDestroy {
   public resizeSubscribe: Subscription;
   public mapServiceSubscribe: Subscription;
   public math: any;
-  public loader: boolean = false;
+  public loader: boolean = true;
   public needChangeUrl: boolean = false;
-  protected Angulartics2GoogleAnalytics: any;
+  private angulartics2GoogleAnalytics: any;
   private mapService: any;
   private places: any[] = [];
   private countries: any[] = [];
@@ -57,6 +51,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private router: Router;
   private activatedRoute: ActivatedRoute;
   private isDesktop: boolean = device.desktop();
+  private isMobile: boolean = device.mobile();
   private zone: NgZone;
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
@@ -68,13 +63,13 @@ export class MapComponent implements OnInit, OnDestroy {
                      @Inject(NgZone) zone: NgZone,
                      @Inject('UrlChangeService') urlChangeService: any,
                      @Inject('Math') math: any,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.mapService = placeService;
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.zone = zone;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.math = math;
     this.urlChangeService = urlChangeService;
   }
@@ -106,7 +101,8 @@ export class MapComponent implements OnInit, OnDestroy {
         this.query = `thing=${res.data.thing}`;
         this.urlChangeService.replaceState('/map', this.query);
         this.setMarkersCoord(this.places);
-        this.loader = true;
+        this.loader = false;
+
         this.resizeSubscribe = fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
@@ -240,8 +236,50 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.hoverPlace.familyImg.background;
   };
 
+  public hoverOnMarkerTablet(index: number, country: any): void {
+    if (this.isMobile || this.isDesktop) {
+      return;
+    }
+
+    if (this.isOpenLeftSide) {
+      return;
+    }
+
+    this.onMarker = true;
+    this.currentCountry = country;
+
+    this.lefSideCountries = this.places.filter((place: any): boolean => {
+      return place.country === this.currentCountry;
+    });
+
+    this.seeAllHomes = this.lefSideCountries.length > 1;
+
+    this.markers = this.map.querySelectorAll('.marker');
+
+    this.places.forEach((place: any, i: number) => {
+      if (i !== index) {
+        return;
+      }
+
+      this.hoverPlace = place;
+    });
+
+    if (!this.hoverPlace) {
+      return;
+    }
+
+    Array.prototype.forEach.call(this.markers, (marker: HTMLElement, i: number): void => {
+      if (i === index) {
+        return;
+      }
+
+      marker.style.opacity = '0.3';
+    });
+
+  };
+
   public unHoverOnMarker(): void {
-    if (!this.isDesktop) {
+    if (this.isMobile) {
       return;
     }
 
@@ -282,9 +320,15 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public openLeftSideBar(): void {
     this.isOpenLeftSide = true;
+
+    if (this.isMobile) {
+      document.body.classList.add('hideScroll');
+    }
   }
 
   public closeLeftSideBar(e: MouseEvent): void {
+    let infoBoxContainer = this.element.querySelector('.info-box-container') as HTMLElement;
+    infoBoxContainer.scrollTop = 0;
     let el = e.target as HTMLElement;
     if (el.classList.contains('see-all') ||
       el.classList.contains('see-all-span') ||
@@ -302,6 +346,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.isOpenLeftSide = false;
     this.onMarker = false;
     this.onThumb = false;
+    if (this.isMobile) {
+      document.body.classList.remove('hideScroll');
+    }
 
     if (!el.classList.contains('marker')) {
       this.unHoverOnMarker();
@@ -315,8 +362,9 @@ export class MapComponent implements OnInit, OnDestroy {
       this.hoverOnMarker(index, country);
       return;
     }
+
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
-      this.Angulartics2GoogleAnalytics.eventTrack(`Look at  ` + this.hoverPlace.family +  ` place from ` + this.hoverPlace.country  + ` with map page`);
+      this.angulartics2GoogleAnalytics.eventTrack(`Look at  ` + this.hoverPlace.family + ` place from ` + this.hoverPlace.country + ` with map page`);
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }
@@ -330,6 +378,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
     if (this.lefSideCountries && this.lefSideCountries.length) {
       this.openLeftSideBar();
+    }
+
+    if (this.lefSideCountries && this.lefSideCountries.length === 1) {
+      this.angulartics2GoogleAnalytics.eventTrack(`Look at  the only one place from ` + country + ` with map page`);
+      this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }
 

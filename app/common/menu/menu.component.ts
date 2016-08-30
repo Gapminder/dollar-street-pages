@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, Inject, ElementRef } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Rx';
 import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
@@ -22,38 +22,66 @@ let style = require('./menu.css');
 
 export class MainMenuComponent implements OnInit, OnDestroy {
   protected isOpenMenu: boolean = false;
-  protected Angulartics2GoogleAnalytics: any;
+  protected angulartics2GoogleAnalytics: any;
   @Input()
   private hoverPlace: Observable<any>;
   private hoverPlaceSubscribe: Subscription;
   private element: HTMLElement;
   private router: Router;
-  private activatedRoute: ActivatedRoute;
   private isMatrixComponent: boolean;
   private window: Window = window;
+  private routerEventsSubscribe: Subscription;
+  private activatedRoute: ActivatedRoute;
 
-  public constructor(@Inject(Router) router: Router,
-                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+  public constructor(router: Router,
+                     activatedRoute: ActivatedRoute,
                      @Inject(ElementRef) element: ElementRef,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
-    this.isMatrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): void {
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe(() => {
-        if (this.isOpenMenu) {
-          this.isOpenMenu = false;
-        }
-      });
+    let activatedRoutePath = this.activatedRoute.snapshot.url.shift();
+
+    if (activatedRoutePath) {
+      this.isMatrixComponent = activatedRoutePath.path === 'matrix';
+    } else {
+      this.routerEventsSubscribe = this.router
+        .events
+        .subscribe((event: any) => {
+          if (event instanceof NavigationEnd) {
+            let activePage: string = event
+              .urlAfterRedirects
+              .split('?')
+              .shift();
+
+            this.isMatrixComponent = activePage === '/matrix';
+          }
+        });
+    }
+
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
+        .subscribe(() => {
+          if (this.isOpenMenu) {
+            this.isOpenMenu = false;
+          }
+        });
   }
 
   public ngOnDestroy(): void {
+    if (this.routerEventsSubscribe) {
+      this.routerEventsSubscribe.unsubscribe();
+    }
+
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
+    }
+
+    if (isMobile) {
+      document.body.classList.remove('hideScroll');
     }
   }
 
@@ -69,24 +97,37 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected goToMatrixPage(removeStorage?: boolean): void {
-    if (removeStorage) {
-      this.window.localStorage.removeItem('quick-guide');
-      this.Angulartics2GoogleAnalytics.eventTrack(`Go to Quick Quide from menu `);
+  protected goToPage(url: string, removeStorage?: boolean): void {
+    switch (url) {
+      case '/matrix':
+        this.goToMatrixPage(removeStorage);
+
+        break;
+      case '/about':
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to About page');
+        this.router.navigate([url], {queryParams: {}});
+
+        break;
+      case '/blog':
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page');
+        this.router.navigate([url], {queryParams: {}});
+
+        break;
+      case '/map':
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page');
+        this.router.navigate([url], {queryParams: {}});
+
+        break;
+      case 'https://www.gapminder.org':
+        this.angulartics2GoogleAnalytics.eventTrack(`Go to Gapminder.org from menu `);
+        this.window.open(url, '_blank');
+
+        break;
+      default:
+        this.goToMatrixPage();
     }
 
-    if (this.isMatrixComponent) {
-      this.window.location.href = this.window.location.origin;
-
-      return;
-    }
-    this.Angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from menu `);
-    this.router.navigate(['/matrix'], {queryParams: {}});
-  }
-
-  protected goToGapminder(): void {
-    this.Angulartics2GoogleAnalytics.eventTrack(`Go to Gapminder.org from menu `);
-    this.window.open('https://www.gapminder.org', '_blank');
+    this.isOpenMenu = false;
   }
 
   @HostListener('document:click', ['$event'])
@@ -94,5 +135,26 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     if (!this.element.contains(event.target) && this.isOpenMenu) {
       this.isOpenMenu = false;
     }
+  }
+
+  private goToMatrixPage(removeStorage?: boolean): void {
+    if (isMobile) {
+      document.body.classList.remove('hideScroll');
+    }
+
+    if (removeStorage) {
+      this.window.localStorage.removeItem('quick-guide');
+      this.angulartics2GoogleAnalytics.eventTrack(`Go to Quick Guide from menu `);
+    } else {
+      this.angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from menu `);
+    }
+
+    if (this.isMatrixComponent) {
+      this.window.location.href = this.window.location.origin;
+
+      return;
+    }
+
+    this.router.navigate(['/matrix'], {queryParams: {}});
   }
 }

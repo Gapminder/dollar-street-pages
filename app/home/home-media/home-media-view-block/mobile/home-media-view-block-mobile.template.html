@@ -4,14 +4,12 @@
   <div class="view-image-container">
     <img (click)="openPopUp()" [src]="imageData.image">
     <div class="close-box-container" (click)="closeImageBlock()">
-      <span class="close-box">
-        <img src="/assets/img/close-button-bubbles.svg" alt="x">
-      </span>
+      <img class="close-box" src="/assets/img/close-button-mobile.svg" alt="x">
     </div>
 
     <div class="view-image-block-footer-container">
       <div class="photographer-container">
-        <p><img src="/assets/img/cc-icon-small.svg">
+        <p><img src="/assets/img/cc-icon-small-white.svg">
           Photo: <a [routerLink]="['/photographer', imageData.photographer._id]"
                     [queryParams]="{}"
                     angulartics2On="click"
@@ -25,7 +23,7 @@
 
       <div class="download-container">
         <a target="_blank" [href]="api + '/consumer/api/v1/download-image/' + imageData.imageId">
-          <img src="/assets/img/download-icon.svg" alt="">
+          <img src="/assets/img/download-icon-white.svg" alt="">
         </a>
       </div>
     </div>
@@ -54,21 +52,21 @@
          [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        {{imageData.thing.plural}} in {{country?.name}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{countryName}}</span> <img src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
          [routerLink]="['/matrix']"
          [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        {{imageData.thing.plural}} in {{country?.region}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{country?.region}}</span> <img src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
          [routerLink]="['/matrix']"
          [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        {{imageData.thing.plural}} in the World <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>the World</span>  <img src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
     </div>
   </div>

@@ -1,52 +1,54 @@
-<div class="pages-container" footerSpace>
-  <div class="matrix-header main-header">
-    <quick-guide (startQuickGuide)="startQuickGuide($event)"></quick-guide>
+<div class="matrix-header main-header">
+  <quick-guide (startQuickGuide)="startQuickGuide($event)"></quick-guide>
 
-    <header [query]="query"
+  <header [query]="query"
+          [thing]="thing"
+          [hoverPlace]="hoverPlace"
+          (filter)="urlChanged($event)"
+          (isOpenIncomeFilter)="openIncomeFilter($event)">
+  </header>
+  <div class="street-container">
+    <street [query]="query"
             [thing]="thing"
+            [places]="streetPlaces"
             [hoverPlace]="hoverPlace"
-            (filter)="urlChanged($event)">
-    </header>
-    <div class="street-container">
-      <street [query]="query"
-              [thing]="thing"
-              [places]="streetPlaces"
-              [hoverPlace]="hoverPlace"
-              [chosenPlaces]="chosenPlaces"
-              (filterStreet)="urlChanged($event)"></street>
+            [chosenPlaces]="chosenPlaces"
+            (filterStreet)="urlChanged($event)"></street>
 
-      <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
-    </div>
+    <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
   </div>
 
-  <matrix-images [zoom]="zoom"
-                 [query]="query"
-                 [thing]="thing"
-                 [padding]="padding"
-                 [places]="matrixPlaces"
-                 [activeHouse]="activeHouse"
-                 [clearActiveHomeViewBox]="clearActiveHomeViewBox"
-                 (filter)="urlChanged($event)"
-                 (hoverPlace)="hoverPlaceS($event)"
-                 (activeHouseOptions)="activeHouseOptions($event)">
-  </matrix-images>
-
-  <div class="zoom-column pull-right" [ngClass]="{stop: zoomPositionFixed}" *ngIf="isDesktop">
-    <button type="button"
-            class="increase"
-            [disabled]="zoom === 2"
-            (click)="changeZoom(zoom - 1)">
-    </button>
-
-    <button type="button"
-            class="decrease"
-            [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
-            (click)="changeZoom(zoom + 1)">
-    </button>
-  </div>
+  <income-filter *ngIf="isOpenIncomeFilter"
+                 [places]="streetPlacesData"
+                 [lowIncome]="lowIncome"
+                 [highIncome]="highIncome"
+                 (sendResponse)="getResponse($event)"></income-filter>
 </div>
 
-<footer></footer>
-<float-footer></float-footer>
+<matrix-images [zoom]="zoom"
+               [query]="query"
+               [thing]="thing"
+               [padding]="padding"
+               [places]="matrixPlaces"
+               [activeHouse]="activeHouse"
+               [clearActiveHomeViewBox]="clearActiveHomeViewBox"
+               (filter)="urlChanged($event)"
+               (hoverPlace)="hoverPlaceS($event)"
+               (activeHouseOptions)="activeHouseOptions($event)">
+</matrix-images>
+
+<div class="zoom-column pull-right" [ngClass]="{stop: zoomPositionFixed}" *ngIf="isDesktop">
+  <button type="button"
+          class="increase"
+          [disabled]="zoom === 2"
+          (click)="changeZoom(zoom - 1)">
+  </button>
+
+  <button type="button"
+          class="decrease"
+          [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
+          (click)="changeZoom(zoom + 1)">
+  </button>
+</div>
 
 <loader [hidden]="loader"></loader>

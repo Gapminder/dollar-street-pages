@@ -6,47 +6,36 @@
     </span>
 
     <div class="container-menu" *ngIf="isOpenMenu">
+      <div class="menu-header-content">
+        <img src="/assets/img/dollar-street.svg"
+             alt="DollarStreet logo">
+        <span>Dollar Street</span>
+      </div>
 
-        <div class="menu-header-content">
-          <img src="/assets/img/dollar-street.svg"
-               alt="DollarStreet logo">
-          <span>Dollar Street</span>
-
-        </div>
-        <img class="close-button pull-right"
-             src="/assets/img/close-button.svg"
-             (click)="openMenu(true)"
-             alt="Close">
-
+      <img class="close-button pull-right"
+           src="/assets/img/close-button.svg"
+           (click)="openMenu(true)"
+           alt="Close">
 
       <ul class="menu-list">
         <li>
-          <a (click)="goToMatrixPage()">Home</a>
+          <a (click)="goToPage('/matrix')">Home</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a (click)="goToMatrixPage(true)">Quick guide</a>
+          <a (click)="goToPage('/matrix', true)">Quick guide</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a [routerLink]="['/info']"
-             [queryParams]="{}"
-             angulartics2On="click"
-             angularticsEvent="From menu to About page">About</a>
+          <a (click)="goToPage('/about')">About</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a [routerLink]="['/blog']"
-             [queryParams]="{}"
-             angulartics2On="click"
-             angularticsEvent="From menu to Blog page">Blog</a>
+          <a (click)="goToPage('/blog')">Blog</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a [routerLink]="['/map']"
-             [queryParams]="{}"
-             angulartics2On="click"
-             angularticsEvent="From menu to Map page">Map</a>
+          <a (click)="goToPage('/map')">Map</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
 
@@ -63,12 +52,11 @@
           <img src="/assets/img/gapminder-logo.png"
                alt="Gapminder logo">
         </div>
-        <div class="gapminder">
-          <a (click)="goToGapminder()">More from gapminder >></a>
-        </div>
 
+        <div class="gapminder">
+          <a (click)="goToPage('https://www.gapminder.org')">More from gapminder >></a>
+        </div>
       </ul>
     </div>
-
   </div>
 </div>
