@@ -49,7 +49,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Output('activeImageOptions')
   private activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
-  private prevImageId: string;
+  private prevImage: Object;
   private homeMediaService: any;
   private images: any = [];
   private familyPlaceServiceSubscribe: Subscription;
@@ -226,8 +226,9 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.imageData = Object.assign({}, this.imageData);
 
-    if (!this.prevImageId) {
-      this.prevImageId = image._id;
+    if (!this.prevImage) {
+      this.prevImage = image;
+
       this.showImageBlock = !this.showImageBlock;
 
       this.changeUrl(Math.ceil((this.indexViewBoxImage + 1) / this.zoom), this.indexViewBoxImage + 1);
@@ -235,16 +236,16 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       return;
     }
 
-    if (this.prevImageId === image._id) {
+    if (_.isEqual(this.prevImage, image)) {
       this.showImageBlock = !this.showImageBlock;
 
       if (!this.showImageBlock) {
-        this.prevImageId = '';
+        this.prevImage = void 0;
       }
 
       this.changeUrl();
     } else {
-      this.prevImageId = image._id;
+      this.prevImage = image;
       this.showImageBlock = true;
 
       this.changeUrl(Math.ceil((this.indexViewBoxImage + 1) / this.zoom), this.indexViewBoxImage + 1);
