@@ -24,6 +24,11 @@
   line-height: 30px;
 }
 
+#article-content img {
+  width: 100%;
+  height: inherit;
+}
+
 @media (max-width: 1023px) {
   #article-content {
     padding-top: 87px;

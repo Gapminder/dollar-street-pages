@@ -18,11 +18,11 @@
     <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
   </div>
 
-  <income-filter *ngIf="isOpenIncomeFilter"
+  <income-filter *ngIf="!isDesktop && isOpenIncomeFilter"
                  [places]="streetPlacesData"
                  [lowIncome]="lowIncome"
                  [highIncome]="highIncome"
-                 (sendResponse)="getResponse($event)"></income-filter>
+                 (sendResponse)="getResponseFromIncomeFilter($event)"></income-filter>
 </div>
 
 <matrix-images [zoom]="zoom"

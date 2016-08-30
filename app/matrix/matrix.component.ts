@@ -357,6 +357,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (!isInit) {
         this.query = this.query.replace(/&activeHouse\=\d*/, '');
         this.activeHouse = void 0;
+
         this.hoverPlace.next(undefined);
         this.clearActiveHomeViewBox.next(true);
       }
@@ -403,9 +404,15 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
           if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== this.streetData.poor || Number(parseQuery.highIncome) !== this.streetData.rich)) {
+            let lowIncome: number = Math.floor(incomesArr[0] - 10);
+            let highIncome: number = Math.ceil(incomesArr[incomesArr.length - 1] + 10);
+
             this.query = this.query
-              .replace(/lowIncome\=\d*/, `lowIncome=${Math.floor(incomesArr[0] - 10)}`)
-              .replace(/highIncome\=\d*/, `highIncome=${Math.ceil(incomesArr[incomesArr.length - 1] + 10)}`);
+              .replace(/lowIncome\=\d*/, `lowIncome=${lowIncome}`)
+              .replace(/highIncome\=\d*/, `highIncome=${highIncome}`);
+
+            this.lowIncome = lowIncome;
+            this.highIncome = highIncome;
 
             this.urlChanged({url: this.query});
           }
@@ -429,6 +436,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let countries = query.countries.split(',');
     let title: any;
     let concatData: any;
+
     if (regions[0] === 'World' && countries[0] === 'World') {
       this.selectedCountries = countries[0];
       this.selectedRegions = regions[0];
@@ -440,6 +448,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       } else {
         title = countries;
       }
+
       this.selectedCountries = title;
       this.selectedRegions = regions[0];
     }
@@ -464,23 +473,24 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         if (difference.length) {
-          title = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + difference[0] : regions;
+          title = difference.length === 1 && regions.length === 1 ? regions[0] + ' & ' + difference[0] : regions;
         } else {
           title = regions.join(' & ');
         }
       }
+
       this.selectedRegions = title;
     }
 
     let concatLocations: string[] = countries;
+
     if (concatLocations.length > 2) {
       concatData = concatLocations;
     } else {
       concatData = concatLocations.join(' & ');
     }
-    this.selectedCountries = concatData;
 
+    this.selectedCountries = concatData;
   }
 
   public activeHouseOptions(options: any): void {
@@ -519,7 +529,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.isOpenIncomeFilter = true;
   }
 
-  protected getResponse(params: any): void {
+  protected getResponseFromIncomeFilter(params: any): void {
     if (params.lowIncome && params.highIncome) {
       this.query = this.query
         .replace(/lowIncome\=\d*/, `lowIncome=${params.lowIncome}`)
