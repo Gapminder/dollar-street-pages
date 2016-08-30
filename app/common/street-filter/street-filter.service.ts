@@ -22,14 +22,13 @@ export class StreetFilterDrawService {
   public halfOfHeight: number;
   public lowIncome: number;
   public highIncome: number;
-  public streetOffset: number;
+  public streetOffset: number = 60;
+  public halfOfStreetOffset: number = 30;
   private scale: any;
   private axisLabel: number[] = [];
   private svg: any;
   private incomeArr: any[] = [];
-  private mouseMoveSubscriber: any;
   private dividersData: any;
-  private mouseUpSubscriber: any;
   private touchMoveSubscriber: any;
   private touchUpSubscriber: any;
   private sliderRightBorder: number;
@@ -55,7 +54,6 @@ export class StreetFilterDrawService {
   }
 
   public init(lowIncome: any, highIncome: any, drawDividers: DrawDividersInterface): this {
-    this.streetOffset = 60;
     this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
@@ -179,13 +177,13 @@ export class StreetFilterDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
-          point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
-          point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth},${roofY}`;
-          point4 = `${this.streetOffset / 2 + scaleDatumIncome},${this.halfOfHeight - 17}`;
-          point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
-          point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${roofY}`;
-          point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
+          point1 = `${this.halfOfStreetOffset + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
+          point2 = `${this.halfOfStreetOffset + scaleDatumIncome + roofX},${roofY}`;
+          point3 = `${this.halfOfStreetOffset + scaleDatumIncome - halfHouseWidth},${roofY}`;
+          point4 = `${this.halfOfStreetOffset + scaleDatumIncome},${this.halfOfHeight - 17}`;
+          point5 = `${this.halfOfStreetOffset + scaleDatumIncome + halfHouseWidth },${roofY}`;
+          point6 = `${this.halfOfStreetOffset + scaleDatumIncome - roofX },${roofY}`;
+          point7 = `${this.halfOfStreetOffset + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
@@ -200,10 +198,10 @@ export class StreetFilterDrawService {
       .attr('class', 'road')
       .attr('height', '14px')
       .attr('points', () => {
-        let point1 = `0,${ this.halfOfHeight + 11}`;
-        let point2 = `30,${ this.halfOfHeight - 4}`;
-        let point3 = `${ this.width + this.streetOffset - this.streetOffset / 2},${ this.halfOfHeight - 4}`;
-        let point4 = `${ this.width + this.streetOffset},${ this.halfOfHeight + 11}`;
+        let point1 = `0,${this.halfOfHeight + 11}`;
+        let point2 = `30,${this.halfOfHeight - 4}`;
+        let point3 = `${this.width + this.halfOfStreetOffset},${this.halfOfHeight - 4}`;
+        let point4 = `${this.width + this.streetOffset},${this.halfOfHeight + 11}`;
         return `${point1} ${point2} ${point3} ${point4}`;
       })
       .style('fill', '#727a82')
@@ -280,56 +278,6 @@ export class StreetFilterDrawService {
     this.drawLeftSlider(this.scale(this.lowIncome), true);
     this.drawRightSlider(this.scale(this.highIncome));
 
-    if (this.mouseMoveSubscriber) {
-      this.mouseMoveSubscriber.unsubscribe();
-    }
-
-    this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
-      .filter((e: MouseEvent) => {
-        e.preventDefault();
-
-        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
-      }).subscribe((e: MouseEvent)=> {
-        e.preventDefault();
-
-        if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
-          document.body.classList.add('draggingSliders');
-
-          if (!this.distanceDraggingLeftSlider) {
-            this.distanceDraggingLeftSlider = e.pageX - 45 - this.sliderLeftBorder;
-          }
-
-          if (!this.distanceDraggingRightSlider) {
-            this.distanceDraggingRightSlider = this.sliderRightBorder - (e.pageX - 56);
-          }
-
-          if (
-            e.pageX - this.distanceDraggingRightSlider <= this.sliderRightBorder + 5 &&
-            e.pageX - this.distanceDraggingLeftSlider >= 50 &&
-            e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
-
-            this.drawLeftSlider(e.pageX - 45 - this.distanceDraggingLeftSlider);
-            this.drawRightSlider(e.pageX - 56 + this.distanceDraggingRightSlider);
-
-            return;
-          }
-
-          return;
-        }
-
-        if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 5 && e.pageX >= 50) {
-          return this.drawLeftSlider(e.pageX - 45);
-        }
-
-        if (this.sliderRightMove && e.pageX <= this.width + 60) {
-          if (this.sliderLeftBorder + 50 >= e.pageX) {
-            return this.drawRightSlider(this.sliderLeftBorder + 40);
-          } else {
-            return this.drawRightSlider(e.pageX - 56);
-          }
-        }
-      });
-
     if (this.touchMoveSubscriber) {
       this.touchMoveSubscriber.unsubscribe();
     }
@@ -344,20 +292,20 @@ export class StreetFilterDrawService {
           document.body.classList.add('draggingSliders');
 
           if (!this.distanceDraggingLeftSlider) {
-            this.distanceDraggingLeftSlider = positionX - 45 - this.sliderLeftBorder;
+            this.distanceDraggingLeftSlider = positionX - 35 - this.sliderLeftBorder;
           }
 
           if (!this.distanceDraggingRightSlider) {
-            this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 56);
+            this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 35);
           }
 
           if (
-            positionX - this.distanceDraggingRightSlider <= this.sliderRightBorder + 5 &&
-            positionX - this.distanceDraggingLeftSlider >= 50 &&
-            positionX + this.distanceDraggingRightSlider <= this.width + 60) {
-
-            this.drawLeftSlider(positionX - 45 - this.distanceDraggingLeftSlider);
-            this.drawRightSlider(positionX - 56 + this.distanceDraggingRightSlider);
+            positionX - this.distanceDraggingRightSlider <= this.sliderRightBorder &&
+            positionX - this.distanceDraggingLeftSlider >= 35 &&
+            positionX + this.distanceDraggingRightSlider <= this.width + 35
+          ) {
+            this.drawLeftSlider(positionX - 35 - this.distanceDraggingLeftSlider);
+            this.drawRightSlider(positionX - 35 + this.distanceDraggingRightSlider);
 
             return;
           }
@@ -365,39 +313,18 @@ export class StreetFilterDrawService {
           return;
         }
 
-        if (this.sliderLeftMove && positionX <= this.sliderRightBorder + 5 && positionX >= 50) {
-          return this.drawLeftSlider(positionX - 45);
+        if (this.sliderLeftMove && positionX <= this.sliderRightBorder && positionX >= 35) {
+          return this.drawLeftSlider(positionX - 35);
         }
 
-        if (this.sliderRightMove && positionX <= this.width + 60) {
-          if (this.sliderLeftBorder + 50 >= positionX) {
-            return this.drawRightSlider(this.sliderLeftBorder + 40);
-          } else {
-            return this.drawRightSlider(positionX - 56);
-          }
+        if (this.sliderRightMove && this.sliderLeftBorder + 70 <= positionX && positionX <= this.width + 35) {
+          return this.drawRightSlider(positionX - 35);
         }
       });
 
-    this.mouseUpSubscriber = fromEvent(window, 'mouseup')
-      .filter(()=> {
-        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
-      }).subscribe((e?: MouseEvent)=> {
-        e.preventDefault();
-
-        this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
-        this.distanceDraggingLeftSlider = 0;
-        this.distanceDraggingRightSlider = 0;
-        document.body.classList.remove('draggingSliders');
-
-        if (this.highIncome > this.dividersData.rich) {
-          this.highIncome = this.dividersData.rich + 0.00002;
-        }
-
-        this.filter.next({
-          lowIncome: Math.round(this.lowIncome),
-          highIncome: Math.round(this.highIncome)
-        });
-      });
+    if (this.touchUpSubscriber) {
+      this.touchUpSubscriber.unsubscribe();
+    }
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
       .filter(()=> {
@@ -406,6 +333,7 @@ export class StreetFilterDrawService {
         this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
         this.distanceDraggingLeftSlider = 0;
         this.distanceDraggingRightSlider = 0;
+
         document.body.classList.remove('draggingSliders');
 
         if (this.highIncome > this.dividersData.rich) {
@@ -446,7 +374,7 @@ export class StreetFilterDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', x + this.streetOffset / 2)
+          .attr('width', x + this.halfOfStreetOffset)
           .style('opacity', '0.1');
       } else {
         this.leftScrollOpacityLabels
@@ -456,7 +384,7 @@ export class StreetFilterDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', x + this.streetOffset / 2)
+          .attr('width', x + this.halfOfStreetOffset)
           .style('opacity', '0.8');
       }
     }
@@ -478,17 +406,17 @@ export class StreetFilterDrawService {
 
     this.leftScroll
       .attr('points', () => {
-        let point1 = `${x + this.streetOffset / 2 - 11},${ this.halfOfHeight + 12}`;
-        let point2 = `${x + this.streetOffset / 2 - 11},${ this.halfOfHeight - 7.5}`;
-        let point3 = `${x + this.streetOffset / 2 },${ this.halfOfHeight - 7.5}`;
-        let point4 = `${x + this.streetOffset / 2 },${ this.halfOfHeight + 12}`;
-        let point5 = `${x + this.streetOffset / 2 - 5.5},${ this.halfOfHeight + 12 + 7.5}`;
+        let point1 = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight + 12}`;
+        let point2 = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight - 7.5}`;
+        let point3 = `${x + this.halfOfStreetOffset },${ this.halfOfHeight - 7.5}`;
+        let point4 = `${x + this.halfOfStreetOffset },${ this.halfOfHeight + 12}`;
+        let point5 = `${x + this.halfOfStreetOffset - 5.5},${ this.halfOfHeight + 12 + 7.5}`;
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
 
     this.leftScrollOpacityStreet
-      .attr('width', x + this.streetOffset / 2);
+      .attr('width', x + this.halfOfStreetOffset);
 
     this.lowIncome = this.scale.invert(x);
 
@@ -557,18 +485,18 @@ export class StreetFilterDrawService {
     }
 
     this.rightScroll.attr('points', () => {
-      let point1 = `${x + this.streetOffset / 2},${ this.halfOfHeight + 12}`;
-      let point2 = `${x + this.streetOffset / 2},${ this.halfOfHeight - 7.5}`;
-      let point3 = `${x + this.streetOffset / 2 + 11},${ this.halfOfHeight - 7.5}`;
-      let point4 = `${x + this.streetOffset / 2 + 11},${ this.halfOfHeight + 12}`;
-      let point5 = `${x + this.streetOffset / 2 + 5.5},${ this.halfOfHeight + 12 + 7.5}`;
+      let point1 = `${x + this.halfOfStreetOffset},${ this.halfOfHeight + 12}`;
+      let point2 = `${x + this.halfOfStreetOffset},${ this.halfOfHeight - 7.5}`;
+      let point3 = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight - 7.5}`;
+      let point4 = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight + 12}`;
+      let point5 = `${x + this.halfOfStreetOffset + 5.5},${ this.halfOfHeight + 12 + 7.5}`;
 
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });
 
     this.rightScrollOpacityStreet
-      .attr('x', x + this.streetOffset / 2 + 1.5)
-      .attr('width', this.width + this.streetOffset / 2 - x);
+      .attr('x', x + this.halfOfStreetOffset + 1.5)
+      .attr('width', this.width + this.halfOfStreetOffset - x);
 
     this.highIncome = this.scale.invert(x);
 
@@ -603,19 +531,19 @@ export class StreetFilterDrawService {
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    if (((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 45 > xR) || ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 45 > xL )) {
+    if (((this.dividersData.lowDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xR + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 45 > xR) || ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xL + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 45 > xL )) {
       this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#767d86');
     }
 
-    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 55 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 55 > xL )) {
+    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xR + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 55 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xL + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 55 > xL )) {
       this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#767d86');
     }
 
-    if (((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 65 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 65 > xL )) {
+    if (((this.dividersData.highDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 65 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xL + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 65 > xL )) {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#fff');
     } else {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
@@ -660,11 +588,11 @@ export class StreetFilterDrawService {
 
     this.rightScrollText
       .text(`${incomeR}$`)
-      .attr('x', ()=> xR + this.streetOffset / 2 + 5.5 - this.rightScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - this.rightScrollText[0][0].getBBox().width / 2);
 
     this.leftScrollText
       .text(`${incomeL}$`)
-      .attr('x', ()=> xL + this.streetOffset / 2 - 5.5 - this.leftScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - this.leftScrollText[0][0].getBBox().width / 2);
 
     return this;
   };

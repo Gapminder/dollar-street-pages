@@ -62,3 +62,7 @@
   margin-right: 9px;
   margin-top: -5px;
 }
+
+.income-filter-button-container button.close-button {
+  color: #767d86;
+}

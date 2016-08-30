@@ -48,14 +48,14 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private streetData: any;
   private element: HTMLElement;
   private activatedRoute: ActivatedRoute;
-  private StreetServiceSubscrib: Subscription;
+  private streetServiceSubscribe: Subscription;
   private resize: any;
   private drawOnMap: boolean = false;
 
   private placesSubscribe: Subscription;
   private hoverPlaceSubscribe: Subscription;
   private chosenPlacesSubscribe: Subscription;
-  private svg: SVGElement;
+  private streetFilterSubscribe: Subscription;
   private showSlider: boolean;
   private placesArr: any;
 
@@ -73,7 +73,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): any {
-    this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
+    this.street.setSvg = this.element.querySelector('.street-box svg') as SVGElement;
     this.street.set('isInit', true);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
@@ -122,7 +122,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         this.setDividers(this.placesArr, this.streetData);
       });
 
-    this.StreetServiceSubscrib = this.streetSettingsService.getStreetSettings()
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -138,13 +138,11 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         this.setDividers(this.placesArr, this.streetData);
       });
 
-    this.street.filter.subscribe((filter: any): void => {
-      let query: any;
+    this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
+      let query: any = {};
 
       if (this.query) {
         query = this.parseUrl(this.query);
-      } else {
-        query = {};
       }
 
       query.lowIncome = filter.lowIncome;
@@ -196,9 +194,11 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       this.chosenPlacesSubscribe.unsubscribe();
     }
 
-    if (this.StreetServiceSubscrib) {
-      this.StreetServiceSubscrib.unsubscribe();
-    }
+    this.streetFilterSubscribe.unsubscribe();
+    this.streetServiceSubscribe.unsubscribe();
+
+    this.street.clearAndRedraw();
+    this.street.clearSvg();
   }
 
   private setDividers(places: any, drawDividers: any): void {

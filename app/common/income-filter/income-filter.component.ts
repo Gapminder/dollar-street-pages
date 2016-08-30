@@ -41,7 +41,6 @@ export class IncomeFilterComponent implements OnInit {
           return;
         }
         this.streetData = res.data;
-        console.log(this.streetData);
       });
   }
 

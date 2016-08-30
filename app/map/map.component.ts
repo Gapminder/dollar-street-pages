@@ -56,13 +56,13 @@ export class MapComponent implements OnInit, OnDestroy {
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
 
-  public constructor(@Inject('MapService') placeService: any,
-                     @Inject(ElementRef) element: ElementRef,
-                     @Inject(Router) router: Router,
-                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
-                     @Inject(NgZone) zone: NgZone,
-                     @Inject('UrlChangeService') urlChangeService: any,
+  public constructor(zone: NgZone,
+                     router: Router,
+                     element: ElementRef,
+                     activatedRoute: ActivatedRoute,
                      @Inject('Math') math: any,
+                     @Inject('MapService') placeService: any,
+                     @Inject('UrlChangeService') urlChangeService: any,
                      @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.mapService = placeService;
     this.element = element.nativeElement;
@@ -114,8 +114,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.mapServiceSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
+    this.mapServiceSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
   }
 
@@ -131,20 +131,8 @@ export class MapComponent implements OnInit, OnDestroy {
         let equator = 0.545 * height;
 
         places.forEach((place: any) => {
-          let stepTop;
-          let stepRight;
-
-          if (place.lat > 0) {
-            stepTop = equator / 75;
-          } else {
-            stepTop = (height - equator) / 75;
-          }
-
-          if (place.lng < 0) {
-            stepRight = greenwich / 130;
-          } else {
-            stepRight = (width - greenwich) / 158;
-          }
+          let stepTop: number = place.lat > 0 ? equator / 75 : (height - equator) / 75;
+          let stepRight: number = place.lng < 0 ? greenwich / 130 : (width - greenwich) / 158;
 
           place.left = place.lng * stepRight + greenwich;
           place.top = equator - place.lat * stepTop - 23;
@@ -198,7 +186,7 @@ export class MapComponent implements OnInit, OnDestroy {
     let img = new Image();
 
     let portraitBox = this.map.querySelector('.hover_portrait') as HTMLElement;
-
+    console.log(portraitBox);
     portraitBox.style.opacity = '0';
 
     img.onload = () => {
@@ -310,6 +298,8 @@ export class MapComponent implements OnInit, OnDestroy {
         marker.style.opacity = '1';
       });
 
+      console.log(1111);
+
       this.seeAllHomes = false;
       this.hoverPlace = void 0;
       this.hoverPortraitTop = void 0;
@@ -330,9 +320,11 @@ export class MapComponent implements OnInit, OnDestroy {
     let infoBoxContainer = this.element.querySelector('.info-box-container') as HTMLElement;
     infoBoxContainer.scrollTop = 0;
     let el = e.target as HTMLElement;
+
     if (el.classList.contains('see-all') ||
       el.classList.contains('see-all-span') ||
-      (!this.isDesktop && el.classList.contains('marker'))) {
+      (!this.isDesktop && el.classList.contains('marker'))
+    ) {
       this.onMarker = false;
       this.onThumb = false;
       this.seeAllHomes = false;
@@ -340,12 +332,14 @@ export class MapComponent implements OnInit, OnDestroy {
       this.hoverPortraitTop = void 0;
       this.hoverPortraitLeft = void 0;
       this.unHoverOnMarker();
+
       return;
     }
 
     this.isOpenLeftSide = false;
     this.onMarker = false;
     this.onThumb = false;
+
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
@@ -360,11 +354,13 @@ export class MapComponent implements OnInit, OnDestroy {
       this.isOpenLeftSide = !this.isOpenLeftSide;
       this.closeLeftSideBar(e);
       this.hoverOnMarker(index, country);
+
       return;
     }
 
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
-      this.angulartics2GoogleAnalytics.eventTrack(`Look at  ` + this.hoverPlace.family + ` place from ` + this.hoverPlace.country + ` with map page`);
+      this.angulartics2GoogleAnalytics
+        .eventTrack(`Look at  ` + this.hoverPlace.family + ` place from ` + this.hoverPlace.country + ` with map page`);
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }

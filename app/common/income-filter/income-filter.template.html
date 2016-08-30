@@ -8,15 +8,15 @@
   </div>
 
   <div class="streets-container">
-    <street [places]="places"
+    <street-filter [places]="places"
             [lowIncome]="lowIncome"
             [highIncome]="highIncome"
-            (filterStreet)="getFilter($event)"></street>
+            (filterStreet)="getFilter($event)"></street-filter>
   </div>
 
   <div class="income-filter-button-container">
     <button type="button" (click)="showAll()">Show all</button>
     <button type="button" (click)="closeFilter()"><img src="/assets/img/apply.svg">Ok</button>
-    <button type="button" (click)="closeFilter(true)">Cancel</button>
+    <button class="close-button" type="button" (click)="closeFilter(true)">Cancel</button>
   </div>
 </div>
