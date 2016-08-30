@@ -338,6 +338,10 @@ body.matrix #main-menu .menu-icon {
 }
 
 @media (max-width: 599px) {
+  matrix .matrix-header header {
+    margin-left: 5px !important;
+  }
+
   svg .poorest,
   svg .richest,
   svg .scale-label {

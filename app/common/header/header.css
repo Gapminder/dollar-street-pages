@@ -29,10 +29,6 @@
   width: calc(100% - 180px);
 }
 
-.filters-container things-filter {
-  margin-bottom: 5px;
-}
-
 .filters-container things-filter,
 .filters-container > span,
 .filters-container .some-filter-container > * {
@@ -88,6 +84,10 @@
 }
 
 @media (max-width: 1023px) {
+  .filters-container things-filter {
+    margin-bottom: 5px;
+  }
+
   .filters-container {
     width: calc(100% - 105px);
   }
@@ -129,6 +129,7 @@
     display: inline-block;
     vertical-align: middle;
     width:100%;
+    margin-bottom: 0;
   }
 
   .header-content .icon-container {
