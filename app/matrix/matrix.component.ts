@@ -50,10 +50,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public lowIncome: number;
   public highIncome: number;
   public matrixServiceSubscribe: Subscription;
-  public Angulartics2GoogleAnalytics: any;
+  public angulartics2GoogleAnalytics: any;
   public streetData: any;
   public selectedCountries: any;
   public selectedRegions: any;
+  public activeCountries: any;
 
   private resizeSubscribe: Subscription;
   private placesArr: any[];
@@ -77,7 +78,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private clonePlaces: any[];
   private zone: NgZone;
   private countriesFilterService: any;
-  private countriesFilterServiceSubscribe: any;
+  private countriesFilterServiceSubscribe: Subscription;
   private windowHistory: any = history;
   private matrixServiceStreetSubscribe: Subscription;
   private streetPlacesData: any;
@@ -85,17 +86,17 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private windowInnerHeight: number = window.innerHeight;
   private imageResolution: ImageResolutionInterface;
 
-  public constructor(@Inject('MatrixService') matrixService: any,
-                     @Inject(ElementRef) element: ElementRef,
+  public constructor(zone: NgZone,
+                     router: Router,
+                     element: ElementRef,
+                     @Inject('MatrixService') matrixService: any,
                      @Inject('CountriesFilterService') countriesFilterService: any,
                      @Inject('UrlChangeService') urlChangeService: any,
-                     @Inject(Router) router: Router,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any,
-                     @Inject(NgZone) zone: NgZone) {
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.matrixService = matrixService;
     this.element = element.nativeElement;
     this.router = router;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.urlChangeService = urlChangeService;
     this.countriesFilterService = countriesFilterService;
     this.zone = zone;
@@ -135,7 +136,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.locations = res.data;
-
       });
 
     if ('scrollRestoration' in history) {
@@ -180,6 +180,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         if (this.lowIncome > this.highIncome) {
           this.lowIncome = val.data.poor;
         }
+
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
 
         if (this.activeHouse) {
@@ -189,6 +190,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.urlChanged({isInit: true});
 
         document.onscroll = () => {
+          if (window.innerWidth < 600) {
+            this.showMobileHeader();
+          }
+
           this.stopScroll();
         };
       });
@@ -416,10 +421,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
             this.urlChanged({url: this.query});
           }
-          let dataForTitle = this.parseUrl(this.query);
-          this.buildTitle(dataForTitle);
-          this.Angulartics2GoogleAnalytics.eventTrack(`Change filters to ` + `thing=` + dataForTitle.thing + ` countries=` + this.selectedCountries
-            + ` regions=` + this.selectedRegions + ` zoom=` + dataForTitle.zoom + ` incomes=` + dataForTitle.lowIncome + `-` + dataForTitle.highIncome);
+
+          this.buildTitle(this.parseUrl(this.query));
+
+          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome);
+
           this.urlChangeService.replaceState('/matrix', this.query);
 
           if (document.body.scrollTop) {
@@ -434,28 +440,28 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public buildTitle(query: any): any {
     let regions = query.regions.split(',');
     let countries = query.countries.split(',');
-    let title: any;
-    let concatData: any;
 
     if (regions[0] === 'World' && countries[0] === 'World') {
-      this.selectedCountries = countries[0];
-      this.selectedRegions = regions[0];
+      this.activeCountries = 'the world';
+
+      return;
     }
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
-      if (countries.length < 2) {
-        title = countries.join(' & ');
+      if (countries.length > 2) {
+        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
       } else {
-        title = countries;
+        this.activeCountries = countries.join(' & ');
       }
 
-      this.selectedCountries = title;
-      this.selectedRegions = regions[0];
+      this.selectedCountries = countries;
+
+      return;
     }
 
     if (regions[0] !== 'World') {
       if (regions.length > 2) {
-        this.selectedCountries = countries;
+        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
       } else {
         let sumCountries: number = 0;
         let difference: string[] = [];
@@ -473,24 +479,29 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         if (difference.length) {
-          title = difference.length === 1 && regions.length === 1 ? regions[0] + ' & ' + difference[0] : regions;
+          this.activeCountries = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
+          + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
         } else {
-          title = regions.join(' & ');
+          this.activeCountries = regions.join(' & ');
         }
       }
 
-      this.selectedRegions = title;
+      this.selectedRegions = regions;
+      this.selectedCountries = countries;
+
+      return;
     }
 
-    let concatLocations: string[] = countries;
+    let concatLocations: string[] = regions.concat(countries);
 
     if (concatLocations.length > 2) {
-      concatData = concatLocations;
+      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
     } else {
-      concatData = concatLocations.join(' & ');
+      this.activeCountries = concatLocations.join(' & ');
     }
 
-    this.selectedCountries = concatData;
+    this.selectedRegions = regions;
+    this.selectedCountries = countries;
   }
 
   public activeHouseOptions(options: any): void {
@@ -542,6 +553,19 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     this.isOpenIncomeFilter = false;
+  }
+
+  private showMobileHeader(): void {
+    let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    let header = this.element.querySelector('.matrix-header') as HTMLElement;
+    let streetContainer = this.element.querySelector('.street-container') as HTMLElement;
+    let headerHeight = header.offsetHeight;
+
+    if (scrollTop > headerHeight - 10) {
+      streetContainer.classList.add('fixed');
+    } else {
+      streetContainer.classList.remove('fixed');
+    }
   }
 
   private parseUrl(url: string): any {
