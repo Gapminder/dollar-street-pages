@@ -48,27 +48,7 @@ float-footer .share-button-container .share-button i {
     text-align: center;
   }
   .share-button-container > div {
-    margin-left: 28px;
+    margin-left: 16px;
     text-align: center;
   }
-
-}
-
-@media (max-width: 568px) {
-  main-menu social-share-buttons .share-button-container .share-button i {
-    color: #374551;
-    font-size: 28px;
-    height: 28px;
-    width:28px
-  }
-
-  .share-button-container > div:first-child  {
-    margin-left: 0px;
-    text-align: center;
-  }
-  .share-button-container > div {
-    margin-left: 24px;
-    text-align: center;
-  }
-
 }

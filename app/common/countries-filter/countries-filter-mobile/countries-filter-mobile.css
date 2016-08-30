@@ -2,6 +2,7 @@
   display: inline-block;
   position: relative;
   vertical-align: bottom;
+  margin-top: 5px;
 }
 
 #countries-filter .countries-filter-button {
@@ -95,8 +96,6 @@
   padding: 19px 20px 18px;
   margin-bottom: 16px;
 }
-
-
 
 #countries-filter .all-filter {
   color: #374551;
@@ -360,9 +359,10 @@
 
 /* IE */
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
   #countries-filter {
-    width: calc(100% - 60px);
+    width: 100%;
+    margin: 6px 0;
   }
 
   #countries-filter .countries-filter-button {

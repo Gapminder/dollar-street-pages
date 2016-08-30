@@ -83,6 +83,10 @@
 }
 
 @media (max-width: 1023px) {
+  .filters-container {
+    width: calc(100% - 110px);
+  }
+
   .header-content .icon-container img {
     width: 42px;
     height: 42px;
@@ -100,15 +104,22 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 599px) {
+  .filters-container .map-things-text {
+    display: none;
+  }
+
+  .filters-container .some-filter-container > span {
+    margin: 0;
+  }
+
   .filters-container {
     float: left;
     margin-top: 11px;
-    width: calc(100% - 30px);
+    width: calc(100% - 43px);
   }
 
-  .filters-container things-filter,
-  .filters-container .some-filter-container > * {
+  .filters-container things-filter {
     display: inline-block;
     vertical-align: middle;
     width:100%;
@@ -118,16 +129,41 @@
     display:none;
   }
 
-}
+  countries-filter {
+    width: calc(100% - 74px);
+    vertical-align: top;
+    display: block;
+    left: 0;
+    right: 0;
+  }
 
-@media (max-width: 767px) {
   .filters-container .some-filter-container {
     display: block;
   }
 
+  .filters-container .some-filter-container .mobile-ver,
+  .filters-container .income-title-container.incomeby .income-title,
+  .filters-container .income-title + .income-title,
   .header-content .icon-container {
     display: none;
   }
 
+  .income-title-container {
+    margin-left: 6px!important;
+    margin-top: 6px!important;
+    float: right;
+  }
 
+  .filters-container .income-title-container.incomeby .income-title + .income-title,
+  .filters-container .income-title {
+    width: 100%;
+    display: block;
+    height: 35px;
+    border: 1px solid #e4e6e7;
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: #394451;
+    font-size: 24px;
+    vertical-align: top;
+  }
 }

@@ -155,3 +155,11 @@
   vertical-align: top;
 }
 
+
+@media (max-width: 599px) {
+  #main-menu .menu-icon {
+    width: 43px;
+    height: 40px;
+    margin-top: 17px;
+  }
+}
