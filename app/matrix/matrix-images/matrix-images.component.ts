@@ -60,6 +60,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private zone: NgZone;
   private clearActiveHomeViewBoxSubscribe: Subscription;
   private imageMargin: number;
+  private windowInnerWidth: number = window.innerWidth;
 
   public constructor(@Inject(ElementRef) element: ElementRef,
                      @Inject(Router) router: Router,
@@ -96,6 +97,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
+          this.windowInnerWidth = window.innerWidth;
           this.getImageHeight();
         });
       });
@@ -213,7 +215,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   private goToRow(row: number): void {
-    document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize - 60;
+    let showPartPrevImage: number = 60;
+
+    if (this.windowInnerWidth < 600) {
+      showPartPrevImage = -20;
+    }
+
+    document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize - showPartPrevImage;
   }
 
   private parseUrl(url: string): any {
@@ -224,7 +232,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
 
-    let widthScroll: number = window.innerWidth - document.body.offsetWidth;
+    let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
 
     let imageMarginLeft: string = window.getComputedStyle(imgContent).getPropertyValue('margin-left');
     let boxPaddingLeft: string = window.getComputedStyle(boxContainer).getPropertyValue('padding-left');

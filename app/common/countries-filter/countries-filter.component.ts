@@ -60,9 +60,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   private resizeSubscribe: Subscription;
   private keyUpSubscribe: Subscription;
 
-  public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
-                     @Inject(ElementRef) element: ElementRef,
-                     @Inject(NgZone) zone: NgZone) {
+  public constructor(zone: NgZone,
+                     element: ElementRef,
+                     @Inject('CountriesFilterService') countriesFilterService: any) {
     this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
     this.zone = zone;
