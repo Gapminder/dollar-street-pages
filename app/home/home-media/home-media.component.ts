@@ -114,22 +114,11 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.imageData.photographer = res.data.photographer;
       });
 
-    let platform = navigator.platform;
-    let nAgt = navigator.userAgent;
-    let verOffset = nAgt.indexOf('Safari');
-    let isSafari = false;
-
-    if (platform === 'iPhone' || platform === 'iPod' || platform === 'iPad') {
-      if (verOffset !== -1) {
-        isSafari = true;
-      }
-    }
-
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
-          if (isSafari && this.windowInnerWidth === window.innerWidth) {
+          if (this.windowInnerWidth === window.innerWidth) {
             return;
           }
 
