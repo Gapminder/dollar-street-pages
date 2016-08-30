@@ -83,6 +83,10 @@
 }
 
 @media (max-width: 1023px) {
+  .filters-container {
+    width: calc(100% - 110px);
+  }
+
   .header-content .icon-container img {
     width: 42px;
     height: 42px;

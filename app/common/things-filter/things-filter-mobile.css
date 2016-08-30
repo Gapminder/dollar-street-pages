@@ -384,11 +384,8 @@
   #things-filter .things-filter-button span {
   }
 
-   #things-filter .things-filter-button .things-filter-button-content span.arrow {
-    display: none;
-  }
-
-   #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
+  #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow,
+  #things-filter .things-filter-button .things-filter-button-content span.arrow {
     display: none;
   }
 

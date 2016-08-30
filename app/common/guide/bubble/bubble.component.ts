@@ -9,6 +9,9 @@ let _ = require('lodash');
 let tpl = require('./bubble.template.html');
 let style = require('./bubble.css');
 
+let device = require('device.js')();
+let isMobile = device.mobile();
+
 @Component({
   selector: 'bubble',
   template: tpl,
@@ -105,6 +108,11 @@ export class BubbleComponent implements OnInit, OnDestroy {
     let baloonDirector: string;
 
     if (step === 1) {
+      //
+      // if (isMobile) {
+      //   this.position = {left: this.windowInnerWidth / 2 - 175, top: -1000};
+      // }
+
       baloonDirector = '.street-box';
       this.bubble = _.find(this.bubbles, ['name', 'street']);
     }
@@ -143,6 +151,10 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
         if (step === 1 || step === 4) {
           data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
+
+          if (isMobile && step === 1) {
+            data.top += 20;
+          }
         }
 
         if (step === 2) {
