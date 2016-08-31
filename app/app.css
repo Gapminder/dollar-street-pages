@@ -20,7 +20,7 @@
 }
 
 @media (min-width: 1400px) {
-  #app-container.container {
+  body:not(.blog) #app-container.container {
     width: 1400px;
   }
 }
