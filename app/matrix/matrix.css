@@ -51,6 +51,7 @@ matrix-images {
 .street-and-title-container {
   height: 64px;
 }
+
 .street-and-title-container,
 .street-container .street-content,
 .street-container {
@@ -88,11 +89,11 @@ matrix-images {
 
 .short-title {
   font-size: 16px;
-  line-height: 24px;
   color: #374551;
   text-align: center;
   display: none;
-  padding-top: 4px;
+  padding-top: 5px;
+  padding-bottom: 1px;
 }
 
 .short-title span {
