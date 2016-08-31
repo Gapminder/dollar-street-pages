@@ -117,7 +117,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       .routerState
       .queryParams
       .subscribe((params: any) => {
-        this.thing = params.thing || 'Families';
+        this.thing = decodeURI(params.thing || 'Families');
         this.countries = params.countries ? decodeURI(params.countries) : 'World';
         this.regions = params.regions ? decodeURI(params.regions) : 'World';
         this.zoom = parseInt(params.zoom, 10);
@@ -368,7 +368,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
 
       let parseQuery = this.parseUrl(this.query);
-      this.thing = parseQuery.thing;
+      this.thing = decodeURI(parseQuery.thing);
       this.loader = false;
 
       if (this.matrixServiceSubscribe) {
@@ -554,6 +554,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.isOpenIncomeFilter = false;
   }
+
+  protected scrollTop(e: MouseEvent, element: HTMLElement): void {
+    if (window.innerWidth >= 600 || element.className.indexOf('fixed') === -1) {
+      return;
+    }
+
+    e.preventDefault();
+
+    Config.animateScroll('scrollBackToTop', 20, 1000);
+  };
 
   private showMobileHeader(): void {
     let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;

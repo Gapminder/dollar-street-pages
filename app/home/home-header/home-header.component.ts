@@ -27,7 +27,6 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   protected aboutDataPosition: {left?: number;top?: number;} = {};
   protected windowHeight: number = window.innerHeight;
   protected maxHeightPopUp: number = this.windowHeight * .95 - 91;
-  protected Angulartics2GoogleAnalytics: any;
 
   @Input('placeId')
   private placeId: string;
@@ -44,12 +43,10 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   @Output('familyExpandBlock')
   private familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(@Inject('HomeHeaderService') homeHeaderService: any,
-                     @Inject(ElementRef) element: ElementRef,
+  public constructor(zone: NgZone,
+                     element: ElementRef,
                      @Inject('Math') math: any,
-                     @Inject(NgZone) zone: NgZone,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
+                     @Inject('HomeHeaderService') homeHeaderService: any) {
     this.homeHeaderService = homeHeaderService;
     this.zone = zone;
     this.math = math;
@@ -163,7 +160,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
     event.preventDefault();
 
-    this.animateScroll('scrollBackToTop', 20, 1000);
+    Config.animateScroll('scrollBackToTop', 20, 1000);
   }
 
   protected truncCountryName(countryData: any): any {
@@ -188,36 +185,5 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
   protected openExpandBlock(): void {
     this.familyExpandBlock.emit({thingId: this.home.familyThingId});
-  }
-
-  private animateScroll(id: string, inc: number, duration: number): any {
-    const elem = document.getElementById(id);
-    const startScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const endScroll = elem.offsetTop;
-    const step = (endScroll - startScroll) / duration * inc;
-
-    window.requestAnimationFrame(this.goToScroll(step, duration, inc));
-  }
-
-  private goToScroll(step: number, duration: number, inc: number): any {
-    return () => {
-      const currentDuration = duration - inc;
-
-      this.incScrollTop(step);
-
-      if (currentDuration < inc) {
-        return;
-      }
-
-      window.requestAnimationFrame(this.goToScroll(step, currentDuration, inc));
-    };
-  }
-
-  private incScrollTop(step: number): void {
-    if (document.body.scrollTop) {
-      document.body.scrollTop += step;
-    } else {
-      document.documentElement.scrollTop += step;
-    }
   }
 }

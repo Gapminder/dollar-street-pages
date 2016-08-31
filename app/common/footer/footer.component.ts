@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation, Inject, OnInit, OnDestroy } from '@angula
 import { Router, ROUTER_DIRECTIVES, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { SocialFollowButtonsComponent } from '../social-follow-buttons/social-follow-buttons.component.ts';
+import { Config } from '../../app.config';
 import * as _ from 'lodash';
 
 let tpl = require('./footer.template.html');
@@ -17,7 +18,7 @@ let style = require('./footer.css');
 
 export class FooterComponent implements OnInit, OnDestroy {
   protected footerData: any = {};
-  protected Angulartics2GoogleAnalytics: any;
+  protected angulartics2GoogleAnalytics: any;
   private footerService: any;
   private footerServiceSubscribe: Subscription;
   private window: Window = window;
@@ -28,10 +29,10 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   public constructor(router: Router,
                      @Inject('FooterService') footerService: any,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.footerService = footerService;
     this.router = router;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): any {
@@ -72,7 +73,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   protected goToMatrixPage(): void {
-    this.Angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from footer `);
+    this.angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from footer `);
 
     if (this.isMatrixComponent) {
       this.window.location.href = this.window.location.origin;
@@ -86,37 +87,6 @@ export class FooterComponent implements OnInit, OnDestroy {
   public scrollTop(e: MouseEvent): void {
     e.preventDefault();
 
-    this.animateScroll('scrollBackToTop', 20, 1000);
+    Config.animateScroll('scrollBackToTop', 20, 1000);
   };
-
-  private animateScroll(id: string, inc: number, duration: number): any {
-    const elem = document.getElementById(id);
-    const startScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const endScroll = elem.offsetTop;
-    const step = (endScroll - startScroll) / duration * inc;
-
-    window.requestAnimationFrame(this.goToScroll(step, duration, inc));
-  }
-
-  private goToScroll(step: number, duration: number, inc: number): any {
-    return () => {
-      const currentDuration = duration - inc;
-
-      this.incScrollTop(step);
-
-      if (currentDuration < inc) {
-        return;
-      }
-
-      window.requestAnimationFrame(this.goToScroll(step, currentDuration, inc));
-    };
-  }
-
-  private incScrollTop(step: number): void {
-    if (document.body.scrollTop) {
-      document.body.scrollTop += step;
-    } else {
-      document.documentElement.scrollTop += step;
-    }
-  }
 }
