@@ -186,7 +186,6 @@ export class MapComponent implements OnInit, OnDestroy {
     let img = new Image();
 
     let portraitBox = this.map.querySelector('.hover_portrait') as HTMLElement;
-    console.log(portraitBox);
     portraitBox.style.opacity = '0';
 
     img.onload = () => {
@@ -298,8 +297,6 @@ export class MapComponent implements OnInit, OnDestroy {
         marker.style.opacity = '1';
       });
 
-      console.log(1111);
-
       this.seeAllHomes = false;
       this.hoverPlace = void 0;
       this.hoverPortraitTop = void 0;
@@ -374,11 +371,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     if (this.lefSideCountries && this.lefSideCountries.length) {
       this.openLeftSideBar();
-    }
-
-    if (this.lefSideCountries && this.lefSideCountries.length === 1) {
-      this.angulartics2GoogleAnalytics.eventTrack(`Look at  the only one place from ` + country + ` with map page`);
-      this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }
 
