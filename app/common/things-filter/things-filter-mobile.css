@@ -79,6 +79,7 @@
 
 #things-filter .thing-filter-header .thing-filter-header-content img {
   width: 25px;
+  height: 25px;
   float: left;
   margin: -3px 10px 0 0;
 }
@@ -104,13 +105,11 @@
 
 #things-filter .things-filter-button .things-filter-button-content img {
   width: 25px;
+  height: 25px;
   float: left;
   margin: -3px 10px 0 0;
 }
 
-#things-filter .things-filter-button span {
-
-}
 
 #things-filter .things-filter-button .things-filter-button-content span.arrow {
   width: 0;
@@ -356,8 +355,7 @@
     position: static;
   }
 
-  #things-filter .things-filter-button span {
-  }
+
 
   #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow,
   #things-filter .things-filter-button .things-filter-button-content span.arrow {
