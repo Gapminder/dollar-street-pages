@@ -138,56 +138,81 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       Config.getCoordinates(baloonDirector, (data: any) => {
-        let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
-        let baloonWidth: number = baloonElement.width;
-        let baloonHeight: number = baloonElement.height;
-
-        data.top += data.height;
-
-        if (step === 1 || step === 4) {
-          data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
-
-          if (isMobile && step === 1) {
-            data.top += 20;
-          }
-
-          if (isMobile && step === 4) {
-            data.top -= 66;
-          }
+        if (isMobile) {
+          this.position = this.setBubblePositionMobile(step, data);
+        } else {
+          this.position = this.setBubblePositionDesktop(step, data);
         }
-
-        if (step === 2) {
-          data.top += 17;
-          data.left -= 7;
-
-          if (isMobile) {
-            data.top -= 14;
-            data.left += 7;
-          }
-        }
-
-        if (step === 3) {
-          data.top += 17;
-          data.left = data.left - baloonWidth / 2 + data.width / 2;
-
-          if (isMobile) {
-            data.top -= 20;
-            data.left += 56;
-          }
-        }
-
-        if (step === 5) {
-          data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
-        }
-
-        if (step === 6) {
-          data.top = (data.top - data.height / 2) - baloonHeight / 2;
-          data.left = (data.left + data.width / 2) - baloonWidth / 2;
-          this.isCloseBubble = true;
-        }
-
-        this.position = data;
       });
     });
+  }
+
+  private setBubblePositionMobile(step: number, data: any):any {
+    let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
+    let baloonWidth: number = baloonElement.width;
+    let baloonHeight: number = baloonElement.height;
+
+    data.top += data.height;
+
+    if (step === 1 || step === 4 || step === 5) {
+      data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
+      if (step === 1) {
+        data.top += 20;
+      }
+      if (step === 4) {
+        data.top -= 66;
+      }
+    }
+
+    if (step === 2) {
+      data.top += 3;
+      }
+
+    if (step === 3) {
+      data.top -= 3;
+      data.left = data.left - baloonWidth / 2 + data.width / 2 + 56;
+    }
+
+    if (step === 6) {
+      data.top = (data.top - data.height / 2) - baloonHeight / 2;
+      data.left = (data.left + data.width / 2) - baloonWidth / 2;
+      this.isCloseBubble = true;
+    }
+
+    return data;
+  }
+
+  private setBubblePositionDesktop(step: number, data: any):any {
+    let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
+    let baloonWidth: number = baloonElement.width;
+    let baloonHeight: number = baloonElement.height;
+
+    data.top += data.height;
+
+    if (step === 1 || step === 4) {
+      data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
+    }
+
+    if (step === 2) {
+      data.top += 17;
+      data.left -= 7;
+    }
+
+    if (step === 3) {
+      data.top += 17;
+      data.left = data.left - baloonWidth / 2 + data.width / 2;
+    }
+
+    if (step === 5) {
+      data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
+    }
+
+    if (step === 6) {
+      data.top = (data.top - data.height / 2) - baloonHeight / 2;
+      data.left = (data.left + data.width / 2) - baloonWidth / 2;
+      this.isCloseBubble = true;
+    }
+
+    return data;
   }
 }
