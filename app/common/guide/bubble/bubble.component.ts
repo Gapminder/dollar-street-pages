@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { SocialShareButtonsComponent } from '../../social_share_buttons/social-share-buttons.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs';
@@ -34,8 +34,8 @@ export class BubbleComponent implements OnInit, OnDestroy {
   private zone: NgZone;
   private resizeSubscribe: Subscription;
 
-  public constructor(@Inject(ElementRef) element: ElementRef,
-                     @Inject(NgZone) zone: NgZone) {
+  public constructor(element: ElementRef,
+                     zone: NgZone) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
@@ -150,16 +150,30 @@ export class BubbleComponent implements OnInit, OnDestroy {
           if (isMobile && step === 1) {
             data.top += 20;
           }
+
+          if (isMobile && step === 4) {
+            data.top -= 66;
+          }
         }
 
         if (step === 2) {
           data.top += 17;
           data.left -= 7;
+
+          if (isMobile) {
+            data.top -= 14;
+            data.left += 7;
+          }
         }
 
         if (step === 3) {
           data.top += 17;
           data.left = data.left - baloonWidth / 2 + data.width / 2;
+
+          if (isMobile) {
+            data.top -= 20;
+            data.left += 56;
+          }
         }
 
         if (step === 5) {
@@ -169,6 +183,8 @@ export class BubbleComponent implements OnInit, OnDestroy {
         if (step === 6) {
           data.top = (data.top - data.height / 2) - baloonHeight / 2;
           data.left = (data.left + data.width / 2) - baloonWidth / 2;
+          console.log('top:::', data.top);
+          console.log('left:::', data.left);
           this.isCloseBubble = true;
         }
 

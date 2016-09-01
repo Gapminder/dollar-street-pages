@@ -290,17 +290,6 @@
     top: 180px !important;
   }
 
-  .bubbles-container.things {
-    top: 50px !important;
-    left: 5px !important;
-  }
-
-  .bubbles-container.none,
-  .bubbles-container.geo {
-    top: 91px !important;
-    left: 5px !important;
-  }
-
   .slider-label.left-slider,
   .slider-label.right-slider {
     display: none;
