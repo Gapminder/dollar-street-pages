@@ -152,13 +152,7 @@
   }
 
   #blog-page.article-page #articles-container {
-    overflow-x: hidden;
     width: 100%;
-  }
-
-  #blog-page #articles-container {
-    overflow-x: hidden;
-
   }
 
   .dynamic-details h1 {
@@ -179,7 +173,6 @@
   }
 
   #blog-page.article-page #articles-container {
-    overflow-x: hidden;
     width: 100%;
     margin: 0 !important;
   }
