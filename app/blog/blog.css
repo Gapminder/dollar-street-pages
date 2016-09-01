@@ -135,6 +135,7 @@
 }
 
 #blog-page.article-page .dynamic-details h1,
+#blog-page.article-page .dynamic-details .small-description,
 #blog-page.article-page .dynamic-details > .date-info {
   display: block;
 }
