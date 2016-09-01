@@ -183,8 +183,6 @@ export class BubbleComponent implements OnInit, OnDestroy {
         if (step === 6) {
           data.top = (data.top - data.height / 2) - baloonHeight / 2;
           data.left = (data.left + data.width / 2) - baloonWidth / 2;
-          console.log('top:::', data.top);
-          console.log('left:::', data.left);
           this.isCloseBubble = true;
         }
 
