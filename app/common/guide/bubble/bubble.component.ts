@@ -146,14 +146,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
         if (isMobile) {
           data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
-
-          if (step === 6) {
-            data.top = (data.top - data.height / 2) - baloonHeight / 2;
-            data.left = data.left + baloonWidth / 2 - 15;
-            this.isCloseBubble = true;
-          }
-
-          this.position = this.setBubblePositionMobile(step, data);
+          this.position = this.setBubblePositionMobile(step, data, baloonWidth, baloonHeight);
         } else {
           this.position = this.setBubblePositionDesktop(step, data, baloonWidth, baloonHeight);
         }
@@ -161,7 +154,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setBubblePositionMobile(step: number, data: any): any {
+  private setBubblePositionMobile(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
 
     if (step === 1) {
       data.top += 20;
@@ -177,6 +170,12 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
     if (step === 4) {
       data.top -= 66;
+    }
+
+    if (step === 6) {
+      data.top = (data.top - data.height / 2) - baloonHeight / 2;
+      data.left = data.left + baloonWidth / 2 - 15;
+      this.isCloseBubble = true;
     }
 
     return data;
