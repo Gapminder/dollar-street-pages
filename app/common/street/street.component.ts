@@ -56,7 +56,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private hoverPlaceSubscribe: Subscription;
   private chosenPlacesSubscribe: Subscription;
   private streetFilterSubscribe: Subscription;
-  private showSlider: boolean;
   private placesArr: any;
 
   public constructor(@Inject(ElementRef) element: ElementRef,
@@ -69,7 +68,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.math = math;
     this.street = streetDrawService;
     this.streetSettingsService = streetSettingsService;
-    this.showSlider = this.activatedRoute.snapshot.url[0].path === 'matrix';
   }
 
   public ngOnInit(): any {
@@ -218,7 +216,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         })
         .compact()
         .value())
-      .drawScale(places, this.showSlider, drawDividers);
+      .drawScale(places, drawDividers);
 
     if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
       this.street.clearAndRedraw(this.street.chosenPlaces);
