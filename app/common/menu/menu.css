@@ -89,8 +89,9 @@
   float: left;
 }
 
-#main-menu .open .dropdown-menu li:last-child a {
+#main-menu .open .dropdown-menu li .menu-links {
   font-size: 14px;
+  line-height: 10px;
   text-decoration: underline;
   text-transform: uppercase;
   text-align: center;
