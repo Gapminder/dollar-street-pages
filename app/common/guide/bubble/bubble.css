@@ -235,10 +235,6 @@
 }
 
 @media (max-width: 1023px) {
-  /*.geo {*/
-    /*top: 64px!important;*/
-  /*}*/
-
   .bubbles-container.last:before {
     left: -14px;
   }
