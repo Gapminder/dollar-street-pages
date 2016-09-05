@@ -127,6 +127,11 @@ export class MainMenuComponent implements OnInit, OnDestroy {
         this.window.open(url, '_blank');
 
         break;
+      case 'https://getsatisfaction.com/gapminder':
+        this.angulartics2GoogleAnalytics.eventTrack(`Go to Getsatisfaction.com/gapminder from menu `);
+        this.window.open(url, '_blank');
+
+        break;
       default:
         this.goToMatrixPage();
     }
