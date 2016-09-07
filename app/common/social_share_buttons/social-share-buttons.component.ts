@@ -27,6 +27,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.locationPath = this.location.path();
+
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl({url: this.locationPath})
       .subscribe((res: any) => {
         if (res.err) {
@@ -38,19 +39,39 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.socialShareButtonsServiceSubscribe && this.socialShareButtonsServiceSubscribe.unsubscribe) {
+    if (this.socialShareButtonsServiceSubscribe) {
       this.socialShareButtonsServiceSubscribe.unsubscribe();
     }
   }
 
   protected openPopUp(originalUrl: string): void {
-    if (this.socialShareButtonsServiceSubscribe && this.socialShareButtonsServiceSubscribe.unsubscribe) {
+    if (this.socialShareButtonsServiceSubscribe) {
       this.socialShareButtonsServiceSubscribe.unsubscribe();
     }
 
-    let left = (window.innerWidth - 490) / 2;
+    if (this.locationPath === this.location.path()) {
+      this.openWindow(originalUrl, this.url);
+      return;
+    }
 
-    let popupWin = window.open(originalUrl + this.url, 'contacts', 'location, width=490, height=368, top=100, left=' + left);
+    this.locationPath = this.location.path();
+    this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl({url: this.locationPath})
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.url = res.url;
+        this.openWindow(originalUrl, this.url);
+      });
+
+    this.openWindow(originalUrl, this.url);
+  }
+
+  protected openWindow(originalUrl: string, url: any): void {
+    let left = (window.innerWidth - 490) / 2;
+    let popupWin = window.open(originalUrl + url, 'contacts', 'location, width=490, height=368, top=100, left=' + left);
     popupWin.focus();
   }
 }
