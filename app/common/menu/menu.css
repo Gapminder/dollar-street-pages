@@ -97,6 +97,19 @@
   text-align: center;
 }
 
+#main-menu .open .dropdown-menu li .feedback-container {
+  padding: 5px 20px 5px 35px;
+}
+
+#main-menu .open .dropdown-menu li .feedback {
+  background: url("/assets/img/feedback-icon.svg") no-repeat;
+  background-position: 20px;
+  font-size: 14px;
+  padding: 4px 0 2px 0;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 #main-menu .open .dropdown-menu li:hover:not(.social-share-container) {
   background-color: #3d4b58;
 }
