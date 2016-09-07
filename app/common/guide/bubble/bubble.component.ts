@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { SocialShareButtonsComponent } from '../../social_share_buttons/social-share-buttons.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ let style = require('./bubble.css');
 
 let device = require('device.js')();
 let isMobile = device.mobile();
+let isTablet = device.tablet();
 
 @Component({
   selector: 'bubble',
@@ -34,8 +35,8 @@ export class BubbleComponent implements OnInit, OnDestroy {
   private zone: NgZone;
   private resizeSubscribe: Subscription;
 
-  public constructor(@Inject(ElementRef) element: ElementRef,
-                     @Inject(NgZone) zone: NgZone) {
+  public constructor(element: ElementRef,
+                     zone: NgZone) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
@@ -141,39 +142,71 @@ export class BubbleComponent implements OnInit, OnDestroy {
         let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
         let baloonWidth: number = baloonElement.width;
         let baloonHeight: number = baloonElement.height;
-
         data.top += data.height;
 
-        if (step === 1 || step === 4) {
+        if (isMobile) {
           data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
-
-          if (isMobile && step === 1) {
-            data.top += 20;
-          }
+          this.position = this.setBubblePositionMobile(step, data, baloonWidth, baloonHeight);
+        } else {
+          this.position = this.setBubblePositionDesktop(step, data, baloonWidth, baloonHeight);
         }
-
-        if (step === 2) {
-          data.top += 17;
-          data.left -= 7;
-        }
-
-        if (step === 3) {
-          data.top += 17;
-          data.left = data.left - baloonWidth / 2 + data.width / 2;
-        }
-
-        if (step === 5) {
-          data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
-        }
-
-        if (step === 6) {
-          data.top = (data.top - data.height / 2) - baloonHeight / 2;
-          data.left = (data.left + data.width / 2) - baloonWidth / 2;
-          this.isCloseBubble = true;
-        }
-
-        this.position = data;
       });
     });
+  }
+
+  private setBubblePositionMobile(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
+
+    if (step === 1) {
+      data.top += 20;
+    }
+
+    if (step === 2) {
+      data.top += 3;
+    }
+
+    if (step === 3) {
+      data.top -= 3;
+    }
+
+    if (step === 4) {
+      data.top -= 66;
+    }
+
+    if (step === 6) {
+      data.top = (data.top - data.height / 2) - baloonHeight / 2;
+      data.left = data.left + baloonWidth / 2 - 15;
+      this.isCloseBubble = true;
+    }
+
+    return data;
+  }
+
+  private setBubblePositionDesktop(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
+    if (step === 1 || step === 4 || step === 5) {
+      data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
+    }
+
+    if (step === 2) {
+      data.top += 17;
+      data.left -= 7;
+    }
+
+    if (step === 3) {
+      if (isTablet) {
+        data.top += 13;
+      } else {
+        data.top += 17;
+      }
+
+      data.left = data.left - baloonWidth / 2 + data.width / 2;
+    }
+
+    if (step === 6) {
+      data.top = (data.top - data.height / 2) - baloonHeight / 2;
+      data.left = (data.left + data.width / 2) - baloonWidth / 2;
+      this.isCloseBubble = true;
+    }
+
+    return data;
   }
 }
