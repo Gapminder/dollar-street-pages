@@ -35,6 +35,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected relatedThings: any[];
   protected popularThings: any[];
   protected otherThings: any[];
+  protected synonymousToThing: any[];
   protected activeThing: any = {};
   protected search: {text: string;} = {text: ''};
   protected isOpenThingsFilter: boolean = false;
