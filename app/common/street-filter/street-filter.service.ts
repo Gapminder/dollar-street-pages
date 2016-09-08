@@ -119,7 +119,7 @@ export class StreetFilterDrawService {
       .append('svg:image')
       .attr('class', 'scale-label22222')
       .attr('xlink:href', '/assets/img/divider1.svg')
-      .attr('y', 26)
+      .attr('y', 25)
       .attr('width', 15 + 19)
       .attr('height', 24)
       .attr('x', (d: any) => {
@@ -216,31 +216,12 @@ export class StreetFilterDrawService {
 
     this.svg
       .append('line')
-      .attr('class', 'whiteline')
-      .attr('height', '1px')
-      .attr('x1', 0)
-      .attr('y1', this.halfOfHeight + 11)
-      .attr('x2', this.width + this.streetOffset)
-      .attr('y2', this.halfOfHeight + 11)
-      .attr('stroke-width', 2)
-      .attr('stroke', '#dde2e5')
-      .style('cursor', '-webkit-grab')
-      .style('cursor', '-moz-grab')
-      .style('cursor', 'grab')
-      .on('mousedown', (): void => {
-        d3.event.preventDefault();
-        this.draggingSliders = true;
-      })
-      .on('touchstart', (): any => this.draggingSliders = true);
-
-    this.svg
-      .append('line')
       .attr('class', 'axis')
       .attr('height', '3px')
-      .attr('x1', 0)
-      .attr('y1', this.halfOfHeight + 13)
-      .attr('x2', this.width + this.streetOffset)
-      .attr('y2', this.halfOfHeight + 13)
+      .attr('x1', 1)
+      .attr('y1', this.halfOfHeight + 12)
+      .attr('x2', this.width + this.streetOffset - 1)
+      .attr('y2', this.halfOfHeight + 12)
       .attr('stroke-width', 3)
       .attr('stroke', '#525c64')
       .style('cursor', '-webkit-grab')
@@ -406,11 +387,11 @@ export class StreetFilterDrawService {
 
     this.leftScroll
       .attr('points', () => {
-        let point1 = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight + 12}`;
-        let point2 = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight - 7.5}`;
-        let point3 = `${x + this.halfOfStreetOffset },${ this.halfOfHeight - 7.5}`;
-        let point4 = `${x + this.halfOfStreetOffset },${ this.halfOfHeight + 12}`;
-        let point5 = `${x + this.halfOfStreetOffset - 5.5},${ this.halfOfHeight + 12 + 7.5}`;
+        let point1 = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight + 12 - 1}`;
+        let point2 = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight - 7.5 - 1}`;
+        let point3 = `${x + this.halfOfStreetOffset },${ this.halfOfHeight - 7.5 - 1}`;
+        let point4 = `${x + this.halfOfStreetOffset },${ this.halfOfHeight + 12 - 1}`;
+        let point5 = `${x + this.halfOfStreetOffset - 5.5},${ this.halfOfHeight + 12 + 7.5 - 1}`;
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
@@ -485,11 +466,11 @@ export class StreetFilterDrawService {
     }
 
     this.rightScroll.attr('points', () => {
-      let point1 = `${x + this.halfOfStreetOffset},${ this.halfOfHeight + 12}`;
-      let point2 = `${x + this.halfOfStreetOffset},${ this.halfOfHeight - 7.5}`;
-      let point3 = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight - 7.5}`;
-      let point4 = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight + 12}`;
-      let point5 = `${x + this.halfOfStreetOffset + 5.5},${ this.halfOfHeight + 12 + 7.5}`;
+      let point1 = `${x + this.halfOfStreetOffset},${ this.halfOfHeight + 12 - 1}`;
+      let point2 = `${x + this.halfOfStreetOffset},${ this.halfOfHeight - 7.5 - 1}`;
+      let point3 = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight - 7.5 - 1}`;
+      let point4 = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight + 12 - 1}`;
+      let point5 = `${x + this.halfOfStreetOffset + 5.5},${ this.halfOfHeight + 12 + 7.5 - 1}`;
 
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });

@@ -480,13 +480,13 @@ export class StreetDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${scaleDatumIncome + this.streetOffset / 2 + roofX },${this.halfOfHeight - 1 - 1}`;
-          point2 = `${scaleDatumIncome + this.streetOffset / 2 + roofX},${roofY}`;
-          point3 = `${scaleDatumIncome + this.streetOffset / 2 - halfHouseWidth},${roofY}`;
-          point4 = `${scaleDatumIncome + this.streetOffset / 2 },${this.halfOfHeight - 26 - 1}`;
-          point5 = `${scaleDatumIncome + this.streetOffset / 2 + halfHouseWidth },${roofY}`;
-          point6 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${roofY}`;
-          point7 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${this.halfOfHeight - 1 - 1}`;
+          point1 = `${scaleDatumIncome + this.streetOffset / 2 + roofX },${this.halfOfHeight - 4}`;
+          point2 = `${scaleDatumIncome + this.streetOffset / 2 + roofX},${roofY - 2}`;
+          point3 = `${scaleDatumIncome + this.streetOffset / 2 - halfHouseWidth},${roofY - 2 }`;
+          point4 = `${scaleDatumIncome + this.streetOffset / 2 },${this.halfOfHeight - 26 - 1 - 2}`;
+          point5 = `${scaleDatumIncome + this.streetOffset / 2 + halfHouseWidth },${roofY - 2}`;
+          point6 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${roofY - 2}`;
+          point7 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${this.halfOfHeight - 4 }`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
