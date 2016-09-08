@@ -7,7 +7,7 @@ interface Thing {
   icon: string;
   plural: string;
   thingCategory: string[];
-  synonymous: any;
+  synonymous: {text: string}[];
   thingName: string;
 }
 
