@@ -7,7 +7,7 @@ interface Thing {
   icon: string;
   plural: string;
   thingCategory: string[];
-  synonymous: string[];
+  synonymous: any;
   thingName: string;
 }
 
@@ -24,7 +24,7 @@ export class ThingsFilterPipe implements PipeTransform {
     }
 
     return filter(value, (item: Thing) => {
-      let synonymous = filter(item.synonymous, (synonym: any) => {
+      let synonymous = filter(item.synonymous, (synonym: {text: string}) => {
         return synonym.text.toLowerCase().indexOf(text.toLowerCase()) !== -1;
       });
 
