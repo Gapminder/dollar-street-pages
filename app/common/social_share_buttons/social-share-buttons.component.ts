@@ -27,13 +27,13 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.locationPath = this.location.path();
-
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl({url: this.locationPath})
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
         }
+
         this.url = res.url;
       });
   }
@@ -55,13 +55,13 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
     }
 
     this.locationPath = this.location.path();
+
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl({url: this.locationPath})
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
         }
-
         this.url = res.url;
         this.openWindow(originalUrl, this.url);
       });
