@@ -71,7 +71,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
   protected openWindow(originalUrl: string, url: any): void {
     let left = (window.innerWidth - 490) / 2;
-    let popupWin = window.open(originalUrl + url, 'contacts', 'location, width=490, height=368, top=100, left=' + left);
+    let popupWin = window.open(originalUrl + url,'_blank','width=490, height=368, top=100, left=' + left);
     popupWin.focus();
   }
 }
