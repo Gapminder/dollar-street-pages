@@ -12,11 +12,12 @@ import {
 } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription, Observable } from 'rxjs/Rx';
+import { InfiniteScroll } from 'angular2-infinite-scroll';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { HomeMediaViewBlockComponent } from './home-media-view-block/home-media-view-block.component';
 import { LoaderComponent } from '../../common/loader/loader.component';
 import { Config, ImageResolutionInterface } from '../../app.config';
-import * as _ from 'lodash';
+import { find, isEqual, slice, concat } from 'lodash';
 
 let tpl = require('./home-media.template.html');
 let style = require('./home-media.css');
@@ -25,7 +26,7 @@ let style = require('./home-media.css');
   selector: 'home-media',
   template: tpl,
   styles: [style],
-  directives: [HomeMediaViewBlockComponent, RowLoaderComponent, LoaderComponent]
+  directives: [HomeMediaViewBlockComponent, RowLoaderComponent, LoaderComponent, InfiniteScroll]
 })
 
 export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
@@ -37,6 +38,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected imageBlockLocation: number;
   protected showImageBlock: boolean = false;
   protected activeImage: any;
+  protected rowLoaderStartPosition: number = 0;
 
   @Input('placeId')
   private placeId: string;
@@ -66,10 +68,13 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private element: HTMLElement;
   private imageMargin: number;
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
+  private visibleImages: number;
+  private currentImages: any = [];
+  private viewBlockHeight: number;
 
-  public constructor(@Inject('HomeMediaService') homeMediaService: any,
-                     @Inject(NgZone) zone: NgZone,
-                     @Inject(ElementRef) element: ElementRef) {
+  public constructor(zone: NgZone,
+                     element: ElementRef,
+                     @Inject('HomeMediaService') homeMediaService: any) {
     this.homeMediaService = homeMediaService;
     this.zone = zone;
     this.element = element.nativeElement;
@@ -81,7 +86,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
         .subscribe((data: any): void => {
           let familyImageIndex: number = 0;
 
-          let familyImage: any = _.find(this.images, (image: any, index: number) => {
+          let familyImage: any = find(this.images, (image: any, index: number) => {
             if (image.thing === data.thingId) {
               familyImageIndex = index;
 
@@ -112,6 +117,23 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         this.images = res.data.images;
         this.imageData.photographer = res.data.photographer;
+
+        setTimeout(() => {
+          this.getVisibleRows();
+
+          let numberSplice: number = this.visibleImages * 2;
+
+          if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
+            let positionInRow: number = this.activeImageIndex % this.zoom;
+            let offset: number = this.zoom - positionInRow;
+
+            numberSplice = this.activeImageIndex + offset + this.visibleImages;
+          }
+
+          this.rowLoaderStartPosition = 0;
+
+          this.currentImages = slice(this.images, 0, numberSplice);
+        }, 0);
       });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -190,6 +212,15 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
+  public onScrollDown(): void {
+    if (this.currentImages.length && this.currentImages.length !== this.images.length) {
+      let images: any = slice(this.images, this.currentImages.length, this.currentImages.length + this.visibleImages);
+
+      this.currentImages = concat(this.currentImages, images);
+      this.rowLoaderStartPosition = this.currentImages.length - this.visibleImages;
+    }
+  }
+
   protected openMedia(image: any, index: number): void {
     this.activeImage = image;
     this.indexViewBoxImage = index;
@@ -215,6 +246,12 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.imageData = Object.assign({}, this.imageData);
 
+    setTimeout(() => {
+      let viewBlockBox = this.element.querySelector('home-media-view-block') as HTMLElement;
+
+      this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+    }, 0);
+
     if (!this.prevImage) {
       this.prevImage = image;
 
@@ -225,7 +262,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       return;
     }
 
-    if (_.isEqual(this.prevImage, image)) {
+    if (isEqual(this.prevImage, image)) {
       this.showImageBlock = !this.showImageBlock;
 
       if (!this.showImageBlock) {
@@ -239,6 +276,12 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       this.changeUrl(Math.ceil((this.indexViewBoxImage + 1) / this.zoom), this.indexViewBoxImage + 1);
     }
+  }
+
+  protected imageIsUploaded(data: {index: number}): void {
+    this.zone.run(() => {
+      this.currentImages[data.index].isUploaded = true;
+    });
   }
 
   private changeUrl(row?: number, activeImageIndex?: number): void {
@@ -275,5 +318,14 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
     this.itemSize = this.imageHeight + this.imageMargin;
+  }
+
+  private getVisibleRows(): void {
+    let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
+    let headerContainer = document.querySelector('.header-container') as HTMLElement;
+    let visibleSpace: number = window.innerHeight - headerContainer.offsetHeight;
+    let imageHeight: number = boxContainer.offsetWidth / this.zoom;
+    let visibleRows: number = Math.round(visibleSpace / imageHeight);
+    this.visibleImages = this.zoom * visibleRows;
   }
 }

@@ -10,9 +10,8 @@
 
   <div class="street-and-title-container">
     <div class="street-container" #streetContainer (click)="scrollTop($event, streetContainer)">
-      <div class="short-title">
-        {{thing}} <span>in</span> {{activeCountries}} <span>by $</span>
-      </div>
+      <div class="short-title">{{thing}} <span>in</span> {{activeCountries}} <span>by $</span></div>
+
       <div class="street-content">
         <street [query]="query"
                 [thing]="thing"
@@ -33,7 +32,8 @@
                  (sendResponse)="getResponseFromIncomeFilter($event)"></income-filter>
 </div>
 
-<matrix-images [zoom]="zoom"
+<matrix-images [row]="row"
+               [zoom]="zoom"
                [query]="query"
                [thing]="thing"
                [padding]="padding"

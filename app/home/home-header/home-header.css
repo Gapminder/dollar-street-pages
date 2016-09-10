@@ -321,6 +321,7 @@
   font-weight: 300;
   line-height: 24px;
   margin: 0;
+  text-align: justify;
 }
 
 .about-data-container .about-data-body p + p {

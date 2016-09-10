@@ -318,14 +318,21 @@
     font-size: 16px;
   }
 
-
 }
 
 @media (max-width: 599px) {
   #item-profile-mobile {
     padding: 15px 5px 0;
     margin-bottom: 25px;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
+
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
   }
 
@@ -351,6 +358,11 @@
     width: 100%;
     font-size: 14px;
     margin-bottom: 10px;
+  }
+
+  #item-profile-mobile .item-description-header > div:not(.more-info) + div:not(.more-info) {
+    margin-bottom: 28px;
+
   }
 
   #item-profile-mobile .item-description-header span {

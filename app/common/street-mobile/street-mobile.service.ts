@@ -17,7 +17,6 @@ export class StreetMobileDrawService {
   public height: number;
   public halfOfHeight: number;
   public streetOffset: number;
-  public chosenPlaces: any;
   private scale: any;
   private svg: any;
 
@@ -54,15 +53,6 @@ export class StreetMobileDrawService {
       return this;
     }
 
-    d3.svg
-      .axis()
-      .scale(this.scale)
-      .orient('bottom')
-      .tickFormat(() => {
-        return void 0;
-      })
-      .tickSize(6, 0);
-
     this.svg
       .selectAll('polygon')
       .data(places)
@@ -80,13 +70,13 @@ export class StreetMobileDrawService {
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
+          point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${this.halfOfHeight - 4}`;
           point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
           point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth},${roofY}`;
           point4 = `${this.streetOffset / 2 + scaleDatumIncome},${this.halfOfHeight - 17}`;
           point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
-          point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${roofY}`;
-          point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
+          point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX},${roofY}`;
+          point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX},${this.halfOfHeight - 4}`;
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +

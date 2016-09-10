@@ -13,7 +13,6 @@ import {
   TagsComponent,
   ContributorsComponent
 } from 'ng2-contentful-blog/index';
-import { RawRoute } from 'ng2-contentful-blog/components/routes-gateway/routes-manager.service';
 import { LoaderComponent } from '../common/loader/loader.component';
 import * as _ from 'lodash';
 
@@ -81,7 +80,7 @@ export class BlogComponent implements OnInit {
           .map((tag: ContentfulTagPage) => tag.sys.id)
           .mergeMap((tagSysId: string) => this.contentfulContentService.getArticleByTagAndSlug(tagSysId, this.contentSlug))
           .mergeMap((articles: ContentfulNodePage[]) => Observable.from(articles))
-          .filter((article: ContentfulNodePage) => !!_.find(article.fields.tags, (tag: ContentfulTagPage) => tag.fields.slug === this.constants.PROJECT_TAG))
+          // .filter((article: ContentfulNodePage) => !!_.find(article.fields.tags, (tag: ContentfulTagPage) => tag.fields.slug === this.constants.PROJECT_TAG))
           .subscribe((article: ContentfulNodePage) => this.onArticleReceived(article));
       });
   }
@@ -98,20 +97,15 @@ export class BlogComponent implements OnInit {
     });
 
     this.contentfulContentService.getChildrenOfArticleByTag(article.sys.id, this.constants.PROJECT_TAG)
-      .do((articles: ContentfulNodePage[]) => this.addRoutes(articles))
       .subscribe((children: ContentfulNodePage[]) => {
+        _.forEach(children, (child: ContentfulNodePage) => {
+          const currentPath: string = _.map(this.activatedRoute.snapshot.url, 'path').join('/');
+          child.fields.url = `${currentPath}/${child.fields.slug}`;
+        });
+        this.routesManager.addRoutesFromArticles(... children);
         this.children = children;
+
         this.loader = false;
       });
-  }
-
-  private addRoutes(articles: ContentfulNodePage[]): void {
-    const rawRoutes: RawRoute[] = [];
-    _.forEach(articles, (contentfulArticle: ContentfulNodePage) => {
-      const article: NodePageContent = contentfulArticle.fields;
-      rawRoutes.push({path: article.slug, data: {name: article.title}});
-    });
-
-    this.routesManager.addRoutes(rawRoutes);
   }
 }

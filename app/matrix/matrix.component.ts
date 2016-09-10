@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { StreetComponent } from '../common/street/street.component';
 import { StreetMobileComponent } from '../common/street-mobile/street-mobile.component';
@@ -56,7 +55,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public selectedRegions: any;
   public activeCountries: any;
 
+  private scrollSubscribe: Subscription;
   private resizeSubscribe: Subscription;
+  private headerFixedSubscribe: Subscription;
   private placesArr: any[];
   private element: HTMLElement;
   private rowEtalon: number = 0;
@@ -84,7 +85,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private streetPlacesData: any;
   private queryParamsSubscribe: Subscription;
   private windowInnerHeight: number = window.innerHeight;
+  private windowInnerWidth: number = window.innerWidth;
   private imageResolution: ImageResolutionInterface;
+  private streetContainer: HTMLElement;
+  private headerContainer: HTMLElement;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -103,11 +107,15 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
+    this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
+
+    this.resizeSubscribe = Observable.fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
           this.windowInnerHeight = window.innerHeight;
+          this.windowInnerWidth = window.innerWidth;
 
           this.interactiveIncomeText();
         });
@@ -158,13 +166,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.zoom = 4;
         }
 
-        let windowInnerWidth: number = window.innerWidth;
-
-        if (!this.isDesktop && windowInnerWidth > 599) {
+        if (!this.isDesktop && this.windowInnerWidth > 599) {
           this.zoom = 3;
         }
 
-        if (!this.isDesktop && windowInnerWidth <= 599) {
+        if (!this.isDesktop && this.windowInnerWidth <= 599) {
           this.zoom = 2;
         }
 
@@ -188,14 +194,24 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.urlChanged({isInit: true});
+      });
 
-        document.onscroll = () => {
-          if (window.innerWidth < 600) {
+    if (this.windowInnerWidth < 600) {
+      this.headerFixedSubscribe = Observable
+        .fromEvent(document, 'scroll')
+        .subscribe(() => {
+          this.zone.run(() => {
             this.showMobileHeader();
-          }
+          });
+        });
+    }
 
+    this.scrollSubscribe = this
+      .getObservable(!this.isDesktop)
+      .subscribe(() => {
+        this.zone.run(() => {
           this.stopScroll();
-        };
+        });
       });
 
     this.imageResolution = Config.getImageResolution();
@@ -226,18 +242,19 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnDestroy(): void {
-    if (this.resizeSubscribe.unsubscribe) {
-      this.resizeSubscribe.unsubscribe();
-    }
-
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
     }
 
-    document.onscroll = void 0;
+    if (this.headerFixedSubscribe) {
+      this.headerFixedSubscribe.unsubscribe();
+    }
+
+    this.scrollSubscribe.unsubscribe();
+    this.resizeSubscribe.unsubscribe();
+    this.queryParamsSubscribe.unsubscribe();
     this.matrixServiceSubscribe.unsubscribe();
     this.matrixServiceStreetSubscribe.unsubscribe();
-    this.queryParamsSubscribe.unsubscribe();
   }
 
   public ngAfterViewChecked(): void {
@@ -299,8 +316,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public getPaddings(): void {
-    let windowInnerWidth = window.innerWidth - 34;
-    let header = this.element.querySelector('.matrix-header') as HTMLElement;
+    let windowInnerWidth = this.windowInnerWidth - 34;
+    let headerHeight: number = this.headerContainer.offsetHeight;
     this.imageMargin = (windowInnerWidth - this.imageHeight * this.zoom) / (2 * this.zoom);
 
     /** se content\view child\childer */
@@ -312,9 +329,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       return;
     }
 
-    matrixImages.style.paddingTop = `${header.offsetHeight}px`;
+    matrixImages.style.paddingTop = `${headerHeight}px`;
 
-    this.getViewableRows(header.offsetHeight);
+    this.getViewableRows(headerHeight);
 
     this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
 
@@ -556,7 +573,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected scrollTop(e: MouseEvent, element: HTMLElement): void {
-    if (window.innerWidth >= 600 || element.className.indexOf('fixed') === -1) {
+    if (this.windowInnerWidth >= 600 || element.className.indexOf('fixed') === -1) {
       return;
     }
 
@@ -567,19 +584,20 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private showMobileHeader(): void {
     let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-    let header = this.element.querySelector('.matrix-header') as HTMLElement;
-    let streetContainer = this.element.querySelector('.street-container') as HTMLElement;
-    let headerHeight = header.offsetHeight;
 
-    if (scrollTop > headerHeight - 10) {
-      streetContainer.classList.add('fixed');
+    if (scrollTop > this.headerContainer.offsetHeight - 10) {
+      if (this.streetContainer.className.indexOf('fixed') !== -1) {
+        return;
+      }
+
+      this.streetContainer.classList.add('fixed');
     } else {
-      streetContainer.classList.remove('fixed');
-    }
-  }
+      if (this.streetContainer.className.indexOf('fixed') === -1) {
+        return;
+      }
 
-  private parseUrl(url: string): any {
-    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+      this.streetContainer.classList.remove('fixed');
+    }
   }
 
   private setZoomButtonPosition(): void {
@@ -589,5 +607,20 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.zone.run(() => {
       this.zoomPositionFixed = scrollTop > containerHeight;
     });
+  }
+
+  private parseUrl(url: string): any {
+    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+  }
+
+  private getObservable(isMobileVersion: boolean): Observable<any> {
+    if (isMobileVersion) {
+      return Observable
+        .fromEvent(document, 'scroll')
+        .debounceTime(150);
+    } else {
+      return Observable
+        .fromEvent(document, 'scroll');
+    }
   }
 }
