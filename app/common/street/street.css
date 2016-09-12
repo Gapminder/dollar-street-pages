@@ -1,4 +1,6 @@
 .street-box {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   margin: -5px 22px 0;
   padding-bottom: 4px;
 }

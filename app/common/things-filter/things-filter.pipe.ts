@@ -7,6 +7,7 @@ interface Thing {
   icon: string;
   plural: string;
   thingCategory: string[];
+  synonymous: {text: string}[];
   thingName: string;
 }
 
@@ -23,7 +24,11 @@ export class ThingsFilterPipe implements PipeTransform {
     }
 
     return filter(value, (item: Thing) => {
-      return !item.empty && item.plural.toLowerCase().indexOf(text.toLowerCase()) !== -1;
+      let synonymous = filter(item.synonymous, (synonym: {text: string}) => {
+        return synonym.text.toLowerCase().indexOf(text.toLowerCase()) !== -1;
+      });
+
+      return !item.empty && (synonymous.length || item.plural.toLowerCase().indexOf(text.toLowerCase()) !== -1);
     });
   }
 }

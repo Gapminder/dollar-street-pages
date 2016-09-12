@@ -92,7 +92,7 @@ footer {
 }
 
 .footer .valor {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 15px;
   text-align: right;
   position: absolute;
@@ -111,7 +111,8 @@ footer {
 }
 
 .footer .valor .valor-name {
-  color: #e7464d;
+  color: #767d86;
+  text-decoration: underline;
 }
 
 .footer .valor .valor-name:hover {

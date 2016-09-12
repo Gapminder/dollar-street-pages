@@ -3,15 +3,22 @@
     <a (click)="goToMatrixPage()"><img src="/assets/img/dollar-street.svg" alt=""/></a>
   </div>
 
-  <div class="filters-container">
+  <div class="filters-container"
+       [ngStyle]="{visibility: isCountryFilterReady && isThingFilterReady ? 'visible' : 'hidden'}">
     <things-filter [url]="query"
+                   (isFilterGotData)="isFilterGotData($event)"
                    (selectedFilter)="urlTransfer($event)">
     </things-filter>
+
     <span class="map-things-text" *ngIf="mapComponent">on the World map</span>
+
     <div class="some-filter-container incomeby" *ngIf="matrixComponent">
       <span class="mobile-ver">in</span>
       <countries-filter [url]="query"
-                        (selectedFilter)="urlTransfer($event)"></countries-filter>
+                        (isFilterGotData)="isFilterGotData($event)"
+                        (selectedFilter)="urlTransfer($event)">
+      </countries-filter>
+
       <span class="income-title-container">
         <span class="income-title" (click)="openIncomeFilter()">by $</span>
         <span class="income-title">by income</span>
