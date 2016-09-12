@@ -149,10 +149,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.placesSubscribe.unsubscribe();
-
-    if (this.resizeSubscribe.unsubscribe) {
-      this.resizeSubscribe.unsubscribe();
-    }
+    this.resizeSubscribe.unsubscribe();
 
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();

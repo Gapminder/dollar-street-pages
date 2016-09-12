@@ -1,28 +1,31 @@
-import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
-import { TestComponentBuilder } from '@angular/compiler/testing';
+import { it, describe, inject, async, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
 import { PhotographerComponent } from '../../../app/photographer/photographer.component';
 
 describe('PhotographerComponent', () => {
-  beforeEachProviders(() => {
-    let mockCommonDependency = new MockCommonDependency();
-    return [
+  let mockCommonDependency = new MockCommonDependency();
+
+  beforeEach(() => {
+    addProviders([
       mockCommonDependency.getProviders()
-    ];
+    ]);
   });
 
   let fixture;
   let context;
 
-  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
-    return tcb
-      .overrideTemplate(PhotographerComponent, '<div></div>')
-      .createAsync(PhotographerComponent).then((fixtureInst:any) => {
-        fixture = fixtureInst;
-        context = fixtureInst.debugElement.componentInstance;
-        context.routeParams.set('id', '5477537786deda0b00d43be5');
-      });
-  })));
+  beforeEach(async(inject([TestComponentBuilder, ActivatedRoute],
+    (tcb: TestComponentBuilder, activatedRoute: ActivatedRoute) => {
+      return tcb
+        .overrideTemplate(PhotographerComponent, '<div></div>')
+        .createAsync(PhotographerComponent).then((fixtureInst: any) => {
+          fixture = fixtureInst;
+          context = fixtureInst.debugElement.componentInstance;
+          activatedRoute.params = Observable.of({id: '5477537786deda0b00d43be5'});
+        });
+    })));
 
   it('PhotographerComponent must init', () => {
     context.ngOnInit();

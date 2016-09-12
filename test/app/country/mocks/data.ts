@@ -1,5 +1,6 @@
 export let places = {
-  err: undefined, data: {
+  err: undefined,
+  data: {
     country: {
       _id: '55ef338d0d2b3c8203788467',
       code: 'US',
@@ -8,37 +9,35 @@ export let places = {
       lng: -95.712891,
       region: 'The Americas'
     },
-    places: [
-      {
-        _id: 'United States',
-        image: 'http://static.dollarstreet.org.s3.amazonaws.com/media/USA 5/image/877dc516-acb8-4f0a-9bc5-158b7f0ad008/thumb-877dc516-acb8-4f0a-9bc5-158b7f0ad008.jpg',
-        imageId: '54b919c76eebabe42d39b85b',
-        income: 100,
-        placeId: '54b9196c02f7310b2e0baaf3',
-        thing: '5477537786deda0b00d43be5'
-      },
-      {
-        _id: 'United States',
-        image: 'http://static.dollarstreet.org.s3.amazonaws.com/media/USA 5/image/877dc516-acb8-4f0a-9bc5-158b7f0ad008/thumb-877dc516-acb8-4f0a-9bc5-158b7f0ad008.jpg',
-        imageId: '54b919c76eebabe42d39b85b',
-        income: 100,
-        placeId: '54b9196c02f7310b2e0baaf3',
-        thing: '5477537786deda0b00d43be5'
-      },
-      {
-        _id: 'United States',
-        image: 'http://static.dollarstreet.org.s3.amazonaws.com/media/USA 5/image/877dc516-acb8-4f0a-9bc5-158b7f0ad008/thumb-877dc516-acb8-4f0a-9bc5-158b7f0ad008.jpg',
-        imageId: '54b919c76eebabe42d39b85b',
-        income: 100,
-        placeId: '54b9196c02f7310b2e0baaf3',
-        thing: '5477537786deda0b00d43be5'
-      }
+    places: [{
+      _id: 'United States',
+      image: 'http://static.dollarstreet.org.s3.amazonaws.com/media/USA 5/image/877dc516-acb8-4f0a-9bc5-158b7f0ad008/thumb-877dc516-acb8-4f0a-9bc5-158b7f0ad008.jpg',
+      imageId: '54b919c76eebabe42d39b85b',
+      income: 100,
+      placeId: '54b9196c02f7310b2e0baaf3',
+      thing: '5477537786deda0b00d43be5'
+    }, {
+      _id: 'United States',
+      image: 'http://static.dollarstreet.org.s3.amazonaws.com/media/USA 5/image/877dc516-acb8-4f0a-9bc5-158b7f0ad008/thumb-877dc516-acb8-4f0a-9bc5-158b7f0ad008.jpg',
+      imageId: '54b919c76eebabe42d39b85b',
+      income: 100,
+      placeId: '54b9196c02f7310b2e0baaf3',
+      thing: '5477537786deda0b00d43be5'
+    }, {
+      _id: 'United States',
+      image: 'http://static.dollarstreet.org.s3.amazonaws.com/media/USA 5/image/877dc516-acb8-4f0a-9bc5-158b7f0ad008/thumb-877dc516-acb8-4f0a-9bc5-158b7f0ad008.jpg',
+      imageId: '54b919c76eebabe42d39b85b',
+      income: 100,
+      placeId: '54b9196c02f7310b2e0baaf3',
+      thing: '5477537786deda0b00d43be5'
+    }
     ]
   }
 };
 
 export let info = {
-  err: undefined, data: {
+  err: undefined,
+  data: {
     country: {
       _id: '55ef338d0d2b3c8203788467',
       code: 'US',

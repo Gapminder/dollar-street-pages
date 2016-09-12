@@ -1,30 +1,30 @@
-import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
-import { TestComponentBuilder } from '@angular/compiler/testing';
+import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
 import { MockService } from '../../../app/common-mocks/mock.service.template';
 import { places } from '../mocks/data.ts';
 import { PhotographerPlacesComponent } from '../../../../app/photographer/photographer-places/photographer-places.component';
 
 describe('PhotographerPlacesComponent', () => {
+  let mockCommonDependency = new MockCommonDependency();
   let mockPhotographerPlacesService = new MockService();
+
   mockPhotographerPlacesService.serviceName = 'PhotographerPlacesService';
   mockPhotographerPlacesService.getMethod = 'getPhotographerPlaces';
   mockPhotographerPlacesService.fakeResponse = places;
-  let mockCommonDependency = new MockCommonDependency();
 
-  beforeEachProviders(() => {
-    return [
+  beforeEach(() => {
+    addProviders([
       mockCommonDependency.getProviders(),
       mockPhotographerPlacesService.getProviders()
-    ];
+    ]);
   });
 
   let context;
   let fixture;
   let nativeElement;
 
-  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
-    return tcb.createAsync(PhotographerPlacesComponent).then((fixtureInst:any) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb: any) => {
+    return tcb.createAsync(PhotographerPlacesComponent).then((fixtureInst: any) => {
       fixture = fixtureInst;
       context = fixture.debugElement.componentInstance;
       nativeElement = fixture.debugElement.nativeElement;
@@ -35,7 +35,7 @@ describe('PhotographerPlacesComponent', () => {
     context.ngOnInit();
 
     expect(context.places).toEqual(places.data.places);
-    expect(context.loader).toEqual(true);
+    expect(context.loader).toEqual(false);
     spyOn(context.photographerPlacesServiceSubscribe, 'unsubscribe');
 
     context.ngOnDestroy();
