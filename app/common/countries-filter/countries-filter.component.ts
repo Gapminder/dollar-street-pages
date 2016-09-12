@@ -46,6 +46,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected positionLeft: number = 0;
   @Input()
   private url: string;
+
+  @Output('isFilterGotData')
+  private isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
@@ -266,6 +269,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           }
 
           this.setTitle(this.url);
+          this.isFilterGotData.emit('isCountryFilterReady');
         });
     }
   }

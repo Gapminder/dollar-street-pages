@@ -1,7 +1,6 @@
-import { Component, Input, Output, Inject, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
+import { Component, Input, Output, Inject, OnChanges, EventEmitter } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Rx';
 import { MainMenuComponent } from '../menu/menu.component';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
@@ -24,7 +23,7 @@ let style = require('./header.css');
   ]
 })
 
-export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
+export class HeaderComponent implements OnChanges {
   @Input()
   protected query: string;
   @Input()
@@ -35,29 +34,26 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   protected isDesktop: boolean = device.desktop();
   protected header: any = {};
   protected math: any;
+  protected isCountryFilterReady: boolean = false;
+  protected isThingFilterReady: boolean = false;
+
   protected angulartics2GoogleAnalytics: any;
   @Output()
   private filter: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
   private activeThing: any;
-  private defaultThing: any;
-  private headerService: any;
   private router: Router;
   private activatedRoute: ActivatedRoute;
   private window: Window = window;
 
   private matrixComponent: boolean;
   private mapComponent: boolean;
-  private headerServiceSubscribe: Subscription;
-  private headerTitleServiceSubscribe: Subscription;
 
-  public constructor(@Inject('HeaderService') headerService: any,
-                     @Inject(Router) router: Router,
-                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+  public constructor(router: Router,
+                     activatedRoute: ActivatedRoute,
                      @Inject('Math') math: any,
                      @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
-    this.headerService = headerService;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -65,18 +61,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
-  }
-
-  public ngOnInit(): void {
-    this.headerServiceSubscribe = this.headerService.getDefaultThing()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.defaultThing = res.data;
-      });
   }
 
   public ngOnChanges(changes: any): void {
@@ -91,30 +75,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
       if (currentQuery.place === previousQuery.place) {
         return;
       }
-
-      if (this.headerTitleServiceSubscribe) {
-        this.headerTitleServiceSubscribe.unsubscribe();
-      }
-
-      this.headerTitleServiceSubscribe = this
-        .headerService
-        .getPlaceHeader(this.query)
-        .subscribe((res: any) => {
-          if (res.err) {
-            console.error(res.err);
-            return;
-          }
-
-          this.header = res.data;
-        });
-    }
-  }
-
-  public ngOnDestroy(): void {
-    this.headerServiceSubscribe.unsubscribe();
-
-    if (this.headerTitleServiceSubscribe) {
-      this.headerTitleServiceSubscribe.unsubscribe();
     }
   }
 
@@ -143,6 +103,10 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
     this.angulartics2GoogleAnalytics.pageTrack(`From header to Matrix page`);
     this.router.navigate(['/matrix'], {queryParams: {}});
+  }
+
+  protected isFilterGotData(event: any):any {
+    this[event] = true;
   }
 
   private parseUrl(url: string): any {

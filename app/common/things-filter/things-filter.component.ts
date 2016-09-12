@@ -41,6 +41,10 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected activeColumn: string = '';
   protected Angulartics2GoogleAnalytics: any;
   protected things: any = [];
+
+  @Output('isFilterGotData')
+  private isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
+
   @Input()
   private url: string;
   @Output()
@@ -51,8 +55,8 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   private activatedRoute: ActivatedRoute;
   private element: HTMLElement;
 
-  public constructor(@Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
-                     @Inject(ElementRef) element: ElementRef,
+  public constructor(activatedRoute: ActivatedRoute,
+                     element: ElementRef,
                      @Inject('ThingsFilterService') thingsFilterService: any,
                      @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
     this.thingsFilterService = thingsFilterService;
@@ -142,7 +146,6 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     if (this.keyUpSubscribe) {
       this.keyUpSubscribe.unsubscribe();
     }
-
   }
 
   public ngOnChanges(changes: any): void {
@@ -164,6 +167,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
           this.popularThings = res.data.popularThings;
           this.otherThings = res.data.otherThings;
           this.activeThing = res.data.thing;
+          this.isFilterGotData.emit('isThingFilterReady');
         });
     }
   }

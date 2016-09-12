@@ -39,6 +39,8 @@
   background-color: #f6f7f8;
   padding: 11px 19px;
   overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 
 .income-filter-button-container button {
