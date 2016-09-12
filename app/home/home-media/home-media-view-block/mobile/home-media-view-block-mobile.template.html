@@ -17,7 +17,8 @@
             {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> <span class="tablet">
             for Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
           </span>
-          <span class="mobile"><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a></span>        </p>
+          <span class="mobile"><a href="https://creativecommons.org/licenses/by/4.0/"
+                                  target="_blank">CC BY 4.0</a></span></p>
       </div>
 
       <div class="download-container">
@@ -51,21 +52,24 @@
          [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{countryName}}</span> <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{countryName}}</span> <img
+        src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
          [routerLink]="['/matrix']"
          [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{country?.region}}</span> <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{country?.region}}</span> <img
+        src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
          [routerLink]="['/matrix']"
          [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1'}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>the World</span>  <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>the World</span> <img
+        src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
     </div>
   </div>
