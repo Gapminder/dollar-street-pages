@@ -116,6 +116,30 @@
   line-height: 27px
 }
 
+#main-menu .open .gapminder a {
+  font-size: 14px;
+  border-bottom: 0;
+  color: #374551;
+  text-transform: uppercase;
+  text-decoration: underline;
+  line-height: 27px
+}
+
+.feedback-container {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#main-menu .open .feedback {
+  background: url("/assets/img/like-icon-dark.svg") no-repeat;
+  font-size: 14px;
+  border-bottom: 0;
+  color: #374551;
+  padding-left: 18px;
+  text-transform: uppercase;
+  line-height: 27px
+}
+
 #main-menu .open .gapminder {
   text-align: center;
   margin-top: 3px;
