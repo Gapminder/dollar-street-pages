@@ -9,20 +9,23 @@
   width: 100%;
 }
 
-.team-container .teacher {
-  order: 0;
+.team-container .teachers {      /* Temporary disabled by owner's demand */
+  /*order: 0;*/
+  display: none;
 }
 
-.team-container .writer {
-  order: 1;
+.team-container .writers {       /* Temporary disabled by owner's demand */
+  /*order: 1;*/
+  display: none;
 }
 
-.team-container .supporters {
+.team-container .contributors {
   order: 2;
 }
 
-.team-container .organizations {
-  order: 3;
+.team-container .organizations {      /* Temporary disabled by owner's demand */
+  /*order: 3;*/
+  display: none;
 }
 
 .team-container * {
