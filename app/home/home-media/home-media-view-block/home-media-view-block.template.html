@@ -38,7 +38,7 @@
           <span>{{imageData.thing.thingName}}</span>
         </div>
 
-        <p *ngIf="article?.shortDescription">{{article.shortDescription}} <a
+        <p *ngIf="article?.description">{{article.description}} <a
           *ngIf="article?.isDescription"
           [routerLink]="['/article', imageData.thing._id]"
           [queryParams]="{}"

@@ -276,9 +276,15 @@
   left: calc(((100% / 4) / 2) + (100% / 4 * 3) - 16px);
 }
 
+@media (max-width: 1400px) {
+  .view-image-block-content .view-image-container .view-image-content {
+    height: 485px;
+  }
+}
+
 @media (max-width: 1280px) {
   .view-image-block-content .view-image-container .view-image-content {
-    height: 625px;
+    height: 420px;
   }
 }
 
