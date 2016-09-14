@@ -68,15 +68,18 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private imageMargin: number;
   private windowInnerWidth: number = window.innerWidth;
   private visibleImages: number;
+  private loaderService: any;
 
   public constructor(zone: NgZone,
                      router: Router,
                      element: ElementRef,
                      @Inject('Math') math: any,
+                     @Inject('LoaderService') loaderService: any,
                      @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.zone = zone;
     this.math = math;
     this.router = router;
+    this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
@@ -196,18 +199,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
   }
 
-  protected goToPlace(place: any): void {
-    if (this.isDesktop) {
-      this.angulartics2GoogleAnalytics.eventTrack(`Go to  Place page from Matrix page `);
-      this.router.navigate(['/family'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
-      return;
-    }
-
-    this.angulartics2GoogleAnalytics.eventTrack(`Go to  Place page from Matrix page `);
-
-    this.router.navigate(['/family'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
-  }
-
   protected goToImageBlock(place: any, index: number): void {
     this.indexViewBoxHouse = index;
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
@@ -270,10 +261,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize - showPartPrevImage;
   }
 
-  private parseUrl(url: string): any {
-    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
-  }
-
   private getImageHeight(): void {
     let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
@@ -288,14 +275,14 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
     this.itemSize = this.imageHeight + this.imageMargin;
+
+    this.loaderService.setLoader(true);
   }
 
   private getVisibleRows(): void {
     let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
-    let headerContainer = document.querySelector('.matrix-header') as HTMLElement;
-    let visibleSpace: number = window.innerHeight - headerContainer.offsetHeight;
     let imageHeight: number = boxContainer.offsetWidth / this.zoom;
-    let visibleRows: number = Math.round(visibleSpace / imageHeight);
+    let visibleRows: number = Math.round(window.innerHeight / imageHeight);
     this.visibleImages = this.zoom * visibleRows;
   }
 }

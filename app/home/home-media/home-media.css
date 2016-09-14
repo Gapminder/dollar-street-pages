@@ -113,7 +113,7 @@ home-media-view-block {
   }
 
   .family-images-container .family-image-container {
-    width: calc(50% - 5px);
+    width: calc(33.33% - 5px);
     margin: 2.5px;
   }
 

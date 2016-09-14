@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ROUTER_DIRECTIVES, ActivatedRoute, UrlPathWithParams, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import {
@@ -13,7 +13,6 @@ import {
   TagsComponent,
   ContributorsComponent
 } from 'ng2-contentful-blog/index';
-import { LoaderComponent } from '../common/loader/loader.component';
 import * as _ from 'lodash';
 
 let tpl = require('./blog.template.html');
@@ -28,14 +27,12 @@ let style = require('./blog.css');
     RelatedComponent,
     ROUTER_DIRECTIVES,
     TagsComponent,
-    ContributorsComponent,
-    LoaderComponent
+    ContributorsComponent
   ],
   pipes: [ToDatePipe]
 })
 
-export class BlogComponent implements OnInit {
-  private loader: boolean = true;
+export class BlogComponent implements OnInit, OnDestroy {
   private isArticle: boolean;
 
   private content: NodePageContent;
@@ -48,18 +45,21 @@ export class BlogComponent implements OnInit {
   private routesManager: RoutesManagerService;
   private constants: any;
   private titleHeaderService: any;
+  private loaderService: any;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
                      routesManager: RoutesManagerService,
                      contentfulContentService: ContenfulContent,
                      @Inject('Constants') constants: any,
+                     @Inject('LoaderService') loaderService: any,
                      @Inject('TitleHeaderService') titleHeaderService: any) {
     this.router = router;
     this.contentfulContentService = contentfulContentService;
     this.routesManager = routesManager;
     this.activatedRoute = activatedRoute;
     this.constants = constants;
+    this.loaderService = loaderService;
 
     let snapshotUrl: any = this.activatedRoute.snapshot.url;
     this.isArticle = snapshotUrl.length > 1 && (snapshotUrl[0].path === 'blog' || snapshotUrl[0].path === 'answers' || snapshotUrl[0].path === 'videos');
@@ -67,6 +67,7 @@ export class BlogComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.loaderService.setLoader(false);
     this.titleHeaderService.setTitle('Blog');
 
     this.activatedRoute.url
@@ -83,6 +84,10 @@ export class BlogComponent implements OnInit {
           // .filter((article: ContentfulNodePage) => !!_.find(article.fields.tags, (tag: ContentfulTagPage) => tag.fields.slug === this.constants.PROJECT_TAG))
           .subscribe((article: ContentfulNodePage) => this.onArticleReceived(article));
       });
+  }
+
+  public ngOnDestroy(): void {
+    this.loaderService.setLoader(false);
   }
 
   private onArticleReceived(article: ContentfulNodePage): void {
@@ -105,7 +110,7 @@ export class BlogComponent implements OnInit {
         this.routesManager.addRoutesFromArticles(... children);
         this.children = children;
 
-        this.loader = false;
+        this.loaderService.setLoader(true);
       });
   }
 }

@@ -299,14 +299,6 @@
     margin-bottom: 15px;
   }
 
-  .active-house.house-1 {
-    left: calc(((100% / 2) / 2) - 16px);
-  }
-
-  .active-house.house-2 {
-    left: calc(((100% / 2) / 2) + (100% / 2) - 16px);
-  }
-
   .active-house {
     top: -12px;
   }

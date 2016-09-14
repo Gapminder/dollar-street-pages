@@ -2,7 +2,7 @@
   <div class="flex-container column-{{zoom}}"
        infinite-scroll
        [infiniteScrollDistance]="2"
-       [infiniteScrollThrottle]="150"
+       [infiniteScrollThrottle]="0"
        (scrolled)="onScrollDown()">
     <div class="image-content"
          *ngFor="let place of placesArr; let i = index"
@@ -16,7 +16,6 @@
          (mouseenter)="hoverImage(place)"
          (mouseleave)="hoverImage()"
          (click)="goToImageBlock(place, i)">
-
       <div class="image-description">
         <span class="place-image-box-income">{{math.round(place?.income)}}$</span>
         <span class="place-image-box-country">{{place?.country}}</span>

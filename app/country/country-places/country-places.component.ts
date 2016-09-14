@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { LoaderComponent } from '../../common/loader/loader.component';
 
 let tpl = require('./country-places.template.html');
 let style = require('./country-places.css');
@@ -10,11 +9,10 @@ let style = require('./country-places.css');
   selector: 'country-places',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, LoaderComponent]
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class CountryPlacesComponent implements OnInit, OnDestroy {
-  public loader: boolean = true;
   public countryPlacesServiceSubscribe: Subscription;
   public math: any;
   @Input()
@@ -22,14 +20,19 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   private places: any = [];
   private country: any;
   private countryPlacesService: any;
+  private loaderService: any;
 
   public constructor(@Inject('CountryPlacesService') countryPlacesService: any,
+                     @Inject('LoaderService') loaderService: any,
                      @Inject('Math') math: any) {
     this.countryPlacesService = countryPlacesService;
     this.math = math;
+    this.loaderService = loaderService;
   }
 
   public ngOnInit(): void {
+    this.loaderService.setLoader(false);
+
     this.countryPlacesServiceSubscribe = this.countryPlacesService.getCountryPlaces(`id=${this.countryId}`)
       .subscribe((res: any) => {
         if (res.err) {
@@ -39,11 +42,13 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
 
         this.country = res.data.country;
         this.places = res.data.places;
-        this.loader = false;
+
+        this.loaderService.setLoader(true);
       });
   }
 
   public ngOnDestroy(): void {
+    this.loaderService.setLoader(false);
     this.countryPlacesServiceSubscribe.unsubscribe();
   }
 }

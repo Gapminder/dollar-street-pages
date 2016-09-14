@@ -2,7 +2,7 @@
   <div class="family-images-container"
        infinite-scroll
        [infiniteScrollDistance]="2"
-       [infiniteScrollThrottle]="150"
+       [infiniteScrollThrottle]="0"
        (scrolled)="onScrollDown()">
     <div class="family-image-container"
          *ngFor="let image of currentImages; let i = index"
@@ -15,10 +15,8 @@
          [style.height.px]="imageHeight">
       <div class="family-image"
            [ngStyle]="{'background-image': image.isUploaded && image.background}">
-
         <div class="image-description">
           <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
-
           <span>{{image.thingName}}</span>
         </div>
       </div>
@@ -44,5 +42,3 @@
                 (imageIsUploaded)="imageIsUploaded($event)"></row-loader>
   </div>
 </div>
-
-<loader *ngIf="loader"></loader>

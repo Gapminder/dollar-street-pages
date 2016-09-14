@@ -15,7 +15,6 @@ import { Subscription, Observable } from 'rxjs/Rx';
 import { InfiniteScroll } from 'angular2-infinite-scroll';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { HomeMediaViewBlockComponent } from './home-media-view-block/home-media-view-block.component';
-import { LoaderComponent } from '../../common/loader/loader.component';
 import { Config, ImageResolutionInterface } from '../../app.config';
 import { find, isEqual, slice, concat } from 'lodash';
 
@@ -26,31 +25,18 @@ let style = require('./home-media.css');
   selector: 'home-media',
   template: tpl,
   styles: [style],
-  directives: [HomeMediaViewBlockComponent, RowLoaderComponent, LoaderComponent, InfiniteScroll]
+  directives: [HomeMediaViewBlockComponent, RowLoaderComponent, InfiniteScroll]
 })
 
 export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
-  protected loader: boolean = true;
-  protected zoom: number = 4;
-
-  protected itemSize: number;
-  protected imageData: any = {};
-  protected imageBlockLocation: number;
-  protected showImageBlock: boolean = false;
-  protected activeImage: any;
-  protected rowLoaderStartPosition: number = 0;
-
-  @Input('placeId')
-  private placeId: string;
-  @Input('activeImageIndex')
-  private activeImageIndex: number;
-
-  @Input('openFamilyExpandBlock')
-  private openFamilyExpandBlock: Observable<any>;
-
-  @Output('activeImageOptions')
-  private activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
-
+  private windowInnerWidth: number = window.innerWidth;
+  private itemSize: number;
+  private imageData: any = {};
+  private imageBlockLocation: number;
+  private showImageBlock: boolean = false;
+  private activeImage: any;
+  private rowLoaderStartPosition: number = 0;
+  private zoom: number = this.windowInnerWidth < 1024 ? 3 : 4;
   private prevImage: Object;
   private homeMediaService: any;
   private images: any = [];
@@ -64,19 +50,31 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imageOffsetHeight: any;
   private isInit: boolean = true;
   private indexViewBoxImage: number;
-  private windowInnerWidth: number = window.innerWidth;
   private element: HTMLElement;
   private imageMargin: number;
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
   private visibleImages: number;
   private currentImages: any = [];
   private viewBlockHeight: number;
+  private loaderService: any;
+
+  @Input('placeId')
+  private placeId: string;
+  @Input('activeImageIndex')
+  private activeImageIndex: number;
+  @Input('openFamilyExpandBlock')
+  private openFamilyExpandBlock: Observable<any>;
+
+  @Output('activeImageOptions')
+  private activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(zone: NgZone,
                      element: ElementRef,
+                     @Inject('LoaderService') loaderService: any,
                      @Inject('HomeMediaService') homeMediaService: any) {
     this.homeMediaService = homeMediaService;
     this.zone = zone;
+    this.loaderService = loaderService;
     this.element = element.nativeElement;
   }
 
@@ -98,14 +96,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.openMedia(familyImage, familyImageIndex);
           }
         });
-
-    if (this.windowInnerWidth > 599 && this.windowInnerWidth < 1024) {
-      this.zoom = 3;
-    }
-
-    if (this.windowInnerWidth <= 599) {
-      this.zoom = 2;
-    }
 
     this.familyPlaceServiceSubscribe = this.homeMediaService
       .getHomeMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}`)
@@ -144,16 +134,8 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
             return;
           }
 
-          this.zoom = 4;
           this.windowInnerWidth = window.innerWidth;
-
-          if (this.windowInnerWidth > 599 && this.windowInnerWidth < 1024) {
-            this.zoom = 3;
-          }
-
-          if (this.windowInnerWidth <= 599) {
-            this.zoom = 2;
-          }
+          this.zoom = this.windowInnerWidth < 1024 ? 3 : 4;
 
           this.getImageHeight();
 
@@ -190,7 +172,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     setTimeout(() => {
       this.getImageHeight();
-      this.loader = false;
     }, 0);
 
     if (this.activeImageIndex && this.isInit) {
@@ -202,14 +183,13 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public ngOnDestroy(): void {
     this.familyPlaceServiceSubscribe.unsubscribe();
-
-    if (this.resizeSubscribe) {
-      this.resizeSubscribe.unsubscribe();
-    }
+    this.resizeSubscribe.unsubscribe();
 
     if (this.openFamilyExpandBlockSubscribe) {
       this.openFamilyExpandBlockSubscribe.unsubscribe();
     }
+
+    this.loaderService.setLoader(false);
   }
 
   public onScrollDown(): void {
@@ -318,14 +298,13 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
     this.itemSize = this.imageHeight + this.imageMargin;
+    this.loaderService.setLoader(true);
   }
 
   private getVisibleRows(): void {
     let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
-    let headerContainer = document.querySelector('.header-container') as HTMLElement;
-    let visibleSpace: number = window.innerHeight - headerContainer.offsetHeight;
     let imageHeight: number = boxContainer.offsetWidth / this.zoom;
-    let visibleRows: number = Math.round(visibleSpace / imageHeight);
+    let visibleRows: number = Math.round(window.innerHeight / imageHeight);
     this.visibleImages = this.zoom * visibleRows;
   }
 }

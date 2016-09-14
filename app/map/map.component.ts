@@ -3,7 +3,6 @@ import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Rx';
 import { HeaderComponent } from '../common/header/header.component';
-import { LoaderComponent } from '../common/loader/loader.component';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');
@@ -16,8 +15,7 @@ let device = require('device.js')();
   styles: [style],
   directives: [
     ROUTER_DIRECTIVES,
-    HeaderComponent,
-    LoaderComponent
+    HeaderComponent
   ]
 })
 
@@ -25,7 +23,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public resizeSubscribe: Subscription;
   public mapServiceSubscribe: Subscription;
   public math: any;
-  public loader: boolean = true;
   public needChangeUrl: boolean = false;
   private angulartics2GoogleAnalytics: any;
   private mapService: any;
@@ -55,6 +52,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private zone: NgZone;
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
+  private loaderService: any;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -62,12 +60,14 @@ export class MapComponent implements OnInit, OnDestroy {
                      activatedRoute: ActivatedRoute,
                      @Inject('Math') math: any,
                      @Inject('MapService') placeService: any,
+                     @Inject('LoaderService') loaderService: any,
                      @Inject('UrlChangeService') urlChangeService: any,
                      @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.mapService = placeService;
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
+    this.loaderService = loaderService;
     this.zone = zone;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.math = math;
@@ -76,6 +76,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.init = true;
+    this.loaderService.setLoader(false);
 
     this.queryParamsSubscribe = this.router
       .routerState
@@ -101,7 +102,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.query = `thing=${res.data.thing}`;
         this.urlChangeService.replaceState('/map', this.query);
         this.setMarkersCoord(this.places);
-        this.loader = false;
+        this.loaderService.setLoader(true);
 
         this.resizeSubscribe = fromEvent(window, 'resize')
           .debounceTime(150)
@@ -117,6 +118,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.resizeSubscribe.unsubscribe();
     this.mapServiceSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
+    this.loaderService.setLoader(false);
   }
 
   public setMarkersCoord(places: any): void {

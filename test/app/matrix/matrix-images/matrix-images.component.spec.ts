@@ -58,19 +58,4 @@ describe('MatrixImagesComponent', () => {
   it('toUrl', () => {
     expect(context.toUrl('http://some.com')).toEqual('url("http://some.com")');
   });
-
-  it(' parseUrl', () => {
-    spyOn(context, 'parseUrl').and.callThrough();
-
-    let url = 'thing=Home&countries=World&regions=World&zoom=5&row=1&lowIncome=0&highIncome=15000';
-    let urlObj = context.parseUrl(url);
-
-    expect(urlObj.thing).toEqual('Home');
-    expect(urlObj.countries).toEqual('World');
-    expect(urlObj.regions).toEqual('World');
-    expect(urlObj.zoom).toEqual('5');
-    expect(urlObj.row).toEqual('1');
-    expect(urlObj.lowIncome).toEqual('0');
-    expect(urlObj.highIncome).toEqual('15000');
-  });
 });
