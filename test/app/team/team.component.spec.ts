@@ -34,6 +34,5 @@ describe('TeamComponent', () => {
   it('must init', ()=> {
     fixture.detectChanges();
     expect(context.teamList.length).toEqual(3);
-    expect(context.isLoaded).toEqual(false);
   });
 });

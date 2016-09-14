@@ -55,7 +55,6 @@ describe('MapComponent', () => {
     context.urlChanged({url: 'thing=Families'});
 
     expect(context.query).toEqual('thing=546ccf730f7ddf45c0179688');
-    expect(context.loader).toEqual(false);
     expect(context.places.length).toEqual(174);
     expect(context.countries.length).toEqual(17);
     expect(context.setMarkersCoord.calls.argsFor(0)).toEqual([context.places]);

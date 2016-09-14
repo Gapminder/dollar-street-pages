@@ -35,7 +35,6 @@ describe('Photographers Component', () => {
     fixture.detectChanges();
     expect(context.photographersByCountry.length).toBe(4);
     expect(context.photographersByName.length).toBe(4);
-    expect(context.loader).toBe(false);
     mockPhotographersService.toInitState();
   });
 

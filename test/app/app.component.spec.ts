@@ -1,7 +1,6 @@
 import { it, describe, inject, async, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../app/common-mocks/mocked.services';
 import { AppComponent } from '../../app/app.component';
-import { By } from '@angular/platform-browser';
 
 describe('AppComponent', () => {
   let mockCommonDependency = new MockCommonDependency();
@@ -25,12 +24,16 @@ describe('AppComponent', () => {
   })));
 
   it('ngOnInit and ngOnDestroy', () => {
+    expect(context.isLoaderd).toBe(false);
+
     context.ngOnInit();
 
     spyOn(context.routerEventsSubscribe, 'unsubscribe');
+    spyOn(context.loaderServiceSubscribe, 'unsubscribe');
 
     context.ngOnDestroy();
 
     expect(context.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(context.loaderServiceSubscribe.unsubscribe).toHaveBeenCalled();
   });
 });

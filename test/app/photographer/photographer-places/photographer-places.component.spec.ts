@@ -35,7 +35,6 @@ describe('PhotographerPlacesComponent', () => {
     context.ngOnInit();
 
     expect(context.places).toEqual(places.data.places);
-    expect(context.loader).toEqual(false);
     spyOn(context.photographerPlacesServiceSubscribe, 'unsubscribe');
 
     context.ngOnDestroy();

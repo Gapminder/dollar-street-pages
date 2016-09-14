@@ -13,7 +13,6 @@ let style = require('./article.css');
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {
-  protected loader: boolean = true;
   private articleService: any;
   private articleServiceSubscribe: Subscription;
   private article: any;

@@ -35,6 +35,7 @@ import { CountriesFilterService } from '../../../app/common/countries-filter/cou
 import { HomeMediaViewBlockService } from '../../../app/home/home-media/home-media-view-block/home-media-view-block.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { TitleHeaderService } from '../../../app/common/title-header/title-header.service';
+import { LoaderService } from '../../../app/common/loader/loader.service';
 import { Angulartics2, Angulartics2On } from 'angulartics2';
 import { GAPMINDER_PROVIDERS, ContentfulImageDirective } from 'ng2-contentful-blog';
 import { BlogComponent } from '../../../app/blog/blog.component';
@@ -102,6 +103,7 @@ export class MockCommonDependency {
       {provide: 'HomeMediaViewBlockService', useClass: HomeMediaViewBlockService},
       {provide: 'Angulartics2GoogleAnalytics', useClass: Angulartics2GoogleAnalytics},
       {provide: 'TitleHeaderService', useClass: TitleHeaderService},
+      {provide: 'LoaderService', useClass: LoaderService},
       {provide: 'Math', useClass: MathService},
       {provide: 'DefaultArticleComponent', useValue: BlogComponent},
       {provide: PLATFORM_DIRECTIVES, useValue: ContentfulImageDirective, multi: true},

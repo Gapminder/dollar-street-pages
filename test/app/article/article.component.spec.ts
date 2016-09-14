@@ -36,7 +36,6 @@ describe('ArticleComponent', () => {
     spyOn(context.articleServiceSubscribe, 'unsubscribe');
 
     expect(context.article).toEqual(aboutContext.data);
-    expect(context.loader).toEqual(false);
 
     context.ngOnDestroy();
     expect(context.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();

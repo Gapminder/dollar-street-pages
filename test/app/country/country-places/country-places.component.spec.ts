@@ -32,7 +32,6 @@ describe('CountryPlacesComponent', () => {
   it('must init', ()=> {
     fixture.detectChanges();
     expect(context.places.length).toEqual(3);
-    expect(context.loader).toEqual(false);
     countryPlacesService.toInitState();
   });
 
