@@ -288,7 +288,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (isMobile) {
       let fixedStreet = this.element.querySelector('.street-container.fixed') as HTMLElement;
-      console.log(fixedStreet);
+
       if (fixedStreet) {
         this.getViewableRows(fixedStreet.offsetHeight);
       }
@@ -306,7 +306,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let rest = distance % 1;
     let row = distance - rest;
 
-    if (rest >= 0.65) {
+    if (rest >= 0.85) {
       row++;
     }
 
@@ -339,7 +339,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
 
     if (this.activeHouse) {
-      scrollTo = this.row * (this.imgContent.offsetHeight + 2 * this.imageMargin) - 60;
+      scrollTo = this.row * (this.imgContent.offsetHeight + this.imageMargin) - 60;
     }
 
     document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
@@ -357,7 +357,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let rest = distance % 1;
     let row = distance - rest;
 
-    if (rest >= 0.65) {
+    if (rest >= 0.85) {
       row++;
     }
 

@@ -1,7 +1,6 @@
-import { Component, Input, Inject, Output, OnChanges, OnDestroy, NgZone, EventEmitter } from '@angular/core';
+import { Component, Input, Inject, Output, OnChanges, OnDestroy, NgZone, EventEmitter, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { Subscription } from 'rxjs';
-
+import { Subscription, Observable } from 'rxjs';
 import { Config, ImageResolutionInterface } from '../../../app.config';
 
 let device = require('device.js')();
@@ -20,7 +19,7 @@ let style = require('./home-media-view-block.css');
   directives: [ROUTER_DIRECTIVES]
 })
 
-export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
+export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected loader: boolean = false;
   protected popIsOpen: boolean = false;
   protected fancyBoxImage: string;
@@ -37,12 +36,29 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
   private zone: NgZone;
   private viewBlockService: any;
   private viewBlockServiceSubscribe: Subscription;
+  private resizeSubscribe: Subscription;
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
+  private windowInnerWidth: number = window.innerWidth;
 
-  public constructor(@Inject(NgZone) zone: NgZone,
+  public constructor(zone: NgZone,
                      @Inject('HomeMediaViewBlockService') viewBlockService: any) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
+  }
+
+  public ngOnInit(): void {
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.windowInnerWidth = window.innerWidth;
+
+          if (this.article && this.article.shortDescription.length) {
+            this.article.description = this.getDescription(this.article.shortDescription);
+          }
+        });
+      });
   }
 
   public ngOnChanges(changes: any): void {
@@ -81,8 +97,8 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
 
           this.truncCountryName(this.country);
 
-          if (this.article && this.article.shortDescription.length > 600) {
-            this.article.shortDescription = this.article.shortDescription.slice(0, 600) + '...';
+          if (this.article && this.article.shortDescription.length) {
+            this.article.description = this.getDescription(this.article.shortDescription);
           }
 
           if (isImageLoaded) {
@@ -92,7 +108,28 @@ export class HomeMediaViewBlockComponent implements OnChanges, OnDestroy {
     }
   }
 
+  public getDescription(shortDescription: string): string {
+    let numbers: number = 600;
+
+    if (isDesktop) {
+      if (this.windowInnerWidth > 1400 && shortDescription.length > 600) {
+        numbers = 600;
+      } else if (this.windowInnerWidth > 1280 && this.windowInnerWidth <= 1400 && shortDescription.length > 600) {
+        numbers = 350;
+      } else if (this.windowInnerWidth <= 1280) {
+        numbers = 200;
+      }
+    }
+
+    if (shortDescription.length > numbers) {
+      return shortDescription.slice(0, numbers) + '...';
+    } else {
+      return shortDescription;
+    }
+  }
+
   public ngOnDestroy(): void {
+    this.resizeSubscribe.unsubscribe();
     this.viewBlockServiceSubscribe.unsubscribe();
   }
 

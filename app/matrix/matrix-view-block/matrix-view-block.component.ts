@@ -43,9 +43,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected markerPositionLeft: number;
   protected api: string = Config.api;
 
-  @Input('positionInRow')
-  protected positionInRow: any;
-
   private privateZoom: any;
   private resizeSubscribe: Subscription;
   private popIsOpen: boolean;
@@ -58,6 +55,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private element: HTMLElement;
   private boxContainer: HTMLElement;
 
+  @Input('positionInRow')
+  private positionInRow: any;
   @Input('query')
   private query: any;
   @Input('place')
@@ -68,16 +67,16 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
 
-  public constructor(@Inject('FamilyInfoService') familyInfoService: any,
+  public constructor(zone: NgZone,
+                     router: Router,
+                     element: ElementRef,
                      @Inject('Math') math: any,
-                     @Inject(NgZone) zone: NgZone,
-                     @Inject(ElementRef) element: ElementRef,
-                     @Inject(Router) router: Router) {
-    this.familyInfoService = familyInfoService;
+                     @Inject('FamilyInfoService') familyInfoService: any) {
+    this.math = math;
     this.zone = zone;
     this.router = router;
-    this.math = math;
     this.element = element.nativeElement;
+    this.familyInfoService = familyInfoService;
   }
 
   public ngOnInit(): void {

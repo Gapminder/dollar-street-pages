@@ -11,7 +11,7 @@
     "install:typings": "./node_modules/.bin/typings install",
     "update-webdriver": "./node_modules/.bin/webdriver-manager update",
     "deploy:github": "npm run build:prod && npm run publish:gh-pages",
-    "deploy:firebase": "npm run build:dev && npm run publish:firebase",
+    "deploy:firebase": "npm run build:prod && npm run publish:firebase",
     "publish:gh-pages": "./tools/gh-pages-publish.js",
     "publish:firebase": "firebase deploy",
     "build:dev": "./node_modules/.bin/webpack --progress --color",

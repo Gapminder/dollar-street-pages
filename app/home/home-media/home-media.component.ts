@@ -93,7 +93,20 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
           });
 
           if (familyImage) {
-            this.openMedia(familyImage, familyImageIndex);
+            let numberSplice: number = this.visibleImages * 2;
+
+            if (familyImageIndex && familyImageIndex > this.visibleImages) {
+              let positionInRow: number = familyImageIndex % this.zoom;
+              let offset: number = this.zoom - positionInRow;
+
+              numberSplice = familyImageIndex + offset + this.visibleImages;
+            }
+
+            this.currentImages = slice(this.images, 0, numberSplice);
+
+            setTimeout(() => {
+              this.openMedia(familyImage, familyImageIndex);
+            }, 0);
           }
         });
 
