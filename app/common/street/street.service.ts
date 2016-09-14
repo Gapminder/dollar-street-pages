@@ -267,9 +267,10 @@ export class StreetDrawService {
       .attr('class', 'axis')
       .attr('height', '3px')
       .attr('x1', 1)
-      .attr('y1', this.halfOfHeight + 12.5)
+      .attr('y1', this.halfOfHeight + 11.5)
       .attr('x2', this.width + this.streetOffset - 1)
-      .attr('y2', this.halfOfHeight + 12.5)
+      .attr('y2', this.halfOfHeight + 11.5)
+
       .attr('stroke-width', 3)
       .attr('stroke', '#525c64')
       .style('cursor', '-webkit-grab')
@@ -294,6 +295,7 @@ export class StreetDrawService {
       .style('cursor', '-webkit-grab')
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
+
       .on('mousedown', (): void => {
         d3.event.preventDefault();
         this.draggingSliders = true;
@@ -303,9 +305,6 @@ export class StreetDrawService {
     this.incomeArr.length = 0;
 
     this.isDrawDividers(drawDividers);
-
-    this.drawLeftSlider(this.scale(this.lowIncome), true);
-    this.drawRightSlider(this.scale(this.highIncome), true);
 
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
@@ -456,6 +455,7 @@ export class StreetDrawService {
     if (!place) {
       return this;
     }
+    this.removeSliders();
 
     let fills = this.colors.fills;
     let fillsOfBorders = this.colors.fillsOfBorders;
@@ -507,7 +507,8 @@ export class StreetDrawService {
 
         return !datum ? void 0 : fills[datum.region];
       });
-
+    this.drawLeftSlider(this.scale(this.lowIncome), true);
+    this.drawRightSlider(this.scale(this.highIncome));
     return this;
   };
 
@@ -515,7 +516,6 @@ export class StreetDrawService {
     if (this.windowInnerWidth <= 566 && Math.floor(this.lowIncome) === this.dividersData.poor) {
       return;
     }
-
     this.sliderLeftBorder = x;
 
     if (!this.leftScrollOpacityStreet) {
@@ -561,29 +561,29 @@ export class StreetDrawService {
         .attr('class', 'left-scroll')
         .style('fill', '#515c65')
         .style('cursor', 'pointer')
-        .attr('stroke-width', 1)
-        .attr('stroke', '#48545f')
+        .attr('id', 'left-scroll')
+        .attr('stroke-width', 0.5)
+        .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
           d3.event.preventDefault();
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
     }
-
     this.leftScroll
       .attr('points', () => {
-        let point1 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight + 12 - 1}`;
-        let point2 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5 - 1}`;
-        let point3 = `${x + this.streetOffset / 2 },${ this.halfOfHeight - 5 - 1}`;
-        let point4 = `${x + this.streetOffset / 2 },${ this.halfOfHeight + 12 - 1}`;
-        let point5 = `${x + this.streetOffset / 2 - 4.5},${ this.halfOfHeight + 12 + 5 - 1}`;
+        let point1 = `${x + this.streetOffset / 2 - 9 },${ this.halfOfHeight + 12 - 1}`;
+        let point2 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
+        let point3 = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
+        let point4 = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight + 12 - 1}`;
+        let point5 = `${x + this.streetOffset / 2 - 4},${ this.halfOfHeight + 12 + 5 - 1}`;
 
         if (this.windowInnerWidth <= 566) {
           point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 1}`;
-          point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5 - 1}`;
-          point3 = `${x + 2 + this.streetOffset / 2 },${ this.halfOfHeight + 14 - 5 - 1}`;
-          point4 = `${x + 2 + this.streetOffset / 2 },${ this.halfOfHeight + 14 - 1}`;
-          point5 = `${x + 2 + this.streetOffset / 2 - 4.5},${ this.halfOfHeight + 14 + 5 - 1}`;
+          point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5 - 1 - 1}`;
+          point3 = `${x + 2 + this.streetOffset / 2 + 1},${ this.halfOfHeight + 14 - 5 - 1 - 1 }`;
+          point4 = `${x + 2 + this.streetOffset / 2 + 1},${ this.halfOfHeight + 14 - 1}`;
+          point5 = `${x + 2 + this.streetOffset / 2 - 4},${ this.halfOfHeight + 14 + 5 - 1}`;
         }
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
@@ -653,8 +653,8 @@ export class StreetDrawService {
         .attr('class', 'right-scroll')
         .style('fill', '#515c65')
         .style('cursor', 'pointer')
-        .attr('stroke-width', 1)
-        .attr('stroke', '#48545f')
+        .attr('stroke-width', 0.5)
+        .attr('stroke', 'white')
         .on('mousedown', (): void=> {
           d3.event.preventDefault();
           this.sliderRightMove = true;
@@ -663,18 +663,18 @@ export class StreetDrawService {
     }
 
     this.rightScroll.attr('points', () => {
-      let point1 = `${x + this.streetOffset / 2},${ this.halfOfHeight + 12 - 1 }`;
-      let point2 = `${x + this.streetOffset / 2},${ this.halfOfHeight - 5 - 1}`;
-      let point3 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight - 5 - 1}`;
+      let point1 = `${x + this.streetOffset / 2 - 1},${ this.halfOfHeight + 12 - 1 }`;
+      let point2 = `${x + this.streetOffset / 2 - 1},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
+      let point3 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
       let point4 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight + 12 - 1}`;
-      let point5 = `${x + this.streetOffset / 2 + 4.5},${ this.halfOfHeight + 12 + 5 - 1}`;
+      let point5 = `${x + this.streetOffset / 2 + 4},${ this.halfOfHeight + 12 + 5 - 1}`;
 
       if (this.windowInnerWidth <= 566) {
-        point1 = `${x - 2 + this.streetOffset / 2},${ this.halfOfHeight + 14 - 1}`;
-        point2 = `${x - 2 + this.streetOffset / 2},${ this.halfOfHeight + 14 - 5 - 1}  `;
-        point3 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14 - 5 - 1}`;
+        point1 = `${x - 2 + this.streetOffset / 2 - 1},${ this.halfOfHeight + 14 - 1}`;
+        point2 = `${x - 2 + this.streetOffset / 2 - 1},${ this.halfOfHeight + 14 - 5 - 1 - 1}  `;
+        point3 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14 - 5 - 1 - 1}`;
         point4 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14 - 1}`;
-        point5 = `${x - 2 + this.streetOffset / 2 + 4.5},${ this.halfOfHeight + 14 + 5 - 1}`;
+        point5 = `${x - 2 + this.streetOffset / 2 + 4},${ this.halfOfHeight + 14 + 5 - 1}`;
       }
 
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
@@ -705,9 +705,11 @@ export class StreetDrawService {
 
     this.removeHouses('hover');
     this.removeHouses('chosen');
-
+    this.removeSliders();
     this.drawHouses(places);
     this.drawHoverHouse(this.hoverPlace);
+    this.drawLeftSlider(this.scale(this.lowIncome), true);
+    this.drawRightSlider(this.scale(this.highIncome));
 
     return this;
   };
@@ -715,11 +717,18 @@ export class StreetDrawService {
   public removeHouses(selector: any): this {
     this.svg.selectAll('rect.' + selector).remove();
     this.svg.selectAll('polygon.' + selector).remove();
-
     if (selector === 'chosen') {
       this.svg.selectAll('polygon.chosenLine').remove();
     }
 
+    return this;
+  };
+
+  public removeSliders(): this {
+    this.svg.selectAll('polygon.right-scroll').remove();
+    this.svg.selectAll('polygon.left-scroll').remove();
+    this.leftScroll = false;
+    this.rightScroll = false;
     return this;
   };
 
@@ -819,7 +828,6 @@ export class StreetDrawService {
     if (!places || !places.length) {
       return this;
     }
-
     let halfHouseWidth = 10;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 12 - 1;
@@ -829,6 +837,7 @@ export class StreetDrawService {
       .enter()
       .append('polygon')
       .attr('class', 'chosen')
+      .attr('id', 'houses')
       .attr('points', (datum: any): any => {
         let point1;
         let point2;

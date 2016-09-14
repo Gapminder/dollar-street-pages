@@ -381,8 +381,8 @@ export class StreetFilterDrawService {
         .attr('class', 'left-scroll')
         .style('fill', '#515c65')
         .style('cursor', 'pointer')
-        .attr('stroke-width', 1)
-        .attr('stroke', '#48545f')
+        .attr('stroke-width', 0.5)
+        .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
           d3.event.preventDefault();
           this.sliderLeftMove = true;
@@ -461,8 +461,8 @@ export class StreetFilterDrawService {
         .attr('class', 'right-scroll')
         .style('fill', '#515c65')
         .style('cursor', 'pointer')
-        .attr('stroke-width', 1)
-        .attr('stroke', '#48545f')
+        .attr('stroke-width', 0.5)
+        .attr('stroke', '#ffffff')
         .on('mousedown', (): void=> {
           d3.event.preventDefault();
           this.sliderRightMove = true;
