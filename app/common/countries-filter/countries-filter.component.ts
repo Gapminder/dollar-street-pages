@@ -281,7 +281,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let countries: string[] = query.countries;
 
     if (regions[0] === 'World' && countries[0] === 'World') {
-      this.activeCountries = 'the world';
+      this.activeCountries = 'the World';
 
       return;
     }
