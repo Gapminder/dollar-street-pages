@@ -508,7 +508,7 @@ export class StreetDrawService {
         return !datum ? void 0 : fills[datum.region];
       });
     this.drawLeftSlider(this.scale(this.lowIncome), true);
-    this.drawRightSlider(this.scale(this.highIncome));
+    this.drawRightSlider(this.scale(this.highIncome), true);
     return this;
   };
 
@@ -709,7 +709,7 @@ export class StreetDrawService {
     this.drawHouses(places);
     this.drawHoverHouse(this.hoverPlace);
     this.drawLeftSlider(this.scale(this.lowIncome), true);
-    this.drawRightSlider(this.scale(this.highIncome));
+    this.drawRightSlider(this.scale(this.highIncome), true);
 
     return this;
   };

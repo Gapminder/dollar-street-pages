@@ -200,6 +200,11 @@
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .name {
   font-size: 16px;
   color: #374551;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display:block;
+
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .country {
@@ -207,6 +212,9 @@
   display: block;
   color: #767d86;
   margin-top: -2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #places .mapBox .mapBoxContainer .hover_portrait .hover_portrait_box .hover_portrait_description .income {
