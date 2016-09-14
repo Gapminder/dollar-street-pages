@@ -114,6 +114,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
       setTimeout(() => {
         this.getImageHeight();
+
+        this.loaderService.setLoader(true);
       }, 0);
 
       if (this.activeHouse && isInit) {
@@ -263,6 +265,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   private getImageHeight(): void {
     let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
+
+    if (!boxContainer) {
+      return;
+    }
+
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
 
     let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
@@ -275,12 +282,15 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
     this.itemSize = this.imageHeight + this.imageMargin;
-
-    this.loaderService.setLoader(true);
   }
 
   private getVisibleRows(): void {
     let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
+
+    if (!boxContainer) {
+      return;
+    }
+
     let imageHeight: number = boxContainer.offsetWidth / this.zoom;
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
     this.visibleImages = this.zoom * visibleRows;

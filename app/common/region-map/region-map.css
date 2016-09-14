@@ -16,3 +16,9 @@
   position: absolute;
   width: 15px;
 }
+
+@media (max-width: 1400px) {
+  #map-content .marker {
+    width: 10px;
+  }
+}

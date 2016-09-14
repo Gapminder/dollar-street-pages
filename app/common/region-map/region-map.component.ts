@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, Input, Inject, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, Input, ElementRef, NgZone } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs';
 
@@ -17,21 +17,22 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input('mapData')
   private mapData: any;
 
-  private mapImage: any;
-  private element: ElementRef;
+  private mapImage: HTMLImageElement;
+  private element: HTMLElement;
   private zone: NgZone;
   private resizeSubscriber: Subscription;
 
-  public constructor(@Inject(ElementRef) element: ElementRef,
-                     @Inject(NgZone) zone: NgZone) {
-    this.element = element;
+  public constructor(zone: NgZone,
+                     element: ElementRef) {
+    this.element = element.nativeElement;
     this.zone = zone;
   }
 
   public ngOnInit(): void {
-    this.resizeSubscriber = fromEvent(window, 'resize').subscribe(()=> {
-      this.draw(this.mapData);
-    });
+    this.resizeSubscriber = fromEvent(window, 'resize')
+      .subscribe(()=> {
+        this.draw(this.mapData);
+      });
   }
 
   public ngOnChanges(changes: any): void {
@@ -49,7 +50,7 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
   public draw(place: any): void {
     let img = new Image();
 
-    this.mapImage = this.element.nativeElement.querySelector('.map');
+    this.mapImage = this.element.querySelector('.map') as HTMLImageElement;
 
     img.onload = () => {
       this.zone.run(() => {
@@ -67,6 +68,7 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
     let heightOfMap = mapImage.offsetHeight;
     let greenwich = widthOfMap * 0.437;
     let equator = heightOfMap * 0.545;
+    let marker = this.element.querySelector('.marker') as HTMLImageElement;
 
     if (place.lat > 0) {
       stepTop = equator / 75;
@@ -80,8 +82,8 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
       stepRight = (widthOfMap - greenwich) / 158;
     }
 
-    let markerTop = equator - place.lat * stepTop - 24 + 'px';
-    let markerLeft = place.lng * stepRight + greenwich - 7.5 + mapImage.offsetLeft + 'px';
+    let markerTop = equator - place.lat * stepTop - marker.offsetHeight + 'px';
+    let markerLeft = place.lng * stepRight + greenwich - marker.offsetWidth / 2 + mapImage.offsetLeft + 'px';
 
     this.markerPosition = {top: markerTop, left: markerLeft};
     this.mapImage.src = this.getMapImage(place.region);
