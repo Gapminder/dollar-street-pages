@@ -25,7 +25,8 @@
                [ngClass]="shadowClass"
                [style.top.px]="hoverPortraitTop"
                [style.left.px]="hoverPortraitLeft"
-               (mouseenter)="thumbHover()">
+               (mouseenter)="thumbHover()"
+               (mouseleave)="unHoverOnMarker($event)">
 
             <div class="hover_portrait_box" *ngIf="isDesktop">
               <img [src]="hoverPlace ? hoverPlace.familyImg.background : ''" alt="">
