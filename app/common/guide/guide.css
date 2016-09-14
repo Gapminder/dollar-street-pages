@@ -6,13 +6,13 @@
 }
 
 .quick-guide-container .quick-guide-content {
-  width: 707px;
+  width: 785px;
   margin: 0 auto;
   overflow: hidden;
 }
 
 .quick-guide-container .logo-container {
-  width: 133px;
+  width: 180px;
   float: left;
 }
 
@@ -21,10 +21,11 @@
 }
 
 .quick-guide-container .quick-guide-description-container {
-  width: calc(100% - 175px);
+  width: calc(100% - 215px);
   float: right;
-  margin-left: 42px;
+  margin-left: 35px;
   text-align: center;
+  margin-bottom: 50px;
 }
 
 .quick-guide-container h1 {
@@ -48,8 +49,8 @@
 }
 
 .quick-guide-container h2 span {
-  font-family: 'Bariol Bold', sans-serif;
-  background: url("/assets/img/underline.svg") no-repeat 100% 90%;
+  font-family: 'Bariol Regular Italic', sans-serif;
+  background: url("/assets/img/underline.svg") no-repeat 100% calc(100% - 2px);
   padding: 0 4px 0 2px;
   margin: 0 -4px 0 -2px;
   background-size: 100%;

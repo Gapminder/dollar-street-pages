@@ -52,10 +52,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private queryParamsSubscribe: Subscription;
   private angulartics2GoogleAnalytics: any;
 
-  public constructor(@Inject('CountriesFilterService') countriesFilterService: any,
+  public constructor(router: Router,
+                     @Inject('CountriesFilterService') countriesFilterService: any,
                      @Inject('HomeIncomeFilterService') homeIncomeFilterService: any,
                      @Inject('UrlChangeService') urlChangeService: any,
-                     @Inject(Router) router: Router,
                      @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.router = router;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;

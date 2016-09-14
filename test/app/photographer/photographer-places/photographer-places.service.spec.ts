@@ -1,4 +1,4 @@
-import { it, describe, inject, beforeEachProviders, fakeAsync, tick } from '@angular/core/testing';
+import { it, describe, inject, fakeAsync, tick, addProviders } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
@@ -6,23 +6,24 @@ import { Config } from '../../../../app/app.config.ts';
 import { PhotographerPlacesService } from '../../../../app/photographer/photographer-places/photographer-places.service';
 
 describe('PhotographerPlacesService', () => {
-  beforeEachProviders(() => {
-    return [
+  beforeEach(() => {
+    addProviders([
       BaseRequestOptions,
       MockBackend,
       PhotographerPlacesService,
       provide(
         Http, {
-          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions):Http => {
+          useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions): Http => {
             return new Http(backend, defaultOptions);
           }, deps: [MockBackend, BaseRequestOptions]
         })
-    ];
+    ]);
   });
+
   it('test getPhotographers()', fakeAsync(inject([PhotographerPlacesService, MockBackend],
-    (photographerPlacesService:PhotographerPlacesService, mockBackend:MockBackend) => {
+    (photographerPlacesService: PhotographerPlacesService, mockBackend: MockBackend) => {
       let res;
-      mockBackend.connections.subscribe((connection:any) => {
+      mockBackend.connections.subscribe((connection: any) => {
         expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/photographer-places?id=56ec091caf72e9437cbccfab`);
         let response = new ResponseOptions({
           body: `{"success":true,"msg":[],"data":{"countries":[{"name":"India","region":"Asia","places":
@@ -36,15 +37,17 @@ describe('PhotographerPlacesService', () => {
         "family":"Gada","placeId":"54b520ed05df73e55431912b","income":96,"imageId":"54b5213d38ef07015525f1bd","thing":"546ccf730f7ddf45c017962f"}]}],
         "familyThingId":"546ccf730f7ddf45c017962f"},"error":false}`
         });
+
         connection.mockRespond(new Response(response));
       });
-      photographerPlacesService.getPhotographerPlaces('id=56ec091caf72e9437cbccfab').subscribe((_res:any) => {
+
+      photographerPlacesService.getPhotographerPlaces('id=56ec091caf72e9437cbccfab').subscribe((_res: any) => {
         res = _res;
       });
+
       tick();
       expect(!res.err).toBe(true);
       expect(res.data.countries.length).toBe(1);
       expect(res.data.countries[0].places.length).toBe(4);
     })));
 });
-

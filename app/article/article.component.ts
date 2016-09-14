@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LoaderComponent } from '../common/loader/loader.component';
 import { Subscription } from 'rxjs/Rx';
 
 let tpl = require('./article.template.html');
@@ -10,12 +9,10 @@ let style = require('./article.css');
   selector: 'article-page',
   template: tpl,
   styles: [style],
-  directives: [LoaderComponent],
   encapsulation: ViewEncapsulation.None
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {
-  protected loader: boolean = true;
   private articleService: any;
   private articleServiceSubscribe: Subscription;
   private article: any;
@@ -23,16 +20,21 @@ export class ArticleComponent implements OnInit, OnDestroy {
   private activatedRoute: ActivatedRoute;
   private queryParamsSubscribe: Subscription;
   private titleHeaderService: any;
+  private loaderService: any;
 
   public constructor(activatedRoute: ActivatedRoute,
+                     @Inject('LoaderService') loaderService: any,
                      @Inject('ArticleService') articleService: any,
                      @Inject('TitleHeaderService') titleHeaderService: any) {
     this.articleService = articleService;
     this.activatedRoute = activatedRoute;
+    this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
   }
 
   public ngOnInit(): void {
+    this.loaderService.setLoader(false);
+
     this.queryParamsSubscribe = this.activatedRoute.params
       .subscribe((params: any) => {
         this.thingId = params.id;
@@ -48,12 +50,13 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
         this.article = val.data;
         this.titleHeaderService.setTitle('Article about: ' + this.article.thing);
-        this.loader = false;
+        this.loaderService.setLoader(true);
       });
   }
 
   public ngOnDestroy(): void {
     this.queryParamsSubscribe.unsubscribe();
     this.articleServiceSubscribe.unsubscribe();
+    this.loaderService.setLoader(false);
   }
 }

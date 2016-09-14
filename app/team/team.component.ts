@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { LoaderComponent } from '../common/loader/loader.component';
 import { Subscription } from 'rxjs';
 
 let tpl = require('./team.template.html');
@@ -8,25 +7,26 @@ let style = require('./team.css');
 @Component({
   selector: 'team',
   template: tpl,
-  styles: [style],
-  directives: [LoaderComponent]
+  styles: [style]
 })
 
 export class TeamComponent implements OnInit, OnDestroy {
-  protected isLoaded: boolean = true;
-  protected teamList: any;
-
+  private teamList: any;
   private teamService: any;
   private teamSubscribe: Subscription;
   private titleHeaderService: any;
+  private loaderService: any;
 
-  public constructor(@Inject('TitleHeaderService') titleHeaderService: any,
-                     @Inject('TeamService') teamService: any) {
-    this.titleHeaderService = titleHeaderService;
+  public constructor(@Inject('TeamService') teamService: any,
+                     @Inject('LoaderService') loaderService: any,
+                     @Inject('TitleHeaderService') titleHeaderService: any) {
     this.teamService = teamService;
+    this.loaderService = loaderService;
+    this.titleHeaderService = titleHeaderService;
   }
 
   public ngOnInit(): void {
+    this.loaderService.setLoader(false);
     this.titleHeaderService.setTitle('Dollar Street Team');
 
     this.teamSubscribe = this.teamService.getTeam()
@@ -37,11 +37,12 @@ export class TeamComponent implements OnInit, OnDestroy {
         }
 
         this.teamList = res.data;
-        this.isLoaded = false;
+        this.loaderService.setLoader(true);
       });
   }
 
   public ngOnDestroy(): void {
     this.teamSubscribe.unsubscribe();
+    this.loaderService.setLoader(false);
   }
 }

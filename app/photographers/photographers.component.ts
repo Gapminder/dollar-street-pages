@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, Inject, ElementRef } from '@angular/core'
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { PhotographersFilter } from './photographers-filter.pipe.ts';
-import { LoaderComponent } from '../common/loader/loader.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
 let tpl = require('./photographers.template.html');
@@ -15,39 +14,40 @@ const isDesktop: boolean = device.desktop();
   selector: 'photographers',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, LoaderComponent],
+  directives: [ROUTER_DIRECTIVES],
   pipes: [PhotographersFilter]
 })
 
 export class PhotographersComponent implements OnInit, OnDestroy {
-  protected math: any;
-  protected photographersByCountry: any[];
-  protected photographersByName: any[];
-  protected Angulartics2GoogleAnalytics: any;
+  protected search: {text: string} = {text: ''};
+
+  private math: any;
+  private photographersByCountry: any[] = [];
+  private photographersByName: any[] = [];
+  private angulartics2GoogleAnalytics: any;
   private photographersService: any;
-  private search: any;
-  private loader: boolean = true;
   private photographersServiceSubscribe: Subscription;
   private keyUpSubscribe: Subscription;
   private element: HTMLElement;
   private titleHeaderService: any;
+  private loaderService: any;
 
   public constructor(element: ElementRef,
-                     @Inject('PhotographersService') photographersService: any,
                      @Inject('Math') math: any,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any,
-                     @Inject('TitleHeaderService') titleHeaderService: any) {
-    this.photographersService = photographersService;
-    this.photographersByCountry = [];
-    this.photographersByName = [];
+                     @Inject('LoaderService') loaderService: any,
+                     @Inject('TitleHeaderService') titleHeaderService: any,
+                     @Inject('PhotographersService') photographersService: any,
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.math = math;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
-    this.search = {text: ''};
+    this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.titleHeaderService = titleHeaderService;
+    this.photographersService = photographersService;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): void {
+    this.loaderService.setLoader(false);
     let searchInput = this.element.querySelector('#search') as HTMLInputElement;
     this.titleHeaderService.setTitle('Photographers');
 
@@ -60,7 +60,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
 
         this.photographersByCountry = res.data.countryList;
         this.photographersByName = res.data.photographersList;
-        this.loader = false;
+        this.loaderService.setLoader(true);
       });
 
     this.keyUpSubscribe = fromEvent(searchInput, 'keyup')
@@ -72,16 +72,15 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.keyUpSubscribe) {
-      this.keyUpSubscribe.unsubscribe();
-    }
-
+    this.keyUpSubscribe.unsubscribe();
     this.photographersServiceSubscribe.unsubscribe();
+    this.loaderService.setLoader(false);
   }
 
   public toggleLeftSide(e: Event): void {
     let element = e.target as HTMLElement;
     let parent = element.parentNode as HTMLElement;
+
     parent.classList.toggle('show');
   }
 }

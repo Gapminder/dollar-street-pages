@@ -15,6 +15,7 @@ import { HomeIncomeFilterService } from './home/home-income-filter.service';
 import { FooterService } from './common/footer/footer.service';
 import { GuideService } from './common/guide/guide.service';
 import { TitleHeaderService } from './common/title-header/title-header.service';
+import { LoaderService } from './common/loader/loader.service';
 import { ThingsFilterService } from './common/things-filter/things-filter.service';
 import { CountriesFilterService } from './common/countries-filter/countries-filter.service';
 import { CountryInfoService } from './country/country-info/country-info.service';
@@ -86,6 +87,7 @@ bootstrap(AppComponent, [
   {provide: 'HomeMediaViewBlockService', useClass: HomeMediaViewBlockService},
   {provide: 'Angulartics2GoogleAnalytics', useClass: Angulartics2GoogleAnalytics},
   {provide: 'TitleHeaderService', useClass: TitleHeaderService},
+  {provide: 'LoaderService', useClass: LoaderService},
   {provide: 'Math', useClass: MathService},
   {provide: 'Routes', useValue: Config.routes},
   {provide: 'DefaultArticleComponent', useValue: BlogComponent},

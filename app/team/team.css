@@ -1,7 +1,14 @@
 .team-container {
   margin: 66px auto 100px;
   overflow: hidden;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
@@ -9,22 +16,41 @@
   width: 100%;
 }
 
-.team-container .teachers {      /* Temporary disabled by owner's demand */
-  /*order: 0;*/
+.team-container .teacher {
+  -webkit-box-ordinal-group: 0;
+  -moz-box-ordinal-group: 0;
+  -ms-flex-order: 0;
+  -webkit-order: 0;
+  order: 0;
+
   display: none;
 }
 
-.team-container .writers {       /* Temporary disabled by owner's demand */
-  /*order: 1;*/
+.team-container .writer {
+  -webkit-box-ordinal-group: 1;
+  -moz-box-ordinal-group: 1;
+  -ms-flex-order: 1;
+  -webkit-order: 1;
+  order: 1;
+
   display: none;
 }
 
-.team-container .contributors {
+.team-container .supporters {
+  -webkit-box-ordinal-group: 2;
+  -moz-box-ordinal-group: 2;
+  -ms-flex-order: 2;
+  -webkit-order: 2;
   order: 2;
 }
 
-.team-container .organizations {      /* Temporary disabled by owner's demand */
-  /*order: 3;*/
+.team-container .organizations {
+  -webkit-box-ordinal-group: 3;
+  -moz-box-ordinal-group: 3;
+  -ms-flex-order: 3;
+  -webkit-order: 3;
+  order: 3;
+
   display: none;
 }
 
@@ -41,9 +67,19 @@
 }
 
 .team-container .team-peoples .team-people-box {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
+
+  -webkit-justify-content: flex-start;
   justify-content: flex-start;
+
   margin: 0 -10px;
 }
 

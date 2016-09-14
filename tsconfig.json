@@ -32,6 +32,8 @@
     "./app/common/loader/loader.component.ts",
     "./app/common/row-loader/row-loader.component.ts",
     "./app/common/region-map/region-map.component.ts",
+    "./app/common/guide/guide.component.ts",
+    "./app/common/guide/guide.service.ts",
     "./app/matrix/matrix.component.ts",
     "./app/matrix/matrix.service.ts",
     "./app/matrix/matrix-images/matrix-images.component.ts",

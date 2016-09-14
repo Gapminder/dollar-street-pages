@@ -72,14 +72,28 @@
 }
 
 .home-description-container .thing-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+
   margin-top: 20px;
   margin-bottom: 17px;
 }
 
 .home-description-container .thing-content {
-  margin-right: 20px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+
+  margin-right: 20px;
   align-items: baseline;
   flex: 2 1 20%;
 }
@@ -121,7 +135,6 @@
   margin: 15px 0 0;
   background-color: transparent;
 }
-
 
 .home-description-container a.link:hover {
   background-color: #374551;
@@ -284,14 +297,6 @@
   .home-description-container p {
     font-size: 16px;
     margin-bottom: 15px;
-  }
-
-  .active-house.house-1 {
-    left: calc(((100% / 2) / 2) - 16px);
-  }
-
-  .active-house.house-2 {
-    left: calc(((100% / 2) / 2) + (100% / 2) - 16px);
   }
 
   .active-house {

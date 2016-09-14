@@ -311,7 +311,14 @@
   #item-profile-mobile {
     padding: 15px 5px 0;
     margin-bottom: 25px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
+
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
   }
 

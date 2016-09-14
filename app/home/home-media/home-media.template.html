@@ -1,16 +1,22 @@
 <div class="family-things-container family-things-container-scroll">
-  <div class="family-images-container">
+  <div class="family-images-container"
+       infinite-scroll
+       [infiniteScrollDistance]="2"
+       [infiniteScrollThrottle]="0"
+       (scrolled)="onScrollDown()">
     <div class="family-image-container"
-         *ngFor="let image of images; let i = index"
+         *ngFor="let image of currentImages; let i = index"
          (click)="openMedia(image, i)"
+         [style.-webkit-box-ordinal-group]="i"
+         [style.-moz-box-ordinal-group]="i"
+         [style.-ms-flex-order]="i"
+         [style.-webkit-order]="i"
          [style.order]="i"
          [style.height.px]="imageHeight">
       <div class="family-image"
-           [ngStyle]="{'background-image': image.background}">
-
+           [ngStyle]="{'background-image': image.isUploaded && image.background}">
         <div class="image-description">
           <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
-
           <span>{{image.thingName}}</span>
         </div>
       </div>
@@ -18,11 +24,21 @@
 
     <home-media-view-block *ngIf="showImageBlock"
                            [imageData]="imageData"
+                           [style.-webkit-box-ordinal-group]="imageBlockLocation"
+                           [style.-moz-box-ordinal-group]="imageBlockLocation"
+                           [style.-ms-flex-order]="imageBlockLocation"
+                           [style.-webkit-order]="imageBlockLocation"
                            [style.order]="imageBlockLocation"
                            (closeBigImageBlock)="openMedia(activeImage, indexViewBoxImage)"></home-media-view-block>
 
-    <row-loader [items]="images" [field]="'background'" [itemHeight]="itemSize" [count]="zoom"></row-loader>
+    <row-loader [items]="currentImages"
+                [countInRow]="zoom"
+                [field]="'background'"
+                [itemHeight]="itemSize"
+                [activeItem]="activeImageIndex"
+                [visibleItems]="visibleImages"
+                [viewBlockHeight]="viewBlockHeight"
+                [startPosition]="rowLoaderStartPosition"
+                (imageIsUploaded)="imageIsUploaded($event)"></row-loader>
   </div>
 </div>
-
-<loader *ngIf="loader"></loader>

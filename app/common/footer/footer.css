@@ -153,13 +153,15 @@ footer {
   .footer .container {
     width: 100%;
     padding: 25px 10px 60px !important;
-    flex-wrap: wrap;
-
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
+
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
   }
 
   .footer .cc-container {
@@ -171,6 +173,7 @@ footer {
     -webkit-order: 0;
     order: 0;
 
+    -webkit-flex-grow: 2;
     flex-grow: 2;
   }
 
@@ -180,6 +183,8 @@ footer {
     -ms-flex-order: 1;
     -webkit-order: 1;
     order: 1;
+
+    -webkit-flex-grow: 2;
     flex-grow: 2;
   }
 

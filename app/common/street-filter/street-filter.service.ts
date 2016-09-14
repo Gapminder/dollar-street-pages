@@ -137,7 +137,12 @@ export class StreetFilterDrawService {
         }
 
         return this.scale(d) - indent + 15 + center;
-      });
+      })
+      .on('mousedown', (): void => {
+        d3.event.preventDefault();
+        this.draggingSliders = true;
+      })
+      .on('touchstart', (): any => this.draggingSliders = true);
 
     return this;
   }
@@ -272,6 +277,7 @@ export class StreetFilterDrawService {
         if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
           document.body.classList.add('draggingSliders');
 
+          // todo: distance from cursor to sliders
           if (!this.distanceDraggingLeftSlider) {
             this.distanceDraggingLeftSlider = positionX - 35 - this.sliderLeftBorder;
           }
@@ -281,7 +287,6 @@ export class StreetFilterDrawService {
           }
 
           if (
-            positionX - this.distanceDraggingRightSlider <= this.sliderRightBorder &&
             positionX - this.distanceDraggingLeftSlider >= 35 &&
             positionX + this.distanceDraggingRightSlider <= this.width + 35
           ) {

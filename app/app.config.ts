@@ -1,3 +1,4 @@
+import { RouterConfig } from '@angular/router';
 import { PhotographersComponent } from './photographers/photographers.component';
 import { TeamComponent } from './team/team.component';
 import { ArticleComponent } from './article/article.component';
@@ -7,7 +8,6 @@ import { AboutComponent } from './about/about.component';
 import { MapComponent } from './map/map.component';
 import { MatrixComponent } from './matrix/matrix.component';
 import { PhotographerComponent } from './photographer/photographer.component';
-import { RouterConfig } from '@angular/router';
 import { RoutesGatewayComponent, RoutesGatewayGuard, TagComponent } from 'ng2-contentful-blog';
 
 let device = require('device.js')();
@@ -81,6 +81,16 @@ export class Config {
   }
 
   public static animateScroll(id: string, inc: number, duration: number): any {
+    if (!isDesktop) {
+      if (document.body.scrollTop) {
+        document.body.scrollTop = 0;
+      } else {
+        document.documentElement.scrollTop = 0;
+      }
+
+      return;
+    }
+
     const elem = document.getElementById(id);
     const startScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const endScroll = elem.offsetTop;

@@ -4,7 +4,14 @@
 }
 
 .family-images-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   vertical-align: top;
   width: 100%;
@@ -45,7 +52,7 @@
   z-index: 1;
   padding: 30px 8px 8px;
   font-size: 20px;
-  font-style: italic;
+  font-family: 'Bariol Regular Italic', sans-serif;
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
 }
 
@@ -106,7 +113,7 @@ home-media-view-block {
   }
 
   .family-images-container .family-image-container {
-    width: calc(50% - 5px);
+    width: calc(33.33% - 5px);
     margin: 2.5px;
   }
 

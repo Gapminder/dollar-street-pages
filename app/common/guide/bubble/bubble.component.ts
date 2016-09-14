@@ -3,8 +3,7 @@ import { SocialShareButtonsComponent } from '../../social_share_buttons/social-s
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs';
 import { Config } from '../../../app.config';
-
-let _ = require('lodash');
+import * as _ from 'lodash';
 
 let tpl = require('./bubble.template.html');
 let style = require('./bubble.css');
@@ -99,12 +98,6 @@ export class BubbleComponent implements OnInit, OnDestroy {
     this.getBubble(this.step);
   }
 
-  protected finish(): void {
-    this.getBubble(6);
-
-    localStorage.setItem('quick-guide', 'true');
-  }
-
   private getBubble(step: number): void {
     let baloonDirector: string;
 
@@ -149,6 +142,10 @@ export class BubbleComponent implements OnInit, OnDestroy {
           this.position = this.setBubblePositionMobile(step, data, baloonWidth, baloonHeight);
         } else {
           this.position = this.setBubblePositionDesktop(step, data, baloonWidth, baloonHeight);
+        }
+
+        if (step === 6) {
+          localStorage.setItem('quick-guide', 'true');
         }
       });
     });

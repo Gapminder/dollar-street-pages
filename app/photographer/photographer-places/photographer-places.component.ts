@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { LoaderComponent } from '../../common/loader/loader.component';
 import { Subscription } from 'rxjs/Rx';
 
 let tpl = require('./photographer-places.template.html');
@@ -10,11 +9,10 @@ let style = require('./photographer-places.css');
   selector: 'photographer-places',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, LoaderComponent]
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
-  public loader: boolean = true;
   public photographerPlacesServiceSubscribe: Subscription;
   public math: any;
 
@@ -22,14 +20,19 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   private photographerId: string;
   private places: any = [];
   private photographerPlacesService: any;
+  private loaderService: any;
 
   public constructor(@Inject('PhotographerPlacesService') photographerPlacesService: any,
+                     @Inject('LoaderService') loaderService: any,
                      @Inject('Math') math: any) {
     this.photographerPlacesService = photographerPlacesService;
+    this.loaderService = loaderService;
     this.math = math;
   }
 
   public ngOnInit(): void {
+    this.loaderService.setLoader(false);
+
     this.photographerPlacesServiceSubscribe = this.photographerPlacesService
       .getPhotographerPlaces(`id=${this.photographerId}`)
       .subscribe((res: any) => {
@@ -39,11 +42,12 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
         }
 
         this.places = res.data.places;
-        this.loader = false;
+        this.loaderService.setLoader(true);
       });
   }
 
   public ngOnDestroy(): void {
     this.photographerPlacesServiceSubscribe.unsubscribe();
+    this.loaderService.setLoader(false);
   }
 }
