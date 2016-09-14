@@ -1,70 +1,61 @@
-import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
-import { TestComponentBuilder } from '@angular/compiler/testing';
-import { MockCommonDependency } from '../../common-mocks/mocked.services.ts';
-import { MockService } from '../../common-mocks/mock.service.template.ts';
-import { places } from '../mocks/data.ts';
+import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
 import { MatrixImagesComponent } from '../../../../app/matrix/matrix-images/matrix-images.component';
+import { Observable } from 'rxjs';
 
 describe('MatrixImagesComponent', () => {
-  let placesObservable = new MockService();
-  placesObservable.fakeResponse = places.data;
   let mockCommonDependency = new MockCommonDependency();
-  beforeEachProviders(() => {
-    return [
+
+  beforeEach(() => {
+    addProviders([
       mockCommonDependency.getProviders()
-    ];
+    ]);
   });
 
-  let fixture;
   let context;
+  let fixture;
 
-  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
-      return tcb
-        .overrideTemplate(MatrixImagesComponent, '<div></div>')
-        .createAsync(MatrixImagesComponent)
-        .then((componentFixture:any) => {
-          fixture = componentFixture;
-          context = componentFixture.debugElement.componentInstance;
-          context.thing = '546ccf730f7ddf45c0179658';
-          context.zoom = 5;
-          context.places = placesObservable;
-          context.query = 'thing=Home&countries=World&regions=World&zoom=4&row=1&lowIncome=0&highIncome=15000';
-        });
-    }
-  )));
-  it('ngOnInit ngOnDestroy', () => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb: any) => {
+    return tcb.createAsync(MatrixImagesComponent).then((fixtureInst: any) => {
+      fixture = fixtureInst;
+      context = fixture.debugElement.componentInstance;
+      context.places = Observable.of([{
+        _id: '547c4bc9b787bd0b00dcfb5b',
+        background: 'http://static.dollarstreet.org.s3.amazonaws.com/media/South Africa 1/image/2dac72df-d013-4b01-a616-b22791d556a6/desktops-2dac72df-d013-4b01-a616-b22791d556a6.jpg',
+        country: 'South Africa',
+        image: '547c4f02b787bd0b00dcfc6e',
+        income: 148.1,
+        incomeQuality: 10,
+        isUploaded: true,
+        lat: -29,
+        lng: 24,
+        region: 'Africa'
+      }]);
+      context.clearActiveHomeViewBox = Observable.of(true);
+    });
+  })));
+
+  it('ngOnInit ngOnDestroy', ()=> {
     context.ngOnInit();
-    expect(context.itemSize).toEqual((window.innerWidth - 36) / context.zoom);
+
     spyOn(context.placesSubscribe, 'unsubscribe');
+    spyOn(context.resizeSubscribe, 'unsubscribe');
+    spyOn(context.clearActiveHomeViewBoxSubscribe, 'unsubscribe');
+
     context.ngOnDestroy();
+
     expect(context.placesSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(context.resizeSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(context.clearActiveHomeViewBoxSubscribe.unsubscribe).toHaveBeenCalled();
   });
-  it('hoverImage', () => {
-    spyOn(context.hoverPlace, 'emit');
-    context.oldPlaceId = places.data.zoomPlaces[0]._id;
-    context.hoverImage(places.data.zoomPlaces[0]);
-    expect(context.hoverPlace.emit).toHaveBeenCalledWith(places.data.zoomPlaces[0]);
-    context.isDesktop = false;
-    context.hoverImage();
-    expect(context.hoverPlace.emit).toHaveBeenCalled();
-    expect(!context.oldPlaceId).toEqual(true);
-  });
-  it('goToPlace', () => {
-    spyOn(context.router, 'navigate');
-    let place = places.data.zoomPlaces[0];
-    context.goToPlace(place);
-    expect(context.router.navigate.calls.argsFor(0)[0]).toEqual(['Home', context.parseUrl(`place=${place._id}&` + context.query)]);
-    context.isDesktop = false;
-    context.oldPlaceId = undefined;
-    context.goToPlace(place);
-    expect(context.oldPlaceId).toEqual(place._id);
-    context.isDesktop = false;
-    context.oldPlaceId = place._id;
-    context.goToPlace(place);
-    expect(context.router.navigate.calls.argsFor(1)[0]).toEqual(['Home', context.parseUrl(`place=${place._id}&` + context.query)]);
+
+  it('onScrollDown', () => {
+    spyOn(context, 'onScrollDown').and.callThrough();
+
+    context.onScrollDown();
   });
 
   it('toUrl', () => {
-    expect(context.toUrl('http://example.com/image.jpg')).toEqual('url("http://example.com/image.jpg")');
+    expect(context.toUrl('http://some.com')).toEqual('url("http://some.com")');
   });
 });

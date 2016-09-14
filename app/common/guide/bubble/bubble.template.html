@@ -18,7 +18,7 @@
     <div class="button-container">
       <span class="back" *ngIf="step !== 1" (click)="back()"><< Back</span>
       <button type="button" *ngIf="step !== 5" (click)="next()">Next >></button>
-      <button type="button" *ngIf="step === 5" (click)="finish()">Ready to start</button>
+      <button type="button" *ngIf="step === 5" (click)="getBubble(6)">Ready to start</button>
     </div>
   </div>
 

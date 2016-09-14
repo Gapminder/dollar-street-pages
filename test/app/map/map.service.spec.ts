@@ -1,4 +1,4 @@
-import { it, describe, fakeAsync, inject, beforeEachProviders, tick } from '@angular/core/testing';
+import { it, describe, fakeAsync, inject, beforeEach, tick, addProviders } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
@@ -6,23 +6,25 @@ import { Config } from '../../../app/app.config.ts';
 import { MapService } from '../../../app/map/map.service.ts';
 
 describe('MapService', () => {
-  beforeEachProviders(() => {
-    return [
+  beforeEach(() => {
+    addProviders([
       BaseRequestOptions,
       MockBackend,
       MapService,
       provide(
         Http, {
-          useFactory: (backend:ConnectionBackend, defaultOptions:BaseRequestOptions):Http => {
+          useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions): Http => {
             return new Http(backend, defaultOptions);
           }, deps: [MockBackend, BaseRequestOptions]
         })
-    ];
+    ]);
   });
+
   it('test getMainPlaces()', fakeAsync(inject([MapService, MockBackend],
-    (mapService:MapService, mockBackend:MockBackend) => {
+    (mapService: MapService, mockBackend: MockBackend) => {
       let res;
-      mockBackend.connections.subscribe((connection:any)=> {
+
+      mockBackend.connections.subscribe((connection: any)=> {
         expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/map?thing=Home`);
         /**
          * ToDo: change body of response
@@ -55,12 +57,16 @@ describe('MapService', () => {
         "thing":"Home"},
         "error":false}`
         });
+
         connection.mockRespond(new Response(response));
       });
-      mapService.getMainPlaces('thing=Home').subscribe((_res:any) => {
+
+      mapService.getMainPlaces('thing=Home').subscribe((_res: any) => {
         res = _res;
       });
+
       tick();
+
       expect(!res.err).toBe(true);
       expect(res.data.places.length).toBe(193);
       expect(res.data.countries.length).toBe(18);

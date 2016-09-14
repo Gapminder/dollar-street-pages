@@ -2,9 +2,11 @@ import { Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnD
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { InfiniteScroll } from 'angular2-infinite-scroll';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
 import { Subject, Subscription } from 'rxjs/Rx';
+import { concat, slice } from 'lodash';
 
 const device = require('device.js')();
 const isDesktop = device.desktop();
@@ -16,7 +18,7 @@ let style = require('./matrix-images.css');
   selector: 'matrix-images',
   template: tpl,
   styles: [style],
-  directives: [RowLoaderComponent, MatrixViewBlockComponent]
+  directives: [RowLoaderComponent, MatrixViewBlockComponent, InfiniteScroll]
 })
 
 export class MatrixImagesComponent implements OnInit, OnDestroy {
@@ -24,7 +26,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   protected indexViewBoxHouse: number;
   protected positionInRow: number;
   protected math: any;
-  protected Angulartics2GoogleAnalytics: any;
+  protected angulartics2GoogleAnalytics: any;
+  protected placesArr: any = [];
+  protected viewBlockHeight: number;
+  protected rowLoaderStartPosition: number = 0;
 
   @Input('query')
   protected query: string;
@@ -38,6 +43,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private zoom: number;
   @Input('showblock')
   private showblock: boolean = false;
+  @Input('row')
+  private row: number;
   @Input('clearActiveHomeViewBox')
   private clearActiveHomeViewBox: Subject<any>;
 
@@ -47,7 +54,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
 
   private isDesktop: boolean = isDesktop;
-  private oldPlaceId: string;
   private router: Router;
   private currentPlaces: any = [];
   private element: HTMLElement;
@@ -61,17 +67,21 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private clearActiveHomeViewBoxSubscribe: Subscription;
   private imageMargin: number;
   private windowInnerWidth: number = window.innerWidth;
+  private visibleImages: number;
+  private loaderService: any;
 
-  public constructor(@Inject(ElementRef) element: ElementRef,
-                     @Inject(Router) router: Router,
+  public constructor(zone: NgZone,
+                     router: Router,
+                     element: ElementRef,
                      @Inject('Math') math: any,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any,
-                     @Inject(NgZone) zone: NgZone) {
-    this.element = element.nativeElement;
-    this.router = router;
-    this.math = math;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
+                     @Inject('LoaderService') loaderService: any,
+                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.zone = zone;
+    this.math = math;
+    this.router = router;
+    this.loaderService = loaderService;
+    this.element = element.nativeElement;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): any {
@@ -80,6 +90,27 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.placesSubscribe = this.places.subscribe((places: any) => {
       this.showblock = false;
       this.currentPlaces = places;
+
+      setTimeout(() => {
+        this.getVisibleRows();
+
+        let numberSplice: number = this.visibleImages * 2;
+
+        if (this.row && this.row > 1) {
+          numberSplice = this.row * this.zoom + this.visibleImages;
+        }
+
+        if (this.activeHouse && this.activeHouse > this.visibleImages) {
+          let positionInRow: number = this.activeHouse % this.zoom;
+          let offset: number = this.zoom - positionInRow;
+
+          numberSplice = this.activeHouse + offset + this.visibleImages;
+        }
+
+        this.rowLoaderStartPosition = 0;
+
+        this.placesArr = slice(this.currentPlaces, 0, numberSplice);
+      }, 0);
 
       setTimeout(() => {
         this.getImageHeight();
@@ -97,7 +128,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
+          if (this.windowInnerWidth === window.innerWidth) {
+            return;
+          }
+
           this.windowInnerWidth = window.innerWidth;
+          this.getVisibleRows();
           this.getImageHeight();
         });
       });
@@ -116,17 +152,26 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.placesSubscribe.unsubscribe();
-
-    if (this.resizeSubscribe.unsubscribe) {
-      this.resizeSubscribe.unsubscribe();
-    }
+    this.resizeSubscribe.unsubscribe();
 
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
     }
   }
 
+  public onScrollDown(): void {
+    if (this.placesArr.length && this.placesArr.length !== this.currentPlaces.length) {
+      let places: any = slice(this.currentPlaces, this.placesArr.length, this.placesArr.length + this.visibleImages);
+      this.placesArr = concat(this.placesArr, places);
+      this.rowLoaderStartPosition = this.placesArr.length - this.visibleImages;
+    }
+  }
+
   protected hoverImage(place: any): void {
+    if (!isDesktop) {
+      return;
+    }
+
     if (this.prevPlaceId && place) {
       this.hoverPlace.emit(undefined);
       this.hoverPlace.emit(place);
@@ -146,26 +191,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     if (this.isDesktop) {
       return;
     }
-
-    if (!place) {
-      this.oldPlaceId = void 0;
-    }
   }
 
-  protected goToPlace(place: any): void {
-    if (this.isDesktop) {
-      this.Angulartics2GoogleAnalytics.eventTrack(`Go to  Place page from Matrix page `);
-      this.router.navigate(['/family'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
-      return;
-    }
-
-    if (!this.oldPlaceId) {
-      this.oldPlaceId = place._id;
-      return;
-    }
-    this.Angulartics2GoogleAnalytics.eventTrack(`Go to  Place page from Matrix page `);
-
-    this.router.navigate(['/family'], {queryParams: this.parseUrl(`place=${place._id}&` + this.query)});
+  protected imageIsUploaded(data: {index: number}): void {
+    this.zone.run(() => {
+      this.placesArr[data.index].isUploaded = true;
+    });
   }
 
   protected goToImageBlock(place: any, index: number): void {
@@ -176,6 +207,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.imageBlockLocation = this.positionInRow ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;
 
     this.familyData = JSON.parse(JSON.stringify(place));
+
+    setTimeout(() => {
+      let viewBlockBox = this.element.querySelector('matrix-view-block') as HTMLElement;
+
+      this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+    }, 0);
 
     if (!this.prevPlaceId) {
       this.prevPlaceId = place._id;
@@ -224,10 +261,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize - showPartPrevImage;
   }
 
-  private parseUrl(url: string): any {
-    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
-  }
-
   private getImageHeight(): void {
     let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
     let imgContent = this.element.querySelector('.image-content') as HTMLElement;
@@ -242,5 +275,14 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
     this.itemSize = this.imageHeight + this.imageMargin;
+
+    this.loaderService.setLoader(true);
+  }
+
+  private getVisibleRows(): void {
+    let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
+    let imageHeight: number = boxContainer.offsetWidth / this.zoom;
+    let visibleRows: number = Math.round(window.innerHeight / imageHeight);
+    this.visibleImages = this.zoom * visibleRows;
   }
 }

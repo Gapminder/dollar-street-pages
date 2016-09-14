@@ -22,11 +22,11 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
   private streetSettingsService: any;
   private streetData: any;
   private element: HTMLElement;
-  private streetServiceSubscrib: Subscription;
+  private streetServiceSubscribe: Subscription;
   private resize: any;
+  private windowInnerWidth: number = window.innerWidth;
 
   private placesSubscribe: Subscription;
-  private svg: SVGElement;
   private placesArr: any;
 
   public constructor(element: ElementRef,
@@ -38,20 +38,22 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): any {
-    this.street.setSvg = this.svg = this.element.querySelector('.street-box svg') as SVGElement;
+    this.street.setSvg = this.element.querySelector('.street-box svg') as SVGElement;
     this.street.set('isInit', true);
 
-    this.placesSubscribe = this.places && this.places.subscribe((places: any): void => {
-        this.placesArr = places;
+    this.placesSubscribe = this.places && this.places
+        .subscribe((places: any): void => {
+          this.placesArr = places;
 
-        if (!this.streetData) {
-          return;
-        }
+          if (!this.streetData) {
+            return;
+          }
 
-        this.setDividers(this.placesArr);
-      });
+          this.setDividers(this.placesArr);
+        });
 
-    this.streetServiceSubscrib = this.streetSettingsService.getStreetSettings()
+    this.streetServiceSubscribe = this.streetSettingsService
+      .getStreetSettings()
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -70,7 +72,7 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
-        if (!this.street.places) {
+        if (!this.street.places || this.windowInnerWidth === window.innerWidth) {
           return;
         }
 
@@ -87,9 +89,7 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
       this.placesSubscribe.unsubscribe();
     }
 
-    if (this.streetServiceSubscrib) {
-      this.streetServiceSubscrib.unsubscribe();
-    }
+    this.streetServiceSubscribe.unsubscribe();
   }
 
   private setDividers(places: any): void {

@@ -1,5 +1,4 @@
-import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
-import { TestComponentBuilder } from '@angular/compiler/testing';
+import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../common-mocks/mocked.services.ts';
 import { MockService } from '../../common-mocks/mock.service.template.ts';
 import { places } from '../mocks/data.ts';
@@ -7,35 +6,36 @@ import { CountryPlacesComponent } from '../../../../app/country/country-places/c
 
 describe('CountryPlacesComponent', () => {
   let countryPlacesService = new MockService();
+  let mockCommonDependency = new MockCommonDependency();
+
   countryPlacesService.serviceName = 'CountryPlacesService';
   countryPlacesService.getMethod = 'getCountryPlaces';
   countryPlacesService.fakeResponse = places;
-  let mockCommonDependency = new MockCommonDependency();
-  beforeEachProviders(() => {
-    return [
+
+  beforeEach(() => {
+    addProviders([
       mockCommonDependency.getProviders(),
       countryPlacesService.getProviders()
-    ];
+    ]);
   });
 
   let context;
   let fixture;
 
-  beforeEach(async(inject([TestComponentBuilder], (tcb:any) => {
-    return tcb.createAsync(CountryPlacesComponent).then((fixtureInst:any) => {
+  beforeEach(async(inject([TestComponentBuilder], (tcb: any) => {
+    return tcb.createAsync(CountryPlacesComponent).then((fixtureInst: any) => {
       fixture = fixtureInst;
       context = fixture.debugElement.componentInstance;
     });
   })));
 
-  it('CountryPlaceComponent must init ', ()=> {
+  it('must init', ()=> {
     fixture.detectChanges();
     expect(context.places.length).toEqual(3);
-    expect(context.loader).toEqual(true);
     countryPlacesService.toInitState();
   });
 
-  it('CountryPlaceComponent must destroy ', ()=> {
+  it('must destroy', ()=> {
     fixture.detectChanges();
     fixture.destroy();
     expect(countryPlacesService.countOfSubscribes).toBe(0);
