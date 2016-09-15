@@ -55,6 +55,8 @@ export class StreetDrawService {
   private rightScrollText: any;
   private hoverPlace: any;
   private math: any;
+  private currentLowIncome: number;
+  private currentHighIncome: number;
   private filter: Subject<any> = new Subject<any>();
   private windowInnerWidth: number = window.innerWidth;
   private colors: {fills: any, fillsOfBorders: any} = {
@@ -306,17 +308,25 @@ export class StreetDrawService {
 
     this.isDrawDividers(drawDividers);
 
+    this.drawLeftSlider(this.scale(this.lowIncome), true);
+    this.drawRightSlider(this.scale(this.highIncome), true);
+
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
     }
 
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
-      .filter((e: MouseEvent) => {
+      .subscribe((e: MouseEvent)=> {
         e.preventDefault();
 
-        return this.windowInnerWidth >= 600 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
-      }).subscribe((e: MouseEvent)=> {
-        e.preventDefault();
+        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+          return;
+        }
+
+        if (!this.currentHighIncome || !this.currentLowIncome) {
+          this.currentLowIncome = this.lowIncome;
+          this.currentHighIncome = this.highIncome;
+        }
 
         if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
           document.body.classList.add('draggingSliders');
@@ -330,31 +340,24 @@ export class StreetDrawService {
           }
 
           if (
-            e.pageX - this.distanceDraggingRightSlider <= this.sliderRightBorder + 5 &&
             e.pageX - this.distanceDraggingLeftSlider >= 50 &&
             e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
             this.chosenPlaces = [];
             this.removeHouses('chosen');
 
-            this.drawLeftSlider(e.pageX - 45 - this.distanceDraggingLeftSlider);
-            this.drawRightSlider(e.pageX - 56 + this.distanceDraggingRightSlider);
-
-            return;
+            this.drawLeftSlider(e.pageX - 47 - this.distanceDraggingLeftSlider);
+            this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
           }
 
           return;
         }
 
-        if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 5 && e.pageX >= 50) {
-          return this.drawLeftSlider(e.pageX - 45);
+        if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 17 && e.pageX >= 52) {
+          return this.drawLeftSlider(e.pageX - 47);
         }
 
-        if (this.sliderRightMove && e.pageX <= this.width + 60) {
-          if (this.sliderLeftBorder + 50 >= e.pageX) {
-            return this.drawRightSlider(this.sliderLeftBorder + 40);
-          } else {
-            return this.drawRightSlider(e.pageX - 56);
-          }
+        if (this.sliderRightMove && this.sliderLeftBorder + 87 <= e.pageX && e.pageX <= this.width + 57) {
+          return this.drawRightSlider(e.pageX - 57);
         }
       });
 
@@ -363,89 +366,69 @@ export class StreetDrawService {
     }
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
-      .filter(()=> {
-        return this.windowInnerWidth >= 600 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
-      }).subscribe((e: TouchEvent)=> {
+      .subscribe((e: TouchEvent)=> {
+        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+          return;
+        }
+
+        if (!this.currentHighIncome || !this.currentLowIncome) {
+          this.currentLowIncome = this.lowIncome;
+          this.currentHighIncome = this.highIncome;
+        }
+
         let positionX = e.touches[0].pageX;
 
         if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
           document.body.classList.add('draggingSliders');
 
           if (!this.distanceDraggingLeftSlider) {
-            this.distanceDraggingLeftSlider = positionX - 45 - this.sliderLeftBorder;
+            this.distanceDraggingLeftSlider = positionX - 35 - this.sliderLeftBorder;
           }
 
           if (!this.distanceDraggingRightSlider) {
-            this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 56);
+            this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 45);
           }
 
           if (
-            positionX - this.distanceDraggingRightSlider <= this.sliderRightBorder + 5 &&
-            positionX - this.distanceDraggingLeftSlider >= 50 &&
-            positionX + this.distanceDraggingRightSlider <= this.width + 60) {
+            positionX - this.distanceDraggingLeftSlider >= 35 &&
+            positionX + this.distanceDraggingRightSlider <= this.width + 50) {
             this.chosenPlaces = [];
             this.removeHouses('chosen');
 
-            this.drawLeftSlider(positionX - 45 - this.distanceDraggingLeftSlider);
-            this.drawRightSlider(positionX - 56 + this.distanceDraggingRightSlider);
-
-            return;
+            this.drawLeftSlider(positionX - 35 - this.distanceDraggingLeftSlider);
+            this.drawRightSlider(positionX - 45 + this.distanceDraggingRightSlider);
           }
 
           return;
         }
 
-        if (this.sliderLeftMove && positionX <= this.sliderRightBorder + 5 && positionX >= 50) {
-          return this.drawLeftSlider(positionX - 45);
+        if (this.sliderLeftMove && positionX <= this.sliderRightBorder - 25 && positionX >= 35) {
+          return this.drawLeftSlider(positionX - 35);
         }
 
-        if (this.sliderRightMove && positionX <= this.width + 60) {
-          if (this.sliderLeftBorder + 50 >= positionX) {
-            return this.drawRightSlider(this.sliderLeftBorder + 40);
-          } else {
-            return this.drawRightSlider(positionX - 56);
-          }
+        if (this.sliderRightMove && this.sliderLeftBorder + 102 <= positionX && positionX <= this.width + 50) {
+          return this.drawRightSlider(positionX - 45);
         }
       });
 
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
-      .filter(()=> {
-        return this.windowInnerWidth >= 566 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
-      }).subscribe((e?: MouseEvent)=> {
+      .subscribe((e?: MouseEvent)=> {
         e.preventDefault();
 
-        this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
-        this.distanceDraggingLeftSlider = 0;
-        this.distanceDraggingRightSlider = 0;
-        document.body.classList.remove('draggingSliders');
-
-        if (this.highIncome > this.dividersData.rich) {
-          this.highIncome = this.dividersData.rich + 0.00002;
+        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+          return;
         }
 
-        this.filter.next({
-          lowIncome: Math.round(this.lowIncome),
-          highIncome: Math.round(this.highIncome)
-        });
+        this.pressedSlider();
       });
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
-      .filter(()=> {
-        return this.windowInnerWidth >= 566 && (this.sliderLeftMove || this.sliderRightMove || this.draggingSliders);
-      }).subscribe(()=> {
-        this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
-        this.distanceDraggingLeftSlider = 0;
-        this.distanceDraggingRightSlider = 0;
-        document.body.classList.remove('draggingSliders');
-
-        if (this.highIncome > this.dividersData.rich) {
-          this.highIncome = this.dividersData.rich + 0.00002;
+      .subscribe(()=> {
+        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+          return;
         }
 
-        this.filter.next({
-          lowIncome: Math.round(this.lowIncome),
-          highIncome: Math.round(this.highIncome)
-        });
+        this.pressedSlider();
       });
 
     return this;
@@ -455,6 +438,7 @@ export class StreetDrawService {
     if (!place) {
       return this;
     }
+
     this.removeSliders();
 
     let fills = this.colors.fills;
@@ -516,6 +500,7 @@ export class StreetDrawService {
     if (this.windowInnerWidth <= 566 && Math.floor(this.lowIncome) === this.dividersData.poor) {
       return;
     }
+
     this.sliderLeftBorder = x;
 
     if (!this.leftScrollOpacityStreet) {
@@ -578,7 +563,7 @@ export class StreetDrawService {
         let point4 = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight + 12 - 1}`;
         let point5 = `${x + this.streetOffset / 2 - 4},${ this.halfOfHeight + 12 + 5 - 1}`;
 
-        if (this.windowInnerWidth <= 566) {
+        if (this.windowInnerWidth < 600) {
           point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 1}`;
           point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5 - 1 - 1}`;
           point3 = `${x + 2 + this.streetOffset / 2 + 1},${ this.halfOfHeight + 14 - 5 - 1 - 1 }`;
@@ -663,18 +648,18 @@ export class StreetDrawService {
     }
 
     this.rightScroll.attr('points', () => {
-      let point1 = `${x + this.streetOffset / 2 - 1},${ this.halfOfHeight + 12 - 1 }`;
-      let point2 = `${x + this.streetOffset / 2 - 1},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      let point3 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      let point4 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight + 12 - 1}`;
-      let point5 = `${x + this.streetOffset / 2 + 4},${ this.halfOfHeight + 12 + 5 - 1}`;
+      let point1 = `${x + this.streetOffset / 2 - 1},${this.halfOfHeight + 12 - 1 }`;
+      let point2 = `${x + this.streetOffset / 2 - 1},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
+      let point3 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
+      let point4 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight + 12 - 1}`;
+      let point5 = `${x + this.streetOffset / 2 + 4},${this.halfOfHeight + 12 + 5 - 1}`;
 
-      if (this.windowInnerWidth <= 566) {
-        point1 = `${x - 2 + this.streetOffset / 2 - 1},${ this.halfOfHeight + 14 - 1}`;
-        point2 = `${x - 2 + this.streetOffset / 2 - 1},${ this.halfOfHeight + 14 - 5 - 1 - 1}  `;
-        point3 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14 - 5 - 1 - 1}`;
-        point4 = `${x - 2 + this.streetOffset / 2 + 9},${ this.halfOfHeight + 14 - 1}`;
-        point5 = `${x - 2 + this.streetOffset / 2 + 4},${ this.halfOfHeight + 14 + 5 - 1}`;
+      if (this.windowInnerWidth < 600) {
+        point1 = `${x - 2 + this.streetOffset / 2 - 1},${this.halfOfHeight + 14 - 1}`;
+        point2 = `${x - 2 + this.streetOffset / 2 - 1},${this.halfOfHeight + 14 - 5 - 1 - 1}`;
+        point3 = `${x - 2 + this.streetOffset / 2 + 9},${this.halfOfHeight + 14 - 5 - 1 - 1}`;
+        point4 = `${x - 2 + this.streetOffset / 2 + 9},${this.halfOfHeight + 14 - 1}`;
+        point5 = `${x - 2 + this.streetOffset / 2 + 4},${this.halfOfHeight + 14 + 5 - 1}`;
       }
 
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
@@ -867,4 +852,62 @@ export class StreetDrawService {
 
     return this;
   };
+
+  private pressedSlider(): void {
+    document.body.classList.remove('draggingSliders');
+
+    if (this.draggingSliders && !this.distanceDraggingLeftSlider && !this.distanceDraggingRightSlider) {
+      this.draggingSliders = false;
+      this.distanceDraggingLeftSlider = void 0;
+      this.distanceDraggingRightSlider = void 0;
+
+      if (this.leftScrollText || this.rightScrollText) {
+        this.leftScrollText.text('');
+        this.rightScrollText.text('');
+      }
+
+      return;
+    }
+
+    if (this.sliderLeftMove && (!this.currentLowIncome || this.currentLowIncome === this.lowIncome)) {
+      this.sliderLeftMove = false;
+      this.currentLowIncome = void 0;
+      this.currentHighIncome = void 0;
+
+      if (this.leftScrollText || this.rightScrollText) {
+        this.leftScrollText.text('');
+        this.rightScrollText.text('');
+      }
+
+      return;
+    }
+
+    if (this.sliderRightMove && (!this.currentHighIncome || this.currentHighIncome === this.highIncome)) {
+      this.sliderRightMove = false;
+      this.currentLowIncome = void 0;
+      this.currentHighIncome = void 0;
+
+      if (this.leftScrollText || this.rightScrollText) {
+        this.leftScrollText.text('');
+        this.rightScrollText.text('');
+      }
+
+      return;
+    }
+
+    this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
+    this.distanceDraggingLeftSlider = void 0;
+    this.distanceDraggingRightSlider = void 0;
+    this.currentLowIncome = void 0;
+    this.currentHighIncome = void 0;
+
+    if (this.highIncome > this.dividersData.rich) {
+      this.highIncome = this.dividersData.rich + 0.00002;
+    }
+
+    this.filter.next({
+      lowIncome: Math.round(this.lowIncome),
+      highIncome: Math.round(this.highIncome)
+    });
+  }
 }

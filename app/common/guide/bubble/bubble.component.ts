@@ -1,14 +1,14 @@
 import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { SocialShareButtonsComponent } from '../../social_share_buttons/social-share-buttons.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Config } from '../../../app.config';
-import * as _ from 'lodash';
+import { find } from 'lodash';
 
 let tpl = require('./bubble.template.html');
 let style = require('./bubble.css');
 
-let device = require('device.js')();
+let device: {mobile: Function; tablet: Function} = require('device.js')();
 let isMobile = device.mobile();
 let isTablet = device.tablet();
 
@@ -33,6 +33,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
   private element: HTMLElement;
   private zone: NgZone;
   private resizeSubscribe: Subscription;
+  private getCoordinates: Function = Config.getCoordinates;
 
   public constructor(element: ElementRef,
                      zone: NgZone) {
@@ -43,7 +44,8 @@ export class BubbleComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.getBubble(this.step);
 
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
@@ -103,27 +105,27 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
     if (step === 1) {
       baloonDirector = '.street-box';
-      this.bubble = _.find(this.bubbles, ['name', 'street']);
+      this.bubble = find(this.bubbles, ['name', 'street']);
     }
 
     if (step === 2) {
       baloonDirector = 'things-filter';
-      this.bubble = _.find(this.bubbles, ['name', 'thing']);
+      this.bubble = find(this.bubbles, ['name', 'thing']);
     }
 
     if (step === 3) {
       baloonDirector = 'countries-filter';
-      this.bubble = _.find(this.bubbles, ['name', 'geography']);
+      this.bubble = find(this.bubbles, ['name', 'geography']);
     }
 
     if (step === 4) {
       baloonDirector = '.street-box';
-      this.bubble = _.find(this.bubbles, ['name', 'income']);
+      this.bubble = find(this.bubbles, ['name', 'income']);
     }
 
     if (step === 5) {
       baloonDirector = '.matrix-header';
-      this.bubble = _.find(this.bubbles, ['name', 'image']);
+      this.bubble = find(this.bubbles, ['name', 'image']);
     }
 
     if (step === 6) {
@@ -131,7 +133,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
 
     setTimeout(() => {
-      Config.getCoordinates(baloonDirector, (data: any) => {
+      this.getCoordinates(baloonDirector, (data: any) => {
         let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
         let baloonWidth: number = baloonElement.width;
         let baloonHeight: number = baloonElement.height;

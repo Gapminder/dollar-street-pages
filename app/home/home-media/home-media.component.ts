@@ -10,7 +10,6 @@ import {
   AfterViewChecked,
   ElementRef
 } from '@angular/core';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription, Observable } from 'rxjs/Rx';
 import { InfiniteScroll } from 'angular2-infinite-scroll';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
@@ -139,7 +138,8 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
         }, 0);
       });
 
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {

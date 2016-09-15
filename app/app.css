@@ -13,16 +13,15 @@
   padding-top: 125px;
 }
 
-@media (min-width: 800px) {
-  .about #app-container.container {
-    width: 730px;
+@media (min-width: 1400px) {
+  body:not(.blog):not(.article):not(.about) .footer .container,
+  body:not(.blog):not(.article) #app-container.container {
+    width: 1400px;
   }
 }
 
-@media (min-width: 1400px) {
-  body:not(.blog) #app-container.container {
-    width: 1400px;
-  }
+body.about #app-container.container {
+  width: 730px !important;
 }
 
 @media (max-width: 1023px) {
@@ -32,7 +31,8 @@
     padding-right: 0;
   }
 
+  body.about #app-container.container,
   #app-container.container {
-    width: 100%;
+    width: 100% !important;
   }
 }

@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, ElementRef, Inject, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Rx';
-
-const _ = require('lodash');
+import { sortBy, chain } from 'lodash';
 
 let tpl = require('./street-mobile.template.html');
 let style = require('./street-mobile.css');
@@ -23,7 +21,7 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
   private streetData: any;
   private element: HTMLElement;
   private streetServiceSubscribe: Subscription;
-  private resize: any;
+  private resizeSubscribe: Subscription;
   private windowInnerWidth: number = window.innerWidth;
 
   private placesSubscribe: Subscription;
@@ -69,7 +67,8 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
         this.setDividers(this.placesArr);
       });
 
-    this.resize = fromEvent(window, 'resize')
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         if (!this.street.places || this.windowInnerWidth === window.innerWidth) {
@@ -81,9 +80,7 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.resize) {
-      this.resize.unsubscribe();
-    }
+    this.resizeSubscribe.unsubscribe();
 
     if (this.placesSubscribe) {
       this.placesSubscribe.unsubscribe();
@@ -96,9 +93,8 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
     this.street
       .clearSvg()
       .init(this.streetData)
-      .set('places', _.sortBy(places, 'income'))
-      .set('fullIncomeArr', _
-        .chain(this.street.places)
+      .set('places', sortBy(places, 'income'))
+      .set('fullIncomeArr', chain(this.street.places)
         .sortBy('income')
         .map((place: any) => {
           if (!place) {

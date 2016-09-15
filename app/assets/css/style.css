@@ -276,18 +276,13 @@ gm-entries-view p {
 .line-clamp:after {
   content: '';
   text-align: right;
-  top: 0;
+  top: -50px;
   right: 0;
   width: 25%;
   display: block;
   position: absolute;
-  height: calc(16px * 1.42857143);
+  height: calc(14px * 1.42857143);
   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
-}
-
-.line-clamp-1 {
-  -webkit-line-clamp: 1;
-  max-height: calc(16px * 1.42857143);
 }
 
 .line-clamp-3 {

@@ -11,8 +11,7 @@ import {
   ElementRef
 } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Config, ImageResolutionInterface } from '../../../app/app.config';
 
@@ -80,7 +79,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => this.setMarkerPosition());

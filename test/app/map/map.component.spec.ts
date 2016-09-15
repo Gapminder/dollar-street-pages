@@ -54,6 +54,8 @@ describe('MapComponent', () => {
 
     context.urlChanged({url: 'thing=Families'});
 
+    spyOn(context.mapServiceSubscribe, 'unsubscribe');
+
     expect(context.query).toEqual('thing=546ccf730f7ddf45c0179688');
     expect(context.places.length).toEqual(174);
     expect(context.countries.length).toEqual(17);
