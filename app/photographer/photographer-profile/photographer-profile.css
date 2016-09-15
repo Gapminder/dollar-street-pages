@@ -80,6 +80,10 @@
   margin-top: 11px;
 }
 
+#item-profile .item-profile-header img {
+  border-radius: 3px;
+}
+
 #item-profile .footer-profile h3,
 #item-profile .item-profile-header h2 {
   font-family: 'Bariol Bold', sans-serif;
@@ -95,6 +99,11 @@
 
 #item-profile .item-profile-header p {
   color: #767d86;
+}
+
+#item-profile .photographer-link a {
+  color: #374551;
+  font-size: 13px;
 }
 
 #item-profile .footer-profile .social-network-container {

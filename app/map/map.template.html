@@ -27,14 +27,15 @@
                [style.left.px]="hoverPortraitLeft"
                (mouseenter)="thumbHover()"
                (mouseleave)="unHoverOnMarker($event)">
+
             <div class="hover_portrait_box" *ngIf="isDesktop">
               <img [src]="hoverPlace ? hoverPlace.familyImg.background : ''" alt="">
 
               <div class="hover_portrait_description" *ngIf="hoverPlace && isDesktop">
                 <div class="pull-left info">
                   <span
-                    class="name line-clamp line-clamp-1">{{hoverPlace.family}} {{hoverPlace.family ? 'family' : ''}}</span>
-                  <span class="country line-clamp line-clamp-1">{{hoverPlace.country}}</span>
+                    class="name">{{hoverPlace.family}} {{hoverPlace.family ? 'family' : ''}}</span>
+                  <span class="country">{{hoverPlace.country}}</span>
                 </div>
 
                 <div class="pull-right">

@@ -3,17 +3,20 @@
   border-bottom: 1px solid #c6c7c9;
   padding: 50px 0 0;
   background-size: auto 100%;
+  text-align: center;
 }
 
 .quick-guide-container .quick-guide-content {
   width: 785px;
   margin: 0 auto;
-  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .quick-guide-container .logo-container {
   width: 180px;
   float: left;
+  margin-top: -12px;
 }
 
 .quick-guide-container .logo-container img {
@@ -88,6 +91,17 @@
 @media (max-width: 1024px) {
   .quick-guide-container {
     width: 100%;
+    padding: 35px 0 0;
+  }
+
+  .quick-guide-container .quick-guide-content {
+    width: 715px;
+  }
+
+  .quick-guide-container .quick-guide-description-container {
+    width: calc(100% - 195px);
+    margin-left: 15px;
+    margin-bottom: 35px;
   }
 
   .quick-guide-container h1 {

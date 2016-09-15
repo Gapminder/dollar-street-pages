@@ -33,6 +33,11 @@
     <p>{{photographer.company.name}}</p>
   </div>
 
+  <p class="photographer-link"
+    *ngIf="photographer?.company?.link"><a
+    [href]="photographer.company.link"
+    target="_blank">{{photographer.company.link}}</a></p>
+
   <div class="footer-profile"
        *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
     <a target="_blank"
