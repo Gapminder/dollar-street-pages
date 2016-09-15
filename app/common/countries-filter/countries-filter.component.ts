@@ -21,20 +21,18 @@ let _ = require('lodash');
 let device = require('device.js')();
 let isDesktop = device.desktop();
 
-let tplMobile = require('./countries-filter-mobile/countries-filter-mobile.template.html');
 let styleMobile = require('./countries-filter-mobile/countries-filter-mobile.css');
-
-let tpl = require('./countries-filter.template.html');
 let style = require('./countries-filter.css');
 
 @Component({
   selector: 'countries-filter',
-  template: isDesktop ? tpl : tplMobile,
+  template: require('./countries-filter.template.html'),
   styles: [isDesktop ? style : styleMobile],
   pipes: [CountriesFilterPipe]
 })
 
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
+  protected isDesktop:boolean = isDesktop;
   protected activeCountries: string;
   protected showSelected: boolean;
   protected locations: any[];
@@ -109,9 +107,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           }
         });
 
-      setTimeout(() => {
-        tabContent.scrollTop = 0;
-      }, 0);
+      if (tabContent) {
+        setTimeout(() => {
+          tabContent.scrollTop = 0;
+        }, 0);
+      }
+
       document.body.classList.add('hideScroll');
     }
 

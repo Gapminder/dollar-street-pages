@@ -17,15 +17,12 @@ import { Subscription } from 'rxjs/Rx';
 let device = require('device.js')();
 let isDesktop = device.desktop();
 
-let tplMobile = require('./things-filter-mobile.template.html');
 let styleMobile = require('./things-filter-mobile.css');
-
-let tpl = require('./things-filter.template.html');
 let style = require('./things-filter.css');
 
 @Component({
   selector: 'things-filter',
-  template: isDesktop ? tpl : tplMobile,
+  template: require('./things-filter.template.html'),
   styles: [isDesktop ? style : styleMobile],
   directives: [ROUTER_DIRECTIVES],
   pipes: [ThingsFilterPipe]
@@ -41,6 +38,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected activeColumn: string = '';
   protected Angulartics2GoogleAnalytics: any;
   protected things: any = [];
+  protected isDesktop: boolean = isDesktop;
 
   @Output('isFilterGotData')
   private isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
