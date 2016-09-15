@@ -4,7 +4,7 @@
   </div>
 
   <div class="filters-container"
-       [ngStyle]="{visibility: isCountryFilterReady && isThingFilterReady ? 'visible' : 'hidden'}">
+       [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (mapComponent && isThingFilterReady)) ? 'visible' : 'hidden'}">
     <things-filter [url]="query"
                    (isFilterGotData)="isFilterGotData($event)"
                    (selectedFilter)="urlTransfer($event)">

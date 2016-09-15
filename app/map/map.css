@@ -327,7 +327,7 @@
 }
 
 #places .hover_portrait_description .info {
-  width: 65%
+  width: 59%
 }
 
 .countries-list {
@@ -374,7 +374,7 @@
   width: 324px;
   background-color: #f3fafc;
   z-index: 9999;
-  top: 74px;
+  top: 65px;
   -webkit-transition: all 0.5s ease-out;
   -moz-transition: all 0.5s ease-out;
   -o-transition: all 0.5s ease-out;
