@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ElementRef, NgZone, OnDestroy } from '@angular/core';
-import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Observable } from 'rxjs';
 
 let tpl = require('./about.template.html');
 let style = require('./about.css');
@@ -30,7 +30,8 @@ export class AboutComponent implements OnInit, OnDestroy {
 
     this.setVideosSize();
 
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {

@@ -143,12 +143,6 @@ footer {
   padding: 0 22px 60px;
 }
 
-@media (min-width: 1400px) {
-  body:not(.blog, .article) .container {
-    width: 1400px;
-  }
-}
-
 @media (max-width: 1023px) {
   .footer .container {
     width: 100%;

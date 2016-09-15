@@ -492,7 +492,7 @@
 
 .left-side-info ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: #ced1d5;;
+  background-color: #ced1d5;
 }
 
 @media (min-width: 1400px) {
@@ -502,9 +502,9 @@
 }
 
 @media (max-width: 1023px) {
-
-  .container {
-    padding: 0 10px;
+  .map-header > .container {
+    padding: 0 0 0 10px;
+    width: 100%;
   }
 
   #places .places_header {
@@ -554,7 +554,6 @@
     padding: 0 20px;
     height: calc(100% - 54px);
   }
-
 }
 
 @media (max-width: 991px) {
@@ -566,7 +565,6 @@
 }
 
 @media (max-width: 599px) {
-
   .container {
     padding: 0 15px;
   }

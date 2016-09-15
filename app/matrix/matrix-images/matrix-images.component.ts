@@ -1,7 +1,6 @@
 import { Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import { InfiniteScroll } from 'angular2-infinite-scroll';
 import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
 import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
@@ -126,7 +125,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {

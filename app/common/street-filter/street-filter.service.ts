@@ -269,9 +269,11 @@ export class StreetFilterDrawService {
     }
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
-      .filter(()=> {
-        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
-      }).subscribe((e: TouchEvent)=> {
+      .subscribe((e: TouchEvent)=> {
+        if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
+          return;
+        }
+
         let positionX = e.touches[0].pageX;
 
         if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
@@ -283,15 +285,14 @@ export class StreetFilterDrawService {
           }
 
           if (!this.distanceDraggingRightSlider) {
-            this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 35);
+            this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 40);
           }
 
           if (
-            positionX - this.distanceDraggingLeftSlider >= 35 &&
-            positionX + this.distanceDraggingRightSlider <= this.width + 35
-          ) {
-            this.drawLeftSlider(positionX - 35 - this.distanceDraggingLeftSlider);
-            this.drawRightSlider(positionX - 35 + this.distanceDraggingRightSlider);
+            positionX - this.distanceDraggingLeftSlider >= 30 &&
+            positionX + this.distanceDraggingRightSlider <= this.width + 45) {
+            this.drawLeftSlider(positionX - 30 - this.distanceDraggingLeftSlider);
+            this.drawRightSlider(positionX - 40 + this.distanceDraggingRightSlider);
 
             return;
           }
@@ -299,12 +300,12 @@ export class StreetFilterDrawService {
           return;
         }
 
-        if (this.sliderLeftMove && positionX <= this.sliderRightBorder && positionX >= 35) {
-          return this.drawLeftSlider(positionX - 35);
+        if (this.sliderLeftMove && positionX <= this.sliderRightBorder - 25 && positionX >= 30) {
+          return this.drawLeftSlider(positionX - 30);
         }
 
-        if (this.sliderRightMove && this.sliderLeftBorder + 70 <= positionX && positionX <= this.width + 35) {
-          return this.drawRightSlider(positionX - 35);
+        if (this.sliderRightMove && this.sliderLeftBorder + 102 <= positionX && positionX <= this.width + 45) {
+          return this.drawRightSlider(positionX - 40);
         }
       });
 
@@ -313,9 +314,11 @@ export class StreetFilterDrawService {
     }
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
-      .filter(()=> {
-        return this.sliderLeftMove || this.sliderRightMove || this.draggingSliders;
-      }).subscribe(()=> {
+      .subscribe(()=> {
+        if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
+          return;
+        }
+
         this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
         this.distanceDraggingLeftSlider = 0;
         this.distanceDraggingRightSlider = 0;

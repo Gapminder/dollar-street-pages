@@ -25,6 +25,13 @@ float-footer .share-button-container .share-button i {
   color: #ffcf43;
 }
 
+main-menu .mobile-menu social-share-buttons .share-button-container .share-button i {
+  color: #374551;
+  font-size: 28px;
+  height: 28px;
+  width:28px
+}
+
 @media (max-width: 1023px) {
   main-menu social-share-buttons .share-button-container .share-button i {
     color: #edf0f5;
@@ -32,17 +39,9 @@ float-footer .share-button-container .share-button i {
     height: 22px;
     width:22px
   }
-
 }
 
 @media (max-width: 599px) {
-  main-menu social-share-buttons .share-button-container .share-button i {
-    color: #374551;
-    font-size: 28px;
-    height: 28px;
-    width:28px
-  }
-
   .share-button-container > div:first-child  {
     margin-left: 14px;
     text-align: center;

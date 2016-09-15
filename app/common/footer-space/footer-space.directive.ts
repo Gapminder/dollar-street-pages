@@ -1,6 +1,5 @@
-import { Directive, ElementRef, Inject, OnInit, AfterViewChecked, OnDestroy, NgZone } from '@angular/core';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs';
+import { Directive, ElementRef, OnInit, AfterViewChecked, OnDestroy, NgZone } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
 
 @Directive({selector: '[footerSpace]'})
 export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy {
@@ -9,14 +8,15 @@ export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy
   private zone: NgZone;
   private resizeSubscribe: Subscription;
 
-  public constructor(@Inject(ElementRef) element: ElementRef,
-                     @Inject(NgZone) zone: NgZone) {
+  public constructor(zone: NgZone,
+                     element: ElementRef) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
 
   public ngOnInit(): void {
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {

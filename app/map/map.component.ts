@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { HeaderComponent } from '../common/header/header.component';
 
 let tpl = require('./map.template.html');
@@ -20,10 +19,9 @@ let device = require('device.js')();
 })
 
 export class MapComponent implements OnInit, OnDestroy {
-  public resizeSubscribe: Subscription;
-  public mapServiceSubscribe: Subscription;
-  public math: any;
-  public needChangeUrl: boolean = false;
+  private resizeSubscribe: Subscription;
+  private mapServiceSubscribe: Subscription;
+  private math: any;
   private angulartics2GoogleAnalytics: any;
   private mapService: any;
   private places: any[] = [];
@@ -53,6 +51,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
   private loaderService: any;
+  private windowInnerWidth: number = window.innerWidth;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -104,10 +103,17 @@ export class MapComponent implements OnInit, OnDestroy {
         this.setMarkersCoord(this.places);
         this.loaderService.setLoader(true);
 
-        this.resizeSubscribe = fromEvent(window, 'resize')
+        this.resizeSubscribe = Observable
+          .fromEvent(window, 'resize')
           .debounceTime(150)
           .subscribe(() => {
             this.zone.run(() => {
+              this.windowInnerWidth = window.innerWidth;
+
+              if (this.windowInnerWidth >= 600) {
+                document.body.classList.remove('hideScroll');
+              }
+
               this.setMarkersCoord(this.places);
             });
           });
@@ -264,7 +270,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
       marker.style.opacity = '0.3';
     });
-
   };
 
   public unHoverOnMarker(): void {
@@ -310,7 +315,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public openLeftSideBar(): void {
     this.isOpenLeftSide = true;
 
-    if (this.isMobile) {
+    if (this.windowInnerWidth < 600) {
       document.body.classList.add('hideScroll');
     }
   }
@@ -318,6 +323,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public closeLeftSideBar(e: MouseEvent): void {
     let infoBoxContainer = this.element.querySelector('.info-box-container') as HTMLElement;
     infoBoxContainer.scrollTop = 0;
+
     let el = e.target as HTMLElement;
 
     if (el.classList.contains('see-all') ||
@@ -339,7 +345,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onMarker = false;
     this.onThumb = false;
 
-    if (this.isMobile) {
+    if (this.windowInnerWidth < 600) {
       document.body.classList.remove('hideScroll');
     }
 
@@ -351,6 +357,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public clickOnMarker(e: MouseEvent, index: number, country: any): void {
     if (this.isOpenLeftSide) {
       this.isOpenLeftSide = !this.isOpenLeftSide;
+
       this.closeLeftSideBar(e);
       this.hoverOnMarker(index, country);
 
@@ -359,7 +366,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     if (this.lefSideCountries && this.lefSideCountries.length === 1) {
       this.angulartics2GoogleAnalytics
-        .eventTrack(`Look at  ` + this.hoverPlace.family + ` place from ` + this.hoverPlace.country + ` with map page`);
+        .eventTrack(`Look at ${this.hoverPlace.family} place from ${this.hoverPlace.country} with map page`);
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }
