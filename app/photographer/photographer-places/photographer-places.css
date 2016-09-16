@@ -93,6 +93,7 @@
   width: calc(100% - 26px);
   vertical-align: top;
   line-height: 20px;
+  margin-bottom:7px;
 }
 
 .line {
