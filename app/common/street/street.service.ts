@@ -396,7 +396,7 @@ export class StreetDrawService {
             this.removeHouses('chosen');
 
             this.drawLeftSlider(positionX - 35 - this.distanceDraggingLeftSlider);
-            this.drawRightSlider(positionX - 45 + this.distanceDraggingRightSlider);
+            this.drawRightSlider(positionX - 40 + this.distanceDraggingRightSlider);
           }
 
           return;
@@ -407,7 +407,7 @@ export class StreetDrawService {
         }
 
         if (this.sliderRightMove && this.sliderLeftBorder + 102 <= positionX && positionX <= this.width + 50) {
-          return this.drawRightSlider(positionX - 45);
+          return this.drawRightSlider(positionX - 40);
         }
       });
 
@@ -557,11 +557,11 @@ export class StreetDrawService {
     }
     this.leftScroll
       .attr('points', () => {
-        let point1 = `${x + this.streetOffset / 2 - 9 },${ this.halfOfHeight + 12 - 1}`;
-        let point2 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
-        let point3 = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
-        let point4 = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight + 12 - 1}`;
-        let point5 = `${x + this.streetOffset / 2 - 4},${ this.halfOfHeight + 12 + 5 - 1}`;
+        let point1 = `${x + this.streetOffset / 2 - 9 },${ this.halfOfHeight + 12 - 1 - 1}`;
+        let point2 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
+        let point3 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
+        let point4 = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight + 12 - 1 - 1}`;
+        let point5 = `${x + this.streetOffset / 2 },${ this.halfOfHeight + 12 + 5 - 1 + 2 }`;
 
         if (this.windowInnerWidth < 600) {
           point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 1}`;
@@ -573,6 +573,20 @@ export class StreetDrawService {
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
+
+    if (isDesktop) {
+      this.leftScroll
+        .attr('points', () => {
+          let point1 = `${x + this.streetOffset / 2 - 9 },${ this.halfOfHeight + 12 - 1}`;
+          let point2 = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
+          let point3 = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
+          let point4 = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight + 12 - 1}`;
+          let point5 = `${x + this.streetOffset / 2 - 4},${ this.halfOfHeight + 12 + 5 - 1}`;
+
+          return `${point1} ${point2} ${point3} ${point4} ${point5}`;
+        });
+
+    }
 
     this.leftScrollOpacityStreet
       .attr('width', x + this.streetOffset / 2);
@@ -648,11 +662,11 @@ export class StreetDrawService {
     }
 
     this.rightScroll.attr('points', () => {
-      let point1 = `${x + this.streetOffset / 2 - 1},${this.halfOfHeight + 12 - 1 }`;
-      let point2 = `${x + this.streetOffset / 2 - 1},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      let point3 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      let point4 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight + 12 - 1}`;
-      let point5 = `${x + this.streetOffset / 2 + 4},${this.halfOfHeight + 12 + 5 - 1}`;
+      let point1 = `${x + this.streetOffset / 2 - 9},${this.halfOfHeight + 12 - 1 - 1 }`;
+      let point2 = `${x + this.streetOffset / 2 - 9},${this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
+      let point3 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
+      let point4 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight + 12 - 1 - 1}`;
+      let point5 = `${x + this.streetOffset / 2},${this.halfOfHeight + 12 + 5 - 1 + 2}`;
 
       if (this.windowInnerWidth < 600) {
         point1 = `${x - 2 + this.streetOffset / 2 - 1},${this.halfOfHeight + 14 - 1}`;
@@ -664,6 +678,18 @@ export class StreetDrawService {
 
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });
+
+    if (isDesktop) {
+      this.rightScroll.attr('points', () => {
+        let point1 = `${x + this.streetOffset / 2 - 1},${this.halfOfHeight + 12 - 1 }`;
+        let point2 = `${x + this.streetOffset / 2 - 1},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
+        let point3 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
+        let point4 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight + 12 - 1}`;
+        let point5 = `${x + this.streetOffset / 2 + 4},${this.halfOfHeight + 12 + 5 - 1}`;
+
+        return `${point1} ${point2} ${point3} ${point4} ${point5}`;
+      });
+    }
 
     this.rightScrollOpacityStreet
       .attr('x', x + this.streetOffset / 2 + 1.5)
