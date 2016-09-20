@@ -27,12 +27,12 @@ let style = require('./countries-filter.css');
 @Component({
   selector: 'countries-filter',
   template: require('./countries-filter.template.html'),
-  styles: [isDesktop ? style : styleMobile],
+  styles: [style, styleMobile],
   pipes: [CountriesFilterPipe]
 })
 
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
-  protected isDesktop:boolean = isDesktop;
+  protected isDesktop: boolean = isDesktop;
   protected activeCountries: string;
   protected showSelected: boolean;
   protected locations: any[];
@@ -42,6 +42,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected selectedRegions: string[] = [];
   protected selectedCountries: string[] = [];
   protected positionLeft: number = 0;
+  protected filterTopDistance: number = 0;
   @Input()
   private url: string;
 
@@ -60,6 +61,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   private zone: NgZone;
   private resizeSubscribe: Subscription;
   private keyUpSubscribe: Subscription;
+  private openMobileFilterView: boolean = false;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -70,11 +72,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
+    this.isOpenMobileFilterView();
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
           this.setPosition();
+          this.isOpenMobileFilterView();
         });
       });
   }
@@ -92,10 +96,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
     this.search = '';
 
-    if (!this.isOpenCountriesFilter && !isDesktop) {
-      document.body.classList.remove('hideScroll');
-    }
-
     if (this.isOpenCountriesFilter && !isDesktop) {
       let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
       let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
@@ -112,8 +112,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           tabContent.scrollTop = 0;
         }, 0);
       }
-
-      document.body.classList.add('hideScroll');
     }
 
     this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
@@ -121,11 +119,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.isOpenCountriesFilter) {
       this.setPosition();
 
-      if (isDesktop) {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (isDesktop && !this.openMobileFilterView) {
           (this.element.querySelector('.autofocus') as HTMLInputElement).focus();
-        });
-      }
+        }
+
+        this.isOpenMobileFilterView();
+      }, 0);
     }
 
     if (!this.isOpenCountriesFilter) {
@@ -140,6 +140,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       } else {
         this.selectedCountries.length = 0;
       }
+
+      this.openMobileFilterView = window.innerWidth < 1024 || !isDesktop;
     }
   }
 
@@ -214,7 +216,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected goToLocation(): void {
     let query = this.parseUrl(this.url);
-    document.body.classList.remove('hideScroll');
 
     this.search = '';
 
@@ -260,14 +261,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
           this.locations = res.data;
 
-          if (!isDesktop) {
-            this.countries = _
-              .chain(res.data)
-              .map('countries')
-              .flatten()
-              .sortBy('country')
-              .value();
-          }
+          this.countries = _
+            .chain(res.data)
+            .map('countries')
+            .flatten()
+            .sortBy('country')
+            .value();
 
           this.setTitle(this.url);
           this.isFilterGotData.emit('isCountryFilterReady');
@@ -372,11 +371,30 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   private setPosition(): void {
     Config.getCoordinates('countries-filter', (data: any) => {
+      this.filterTopDistance = data.top;
+
       if (data.left + 787 + 10 > window.innerWidth) {
         this.positionLeft = data.left + 787 - window.innerWidth + 10;
       } else {
         this.positionLeft = 0;
       }
     });
+  }
+
+  private isOpenMobileFilterView(): void {
+    if (window.innerWidth < 1024 || !isDesktop) {
+      this.openMobileFilterView = true;
+      return;
+    }
+
+    let countriesFilterContainer = this.element.querySelector('#countries-filter .countries-filter-container') as HTMLElement;
+    let openCountriesFilterContainer = this.element.querySelector('.open-countries-filter') as HTMLElement;
+
+    if (countriesFilterContainer && openCountriesFilterContainer && (window.innerHeight <
+       (this.filterTopDistance + countriesFilterContainer.offsetHeight + openCountriesFilterContainer.offsetHeight))) {
+      this.openMobileFilterView = true;
+    } else {
+      this.openMobileFilterView = false;
+    }
   }
 }

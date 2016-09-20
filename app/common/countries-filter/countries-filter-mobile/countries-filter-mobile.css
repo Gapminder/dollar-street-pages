@@ -1,11 +1,11 @@
-#countries-filter {
+#countries-filter-mobile {
   display: inline-block;
   position: relative;
   vertical-align: bottom;
   margin-bottom: 5px;
 }
 
-#countries-filter .countries-filter-button {
+#countries-filter-mobile .countries-filter-button {
   background-color: white;
   border: 1px solid #e4e6e7;
   border-radius: 6px;
@@ -21,11 +21,11 @@
   text-overflow: ellipsis;
 }
 
-#countries-filter.open-countries-filter .countries-filter-button {
+#countries-filter-mobile.open-countries-filter .countries-filter-button {
   box-shadow: 0 0 10px rgba(46, 67, 80, 0.1);
 }
 
-#countries-filter .countries-filter-button span.arrow {
+#countries-filter-mobile .countries-filter-button span.arrow {
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
@@ -36,7 +36,7 @@
   right: 11px;
 }
 
-#countries-filter.open-countries-filter .countries-filter-button span.arrow {
+#countries-filter-mobile.open-countries-filter .countries-filter-button span.arrow {
   border-bottom: 7px solid #374551;
   border-top: 0 solid transparent;
   position: absolute;
@@ -44,12 +44,12 @@
   right: 11px;
 }
 
-#countries-filter .countries-filter-container {
+#countries-filter-mobile .countries-filter-container {
   display: none;
   overflow: hidden;
 }
 
-#countries-filter.open-countries-filter .countries-filter-container {
+#countries-filter-mobile.open-countries-filter .countries-filter-container {
   overflow: hidden;
   top: 0;
   bottom: 0;
@@ -63,17 +63,17 @@
   height: 100%;
 }
 
-#countries-filter .regions-container {
+#countries-filter-mobile .regions-container {
   display: inline-block;
   padding: 0 20px;
 }
 
-.underline-k {
+#countries-filter-mobile .underline-k {
   width: 100%;
   border-bottom: 1px solid #e4e6e7;
 }
 
-#countries-filter .regions-container .title {
+#countries-filter-mobile .regions-container .title {
   height: 38px;
   border-bottom: 0;
   background-color: white;
@@ -85,7 +85,7 @@
   cursor: pointer;
 }
 
-#countries-filter .title {
+#countries-filter-mobile .title {
   width: 100%;
   height: 55px;
   border-bottom: 1px solid #c6c7c9;
@@ -97,7 +97,7 @@
   margin-bottom: 16px;
 }
 
-#countries-filter .all-filter {
+#countries-filter-mobile .all-filter {
   color: #374551;
   font-size: 24px;
   line-height: 20px;
@@ -105,13 +105,13 @@
   cursor: pointer;
 }
 
-#countries-filter .countries-search {
+#countries-filter-mobile .countries-search {
   width: 100%;
   position: relative;
   margin-bottom: 19px;
 }
 
-#countries-filter .countries-search input {
+#countries-filter-mobile .countries-search input {
   font-size: 18px;
   color: #374551;
   padding: 0 30px 0 20px;
@@ -121,11 +121,11 @@
   text-align: left;
 }
 
-#countries-filter .countries-search input:focus {
+#countries-filter-mobile .countries-search input:focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
 }
 
-#countries-filter .countries-search img {
+#countries-filter-mobile .countries-search img {
   position: absolute;
   right: 14px;
   bottom: 7px;
@@ -134,19 +134,19 @@
   width: 18px;
 }
 
-#countries-filter .pointer-search-container {
+#countries-filter-mobile .pointer-search-container {
   padding: 0 20px;
   width: 100%;
 }
 
 
-#countries-filter .pointer-container {
+#countries-filter-mobile .pointer-container {
   width: 222px;
   margin-bottom: 15px;
   cursor: pointer;
 }
 
-#countries-filter .pointer-container div {
+#countries-filter-mobile .pointer-container div {
   width: 20px;
   position: relative;
   display: inline-block;
@@ -154,11 +154,11 @@
   margin-right: 8px;
 }
 
-#countries-filter .pointer-container img {
+#countries-filter-mobile .pointer-container img {
   width: 100%;
 }
 
-#countries-filter .pointer-container .check {
+#countries-filter-mobile .pointer-container .check {
   width: 22px;
   position: absolute;
   top: 3px;
@@ -166,40 +166,41 @@
   opacity: 0;
 }
 
-#countries-filter .pointer-container .active {
+#countries-filter-mobile .pointer-container .active {
   opacity: 1;
 }
 
-#countries-filter .pointer-container span {
+#countries-filter-mobile .pointer-container span {
   color: #374551;
   font-size: 24px;
   line-height: 10px;
 }
 
-.country-content {
+#countries-filter-mobile .country-content {
   padding: 10px 20px;
   position: relative;
   border-bottom: 1px solid #e4e6e7;
   width: 100%;
+  cursor: pointer;
 }
 
-.country-content .name {
+#countries-filter-mobile .country-content .name {
   margin-left: 10px;
   color: #384651;
   font-size: 22px;
   line-height: 21px;
 }
 
-#countries-filter .countries-container {
+#countries-filter-mobile .countries-container {
   height: calc(100% - 260px);
   overflow-y: auto;
 }
 
-#countries-filter .regions-container .countries-container :hover {
+#countries-filter-mobile .regions-container .countries-container :hover {
   background-color: #f4f5f5;
 }
 
-#countries-filter .regions-container span.name {
+#countries-filter-mobile .regions-container span.name {
   color: #384651;
   font-size: 20px;
   line-height: 17px;
@@ -208,20 +209,20 @@
   float: right;
 }
 
-#countries-filter .country-content.empty {
+#countries-filter-mobile .country-content.empty {
   cursor: default;
 }
 
-#countries-filter .country-content.empty span {
+#countries-filter-mobile .country-content.empty span {
   color: #a9a9a9;
 }
 
-#countries-filter .regions-container .empty  {
+#countries-filter-mobile .regions-container .empty  {
   cursor: default;
   color: #a9a9a9 ;
 }
 
-#countries-filter .button-container {
+#countries-filter-mobile .button-container {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -236,7 +237,7 @@
   color: #767d86;
 }
 
-#countries-filter .button-container button {
+#countries-filter-mobile .button-container button {
   color: #2e4350;
   font-size: 24px;
   line-height: 20px;
@@ -246,18 +247,18 @@
   padding: 5px 50px 0 50px;
 }
 
-#countries-filter .button-container button:focus {
+#countries-filter-mobile .button-container button:focus {
   box-shadow: none;
   outline: none;
 }
 
-#countries-filter .button-container img {
+#countries-filter-mobile .button-container img {
   width: 24px;
   margin: 10px 9px 15px 0;
 }
 
-#countries-filter .title .selected,
-#countries-filter .country-content .selected {
+#countries-filter-mobile .title .selected,
+#countries-filter-mobile .country-content .selected {
   width: 15px;
   height: 11px;
   float: left;
@@ -266,7 +267,7 @@
   position: absolute;
 }
 
-#countries-filter .regions-container .selected {
+#countries-filter-mobile .regions-container .selected {
   width: 15px;
   height: 11px;
   float: left;
@@ -275,52 +276,52 @@
   position: absolute;
 }
 
-#countries-filter .regions-container .not-selected {
+#countries-filter-mobile .regions-container .not-selected {
   width: 13px;
   margin-top: -2px;
   float: left;
 }
 
-#countries-filter .title .regions-names {
+#countries-filter-mobile .title .regions-names {
   margin-left: 6px;
 }
 
-#countries-filter .title .selected img,
-#countries-filter .country-content .selected img {
+#countries-filter-mobile .title .selected img,
+#countries-filter-mobile .country-content .selected img {
   width: 100%;
   display: none;
 }
 
-#countries-filter .title.active .selected img,
-#countries-filter .country-content.active .selected img {
+#countries-filter-mobile .title.active .selected img,
+#countries-filter-mobile .country-content.active .selected img {
   display: block;
 }
 
-#countries-filter .title .not-selected,
-#countries-filter .country-content .not-selected {
+#countries-filter-mobile .title .not-selected,
+#countries-filter-mobile .country-content .not-selected {
   width: 13px;
   float: left;
 }
 
-#countries-filter .title .not-selected img {
+#countries-filter-mobile .title .not-selected img {
   width: 100%;
 }
 
-#countries-filter .country-content .not-selected img {
+#countries-filter-mobile .country-content .not-selected img {
   width: 100%;
 }
 
-#countries-filter .title.active .not-selected img,
-#countries-filter .country-content.active .not-selected img {
+#countries-filter-mobile .title.active .not-selected img,
+#countries-filter-mobile .country-content.active .not-selected img {
   display: block;
   margin-top: 5px;
 }
 
-.cancel {
+#countries-filter-mobile .cancel {
   color: #767d86 !important;
 }
 
-.close-button {
+#countries-filter-mobile .close-button {
   width: 19px;
   margin: 0;
   cursor: pointer;
@@ -364,51 +365,60 @@
 
 /* IE */
 
+@media (min-width: 1024px) {
+  #countries-filter-mobile .countries-filter-button {
+    text-align: center;
+    padding: 9px 35px 10px 14px;
+    font-size: 28px;
+    line-height: 20px;
+  }
+}
+
 @media (max-width: 599px) {
-  #countries-filter {
+  #countries-filter-mobile {
     width: 100%;
     margin: 6px 0;
   }
 
-  #countries-filter .countries-filter-button {
+   .countries-filter-button {
     min-width: 100%;
   }
 
-  #countries-filter .countries-filter-button span.arrow,
-  #countries-filter.open-countries-filter .countries-filter-button span.arrow {
+  .countries-filter-button span.arrow,
+  .open-countries-filter .countries-filter-button span.arrow {
     display: none;
   }
 
-  #countries-filter .countries-search input {
+  #countries-filter-mobile .countries-search input {
     padding: 0 30px;
   }
 
-  #countries-filter .regions-container:nth-child(odd) {
+  #countries-filter-mobile .regions-container:nth-child(odd) {
     width: 40%;
   }
 
-  #countries-filter .regions-container:nth-child(even) {
+  #countries-filter-mobile .regions-container:nth-child(even) {
     width: 60%;
   }
 
-  #countries-filter .regions-container,
-  #countries-filter .pointer-search-container {
+  #countries-filter-mobile .regions-container,
+  #countries-filter-mobile .pointer-search-container {
     padding: 0 8px;
   }
 
-  #countries-filter .countries-container {
+  #countries-filter-mobile .countries-container {
     height: calc(100% - 298px);
   }
 
-  .country-content {
+  #countries-filter-mobile .country-content {
     padding: 10px 8px;
   }
 
-  #countries-filter .title {
+  #countries-filter-mobile .title {
     padding: 18px 8px;
   }
 
-  #countries-filter .button-container button {
+  #countries-filter-mobile .button-container button {
     padding: 5px 40px 0 40px;
   }
 }

@@ -1,5 +1,5 @@
 <div id="countries-filter"
-     *ngIf="activeCountries"
+     *ngIf="activeCountries && !openMobileFilterView"
      [ngClass]="{'open-countries-filter': isOpenCountriesFilter}">
   <div class="countries-filter-button"
        (click)="openCloseCountriesFilter(isOpenCountriesFilter)">
@@ -76,9 +76,18 @@
       <button type="button" (click)="goToLocation()"><img src="/assets/img/apply-icon.svg">Ok</button>
     </div>
   </div>
+</div>
 
+<div id="countries-filter-mobile"
+     *ngIf="activeCountries && openMobileFilterView"
+     [ngClass]="{'open-countries-filter': isOpenCountriesFilter}">
+  <div class="countries-filter-button"
+       (click)="openCloseCountriesFilter(isOpenCountriesFilter)">
+    <span>{{activeCountries}}</span>
+    <span class="arrow"></span>
+  </div>
   <div class="countries-filter-container"
-       *ngIf="!isDesktop && isOpenCountriesFilter">
+       *ngIf="isOpenCountriesFilter">
     <div class="title">Select countries
       <img class="close-button pull-right"
            src="/assets/img/close-button.svg"

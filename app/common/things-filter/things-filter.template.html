@@ -1,5 +1,5 @@
 <div id="things-filter"
-     *ngIf="activeThing?.plural || activeThing?.thingName"
+     *ngIf="(activeThing?.plural || activeThing?.thingName) && !openMobileFilterView"
      [ngClass]="{'open-things-filter': isOpenThingsFilter}">
   <div class="things-filter-button">
     <div class="things-filter-button-content"
@@ -25,7 +25,8 @@
     </div>
   </div>
 
-  <div *ngIf="isDesktop" class="things-filter-container">
+  <div *ngIf="isDesktop && !openMobileFilterView"
+       class="things-filter-container">
     <div class="related-things-container">
       <h3 class="title">Related</h3>
 
@@ -93,8 +94,22 @@
       </div>
     </div>
   </div>
+</div>
 
-  <div *ngIf="!isDesktop">
+<div id="things-filter-mobile"
+     *ngIf="(activeThing?.plural || activeThing?.thingName) && openMobileFilterView"
+     [ngClass]="{'open-things-filter': isOpenThingsFilter}">
+  <div class="things-filter-button">
+    <div class="things-filter-button-content"
+         (click)="openThingsFilter(isOpenThingsFilter)">
+      <img *ngIf="activeThing?.iconDark"
+           [src]="activeThing?.iconDark"
+           alt="Icon">
+      <span>{{activeThing?.plural || activeThing?.thingName}}</span>
+      <span class="arrow"></span>
+    </div>
+  </div>
+
     <div class="container-filter" *ngIf="isOpenThingsFilter">
       <div class="thing-filter-header">
         <div class="thing-filter-header-content">
@@ -134,24 +149,7 @@
             <span class="thing-name">{{thing.plural}}</span>
             <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
           </div>
-
         </div>
       </div>
     </div>
-
-    <!--
-      <div class="thing-pop-up" *ngIf="activeThing.shortDescription && !isOpenThingsFilter">
-        <div class="thing-pop-up-content">
-          <p> {{activeThing?.shortDescription}}
-            <a *ngIf="activeThing?.isShowReadMore"
-               [routerLink]="['/article', activeThing._id]"
-               [queryParams]="{}"
-               angulartics2On="click"
-               angularticsEvent="Move to Article about {{activeThing.thingName}} page with Read More button ">Read more >></a>
-          </p>
-        </div>
-      </div>
-    -->
-  </div>
-
 </div>

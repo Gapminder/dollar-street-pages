@@ -38,7 +38,7 @@
   border-bottom: 7px solid #374551;
   border-top: 0 solid transparent;
   position: absolute;
-  top: 18px;
+  top: calc(50% - 3.5px) !important;
   right: 11px;
 }
 
@@ -53,6 +53,20 @@
   height: 575px;
   z-index: 99;
   display: none;
+}
+
+#countries-filter.open-countries-filter .countries-filter-container.full-screen-filter {
+  overflow: hidden;
+  top: 0 !important;
+  bottom: 0;
+  left: 0 !important;
+  right: 0;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  display: block;
+  z-index: 500;
+  height: 100%;
 }
 
 #countries-filter.open-countries-filter .countries-filter-container {
@@ -434,7 +448,6 @@
     margin: 10px 9px 15px 0;
   }
 }
-
 
 @media (max-width: 1023px) {
   #countries-filter .countries-filter-button {
