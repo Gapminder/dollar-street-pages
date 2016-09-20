@@ -176,6 +176,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.keyUpSubscribe) {
       this.keyUpSubscribe.unsubscribe();
     }
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
   }
 
   public ngOnChanges(changes: any): void {
