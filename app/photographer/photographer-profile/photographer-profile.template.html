@@ -30,19 +30,21 @@
        *ngIf="photographer.company && photographer.company.name">
     <h3>Organisation</h3>
 
-    <p>{{photographer.company.name}}</p>
+    <p *ngIf="photographer?.company?.link"><a
+      [href]="photographer.company.link"
+      target="_blank">{{photographer.company.name}}</a>
+    </p>
+
+    <p *ngIf="!photographer?.company?.link"> {{photographer.company.name}}</p>
   </div>
 
   <p class="photographer-link"
-    *ngIf="photographer?.company?.link"><a
+    *ngIf="photographer?.company?.link && photographer?.company?.link"><a
     [href]="photographer.company.link"
     target="_blank">{{photographer.company.link}}</a></p>
 
   <div class="footer-profile"
        *ngIf="photographer.google || photographer.facebook || photographer.twitter || photographer.linkedIn">
-    <a target="_blank"
-       *ngIf="photographer.company && photographer.company.name && photographer.company.link"
-       [href]="photographer.company.link">{{photographer.company.link.replace('http://', '')}}</a>
     <div class="social-network-container">
       <a *ngIf="photographer.google"
          [href]="photographer.google"
