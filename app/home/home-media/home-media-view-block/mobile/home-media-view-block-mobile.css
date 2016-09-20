@@ -89,9 +89,17 @@
   display: -webkit-flex;
   display: flex;
 
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+
   margin-right: 20px;
+  -webkit-align-items: baseline;
   align-items: baseline;
-  flex: 2 1 20%;
+
+  -webkit-flex: 20%;
+  -ms-flex: 20%;
+  flex: 20%;
 }
 
 .home-description-container .thing-content img {
@@ -106,7 +114,9 @@
 }
 
 .home-description-container .thing-description {
-  flex: 2 1 80%;
+  -webkit-flex: 80%;
+  -ms-flex: 80%;
+  flex: 80%;
 }
 
 .home-description-container p {

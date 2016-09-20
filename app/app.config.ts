@@ -20,7 +20,8 @@ export interface ImageResolutionInterface {
 }
 
 export class Config {
-   public static api: string = 'https://apidev.dollarstreet.org';
+  public static api: string = 'https://apidev.dollarstreet.org';
+
   // public static api:string = 'http://stage.dollarstreet.org';
   // public static api: string = 'http://192.168.1.148';
   // public static api:string = 'http://192.168.1.57';
@@ -40,6 +41,8 @@ export class Config {
     {path: 'tag/:tag', component: TagComponent},
     {path: '**', component: RoutesGatewayComponent, canActivate: [RoutesGatewayGuard]}
   ];
+
+  private static windowInnerWidth: number = window.innerWidth;
 
   public static getCoordinates(querySelector: string, cb: any): any {
     let box: any = document.querySelector(querySelector).getBoundingClientRect();
@@ -65,7 +68,7 @@ export class Config {
       };
     }
 
-    if (window.innerWidth < 400) {
+    if (this.windowInnerWidth < 400) {
       return {
         image: '150x150',
         expand: 'devices',

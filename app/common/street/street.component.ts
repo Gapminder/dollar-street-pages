@@ -11,11 +11,9 @@ import {
 } from '@angular/core';
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Rx';
-
-const _ = require('lodash');
+import { sortBy, chain } from 'lodash';
 
 let tpl = require('./street.template.html');
 let style = require('./street.css');
@@ -58,8 +56,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private streetFilterSubscribe: Subscription;
   private placesArr: any;
 
-  public constructor(@Inject(ElementRef) element: ElementRef,
-                     @Inject(ActivatedRoute) activatedRoute: ActivatedRoute,
+  public constructor(element: ElementRef,
+                     activatedRoute: ActivatedRoute,
                      @Inject('Math') math: any,
                      @Inject('StreetSettingsService') streetSettingsService: any,
                      @Inject('StreetDrawService') streetDrawService: any) {
@@ -155,7 +153,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
     this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
-    this.resize = fromEvent(window, 'resize')
+    this.resize = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         if (!this.street.places) {
@@ -203,9 +202,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.street
       .clearSvg()
       .init(this.street.lowIncome, this.street.highIncome, this.streetData)
-      .set('places', _.sortBy(places, 'income'))
-      .set('fullIncomeArr', _
-        .chain(this.street.places)
+      .set('places', sortBy(places, 'income'))
+      .set('fullIncomeArr', chain(this.street.places)
         .sortBy('income')
         .map((place: any) => {
           if (!place) {

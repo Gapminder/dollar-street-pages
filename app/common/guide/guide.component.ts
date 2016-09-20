@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { BubbleComponent } from './bubble/bubble.component';
-
-let _ = require('lodash');
+import { find, difference } from 'lodash';
 
 let tpl = require('./guide.template.html');
 let style = require('./guide.css');
@@ -38,10 +37,10 @@ export class GuideComponent implements OnInit, OnDestroy {
           return;
         }
 
-        let welcomeHeader: any = _.find(res.data, ['name', 'welcomeHeader']);
+        let welcomeHeader: any = find(res.data, ['name', 'welcomeHeader']);
 
         this.description = welcomeHeader.description;
-        this.bubbles = _.difference(res.data, [welcomeHeader]);
+        this.bubbles = difference(res.data, [welcomeHeader]);
       });
   }
 

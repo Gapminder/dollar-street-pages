@@ -13,10 +13,9 @@ import {
 } from '@angular/core';
 import { CountriesFilterPipe } from './countries-filter.pipe';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Config } from '../../app.config';
-
-let _ = require('lodash');
+import * as _ from 'lodash';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -73,7 +72,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit(): void {
     this.isOpenMobileFilterView();
-    this.resizeSubscribe = fromEvent(window, 'resize')
+
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
@@ -169,12 +170,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    let getCountriesName = _.map(location.countries, 'country');
+    let getCountriesName = _.map(location.countries, 'country') as string[];
 
     if (index !== -1) {
       this.selectedRegions.splice(index, 1);
 
-      this.selectedCountries = _.difference(this.selectedCountries, getCountriesName);
+      this.selectedCountries = _.difference(this.selectedCountries, getCountriesName) as string[];
 
       return;
     }
@@ -310,7 +311,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
         _.forEach(this.locations, (location: any) => {
           if (regions.indexOf(location.region) !== -1) {
-            regionCountries = regionCountries.concat(_.map(location.countries, 'country'));
+            regionCountries = regionCountries.concat(_.map(location.countries, 'country') as string[]);
             sumCountries = +location.countries.length;
           }
         });

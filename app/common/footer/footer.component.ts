@@ -3,7 +3,7 @@ import { Router, ROUTER_DIRECTIVES, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { SocialFollowButtonsComponent } from '../social-follow-buttons/social-follow-buttons.component.ts';
 import { Config } from '../../app.config';
-import * as _ from 'lodash';
+import { compact } from 'lodash';
 
 let tpl = require('./footer.template.html');
 let style = require('./footer.css');
@@ -45,7 +45,7 @@ export class FooterComponent implements OnInit, OnDestroy {
 
         this.isMatrixComponent = activePage === '/matrix';
 
-        activePage = _.compact(activePage.split('/')).shift();
+        activePage = compact(activePage.split('/')).shift();
 
         if (activePage !== this.page) {
           document.body.classList.add(activePage);

@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, ElementRef, Inject, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Rx';
-
-const _ = require('lodash');
+import { Subscription, Observable } from 'rxjs/Rx';
+import { sortBy, chain } from 'lodash';
 
 let tpl = require('./street-filter.template.html');
 let style = require('./street-filter.css');
@@ -65,7 +63,8 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
       this.filterStreet.emit(filter);
     });
 
-    this.resize = fromEvent(window, 'resize')
+    this.resize = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.setDividers(this.places, this.streetData);
@@ -85,9 +84,8 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
     this.street
       .clearSvg()
       .init(this.lowIncome, this.highIncome, this.streetData)
-      .set('places', _.sortBy(places, 'income'))
-      .set('fullIncomeArr', _
-        .chain(this.street.places)
+      .set('places', sortBy(places, 'income'))
+      .set('fullIncomeArr', chain(this.street.places)
         .sortBy('income')
         .map((place: any) => {
           if (!place) {
