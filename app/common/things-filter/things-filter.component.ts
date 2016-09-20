@@ -1,4 +1,5 @@
 import {
+  OnInit,
   Component,
   OnDestroy,
   OnChanges,
@@ -7,31 +8,30 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  HostListener
+  HostListener,
+  NgZone
 } from '@angular/core';
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { ThingsFilterPipe } from './things-filter.pipe';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
+import { Config } from '../../app.config';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
 
-let tplMobile = require('./things-filter-mobile.template.html');
-let styleMobile = require('./things-filter-mobile.css');
-
-let tpl = require('./things-filter.template.html');
-let style = require('./things-filter.css');
+let styleMobile = require('./things-filter-mobile.css') as string;
+let style = require('./things-filter.css') as string;
 
 @Component({
   selector: 'things-filter',
-  template: isDesktop ? tpl : tplMobile,
-  styles: [isDesktop ? style : styleMobile],
+  template: require('./things-filter.template.html') as string,
+  styles: [style, styleMobile],
   directives: [ROUTER_DIRECTIVES],
   pipes: [ThingsFilterPipe]
 })
 
-export class ThingsFilterComponent implements OnDestroy, OnChanges {
+export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected relatedThings: any[];
   protected popularThings: any[];
   protected otherThings: any[];
@@ -41,7 +41,12 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
   protected activeColumn: string = '';
   protected Angulartics2GoogleAnalytics: any;
   protected things: any = [];
+  protected isDesktop: boolean = isDesktop;
+  protected filterTopDistance: number = 0;
 
+  private zone: NgZone;
+  private resizeSubscribe: Subscription;
+  private openMobileFilterView: boolean = false;
   @Output('isFilterGotData')
   private isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
 
@@ -57,11 +62,13 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
+                     zone: NgZone,
                      @Inject('ThingsFilterService') thingsFilterService: any,
                      @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
     this.thingsFilterService = thingsFilterService;
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
+    this.zone = zone;
     this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
   }
 
@@ -73,18 +80,40 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     }
   }
 
+  public ngOnInit(): void {
+    this.isOpenMobileFilterView();
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.isOpenMobileFilterView();
+        });
+      });
+  }
+
   protected openThingsFilter(isOpenThingsFilter: boolean): void {
     this.isOpenThingsFilter = !isOpenThingsFilter;
-    if (!this.isOpenThingsFilter && !isDesktop) {
-      document.body.classList.remove('hideScroll');
-    }
 
     this.search = {text: ''};
 
     if (this.isOpenThingsFilter && !isDesktop) {
       this.things = this.relatedThings;
       this.activeColumn = 'related';
-      document.body.classList.add('hideScroll');
+    }
+
+    if (this.isOpenThingsFilter) {
+      Config.getCoordinates('things-filter', (data: any) => {
+        this.filterTopDistance = data.top;
+
+        setTimeout(() => {
+          this.isOpenMobileFilterView();
+        }, 0);
+      });
+    }
+
+    if (!this.isOpenThingsFilter) {
+      this.openMobileFilterView = window.innerWidth < 1024 || !isDesktop;
     }
   }
 
@@ -99,7 +128,7 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
 
     this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
     this.isOpenThingsFilter = false;
-    document.body.classList.remove('hideScroll');
+    this.openMobileFilterView = false;
     this.search = {text: ''};
   }
 
@@ -123,11 +152,12 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
       default:
         this.things = this.relatedThings;
     }
-    tabContent.scrollTop = 0;
+    if (tabContent) {
+      tabContent.scrollTop = 0;
+    }
   }
 
   protected hideKeyboard(): void {
-
     if (this.keyUpSubscribe) {
       this.keyUpSubscribe.unsubscribe();
     }
@@ -145,6 +175,10 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     this.thingsFilterServiceSubscribe.unsubscribe();
     if (this.keyUpSubscribe) {
       this.keyUpSubscribe.unsubscribe();
+    }
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
     }
   }
 
@@ -191,5 +225,24 @@ export class ThingsFilterComponent implements OnDestroy, OnChanges {
     }
 
     return query;
+  }
+
+  private isOpenMobileFilterView(): void {
+    if (window.innerWidth < 1024 || !isDesktop) {
+      this.openMobileFilterView = true;
+      this.setActiveThingsColumn('related');
+      return;
+    }
+
+    let thingsFilterContainer = this.element.querySelector('#things-filter .things-filter-container') as HTMLElement;
+    let thingsFilterButtonContainer = this.element.querySelector('#things-filter .things-filter-button-content') as HTMLElement;
+
+    if (thingsFilterContainer && window.innerHeight <
+      (this.filterTopDistance + thingsFilterContainer.offsetHeight + thingsFilterButtonContainer.offsetHeight)) {
+      this.openMobileFilterView = true;
+      this.setActiveThingsColumn('related');
+    } else {
+      this.openMobileFilterView = false;
+    }
   }
 }

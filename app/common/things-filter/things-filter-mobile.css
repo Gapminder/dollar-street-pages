@@ -2,6 +2,7 @@
   position: absolute;
   top: 18px;
   right: 15px;
+  cursor: pointer;
 }
 
 ::-webkit-scrollbar {
@@ -13,18 +14,18 @@
   background-color: #ced1d5;;
 }
 
-#things-filter {
+#things-filter-mobile {
   display: inline-block;
   position: relative;
   vertical-align: bottom;
 }
 
-#things-filter .tabs-header-container {
+#things-filter-mobile .tabs-header-container {
   border-bottom: 1px solid #e4e6e7;
   padding: 0 20px;
 }
 
-#things-filter .tabs-header-container span {
+#things-filter-mobile .tabs-header-container span {
   color: #767d86;
   font-size: 24px;
   font-weight: 400;
@@ -32,9 +33,10 @@
   display: inline-block;
   padding: 10px 10px;
   position: relative;
+  cursor: pointer;
 }
 
-#things-filter .tabs-header-container span.active:before {
+#things-filter-mobile .tabs-header-container span.active:before {
   content: "";
   height: 2px;
   width: 100%;
@@ -45,15 +47,15 @@
   background-color: #ffcb34;
 }
 
-#things-filter .tabs-header-container span.active {
+#things-filter-mobile .tabs-header-container span.active {
   color: #374551;
 }
 
-#things-filter .container-filter {
+#things-filter-mobile .container-filter {
   display: none;
 }
 
-#things-filter.open-things-filter .container-filter {
+#things-filter-mobile.open-things-filter .container-filter {
   top: 0;
   bottom: 0;
   left: 0;
@@ -66,7 +68,7 @@
   height: 100%;
 }
 
-#things-filter .thing-filter-header .thing-filter-header-content {
+#things-filter-mobile .thing-filter-header .thing-filter-header-content {
   min-width: 150px;
   text-align: left;
   padding: 16px 35px 20px 20px;
@@ -77,18 +79,18 @@
   border-bottom: 1px solid #c6c7c9;
 }
 
-#things-filter .thing-filter-header .thing-filter-header-content img {
+#things-filter-mobile .thing-filter-header .thing-filter-header-content img {
   width: 25px;
   height: 25px;
   float: left;
   margin: -3px 10px 0 0;
 }
 
-#things-filter .things-filter-button {
+#things-filter-mobile .things-filter-button {
   position: relative;
 }
 
-#things-filter .things-filter-button .things-filter-button-content {
+#things-filter-mobile .things-filter-button .things-filter-button-content {
   background-color: white;
   border: 1px solid #e4e6e7;
   border-radius: 6px;
@@ -103,7 +105,7 @@
   text-overflow: ellipsis;
 }
 
-#things-filter .things-filter-button .things-filter-button-content img {
+#things-filter-mobile .things-filter-button .things-filter-button-content img {
   width: 25px;
   height: 25px;
   float: left;
@@ -111,7 +113,7 @@
 }
 
 
-#things-filter .things-filter-button .things-filter-button-content span.arrow {
+#things-filter-mobile .things-filter-button .things-filter-button-content span.arrow {
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
@@ -122,11 +124,11 @@
   right: 11px;
 }
 
-#things-filter.open-things-filter .things-filter-button .things-filter-button-content {
+#things-filter-mobile.open-things-filter .things-filter-button .things-filter-button-content {
   box-shadow: 0 0 10px rgba(55, 69, 81, 0.1)
 }
 
-#things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
+#things-filter-mobile.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
   border-bottom: 7px solid #374551;
   border-top: 0 solid transparent;
   position: absolute;
@@ -134,47 +136,47 @@
   right: 11px;
 }
 
-#things-filter .thing-filter-header {
+#things-filter-mobile .thing-filter-header {
   width: 100%;
   height: 55px;
   background-color: #f6f7f8;
 }
 
-#things-filter .tabs-content-container {
+#things-filter-mobile .tabs-content-container {
   position: relative;
   height: calc(100% - 160px);
   overflow-y: auto;
 }
 
-#things-filter .search-container[hidden] + .tabs-header-container + .tabs-content-container {
+#things-filter-mobile .search-container[hidden] + .tabs-header-container + .tabs-content-container {
   height: calc(100% - 106px);
   overflow-y: auto;
 }
 
-#things-filter .thing-content {
+#things-filter-mobile .thing-content {
   padding: 0px 11px 4px 24px;
   position: relative;
   border-bottom: 1px solid #e4e6e7;
   width: 100%;
 }
 
-#things-filter .thing-content:last-child {
+#things-filter-mobile .thing-content:last-child {
   border-bottom: 0;
 }
 
-#things-filter .thing-content.empty {
+#things-filter-mobile .thing-content.empty {
 }
 
-#things-filter .thing-content:hover {
+#things-filter-mobile .thing-content:hover {
   background-color: #f4f5f5;
 }
 
-#things-filter .thing-content .thing-icon-container {
+#things-filter-mobile .thing-content .thing-icon-container {
   position: relative;
   top: 12px;
 }
 
-#things-filter .thing-content .thing-apply-icon {
+#things-filter-mobile .thing-content .thing-apply-icon {
   position: absolute;
   top: calc(50% - 12px);
   right: 20px;
@@ -182,21 +184,21 @@
   height: 20px;
 }
 
-#things-filter .thing-content .thing-apply-icon img {
+#things-filter-mobile .thing-content .thing-apply-icon img {
   position: relative;
   top: 0;
   width: 20px;
   height: 20px;
 }
 
-#things-filter .thing-content img {
+#things-filter-mobile .thing-content img {
   position: relative;
   top: 0;
   width: 24px;
   height: 24px;
 }
 
-#things-filter .thing-content span {
+#things-filter-mobile .thing-content span {
   color: #374551;
   font-size: 22px;
   line-height: 30px;
@@ -205,22 +207,23 @@
   margin-top: -14px;
   margin-bottom: 3px;
   margin-left: 35px;
+  cursor: pointer;
 }
 
-#things-filter .thing-content.empty span {
+#things-filter-mobile .thing-content.empty span {
   color: #a9a9a9;
 }
 
-#things-filter .things-search {
+#things-filter-mobile .things-search {
   position: relative;
   margin: 15px 20px 5px;
 }
 
-#things-filter .things-search input:focus {
+#things-filter-mobile .things-search input:focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
 }
 
-#things-filter .things-search input {
+#things-filter-mobile .things-search input {
   font-size: 18px;
   color: #767d86;
   padding: 3px 35px 3px 20px;
@@ -231,18 +234,18 @@
   width: 100%;
 }
 
-#things-filter .things-search img {
+#things-filter-mobile .things-search img {
   position: absolute;
   top: 8px;
   right: 14px;
   width: 18px;
 }
 
-#things-filter.open-things-filter .things-filter-container {
+#things-filter-mobile.open-things-filter .things-filter-container {
   display: block;
 }
 
-.things-filter-button .thing-pop-up {
+#things-filter-mobile .things-filter-button .thing-pop-up {
   position: absolute;
   top: 100%;
   left: -7px;
@@ -252,15 +255,15 @@
   text-align: left;
 }
 
-.things-filter-button:hover .thing-pop-up {
+#things-filter-mobile .things-filter-button:hover .thing-pop-up {
   display: block;
 }
 
-.things-filter-button.exist:hover .thing-pop-up {
+#things-filter-mobile .things-filter-button.exist:hover .thing-pop-up {
   display: block;
 }
 
-.things-filter-button .thing-pop-up span {
+#things-filter-mobile .things-filter-button .thing-pop-up span {
   width: 50px;
   height: 10px;
   position: relative;
@@ -268,7 +271,7 @@
   display: block;
 }
 
-.things-filter-button .thing-pop-up span:after {
+#things-filter-mobile .things-filter-button .thing-pop-up span:after {
   content: "";
   position: absolute;
   width: 13px;
@@ -286,7 +289,7 @@
   margin: auto;
 }
 
-.things-filter-button .thing-pop-up-content {
+#things-filter-mobile .things-filter-button .thing-pop-up-content {
   width: 450px;
   background-color: white;
   border-radius: 4px;
@@ -294,7 +297,7 @@
   box-shadow: 0px 2px 12.04px 1.96px rgba(0, 0, 0, 0.28);
 }
 
-.things-filter-button .thing-pop-up-content p {
+#things-filter-mobile .things-filter-button .thing-pop-up-content p {
   font-family: 'Bariol Light', sans-serif;
   font-size: 14px;
   line-height: 20px;
@@ -302,53 +305,60 @@
   margin-bottom: 0;
 }
 
-#countries-filter .countries-search input:focus {
+#things-filter-mobile #countries-filter .countries-search input:focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
 }
 
-.things-filter-button .thing-pop-up-content p a {
+#things-filter-mobile .things-filter-button .thing-pop-up-content p a {
   color: #0567bf;
   font-family: 'Bariol Regular', sans-serif;
 }
 
-@media (max-width: 599px) {
+@media (min-width: 1024px) {
+  #things-filter-mobile .things-filter-button .things-filter-button-content {
+    padding: 8px 35px 9px 14px;
+    font-size: 28px;
+    line-height: 20px;
+  }
+}
 
-  .close-button {
+@media (max-width: 599px) {
+  #things-filter-mobile .close-button {
     position: absolute;
     top: 18px;
     right: 8px;
   }
 
-  #things-filter {
+  #things-filter-mobile {
     display: inline-block;
     position: relative;
     vertical-align: bottom;
     width: 100%
   }
 
-  #things-filter .tabs-header-container span {
+  #things-filter-mobile .tabs-header-container span {
     font-size: 24px;
     padding: 10px 14px;
   }
 
-  #things-filter .thing-filter-header .thing-filter-header-content {
+  #things-filter-mobile .thing-filter-header .thing-filter-header-content {
     padding: 18px 35px 14px 8px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
-  #things-filter .things-filter-button {
+  #things-filter-mobile .things-filter-button {
     position: relative;
     width: 100%
   }
 
-  #things-filter .things-filter-button .things-filter-button-content {
+  #things-filter-mobile .things-filter-button .things-filter-button-content {
     text-align: left;
     padding: 7px 29px 6px 12px;
   }
 
-  #things-filter .things-filter-button .things-filter-button-content img {
+  #things-filter-mobile .things-filter-button .things-filter-button-content img {
     width: 23px;
     float: left;
     margin: -3px 9px 0 0;
@@ -357,21 +367,21 @@
 
 
 
-  #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow,
-  #things-filter .things-filter-button .things-filter-button-content span.arrow {
+  #things-filter-mobile.open-things-filter .things-filter-button .things-filter-button-content span.arrow,
+  #things-filter-mobile .things-filter-button .things-filter-button-content span.arrow {
     display: none;
   }
 
-  #things-filter .tabs-content-container {
+  #things-filter-mobile .tabs-content-container {
     height: calc(100% - 160px);
   }
 
-  #things-filter .thing-content {
+  #things-filter-mobile .thing-content {
     padding: 0 18px 4px 12px;
   }
 
 
-  #things-filter .thing-content .thing-apply-icon {
+  #things-filter-mobile .thing-content .thing-apply-icon {
     position: absolute;
     top: calc(50% - 10px);
     right: 8px;
@@ -379,7 +389,7 @@
     height: 20px;
   }
 
-  #things-filter .things-search {
+  #things-filter-mobile .things-search {
     position: relative;
     margin: 15px 8px 5px;
   }
@@ -388,7 +398,7 @@
 
 @media (max-width: 568px) {
 
-  #things-filter .tabs-header-container span {
+  #things-filter-mobile .tabs-header-container span {
     color: #767d86;
     font-size: 24px;
     font-weight: 400;
@@ -398,7 +408,7 @@
     position: relative;
   }
 
-  #things-filter .tabs-header-container {
+  #things-filter-mobile .tabs-header-container {
     border-bottom: 1px solid #e4e6e7;
     padding: 0 10px;
   }

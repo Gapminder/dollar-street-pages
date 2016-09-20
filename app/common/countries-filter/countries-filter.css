@@ -38,7 +38,7 @@
   border-bottom: 7px solid #374551;
   border-top: 0 solid transparent;
   position: absolute;
-  top: 18px;
+  top: calc(50% - 3.5px) !important;
   right: 11px;
 }
 
@@ -53,6 +53,20 @@
   height: 575px;
   z-index: 99;
   display: none;
+}
+
+#countries-filter.open-countries-filter .countries-filter-container.full-screen-filter {
+  overflow: hidden;
+  top: 0 !important;
+  bottom: 0;
+  left: 0 !important;
+  right: 0;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  display: block;
+  z-index: 500;
+  height: 100%;
 }
 
 #countries-filter.open-countries-filter .countries-filter-container {
@@ -332,6 +346,108 @@
 }
 
 /* IE */
+
+@media (max-width: 1400px) {
+  .close-button {
+    margin-right: 3px;
+    margin-top: 0;
+  }
+
+  .form-control {
+    height: 30px;
+  }
+
+  #countries-filter .countries-filter-container {
+    margin-top: 2px;
+    width: 700px;
+    height: 425px;
+  }
+
+  #countries-filter .regions-container {
+    height: calc(100% - 108px);
+    padding: 5px 5px 5px 0;
+  }
+
+  #countries-filter .regions-container .countries-container {
+    height: calc(100% - 24px);
+  }
+
+  #countries-filter .regions-container .title {
+    font-size: 20px;
+    line-height: 16px;
+    margin: 0;
+    padding: 0 0 5px 11px;
+    cursor: pointer;
+  }
+
+  #countries-filter .title {
+    font-size: 20px;
+    line-height: 16px;
+    margin: 10px 10px 5px 10px;
+  }
+
+  #countries-filter .all-filter {
+    color: #374551;
+    font-size: 20px;
+    line-height: 16px;
+    margin: 0 20px 0 40px;
+  }
+
+  #countries-filter .pointer-container span {
+    font-size: 20px;
+    line-height: 6px;
+  }
+
+  #countries-filter .pointer-container {
+    width: 185px;
+    margin-top: 4px;
+  }
+
+  #countries-filter .pointer-container div {
+    width: 16px;
+    margin-right: 8px;
+  }
+
+  #countries-filter .pointer-container .check {
+    width: 18px;
+    top: 5px;
+  }
+
+  #countries-filter .countries-search {
+    margin-bottom: 5px;
+  }
+
+  #countries-filter .countries-search img {
+    top: 7px;
+    right: 14px;
+    bottom: 7px;
+    font-size: 18px;
+    width: 18px;
+  }
+
+  #countries-filter .regions-container span.name {
+    font-size: 16px;
+    line-height: 10px;
+    margin-top: 10px;
+    width: calc(100% - 20px);
+  }
+
+  #countries-filter .regions-container .country-content {
+    padding: 5px 0 5px 11px;
+    margin-right: 7px;
+  }
+
+  #countries-filter .button-container button {
+    font-size: 20px;
+    line-height: 16px;
+    padding-right: 20px;
+  }
+
+  #countries-filter .button-container img {
+    width: 20px;
+    margin: 10px 9px 15px 0;
+  }
+}
 
 @media (max-width: 1023px) {
   #countries-filter .countries-filter-button {

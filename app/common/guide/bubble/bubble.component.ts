@@ -182,6 +182,9 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
   private setBubblePositionDesktop(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
     if (step === 1 || step === 4 || step === 5) {
+      if (step === 1) {
+        data.top -= 2;
+      }
       data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
     }
 
