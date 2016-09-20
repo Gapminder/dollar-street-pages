@@ -14,18 +14,18 @@ import {
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { ThingsFilterPipe } from './things-filter.pipe';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { Config } from '../../app.config';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
 
-let styleMobile = require('./things-filter-mobile.css');
-let style = require('./things-filter.css');
+let styleMobile = require('./things-filter-mobile.css') as string;
+let style = require('./things-filter.css') as string;
 
 @Component({
   selector: 'things-filter',
-  template: require('./things-filter.template.html'),
+  template: require('./things-filter.template.html') as string,
   styles: [style, styleMobile],
   directives: [ROUTER_DIRECTIVES],
   pipes: [ThingsFilterPipe]
@@ -82,7 +82,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit(): void {
     this.isOpenMobileFilterView();
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.resizeSubscribe = Observable
+      .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {

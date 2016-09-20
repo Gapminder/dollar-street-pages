@@ -20,12 +20,12 @@ import * as _ from 'lodash';
 let device = require('device.js')();
 let isDesktop = device.desktop();
 
-let styleMobile = require('./countries-filter-mobile/countries-filter-mobile.css');
-let style = require('./countries-filter.css');
+let styleMobile = require('./countries-filter-mobile/countries-filter-mobile.css') as string;
+let style = require('./countries-filter.css') as string;
 
 @Component({
   selector: 'countries-filter',
-  template: require('./countries-filter.template.html'),
+  template: require('./countries-filter.template.html') as string,
   styles: [style, styleMobile],
   pipes: [CountriesFilterPipe]
 })
