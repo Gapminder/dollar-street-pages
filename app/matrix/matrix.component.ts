@@ -167,8 +167,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.zoom = 3;
         }
 
-        this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
-
         this.thing = this.thing ? this.thing : 'Families';
         this.zoom = this.zoom ? this.zoom : 4;
         this.regions = this.regions ? this.regions : 'World';
@@ -334,11 +332,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.getViewableRows(headerHeight);
 
-    this.row = this.activeHouse ? Math.ceil(this.activeHouse / this.zoom) : this.row;
-
     let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
 
-    if (this.activeHouse) {
+    if (this.activeHouse && Math.ceil(this.activeHouse / this.zoom) === this.row) {
       scrollTo = this.row * (this.imgContent.offsetHeight + this.imageMargin) - 60;
     }
 
@@ -526,7 +522,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public activeHouseOptions(options: any): void {
     let {row, activeHouseIndex} = options;
 
-    this.query = this.query.replace(/row\=\d*/, `row=${row}`).replace(/&activeHouse\=\d*/, '');
+    this.query = this.query.replace(/&activeHouse\=\d*/, '');
+
+    if (row) {
+      this.query.replace(/row\=\d*/, `row=${row}`);
+    }
 
     if (activeHouseIndex) {
       this.activeHouse = activeHouseIndex;

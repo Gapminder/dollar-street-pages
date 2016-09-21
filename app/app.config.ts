@@ -10,8 +10,8 @@ import { MatrixComponent } from './matrix/matrix.component';
 import { PhotographerComponent } from './photographer/photographer.component';
 import { RoutesGatewayComponent, RoutesGatewayGuard, TagComponent } from 'ng2-contentful-blog';
 
-let device = require('device.js')();
-let isDesktop = device.desktop();
+let device: {desktop: Function} = require('device.js')();
+let isDesktop: boolean = device.desktop();
 
 export interface ImageResolutionInterface {
   image: string;

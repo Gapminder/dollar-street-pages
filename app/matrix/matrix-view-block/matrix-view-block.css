@@ -297,7 +297,7 @@
   top: -13px;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1440px) {
   .view-image-block-content .view-image-container {
     height: 485px;
   }
