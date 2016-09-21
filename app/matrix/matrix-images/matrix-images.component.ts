@@ -99,12 +99,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
           numberSplice = this.row * this.zoom + this.visibleImages;
         }
 
-        if (this.activeHouse && this.activeHouse > this.visibleImages) {
-          let positionInRow: number = this.activeHouse % this.zoom;
-          let offset: number = this.zoom - positionInRow;
-
-          numberSplice = this.activeHouse + offset + this.visibleImages;
-        }
+        // if (this.activeHouse && this.activeHouse > this.visibleImages) {
+        //   let positionInRow: number = this.activeHouse % this.zoom;
+        //   let offset: number = this.zoom - positionInRow;
+        //
+        //   numberSplice = this.activeHouse + offset + this.visibleImages;
+        // }
 
         this.rowLoaderStartPosition = 0;
 
@@ -119,7 +119,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
       if (this.activeHouse && isInit) {
         setTimeout(() => {
-          this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1);
+          this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1, true);
           isInit = false;
         }, 0);
       }
@@ -201,7 +201,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
   }
 
-  protected goToImageBlock(place: any, index: number): void {
+  protected goToImageBlock(place: any, index: number, isInit?: boolean): void {
     this.indexViewBoxHouse = index;
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
     let offset: number = this.zoom - this.positionInRow;
@@ -216,11 +216,18 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
     }, 0);
 
+    let row: number = Math.ceil((this.indexViewBoxHouse + 1) / this.zoom);
+    let activeHouseIndex: number = this.indexViewBoxHouse + 1;
+
     if (!this.prevPlaceId) {
       this.prevPlaceId = place._id;
       this.showblock = !this.showblock;
 
-      this.changeUrl(Math.ceil((this.indexViewBoxHouse + 1) / this.zoom), this.indexViewBoxHouse + 1);
+      if (isInit) {
+        this.changeUrl({activeHouseIndex: activeHouseIndex});
+      } else {
+        this.changeUrl({row: row, activeHouseIndex: activeHouseIndex});
+      }
 
       return;
     }
@@ -232,12 +239,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         this.prevPlaceId = '';
       }
 
-      this.changeUrl(Math.ceil((this.indexViewBoxHouse + 1) / this.zoom));
+      this.changeUrl({row: row});
     } else {
       this.prevPlaceId = place._id;
       this.showblock = true;
 
-      this.changeUrl(Math.ceil((this.indexViewBoxHouse + 1) / this.zoom), this.indexViewBoxHouse + 1);
+      this.changeUrl({row: row, activeHouseIndex: activeHouseIndex});
     }
   }
 
@@ -245,12 +252,18 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     return `url("${image}")`;
   }
 
-  private changeUrl(row: number, activeHouseIndex?: number): void {
-    this.activeHouseOptions.emit({row: row, activeHouseIndex: activeHouseIndex});
+  private changeUrl(options: {row?: number, activeHouseIndex?: number}): void {
+    let {row, activeHouseIndex} = options;
+
     this.hoverPlace.emit(undefined);
     this.hoverPlace.emit(this.familyData);
 
-    this.goToRow(row);
+    if (row) {
+      this.goToRow(row);
+      this.activeHouseOptions.emit({row: row, activeHouseIndex: activeHouseIndex});
+    } else {
+      this.activeHouseOptions.emit({activeHouseIndex: activeHouseIndex});
+    }
   }
 
   private goToRow(row: number): void {
