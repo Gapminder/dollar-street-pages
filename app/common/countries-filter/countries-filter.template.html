@@ -111,16 +111,18 @@
         <input class="form-control"
                type="search"
                placeholder="Search country"
-               [(ngModel)]="search">
+               [(ngModel)]="search"
+               (click) = 'hideRegions(true)'>
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
     </div>
 
-    <div class="underline-k">
+    <div class="underline-k" [ngStyle] = "{display: regionsVisibility ? 'inline-block' : 'none'}">
       <div class="regions-container" *ngFor="let location of locations">
         <h3 class="title"
             (click)="selectRegions(location)"
-            [ngClass]="{empty: location.empty, active: selectedRegions.indexOf(location.region) !== -1}">
+            [ngClass]="{empty: location.empty,
+                        active: selectedRegions.indexOf(location.region) !== -1}">
         <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
         </span>
