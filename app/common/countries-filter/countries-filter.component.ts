@@ -94,6 +94,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  protected hideRegionsIfInFocus(regionsVisibility: boolean): void {
+    this.regionsVisibility = !regionsVisibility;
+  }
+
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
     this.search = '';
@@ -277,16 +281,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.isFilterGotData.emit('isCountryFilterReady');
         });
     }
-  }
-
-  protected hideRegions(isShown: boolean): void {
-    let tabContent = this.element.querySelector('.underline-k') as HTMLElement;
-
-    if (isShown && tabContent) {
-      this.regionsVisibility = false;
-      return;
-    }
-    this.regionsVisibility = true;
   }
 
   private setTitle(url: string): void {

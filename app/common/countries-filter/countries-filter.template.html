@@ -111,8 +111,9 @@
         <input class="form-control"
                type="search"
                placeholder="Search country"
-               [(ngModel)]="search"
-               (click) = 'hideRegions(true)'>
+               (focus)="hideRegionsIfInFocus(regionsVisibility)"
+               (focusout)="hideRegionsIfInFocus()"
+               [(ngModel)]="search">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
     </div>
