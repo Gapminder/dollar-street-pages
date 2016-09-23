@@ -244,6 +244,7 @@
   -o-transition: opacity 0.3s ease-out;
   transition: opacity 0.3s ease-out;
   width: 15px;
+  pointer-events: all;
 }
 
 #places .familyPortraits .portrait {
@@ -370,7 +371,7 @@
 
 .left-side-info {
   position: fixed;
-  height: calc(100% - 74px);
+  height: calc(100% - 64px);
   width: 324px;
   background-color: #f3fafc;
   z-index: 9999;
@@ -542,7 +543,7 @@
     width: 324px;
     background-color: white;
     z-index: 9999;
-    top: 58px;
+    top: 57px;
   }
 
   .left-side-info .header {

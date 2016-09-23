@@ -18,6 +18,7 @@
                [style.top.px]="place.top"
                (mouseenter)="isDesktop ? hoverOnMarker(i, place.country) : hoverOnMarkerTablet(i, place.country)"
                (mouseleave)="unHoverOnMarker($event)"
+               (touchstart)="isDesktop ? hoverOnMarker(i, place.country) : hoverOnMarkerTablet(i, place.country)"
                (click)="isDesktop ? clickOnMarker($event, i, place.country) : mobileClickOnMarker(place.country)">
           <div class="hover_portrait"
                *ngIf="isDesktop"
@@ -73,12 +74,15 @@
 
 <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
   <div class="header">
-    <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} Families in
+    <p *ngIf="lefSideCountries && lefSideCountries.length === 1">{{lefSideCountries.length}} Family in
       {{currentCountry}}</p>
-    <span>
+
+    <p *ngIf="lefSideCountries && lefSideCountries.length > 1">{{lefSideCountries.length}} Families in
+      {{currentCountry}}</p>
+
+    <span (click)="closeLeftSideBar($event)">
               <img class="close-button pull-right"
                    src="/assets/img/close-button.svg"
-                   (click)="closeLeftSideBar($event)"
                    alt="Close">
         </span>
   </div>
