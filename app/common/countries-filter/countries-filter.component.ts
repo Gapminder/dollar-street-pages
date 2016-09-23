@@ -101,7 +101,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
     this.search = '';
-    this.regionsVisibility = true;
 
     if (this.isOpenCountriesFilter && !isDesktop) {
       let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
@@ -159,7 +158,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected clearAllCountries(): void {
     this.showSelected = true;
-    this.regionsVisibility = true;
     this.selectedRegions.length = 0;
     this.selectedCountries.length = 0;
     this.search = '';
@@ -226,7 +224,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let query = this.parseUrl(this.url);
 
     this.search = '';
-    this.regionsVisibility = true;
 
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
     query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
