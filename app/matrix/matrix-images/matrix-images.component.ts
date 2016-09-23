@@ -6,7 +6,7 @@ import { RowLoaderComponent } from '../../common/row-loader/row-loader.component
 import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
 import { Subject, Subscription } from 'rxjs/Rx';
 import { concat, slice } from 'lodash';
-
+import * as _ from 'lodash';
 const device = require('device.js')();
 const isDesktop = device.desktop();
 
@@ -21,10 +21,17 @@ let style = require('./matrix-images.css');
 })
 
 export class MatrixImagesComponent implements OnInit, OnDestroy {
+  public selectedCountries: any;
+  public selectedRegions: any;
+  public activeCountries: any;
+  public selectedThing: any;
+
   protected imageBlockLocation: any;
   protected indexViewBoxHouse: number;
   protected positionInRow: number;
   protected math: any;
+  protected showErrorMsg: boolean = false;
+  protected errorMsg: any;
   protected angulartics2GoogleAnalytics: any;
   protected placesArr: any = [];
   protected viewBlockHeight: number;
@@ -59,6 +66,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private placesSubscribe: Subscription;
   private itemSize: number;
   private imageHeight: number;
+  private countriesFilterService: any;
+  private countriesFilterServiceSubscribe: Subscription;
   private familyData: any;
   private prevPlaceId: string;
   private resizeSubscribe: Subscription;
@@ -68,17 +77,20 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private windowInnerWidth: number = window.innerWidth;
   private visibleImages: number;
   private loaderService: any;
+  private locations: any;
 
   public constructor(zone: NgZone,
                      router: Router,
                      element: ElementRef,
                      @Inject('Math') math: any,
                      @Inject('LoaderService') loaderService: any,
+                     @Inject('CountriesFilterService') countriesFilterService: any,
                      @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.zone = zone;
     this.math = math;
     this.router = router;
     this.loaderService = loaderService;
+    this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
@@ -87,9 +99,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     let isInit: boolean = true;
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
+      this.showErrorMsg = false;
       this.showblock = false;
       this.currentPlaces = places;
-
+      this.buildErrorMsg(this.currentPlaces);
       setTimeout(() => {
         this.getVisibleRows();
 
@@ -125,6 +138,17 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.countriesFilterServiceSubscribe = this.countriesFilterService
+      .getCountries(`thing=${this.thing}`)
+      .subscribe((res: any): any => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.locations = res.data;
+      });
+
     this.resizeSubscribe = Observable
       .fromEvent(window, 'resize')
       .debounceTime(300)
@@ -148,6 +172,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
           this.imageBlockLocation = void 0;
           this.indexViewBoxHouse = void 0;
           this.showblock = void 0;
+          this.showErrorMsg = void 0;
         }
       });
   }
@@ -195,10 +220,104 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
+  public buildTitle(query: any): any {
+    let regions = query.regions.split(',');
+    let countries = query.countries.split(',');
+    this.selectedThing = query.thing.split(',');
+    if (regions[0] === 'World' && countries[0] === 'World') {
+      this.activeCountries = 'the world';
+
+      return;
+    }
+
+    if (regions[0] === 'World' && countries[0] !== 'World') {
+      if (countries.length > 2) {
+        this.activeCountries = countries;
+      } else {
+        this.activeCountries = countries.join(' & ');
+      }
+
+      this.selectedCountries = countries;
+
+      return;
+    }
+
+    if (regions[0] !== 'World') {
+
+      if (regions.length > 3) {
+        this.activeCountries = 'the world';
+      } else {
+        let sumCountries: number = 0;
+        let difference: string[] = [];
+        let regionCountries: string[] = [];
+
+        _.forEach(this.locations, (location: any) => {
+          if (regions.indexOf(location.region) !== -1) {
+            regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
+            sumCountries = +location.countries.length;
+          }
+        });
+
+        if (sumCountries !== countries.length) {
+          difference = _.difference(countries, regionCountries);
+        }
+
+        if (difference.length) {
+
+          this.activeCountries = regions + ',' + difference;
+        } else {
+          this.activeCountries = regions.join(' & ');
+        }
+      }
+
+      this.selectedRegions = regions;
+      this.selectedCountries = countries;
+
+      return;
+    }
+
+    let concatLocations: string[] = regions.concat(countries);
+
+    if (concatLocations.length < 5) {
+      this.activeCountries = concatLocations.join(' & ');
+    }
+
+    this.selectedRegions = regions;
+    this.selectedCountries = countries;
+  }
+
   protected imageIsUploaded(data: {index: number}): void {
     this.zone.run(() => {
       this.placesArr[data.index].isUploaded = true;
     });
+  }
+
+  protected buildErrorMsg(places: any): void {
+    if (!places.length) {
+      this.buildTitle(this.parseUrl(this.query));
+
+      let activeCountries = this.activeCountries.toString().replace(/,/g, ', ');
+
+      if (this.activeCountries === 'the world') {
+
+        this.showErrorMsg = true;
+        this.errorMsg = 'Sorry, we have no ' + this.selectedThing.toString().toLowerCase() + ' on this income yet.';
+        return;
+      } else {
+
+        if (!this.selectedRegions) {
+
+          this.showErrorMsg = true;
+
+          this.errorMsg = 'Sorry, there is no data by this query yet!';
+          return;
+        }
+
+        this.showErrorMsg = true;
+        this.errorMsg = 'Sorry, we have no ' + this.selectedThing.toString().toLowerCase() + ' in ' + activeCountries + ' on this income yet.';
+        return;
+      }
+    }
   }
 
   protected goToImageBlock(place: any, index: number, isInit?: boolean): void {
@@ -307,5 +426,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     let imageHeight: number = boxContainer.offsetWidth / this.zoom;
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
     this.visibleImages = this.zoom * visibleRows;
+  }
+
+  private parseUrl(url: string): any {
+    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }
