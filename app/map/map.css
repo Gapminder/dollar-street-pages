@@ -416,7 +416,7 @@
   left: 0;
 }
 
-.left-side-info .header p {
+.left-side-info .header a {
   font-size: 18px;
   font-family: 'Bariol Bold', sans-serif;
   color: #374551;
