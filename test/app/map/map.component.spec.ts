@@ -81,7 +81,7 @@ describe('MapComponent', () => {
 
     expect(context.onMarker).toEqual(true);
     expect(context.currentCountry).toEqual('Burundi');
-    expect(context.lefSideCountries.length).toEqual(3);
+    expect(context.leftSideCountries.length).toEqual(3);
     expect(context.seeAllHomes).toEqual(true);
     expect(context.markers.length).toEqual(174);
     expect(context.hoverPlace).toEqual(context.places[2]);
@@ -164,7 +164,7 @@ describe('MapComponent', () => {
     expect(context.hoverOnMarker.calls.argsFor(0)).toEqual([134, 'United Kingdom']);
 
     context.isOpenLeftSide = false;
-    context.lefSideCountries = [mapdata.data.places[0]];
+    context.leftSideCountries = [mapdata.data.places[0]];
     context.hoverPlace = mapdata.data.places[0];
 
     spyOn(context.router, 'navigate');
@@ -182,7 +182,7 @@ describe('MapComponent', () => {
     context.mobileClickOnMarker('United States');
 
     expect(context.currentCountry).toEqual('United States');
-    expect(context.lefSideCountries.length).toEqual(6);
+    expect(context.leftSideCountries.length).toEqual(6);
     expect(context.openLeftSideBar).toHaveBeenCalled();
   });
 

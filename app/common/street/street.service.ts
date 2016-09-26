@@ -239,7 +239,7 @@ export class StreetDrawService {
           point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
         })
         .attr('stroke-width', 1)
-        .style('fill', '#cfd2d6')
+        .style('fill', '#aaacb0')
         .style('opacity', '0.7');
     }
 
@@ -511,7 +511,7 @@ export class StreetDrawService {
         .attr('y', 0)
         .attr('height', 50)
         .style('fill', 'white')
-        .style('opacity', '0.8');
+        .style('opacity', '0.65');
     }
 
     if (!this.leftScrollOpacityLabels) {
@@ -536,7 +536,7 @@ export class StreetDrawService {
           .attr('height', 15)
           .style('fill', 'white')
           .attr('width', x + this.streetOffset / 2)
-          .style('opacity', '0.8');
+          .style('opacity', '0.65');
       }
     }
 
@@ -617,7 +617,7 @@ export class StreetDrawService {
         .attr('x', 10)
         .attr('height', 50)
         .style('fill', 'white')
-        .style('opacity', '0.8');
+        .style('opacity', '0.65');
     }
 
     if (!this.rightScrollOpacityLabels) {
@@ -642,7 +642,7 @@ export class StreetDrawService {
           .attr('height', 15)
           .style('fill', 'white')
           .attr('width', this.width - x + this.streetOffset)
-          .style('opacity', '0.8');
+          .style('opacity', '0.65');
       }
     }
 

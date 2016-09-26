@@ -263,7 +263,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       !this.element.querySelector('.image-content') || !imageClientRect.height ||
       this.imageHeight === imageClientRect.height &&
       this.footerHeight === footer.offsetHeight) {
-
       return;
     }
 
@@ -435,6 +434,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.highIncome = highIncome;
 
             this.urlChanged({url: this.query});
+            return;
+          }
+
+          if (!this.filtredPlaces.length) {
+            let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
+
+            let headerHeight: number = this.headerContainer.offsetHeight;
+            matrixImages.style.paddingTop = `${headerHeight}px`;
           }
 
           this.buildTitle(this.parseUrl(this.query));

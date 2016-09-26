@@ -43,7 +43,7 @@
                   <span class="income">{{math.round(hoverPlace.income)}}$</span>
                 </div>
                 <div class="see-all" *ngIf="seeAllHomes" (click)="openLeftSideBar()">
-                  <span class="see-all-span">See all {{lefSideCountries.length}} Families »</span>
+                  <span class="see-all-span">See all {{leftSideCountries.length}} Families »</span>
                 </div>
               </div>
             </div>
@@ -74,11 +74,18 @@
 
 <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
   <div class="header">
-    <p *ngIf="lefSideCountries && lefSideCountries.length === 1">{{lefSideCountries.length}} Family in
-      {{currentCountry}}</p>
 
-    <p *ngIf="lefSideCountries && lefSideCountries.length > 1">{{lefSideCountries.length}} Families in
-      {{currentCountry}}</p>
+    <a *ngIf="leftSideCountries && leftSideCountries.length === 1"  [routerLink]="['/matrix']"
+       [queryParams]="{thing: 'Families', countries: currentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
+       angulartics2On="click"
+       angularticsEvent="From Home page to Matrix page"> Family in
+      {{currentCountry}} >> </a>
+
+    <a *ngIf="leftSideCountries && leftSideCountries.length > 1"  [routerLink]="['/matrix']"
+       [queryParams]="{thing: 'Families', countries: currentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
+       angulartics2On="click"
+       angularticsEvent="From Home page to Matrix page">All {{leftSideCountries.length}} families in
+      {{currentCountry}} >> </a>
 
     <span (click)="closeLeftSideBar($event)">
               <img class="close-button pull-right"
@@ -88,7 +95,7 @@
   </div>
   <div class="info-box-container">
     <div class="info-box"
-         *ngFor="let place of lefSideCountries"
+         *ngFor="let place of leftSideCountries"
          [routerLink]="['/family']"
          [queryParams]="{place: place._id}"
          angulartics2On="click"
