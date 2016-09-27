@@ -38,6 +38,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected countries: any[];
   protected search: string = '';
   protected isOpenCountriesFilter: boolean = false;
+  protected regionsVisibility: boolean = true;
   protected selectedRegions: string[] = [];
   protected selectedCountries: string[] = [];
   protected positionLeft: number = 0;
@@ -91,6 +92,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.openCloseCountriesFilter(true);
       this.search = '';
     }
+  }
+
+  protected hideRegionsIfInFocus(regionsVisibility: boolean): void {
+    this.regionsVisibility = !regionsVisibility;
   }
 
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
@@ -392,7 +397,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let openCountriesFilterContainer = this.element.querySelector('.open-countries-filter') as HTMLElement;
 
     if (countriesFilterContainer && openCountriesFilterContainer && (window.innerHeight <
-       (this.filterTopDistance + countriesFilterContainer.offsetHeight + openCountriesFilterContainer.offsetHeight))) {
+      (this.filterTopDistance + countriesFilterContainer.offsetHeight + openCountriesFilterContainer.offsetHeight))) {
       this.openMobileFilterView = true;
     } else {
       this.openMobileFilterView = false;
