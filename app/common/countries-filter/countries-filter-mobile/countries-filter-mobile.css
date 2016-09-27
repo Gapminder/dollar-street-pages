@@ -141,8 +141,6 @@
 
 
 #countries-filter-mobile .pointer-container {
-  width: 222px;
-  margin-bottom: 15px;
   cursor: pointer;
 }
 
@@ -150,12 +148,17 @@
   width: 20px;
   position: relative;
   display: inline-block;
-  vertical-align: super;
-  margin-right: 8px;
+  vertical-align: middle;
+  margin-right: 5px;
 }
 
-#countries-filter-mobile .pointer-container img {
-  width: 100%;
+#countries-filter-mobile .button-container .pointer-container img {
+  width: 19px !important;
+  vertical-align: text-top;
+}
+
+#countries-filter-mobile .pointer-container .white-background {
+  background: white;
 }
 
 #countries-filter-mobile .pointer-container .check {
@@ -176,6 +179,14 @@
   line-height: 10px;
 }
 
+#countries-filter-mobile .pointer-container .normal {
+  display: inline-block;
+}
+
+#countries-filter-mobile .pointer-container .shorten {
+  display: none;
+}
+
 #countries-filter-mobile .country-content {
   padding: 10px 20px;
   position: relative;
@@ -192,7 +203,7 @@
 }
 
 #countries-filter-mobile .countries-container {
-  height: calc(100% - 260px);
+  height: calc(100% - 220px);
   overflow-y: auto;
 }
 
@@ -214,12 +225,12 @@
 }
 
 #countries-filter-mobile .country-content.empty span {
-  color: #a9a9a9;
+  color: #d5dbdf;
 }
 
 #countries-filter-mobile .regions-container .empty  {
   cursor: default;
-  color: #a9a9a9 ;
+  color: #d5dbdf;
 }
 
 #countries-filter-mobile .button-container {
@@ -244,7 +255,7 @@
   border: 0;
   background: none;
   box-shadow: none;
-  padding: 5px 50px 0 50px;
+  padding: 5px 40px;
 }
 
 #countries-filter-mobile .button-container button:focus {
@@ -401,13 +412,56 @@
     width: 60%;
   }
 
+  #countries-filter-mobile .pointer-container {
+    display: inline-block;
+    padding: 0;
+    float: left;
+  }
+
+  #countries-filter-mobile .pointer-container div {
+    margin: 0;
+  }
+
+  #countries-filter-mobile .pointer-container .normal {
+    display: none;
+  }
+
+  #countries-filter-mobile .pointer-container .shorten {
+    display: inline-block;
+  }
+
+  #countries-filter-mobile .button-container button {
+    padding: 2px 10px !important;
+  }
+
+  #countries-filter-mobile .button-container .cancel {
+   margin-top: 16px;
+  }
+
+  #countries-filter-mobile .button-container button:last-child {
+    float: right;
+  }
+
+  #countries-filter-mobile .button-container img {
+    width: 19px;
+    margin: 15px 8px 20px 0;
+  }
+
+  #countries-filter-mobile .button-container .ok-img {
+    width: 24px;
+  }
+
+  #countries-filter-mobile .pointer-container .check {
+    width: 19px;
+  }
+
   #countries-filter-mobile .regions-container,
   #countries-filter-mobile .pointer-search-container {
     padding: 0 8px;
   }
 
   #countries-filter-mobile .countries-container {
-    height: calc(100% - 298px);
+    height: calc(100% - 260px);
   }
 
   #countries-filter-mobile .country-content {

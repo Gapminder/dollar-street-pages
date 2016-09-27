@@ -50,7 +50,7 @@
   top: 100%;
   margin-top: 5px;
   width: 787px;
-  height: 575px;
+  height: 548px;
   z-index: 99;
   display: none;
 }
@@ -78,7 +78,7 @@
   width: 25%;
   padding: 7px 5px 5px 0;
   float: left;
-  height: calc(100% - 155px);
+  height: calc(100% - 130px);
 }
 
 #countries-filter .regions-container .title {
@@ -144,9 +144,9 @@
 
 
 #countries-filter .pointer-container {
-  width: 222px;
-  float: left;
-  margin-top: 5px;
+  width: 275px;
+  display: inline-block;
+  padding-right: 38px;
   cursor: pointer;
 }
 
@@ -165,7 +165,7 @@
 #countries-filter .pointer-container .check {
   width: 22px;
   position: absolute;
-  top: 3px;
+  top: 0;
   left: 2px;
   opacity: 0;
 }
@@ -213,12 +213,12 @@
 }
 
 #countries-filter .regions-container .country-content.empty span {
-  color: #a9a9a9;
+  color: #d5dbdf;
 }
 
 #countries-filter .regions-container .empty  {
   cursor: default;
-  color: #a9a9a9 ;
+  color: #d5dbdf;
 }
 
 #countries-filter .button-container {
@@ -226,6 +226,7 @@
   float: none;
   clear: both;
   text-align: right;
+  padding-top: 2px;
 }
 
 #countries-filter .button-container button {
@@ -235,7 +236,7 @@
   border: 0;
   background: none;
   box-shadow: none;
-  padding-right: 20px;
+  padding-right: 27px;
 }
 
 #countries-filter .button-container button:focus {
@@ -244,8 +245,13 @@
 }
 
 #countries-filter .button-container img {
+  width: 19px;
+  margin: 15px 9px 15px 0;
+}
+
+#countries-filter .button-container .ok-img {
   width: 24px;
-  margin: 10px 9px 15px 0;
+  margin-top: 7px;
 }
 
 #countries-filter .title .selected,
@@ -364,19 +370,19 @@
   }
 
   #countries-filter .regions-container {
-    height: calc(100% - 108px);
+    height: calc(100% - 90px);
     padding: 5px 5px 5px 0;
   }
 
   #countries-filter .regions-container .countries-container {
-    height: calc(100% - 24px);
+    height: calc(100% - 30px);
   }
 
   #countries-filter .regions-container .title {
     font-size: 20px;
     line-height: 16px;
     margin: 0;
-    padding: 0 0 5px 11px;
+    padding: 0 0 10px 11px;
     cursor: pointer;
   }
 
@@ -399,7 +405,7 @@
   }
 
   #countries-filter .pointer-container {
-    width: 185px;
+    width: 210px;
     margin-top: 4px;
   }
 
@@ -410,7 +416,7 @@
 
   #countries-filter .pointer-container .check {
     width: 18px;
-    top: 5px;
+    top: 3px;
   }
 
   #countries-filter .countries-search {
@@ -437,6 +443,10 @@
     margin-right: 7px;
   }
 
+  #countries-filter .button-container {
+    padding-top: 5px;
+  }
+
   #countries-filter .button-container button {
     font-size: 20px;
     line-height: 16px;
@@ -444,8 +454,14 @@
   }
 
   #countries-filter .button-container img {
-    width: 20px;
-    margin: 10px 9px 15px 0;
+    width: 19px;
+    margin: 0 9px 0 0;
+    padding-top: 2px;
+  }
+
+  #countries-filter .button-container .ok-img {
+    padding-top: 0;
+    margin-top: -7px;
   }
 }
 

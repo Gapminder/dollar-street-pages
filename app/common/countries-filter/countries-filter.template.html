@@ -10,7 +10,7 @@
   <div class="countries-filter-container"
        *ngIf="isDesktop"
        [style.left.px]="-positionLeft">
-    <div class="title">Select countries
+    <div class="title">
       <img class="close-button pull-right"
            src="/assets/img/close-button.svg"
            (click)="cancelCountriesFilter()"
@@ -18,17 +18,6 @@
     </div>
 
     <div class="pointer-search-container">
-      <div class="pointer-container" (click)="clearAllCountries()">
-        <div>
-          <img src="/assets/img/empty-check.png"
-               alt="">
-          <img class="check" src="/assets/img/check-icon.svg"
-               alt=""
-               [ngClass]="{active: showSelected}">
-        </div>
-        <span>Show all countries</span>
-      </div>
-
       <div class="countries-search">
         <input class="form-control autofocus"
                type="search"
@@ -72,8 +61,18 @@
     </div>
 
     <div class="button-container">
+      <div class="pointer-container" (click)="clearAllCountries()">
+        <div>
+          <img src="/assets/img/empty-check.png"
+               alt="">
+          <img class="check" src="/assets/img/check-icon.svg"
+               alt=""
+               [ngClass]="{active: showSelected}">
+        </div>
+        <span>Show all countries</span>
+      </div>
       <button class="cancel" type="button" (click)="cancelCountriesFilter()">Cancel</button>
-      <button type="button" (click)="goToLocation()"><img src="/assets/img/apply-icon.svg">Ok</button>
+      <button type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">Ok</button>
     </div>
   </div>
 </div>
@@ -96,24 +95,13 @@
     </div>
 
     <div class="pointer-search-container">
-      <div class="pointer-container" (click)="clearAllCountries()">
-        <div>
-          <img src="/assets/img/empty-check.png"
-               alt="">
-          <img class="check" src="/assets/img/check-icon.svg"
-               alt=""
-               [ngClass]="{active: showSelected}">
-        </div>
-        <span>Show all countries</span>
-      </div>
-
       <div class="countries-search">
         <input class="form-control"
                type="search"
                placeholder="Search country"
-               (focus)="hideRegionsIfInFocus(regionsVisibility)"
-               (focusout)="hideRegionsIfInFocus()"
-               [(ngModel)]="search">
+               [(ngModel)]="search"
+
+               (click)="hideRegions(true)">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
     </div>
@@ -154,10 +142,21 @@
       </div>
     </div>
 
-
     <div class="button-container">
+      <button class="pointer-container" (click)="clearAllCountries()">
+        <div>
+          <img class="white-background"
+               src="/assets/img/empty-check.png"
+               alt="">
+          <img class="check" src="/assets/img/check-icon.svg"
+               alt=""
+               [ngClass]="{active: showSelected}">
+        </div>
+        <span class="normal">Show all countries</span>
+        <span class="shorten">Show all</span>
+      </button>
       <button class="cancel" type="button" (click)="cancelCountriesFilter()">Cancel</button>
-      <button type="button" (click)="goToLocation()"><img src="/assets/img/apply.svg">Ok</button>
+      <button type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">Ok</button>
     </div>
   </div>
 </div>
