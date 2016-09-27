@@ -6,10 +6,16 @@
                   [routerLink]="['/map']"
                   [queryParams]="{thing: thing}"
                   angulartics2On="click"
-                  angularticsEvent="From {{country.country}} country page to Map page"></region-map>
+                  angularticsEvent="From {{country?.alias }} country page to Map page"></region-map>
     </div>
-
-    <p class="description" *ngIf="country?.description">{{country.description}}</p>
+    <div class="country-link">
+      <a [routerLink]="['/matrix']"
+         [queryParams]="{thing: 'Families', countries: country?.alias  , regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
+         angulartics2On="click"
+         angularticsEvent="From '{{country?.alias }} country page to Matrix page with all families in {{country?.alias }} ">
+        All families in {{country?.alias}} >> </a>
+      <p class="description" *ngIf="country?.description">{{country.description}}</p>
+    </div>
   </div>
 
   <div class="main">
@@ -36,8 +42,16 @@
                 [routerLink]="['/map']"
                 [queryParams]="{thing: thing}"
                 angulartics2On="click"
-                angularticsEvent="From {{country.country}} country page to Map page"></region-map>
+                angularticsEvent="From {{country.alias}} country page to Map page"></region-map>
+    <div class="country-link">
+      <a [routerLink]="['/matrix']"
+         [queryParams]="{thing: 'Families', countries: country?.alias , regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
+         angulartics2On="click"
+         angularticsEvent="From '{{country?.alias}} country page to Matrix page with all families in {{country?.alias}} ">
+        All families in {{country?.alias}} >> </a>
+    </div>
   </div>
+
 
   <div class="item-description">
     <div class="item-description-header">

@@ -1,3 +1,10 @@
+.country-link {
+  padding-top: 20px;
+  margin-left: 19px;
+  margin-right: -9px;
+  word-break: keep-all;
+}
+
 #item-profile {
   color: #374551;
   font-size: 18px;
@@ -36,6 +43,12 @@
 #item-profile .item-profile-header .country img {
   width: 10px;
   margin: -5px 0 0;
+}
+
+#item-profile .item-profile-header a {
+  font-family: 'Bariol Regular', sans-serif;
+  color: #374551;
+  font-size: 16px;
 }
 
 #item-profile .main {
@@ -136,6 +149,13 @@
   position: relative;
   margin-right: 20px;
   float: left;
+}
+
+
+#item-profile-mobile .box-container a {
+  font-family: 'Bariol Regular', sans-serif;
+  color: #374551;
+  font-size: 16px;
 }
 
 #item-profile-mobile .box-container > img {
@@ -295,9 +315,20 @@
   #item-profile .main span {
     margin-top: 1px;
   }
+
+  #item-profile .item-profile-header a {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 1023px) {
+
+  .country-link {
+    padding-top: 20px;
+    margin-left: 11px;
+    margin-right: -7px;
+  }
+
   #item-profile {
     display: none;
   }
@@ -305,9 +336,19 @@
   #item-profile-mobile {
     display: block;
   }
+
+/*  #item-profile-mobile .box-container a {
+    margin: 0 11px;
+  }*/
 }
 
 @media (max-width: 600px) {
+  .country-link {
+    padding-top: 20px;
+    margin-left: 11px;
+    margin-right: -9px
+  }
+
   #item-profile-mobile {
     padding: 15px 5px 0;
     margin-bottom: 25px;
@@ -329,6 +370,10 @@
   #item-profile-mobile .box-container {
     width: 178px;
     margin-right: 10px;
+  }
+
+  #item-profile-mobile .box-container a {
+    font-size: 15px;
   }
 
   #item-profile-mobile .item-description {

@@ -78,13 +78,13 @@
     <a *ngIf="leftSideCountries && leftSideCountries.length === 1"  [routerLink]="['/matrix']"
        [queryParams]="{thing: 'Families', countries: currentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
        angulartics2On="click"
-       angularticsEvent="From Home page to Matrix page"> Family in
+       angularticsEvent="From map page to Matrix page with one family in {{currentCountry}}"> Family in
       {{currentCountry}} >> </a>
 
     <a *ngIf="leftSideCountries && leftSideCountries.length > 1"  [routerLink]="['/matrix']"
        [queryParams]="{thing: 'Families', countries: currentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
        angulartics2On="click"
-       angularticsEvent="From Home page to Matrix page">All {{leftSideCountries.length}} families in
+       angularticsEvent="From map page to Matrix page with all families in {{currentCountry}} ">All {{leftSideCountries.length}} families in
       {{currentCountry}} >> </a>
 
     <span (click)="closeLeftSideBar($event)">
