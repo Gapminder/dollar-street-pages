@@ -33,6 +33,7 @@
                        [style.-ms-flex-order]="imageBlockLocation"
                        [style.-webkit-order]="imageBlockLocation"
                        [style.order]="imageBlockLocation"
+                       (goToMatrixWithCountry)="goToMatrixWithCountry($event)"
                        (closeBigImageBlock)="goToImageBlock(familyData, indexViewBoxHouse)">
     </matrix-view-block>
 
