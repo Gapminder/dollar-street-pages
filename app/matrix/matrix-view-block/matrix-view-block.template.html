@@ -48,7 +48,7 @@
             src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
 
           <a *ngIf="isShowCountryButton"
-             (click)="goToMatrixByCountry(familyData.country.country)">
+             (click)="goToMatrixByCountry(familyData.country.alias)">
             <span>All {{thing.toLowerCase()}}</span>
             <span>in</span>
             <span>{{countryName}}</span>
@@ -62,7 +62,7 @@
                       [queryParams]="{}"
                       [mapData]="mapData"
                       angulartics2On="click"
-                      angularticsEvent="From Matrix page to {{familyData.country?.country}} page"></region-map>
+                      angularticsEvent="From Matrix page to {{familyData.country?.alias}} page"></region-map>
         </div>
       </div>
 

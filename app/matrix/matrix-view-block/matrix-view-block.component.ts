@@ -128,10 +128,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         if (this.familyData && this.familyData.familyData.length) {
           this.familyData.description = this.getDescription(this.familyData.familyData);
         }
-
         this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
-        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.country;
+        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.alias;
         this.loader = true;
       });
   }
@@ -173,6 +172,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     query.regions = 'World';
     query.countries = country;
+    query.lowIncome = '1';
+    query.highIncome = '15000';
 
     delete query.activeHouse;
 
