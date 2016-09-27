@@ -33,6 +33,7 @@
                        [style.-ms-flex-order]="imageBlockLocation"
                        [style.-webkit-order]="imageBlockLocation"
                        [style.order]="imageBlockLocation"
+                       (goToMatrixWithCountry)="goToMatrixWithCountry($event)"
                        (closeBigImageBlock)="goToImageBlock(familyData, indexViewBoxHouse)">
     </matrix-view-block>
 
@@ -49,6 +50,6 @@
   </div>
 </div>
 
-<div class="xl-text-c" *ngIf="!currentPlaces?.length">
-  <p>Sorry. There is no data by this query yet.</p>
+<div class="xl-text-c" *ngIf="showErrorMsg">
+  <p>{{errorMsg}}</p>
 </div>

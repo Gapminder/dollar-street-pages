@@ -18,6 +18,7 @@
                [style.top.px]="place.top"
                (mouseenter)="isDesktop ? hoverOnMarker(i, place.country) : hoverOnMarkerTablet(i, place.country)"
                (mouseleave)="unHoverOnMarker($event)"
+               (touchstart)="isDesktop ? hoverOnMarker(i, place.country) : hoverOnMarkerTablet(i, place.country)"
                (click)="isDesktop ? clickOnMarker($event, i, place.country) : mobileClickOnMarker(place.country)">
           <div class="hover_portrait"
                *ngIf="isDesktop"
@@ -42,7 +43,7 @@
                   <span class="income">{{math.round(hoverPlace.income)}}$</span>
                 </div>
                 <div class="see-all" *ngIf="seeAllHomes" (click)="openLeftSideBar()">
-                  <span class="see-all-span">See all {{lefSideCountries.length}} Families »</span>
+                  <span class="see-all-span">See all {{leftSideCountries.length}} Families »</span>
                 </div>
               </div>
             </div>
@@ -73,18 +74,28 @@
 
 <div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
   <div class="header">
-    <p *ngIf="lefSideCountries && lefSideCountries.length">{{lefSideCountries.length}} Families in
-      {{currentCountry}}</p>
-    <span>
+
+    <a *ngIf="leftSideCountries && leftSideCountries.length === 1"  [routerLink]="['/matrix']"
+       [queryParams]="{thing: 'Families', countries: currentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
+       angulartics2On="click"
+       angularticsEvent="From map page to Matrix page with one family in {{currentCountry}}"> Family in
+      {{currentCountry}} >> </a>
+
+    <a *ngIf="leftSideCountries && leftSideCountries.length > 1"  [routerLink]="['/matrix']"
+       [queryParams]="{thing: 'Families', countries: currentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: 0, highIncome: 15000}"
+       angulartics2On="click"
+       angularticsEvent="From map page to Matrix page with all families in {{currentCountry}} ">All {{leftSideCountries.length}} families in
+      {{currentCountry}} >> </a>
+
+    <span (click)="closeLeftSideBar($event)">
               <img class="close-button pull-right"
                    src="/assets/img/close-button.svg"
-                   (click)="closeLeftSideBar($event)"
                    alt="Close">
         </span>
   </div>
   <div class="info-box-container">
     <div class="info-box"
-         *ngFor="let place of lefSideCountries"
+         *ngFor="let place of leftSideCountries"
          [routerLink]="['/family']"
          [queryParams]="{place: place._id}"
          angulartics2On="click"

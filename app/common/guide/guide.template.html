@@ -1,12 +1,12 @@
 <div class="quick-guide-container" *ngIf="isShowGuide">
   <div class="quick-guide-content">
-    <div class="logo-container">
+    <div class="guide-logo-container">
       <img src="/assets/img/welcome-header-logo.png" alt="Logo">
     </div>
 
     <div class="quick-guide-description-container">
       <h1>Dollar Street</h1>
-      <p *ngIf="description">{{description}}</p>
+      <div class="guide-description" *ngIf="description" [innerHtml]="description"></div>
       <h2>See how people <span>really</span> live</h2>
       <div class="button-container">
         <button class="bg-orange" type="button" (click)="openQuickGuide()">Quick tour</button>

@@ -36,7 +36,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private urlChangeService: any;
   private query: string;
   private currentCountry: string;
-  private lefSideCountries: any;
+  private leftSideCountries: any;
   private seeAllHomes: boolean = false;
   private leftArrowTop: any;
   private onThumb: boolean = false;
@@ -163,11 +163,11 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onMarker = true;
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place: any): boolean => {
+    this.leftSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;
     });
 
-    this.seeAllHomes = this.lefSideCountries.length > 1;
+    this.seeAllHomes = this.leftSideCountries.length > 1;
 
     this.markers = this.map.querySelectorAll('.marker');
 
@@ -243,11 +243,11 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onMarker = true;
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place: any): boolean => {
+    this.leftSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;
     });
 
-    this.seeAllHomes = this.lefSideCountries.length > 1;
+    this.seeAllHomes = this.leftSideCountries.length > 1;
 
     this.markers = this.map.querySelectorAll('.marker');
 
@@ -364,7 +364,7 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.lefSideCountries && this.lefSideCountries.length === 1) {
+    if (this.leftSideCountries && this.leftSideCountries.length === 1) {
       this.angulartics2GoogleAnalytics
         .eventTrack(`Look at ${this.hoverPlace.family} place from ${this.hoverPlace.country} with map page`);
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
@@ -374,11 +374,11 @@ export class MapComponent implements OnInit, OnDestroy {
   public mobileClickOnMarker(country: any): void {
     this.currentCountry = country;
 
-    this.lefSideCountries = this.places.filter((place: any): boolean => {
+    this.leftSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;
     });
 
-    if (this.lefSideCountries && this.lefSideCountries.length) {
+    if (this.leftSideCountries && this.leftSideCountries.length) {
       this.openLeftSideBar();
     }
   }
