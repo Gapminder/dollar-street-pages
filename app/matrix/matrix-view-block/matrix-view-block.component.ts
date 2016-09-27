@@ -56,6 +56,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private windowInnerWidth: number = window.innerWidth;
   private isShowCountryButton: boolean;
   private countryName: string;
+  private streetSettingsService: any;
+  private streetData: any;
+  private streetServiceSubscribe: Subscription;
 
   @Input('positionInRow')
   private positionInRow: any;
@@ -75,11 +78,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      router: Router,
                      element: ElementRef,
                      @Inject('Math') math: any,
+                     @Inject('StreetSettingsService') streetSettingsService: any,
                      @Inject('FamilyInfoService') familyInfoService: any) {
     this.math = math;
     this.zone = zone;
     this.router = router;
     this.element = element.nativeElement;
+    this.streetSettingsService = streetSettingsService;
     this.familyInfoService = familyInfoService;
   }
 
@@ -96,6 +101,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
             this.familyData.description = this.getDescription(this.familyData.familyData);
           }
         });
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.streetData = res.data;
       });
   }
 
@@ -128,10 +142,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         if (this.familyData && this.familyData.familyData.length) {
           this.familyData.description = this.getDescription(this.familyData.familyData);
         }
-
         this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
-        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.country;
+        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.alias;
         this.loader = true;
       });
   }
@@ -173,6 +186,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     query.regions = 'World';
     query.countries = country;
+    query.lowIncome = this.streetData.poor;
+    query.highIncome = this.streetData.rich;
 
     delete query.activeHouse;
 

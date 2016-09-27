@@ -296,6 +296,7 @@
 @media (max-width: 1200px) {
   #item-profile {
     font-size: 14px;
+    margin-left: 11px;
   }
 
   #item-profile .main .home i {
