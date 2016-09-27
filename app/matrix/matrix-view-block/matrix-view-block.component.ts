@@ -53,6 +53,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private widthScroll: number;
   private element: HTMLElement;
   private boxContainer: HTMLElement;
+  private windowInnerWidth: number = window.innerWidth;
+  private isShowCountryButton: boolean;
+  private countryName: string;
 
   @Input('positionInRow')
   private positionInRow: any;
@@ -64,6 +67,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private thing: string;
   @Output('closeBigImageBlock')
   private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
+  @Output('goToMatrixWithCountry')
+  private goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
 
   public constructor(zone: NgZone,
@@ -83,7 +88,14 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       .fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
-        this.zone.run(() => this.setMarkerPosition());
+        this.zone.run(() => {
+          this.windowInnerWidth = window.innerWidth;
+          this.setMarkerPosition();
+
+          if (this.familyData && this.familyData.familyData.length) {
+            this.familyData.description = this.getDescription(this.familyData.familyData);
+          }
+        });
       });
   }
 
@@ -113,11 +125,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
         this.familyData = res.data;
 
-        if (this.familyData.familyData && this.familyData.familyData.length > 300) {
-          this.familyData.familyData = this.familyData.familyData.slice(0, 300) + '...';
+        if (this.familyData && this.familyData.familyData.length) {
+          this.familyData.description = this.getDescription(this.familyData.familyData);
         }
 
+        this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
+        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.country;
         this.loader = true;
       });
   }
@@ -154,6 +168,17 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.fancyBoxImage = void 0;
   }
 
+  protected goToMatrixByCountry(country: string): void {
+    let query: any = this.parseUrl(this.query);
+
+    query.regions = 'World';
+    query.countries = country;
+
+    delete query.activeHouse;
+
+    this.goToMatrixWithCountry.emit({url: this.objToQuery(query), isCountriesFilter: true});
+  }
+
   private parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
@@ -168,5 +193,49 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     let imageWidth: number = (this.boxContainer.offsetWidth - this.boxContainerPadding * 2 - this.widthScroll) / this.privateZoom;
 
     this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
+  }
+
+  private getDescription(shortDescription: string): string {
+    let numbers: number = 300;
+
+    if (isDesktop) {
+      if (this.windowInnerWidth > 1440 && shortDescription.length > 300) {
+        numbers = 300;
+      } else if (this.windowInnerWidth <= 1440 && shortDescription.length > 113) {
+        numbers = 113;
+      }
+    }
+
+    if (shortDescription.length > numbers) {
+      return shortDescription.slice(0, numbers) + '...';
+    } else {
+      return shortDescription;
+    }
+  }
+
+  private objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
+      return encodeURIComponent(k) + '=' + data[k];
+    }).join('&');
+  }
+
+  private truncCountryName(countryData: any): string {
+    let countryName: string;
+
+    switch (countryData.alias) {
+      case 'South Africa' :
+        countryName = 'SA';
+        break;
+      case 'United States' :
+        countryName = 'USA';
+        break;
+      case 'United Kingdom' :
+        countryName = 'UK';
+        break;
+      default :
+        countryName = countryData.alias;
+    }
+
+    return countryName;
   }
 }

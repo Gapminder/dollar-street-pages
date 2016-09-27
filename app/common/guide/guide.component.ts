@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { BubbleComponent } from './bubble/bubble.component';
 import { find, difference } from 'lodash';
@@ -10,15 +10,15 @@ let style = require('./guide.css');
   selector: 'quick-guide',
   template: tpl,
   styles: [style],
-  directives: [BubbleComponent]
+  directives: [BubbleComponent],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class GuideComponent implements OnInit, OnDestroy {
-  protected isShowGuide: boolean = !Boolean(localStorage.getItem('quick-guide'));
-  protected description: string;
-  protected bubbles: any[];
-  protected isShowBubble: boolean = false;
-
+  private isShowGuide: boolean = !Boolean(localStorage.getItem('quick-guide'));
+  private description: string;
+  private bubbles: any[];
+  private isShowBubble: boolean = false;
   private guideService: any;
   private guideServiceSubscribe: Subscription;
 

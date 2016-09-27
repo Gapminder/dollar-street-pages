@@ -34,11 +34,11 @@
   <div class="house-info-container">
     <div class="header-container">
       <div class="title-container">
-        <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family, <span style="cursor:pointer"
-                                                                                          [routerLink]="['/country', familyData?.country?._id]"
-                                                                                          [queryParams]="{}"
-                                                                                          angulartics2On="click"
-                                                                                          angularticsEvent="From Matrix page to {{familyData.country.country}} page ">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+        <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family, <span
+          [routerLink]="['/country', familyData?.country?._id]"
+          [queryParams]="{}"
+          angulartics2On="click"
+          angularticsEvent="From Matrix page to {{familyData.country.country}} page">{{familyData?.country?.alias || familyData?.country?.country}}</span>
         </h3>
       </div>
 
@@ -58,6 +58,15 @@
         src="/assets/img/arrow-right-icon.svg"
         alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+
+      <a *ngIf="isShowCountryButton"
+         (click)="goToMatrixByCountry(familyData.country.country)">
+        <span>All {{thing.toLowerCase()}}</span>
+        <span>in</span>
+        <span>{{countryName}}</span>
+        <img src="/assets/img/arrow-right-icon.svg" alt="">
+        <img src="/assets/img/arrow-right-icon-white.svg" alt="">
+      </a>
     </div>
   </div>
 

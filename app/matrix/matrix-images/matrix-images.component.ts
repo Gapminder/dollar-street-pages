@@ -58,6 +58,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private hoverPlace: EventEmitter<any> = new EventEmitter<any>();
   @Output('activeHouseOptions')
   private activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
+  @Output('filter')
+  private filter: EventEmitter<any> = new EventEmitter<any>();
 
   private isDesktop: boolean = isDesktop;
   private router: Router;
@@ -111,13 +113,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         if (this.row && this.row > 1) {
           numberSplice = this.row * this.zoom + this.visibleImages;
         }
-
-        // if (this.activeHouse && this.activeHouse > this.visibleImages) {
-        //   let positionInRow: number = this.activeHouse % this.zoom;
-        //   let offset: number = this.zoom - positionInRow;
-        //
-        //   numberSplice = this.activeHouse + offset + this.visibleImages;
-        // }
 
         this.rowLoaderStartPosition = 0;
 
@@ -369,6 +364,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   protected toUrl(image: any): string {
     return `url("${image}")`;
+  }
+
+  protected goToMatrixWithCountry(params: any):void {
+    this.filter.emit(params);
   }
 
   private changeUrl(options: {row?: number, activeHouseIndex?: number}): void {

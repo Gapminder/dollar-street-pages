@@ -20,13 +20,13 @@ let style = require('./home-media-view-block.css');
 })
 
 export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  protected loader: boolean = false;
-  protected popIsOpen: boolean = false;
-  protected fancyBoxImage: string;
-  protected country: any;
-  protected countryName: any;
-  protected article: any;
   protected api: string = Config.api;
+  private loader: boolean = false;
+  private popIsOpen: boolean = false;
+  private fancyBoxImage: string;
+  private country: any;
+  private countryName: any;
+  private article: any;
   @Input('imageData')
   private imageData: any;
 
@@ -108,26 +108,6 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  public getDescription(shortDescription: string): string {
-    let numbers: number = 600;
-
-    if (isDesktop) {
-      if (this.windowInnerWidth > 1400 && shortDescription.length > 600) {
-        numbers = 600;
-      } else if (this.windowInnerWidth > 1280 && this.windowInnerWidth <= 1400 && shortDescription.length > 600) {
-        numbers = 350;
-      } else if (this.windowInnerWidth <= 1280) {
-        numbers = 200;
-      }
-    }
-
-    if (shortDescription.length > numbers) {
-      return shortDescription.slice(0, numbers) + '...';
-    } else {
-      return shortDescription;
-    }
-  }
-
   public ngOnDestroy(): void {
     this.resizeSubscribe.unsubscribe();
     this.viewBlockServiceSubscribe.unsubscribe();
@@ -153,7 +133,11 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
     this.fancyBoxImage = void 0;
   }
 
-  protected truncCountryName(countryData: any): any {
+  protected closeImageBlock(): void {
+    this.closeBigImageBlock.emit({});
+  }
+
+  private truncCountryName(countryData: any): any {
     switch (countryData.name) {
       case 'South Africa' :
         this.countryName = 'SA';
@@ -169,7 +153,23 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  protected closeImageBlock(): void {
-    this.closeBigImageBlock.emit({});
+  private getDescription(shortDescription: string): string {
+    let numbers: number = 600;
+
+    if (isDesktop) {
+      if (this.windowInnerWidth > 1400 && shortDescription.length > 600) {
+        numbers = 600;
+      } else if (this.windowInnerWidth > 1280 && this.windowInnerWidth <= 1400 && shortDescription.length > 600) {
+        numbers = 350;
+      } else if (this.windowInnerWidth <= 1280) {
+        numbers = 200;
+      }
+    }
+
+    if (shortDescription.length > numbers) {
+      return shortDescription.slice(0, numbers) + '...';
+    } else {
+      return shortDescription;
+    }
   }
 }
