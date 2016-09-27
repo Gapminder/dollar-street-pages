@@ -27,14 +27,18 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private countryId: string;
   private countryInfoService: any;
   private countryInfoServiceSubscribe: Subscription;
-
+  private streetSettingsService: any;
+  private streetData: any;
+  private streetServiceSubscribe: Subscription;
   @Output()
   private getCountry: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(@Inject('CountryInfoService') countryInfoService: any,
+                     @Inject('StreetSettingsService') streetSettingsService: any,
                      @Inject('Math') math: any) {
     this.countryInfoService = countryInfoService;
     this.math = math;
+    this.streetSettingsService = streetSettingsService;
     this.isShowInfo = false;
   }
 
@@ -53,6 +57,15 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         this.photosQuantity = res.data.images;
         this.videosQuantity = res.data.video;
         this.getCountry.emit(this.country.alias || this.country.country);
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.streetData = res.data;
       });
   }
 

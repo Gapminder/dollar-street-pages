@@ -39,17 +39,21 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private headerElement: HTMLElement;
   private headerHeight: number;
   private headerContentHeight: number;
-
+  private streetSettingsService: any;
+  private streetData: any;
+  private streetServiceSubscribe: Subscription;
   @Output('familyExpandBlock')
   private familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(zone: NgZone,
                      element: ElementRef,
                      @Inject('Math') math: any,
+                     @Inject('StreetSettingsService') streetSettingsService: any,
                      @Inject('HomeHeaderService') homeHeaderService: any) {
     this.homeHeaderService = homeHeaderService;
     this.zone = zone;
     this.math = math;
+    this.streetSettingsService = streetSettingsService;
     this.element = element.nativeElement;
   }
 
@@ -69,6 +73,15 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
         this.home = res.data;
         this.mapData = this.home.country;
         this.truncCountryName(this.home.country);
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.streetData = res.data;
       });
 
     this.scrollSubscribe = fromEvent(document, 'scroll')

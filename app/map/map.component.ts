@@ -50,6 +50,9 @@ export class MapComponent implements OnInit, OnDestroy {
   private zone: NgZone;
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
+  private streetSettingsService: any;
+  private streetData: any;
+  private streetServiceSubscribe: Subscription;
   private loaderService: any;
   private windowInnerWidth: number = window.innerWidth;
 
@@ -60,6 +63,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      @Inject('Math') math: any,
                      @Inject('MapService') placeService: any,
                      @Inject('LoaderService') loaderService: any,
+                     @Inject('StreetSettingsService') streetSettingsService: any,
                      @Inject('UrlChangeService') urlChangeService: any,
                      @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
     this.mapService = placeService;
@@ -70,6 +74,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.zone = zone;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.math = math;
+    this.streetSettingsService = streetSettingsService;
     this.urlChangeService = urlChangeService;
   }
 
@@ -84,6 +89,15 @@ export class MapComponent implements OnInit, OnDestroy {
         this.thing = params.thing ? params.thing : 'Families';
 
         this.urlChanged({url: `thing=${this.thing}`});
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.streetData = res.data;
       });
   }
 
