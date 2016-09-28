@@ -1,6 +1,6 @@
-import { Component, Output, EventEmitter, Input, OnInit, Inject } from '@angular/core';
-import { StreetFilterComponent } from '../street-filter/street-filter.component';
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { StreetSettingsService } from '../street/street.settings.service';
 
 let tpl = require('./income-filter.template.html');
 let style = require('./income-filter.css');
@@ -8,8 +8,7 @@ let style = require('./income-filter.css');
 @Component({
   selector: 'income-filter',
   template: tpl,
-  styles: [style],
-  directives: [StreetFilterComponent]
+  styles: [style]
 })
 
 export class IncomeFilterComponent implements OnInit {
@@ -26,10 +25,10 @@ export class IncomeFilterComponent implements OnInit {
     highIncome: this.highIncome
   };
   private streetData: any;
-  private streetSettingsService: any;
+  private streetSettingsService: StreetSettingsService;
   private streetServiceSubscribe: Subscription;
 
-  public constructor(@Inject('StreetSettingsService') streetSettingsService: any) {
+  public constructor(streetSettingsService: StreetSettingsService) {
     this.streetSettingsService = streetSettingsService;
   }
 

@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Component, OnInit, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription, Observable } from 'rxjs/Rx';
-import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Config } from '../../app.config';
+import { MathService } from '../../common/math-service/math-service';
+import { HomeHeaderService } from './home-header.service';
 
 let tpl = require('./home-header.template.html');
 let style = require('./home-header.css');
@@ -11,26 +11,25 @@ let style = require('./home-header.css');
 @Component({
   selector: 'home-header',
   template: tpl,
-  styles: [style],
-  directives: [RegionMapComponent, ROUTER_DIRECTIVES]
+  styles: [style]
 })
 
 export class HomeHeaderComponent implements OnInit, OnDestroy {
-  protected home: any = {};
-  protected mapData: any;
-  protected math: any;
-  protected countryName: any;
-  protected isOpenArticle: boolean = false;
-  protected familyShortInfoPosition: number = -88;
-  protected isShowAboutData: boolean = false;
-  protected isShowAboutDataFullScreen: boolean = false;
-  protected aboutDataPosition: {left?: number;top?: number;} = {};
-  protected windowHeight: number = window.innerHeight;
-  protected maxHeightPopUp: number = this.windowHeight * .95 - 91;
+  private home: any = {};
+  private mapData: any;
+  private math: MathService;
+  private countryName: any;
+  private isOpenArticle: boolean = false;
+  private familyShortInfoPosition: number = -88;
+  private isShowAboutData: boolean = false;
+  private isShowAboutDataFullScreen: boolean = false;
+  private aboutDataPosition: {left?: number;top?: number;} = {};
+  private windowHeight: number = window.innerHeight;
+  private maxHeightPopUp: number = this.windowHeight * .95 - 91;
 
   @Input('placeId')
   private placeId: string;
-  private homeHeaderService: any;
+  private homeHeaderService: HomeHeaderService;
   private homeHeaderServiceSubscribe: Subscription;
   private scrollSubscribe: Subscription;
   private resizeSubscribe: Subscription;
@@ -44,13 +43,13 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(zone: NgZone,
+                     math: MathService,
                      element: ElementRef,
-                     @Inject('Math') math: any,
-                     @Inject('HomeHeaderService') homeHeaderService: any) {
-    this.homeHeaderService = homeHeaderService;
+                     homeHeaderService: HomeHeaderService) {
     this.zone = zone;
     this.math = math;
     this.element = element.nativeElement;
+    this.homeHeaderService = homeHeaderService;
   }
 
   public ngOnInit(): void {

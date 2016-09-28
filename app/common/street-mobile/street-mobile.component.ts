@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, ElementRef, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Rx';
 import { sortBy, chain } from 'lodash';
+import { StreetSettingsService } from '../street/street.settings.service';
+import { StreetMobileDrawService } from './street-mobile.service';
 
 let tpl = require('./street-mobile.template.html');
 let style = require('./street-mobile.css');
@@ -17,7 +19,7 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
   private places: Observable<any>;
 
   private street: any;
-  private streetSettingsService: any;
+  private streetSettingsService: StreetSettingsService;
   private streetData: any;
   private element: HTMLElement;
   private streetServiceSubscribe: Subscription;
@@ -28,8 +30,8 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
   private placesArr: any;
 
   public constructor(element: ElementRef,
-                     @Inject('StreetSettingsService') streetSettingsService: any,
-                     @Inject('StreetMobileDrawService') streetDrawService: any) {
+                     streetSettingsService: StreetSettingsService,
+                     streetDrawService: StreetMobileDrawService) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
     this.streetSettingsService = streetSettingsService;

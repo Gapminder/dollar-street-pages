@@ -4,16 +4,16 @@ import {
   Output,
   OnInit,
   OnChanges,
-  Inject,
   EventEmitter,
   NgZone,
   OnDestroy,
   ElementRef
 } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs/Rx';
-import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Config, ImageResolutionInterface } from '../../../app/app.config';
+import { MathService } from '../../common/math-service/math-service';
+import { FamilyInfoService } from './matrix-view-block.service';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -27,26 +27,24 @@ let style = require('./matrix-view-block.css');
 @Component({
   selector: 'matrix-view-block',
   template: isDesktop ? tpl : tplMobile,
-  styles: [isDesktop ? style : styleMobile],
-  directives: [RegionMapComponent, ROUTER_DIRECTIVES]
+  styles: [isDesktop ? style : styleMobile]
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  public familyInfoServiceSubscribe: Subscription;
-  public fancyBoxImage: any;
-
-  protected showblock: boolean;
-  protected familyData: any = {};
-  protected loader: boolean = false;
-  protected math: any;
-  protected markerPositionLeft: number;
   protected api: string = Config.api;
 
+  private familyInfoServiceSubscribe: Subscription;
+  private fancyBoxImage: any;
+  private showblock: boolean;
+  private familyData: any = {};
+  private loader: boolean = false;
+  private markerPositionLeft: number;
+  private math: MathService;
   private privateZoom: any;
   private resizeSubscribe: Subscription;
   private popIsOpen: boolean;
   private mapData: any;
-  private familyInfoService: any;
+  private familyInfoService: FamilyInfoService;
   private zone: NgZone;
   private router: Router;
   private boxContainerPadding: number;
@@ -73,9 +71,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   public constructor(zone: NgZone,
                      router: Router,
+                     math: MathService,
                      element: ElementRef,
-                     @Inject('Math') math: any,
-                     @Inject('FamilyInfoService') familyInfoService: any) {
+                     familyInfoService: FamilyInfoService) {
     this.math = math;
     this.zone = zone;
     this.router = router;

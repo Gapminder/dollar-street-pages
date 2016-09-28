@@ -3,6 +3,18 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Config } from '../../app.config';
 
+export interface DrawDividersInterface {
+  showDividers: boolean;
+  low: number;
+  medium: number;
+  high: number;
+  poor: number;
+  rich: number;
+  lowDividerCoord: number;
+  mediumDividerCoord: number;
+  highDividerCoord: number;
+}
+
 export class StreetSettingsService {
   public http: Http;
 
@@ -13,7 +25,7 @@ export class StreetSettingsService {
   public getStreetSettings(): Observable<any> {
     return this.http.get(`${Config.api}/consumer/api/v1/street-settings`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, data: parseRes.data};
+      return {err: parseRes.error, data: parseRes.data as DrawDividersInterface};
     });
   }
 }

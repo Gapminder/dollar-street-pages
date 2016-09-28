@@ -1,9 +1,10 @@
-import { Component, ViewEncapsulation, Inject, OnInit, OnDestroy } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES, NavigationEnd } from '@angular/router';
+import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { SocialFollowButtonsComponent } from '../social-follow-buttons/social-follow-buttons.component.ts';
-import { Config } from '../../app.config';
 import { compact } from 'lodash';
+import { Config } from '../../app.config';
+import { FooterService } from './footer.service';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
 let tpl = require('./footer.template.html');
 let style = require('./footer.css');
@@ -12,14 +13,13 @@ let style = require('./footer.css');
   selector: 'footer',
   template: tpl,
   styles: [style],
-  directives: [ROUTER_DIRECTIVES, SocialFollowButtonsComponent],
   encapsulation: ViewEncapsulation.None
 })
 
 export class FooterComponent implements OnInit, OnDestroy {
-  protected footerData: any = {};
-  protected angulartics2GoogleAnalytics: any;
-  private footerService: any;
+  private footerData: any;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private footerService: FooterService;
   private footerServiceSubscribe: Subscription;
   private window: Window = window;
   private isMatrixComponent: boolean;
@@ -28,10 +28,10 @@ export class FooterComponent implements OnInit, OnDestroy {
   private page: string;
 
   public constructor(router: Router,
-                     @Inject('FooterService') footerService: any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
-    this.footerService = footerService;
+                     footerService: FooterService,
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
+    this.footerService = footerService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
@@ -73,7 +73,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   protected goToMatrixPage(): void {
-    this.angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from footer `);
+    this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from footer', {});
 
     if (this.isMatrixComponent) {
       this.window.location.href = this.window.location.origin;

@@ -5,12 +5,12 @@ import {
   OnChanges,
   Input,
   Output,
-  Inject,
   EventEmitter,
   ElementRef,
   HostListener
 } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
+import { StreetSettingsService } from '../street/street.settings.service';
 
 let tpl = require('./incomes-filter.template.html');
 let style = require('./incomes-filter.css');
@@ -31,13 +31,13 @@ export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
   private cloneRange: {min: number; max: number;} = {min: 0, max: 0};
-  private streetSettingsService: any;
+  private streetSettingsService: StreetSettingsService;
   private streetData: any;
   private streetServiceSubscribe: Subscription;
   private element: ElementRef;
 
-  public constructor(@Inject('StreetSettingsService') streetSettingsService: any,
-                     @Inject(ElementRef) element: ElementRef) {
+  public constructor(streetSettingsService: StreetSettingsService,
+                     element: ElementRef) {
     this.streetSettingsService = streetSettingsService;
     this.element = element;
   }

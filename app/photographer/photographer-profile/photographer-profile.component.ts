@@ -1,5 +1,7 @@
-import { Component, OnInit, OnDestroy, Input, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
+import { MathService } from '../../common/math-service/math-service';
+import { PhotographerProfileService } from './photographer-profile.service';
 let tpl = require('./photographer-profile.template.html');
 let style = require('./photographer-profile.css');
 
@@ -11,23 +13,21 @@ let style = require('./photographer-profile.css');
 
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
   protected isShowInfo: boolean = false;
-  protected math: any;
-  protected Angulartics2GoogleAnalytics: any;
+
   @Input()
   private photographerId: string;
   @Output()
   private getPhotographer: EventEmitter<any> = new EventEmitter<any>();
 
+  private math: MathService;
   private photographer: {firstName?: string, lastName?: string} = {};
-  private photographerProfileService: any;
   private photographerProfileServiceSubscribe: Subscription;
+  private photographerProfileService: PhotographerProfileService;
 
-  public constructor(@Inject('PhotographerProfileService') photographerProfileService: any,
-                     @Inject('Math') math: any,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+  public constructor(math: MathService,
+                     photographerProfileService: PhotographerProfileService) {
     this.photographerProfileService = photographerProfileService;
     this.math = math;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): void {
@@ -41,7 +41,8 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
         }
 
         this.photographer = res.data;
-        this.getPhotographer.emit(`<span class="sub-title">Photographer:</span> ${this.photographer.firstName} ${this.photographer.lastName}`);
+        this.getPhotographer
+          .emit(`<span class="sub-title">Photographer:</span> ${this.photographer.firstName} ${this.photographer.lastName}`);
       });
   }
 

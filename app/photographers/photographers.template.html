@@ -6,7 +6,8 @@
         <input id="search"
                type="search"
                placeholder="Search..."
-               [(ngModel)]="search.text">
+               #photographersSearch
+               (input)="search.text = photographersSearch.value">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
       <ul class="photographers-country">

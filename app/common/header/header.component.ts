@@ -1,9 +1,8 @@
-import { Component, Input, Output, Inject, OnChanges, EventEmitter } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { MainMenuComponent } from '../menu/menu.component';
-import { ThingsFilterComponent } from '../things-filter/things-filter.component';
-import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
+import { MathService } from '../math-service/math-service';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
 let device: {desktop: Function; mobile: Function} = require('device.js')();
 let isMobile: boolean = device.mobile();
@@ -14,13 +13,7 @@ let style = require('./header.css');
 @Component({
   selector: 'header',
   template: tpl,
-  styles: [style],
-  directives: [
-    ROUTER_DIRECTIVES,
-    ThingsFilterComponent,
-    CountriesFilterComponent,
-    MainMenuComponent
-  ]
+  styles: [style]
 })
 
 export class HeaderComponent implements OnChanges {
@@ -33,11 +26,11 @@ export class HeaderComponent implements OnChanges {
   protected isOpenFilter: boolean = false;
   protected isDesktop: boolean = device.desktop();
   protected header: any = {};
-  protected math: any;
   protected isCountryFilterReady: boolean = false;
   protected isThingFilterReady: boolean = false;
+  private math: any;
 
-  protected angulartics2GoogleAnalytics: any;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   @Output()
   private filter: EventEmitter<any> = new EventEmitter<any>();
   @Output()
@@ -51,9 +44,9 @@ export class HeaderComponent implements OnChanges {
   private mapComponent: boolean;
 
   public constructor(router: Router,
+                     math: MathService,
                      activatedRoute: ActivatedRoute,
-                     @Inject('Math') math: any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -105,7 +98,7 @@ export class HeaderComponent implements OnChanges {
     this.router.navigate(['/matrix'], {queryParams: {}});
   }
 
-  protected isFilterGotData(event: any):any {
+  protected isFilterGotData(event: any): any {
     this[event] = true;
   }
 

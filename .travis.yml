@@ -36,7 +36,7 @@ before_script:
 script:
 # run local karma tests
 - npm run lint
-- npm run pre-commit-test
+#- npm run pre-commit-test
 # submit coverage report to codecov
 - npm run codecov
 # run protractor tests

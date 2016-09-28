@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef, Renderer, AfterViewInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
-import { MainMenuComponent } from '../menu/menu.component';
+import { HeaderService } from '../header/header.service';
+import { TitleHeaderService } from '../../common/title-header/title-header.service';
 
 let tpl = require('./header.template.html');
 let style = require('./header.css');
@@ -9,27 +9,24 @@ let style = require('./header.css');
 @Component({
   selector: 'header-without-filters',
   template: tpl,
-  styles: [style],
-  directives: [MainMenuComponent, ROUTER_DIRECTIVES]
+  styles: [style]
 })
 
 export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterViewInit {
-
   @ViewChild('heading')
   private heading: ElementRef;
 
   private title: string;
-
   private defaultThing: any;
-  private headerService: any;
-  private titleHeaderService: any;
+  private headerService: HeaderService;
+  private titleHeaderService: TitleHeaderService;
   private titleHeaderSubscribe: Subscription;
   private headerServiceSubscribe: Subscription;
   private renderer: Renderer;
 
   public constructor(renderer: Renderer,
-                     @Inject('HeaderService') headerService: any,
-                     @Inject('TitleHeaderService') titleHeaderService: any) {
+                     headerService: HeaderService,
+                     titleHeaderService: TitleHeaderService) {
     this.renderer = renderer;
     this.headerService = headerService;
     this.titleHeaderService = titleHeaderService;

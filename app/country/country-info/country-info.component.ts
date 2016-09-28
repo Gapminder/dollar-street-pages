@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { RegionMapComponent } from '../../common/region-map/region-map.component';
+import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
+import { MathService } from '../../common/math-service/math-service';
+import { CountryInfoService } from './country-info.service';
 
 let tpl = require('./country-info.template.html');
 let style = require('./country-info.css');
@@ -9,30 +9,29 @@ let style = require('./country-info.css');
 @Component({
   selector: 'country-info',
   template: tpl,
-  styles: [style],
-  directives: [ROUTER_DIRECTIVES, RegionMapComponent]
+  styles: [style]
 })
 
 export class CountryInfoComponent implements OnInit, OnDestroy {
-  protected math: any;
-  protected mapData: any;
-  protected isShowInfo: boolean;
-  protected country: any;
-  protected thing: any;
-  protected placesQuantity: number;
-  protected photosQuantity: number;
-  protected videosQuantity: number;
-
   @Input()
   private countryId: string;
-  private countryInfoService: any;
-  private countryInfoServiceSubscribe: Subscription;
 
   @Output()
   private getCountry: EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(@Inject('CountryInfoService') countryInfoService: any,
-                     @Inject('Math') math: any) {
+  private mapData: any;
+  private isShowInfo: boolean;
+  private country: any;
+  private thing: any;
+  private placesQuantity: number;
+  private photosQuantity: number;
+  private videosQuantity: number;
+  private math: MathService;
+  private countryInfoService: CountryInfoService;
+  private countryInfoServiceSubscribe: Subscription;
+
+  public constructor(countryInfoService: CountryInfoService,
+                     math: MathService) {
     this.countryInfoService = countryInfoService;
     this.math = math;
     this.isShowInfo = false;

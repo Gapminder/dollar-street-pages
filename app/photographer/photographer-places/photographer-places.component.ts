@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
+import { MathService } from '../../common/math-service/math-service';
+import { PhotographerPlacesService } from './photographer-places.service';
+import { LoaderService } from '../../common/loader/loader.service';
 
 let tpl = require('./photographer-places.template.html');
 let style = require('./photographer-places.css');
@@ -8,26 +10,24 @@ let style = require('./photographer-places.css');
 @Component({
   selector: 'photographer-places',
   template: tpl,
-  styles: [style],
-  directives: [ROUTER_DIRECTIVES]
+  styles: [style]
 })
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
-  public photographerPlacesServiceSubscribe: Subscription;
-  public math: any;
-
   @Input()
   private photographerId: string;
   private places: any = [];
-  private photographerPlacesService: any;
-  private loaderService: any;
+  private math: MathService;
+  private loaderService: LoaderService;
+  private photographerPlacesServiceSubscribe: Subscription;
+  private photographerPlacesService: PhotographerPlacesService;
 
-  public constructor(@Inject('PhotographerPlacesService') photographerPlacesService: any,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('Math') math: any) {
-    this.photographerPlacesService = photographerPlacesService;
-    this.loaderService = loaderService;
+  public constructor(math: MathService,
+                     loaderService: LoaderService,
+                     photographerPlacesService: PhotographerPlacesService) {
     this.math = math;
+    this.loaderService = loaderService;
+    this.photographerPlacesService = photographerPlacesService;
   }
 
   public ngOnInit(): void {

@@ -1,6 +1,7 @@
-import { Component, OnDestroy, Inject, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Rx';
+import { SocialShareButtonsService } from './social-share-buttons.service';
 
 let tpl = require('./social-share-buttons.html');
 let style = require('./social-share-buttons.css');
@@ -13,14 +14,14 @@ let style = require('./social-share-buttons.css');
 })
 
 export class SocialShareButtonsComponent implements OnInit, OnDestroy {
-  private socialShareButtonsService: any;
+  private socialShareButtonsService: SocialShareButtonsService;
   private location: Location;
   private url: string;
   private socialShareButtonsServiceSubscribe: Subscription;
   private locationPath: string;
 
-  public constructor(@Inject('SocialShareButtonsService') socialShareButtonsService: any,
-                     @Inject(Location) location: Location) {
+  public constructor(location: Location,
+                     socialShareButtonsService: SocialShareButtonsService) {
     this.socialShareButtonsService = socialShareButtonsService;
     this.location = location;
   }
@@ -71,7 +72,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
   protected openWindow(originalUrl: string, url: any): void {
     let left = (window.innerWidth - 490) / 2;
-    let popupWin = window.open(originalUrl + url,'_blank','width=490, height=368, top=100, left=' + left);
+    let popupWin = window.open(originalUrl + url, '_blank', 'width=490, height=368, top=100, left=' + left);
     popupWin.focus();
   }
 }

@@ -3,7 +3,6 @@ import {
   Component,
   OnDestroy,
   OnChanges,
-  Inject,
   Input,
   Output,
   EventEmitter,
@@ -11,11 +10,12 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
-import { ThingsFilterPipe } from './things-filter.pipe';
+import { ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription, Observable } from 'rxjs/Rx';
 import { Config } from '../../app.config';
+import { ThingsFilterService } from './things-filter.service';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -26,9 +26,7 @@ let style = require('./things-filter.css') as string;
 @Component({
   selector: 'things-filter',
   template: require('./things-filter.template.html') as string,
-  styles: [style, styleMobile],
-  directives: [ROUTER_DIRECTIVES],
-  pipes: [ThingsFilterPipe]
+  styles: [style, styleMobile]
 })
 
 export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
@@ -39,7 +37,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected search: {text: string;} = {text: ''};
   protected isOpenThingsFilter: boolean = false;
   protected activeColumn: string = '';
-  protected Angulartics2GoogleAnalytics: any;
+  protected angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   protected things: any = [];
   protected isDesktop: boolean = isDesktop;
   protected filterTopDistance: number = 0;
@@ -63,13 +61,13 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
                      zone: NgZone,
-                     @Inject('ThingsFilterService') thingsFilterService: any,
-                     @Inject('Angulartics2GoogleAnalytics') Angulartics2GoogleAnalytics: any) {
+                     thingsFilterService: ThingsFilterService,
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.thingsFilterService = thingsFilterService;
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
-    this.Angulartics2GoogleAnalytics = Angulartics2GoogleAnalytics;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   @HostListener('document:click', ['$event'])
@@ -122,7 +120,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.Angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.thingName} `);
+    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.thingName}`, {});
     let query = this.parseUrl(this.url);
     query.thing = thing.plural;
 

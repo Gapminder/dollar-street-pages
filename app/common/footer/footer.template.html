@@ -41,7 +41,7 @@
       </div>
 
       <div class="description-content">
-        {{footerData.text}}
+        {{footerData?.text}}
         <p>All images under <a href="https://creativecommons.org/licenses/by/4.0/"
                                target="_blank"
                                angulartics2On="click"
@@ -54,7 +54,8 @@
     </div>
 
     <div class="gapminder">
-      <a href="https://www.gapminder.org" target="_blank"
+      <a href="https://www.gapminder.org"
+         target="_blank"
          angulartics2On="click"
          angularticsEvent="Moved from footer to  Gapminder">
         <img src="/assets/img/gapminder-logo.png" alt="Gapminder">
