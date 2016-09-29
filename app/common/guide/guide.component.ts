@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit, OnDestroy, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
-import { BubbleComponent } from './bubble/bubble.component';
 import { find, difference } from 'lodash';
+import { GuideService } from './guide.service';
 
 let tpl = require('./guide.template.html');
 let style = require('./guide.css');
@@ -10,7 +10,6 @@ let style = require('./guide.css');
   selector: 'quick-guide',
   template: tpl,
   styles: [style],
-  directives: [BubbleComponent],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -19,13 +18,13 @@ export class GuideComponent implements OnInit, OnDestroy {
   private description: string;
   private bubbles: any[];
   private isShowBubble: boolean = false;
-  private guideService: any;
+  private guideService: GuideService;
   private guideServiceSubscribe: Subscription;
 
   @Output('startQuickGuide')
   private startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(@Inject('GuideService') guideService: any) {
+  public constructor(guideService: GuideService) {
     this.guideService = guideService;
   }
 

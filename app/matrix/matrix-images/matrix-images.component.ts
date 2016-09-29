@@ -1,12 +1,13 @@
-import { Component, Input, EventEmitter, ElementRef, Inject, Output, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, Input, EventEmitter, ElementRef, Output, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { InfiniteScroll } from 'angular2-infinite-scroll';
-import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
-import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
 import { Subject, Subscription } from 'rxjs/Rx';
-import { concat, slice } from 'lodash';
 import * as _ from 'lodash';
+import { concat, slice } from 'lodash';
+import { MathService } from '../../common/math-service/math-service';
+import { LoaderService } from '../../common/loader/loader.service';
+import { CountriesFilterService } from '../../common/countries-filter/countries-filter.service';
+
 const device = require('device.js')();
 const isDesktop = device.desktop();
 
@@ -16,31 +17,14 @@ let style = require('./matrix-images.css');
 @Component({
   selector: 'matrix-images',
   template: tpl,
-  styles: [style],
-  directives: [RowLoaderComponent, MatrixViewBlockComponent, InfiniteScroll]
+  styles: [style]
 })
 
 export class MatrixImagesComponent implements OnInit, OnDestroy {
-  public selectedCountries: any;
-  public selectedRegions: any;
-  public activeCountries: any;
-  public selectedThing: any;
-
-  protected imageBlockLocation: any;
-  protected indexViewBoxHouse: number;
-  protected positionInRow: number;
-  protected math: any;
-  protected showErrorMsg: boolean = false;
-  protected errorMsg: any;
-  protected angulartics2GoogleAnalytics: any;
-  protected placesArr: any = [];
-  protected viewBlockHeight: number;
-  protected rowLoaderStartPosition: number = 0;
-
   @Input('query')
-  protected query: string;
+  private query: string;
   @Input('thing')
-  protected thing: string;
+  private thing: string;
   @Input('places')
   private places: Observable<any>;
   @Input('activeHouse')
@@ -61,6 +45,19 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   @Output('filter')
   private filter: EventEmitter<any> = new EventEmitter<any>();
 
+  private selectedCountries: any;
+  private selectedRegions: any;
+  private activeCountries: any;
+  private selectedThing: any;
+  private imageBlockLocation: any;
+  private indexViewBoxHouse: number;
+  private positionInRow: number;
+  private math: MathService;
+  private showErrorMsg: boolean = false;
+  private errorMsg: any;
+  private placesArr: any = [];
+  private viewBlockHeight: number;
+  private rowLoaderStartPosition: number = 0;
   private isDesktop: boolean = isDesktop;
   private router: Router;
   private currentPlaces: any = [];
@@ -68,7 +65,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private placesSubscribe: Subscription;
   private itemSize: number;
   private imageHeight: number;
-  private countriesFilterService: any;
+  private countriesFilterService: CountriesFilterService;
   private countriesFilterServiceSubscribe: Subscription;
   private familyData: any;
   private prevPlaceId: string;
@@ -78,23 +75,21 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private imageMargin: number;
   private windowInnerWidth: number = window.innerWidth;
   private visibleImages: number;
-  private loaderService: any;
+  private loaderService: LoaderService;
   private locations: any;
 
   public constructor(zone: NgZone,
                      router: Router,
                      element: ElementRef,
-                     @Inject('Math') math: any,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('CountriesFilterService') countriesFilterService: any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
+                     math: MathService,
+                     loaderService: LoaderService,
+                     countriesFilterService: CountriesFilterService) {
     this.zone = zone;
     this.math = math;
     this.router = router;
     this.loaderService = loaderService;
     this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): any {
@@ -365,7 +360,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     return `url("${image}")`;
   }
 
-  protected goToMatrixWithCountry(params: any):void {
+  protected goToMatrixWithCountry(params: any): void {
     this.filter.emit(params);
   }
 

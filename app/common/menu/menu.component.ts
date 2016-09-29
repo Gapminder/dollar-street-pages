@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, OnDestroy, HostListener, Inject, ElementRef } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Rx';
-import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
 let device = require('device.js')();
 let isMobile = device.mobile();
@@ -16,13 +16,12 @@ let style = require('./menu.css');
 @Component({
   selector: 'main-menu',
   template: isMobile ? tplMobile : tpl,
-  styles: [isMobile ? styleMobile : style],
-  directives: [SocialShareButtonsComponent, ROUTER_DIRECTIVES]
+  styles: [isMobile ? styleMobile : style]
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
   protected isOpenMenu: boolean = false;
-  protected angulartics2GoogleAnalytics: any;
+  protected angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   @Input()
   private hoverPlace: Observable<any>;
   private hoverPlaceSubscribe: Subscription;
@@ -34,9 +33,9 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   private activatedRoute: ActivatedRoute;
 
   public constructor(router: Router,
+                     element: ElementRef,
                      activatedRoute: ActivatedRoute,
-                     @Inject(ElementRef) element: ElementRef,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -108,27 +107,27 @@ export class MainMenuComponent implements OnInit, OnDestroy {
 
         break;
       case '/about':
-        this.angulartics2GoogleAnalytics.eventTrack('From menu to About page');
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
         this.router.navigate([url], {queryParams: {}});
 
         break;
       case '/blog':
-        this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page');
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page', {});
         this.router.navigate([url], {queryParams: {}});
 
         break;
       case '/map':
-        this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page');
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
         this.router.navigate([url], {queryParams: {}});
 
         break;
       case 'https://www.gapminder.org':
-        this.angulartics2GoogleAnalytics.eventTrack(`Go to Gapminder.org from menu `);
+        this.angulartics2GoogleAnalytics.eventTrack('Go to Gapminder.org from menu', {});
         this.window.open(url, '_blank');
 
         break;
       case 'https://getsatisfaction.com/gapminder':
-        this.angulartics2GoogleAnalytics.eventTrack(`Go to Getsatisfaction.com/gapminder from menu `);
+        this.angulartics2GoogleAnalytics.eventTrack('Go to Getsatisfaction.com/gapminder from menu', {});
         this.window.open(url, '_blank');
 
         break;
@@ -153,10 +152,9 @@ export class MainMenuComponent implements OnInit, OnDestroy {
 
     if (removeStorage) {
       this.window.localStorage.removeItem('quick-guide');
-      this.angulartics2GoogleAnalytics.eventTrack(`Go to Quick Guide from menu `);
-    } else {
-      this.angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from menu `);
     }
+
+    this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
 
     if (this.isMatrixComponent) {
       this.window.location.href = this.window.location.origin;

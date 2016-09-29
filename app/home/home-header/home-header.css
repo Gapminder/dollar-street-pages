@@ -135,7 +135,7 @@
   color: #374551;
   font-size: 20px;
   font-family: 'Bariol Light', sans-serif;
-  padding: 4px 35px 4px 8px;
+  padding: 4px 30px 4px 8px;
   position: relative;
   margin: 9px 0 0;
   background-color: transparent;
@@ -150,7 +150,7 @@
   height: 15px;
   position: absolute;
   top: calc(50% - 7.5px);
-  right: 4px;
+  right: 10px;
   opacity: 1;
 }
 

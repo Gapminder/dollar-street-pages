@@ -1,6 +1,8 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
-import { Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { MathService } from '../math-service/math-service';
+import { DrawDividersInterface } from './street.settings.service';
 import * as _ from 'lodash';
 
 const d3 = require('d3');
@@ -8,18 +10,7 @@ const d3 = require('d3');
 let device = require('device.js')();
 let isDesktop: boolean = device.desktop();
 
-export interface DrawDividersInterface {
-  showDividers: boolean;
-  low: number;
-  medium: number;
-  high: number;
-  poor: number;
-  rich: number;
-  lowDividerCoord: number;
-  mediumDividerCoord: number;
-  highDividerCoord: number;
-}
-
+@Injectable()
 export class StreetDrawService {
   public width: number;
   public height: number;
@@ -35,7 +26,7 @@ export class StreetDrawService {
   private svg: any;
   private incomeArr: any[] = [];
   private mouseMoveSubscriber: any;
-  private dividersData: DrawDividersInterface;
+  private dividersData: any;
   private mouseUpSubscriber: any;
   private touchMoveSubscriber: any;
   private touchUpSubscriber: any;
@@ -57,7 +48,6 @@ export class StreetDrawService {
   private leftScrollText: any;
   private rightScrollText: any;
   private hoverPlace: any;
-  private math: any;
   private cloneLowIncome: any;
   private cloneHighIncome: any;
   private minIncome: any;
@@ -66,6 +56,7 @@ export class StreetDrawService {
   private regions: any;
   private thingname: any;
   private countries: any;
+  private math: MathService;
   private currentLowIncome: number;
   private currentHighIncome: number;
   private filter: Subject<any> = new Subject<any>();
@@ -85,7 +76,7 @@ export class StreetDrawService {
     }
   };
 
-  public constructor(@Inject('Math') math: any) {
+  public constructor(math: MathService) {
     this.math = math;
   }
 

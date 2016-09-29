@@ -26,7 +26,7 @@
                  [max]="maxIncome"
                  placeholder="Low income"
                  #low
-                 [(ngModel)]="range.min">
+                 (input)="range.min = low.value">
         </div>
 
         <div class="range-content">
@@ -38,7 +38,7 @@
                  [max]="maxIncome"
                  placeholder="High income"
                  #high
-                 [(ngModel)]="range.max">
+                 (input)="range.max = high.value">
         </div>
 
         <span class="button-incomes pull-right" (click)="applyFilter(low.value, high.value)">

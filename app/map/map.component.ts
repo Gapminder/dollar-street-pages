@@ -1,7 +1,12 @@
-import { Component, OnInit, OnDestroy, Inject, ElementRef, NgZone } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs/Rx';
-import { HeaderComponent } from '../common/header/header.component';
+import { MathService } from '../common/math-service/math-service';
+import { MapService } from './map.service';
+import { LoaderService } from '../common/loader/loader.service';
+import { UrlChangeService } from '../common/url-change/url-change.service';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
+import { StreetSettingsService, DrawDividersInterface } from '../common/street/street.settings.service';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');
@@ -11,19 +16,15 @@ let device = require('device.js')();
 @Component({
   selector: 'map-component',
   template: tpl,
-  styles: [style],
-  directives: [
-    ROUTER_DIRECTIVES,
-    HeaderComponent
-  ]
+  styles: [style]
 })
 
 export class MapComponent implements OnInit, OnDestroy {
   private resizeSubscribe: Subscription;
   private mapServiceSubscribe: Subscription;
-  private math: any;
-  private angulartics2GoogleAnalytics: any;
-  private mapService: any;
+  private math: MathService;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private mapService: MapService;
   private places: any[] = [];
   private countries: any[] = [];
   private element: any;
@@ -33,7 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private hoverPortraitTop: any;
   private hoverPortraitLeft: any;
   private thing: any;
-  private urlChangeService: any;
+  private urlChangeService: UrlChangeService;
   private query: string;
   private currentCountry: string;
   private leftSideCountries: any;
@@ -50,53 +51,53 @@ export class MapComponent implements OnInit, OnDestroy {
   private zone: NgZone;
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
-  private streetSettingsService: any;
-  private streetData: any;
+  private loaderService: LoaderService;
+  private streetData: DrawDividersInterface;
+  private streetSettingsService: StreetSettingsService;
   private streetServiceSubscribe: Subscription;
-  private loaderService: any;
   private windowInnerWidth: number = window.innerWidth;
 
   public constructor(zone: NgZone,
                      router: Router,
+                     math: MathService,
                      element: ElementRef,
+                     mapService: MapService,
+                     loaderService: LoaderService,
                      activatedRoute: ActivatedRoute,
-                     @Inject('Math') math: any,
-                     @Inject('MapService') placeService: any,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('StreetSettingsService') streetSettingsService: any,
-                     @Inject('UrlChangeService') urlChangeService: any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
-    this.mapService = placeService;
-    this.element = element.nativeElement;
-    this.router = router;
-    this.activatedRoute = activatedRoute;
-    this.loaderService = loaderService;
+                     urlChangeService: UrlChangeService,
+                     streetSettingsService: StreetSettingsService,
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.zone = zone;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.math = math;
-    this.streetSettingsService = streetSettingsService;
+    this.router = router;
+    this.mapService = mapService;
+    this.loaderService = loaderService;
+    this.element = element.nativeElement;
+    this.activatedRoute = activatedRoute;
     this.urlChangeService = urlChangeService;
+    this.streetSettingsService = streetSettingsService;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): void {
     this.init = true;
     this.loaderService.setLoader(false);
 
-    this.queryParamsSubscribe = this.router
-      .routerState
+    this.queryParamsSubscribe = this.activatedRoute
       .queryParams
       .subscribe((params: any) => {
         this.thing = params.thing ? params.thing : 'Families';
-
         this.urlChanged({url: `thing=${this.thing}`});
       });
 
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+    this.streetServiceSubscribe = this.streetSettingsService
+      .getStreetSettings()
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
         }
+
         this.streetData = res.data;
       });
   }
@@ -380,7 +381,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     if (this.leftSideCountries && this.leftSideCountries.length === 1) {
       this.angulartics2GoogleAnalytics
-        .eventTrack(`Look at ${this.hoverPlace.family} place from ${this.hoverPlace.country} with map page`);
+        .eventTrack(`Look at ${this.hoverPlace.family} place from ${this.hoverPlace.country} with map page`, {});
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }

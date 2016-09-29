@@ -1,19 +1,12 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  ElementRef,
-  Inject,
-  OnDestroy,
-  OnChanges,
-  EventEmitter
-} from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input, Output, ElementRef, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Rx';
 import { sortBy, chain } from 'lodash';
+import { MathService } from '../math-service/math-service';
+import { StreetSettingsService } from './street.settings.service';
+import { StreetDrawService } from './street.service';
 
 let tpl = require('./street.template.html');
 let style = require('./street.css');
@@ -21,13 +14,11 @@ let style = require('./street.css');
 @Component({
   selector: 'street',
   template: tpl,
-  styles: [style],
-  directives: [ROUTER_DIRECTIVES]
+  styles: [style]
 })
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   public data: any;
-  protected math: any;
   @Input('thing')
   protected thing: string;
   @Input('query')
@@ -45,7 +36,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private regions: any;
   private thingname: any;
   private countries: any;
-  private streetSettingsService: any;
+  private math: MathService;
+  private streetSettingsService: StreetSettingsService;
   private streetData: any;
   private element: HTMLElement;
   private activatedRoute: ActivatedRoute;
@@ -61,9 +53,9 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
-                     @Inject('Math') math: any,
-                     @Inject('StreetSettingsService') streetSettingsService: any,
-                     @Inject('StreetDrawService') streetDrawService: any) {
+                     math: MathService,
+                     streetSettingsService: StreetSettingsService,
+                     streetDrawService: StreetDrawService) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;

@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
+import { MathService } from '../../common/math-service/math-service';
+import { LoaderService } from '../../common/loader/loader.service';
+import { CountryPlacesService } from './country-places.service';
 
 let tpl = require('./country-places.template.html');
 let style = require('./country-places.css');
@@ -8,23 +10,22 @@ let style = require('./country-places.css');
 @Component({
   selector: 'country-places',
   template: tpl,
-  styles: [style],
-  directives: [ROUTER_DIRECTIVES]
+  styles: [style]
 })
 
 export class CountryPlacesComponent implements OnInit, OnDestroy {
-  public countryPlacesServiceSubscribe: Subscription;
-  public math: any;
   @Input()
   private countryId: string;
   private places: any = [];
   private country: any;
-  private countryPlacesService: any;
-  private loaderService: any;
+  private math: MathService;
+  private loaderService: LoaderService;
+  private countryPlacesService: CountryPlacesService;
+  private countryPlacesServiceSubscribe: Subscription;
 
-  public constructor(@Inject('CountryPlacesService') countryPlacesService: any,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('Math') math: any) {
+  public constructor(countryPlacesService: CountryPlacesService,
+                     loaderService: LoaderService,
+                     math: MathService) {
     this.countryPlacesService = countryPlacesService;
     this.math = math;
     this.loaderService = loaderService;
