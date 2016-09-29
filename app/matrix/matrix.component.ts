@@ -323,12 +323,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public getPaddings(): void {
+  public getPaddings(isGuideExist?: boolean): void {
     let headerHeight: number = this.headerContainer.offsetHeight;
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
 
     matrixImages.style.paddingTop = `${headerHeight}px`;
-
+    console.log(headerHeight);
     this.getViewableRows(headerHeight);
 
     let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
@@ -337,7 +337,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       scrollTo = this.row * (this.imgContent.offsetHeight + this.imageMargin) - 60;
     }
 
-    document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
+    if (!isGuideExist) {
+      document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
+    }
 
     if (this.clonePlaces && this.clonePlaces.length) {
       this.streetPlaces.next(this.streetPlacesData);
@@ -556,6 +558,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     setTimeout(() => {
       this.getPaddings();
     }, 0);
+  }
+
+  protected reGetVisibleRows(): void {
+    setTimeout(() => this.getPaddings(true), 0);
   }
 
   protected openIncomeFilter(): void {

@@ -1,5 +1,7 @@
 <div class="matrix-header main-header">
-  <quick-guide (startQuickGuide)="startQuickGuide($event)"></quick-guide>
+  <quick-guide (startQuickGuide)="startQuickGuide($event)"
+               (reGetVisibleRows)="reGetVisibleRows($event)">
+  </quick-guide>
 
   <header [query]="query"
           [thing]="thing"

@@ -366,7 +366,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     return `url("${image}")`;
   }
 
-  protected goToMatrixWithCountry(params: any):void {
+  protected goToMatrixWithCountry(params: any): void {
     this.filter.emit(params);
   }
 
