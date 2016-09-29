@@ -42,6 +42,9 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
   private street: any;
+  private regions: any;
+  private thingname: any;
+  private countries: any;
   private streetSettingsService: any;
   private streetData: any;
   private element: HTMLElement;
@@ -79,7 +82,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
           return;
         }
-
         this.street.set('chosenPlaces', chosenPlaces);
         this.street.clearAndRedraw(chosenPlaces);
       });
@@ -115,6 +117,16 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
           return;
         }
 
+        if(!places.length) {
+          this.street
+            .clearSvg()
+            .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries,this.thingname)
+            .set('places', [])
+            .set('fullIncomeArr', [])
+            .drawScale(places, this.streetData)
+            .removeSliders();
+        }
+
         this.setDividers(this.placesArr, this.streetData);
       });
 
@@ -140,7 +152,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       if (this.query) {
         query = this.parseUrl(this.query);
       }
-
       query.lowIncome = filter.lowIncome;
       query.highIncome = filter.highIncome;
 
@@ -171,6 +182,9 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
       this.street.set('lowIncome', parseUrl.lowIncome);
       this.street.set('highIncome', parseUrl.highIncome);
+      this.thingname = parseUrl.thing;
+      this.countries = parseUrl.countries;
+      this.regions = parseUrl.regions;
     }
   }
 
@@ -201,7 +215,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private setDividers(places: any, drawDividers: any): void {
     this.street
       .clearSvg()
-      .init(this.street.lowIncome, this.street.highIncome, this.streetData)
+      .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries,this.thingname)
       .set('places', sortBy(places, 'income'))
       .set('fullIncomeArr', chain(this.street.places)
         .sortBy('income')

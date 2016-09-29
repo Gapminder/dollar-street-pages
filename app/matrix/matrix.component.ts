@@ -367,7 +367,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public urlChanged(options: any): void {
     this.zone.run(() => {
-      let {url, isZoom, isCountriesFilter, isInit} = options;
+      let {url, isZoom, isInit} = options;
 
       if (url) {
         this.query = isZoom ? url.replace(/row\=\d*/, 'row=1') : url;
@@ -413,6 +413,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.clonePlaces = _.cloneDeep(this.filtredPlaces);
           this.zoom = +parseQuery.zoom;
 
+          if (!this.streetPlacesData.length) {
+            this.streetPlaces.next([]);
+            this.chosenPlaces.next([]);
+            return;
+          }
+
           let incomesArr = (_
             .chain(this.streetPlacesData)
             .map('income')
@@ -422,7 +428,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.streetPlaces.next(this.streetPlacesData);
           this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-          if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== this.streetData.poor || Number(parseQuery.highIncome) !== this.streetData.rich)) {
+          if (!this.filtredPlaces.length) {
             let lowIncome: number = Math.floor(incomesArr[0] - 10);
             let highIncome: number = Math.ceil(incomesArr[incomesArr.length - 1] + 10);
 
@@ -432,7 +438,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
             this.lowIncome = lowIncome;
             this.highIncome = highIncome;
-
             this.urlChanged({url: this.query});
             return;
           }
@@ -574,7 +579,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       this.lowIncome = params.lowIncome;
       this.highIncome = params.highIncome;
-
       this.urlChanged({url: this.query});
     }
 
