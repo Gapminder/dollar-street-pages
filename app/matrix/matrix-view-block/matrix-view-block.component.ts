@@ -14,6 +14,7 @@ import { Subscription, Observable } from 'rxjs/Rx';
 import { Config, ImageResolutionInterface } from '../../../app/app.config';
 import { MathService } from '../../common/math-service/math-service';
 import { FamilyInfoService } from './matrix-view-block.service';
+import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -54,6 +55,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private windowInnerWidth: number = window.innerWidth;
   private isShowCountryButton: boolean;
   private countryName: string;
+  private streetData: DrawDividersInterface;
+  private streetSettingsService: StreetSettingsService;
+  private streetServiceSubscribe: Subscription;
 
   @Input('positionInRow')
   private positionInRow: any;
@@ -73,11 +77,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      router: Router,
                      math: MathService,
                      element: ElementRef,
-                     familyInfoService: FamilyInfoService) {
+                     familyInfoService: FamilyInfoService,
+                     streetSettingsService: StreetSettingsService) {
     this.math = math;
     this.zone = zone;
     this.router = router;
     this.element = element.nativeElement;
+    this.streetSettingsService = streetSettingsService;
     this.familyInfoService = familyInfoService;
   }
 
@@ -94,6 +100,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
             this.familyData.description = this.getDescription(this.familyData.familyData);
           }
         });
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.streetData = res.data;
       });
   }
 
@@ -126,10 +141,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         if (this.familyData && this.familyData.familyData.length) {
           this.familyData.description = this.getDescription(this.familyData.familyData);
         }
-
         this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
-        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.country;
+        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.alias;
         this.loader = true;
       });
   }
@@ -171,6 +185,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     query.regions = 'World';
     query.countries = country;
+    query.lowIncome = this.streetData.poor;
+    query.highIncome = this.streetData.rich;
 
     delete query.activeHouse;
 

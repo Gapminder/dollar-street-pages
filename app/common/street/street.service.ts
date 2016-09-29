@@ -308,7 +308,6 @@ export class StreetDrawService {
 
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
       .subscribe((e: MouseEvent)=> {
-        e.preventDefault();
 
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
@@ -403,8 +402,7 @@ export class StreetDrawService {
       });
 
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
-      .subscribe((e?: MouseEvent)=> {
-        e.preventDefault();
+      .subscribe(()=> {
 
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;

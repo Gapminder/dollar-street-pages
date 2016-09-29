@@ -4,6 +4,7 @@ import { Subscription, Observable } from 'rxjs/Rx';
 import { Config } from '../../app.config';
 import { MathService } from '../../common/math-service/math-service';
 import { HomeHeaderService } from './home-header.service';
+import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
 
 let tpl = require('./home-header.template.html');
 let style = require('./home-header.css');
@@ -15,6 +16,12 @@ let style = require('./home-header.css');
 })
 
 export class HomeHeaderComponent implements OnInit, OnDestroy {
+  @Input('placeId')
+  private placeId: string;
+
+  @Output('familyExpandBlock')
+  private familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
+
   private home: any = {};
   private mapData: any;
   private math: MathService;
@@ -26,9 +33,6 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private aboutDataPosition: {left?: number;top?: number;} = {};
   private windowHeight: number = window.innerHeight;
   private maxHeightPopUp: number = this.windowHeight * .95 - 91;
-
-  @Input('placeId')
-  private placeId: string;
   private homeHeaderService: HomeHeaderService;
   private homeHeaderServiceSubscribe: Subscription;
   private scrollSubscribe: Subscription;
@@ -38,16 +42,19 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private headerElement: HTMLElement;
   private headerHeight: number;
   private headerContentHeight: number;
-
-  @Output('familyExpandBlock')
-  private familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
+  private streetSettingsService: StreetSettingsService;
+  private streetData: DrawDividersInterface;
+  private streetServiceSubscribe: Subscription;
 
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,
+                     streetSettingsService: StreetSettingsService,
                      homeHeaderService: HomeHeaderService) {
+    this.homeHeaderService = homeHeaderService;
     this.zone = zone;
     this.math = math;
+    this.streetSettingsService = streetSettingsService;
     this.element = element.nativeElement;
     this.homeHeaderService = homeHeaderService;
   }
@@ -68,6 +75,15 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
         this.home = res.data;
         this.mapData = this.home.country;
         this.truncCountryName(this.home.country);
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.streetData = res.data;
       });
 
     this.scrollSubscribe = fromEvent(document, 'scroll')

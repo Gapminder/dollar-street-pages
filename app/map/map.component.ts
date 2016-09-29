@@ -6,6 +6,7 @@ import { MapService } from './map.service';
 import { LoaderService } from '../common/loader/loader.service';
 import { UrlChangeService } from '../common/url-change/url-change.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
+import { StreetSettingsService, DrawDividersInterface } from '../common/street/street.settings.service';
 
 let tpl = require('./map.template.html');
 let style = require('./map.css');
@@ -51,6 +52,9 @@ export class MapComponent implements OnInit, OnDestroy {
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
   private loaderService: LoaderService;
+  private streetData: DrawDividersInterface;
+  private streetSettingsService: StreetSettingsService;
+  private streetServiceSubscribe: Subscription;
   private windowInnerWidth: number = window.innerWidth;
 
   public constructor(zone: NgZone,
@@ -61,6 +65,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      loaderService: LoaderService,
                      activatedRoute: ActivatedRoute,
                      urlChangeService: UrlChangeService,
+                     streetSettingsService: StreetSettingsService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.zone = zone;
     this.math = math;
@@ -70,6 +75,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.urlChangeService = urlChangeService;
+    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
@@ -82,6 +88,17 @@ export class MapComponent implements OnInit, OnDestroy {
       .subscribe((params: any) => {
         this.thing = params.thing ? params.thing : 'Families';
         this.urlChanged({url: `thing=${this.thing}`});
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService
+      .getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.streetData = res.data;
       });
   }
 

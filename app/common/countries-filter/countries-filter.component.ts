@@ -88,17 +88,37 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.element.contains(event.target) && this.isOpenCountriesFilter) {
 
       this.openCloseCountriesFilter(true);
-      this.search = '';
     }
   }
 
-  protected hideRegionsIfInFocus(regionsVisibility: boolean): void {
-    this.regionsVisibility = !regionsVisibility;
+  protected hideRegions(isShown: boolean): void {
+    let tabContent = this.element.querySelector('.underline-k') as HTMLElement;
+
+    if (isShown && tabContent) {
+      this.regionsVisibility = false;
+      setTimeout(() => {
+        if (this.keyUpSubscribe) {
+          this.keyUpSubscribe.unsubscribe();
+        }
+
+        let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+        this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
+          .subscribe((e: KeyboardEvent) => {
+            if (e.keyCode === 13) {
+              this.regionsVisibility = true;
+              inputElement.blur();
+            }
+          });
+      }, 0);
+      return;
+    }
+    this.regionsVisibility = true;
   }
 
   protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
     this.search = '';
+    this.regionsVisibility = true;
 
     if (this.isOpenCountriesFilter && !isDesktop) {
       let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
@@ -151,11 +171,11 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected cancelCountriesFilter(): void {
     this.openCloseCountriesFilter(true);
-    this.search = '';
   }
 
   protected clearAllCountries(): void {
     this.showSelected = true;
+    this.regionsVisibility = true;
     this.selectedRegions.length = 0;
     this.selectedCountries.length = 0;
     this.search = '';
@@ -190,6 +210,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   protected selectCountries(country: any, region: string): void {
     this.showSelected = false;
+    this.regionsVisibility = true;
 
     let indexCountry = this.selectedCountries.indexOf(country.country);
 
@@ -222,6 +243,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let query = this.parseUrl(this.url);
 
     this.search = '';
+    this.regionsVisibility = true;
 
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
     query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
@@ -231,6 +253,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.cloneSelectedCountries = ['World'];
     this.cloneSelectedRegions = ['World'];
+    this.openMobileFilterView = window.innerWidth < 1024 || !isDesktop;
   }
 
   public ngOnDestroy(): void {

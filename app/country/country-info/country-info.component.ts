@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angu
 import { Subscription } from 'rxjs/Rx';
 import { MathService } from '../../common/math-service/math-service';
 import { CountryInfoService } from './country-info.service';
+import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
 
 let tpl = require('./country-info.template.html');
 let style = require('./country-info.css');
@@ -15,7 +16,6 @@ let style = require('./country-info.css');
 export class CountryInfoComponent implements OnInit, OnDestroy {
   @Input()
   private countryId: string;
-
   @Output()
   private getCountry: EventEmitter<any> = new EventEmitter<any>();
 
@@ -29,11 +29,16 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   private math: MathService;
   private countryInfoService: CountryInfoService;
   private countryInfoServiceSubscribe: Subscription;
+  private streetSettingsService: StreetSettingsService;
+  private streetData: DrawDividersInterface;
+  private streetServiceSubscribe: Subscription;
 
   public constructor(countryInfoService: CountryInfoService,
-                     math: MathService) {
+                     math: MathService,
+                     streetSettingsService: StreetSettingsService) {
     this.countryInfoService = countryInfoService;
     this.math = math;
+    this.streetSettingsService = streetSettingsService;
     this.isShowInfo = false;
   }
 
@@ -52,6 +57,15 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         this.photosQuantity = res.data.images;
         this.videosQuantity = res.data.video;
         this.getCountry.emit(this.country.alias || this.country.country);
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.streetData = res.data;
       });
   }
 
