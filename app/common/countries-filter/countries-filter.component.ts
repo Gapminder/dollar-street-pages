@@ -2,7 +2,6 @@ import {
   Component,
   OnDestroy,
   OnChanges,
-  Inject,
   Input,
   Output,
   EventEmitter,
@@ -11,11 +10,11 @@ import {
   OnInit,
   NgZone
 } from '@angular/core';
-import { CountriesFilterPipe } from './countries-filter.pipe';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription, Observable } from 'rxjs';
 import { Config } from '../../app.config';
 import * as _ from 'lodash';
+import { CountriesFilterService } from './countries-filter.service';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -26,8 +25,7 @@ let style = require('./countries-filter.css') as string;
 @Component({
   selector: 'countries-filter',
   template: require('./countries-filter.template.html') as string,
-  styles: [style, styleMobile],
-  pipes: [CountriesFilterPipe]
+  styles: [style, styleMobile]
 })
 
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
@@ -51,7 +49,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Output()
   private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
-  private countriesFilterService: any;
+  private countriesFilterService: CountriesFilterService;
   private countriesFilterServiceSubscribe: Subscription;
 
   private cloneSelectedRegions: string[] = ['World'];
@@ -65,7 +63,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public constructor(zone: NgZone,
                      element: ElementRef,
-                     @Inject('CountriesFilterService') countriesFilterService: any) {
+                     countriesFilterService: CountriesFilterService) {
     this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
     this.zone = zone;

@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs';
-import { SocialShareButtonsComponent } from '../social_share_buttons/social-share-buttons.component.ts';
 import { Config } from '../../app.config';
 
 let tpl = require('./footer-floating.template.html');
@@ -10,8 +9,7 @@ let style = require('./footer-floating.css');
 @Component({
   selector: 'float-footer',
   template: tpl,
-  styles: [style],
-  directives: [SocialShareButtonsComponent]
+  styles: [style]
 })
 
 export class FloatFooterComponent implements OnInit, OnDestroy {

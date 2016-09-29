@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, ElementRef, Inject, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Component, OnInit, Input, ElementRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Subscription, Observable } from 'rxjs/Rx';
 import { sortBy, chain } from 'lodash';
+import { MathService } from '../math-service/math-service';
+import { StreetSettingsService } from '../street/street.settings.service';
+import { StreetFilterDrawService } from '../../common/street-filter/street-filter.service';
 
 let tpl = require('./street-filter.template.html');
 let style = require('./street-filter.css');
@@ -9,12 +11,11 @@ let style = require('./street-filter.css');
 @Component({
   selector: 'street-filter',
   template: tpl,
-  styles: [style],
-  directives: [ROUTER_DIRECTIVES]
+  styles: [style]
 })
 
 export class StreetFilterComponent implements OnInit, OnDestroy {
-  protected math: any;
+  private math: MathService;
   @Input('places')
   private places: any[];
   @Input('lowIncome')
@@ -25,7 +26,7 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
   private filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
   private street: any;
-  private streetSettingsService: any;
+  private streetSettingsService: StreetSettingsService;
   private streetData: any;
   private element: HTMLElement;
   private streetFilterSubscribe: Subscription;
@@ -33,9 +34,9 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
   private resize: any;
 
   public constructor(element: ElementRef,
-                     @Inject('Math') math: any,
-                     @Inject('StreetSettingsService') streetSettingsService: any,
-                     @Inject('StreetFilterDrawService') streetDrawService: any) {
+                     math: MathService,
+                     streetSettingsService: StreetSettingsService,
+                     streetDrawService: StreetFilterDrawService) {
     this.element = element.nativeElement;
     this.math = math;
     this.street = streetDrawService;

@@ -1,8 +1,7 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PhotographerProfileComponent } from './photographer-profile/photographer-profile.component';
-import { PhotographerPlacesComponent } from './photographer-places/photographer-places.component';
+import { TitleHeaderService } from '../common/title-header/title-header.service';
 
 let tpl = require('./photographer.template.html');
 let style = require('./photographer.css');
@@ -10,22 +9,17 @@ let style = require('./photographer.css');
 @Component({
   selector: 'photographer',
   template: tpl,
-  styles: [style],
-  directives: [
-    PhotographerProfileComponent,
-    PhotographerPlacesComponent
-  ]
+  styles: [style]
 })
 
 export class PhotographerComponent implements OnInit, OnDestroy {
-  protected photographerId: string;
-
+  private photographerId: string;
   private activatedRoute: ActivatedRoute;
-  private titleHeaderService: any;
   private queryParamsSubscribe: Subscription;
+  private titleHeaderService: TitleHeaderService;
 
   public constructor(activatedRoute: ActivatedRoute,
-                     @Inject('TitleHeaderService') titleHeaderService: any) {
+                     titleHeaderService: TitleHeaderService) {
     this.activatedRoute = activatedRoute;
     this.titleHeaderService = titleHeaderService;
   }

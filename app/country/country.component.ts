@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CountryInfoComponent } from './country-info/country-info.component';
-import { CountryPlacesComponent } from './country-places/country-places.component.ts';
+import { MathService } from '../common/math-service/math-service';
+import { TitleHeaderService } from '../common/title-header/title-header.service';
 
 let tpl = require('./country.template.html');
 let style = require('./country.css');
@@ -10,24 +10,20 @@ let style = require('./country.css');
 @Component({
   selector: 'country',
   template: tpl,
-  styles: [style],
-  directives: [
-    CountryInfoComponent,
-    CountryPlacesComponent
-  ]
+  styles: [style]
 })
 
 export class CountryComponent implements OnInit, OnDestroy {
   protected title: string;
-  protected math: any;
-  protected countryId: string;
+  private countryId: string;
+  private math: MathService;
   private activatedRoute: ActivatedRoute;
   private queryParamsSubscribe: Subscription;
-  private titleHeaderService: any;
+  private titleHeaderService: TitleHeaderService;
 
   public constructor(activatedRoute: ActivatedRoute,
-                     @Inject('Math') math: any,
-                     @Inject('TitleHeaderService') titleHeaderService: any) {
+                     math: MathService,
+                     titleHeaderService: TitleHeaderService) {
     this.activatedRoute = activatedRoute;
     this.titleHeaderService = titleHeaderService;
     this.math = math;

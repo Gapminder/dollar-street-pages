@@ -1,21 +1,11 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
-import { Inject } from '@angular/core';
-
+import { Injectable } from '@angular/core';
+import { MathService } from '../math-service/math-service';
+import { DrawDividersInterface } from '../street/street.settings.service';
 const d3 = require('d3');
 
-export interface DrawDividersInterface {
-  showDividers: boolean;
-  low: number;
-  medium: number;
-  high: number;
-  poor: number;
-  rich: number;
-  lowDividerCoord: number;
-  mediumDividerCoord: number;
-  highDividerCoord: number;
-}
-
+@Injectable()
 export class StreetFilterDrawService {
   public width: number;
   public height: number;
@@ -46,10 +36,10 @@ export class StreetFilterDrawService {
   private rightScrollOpacityLabels: any;
   private leftScrollText: any;
   private rightScrollText: any;
-  private math: any;
+  private math: MathService;
   private filter: Subject<any> = new Subject<any>();
 
-  public constructor(@Inject('Math') math: any) {
+  public constructor(math: MathService) {
     this.math = math;
   }
 

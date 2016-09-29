@@ -1,7 +1,7 @@
-import { Component, Input, Inject, Output, OnChanges, OnDestroy, NgZone, EventEmitter, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Component, Input, Output, OnChanges, OnDestroy, NgZone, EventEmitter, OnInit } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { Config, ImageResolutionInterface } from '../../../app.config';
+import { HomeMediaViewBlockService } from './home-media-view-block.service';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -15,8 +15,7 @@ let style = require('./home-media-view-block.css');
 @Component({
   selector: 'home-media-view-block',
   template: isDesktop ? tpl : tplMobile,
-  styles: [isDesktop ? style : styleMobile],
-  directives: [ROUTER_DIRECTIVES]
+  styles: [isDesktop ? style : styleMobile]
 })
 
 export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
@@ -34,14 +33,14 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
   private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
   private zone: NgZone;
-  private viewBlockService: any;
+  private viewBlockService: HomeMediaViewBlockService;
   private viewBlockServiceSubscribe: Subscription;
   private resizeSubscribe: Subscription;
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
   private windowInnerWidth: number = window.innerWidth;
 
   public constructor(zone: NgZone,
-                     @Inject('HomeMediaViewBlockService') viewBlockService: any) {
+                     viewBlockService: HomeMediaViewBlockService) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
   }

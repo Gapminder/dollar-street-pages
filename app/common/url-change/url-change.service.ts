@@ -1,10 +1,10 @@
-import { Inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import { Inject } from '@angular/core';
 
 export class UrlChangeService {
-  public location: Location;
+  private location: Location;
   private urlEvents: Subject<any>;
 
   public constructor(@Inject(Location) location: Location) {

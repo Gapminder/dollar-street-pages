@@ -1,16 +1,6 @@
-const d3 = require('d3');
+import { DrawDividersInterface } from '../street/street.settings.service';
 
-export interface DrawDividersInterface {
-  showDividers: boolean;
-  low: number;
-  medium: number;
-  high: number;
-  poor: number;
-  rich: number;
-  lowDividerCoord: number;
-  mediumDividerCoord: number;
-  highDividerCoord: number;
-}
+const d3 = require('d3');
 
 export class StreetMobileDrawService {
   public width: number;

@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewEncapsulation, OnDestroy, ElementRef, NgZone } from '@angular/core';
-import { SocialShareButtonsComponent } from '../../social_share_buttons/social-share-buttons.component';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription, Observable } from 'rxjs';
 import { Config } from '../../../app.config';
@@ -16,7 +15,6 @@ let isTablet = device.tablet();
   selector: 'bubble',
   template: tpl,
   styles: [style],
-  directives: [SocialShareButtonsComponent],
   encapsulation: ViewEncapsulation.None
 })
 
