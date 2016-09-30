@@ -179,10 +179,6 @@ export class StreetDrawService {
     let halfHouseWidth = 7;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 10;
-    /*
-     if (!places || !places.length) {
-     return this;
-     }*/
 
     d3.svg
       .axis()
@@ -357,14 +353,22 @@ export class StreetDrawService {
             this.distanceDraggingRightSlider = this.sliderRightBorder - (e.pageX - 56);
           }
 
-          if (
-            e.pageX - this.distanceDraggingLeftSlider >= 50 &&
-            e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
-            this.chosenPlaces = [];
-            this.removeHouses('chosen');
-
-            this.drawLeftSlider(e.pageX - 47 - this.distanceDraggingLeftSlider);
-            this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
+          if (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') {
+            if (e.pageX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && e.pageX + this.distanceDraggingRightSlider <= this.rightPoint + 76) {
+              this.chosenPlaces = [];
+              this.removeHouses('chosen');
+              this.drawLeftSlider(e.pageX - 57 - this.distanceDraggingLeftSlider);
+              this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
+            }
+          } else {
+            if (
+              e.pageX - this.distanceDraggingLeftSlider >= 50 &&
+              e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
+              this.chosenPlaces = [];
+              this.removeHouses('chosen');
+              this.drawLeftSlider(e.pageX - 47 - this.distanceDraggingLeftSlider);
+              this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
+            }
           }
 
           return;
@@ -615,7 +619,7 @@ export class StreetDrawService {
     }
     if (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') {
       if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4)) {
-
+        this.sliderLeftBorder = this.leftPoint - 12;
         this.leftScrollOpacityStreet
           .attr('width', this.leftPoint - 12 + this.streetOffset / 2);
       } else {
@@ -626,6 +630,7 @@ export class StreetDrawService {
       this.leftScrollOpacityStreet
         .attr('width', x + this.streetOffset / 2);
     }
+
     this.lowIncome = this.scale.invert(x);
 
     if (init) {
@@ -739,6 +744,7 @@ export class StreetDrawService {
 
     if (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') {
       if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(x + this.streetOffset / 2 - 1)) {
+        this.sliderRightBorder = this.rightPoint + 12;
         this.rightScrollOpacityStreet.attr('x', this.rightPoint + this.streetOffset / 2 + 1.5 + 12)
           .attr('width', this.width + this.streetOffset / 2);
       } else {
@@ -797,13 +803,13 @@ export class StreetDrawService {
     return this;
   };
 
-  public removeOpacity(): this {
+/*  public removeOpacity(): this {
     this.svg.selectAll('rect.right-scroll-opacity-part').remove();
     this.svg.selectAll('rect.left-scroll-opacity-part').remove();
     this.svg.selectAll('rect.left-scroll-opacity-part2').remove();
     this.svg.selectAll('rect.right-scroll-opacity-part2').remove();
     return this;
-  }
+  }*/
 
   public clearSvg(): this {
     this.leftScroll = void 0;
@@ -1012,9 +1018,33 @@ export class StreetDrawService {
       this.highIncome = this.dividersData.rich + 0.00002;
     }
 
-    this.filter.next({
-      lowIncome: Math.round(this.lowIncome),
-      highIncome: Math.round(this.highIncome)
-    });
+    if (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') {
+
+      if (this.lowIncome < this.minIncome) {
+        this.filter.next({
+          lowIncome: Math.round(this.minIncome - 3),
+          highIncome: Math.round(this.highIncome)
+        });
+      }
+
+      if (this.highIncome > this.maxIncome) {
+        this.filter.next({
+          lowIncome: Math.round(this.lowIncome),
+          highIncome: Math.round(this.maxIncome + 5)
+        });
+      }
+      if (this.highIncome < this.maxIncome && this.lowIncome > this.minIncome) {
+        this.filter.next({
+          lowIncome: Math.round(this.lowIncome),
+          highIncome: Math.round(this.highIncome)
+        });
+      }
+
+    } else {
+      this.filter.next({
+        lowIncome: Math.round(this.lowIncome),
+        highIncome: Math.round(this.highIncome)
+      });
+    }
   }
 }
