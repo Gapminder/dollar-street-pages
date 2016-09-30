@@ -4,18 +4,16 @@ import {
   OnDestroy,
   Input,
   Output,
-  Inject,
   EventEmitter,
   NgZone,
   AfterViewChecked,
   ElementRef
 } from '@angular/core';
 import { Subscription, Observable } from 'rxjs/Rx';
-import { InfiniteScroll } from 'angular2-infinite-scroll';
-import { RowLoaderComponent } from '../../common/row-loader/row-loader.component';
-import { HomeMediaViewBlockComponent } from './home-media-view-block/home-media-view-block.component';
 import { Config, ImageResolutionInterface } from '../../app.config';
 import { find, isEqual, slice, concat } from 'lodash';
+import { LoaderService } from '../../common/loader/loader.service';
+import { HomeMediaService } from './home-media.service';
 
 let tpl = require('./home-media.template.html');
 let style = require('./home-media.css');
@@ -23,8 +21,7 @@ let style = require('./home-media.css');
 @Component({
   selector: 'home-media',
   template: tpl,
-  styles: [style],
-  directives: [HomeMediaViewBlockComponent, RowLoaderComponent, InfiniteScroll]
+  styles: [style]
 })
 
 export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
@@ -37,7 +34,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private rowLoaderStartPosition: number = 0;
   private zoom: number = this.windowInnerWidth < 1024 ? 3 : 4;
   private prevImage: Object;
-  private homeMediaService: any;
+  private homeMediaService: HomeMediaService;
   private images: any = [];
   private familyPlaceServiceSubscribe: Subscription;
   private resizeSubscribe: Subscription;
@@ -55,7 +52,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private visibleImages: number;
   private currentImages: any = [];
   private viewBlockHeight: number;
-  private loaderService: any;
+  private loaderService: LoaderService;
 
   @Input('placeId')
   private placeId: string;
@@ -69,8 +66,8 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public constructor(zone: NgZone,
                      element: ElementRef,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('HomeMediaService') homeMediaService: any) {
+                     loaderService: LoaderService,
+                     homeMediaService: HomeMediaService) {
     this.homeMediaService = homeMediaService;
     this.zone = zone;
     this.loaderService = loaderService;

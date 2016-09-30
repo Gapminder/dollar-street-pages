@@ -1,19 +1,16 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute, UrlPathWithParams, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import {
   ContenfulContent,
   ContentfulTagPage,
   ContentfulNodePage,
   NodePageContent,
-  RoutesManagerService,
-  ToDatePipe,
-  EntriesViewComponent,
-  RelatedComponent,
-  TagsComponent,
-  ContributorsComponent
+  RoutesManagerService
 } from 'ng2-contentful-blog/index';
 import * as _ from 'lodash';
+import { LoaderService } from '../common/loader/loader.service';
+import { TitleHeaderService } from '../common/title-header/title-header.service';
 
 let tpl = require('./blog.template.html');
 let style = require('./blog.css');
@@ -21,20 +18,11 @@ let style = require('./blog.css');
 @Component({
   selector: 'blog-page',
   template: tpl,
-  styles: [style],
-  directives: [
-    EntriesViewComponent,
-    RelatedComponent,
-    ROUTER_DIRECTIVES,
-    TagsComponent,
-    ContributorsComponent
-  ],
-  pipes: [ToDatePipe]
+  styles: [style]
 })
 
 export class BlogComponent implements OnInit, OnDestroy {
   private isArticle: boolean;
-
   private content: NodePageContent;
   private children: ContentfulNodePage[];
   private urlPath: string;
@@ -44,16 +32,18 @@ export class BlogComponent implements OnInit, OnDestroy {
   private contentfulContentService: ContenfulContent;
   private routesManager: RoutesManagerService;
   private constants: any;
-  private titleHeaderService: any;
-  private loaderService: any;
+  private loaderService: LoaderService;
+  private titleHeaderService: TitleHeaderService;
+  private projectTagId: string;
+  private relatedArticles: ContentfulNodePage[];
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
                      routesManager: RoutesManagerService,
                      contentfulContentService: ContenfulContent,
-                     @Inject('Constants') constants: any,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('TitleHeaderService') titleHeaderService: any) {
+                     loaderService: LoaderService,
+                     titleHeaderService: TitleHeaderService,
+                     @Inject('Constants') constants: any) {
     this.router = router;
     this.contentfulContentService = contentfulContentService;
     this.routesManager = routesManager;
@@ -71,23 +61,30 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.titleHeaderService.setTitle('Blog');
 
     this.activatedRoute.url
-      .subscribe((urls: UrlPathWithParams[]) => {
-        this.urlPath = urls.map((value: UrlPathWithParams) => value.path).join('/');
+      .subscribe((urls: UrlSegment[]) => {
+        this.urlPath = urls.map((value: UrlSegment) => value.path).join('/');
         this.contentSlug = this.urlPath.split('/').pop();
 
         this.contentfulContentService
           .getTagsBySlug(this.constants.PROJECT_TAG)
           .mergeMap((tags: ContentfulTagPage[]) => Observable.from(tags))
+          .do((projectTagId: ContentfulTagPage)=> this.projectTagId = projectTagId.sys.id)
           .map((tag: ContentfulTagPage) => tag.sys.id)
           .mergeMap((tagSysId: string) => this.contentfulContentService.getArticleByTagAndSlug(tagSysId, this.contentSlug))
           .mergeMap((articles: ContentfulNodePage[]) => Observable.from(articles))
-          // .filter((article: ContentfulNodePage) => !!_.find(article.fields.tags, (tag: ContentfulTagPage) => tag.fields.slug === this.constants.PROJECT_TAG))
           .subscribe((article: ContentfulNodePage) => this.onArticleReceived(article));
       });
   }
 
   public ngOnDestroy(): void {
     this.loaderService.setLoader(false);
+  }
+
+  private related(related: ContentfulNodePage[]): Observable<ContentfulNodePage[]> {
+    return Observable
+      .from(related)
+      .filter((article: ContentfulNodePage) => !!_.find(article.fields.tags, (tag: ContentfulTagPage) => tag.sys.id === this.projectTagId))
+      .toArray();
   }
 
   private onArticleReceived(article: ContentfulNodePage): void {
@@ -97,15 +94,19 @@ export class BlogComponent implements OnInit, OnDestroy {
 
     this.content = article.fields;
 
-    this.content.tags = _.filter(this.content.tags, (tag: ContentfulTagPage)=> {
-      return !_.includes(this.constants.EXCLUDED_TAGS, tag.fields.slug);
-    });
+    if (this.content.related) {
+      this.related(this.content.related).subscribe((related: ContentfulNodePage[]) => {
+        if (!_.isEmpty(related)) {
+          this.relatedArticles = related;
+        }
+      });
+    }
 
     this.contentfulContentService.getChildrenOfArticleByTag(article.sys.id, this.constants.PROJECT_TAG)
       .subscribe((children: ContentfulNodePage[]) => {
         _.forEach(children, (child: ContentfulNodePage) => {
-          const currentPath: string = _.map(this.activatedRoute.snapshot.url, 'path').join('/');
-          child.fields.url = `${currentPath}/${child.fields.slug}`;
+          const currentPagePath: string = _.map(this.activatedRoute.snapshot.url, 'path').join('/');
+          child.fields.url = `${currentPagePath}/${child.fields.slug}`;
         });
         this.routesManager.addRoutesFromArticles(... children);
         this.children = children;

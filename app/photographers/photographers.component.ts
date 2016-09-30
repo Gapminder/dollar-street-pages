@@ -1,8 +1,10 @@
-import { Component, OnInit, OnDestroy, Inject, ElementRef } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
-import { PhotographersFilter } from './photographers-filter.pipe.ts';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { MathService } from '../common/math-service/math-service';
+import { LoaderService } from '../common/loader/loader.service';
+import { TitleHeaderService } from '../common/title-header/title-header.service';
+import { PhotographersService } from './photographers.service';
 
 let tpl = require('./photographers.template.html');
 let style = require('./photographers.css');
@@ -13,37 +15,32 @@ const isDesktop: boolean = device.desktop();
 @Component({
   selector: 'photographers',
   template: tpl,
-  styles: [style],
-  directives: [ROUTER_DIRECTIVES],
-  pipes: [PhotographersFilter]
+  styles: [style]
 })
 
 export class PhotographersComponent implements OnInit, OnDestroy {
   protected search: {text: string} = {text: ''};
 
-  private math: any;
+  private math: MathService;
   private photographersByCountry: any[] = [];
   private photographersByName: any[] = [];
-  private angulartics2GoogleAnalytics: any;
-  private photographersService: any;
+  private photographersService: PhotographersService;
   private photographersServiceSubscribe: Subscription;
   private keyUpSubscribe: Subscription;
   private element: HTMLElement;
-  private titleHeaderService: any;
-  private loaderService: any;
+  private titleHeaderService: TitleHeaderService;
+  private loaderService: LoaderService;
 
   public constructor(element: ElementRef,
-                     @Inject('Math') math: any,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('TitleHeaderService') titleHeaderService: any,
-                     @Inject('PhotographersService') photographersService: any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
+                     math: MathService,
+                     loaderService: LoaderService,
+                     titleHeaderService: TitleHeaderService,
+                     photographersService: PhotographersService) {
     this.math = math;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.titleHeaderService = titleHeaderService;
     this.photographersService = photographersService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): void {

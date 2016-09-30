@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES } from '@angular/router';
-import { MainMenuComponent } from '../common/menu/menu.component';
-import { HomeHeaderComponent } from './home-header/home-header.component';
-import { HomeMediaComponent } from './home-media/home-media.component';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Subject } from 'rxjs/Rx';
-
-let _ = require('lodash');
+import { CountriesFilterService } from '../common/countries-filter/countries-filter.service';
+import { HomeIncomeFilterService } from './home-income-filter.service';
+import { UrlChangeService } from '../common/url-change/url-change.service';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
+import * as _ from 'lodash';
 
 let tpl = require('./home.template.html');
 let style = require('./home.css');
@@ -23,41 +23,38 @@ interface UrlParamsInterface {
 @Component({
   selector: 'family',
   template: tpl,
-  styles: [style],
-  directives: [
-    HomeHeaderComponent,
-    HomeMediaComponent,
-    ROUTER_DIRECTIVES,
-    MainMenuComponent
-  ]
+  styles: [style]
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
-  protected titles: any = {};
-  protected openFamilyExpandBlock: Subject<any> = new Subject<any>();
+  private titles: any = {};
+  private openFamilyExpandBlock: Subject<any> = new Subject<any>();
   private placeId: string;
   private urlParams: UrlParamsInterface;
-  private homeIncomeFilterService: any;
+  private homeIncomeFilterService: HomeIncomeFilterService;
   private homeIncomeFilterServiceSubscribe: Subscription;
   private homeIncomeData: any;
   private rich: any;
   private poor: any;
   private router: Router;
-  private countriesFilterService: any;
+  private activatedRoute: ActivatedRoute;
+  private countriesFilterService: CountriesFilterService;
   private countriesFilterServiceSubscribe: Subscription;
   private locations: any[];
   private activeImageIndex: number;
-  private urlChangeService: any;
+  private urlChangeService: UrlChangeService;
   private windowHistory: any = history;
   private queryParamsSubscribe: Subscription;
-  private angulartics2GoogleAnalytics: any;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
 
   public constructor(router: Router,
-                     @Inject('CountriesFilterService') countriesFilterService: any,
-                     @Inject('HomeIncomeFilterService') homeIncomeFilterService: any,
-                     @Inject('UrlChangeService') urlChangeService: any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
+                     activatedRoute: ActivatedRoute,
+                     countriesFilterService: CountriesFilterService,
+                     homeIncomeFilterService: HomeIncomeFilterService,
+                     urlChangeService: UrlChangeService,
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
+    this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.homeIncomeFilterService = homeIncomeFilterService;
     this.countriesFilterService = countriesFilterService;
@@ -65,8 +62,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.queryParamsSubscribe = this.router
-      .routerState
+    this.queryParamsSubscribe = this.activatedRoute
       .queryParams
       .subscribe((params: any) => {
         this.placeId = params.place;
@@ -174,7 +170,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         highIncome: this.rich
       }]);
 
-      this.angulartics2GoogleAnalytics.eventTrack(`Go to Matrix page from Home page `);
+      this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
 
       return;
     }
@@ -231,7 +227,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         _.forEach(this.locations, (location: any) => {
           if (regions.indexOf(location.region) !== -1) {
-            regionCountries = regionCountries.concat(_.map(location.countries, 'country'));
+            regionCountries = regionCountries.concat(_.map(location.countries, 'country') as string[]);
             sumCountries = +location.countries.length;
           }
         });

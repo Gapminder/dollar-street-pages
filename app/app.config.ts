@@ -1,15 +1,3 @@
-import { RouterConfig } from '@angular/router';
-import { PhotographersComponent } from './photographers/photographers.component';
-import { TeamComponent } from './team/team.component';
-import { ArticleComponent } from './article/article.component';
-import { CountryComponent } from './country/country.component';
-import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
-import { MapComponent } from './map/map.component';
-import { MatrixComponent } from './matrix/matrix.component';
-import { PhotographerComponent } from './photographer/photographer.component';
-import { RoutesGatewayComponent, RoutesGatewayGuard, TagComponent } from 'ng2-contentful-blog';
-
 let device: {desktop: Function} = require('device.js')();
 let isDesktop: boolean = device.desktop();
 
@@ -25,21 +13,6 @@ export class Config {
   // public static api: string = 'http://192.168.1.148';
   // public static api:string = 'http://192.168.1.57';
   // public static api:string = 'http://192.168.1.95';
-
-  public static routes: RouterConfig = [
-    {path: '', pathMatch: 'full', redirectTo: 'matrix'},
-    {path: 'matrix', component: MatrixComponent, terminal: true},
-    {path: 'family', component: HomeComponent},
-    {path: 'map', component: MapComponent},
-    {path: 'photographers', component: PhotographersComponent},
-    {path: 'photographer/:id', component: PhotographerComponent},
-    {path: 'team', component: TeamComponent},
-    {path: 'country/:id', component: CountryComponent},
-    {path: 'about', component: AboutComponent},
-    {path: 'article/:id', component: ArticleComponent},
-    {path: 'tag/:tag', component: TagComponent},
-    {path: '**', component: RoutesGatewayComponent, canActivate: [RoutesGatewayGuard]}
-  ];
 
   private static windowInnerWidth: number = window.innerWidth;
 

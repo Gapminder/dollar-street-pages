@@ -1,5 +1,8 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { TeamService } from './team.service';
+import { LoaderService } from '../common/loader/loader.service';
+import { TitleHeaderService } from '../common/title-header/title-header.service';
 
 let tpl = require('./team.template.html');
 let style = require('./team.css');
@@ -12,14 +15,14 @@ let style = require('./team.css');
 
 export class TeamComponent implements OnInit, OnDestroy {
   private teamList: any;
-  private teamService: any;
+  private teamService: TeamService;
   private teamSubscribe: Subscription;
-  private titleHeaderService: any;
-  private loaderService: any;
+  private titleHeaderService: TitleHeaderService;
+  private loaderService: LoaderService;
 
-  public constructor(@Inject('TeamService') teamService: any,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('TitleHeaderService') titleHeaderService: any) {
+  public constructor(teamService: TeamService,
+                     loaderService: LoaderService,
+                     titleHeaderService: TitleHeaderService) {
     this.teamService = teamService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;

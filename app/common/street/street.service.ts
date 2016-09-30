@@ -1,24 +1,15 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
-import { Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { MathService } from '../math-service/math-service';
+import { DrawDividersInterface } from './street.settings.service';
 
 const d3 = require('d3');
 
 let device = require('device.js')();
 let isDesktop: boolean = device.desktop();
 
-export interface DrawDividersInterface {
-  showDividers: boolean;
-  low: number;
-  medium: number;
-  high: number;
-  poor: number;
-  rich: number;
-  lowDividerCoord: number;
-  mediumDividerCoord: number;
-  highDividerCoord: number;
-}
-
+@Injectable()
 export class StreetDrawService {
   public width: number;
   public height: number;
@@ -34,7 +25,7 @@ export class StreetDrawService {
   private svg: any;
   private incomeArr: any[] = [];
   private mouseMoveSubscriber: any;
-  private dividersData: DrawDividersInterface;
+  private dividersData: any;
   private mouseUpSubscriber: any;
   private touchMoveSubscriber: any;
   private touchUpSubscriber: any;
@@ -54,7 +45,7 @@ export class StreetDrawService {
   private leftScrollText: any;
   private rightScrollText: any;
   private hoverPlace: any;
-  private math: any;
+  private math: MathService;
   private currentLowIncome: number;
   private currentHighIncome: number;
   private filter: Subject<any> = new Subject<any>();
@@ -74,7 +65,7 @@ export class StreetDrawService {
     }
   };
 
-  public constructor(@Inject('Math') math: any) {
+  public constructor(math: MathService) {
     this.math = math;
   }
 
@@ -317,7 +308,6 @@ export class StreetDrawService {
 
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
       .subscribe((e: MouseEvent)=> {
-        e.preventDefault();
 
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
@@ -412,8 +402,7 @@ export class StreetDrawService {
       });
 
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
-      .subscribe((e?: MouseEvent)=> {
-        e.preventDefault();
+      .subscribe(()=> {
 
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;

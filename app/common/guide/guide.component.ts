@@ -1,18 +1,8 @@
-import {
-  Component,
-  Inject,
-  OnInit,
-  OnDestroy,
-  Output,
-  EventEmitter,
-  ViewEncapsulation,
-  NgZone,
-  ElementRef
-} from '@angular/core';
-import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { BubbleComponent } from './bubble/bubble.component';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
 import { find, difference } from 'lodash';
+import { GuideService } from './guide.service';
 
 let tpl = require('./guide.template.html');
 let style = require('./guide.css');
@@ -21,7 +11,6 @@ let style = require('./guide.css');
   selector: 'quick-guide',
   template: tpl,
   styles: [style],
-  directives: [BubbleComponent],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -30,11 +19,9 @@ export class GuideComponent implements OnInit, OnDestroy {
   private description: string;
   private bubbles: any[];
   private isShowBubble: boolean = false;
-  private guideService: any;
+  private guideService: GuideService;
   private guideServiceSubscribe: Subscription;
   private scrollSubscribe: Subscription;
-  private zone: NgZone;
-  private element: HTMLElement;
   private isShowGuideForScroll: boolean = true;
 
   @Output('reGetVisibleRows')
@@ -43,12 +30,8 @@ export class GuideComponent implements OnInit, OnDestroy {
   @Output('startQuickGuide')
   private startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
-  public constructor(zone: NgZone,
-                     @Inject('GuideService') guideService: any,
-                     element: ElementRef) {
+  public constructor(guideService: GuideService) {
     this.guideService = guideService;
-    this.zone = zone;
-    this.element = element.nativeElement;
   }
 
   public ngOnInit(): void {

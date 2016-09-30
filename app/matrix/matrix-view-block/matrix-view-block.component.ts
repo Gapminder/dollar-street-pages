@@ -4,16 +4,17 @@ import {
   Output,
   OnInit,
   OnChanges,
-  Inject,
   EventEmitter,
   NgZone,
   OnDestroy,
   ElementRef
 } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs/Rx';
-import { RegionMapComponent } from '../../common/region-map/region-map.component';
 import { Config, ImageResolutionInterface } from '../../../app/app.config';
+import { MathService } from '../../common/math-service/math-service';
+import { FamilyInfoService } from './matrix-view-block.service';
+import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -27,26 +28,24 @@ let style = require('./matrix-view-block.css');
 @Component({
   selector: 'matrix-view-block',
   template: isDesktop ? tpl : tplMobile,
-  styles: [isDesktop ? style : styleMobile],
-  directives: [RegionMapComponent, ROUTER_DIRECTIVES]
+  styles: [isDesktop ? style : styleMobile]
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  public familyInfoServiceSubscribe: Subscription;
-  public fancyBoxImage: any;
-
-  protected showblock: boolean;
-  protected familyData: any = {};
-  protected loader: boolean = false;
-  protected math: any;
-  protected markerPositionLeft: number;
   protected api: string = Config.api;
 
+  private familyInfoServiceSubscribe: Subscription;
+  private fancyBoxImage: any;
+  private showblock: boolean;
+  private familyData: any = {};
+  private loader: boolean = false;
+  private markerPositionLeft: number;
+  private math: MathService;
   private privateZoom: any;
   private resizeSubscribe: Subscription;
   private popIsOpen: boolean;
   private mapData: any;
-  private familyInfoService: any;
+  private familyInfoService: FamilyInfoService;
   private zone: NgZone;
   private router: Router;
   private boxContainerPadding: number;
@@ -56,6 +55,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private windowInnerWidth: number = window.innerWidth;
   private isShowCountryButton: boolean;
   private countryName: string;
+  private streetData: DrawDividersInterface;
+  private streetSettingsService: StreetSettingsService;
+  private streetServiceSubscribe: Subscription;
 
   @Input('positionInRow')
   private positionInRow: any;
@@ -73,13 +75,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   public constructor(zone: NgZone,
                      router: Router,
+                     math: MathService,
                      element: ElementRef,
-                     @Inject('Math') math: any,
-                     @Inject('FamilyInfoService') familyInfoService: any) {
+                     familyInfoService: FamilyInfoService,
+                     streetSettingsService: StreetSettingsService) {
     this.math = math;
     this.zone = zone;
     this.router = router;
     this.element = element.nativeElement;
+    this.streetSettingsService = streetSettingsService;
     this.familyInfoService = familyInfoService;
   }
 
@@ -96,6 +100,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
             this.familyData.description = this.getDescription(this.familyData.familyData);
           }
         });
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.streetData = res.data;
       });
   }
 
@@ -128,10 +141,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         if (this.familyData && this.familyData.familyData.length) {
           this.familyData.description = this.getDescription(this.familyData.familyData);
         }
-
         this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
-        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.country;
+        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.alias;
         this.loader = true;
       });
   }
@@ -173,6 +185,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     query.regions = 'World';
     query.countries = country;
+    query.lowIncome = this.streetData.poor;
+    query.highIncome = this.streetData.rich;
 
     delete query.activeHouse;
 

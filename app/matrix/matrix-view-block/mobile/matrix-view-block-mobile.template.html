@@ -38,7 +38,7 @@
           [routerLink]="['/country', familyData?.country?._id]"
           [queryParams]="{}"
           angulartics2On="click"
-          angularticsEvent="From Matrix page to {{familyData.country.country}} page">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+          angularticsEvent="From Matrix page to {{familyData.country.alias}} page">{{familyData?.country?.alias || familyData?.country?.country}}</span>
         </h3>
       </div>
 
@@ -60,7 +60,7 @@
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
 
       <a *ngIf="isShowCountryButton"
-         (click)="goToMatrixByCountry(familyData.country.country)">
+         (click)="goToMatrixByCountry(familyData.country.alias)">
         <span>All {{thing.toLowerCase()}}</span>
         <span>in</span>
         <span>{{countryName}}</span>

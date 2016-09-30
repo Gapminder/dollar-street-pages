@@ -1,6 +1,9 @@
-import { Component, Inject, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+import { LoaderService } from '../common/loader/loader.service';
+import { ArticleService } from './article.service';
+import { TitleHeaderService } from '../common/title-header/title-header.service';
 
 let tpl = require('./article.template.html');
 let style = require('./article.css');
@@ -13,19 +16,19 @@ let style = require('./article.css');
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {
-  private articleService: any;
+  private articleService: ArticleService;
   private articleServiceSubscribe: Subscription;
   private article: any;
   private thingId: string;
   private activatedRoute: ActivatedRoute;
   private queryParamsSubscribe: Subscription;
-  private titleHeaderService: any;
-  private loaderService: any;
+  private titleHeaderService: TitleHeaderService;
+  private loaderService: LoaderService;
 
   public constructor(activatedRoute: ActivatedRoute,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('ArticleService') articleService: any,
-                     @Inject('TitleHeaderService') titleHeaderService: any) {
+                     loaderService: LoaderService,
+                     articleService: ArticleService,
+                     titleHeaderService: TitleHeaderService) {
     this.articleService = articleService;
     this.activatedRoute = activatedRoute;
     this.loaderService = loaderService;

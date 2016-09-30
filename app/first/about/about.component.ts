@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ElementRef, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 let tpl = require('./about.template.html');
@@ -14,13 +14,13 @@ const proportion: number = 1.777;
 
 export class AboutComponent implements OnInit, OnDestroy {
   private resizeSubscribe: any;
-  private element: any;
+  private element: HTMLElement;
   private videoContainer: HTMLElement;
   private videosIframes: any;
   private zone: NgZone;
 
-  public constructor(@Inject(ElementRef) element: ElementRef,
-                     @Inject(NgZone) zone: NgZone) {
+  public constructor(element: ElementRef,
+                     zone: NgZone) {
     this.element = element.nativeElement;
     this.zone = zone;
   }
@@ -49,7 +49,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.videoContainer = this.element.querySelector('.video-container');
+    this.videoContainer = this.element.querySelector('.video-container') as HTMLElement;
 
     let videoContainerWidth = this.videoContainer.offsetWidth;
     let videoWidth = (videoContainerWidth - 20) / 2;

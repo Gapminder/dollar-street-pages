@@ -22,7 +22,8 @@
         <input class="form-control autofocus"
                type="search"
                placeholder="Search country"
-               [(ngModel)]="search">
+               #countriesSearch
+               (input)="search = countriesSearch.value">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
     </div>
@@ -99,14 +100,16 @@
         <input class="form-control"
                type="search"
                placeholder="Search country"
-               [(ngModel)]="search"
-
+               (focus)="hideRegionsIfInFocus(regionsVisibility)"
+               (focusout)="hideRegionsIfInFocus()"
+               #countriesMobileSearch
+               (input)="search = countriesMobileSearch.value"
                (click)="hideRegions(true)">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
     </div>
 
-    <div class="underline-k" [ngStyle] = "{display: regionsVisibility ? 'inline-block' : 'none'}">
+    <div class="underline-k" [ngStyle]="{display: regionsVisibility ? 'inline-block' : 'none'}">
       <div class="regions-container" *ngFor="let location of locations">
         <h3 class="title"
             (click)="selectRegions(location)"

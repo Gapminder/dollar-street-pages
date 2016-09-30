@@ -1,14 +1,13 @@
-import { Component, OnInit, Inject, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, Subject } from 'rxjs/Rx';
-import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
-import { StreetComponent } from '../common/street/street.component';
-import { StreetMobileComponent } from '../common/street-mobile/street-mobile.component';
-import { HeaderComponent } from '../common/header/header.component';
-import { GuideComponent } from '../common/guide/guide.component';
-import { IncomeFilterComponent } from '../common/income-filter/income-filter.component';
 import { Config, ImageResolutionInterface } from '../app.config';
 import * as _ from 'lodash';
+import { MatrixService } from './matrix.service';
+import { LoaderService } from '../common/loader/loader.service';
+import { UrlChangeService } from '../common/url-change/url-change.service';
+import { CountriesFilterService } from '../common/countries-filter/countries-filter.service';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
 let device: {desktop: Function; mobile: Function} = require('device.js')();
 let isMobile: boolean = device.mobile();
@@ -16,39 +15,29 @@ let isMobile: boolean = device.mobile();
 @Component({
   selector: 'matrix',
   template: require('./matrix.template.html') as string,
-  styles: [require('./matrix.css') as string],
-  directives: [
-    GuideComponent,
-    HeaderComponent,
-    StreetComponent,
-    StreetMobileComponent,
-    MatrixImagesComponent,
-    IncomeFilterComponent]
+  styles: [require('./matrix.css') as string]
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
-  protected filtredPlaces: any[] = [];
-  protected zoomPositionFixed: boolean = false;
-  protected isOpenIncomeFilter: boolean = false;
-  public clearActiveHomeViewBox: Subject<any> = new Subject<any>();
-
-  public query: string;
-  public matrixService: any;
-  public loaderService: any;
-  public streetPlaces: Subject<any> = new Subject<any>();
-  public matrixPlaces: Subject<any> = new Subject<any>();
-  public chosenPlaces: Subject<any> = new Subject<any>();
-  public hoverPlace: Subject<any> = new Subject<any>();
-  public padding: Subject<any> = new Subject<any>();
-  public lowIncome: number;
-  public highIncome: number;
-  public matrixServiceSubscribe: Subscription;
-  public angulartics2GoogleAnalytics: any;
-  public streetData: any;
-  public selectedCountries: any;
-  public selectedRegions: any;
-  public activeCountries: any;
-
+  private zoomPositionFixed: boolean = false;
+  private isOpenIncomeFilter: boolean = false;
+  private clearActiveHomeViewBox: Subject<any> = new Subject<any>();
+  private filtredPlaces: any[] = [];
+  private query: string;
+  private matrixService: MatrixService;
+  private loaderService: LoaderService;
+  private streetPlaces: Subject<any> = new Subject<any>();
+  private matrixPlaces: Subject<any> = new Subject<any>();
+  private chosenPlaces: Subject<any> = new Subject<any>();
+  private hoverPlace: Subject<any> = new Subject<any>();
+  private lowIncome: number;
+  private highIncome: number;
+  private matrixServiceSubscribe: Subscription;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private streetData: any;
+  private selectedCountries: any;
+  private selectedRegions: any;
+  private activeCountries: any;
   private scrollSubscribe: Subscription;
   private resizeSubscribe: Subscription;
   private headerFixedSubscribe: Subscription;
@@ -59,8 +48,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private footerHeight: number;
   private imageMargin: number;
   private visiblePlaces: number;
-  private urlChangeService: any;
+  private urlChangeService: UrlChangeService;
   private router: Router;
+  private activatedRoute: ActivatedRoute;
   private thing: string;
   private countries: string;
   private regions: string;
@@ -72,7 +62,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private isDesktop: boolean = device.desktop();
   private clonePlaces: any[];
   private zone: NgZone;
-  private countriesFilterService: any;
+  private countriesFilterService: CountriesFilterService;
   private countriesFilterServiceSubscribe: Subscription;
   private windowHistory: any = history;
   private matrixServiceStreetSubscribe: Subscription;
@@ -87,14 +77,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public constructor(zone: NgZone,
                      router: Router,
+                     activatedRoute: ActivatedRoute,
                      element: ElementRef,
-                     @Inject('MatrixService') matrixService: any,
-                     @Inject('LoaderService') loaderService: any,
-                     @Inject('UrlChangeService') urlChangeService: any,
-                     @Inject('CountriesFilterService') countriesFilterService: any,
-                     @Inject('Angulartics2GoogleAnalytics') angulartics2GoogleAnalytics: any) {
+                     matrixService: MatrixService,
+                     loaderService: LoaderService,
+                     urlChangeService: UrlChangeService,
+                     countriesFilterService: CountriesFilterService,
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.zone = zone;
     this.router = router;
+    this.activatedRoute = activatedRoute;
     this.matrixService = matrixService;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
@@ -118,8 +110,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         });
       });
 
-    this.queryParamsSubscribe = this.router
-      .routerState
+    this.queryParamsSubscribe = this.activatedRoute
       .queryParams
       .subscribe((params: any) => {
         this.thing = decodeURI(params.thing || 'Families');
@@ -448,7 +439,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
           this.buildTitle(this.parseUrl(this.query));
 
-          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome);
+          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
 
           this.urlChangeService.replaceState('/matrix', this.query);
 
