@@ -298,7 +298,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         if (!this.selectedRegions) {
 
           this.showErrorMsg = true;
-
           this.errorMsg = 'Sorry, there is no data by this query yet!';
           return;
         }
