@@ -21,59 +21,62 @@ let isMobile: boolean = device.mobile();
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private zoomPositionFixed: boolean = false;
   private isOpenIncomeFilter: boolean = false;
-  private clearActiveHomeViewBox: Subject<any> = new Subject<any>();
-  private filtredPlaces: any[] = [];
-  private query: string;
-  private matrixService: MatrixService;
-  private loaderService: LoaderService;
+  private isDesktop: boolean = device.desktop();
+  private hoverPlace: Subject<any> = new Subject<any>();
   private streetPlaces: Subject<any> = new Subject<any>();
   private matrixPlaces: Subject<any> = new Subject<any>();
   private chosenPlaces: Subject<any> = new Subject<any>();
-  private hoverPlace: Subject<any> = new Subject<any>();
+  private clearActiveHomeViewBox: Subject<any> = new Subject<any>();
+  private row: number;
+  private zoom: number;
   private lowIncome: number;
   private highIncome: number;
-  private matrixServiceSubscribe: Subscription;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private activeHouse: number;
+  private imageHeight: number;
+  private imageMargin: number;
+  private footerHeight: number;
+  private visiblePlaces: number;
+  private rowEtalon: number = 0;
+  private scrollToTopHeader: number = 0;
+  private windowInnerWidth: number = window.innerWidth;
+  private windowInnerHeight: number = window.innerHeight;
+  private placesVal: any;
+  private locations: any;
   private streetData: any;
-  private selectedCountries: any;
   private selectedRegions: any;
   private activeCountries: any;
+  private streetPlacesData: any;
+  private selectedCountries: any;
+  private placesArr: any[];
+  private clonePlaces: any[];
+  private filtredPlaces: any[] = [];
+  private windowHistory: any = history;
   private scrollSubscribe: Subscription;
   private resizeSubscribe: Subscription;
-  private headerFixedSubscribe: Subscription;
-  private placesArr: any[];
-  private element: HTMLElement;
-  private rowEtalon: number = 0;
-  private imageHeight: number;
-  private footerHeight: number;
-  private imageMargin: number;
-  private visiblePlaces: number;
-  private urlChangeService: UrlChangeService;
-  private router: Router;
-  private activatedRoute: ActivatedRoute;
-  private thing: string;
-  private countries: string;
-  private regions: string;
-  private row: number;
-  private activeHouse: number;
-  private placesVal: any;
-  private zoom: number;
-  private locations: any;
-  private isDesktop: boolean = device.desktop();
-  private clonePlaces: any[];
-  private zone: NgZone;
-  private countriesFilterService: CountriesFilterService;
-  private countriesFilterServiceSubscribe: Subscription;
-  private windowHistory: any = history;
-  private matrixServiceStreetSubscribe: Subscription;
-  private streetPlacesData: any;
   private queryParamsSubscribe: Subscription;
-  private windowInnerHeight: number = window.innerHeight;
-  private windowInnerWidth: number = window.innerWidth;
+  private headerFixedSubscribe: Subscription;
+  private matrixServiceSubscribe: Subscription;
+  private matrixServiceStreetSubscribe: Subscription;
+  private scrollWellcomeHeaderSubscribe: Subscription;
+  private countriesFilterServiceSubscribe: Subscription;
+  private thing: string;
+  private query: string;
+  private regions: string;
+  private countries: string;
+  private zone: NgZone;
+  private router: Router;
+  private matrixService: MatrixService;
+  private loaderService: LoaderService;
+  private activatedRoute: ActivatedRoute;
+  private urlChangeService: UrlChangeService;
   private imageResolution: ImageResolutionInterface;
+  private countriesFilterService: CountriesFilterService;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private element: HTMLElement;
+  private imgContent: HTMLElement;
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
-  private imgContent: HTMLElement;
+  private welcomeHeaderContainer: HTMLElement;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -98,6 +101,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngOnInit(): void {
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
+
+    setTimeout((): void => {
+      this.welcomeHeaderContainer = this.element.querySelector('.quick-guide-container') as HTMLElement;
+    }, 0);
 
     this.resizeSubscribe = Observable.fromEvent(window, 'resize')
       .debounceTime(150)
@@ -187,6 +194,24 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           });
         });
     }
+
+    this.scrollWellcomeHeaderSubscribe = Observable
+      .fromEvent(document, 'scroll')
+      .subscribe(() => {
+        this.zone.run(() => {
+          let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+          if (this.welcomeHeaderContainer.offsetHeight > scrollTop) {
+            this.scrollToTopHeader = scrollTop;
+            this.getPaddings(true);
+          }
+
+          if (scrollTop > this.welcomeHeaderContainer.offsetHeight && this.scrollToTopHeader !== this.welcomeHeaderContainer.offsetHeight) {
+            this.scrollToTopHeader = this.welcomeHeaderContainer.offsetHeight;
+            this.getPaddings(true);
+          }
+        });
+      });
 
     this.scrollSubscribe = this
       .getObservable(!this.isDesktop)
@@ -317,9 +342,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public getPaddings(isGuideExist?: boolean): void {
     let headerHeight: number = this.headerContainer.offsetHeight;
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
-
+    if (isGuideExist) {
+      headerHeight -= this.scrollToTopHeader;
+    }
     matrixImages.style.paddingTop = `${headerHeight}px`;
-    console.log(headerHeight);
     this.getViewableRows(headerHeight);
 
     let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
@@ -333,8 +359,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     if (this.clonePlaces && this.clonePlaces.length) {
-      this.streetPlaces.next(this.streetPlacesData);
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+
+      if (isGuideExist) {
+        return;
+      }
+
+      this.streetPlaces.next(this.streetPlacesData);
     }
   }
 

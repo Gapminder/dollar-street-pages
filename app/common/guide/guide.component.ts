@@ -1,4 +1,3 @@
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { find, difference } from 'lodash';
@@ -21,11 +20,6 @@ export class GuideComponent implements OnInit, OnDestroy {
   private isShowBubble: boolean = false;
   private guideService: GuideService;
   private guideServiceSubscribe: Subscription;
-  private scrollSubscribe: Subscription;
-  private isShowGuideForScroll: boolean = true;
-
-  @Output('reGetVisibleRows')
-  private reGetVisibleRows: EventEmitter<any> = new EventEmitter<any>();
 
   @Output('startQuickGuide')
   private startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
@@ -51,29 +45,10 @@ export class GuideComponent implements OnInit, OnDestroy {
     if (!this.isShowGuide) {
       return;
     }
-
-    this.scrollSubscribe = fromEvent(document, 'scroll')
-      .subscribe(() => {
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-
-        if (!scrollTop) {
-          this.isShowGuideForScroll = true;
-          this.reGetVisibleRows.emit({});
-        }
-
-        if (scrollTop && this.isShowGuideForScroll) {
-          this.isShowGuideForScroll = false;
-          this.reGetVisibleRows.emit({});
-        }
-      });
   }
 
   public ngOnDestroy(): void {
     this.guideServiceSubscribe.unsubscribe();
-
-    if (this.scrollSubscribe) {
-      this.scrollSubscribe.unsubscribe();
-    }
   }
 
   protected openQuickGuide(): void {
