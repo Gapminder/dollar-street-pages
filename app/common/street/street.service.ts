@@ -54,7 +54,7 @@ export class StreetDrawService {
   private maxIncome: any;
   private placesArray: any[] = [];
   private regions: any;
-  private thingname: any;
+  private thingname: string;
   private countries: any;
   private math: MathService;
   private currentLowIncome: number;
@@ -80,7 +80,7 @@ export class StreetDrawService {
     this.math = math;
   }
 
-  public init(lowIncome: any, highIncome: any, drawDividers: DrawDividersInterface, regions: any, countries: any, thing: any): this {
+  public init(lowIncome: any, highIncome: any, drawDividers: DrawDividersInterface, regions: any, countries: any, thing: string): this {
     this.thingname = thing;
     this.countries = countries[0];
     this.regions = regions[0];
@@ -230,8 +230,15 @@ export class StreetDrawService {
             this.placesArray.push(datum);
             this.placesArray = _.uniqBy(this.placesArray, '_id');
             this.placesArray = _.sortBy(this.placesArray, 'income');
-            this.minIncome = this.placesArray[0].income;
-            this.maxIncome = this.placesArray[this.placesArray.length - 1].income;
+
+            this.placesArray = _
+              .chain(this.placesArray)
+              .uniqBy('_id')
+              .sortBy('income')
+              .value();
+
+            this.minIncome = _.head(this.placesArray).income;
+            this.maxIncome = _.last(this.placesArray).income;
             this.leftPoint = this.scale(this.minIncome);
             this.rightPoint = this.scale(this.maxIncome);
 
@@ -816,8 +823,6 @@ export class StreetDrawService {
     if (!places || !places.length) {
       this.removeHouses('hover');
       this.removeHouses('chosen');
-      // this.removeSliders();
-      // this.removeOpacity();
       return this;
     }
     this.removeHouses('hover');
@@ -848,16 +853,6 @@ export class StreetDrawService {
     this.rightScroll = false;
     return this;
   };
-
-  /*  public removeOpacity(): this {
-   this.svg.selectAll('rect.right-scroll-opacity-labels').remove();
-   this.svg.selectAll('rect.left-scroll-opacity-homes').remove();
-   this.svg.selectAll('rect.left-scroll-opacity-street').remove();
-   this.svg.selectAll('rect.left-scroll-opacity-labels').remove();
-   this.svg.selectAll('rect.left-scroll-opacity-homes').remove();
-   this.svg.selectAll('rect.right-scroll-opacity-street').remove();
-   return this;
-   }*/
 
   public clearSvg(): this {
     this.leftScroll = void 0;
