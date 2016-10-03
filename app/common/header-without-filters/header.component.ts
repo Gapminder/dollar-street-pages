@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer, AfterVie
 import { Subscription } from 'rxjs/Rx';
 import { HeaderService } from '../header/header.service';
 import { TitleHeaderService } from '../../common/title-header/title-header.service';
+import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 
 let tpl = require('./header.template.html');
 let style = require('./header.css');
@@ -18,18 +19,23 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
   private title: string;
   private defaultThing: any;
+  private renderer: Renderer;
   private headerService: HeaderService;
-  private titleHeaderService: TitleHeaderService;
+  private streetData: DrawDividersInterface;
   private titleHeaderSubscribe: Subscription;
   private headerServiceSubscribe: Subscription;
-  private renderer: Renderer;
+  private streetServiceSubscribe: Subscription;
+  private titleHeaderService: TitleHeaderService;
+  private streetSettingsService: StreetSettingsService;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
-                     titleHeaderService: TitleHeaderService) {
+                     titleHeaderService: TitleHeaderService,
+                     streetSettingsService: StreetSettingsService) {
     this.renderer = renderer;
     this.headerService = headerService;
     this.titleHeaderService = titleHeaderService;
+    this.streetSettingsService = streetSettingsService;
   }
 
   public ngOnInit(): void {
@@ -50,6 +56,17 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
       .getTitleEvent()
       .subscribe((data: {title: string}) => {
         this.rendererTitle(data.title);
+      });
+
+    this.streetServiceSubscribe = this.streetSettingsService
+      .getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.streetData = res.data;
       });
   }
 

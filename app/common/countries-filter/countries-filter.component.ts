@@ -91,6 +91,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  protected hideRegionsIfInFocus(regionsVisibility: boolean): void {
+    this.regionsVisibility = !regionsVisibility;
+  }
+
   protected hideRegions(isShown: boolean): void {
     let tabContent = this.element.querySelector('.underline-k') as HTMLElement;
 
@@ -309,6 +313,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (regions[0] === 'World' && countries[0] === 'World') {
       this.activeCountries = 'the World';
+      this.selectedCountries.length = 0;
+      this.selectedRegions.length = 0;
 
       return;
     }

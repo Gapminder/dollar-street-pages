@@ -2,6 +2,7 @@ import { Component, Input, Output, OnChanges, OnDestroy, NgZone, EventEmitter, O
 import { Subscription, Observable } from 'rxjs';
 import { Config, ImageResolutionInterface } from '../../../app.config';
 import { HomeMediaViewBlockService } from './home-media-view-block.service';
+import { StreetSettingsService, DrawDividersInterface } from '../../../common/street/street.settings.service';
 
 let device = require('device.js')();
 let isDesktop = device.desktop();
@@ -32,20 +33,36 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
   @Output('closeBigImageBlock')
   private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
+  private streetData: DrawDividersInterface;
   private zone: NgZone;
   private viewBlockService: HomeMediaViewBlockService;
   private viewBlockServiceSubscribe: Subscription;
   private resizeSubscribe: Subscription;
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
   private windowInnerWidth: number = window.innerWidth;
+  private streetServiceSubscribe: Subscription;
+  private streetSettingsService: StreetSettingsService;
 
   public constructor(zone: NgZone,
+                     streetSettingsService: StreetSettingsService,
                      viewBlockService: HomeMediaViewBlockService) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
+    this.streetSettingsService = streetSettingsService;
   }
 
   public ngOnInit(): void {
+    this.streetServiceSubscribe = this.streetSettingsService
+      .getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.streetData = res.data;
+      });
+
     this.resizeSubscribe = Observable
       .fromEvent(window, 'resize')
       .debounceTime(150)

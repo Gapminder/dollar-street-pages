@@ -5,6 +5,7 @@ import { compact } from 'lodash';
 import { Config } from '../../app.config';
 import { FooterService } from './footer.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
+import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 
 let tpl = require('./footer.template.html');
 let style = require('./footer.css');
@@ -17,21 +18,27 @@ let style = require('./footer.css');
 })
 
 export class FooterComponent implements OnInit, OnDestroy {
+  private page: string;
   private footerData: any;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  private footerService: FooterService;
-  private footerServiceSubscribe: Subscription;
   private window: Window = window;
   private isMatrixComponent: boolean;
+  private streetData: DrawDividersInterface;
+
   private router: Router;
+  private footerService: FooterService;
+  private footerServiceSubscribe: Subscription;
   private routerEventsSubscribe: Subscription;
-  private page: string;
+  private streetServiceSubscribe: Subscription;
+  private streetSettingsService: StreetSettingsService;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
 
   public constructor(router: Router,
                      footerService: FooterService,
+                     streetSettingsService: StreetSettingsService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.footerService = footerService;
+    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
@@ -55,6 +62,17 @@ export class FooterComponent implements OnInit, OnDestroy {
         this.page = activePage;
       }
     });
+
+    this.streetServiceSubscribe = this.streetSettingsService
+      .getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.streetData = res.data;
+      });
 
     this.footerServiceSubscribe = this.footerService.getFooter()
       .subscribe((val: any) => {
@@ -81,7 +99,17 @@ export class FooterComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.router.navigate(['/matrix'], {queryParams: {}});
+    this.router.navigate(['/matrix'], {
+      queryParams: {
+        thing: 'Families',
+        countries: 'World',
+        regions: 'World',
+        zoom: 4,
+        row: 1,
+        lowIncome: this.streetData.poor,
+        highIncome: this.streetData.rich
+      }
+    });
   }
 
   public scrollTop(e: MouseEvent): void {

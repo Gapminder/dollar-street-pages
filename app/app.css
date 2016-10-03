@@ -21,7 +21,7 @@
 }
 
 body.about #app-container.container {
-  width: 730px !important;
+  width: 760px !important;
 }
 
 @media (max-width: 1023px) {
