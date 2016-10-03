@@ -23,6 +23,7 @@
                type="search"
                placeholder="Search country"
                #countriesSearch
+               [value]="search"
                (input)="search = countriesSearch.value">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
@@ -103,6 +104,7 @@
                (focus)="hideRegionsIfInFocus(regionsVisibility)"
                (focusout)="hideRegionsIfInFocus()"
                #countriesMobileSearch
+               [value]="search"
                (input)="search = countriesMobileSearch.value"
                (click)="hideRegions(true)">
         <img src="/assets/img/search-icon.svg" alt="Search icon">

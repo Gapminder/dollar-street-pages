@@ -1,8 +1,10 @@
-import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MathService } from '../math-service/math-service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
+import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
+import { Subscription } from 'rxjs';
 
 let device: {desktop: Function; mobile: Function} = require('device.js')();
 let isMobile: boolean = device.mobile();
@@ -16,7 +18,7 @@ let style = require('./header.css');
   styles: [style]
 })
 
-export class HeaderComponent implements OnChanges {
+export class HeaderComponent implements OnInit, OnChanges {
   @Input()
   protected query: string;
   @Input()
@@ -28,32 +30,48 @@ export class HeaderComponent implements OnChanges {
   protected header: any = {};
   protected isCountryFilterReady: boolean = false;
   protected isThingFilterReady: boolean = false;
-  private math: any;
 
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   @Output()
   private filter: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
+  private streetData: DrawDividersInterface;
   private activeThing: any;
   private router: Router;
   private activatedRoute: ActivatedRoute;
-  private window: Window = window;
-
   private matrixComponent: boolean;
   private mapComponent: boolean;
+  private math: MathService;
+  private streetServiceSubscribe: Subscription;
+  private streetSettingsService: StreetSettingsService;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
 
   public constructor(router: Router,
                      math: MathService,
                      activatedRoute: ActivatedRoute,
+                     streetSettingsService: StreetSettingsService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
+    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
+  }
+
+  public ngOnInit(): void {
+    this.streetServiceSubscribe = this.streetSettingsService
+      .getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.streetData = res.data;
+      });
   }
 
   public ngOnChanges(changes: any): void {
@@ -88,14 +106,23 @@ export class HeaderComponent implements OnChanges {
   }
 
   protected goToMatrixPage(): void {
-    if (this.matrixComponent) {
-      this.window.location.href = this.window.location.origin;
+    let queryParams = {
+      thing: 'Families',
+      countries: 'World',
+      regions: 'World',
+      zoom: 4,
+      row: 1,
+      lowIncome: this.streetData.poor,
+      highIncome: this.streetData.rich
+    };
 
-      return;
+    if (this.matrixComponent) {
+      this.filter.emit({url: this.objToQuery(queryParams)});
+    } else {
+      this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
 
-    this.angulartics2GoogleAnalytics.pageTrack(`From header to Matrix page`);
-    this.router.navigate(['/matrix'], {queryParams: {}});
+    this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }
 
   protected isFilterGotData(event: any): any {
@@ -115,5 +142,11 @@ export class HeaderComponent implements OnChanges {
     }
 
     return query;
+  }
+
+  private objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
+      return encodeURIComponent(k) + '=' + data[k];
+    }).join('&');
   }
 }

@@ -27,6 +27,7 @@
   </div>
 
   <main-menu class="pull-right"
-             [hoverPlace]="hoverPlace">
+             [hoverPlace]="hoverPlace"
+             (selectedFilter)="urlTransfer($event)">
   </main-menu>
 </div>
