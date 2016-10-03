@@ -53,9 +53,9 @@ export class StreetDrawService {
   private minIncome: any;
   private maxIncome: any;
   private placesArray: any[] = [];
-  private regions: any;
+  private regions: string[] | string;
   private thingname: string;
-  private countries: any;
+  private countries: string[] | string;
   private math: MathService;
   private currentLowIncome: number;
   private currentHighIncome: number;
@@ -228,8 +228,6 @@ export class StreetDrawService {
           if (datum) {
             let scaleDatumIncome = this.scale(datum.income);
             this.placesArray.push(datum);
-            this.placesArray = _.uniqBy(this.placesArray, '_id');
-            this.placesArray = _.sortBy(this.placesArray, 'income');
 
             this.placesArray = _
               .chain(this.placesArray)
