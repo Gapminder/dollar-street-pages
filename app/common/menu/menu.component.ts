@@ -136,9 +136,9 @@ export class MainMenuComponent implements OnInit, OnDestroy {
         this.router.navigate([url], {queryParams: {}});
 
         break;
-      case '/blog':
+      case 'https://www.gapminder.org/category/dollarstreet/':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page', {});
-        this.router.navigate([url], {queryParams: {}});
+        this.window.open(url, '_blank');
 
         break;
       case '/map':
