@@ -36,8 +36,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imageMargin: number;
   private footerHeight: number;
   private visiblePlaces: number;
+  private guideHeight: number;
   private rowEtalon: number = 0;
-  private scrollToTopHeader: number = 0;
+  private scrollToTopHeader: number;
   private windowInnerWidth: number = window.innerWidth;
   private windowInnerHeight: number = window.innerHeight;
   private placesVal: any;
@@ -104,6 +105,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     setTimeout((): void => {
       this.welcomeHeaderContainer = this.element.querySelector('.quick-guide-container') as HTMLElement;
+      this.guideHeight = this.welcomeHeaderContainer.offsetHeight;
+      console.log(this.welcomeHeaderContainer.offsetHeight);
     }, 0);
 
     this.resizeSubscribe = Observable.fromEvent(window, 'resize')
@@ -199,17 +202,23 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       .fromEvent(document, 'scroll')
       .subscribe(() => {
         this.zone.run(() => {
+          if (!this.welcomeHeaderContainer) {
+            return;
+          }
+
           let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
           if (this.welcomeHeaderContainer.offsetHeight > scrollTop) {
+            this.guideHeight = this.welcomeHeaderContainer.offsetHeight - scrollTop;
             this.scrollToTopHeader = scrollTop;
-            this.getPaddings(true);
           }
 
-          if (scrollTop > this.welcomeHeaderContainer.offsetHeight && this.scrollToTopHeader !== this.welcomeHeaderContainer.offsetHeight) {
-            this.scrollToTopHeader = this.welcomeHeaderContainer.offsetHeight;
-            this.getPaddings(true);
+          if (scrollTop > this.welcomeHeaderContainer.offsetHeight && this.guideHeight !== 0) {
+            this.guideHeight = 0;
+            this.scrollToTopHeader = scrollTop;
           }
+
+          this.getPaddings(true);
         });
       });
 
@@ -342,10 +351,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public getPaddings(isGuideExist?: boolean): void {
     let headerHeight: number = this.headerContainer.offsetHeight;
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
+
     if (isGuideExist) {
-      headerHeight -= this.scrollToTopHeader;
+      matrixImages.style.paddingTop = `${headerHeight + this.scrollToTopHeader}px`;
+      return;
+    } else {
+      matrixImages.style.paddingTop = `${headerHeight}px`;
     }
-    matrixImages.style.paddingTop = `${headerHeight}px`;
+
     this.getViewableRows(headerHeight);
 
     let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
@@ -354,9 +367,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       scrollTo = this.row * (this.imgContent.offsetHeight + this.imageMargin) - 60;
     }
 
-    if (!isGuideExist) {
-      document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
-    }
+    document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
 
     if (this.clonePlaces && this.clonePlaces.length) {
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
@@ -582,9 +593,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }, 0);
   }
 
-  protected reGetVisibleRows(): void {
-    setTimeout(() => this.getPaddings(true), 0);
-  }
+  // protected reGetVisibleRows(): void {
+  //   setTimeout(() => this.getPaddings(true), 0);
+  // }
 
   protected openIncomeFilter(): void {
     if (!isMobile) {
