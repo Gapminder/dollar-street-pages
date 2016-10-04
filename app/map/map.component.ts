@@ -43,7 +43,6 @@ export class MapComponent implements OnInit, OnDestroy {
   private onThumb: boolean = false;
   private onMarker: boolean = false;
   private isOpenLeftSide: boolean = false;
-  private init: boolean;
   private router: Router;
   private activatedRoute: ActivatedRoute;
   private isDesktop: boolean = device.desktop();
@@ -80,14 +79,21 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.init = true;
+    let isInit: boolean = true;
     this.loaderService.setLoader(false);
 
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams
-      .subscribe((params: any) => {
+      .subscribe((params: {thing: string}) => {
         this.thing = params.thing ? params.thing : 'Families';
-        this.urlChanged({url: `thing=${this.thing}`});
+        let query: any = {url: `thing=${this.thing}`};
+
+        if (!params.thing || (params.thing && !isInit)) {
+          query.isNotReplaceState = true;
+        }
+
+        this.urlChanged(query);
+        isInit = false;
       });
 
     this.streetServiceSubscribe = this.streetSettingsService
@@ -102,8 +108,10 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  public urlChanged(options: any): void {
-    this.mapServiceSubscribe = this.mapService.getMainPlaces(options.url)
+  public urlChanged(options: {url: string, isNotReplaceState?: any}): void {
+    let {url, isNotReplaceState} = options;
+
+    this.mapServiceSubscribe = this.mapService.getMainPlaces(url)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
@@ -114,7 +122,11 @@ export class MapComponent implements OnInit, OnDestroy {
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
         this.query = `thing=${res.data.thing}`;
-        this.urlChangeService.replaceState('/map', this.query);
+
+        if (!isNotReplaceState) {
+          this.urlChangeService.replaceState('/map', this.query);
+        }
+
         this.setMarkersCoord(this.places);
         this.loaderService.setLoader(true);
 

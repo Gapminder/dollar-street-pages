@@ -3,6 +3,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription, Observable } from 'rxjs';
 import { Config } from '../../../app.config';
 import { find } from 'lodash';
+import { LocalStorageService } from '../localstorage.service';
 
 let tpl = require('./bubble.template.html');
 let style = require('./bubble.css');
@@ -32,11 +33,14 @@ export class BubbleComponent implements OnInit, OnDestroy {
   private zone: NgZone;
   private resizeSubscribe: Subscription;
   private getCoordinates: Function = Config.getCoordinates;
+  private localStorageService: LocalStorageService;
 
-  public constructor(element: ElementRef,
-                     zone: NgZone) {
-    this.element = element.nativeElement;
+  public constructor(zone: NgZone,
+                     element: ElementRef,
+                     localStorageService: LocalStorageService) {
     this.zone = zone;
+    this.element = element.nativeElement;
+    this.localStorageService = localStorageService;
   }
 
   public ngOnInit(): void {
@@ -145,14 +149,13 @@ export class BubbleComponent implements OnInit, OnDestroy {
         }
 
         if (step === 6) {
-          localStorage.setItem('quick-guide', 'true');
+          this.localStorageService.setItem('quick-guide', true);
         }
       });
     });
   }
 
   private setBubblePositionMobile(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
-
     if (step === 1) {
       data.top += 20;
     }
