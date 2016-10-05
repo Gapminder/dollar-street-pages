@@ -37,9 +37,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imageMargin: number;
   private footerHeight: number;
   private visiblePlaces: number;
-  private guideHeight: number;
   private rowEtalon: number = 0;
-  private scrollToTopHeader: number;
   private windowInnerWidth: number = window.innerWidth;
   private windowInnerHeight: number = window.innerHeight;
   private placesVal: any;
@@ -59,7 +57,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private headerFixedSubscribe: Subscription;
   private matrixServiceSubscribe: Subscription;
   private matrixServiceStreetSubscribe: Subscription;
-  private scrollWellcomeHeaderSubscribe: Subscription;
   private countriesFilterServiceSubscribe: Subscription;
   private thing: string;
   private query: string;
@@ -78,7 +75,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imgContent: HTMLElement;
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
-  private welcomeHeaderContainer: HTMLElement;
   private imgContent: HTMLElement;
   private locationStrategy: LocationStrategy;
 
@@ -107,12 +103,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngOnInit(): void {
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
-
-    setTimeout((): void => {
-      this.welcomeHeaderContainer = this.element.querySelector('.quick-guide-container') as HTMLElement;
-      this.guideHeight = this.welcomeHeaderContainer.offsetHeight;
-      console.log(this.welcomeHeaderContainer.offsetHeight);
-    }, 0);
 
     this.resizeSubscribe = Observable.fromEvent(window, 'resize')
       .debounceTime(150)
@@ -209,30 +199,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           });
         });
     }
-
-    this.scrollWellcomeHeaderSubscribe = Observable
-      .fromEvent(document, 'scroll')
-      .subscribe(() => {
-        this.zone.run(() => {
-          if (!this.welcomeHeaderContainer) {
-            return;
-          }
-
-          let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-
-          if (this.welcomeHeaderContainer.offsetHeight > scrollTop) {
-            this.guideHeight = this.welcomeHeaderContainer.offsetHeight - scrollTop;
-            this.scrollToTopHeader = scrollTop;
-          }
-
-          if (scrollTop > this.welcomeHeaderContainer.offsetHeight && this.guideHeight !== 0) {
-            this.guideHeight = 0;
-            this.scrollToTopHeader = scrollTop;
-          }
-
-          this.getPaddings(true);
-        });
-      });
 
     this.scrollSubscribe = this
       .getObservable(!this.isDesktop)
@@ -360,17 +326,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public getPaddings(isGuideExist?: boolean): void {
+  public getPaddings(): void {
     let headerHeight: number = this.headerContainer.offsetHeight;
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
 
-    if (isGuideExist) {
-      matrixImages.style.paddingTop = `${headerHeight + this.scrollToTopHeader}px`;
-      return;
-    } else {
-      matrixImages.style.paddingTop = `${headerHeight}px`;
-    }
-
+    matrixImages.style.paddingTop = `${headerHeight}px`;
     this.getViewableRows(headerHeight);
 
     let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
@@ -383,12 +343,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.clonePlaces && this.clonePlaces.length) {
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-
-      if (isGuideExist) {
-        return;
-      }
-
-      this.streetPlaces.next(this.streetPlacesData);
     }
   }
 
@@ -611,10 +565,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.getPaddings();
     }, 0);
   }
-
-  // protected reGetVisibleRows(): void {
-  //   setTimeout(() => this.getPaddings(true), 0);
-  // }
 
   protected openIncomeFilter(): void {
     if (!isMobile) {

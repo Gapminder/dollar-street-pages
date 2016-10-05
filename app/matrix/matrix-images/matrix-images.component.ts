@@ -77,7 +77,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private visibleImages: number;
   private loaderService: LoaderService;
   private locations: any;
-  private welcomeHeaderContainer: HTMLElement;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -95,10 +94,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): any {
     let isInit: boolean = true;
-
-    setTimeout((): void => {
-      this.welcomeHeaderContainer = document.querySelector('.quick-guide-container') as HTMLElement;
-    }, 0);
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
       this.showErrorMsg = false;
@@ -388,10 +383,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     if (this.windowInnerWidth < 600) {
       showPartPrevImage = -20;
-    }
-
-    if (this.welcomeHeaderContainer) {
-      showPartPrevImage += this.welcomeHeaderContainer.offsetHeight;
     }
 
     document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize - showPartPrevImage;
