@@ -49,8 +49,8 @@ describe('MainMenuComponent', () => {
     context.goToPage('/about');
     expect(context.goToPage).toHaveBeenCalledWith('/about');
 
-    context.goToPage('/blog');
-    expect(context.goToPage).toHaveBeenCalledWith('/blog');
+    context.goToPage('https://www.gapminder.org/category/dollarstreet/');
+    expect(context.goToPage).toHaveBeenCalledWith('https://www.gapminder.org/category/dollarstreet/');
 
     context.goToPage('/map');
     expect(context.goToPage).toHaveBeenCalledWith('/map');

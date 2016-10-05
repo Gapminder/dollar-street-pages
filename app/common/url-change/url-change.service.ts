@@ -12,9 +12,22 @@ export class UrlChangeService {
     this.location = location;
   }
 
-  public replaceState(path: string, query?: string): void {
-    this.location.go(path, query);
+  public replaceState(path: string, query: string, isReplace?: boolean): void {
+    if (this.location.isCurrentPathEqualTo(path, query)) {
+      return;
+    }
+
+    if (isReplace) {
+      this.location.replaceState(path, query);
+    } else {
+      this.location.go(path, query);
+    }
+
     this.urlEvents.next('my event');
+  }
+
+  public isCurrentPathEqualTo(path: string, query: string): boolean {
+    return this.location.isCurrentPathEqualTo(path, query);
   }
 
   public getUrlEvents(): Observable<any> {

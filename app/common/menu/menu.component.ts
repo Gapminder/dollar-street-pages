@@ -1,8 +1,10 @@
-import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Rx';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
+import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
+import { LocalStorageService } from '../guide/localstorage.service';
 
 let device = require('device.js')();
 let isMobile = device.mobile();
@@ -20,25 +22,37 @@ let style = require('./menu.css');
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
-  protected isOpenMenu: boolean = false;
-  protected angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  @Input()
+  @Input('hoverPlace')
   private hoverPlace: Observable<any>;
-  private hoverPlaceSubscribe: Subscription;
+  @Output('selectedFilter')
+  private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+
   private element: HTMLElement;
-  private router: Router;
-  private isMatrixComponent: boolean;
   private window: Window = window;
-  private routerEventsSubscribe: Subscription;
+  private isMatrixComponent: boolean;
+  private isOpenMenu: boolean = false;
+  private streetData: DrawDividersInterface;
+
+  private router: Router;
   private activatedRoute: ActivatedRoute;
+  private hoverPlaceSubscribe: Subscription;
+  private routerEventsSubscribe: Subscription;
+  private streetServiceSubscribe: Subscription;
+  private localStorageService: LocalStorageService;
+  private streetSettingsService: StreetSettingsService;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
 
   public constructor(router: Router,
                      element: ElementRef,
                      activatedRoute: ActivatedRoute,
+                     localStorageService: LocalStorageService,
+                     streetSettingsService: StreetSettingsService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
+    this.localStorageService = localStorageService;
+    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
@@ -61,6 +75,17 @@ export class MainMenuComponent implements OnInit, OnDestroy {
           }
         });
     }
+
+    this.streetServiceSubscribe = this.streetSettingsService
+      .getStreetSettings()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        this.streetData = res.data;
+      });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
         .subscribe(() => {
@@ -111,14 +136,14 @@ export class MainMenuComponent implements OnInit, OnDestroy {
         this.router.navigate([url], {queryParams: {}});
 
         break;
-      case '/blog':
+      case 'https://www.gapminder.org/category/dollarstreet/':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page', {});
-        this.router.navigate([url], {queryParams: {}});
+        this.window.open(url, '_blank');
 
         break;
       case '/map':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
-        this.router.navigate([url], {queryParams: {}});
+        this.router.navigate([url], {queryParams: {thing: 'Families'}});
 
         break;
       case 'https://www.gapminder.org':
@@ -151,17 +176,31 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
 
     if (removeStorage) {
-      this.window.localStorage.removeItem('quick-guide');
+      this.localStorageService.removeItem('quick-guide');
+    }
+
+    let queryParams = {
+      thing: 'Families',
+      countries: 'World',
+      regions: 'World',
+      zoom: 4,
+      row: 1,
+      lowIncome: this.streetData.poor,
+      highIncome: this.streetData.rich
+    };
+
+    if (this.isMatrixComponent) {
+      this.selectedFilter.emit({url: this.objToQuery(queryParams)});
+    } else {
+      this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
 
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
+  }
 
-    if (this.isMatrixComponent) {
-      this.window.location.href = this.window.location.origin;
-
-      return;
-    }
-
-    this.router.navigate(['/matrix'], {queryParams: {}});
+  private objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
+      return encodeURIComponent(k) + '=' + data[k];
+    }).join('&');
   }
 }

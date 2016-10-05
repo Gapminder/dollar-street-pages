@@ -32,8 +32,10 @@ export class StreetFilterDrawService {
   private rightScroll: any;
   private leftScrollOpacityStreet: any;
   private leftScrollOpacityLabels: any;
+  private leftScrollOpacityHomes: any;
   private rightScrollOpacityStreet: any;
   private rightScrollOpacityLabels: any;
+  private rightScrollOpacityHomes: any;
   private leftScrollText: any;
   private rightScrollText: any;
   private math: MathService;
@@ -103,11 +105,11 @@ export class StreetFilterDrawService {
       .attr('fill', '#767d86');
 
     this.svg
-      .selectAll('image.scale-label22222')
+      .selectAll('image.scale-label')
       .data(this.axisLabel)
       .enter()
       .append('svg:image')
-      .attr('class', 'scale-label22222')
+      .attr('class', 'scale-label')
       .attr('xlink:href', '/assets/img/divider1.svg')
       .attr('y', 25)
       .attr('width', 15 + 19)
@@ -186,7 +188,7 @@ export class StreetFilterDrawService {
       })
       .attr('stroke-width', 1)
       .style('fill', '#cfd2d6')
-      .style('opacity', '0.7');
+      .style('opacity', '0.6');
 
     this.svg
       .append('polygon')
@@ -331,13 +333,24 @@ export class StreetFilterDrawService {
   protected drawLeftSlider(x: number, init: boolean = false): this {
     this.sliderLeftBorder = x;
 
+    if (!this.leftScrollOpacityHomes) {
+      this.leftScrollOpacityHomes = this.svg
+        .append('rect')
+        .attr('class', 'left-scroll-opacity-part-homes')
+        .attr('x', -2)
+        .attr('y', 0)
+        .attr('height', 28.8)
+        .style('fill', 'white')
+        .style('opacity', '0.6');
+    }
+
     if (!this.leftScrollOpacityStreet) {
       this.leftScrollOpacityStreet = this.svg
         .append('rect')
-        .attr('class', 'left-scroll-opacity-part')
+        .attr('class', 'left-scroll-opacity-part-street')
         .attr('x', -2)
-        .attr('y', 0)
-        .attr('height', 50)
+        .attr('y', 28.5)
+        .attr('height', 21)
         .style('fill', 'white')
         .style('opacity', '0.8');
     }
@@ -396,6 +409,8 @@ export class StreetFilterDrawService {
 
     this.leftScrollOpacityStreet
       .attr('width', x + this.halfOfStreetOffset);
+    this.leftScrollOpacityHomes
+      .attr('width', x + this.halfOfStreetOffset);
 
     this.lowIncome = this.scale.invert(x);
 
@@ -411,13 +426,24 @@ export class StreetFilterDrawService {
   protected drawRightSlider(x: number): this {
     this.sliderRightBorder = x;
 
+    if (!this.rightScrollOpacityHomes) {
+      this.rightScrollOpacityHomes = this.svg
+        .append('rect')
+        .attr('class', 'left-scroll-opacity-part-homes')
+        .attr('x', -2)
+        .attr('y', 0)
+        .attr('height', 28.8)
+        .style('fill', 'white')
+        .style('opacity', '0.65');
+    }
+
     if (!this.rightScrollOpacityStreet) {
       this.rightScrollOpacityStreet = this.svg
         .append('rect')
-        .attr('class', 'right-scroll-opacity-part')
-        .attr('y', 0)
-        .attr('x', 10)
-        .attr('height', 50)
+        .attr('class', 'left-scroll-opacity-part-street')
+        .attr('x', -2)
+        .attr('y', 28.5)
+        .attr('height', 21)
         .style('fill', 'white')
         .style('opacity', '0.8');
     }
@@ -476,6 +502,9 @@ export class StreetFilterDrawService {
     this.rightScrollOpacityStreet
       .attr('x', x + this.halfOfStreetOffset + 1.5)
       .attr('width', this.width + this.halfOfStreetOffset - x);
+    this.rightScrollOpacityHomes
+      .attr('x', x + this.halfOfStreetOffset + 1.5)
+      .attr('width', this.width + this.halfOfStreetOffset - x);
 
     this.highIncome = this.scale.invert(x);
 
@@ -489,8 +518,10 @@ export class StreetFilterDrawService {
     this.rightScroll = void 0;
     this.leftScrollOpacityStreet = void 0;
     this.leftScrollOpacityLabels = void 0;
+    this.leftScrollOpacityHomes = void 0;
     this.rightScrollOpacityLabels = void 0;
     this.rightScrollOpacityStreet = void 0;
+    this.rightScrollOpacityHomes = void 0;
     this.leftScrollText = void 0;
     this.rightScrollText = void 0;
 

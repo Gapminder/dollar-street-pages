@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LocationStrategy } from '@angular/common';
 import { Observable, Subscription, Subject } from 'rxjs/Rx';
 import { Config, ImageResolutionInterface } from '../app.config';
 import * as _ from 'lodash';
@@ -78,11 +79,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
   private welcomeHeaderContainer: HTMLElement;
+  private imgContent: HTMLElement;
+  private locationStrategy: LocationStrategy;
 
   public constructor(zone: NgZone,
                      router: Router,
                      activatedRoute: ActivatedRoute,
                      element: ElementRef,
+                     locationStrategy: LocationStrategy,
                      matrixService: MatrixService,
                      loaderService: LoaderService,
                      urlChangeService: UrlChangeService,
@@ -90,6 +94,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.zone = zone;
     this.router = router;
+    this.locationStrategy = locationStrategy;
     this.activatedRoute = activatedRoute;
     this.matrixService = matrixService;
     this.loaderService = loaderService;
@@ -119,6 +124,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.interactiveIncomeText();
         });
       });
+
+    this.locationStrategy.onPopState(() => {
+      if (this.streetData && this.locations) {
+        this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.urlChanged({isBack: true});
+      }
+    });
 
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams
@@ -338,7 +350,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.rowEtalon = this.row;
       let query = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`;
 
-      this.urlChangeService.replaceState(`/matrix`, query);
+      this.urlChangeService.replaceState('/matrix', query, true);
     }
 
     let clonePlaces = _.cloneDeep(this.filtredPlaces);
@@ -402,14 +414,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public urlChanged(options: any): void {
     this.zone.run(() => {
-      let {url, isZoom, isCountriesFilter, isInit} = options;
+      let {url, isZoom, isInit, isBack} = options;
 
       if (url) {
         this.query = isZoom ? url.replace(/row\=\d*/, 'row=1') : url;
         this.row = isZoom ? this.row : 1;
       }
 
-      if (!isInit) {
+      if (!isInit && !isBack) {
         this.query = this.query.replace(/&activeHouse\=\d*/, '');
         this.activeHouse = void 0;
 
@@ -448,6 +460,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.clonePlaces = _.cloneDeep(this.filtredPlaces);
           this.zoom = +parseQuery.zoom;
 
+          if (!this.streetPlacesData.length) {
+            this.streetPlaces.next([]);
+            this.chosenPlaces.next([]);
+            return;
+          }
+
           let incomesArr = (_
             .chain(this.streetPlacesData)
             .map('income')
@@ -457,7 +475,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.streetPlaces.next(this.streetPlacesData);
           this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-          if (!this.filtredPlaces.length && isCountriesFilter && (Number(parseQuery.lowIncome) !== this.streetData.poor || Number(parseQuery.highIncome) !== this.streetData.rich)) {
+          if (!this.filtredPlaces.length) {
             let lowIncome: number = Math.floor(incomesArr[0] - 10);
             let highIncome: number = Math.ceil(incomesArr[incomesArr.length - 1] + 10);
 
@@ -467,7 +485,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
             this.lowIncome = lowIncome;
             this.highIncome = highIncome;
-
             this.urlChanged({url: this.query});
             return;
           }
@@ -483,7 +500,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
           this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
 
-          this.urlChangeService.replaceState('/matrix', this.query);
+          if (!isBack) {
+            this.urlChangeService.replaceState('/matrix', this.query);
+          }
 
           if (document.body.scrollTop) {
             document.body.scrollTop = 0;
@@ -567,7 +586,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.query = this.query.replace(/&activeHouse\=\d*/, '');
 
     if (row) {
-      this.query.replace(/row\=\d*/, `row=${row}`);
+      this.query = this.query.replace(/row\=\d*/, `row=${row}`);
     }
 
     if (activeHouseIndex) {
@@ -577,7 +596,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.activeHouse = void 0;
     }
 
-    this.urlChangeService.replaceState('/matrix', this.query);
+    this.urlChangeService.replaceState('/matrix', this.query, true);
   }
 
   public changeZoom(zoom: any): void {
@@ -613,7 +632,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       this.lowIncome = params.lowIncome;
       this.highIncome = params.highIncome;
-
       this.urlChanged({url: this.query});
     }
 

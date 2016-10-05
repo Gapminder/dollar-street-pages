@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Rx';
 import { AboutService } from './about.service';
 import { LoaderService } from '../common/loader/loader.service';
 import { TitleHeaderService } from '../common/title-header/title-header.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 let tpl = require('./about.template.html');
 let style = require('./about.css');
@@ -20,10 +21,13 @@ export class AboutComponent implements OnInit, OnDestroy {
   private aboutSubscribe: Subscription;
   private titleHeaderService: TitleHeaderService;
   private loaderService: LoaderService;
+  private sanitizer: DomSanitizer;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
+                     sanitizer: DomSanitizer,
                      titleHeaderService: TitleHeaderService) {
+    this.sanitizer = sanitizer;
     this.aboutService = aboutService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
@@ -41,6 +45,7 @@ export class AboutComponent implements OnInit, OnDestroy {
 
       this.about = val.data;
       this.loaderService.setLoader(true);
+      this.about.context = this.sanitizer.bypassSecurityTrustHtml(this.about.context);
     });
   }
 

@@ -7,6 +7,7 @@ export * from './footer-floating/footer-floating.component';
 export * from './footer-space/footer-space.directive';
 export * from './guide/guide.component';
 export * from './guide/guide.service';
+export * from './guide/localstorage.service';
 export * from './guide/bubble/bubble.component';
 export * from './header/header.component';
 export * from './header/header.service';
