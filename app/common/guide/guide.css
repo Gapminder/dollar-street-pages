@@ -92,43 +92,90 @@
   cursor: pointer;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1400px) {
   .quick-guide-container {
-    width: 100%;
-    padding: 35px 0 0;
-  }
-
-  .quick-guide-container .quick-guide-content {
-    width: 715px;
+    padding: 20px 0 0;
   }
 
   .quick-guide-container .quick-guide-description-container {
-    width: calc(100% - 195px);
-    margin-left: 15px;
-    margin-bottom: 35px;
+    margin-bottom: 18px;
+  }
+
+  .quick-guide-container .guide-logo-container img {
+    width: 77%;
   }
 
   .quick-guide-container h1 {
-    font-size: 42px;
-    line-height: 48px;
+    font-size: 40px;
+    line-height: 40px;
+    margin: -6px 0 0;
+    text-transform: uppercase;
+    font-family: 'Bariol Bold', sans-serif;
   }
 
   .quick-guide-container h2 {
-    font-size: 34px;
+    font-size: 30px;
+    line-height: 30px;
   }
 
+  .quick-guide-container button {
+    padding: 0 30px;
+  }
   .quick-guide-container .guide-description {
-    margin: 18px 30px 23px;
     font-size: 18px;
+    line-height: 24px;
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .quick-guide-container {
+    padding: 15px 0 0;
+  }
+
+  .quick-guide-container .quick-guide-content {
+    width: 745px;
+  }
+
+  .quick-guide-container .guide-logo-container img {
+    width: 65%;
+  }
+
+  .quick-guide-container h1 {
+    font-size: 36px;
+    line-height: 36px;
+    margin: -6px 0 0;
+    text-transform: uppercase;
+    font-family: 'Bariol Bold', sans-serif;
+  }
+
+  .quick-guide-container h2 {
+    font-size: 28px;
     line-height: 26px;
   }
 
-  .quick-guide-container .button-container {
-    margin-top: 31px;
+  .quick-guide-container button {
+    padding: 0 30px;
+  }
+  .quick-guide-container .guide-description {
+    font-size: 18px;
+    line-height: 20px;
+    margin: 7px 0;
+  }
+
+  .quick-guide-container .quick-guide-description-container {
+    width: calc(100% - 180px);
+    margin-left: 0;
+    margin-bottom: 7px;
   }
 
   .quick-guide-container > img {
-    right: 20px;
+    right: 10px;
+    top: 10px;
+  }
+
+  .quick-guide-container .button-container {
+    margin-top: 15px;
   }
 }
 
@@ -169,8 +216,8 @@
   }
 
   .quick-guide-container .guide-description {
-    margin: 0 10px;
-    font-size: 14px;
+    margin: 0 -5px;
+    font-size: 11px;
     line-height: 22px;
   }
 
