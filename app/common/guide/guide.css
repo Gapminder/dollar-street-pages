@@ -1,19 +1,9 @@
-quick-guide {
-  overflow: hidden;
-  position: relative;
-  display: block;
-}
-
 .quick-guide-container {
   background: #d5eaf6 url("/assets/img/clouds.jpg") center center no-repeat;
   border-bottom: 1px solid #c6c7c9;
   padding: 50px 0 0;
   background-size: auto 100%;
   text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .quick-guide-container .quick-guide-content {
