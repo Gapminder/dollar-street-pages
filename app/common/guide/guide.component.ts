@@ -56,10 +56,6 @@ export class GuideComponent implements OnInit, OnDestroy {
         this.description = welcomeHeader.description;
         this.bubbles = difference(res.data, [welcomeHeader]);
       });
-
-    if (!this.isShowGuide) {
-      return;
-    }
   }
 
   public ngOnDestroy(): void {
