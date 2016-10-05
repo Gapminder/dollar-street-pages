@@ -1,3 +1,8 @@
+quick-guide {
+  display: block;
+  position: relative;
+}
+
 .quick-guide-container {
   background: #d5eaf6 url("/assets/img/clouds.jpg") center center no-repeat;
   border-bottom: 1px solid #c6c7c9;

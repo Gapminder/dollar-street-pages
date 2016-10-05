@@ -148,7 +148,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.activeImageIndex = void 0;
     }
 
-    this.urlChangeService.replaceState('/family', url);
+    this.urlChangeService.replaceState('/family', url, true);
   }
 
   protected isOpenFamilyExpandBlock(data: any): void {

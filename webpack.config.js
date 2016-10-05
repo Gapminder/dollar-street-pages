@@ -10,6 +10,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isProduction = (process.env.NODE_ENV || 'development') === 'production';
+const basePath = 'dollarstreet';
 // const devtool = isProduction ? 'inline-source-map' : 'source-map';
 const dest = 'dist';
 const absDest = root(dest);
@@ -44,9 +45,10 @@ const config = {
 
   output: {
     path: absDest,
-    filename: '[name].js',
-    sourceMapFilename: '[name].js.map',
-    chunkFilename: '[id].chunk.js'
+    filename: `${basePath}/[name].js`,
+    sourceMapFilename: `${basePath}/[name].js.map`,
+    chunkFilename: `${basePath}/[id].chunk.js`,
+    publicPath: '/'
   },
 
   module: {
@@ -100,7 +102,7 @@ const config = {
     })
   ],
   devServer: {
-    contentBase: dest,
+    contentBase: path.join(`${dest}/${basePath}`),
     publicPath: '/',
     noInfo: true,
     hot: true,

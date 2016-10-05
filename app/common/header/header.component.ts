@@ -7,6 +7,7 @@ import { StreetSettingsService, DrawDividersInterface } from '../street/street.s
 import { Subscription } from 'rxjs';
 
 let device: {desktop: Function; mobile: Function} = require('device.js')();
+let isDesktop: boolean = device.desktop();
 let isMobile: boolean = device.mobile();
 
 let tpl = require('./header.template.html');
@@ -115,6 +116,10 @@ export class HeaderComponent implements OnInit, OnChanges {
       lowIncome: this.streetData.poor,
       highIncome: this.streetData.rich
     };
+
+    if (!isDesktop) {
+      queryParams.zoom = 3;
+    }
 
     if (this.matrixComponent) {
       this.filter.emit({url: this.objToQuery(queryParams)});

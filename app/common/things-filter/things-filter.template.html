@@ -75,6 +75,7 @@
                type="search"
                placeholder="Search things"
                #thingsSearch
+               [value]="search.text"
                (input)="search.text = thingsSearch.value">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
@@ -132,6 +133,7 @@
                  type="search"
                  placeholder="Search things"
                  #thingsMobileSearch
+                 [value]="search.text"
                  (input)="search.text = thingsMobileSearch.value">
           <img src="/assets/img/search-icon.svg" alt="Search icon">
         </div>
