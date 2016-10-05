@@ -18,4 +18,4 @@
   <img (click)="close()" src="/assets/img/close-button-welcome.png" alt="">
 </div>
 
-<bubble *ngIf="isShowBubble" [bubbles]="bubbles"></bubble>
+<bubble *ngIf="!isShowGuide && isShowBubble" [bubbles]="bubbles"></bubble>

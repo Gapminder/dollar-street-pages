@@ -3,7 +3,6 @@
   top: 18px;
   right: 10px;
 }
-
 #main-menu .open .container-menu {
   top: 0;
   bottom: 0;
@@ -64,7 +63,7 @@
 
 #main-menu > div {
   float: right;
-  z-index: 99;
+  z-index: 666;
 }
 
 #main-menu .open .menu-icon {
