@@ -18,6 +18,9 @@ let style = require('./street.css');
 })
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
+  public regions: string[] | string;
+  public thingname: string;
+  public countries: string[] | string;
   public data: any;
   @Input('thing')
   protected thing: string;
@@ -31,11 +34,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private hoverPlace: Subject<any>;
   @Output('filterStreet')
   private filterStreet: EventEmitter<any> = new EventEmitter<any>();
-
   private street: any;
-  private regions: any;
-  private thingname: any;
-  private countries: any;
   private math: MathService;
   private streetSettingsService: StreetSettingsService;
   private streetData: any;
@@ -140,7 +139,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
     this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
       let query: any = {};
-
       if (this.query) {
         query = this.parseUrl(this.query);
       }

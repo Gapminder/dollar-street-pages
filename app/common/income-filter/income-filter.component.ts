@@ -18,6 +18,8 @@ export class IncomeFilterComponent implements OnInit {
   protected lowIncome: number;
   @Input('highIncome')
   protected highIncome: number;
+  @Input('query')
+  protected query: any;
   @Output('sendResponse')
   private sendResponse: EventEmitter<any> = new EventEmitter<any>();
   private range: {lowIncome: number; highIncome: number; close?: boolean} = {
