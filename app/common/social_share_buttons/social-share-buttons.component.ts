@@ -16,7 +16,7 @@ let style = require('./social-share-buttons.css');
 export class SocialShareButtonsComponent implements OnDestroy {
   private url: string;
   private locationPath: string;
-  private newWindow: Window;
+  private newWindow: any;
   private location: Location;
   private window: Window = window;
   private socialShareButtonsServiceSubscribe: Subscription;
@@ -63,7 +63,7 @@ export class SocialShareButtonsComponent implements OnDestroy {
   }
 
   protected openWindow(originalUrl: string, url: any): void {
-    this.newWindow.location = originalUrl + url;
+    this.newWindow.location.href = originalUrl + url;
     this.newWindow.focus();
   }
 }
