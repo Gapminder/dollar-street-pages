@@ -1,4 +1,4 @@
-<div class="matrix-header main-header">
+<div class="matrix-header main-header" [style.top.px]="-guidePositionTop">
   <quick-guide (startQuickGuide)="startQuickGuide($event)"></quick-guide>
 
   <header [query]="query"
@@ -39,6 +39,7 @@
                [thing]="thing"
                [places]="matrixPlaces"
                [activeHouse]="activeHouse"
+               [guidePositionTop]="guideHeight"
                [clearActiveHomeViewBox]="clearActiveHomeViewBox"
                (filter)="urlChanged($event)"
                (hoverPlace)="hoverPlaceS($event)"

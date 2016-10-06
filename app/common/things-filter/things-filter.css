@@ -269,7 +269,7 @@
 }
 
 .things-filter-button .thing-pop-up-content p a {
-  color: #0567bf;
+  color: #b04514;
   font-family: 'Bariol Regular', sans-serif;
 }
 
@@ -307,7 +307,7 @@
   background-color: #ced1d5;;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1400px), (max-height: 600px) {
   #things-filter .things-filter-container {
     margin-top: 2px;
     width: 700px;

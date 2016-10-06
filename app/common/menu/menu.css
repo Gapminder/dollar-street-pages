@@ -24,7 +24,7 @@
 
 #main-menu > div {
   float: right;
-  z-index: 99;
+  z-index: 666;
 }
 
 #main-menu .open .menu-icon {

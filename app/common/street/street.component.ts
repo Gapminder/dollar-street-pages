@@ -67,12 +67,17 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.street.set('isInit', true);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
+        if (!this.street.scale) {
+          return;
+        }
+
         if (!chosenPlaces.length) {
           this.street.set('chosenPlaces', []);
           this.street.clearAndRedraw(chosenPlaces);
 
           return;
         }
+
         this.street.set('chosenPlaces', chosenPlaces);
         this.street.clearAndRedraw(chosenPlaces);
       });
@@ -104,14 +109,15 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
     this.placesSubscribe = this.places && this.places.subscribe((places: any): void => {
         this.placesArr = places;
+
         if (!this.streetData) {
           return;
         }
 
-        if(!places.length) {
+        if (!places.length) {
           this.street
             .clearSvg()
-            .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries,this.thingname)
+            .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
             .set('places', [])
             .set('fullIncomeArr', [])
             .drawScale(places, this.streetData)
@@ -205,7 +211,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private setDividers(places: any, drawDividers: any): void {
     this.street
       .clearSvg()
-      .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries,this.thingname)
+      .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
       .set('places', sortBy(places, 'income'))
       .set('fullIncomeArr', chain(this.street.places)
         .sortBy('income')

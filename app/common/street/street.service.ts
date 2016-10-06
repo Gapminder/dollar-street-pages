@@ -864,8 +864,10 @@ export class StreetDrawService {
     if (!places || !places.length) {
       this.removeHouses('hover');
       this.removeHouses('chosen');
+
       return this;
     }
+
     this.removeHouses('hover');
     this.removeHouses('chosen');
     this.removeSliders();
@@ -1007,11 +1009,12 @@ export class StreetDrawService {
   };
 
   private drawHouses(places: any): this {
-
     this.placesArray = [];
+
     if (!places || !places.length) {
       return this;
     }
+
     let halfHouseWidth = 10;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 12 - 1;

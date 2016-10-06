@@ -126,7 +126,6 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
     this.isOpenThingsFilter = false;
-    this.openMobileFilterView = false;
     this.search = {text: ''};
   }
 

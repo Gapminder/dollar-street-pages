@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
@@ -93,6 +93,12 @@ const ContentfulConfig = require('./contentTypeIds.json');
 declare var CONTENTFUL_ACCESS_TOKEN: string;
 declare var CONTENTFUL_SPACE_ID: string;
 declare var CONTENTFUL_HOST: string;
+
+declare const ENV:string;
+
+if (ENV === 'production') {
+  enableProdMode();
+}
 
 @NgModule({
   declarations: [

@@ -35,6 +35,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private showblock: boolean = false;
   @Input('row')
   private row: number;
+  @Input('guidePositionTop')
+  private guidePositionTop: number;
   @Input('clearActiveHomeViewBox')
   private clearActiveHomeViewBox: Subject<any>;
 
@@ -385,7 +387,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       showPartPrevImage = -20;
     }
 
-    document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize - showPartPrevImage;
+    let scrollTop: number = row * this.itemSize - showPartPrevImage;
+
+    if (this.guidePositionTop || this.guidePositionTop === 0) {
+      scrollTop += this.guidePositionTop;
+    }
+
+    document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
   }
 
   private getImageHeight(): void {

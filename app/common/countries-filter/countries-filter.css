@@ -353,7 +353,7 @@
 
 /* IE */
 
-@media (max-width: 1400px) {
+@media (max-width: 1400px), (max-height: 600px) {
   .close-button {
     margin-right: 3px;
     margin-top: 0;
