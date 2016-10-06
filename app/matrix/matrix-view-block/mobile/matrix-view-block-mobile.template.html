@@ -34,11 +34,13 @@
   <div class="house-info-container">
     <div class="header-container">
       <div class="title-container">
-        <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family, <span
-          [routerLink]="['/country', familyData?.country?._id]"
-          [queryParams]="{}"
-          angulartics2On="click"
-          angularticsEvent="From Matrix page to {{familyData.country.alias}} page">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+        <h3>
+          <span *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} family,</span>
+          <span
+            [routerLink]="['/country', familyData?.country?._id]"
+            [queryParams]="{}"
+            angulartics2On="click"
+            angularticsEvent="From Matrix page to {{familyData?.country?.alias}} page">{{familyData?.country?.alias || familyData?.country?.country}}</span>
         </h3>
       </div>
 
@@ -59,7 +61,8 @@
         alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
 
-      <a *ngIf="isShowCountryButton"
+      <a class="link-to-page"
+         *ngIf="isShowCountryButton"
          (click)="goToMatrixByCountry(familyData.country.alias)">
         <span>All {{thing.toLowerCase()}}</span>
         <span>in</span>

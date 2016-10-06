@@ -7,6 +7,7 @@ import { StreetSettingsService, DrawDividersInterface } from '../street/street.s
 import { LocalStorageService } from '../guide/localstorage.service';
 
 let device = require('device.js')();
+let isDesktop = device.desktop();
 let isMobile = device.mobile();
 
 let tplMobile = require('./menu-mobile.template.html');
@@ -188,6 +189,10 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       lowIncome: this.streetData.poor,
       highIncome: this.streetData.rich
     };
+
+    if (!isDesktop) {
+      queryParams.zoom = 3;
+    }
 
     if (this.isMatrixComponent) {
       this.selectedFilter.emit({url: this.objToQuery(queryParams)});

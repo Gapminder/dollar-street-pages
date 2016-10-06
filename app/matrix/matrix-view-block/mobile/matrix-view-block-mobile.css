@@ -127,8 +127,8 @@
   vertical-align: bottom;
 }
 
-.home-description-container p + a {
-  margin-bottom: 17px;
+.home-description-container .link-to-page {
+  margin-top: 17px;
 }
 
 .home-description-container a:hover {

@@ -77,7 +77,11 @@ footer {
   line-height: 20px;
 }
 
-.footer .description-content p {
+.footer .description-content div p {
+  margin: 0;
+}
+
+.footer .description-content > p {
   display: none;
   margin: 5px 0 0;
 }
@@ -271,10 +275,10 @@ footer {
   }
 
   .footer .description-content {
-    font-size: 14px;
+    font-size: 12px;
   }
 
-  .footer .description-content p {
+  .footer .description-content > p {
     display: block;
   }
 

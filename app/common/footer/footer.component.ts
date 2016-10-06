@@ -7,6 +7,8 @@ import { FooterService } from './footer.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 
+let device: {desktop: Function; mobile: Function} = require('device.js')();
+
 let tpl = require('./footer.template.html');
 let style = require('./footer.css');
 
@@ -31,6 +33,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   private streetServiceSubscribe: Subscription;
   private streetSettingsService: StreetSettingsService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private isDesktop: boolean = device.desktop();
 
   public constructor(router: Router,
                      footerService: FooterService,
@@ -99,17 +102,21 @@ export class FooterComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.router.navigate(['/matrix'], {
-      queryParams: {
-        thing: 'Families',
-        countries: 'World',
-        regions: 'World',
-        zoom: 4,
-        row: 1,
-        lowIncome: this.streetData.poor,
-        highIncome: this.streetData.rich
-      }
-    });
+    let queryParams: any = {
+      thing: 'Families',
+      countries: 'World',
+      regions: 'World',
+      zoom: 4,
+      row: 1,
+      lowIncome: this.streetData.poor,
+      highIncome: this.streetData.rich
+    };
+
+    if (!this.isDesktop) {
+      queryParams.zoom = 3;
+    }
+
+    this.router.navigate(['/matrix'], {queryParams: queryParams});
   }
 
   public scrollTop(e: MouseEvent): void {

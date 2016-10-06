@@ -4,6 +4,8 @@ import { HeaderService } from '../header/header.service';
 import { TitleHeaderService } from '../../common/title-header/title-header.service';
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 
+let device: {desktop: Function; mobile: Function} = require('device.js')();
+
 let tpl = require('./header.template.html');
 let style = require('./header.css');
 
@@ -14,6 +16,8 @@ let style = require('./header.css');
 })
 
 export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterViewInit {
+  protected isDesktop: boolean = device.desktop();
+
   @ViewChild('heading')
   private heading: ElementRef;
 

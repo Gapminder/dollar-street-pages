@@ -326,6 +326,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         this.activeCountries = countries.join(' & ');
       }
 
+      this.selectedRegions.length = 0;
       this.selectedCountries = countries;
 
       this.cloneSelectedLocations(regions, countries);
