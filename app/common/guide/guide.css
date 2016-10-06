@@ -179,6 +179,30 @@
   }
 }
 
+@media (max-width: 667px) {
+  .quick-guide-container .quick-guide-content {
+    width: 667px;
+  }
+
+  .quick-guide-container .guide-description {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 640px) {
+  .quick-guide-container .quick-guide-content {
+    width: 640px;
+  }
+
+  .quick-guide-container .guide-description {
+    font-size: 15px;
+  }
+
+  .quick-guide-container .guide-logo-container {
+    width: 175px;
+  }
+}
+
 @media (max-width: 600px) {
   .quick-guide-container .quick-guide-content {
     width: 100%;
