@@ -74,7 +74,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
-  private imgContent: HTMLElement;
   private locationStrategy: LocationStrategy;
   private guidePositionTop: number = 0;
   private guideContainer: HTMLElement;
