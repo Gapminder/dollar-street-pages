@@ -3,6 +3,15 @@
   margin: 0 auto 100px;
 }
 
+#article-content h1:first-child,
+#article-content h2:first-child,
+#article-content h3:first-child,
+#article-content h4:first-child,
+#article-content h5:first-child,
+#article-content h6:first-child {
+  margin: 0 0 5px;
+}
+
 #article-content h1 {
   font-size: 38px;
   margin: 0 0 5px;
@@ -54,14 +63,19 @@
   text-decoration: underline;
 }
 
+#article-content iframe {
+  border: 0;
+  width: 100%;
+}
+
 @media (max-width: 1023px) {
   #article-content {
-    padding-bottom: 30px;
     padding-top: 87px;
+    margin-bottom: 30px;
   }
 }
 
-@media (min-width: 780px) {
+@media (min-width: 1024px) {
   #article-content {
     width: 730px;
   }

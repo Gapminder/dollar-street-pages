@@ -51,7 +51,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private clonePlaces: any[];
   private filtredPlaces: any[] = [];
   private windowHistory: any = history;
-  private scrollSubscribe: Subscription;
+  private scrollSubscribeForMobile: Subscription;
   private resizeSubscribe: Subscription;
   private queryParamsSubscribe: Subscription;
   private headerFixedSubscribe: Subscription;
@@ -68,14 +68,17 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private loaderService: LoaderService;
   private activatedRoute: ActivatedRoute;
   private urlChangeService: UrlChangeService;
-  private imageResolution: ImageResolutionInterface;
   private countriesFilterService: CountriesFilterService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   private element: HTMLElement;
-  private imgContent: HTMLElement;
+  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
   private locationStrategy: LocationStrategy;
+  private guidePositionTop: number = 0;
+  private imgContent: HTMLElement;
+  private guideContainer: HTMLElement;
+  private guideHeight: number;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -102,11 +105,20 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngOnInit(): void {
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
+    this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
 
     this.resizeSubscribe = Observable.fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
+          if (window.innerWidth === this.windowInnerWidth) {
+            return;
+          }
+
+          if (this.guideContainer) {
+            this.guideHeight = this.guideContainer.offsetHeight;
+          }
+
           this.windowInnerHeight = window.innerHeight;
           this.windowInnerWidth = window.innerWidth;
 
@@ -118,6 +130,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (this.streetData && this.locations) {
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
         this.urlChanged({isBack: true});
+
+        if (this.guideContainer) {
+          this.guideHeight = this.guideContainer.offsetHeight;
+        }
+
+        if (this.guideContainer && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
+          this.guidePositionTop = this.guideContainer.offsetHeight;
+        }
       }
     });
 
@@ -186,28 +206,55 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.query = this.query + `&activeHouse=${this.activeHouse}`;
         }
 
+        if (this.guideContainer) {
+          this.guideHeight = this.guideContainer.offsetHeight;
+        }
+
+        if (this.guideContainer && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
+          this.guidePositionTop = this.guideContainer.offsetHeight;
+        }
+
         this.urlChanged({isInit: true});
       });
 
-    if (this.windowInnerWidth < 600) {
-      this.headerFixedSubscribe = Observable
-        .fromEvent(document, 'scroll')
-        .subscribe(() => {
-          this.zone.run(() => {
-            this.showMobileHeader();
-          });
-        });
-    }
-
-    this.scrollSubscribe = this
-      .getObservable(!this.isDesktop)
+    this.headerFixedSubscribe = Observable
+      .fromEvent(document, 'scroll')
       .subscribe(() => {
         this.zone.run(() => {
-          this.stopScroll();
+          let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+          if (this.guideContainer && this.windowInnerWidth > 599) {
+            if (this.guideContainer.offsetHeight > scrollTop) {
+              this.guidePositionTop = scrollTop;
+            }
+
+            if (scrollTop > this.guideContainer.offsetHeight && this.guideContainer.offsetHeight !== this.guidePositionTop) {
+              this.guidePositionTop = this.guideContainer.offsetHeight;
+            }
+
+            this.getPaddings({isGuide: true});
+          }
+
+          if (this.windowInnerWidth < 600) {
+            this.showMobileHeader();
+          }
+
+          if (this.isDesktop) {
+            this.stopScroll();
+          }
         });
       });
 
-    this.imageResolution = Config.getImageResolution();
+    if (!this.isDesktop) {
+      this.scrollSubscribeForMobile = Observable
+        .fromEvent(document, 'scroll')
+        .debounceTime(150)
+        .subscribe(() => {
+          this.zone.run(() => {
+            this.stopScroll();
+          });
+        });
+    }
   }
 
   public interactiveIncomeText(): void {
@@ -243,7 +290,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.headerFixedSubscribe.unsubscribe();
     }
 
-    this.scrollSubscribe.unsubscribe();
+    if (this.scrollSubscribeForMobile) {
+      this.scrollSubscribeForMobile.unsubscribe();
+    }
+
     this.resizeSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
     this.matrixServiceSubscribe.unsubscribe();
@@ -252,31 +302,39 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngAfterViewChecked(): void {
-    let footer = document.querySelector('.footer') as HTMLElement;
-    this.imgContent = this.element.querySelector('.image-content') as HTMLElement;
+    this.zone.run(() => {
+      let footer = document.querySelector('.footer') as HTMLElement;
+      this.imgContent = this.element.querySelector('.image-content') as HTMLElement;
 
-    if (!this.imgContent) {
-      return;
-    }
+      if (!this.imgContent) {
+        return;
+      }
 
-    let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
+      let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
 
-    if (
-      !this.element.querySelector('.image-content') || !imageClientRect.height ||
-      this.imageHeight === imageClientRect.height &&
-      this.footerHeight === footer.offsetHeight) {
-      return;
-    }
+      if (
+        !this.element.querySelector('.image-content') || !imageClientRect.height ||
+        this.imageHeight === imageClientRect.height &&
+        this.footerHeight === footer.offsetHeight &&
+        this.guideHeight === this.guideContainer.offsetHeight) {
+        return;
+      }
 
-    this.imageHeight = imageClientRect.height;
+      this.imageHeight = imageClientRect.height;
 
-    let imageMarginLeft: string = window.getComputedStyle(this.imgContent).getPropertyValue('margin-left');
-    this.imageMargin = parseFloat(imageMarginLeft) * 2;
+      setTimeout(() => {
+        this.guideHeight = this.guideContainer.offsetHeight;
+        this.guidePositionTop = 0;
+      }, 0);
 
-    this.footerHeight = footer.offsetHeight;
+      let imageMarginLeft: string = window.getComputedStyle(this.imgContent).getPropertyValue('margin-left');
+      this.imageMargin = parseFloat(imageMarginLeft) * 2;
 
-    this.setZoomButtonPosition();
-    this.getPaddings();
+      this.footerHeight = footer.offsetHeight;
+
+      this.setZoomButtonPosition();
+      this.getPaddings({});
+    });
   }
 
   /** each document usage breaks possible server side rendering */
@@ -289,13 +347,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       let fixedStreet = this.element.querySelector('.street-container.fixed') as HTMLElement;
 
       if (fixedStreet) {
-        this.getViewableRows(fixedStreet.offsetHeight);
+        this.getVisibleRows(fixedStreet.offsetHeight);
       }
     }
 
     this.setZoomButtonPosition();
 
-    let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - this.guidePositionTop;
     let distance = scrollTop / (this.imageHeight + this.imageMargin);
 
     if (isNaN(distance)) {
@@ -325,12 +383,19 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public getPaddings(): void {
+  public getPaddings(options: {isGuide?: boolean}): void {
+    let {isGuide} = options;
+
     let headerHeight: number = this.headerContainer.offsetHeight;
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
 
     matrixImages.style.paddingTop = `${headerHeight}px`;
-    this.getViewableRows(headerHeight);
+
+    if (this.guideContainer) {
+      headerHeight -= this.guidePositionTop;
+    }
+
+    this.getVisibleRows(headerHeight);
 
     let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
 
@@ -338,14 +403,20 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       scrollTo = this.row * (this.imgContent.offsetHeight + this.imageMargin) - 60;
     }
 
-    document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
+    if (this.guidePositionTop || this.guidePositionTop === 0) {
+      scrollTo = scrollTo + this.guidePositionTop;
+    }
+
+    if (!isGuide) {
+      document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
+    }
 
     if (this.clonePlaces && this.clonePlaces.length) {
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
     }
   }
 
-  public getViewableRows(headerHeight: number): void {
+  public getVisibleRows(headerHeight: number): void {
     let viewable = this.windowInnerHeight - headerHeight;
 
     let distance = viewable / (this.imageHeight + this.imageMargin);
@@ -561,7 +632,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   protected startQuickGuide(): void {
     setTimeout(() => {
-      this.getPaddings();
+      this.getPaddings({});
     }, 0);
   }
 
@@ -626,16 +697,5 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
-  }
-
-  private getObservable(isMobileVersion: boolean): Observable<any> {
-    if (isMobileVersion) {
-      return Observable
-        .fromEvent(document, 'scroll')
-        .debounceTime(150);
-    } else {
-      return Observable
-        .fromEvent(document, 'scroll');
-    }
   }
 }
