@@ -74,6 +74,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
+  private matrixImagesContainer: HTMLElement;
+  private matrixImagesContainerHeight: number;
   private locationStrategy: LocationStrategy;
   private guidePositionTop: number = 0;
   private imgContent: HTMLElement;
@@ -105,6 +107,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngOnInit(): void {
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
+    this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
     this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
 
     this.resizeSubscribe = Observable.fromEvent(window, 'resize')
@@ -312,6 +315,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
 
+      if (this.matrixImagesContainerHeight !== this.matrixImagesContainer.offsetHeight) {
+        this.matrixImagesContainerHeight = this.matrixImagesContainer.offsetHeight;
+        this.setZoomButtonPosition();
+      }
+
       if (
         !this.element.querySelector('.image-content') || !imageClientRect.height ||
         this.imageHeight === imageClientRect.height &&
@@ -332,7 +340,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       this.footerHeight = footer.offsetHeight;
 
-      this.setZoomButtonPosition();
       this.getPaddings({});
     });
   }
@@ -352,7 +359,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     this.setZoomButtonPosition();
-
     let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - this.guidePositionTop;
     let distance = scrollTop / (this.imageHeight + this.imageMargin);
 
@@ -387,9 +393,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let {isGuide} = options;
 
     let headerHeight: number = this.headerContainer.offsetHeight;
-    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
 
-    matrixImages.style.paddingTop = `${headerHeight}px`;
+    this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
 
     if (this.guideContainer) {
       headerHeight -= this.guidePositionTop;
@@ -514,10 +519,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           }
 
           if (!this.filtredPlaces.length) {
-            let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
-
             let headerHeight: number = this.headerContainer.offsetHeight;
-            matrixImages.style.paddingTop = `${headerHeight}px`;
+            this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
           }
 
           this.buildTitle(this.parseUrl(this.query));
@@ -689,7 +692,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private setZoomButtonPosition(): void {
     let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
     let containerHeight: number = this.element.offsetHeight + 30;
-
     this.zone.run(() => {
       this.zoomPositionFixed = scrollTop > containerHeight;
     });
