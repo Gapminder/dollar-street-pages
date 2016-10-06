@@ -75,6 +75,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imgContent: HTMLElement;
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
+  private matrixImagesContainer: HTMLElement;
+  private matrixImagesContainerHeight: number;
   private locationStrategy: LocationStrategy;
 
   public constructor(zone: NgZone,
@@ -102,6 +104,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngOnInit(): void {
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
+    this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
 
     this.resizeSubscribe = Observable.fromEvent(window, 'resize')
       .debounceTime(150)
@@ -275,7 +278,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.footerHeight = footer.offsetHeight;
 
-    this.setZoomButtonPosition();
+    if (this.matrixImagesContainerHeight !== this.matrixImagesContainer.offsetHeight) {
+      this.matrixImagesContainerHeight = this.matrixImagesContainer.offsetHeight;
+      this.setZoomButtonPosition();
+    }
+
     this.getPaddings();
   }
 
@@ -327,9 +334,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public getPaddings(): void {
     let headerHeight: number = this.headerContainer.offsetHeight;
-    let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
 
-    matrixImages.style.paddingTop = `${headerHeight}px`;
+    this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
     this.getViewableRows(headerHeight);
 
     let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
@@ -443,10 +449,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           }
 
           if (!this.filtredPlaces.length) {
-            let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
-
             let headerHeight: number = this.headerContainer.offsetHeight;
-            matrixImages.style.paddingTop = `${headerHeight}px`;
+            this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
           }
 
           this.buildTitle(this.parseUrl(this.query));
@@ -618,7 +622,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private setZoomButtonPosition(): void {
     let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
     let containerHeight: number = this.element.offsetHeight + 30;
-
     this.zone.run(() => {
       this.zoomPositionFixed = scrollTop > containerHeight;
     });
