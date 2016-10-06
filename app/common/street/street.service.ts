@@ -529,7 +529,7 @@ export class StreetDrawService {
   };
 
   protected drawLeftSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566) {
+    if (this.windowInnerWidth <= 566 && Math.floor(this.lowIncome) === this.dividersData.poor) {
       return;
     }
 
@@ -683,7 +683,7 @@ export class StreetDrawService {
   };
 
   protected drawRightSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566) {
+    if (this.windowInnerWidth <= 566 && Math.floor(this.highIncome) === this.dividersData.rich) {
       return;
     }
 
