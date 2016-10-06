@@ -76,6 +76,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private headerContainer: HTMLElement;
   private locationStrategy: LocationStrategy;
   private guidePositionTop: number = 0;
+  private imgContent: HTMLElement;
   private guideContainer: HTMLElement;
   private guideHeight: number;
 
