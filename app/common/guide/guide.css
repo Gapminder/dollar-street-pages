@@ -179,6 +179,12 @@
   }
 }
 
+@media (max-width: 733px) {
+  .quick-guide-container .quick-guide-content {
+    width: 685px;
+  }
+}
+
 @media (max-width: 667px) {
   .quick-guide-container .quick-guide-content {
     width: 667px;
