@@ -10,11 +10,13 @@
         <div class="header-container">$ {{math.round(place.income)}}<span>/month</span></div>
 
         <div class="home-description-container">
-          <h3 *ngIf="familyData?.familyName">{{familyData?.familyName || ''}} family, <span style="cursor:pointer"
-                                                                                            [routerLink]="['/country', familyData?.country?._id]"
-                                                                                            [queryParams]="{}"
-                                                                                            angulartics2On="click"
-                                                                                            angularticsEvent="From Matrix page to {{familyData.country.country}} page ">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+          <h3>
+            <span *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} family,</span>
+            <span style="cursor:pointer"
+                  [routerLink]="['/country', familyData?.country?._id]"
+                  [queryParams]="{}"
+                  angulartics2On="click"
+                  angularticsEvent="From Matrix page to {{familyData?.country?.country}} page ">{{familyData?.country?.alias || familyData?.country?.country}}</span>
           </h3>
 
           <div class="images-container"

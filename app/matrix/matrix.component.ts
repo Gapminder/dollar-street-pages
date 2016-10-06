@@ -77,8 +77,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imgContent: HTMLElement;
   private locationStrategy: LocationStrategy;
   private guidePositionTop: number = 0;
-  private matrixHeader: HTMLElement;
-  private matrixHeaderHeight: number = 0;
+  private guideContainer: HTMLElement;
+  private guideHeight: number;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -105,7 +105,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngOnInit(): void {
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
-    this.matrixHeader = this.element.querySelector('quick-guide') as HTMLElement;
+    this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
 
     this.resizeSubscribe = Observable.fromEvent(window, 'resize')
       .debounceTime(150)
@@ -113,6 +113,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.zone.run(() => {
           if (window.innerWidth === this.windowInnerWidth) {
             return;
+          }
+
+          if (this.guideContainer) {
+            this.guideHeight = this.guideContainer.offsetHeight;
           }
 
           this.windowInnerHeight = window.innerHeight;
@@ -127,12 +131,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
         this.urlChanged({isBack: true});
 
-        if (this.matrixHeader) {
-          this.matrixHeaderHeight = this.matrixHeader.offsetHeight;
+        if (this.guideContainer) {
+          this.guideHeight = this.guideContainer.offsetHeight;
         }
 
-        if (this.matrixHeader && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
-          this.guidePositionTop = this.matrixHeader.offsetHeight;
+        if (this.guideContainer && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
+          this.guidePositionTop = this.guideContainer.offsetHeight;
         }
       }
     });
@@ -202,12 +206,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.query = this.query + `&activeHouse=${this.activeHouse}`;
         }
 
-        if (this.matrixHeader) {
-          this.matrixHeaderHeight = this.matrixHeader.offsetHeight;
+        if (this.guideContainer) {
+          this.guideHeight = this.guideContainer.offsetHeight;
         }
 
-        if (this.matrixHeader && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
-          this.guidePositionTop = this.matrixHeader.offsetHeight;
+        if (this.guideContainer && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
+          this.guidePositionTop = this.guideContainer.offsetHeight;
         }
 
         this.urlChanged({isInit: true});
@@ -219,16 +223,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.zone.run(() => {
           let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-          if (this.matrixHeader && this.windowInnerWidth > 599) {
-            if (this.matrixHeader.offsetHeight > scrollTop) {
+          if (this.guideContainer && this.windowInnerWidth > 599) {
+            if (this.guideContainer.offsetHeight > scrollTop) {
               this.guidePositionTop = scrollTop;
             }
 
-            if (scrollTop > this.matrixHeader.offsetHeight && this.matrixHeader.offsetHeight !== this.guidePositionTop) {
-              this.guidePositionTop = this.matrixHeader.offsetHeight;
+            if (scrollTop > this.guideContainer.offsetHeight && this.guideContainer.offsetHeight !== this.guidePositionTop) {
+              this.guidePositionTop = this.guideContainer.offsetHeight;
             }
 
-            // this.getPaddings();
+            this.getPaddings({isGuide: true});
           }
 
           if (this.windowInnerWidth < 600) {
@@ -298,31 +302,39 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngAfterViewChecked(): void {
-    let footer = document.querySelector('.footer') as HTMLElement;
-    this.imgContent = this.element.querySelector('.image-content') as HTMLElement;
+    this.zone.run(() => {
+      let footer = document.querySelector('.footer') as HTMLElement;
+      this.imgContent = this.element.querySelector('.image-content') as HTMLElement;
 
-    if (!this.imgContent) {
-      return;
-    }
+      if (!this.imgContent) {
+        return;
+      }
 
-    let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
+      let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
 
-    if (
-      !this.element.querySelector('.image-content') || !imageClientRect.height ||
-      this.imageHeight === imageClientRect.height &&
-      this.footerHeight === footer.offsetHeight) {
-      return;
-    }
+      if (
+        !this.element.querySelector('.image-content') || !imageClientRect.height ||
+        this.imageHeight === imageClientRect.height &&
+        this.footerHeight === footer.offsetHeight &&
+        this.guideHeight === this.guideContainer.offsetHeight) {
+        return;
+      }
 
-    this.imageHeight = imageClientRect.height;
+      this.imageHeight = imageClientRect.height;
 
-    let imageMarginLeft: string = window.getComputedStyle(this.imgContent).getPropertyValue('margin-left');
-    this.imageMargin = parseFloat(imageMarginLeft) * 2;
+      setTimeout(() => {
+        this.guideHeight = this.guideContainer.offsetHeight;
+        this.guidePositionTop = 0;
+      }, 0);
 
-    this.footerHeight = footer.offsetHeight;
+      let imageMarginLeft: string = window.getComputedStyle(this.imgContent).getPropertyValue('margin-left');
+      this.imageMargin = parseFloat(imageMarginLeft) * 2;
 
-    this.setZoomButtonPosition();
-    this.getPaddings();
+      this.footerHeight = footer.offsetHeight;
+
+      this.setZoomButtonPosition();
+      this.getPaddings({});
+    });
   }
 
   /** each document usage breaks possible server side rendering */
@@ -371,11 +383,17 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public getPaddings(): void {
+  public getPaddings(options: {isGuide?: boolean}): void {
+    let {isGuide} = options;
+
     let headerHeight: number = this.headerContainer.offsetHeight;
     let matrixImages = this.element.querySelector('matrix-images') as HTMLElement;
 
     matrixImages.style.paddingTop = `${headerHeight}px`;
+
+    if (this.guideContainer) {
+      headerHeight -= this.guidePositionTop;
+    }
 
     this.getVisibleRows(headerHeight);
 
@@ -385,11 +403,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       scrollTo = this.row * (this.imgContent.offsetHeight + this.imageMargin) - 60;
     }
 
-    if (this.guidePositionTop) {
+    if (this.guidePositionTop || this.guidePositionTop === 0) {
       scrollTo = scrollTo + this.guidePositionTop;
     }
 
-    document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
+    if (!isGuide) {
+      document.body.scrollTop = document.documentElement.scrollTop = scrollTo;
+    }
 
     if (this.clonePlaces && this.clonePlaces.length) {
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
@@ -612,7 +632,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   protected startQuickGuide(): void {
     setTimeout(() => {
-      this.getPaddings();
+      this.getPaddings({});
     }, 0);
   }
 
