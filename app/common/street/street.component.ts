@@ -18,9 +18,6 @@ let style = require('./street.css');
 })
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
-  public regions: string[] | string;
-  public thingname: string;
-  public countries: string[] | string;
   public data: any;
   @Input('thing')
   protected thing: string;
@@ -35,6 +32,9 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   @Output('filterStreet')
   private filterStreet: EventEmitter<any> = new EventEmitter<any>();
   private street: any;
+  private regions: any;
+  private thingname: any;
+  private countries: any;
   private math: MathService;
   private streetSettingsService: StreetSettingsService;
   private streetData: any;

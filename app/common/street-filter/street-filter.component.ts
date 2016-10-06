@@ -22,11 +22,8 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
   private lowIncome: number;
   @Input('highIncome')
   private highIncome: number;
-  @Input('query')
-  private query: any;
   @Output('filterStreet')
   private filterStreet: EventEmitter<any> = new EventEmitter<any>();
-  private placesArray: any[] = [];
   private street: any;
   private streetSettingsService: StreetSettingsService;
   private streetData: any;
@@ -48,10 +45,6 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
   public ngOnInit(): any {
     this.street.setSvg = this.element.querySelector('.street-box svg') as SVGElement;
     this.street.set('isInit', true);
-
-    if (this.query) {
-      this.query = this.parseUrl(this.query);
-    }
 
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
@@ -87,32 +80,11 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
     this.streetServiceSubscribe.unsubscribe();
   }
 
-  private parseUrl(url: string): any {
-    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
-    let query = JSON.parse(urlForParse);
-
-    query.regions = query.regions.split(',');
-    query.countries = query.countries.split(',');
-
-    return query;
-  }
-
   private setDividers(places: any, drawDividers: any): void {
-
-    if (this.query.thing !== 'Families' || this.query.countries[0] !== 'World' || this.query.regions[0] !== 'World') {
-      this.placesArray = _
-        .chain(places)
-        .uniqBy('_id')
-        .sortBy('income')
-        .value();
-
-      this.lowIncome = _.head(this.placesArray).income;
-      this.highIncome = _.last(this.placesArray).income;
-    }
 
     this.street
       .clearSvg()
-      .init(this.lowIncome, this.highIncome, this.streetData, this.query)
+      .init(this.lowIncome, this.highIncome, this.streetData)
       .set('places', sortBy(places, 'income'))
       .set('fullIncomeArr', chain(this.street.places)
         .sortBy('income')
