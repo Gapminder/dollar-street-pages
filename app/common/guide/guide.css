@@ -24,9 +24,9 @@
 }
 
 .quick-guide-container .quick-guide-description-container {
-  width: calc(100% - 215px);
+  width: calc(100% - 210px);
   float: right;
-  margin-left: 35px;
+  margin-left: 30px;
   text-align: center;
   margin-bottom: 50px;
 }
@@ -179,6 +179,36 @@
   }
 }
 
+@media (max-width: 733px) {
+  .quick-guide-container .quick-guide-content {
+    width: 685px;
+  }
+}
+
+@media (max-width: 667px) {
+  .quick-guide-container .quick-guide-content {
+    width: 667px;
+  }
+
+  .quick-guide-container .guide-description {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 640px) {
+  .quick-guide-container .quick-guide-content {
+    width: 640px;
+  }
+
+  .quick-guide-container .guide-description {
+    font-size: 15px;
+  }
+
+  .quick-guide-container .guide-logo-container {
+    width: 175px;
+  }
+}
+
 @media (max-width: 600px) {
   .quick-guide-container .quick-guide-content {
     width: 100%;
@@ -212,17 +242,18 @@
 
   .quick-guide-container h2 {
     font-size: 27px;
-    margin-top: 15px;
+    margin-top: 12px;
   }
 
   .quick-guide-container .guide-description {
     margin: 0 -5px;
     font-size: 11px;
-    line-height: 22px;
+    line-height: 18px;
+    padding-top: 3px;
   }
 
   .quick-guide-container .button-container {
-    margin: 31px 0 65px;
+    margin: 20px 0 25px;
   }
 
   .quick-guide-container button {

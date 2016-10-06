@@ -75,7 +75,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imgContent: HTMLElement;
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
-  private imgContent: HTMLElement;
   private locationStrategy: LocationStrategy;
 
   public constructor(zone: NgZone,
