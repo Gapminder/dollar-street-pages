@@ -529,7 +529,8 @@ export class StreetDrawService {
   };
 
   protected drawLeftSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566 && Math.floor(this.lowIncome) === this.dividersData.poor) {
+    console.log(this.lowIncome)
+    if (this.windowInnerWidth <= 566 && Math.round(this.lowIncome) === this.dividersData.poor) {
       return;
     }
 
@@ -652,7 +653,7 @@ export class StreetDrawService {
     }
 
     if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !isMobile) {
-      if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4)) {
+      if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4) && !isMobile) {
         this.sliderLeftBorder = this.leftPoint - 12;
         this.leftScrollOpacityStreet
           .attr('width', this.leftPoint - 12 + this.streetOffset / 2);
@@ -683,7 +684,7 @@ export class StreetDrawService {
   };
 
   protected drawRightSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566 && Math.floor(this.highIncome) === this.dividersData.rich) {
+    if (this.windowInnerWidth <= 566 && Math.round(this.highIncome) === this.dividersData.rich) {
       return;
     }
 
@@ -805,7 +806,7 @@ export class StreetDrawService {
     }
 
     if (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World' && !isMobile) {
-      if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(x + this.streetOffset / 2 - 1)) {
+      if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(x + this.streetOffset / 2 - 1) && !isMobile) {
         this.sliderRightBorder = this.rightPoint + 12;
         this.rightScrollOpacityStreet.attr('x', this.rightPoint + this.streetOffset / 2 + 1.5 + 12)
           .attr('width', this.width + this.streetOffset / 2);
