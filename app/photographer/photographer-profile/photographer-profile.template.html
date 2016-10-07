@@ -32,6 +32,8 @@
 
     <p *ngIf="photographer?.company?.link"><a
       [href]="photographer.company.link"
+      angulartics2On="click"
+      angularticsEvent=" Moved to {{photographer.firstName}} {{photographer.lastName}} private link"
       target="_blank">{{photographer.company.name}}</a>
     </p>
 
@@ -39,7 +41,7 @@
   </div>
 
   <p class="photographer-link"
-    *ngIf="photographer?.company?.link && photographer?.company?.link"><a
+     *ngIf="photographer?.company?.link && photographer?.company?.link"><a
     [href]="photographer.company.link"
     target="_blank">{{photographer.company.link}}</a></p>
 
@@ -168,6 +170,8 @@
 
           <p *ngIf="photographer?.company?.link"><a
             [href]="photographer.company.link"
+            angulartics2On="click"
+            angularticsEvent=" Moved to {{photographer.firstName}} {{photographer.lastName}} private link by mobile"
             target="_blank">{{photographer.company.link}}</a></p>
         </div>
       </div>

@@ -31,7 +31,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private hoverPlace: Subject<any>;
   @Output('filterStreet')
   private filterStreet: EventEmitter<any> = new EventEmitter<any>();
-
   private street: any;
   private regions: any;
   private thingname: any;
@@ -146,7 +145,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
     this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
       let query: any = {};
-
       if (this.query) {
         query = this.parseUrl(this.query);
       }

@@ -285,10 +285,8 @@ export class StreetFilterDrawService {
             positionX + this.distanceDraggingRightSlider <= this.width + 45) {
             this.drawLeftSlider(positionX - 30 - this.distanceDraggingLeftSlider);
             this.drawRightSlider(positionX - 40 + this.distanceDraggingRightSlider);
-
             return;
           }
-
           return;
         }
 
@@ -499,13 +497,10 @@ export class StreetFilterDrawService {
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });
 
-    this.rightScrollOpacityStreet
-      .attr('x', x + this.halfOfStreetOffset + 1.5)
+    this.rightScrollOpacityStreet.attr('x', x + this.halfOfStreetOffset + 1.5)
       .attr('width', this.width + this.halfOfStreetOffset - x);
-    this.rightScrollOpacityHomes
-      .attr('x', x + this.halfOfStreetOffset + 1.5)
+    this.rightScrollOpacityHomes.attr('x', x + this.halfOfStreetOffset + 1.5)
       .attr('width', this.width + this.halfOfStreetOffset - x);
-
     this.highIncome = this.scale.invert(x);
 
     this.drawScrollLabel();
@@ -596,14 +591,13 @@ export class StreetFilterDrawService {
         .attr('fill', '#767d86');
     }
 
-    this.rightScrollText
-      .text(`${incomeR}$`)
-      .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - this.rightScrollText[0][0].getBBox().width / 2);
-
     this.leftScrollText
       .text(`${incomeL}$`)
       .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - this.leftScrollText[0][0].getBBox().width / 2);
 
+    this.rightScrollText
+      .text(`${incomeR}$`)
+      .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - this.rightScrollText[0][0].getBBox().width / 2);
     return this;
   };
 }

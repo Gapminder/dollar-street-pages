@@ -24,7 +24,6 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
   private highIncome: number;
   @Output('filterStreet')
   private filterStreet: EventEmitter<any> = new EventEmitter<any>();
-
   private street: any;
   private streetSettingsService: StreetSettingsService;
   private streetData: any;
@@ -82,6 +81,7 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
   }
 
   private setDividers(places: any, drawDividers: any): void {
+
     this.street
       .clearSvg()
       .init(this.lowIncome, this.highIncome, this.streetData)
