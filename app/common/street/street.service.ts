@@ -529,7 +529,6 @@ export class StreetDrawService {
   };
 
   protected drawLeftSlider(x: number, init: boolean = false): this {
-    console.log(this.lowIncome)
     if (this.windowInnerWidth <= 566 && Math.round(this.lowIncome) === this.dividersData.poor) {
       return;
     }
