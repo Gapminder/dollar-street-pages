@@ -8,11 +8,11 @@ export interface ImageResolutionInterface {
 }
 
 export class Config {
-  // public static api: string = 'https://apidev.dollarstreet.org';
-  public static api:string = '//stage.dollarstreet.org';
-  // public static api: string = 'http://192.168.1.123';
-  // public static api:string = 'http://192.168.1.57';
-  // public static api:string = 'http://192.168.1.95';
+  public static api: string = '//stage.dollarstreet.org';
+  // public static api: string = '//apidev.dollarstreet.org';
+  // public static api: string = '//192.168.1.123';
+  // public static api: string = '//192.168.1.57';
+  // public static api: string = '//192.168.1.95';
 
   private static windowInnerWidth: number = window.innerWidth;
 
