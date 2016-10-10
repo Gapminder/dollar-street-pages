@@ -94,7 +94,6 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.isOpenThingsFilter = !isOpenThingsFilter;
 
     this.search = {text: ''};
-
     if (this.isOpenThingsFilter && !isDesktop) {
       this.things = this.relatedThings;
       this.activeColumn = 'related';
@@ -120,7 +119,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.thingName}`, {});
+    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
     let query = this.parseUrl(this.url);
     query.thing = thing.plural;
 
@@ -227,6 +226,9 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   private isOpenMobileFilterView(): void {
     if (window.innerWidth < 1024 || !isDesktop) {
       this.openMobileFilterView = true;
+      if (this.activeColumn === 'all') {
+        return;
+      }
       this.setActiveThingsColumn('related');
       return;
     }
