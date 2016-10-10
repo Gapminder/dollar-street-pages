@@ -52,7 +52,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
         }
 
         this.article = val.data;
-        this.titleHeaderService.setTitle('Article about: ' + this.article.thing);
+        this.titleHeaderService.setTitle(this.article.thing);
         this.loaderService.setLoader(true);
       });
   }
