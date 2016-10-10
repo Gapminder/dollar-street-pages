@@ -96,12 +96,6 @@ export class FooterComponent implements OnInit, OnDestroy {
   protected goToMatrixPage(): void {
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from footer', {});
 
-    if (this.isMatrixComponent) {
-      this.window.location.href = this.window.location.origin;
-
-      return;
-    }
-
     let queryParams: any = {
       thing: 'Families',
       countries: 'World',
@@ -111,6 +105,12 @@ export class FooterComponent implements OnInit, OnDestroy {
       lowIncome: this.streetData.poor,
       highIncome: this.streetData.rich
     };
+
+    if (this.isMatrixComponent) {
+      this.window.location.href = this.window.location.origin + this.window.location.pathname + '?' + this.objToQuery(queryParams);
+
+      return;
+    }
 
     if (!this.isDesktop) {
       queryParams.zoom = 3;
@@ -124,4 +124,10 @@ export class FooterComponent implements OnInit, OnDestroy {
 
     Config.animateScroll('scrollBackToTop', 20, 1000);
   };
+
+  private objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
+      return encodeURIComponent(k) + '=' + data[k];
+    }).join('&');
+  }
 }
