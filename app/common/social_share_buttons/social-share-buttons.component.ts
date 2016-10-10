@@ -1,5 +1,4 @@
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Rx';
 import { SocialShareButtonsService } from './social-share-buttons.service';
 
@@ -17,14 +16,12 @@ export class SocialShareButtonsComponent implements OnDestroy {
   private url: string;
   private locationPath: string;
   private newWindow: any;
-  private location: Location;
+  private location: any = location;
   private window: Window = window;
   private socialShareButtonsServiceSubscribe: Subscription;
   private socialShareButtonsService: SocialShareButtonsService;
 
-  public constructor(location: Location,
-                     socialShareButtonsService: SocialShareButtonsService) {
-    this.location = location;
+  public constructor(socialShareButtonsService: SocialShareButtonsService) {
     this.socialShareButtonsService = socialShareButtonsService;
   }
 
@@ -42,13 +39,13 @@ export class SocialShareButtonsComponent implements OnDestroy {
       this.socialShareButtonsServiceSubscribe.unsubscribe();
     }
 
-    if (this.locationPath === this.location.path()) {
+    if (this.locationPath === this.location.pathname + this.location.search) {
       this.openWindow(originalUrl, this.url);
 
       return;
     }
 
-    this.locationPath = this.location.path();
+    this.locationPath = this.location.pathname + this.location.search;
 
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl({url: this.locationPath})
       .subscribe((res: any) => {

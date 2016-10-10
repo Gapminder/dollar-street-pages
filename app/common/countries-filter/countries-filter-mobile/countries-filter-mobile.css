@@ -207,6 +207,10 @@
   overflow-y: auto;
 }
 
+#countries-filter-mobile .countries-container.close-regions-section {
+  height: calc(100% - 181px);
+}
+
 #countries-filter-mobile .regions-container .countries-container :hover {
   background-color: #f4f5f5;
 }
@@ -462,6 +466,10 @@
 
   #countries-filter-mobile .countries-container {
     height: calc(100% - 260px);
+  }
+
+  #countries-filter-mobile .countries-container.close-regions-section {
+    height: calc(100% - 183px);
   }
 
   #countries-filter-mobile .country-content {

@@ -130,7 +130,7 @@
       </div>
     </div>
 
-    <div class="countries-container">
+    <div class="countries-container" [class.close-regions-section]="!regionsVisibility">
       <div class="country-content"
            *ngFor="let country of countries | CountriesFilterPipe:search"
            [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
