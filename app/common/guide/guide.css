@@ -12,16 +12,16 @@ quick-guide {
 }
 
 .quick-guide-container .quick-guide-content {
-  width: 785px;
+  width: 925px;
   margin: 0 auto;
   display: inline-block;
   vertical-align: top;
 }
 
 .quick-guide-container .guide-logo-container {
-  width: 180px;
+  width: 290px;
   float: left;
-  margin-top: -12px;
+  margin-top: -29px;
 }
 
 .quick-guide-container .guide-logo-container img {
@@ -29,9 +29,9 @@ quick-guide {
 }
 
 .quick-guide-container .quick-guide-description-container {
-  width: calc(100% - 210px);
+  width: calc(100% - 310px);
   float: right;
-  margin-left: 30px;
+  margin-left: 10px;
   text-align: center;
   margin-bottom: 50px;
 }
@@ -107,7 +107,8 @@ quick-guide {
   }
 
   .quick-guide-container .guide-logo-container img {
-    width: 77%;
+    width: 74%;
+    margin-top: 12px;
   }
 
   .quick-guide-container h1 {
@@ -142,8 +143,13 @@ quick-guide {
     width: 745px;
   }
 
+  .quick-guide-container .guide-logo-container {
+    width: 180px;
+    margin-top: -21px;
+  }
+
   .quick-guide-container .guide-logo-container img {
-    width: 65%;
+    width: 100%;
   }
 
   .quick-guide-container h1 {
