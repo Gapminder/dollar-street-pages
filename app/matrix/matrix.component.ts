@@ -226,16 +226,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.zone.run(() => {
           let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-          if (this.guideContainer && this.windowInnerWidth > 599 && this.imgContent) {
+          if (this.guideContainer && this.guideContainer.offsetHeight && this.windowInnerWidth > 599 && this.imgContent) {
             if (this.guideContainer.offsetHeight > scrollTop) {
               this.guidePositionTop = scrollTop;
+              this.getPaddings({isGuide: true});
             }
 
             if (scrollTop > this.guideContainer.offsetHeight && this.guideContainer.offsetHeight !== this.guidePositionTop) {
               this.guidePositionTop = this.guideContainer.offsetHeight;
+              this.getPaddings({isGuide: true});
             }
-
-            this.getPaddings({isGuide: true});
           }
 
           if (this.windowInnerWidth < 600) {
