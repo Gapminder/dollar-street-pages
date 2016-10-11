@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Rx';
-import { sortBy, chain } from 'lodash';
+import { sortBy, chain, differenceBy } from 'lodash';
 import { MathService } from '../math-service/math-service';
 import { StreetSettingsService } from './street.settings.service';
 import { StreetDrawService } from './street.service';
@@ -49,6 +49,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private chosenPlacesSubscribe: Subscription;
   private streetFilterSubscribe: Subscription;
   private placesArr: any;
+  private streetBoxContainer: HTMLElement;
+  private streetBoxContainerMargin: number;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
@@ -64,21 +66,35 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit(): any {
     this.street.setSvg = this.element.querySelector('.street-box svg') as SVGElement;
+    this.streetBoxContainer = this.element.querySelector('.street-box') as HTMLElement;
+    let streetBoxContainerMarginLeft: string = window.getComputedStyle(this.streetBoxContainer)
+      .getPropertyValue('margin-left');
+    this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
     this.street.set('isInit', true);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
+        let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+
+        if (
+          this.street.width + this.street.streetOffset + this.streetBoxContainerMargin !== document.body.offsetWidth &&
+          this.placesArr &&
+          this.streetData
+        ) {
+          this.setDividers(this.placesArr, this.streetData);
+
+          return;
+        }
+
+        if (!difference.length) {
+          return;
+        }
+
+        this.street.set('chosenPlaces', chosenPlaces.length ? chosenPlaces : []);
+
         if (!this.street.scale) {
           return;
         }
 
-        if (!chosenPlaces.length) {
-          this.street.set('chosenPlaces', []);
-          this.street.clearAndRedraw(chosenPlaces);
-
-          return;
-        }
-
-        this.street.set('chosenPlaces', chosenPlaces);
         this.street.clearAndRedraw(chosenPlaces);
       });
 
@@ -167,6 +183,10 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         if (!this.street.places) {
           return;
         }
+
+        streetBoxContainerMarginLeft = window.getComputedStyle(this.streetBoxContainer)
+          .getPropertyValue('margin-left');
+        this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
 
         this.setDividers(this.placesArr, this.streetData);
       });
