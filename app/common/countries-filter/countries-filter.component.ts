@@ -242,7 +242,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.selectedCountries.push(country.country);
 
     let regionObject = _.find(this.locations, {region: region});
-    let regionCountries = _.map(regionObject.countries, 'country');
+    let filtetredRegionCountries = _.filter(regionObject.countries, (currentCountry: any) => {
+      return currentCountry.empty !== true;
+    });
+
+    let regionCountries = _.map(filtetredRegionCountries, 'country');
+
     if (!_.difference(regionCountries, this.selectedCountries).length) {
       this.selectedRegions.push(region);
     }
@@ -316,6 +321,40 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let regions: string[] = query.regions;
     let countries: string[] = query.countries;
 
+    let resultCountries: string[] = [];
+
+    let filteredRegionCountries: any = {};
+
+    _.forEach(this.locations, (location: any) => {
+      let filteredCountries: string[] = [];
+      let currentRegion: string = location.region;
+      let isRegionSelected: boolean = false;
+
+      if (regions.indexOf(currentRegion) !== -1) {
+        isRegionSelected = true;
+      }
+
+      filteredCountries = _.filter(location.countries, (country: any) => {
+        if(country.empty !== true) {
+          let countryName: string = country.country;
+
+          if (regions.indexOf(currentRegion) !== -1) {
+            if (filteredRegionCountries[currentRegion] === undefined) {
+              filteredRegionCountries[currentRegion] = [];
+            }
+
+            filteredRegionCountries[currentRegion].push(countryName);
+
+            resultCountries.push(countryName);
+            return countryName;
+          } else if (countries.indexOf(countryName) !== -1) {
+            resultCountries.push(countryName);
+            return countryName;
+          }
+        }
+      }) as string[];
+    });
+
     if (regions[0] === 'World' && countries[0] === 'World') {
       this.activeCountries = 'the World';
       this.selectedCountries.length = 0;
@@ -326,65 +365,82 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
       if (countries.length > 2) {
-        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+        this.activeCountries = resultCountries.slice(0, 2).join(', ') + ' (+' + (resultCountries.length - 2) + ')';
       } else {
-        this.activeCountries = countries.join(' & ');
+        this.activeCountries = resultCountries.join(' & ');
       }
 
       this.selectedRegions.length = 0;
-      this.selectedCountries = countries;
+      this.selectedCountries = resultCountries;
 
-      this.cloneSelectedLocations(regions, countries);
+      this.cloneSelectedLocations(regions, resultCountries);
 
       return;
     }
 
     if (regions[0] !== 'World') {
-      if (regions.length > 2) {
-        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-      } else {
-        let sumCountries: number = 0;
-        let difference: string[] = [];
-        let regionCountries: string[] = [];
+      let difference: string[] = [];
+      let regionCountries: string[] = [];
 
-        _.forEach(this.locations, (location: any) => {
-          if (regions.indexOf(location.region) !== -1) {
-            regionCountries = regionCountries.concat(_.map(location.countries, 'country') as string[]);
-            sumCountries = +location.countries.length;
-          }
-        });
+      _.forEach(this.locations, (location: any) => {
+        let currentRegion: string = location.region;
 
-        if (sumCountries !== countries.length) {
-          difference = _.difference(countries, regionCountries);
+        if (regions.indexOf(currentRegion) !== -1) {
+          regionCountries.push(...filteredRegionCountries[currentRegion]);
         }
+      });
 
-        if (difference.length) {
-          this.activeCountries = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+      if (resultCountries.length !== regionCountries.length) {
+        difference = _.difference(resultCountries, regionCountries);
+      }
+
+      /*if (difference.length) {
+        let countriesCountDiff: number = countries.length - resultCountries.length;
+        let activeCountriesNum: number = countries.length - countriesCountDiff - 2;
+
+        this.activeCountries = difference.length === 1 && regions.length === 1 ?
+                               regions[0] + ' & ' + difference[0] :
+                               resultCountries.slice(0, 2).join(', ') + ' (+' + (activeCountriesNum) + ')';
+      } else {
+        if (regions.length > 2) {
+          let activeCountriesNum: number = 0;
+
+          _.forEach(regions.slice(2), (currentRegion: any) => {
+            activeCountriesNum += filteredRegionCountries[currentRegion].length;
+          });
+
+          this.activeCountries = regions.slice(0, 2).join(' & ') + ' (+' + (activeCountriesNum) + ')';
+        } else {
+          this.activeCountries = regions.join(' & ');
+        }
+      }*/
+
+      if (difference.length) {
+        let countriesCountDiff: number = countries.length - resultCountries.length;
+        let activeCountriesNum: number = countries.length - countriesCountDiff - 2;
+
+        this.activeCountries = difference.length === 1 && regions.length === 1 ?
+                               regions[0] + ' & ' + difference[0] :
+                               resultCountries.slice(0, 2).join(', ') + ' (+' + (activeCountriesNum) + ')';
+      } else {
+        if (regions.length > 2) {
+          let activeCountriesNum: number = 0;
+
+          _.forEach(regions, (currentRegion: any) => {
+            activeCountriesNum += filteredRegionCountries[currentRegion].length;
+          });
+
+          this.activeCountries = filteredRegionCountries[regions[0]].slice(0, 2).join(' & ') + ' (+' + (activeCountriesNum - 2) + ')';
         } else {
           this.activeCountries = regions.join(' & ');
         }
       }
 
       this.selectedRegions = regions;
-      this.selectedCountries = countries;
+      this.selectedCountries = resultCountries;
 
-      this.cloneSelectedLocations(regions, countries);
-
-      return;
+      this.cloneSelectedLocations(regions, resultCountries);
     }
-
-    let concatLocations: string[] = regions.concat(countries);
-
-    if (concatLocations.length > 2) {
-      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
-    } else {
-      this.activeCountries = concatLocations.join(' & ');
-    }
-
-    this.selectedRegions = regions;
-    this.selectedCountries = countries;
-    this.cloneSelectedLocations(regions, countries);
   }
 
   private cloneSelectedLocations(regions: any[], countries: any[]): void {
