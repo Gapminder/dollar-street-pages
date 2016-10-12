@@ -27,7 +27,6 @@ let style = require('./countries-filter.css') as string;
   template: require('./countries-filter.template.html') as string,
   styles: [style, styleMobile]
 })
-
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected isDesktop: boolean = isDesktop;
   protected activeCountries: string;
@@ -189,27 +188,33 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.showSelected = false;
     this.search = '';
 
+    let getCountriesName = _.map(location.countries, (country: any)=> {
+      if(country.empty !== true) {
+        return country.country;
+      }
+    }) as string[];
+
+    let filteredCountriesName: string[] = [];
+
+    getCountriesName.forEach((name: any)=> {
+      if(name !== undefined) {
+        filteredCountriesName.push(name);
+      }
+    });
+
     let index = this.selectedRegions.indexOf(location.region);
-    let getEmptyCountries = _.map(location.countries, 'empty');
-    let uniqEmptyCountries = _.uniq(getEmptyCountries);
-
-    if (uniqEmptyCountries.length === 1 && uniqEmptyCountries[0] === true) {
-      return;
-    }
-
-    let getCountriesName = _.map(location.countries, 'country') as string[];
 
     if (index !== -1) {
       this.selectedRegions.splice(index, 1);
 
-      this.selectedCountries = _.difference(this.selectedCountries, getCountriesName) as string[];
+      this.selectedCountries = _.difference(this.selectedCountries, filteredCountriesName) as string[];
 
       return;
     }
 
     this.selectedRegions.push(location.region);
 
-    this.selectedCountries = _.union(this.selectedCountries.concat(getCountriesName));
+    this.selectedCountries = _.union(this.selectedCountries.concat(filteredCountriesName));
   }
 
   protected selectCountries(country: any, region: string): void {
