@@ -34,7 +34,7 @@ export class Config {
   public static getImageResolution(): ImageResolutionInterface {
     if (isDesktop) {
       return {
-        image: 'devices',
+        image: '480x480',
         expand: 'desktops',
         full: 'original'
       };
