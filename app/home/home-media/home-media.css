@@ -90,6 +90,24 @@
   color: white;
 }
 
+.loader-content {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  height: 64px;
+  margin: auto;
+  text-align: center;
+}
+
+.isLoad {
+  width: 64px;
+  height: 64px;
+  display: inline-block;
+}
+
+
 home-media-view-block {
   display: block;
   clear: both;

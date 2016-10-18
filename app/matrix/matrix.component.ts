@@ -330,15 +330,30 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       this.imageHeight = imageClientRect.height;
 
-      setTimeout(() => {
-        this.guideHeight = this.guideContainer.offsetHeight;
-        this.guidePositionTop = 0;
-      }, 0);
-
       let imageMarginLeft: string = window.getComputedStyle(this.imgContent).getPropertyValue('margin-left');
       this.imageMargin = parseFloat(imageMarginLeft) * 2;
 
       this.footerHeight = footer.offsetHeight;
+
+      setTimeout(() => {
+        this.guideHeight = this.guideContainer.offsetHeight;
+      }, 0);
+
+      if (this.row === 1) {
+        setTimeout(() => {
+
+          this.getPaddings({});
+          return;
+        }, 0);
+      }
+
+      if (!this.activeHouse && this.row < 2) {
+        setTimeout(() => {
+          this.guidePositionTop = 0;
+          this.getPaddings({});
+          return;
+        }, 0);
+      }
 
       this.getPaddings({});
     });

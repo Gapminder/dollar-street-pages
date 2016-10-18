@@ -79,6 +79,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private visibleImages: number;
   private loaderService: LoaderService;
   private locations: any;
+  private loader: boolean = false;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -96,6 +97,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): any {
     let isInit: boolean = true;
+    this.loader = false;
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
       this.showErrorMsg = false;
@@ -104,21 +106,22 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.buildErrorMsg(this.currentPlaces);
       setTimeout(() => {
         this.getVisibleRows();
-
         let numberSplice: number = this.visibleImages * 2;
 
         if (this.row && this.row > 1) {
           numberSplice = this.row * this.zoom + this.visibleImages;
         }
 
-        this.rowLoaderStartPosition = 0;
-
-        this.placesArr = slice(this.currentPlaces, 0, numberSplice);
+        if (this.row && this.row > (this.visibleImages / this.zoom)) {
+          this.placesArr = slice(this.currentPlaces, this.rowLoaderStartPosition, numberSplice);
+        } else {
+          this.rowLoaderStartPosition = 0;
+          this.placesArr = slice(this.currentPlaces, 0, numberSplice);
+        }
       }, 0);
 
       setTimeout(() => {
         this.getImageHeight();
-
         this.loaderService.setLoader(true);
       }, 0);
 
@@ -278,9 +281,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.selectedCountries = countries;
   }
 
-  protected imageIsUploaded(data: {index: number}): void {
+  protected imageIsUploaded(index: number): void {
     this.zone.run(() => {
-      this.placesArr[data.index].isUploaded = true;
+      this.placesArr[index].isUploaded = true;
     });
   }
 

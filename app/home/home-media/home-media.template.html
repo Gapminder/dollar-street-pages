@@ -12,12 +12,28 @@
          [style.-ms-flex-order]="i"
          [style.-webkit-order]="i"
          [style.order]="i"
-         [style.height.px]="imageHeight">
+         [style.height.px]="imageHeight"
+         isImageLoaded [placeUrl]="convertImageUrlWithoutWrapper(image?.background)" (isImgLoaded)="imageIsUploaded(i)">
       <div class="family-image"
            [ngStyle]="{'background-image': image.isUploaded && image.background}">
         <div class="image-description">
           <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
           <span>{{image.thingName}}</span>
+        </div>
+      </div>
+
+      <div class="loader-content" *ngIf="!image.isUploaded">
+        <div class="isLoad">
+          <div class="la-ball-spin la-dark la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -31,14 +47,14 @@
                            [style.order]="imageBlockLocation"
                            (closeBigImageBlock)="openMedia(activeImage, indexViewBoxImage)"></home-media-view-block>
 
-    <row-loader [items]="currentImages"
-                [countInRow]="zoom"
-                [field]="'background'"
-                [itemHeight]="itemSize"
-                [activeItem]="activeImageIndex"
-                [visibleItems]="visibleImages"
-                [viewBlockHeight]="viewBlockHeight"
-                [startPosition]="rowLoaderStartPosition"
-                (imageIsUploaded)="imageIsUploaded($event)"></row-loader>
+    <!--<row-loader [items]="currentImages"-->
+                <!--[countInRow]="zoom"-->
+                <!--[field]="'background'"-->
+                <!--[itemHeight]="itemSize"-->
+                <!--[activeItem]="activeImageIndex"-->
+                <!--[visibleItems]="visibleImages"-->
+                <!--[viewBlockHeight]="viewBlockHeight"-->
+                <!--[startPosition]="rowLoaderStartPosition"-->
+                <!--(imageIsUploaded)="imageIsUploaded($event)"></row-loader>-->
   </div>
 </div>

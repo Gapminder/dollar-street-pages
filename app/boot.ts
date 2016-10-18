@@ -18,7 +18,8 @@ import {
   MatrixService,
   MatrixImagesComponent,
   MatrixViewBlockComponent,
-  FamilyInfoService
+  FamilyInfoService,
+  IsImageLoadedDirective
 } from './matrix';
 import {
   CountriesFilterComponent,
@@ -116,6 +117,7 @@ if (ENV === 'production') {
     MatrixComponent,
     MatrixImagesComponent,
     MatrixViewBlockComponent,
+    IsImageLoadedDirective,
 
     /* Common components */
     CountriesFilterComponent,

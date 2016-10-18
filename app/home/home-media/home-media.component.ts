@@ -268,9 +268,14 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  protected imageIsUploaded(data: {index: number}): void {
+  protected convertImageUrlWithoutWrapper(urlToConvert: string): string {
+    return urlToConvert.replace('url("', '')
+                       .replace('")', '');
+  }
+
+  protected imageIsUploaded(index: number): void {
     this.zone.run(() => {
-      this.currentImages[data.index].isUploaded = true;
+      this.currentImages[index].isUploaded = true;
     });
   }
 
