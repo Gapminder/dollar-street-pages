@@ -44,7 +44,7 @@
     "@types/node": "6.0.41",
     "@types/protractor": "1.5.20",
     "@types/selenium-webdriver": "2.53.30",
-    "angular2-infinite-scroll": "0.2.2",
+    "angular2-infinite-scroll": "0.2.4",
     "angulartics2": "1.1.9",
     "d3": "3.5.15",
     "device.js": "0.1.2",
