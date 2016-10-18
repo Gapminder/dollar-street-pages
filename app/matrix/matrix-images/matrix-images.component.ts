@@ -58,7 +58,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private showErrorMsg: boolean = false;
   private errorMsg: any;
   private placesArr: any = [];
-  //private viewBlockHeight: number;
+  private viewBlockHeight: number;
   private rowLoaderStartPosition: number = 0;
   private isDesktop: boolean = isDesktop;
   private router: Router;
@@ -323,7 +323,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       let viewBlockBox = this.element.querySelector('matrix-view-block') as HTMLElement;
 
-      //this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+      this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
     }, 0);
 
     let row: number = Math.ceil((this.indexViewBoxHouse + 1) / this.zoom);
@@ -334,9 +334,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.showblock = !this.showblock;
 
       if (isInit) {
-        this.changeUrl({activeHouseIndex: activeHouseIndex});        
+        this.changeUrl({activeHouseIndex: activeHouseIndex});
+        this.goToRow(row);
       } else {
-        this.changeUrl({row: row, activeHouseIndex: activeHouseIndex});        
+        this.changeUrl({row: row, activeHouseIndex: activeHouseIndex});
       }
 
       return;
@@ -393,9 +394,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       scrollTop += this.guidePositionTop;
     }
 
-    setTimeout(()=>{
+    setTimeout(() => {
       document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
-    },0);    
+    }, 0);
   }
 
   private getImageHeight(): void {
