@@ -688,6 +688,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private showMobileHeader(): void {
     let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
+    this.guidePositionTop = 0;
     if (scrollTop > this.headerContainer.offsetHeight - 10) {
       if (this.streetContainer.className.indexOf('fixed') !== -1) {
         return;
