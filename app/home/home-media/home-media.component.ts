@@ -31,7 +31,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imageBlockLocation: number;
   private showImageBlock: boolean = false;
   private activeImage: any;
-  private rowLoaderStartPosition: number = 0;
   private zoom: number = this.windowInnerWidth < 1024 ? 3 : 4;
   private prevImage: Object;
   private homeMediaService: HomeMediaService;
@@ -129,8 +128,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
             numberSplice = this.activeImageIndex + offset + this.visibleImages;
           }
 
-          this.rowLoaderStartPosition = 0;
-
           this.currentImages = slice(this.images, 0, numberSplice);
         }, 0);
       });
@@ -207,7 +204,6 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
       let images: any = slice(this.images, this.currentImages.length, this.currentImages.length + this.visibleImages);
 
       this.currentImages = concat(this.currentImages, images);
-      this.rowLoaderStartPosition = this.currentImages.length - this.visibleImages;
     }
   }
 

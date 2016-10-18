@@ -59,7 +59,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private errorMsg: any;
   private placesArr: any = [];
   private viewBlockHeight: number;
-  private rowLoaderStartPosition: number = 0;
   private isDesktop: boolean = isDesktop;
   private router: Router;
   private currentPlaces: any = [];
@@ -79,7 +78,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private visibleImages: number;
   private loaderService: LoaderService;
   private locations: any;
-  private loader: boolean = false;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -97,7 +95,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): any {
     let isInit: boolean = true;
-    this.loader = false;
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
       this.showErrorMsg = false;
@@ -112,12 +109,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
           numberSplice = this.row * this.zoom + this.visibleImages;
         }
 
-        if (this.row && this.row > (this.visibleImages / this.zoom)) {
-          this.placesArr = slice(this.currentPlaces, this.rowLoaderStartPosition, numberSplice);
-        } else {
-          this.rowLoaderStartPosition = 0;
-          this.placesArr = slice(this.currentPlaces, 0, numberSplice);
-        }
+        this.placesArr = slice(this.currentPlaces, 0, numberSplice);
       }, 0);
 
       setTimeout(() => {
@@ -185,7 +177,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     if (this.placesArr.length && this.placesArr.length !== this.currentPlaces.length) {
       let places: any = slice(this.currentPlaces, this.placesArr.length, this.placesArr.length + this.visibleImages);
       this.placesArr = concat(this.placesArr, places);
-      this.rowLoaderStartPosition = this.placesArr.length - this.visibleImages;
     }
   }
 

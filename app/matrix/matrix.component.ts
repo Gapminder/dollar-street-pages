@@ -354,7 +354,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           return;
         }, 0);
       }
-
       this.getPaddings({});
     });
   }

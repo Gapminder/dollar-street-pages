@@ -13,7 +13,7 @@
          [style.-webkit-order]="i"
          [style.order]="i"
          [style.height.px]="imageHeight"
-         isImageLoaded [placeUrl]="convertImageUrlWithoutWrapper(image?.background)" (isImgLoaded)="imageIsUploaded(i)">
+         isImageLoaded [imageLoadedUrl]="convertImageUrlWithoutWrapper(image?.background)" (imageLoadedEvent)="imageIsUploaded(i)">
       <div class="family-image"
            [ngStyle]="{'background-image': image.isUploaded && image.background}">
         <div class="image-description">
@@ -47,14 +47,5 @@
                            [style.order]="imageBlockLocation"
                            (closeBigImageBlock)="openMedia(activeImage, indexViewBoxImage)"></home-media-view-block>
 
-    <!--<row-loader [items]="currentImages"-->
-                <!--[countInRow]="zoom"-->
-                <!--[field]="'background'"-->
-                <!--[itemHeight]="itemSize"-->
-                <!--[activeItem]="activeImageIndex"-->
-                <!--[visibleItems]="visibleImages"-->
-                <!--[viewBlockHeight]="viewBlockHeight"-->
-                <!--[startPosition]="rowLoaderStartPosition"-->
-                <!--(imageIsUploaded)="imageIsUploaded($event)"></row-loader>-->
   </div>
 </div>
