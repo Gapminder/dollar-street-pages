@@ -335,6 +335,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
       if (isInit) {
         this.changeUrl({activeHouseIndex: activeHouseIndex});
+        this.goToRow(row);
       } else {
         this.changeUrl({row: row, activeHouseIndex: activeHouseIndex});
       }
@@ -393,7 +394,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       scrollTop += this.guidePositionTop;
     }
 
-    document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
+    setTimeout(() => {
+      document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
+    }, 0);
   }
 
   private getImageHeight(): void {
