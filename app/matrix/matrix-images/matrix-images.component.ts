@@ -59,7 +59,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private errorMsg: any;
   private placesArr: any = [];
   private viewBlockHeight: number;
-  private rowLoaderStartPosition: number = 0;
   private isDesktop: boolean = isDesktop;
   private router: Router;
   private currentPlaces: any = [];
@@ -104,21 +103,17 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.buildErrorMsg(this.currentPlaces);
       setTimeout(() => {
         this.getVisibleRows();
-
         let numberSplice: number = this.visibleImages * 2;
 
         if (this.row && this.row > 1) {
           numberSplice = this.row * this.zoom + this.visibleImages;
         }
 
-        this.rowLoaderStartPosition = 0;
-
         this.placesArr = slice(this.currentPlaces, 0, numberSplice);
       }, 0);
 
       setTimeout(() => {
         this.getImageHeight();
-
         this.loaderService.setLoader(true);
       }, 0);
 
@@ -182,7 +177,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     if (this.placesArr.length && this.placesArr.length !== this.currentPlaces.length) {
       let places: any = slice(this.currentPlaces, this.placesArr.length, this.placesArr.length + this.visibleImages);
       this.placesArr = concat(this.placesArr, places);
-      this.rowLoaderStartPosition = this.placesArr.length - this.visibleImages;
     }
   }
 
@@ -278,9 +272,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.selectedCountries = countries;
   }
 
-  protected imageIsUploaded(data: {index: number}): void {
+  protected imageIsUploaded(index: number): void {
     this.zone.run(() => {
-      this.placesArr[data.index].isUploaded = true;
+      this.placesArr[index].isUploaded = true;
     });
   }
 

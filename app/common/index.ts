@@ -19,7 +19,6 @@ export * from './loader/loader.service';
 export * from './math-service/math-service';
 export * from './menu/menu.component';
 export * from './region-map/region-map.component';
-export * from './row-loader/row-loader.component';
 export * from './social_share_buttons/social-share-buttons.component';
 export * from './social_share_buttons/social-share-buttons.service';
 export * from './social-follow-buttons/social-follow-buttons.component';

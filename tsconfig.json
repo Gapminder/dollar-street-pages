@@ -29,6 +29,7 @@
     "dist",
     "./test",
     "./test-e2e",
-    "./app/first"
+    "./app/first",
+    "./app/common/row-loader"
   ]
 }

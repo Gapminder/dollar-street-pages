@@ -18,7 +18,8 @@ import {
   MatrixService,
   MatrixImagesComponent,
   MatrixViewBlockComponent,
-  FamilyInfoService
+  FamilyInfoService,
+  IsImageLoadedDirective
 } from './matrix';
 import {
   CountriesFilterComponent,
@@ -42,7 +43,6 @@ import {
   MathService,
   MainMenuComponent,
   RegionMapComponent,
-  RowLoaderComponent,
   SocialShareButtonsComponent,
   SocialShareButtonsService,
   SocialFollowButtonsComponent,
@@ -116,6 +116,7 @@ if (ENV === 'production') {
     MatrixComponent,
     MatrixImagesComponent,
     MatrixViewBlockComponent,
+    IsImageLoadedDirective,
 
     /* Common components */
     CountriesFilterComponent,
@@ -132,7 +133,6 @@ if (ENV === 'production') {
     LoaderComponent,
     MainMenuComponent,
     RegionMapComponent,
-    RowLoaderComponent,
     SocialShareButtonsComponent,
     SocialFollowButtonsComponent,
     StreetComponent,
