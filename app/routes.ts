@@ -9,10 +9,8 @@ import { AboutComponent } from './about/about.component';
 import { MapComponent } from './map/map.component';
 import { MatrixComponent } from './matrix/matrix.component';
 import { PhotographerComponent } from './photographer/photographer.component';
-import { TagComponent, RoutesGatewayGuard, RoutesGatewayComponent } from 'ng2-contentful-blog';
 
 export const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: 'matrix'},
   {path: 'matrix', component: MatrixComponent},
   {path: 'family', component: HomeComponent},
   {path: 'map', component: MapComponent},
@@ -22,8 +20,7 @@ export const routes: Routes = [
   {path: 'country/:id', component: CountryComponent},
   {path: 'about', component: AboutComponent},
   {path: 'article/:id', component: ArticleComponent},
-  {path: 'tag/:tag', component: TagComponent},
-  {path: '**', component: RoutesGatewayComponent, canActivate: [RoutesGatewayGuard]}
+  {path: '**', redirectTo: 'matrix'}
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {useHash: false});

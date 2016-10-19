@@ -1,5 +1,5 @@
 <div class="home-description-container" [ngClass]="{'open-info': isOpenArticle}">
-  <div class="image-container">
+  <div class="image-container" *ngIf="home.image">
     <img (click)="openExpandBlock()" [src]="home.image" alt="">
   </div>
 
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div class="image-container mobile">
+      <div class="image-container mobile" *ngIf="home.image">
         <img (click)="openExpandBlock()" [src]="home.image" alt="">
       </div>
 
@@ -79,7 +79,7 @@
 </div>
 
 <div class="short-family-info-container" [style.top.px]="familyShortInfoPosition" (click)="scrollToStart($event)">
-  <div class="image-container">
+  <div class="image-container" *ngIf="home.image">
     <img class="portrait" (click)="openExpandBlock()" [src]="home.image" alt="">
   </div>
 
