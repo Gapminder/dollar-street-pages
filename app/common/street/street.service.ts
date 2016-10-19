@@ -869,6 +869,7 @@ export class StreetDrawService {
     this.svg.selectAll('polygon.left-scroll').remove();
     this.leftScroll = false;
     this.rightScroll = false;
+
     return this;
   };
 
@@ -954,6 +955,7 @@ export class StreetDrawService {
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
+
     if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !isMobile) {
       incomeL = Math.round(this.minIncome);
       incomeL = this.math.round(incomeL);
@@ -1042,6 +1044,7 @@ export class StreetDrawService {
         this.rightScrollText.text('');
       }
 
+      return;
     }
 
     if (this.sliderLeftMove && (!this.currentLowIncome || this.currentLowIncome === this.lowIncome)) {
@@ -1081,7 +1084,6 @@ export class StreetDrawService {
     }
 
     if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !isMobile) {
-
       if (this.lowIncome < this.minIncome) {
         this.filter.next({
           lowIncome: Math.round(this.minIncome - 3),
