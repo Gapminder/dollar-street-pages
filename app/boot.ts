@@ -3,16 +3,13 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
-import { Ng2ContentfulBlogModule } from 'ng2-contentful-blog';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
-import { ContentfulService } from 'ng2-contentful';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { routing, routes } from './routes';
 import { AppComponent } from './app.component';
 import { AboutComponent, AboutService } from './about';
 import { ArticleComponent, ArticleService } from './article';
-import { BlogComponent } from './blog';
 import {
   MatrixComponent,
   MatrixService,
@@ -87,13 +84,6 @@ import {
 import { PhotographersComponent, PhotographersService, PhotographersFilter } from './photographers';
 import { TeamComponent, TeamService } from './team';
 
-const Constants = require('./constants');
-const ContentfulConfig = require('./contentTypeIds.json');
-
-declare var CONTENTFUL_ACCESS_TOKEN: string;
-declare var CONTENTFUL_SPACE_ID: string;
-declare var CONTENTFUL_HOST: string;
-
 declare const ENV:string;
 
 if (ENV === 'production') {
@@ -108,9 +98,6 @@ if (ENV === 'production') {
 
     /* Article components */
     ArticleComponent,
-
-    /* Blog components */
-    BlogComponent,
 
     /* Matrix components */
     MatrixComponent,
@@ -171,14 +158,11 @@ if (ENV === 'production') {
     BrowserModule,
     HttpModule,
     CommonModule,
-    Ng2ContentfulBlogModule,
     Angulartics2Module.forRoot(),
     InfiniteScrollModule,
     routing
   ],
-  entryComponents: [BlogComponent],
   providers: [
-    ContentfulService,
     Angulartics2GoogleAnalytics,
     AboutService,
     ArticleService,
@@ -210,18 +194,7 @@ if (ENV === 'production') {
     HomeMediaViewBlockService,
     CountryInfoService,
     CountryPlacesService,
-    {
-      provide: 'ContentfulConfiguration',
-      useValue: {
-        accessToken: CONTENTFUL_ACCESS_TOKEN,
-        spaceId: CONTENTFUL_SPACE_ID,
-        host: CONTENTFUL_HOST
-      }
-    },
-    {provide: 'Routes', useValue: routes},
-    {provide: 'DefaultArticleComponent', useValue: BlogComponent},
-    {provide: 'ContentfulTypeIds', useValue: ContentfulConfig},
-    {provide: 'Constants', useValue: Constants}
+    {provide: 'Routes', useValue: routes}
   ],
   bootstrap: [AppComponent]
 })
