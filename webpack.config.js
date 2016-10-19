@@ -2,7 +2,6 @@
 'use strict';
 const helpers = require('./helpers');
 
-const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -14,12 +13,6 @@ const basePath = 'dollar-street';
 // const devtool = isProduction ? 'inline-source-map' : 'source-map';
 const dest = 'dist';
 const absDest = root(dest);
-
-const contentfulJson = isProduction ? 'contentful-stage.json' : './contentful-dev.json';
-
-const contentfulDevConfig = JSON.parse(
-  fs.readFileSync(contentfulJson) // eslint-disable-line no-sync
-);
 
 const config = {
   debug: false,
@@ -93,14 +86,7 @@ const config = {
       template: 'app/index.html',
       chunksSortMode: helpers.packageSort(['polyfills', 'vendor', 'app'])
     }),
-    new webpack.DefinePlugin({
-      CONTENTFUL_ACCESS_TOKEN: JSON.stringify(process.env.CONTENTFUL_ACCESS_TOKEN) ||
-      JSON.stringify(contentfulDevConfig.accessToken),
-      CONTENTFUL_SPACE_ID: JSON.stringify(process.env.CONTENTFUL_SPACE_ID) ||
-      JSON.stringify(contentfulDevConfig.spaceId),
-      CONTENTFUL_HOST: JSON.stringify(process.env.CONTENTFUL_HOST) || JSON.stringify(contentfulDevConfig.host),
-      ENV: JSON.stringify(process.env.NODE_ENV || 'development')
-    })
+    new webpack.DefinePlugin({ENV: JSON.stringify(process.env.NODE_ENV || 'development')})
   ],
   devServer: {
     contentBase: path.join(`${dest}/${basePath}`),
