@@ -14,13 +14,10 @@
     "lib": ["dom", "es6"],
     "types": [
       "lodash",
-      "marked",
       "node",
       "webpack",
       "jasmine",
-      "uglify-js",
-      "selenium-webdriver",
-      "source-map"
+      "selenium-webdriver"
     ]
   },
   "exclude": [

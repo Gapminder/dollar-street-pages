@@ -38,9 +38,9 @@ const config = {
 
   output: {
     path: absDest,
-    filename: `${basePath}/[name].js`,
-    sourceMapFilename: `${basePath}/[name].js.map`,
-    chunkFilename: `${basePath}/[id].chunk.js`,
+    filename: `${basePath}/[name].[hash].js`,
+    sourceMapFilename: `${basePath}/[name].[hash].js.map`,
+    chunkFilename: `${basePath}/[id].[hash].chunk.js`,
     publicPath: '/'
   },
 

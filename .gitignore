@@ -32,3 +32,6 @@ test-e2e/app/**/*.d.ts
 
 #js Contentfull constants
 !app/constants.js
+
+# new relic log
+newrelic_agent.log
