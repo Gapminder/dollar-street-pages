@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Rx';
-import { sortBy, chain, differenceBy } from 'lodash';
+import { sortBy, chain } from 'lodash';
 import { MathService } from '../math-service/math-service';
 import { StreetSettingsService } from './street.settings.service';
 import { StreetDrawService } from './street.service';
@@ -73,8 +73,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.street.set('isInit', true);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
-        let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
-
         if (
           this.street.width + this.street.streetOffset + this.streetBoxContainerMargin !== document.body.offsetWidth &&
           this.placesArr &&
@@ -82,10 +80,6 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         ) {
           this.setDividers(this.placesArr, this.streetData);
 
-          return;
-        }
-
-        if (!difference.length) {
           return;
         }
 
