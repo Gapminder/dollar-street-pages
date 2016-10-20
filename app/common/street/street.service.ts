@@ -941,7 +941,7 @@ export class StreetDrawService {
       this.leftScrollText = this.svg
         .append('text')
         .attr('class', 'left-scroll-label')
-        .text(`${incomeL}$`)
+        .text(`$${incomeL}`)
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
@@ -950,7 +950,7 @@ export class StreetDrawService {
       this.rightScrollText = this.svg
         .append('text')
         .attr('class', 'right-scroll-label')
-        .text(`${incomeR}$`)
+        .text(`$${incomeR}`)
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
@@ -959,11 +959,11 @@ export class StreetDrawService {
       incomeL = this.math.round(incomeL);
 
       this.leftScrollText
-        .text(`${incomeL}$`)
+        .text(`$${incomeL}`)
         .attr('x', ()=> this.leftPoint + this.streetOffset / 2 - 4.5 - this.leftScrollText[0][0].getBBox().width / 2);
     } else {
       this.leftScrollText
-        .text(`${incomeL}$`)
+        .text(`$${incomeL}`)
         .attr('x', ()=> xL + this.streetOffset / 2 - 4.5 - this.leftScrollText[0][0].getBBox().width / 2);
     }
 
@@ -972,11 +972,11 @@ export class StreetDrawService {
       incomeR = this.math.round(incomeR);
 
       this.rightScrollText
-        .text(`${incomeR}$`)
+        .text(`$${incomeR}`)
         .attr('x', ()=> this.rightPoint + this.streetOffset / 2 + 4.5 - this.rightScrollText[0][0].getBBox().width / 2);
     } else {
       this.rightScrollText
-        .text(`${incomeR}$`)
+        .text(`$${incomeR}`)
         .attr('x', ()=> xR + this.streetOffset / 2 + 4.5 - this.rightScrollText[0][0].getBBox().width / 2);
     }
 
