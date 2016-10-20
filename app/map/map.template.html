@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="pull-right">
-                  <span class="income">{{math.round(hoverPlace.income)}}$</span>
+                  <span class="income">${{math.round(hoverPlace.income)}}</span>
                 </div>
                 <div class="see-all" *ngIf="seeAllHomes" (click)="openLeftSideBar()">
                   <span class="see-all-span">See all {{leftSideCountries.length}} Families »</span>
@@ -108,7 +108,7 @@
         </div>
 
         <div class="pull-right">
-          <span class="income">{{math.round(place.income)}}$</span>
+          <span class="income">${{math.round(place.income)}}</span>
         </div>
       </div>
     </div>
