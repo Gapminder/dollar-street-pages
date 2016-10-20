@@ -12,7 +12,6 @@
 .share-button-container .share-button i {
   font-size: 24px;
   color: #e0e7ef;
-
 }
 
 main-menu social-share-buttons {
@@ -20,9 +19,24 @@ main-menu social-share-buttons {
   vertical-align: top;
 }
 
-float-footer .share-button-container .share-button i {
-  font-size: 28px;
-  color: #ffcf43;
+/*float-footer .share-button-container .share-button i {*/
+  /*font-size: 28px;*/
+/*}*/
+
+float-footer .share-button-container .share-button.twitter i {
+  color: #55acee;
+}
+
+float-footer .share-button-container .share-button.facebook i {
+  color: #3b5998;
+}
+
+float-footer .share-button-container .share-button.linkedin i {
+  color: #0077b5;
+}
+
+float-footer .share-button-container .share-button.google i {
+  color: #cc3732;
 }
 
 main-menu .mobile-menu social-share-buttons .share-button-container .share-button i {
