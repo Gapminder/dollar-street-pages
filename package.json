@@ -5,7 +5,7 @@
   "description": "consumer.dollarstreet.org angular2 client application",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/concurrent \"npm run watch:dev\"",
+    "start": "npm run watch:dev",
     "dev": "NODE_ENV=development webpack-dev-server --inline --hot --progress --color",
     "postinstall": "./node_modules/.bin/concurrent \"npm run update-webdriver\"",
     "update-webdriver": "./node_modules/.bin/webdriver-manager update",

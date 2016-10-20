@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Subject } from 'rxjs/Rx';
 import { CountriesFilterService } from '../common/countries-filter/countries-filter.service';
-import { HomeIncomeFilterService } from './home-income-filter.service';
 import { UrlChangeService } from '../common/url-change/url-change.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import * as _ from 'lodash';
+import { StreetSettingsService } from '../common/street/street.settings.service';
 
 let tpl = require('./home.template.html');
 let style = require('./home.css');
@@ -31,8 +31,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   private openFamilyExpandBlock: Subject<any> = new Subject<any>();
   private placeId: string;
   private urlParams: UrlParamsInterface;
-  private homeIncomeFilterService: HomeIncomeFilterService;
-  private homeIncomeFilterServiceSubscribe: Subscription;
+  private streetSettingsService: StreetSettingsService;
+  private streetSettingsServiceSubscribe: Subscription;
   private homeIncomeData: any;
   private rich: any;
   private poor: any;
@@ -50,13 +50,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
                      countriesFilterService: CountriesFilterService,
-                     homeIncomeFilterService: HomeIncomeFilterService,
+                     streetSettingsService: StreetSettingsService,
                      urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.homeIncomeFilterService = homeIncomeFilterService;
+    this.streetSettingsService = streetSettingsService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
   }
@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    this.homeIncomeFilterServiceSubscribe = this.homeIncomeFilterService.getData()
+    this.streetSettingsServiceSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.queryParamsSubscribe.unsubscribe();
     this.countriesFilterServiceSubscribe.unsubscribe();
-    this.homeIncomeFilterServiceSubscribe.unsubscribe();
+    this.streetSettingsServiceSubscribe.unsubscribe();
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';

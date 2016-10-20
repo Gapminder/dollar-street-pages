@@ -9,6 +9,7 @@ import { LoaderService } from '../common/loader/loader.service';
 import { UrlChangeService } from '../common/url-change/url-change.service';
 import { CountriesFilterService } from '../common/countries-filter/countries-filter.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
+import { StreetSettingsService } from '../common/street/street.settings.service';
 
 let device: {desktop: Function; mobile: Function} = require('device.js')();
 let isMobile: boolean = device.mobile();
@@ -69,6 +70,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private activatedRoute: ActivatedRoute;
   private urlChangeService: UrlChangeService;
   private countriesFilterService: CountriesFilterService;
+  private streetSettingsService: StreetSettingsService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   private element: HTMLElement;
   private imageResolution: ImageResolutionInterface = Config.getImageResolution();
@@ -91,6 +93,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      loaderService: LoaderService,
                      urlChangeService: UrlChangeService,
                      countriesFilterService: CountriesFilterService,
+                     streetSettingsService: StreetSettingsService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.zone = zone;
     this.router = router;
@@ -101,6 +104,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.element = element.nativeElement;
     this.urlChangeService = urlChangeService;
     this.countriesFilterService = countriesFilterService;
+    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
@@ -172,7 +176,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    this.matrixServiceStreetSubscribe = this.matrixService.getStreetSettings()
+    this.matrixServiceStreetSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);

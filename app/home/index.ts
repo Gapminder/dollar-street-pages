@@ -1,5 +1,4 @@
 export * from './home.component';
-export * from './home-income-filter.service';
 export * from './home-header/home-header.component';
 export * from './home-header/home-header.service';
 export * from './home-media/home-media.component';
