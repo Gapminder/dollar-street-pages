@@ -24,7 +24,7 @@ main-menu social-share-buttons {
 /*}*/
 
 float-footer .share-button-container .share-button.twitter i {
-  color: #55acee;
+  color: #1da1f2;
 }
 
 float-footer .share-button-container .share-button.facebook i {
@@ -61,7 +61,7 @@ main-menu .mobile-menu social-share-buttons .share-button-container .share-butto
     text-align: center;
   }
   .share-button-container > div {
-    margin-left: 16px;
+    margin-left: 7px;
     text-align: center;
   }
 }
