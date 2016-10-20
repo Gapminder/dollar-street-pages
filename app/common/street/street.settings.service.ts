@@ -15,6 +15,8 @@ export interface DrawDividersInterface {
   highDividerCoord: number;
 }
 
+let _cache:Observable<any>;
+
 export class StreetSettingsService {
   public http: Http;
 
@@ -23,9 +25,16 @@ export class StreetSettingsService {
   }
 
   public getStreetSettings(): Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/street-settings`).map((res: any) => {
-      let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, data: parseRes.data as DrawDividersInterface};
-    });
+    if (_cache) {
+      return _cache;
+    }
+    _cache = this.http
+      .get(`${Config.api}/consumer/api/v1/street-settings`)
+      .map((res: any) => {
+        let parseRes = JSON.parse(res._body);
+        return {err: parseRes.error, data: parseRes.data as DrawDividersInterface};
+      })
+      .share();
+    return _cache;
   }
 }

@@ -65,7 +65,6 @@ import {
 } from './country';
 import {
   HomeComponent,
-  HomeIncomeFilterService,
   HomeHeaderComponent,
   HomeHeaderService,
   HomeMediaComponent,
@@ -188,7 +187,6 @@ if (ENV === 'production') {
     PhotographersService,
     PhotographerPlacesService,
     PhotographerProfileService,
-    HomeIncomeFilterService,
     HomeHeaderService,
     HomeMediaService,
     HomeMediaViewBlockService,
