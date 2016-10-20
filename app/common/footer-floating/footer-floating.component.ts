@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, NgZone, ViewEncapsulation } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs';
 import { Config } from '../../app.config';
@@ -9,7 +9,8 @@ let style = require('./footer-floating.css');
 @Component({
   selector: 'float-footer',
   template: tpl,
-  styles: [style]
+  styles: [style],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class FloatFooterComponent implements OnInit, OnDestroy {
