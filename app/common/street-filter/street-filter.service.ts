@@ -577,7 +577,7 @@ export class StreetFilterDrawService {
       this.leftScrollText = this.svg
         .append('text')
         .attr('class', 'left-scroll-label')
-        .text(`${incomeL}$`)
+        .text(`$${incomeL}`)
         .attr('y', 10)
         .attr('fill', '#767d86');
     }
@@ -586,17 +586,17 @@ export class StreetFilterDrawService {
       this.rightScrollText = this.svg
         .append('text')
         .attr('class', 'right-scroll-label')
-        .text(`${incomeR}$`)
+        .text(`$${incomeR}`)
         .attr('y', 10)
         .attr('fill', '#767d86');
     }
 
     this.leftScrollText
-      .text(`${incomeL}$`)
+      .text(`$${incomeL}`)
       .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - this.leftScrollText[0][0].getBBox().width / 2);
 
     this.rightScrollText
-      .text(`${incomeR}$`)
+      .text(`$${incomeR}`)
       .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - this.rightScrollText[0][0].getBBox().width / 2);
     return this;
   };
