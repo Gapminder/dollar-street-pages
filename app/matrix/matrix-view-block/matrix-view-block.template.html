@@ -2,7 +2,8 @@
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
   <div class="view-image-block-content">
     <div class="view-image-container">
-      <img (click)="openPopUp()" [src]="place.background">
+      <img (click)="openPopUp()"
+           [src]="place?.background">
     </div>
 
     <div class="house-info-container">

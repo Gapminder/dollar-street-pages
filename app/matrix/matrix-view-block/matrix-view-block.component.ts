@@ -145,7 +145,16 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
         this.isShowCountryButton = parseUrl.countries !== this.familyData.country.alias;
-        this.loader = true;
+
+        let newImage = new Image();
+
+        newImage.onload = () => {
+          this.zone.run(() => {
+            this.loader = true;
+          });
+        };
+
+        newImage.src = this.place.background;
       });
   }
 
