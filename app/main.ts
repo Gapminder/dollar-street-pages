@@ -1,5 +1,8 @@
-import { NgModule, enableProdMode } from '@angular/core';
+import './polyfills.ts';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+// import { AppModule } from './app/';
+import { enableProdMode, NgModule } from '@angular/core';
+import { environment } from './environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
@@ -82,12 +85,6 @@ import {
 } from './photographer';
 import { PhotographersComponent, PhotographersService, PhotographersFilter } from './photographers';
 import { TeamComponent, TeamService } from './team';
-
-declare const ENV:string;
-
-if (ENV === 'production') {
-  enableProdMode();
-}
 
 @NgModule({
   declarations: [
@@ -197,6 +194,11 @@ if (ENV === 'production') {
   bootstrap: [AppComponent]
 })
 export class AppModule {
+}
+
+
+if (environment.production) {
+  enableProdMode();
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule);
