@@ -4,13 +4,10 @@ import { TeamService } from './team.service';
 import { LoaderService } from '../common/loader/loader.service';
 import { TitleHeaderService } from '../common/title-header/title-header.service';
 
-let tpl = require('./team.template.html');
-let style = require('./team.css');
-
 @Component({
   selector: 'team',
-  template: tpl,
-  styles: [style]
+  templateUrl: './team.template.html',
+  styleUrls: ['./team.css']
 })
 
 export class TeamComponent implements OnInit, OnDestroy {

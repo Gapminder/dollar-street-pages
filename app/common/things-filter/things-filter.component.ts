@@ -17,16 +17,15 @@ import { Config } from '../../app.config';
 import { ThingsFilterService } from './things-filter.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
-let device = require('device.js')();
-let isDesktop = device.desktop();
-
-let styleMobile = require('./things-filter-mobile.css') as string;
-let style = require('./things-filter.css') as string;
+// fixme
+// let device = require('device.js')();
+// let isDesktop = device.desktop();
+let isDesktop = true;
 
 @Component({
   selector: 'things-filter',
-  template: require('./things-filter.template.html') as string,
-  styles: [style, styleMobile]
+  templateUrl: './things-filter.template.html',
+  styleUrls: ['./things-filter.css', './things-filter-mobile.css']
 })
 
 export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {

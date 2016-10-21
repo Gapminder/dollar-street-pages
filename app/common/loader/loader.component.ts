@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-let tpl = require('./loader.template.html');
-let style = require('./loader.css');
-
 @Component({
   selector: 'loader',
-  template: tpl,
-  styles: [style]
+  templateUrl: './loader.template.html',
+  styleUrls: ['./loader.css']
 })
 
 export class LoaderComponent implements OnInit {

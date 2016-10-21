@@ -4,19 +4,19 @@ import { HeaderService } from '../header/header.service';
 import { TitleHeaderService } from '../../common/title-header/title-header.service';
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 
-let device: {desktop: Function; mobile: Function} = require('device.js')();
-
-let tpl = require('./header.template.html');
-let style = require('./header.css');
+// fixme
+// let device: {desktop: Function; mobile: Function} = require('device.js')();
 
 @Component({
   selector: 'header-without-filters',
-  template: tpl,
-  styles: [style]
+  templateUrl: './header.template.html',
+  styleUrls: ['./header.css']
 })
 
 export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterViewInit {
-  protected isDesktop: boolean = device.desktop();
+  // fixme
+  // protected isDesktop: boolean = device.desktop();
+  protected isDesktop: boolean = true;
 
   @ViewChild('heading')
   private heading: ElementRef;

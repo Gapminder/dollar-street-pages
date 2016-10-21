@@ -6,20 +6,23 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 import { LocalStorageService } from '../guide/localstorage.service';
 
-let device = require('device.js')();
-let isDesktop = device.desktop();
-let isMobile = device.mobile();
+// #fixme
+// let device = require('device.js')();
+// let isDesktop = device.desktop();
+// let isMobile = device.mobile();
+let isDesktop = true;
+let isMobile = true;
 
-let tplMobile = require('./menu-mobile.template.html');
-let styleMobile = require('./menu-mobile.css');
+// let tplMobile = require('./menu-mobile.template.html');
+// let styleMobile = require('./menu-mobile.css');
 
-let tpl = require('./menu.template.html');
-let style = require('./menu.css');
+// let tpl = require('./menu.template.html');
+// let style = require('./menu.css');
 
 @Component({
   selector: 'main-menu',
-  template: isMobile ? tplMobile : tpl,
-  styles: [isMobile ? styleMobile : style]
+  templateUrl: isMobile ? './menu-mobile.template.html' : './menu.template.html',
+  styleUrls: [isMobile ? './menu-mobile.css' : './menu.css']
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {

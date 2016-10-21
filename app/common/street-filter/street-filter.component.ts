@@ -5,13 +5,10 @@ import { MathService } from '../math-service/math-service';
 import { StreetSettingsService } from '../street/street.settings.service';
 import { StreetFilterDrawService } from '../../common/street-filter/street-filter.service';
 
-let tpl = require('./street-filter.template.html');
-let style = require('./street-filter.css');
-
 @Component({
   selector: 'street-filter',
-  template: tpl,
-  styles: [style]
+  templateUrl: './street-filter.template.html',
+  styleUrls: ['./street-filter.css']
 })
 
 export class StreetFilterComponent implements OnInit, OnDestroy {

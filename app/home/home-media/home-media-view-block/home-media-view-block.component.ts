@@ -4,21 +4,16 @@ import { Config, ImageResolutionInterface } from '../../../app.config';
 import { HomeMediaViewBlockService } from './home-media-view-block.service';
 import { StreetSettingsService, DrawDividersInterface } from '../../../common/street/street.settings.service';
 
-let device = require('device.js')();
-let isDesktop = device.desktop();
-
-let tplMobile = require('./mobile/home-media-view-block-mobile.template.html');
-let styleMobile = require('./mobile/home-media-view-block-mobile.css');
-
-let tpl = require('./home-media-view-block.template.html');
-let style = require('./home-media-view-block.css');
+//  fixme
+// let device = require('device.js')();
+// let isDesktop = device.desktop();
+let isDesktop = true;
 
 @Component({
   selector: 'home-media-view-block',
-  template: isDesktop ? tpl : tplMobile,
-  styles: [isDesktop ? style : styleMobile]
+  template: isDesktop ? './home-media-view-block.template.html' : './mobile/home-media-view-block-mobile.template.html',
+  styles: [isDesktop ? './home-media-view-block.css' : './mobile/home-media-view-block-mobile.css']
 })
-
 export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected api: string = Config.api;
   private loader: boolean = false;

@@ -4,13 +4,10 @@ import { MathService } from '../../common/math-service/math-service';
 import { LoaderService } from '../../common/loader/loader.service';
 import { CountryPlacesService } from './country-places.service';
 
-let tpl = require('./country-places.template.html');
-let style = require('./country-places.css');
-
 @Component({
   selector: 'country-places',
-  template: tpl,
-  styles: [style]
+  templateUrl: './country-places.template.html',
+  styleUrls: ['./country-places.css']
 })
 
 export class CountryPlacesComponent implements OnInit, OnDestroy {

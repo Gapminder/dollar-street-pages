@@ -2,13 +2,10 @@ import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { SocialShareButtonsService } from './social-share-buttons.service';
 
-let tpl = require('./social-share-buttons.html');
-let style = require('./social-share-buttons.css');
-
 @Component({
   selector: 'social-share-buttons',
-  template: tpl,
-  styles: [style],
+  templateUrl: './social-share-buttons.html',
+  styleUrls: ['./social-share-buttons.css'],
   encapsulation: ViewEncapsulation.None
 })
 

@@ -12,13 +12,10 @@ import {
 import { Subscription } from 'rxjs/Rx';
 import { StreetSettingsService } from '../street/street.settings.service';
 
-let tpl = require('./incomes-filter.template.html');
-let style = require('./incomes-filter.css');
-
 @Component({
   selector: 'incomes-filter',
-  template: tpl,
-  styles: [style]
+  templateUrl: './incomes-filter.template.html',
+  styleUrls: ['./incomes-filter.css']
 })
 
 export class IncomesFilterComponent implements OnInit, OnChanges, OnDestroy {

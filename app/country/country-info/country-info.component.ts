@@ -4,13 +4,10 @@ import { MathService } from '../../common/math-service/math-service';
 import { CountryInfoService } from './country-info.service';
 import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
 
-let tpl = require('./country-info.template.html');
-let style = require('./country-info.css');
-
 @Component({
   selector: 'country-info',
-  template: tpl,
-  styles: [style]
+  templateUrl: './country-info.template.html',
+  styleUrls: ['./country-info.css']
 })
 
 export class CountryInfoComponent implements OnInit, OnDestroy {

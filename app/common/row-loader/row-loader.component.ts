@@ -1,12 +1,9 @@
 import { Component, Input, NgZone, OnChanges, Output, EventEmitter } from '@angular/core';
 
-let tpl = require('./row-loader.template.html');
-let style = require('./row-loader.css');
-
 @Component({
   selector: 'row-loader',
-  template: tpl,
-  styles: [style]
+  templateUrl: './row-loader.template.html',
+  styleUrls: ['./row-loader.css']
 })
 
 export class RowLoaderComponent implements OnChanges {

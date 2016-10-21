@@ -3,15 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TitleHeaderService } from '../common/title-header/title-header.service';
 
-let tpl = require('./photographer.template.html');
-let style = require('./photographer.css');
-
 @Component({
   selector: 'photographer',
-  template: tpl,
-  styles: [style]
+  templateUrl: './photographer.template.html',
+  styleUrls: ['./photographer.css']
 })
-
 export class PhotographerComponent implements OnInit, OnDestroy {
   private photographerId: string;
   private activatedRoute: ActivatedRoute;

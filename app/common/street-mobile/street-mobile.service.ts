@@ -1,6 +1,8 @@
 import { DrawDividersInterface } from '../street/street.settings.service';
 
-const d3 = require('d3');
+// fixme
+// const d3 = require('d3');
+import * as d3 from 'd3';
 
 export class StreetMobileDrawService {
   public width: number;

@@ -6,16 +6,15 @@ import { LoaderService } from '../common/loader/loader.service';
 import { TitleHeaderService } from '../common/title-header/title-header.service';
 import { PhotographersService } from './photographers.service';
 
-let tpl = require('./photographers.template.html');
-let style = require('./photographers.css');
-
-let device = require('device.js')();
-const isDesktop: boolean = device.desktop();
+// fixme
+// let device = require('device.js')();
+// const isDesktop: boolean = device.desktop();
+const isDesktop: boolean = true;
 
 @Component({
   selector: 'photographers',
-  template: tpl,
-  styles: [style]
+  templateUrl: './photographers.template.html',
+  styleUrls: ['./photographers.css']
 })
 
 export class PhotographersComponent implements OnInit, OnDestroy {

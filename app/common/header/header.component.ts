@@ -6,17 +6,17 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 import { Subscription } from 'rxjs';
 
-let device: {desktop: Function; mobile: Function} = require('device.js')();
-let isDesktop: boolean = device.desktop();
-let isMobile: boolean = device.mobile();
-
-let tpl = require('./header.template.html');
-let style = require('./header.css');
+// fixme
+// let device: {desktop: Function; mobile: Function} = require('device.js')();
+// let isDesktop: boolean = device.desktop();
+// let isMobile: boolean = device.mobile();
+let isDesktop: boolean = false;
+let isMobile: boolean = false;
 
 @Component({
   selector: 'header',
-  template: tpl,
-  styles: [style]
+  templateUrl: './header.template.html',
+  styleUrls: ['./header.css']
 })
 
 export class HeaderComponent implements OnInit, OnChanges {
@@ -27,7 +27,9 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Input('hoverPlace')
   protected hoverPlace: Observable<any>;
   protected isOpenFilter: boolean = false;
-  protected isDesktop: boolean = device.desktop();
+  // fixme
+  // protected isDesktop: boolean = device.desktop();
+  protected isDesktop: boolean = true;
   protected header: any = {};
   protected isCountryFilterReady: boolean = false;
   protected isThingFilterReady: boolean = false;

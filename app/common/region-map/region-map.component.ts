@@ -2,13 +2,10 @@ import { Component, OnInit, OnChanges, OnDestroy, Input, ElementRef, NgZone } fr
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs';
 
-let tpl = require('./region-map.template.html');
-let style = require('./region-map.css');
-
 @Component({
   selector: 'region-map',
-  template: tpl,
-  styles: [style]
+  templateUrl: './region-map.template.html',
+  styleUrls: ['./region-map.css']
 })
 
 export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {

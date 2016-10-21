@@ -4,18 +4,14 @@ import { MathService } from '../../common/math-service/math-service';
 import { PhotographerPlacesService } from './photographer-places.service';
 import { LoaderService } from '../../common/loader/loader.service';
 
-let tpl = require('./photographer-places.template.html');
-let style = require('./photographer-places.css');
-
 @Component({
   selector: 'photographer-places',
-  template: tpl,
-  styles: [style]
+  templateUrl: './photographer-places.template.html',
+  styleUrls: ['./photographer-places.css']
 })
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
-  @Input()
-  private photographerId: string;
+  @Input() public  photographerId: string;
   private places: any = [];
   private math: MathService;
   private loaderService: LoaderService;

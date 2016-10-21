@@ -3,7 +3,9 @@ import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { MathService } from '../math-service/math-service';
 import { DrawDividersInterface } from '../street/street.settings.service';
-const d3 = require('d3');
+// fixme
+// const d3 = require('d3');
+import * as d3 from 'd3';
 
 @Injectable()
 export class StreetFilterDrawService {
@@ -131,7 +133,7 @@ export class StreetFilterDrawService {
         return this.scale(d) - indent + 15 + center;
       })
       .on('mousedown', (): void => {
-        d3.event.preventDefault();
+        (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -206,7 +208,7 @@ export class StreetFilterDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        d3.event.preventDefault();
+        (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -225,7 +227,7 @@ export class StreetFilterDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        d3.event.preventDefault();
+        (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -244,7 +246,7 @@ export class StreetFilterDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        d3.event.preventDefault();
+        (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -388,7 +390,7 @@ export class StreetFilterDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
-          d3.event.preventDefault();
+          (d3.event as any).preventDefault();
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
@@ -481,7 +483,7 @@ export class StreetFilterDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void=> {
-          d3.event.preventDefault();
+          (d3.event as any).preventDefault();
           this.sliderRightMove = true;
         })
         .on('touchstart', (): any => this.sliderRightMove = true);

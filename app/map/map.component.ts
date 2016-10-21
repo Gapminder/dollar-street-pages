@@ -8,15 +8,13 @@ import { UrlChangeService } from '../common/url-change/url-change.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService, DrawDividersInterface } from '../common/street/street.settings.service';
 
-let tpl = require('./map.template.html');
-let style = require('./map.css');
-
-let device = require('device.js')();
+// fixme
+// let device = require('device.js')();
 
 @Component({
   selector: 'map-component',
-  template: tpl,
-  styles: [style]
+  templateUrl: './map.template.html',
+  styleUrls: ['./map.css']
 })
 
 export class MapComponent implements OnInit, OnDestroy {
@@ -45,8 +43,11 @@ export class MapComponent implements OnInit, OnDestroy {
   private isOpenLeftSide: boolean = false;
   private router: Router;
   private activatedRoute: ActivatedRoute;
-  private isDesktop: boolean = device.desktop();
-  private isMobile: boolean = device.mobile();
+  // fixme
+  // private isDesktop: boolean = device.desktop();
+  // private isMobile: boolean = device.mobile();
+  private isDesktop: boolean = true;
+  private isMobile: boolean = false;
   private zone: NgZone;
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;

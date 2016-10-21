@@ -11,26 +11,21 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs/Rx';
-import { Config, ImageResolutionInterface } from '../../../app/app.config';
+import { Config, ImageResolutionInterface } from '../../app.config';
 import { MathService } from '../../common/math-service/math-service';
 import { FamilyInfoService } from './matrix-view-block.service';
 import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
 
-let device = require('device.js')();
-let isDesktop = device.desktop();
-
-let tplMobile = require('./mobile/matrix-view-block-mobile.template.html');
-let styleMobile = require('./mobile/matrix-view-block-mobile.css');
-
-let tpl = require('./matrix-view-block.template.html');
-let style = require('./matrix-view-block.css');
+// fixme
+// let device = require('device.js')();
+// let isDesktop = device.desktop();
+let isDesktop = true;
 
 @Component({
   selector: 'matrix-view-block',
-  template: isDesktop ? tpl : tplMobile,
-  styles: [isDesktop ? style : styleMobile]
+  template: isDesktop ? './matrix-view-block.template.html' : './mobile/matrix-view-block-mobile.template.html',
+  styles: [isDesktop ? './matrix-view-block.css' : './mobile/matrix-view-block-mobile.css']
 })
-
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected api: string = Config.api;
 
@@ -211,6 +206,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.widthScroll = window.innerWidth - document.body.offsetWidth;
 
     this.boxContainer = this.element.querySelector('.view-image-block-container') as HTMLElement;
+    // console.log(this.boxContainer);
+    // debugger
     let paddingLeft: string = window.getComputedStyle(this.boxContainer).getPropertyValue('padding-left');
     this.boxContainerPadding = parseFloat(paddingLeft);
 

@@ -8,13 +8,10 @@ import { MathService } from '../math-service/math-service';
 import { StreetSettingsService } from './street.settings.service';
 import { StreetDrawService } from './street.service';
 
-let tpl = require('./street.template.html');
-let style = require('./street.css');
-
 @Component({
   selector: 'street',
-  template: tpl,
-  styles: [style]
+  templateUrl: './street.template.html',
+  styleUrls: ['./street.css']
 })
 
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {

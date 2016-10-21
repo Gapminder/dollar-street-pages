@@ -8,16 +8,15 @@ import { MathService } from '../../common/math-service/math-service';
 import { LoaderService } from '../../common/loader/loader.service';
 import { CountriesFilterService } from '../../common/countries-filter/countries-filter.service';
 
-const device = require('device.js')();
-const isDesktop = device.desktop();
-
-let tpl = require('./matrix-images.template.html');
-let style = require('./matrix-images.css');
+// fixme
+// const device = require('device.js')();
+// const isDesktop = device.desktop();
+const isDesktop = true;
 
 @Component({
   selector: 'matrix-images',
-  template: tpl,
-  styles: [style]
+  templateUrl: './matrix-images.template.html',
+  styleUrls: ['./matrix-images.css']
 })
 
 export class MatrixImagesComponent implements OnInit, OnDestroy {

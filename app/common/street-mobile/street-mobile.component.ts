@@ -5,13 +5,10 @@ import { sortBy, chain } from 'lodash';
 import { StreetSettingsService } from '../street/street.settings.service';
 import { StreetMobileDrawService } from './street-mobile.service';
 
-let tpl = require('./street-mobile.template.html');
-let style = require('./street-mobile.css');
-
 @Component({
   selector: 'street-mobile',
-  template: tpl,
-  styles: [style]
+  templateUrl: './street-mobile.template.html',
+  styleUrls: ['./street-mobile.css']
 })
 
 export class StreetMobileComponent implements OnInit, OnDestroy {

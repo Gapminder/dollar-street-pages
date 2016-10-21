@@ -2,13 +2,11 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { Subscription } from 'rxjs/Rx';
 import { MathService } from '../../common/math-service/math-service';
 import { PhotographerProfileService } from './photographer-profile.service';
-let tpl = require('./photographer-profile.template.html');
-let style = require('./photographer-profile.css');
 
 @Component({
   selector: 'photographer-profile',
-  template: tpl,
-  styles: [style]
+  templateUrl: './photographer-profile.template.html',
+  styleUrls: ['./photographer-profile.css']
 })
 
 export class PhotographerProfileComponent implements OnInit, OnDestroy {

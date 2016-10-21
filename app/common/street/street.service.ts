@@ -5,11 +5,16 @@ import { MathService } from '../math-service/math-service';
 import { DrawDividersInterface } from './street.settings.service';
 import * as _ from 'lodash';
 
-const d3 = require('d3');
+// fixme
+// const d3 = require('d3');
+import * as d3 from 'd3';
 
-let device = require('device.js')();
-let isDesktop: boolean = device.desktop();
-let isMobile: boolean = device.mobile();
+// fixme
+// let device = require('device.js')();
+// let isDesktop: boolean = device.desktop();
+// let isMobile: boolean = device.mobile();
+let isDesktop: boolean = true;
+let isMobile: boolean = false;
 
 @Injectable()
 export class StreetDrawService {
@@ -274,7 +279,7 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        d3.event.preventDefault();
+        (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -294,7 +299,7 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        d3.event.preventDefault();
+        (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -314,7 +319,7 @@ export class StreetDrawService {
       .style('cursor', 'grab')
 
       .on('mousedown', (): void => {
-        d3.event.preventDefault();
+        (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -593,7 +598,7 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
-          d3.event.preventDefault();
+          (d3.event as any).preventDefault();
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
@@ -746,7 +751,7 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', 'white')
         .on('mousedown', (): void=> {
-          d3.event.preventDefault();
+          (d3.event as any).preventDefault();
           this.sliderRightMove = true;
         })
         .on('touchstart', (): any => this.sliderRightMove = true);

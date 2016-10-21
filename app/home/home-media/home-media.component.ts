@@ -15,13 +15,10 @@ import { find, isEqual, slice, concat } from 'lodash';
 import { LoaderService } from '../../common/loader/loader.service';
 import { HomeMediaService } from './home-media.service';
 
-let tpl = require('./home-media.template.html');
-let style = require('./home-media.css');
-
 @Component({
   selector: 'home-media',
-  template: tpl,
-  styles: [style]
+  templateUrl: './home-media.template.html',
+  styleUrls: ['./home-media.css']
 })
 
 export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {

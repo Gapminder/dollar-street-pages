@@ -11,19 +11,23 @@ import { CountriesFilterService } from '../common/countries-filter/countries-fil
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService } from '../common/street/street.settings.service';
 
-let device: {desktop: Function; mobile: Function} = require('device.js')();
-let isMobile: boolean = device.mobile();
+// fixme
+// let device: {desktop: Function; mobile: Function} = require('device.js')();
+// let isMobile: boolean = device.mobile();
+let isMobile: boolean = false;
 
 @Component({
   selector: 'matrix',
-  template: require('./matrix.template.html') as string,
-  styles: [require('./matrix.css') as string]
+  templateUrl: './matrix.template.html',
+  styleUrls: ['./matrix.css']
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private zoomPositionFixed: boolean = false;
   private isOpenIncomeFilter: boolean = false;
-  private isDesktop: boolean = device.desktop();
+  // fixme
+  // private isDesktop: boolean = device.desktop();
+  private isDesktop: boolean = true;
   private hoverPlace: Subject<any> = new Subject<any>();
   private streetPlaces: Subject<any> = new Subject<any>();
   private matrixPlaces: Subject<any> = new Subject<any>();

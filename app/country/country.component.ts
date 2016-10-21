@@ -4,13 +4,10 @@ import { Subscription } from 'rxjs';
 import { MathService } from '../common/math-service/math-service';
 import { TitleHeaderService } from '../common/title-header/title-header.service';
 
-let tpl = require('./country.template.html');
-let style = require('./country.css');
-
 @Component({
   selector: 'country',
-  template: tpl,
-  styles: [style]
+  templateUrl: './country.template.html',
+  styleUrls: ['./country.css']
 })
 
 export class CountryComponent implements OnInit, OnDestroy {

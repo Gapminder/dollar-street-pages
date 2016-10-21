@@ -8,8 +8,8 @@ const proportion: number = 1.777;
 
 @Component({
   selector: 'about',
-  template: tpl,
-  styles: [style]
+  templateUrl: './about.template.html',
+  styleUrls: ['./about.css']
 })
 
 export class AboutComponent implements OnInit, OnDestroy {

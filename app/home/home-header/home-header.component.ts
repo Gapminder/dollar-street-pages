@@ -6,13 +6,10 @@ import { MathService } from '../../common/math-service/math-service';
 import { HomeHeaderService } from './home-header.service';
 import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
 
-let tpl = require('./home-header.template.html');
-let style = require('./home-header.css');
-
 @Component({
   selector: 'home-header',
-  template: tpl,
-  styles: [style]
+  templateUrl: './home-header.template.html',
+  styleUrls: ['./home-header.css']
 })
 
 export class HomeHeaderComponent implements OnInit, OnDestroy {

@@ -2,13 +2,10 @@ import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { StreetSettingsService } from '../street/street.settings.service';
 
-let tpl = require('./income-filter.template.html');
-let style = require('./income-filter.css');
-
 @Component({
   selector: 'income-filter',
-  template: tpl,
-  styles: [style]
+  templateUrl: './income-filter.template.html',
+  styleUrls: ['./income-filter.css']
 })
 
 export class IncomeFilterComponent implements OnInit {
