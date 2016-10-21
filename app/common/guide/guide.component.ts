@@ -4,13 +4,10 @@ import { find, difference } from 'lodash';
 import { GuideService } from './guide.service';
 import { LocalStorageService } from './localstorage.service';
 
-let tpl = require('./guide.template.html');
-let style = require('./guide.css');
-
 @Component({
   selector: 'quick-guide',
-  template: tpl,
-  styles: [style],
+  templateUrl: './guide.template.html',
+  styleUrls: ['./guide.css'],
   encapsulation: ViewEncapsulation.None
 })
 

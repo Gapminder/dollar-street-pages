@@ -3,13 +3,10 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs';
 import { Config } from '../../app.config';
 
-let tpl = require('./footer-floating.template.html');
-let style = require('./footer-floating.css');
-
 @Component({
   selector: 'float-footer',
-  template: tpl,
-  styles: [style],
+  templateUrl: './footer-floating.template.html',
+  styleUrls: ['./footer-floating.css'],
   encapsulation: ViewEncapsulation.None
 })
 

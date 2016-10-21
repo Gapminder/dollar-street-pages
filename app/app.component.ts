@@ -5,8 +5,8 @@ import { LoaderService } from './common/loader/loader.service';
 
 @Component({
   selector: 'consumer-app',
-  template: require('./app.template.html') as string,
-  styles: [require('./app.css') as string],
+  templateUrl: './app.template.html',
+  styleUrls: ['./app.css'],
   encapsulation: ViewEncapsulation.None
 })
 

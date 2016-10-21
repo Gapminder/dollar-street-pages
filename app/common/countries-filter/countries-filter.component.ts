@@ -16,16 +16,15 @@ import { Config } from '../../app.config';
 import * as _ from 'lodash';
 import { CountriesFilterService } from './countries-filter.service';
 
-let device = require('device.js')();
-let isDesktop = device.desktop();
-
-let styleMobile = require('./countries-filter-mobile/countries-filter-mobile.css') as string;
-let style = require('./countries-filter.css') as string;
+// #FIXME: disabled
+// let device = require('device.js')();
+// let isDesktop = device.desktop();
+let isDesktop = true;
 
 @Component({
   selector: 'countries-filter',
-  template: require('./countries-filter.template.html') as string,
-  styles: [style, styleMobile]
+  templateUrl: './countries-filter.template.html',
+  styleUrls: ['./countries-filter-mobile/countries-filter-mobile.css', './countries-filter.css']
 })
 
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {

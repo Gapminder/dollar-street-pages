@@ -5,13 +5,10 @@ import { LoaderService } from '../common/loader/loader.service';
 import { ArticleService } from './article.service';
 import { TitleHeaderService } from '../common/title-header/title-header.service';
 
-let tpl = require('./article.template.html');
-let style = require('./article.css');
-
 @Component({
   selector: 'article-page',
-  template: tpl,
-  styles: [style],
+  templateUrl: './article.template.html',
+  styleUrls: ['./article.css'],
   encapsulation: ViewEncapsulation.None
 })
 

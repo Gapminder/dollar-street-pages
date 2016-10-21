@@ -7,15 +7,12 @@ import { FooterService } from './footer.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 
-let device: {desktop: Function; mobile: Function} = require('device.js')();
-
-let tpl = require('./footer.template.html');
-let style = require('./footer.css');
+// let device: {desktop: Function; mobile: Function} = require('device.js')();
 
 @Component({
   selector: 'footer',
-  template: tpl,
-  styles: [style],
+  templateUrl: './footer.template.html',
+  styleUrls: ['./footer.css'],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -33,7 +30,9 @@ export class FooterComponent implements OnInit, OnDestroy {
   private streetServiceSubscribe: Subscription;
   private streetSettingsService: StreetSettingsService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  private isDesktop: boolean = device.desktop();
+  // #FIXME: disabled
+  // private isDesktop: boolean = device.desktop();
+  private isDesktop: boolean = true;
 
   public constructor(router: Router,
                      footerService: FooterService,

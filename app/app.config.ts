@@ -1,4 +1,6 @@
-let device: {desktop: Function} = require('device.js')();
+// #FIXME: disabled
+// let device: {desktop: Function} = require('device.js')();
+let device: {desktop: Function} = {desktop():any{return {};}};
 let isDesktop: boolean = device.desktop();
 
 export interface ImageResolutionInterface {

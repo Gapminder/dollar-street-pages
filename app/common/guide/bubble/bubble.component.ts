@@ -5,17 +5,17 @@ import { Config } from '../../../app.config';
 import { find } from 'lodash';
 import { LocalStorageService } from '../localstorage.service';
 
-let tpl = require('./bubble.template.html');
-let style = require('./bubble.css');
-
-let device: {mobile: Function; tablet: Function} = require('device.js')();
-let isMobile = device.mobile();
-let isTablet = device.tablet();
+// #FIXME: disabled
+// let device: {mobile: Function; tablet: Function} = require('device.js')();
+// let isMobile = device.mobile();
+// let isTablet = device.tablet();
+let isMobile = false;
+let isTablet = false;
 
 @Component({
   selector: 'bubble',
-  template: tpl,
-  styles: [style],
+  templateUrl: './bubble.template.html',
+  styleUrls: ['./bubble.css'],
   encapsulation: ViewEncapsulation.None
 })
 
