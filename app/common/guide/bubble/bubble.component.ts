@@ -137,8 +137,10 @@ export class BubbleComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.getCoordinates(baloonDirector, (data: any) => {
         let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
+
         let baloonWidth: number = baloonElement.width;
         let baloonHeight: number = baloonElement.height;
+
         data.top += data.height;
 
         if (isMobile) {
@@ -151,31 +153,48 @@ export class BubbleComponent implements OnInit, OnDestroy {
         if (step === 6) {
           this.localStorageService.setItem('quick-guide', true);
         }
+
+        if (step !== 6) {
+          window.scrollTo(0, 0);
+        }
       });
-    });
+    }, 100);
   }
 
   private setBubblePositionMobile(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
+    let topOffest: number = document.body.scrollTop;
+    let topOffsetBorder: number = 175;
+
     if (step === 1) {
-      data.top += 20;
+      data.top += 16 + topOffest;
     }
 
     if (step === 2) {
-      data.top += 3;
+      data.top += 3 + topOffest;
     }
 
     if (step === 3) {
-      data.top -= 3;
+      data.top += topOffest - 2;
     }
 
     if (step === 4) {
-      data.top -= 66;
+      data.top += topOffest < topOffsetBorder ? topOffest - 65 : 0;
+    }
+
+    if (step === 5) {
+      data.top = (data.top + topOffest - data.height / 2) + baloonHeight / 2;
     }
 
     if (step === 6) {
-      data.top = (data.top - data.height / 2) - baloonHeight / 2;
+      data.top = 57;
+      data.left = 5;
+
+      data.top = (data.top + topOffest - data.height / 2) - baloonHeight / 2;
       data.left = data.left + baloonWidth / 2 - 15;
-      this.isCloseBubble = true;
+
+      setTimeout(() => {
+        this.isCloseBubble = true;
+      }, 100);
     }
 
     return data;
