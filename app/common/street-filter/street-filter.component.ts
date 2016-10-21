@@ -81,7 +81,6 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
   }
 
   private setDividers(places: any, drawDividers: any): void {
-
     this.street
       .clearSvg()
       .init(this.lowIncome, this.highIncome, this.streetData)
