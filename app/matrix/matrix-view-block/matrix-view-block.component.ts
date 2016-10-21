@@ -23,8 +23,8 @@ let isDesktop = true;
 
 @Component({
   selector: 'matrix-view-block',
-  template: isDesktop ? './matrix-view-block.template.html' : './mobile/matrix-view-block-mobile.template.html',
-  styles: [isDesktop ? './matrix-view-block.css' : './mobile/matrix-view-block-mobile.css']
+  templateUrl: isDesktop ? './matrix-view-block.template.html' : './mobile/matrix-view-block-mobile.template.html',
+  styleUrls: [isDesktop ? './matrix-view-block.css' : './mobile/matrix-view-block-mobile.css']
 })
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected api: string = Config.api;
@@ -206,8 +206,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.widthScroll = window.innerWidth - document.body.offsetWidth;
 
     this.boxContainer = this.element.querySelector('.view-image-block-container') as HTMLElement;
-    // console.log(this.boxContainer);
-    // debugger
     let paddingLeft: string = window.getComputedStyle(this.boxContainer).getPropertyValue('padding-left');
     this.boxContainerPadding = parseFloat(paddingLeft);
 

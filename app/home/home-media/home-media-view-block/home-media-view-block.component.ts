@@ -11,8 +11,8 @@ let isDesktop = true;
 
 @Component({
   selector: 'home-media-view-block',
-  template: isDesktop ? './home-media-view-block.template.html' : './mobile/home-media-view-block-mobile.template.html',
-  styles: [isDesktop ? './home-media-view-block.css' : './mobile/home-media-view-block-mobile.css']
+  templateUrl: isDesktop ? './home-media-view-block.template.html' : './mobile/home-media-view-block-mobile.template.html',
+  styleUrls: [isDesktop ? './home-media-view-block.css' : './mobile/home-media-view-block-mobile.css']
 })
 export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected api: string = Config.api;
