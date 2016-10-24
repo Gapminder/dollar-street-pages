@@ -4,13 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Config } from '../../../app.config';
 import { find } from 'lodash';
 import { LocalStorageService } from '../localstorage.service';
-
-// #FIXME: disabled
-// let device: {mobile: Function; tablet: Function} = require('device.js')();
-// let isMobile = device.mobile();
-// let isTablet = device.tablet();
-let isMobile = false;
-let isTablet = false;
+import { BrowserDetectionService } from '../../browser-detection/browser-detection.service';
 
 @Component({
   selector: 'bubble',
@@ -34,16 +28,24 @@ export class BubbleComponent implements OnInit, OnDestroy {
   private resizeSubscribe: Subscription;
   private getCoordinates: Function = Config.getCoordinates;
   private localStorageService: LocalStorageService;
+  private device: BrowserDetectionService;
+  private isTablet: boolean;
+  private isMobile: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
+                     browserDetectionService: BrowserDetectionService,
                      localStorageService: LocalStorageService) {
     this.zone = zone;
     this.element = element.nativeElement;
+    this.device = browserDetectionService;
     this.localStorageService = localStorageService;
   }
 
   public ngOnInit(): void {
+    this.isTablet = this.device.isTablet();
+    this.isMobile = this.device.isMobile();
+
     this.getBubble(this.step);
 
     this.resizeSubscribe = Observable
@@ -141,7 +143,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
         let baloonHeight: number = baloonElement.height;
         data.top += data.height;
 
-        if (isMobile) {
+        if (this.isMobile) {
           data.left = this.windowInnerWidth / 2 - baloonWidth / 2;
           this.position = this.setBubblePositionMobile(step, data, baloonWidth, baloonHeight);
         } else {
@@ -195,7 +197,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
 
     if (step === 3) {
-      if (isTablet) {
+      if (this.isTablet) {
         data.top += 13;
       } else {
         data.top += 17;

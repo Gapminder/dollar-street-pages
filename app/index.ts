@@ -53,7 +53,8 @@ import {
   ThingsFilterPipe,
   ThingsFilterService,
   TitleHeaderService,
-  UrlChangeService
+  UrlChangeService,
+  BrowserDetectionService
 } from './common';
 import {
   CountryComponent,
@@ -173,6 +174,7 @@ import { TeamComponent, TeamService } from './team';
     ThingsFilterService,
     TitleHeaderService,
     UrlChangeService,
+    BrowserDetectionService,
     MatrixService,
     FamilyInfoService,
     MapService,

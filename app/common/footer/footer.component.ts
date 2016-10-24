@@ -6,8 +6,7 @@ import { Config } from '../../app.config';
 import { FooterService } from './footer.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
-
-// let device: {desktop: Function; mobile: Function} = require('device.js')();
+import { BrowserDetectionService } from '../browser-detection/browser-detection.service';
 
 @Component({
   selector: 'footer',
@@ -30,21 +29,24 @@ export class FooterComponent implements OnInit, OnDestroy {
   private streetServiceSubscribe: Subscription;
   private streetSettingsService: StreetSettingsService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  // #FIXME: disabled
-  // private isDesktop: boolean = device.desktop();
-  private isDesktop: boolean = true;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   public constructor(router: Router,
                      footerService: FooterService,
                      streetSettingsService: StreetSettingsService,
+                     browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.footerService = footerService;
+    this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): any {
+    this.isDesktop = this.device.isDesktop();
+
     this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         let activePage: string = event
@@ -121,7 +123,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public scrollTop(e: MouseEvent): void {
     e.preventDefault();
 
-    Config.animateScroll('scrollBackToTop', 20, 1000);
+    Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   };
 
   private objToQuery(data: any): string {

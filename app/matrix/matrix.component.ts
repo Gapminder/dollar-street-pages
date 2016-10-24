@@ -10,11 +10,7 @@ import { UrlChangeService } from '../common/url-change/url-change.service';
 import { CountriesFilterService } from '../common/countries-filter/countries-filter.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService } from '../common/street/street.settings.service';
-
-// fixme
-// let device: {desktop: Function; mobile: Function} = require('device.js')();
-// let isMobile: boolean = device.mobile();
-let isMobile: boolean = false;
+import { BrowserDetectionService } from '../common/browser-detection/browser-detection.service';
 
 @Component({
   selector: 'matrix',
@@ -25,9 +21,8 @@ let isMobile: boolean = false;
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private zoomPositionFixed: boolean = false;
   private isOpenIncomeFilter: boolean = false;
-  // fixme
-  // private isDesktop: boolean = device.desktop();
-  private isDesktop: boolean = true;
+  private isMobile: boolean;
+  private isDesktop: boolean;
   private hoverPlace: Subject<any> = new Subject<any>();
   private streetPlaces: Subject<any> = new Subject<any>();
   private matrixPlaces: Subject<any> = new Subject<any>();
@@ -77,7 +72,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private streetSettingsService: StreetSettingsService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   private element: HTMLElement;
-  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
+  private imageResolution: ImageResolutionInterface;
   private streetContainer: HTMLElement;
   private headerContainer: HTMLElement;
   private matrixImagesContainer: HTMLElement;
@@ -87,6 +82,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   private imgContent: HTMLElement;
   private guideContainer: HTMLElement;
   private guideHeight: number;
+  private device: BrowserDetectionService;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -98,6 +94,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      urlChangeService: UrlChangeService,
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
+                     browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.zone = zone;
     this.router = router;
@@ -106,10 +103,15 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixService = matrixService;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
+    this.device = browserDetectionService;
     this.urlChangeService = urlChangeService;
     this.countriesFilterService = countriesFilterService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+
+    this.isMobile = this.device.isMobile();
+    this.isDesktop = this.device.isDesktop();
+    this.imageResolution = Config.getImageResolution(this.isDesktop);
   }
 
   public ngOnInit(): void {
@@ -372,7 +374,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       return;
     }
 
-    if (isMobile) {
+    if (this.isMobile) {
       let fixedStreet = this.element.querySelector('.street-container.fixed') as HTMLElement;
 
       if (fixedStreet) {
@@ -662,7 +664,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected openIncomeFilter(): void {
-    if (!isMobile) {
+    if (!this.isMobile) {
       return;
     }
 
@@ -690,7 +692,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     e.preventDefault();
 
-    Config.animateScroll('scrollBackToTop', 20, 1000);
+    Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   };
 
   private showMobileHeader(): void {

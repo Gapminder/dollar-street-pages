@@ -5,24 +5,12 @@ import { Subscription } from 'rxjs/Rx';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 import { LocalStorageService } from '../guide/localstorage.service';
-
-// #fixme
-// let device = require('device.js')();
-// let isDesktop = device.desktop();
-// let isMobile = device.mobile();
-let isDesktop = true;
-let isMobile = true;
-
-// let tplMobile = require('./menu-mobile.template.html');
-// let styleMobile = require('./menu-mobile.css');
-
-// let tpl = require('./menu.template.html');
-// let style = require('./menu.css');
+import { BrowserDetectionService } from '../browser-detection/browser-detection.service';
 
 @Component({
   selector: 'main-menu',
-  templateUrl: isMobile ? './menu-mobile.template.html' : './menu.template.html',
-  styleUrls: [isMobile ? './menu-mobile.css' : './menu.css']
+  templateUrl: './menu.template.html',
+  styleUrls: ['./menu.css', './menu-mobile.css']
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
@@ -45,22 +33,30 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   private localStorageService: LocalStorageService;
   private streetSettingsService: StreetSettingsService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
+  private isMobile: boolean;
 
   public constructor(router: Router,
                      element: ElementRef,
                      activatedRoute: ActivatedRoute,
                      localStorageService: LocalStorageService,
                      streetSettingsService: StreetSettingsService,
+                     browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
+    this.device = browserDetectionService;
     this.localStorageService = localStorageService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): void {
+    this.isMobile = this.device.isMobile();
+    this.isDesktop = this.device.isDesktop();
+
     let activatedRoutePath = this.activatedRoute.snapshot.url.shift();
 
     if (activatedRoutePath) {
@@ -108,7 +104,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       this.hoverPlaceSubscribe.unsubscribe();
     }
 
-    if (isMobile) {
+    if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
   }
@@ -116,17 +112,17 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   protected openMenu(isOpenMenu: boolean): void {
     this.isOpenMenu = !isOpenMenu;
 
-    if (this.isOpenMenu && isMobile) {
+    if (this.isOpenMenu && this.isMobile) {
       document.body.classList.add('hideScroll');
     }
 
-    if (!this.isOpenMenu && isMobile) {
+    if (!this.isOpenMenu && this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
   }
 
   protected goToPage(url: string, removeStorage?: boolean): void {
-    if (isMobile) {
+    if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
 
@@ -175,7 +171,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   private goToMatrixPage(removeStorage?: boolean): void {
-    if (isMobile) {
+    if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
 
@@ -193,7 +189,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       highIncome: this.streetData.rich
     };
 
-    if (!isDesktop) {
+    if (!this.isDesktop) {
       queryParams.zoom = 3;
     }
 

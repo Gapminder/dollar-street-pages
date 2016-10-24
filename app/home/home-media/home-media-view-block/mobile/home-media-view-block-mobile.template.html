@@ -1,4 +1,4 @@
-<div class="view-image-block-container">
+<div class="mobile-view-image-block-container">
   <div class="active-house house-{{imageData.index}}"></div>
 
   <div class="view-image-container">
@@ -86,21 +86,21 @@
       <div></div>
     </div>
   </div>
-</div>
 
-<div class="fancyBox-container" *ngIf="popIsOpen" (click)="fancyBoxClose()">
-  <div class="fancyBox-image" [hidden]="!fancyBoxImage" [ngStyle]="{'background-image': fancyBoxImage}"></div>
+  <div class="fancyBox-container" *ngIf="popIsOpen" (click)="fancyBoxClose()">
+    <div class="fancyBox-image" [hidden]="!fancyBoxImage" [ngStyle]="{'background-image': fancyBoxImage}"></div>
 
-  <div class="load" [hidden]="fancyBoxImage">
-    <div class="la-ball-spin la-dark la-2x">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div class="load" [hidden]="fancyBoxImage">
+      <div class="la-ball-spin la-dark la-2x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   </div>
 </div>

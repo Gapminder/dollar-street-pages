@@ -3,9 +3,7 @@ import { Subscription } from 'rxjs/Rx';
 import { HeaderService } from '../header/header.service';
 import { TitleHeaderService } from '../../common/title-header/title-header.service';
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
-
-// fixme
-// let device: {desktop: Function; mobile: Function} = require('device.js')();
+import { BrowserDetectionService } from '../browser-detection/browser-detection.service';
 
 @Component({
   selector: 'header-without-filters',
@@ -14,10 +12,6 @@ import { StreetSettingsService, DrawDividersInterface } from '../street/street.s
 })
 
 export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterViewInit {
-  // fixme
-  // protected isDesktop: boolean = device.desktop();
-  protected isDesktop: boolean = true;
-
   @ViewChild('heading')
   private heading: ElementRef;
 
@@ -31,18 +25,24 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   private streetServiceSubscribe: Subscription;
   private titleHeaderService: TitleHeaderService;
   private streetSettingsService: StreetSettingsService;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
                      titleHeaderService: TitleHeaderService,
+                     browserDetectionService: BrowserDetectionService,
                      streetSettingsService: StreetSettingsService) {
     this.renderer = renderer;
     this.headerService = headerService;
+    this.device = browserDetectionService;
     this.titleHeaderService = titleHeaderService;
     this.streetSettingsService = streetSettingsService;
   }
 
   public ngOnInit(): void {
+    this.isDesktop = this.device.isDesktop();
+
     this.headerServiceSubscribe = this.headerService
       .getDefaultThing()
       .subscribe((res: any) => {

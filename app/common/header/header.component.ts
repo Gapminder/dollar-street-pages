@@ -5,13 +5,7 @@ import { MathService } from '../math-service/math-service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
 import { Subscription } from 'rxjs';
-
-// fixme
-// let device: {desktop: Function; mobile: Function} = require('device.js')();
-// let isDesktop: boolean = device.desktop();
-// let isMobile: boolean = device.mobile();
-let isDesktop: boolean = false;
-let isMobile: boolean = false;
+import { BrowserDetectionService } from '../browser-detection/browser-detection.service';
 
 @Component({
   selector: 'header',
@@ -26,10 +20,6 @@ export class HeaderComponent implements OnInit, OnChanges {
   protected thing: string;
   @Input('hoverPlace')
   protected hoverPlace: Observable<any>;
-  protected isOpenFilter: boolean = false;
-  // fixme
-  // protected isDesktop: boolean = device.desktop();
-  protected isDesktop: boolean = true;
   protected header: any = {};
   protected isCountryFilterReady: boolean = false;
   protected isThingFilterReady: boolean = false;
@@ -48,15 +38,20 @@ export class HeaderComponent implements OnInit, OnChanges {
   private streetServiceSubscribe: Subscription;
   private streetSettingsService: StreetSettingsService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
+  private isMobile: boolean;
 
   public constructor(router: Router,
                      math: MathService,
                      activatedRoute: ActivatedRoute,
                      streetSettingsService: StreetSettingsService,
+                     browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
+    this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
 
@@ -65,6 +60,9 @@ export class HeaderComponent implements OnInit, OnChanges {
   }
 
   public ngOnInit(): void {
+    this.isMobile = this.device.isMobile();
+    this.isDesktop = this.device.isDesktop();
+
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
       .subscribe((res: any) => {
@@ -93,7 +91,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   }
 
   protected openIncomeFilter(): void {
-    if (!isMobile) {
+    if (!this.isMobile) {
       return;
     }
 
@@ -119,7 +117,7 @@ export class HeaderComponent implements OnInit, OnChanges {
       highIncome: this.streetData.rich
     };
 
-    if (!isDesktop) {
+    if (!this.isDesktop) {
       queryParams.zoom = 3;
     }
 
