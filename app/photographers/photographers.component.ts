@@ -5,11 +5,7 @@ import { MathService } from '../common/math-service/math-service';
 import { LoaderService } from '../common/loader/loader.service';
 import { TitleHeaderService } from '../common/title-header/title-header.service';
 import { PhotographersService } from './photographers.service';
-
-// fixme
-// let device = require('device.js')();
-// const isDesktop: boolean = device.desktop();
-const isDesktop: boolean = true;
+import { BrowserDetectionService } from '../common/browser-detection/browser-detection.service';
 
 @Component({
   selector: 'photographers',
@@ -29,20 +25,26 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   private element: HTMLElement;
   private titleHeaderService: TitleHeaderService;
   private loaderService: LoaderService;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   public constructor(element: ElementRef,
                      math: MathService,
                      loaderService: LoaderService,
                      titleHeaderService: TitleHeaderService,
+                     browserDetectionService: BrowserDetectionService,
                      photographersService: PhotographersService) {
     this.math = math;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.titleHeaderService = titleHeaderService;
     this.photographersService = photographersService;
+    this.device = browserDetectionService;
   }
 
   public ngOnInit(): void {
+    this.isDesktop = this.device.isDesktop();
+
     this.loaderService.setLoader(false);
     let searchInput = this.element.querySelector('#search') as HTMLInputElement;
     this.titleHeaderService.setTitle('Photographers');
@@ -61,7 +63,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
 
     this.keyUpSubscribe = fromEvent(searchInput, 'keyup')
       .subscribe((e: KeyboardEvent) => {
-        if (!isDesktop && e.keyCode === 13) {
+        if (!this.isDesktop && e.keyCode === 13) {
           searchInput.blur();
         }
       });

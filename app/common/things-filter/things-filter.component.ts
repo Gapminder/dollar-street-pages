@@ -16,11 +16,7 @@ import { Subscription, Observable } from 'rxjs/Rx';
 import { Config } from '../../app.config';
 import { ThingsFilterService } from './things-filter.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
-
-// fixme
-// let device = require('device.js')();
-// let isDesktop = device.desktop();
-let isDesktop = true;
+import { BrowserDetectionService } from '../browser-detection/browser-detection.service';
 
 @Component({
   selector: 'things-filter',
@@ -38,8 +34,9 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   protected activeColumn: string = '';
   protected angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   protected things: any = [];
-  protected isDesktop: boolean = isDesktop;
   protected filterTopDistance: number = 0;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   private zone: NgZone;
   private resizeSubscribe: Subscription;
@@ -61,11 +58,13 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
                      element: ElementRef,
                      zone: NgZone,
                      thingsFilterService: ThingsFilterService,
+                     browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.thingsFilterService = thingsFilterService;
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
+    this.device = browserDetectionService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
@@ -78,7 +77,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
+    this.isDesktop = this.device.isDesktop();
+
     this.isOpenMobileFilterView();
+
     this.resizeSubscribe = Observable
       .fromEvent(window, 'resize')
       .debounceTime(150)
@@ -93,7 +95,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.isOpenThingsFilter = !isOpenThingsFilter;
 
     this.search = {text: ''};
-    if (this.isOpenThingsFilter && !isDesktop) {
+    if (this.isOpenThingsFilter && !this.isDesktop) {
       this.things = this.relatedThings;
       this.activeColumn = 'related';
     }
@@ -109,7 +111,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     if (!this.isOpenThingsFilter) {
-      this.openMobileFilterView = window.innerWidth < 1024 || !isDesktop;
+      this.openMobileFilterView = window.innerWidth < 1024 || !this.isDesktop;
     }
   }
 
@@ -223,7 +225,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private isOpenMobileFilterView(): void {
-    if (window.innerWidth < 1024 || !isDesktop) {
+    if (window.innerWidth < 1024 || !this.isDesktop) {
       this.openMobileFilterView = true;
       if (this.activeColumn === 'all') {
         return;

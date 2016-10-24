@@ -7,9 +7,7 @@ import { LoaderService } from '../common/loader/loader.service';
 import { UrlChangeService } from '../common/url-change/url-change.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { StreetSettingsService, DrawDividersInterface } from '../common/street/street.settings.service';
-
-// fixme
-// let device = require('device.js')();
+import { BrowserDetectionService } from '../common/browser-detection/browser-detection.service';
 
 @Component({
   selector: 'map-component',
@@ -43,11 +41,8 @@ export class MapComponent implements OnInit, OnDestroy {
   private isOpenLeftSide: boolean = false;
   private router: Router;
   private activatedRoute: ActivatedRoute;
-  // fixme
-  // private isDesktop: boolean = device.desktop();
-  // private isMobile: boolean = device.mobile();
-  private isDesktop: boolean = true;
-  private isMobile: boolean = false;
+  private isDesktop: boolean;
+  private isMobile: boolean;
   private zone: NgZone;
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   private queryParamsSubscribe: Subscription;
@@ -56,6 +51,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private streetSettingsService: StreetSettingsService;
   private streetServiceSubscribe: Subscription;
   private windowInnerWidth: number = window.innerWidth;
+  private device: BrowserDetectionService;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -66,6 +62,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      activatedRoute: ActivatedRoute,
                      urlChangeService: UrlChangeService,
                      streetSettingsService: StreetSettingsService,
+                     browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.zone = zone;
     this.math = math;
@@ -74,12 +71,16 @@ export class MapComponent implements OnInit, OnDestroy {
     this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
+    this.device = browserDetectionService;
     this.urlChangeService = urlChangeService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
   }
 
   public ngOnInit(): void {
+    this.isDesktop = this.device.isDesktop();
+    this.isMobile = this.device.isMobile();
+
     let isInit: boolean = true;
     this.loaderService.setLoader(false);
 

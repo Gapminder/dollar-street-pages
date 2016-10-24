@@ -1,4 +1,4 @@
-<div id="main-menu">
+<div id="main-menu" *ngIf="!isMobile">
   <div class="btn-group" [ngClass]="{open: isOpenMenu}">
     <span class="menu-icon" (click)="openMenu(isOpenMenu)">
       <img class="unactive" src="/assets/img/gamburger-menu-icon.svg" alt=""/>
@@ -41,3 +41,72 @@
     </div>
   </div>
 </div>
+
+<div id="main-mobile-menu" *ngIf="isMobile">
+  <div class="btn-group" [ngClass]="{open: isOpenMenu}">
+    <span class="menu-icon" (click)="openMenu(isOpenMenu)">
+      <img class="unactive" src="/assets/img/gamburger-menu-icon.svg" alt=""/>
+      <img class="active" src="/assets/img/gamburger-menu-white-icon.svg" alt=""/>
+    </span>
+
+    <div class="container-menu" *ngIf="isOpenMenu">
+      <div class="menu-header-content">
+        <img src="/assets/img/dollar-street.svg"
+             alt="DollarStreet logo">
+        <span>Dollar Street</span>
+      </div>
+
+      <img class="close-button pull-right"
+           src="/assets/img/close-button.svg"
+           (click)="openMenu(true)"
+           alt="Close">
+
+      <ul class="menu-list">
+        <li>
+          <a (click)="goToPage('/matrix')">Home</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
+        </li>
+        <li>
+          <a (click)="goToPage('/matrix', true)">Quick guide</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
+        </li>
+        <li>
+          <a (click)="goToPage('/about')">About</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
+        </li>
+        <li>
+          <a (click)="goToPage('https://www.gapminder.org/category/dollarstreet/')">Blog</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
+        </li>
+        <li>
+          <a (click)="goToPage('/map')">Map</a>
+          <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
+        </li>
+
+        <li class="social-share-container">
+          <div class="social-share-content">
+            <div class="share-text">
+              Share:
+            </div>
+            <social-share-buttons></social-share-buttons>
+          </div>
+        </li>
+
+        <div class="gapminder-img">
+          <img src="/assets/img/gapminder-logo.png"
+               alt="Gapminder logo">
+        </div>
+
+        <div class="feedback-container">
+          <a class="feedback" (click)="goToPage('https://getsatisfaction.com/gapminder')">
+            Send feedback</a>
+        </div>
+
+        <div class="gapminder">
+          <a (click)="goToPage('https://www.gapminder.org')">More from gapminder >></a>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+

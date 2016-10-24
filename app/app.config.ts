@@ -1,8 +1,3 @@
-// #FIXME: disabled
-// let device: {desktop: Function} = require('device.js')();
-let device: {desktop: Function} = {desktop():any{return {};}};
-let isDesktop: boolean = device.desktop();
-
 export interface ImageResolutionInterface {
   image: string;
   expand: string;
@@ -34,7 +29,7 @@ export class Config {
     cb({top: Math.round(top), left: Math.round(left), width: box.width, height: box.height});
   }
 
-  public static getImageResolution(): ImageResolutionInterface {
+  public static getImageResolution(isDesktop: boolean): ImageResolutionInterface {
     if (isDesktop) {
       return {
         image: '480x480',
@@ -58,7 +53,7 @@ export class Config {
     };
   }
 
-  public static animateScroll(id: string, inc: number, duration: number): any {
+  public static animateScroll(id: string, inc: number, duration: number, isDesktop: boolean): any {
     if (!isDesktop) {
       if (document.body.scrollTop) {
         document.body.scrollTop = 0;

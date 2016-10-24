@@ -15,16 +15,12 @@ import { Config, ImageResolutionInterface } from '../../app.config';
 import { MathService } from '../../common/math-service/math-service';
 import { FamilyInfoService } from './matrix-view-block.service';
 import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
-
-// fixme
-// let device = require('device.js')();
-// let isDesktop = device.desktop();
-let isDesktop = true;
+import { BrowserDetectionService } from '../../common/browser-detection/browser-detection.service';
 
 @Component({
   selector: 'matrix-view-block',
-  templateUrl: isDesktop ? './matrix-view-block.template.html' : './mobile/matrix-view-block-mobile.template.html',
-  styleUrls: [isDesktop ? './matrix-view-block.css' : './mobile/matrix-view-block-mobile.css']
+  templateUrl: './matrix-view-block.template.html',
+  styleUrls: ['./matrix-view-block.css', './mobile/matrix-view-block-mobile.css']
 })
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected api: string = Config.api;
@@ -66,20 +62,27 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output('goToMatrixWithCountry')
   private goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
-  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
+  private imageResolution: ImageResolutionInterface;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      router: Router,
                      math: MathService,
                      element: ElementRef,
                      familyInfoService: FamilyInfoService,
+                     browserDetectionService: BrowserDetectionService,
                      streetSettingsService: StreetSettingsService) {
     this.math = math;
     this.zone = zone;
     this.router = router;
     this.element = element.nativeElement;
     this.streetSettingsService = streetSettingsService;
+    this.device = browserDetectionService;
     this.familyInfoService = familyInfoService;
+
+    this.isDesktop = this.device.isDesktop();
+    this.imageResolution = Config.getImageResolution(this.isDesktop);
   }
 
   public ngOnInit(): void {
@@ -205,7 +208,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private setMarkerPosition(): void {
     this.widthScroll = window.innerWidth - document.body.offsetWidth;
 
-    this.boxContainer = this.element.querySelector('.view-image-block-container') as HTMLElement;
+    let boxContainer = this.element.querySelector('.view-image-block-container') as HTMLElement;
+
+    if (!boxContainer) {
+      boxContainer = this.element.querySelector('.mobile-view-image-block-container') as HTMLElement;
+    }
+
+    this.boxContainer = boxContainer;
     let paddingLeft: string = window.getComputedStyle(this.boxContainer).getPropertyValue('padding-left');
     this.boxContainerPadding = parseFloat(paddingLeft);
 
@@ -217,7 +226,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   private getDescription(shortDescription: string): string {
     let numbers: number = 300;
 
-    if (isDesktop) {
+    if (this.isDesktop) {
       if (this.windowInnerWidth > 1440 && shortDescription.length > 300) {
         numbers = 300;
       } else if (this.windowInnerWidth <= 1440 && shortDescription.length > 113) {

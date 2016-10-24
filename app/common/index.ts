@@ -34,3 +34,4 @@ export * from './things-filter/things-filter.service';
 export * from './things-filter/things-filter.pipe';
 export * from './title-header/title-header.service';
 export * from './url-change/url-change.service';
+export * from './browser-detection/browser-detection.service';

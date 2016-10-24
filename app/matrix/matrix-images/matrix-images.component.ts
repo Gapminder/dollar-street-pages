@@ -7,11 +7,7 @@ import { concat, slice } from 'lodash';
 import { MathService } from '../../common/math-service/math-service';
 import { LoaderService } from '../../common/loader/loader.service';
 import { CountriesFilterService } from '../../common/countries-filter/countries-filter.service';
-
-// fixme
-// const device = require('device.js')();
-// const isDesktop = device.desktop();
-const isDesktop = true;
+import { BrowserDetectionService } from '../../common/browser-detection/browser-detection.service';
 
 @Component({
   selector: 'matrix-images',
@@ -58,7 +54,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private errorMsg: any;
   private placesArr: any = [];
   private viewBlockHeight: number;
-  private isDesktop: boolean = isDesktop;
+  private isDesktop: boolean;
   private router: Router;
   private currentPlaces: any = [];
   private element: HTMLElement;
@@ -76,24 +72,28 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   private windowInnerWidth: number = window.innerWidth;
   private visibleImages: number;
   private loaderService: LoaderService;
-  private locations: any;
+  private locations: any[];
+  private device: BrowserDetectionService;
 
   public constructor(zone: NgZone,
                      router: Router,
                      element: ElementRef,
                      math: MathService,
                      loaderService: LoaderService,
-                     countriesFilterService: CountriesFilterService) {
+                     countriesFilterService: CountriesFilterService,
+                     browserDetectionService: BrowserDetectionService) {
     this.zone = zone;
     this.math = math;
     this.router = router;
     this.loaderService = loaderService;
+    this.device = browserDetectionService;
     this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
   }
 
   public ngOnInit(): any {
     let isInit: boolean = true;
+    this.isDesktop = this.device.isDesktop();
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
       this.showErrorMsg = false;
@@ -180,7 +180,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   protected hoverImage(place: any): void {
-    if (!isDesktop) {
+    if (!this.isDesktop) {
       return;
     }
 

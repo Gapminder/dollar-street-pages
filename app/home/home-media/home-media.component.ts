@@ -14,6 +14,7 @@ import { Config, ImageResolutionInterface } from '../../app.config';
 import { find, isEqual, slice, concat } from 'lodash';
 import { LoaderService } from '../../common/loader/loader.service';
 import { HomeMediaService } from './home-media.service';
+import { BrowserDetectionService } from '../../common/browser-detection/browser-detection.service';
 
 @Component({
   selector: 'home-media',
@@ -44,11 +45,13 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private indexViewBoxImage: number;
   private element: HTMLElement;
   private imageMargin: number;
-  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
+  private imageResolution: ImageResolutionInterface;
   private visibleImages: number;
   private currentImages: any = [];
   private viewBlockHeight: number;
   private loaderService: LoaderService;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   @Input('placeId')
   private placeId: string;
@@ -63,11 +66,16 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   public constructor(zone: NgZone,
                      element: ElementRef,
                      loaderService: LoaderService,
-                     homeMediaService: HomeMediaService) {
+                     homeMediaService: HomeMediaService,
+                     browserDetectionService: BrowserDetectionService) {
     this.homeMediaService = homeMediaService;
     this.zone = zone;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
+    this.device = browserDetectionService;
+
+    this.isDesktop = this.device.isDesktop();
+    this.imageResolution = Config.getImageResolution(this.isDesktop);
   }
 
   public ngOnInit(): void {
@@ -263,7 +271,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   protected convertImageUrlWithoutWrapper(urlToConvert: string): string {
     return urlToConvert.replace('url("', '')
-                       .replace('")', '');
+      .replace('")', '');
   }
 
   protected imageIsUploaded(index: number): void {

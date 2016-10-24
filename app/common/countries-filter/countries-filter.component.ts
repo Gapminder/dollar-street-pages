@@ -15,11 +15,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Config } from '../../app.config';
 import * as _ from 'lodash';
 import { CountriesFilterService } from './countries-filter.service';
-
-// #FIXME: disabled
-// let device = require('device.js')();
-// let isDesktop = device.desktop();
-let isDesktop = true;
+import { BrowserDetectionService } from '../browser-detection/browser-detection.service';
 
 @Component({
   selector: 'countries-filter',
@@ -28,7 +24,6 @@ let isDesktop = true;
 })
 
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
-  protected isDesktop: boolean = isDesktop;
   protected activeCountries: string;
   protected showSelected: boolean;
   protected locations: any[];
@@ -59,16 +54,22 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   private resizeSubscribe: Subscription;
   private keyUpSubscribe: Subscription;
   private openMobileFilterView: boolean = false;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
-                     countriesFilterService: CountriesFilterService) {
+                     countriesFilterService: CountriesFilterService,
+                     browserDetectionService: BrowserDetectionService) {
+    this.device = browserDetectionService;
     this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
     this.zone = zone;
   }
 
   public ngOnInit(): void {
+    this.isDesktop = this.device.isDesktop();
+
     this.isOpenMobileFilterView();
 
     this.resizeSubscribe = Observable
@@ -123,7 +124,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.search = '';
     this.regionsVisibility = true;
 
-    if (this.isOpenCountriesFilter && !isDesktop) {
+    if (this.isOpenCountriesFilter && !this.isDesktop) {
       let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
       let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
 
@@ -147,7 +148,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.setPosition();
 
       setTimeout(() => {
-        if (isDesktop && !this.openMobileFilterView) {
+        if (this.isDesktop && !this.openMobileFilterView) {
           (this.element.querySelector('.autofocus') as HTMLInputElement).focus();
         }
 
@@ -168,7 +169,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         this.selectedCountries.length = 0;
       }
 
-      this.openMobileFilterView = window.innerWidth < 1024 || !isDesktop;
+      this.openMobileFilterView = window.innerWidth < 1024 || !this.isDesktop;
     }
   }
 
@@ -256,7 +257,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.cloneSelectedCountries = ['World'];
     this.cloneSelectedRegions = ['World'];
-    this.openMobileFilterView = window.innerWidth < 1024 || !isDesktop;
+    this.openMobileFilterView = window.innerWidth < 1024 || !this.isDesktop;
   }
 
   public ngOnDestroy(): void {
@@ -415,7 +416,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private isOpenMobileFilterView(): void {
-    if (window.innerWidth < 1024 || !isDesktop) {
+    if (window.innerWidth < 1024 || !this.isDesktop) {
       this.openMobileFilterView = true;
       return;
     }
