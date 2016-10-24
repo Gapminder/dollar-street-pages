@@ -1,14 +1,13 @@
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { SocialShareButtonsService } from './social-share-buttons.service';
 
 @Component({
   selector: 'social-share-buttons',
-  templateUrl: './social-share-buttons.html',
-  styleUrls: ['./social-share-buttons.css'],
-  encapsulation: ViewEncapsulation.None
+  templateUrl: 'social-share-buttons.component.html',
+  styleUrls: ['social-share-buttons.component.css']/*,
+  encapsulation: ViewEncapsulation.None*/
 })
-
 export class SocialShareButtonsComponent implements OnDestroy {
   private url: string;
   private locationPath: string;
