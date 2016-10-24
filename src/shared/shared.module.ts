@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { HeaderWithoutFiltersComponent } from './header-without-filters/header.component';
+import { RouterModule } from '@angular/router';
+import { HeaderService } from './header/header.service';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -8,10 +11,13 @@ import { HeaderWithoutFiltersComponent } from './header-without-filters/header.c
     HeaderWithoutFiltersComponent
   ],
   imports: [
+    HttpModule,
+    RouterModule
   ],
   providers: [
+    HeaderService
   ],
-  bootstrap: []
+  exports: [HeaderWithoutFiltersComponent]
 })
 export class SharedModule {
 

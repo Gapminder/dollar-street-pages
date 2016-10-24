@@ -1,6 +1,10 @@
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
+
 import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+
 import { Config } from '../../app.config';
 
 @Injectable()
@@ -21,6 +25,7 @@ export class HeaderService {
   }
 
   public getPlaceHeader(query: string): Observable<any> {
+    // return
     return this.http
       .get(`${Config.api}/consumer/api/v1/place-header?${query}`)
       .map((res: any) => {
