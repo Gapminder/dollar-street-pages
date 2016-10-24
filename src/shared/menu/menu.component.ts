@@ -1,23 +1,24 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
-import { StreetSettingsService, DrawDividersInterface } from '../street/street.settings.service';
-import { LocalStorageService } from '../guide/localstorage.service';
-import { BrowserDetectionService } from '../browser-detection/browser-detection.service';
+import {
+  StreetSettingsService,
+  DrawDividersInterface,
+  LocalStorageService,
+  BrowserDetectionService
+} from '../../common';
 
 @Component({
   selector: 'main-menu',
   templateUrl: './menu.template.html',
-  styleUrls: ['./menu.css', './menu-mobile.css']
+  styleUrls: ['menu.component.css', 'menu.component.mobile.css']
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
-  @Input('hoverPlace')
-  private hoverPlace: Observable<any>;
-  @Output('selectedFilter')
-  private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+  @Input('hoverPlace') private hoverPlace: Observable<any>;
+  @Output('selectedFilter') private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
   private element: HTMLElement;
   private window: Window = window;

@@ -4,11 +4,13 @@ import { HeaderWithoutFiltersComponent } from './header-without-filters/header.c
 import { RouterModule } from '@angular/router';
 import { HeaderService } from './header/header.service';
 import { HttpModule } from '@angular/http';
+import { MainMenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    HeaderWithoutFiltersComponent
+    HeaderWithoutFiltersComponent,
+    MainMenuComponent
   ],
   imports: [
     HttpModule,

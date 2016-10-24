@@ -1,5 +1,8 @@
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from  'rxjs/Subject';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class LocalStorageService {
   private localStorage: Storage = localStorage;
   private itemEvents: Subject<any> = new Subject<any>();
