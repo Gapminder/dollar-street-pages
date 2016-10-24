@@ -5,7 +5,7 @@
   },
   "apps": [
     {
-      "root": "app",
+      "root": "src",
       "outDir": "dist",
       "assets": "assets",
       "index": "index.html",
@@ -15,6 +15,9 @@
       "prefix": "",
       "mobile": false,
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "assets/css/ball-spin.css",
+        "assets/css/style.css"
       ],
       "scripts": [],
       "environments": {
