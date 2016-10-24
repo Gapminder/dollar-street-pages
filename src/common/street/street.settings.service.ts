@@ -1,6 +1,10 @@
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
+
 import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+
 import { Config } from '../../app.config';
 
 export interface DrawDividersInterface {
