@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+
 import { MathService, StreetSettingsService, DrawDividersInterface } from '../../common';
 import { CountryInfoService } from './country-info.service';
 
