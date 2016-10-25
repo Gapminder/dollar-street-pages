@@ -1,6 +1,6 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { LoaderService } from '../common';
 
 @Component({
@@ -8,6 +8,7 @@ import { LoaderService } from '../common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit, OnDestroy {
   private isLoader: boolean = false;
   private isVisibleHeader: boolean;

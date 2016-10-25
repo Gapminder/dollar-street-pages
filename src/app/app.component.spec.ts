@@ -8,7 +8,7 @@ describe('App: NgAot', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
-      ],
+      ]
     });
   });
 
