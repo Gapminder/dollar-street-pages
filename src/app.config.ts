@@ -5,10 +5,10 @@ export interface ImageResolutionInterface {
 }
 
 export class Config {
-  public static api: string = '//prod-api.dollarstreet.org';
+  // public static api: string = '//prod-api.dollarstreet.org';
   // public static api: string = '//stage.dollarstreet.org';
   // public static api: string = '//apidev.dollarstreet.org';
-  // public static api: string = '//192.168.1.123';
+  public static api: string = '//192.168.1.123';
   // public static api: string = '//192.168.1.57';
   // public static api: string = '//192.168.1.95';
 

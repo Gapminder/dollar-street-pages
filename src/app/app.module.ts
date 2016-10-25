@@ -3,20 +3,25 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { AppComponent } from './app.component';
-import { RouterModule, Routes } from '@angular/router';
+import { routing } from '../routes';
 
-import { SharedModule, HomeComponent } from '../shared';
-import { CommonModule } from '../common';
+import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
+
+import { SharedModule } from '../shared';
+import { CommonAppModule } from '../common';
+
+import { TeamModule } from '../team';
+import { PhotographersModule } from '../photographers';
+import { PhotographerModule } from '../photographer';
+import { CountryModule } from '../country';
+import { MapModule } from '../map';
+import { ArticleModule } from '../article';
+import { MatrixModule } from '../matrix';
+
 import { Angulartics2Module } from 'angulartics2';
 
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
-
-const routes: Routes = [
-  { path: '', component: HomeComponent }
-];
-
-const routing = RouterModule.forRoot(routes);
 
 @NgModule({
   declarations: [
@@ -27,8 +32,15 @@ const routing = RouterModule.forRoot(routes);
     FormsModule,
     HttpModule,
     SharedModule,
-    CommonModule,
+    CommonAppModule,
     RouterModule,
+    TeamModule,
+    PhotographersModule,
+    PhotographerModule,
+    CountryModule,
+    MapModule,
+    ArticleModule,
+    MatrixModule,
     Angulartics2Module.forRoot(),
     routing
   ],
