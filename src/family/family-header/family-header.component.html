@@ -1,0 +1,125 @@
+<div class="home-description-container" [ngClass]="{'open-info': isOpenArticle}">
+  <div class="image-container" *ngIf="home.image">
+    <img (click)="openExpandBlock()" [src]="home.image" alt="">
+  </div>
+
+  <div class="description-container">
+    <div class="home-info-container">
+      <div class="title-info">
+        <div class="left-title">
+          <p class="sub-title">Home of</p>
+          <p class="title desktop">{{home.familyName}} family</p>
+          <p class="title mobile">{{home.familyName}}, <a *ngIf="home.country"
+                                                          [routerLink]="['/country', home.country?._id]"
+                                                          [queryParams]="{}"
+                                                          angulartics2On="click"
+                                                          angularticsEvent="From Home page to {{home.country?.alias}} country page">{{home.country?.alias}}</a>
+          </p>
+        </div>
+
+        <div class="right-title">
+          <p class="sub-title">Monthly income</p>
+          <p class="title">${{math.round(home.income)}} <img class="about-info-image"
+                                                             src="/assets/img/info-button.svg"
+                                                             alt=""
+                                                             *ngIf="home.aboutData"
+                                                             (click)="showAboutData($event, true)"
+                                                             (mouseenter)="showAboutData($event)"
+                                                             (mouseleave)="showAboutData()"></p>
+        </div>
+      </div>
+
+      <div class="image-container mobile" *ngIf="home.image">
+        <img (click)="openExpandBlock()" [src]="home.image" alt="">
+      </div>
+
+      <div class="family-info-container">
+        <div class="family-short-info">
+          {{home.familyInfoSummary}}
+        </div>
+        <div class="family-full-info">
+          {{home.familyInfo}}
+        </div>
+      </div>
+
+      <div class="show-info">
+        <span (click)="openInfo(isOpenArticle)">
+          <img src="/assets/img/read-more-icon.svg"
+               alt=""
+               [class.rotate]="isOpenArticle"> {{isOpenArticle ? 'Read less' : 'Read more'}}</span>
+      </div>
+    </div>
+
+    <div class="home-country-container">
+      <div class="title-info">
+        <div class="right-title">
+          <p class="sub-title">Country</p>
+          <p class="title">{{home.country?.alias}}</p>
+        </div>
+      </div>
+      <div class="map-container"
+           [routerLink]="['/country', home.country?._id]"
+           [queryParams]="{}"
+           angulartics2On="click"
+           angularticsEvent="From Home page to {{home.country?.alias}} country page">
+        <region-map *ngIf="mapData" [mapData]="mapData"></region-map>
+      </div>
+
+      <div class="go-to-matrix">
+        <a
+          [routerLink]="['/matrix']"
+          [queryParams]="{thing: home.thing, countries: home.country?.alias, regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+          angulartics2On="click"
+          angularticsEvent="From Home page to Matrix page">
+          All families in {{countryName}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
+          src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="short-family-info-container" [style.top.px]="familyShortInfoPosition" (click)="scrollToStart($event)">
+  <div class="image-container" *ngIf="home.image">
+    <img class="portrait" (click)="openExpandBlock()" [src]="home.image" alt="">
+  </div>
+
+  <div class="description-container">
+    <div class="left-title">
+      <p class="title desktop">{{home.familyName}} family, {{home.country?.alias}}</p>
+      <p class="title mobile">{{home.familyName}}, {{home.country?.alias}}</p>
+    </div>
+
+    <div class="right-title">
+      <p class="title">${{math.round(home.income)}}<span>/month</span><img class="short-about-info-image"
+                                                                           src="/assets/img/info-button.svg"
+                                                                           alt=""
+                                                                           *ngIf="home.aboutData"
+                                                                           (click)="showAboutData($event, true)"
+                                                                           (mouseenter)="showAboutData($event)"
+                                                                           (mouseleave)="showAboutData()"></p>
+    </div>
+  </div>
+</div>
+
+<div class="about-data-container closeMenu"
+     [style.left.px]="isShowAboutData ? aboutDataPosition.left : '-1000'"
+     [style.top.px]="isShowAboutData ? aboutDataPosition.top : '-1000'"
+     [style.lineHeight.px]="isShowAboutDataFullScreen ? windowHeight : 0"
+     [class.open]="isShowAboutDataFullScreen"
+     (click)="closeAboutDataPopUp($event)">
+  <div class="about-data-content">
+    <div class="about-data-header">
+      <h3>About the data</h3>
+      <span class="closeMenu">
+               <img class="closeMenu close-button pull-right"
+                    src="/assets/img/close-button.svg"
+                    alt="Close">
+       </span>
+    </div>
+
+    <div class="about-data-body" [style.maxHeight.px]="maxHeightPopUp">
+      <p *ngIf="home?.commonAboutData">{{home.commonAboutData}}</p>
+      <p>{{home?.aboutData}}</p>
+    </div>
+  </div>
+</div>

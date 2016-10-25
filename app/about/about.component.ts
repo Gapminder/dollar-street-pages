@@ -5,13 +5,10 @@ import { LoaderService } from '../common/loader/loader.service';
 import { TitleHeaderService } from '../common/title-header/title-header.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
-let tpl = require('./about.template.html');
-let style = require('./about.css');
-
 @Component({
   selector: 'about',
-  template: tpl,
-  styles: [style],
+  templateUrl: './about.template.html',
+  styleUrls: ['./about.css'],
   encapsulation: ViewEncapsulation.None
 })
 
