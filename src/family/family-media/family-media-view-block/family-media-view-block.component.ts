@@ -1,15 +1,15 @@
 import { Component, Input, Output, OnChanges, OnDestroy, NgZone, EventEmitter, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+
 import { Config, ImageResolutionInterface } from '../../../app.config';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
-import { StreetSettingsService, DrawDividersInterface } from '../../../common';
-import { BrowserDetectionService } from '../../../common';
+import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../../common';
 
 @Component({
   selector: 'family-media-view-block',
-  templateUrl: './family-media-view-block.template.html',
-  styleUrls: ['./family-media-view-block.css', './family-media-view-block.component.mobile.css']
+  templateUrl: './family-media-view-block.component.html',
+  styleUrls: ['./family-media-view-block.component.css', './family-media-view-block.component.mobile.css']
 })
 
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {

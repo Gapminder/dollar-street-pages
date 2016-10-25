@@ -2,11 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
-import { CountriesFilterService } from '../common';
-import { UrlChangeService } from '../common';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
-import * as _ from 'lodash';
-import { StreetSettingsService } from '../common';
+import { forEach, difference } from 'lodash';
+
+import { StreetSettingsService, CountriesFilterService, UrlChangeService } from '../common';
 
 interface UrlParamsInterface {
   thing: string;
@@ -220,10 +219,10 @@ export class FamilyComponent implements OnInit, OnDestroy {
         title = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
       } else {
         let sumCountries: number = 0;
-        let difference: string[] = [];
+        let getDifference: string[] = [];
         let regionCountries: string[] = [];
 
-        _.forEach(this.locations, (location: any) => {
+        forEach(this.locations, (location: any) => {
           if (regions.indexOf(location.region) !== -1) {
             regionCountries = regionCountries.concat(_.map(location.countries, 'country') as string[]);
             sumCountries = +location.countries.length;
@@ -231,12 +230,12 @@ export class FamilyComponent implements OnInit, OnDestroy {
         });
 
         if (sumCountries !== countries.length) {
-          difference = _.difference(countries, regionCountries);
+          getDifference = difference(countries, regionCountries);
         }
 
-        if (difference.length) {
-          title = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+        if (getDifference.length) {
+          title = getDifference.length === 1 && regions.length === 1 ? regions[0] + ' & '
+          + getDifference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
         } else {
           title = regions.join(' & ');
         }

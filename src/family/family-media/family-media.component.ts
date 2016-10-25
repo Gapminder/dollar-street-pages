@@ -1,21 +1,11 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Input,
-  Output,
-  EventEmitter,
-  NgZone,
-  AfterViewChecked,
-  ElementRef
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone, AfterViewChecked, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Config, ImageResolutionInterface } from '../../app.config';
 import { find, isEqual, slice, concat } from 'lodash';
-import { LoaderService } from '../../common';
+
+import { Config, ImageResolutionInterface } from '../../app.config';
+import { LoaderService, BrowserDetectionService } from '../../common';
 import { FamilyMediaService } from './family-media.service';
-import { BrowserDetectionService } from '../../common';
 
 @Component({
   selector: 'family-media',
