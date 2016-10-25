@@ -6,21 +6,33 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule, HomeComponent } from '../shared';
+import { FamilyComponent } from '../family';
+import { FamilyHeaderComponent } from '../family';
+import { FamilyMediaComponent } from '../family';
+import { FamilyMediaViewBlockComponent } from '../family';
+import { FamilyMediaService } from '../family';
+import { FamilyMediaViewBlockService } from '../family';
+import { FamilyHeaderService } from '../family';
+
+import { SharedModule } from '../shared';
 import { CommonModule } from '../common';
 import { Angulartics2Module } from 'angulartics2';
 
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }
+  { path: '', component: FamilyComponent }
 ];
 
 const routing = RouterModule.forRoot(routes);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FamilyComponent,
+    FamilyHeaderComponent,
+    FamilyMediaComponent,
+    FamilyMediaViewBlockComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +45,10 @@ const routing = RouterModule.forRoot(routes);
     routing
   ],
   providers: [
-    Angulartics2GoogleAnalytics
+    Angulartics2GoogleAnalytics,
+    FamilyMediaService,
+    FamilyMediaViewBlockService,
+    FamilyHeaderService
   ],
   bootstrap: [AppComponent]
 })
