@@ -2,51 +2,50 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
-import { AppComponent } from './app.component';
-import { RouterModule, Routes } from '@angular/router';
+import { routing } from '../routes';
 
-import { FamilyComponent } from '../family';
-import { FamilyHeaderComponent } from '../family';
-import { FamilyMediaComponent } from '../family';
-import { FamilyMediaViewBlockComponent } from '../family';
-import { FamilyMediaService } from '../family';
-import { FamilyMediaViewBlockService } from '../family';
-import { FamilyHeaderService } from '../family';
+import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared';
-import { CommonModule } from '../common';
+import { CommonAppModule } from '../common';
+
+import { TeamModule } from '../team';
+import { PhotographersModule } from '../photographers';
+import { PhotographerModule } from '../photographer';
+import { CountryModule } from '../country';
+import { MapModule } from '../map';
+import { ArticleModule } from '../article';
+import { MatrixModule } from '../matrix';
+import { FamilyModule } from '../family';
+
 import { Angulartics2Module } from 'angulartics2';
 
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
-const routes: Routes = [
-  { path: '', component: FamilyComponent }
-];
-
-const routing = RouterModule.forRoot(routes);
-
 @NgModule({
   declarations: [
-    AppComponent,
-    FamilyComponent,
-    FamilyHeaderComponent,
-    FamilyMediaComponent,
-    FamilyMediaViewBlockComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     SharedModule,
-    CommonModule,
+    CommonAppModule,
     RouterModule,
+    TeamModule,
+    PhotographersModule,
+    PhotographerModule,
+    CountryModule,
+    MapModule,
+    ArticleModule,
+    MatrixModule,
+    FamilyModule,
     Angulartics2Module.forRoot(),
     routing
   ],
   providers: [
-    Angulartics2GoogleAnalytics,
-    FamilyMediaService,
-    FamilyMediaViewBlockService,
-    FamilyHeaderService
+    Angulartics2GoogleAnalytics
   ],
   bootstrap: [AppComponent]
 })

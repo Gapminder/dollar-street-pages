@@ -1,0 +1,52 @@
+<div id="photographers">
+  <div class="row">
+    <div class="col-md-2 left-side-bar">
+      <div class="search-input">
+        <span class="sort-country" (click)="toggleLeftSide($event)">Sort by country</span>
+        <input id="search"
+               type="search"
+               placeholder="Search..."
+               #photographersSearch
+               (input)="search.text = photographersSearch.value">
+        <img src="/assets/img/search-icon.svg" alt="Search icon">
+      </div>
+      <ul class="photographers-country">
+        <li class="country-card"
+            *ngFor="let country of photographersByCountry | PhotographersFilter:search.text:photographersByCountry:true">
+          <div>
+            <span class="photographer-country">{{country.name}}</span>
+            <ul class="photographers-list">
+              <li
+                *ngFor="let photographer of country.photographers"
+                [routerLink]="['/photographer', photographer.userId]"
+                [queryParams]="{}">
+                <!--angulartics2On="click"-->
+                <!--angularticsEvent="From photographers page to profile page of the photographer {{photographer.name}}">-->
+                {{photographer.name}}
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-10 photographers-container">
+      <div class="photographer-card"
+           *ngFor="let photographer of photographersByName | PhotographersFilter:search.text:photographersByCountry"
+           [routerLink]="['/photographer', photographer.userId]"
+           [queryParams]="{}">
+        <!--angulartics2On="click"-->
+        <!--angularticsEvent="From photographers page to profile page of the photographer {{photographer.name}}">-->
+        <div class="photographer-portrait"
+             [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/empty-photographer.jpg)'}">
+          <div class="photographer-material">
+            <span><i class="fa fa-camera"></i> {{math.round(photographer.images)}}</span>
+            <span *ngIf="photographer.video"><i class="fa fa-video-camera"></i> {{math.round(photographer.video) || 0}}</span>
+            <span><img src="/assets/img/house-icon-white.png" alt=""> {{math.round(photographer.places)}}</span>
+          </div>
+        </div>
+        <h3>{{photographer.name}}</h3>
+      </div>
+    </div>
+  </div>
+</div>
