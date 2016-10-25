@@ -14,6 +14,7 @@ export class Config {
   // public static api: string = '//192.168.1.123';
   // public static api: string = '//192.168.1.57';
   // public static api: string = '//192.168.1.95';
+  // public static api: string = '//192.168.1.143';
 
   private static windowInnerWidth: number = window.innerWidth;
 
