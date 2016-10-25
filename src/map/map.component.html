@@ -1,0 +1,117 @@
+<div class="map-header main-header" (click)="closeLeftSideBar($event)">
+  <div class="container">
+    <header [query]="query" (filter)="urlChanged($event)"></header>
+  </div>
+</div>
+
+<div id="places">
+  <div class="row">
+    <div class="col-md-12 places_header">
+      <div class="col-md-12 col-sm-12 mapBox">
+        <div class="mapBoxContainer" (click)="closeLeftSideBar($event)">
+          <img class="map-color" src="/assets/img/original-map.svg" alt="">
+          <img class="marker"
+               src="/assets/img/dark-marker.svg"
+               alt="marker"
+               *ngFor="let place of places; let i = index"
+               [style.left.px]="place.left"
+               [style.top.px]="place.top"
+               (mouseenter)="isDesktop ? hoverOnMarker(i, place.country) : hoverOnMarkerTablet(i, place.country)"
+               (mouseleave)="unHoverOnMarker($event)"
+               (touchstart)="isDesktop ? hoverOnMarker(i, place.country) : hoverOnMarkerTablet(i, place.country)"
+               (click)="isDesktop ? clickOnMarker($event, i, place.country) : mobileClickOnMarker(place.country)">
+          <div class="hover_portrait"
+               *ngIf="isDesktop"
+               [hidden]="!hoverPlace"
+               [ngClass]="shadowClass"
+               [style.top.px]="hoverPortraitTop"
+               [style.left.px]="hoverPortraitLeft"
+               (mouseenter)="thumbHover()"
+               (mouseleave)="unHoverOnMarker($event)">
+
+            <div class="hover_portrait_box" *ngIf="isDesktop">
+              <img [src]="hoverPlace ? hoverPlace.familyImg.background : ''" alt="">
+
+              <div class="hover_portrait_description" *ngIf="hoverPlace && isDesktop">
+                <div class="pull-left info">
+                  <span
+                    class="name">{{hoverPlace.family}} {{hoverPlace.family ? 'family' : ''}}</span>
+                  <span class="country">{{hoverPlace.country}}</span>
+                </div>
+
+                <div class="pull-right">
+                  <span class="income">${{math.round(hoverPlace.income)}}</span>
+                </div>
+                <div class="see-all" *ngIf="seeAllHomes" (click)="openLeftSideBar()">
+                  <span class="see-all-span">See all {{leftSideCountries.length}} Families »</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hover_portrait_arrow" *ngIf="!leftArrowTop"></div>
+            <div class="hover_portrait_arrow_left" *ngIf="leftArrowTop" [style.top.px]="leftArrowTop"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row countries-list">
+    <div class="country" *ngFor="let list of countries; let i = index">
+      <span class="country-letter">{{list.letter}}</span>
+      <ul class="countries">
+        <li *ngFor="let country of list.countries">
+            <span class="country-name"
+                  [routerLink]="['/country', country._id]"
+                  [queryParams]="{}">{{country.name}}</span>
+          <!--angulartics2On="click"-->
+          <!--angularticsEvent="From Map page to {{country.name}} country page">{{country.name}}</span>-->
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="left-side-info" [ngClass]="{open: isOpenLeftSide}">
+  <div class="header">
+    <a *ngIf="leftSideCountries && leftSideCountries.length === 1"
+       [routerLink]="['/matrix']"
+       [queryParams]="{thing: 'Families', countries: currentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}">Family
+      in{{currentCountry}} >> </a>
+    <!--angulartics2On="click"-->
+    <!--angularticsEvent="From map page to Matrix page with one family in {{currentCountry}}"-->
+
+    <a *ngIf="leftSideCountries && leftSideCountries.length > 1" [routerLink]="['/matrix']"
+       [queryParams]="{thing: 'Families', countries: currentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}">All
+      {{leftSideCountries.length}} families in {{currentCountry}} >> </a>
+    <!--angulartics2On="click"-->
+    <!--angularticsEvent="From map page to Matrix page with all families in {{currentCountry}}"-->
+
+    <span (click)="closeLeftSideBar($event)">
+              <img class="close-button pull-right"
+                   src="/assets/img/close-button.svg"
+                   alt="Close">
+        </span>
+  </div>
+  <div class="info-box-container">
+    <div class="info-box"
+         *ngFor="let place of leftSideCountries"
+         [routerLink]="['/family']"
+         [queryParams]="{place: place._id}">
+         <!--angulartics2On="click"-->
+         <!--angularticsEvent="From map page to {{place.family}} family place page">-->
+      <div class="family-photo" [ngStyle]="{'background-image': toUrl(place.familyImg.background)}"></div>
+
+      <div class="hover_portrait_description">
+        <div class="pull-left">
+          <span class="name" *ngIf="place.family">{{place.family}} family</span>
+          <span class="country" *ngIf="currentCountry">{{currentCountry}}</span>
+        </div>
+
+        <div class="pull-right">
+          <span class="income">${{math.round(place.income)}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

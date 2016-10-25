@@ -12,6 +12,8 @@ gulp.paths = {
     '!dist/**/*',
     '!app/**/*.d.ts',
     '!test-e2e/**/*',
+    '!e2e/**/*',
+    '!src2/**/*',
     '!**/*.{ts,coffee}.js'
   ]
 };

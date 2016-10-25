@@ -35,3 +35,8 @@ test-e2e/app/**/*.d.ts
 
 # new relic log
 newrelic_agent.log
+
+# AoT
+**/*.ngfactory.ts
+**/*.css.ts
+**/*.shim.ts

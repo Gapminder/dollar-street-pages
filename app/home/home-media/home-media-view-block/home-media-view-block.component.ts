@@ -3,20 +3,12 @@ import { Subscription, Observable } from 'rxjs';
 import { Config, ImageResolutionInterface } from '../../../app.config';
 import { HomeMediaViewBlockService } from './home-media-view-block.service';
 import { StreetSettingsService, DrawDividersInterface } from '../../../common/street/street.settings.service';
-
-let device = require('device.js')();
-let isDesktop = device.desktop();
-
-let tplMobile = require('./mobile/home-media-view-block-mobile.template.html');
-let styleMobile = require('./mobile/home-media-view-block-mobile.css');
-
-let tpl = require('./home-media-view-block.template.html');
-let style = require('./home-media-view-block.css');
+import { BrowserDetectionService } from '../../../common/browser-detection/browser-detection.service';
 
 @Component({
   selector: 'home-media-view-block',
-  template: isDesktop ? tpl : tplMobile,
-  styles: [isDesktop ? style : styleMobile]
+  templateUrl: './home-media-view-block.template.html',
+  styleUrls: ['./home-media-view-block.css', './mobile/home-media-view-block-mobile.css']
 })
 
 export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
@@ -38,17 +30,24 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
   private viewBlockService: HomeMediaViewBlockService;
   private viewBlockServiceSubscribe: Subscription;
   private resizeSubscribe: Subscription;
-  private imageResolution: ImageResolutionInterface = Config.getImageResolution();
+  private imageResolution: ImageResolutionInterface;
   private windowInnerWidth: number = window.innerWidth;
   private streetServiceSubscribe: Subscription;
   private streetSettingsService: StreetSettingsService;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
+                     browserDetectionService: BrowserDetectionService,
                      viewBlockService: HomeMediaViewBlockService) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
+    this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
+
+    this.isDesktop = this.device.isDesktop();
+    this.imageResolution = Config.getImageResolution(this.isDesktop);
   }
 
   public ngOnInit(): void {
@@ -172,7 +171,7 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
   private getDescription(shortDescription: string): string {
     let numbers: number = 600;
 
-    if (isDesktop) {
+    if (this.isDesktop) {
       if (this.windowInnerWidth > 1400 && shortDescription.length > 600) {
         numbers = 600;
       } else if (this.windowInnerWidth > 1280 && this.windowInnerWidth <= 1400 && shortDescription.length > 600) {
