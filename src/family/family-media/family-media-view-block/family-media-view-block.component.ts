@@ -1,6 +1,8 @@
+import 'rxjs/operator/debounceTime';
+
 import { Component, Input, Output, OnChanges, OnDestroy, NgZone, EventEmitter, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 import { Config, ImageResolutionInterface } from '../../../app.config';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
@@ -63,8 +65,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
         this.streetData = res.data;
       });
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {

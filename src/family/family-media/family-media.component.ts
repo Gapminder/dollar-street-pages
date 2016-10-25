@@ -1,6 +1,10 @@
+import 'rxjs/operator/debounceTime';
+
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone, AfterViewChecked, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import { find, isEqual, slice, concat } from 'lodash';
 
 import { Config, ImageResolutionInterface } from '../../app.config';
@@ -128,8 +132,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
         }, 0);
       });
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {

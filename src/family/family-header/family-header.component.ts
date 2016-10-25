@@ -1,7 +1,8 @@
+import 'rxjs/operator/debounceTime';
+
 import { Component, OnInit, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 
 import { Config } from '../../app.config';
 import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService } from '../../common';
@@ -101,8 +102,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {

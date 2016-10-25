@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { find, difference } from 'lodash';
 import { GuideService } from './guide.service';
@@ -7,8 +7,8 @@ import { LocalStorageService } from '../../common';
 @Component({
   selector: 'quick-guide',
   templateUrl: './guide.component.html',
-  styleUrls: ['./guide.component.css']/*,
-  encapsulation: ViewEncapsulation.None*/
+  styleUrls: ['./guide.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class GuideComponent implements OnInit, OnDestroy {

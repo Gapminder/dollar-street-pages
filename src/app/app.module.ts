@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-
+import { FormsModule } from '@angular/forms';
 import { routing } from '../routes';
 
 import { AppComponent } from './app.component';
@@ -41,6 +41,7 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
     ArticleModule,
     MatrixModule,
     FamilyModule,
+    FormsModule,
     Angulartics2Module.forRoot(),
     routing
   ],

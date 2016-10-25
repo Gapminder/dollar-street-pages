@@ -5,7 +5,7 @@ import { PhotographersComponent } from './photographers';
 import { TeamComponent } from './team';
 import { ArticleComponent } from './article';
 import { CountryComponent } from './country';
-// import { HomeComponent } from './home';
+import { FamilyComponent } from './family';
 // import { AboutComponent } from './about';
 import { MapComponent } from './map';
 import { MatrixComponent } from './matrix';
@@ -13,7 +13,7 @@ import { PhotographerComponent } from './photographer';
 
 export const routes: Routes = [
   {path: 'matrix', component: MatrixComponent},
-  // {path: 'family', component: HomeComponent},
+  {path: 'family', component: FamilyComponent},
   {path: 'map', component: MapComponent},
   {path: 'photographers', component: PhotographersComponent},
   {path: 'photographer/:id', component: PhotographerComponent},

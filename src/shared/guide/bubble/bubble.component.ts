@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ElementRef, NgZone, ViewEncapsulation } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { find } from 'lodash';
@@ -9,8 +9,8 @@ import { LocalStorageService, BrowserDetectionService } from '../../../common';
 @Component({
   selector: 'bubble',
   templateUrl: './bubble.component.html',
-  styleUrls: ['./bubble.component.css']/*,
-  encapsulation: ViewEncapsulation.None*/
+  styleUrls: ['./bubble.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class BubbleComponent implements OnInit, OnDestroy {

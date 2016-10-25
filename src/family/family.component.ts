@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
-import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 import { forEach, difference } from 'lodash';
 
+// import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
 import { StreetSettingsService, CountriesFilterService, UrlChangeService } from '../common';
 
 interface UrlParamsInterface {
@@ -42,17 +42,17 @@ export class FamilyComponent implements OnInit, OnDestroy {
   private urlChangeService: UrlChangeService;
   private windowHistory: any = history;
   private queryParamsSubscribe: Subscription;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  // private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
-                     urlChangeService: UrlChangeService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     urlChangeService: UrlChangeService) {
+                     // angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    // this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.streetSettingsService = streetSettingsService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
@@ -167,7 +167,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
         highIncome: this.rich
       }]);
 
-      this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
+      // this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
 
       return;
     }

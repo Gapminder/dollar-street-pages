@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -8,8 +8,8 @@ import { ArticleService } from './article.service';
 @Component({
   selector: 'article-page',
   templateUrl: './article.component.html',
-  styleUrls: ['./article.component.css']/*,
-   encapsulation: ViewEncapsulation.None*/
+  styleUrls: ['./article.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {

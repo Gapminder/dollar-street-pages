@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { compact } from 'lodash';
@@ -14,8 +14,8 @@ import {
 @Component({
   selector: 'footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']/*,
-   encapsulation: ViewEncapsulation.None*/
+  styleUrls: ['./footer.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class FooterComponent implements OnInit, OnDestroy {

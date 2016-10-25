@@ -1,17 +1,17 @@
 <div class="header-container">
   <a class="logo pull-left"
      [routerLink]="['/matrix']"
-     [queryParams]="{thing: 'Families', countries: 'World', regions: 'World', zoom: 4, row: 1, lowIncome: poor, highIncome: rich}"
-     angulartics2On="click"
-     angularticsEvent="From Place page to Matrix page (Thing: Families, Countries: World, Zoom: 4, Row: 1, Incomes: {{poor}} - {{rich}}">
+     [queryParams]="{thing: 'Families', countries: 'World', regions: 'World', zoom: 4, row: 1, lowIncome: poor, highIncome: rich}">
+     <!--angulartics2On="click">-->
+     <!--angularticsEvent="From Place page to Matrix page (Thing: Families, Countries: World, Zoom: 4, Row: 1, Incomes: {{poor}} - {{rich}}">-->
     <img src="/assets/img/dollar-street.svg" alt="">
   </a>
 
   <p class="heading pull-left"
      [routerLink]="['/matrix']"
-     [queryParams]="urlParams"
-     angulartics2On="click"
-     angularticsEvent="From Place page to Matrix page (Thing:{{urlParams.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
+     [queryParams]="urlParams">
+     <!--angulartics2On="click">-->
+     <!--angularticsEvent="From Place page to Matrix page (Thing:{{urlParams.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">-->
     <img src="/assets/img/back-icon.svg" alt="Back">
     {{titles?.thing}} in {{titles?.countries}}
   </p>
