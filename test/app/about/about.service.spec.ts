@@ -3,7 +3,7 @@ import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 import { Config } from '../../../app/app.config.ts';
-import { AboutService } from '../../../app/about/about.service';
+import { AboutService } from '../../../src/about/about.service';
 import { addProviders } from '@angular/core/testing/testing';
 
 describe('AboutService', () => {

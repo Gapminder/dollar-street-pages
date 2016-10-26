@@ -17,7 +17,7 @@ import { PhotographerProfileService } from '../../../app/photographer/photograph
 import { PhotographerPlacesService } from '../../../app/photographer/photographer-places/photographer-places.service';
 import { TeamService } from '../../../app/team/team.service';
 import { SocialShareButtonsService } from '../../../app/common/social_share_buttons/social-share-buttons.service';
-import { AboutService } from '../../../app/about/about.service';
+import { AboutService } from '../../../src/about/about.service';
 import { FooterService } from '../../../app/common/footer/footer.service';
 import { UrlSerializer, DefaultUrlSerializer, RouterOutletMap, Router, ActivatedRoute } from '@angular/router';
 import { BrowserPlatformLocation } from '@angular/platform-browser';

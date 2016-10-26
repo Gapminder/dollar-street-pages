@@ -2,7 +2,7 @@ import { it, describe, async, inject, beforeEach, addProviders, TestComponentBui
 import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
 import { MockService } from '../../app/common-mocks/mock.service.template';
 import { infoContext } from './mocks/data.ts';
-import { AboutComponent } from '../../../app/about/about.component';
+import { AboutComponent } from '../../../src/about/about.component';
 
 describe('AboutComponent', () => {
   let mockAboutService = new MockService();
