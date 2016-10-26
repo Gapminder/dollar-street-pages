@@ -5,7 +5,7 @@ import { TeamComponent } from './team/team.component';
 import { ArticleComponent } from './article/article.component';
 import { CountryComponent } from './country/country.component';
 import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
+import { AboutComponent } from '../src/about/about.component';
 import { MapComponent } from './map/map.component';
 import { MatrixComponent } from './matrix/matrix.component';
 import { PhotographerComponent } from './photographer/photographer.component';

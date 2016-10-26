@@ -18,6 +18,7 @@ import { MapModule } from '../map';
 import { ArticleModule } from '../article';
 import { MatrixModule } from '../matrix';
 import { FamilyModule } from '../family';
+import { AboutModule } from '../about';
 
 import { Angulartics2Module } from 'angulartics2';
 
@@ -42,6 +43,7 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
     MatrixModule,
     FamilyModule,
     FormsModule,
+    AboutModule,
     Angulartics2Module.forRoot(),
     routing
   ],

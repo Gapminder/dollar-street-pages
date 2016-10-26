@@ -1,15 +1,13 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs/Rx';
-import { AboutService } from './about.service';
-import { LoaderService } from '../common/loader/loader.service';
-import { TitleHeaderService } from '../common/title-header/title-header.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subscription } from 'rxjs/Subscription';
+import { AboutService } from './about.service';
+import { LoaderService, TitleHeaderService } from '../common';
 
 @Component({
   selector: 'about',
-  templateUrl: './about.template.html',
-  styleUrls: ['./about.css'],
-  encapsulation: ViewEncapsulation.None
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css']
 })
 
 export class AboutComponent implements OnInit, OnDestroy {

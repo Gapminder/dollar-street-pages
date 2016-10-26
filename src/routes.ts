@@ -6,7 +6,8 @@ import { TeamComponent } from './team';
 import { ArticleComponent } from './article';
 import { CountryComponent } from './country';
 import { FamilyComponent } from './family';
-// import { AboutComponent } from './about';
+import { AboutComponent } from './about';
+
 import { MapComponent } from './map';
 import { MatrixComponent } from './matrix';
 import { PhotographerComponent } from './photographer';
@@ -19,7 +20,7 @@ export const routes: Routes = [
   {path: 'photographer/:id', component: PhotographerComponent},
   {path: 'team', component: TeamComponent},
   {path: 'country/:id', component: CountryComponent},
-  // {path: 'about', component: AboutComponent},
+  {path: 'about', component: AboutComponent},
   {path: 'article/:id', component: ArticleComponent},
   {path: '**', redirectTo: 'matrix'}
 ];

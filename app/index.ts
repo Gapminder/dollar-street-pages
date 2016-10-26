@@ -7,7 +7,7 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { routing, routes } from './routes';
 import { AppComponent } from './app.component';
-import { AboutComponent, AboutService } from './about';
+import { AboutComponent, AboutService } from './.';
 import { ArticleComponent, ArticleService } from './article';
 import {
   MatrixComponent,
