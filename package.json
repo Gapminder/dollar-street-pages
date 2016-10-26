@@ -64,7 +64,7 @@
     "browserstacktunnel-wrapper": "2.0.0",
     "codecov": "1.0.1",
     "compression": "1.6.2",
-    "concurrently": "1.0.0",
+    "concurrently": "3.1.0",
     "coveralls": "2.11.14",
     "cpy": "4.0.1",
     "del": "2.2.2",
