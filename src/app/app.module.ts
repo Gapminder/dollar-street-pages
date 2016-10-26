@@ -20,7 +20,7 @@ import { MatrixModule } from '../matrix';
 import { FamilyModule } from '../family';
 import { AboutModule } from '../about';
 
-import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-ga';
 
 @NgModule({
   declarations: [
