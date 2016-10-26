@@ -11,9 +11,9 @@
           <span *ngIf="team.name === 'Organization' || team.name === 'Contributor'">
             <a target="_blank"
                *ngIf="ambassador?.company?.link"
-               [href]="ambassador?.company?.link">
-              <!--angulartics2On="click"-->
-               <!--angularticsEvent=" Moved to {{ambassador?.company?.link}} link">-->
+               [href]="ambassador?.company?.link"
+               angulartics2On="click"
+               angularticsEvent=" Moved to {{ambassador?.company?.link}} link">
               <img [src]="ambassador.avatar || 'assets/img/default-am.jpg'" alt="">
             </a>
 
@@ -26,9 +26,9 @@
           <span *ngIf="team.name === 'Organization' || team.name === 'Contributor'">
             <a target="_blank"
                *ngIf="ambassador?.company?.link"
-               [href]="ambassador?.company?.link">
-              <!--angulartics2On="click"-->
-               <!--angularticsEvent=" Moved to {{ambassador?.company?.link}} link ">-->
+               [href]="ambassador?.company?.link"
+               angulartics2On="click"
+               angularticsEvent=" Moved to {{ambassador?.company?.link}} link ">
               <span *ngIf="team.name === 'Organization'">{{ambassador.name}}</span>
               <div *ngIf="team.name === 'Contributor'">{{ambassador.company.name}}</div>
             </a>

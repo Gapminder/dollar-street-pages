@@ -20,8 +20,6 @@ import { MatrixModule } from '../matrix';
 import { FamilyModule } from '../family';
 import { AboutModule } from '../about';
 
-import { Angulartics2Module } from 'angulartics2';
-
 import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
 
 @NgModule({
@@ -44,7 +42,6 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
     FamilyModule,
     FormsModule,
     AboutModule,
-    Angulartics2Module.forRoot(),
     routing
   ],
   providers: [

@@ -4,8 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { forEach, difference } from 'lodash';
 
-// import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
-import { StreetSettingsService, CountriesFilterService, UrlChangeService } from '../common';
+import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
 
 interface UrlParamsInterface {
   thing: string;
@@ -42,17 +41,17 @@ export class FamilyComponent implements OnInit, OnDestroy {
   private urlChangeService: UrlChangeService;
   private windowHistory: any = history;
   private queryParamsSubscribe: Subscription;
-  // private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
-                     urlChangeService: UrlChangeService) {
-                     // angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     urlChangeService: UrlChangeService,
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
-    // this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.streetSettingsService = streetSettingsService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
@@ -167,7 +166,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
         highIncome: this.rich
       }]);
 
-      // this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
+      this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
 
       return;
     }

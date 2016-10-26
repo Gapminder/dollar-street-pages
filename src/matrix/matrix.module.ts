@@ -3,6 +3,9 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
+import { Angulartics2Module } from 'angulartics2';
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+
 import { SharedModule } from '../shared';
 
 import { MatrixComponent } from './matrix.component';
@@ -25,7 +28,9 @@ import { FamilyInfoService } from './matrix-view-block/matrix-view-block.service
     HttpModule,
     RouterModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    InfiniteScrollModule,
+    Angulartics2Module.forRoot()
   ],
   providers: [
     MatrixService,
