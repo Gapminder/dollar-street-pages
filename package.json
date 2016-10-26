@@ -71,7 +71,7 @@
     "eslint-config-valorsoft": "0.1.0",
     "exports-loader": "0.6.3",
     "file-loader": "0.9.0",
-    "firebase": "3.5.1",
+    "firebase": "3.5.2",
     "gh-pages": "0.11.0",
     "gulp": "3.9.1",
     "gulp-tslint": "6.1.2",

@@ -25,9 +25,7 @@ const paths = gulp.paths;
 
 gulp.task('tslint', () =>
   gulp.src(paths.tssrc)
-    .pipe(tslint({
-      formatter: "verbose"
-    }))
+    .pipe(tslint({formatter: 'verbose'}))
     .pipe(tslint.report({
       emitError: true,
       reportLimit: 0
