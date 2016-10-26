@@ -18,6 +18,7 @@ import { CountryModule } from '../country';
 import { MapModule } from '../map';
 import { ArticleModule } from '../article';
 import { MatrixModule } from '../matrix';
+import { AboutModule } from '../about';
 
 import { Angulartics2Module } from 'angulartics2';
 
@@ -41,6 +42,7 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
     MapModule,
     ArticleModule,
     MatrixModule,
+    AboutModule,
     Angulartics2Module.forRoot(),
     routing
   ],
