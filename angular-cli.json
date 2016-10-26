@@ -19,7 +19,11 @@
         "assets/css/ball-spin.css",
         "assets/css/style.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../src/common/socials/socials-fb-like.js",
+        "../src/common/socials/socials-tw-follow.js",
+        "../src/common/google-analytics/google-analytics.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
