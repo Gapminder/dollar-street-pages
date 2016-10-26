@@ -7,7 +7,6 @@ import { ArticleComponent } from './article';
 import { CountryComponent } from './country';
 import { FamilyComponent } from './family';
 import { AboutComponent } from './about';
-
 import { MapComponent } from './map';
 import { MatrixComponent } from './matrix';
 import { PhotographerComponent } from './photographer';
