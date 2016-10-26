@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
+import { FormsModule } from '@angular/forms';
 import { routing } from '../routes';
 
 import { AppComponent } from './app.component';
@@ -18,6 +17,7 @@ import { CountryModule } from '../country';
 import { MapModule } from '../map';
 import { ArticleModule } from '../article';
 import { MatrixModule } from '../matrix';
+import { FamilyModule } from '../family';
 import { AboutModule } from '../about';
 
 import { Angulartics2Module } from 'angulartics2';
@@ -30,7 +30,6 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpModule,
     SharedModule,
     CommonAppModule,
@@ -42,6 +41,8 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
     MapModule,
     ArticleModule,
     MatrixModule,
+    FamilyModule,
+    FormsModule,
     AboutModule,
     Angulartics2Module.forRoot(),
     routing

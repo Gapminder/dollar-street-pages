@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { HomeComponent } from './home.component';
 import { HeaderWithoutFiltersComponent } from './header-without-filters/header.component';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -48,10 +47,10 @@ import { StreetFilterComponent } from './street-filter/street-filter.component';
 import { StreetFilterDrawService } from './street-filter/street-filter.service';
 
 import { IncomeFilterComponent } from './income-filter/income-filter.component';
+import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
 @NgModule({
   declarations: [
-    HomeComponent,
     HeaderWithoutFiltersComponent,
     MainMenuComponent,
     SocialShareButtonsComponent,
@@ -71,7 +70,8 @@ import { IncomeFilterComponent } from './income-filter/income-filter.component';
     StreetComponent,
     StreetMobileComponent,
     StreetFilterComponent,
-    IncomeFilterComponent
+    IncomeFilterComponent,
+    IsImageLoadedDirective
   ],
   imports: [
     HttpModule,
@@ -100,7 +100,9 @@ import { IncomeFilterComponent } from './income-filter/income-filter.component';
     StreetComponent,
     StreetMobileComponent,
     StreetFilterComponent,
-    IncomeFilterComponent
+    IncomeFilterComponent,
+    MainMenuComponent,
+    IsImageLoadedDirective
   ]
 })
 

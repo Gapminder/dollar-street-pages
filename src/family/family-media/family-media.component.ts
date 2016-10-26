@@ -1,28 +1,23 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Input,
-  Output,
-  EventEmitter,
-  NgZone,
-  AfterViewChecked,
-  ElementRef
-} from '@angular/core';
-import { Subscription, Observable } from 'rxjs/Rx';
-import { Config, ImageResolutionInterface } from '../../app.config';
+import 'rxjs/operator/debounceTime';
+
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone, AfterViewChecked, ElementRef } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import { find, isEqual, slice, concat } from 'lodash';
-import { LoaderService } from '../../common/loader/loader.service';
-import { HomeMediaService } from './home-media.service';
-import { BrowserDetectionService } from '../../common/browser-detection/browser-detection.service';
+
+import { Config, ImageResolutionInterface } from '../../app.config';
+import { LoaderService, BrowserDetectionService } from '../../common';
+import { FamilyMediaService } from './family-media.service';
 
 @Component({
-  selector: 'home-media',
-  templateUrl: './home-media.template.html',
-  styleUrls: ['./home-media.css']
+  selector: 'family-media',
+  templateUrl: './family-media.component.html',
+  styleUrls: ['./family-media.component.css']
 })
 
-export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private windowInnerWidth: number = window.innerWidth;
   private itemSize: number;
   private imageData: any = {};
@@ -31,7 +26,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   private activeImage: any;
   private zoom: number = this.windowInnerWidth < 1024 ? 3 : 4;
   private prevImage: Object;
-  private homeMediaService: HomeMediaService;
+  private familyMediaService: FamilyMediaService;
   private images: any = [];
   private familyPlaceServiceSubscribe: Subscription;
   private resizeSubscribe: Subscription;
@@ -66,9 +61,9 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
   public constructor(zone: NgZone,
                      element: ElementRef,
                      loaderService: LoaderService,
-                     homeMediaService: HomeMediaService,
+                     familyMediaService: FamilyMediaService,
                      browserDetectionService: BrowserDetectionService) {
-    this.homeMediaService = homeMediaService;
+    this.familyMediaService = familyMediaService;
     this.zone = zone;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
@@ -110,8 +105,8 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
           }
         });
 
-    this.familyPlaceServiceSubscribe = this.homeMediaService
-      .getHomeMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}`)
+    this.familyPlaceServiceSubscribe = this.familyMediaService
+      .getFamilyMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -137,8 +132,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
         }, 0);
       });
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
@@ -238,7 +232,7 @@ export class HomeMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.imageData = Object.assign({}, this.imageData);
 
     setTimeout(() => {
-      let viewBlockBox = this.element.querySelector('home-media-view-block') as HTMLElement;
+      let viewBlockBox = this.element.querySelector('family-media-view-block') as HTMLElement;
 
       this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
     }, 0);

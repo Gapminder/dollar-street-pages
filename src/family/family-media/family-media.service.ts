@@ -1,16 +1,20 @@
-import { Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+
 import { Config } from '../../app.config';
 
-export class HomeMediaService {
+import 'rxjs/add/operator/map';
+
+@Injectable()
+export class FamilyMediaService {
   public http: Http;
 
   public constructor(@Inject(Http) http: Http) {
     this.http = http;
   }
 
-  public getHomeMedia(query: any): Observable<any> {
+  public getFamilyMedia(query: any): Observable<any> {
     return this.http.get(`${Config.api}/consumer/api/v1/home-media?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 

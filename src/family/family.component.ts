@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription, Subject } from 'rxjs/Rx';
-import { CountriesFilterService } from '../common/countries-filter/countries-filter.service';
-import { UrlChangeService } from '../common/url-change/url-change.service';
-import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulartics2-google-analytics';
-import * as _ from 'lodash';
-import { StreetSettingsService } from '../common/street/street.settings.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { forEach, difference } from 'lodash';
+
+// import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
+import { StreetSettingsService, CountriesFilterService, UrlChangeService } from '../common';
 
 interface UrlParamsInterface {
   thing: string;
@@ -19,11 +19,11 @@ interface UrlParamsInterface {
 
 @Component({
   selector: 'family',
-  templateUrl: './home.template.html',
-  styleUrls: ['./home.css']
+  templateUrl: './family.component.html',
+  styleUrls: ['./family.component.css']
 })
 
-export class HomeComponent implements OnInit, OnDestroy {
+export class FamilyComponent implements OnInit, OnDestroy {
   private titles: any = {};
   private openFamilyExpandBlock: Subject<any> = new Subject<any>();
   private placeId: string;
@@ -42,17 +42,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   private urlChangeService: UrlChangeService;
   private windowHistory: any = history;
   private queryParamsSubscribe: Subscription;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  // private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
-                     urlChangeService: UrlChangeService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     urlChangeService: UrlChangeService) {
+                     // angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    // this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.streetSettingsService = streetSettingsService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
@@ -167,7 +167,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         highIncome: this.rich
       }]);
 
-      this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
+      // this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
 
       return;
     }
@@ -219,10 +219,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         title = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
       } else {
         let sumCountries: number = 0;
-        let difference: string[] = [];
+        let getDifference: string[] = [];
         let regionCountries: string[] = [];
 
-        _.forEach(this.locations, (location: any) => {
+        forEach(this.locations, (location: any) => {
           if (regions.indexOf(location.region) !== -1) {
             regionCountries = regionCountries.concat(_.map(location.countries, 'country') as string[]);
             sumCountries = +location.countries.length;
@@ -230,12 +230,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
 
         if (sumCountries !== countries.length) {
-          difference = _.difference(countries, regionCountries);
+          getDifference = difference(countries, regionCountries);
         }
 
-        if (difference.length) {
-          title = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+        if (getDifference.length) {
+          title = getDifference.length === 1 && regions.length === 1 ? regions[0] + ' & '
+          + getDifference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
         } else {
           title = regions.join(' & ');
         }

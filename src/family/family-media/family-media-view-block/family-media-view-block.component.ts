@@ -1,17 +1,20 @@
+import 'rxjs/operator/debounceTime';
+
 import { Component, Input, Output, OnChanges, OnDestroy, NgZone, EventEmitter, OnInit } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import { Config, ImageResolutionInterface } from '../../../app.config';
-import { HomeMediaViewBlockService } from './home-media-view-block.service';
-import { StreetSettingsService, DrawDividersInterface } from '../../../common/street/street.settings.service';
-import { BrowserDetectionService } from '../../../common/browser-detection/browser-detection.service';
+import { FamilyMediaViewBlockService } from './family-media-view-block.service';
+import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../../common';
 
 @Component({
-  selector: 'home-media-view-block',
-  templateUrl: './home-media-view-block.template.html',
-  styleUrls: ['./home-media-view-block.css', './mobile/home-media-view-block-mobile.css']
+  selector: 'family-media-view-block',
+  templateUrl: './family-media-view-block.component.html',
+  styleUrls: ['./family-media-view-block.component.css', './family-media-view-block.component.mobile.css']
 })
 
-export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
+export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   protected api: string = Config.api;
   private loader: boolean = false;
   private popIsOpen: boolean = false;
@@ -27,7 +30,7 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
 
   private streetData: DrawDividersInterface;
   private zone: NgZone;
-  private viewBlockService: HomeMediaViewBlockService;
+  private viewBlockService: FamilyMediaViewBlockService;
   private viewBlockServiceSubscribe: Subscription;
   private resizeSubscribe: Subscription;
   private imageResolution: ImageResolutionInterface;
@@ -40,7 +43,7 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     viewBlockService: HomeMediaViewBlockService) {
+                     viewBlockService: FamilyMediaViewBlockService) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
@@ -62,8 +65,7 @@ export class HomeMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy
         this.streetData = res.data;
       });
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {

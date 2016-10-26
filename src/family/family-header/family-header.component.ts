@@ -1,19 +1,20 @@
+import 'rxjs/operator/debounceTime';
+
 import { Component, OnInit, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription, Observable } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+
 import { Config } from '../../app.config';
-import { MathService } from '../../common/math-service/math-service';
-import { HomeHeaderService } from './home-header.service';
-import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
-import { BrowserDetectionService } from '../../common/browser-detection/browser-detection.service';
+import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService } from '../../common';
+import { FamilyHeaderService } from './family-header.service';
 
 @Component({
-  selector: 'home-header',
-  templateUrl: './home-header.template.html',
-  styleUrls: ['./home-header.css']
+  selector: 'family-header',
+  templateUrl: './family-header.component.html',
+  styleUrls: ['./family-header.component.css']
 })
 
-export class HomeHeaderComponent implements OnInit, OnDestroy {
+export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @Input('placeId')
   private placeId: string;
 
@@ -31,8 +32,8 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private aboutDataPosition: {left?: number;top?: number;} = {};
   private windowHeight: number = window.innerHeight;
   private maxHeightPopUp: number = this.windowHeight * .95 - 91;
-  private homeHeaderService: HomeHeaderService;
-  private homeHeaderServiceSubscribe: Subscription;
+  private familyHeaderService: FamilyHeaderService;
+  private familyHeaderServiceSubscribe: Subscription;
   private scrollSubscribe: Subscription;
   private resizeSubscribe: Subscription;
   private zone: NgZone;
@@ -50,14 +51,13 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
                      math: MathService,
                      element: ElementRef,
                      streetSettingsService: StreetSettingsService,
-                     homeHeaderService: HomeHeaderService,
+                     familyHeaderService: FamilyHeaderService,
                      browserDetectionService: BrowserDetectionService) {
-    this.homeHeaderService = homeHeaderService;
     this.zone = zone;
     this.math = math;
     this.streetSettingsService = streetSettingsService;
     this.element = element.nativeElement;
-    this.homeHeaderService = homeHeaderService;
+    this.familyHeaderService = familyHeaderService;
     this.device = browserDetectionService;
   }
 
@@ -67,8 +67,8 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
     this.headerHeight = this.headerElement.offsetHeight;
     this.headerContentHeight = this.element.offsetHeight;
 
-    this.homeHeaderServiceSubscribe = this.homeHeaderService
-      .getHomeHeaderData(`placeId=${this.placeId}`)
+    this.familyHeaderServiceSubscribe = this.familyHeaderService
+      .getFamilyHeaderData(`placeId=${this.placeId}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
@@ -102,8 +102,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.resizeSubscribe = Observable
-      .fromEvent(window, 'resize')
+    this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
         this.zone.run(() => {
@@ -116,7 +115,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.homeHeaderServiceSubscribe.unsubscribe();
+    this.familyHeaderServiceSubscribe.unsubscribe();
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
