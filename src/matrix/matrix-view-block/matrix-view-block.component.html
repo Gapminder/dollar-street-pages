@@ -12,12 +12,13 @@
 
         <div class="home-description-container">
           <h3>
-            <span *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} family,</span>
+            <span
+              *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} family,</span>
             <span style="cursor:pointer"
                   [routerLink]="['/country', familyData?.country?._id]"
-                  [queryParams]="{}">{{familyData?.country?.alias || familyData?.country?.country}}</span>
-            <!--angulartics2On="click"-->
-            <!--angularticsEvent="From Matrix page to {{familyData?.country?.country}} page ">-->
+                  [queryParams]="{}"
+                  angulartics2On="click"
+                  angularticsEvent="From Matrix page to {{familyData?.country?.country}} page ">{{familyData?.country?.alias || familyData?.country?.country}}</span>
           </h3>
 
           <div class="images-container"
@@ -25,18 +26,18 @@
             <div class="image-content"
                  *ngIf="familyData?.familyImage"
                  [routerLink]="['/family']"
-                 [queryParams]="familyData.goToPlaceData">
-              <!--angulartics2On="click"-->
-              <!--angularticsEvent="From Matrix page to {{familyData.familyName}} family place page"-->
+                 [queryParams]="familyData.goToPlaceData"
+                 angulartics2On="click"
+                 angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
               <img [src]="familyData.familyImage.url" alt="Family portrait">
             </div>
 
             <div class="image-content"
                  *ngIf="familyData?.houseImage"
                  [routerLink]="['/family']"
-                 [queryParams]="familyData.goToPlaceData">
-              <!--angulartics2On="click"-->
-              <!--angularticsEvent="From Matrix page to {{familyData.familyName}} family place page"-->
+                 [queryParams]="familyData.goToPlaceData"
+                 angulartics2On="click"
+                 angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
               <img [src]="familyData.houseImage.url" alt="House photo">
             </div>
           </div>
@@ -45,10 +46,10 @@
 
           <a *ngIf="familyData.goToPlaceData"
              [routerLink]="['/family']"
-             [queryParams]="familyData.goToPlaceData">Visit this home <img
+             [queryParams]="familyData.goToPlaceData"
+             angulartics2On="click"
+             angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">Visit this home <img
             src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
-          <!--angulartics2On="click"-->
-          <!--angularticsEvent="From Matrix page to {{familyData.familyName}} family place page"-->
 
           <a *ngIf="isShowCountryButton"
              (click)="goToMatrixByCountry(familyData.country.alias)">
@@ -63,9 +64,9 @@
         <div class="map-container">
           <region-map [routerLink]="['/country', familyData?.country?._id]"
                       [queryParams]="{}"
-                      [mapData]="mapData"></region-map>
-          <!--angulartics2On="click"-->
-          <!--angularticsEvent="From Matrix page to {{familyData.country?.alias}} page"-->
+                      [mapData]="mapData"
+                      angulartics2On="click"
+                      angularticsEvent="From Matrix page to {{familyData.country?.alias}} page"></region-map>
         </div>
       </div>
 
@@ -80,9 +81,9 @@
       <p><img src="/assets/img/cc-icon-small.svg">
         Photo: <a *ngIf="familyData?.photographer?.id"
                   [routerLink]="['/photographer', familyData.photographer.id]"
-                  [queryParams]="{}">
-          <!--angulartics2On="click"-->
-          <!--angularticsEvent="From Matrix page to {{familyData.photographer.name}} Photographer profile"-->
+                  [queryParams]="{}"
+                  angulartics2On="click"
+                  angularticsEvent="From Matrix page to {{familyData.photographer.name}} Photographer profile">
           {{familyData.photographer?.name}}</a> for Dollar Street <a
           href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
       </p>
@@ -126,9 +127,9 @@
         <p><img src="/assets/img/cc-icon-small-white.svg">
           Photo: <a *ngIf="familyData?.photographer?.id"
                     [routerLink]="['/photographer', familyData.photographer.id]"
-                    [queryParams]="{}">
-            <!--angulartics2On="click"-->
-            <!--angularticsEvent="From Matrix page to {{familyData.photographer.name}} Photographer profile"-->
+                    [queryParams]="{}"
+                    angulartics2On="click"
+                    angularticsEvent="From Matrix page to {{familyData.photographer.name}} Photographer profile">
             {{familyData.photographer?.name}}</a> <span class="tablet">
             for Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
           </span>
@@ -149,12 +150,13 @@
     <div class="header-container">
       <div class="title-container">
         <h3>
-          <span *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} family,</span>
+          <span
+            *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} family,</span>
           <span
             [routerLink]="['/country', familyData?.country?._id]"
-            [queryParams]="{}">{{familyData?.country?.alias || familyData?.country?.country}}</span>
-          <!--angulartics2On="click"-->
-          <!--angularticsEvent="From Matrix page to {{familyData?.country?.alias}} page"-->
+            [queryParams]="{}"
+            angulartics2On="click"
+            angularticsEvent="From Matrix page to {{familyData?.country?.alias}} page">{{familyData?.country?.alias || familyData?.country?.country}}</span>
         </h3>
       </div>
 
@@ -168,12 +170,10 @@
 
       <a *ngIf="familyData.goToPlaceData"
          [routerLink]="['/family']"
-         [queryParams]="familyData.goToPlaceData">Visit this home <img
-        src="/assets/img/arrow-right-icon.svg"
-        alt=""><img
-        src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
-      <!--angulartics2On="click"-->
-      <!--angularticsEvent="From Matrix page to {{familyData.familyName}} family place page"-->
+         [queryParams]="familyData.goToPlaceData"
+         angulartics2On="click"
+         angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">Visit this home <img
+        src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
 
       <a class="link-to-page"
          *ngIf="isShowCountryButton"

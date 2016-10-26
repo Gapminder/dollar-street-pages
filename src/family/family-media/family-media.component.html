@@ -1,9 +1,9 @@
 <div class="family-things-container family-things-container-scroll">
-  <div class="family-images-container">
-       <!--infinite-scroll-->
-       <!--[infiniteScrollDistance]="2"-->
-       <!--[infiniteScrollThrottle]="0"-->
-       <!--(scrolled)="onScrollDown()">-->
+  <div class="family-images-container"
+       infinite-scroll
+       [infiniteScrollDistance]="2"
+       [infiniteScrollThrottle]="0"
+       (scrolled)="onScrollDown()">
     <div class="family-image-container"
          *ngFor="let image of currentImages; let i = index"
          (click)="openMedia(image, i)"

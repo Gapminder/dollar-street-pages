@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { Angulartics2Module } from 'angulartics2';
+
 import { HeaderWithoutFiltersComponent } from './header-without-filters/header.component';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -76,7 +78,8 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
   imports: [
     HttpModule,
     RouterModule,
-    CommonModule
+    CommonModule,
+    Angulartics2Module.forRoot()
   ],
   providers: [
     HeaderService,

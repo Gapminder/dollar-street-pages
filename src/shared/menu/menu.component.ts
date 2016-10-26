@@ -133,27 +133,27 @@ export class MainMenuComponent implements OnInit, OnDestroy {
 
         break;
       case '/about':
-        // this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
         this.router.navigate([url], {queryParams: {}});
 
         break;
       case 'https://www.gapminder.org/category/dollarstreet/':
-        // this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page', {});
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page', {});
         this.window.open(url, '_blank');
 
         break;
       case '/map':
-        // this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
         this.router.navigate([url], {queryParams: {thing: 'Families'}});
 
         break;
       case 'https://www.gapminder.org':
-        // this.angulartics2GoogleAnalytics.eventTrack('Go to Gapminder.org from menu', {});
+        this.angulartics2GoogleAnalytics.eventTrack('Go to Gapminder.org from menu', {});
         this.window.open(url, '_blank');
 
         break;
       case 'https://getsatisfaction.com/gapminder':
-        // this.angulartics2GoogleAnalytics.eventTrack('Go to Getsatisfaction.com/gapminder from menu', {});
+        this.angulartics2GoogleAnalytics.eventTrack('Go to Getsatisfaction.com/gapminder from menu', {});
         this.window.open(url, '_blank');
 
         break;
@@ -200,7 +200,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
 
-    // this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
+    this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
   }
 
   private objToQuery(data: any): string {

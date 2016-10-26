@@ -131,7 +131,7 @@ export class HeaderComponent implements OnInit, OnChanges {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
 
-    // this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
+    this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }
 
   protected isFilterGotData(event: any): any {

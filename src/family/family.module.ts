@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../shared';
 
+import { Angulartics2Module } from 'angulartics2';
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+
 import { FamilyComponent }  from './family.component';
 import { FamilyHeaderComponent } from './family-header/family-header.component';
 import { FamilyHeaderService } from './family-header/family-header.service';
@@ -24,7 +27,9 @@ import { FamilyMediaViewBlockService } from './family-media/family-media-view-bl
     HttpModule,
     RouterModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    InfiniteScrollModule,
+    Angulartics2Module.forRoot()
   ],
   providers: [
     FamilyHeaderService,

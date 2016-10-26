@@ -4,9 +4,9 @@
       <img *ngIf="place.image" [src]="place.image"
            [routerLink]="['/family']"
            [queryParams]="{place: place.placeId}"
-           alt="">
-           <!--angulartics2On="click"-->
-           <!--angularticsEvent="Moved from photographer's profile page to {{place.family}} family page">-->
+           alt=""
+           angulartics2On="click"
+           angularticsEvent="Moved from photographer's profile page to {{place.family}} family page">
     </div>
 
     <div class="place-description">
@@ -35,9 +35,9 @@
     <div class="link">
       <a class="custom-button"
          [routerLink]="['/family']"
-         [queryParams]="{place: place.placeId}">Visit family >></a>
-         <!--angulartics2On="click"-->
-         <!--angularticsEvent="Moved from photographer's profile page to {{place.family}} family page">Visit family >></a>-->
+         [queryParams]="{place: place.placeId}"
+         angulartics2On="click"
+         angularticsEvent="Moved from photographer's profile page to {{place.family}} family page">Visit family >></a>
     </div>
   </div>
 </div>
