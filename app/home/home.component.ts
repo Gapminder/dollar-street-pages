@@ -7,9 +7,6 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/src/providers/angulart
 import * as _ from 'lodash';
 import { StreetSettingsService } from '../common/street/street.settings.service';
 
-let tpl = require('./home.template.html');
-let style = require('./home.css');
-
 interface UrlParamsInterface {
   thing: string;
   countries: string;
@@ -22,8 +19,8 @@ interface UrlParamsInterface {
 
 @Component({
   selector: 'family',
-  template: tpl,
-  styles: [style]
+  templateUrl: './home.template.html',
+  styleUrls: ['./home.css']
 })
 
 export class HomeComponent implements OnInit, OnDestroy {

@@ -5,14 +5,12 @@ import { Config } from '../../app.config';
 import { MathService } from '../../common/math-service/math-service';
 import { HomeHeaderService } from './home-header.service';
 import { StreetSettingsService, DrawDividersInterface } from '../../common/street/street.settings.service';
-
-let tpl = require('./home-header.template.html');
-let style = require('./home-header.css');
+import { BrowserDetectionService } from '../../common/browser-detection/browser-detection.service';
 
 @Component({
   selector: 'home-header',
-  template: tpl,
-  styles: [style]
+  templateUrl: './home-header.template.html',
+  styleUrls: ['./home-header.css']
 })
 
 export class HomeHeaderComponent implements OnInit, OnDestroy {
@@ -45,21 +43,26 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
   private streetSettingsService: StreetSettingsService;
   private streetData: DrawDividersInterface;
   private streetServiceSubscribe: Subscription;
+  private device: BrowserDetectionService;
+  private isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,
                      streetSettingsService: StreetSettingsService,
-                     homeHeaderService: HomeHeaderService) {
+                     homeHeaderService: HomeHeaderService,
+                     browserDetectionService: BrowserDetectionService) {
     this.homeHeaderService = homeHeaderService;
     this.zone = zone;
     this.math = math;
     this.streetSettingsService = streetSettingsService;
     this.element = element.nativeElement;
     this.homeHeaderService = homeHeaderService;
+    this.device = browserDetectionService;
   }
 
   public ngOnInit(): void {
+    this.isDesktop = this.device.isDesktop();
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
     this.headerHeight = this.headerElement.offsetHeight;
     this.headerContentHeight = this.element.offsetHeight;
@@ -176,7 +179,7 @@ export class HomeHeaderComponent implements OnInit, OnDestroy {
 
     event.preventDefault();
 
-    Config.animateScroll('scrollBackToTop', 20, 1000);
+    Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   }
 
   protected truncCountryName(countryData: any): any {
