@@ -47,7 +47,7 @@
     "angular2-infinite-scroll": "0.2.6",
     "angulartics2": "1.1.12",
     "bootstrap": "3.3.7",
-    "d3": "3.5.15",
+    "d3": "4.2.8",
     "es6-promise": "4.0.5",
     "es6-shim": "0.35.1",
     "es7-reflect-metadata": "1.6.0",

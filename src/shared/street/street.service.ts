@@ -80,7 +80,6 @@ export class StreetDrawService {
     this.device = browserDetectionService;
     this.isDesktop = this.device.isDesktop();
     this.isMobile = this.device.isMobile();
-
   }
 
   public init(lowIncome: any, highIncome: any, drawDividers: DrawDividersInterface, regions: any, countries: any, thing: string): this {
@@ -97,7 +96,7 @@ export class StreetDrawService {
     this.windowInnerWidth = window.innerWidth;
 
     this.scale = d3
-      .scale.log()
+      .scaleLog()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
       .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
 
@@ -181,10 +180,7 @@ export class StreetDrawService {
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 10;
 
-    d3.svg
-      .axis()
-      .scale(this.scale)
-      .orient('bottom')
+    d3.axisBottom(this.scale)
       .tickFormat(() => {
         return void 0;
       })
@@ -967,11 +963,11 @@ export class StreetDrawService {
 
       this.leftScrollText
         .text(`$${incomeL}`)
-        .attr('x', ()=> this.leftPoint + this.streetOffset / 2 - 4.5 - this.leftScrollText[0][0].getBBox().width / 2);
+        .attr('x', ()=> this.leftPoint + this.streetOffset / 2 - 4.5 - parseInt(this.leftScrollText.style('width'), 10) / 2);
     } else {
       this.leftScrollText
         .text(`$${incomeL}`)
-        .attr('x', ()=> xL + this.streetOffset / 2 - 4.5 - this.leftScrollText[0][0].getBBox().width / 2);
+        .attr('x', ()=> xL + this.streetOffset / 2 - 4.5 - parseInt(this.leftScrollText.style('width'), 10) / 2);
     }
 
     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
@@ -980,11 +976,11 @@ export class StreetDrawService {
 
       this.rightScrollText
         .text(`$${incomeR}`)
-        .attr('x', ()=> this.rightPoint + this.streetOffset / 2 + 4.5 - this.rightScrollText[0][0].getBBox().width / 2);
+        .attr('x', ()=> this.rightPoint + this.streetOffset / 2 + 4.5 - parseInt(this.rightScrollText.style('width'), 10) / 2);
     } else {
       this.rightScrollText
         .text(`$${incomeR}`)
-        .attr('x', ()=> xR + this.streetOffset / 2 + 4.5 - this.rightScrollText[0][0].getBBox().width / 2);
+        .attr('x', ()=> xR + this.streetOffset / 2 + 4.5 - parseInt(this.rightScrollText.style('width'), 10) / 2);
     }
 
     return this;

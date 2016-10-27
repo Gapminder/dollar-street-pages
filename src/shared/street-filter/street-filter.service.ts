@@ -55,7 +55,7 @@ export class StreetFilterDrawService {
     this.halfOfHeight = 0.5 * this.height;
 
     this.scale = d3
-      .scale.log()
+      .scaleLog()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
       .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
 
@@ -148,10 +148,7 @@ export class StreetFilterDrawService {
       return this;
     }
 
-    d3.svg
-      .axis()
-      .scale(this.scale)
-      .orient('bottom')
+    d3.axisBottom(this.scale)
       .tickFormat(() => {
         return void 0;
       })
@@ -593,11 +590,11 @@ export class StreetFilterDrawService {
 
     this.leftScrollText
       .text(`$${incomeL}`)
-      .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - this.leftScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - parseInt(this.leftScrollText.style('width'), 10) / 2);
 
     this.rightScrollText
       .text(`$${incomeR}`)
-      .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - this.rightScrollText[0][0].getBBox().width / 2);
+      .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - parseInt(this.rightScrollText.style('width'), 10) / 2);
     return this;
   };
 }
