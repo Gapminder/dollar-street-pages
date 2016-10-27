@@ -42,7 +42,7 @@
     "@types/d3": "3.5.36",
     "@types/jasmine": "2.5.36",
     "@types/lodash": "4.14.37",
-    "@types/node": "6.0.45",
+    "@types/node": "6.0.46",
     "@types/selenium-webdriver": "2.53.33",
     "angular2-infinite-scroll": "0.2.6",
     "angulartics2": "1.1.12",
