@@ -3,6 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { MathService, DrawDividersInterface, BrowserDetectionService } from '../../common';
 import * as _ from 'lodash';
+
 import { scaleLog } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
