@@ -3,7 +3,9 @@ import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { MathService, DrawDividersInterface, BrowserDetectionService } from '../../common';
 import * as _ from 'lodash';
-import * as d3 from 'd3';
+import { scaleLog } from 'd3-scale';
+import { axisBottom } from 'd3-axis';
+import { select } from 'd3-selection';
 
 @Injectable()
 export class StreetDrawService {
@@ -95,8 +97,7 @@ export class StreetDrawService {
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
 
-    this.scale = d3
-      .scaleLog()
+    this.scale = scaleLog()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
       .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
 
@@ -104,7 +105,7 @@ export class StreetDrawService {
   }
 
   public set setSvg(element: HTMLElement) {
-    this.svg = d3.select(element);
+    this.svg = select(element);
   }
 
   public set(key: any, val: any): this {
@@ -180,11 +181,11 @@ export class StreetDrawService {
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 10;
 
-    d3.axisBottom(this.scale)
-      .tickFormat(() => {
-        return void 0;
-      })
-      .tickSize(6, 0);
+    axisBottom(this.scale)
+    .tickFormat(() => {
+      return void 0;
+    })
+    .tickSize(6, 0);
 
     this.svg
       .selectAll('text.poorest')
@@ -272,7 +273,7 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        (d3.event as any).preventDefault();
+        // (event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -292,7 +293,7 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        (d3.event as any).preventDefault();
+        // (event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -312,7 +313,7 @@ export class StreetDrawService {
       .style('cursor', 'grab')
 
       .on('mousedown', (): void => {
-        (d3.event as any).preventDefault();
+        // (event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -593,7 +594,7 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
-          (d3.event as any).preventDefault();
+          // (event as any).preventDefault();
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
@@ -745,7 +746,7 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', 'white')
         .on('mousedown', (): void=> {
-          (d3.event as any).preventDefault();
+          // (event as any).preventDefault();
           this.sliderRightMove = true;
         })
         .on('touchstart', (): any => this.sliderRightMove = true);
