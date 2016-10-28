@@ -185,8 +185,8 @@ export class StreetDrawService {
     axisBottom(this.scale)
     .tickFormat(() => {
       return void 0;
-    })
-    .tickSize(6, 0);
+    });
+    // .tickSize(6, 0);
 
     this.svg
       .selectAll('text.poorest')
