@@ -1,7 +1,8 @@
 import { DrawDividersInterface } from '../../common';
 import { Injectable } from '@angular/core';
 
-import * as d3 from 'd3';
+import { select } from 'd3-selection';
+import { scaleLog } from 'd3-scale';
 
 @Injectable()
 export class StreetMobileDrawService {
@@ -18,8 +19,7 @@ export class StreetMobileDrawService {
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
 
-    this.scale = d3
-      .scale.log()
+    this.scale = scaleLog()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
       .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
 
@@ -27,7 +27,7 @@ export class StreetMobileDrawService {
   }
 
   public set setSvg(element: HTMLElement) {
-    this.svg = d3.select(element);
+    this.svg = select(element);
   }
 
   public set(key: any, val: any): this {
