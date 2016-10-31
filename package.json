@@ -55,12 +55,12 @@
     "es7-reflect-metadata": "1.6.0",
     "lodash": "4.*",
     "rxjs": "5.0.0-rc.1",
-    "typings": "^1.4.0",
+    "typings": "^1.5.0",
     "zone.js": "0.6.26"
   },
   "devDependencies": {
     "@types/d3": "4.2.37",
-    "angular-cli": "1.0.0-beta.18",
+    "angular-cli": "1.0.0-beta.19-3",
     "babel-polyfill": "6.16.0",
     "browserstack-wrapper": "1.0.0",
     "browserstacktunnel-wrapper": "2.0.0",

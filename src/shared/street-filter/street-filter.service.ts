@@ -132,7 +132,6 @@ export class StreetFilterDrawService {
         return this.scale(d) - indent + 15 + center;
       })
       .on('mousedown', (): void => {
-        // (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -153,7 +152,6 @@ export class StreetFilterDrawService {
     .tickFormat(() => {
       return void 0;
     });
-    // .tickSize(6, 0);
 
     this.svg
       .selectAll('polygon')
@@ -204,7 +202,6 @@ export class StreetFilterDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        // (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -223,7 +220,6 @@ export class StreetFilterDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        // (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -242,7 +238,6 @@ export class StreetFilterDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        // (d3.event as any).preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
