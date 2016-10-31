@@ -73,11 +73,10 @@
   padding-left: 50px;
 }
 
-#country-place .place-description .place-country i {
-  color: #767d86;
-  font-size: 12px;
-  vertical-align: middle;
+#country-place .place-description .place-country img {
   margin-right: 6px;
+  width: 13px;
+  margin-top: -3px;
 }
 
 #country-place .place-description .income {
