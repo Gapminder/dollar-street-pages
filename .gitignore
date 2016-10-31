@@ -18,6 +18,10 @@ app/**/*.js
 app/**/*.js.map
 app/**/*.d.ts
 
+src/**/*.js
+src/**/*.js.map
+src/**/*.d.ts
+
 #ts typings
 typings
 !typings/require.d.ts

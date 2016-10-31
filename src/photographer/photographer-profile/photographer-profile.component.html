@@ -16,12 +16,12 @@
     </p>
 
     <p class="photo">
-      <i class="fa fa-camera"></i> Total Photos: <span
+      <img src="/assets/img/camera.svg" alt=""> Total Photos: <span
       class="pull-right">{{math.round(photographer.imagesCount)}}</span>
     </p>
 
     <p class="camera" *ngIf="photographer.video">
-      <i class="fa fa-video-camera"></i> Total Videos: <span
+      <img src="/assets/img/video-camera.svg" alt=""> Total Videos: <span
       class="pull-right">{{math.round(photographer.video)}}</span>
     </p>
   </div>
@@ -53,28 +53,28 @@
          target="_blank"
          angulartics2On="click"
          angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Google+ account">
-        <i class="fa fa-google-plus-square"></i>
+        <img src="/assets/img/g+-dark.svg" alt="">
       </a>
       <a *ngIf="photographer.facebook"
          [href]="photographer.facebook"
          target="_blank"
          angulartics2On="click"
          angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Facebook account">
-        <i class="fa fa-facebook-square"></i>
+        <img src="/assets/img/f-dark.svg" alt="">
       </a>
       <a *ngIf="photographer.twitter"
          [href]="photographer.twitter"
          target="_blank"
          angulartics2On="click"
          angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}} Twitter account">
-        <i class="fa fa-twitter-square"></i>
+        <img src="/assets/img/tw-dark.svg" alt="">
       </a>
       <a *ngIf="photographer.linkedIn"
          [href]="photographer.linkedIn"
          target="_blank"
          angulartics2On="click"
          angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Linkedin account">
-        <i class="fa fa-linkedin-square"></i>
+        <img src="/assets/img/in-dark.svg" alt="">
       </a>
     </div>
   </div>
@@ -97,11 +97,11 @@
       </div>
 
       <div class="photo">
-        <i class="fa fa-camera"></i> Total Photos: <span>{{math.round(photographer.imagesCount) || 0}}</span>
+        <img src="/assets/img/camera.svg" alt=""> Total Photos: <span>{{math.round(photographer.imagesCount) || 0}}</span>
       </div>
 
       <div class="camera" *ngIf="photographer.video">
-        <i class="fa fa-video-camera"></i> Total Videos: <span>{{math.round(photographer.video) || 0}}</span>
+        <img src="/assets/img/video-camera.svg" alt=""> Total Videos: <span>{{math.round(photographer.video) || 0}}</span>
       </div>
 
       <div class="more-info" *ngIf="isShowInfoMore(photographer)">
@@ -140,7 +140,7 @@
                target="_blank"
                angulartics2On="click"
                angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Google+ account by mobile">
-              <i class="fa fa-google-plus-square"></i>
+              <img src="/assets/img/g+-dark.svg" alt="">
             </a>
 
             <a *ngIf="photographer.facebook"
@@ -148,7 +148,7 @@
                target="_blank"
                angulartics2On="click"
                angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Facebook account by mobile">
-              <i class="fa fa-facebook-square"></i>
+              <img src="/assets/img/f-dark.svg" alt="">
             </a>
 
             <a *ngIf="photographer.twitter"
@@ -156,7 +156,7 @@
                target="_blank"
                angulartics2On="click"
                angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}} Twitter account by mobile">
-              <i class="fa fa-twitter-square"></i>
+              <img src="/assets/img/tw-dark.svg" alt="">
             </a>
 
             <a *ngIf="photographer.linkedIn"
@@ -164,7 +164,7 @@
                target="_blank"
                angulartics2On="click"
                angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Linkedin account by mobile">
-              <i class="fa fa-linkedin-square"></i>
+              <img src="/assets/img/in-dark.svg" alt="">
             </a>
           </div>
 

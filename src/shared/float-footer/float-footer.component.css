@@ -54,10 +54,10 @@
   float: right;
 }
 
-.float-footer-container .back-to-top i {
-  color: #767d86;
-  font-size: 30px;
-  margin: -6px 0;
+.float-footer-container .back-to-top img {
+  width: 19px;
+  margin: 4px 0 0;
+  vertical-align: top;
 }
 
 @media (max-width: 1023px) {

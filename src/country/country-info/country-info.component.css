@@ -71,12 +71,16 @@
   margin-right: 2px;
 }
 
-#item-profile .main .photo i {
-  font-size: 13px;
+#item-profile .main .photo img {
+  height: 13px;
+  margin-top: -5px;
+  margin-right: 2px;
 }
 
-#item-profile .main .camera i {
-  font-size: 14px;
+#item-profile .main .camera img {
+  height: 13px;
+  margin-top: -5px;
+  margin-right: 2px;
 }
 
 #item-profile .main span {
@@ -195,7 +199,7 @@
 }
 
 #item-profile-mobile .item-description-header img {
-  width: 13px;
+  height: 13px;
   margin-top: -5px;
 }
 

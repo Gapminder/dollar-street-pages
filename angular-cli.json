@@ -15,15 +15,9 @@
       "prefix": "",
       "mobile": false,
       "styles": [
-        "../node_modules/bootstrap/dist/css/bootstrap.css",
-        "assets/css/ball-spin.css",
-        "assets/css/style.css"
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css"
       ],
-      "scripts": [
-        "../src/common/socials/socials-fb-like.js",
-        "../src/common/socials/socials-tw-follow.js",
-        "../src/common/google-analytics/google-analytics.js"
-      ],
+      "scripts": [],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
