@@ -12,7 +12,7 @@ export class Config {
   // public static api: string = '//192.168.1.57';
   // public static api: string = '//192.168.1.95';
 
-  private static windowInnerWidth: number = window.innerWidth;
+  public static windowInnerWidth: number = window.innerWidth;
 
   public static getCoordinates(querySelector: string, cb: any): any {
     let box: any = document.querySelector(querySelector).getBoundingClientRect();
@@ -72,7 +72,7 @@ export class Config {
     window.requestAnimationFrame(this.goToScroll(step, duration, inc));
   }
 
-  private static goToScroll(step: number, duration: number, inc: number): any {
+  public static goToScroll(step: number, duration: number, inc: number): any {
     return () => {
       const currentDuration = duration - inc;
 
@@ -86,7 +86,7 @@ export class Config {
     };
   }
 
-  private static incScrollTop(step: number): void {
+  public static incScrollTop(step: number): void {
     if (document.body.scrollTop) {
       document.body.scrollTop += step;
     } else {

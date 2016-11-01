@@ -11,13 +11,13 @@ import { CountryPlacesService } from './country-places.service';
 
 export class CountryPlacesComponent implements OnInit, OnDestroy {
   @Input()
-  private countryId: string;
-  private places: any = [];
-  private country: any;
-  private math: MathService;
-  private loaderService: LoaderService;
-  private countryPlacesService: CountryPlacesService;
-  private countryPlacesServiceSubscribe: Subscription;
+  public countryId: string;
+  public places: any = [];
+  public country: any;
+  public math: MathService;
+  public loaderService: LoaderService;
+  public countryPlacesService: CountryPlacesService;
+  public countryPlacesServiceSubscribe: Subscription;
 
   public constructor(countryPlacesService: CountryPlacesService,
                      loaderService: LoaderService,

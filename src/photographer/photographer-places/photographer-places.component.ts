@@ -11,11 +11,11 @@ import { PhotographerPlacesService } from './photographer-places.service';
 
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   @Input() public photographerId: string;
-  private places: any = [];
-  private math: MathService;
-  private loaderService: LoaderService;
-  private photographerPlacesServiceSubscribe: Subscription;
-  private photographerPlacesService: PhotographerPlacesService;
+  public places: any = [];
+  public math: MathService;
+  public loaderService: LoaderService;
+  public photographerPlacesServiceSubscribe: Subscription;
+  public photographerPlacesService: PhotographerPlacesService;
 
   public constructor(math: MathService,
                      loaderService: LoaderService,

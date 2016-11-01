@@ -1,4 +1,4 @@
-quick-guide {
+:host(quick-guide) {
   display: block;
   position: relative;
 }
@@ -50,7 +50,7 @@ quick-guide {
   margin: 14px 0 13px;
 }
 
-.quick-guide-container .guide-description p {
+.quick-guide-container .guide-description >>> p {
   margin: 0;
 }
 

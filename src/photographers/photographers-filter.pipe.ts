@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PhotographersFilterPipe implements PipeTransform {
   public transform(...args: any[]): any[] {
     let [value, text, countries, nested] = args;
-    let photographersArr = [];
+    let photographersArr: any[] = [];
 
     countries = JSON.parse(JSON.stringify(countries));
 

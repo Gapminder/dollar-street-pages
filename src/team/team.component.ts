@@ -10,11 +10,11 @@ import { LoaderService, TitleHeaderService } from '../common';
 })
 
 export class TeamComponent implements OnInit, OnDestroy {
-  private teamList: any;
-  private teamService: TeamService;
-  private teamSubscribe: Subscription;
-  private titleHeaderService: TitleHeaderService;
-  private loaderService: LoaderService;
+  public teamList: any;
+  public teamService: TeamService;
+  public teamSubscribe: Subscription;
+  public titleHeaderService: TitleHeaderService;
+  public loaderService: LoaderService;
 
   public constructor(teamService: TeamService,
                      loaderService: LoaderService,

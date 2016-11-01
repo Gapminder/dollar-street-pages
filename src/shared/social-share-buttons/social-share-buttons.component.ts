@@ -1,21 +1,21 @@
-import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { SocialShareButtonsService } from './social-share-buttons.service';
 
 @Component({
   selector: 'social-share-buttons',
   templateUrl: 'social-share-buttons.component.html',
-  styleUrls: ['social-share-buttons.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['social-share-buttons.component.css']
 })
+
 export class SocialShareButtonsComponent implements OnDestroy {
-  private url: string;
-  private locationPath: string;
-  private newWindow: any;
-  private location: any = location;
-  private window: Window = window;
-  private socialShareButtonsServiceSubscribe: Subscription;
-  private socialShareButtonsService: SocialShareButtonsService;
+  public url: string;
+  public locationPath: string;
+  public newWindow: any;
+  public location: any = location;
+  public window: Window = window;
+  public socialShareButtonsServiceSubscribe: Subscription;
+  public socialShareButtonsService: SocialShareButtonsService;
 
   public constructor(socialShareButtonsService: SocialShareButtonsService) {
     this.socialShareButtonsService = socialShareButtonsService;
@@ -27,7 +27,7 @@ export class SocialShareButtonsComponent implements OnDestroy {
     }
   }
 
-  protected openPopUp(originalUrl: string): void {
+  public openPopUp(originalUrl: string): void {
     let left: number = (this.window.innerWidth - 490) / 2;
     this.newWindow = this.window.open('', '_blank', 'width=490, height=368, top=100, left=' + left);
 
@@ -55,7 +55,7 @@ export class SocialShareButtonsComponent implements OnDestroy {
       });
   }
 
-  protected openWindow(originalUrl: string, url: any): void {
+  public openWindow(originalUrl: string, url: any): void {
     this.newWindow.location.href = originalUrl + url;
     this.newWindow.focus();
   }

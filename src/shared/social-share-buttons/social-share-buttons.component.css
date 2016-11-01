@@ -9,66 +9,6 @@
   cursor: pointer;
 }
 
-.share-button-container .share-button i {
-  font-size: 24px;
-  color: #e0e7ef;
-}
-
-main-menu social-share-buttons {
-  display: inline-block;
-  vertical-align: top;
-}
-
-main-menu social-share-buttons .share-button-container svg {
-  width: 20px;
-  height: 20px;
-}
-
-main-menu social-share-buttons .share-button-container svg .cls-1 {
-  fill: #e0e7ef;
-}
-
-float-footer .share-button-container .share-button svg {
-  width: 20px;
-  height: 20px;
-}
-
-float-footer .share-button-container .share-button.twitter svg .cls-1 {
-  fill: #1da1f2;
-}
-
-float-footer .share-button-container .share-button.facebook svg .cls-1 {
-  fill: #3b5998;
-}
-
-float-footer .share-button-container .share-button.linkedin svg .cls-1 {
-  fill: #0077b5;
-}
-
-float-footer .share-button-container .share-button.google svg .cls-1 {
-  fill: #cc3732;
-}
-
-main-menu #main-mobile-menu social-share-buttons .share-button-container .share-button svg {
-  height: 24px;
-  width: 24px
-}
-
-main-menu #main-mobile-menu social-share-buttons .share-button-container .share-button svg .cls-1 {
-  fill: #374551;
-}
-
-@media (max-width: 1023px) {
-  main-menu social-share-buttons .share-button-container .share-button svg {
-    height: 22px;
-    width: 22px
-  }
-
-  main-menu social-share-buttons .share-button-container .share-button svg .cls-1 {
-    fill: #edf0f5;
-  }
-}
-
 @media (max-width: 599px) {
   .share-button-container > div:first-child {
     margin-left: 14px;

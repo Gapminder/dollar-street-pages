@@ -11,20 +11,20 @@ import { StreetSettingsService } from '../../common';
 
 export class IncomeFilterComponent implements OnInit {
   @Input('places')
-  protected places: any[];
+  public places: any[];
   @Input('lowIncome')
-  protected lowIncome: number;
+  public lowIncome: number;
   @Input('highIncome')
-  protected highIncome: number;
+  public highIncome: number;
   @Output('sendResponse')
-  private sendResponse: EventEmitter<any> = new EventEmitter<any>();
-  private range: {lowIncome: number; highIncome: number; close?: boolean} = {
+  public sendResponse: EventEmitter<any> = new EventEmitter<any>();
+  public range: {lowIncome: number; highIncome: number; close?: boolean} = {
     lowIncome: this.lowIncome,
     highIncome: this.highIncome
   };
-  private streetData: any;
-  private streetSettingsService: StreetSettingsService;
-  private streetServiceSubscribe: Subscription;
+  public streetData: any;
+  public streetSettingsService: StreetSettingsService;
+  public streetServiceSubscribe: Subscription;
 
   public constructor(streetSettingsService: StreetSettingsService) {
     this.streetSettingsService = streetSettingsService;
@@ -41,7 +41,7 @@ export class IncomeFilterComponent implements OnInit {
       });
   }
 
-  protected closeFilter(isClose?: boolean): void {
+  public closeFilter(isClose?: boolean): void {
     if (isClose) {
       this.sendResponse.emit({close: true});
       return;
@@ -52,11 +52,11 @@ export class IncomeFilterComponent implements OnInit {
     this.sendResponse.emit(this.range);
   }
 
-  protected getFilter(data: {lowIncome: number;highIncome: number}): void {
+  public getFilter(data: {lowIncome: number;highIncome: number}): void {
     this.range = data;
   }
 
-  protected showAll(): void {
+  public showAll(): void {
     this.range.lowIncome = this.streetData.poor;
     this.range.highIncome = this.streetData.rich;
     this.range.close = true;

@@ -20,7 +20,7 @@
   bottom: 0;
 }
 
-.float-footer-container span {
+.float-footer-container >>> span {
   color: #767d86;
   font-size: 16px;
   float: left;
@@ -34,16 +34,37 @@
   margin-bottom: -3px;
 }
 
-.float-footer-container .follow-buttons-container .twitter-follow-button {
-  margin-right: 10px;
-  margin-bottom: -2px;
+.float-footer-container social-share-buttons >>> .share-button svg {
+  width: 21px;
+  height: 21px;
+}
+
+.float-footer-container social-share-buttons >>> .share-button.twitter svg .cls-1 {
+  fill: #1da1f2;
+}
+
+.float-footer-container social-share-buttons >>> .share-button.facebook svg .cls-1 {
+  fill: #3b5998;
+}
+
+.float-footer-container social-share-buttons >>> .share-button.linkedin svg .cls-1 {
+  fill: #0077b5;
+}
+
+.float-footer-container social-share-buttons >>> .share-button.google svg .cls-1 {
+  fill: #cc3732;
 }
 
 .float-footer-container .follow-buttons-container {
   float: right;
 }
 
-.float-footer-container .follow-buttons-container .fb-like {
+.float-footer-container .follow-buttons-container >>> .twitter-follow-button {
+  margin-right: 10px;
+  margin-bottom: -2px;
+}
+
+.float-footer-container .follow-buttons-container >>> .fb-like {
   margin-right: 10px;
   display: inline-block;
 }
@@ -71,7 +92,7 @@
     padding: 9px 5px;
   }
 
-  .float-footer-container span {
+  .float-footer-container >>> span {
     font-size: 16px;
     margin: 1px -4px 0 0;
   }
@@ -81,11 +102,11 @@
     font-size: 16px;
   }
 
-  .float-footer-container .follow-buttons-container .twitter-follow-button {
+  .float-footer-container .follow-buttons-container >>> .twitter-follow-button {
     margin: 0;
   }
 
-  .float-footer-container .follow-buttons-container .fb-like {
+  .float-footer-container .follow-buttons-container >>> .fb-like {
     margin-right: 10px;
     display: inline-block;
   }

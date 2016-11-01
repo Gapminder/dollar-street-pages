@@ -45,11 +45,6 @@
   padding: 7px 0;
 }
 
-#item-profile .main i {
-  color: #767d86;
-  margin-right: 2px;
-}
-
 #item-profile .main .photo {
   margin: 10px 0;
 }
@@ -193,11 +188,6 @@
   margin-top: -5px;
 }
 
-#item-profile-mobile .item-description-header i {
-  font-size: 13px;
-  color: #767d86;
-}
-
 #item-profile-mobile .item-description-header span {
   color: #767d86;
   font-size: 14px;
@@ -221,6 +211,7 @@
   margin: 0;
   display: inline-block;
   vertical-align: top;
+  cursor: pointer;
 }
 
 #item-profile-mobile .more-info img {
@@ -270,10 +261,10 @@
   margin-bottom: 3px;
 }
 
-#item-profile-mobile .company-container .social-network-container i {
-  color: #374551;
-  font-size: 20px;
+#item-profile-mobile .company-container .social-network-container img {
   margin-right: 15px;
+  width: 18px;
+  vertical-align: top;
 }
 
 #item-profile-mobile .company-container p {

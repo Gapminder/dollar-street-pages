@@ -9,15 +9,15 @@ import { Subscription } from 'rxjs/Subscription';
 })
 
 export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
-  protected markerPosition: any = {};
+  public markerPosition: any = {};
 
   @Input('mapData')
-  private mapData: any;
+  public mapData: any;
 
-  private mapImage: HTMLImageElement;
-  private element: HTMLElement;
-  private zone: NgZone;
-  private resizeSubscriber: Subscription;
+  public mapImage: HTMLImageElement;
+  public element: HTMLElement;
+  public zone: NgZone;
+  public resizeSubscriber: Subscription;
 
   public constructor(zone: NgZone,
                      element: ElementRef) {
@@ -59,8 +59,8 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public drawMarker(place: any, mapImage: any): void {
-    let stepTop;
-    let stepRight;
+    let stepTop: number;
+    let stepRight: number;
     let widthOfMap = mapImage.offsetWidth;
     let heightOfMap = mapImage.offsetHeight;
     let greenwich = widthOfMap * 0.437;
@@ -86,7 +86,7 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
     this.mapImage.src = this.getMapImage(place.region);
   }
 
-  private getMapImage(region: string): string {
+  public getMapImage(region: string): string {
     let url: string;
 
     if (region === 'Africa') {

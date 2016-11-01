@@ -10,12 +10,12 @@ import { MathService, TitleHeaderService } from '../common';
 })
 
 export class CountryComponent implements OnInit, OnDestroy {
-  protected title: string;
-  private countryId: string;
-  private math: MathService;
-  private activatedRoute: ActivatedRoute;
-  private queryParamsSubscribe: Subscription;
-  private titleHeaderService: TitleHeaderService;
+  public title: string;
+  public countryId: string;
+  public math: MathService;
+  public activatedRoute: ActivatedRoute;
+  public queryParamsSubscribe: Subscription;
+  public titleHeaderService: TitleHeaderService;
 
   public constructor(activatedRoute: ActivatedRoute,
                      math: MathService,
@@ -39,7 +39,7 @@ export class CountryComponent implements OnInit, OnDestroy {
     this.queryParamsSubscribe.unsubscribe();
   }
 
-  protected setTitle(title: string): void {
+  public setTitle(title: string): void {
     this.titleHeaderService.setTitle(title);
   }
 }

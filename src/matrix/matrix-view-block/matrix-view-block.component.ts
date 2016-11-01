@@ -25,48 +25,48 @@ import { FamilyInfoService } from './matrix-view-block.service';
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  protected api: string = Config.api;
+  public api: string = Config.api;
 
-  private familyInfoServiceSubscribe: Subscription;
-  private fancyBoxImage: any;
-  private showblock: boolean;
-  private familyData: any = {};
-  private loader: boolean = false;
-  private markerPositionLeft: number;
-  private math: MathService;
-  private privateZoom: any;
-  private resizeSubscribe: Subscription;
-  private popIsOpen: boolean;
-  private mapData: any;
-  private familyInfoService: FamilyInfoService;
-  private zone: NgZone;
-  private router: Router;
-  private boxContainerPadding: number;
-  private widthScroll: number;
-  private element: HTMLElement;
-  private boxContainer: HTMLElement;
-  private windowInnerWidth: number = window.innerWidth;
-  private isShowCountryButton: boolean;
-  private countryName: string;
-  private streetData: DrawDividersInterface;
-  private streetSettingsService: StreetSettingsService;
-  private streetServiceSubscribe: Subscription;
+  public familyInfoServiceSubscribe: Subscription;
+  public fancyBoxImage: any;
+  public showblock: boolean;
+  public familyData: any = {};
+  public loader: boolean = false;
+  public markerPositionLeft: number;
+  public math: MathService;
+  public privateZoom: any;
+  public resizeSubscribe: Subscription;
+  public popIsOpen: boolean;
+  public mapData: any;
+  public familyInfoService: FamilyInfoService;
+  public zone: NgZone;
+  public router: Router;
+  public boxContainerPadding: number;
+  public widthScroll: number;
+  public element: HTMLElement;
+  public boxContainer: HTMLElement;
+  public windowInnerWidth: number = window.innerWidth;
+  public isShowCountryButton: boolean;
+  public countryName: string;
+  public streetData: DrawDividersInterface;
+  public streetSettingsService: StreetSettingsService;
+  public streetServiceSubscribe: Subscription;
 
   @Input('positionInRow')
-  private positionInRow: any;
+  public positionInRow: any;
   @Input('query')
-  private query: any;
+  public query: any;
   @Input('place')
-  private place: any;
+  public place: any;
   @Input('thing')
-  private thing: string;
+  public thing: string;
   @Output('closeBigImageBlock')
-  private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
+  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output('goToMatrixWithCountry')
-  private goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
-  private imageResolution: ImageResolutionInterface;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
+  public imageResolution: ImageResolutionInterface;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -165,11 +165,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  protected closeBlock(): void {
+  public closeBlock(): void {
     this.closeBigImageBlock.emit({});
   }
 
-  protected openPopUp(): void {
+  public openPopUp(): void {
     this.popIsOpen = true;
 
     let imgUrl = this.place.background.replace(this.imageResolution.expand, this.imageResolution.full);
@@ -184,12 +184,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     newImage.src = imgUrl;
   };
 
-  protected fancyBoxClose(): void {
+  public fancyBoxClose(): void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
   }
 
-  protected goToMatrixByCountry(country: string): void {
+  public goToMatrixByCountry(country: string): void {
     let query: any = this.parseUrl(this.query);
 
     query.regions = 'World';
@@ -202,11 +202,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.goToMatrixWithCountry.emit({url: this.objToQuery(query), isCountriesFilter: true});
   }
 
-  private parseUrl(url: string): any {
+  public parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 
-  private setMarkerPosition(): void {
+  public setMarkerPosition(): void {
     this.widthScroll = window.innerWidth - document.body.offsetWidth;
 
     let boxContainer = this.element.querySelector('.view-image-block-container') as HTMLElement;
@@ -224,7 +224,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
   }
 
-  private getDescription(shortDescription: string): string {
+  public getDescription(shortDescription: string): string {
     let numbers: number = 300;
 
     if (this.isDesktop) {
@@ -242,13 +242,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private objToQuery(data: any): string {
+  public objToQuery(data: any): string {
     return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
   }
 
-  private truncCountryName(countryData: any): string {
+  public truncCountryName(countryData: any): string {
     let countryName: string;
 
     switch (countryData.alias) {

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class BrowserDetectionService {
-  private window: Window = window;
-  private userAgent: string = this.window.navigator.userAgent.toLowerCase();
+  public window: Window = window;
+  public userAgent: string = this.window.navigator.userAgent.toLowerCase();
 
   public isMobile(): boolean {
     return this.androidPhone() || this.iphone() || this.ipod() || this.windowsPhone() || this.blackberryPhone() || this.fxosPhone() || this.meego();
@@ -17,71 +17,71 @@ export class BrowserDetectionService {
     return !this.isTablet() && !this.isMobile();
   };
 
-  private find(needle: string): boolean {
+  public find(needle: string): boolean {
     return this.userAgent.indexOf(needle) !== -1;
   }
 
-  private iphone(): boolean {
+  public iphone(): boolean {
     return this.find('iphone');
   };
 
-  private ipod(): boolean {
+  public ipod(): boolean {
     return this.find('ipod');
   };
 
-  private ipad(): boolean {
+  public ipad(): boolean {
     return this.find('ipad');
   };
 
-  private android(): boolean {
+  public android(): boolean {
     return this.find('android');
   };
 
-  private androidPhone(): boolean {
+  public androidPhone(): boolean {
     return this.android() && this.find('mobile');
   };
 
-  private androidTablet(): boolean {
+  public androidTablet(): boolean {
     return this.android() && !this.find('mobile');
   };
 
-  private blackberry(): boolean {
+  public blackberry(): boolean {
     return this.find('blackberry') || this.find('bb10') || this.find('rim');
   };
 
-  private blackberryPhone(): boolean {
+  public blackberryPhone(): boolean {
     return this.blackberry() && !this.find('tablet');
   };
 
-  private blackberryTablet(): boolean {
+  public blackberryTablet(): boolean {
     return this.blackberry() && this.find('tablet');
   };
 
-  private windows(): boolean {
+  public windows(): boolean {
     return this.find('windows');
   };
 
-  private windowsPhone(): boolean {
+  public windowsPhone(): boolean {
     return this.windows() && this.find('phone');
   };
 
-  private windowsTablet(): boolean {
+  public windowsTablet(): boolean {
     return this.windows() && (this.find('touch') && !this.windowsPhone());
   };
 
-  private fxos(): boolean {
+  public fxos(): boolean {
     return (this.find('(mobile;') || this.find('(tablet;')) && this.find('; rv:');
   };
 
-  private fxosPhone(): boolean {
+  public fxosPhone(): boolean {
     return this.fxos() && this.find('mobile');
   };
 
-  private fxosTablet(): boolean {
+  public fxosTablet(): boolean {
     return this.fxos() && this.find('tablet');
   };
 
-  private meego(): boolean {
+  public meego(): boolean {
     return this.find('meego');
   };
 }
