@@ -4,8 +4,8 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TitleHeaderService {
-  private title: string = '';
-  private titleEvents: Subject<any>;
+  public title: string = '';
+  public titleEvents: Subject<any>;
 
   public constructor() {
     this.titleEvents = new Subject<any>();

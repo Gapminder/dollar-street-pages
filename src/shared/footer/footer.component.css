@@ -1,4 +1,4 @@
-footer {
+:host(footer) {
   position: absolute !important;
   bottom: 0;
   left: 0;
@@ -77,7 +77,7 @@ footer {
   line-height: 20px;
 }
 
-.footer .description-content div p {
+.footer .description-content div >>> p {
   margin: 0;
 }
 
@@ -101,12 +101,6 @@ footer {
   text-align: right;
   position: absolute;
   right: 16px;
-  bottom: 60px;
-}
-
-.family .footer .valor,
-.matrix .footer .valor {
-  right: 22px;
   bottom: 60px;
 }
 
@@ -139,12 +133,6 @@ footer {
 .footer .container {
   position: relative;
   padding-bottom: 60px;
-}
-
-.family .footer .container,
-.matrix .footer .container {
-  width: 100% !important;
-  padding: 0 22px 60px;
 }
 
 @media (max-width: 1023px) {

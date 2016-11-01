@@ -14,22 +14,22 @@ import { StreetFilterDrawService } from './street-filter.service';
 })
 
 export class StreetFilterComponent implements OnInit, OnDestroy {
-  private math: MathService;
+  public math: MathService;
   @Input('places')
-  private places: any[];
+  public places: any[];
   @Input('lowIncome')
-  private lowIncome: number;
+  public lowIncome: number;
   @Input('highIncome')
-  private highIncome: number;
+  public highIncome: number;
   @Output('filterStreet')
-  private filterStreet: EventEmitter<any> = new EventEmitter<any>();
-  private street: any;
-  private streetSettingsService: StreetSettingsService;
-  private streetData: any;
-  private element: HTMLElement;
-  private streetFilterSubscribe: Subscription;
-  private streetServiceSubscribe: Subscription;
-  private resize: any;
+  public filterStreet: EventEmitter<any> = new EventEmitter<any>();
+  public street: any;
+  public streetSettingsService: StreetSettingsService;
+  public streetData: any;
+  public element: HTMLElement;
+  public streetFilterSubscribe: Subscription;
+  public streetServiceSubscribe: Subscription;
+  public resize: any;
 
   public constructor(element: ElementRef,
                      math: MathService,
@@ -78,7 +78,7 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
     this.streetServiceSubscribe.unsubscribe();
   }
 
-  private setDividers(places: any, drawDividers: any): void {
+  public setDividers(places: any, drawDividers: any): void {
 
     this.street
       .clearSvg()

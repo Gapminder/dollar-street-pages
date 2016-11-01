@@ -177,6 +177,18 @@
 
 #main-mobile-menu social-share-buttons {
   vertical-align: top;
+  display: inline-block;
+  margin-top: 2px;
+}
+
+#main-mobile-menu social-share-buttons >>> .share-button-container .share-button svg {
+  height: 24px;
+  width: 24px;
+  vertical-align: middle;
+}
+
+#main-mobile-menu social-share-buttons >>> .share-button-container .share-button svg .cls-1 {
+  fill: #374551;
 }
 
 @media (max-width: 599px) {
@@ -184,5 +196,9 @@
     width: 43px;
     height: 40px;
     margin-top: 17px;
+  }
+
+  #main-mobile-menu social-share-buttons >>> .share-button-container > div {
+    margin-left: 12px;
   }
 }

@@ -15,30 +15,30 @@ import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService }
 })
 
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  protected api: string = Config.api;
-  private loader: boolean = false;
-  private popIsOpen: boolean = false;
-  private fancyBoxImage: string;
-  private country: any;
-  private countryName: any;
-  private article: any;
+  public api: string = Config.api;
+  public loader: boolean = false;
+  public popIsOpen: boolean = false;
+  public fancyBoxImage: string;
+  public country: any;
+  public countryName: any;
+  public article: any;
   @Input('imageData')
-  private imageData: any;
+  public imageData: any;
 
   @Output('closeBigImageBlock')
-  private closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
+  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
-  private streetData: DrawDividersInterface;
-  private zone: NgZone;
-  private viewBlockService: FamilyMediaViewBlockService;
-  private viewBlockServiceSubscribe: Subscription;
-  private resizeSubscribe: Subscription;
-  private imageResolution: ImageResolutionInterface;
-  private windowInnerWidth: number = window.innerWidth;
-  private streetServiceSubscribe: Subscription;
-  private streetSettingsService: StreetSettingsService;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public streetData: DrawDividersInterface;
+  public zone: NgZone;
+  public viewBlockService: FamilyMediaViewBlockService;
+  public viewBlockServiceSubscribe: Subscription;
+  public resizeSubscribe: Subscription;
+  public imageResolution: ImageResolutionInterface;
+  public windowInnerWidth: number = window.innerWidth;
+  public streetServiceSubscribe: Subscription;
+  public streetSettingsService: StreetSettingsService;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
@@ -130,7 +130,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     this.viewBlockServiceSubscribe.unsubscribe();
   }
 
-  protected openPopUp(): void {
+  public openPopUp(): void {
     this.popIsOpen = true;
 
     let imgUrl = this.imageData.image.replace(this.imageResolution.expand, this.imageResolution.full);
@@ -145,16 +145,16 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     newImage.src = imgUrl;
   };
 
-  protected fancyBoxClose(): void {
+  public fancyBoxClose(): void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
   }
 
-  protected closeImageBlock(): void {
+  public closeImageBlock(): void {
     this.closeBigImageBlock.emit({});
   }
 
-  private truncCountryName(countryData: any): any {
+  public truncCountryName(countryData: any): any {
     switch (countryData.name) {
       case 'South Africa' :
         this.countryName = 'SA';
@@ -170,7 +170,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
-  private getDescription(shortDescription: string): string {
+  public getDescription(shortDescription: string): string {
     let numbers: number = 600;
 
     if (this.isDesktop) {

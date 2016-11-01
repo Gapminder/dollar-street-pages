@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, NgZone, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Config } from '../../app.config';
@@ -7,16 +7,15 @@ import { BrowserDetectionService } from '../../common';
 @Component({
   selector: 'float-footer',
   templateUrl: './float-footer.component.html',
-  styleUrls: ['./float-footer.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./float-footer.component.css']
 })
 
 export class FloatFooterComponent implements OnInit, OnDestroy {
-  private zone: NgZone;
-  private element: HTMLElement;
-  private scrollSubscribe: Subscription;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public zone: NgZone;
+  public element: HTMLElement;
+  public scrollSubscribe: Subscription;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,

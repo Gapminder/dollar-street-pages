@@ -17,26 +17,26 @@ import {
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy {
-  @Input('hoverPlace') private hoverPlace: Observable<any>;
-  @Output('selectedFilter') private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+  @Input('hoverPlace') public hoverPlace: Observable<any>;
+  @Output('selectedFilter') public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
-  private element: HTMLElement;
-  private window: Window = window;
-  private isMatrixComponent: boolean;
-  private isOpenMenu: boolean = false;
-  private streetData: DrawDividersInterface;
+  public element: HTMLElement;
+  public window: Window = window;
+  public isMatrixComponent: boolean;
+  public isOpenMenu: boolean = false;
+  public streetData: DrawDividersInterface;
 
-  private router: Router;
-  private activatedRoute: ActivatedRoute;
-  private hoverPlaceSubscribe: Subscription;
-  private routerEventsSubscribe: Subscription;
-  private streetServiceSubscribe: Subscription;
-  private localStorageService: LocalStorageService;
-  private streetSettingsService: StreetSettingsService;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
-  private isMobile: boolean;
+  public router: Router;
+  public activatedRoute: ActivatedRoute;
+  public hoverPlaceSubscribe: Subscription;
+  public routerEventsSubscribe: Subscription;
+  public streetServiceSubscribe: Subscription;
+  public localStorageService: LocalStorageService;
+  public streetSettingsService: StreetSettingsService;
+  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
+  public isMobile: boolean;
 
   public constructor(router: Router,
                      element: ElementRef,
@@ -110,7 +110,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected openMenu(isOpenMenu: boolean): void {
+  public openMenu(isOpenMenu: boolean): void {
     this.isOpenMenu = !isOpenMenu;
 
     if (this.isOpenMenu && this.isMobile) {
@@ -122,7 +122,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected goToPage(url: string, removeStorage?: boolean): void {
+  public goToPage(url: string, removeStorage?: boolean): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
@@ -171,7 +171,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  private goToMatrixPage(removeStorage?: boolean): void {
+  public goToMatrixPage(removeStorage?: boolean): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
@@ -203,7 +203,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
   }
 
-  private objToQuery(data: any): string {
+  public objToQuery(data: any): string {
     return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');

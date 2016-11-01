@@ -122,6 +122,20 @@
   padding: 19px 20px;
 }
 
+#main-menu social-share-buttons {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#main-menu social-share-buttons >>> .share-button-container svg {
+  width: 21px;
+  height: 21px;
+}
+
+#main-menu social-share-buttons >>> .share-button-container svg .cls-1 {
+  fill: #e0e7ef;
+}
+
 @media (max-width: 1023px) {
   #main-menu .menu-icon {
     width: 47px;
@@ -130,6 +144,15 @@
 
   #main-menu .open .dropdown-menu li div.social-share-content {
     padding: 19px 19px;
+  }
+
+  #main-menu social-share-buttons >>> .share-button-container .share-button svg {
+    height: 22px;
+    width: 22px
+  }
+
+  #main-menu social-share-buttons >>> .share-button-container .share-button svg .cls-1 {
+    fill: #edf0f5;
   }
 }
 

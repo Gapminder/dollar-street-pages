@@ -1,26 +1,24 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-
 import { LoaderService, TitleHeaderService } from '../common';
 import { ArticleService } from './article.service';
 
 @Component({
   selector: 'article-page',
   templateUrl: './article.component.html',
-  styleUrls: ['./article.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./article.component.css']
 })
 
 export class ArticleComponent implements OnInit, OnDestroy {
-  private articleService: ArticleService;
-  private articleServiceSubscribe: Subscription;
-  private article: any;
-  private thingId: string;
-  private activatedRoute: ActivatedRoute;
-  private queryParamsSubscribe: Subscription;
-  private titleHeaderService: TitleHeaderService;
-  private loaderService: LoaderService;
+  public articleService: ArticleService;
+  public articleServiceSubscribe: Subscription;
+  public article: any;
+  public thingId: string;
+  public activatedRoute: ActivatedRoute;
+  public queryParamsSubscribe: Subscription;
+  public titleHeaderService: TitleHeaderService;
+  public loaderService: LoaderService;
 
   public constructor(activatedRoute: ActivatedRoute,
                      loaderService: LoaderService,

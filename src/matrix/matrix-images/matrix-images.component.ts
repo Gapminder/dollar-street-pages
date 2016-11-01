@@ -19,63 +19,63 @@ import { MathService, LoaderService, CountriesFilterService, BrowserDetectionSer
 
 export class MatrixImagesComponent implements OnInit, OnDestroy {
   @Input('query')
-  private query: string;
+  public query: string;
   @Input('thing')
-  private thing: string;
+  public thing: string;
   @Input('places')
-  private places: Observable<any>;
+  public places: Observable<any>;
   @Input('activeHouse')
-  private activeHouse: number;
+  public activeHouse: number;
   @Input('zoom')
-  private zoom: number;
+  public zoom: number;
   @Input('showblock')
-  private showblock: boolean = false;
+  public showblock: boolean = false;
   @Input('row')
-  private row: number;
+  public row: number;
   @Input('guidePositionTop')
-  private guidePositionTop: number;
+  public guidePositionTop: number;
   @Input('clearActiveHomeViewBox')
-  private clearActiveHomeViewBox: Subject<any>;
+  public clearActiveHomeViewBox: Subject<any>;
 
   @Output('hoverPlace')
-  private hoverPlace: EventEmitter<any> = new EventEmitter<any>();
+  public hoverPlace: EventEmitter<any> = new EventEmitter<any>();
   @Output('activeHouseOptions')
-  private activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
+  public activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
   @Output('filter')
-  private filter: EventEmitter<any> = new EventEmitter<any>();
+  public filter: EventEmitter<any> = new EventEmitter<any>();
 
-  private selectedCountries: any;
-  private selectedRegions: any;
-  private activeCountries: any;
-  private selectedThing: any;
-  private imageBlockLocation: any;
-  private indexViewBoxHouse: number;
-  private positionInRow: number;
-  private math: MathService;
-  private showErrorMsg: boolean = false;
-  private errorMsg: any;
-  private placesArr: any = [];
-  private viewBlockHeight: number;
-  private isDesktop: boolean;
-  private router: Router;
-  private currentPlaces: any = [];
-  private element: HTMLElement;
-  private placesSubscribe: Subscription;
-  private itemSize: number;
-  private imageHeight: number;
-  private countriesFilterService: CountriesFilterService;
-  private countriesFilterServiceSubscribe: Subscription;
-  private familyData: any;
-  private prevPlaceId: string;
-  private resizeSubscribe: Subscription;
-  private zone: NgZone;
-  private clearActiveHomeViewBoxSubscribe: Subscription;
-  private imageMargin: number;
-  private windowInnerWidth: number = window.innerWidth;
-  private visibleImages: number;
-  private loaderService: LoaderService;
-  private locations: any[];
-  private device: BrowserDetectionService;
+  public selectedCountries: any;
+  public selectedRegions: any;
+  public activeCountries: any;
+  public selectedThing: any;
+  public imageBlockLocation: any;
+  public indexViewBoxHouse: number;
+  public positionInRow: number;
+  public math: MathService;
+  public showErrorMsg: boolean = false;
+  public errorMsg: any;
+  public placesArr: any = [];
+  public viewBlockHeight: number;
+  public isDesktop: boolean;
+  public router: Router;
+  public currentPlaces: any = [];
+  public element: HTMLElement;
+  public placesSubscribe: Subscription;
+  public itemSize: number;
+  public imageHeight: number;
+  public countriesFilterService: CountriesFilterService;
+  public countriesFilterServiceSubscribe: Subscription;
+  public familyData: any;
+  public prevPlaceId: string;
+  public resizeSubscribe: Subscription;
+  public zone: NgZone;
+  public clearActiveHomeViewBoxSubscribe: Subscription;
+  public imageMargin: number;
+  public windowInnerWidth: number = window.innerWidth;
+  public visibleImages: number;
+  public loaderService: LoaderService;
+  public locations: any[];
+  public device: BrowserDetectionService;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -180,7 +180,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected hoverImage(place: any): void {
+  public hoverImage(place: any): void {
     if (!this.isDesktop) {
       return;
     }
@@ -272,13 +272,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.selectedCountries = countries;
   }
 
-  protected imageIsUploaded(index: number): void {
+  public imageIsUploaded(index: number): void {
     this.zone.run(() => {
       this.placesArr[index].isUploaded = true;
     });
   }
 
-  protected buildErrorMsg(places: any): void {
+  public buildErrorMsg(places: any): void {
     if (!places.length) {
       this.buildTitle(this.parseUrl(this.query));
 
@@ -305,7 +305,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected goToImageBlock(place: any, index: number, isInit?: boolean): void {
+  public goToImageBlock(place: any, index: number, isInit?: boolean): void {
     this.indexViewBoxHouse = index;
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
     let offset: number = this.zoom - this.positionInRow;
@@ -353,15 +353,15 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected toUrl(image: any): string {
+  public toUrl(image: any): string {
     return `url("${image}")`;
   }
 
-  protected goToMatrixWithCountry(params: any): void {
+  public goToMatrixWithCountry(params: any): void {
     this.filter.emit(params);
   }
 
-  private changeUrl(options: {row?: number, activeHouseIndex?: number}): void {
+  public changeUrl(options: {row?: number, activeHouseIndex?: number}): void {
     let {row, activeHouseIndex} = options;
 
     this.hoverPlace.emit(undefined);
@@ -375,7 +375,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  private goToRow(row: number): void {
+  public goToRow(row: number): void {
     let showPartPrevImage: number = 60;
 
     if (this.windowInnerWidth < 600) {
@@ -393,7 +393,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
-  private getImageHeight(): void {
+  public getImageHeight(): void {
     let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
 
     if (!boxContainer) {
@@ -414,7 +414,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.itemSize = this.imageHeight + this.imageMargin;
   }
 
-  private getVisibleRows(): void {
+  public getVisibleRows(): void {
     let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
 
     if (!boxContainer) {
@@ -426,7 +426,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.visibleImages = this.zoom * visibleRows;
   }
 
-  private parseUrl(url: string): any {
+  public parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

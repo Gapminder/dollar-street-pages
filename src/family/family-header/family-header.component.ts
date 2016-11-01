@@ -16,36 +16,36 @@ import { FamilyHeaderService } from './family-header.service';
 
 export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @Input('placeId')
-  private placeId: string;
+  public placeId: string;
 
   @Output('familyExpandBlock')
-  private familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
+  public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
 
-  private home: any = {};
-  private mapData: any;
-  private math: MathService;
-  private countryName: any;
-  private isOpenArticle: boolean = false;
-  private familyShortInfoPosition: number = -88;
-  private isShowAboutData: boolean = false;
-  private isShowAboutDataFullScreen: boolean = false;
-  private aboutDataPosition: {left?: number;top?: number;} = {};
-  private windowHeight: number = window.innerHeight;
-  private maxHeightPopUp: number = this.windowHeight * .95 - 91;
-  private familyHeaderService: FamilyHeaderService;
-  private familyHeaderServiceSubscribe: Subscription;
-  private scrollSubscribe: Subscription;
-  private resizeSubscribe: Subscription;
-  private zone: NgZone;
-  private element: HTMLElement;
-  private headerElement: HTMLElement;
-  private headerHeight: number;
-  private headerContentHeight: number;
-  private streetSettingsService: StreetSettingsService;
-  private streetData: DrawDividersInterface;
-  private streetServiceSubscribe: Subscription;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public home: any = {};
+  public mapData: any;
+  public math: MathService;
+  public countryName: any;
+  public isOpenArticle: boolean = false;
+  public familyShortInfoPosition: number = -88;
+  public isShowAboutData: boolean = false;
+  public isShowAboutDataFullScreen: boolean = false;
+  public aboutDataPosition: {left?: number;top?: number;} = {};
+  public windowHeight: number = window.innerHeight;
+  public maxHeightPopUp: number = this.windowHeight * .95 - 91;
+  public familyHeaderService: FamilyHeaderService;
+  public familyHeaderServiceSubscribe: Subscription;
+  public scrollSubscribe: Subscription;
+  public resizeSubscribe: Subscription;
+  public zone: NgZone;
+  public element: HTMLElement;
+  public headerElement: HTMLElement;
+  public headerHeight: number;
+  public headerContentHeight: number;
+  public streetSettingsService: StreetSettingsService;
+  public streetData: DrawDividersInterface;
+  public streetServiceSubscribe: Subscription;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -126,11 +126,11 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected openInfo(isOpenArticle: boolean): void {
+  public openInfo(isOpenArticle: boolean): void {
     this.isOpenArticle = !isOpenArticle;
   }
 
-  protected closeAboutDataPopUp(event: MouseEvent): void {
+  public closeAboutDataPopUp(event: MouseEvent): void {
     let el = event && event.target as HTMLElement;
 
     if (el.className.indexOf('closeMenu') !== -1) {
@@ -139,7 +139,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected showAboutData(event: MouseEvent, fixed: boolean): void {
+  public showAboutData(event: MouseEvent, fixed: boolean): void {
     if (fixed) {
       event.preventDefault();
     }
@@ -168,7 +168,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  protected scrollToStart(event: MouseEvent): void {
+  public scrollToStart(event: MouseEvent): void {
     let targetElement = event.target as HTMLElement;
     let elementClassName: string = targetElement.className;
 
@@ -181,7 +181,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   }
 
-  protected truncCountryName(countryData: any): any {
+  public truncCountryName(countryData: any): any {
     switch (countryData.alias) {
       case 'South Africa' :
         this.countryName = 'SA';
@@ -201,7 +201,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected openExpandBlock(): void {
+  public openExpandBlock(): void {
     this.familyExpandBlock.emit({thingId: this.home.familyThingId});
   }
 }

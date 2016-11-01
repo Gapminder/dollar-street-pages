@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class LoaderService {
-  private loaderEvents: Subject<any>;
+  public loaderEvents: Subject<any>;
 
   public constructor() {
     this.loaderEvents = new Subject<any>();

@@ -10,10 +10,10 @@ import { TitleHeaderService } from '../common';
 })
 
 export class PhotographerComponent implements OnInit, OnDestroy {
-  private photographerId: string;
-  private activatedRoute: ActivatedRoute;
-  private queryParamsSubscribe: Subscription;
-  private titleHeaderService: TitleHeaderService;
+  public photographerId: string;
+  public activatedRoute: ActivatedRoute;
+  public queryParamsSubscribe: Subscription;
+  public titleHeaderService: TitleHeaderService;
 
   public constructor(activatedRoute: ActivatedRoute,
                      titleHeaderService: TitleHeaderService) {
@@ -32,7 +32,7 @@ export class PhotographerComponent implements OnInit, OnDestroy {
     this.queryParamsSubscribe.unsubscribe();
   }
 
-  protected setTitle(title: string): void {
+  public setTitle(title: string): void {
     this.titleHeaderService.setTitle(title);
   }
 }

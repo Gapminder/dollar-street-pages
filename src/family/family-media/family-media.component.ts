@@ -18,45 +18,45 @@ import { FamilyMediaService } from './family-media.service';
 })
 
 export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
-  private windowInnerWidth: number = window.innerWidth;
-  private itemSize: number;
-  private imageData: any = {};
-  private imageBlockLocation: number;
-  private showImageBlock: boolean = false;
-  private activeImage: any;
-  private zoom: number = this.windowInnerWidth < 1024 ? 3 : 4;
-  private prevImage: Object;
-  private familyMediaService: FamilyMediaService;
-  private images: any = [];
-  private familyPlaceServiceSubscribe: Subscription;
-  private resizeSubscribe: Subscription;
-  private openFamilyExpandBlockSubscribe: Subscription;
-  private zone: NgZone;
-  private imageHeight: number;
-  private footerHeight: number;
-  private headerHeight: number;
-  private imageOffsetHeight: any;
-  private isInit: boolean = true;
-  private indexViewBoxImage: number;
-  private element: HTMLElement;
-  private imageMargin: number;
-  private imageResolution: ImageResolutionInterface;
-  private visibleImages: number;
-  private currentImages: any = [];
-  private viewBlockHeight: number;
-  private loaderService: LoaderService;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public windowInnerWidth: number = window.innerWidth;
+  public itemSize: number;
+  public imageData: any = {};
+  public imageBlockLocation: number;
+  public showImageBlock: boolean = false;
+  public activeImage: any;
+  public zoom: number = this.windowInnerWidth < 1024 ? 3 : 4;
+  public prevImage: Object;
+  public familyMediaService: FamilyMediaService;
+  public images: any = [];
+  public familyPlaceServiceSubscribe: Subscription;
+  public resizeSubscribe: Subscription;
+  public openFamilyExpandBlockSubscribe: Subscription;
+  public zone: NgZone;
+  public imageHeight: number;
+  public footerHeight: number;
+  public headerHeight: number;
+  public imageOffsetHeight: any;
+  public isInit: boolean = true;
+  public indexViewBoxImage: number;
+  public element: HTMLElement;
+  public imageMargin: number;
+  public imageResolution: ImageResolutionInterface;
+  public visibleImages: number;
+  public currentImages: any = [];
+  public viewBlockHeight: number;
+  public loaderService: LoaderService;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   @Input('placeId')
-  private placeId: string;
+  public placeId: string;
   @Input('activeImageIndex')
-  private activeImageIndex: number;
+  public activeImageIndex: number;
   @Input('openFamilyExpandBlock')
-  private openFamilyExpandBlock: Observable<any>;
+  public openFamilyExpandBlock: Observable<any>;
 
   @Output('activeImageOptions')
-  private activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
+  public activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -206,7 +206,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
-  protected openMedia(image: any, index: number): void {
+  public openMedia(image: any, index: number): void {
     this.activeImage = image;
     this.indexViewBoxImage = index;
     let countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
@@ -263,18 +263,18 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
-  protected convertImageUrlWithoutWrapper(urlToConvert: string): string {
+  public convertImageUrlWithoutWrapper(urlToConvert: string): string {
     return urlToConvert.replace('url("', '')
       .replace('")', '');
   }
 
-  protected imageIsUploaded(index: number): void {
+  public imageIsUploaded(index: number): void {
     this.zone.run(() => {
       this.currentImages[index].isUploaded = true;
     });
   }
 
-  private changeUrl(row?: number, activeImageIndex?: number): void {
+  public changeUrl(row?: number, activeImageIndex?: number): void {
     if (!row && !activeImageIndex) {
       this.activeImageOptions.emit({});
 
@@ -285,7 +285,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.goToRow(row);
   }
 
-  private goToRow(row: number): void {
+  public goToRow(row: number): void {
     let header = document.querySelector('.header-container') as HTMLElement;
     let homeDescription = document.querySelector('.home-description-container') as HTMLElement;
     let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
@@ -294,7 +294,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize + headerHeight - 45;
   }
 
-  private getImageHeight(): void {
+  public getImageHeight(): void {
     let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
     let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
 
@@ -311,7 +311,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.loaderService.setLoader(true);
   }
 
-  private getVisibleRows(): void {
+  public getVisibleRows(): void {
     let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
     let imageHeight: number = boxContainer.offsetWidth / this.zoom;
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);

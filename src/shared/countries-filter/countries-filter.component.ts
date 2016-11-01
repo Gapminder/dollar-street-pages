@@ -24,38 +24,38 @@ import { BrowserDetectionService, CountriesFilterService } from '../../common';
 })
 
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
-  protected activeCountries: string;
-  protected showSelected: boolean;
-  protected locations: any[];
-  protected countries: any[];
-  protected search: string = '';
-  protected isOpenCountriesFilter: boolean = false;
-  protected regionsVisibility: boolean = true;
-  protected selectedRegions: string[] = [];
-  protected selectedCountries: string[] = [];
-  protected positionLeft: number = 0;
-  protected filterTopDistance: number = 0;
+  public activeCountries: string;
+  public showSelected: boolean;
+  public locations: any[];
+  public countries: any[];
+  public search: string = '';
+  public isOpenCountriesFilter: boolean = false;
+  public regionsVisibility: boolean = true;
+  public selectedRegions: string[] = [];
+  public selectedCountries: string[] = [];
+  public positionLeft: number = 0;
+  public filterTopDistance: number = 0;
   @Input()
-  private url: string;
+  public url: string;
 
   @Output('isFilterGotData')
-  private isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
+  public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
-  private countriesFilterService: CountriesFilterService;
-  private countriesFilterServiceSubscribe: Subscription;
+  public countriesFilterService: CountriesFilterService;
+  public countriesFilterServiceSubscribe: Subscription;
 
-  private cloneSelectedRegions: string[] = ['World'];
-  private cloneSelectedCountries: string[] = ['World'];
+  public cloneSelectedRegions: string[] = ['World'];
+  public cloneSelectedCountries: string[] = ['World'];
 
-  private element: HTMLElement;
-  private zone: NgZone;
-  private resizeSubscribe: Subscription;
-  private keyUpSubscribe: Subscription;
-  private openMobileFilterView: boolean = false;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public element: HTMLElement;
+  public zone: NgZone;
+  public resizeSubscribe: Subscription;
+  public keyUpSubscribe: Subscription;
+  public openMobileFilterView: boolean = false;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -90,11 +90,11 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  protected hideRegionsIfInFocus(regionsVisibility: boolean): void {
+  public hideRegionsIfInFocus(regionsVisibility: boolean): void {
     this.regionsVisibility = !regionsVisibility;
   }
 
-  protected hideRegions(isShown: boolean): void {
+  public hideRegions(isShown: boolean): void {
     let tabContent = this.element.querySelector('.underline-k') as HTMLElement;
 
     if (isShown && tabContent) {
@@ -118,7 +118,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.regionsVisibility = true;
   }
 
-  protected openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
+  public openCloseCountriesFilter(isOpenCountriesFilter: boolean): void {
     this.isOpenCountriesFilter = !isOpenCountriesFilter;
     this.search = '';
     this.regionsVisibility = true;
@@ -172,11 +172,11 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  protected cancelCountriesFilter(): void {
+  public cancelCountriesFilter(): void {
     this.openCloseCountriesFilter(true);
   }
 
-  protected clearAllCountries(): void {
+  public clearAllCountries(): void {
     this.showSelected = true;
     this.regionsVisibility = true;
     this.selectedRegions.length = 0;
@@ -184,7 +184,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.search = '';
   }
 
-  protected selectRegions(location: any): void {
+  public selectRegions(location: any): void {
     this.showSelected = false;
     this.search = '';
 
@@ -211,7 +211,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.selectedCountries = _.union(this.selectedCountries.concat(getCountriesName));
   }
 
-  protected selectCountries(country: any, region: string): void {
+  public selectCountries(country: any, region: string): void {
     this.showSelected = false;
     this.regionsVisibility = true;
 
@@ -242,7 +242,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  protected goToLocation(): void {
+  public goToLocation(): void {
     let query = this.parseUrl(this.url);
 
     this.search = '';
@@ -304,7 +304,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private setTitle(url: string): void {
+  public setTitle(url: string): void {
     let query: any = this.parseUrl(url);
 
     let regions: string[] = query.regions;
@@ -381,18 +381,18 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.cloneSelectedLocations(regions, countries);
   }
 
-  private cloneSelectedLocations(regions: any[], countries: any[]): void {
+  public cloneSelectedLocations(regions: any[], countries: any[]): void {
     this.cloneSelectedRegions = _.clone(regions);
     this.cloneSelectedCountries = _.clone(countries);
   }
 
-  private objToQuery(data: any): string {
+  public objToQuery(data: any): string {
     return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
   }
 
-  private parseUrl(url: string): any {
+  public parseUrl(url: string): any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);
 
@@ -402,7 +402,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     return query;
   }
 
-  private setPosition(): void {
+  public setPosition(): void {
     Config.getCoordinates('countries-filter', (data: any) => {
       this.filterTopDistance = data.top;
 
@@ -414,7 +414,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  private isOpenMobileFilterView(): void {
+  public isOpenMobileFilterView(): void {
     if (window.innerWidth < 1024 || !this.isDesktop) {
       this.openMobileFilterView = true;
       return;

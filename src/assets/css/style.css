@@ -141,12 +141,6 @@ matrix {
   background-color: transparent;
 }
 
-.first-page.header .social-share-buttons-container i {
-  color: #767d86;
-  font-size: 26px;
-  margin-left: 35px;
-}
-
 .text-center {
   text-align: center;
 }
@@ -303,19 +297,23 @@ body.matrix #main-menu .menu-icon {
   padding-right: 0;
 }
 
-.tag #app-container.container {
-  padding-top: 90px;
-}
-
-.blog #app-container.container {
-  padding-top: 125px;
-}
-
 @media (min-width: 1400px) {
-  body:not(.blog):not(.article):not(.about) .footer .container,
-  body:not(.blog):not(.article) #app-container.container {
+  body:not(.article):not(.about) .footer .container,
+  body:not(.article) #app-container.container {
     width: 1400px;
   }
+}
+
+.family .footer .valor,
+.matrix .footer .valor {
+  right: 22px;
+  bottom: 60px;
+}
+
+.family .footer .container,
+.matrix .footer .container {
+  width: 100% !important;
+  padding: 0 22px 60px;
 }
 
 body.about #app-container.container {
@@ -361,12 +359,6 @@ body.about #app-container.container {
     margin-bottom: 0;
   }
 
-  .blog #app-container.container {
-    padding-top: 87px !important;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
   .country #app-container.container,
   .photographer #app-container.container {
     padding-left: 0;
@@ -394,12 +386,6 @@ body.about #app-container.container {
   svg .richest,
   svg .scale-label {
     font-size: 12px;
-  }
-
-  .blog #app-container.container {
-    padding-top: 77px !important;
-    padding-left: 0;
-    padding-right: 0;
   }
 
   .block-entry h2 {

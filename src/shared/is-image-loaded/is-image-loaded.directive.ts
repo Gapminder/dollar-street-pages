@@ -3,13 +3,13 @@ import { Directive, OnInit, Input, Output, NgZone, ElementRef, EventEmitter } fr
 @Directive({selector: '[isImageLoaded]'})
 export class IsImageLoadedDirective implements OnInit {
   @Input('imageLoadedUrl')
-  private imageLoadedUrl: string;
+  public imageLoadedUrl: string;
 
   @Output('imageLoadedEvent')
-  private imageLoadedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  public imageLoadedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private zone: NgZone;
-  private element: HTMLElement;
+  public zone: NgZone;
+  public element: HTMLElement;
 
   public constructor(zone: NgZone,
                      element: ElementRef) {
