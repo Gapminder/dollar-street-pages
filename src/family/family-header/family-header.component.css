@@ -8,7 +8,7 @@
 
 .home-description-container {
   overflow: hidden;
-  padding: 86px 22px 20px;
+  padding: 100px 22px 20px;
   background-color: #f6f7f8;
   border-bottom: 1px solid #c6c7c9;
 }
@@ -165,7 +165,7 @@
 
 .short-family-info-container {
   overflow: hidden;
-  padding: 8px 22px;
+  padding: 5px 22px;
   background-color: #f6f7f8;
   border-bottom: 1px solid #c6c7c9;
   position: fixed;
@@ -182,8 +182,8 @@
 }
 
 .short-family-info-container .image-container {
-  width: 48px;
-  margin-right: 24px;
+  width: 43px;
+  margin-right: 11px;
   float: left;
 }
 
@@ -222,14 +222,10 @@
   font-size: 28px;
 }
 
-.short-family-info-container .left-title {
-  margin-top: 3px;
-}
-
 .short-family-info-container .right-title .title {
   font-size: 32px;
   line-height: 32px;
-  margin-top: 10px;
+  margin: 5px 0 0;
 }
 
 .short-family-info-container .right-title .title span {
@@ -352,7 +348,7 @@
   }
 
   .home-description-container {
-    padding: 72px 10px 15px;
+    padding: 88px 10px 15px;
   }
 
   .home-description-container .image-container {
@@ -379,7 +375,7 @@
   }
 
   .title-info {
-    margin-bottom: 10px;
+    margin-bottom: 11px;
   }
 
   .title-info .sub-title {
@@ -405,11 +401,11 @@
   }
 
   .short-family-info-container {
-    padding: 6px 10px;
+    padding: 5px 10px;
   }
 
   .short-family-info-container .description-container {
-    width: calc(100% - 55px);
+    width: calc(100% - 56px);
   }
 
   .short-family-info-container .image-container {
@@ -454,7 +450,7 @@
 
 @media (max-width: 599px) {
   .home-description-container {
-    padding: 67px 5px 5px;
+    padding: 97px 5px 5px;
     background-color: #fff;
     border-bottom: 0;
   }
@@ -518,7 +514,7 @@
   }
 
   .short-family-info-container {
-    padding: 13px 5px;
+    padding: 5px;
   }
 
   .short-family-info-container .image-container {
@@ -542,13 +538,13 @@
   }
 
   .short-family-info-container .description-container .left-title .title.mobile {
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 20px;
+    line-height: 24px;
   }
 
   .short-family-info-container .description-container .right-title .title {
     font-size: 22px;
-    line-height: 28px;
+    line-height: 24px;
     margin: 0;
   }
 

@@ -1,9 +1,7 @@
 import 'rxjs/operator/debounceTime';
-
 import { Component, OnInit, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-
 import { Config } from '../../app.config';
 import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
@@ -20,6 +18,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
   @Output('familyExpandBlock')
   public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
+  @Output('streetFamilyData')
+  public streetFamilyData: EventEmitter<any> = new EventEmitter<any>();
 
   public home: any = {};
   public mapData: any;
@@ -46,6 +46,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public streetServiceSubscribe: Subscription;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public isMobile: boolean;
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -63,8 +64,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
+    this.isMobile = this.device.isMobile();
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
-    this.headerHeight = this.headerElement.offsetHeight;
     this.headerContentHeight = this.element.offsetHeight;
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
@@ -76,7 +77,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         }
 
         this.home = res.data;
+        this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
         this.mapData = this.home.country;
+
         this.truncCountryName(this.home.country);
       });
 
@@ -86,6 +89,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
           console.error(res.err);
           return;
         }
+
         this.streetData = res.data;
       });
 
@@ -93,11 +97,25 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
+        if (this.headerHeight !== this.headerElement.offsetHeight) {
+          this.headerHeight = this.headerElement.offsetHeight;
+        }
+
         this.zone.run(() => {
-          if (scrollTop > this.element.offsetHeight - this.headerHeight) {
+          if (scrollTop > this.element.offsetHeight - this.headerHeight && this.familyShortInfoPosition !== this.headerHeight) {
             this.familyShortInfoPosition = this.headerHeight;
-          } else {
+
+            if (this.isMobile) {
+              this.headerElement.classList.add('sub-panel-shown');
+            }
+          }
+
+          if (scrollTop < this.element.offsetHeight - this.headerHeight && this.familyShortInfoPosition !== -this.headerHeight) {
             this.familyShortInfoPosition = -this.headerHeight;
+
+            if (this.isMobile) {
+              this.headerElement.classList.remove('sub-panel-shown');
+            }
           }
         });
       });

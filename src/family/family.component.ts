@@ -23,6 +23,7 @@ export interface UrlParamsInterface {
 })
 
 export class FamilyComponent implements OnInit, OnDestroy {
+  public streetFamilyData: {income: number, region: string};
   public titles: any = {};
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
   public placeId: string;
