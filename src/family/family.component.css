@@ -3,21 +3,26 @@ family-header {
 }
 
 .header-container {
-  border-bottom: 1px solid #c6c7c9;
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  padding: 0 0 0 22px;
   display: block;
   background-color: #f6f7f8;
   z-index: 21;
 }
 
+.header-container .header-content {
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+  margin-bottom: -6px;
+}
+
 .header-container .logo {
-  margin: 9px 0;
-  width: 46px;
+  margin: 8px 0 8px 22px;
+  width: 39px;
   display: block;
 }
 
@@ -30,54 +35,88 @@ family-header {
   display: inline-block;
   margin: 13px 0 0;
   color: #374551;
-  font-size: 28px;
+  font-size: 22px;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: calc(100% - 120px);
+  width: calc(100% - 135px);
 }
 
 .header-container .heading img {
-  width: 14px;
-  margin: 0 8px -3px 27px;
+  width: 8px;
+  margin: 0 12px 0 15px;
   vertical-align: baseline;
 }
 
+.street-family-container {
+  clear: both;
+}
+
+.header-container main-menu >>> #main-menu .menu-icon {
+  width: 72px;
+  height: 56px;
+}
+
 @media (max-width: 1023px) {
-  .header-container {
-    padding: 0 0 0 10px;
+  .header-container .header-content {
+    margin-bottom: -3px;
   }
 
   .header-container .logo {
-    margin: 7px 0;
-    width: 42px;
+    margin: 5px 0 5px 10px;
+    width: 36px;
   }
 
   .header-container .heading {
     margin: 11px 0 0;
-    font-size: 24px;
-    width: calc(100% - 100px);
+    font-size: 20px;
+    width: calc(100% - 105px);
   }
 
   .header-container .heading img {
-    width: 10px;
-    margin: 0 13px -2px 14px;
+    width: 8px;
+    margin: 0 12px -2px 15px;
+  }
+
+  .header-container main-menu >>> #main-menu .menu-icon {
+    width: 53px;
+    height: 46px;
   }
 }
 
 @media (max-width: 599px) {
+  .header-container {
+    -webkit-transition: background-color .2s ease-out;
+    -moz-transition: background-color .2s ease-out;
+    -o-transition: background-color .2s ease-out;
+    transition: background-color .2s ease-out;
+
+    background-color: #fff;
+  }
+
+  .header-container.sub-panel-shown {
+    background-color: #f6f7f8;
+  }
+
   .header-container .logo {
     display: none;
   }
 
   .header-container .heading {
-    font-size: 24px;
+    margin: 14px 0 0;
+    font-size: 20px;
     width: calc(100% - 50px);
   }
 
   .header-container .heading img {
-    width: 10px;
-    margin: 0 5px -1px 0;
+    width: 8px;
+    margin: 0 10px -1px 8px;
+  }
+
+  .header-container main-menu >>> #main-mobile-menu .menu-icon {
+    width: 48px;
+    height: 55px;
+    margin-top: 0;
   }
 }

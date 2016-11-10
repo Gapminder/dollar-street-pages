@@ -48,6 +48,9 @@ import { StreetMobileDrawService } from './street-mobile/street-mobile.service';
 import { StreetFilterComponent } from './street-filter/street-filter.component';
 import { StreetFilterDrawService } from './street-filter/street-filter.service';
 
+import { StreetFamilyComponent } from './street-family/street-family.component';
+import { StreetFamilyDrawService } from './street-family/street-family.service';
+
 import { IncomeFilterComponent } from './income-filter/income-filter.component';
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
@@ -72,6 +75,7 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
     StreetComponent,
     StreetMobileComponent,
     StreetFilterComponent,
+    StreetFamilyComponent,
     IncomeFilterComponent,
     IsImageLoadedDirective
   ],
@@ -89,7 +93,8 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
     GuideService,
     StreetDrawService,
     StreetMobileDrawService,
-    StreetFilterDrawService
+    StreetFilterDrawService,
+    StreetFamilyDrawService
   ],
   exports: [
     HeaderWithoutFiltersComponent,
@@ -103,6 +108,7 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
     StreetComponent,
     StreetMobileComponent,
     StreetFilterComponent,
+    StreetFamilyComponent,
     IncomeFilterComponent,
     MainMenuComponent,
     IsImageLoadedDirective
