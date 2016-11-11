@@ -52,13 +52,13 @@ export class StreetMobileDrawService {
       .append('polygon')
       .attr('class', 'point')
       .attr('points', (datum: any): any => {
-        let point1;
-        let point2;
-        let point3;
-        let point4;
-        let point5;
-        let point6;
-        let point7;
+        let point1: string;
+        let point2: string;
+        let point3: string;
+        let point4: string;
+        let point5: string;
+        let point6: string;
+        let point7: string;
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);

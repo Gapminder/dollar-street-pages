@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class LocalStorageService {
-  private localStorage: Storage = localStorage;
-  private itemEvents: Subject<any> = new Subject<any>();
+  public localStorage: Storage = localStorage;
+  public itemEvents: Subject<any> = new Subject<any>();
 
   public setItem(key: string, value: boolean): void {
     this.localStorage.setItem(key, value.toString());

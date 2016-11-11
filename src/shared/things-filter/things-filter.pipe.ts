@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { filter } from 'lodash';
 
-interface Thing {
+export interface Thing {
   _id: string;
   empty: boolean;
   icon: string;

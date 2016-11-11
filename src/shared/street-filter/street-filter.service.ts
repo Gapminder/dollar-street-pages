@@ -2,7 +2,6 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { MathService, DrawDividersInterface } from '../../common';
-
 import { scaleLog } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
@@ -16,32 +15,32 @@ export class StreetFilterDrawService {
   public highIncome: number;
   public streetOffset: number = 60;
   public halfOfStreetOffset: number = 30;
-  private scale: any;
-  private axisLabel: number[] = [];
-  private svg: any;
-  private incomeArr: any[] = [];
-  private dividersData: any;
-  private touchMoveSubscriber: any;
-  private touchUpSubscriber: any;
-  private sliderRightBorder: number;
-  private sliderLeftBorder: number;
-  private sliderRightMove: boolean = false;
-  private sliderLeftMove: boolean = false;
-  private draggingSliders: boolean = false;
-  private distanceDraggingLeftSlider: number = 0;
-  private distanceDraggingRightSlider: number = 0;
-  private leftScroll: any;
-  private rightScroll: any;
-  private leftScrollOpacityStreet: any;
-  private leftScrollOpacityLabels: any;
-  private leftScrollOpacityHomes: any;
-  private rightScrollOpacityStreet: any;
-  private rightScrollOpacityLabels: any;
-  private rightScrollOpacityHomes: any;
-  private leftScrollText: any;
-  private rightScrollText: any;
-  private math: MathService;
-  private filter: Subject<any> = new Subject<any>();
+  public scale: any;
+  public axisLabel: number[] = [];
+  public svg: any;
+  public incomeArr: any[] = [];
+  public dividersData: any;
+  public touchMoveSubscriber: any;
+  public touchUpSubscriber: any;
+  public sliderRightBorder: number;
+  public sliderLeftBorder: number;
+  public sliderRightMove: boolean = false;
+  public sliderLeftMove: boolean = false;
+  public draggingSliders: boolean = false;
+  public distanceDraggingLeftSlider: number = 0;
+  public distanceDraggingRightSlider: number = 0;
+  public leftScroll: any;
+  public rightScroll: any;
+  public leftScrollOpacityStreet: any;
+  public leftScrollOpacityLabels: any;
+  public leftScrollOpacityHomes: any;
+  public rightScrollOpacityStreet: any;
+  public rightScrollOpacityLabels: any;
+  public rightScrollOpacityHomes: any;
+  public leftScrollText: any;
+  public rightScrollText: any;
+  public math: MathService;
+  public filter: Subject<any> = new Subject<any>();
 
   public constructor(math: MathService) {
     this.math = math;
@@ -149,9 +148,10 @@ export class StreetFilterDrawService {
     }
 
     axisBottom(this.scale)
-    .tickFormat(() => {
-      return void 0;
-    });
+      .tickFormat(() => {
+        return void 0;
+      });
+    // .tickSize(6, 0);
 
     this.svg
       .selectAll('polygon')
@@ -160,13 +160,13 @@ export class StreetFilterDrawService {
       .append('polygon')
       .attr('class', 'point')
       .attr('points', (datum: any): any => {
-        let point1;
-        let point2;
-        let point3;
-        let point4;
-        let point5;
-        let point6;
-        let point7;
+        let point1: string;
+        let point2: string;
+        let point3: string;
+        let point4: string;
+        let point5: string;
+        let point6: string;
+        let point7: string;
 
         if (datum) {
           let scaleDatumIncome = this.scale(datum.income);
@@ -191,10 +191,10 @@ export class StreetFilterDrawService {
       .attr('class', 'road')
       .attr('height', '14px')
       .attr('points', () => {
-        let point1 = `0,${this.halfOfHeight + 11}`;
-        let point2 = `30,${this.halfOfHeight - 4}`;
-        let point3 = `${this.width + this.halfOfStreetOffset},${this.halfOfHeight - 4}`;
-        let point4 = `${this.width + this.streetOffset},${this.halfOfHeight + 11}`;
+        let point1: string = `0,${this.halfOfHeight + 11}`;
+        let point2: string = `30,${this.halfOfHeight - 4}`;
+        let point3: string = `${this.width + this.halfOfStreetOffset},${this.halfOfHeight - 4}`;
+        let point4: string = `${this.width + this.streetOffset},${this.halfOfHeight + 11}`;
         return `${point1} ${point2} ${point3} ${point4}`;
       })
       .style('fill', '#727a82')
@@ -259,6 +259,8 @@ export class StreetFilterDrawService {
           return;
         }
 
+        e.preventDefault();
+
         let positionX = e.touches[0].pageX;
 
         if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
@@ -321,7 +323,7 @@ export class StreetFilterDrawService {
     return this;
   };
 
-  protected drawLeftSlider(x: number, init: boolean = false): this {
+  public drawLeftSlider(x: number, init: boolean = false): this {
     this.sliderLeftBorder = x;
 
     if (!this.leftScrollOpacityHomes) {
@@ -381,7 +383,6 @@ export class StreetFilterDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
-          // (d3.event as any).preventDefault();
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
@@ -389,11 +390,11 @@ export class StreetFilterDrawService {
 
     this.leftScroll
       .attr('points', () => {
-        let point1 = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight + 12 - 1}`;
-        let point2 = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight - 7.5 - 1}`;
-        let point3 = `${x + this.halfOfStreetOffset },${ this.halfOfHeight - 7.5 - 1}`;
-        let point4 = `${x + this.halfOfStreetOffset },${ this.halfOfHeight + 12 - 1}`;
-        let point5 = `${x + this.halfOfStreetOffset - 5.5},${ this.halfOfHeight + 12 + 7.5 - 1}`;
+        let point1: string = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight + 12 - 1}`;
+        let point2: string = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight - 7.5 - 1}`;
+        let point3: string = `${x + this.halfOfStreetOffset },${ this.halfOfHeight - 7.5 - 1}`;
+        let point4: string = `${x + this.halfOfStreetOffset },${ this.halfOfHeight + 12 - 1}`;
+        let point5: string = `${x + this.halfOfStreetOffset - 5.5},${ this.halfOfHeight + 12 + 7.5 - 1}`;
 
         return `${point1} ${point2} ${point3} ${point4} ${point5}`;
       });
@@ -414,7 +415,7 @@ export class StreetFilterDrawService {
     return this;
   };
 
-  protected drawRightSlider(x: number): this {
+  public drawRightSlider(x: number): this {
     this.sliderRightBorder = x;
 
     if (!this.rightScrollOpacityHomes) {
@@ -473,19 +474,18 @@ export class StreetFilterDrawService {
         .style('cursor', 'pointer')
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
-        .on('mousedown', (): void=> {
-          // (d3.event as any).preventDefault();
+        .on('mousedown', (): void => {
           this.sliderRightMove = true;
         })
         .on('touchstart', (): any => this.sliderRightMove = true);
     }
 
     this.rightScroll.attr('points', () => {
-      let point1 = `${x + this.halfOfStreetOffset},${ this.halfOfHeight + 12 - 1}`;
-      let point2 = `${x + this.halfOfStreetOffset},${ this.halfOfHeight - 7.5 - 1}`;
-      let point3 = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight - 7.5 - 1}`;
-      let point4 = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight + 12 - 1}`;
-      let point5 = `${x + this.halfOfStreetOffset + 5.5},${ this.halfOfHeight + 12 + 7.5 - 1}`;
+      let point1: string = `${x + this.halfOfStreetOffset},${ this.halfOfHeight + 12 - 1}`;
+      let point2: string = `${x + this.halfOfStreetOffset},${ this.halfOfHeight - 7.5 - 1}`;
+      let point3: string = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight - 7.5 - 1}`;
+      let point4: string = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight + 12 - 1}`;
+      let point5: string = `${x + this.halfOfStreetOffset + 5.5},${ this.halfOfHeight + 12 + 7.5 - 1}`;
 
       return `${point1} ${point2} ${point3} ${point4} ${point5}`;
     });
@@ -518,7 +518,7 @@ export class StreetFilterDrawService {
     return this;
   };
 
-  private drawScrollLabel(): this {
+  public drawScrollLabel(): this {
     let incomeL: any = Math.round(this.lowIncome ? this.lowIncome : 0);
     let incomeR: any = Math.round(this.highIncome ? this.highIncome : this.dividersData.rich);
 

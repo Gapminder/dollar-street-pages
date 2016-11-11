@@ -12,23 +12,23 @@ import { CountryInfoService } from './country-info.service';
 
 export class CountryInfoComponent implements OnInit, OnDestroy {
   @Input()
-  private countryId: string;
+  public countryId: string;
   @Output()
-  private getCountry: EventEmitter<any> = new EventEmitter<any>();
+  public getCountry: EventEmitter<any> = new EventEmitter<any>();
 
-  private mapData: any;
-  private isShowInfo: boolean;
-  private country: any;
-  private thing: any;
-  private placesQuantity: number;
-  private photosQuantity: number;
-  private videosQuantity: number;
-  private math: MathService;
-  private countryInfoService: CountryInfoService;
-  private countryInfoServiceSubscribe: Subscription;
-  private streetSettingsService: StreetSettingsService;
-  private streetData: DrawDividersInterface;
-  private streetServiceSubscribe: Subscription;
+  public mapData: any;
+  public isShowInfo: boolean;
+  public country: any;
+  public thing: any;
+  public placesQuantity: number;
+  public photosQuantity: number;
+  public videosQuantity: number;
+  public math: MathService;
+  public countryInfoService: CountryInfoService;
+  public countryInfoServiceSubscribe: Subscription;
+  public streetSettingsService: StreetSettingsService;
+  public streetData: DrawDividersInterface;
+  public streetServiceSubscribe: Subscription;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,

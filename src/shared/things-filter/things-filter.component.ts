@@ -26,34 +26,34 @@ import { Config } from '../../app.config';
 })
 
 export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
-  protected relatedThings: any[];
-  protected popularThings: any[];
-  protected otherThings: any[];
-  protected activeThing: any = {};
-  protected search: {text: string;} = {text: ''};
-  protected isOpenThingsFilter: boolean = false;
-  protected activeColumn: string = '';
-  protected angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  protected things: any = [];
-  protected filterTopDistance: number = 0;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public relatedThings: any[];
+  public popularThings: any[];
+  public otherThings: any[];
+  public activeThing: any = {};
+  public search: {text: string;} = {text: ''};
+  public isOpenThingsFilter: boolean = false;
+  public activeColumn: string = '';
+  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public things: any = [];
+  public filterTopDistance: number = 0;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
-  private zone: NgZone;
-  private resizeSubscribe: Subscription;
-  private openMobileFilterView: boolean = false;
+  public zone: NgZone;
+  public resizeSubscribe: Subscription;
+  public openMobileFilterView: boolean = false;
   @Output('isFilterGotData')
-  private isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
+  public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
 
   @Input()
-  private url: string;
+  public url: string;
   @Output()
-  private selectedFilter: EventEmitter<any> = new EventEmitter<any>();
-  private thingsFilterService: any;
-  private thingsFilterServiceSubscribe: Subscription;
-  private keyUpSubscribe: Subscription;
-  private activatedRoute: ActivatedRoute;
-  private element: HTMLElement;
+  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+  public thingsFilterService: any;
+  public thingsFilterServiceSubscribe: Subscription;
+  public keyUpSubscribe: Subscription;
+  public activatedRoute: ActivatedRoute;
+  public element: HTMLElement;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
@@ -91,7 +91,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  protected openThingsFilter(isOpenThingsFilter: boolean): void {
+  public openThingsFilter(isOpenThingsFilter: boolean): void {
     this.isOpenThingsFilter = !isOpenThingsFilter;
 
     this.search = {text: ''};
@@ -115,7 +115,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  protected goToThing(thing: any): void {
+  public goToThing(thing: any): void {
     if (thing.empty) {
       return;
     }
@@ -129,7 +129,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.search = {text: ''};
   }
 
-  protected setActiveThingsColumn(column: string): void {
+  public setActiveThingsColumn(column: string): void {
     this.activeColumn = column;
     this.search = {text: ''};
     let tabContent = this.element.querySelector('.tabs-content-container') as HTMLElement;
@@ -154,7 +154,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  protected hideKeyboard(): void {
+  public hideKeyboard(): void {
     if (this.keyUpSubscribe) {
       this.keyUpSubscribe.unsubscribe();
     }
@@ -203,13 +203,13 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private objToQuery(data: any): string {
+  public objToQuery(data: any): string {
     return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
   }
 
-  private parseUrl(url: string): any {
+  public parseUrl(url: string): any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);
 
@@ -224,7 +224,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     return query;
   }
 
-  private isOpenMobileFilterView(): void {
+  public isOpenMobileFilterView(): void {
     if (window.innerWidth < 1024 || !this.isDesktop) {
       this.openMobileFilterView = true;
       if (this.activeColumn === 'all') {

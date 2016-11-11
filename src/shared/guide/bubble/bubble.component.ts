@@ -1,36 +1,34 @@
-import { Component, Input, OnInit, OnDestroy, ElementRef, NgZone, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { find } from 'lodash';
-
 import { Config } from '../../../app.config';
 import { LocalStorageService, BrowserDetectionService } from '../../../common';
 
 @Component({
   selector: 'bubble',
   templateUrl: './bubble.component.html',
-  styleUrls: ['./bubble.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./bubble.component.css']
 })
 
 export class BubbleComponent implements OnInit, OnDestroy {
-  protected step: number = 1;
-  protected bubble: any = {};
-  protected windowInnerWidth: number = window.innerWidth;
-  protected position: any = {left: this.windowInnerWidth / 2 - 228, top: -1000};
-  protected isCloseBubble: boolean = false;
+  public step: number = 1;
+  public bubble: any = {};
+  public windowInnerWidth: number = window.innerWidth;
+  public position: any = {left: this.windowInnerWidth / 2 - 228, top: -1000};
+  public isCloseBubble: boolean = false;
 
   @Input('bubbles')
-  private bubbles: any[];
-  private keyUpSubscribe: Subscription;
-  private element: HTMLElement;
-  private zone: NgZone;
-  private resizeSubscribe: Subscription;
-  private getCoordinates: Function = Config.getCoordinates;
-  private localStorageService: LocalStorageService;
-  private device: BrowserDetectionService;
-  private isTablet: boolean;
-  private isMobile: boolean;
+  public bubbles: any[];
+  public keyUpSubscribe: Subscription;
+  public element: HTMLElement;
+  public zone: NgZone;
+  public resizeSubscribe: Subscription;
+  public getCoordinates: Function = Config.getCoordinates;
+  public localStorageService: LocalStorageService;
+  public device: BrowserDetectionService;
+  public isTablet: boolean;
+  public isMobile: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -85,7 +83,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected back(): void {
+  public back(): void {
     if (this.step === 1) {
       return;
     }
@@ -94,7 +92,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     this.getBubble(this.step);
   }
 
-  protected next(): void {
+  public next(): void {
     if (this.step === this.bubbles.length) {
       return;
     }
@@ -103,7 +101,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     this.getBubble(this.step);
   }
 
-  private getBubble(step: number): void {
+  public getBubble(step: number): void {
     let baloonDirector: string;
 
     if (step === 1) {
@@ -156,7 +154,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setBubblePositionMobile(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
+  public setBubblePositionMobile(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
     if (step === 1) {
       data.top += 20;
     }
@@ -182,7 +180,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     return data;
   }
 
-  private setBubblePositionDesktop(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
+  public setBubblePositionDesktop(step: number, data: any, baloonWidth: number, baloonHeight: number): any {
     if (step === 1 || step === 4 || step === 5) {
       if (step === 1) {
         data.top -= 2;

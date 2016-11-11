@@ -11,19 +11,19 @@ import { PhotographersService } from './photographers.service';
 })
 
 export class PhotographersComponent implements OnInit, OnDestroy {
-  protected search: {text: string} = {text: ''};
+  public search: {text: string} = {text: ''};
 
-  private math: MathService;
-  private photographersByCountry: any[] = [];
-  private photographersByName: any[] = [];
-  private photographersService: PhotographersService;
-  private photographersServiceSubscribe: Subscription;
-  private keyUpSubscribe: Subscription;
-  private element: HTMLElement;
-  private titleHeaderService: TitleHeaderService;
-  private loaderService: LoaderService;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public math: MathService;
+  public photographersByCountry: any[] = [];
+  public photographersByName: any[] = [];
+  public photographersService: PhotographersService;
+  public photographersServiceSubscribe: Subscription;
+  public keyUpSubscribe: Subscription;
+  public element: HTMLElement;
+  public titleHeaderService: TitleHeaderService;
+  public loaderService: LoaderService;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   public constructor(element: ElementRef,
                      math: MathService,

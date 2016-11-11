@@ -6,7 +6,7 @@ import { forEach, difference } from 'lodash';
 
 import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
 
-interface UrlParamsInterface {
+export interface UrlParamsInterface {
   thing: string;
   countries: string;
   regions: string;
@@ -23,25 +23,26 @@ interface UrlParamsInterface {
 })
 
 export class FamilyComponent implements OnInit, OnDestroy {
-  private titles: any = {};
-  private openFamilyExpandBlock: Subject<any> = new Subject<any>();
-  private placeId: string;
-  private urlParams: UrlParamsInterface;
-  private streetSettingsService: StreetSettingsService;
-  private streetSettingsServiceSubscribe: Subscription;
-  private homeIncomeData: any;
-  private rich: any;
-  private poor: any;
-  private router: Router;
-  private activatedRoute: ActivatedRoute;
-  private countriesFilterService: CountriesFilterService;
-  private countriesFilterServiceSubscribe: Subscription;
-  private locations: any[];
-  private activeImageIndex: number;
-  private urlChangeService: UrlChangeService;
-  private windowHistory: any = history;
-  private queryParamsSubscribe: Subscription;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public streetFamilyData: {income: number, region: string};
+  public titles: any = {};
+  public openFamilyExpandBlock: Subject<any> = new Subject<any>();
+  public placeId: string;
+  public urlParams: UrlParamsInterface;
+  public streetSettingsService: StreetSettingsService;
+  public streetSettingsServiceSubscribe: Subscription;
+  public homeIncomeData: any;
+  public rich: any;
+  public poor: any;
+  public router: Router;
+  public activatedRoute: ActivatedRoute;
+  public countriesFilterService: CountriesFilterService;
+  public countriesFilterServiceSubscribe: Subscription;
+  public locations: any[];
+  public activeImageIndex: number;
+  public urlChangeService: UrlChangeService;
+  public windowHistory: any = history;
+  public queryParamsSubscribe: Subscription;
+  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -126,7 +127,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected activeImageOptions(options: {activeImageIndex?: number;}): void {
+  public activeImageOptions(options: {activeImageIndex?: number;}): void {
     let {activeImageIndex} = options;
 
     if (activeImageIndex === this.activeImageIndex) {
@@ -147,11 +148,11 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.urlChangeService.replaceState('/family', url, true);
   }
 
-  protected isOpenFamilyExpandBlock(data: any): void {
+  public isOpenFamilyExpandBlock(data: any): void {
     this.openFamilyExpandBlock.next(data);
   }
 
-  private initData(): void {
+  public initData(): void {
     this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
     this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
 
@@ -178,7 +179,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     };
   }
 
-  private getIncomeTitle(min: number, max: number): string {
+  public getIncomeTitle(min: number, max: number): string {
     let poor: number = this.homeIncomeData.poor;
     let rich: number = this.homeIncomeData.rich;
     let title: string = 'all incomes';
@@ -197,7 +198,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     return title;
   }
 
-  private getCountriesTitle(regions: string[], countries: string[]): string {
+  public getCountriesTitle(regions: string[], countries: string[]): string {
     let title: string;
     if (regions[0] === 'World' && countries[0] === 'World') {
       return 'the world';

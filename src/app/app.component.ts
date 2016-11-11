@@ -10,12 +10,12 @@ import { LoaderService } from '../common';
 })
 
 export class AppComponent implements OnInit, OnDestroy {
-  private isLoader: boolean = false;
-  private isVisibleHeader: boolean;
-  private router: Router;
-  private loaderService: LoaderService;
-  private routerEventsSubscribe: Subscription;
-  private loaderServiceSubscribe: Subscription;
+  public isLoader: boolean = false;
+  public isVisibleHeader: boolean;
+  public router: Router;
+  public loaderService: LoaderService;
+  public routerEventsSubscribe: Subscription;
+  public loaderServiceSubscribe: Subscription;
 
   public constructor(router: Router,
                      loaderService: LoaderService) {

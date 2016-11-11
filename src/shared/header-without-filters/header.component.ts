@@ -15,20 +15,20 @@ import {
 })
 
 export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('heading') private heading: ElementRef;
+  @ViewChild('heading') public heading: ElementRef;
 
-  private title: string;
-  private defaultThing: any;
-  private renderer: Renderer;
-  private headerService: HeaderService;
-  private streetData: DrawDividersInterface;
-  private titleHeaderSubscribe: Subscription;
-  private headerServiceSubscribe: Subscription;
-  private streetServiceSubscribe: Subscription;
-  private titleHeaderService: TitleHeaderService;
-  private streetSettingsService: StreetSettingsService;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public title: string;
+  public defaultThing: any;
+  public renderer: Renderer;
+  public headerService: HeaderService;
+  public streetData: DrawDividersInterface;
+  public titleHeaderSubscribe: Subscription;
+  public headerServiceSubscribe: Subscription;
+  public streetServiceSubscribe: Subscription;
+  public titleHeaderService: TitleHeaderService;
+  public streetSettingsService: StreetSettingsService;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
@@ -85,7 +85,7 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
     this.rendererTitle(this.title);
   }
 
-  private rendererTitle(title: string): void {
+  public rendererTitle(title: string): void {
     this.renderer.setElementProperty(this.heading.nativeElement, 'innerHTML', title);
   }
 }

@@ -25,70 +25,70 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
-  private zoomPositionFixed: boolean = false;
-  private isOpenIncomeFilter: boolean = false;
-  private isMobile: boolean;
-  private isDesktop: boolean;
-  private hoverPlace: Subject<any> = new Subject<any>();
-  private streetPlaces: Subject<any> = new Subject<any>();
-  private matrixPlaces: Subject<any> = new Subject<any>();
-  private chosenPlaces: Subject<any> = new Subject<any>();
-  private clearActiveHomeViewBox: Subject<any> = new Subject<any>();
-  private row: number;
-  private zoom: number;
-  private lowIncome: number;
-  private highIncome: number;
-  private activeHouse: number;
-  private imageHeight: number;
-  private imageMargin: number;
-  private footerHeight: number;
-  private visiblePlaces: number;
-  private rowEtalon: number = 0;
-  private windowInnerWidth: number = window.innerWidth;
-  private windowInnerHeight: number = window.innerHeight;
-  private placesVal: any;
-  private locations: any;
-  private streetData: any;
-  private selectedRegions: any;
-  private activeCountries: any;
-  private streetPlacesData: any;
-  private selectedCountries: any;
-  private placesArr: any[];
-  private clonePlaces: any[];
-  private filtredPlaces: any[] = [];
-  private windowHistory: any = history;
-  private scrollSubscribeForMobile: Subscription;
-  private resizeSubscribe: Subscription;
-  private queryParamsSubscribe: Subscription;
-  private headerFixedSubscribe: Subscription;
-  private matrixServiceSubscribe: Subscription;
-  private matrixServiceStreetSubscribe: Subscription;
-  private countriesFilterServiceSubscribe: Subscription;
-  private thing: string;
-  private query: string;
-  private regions: string;
-  private countries: string;
-  private zone: NgZone;
-  private router: Router;
-  private matrixService: MatrixService;
-  private loaderService: LoaderService;
-  private activatedRoute: ActivatedRoute;
-  private urlChangeService: UrlChangeService;
-  private countriesFilterService: CountriesFilterService;
-  private streetSettingsService: StreetSettingsService;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  private element: HTMLElement;
-  private imageResolution: ImageResolutionInterface;
-  private streetContainer: HTMLElement;
-  private headerContainer: HTMLElement;
-  private matrixImagesContainer: HTMLElement;
-  private matrixImagesContainerHeight: number;
-  private locationStrategy: LocationStrategy;
-  private guidePositionTop: number = 0;
-  private imgContent: HTMLElement;
-  private guideContainer: HTMLElement;
-  private guideHeight: number;
-  private device: BrowserDetectionService;
+  public zoomPositionFixed: boolean = false;
+  public isOpenIncomeFilter: boolean = false;
+  public isMobile: boolean;
+  public isDesktop: boolean;
+  public hoverPlace: Subject<any> = new Subject<any>();
+  public streetPlaces: Subject<any> = new Subject<any>();
+  public matrixPlaces: Subject<any> = new Subject<any>();
+  public chosenPlaces: Subject<any> = new Subject<any>();
+  public clearActiveHomeViewBox: Subject<any> = new Subject<any>();
+  public row: number;
+  public zoom: number;
+  public lowIncome: number;
+  public highIncome: number;
+  public activeHouse: number;
+  public imageHeight: number;
+  public imageMargin: number;
+  public footerHeight: number;
+  public visiblePlaces: number;
+  public rowEtalon: number = 0;
+  public windowInnerWidth: number = window.innerWidth;
+  public windowInnerHeight: number = window.innerHeight;
+  public placesVal: any;
+  public locations: any;
+  public streetData: any;
+  public selectedRegions: any;
+  public activeCountries: any;
+  public streetPlacesData: any;
+  public selectedCountries: any;
+  public placesArr: any[];
+  public clonePlaces: any[];
+  public filtredPlaces: any[] = [];
+  public windowHistory: any = history;
+  public scrollSubscribeForMobile: Subscription;
+  public resizeSubscribe: Subscription;
+  public queryParamsSubscribe: Subscription;
+  public headerFixedSubscribe: Subscription;
+  public matrixServiceSubscribe: Subscription;
+  public matrixServiceStreetSubscribe: Subscription;
+  public countriesFilterServiceSubscribe: Subscription;
+  public thing: string;
+  public query: string;
+  public regions: string;
+  public countries: string;
+  public zone: NgZone;
+  public router: Router;
+  public matrixService: MatrixService;
+  public loaderService: LoaderService;
+  public activatedRoute: ActivatedRoute;
+  public urlChangeService: UrlChangeService;
+  public countriesFilterService: CountriesFilterService;
+  public streetSettingsService: StreetSettingsService;
+  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public element: HTMLElement;
+  public imageResolution: ImageResolutionInterface;
+  public streetContainer: HTMLElement;
+  public headerContainer: HTMLElement;
+  public matrixImagesContainer: HTMLElement;
+  public matrixImagesContainerHeight: number;
+  public locationStrategy: LocationStrategy;
+  public guidePositionTop: number = 0;
+  public imgContent: HTMLElement;
+  public guideContainer: HTMLElement;
+  public guideHeight: number;
+  public device: BrowserDetectionService;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -337,7 +337,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (
         !this.element.querySelector('.image-content') || !imageClientRect.height ||
         this.imageHeight === imageClientRect.height &&
-        this.footerHeight === footer.offsetHeight &&
         this.guideHeight === this.guideContainer.offsetHeight) {
         return;
       }
@@ -661,13 +660,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   };
 
-  protected startQuickGuide(): void {
+  public startQuickGuide(): void {
     setTimeout(() => {
       this.getPaddings({});
     }, 0);
   }
 
-  protected openIncomeFilter(): void {
+  public openIncomeFilter(): void {
     if (!this.isMobile) {
       return;
     }
@@ -675,7 +674,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.isOpenIncomeFilter = true;
   }
 
-  protected getResponseFromIncomeFilter(params: any): void {
+  public getResponseFromIncomeFilter(params: any): void {
     if (params.lowIncome && params.highIncome) {
       this.query = this.query
         .replace(/lowIncome\=\d*/, `lowIncome=${params.lowIncome}`)
@@ -689,7 +688,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.isOpenIncomeFilter = false;
   }
 
-  protected scrollTop(e: MouseEvent, element: HTMLElement): void {
+  public scrollTop(e: MouseEvent, element: HTMLElement): void {
     if (this.windowInnerWidth >= 600 || element.className.indexOf('fixed') === -1) {
       return;
     }
@@ -699,7 +698,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   };
 
-  private showMobileHeader(): void {
+  public showMobileHeader(): void {
     let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
     this.guidePositionTop = 0;
@@ -718,7 +717,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  private setZoomButtonPosition(): void {
+  public setZoomButtonPosition(): void {
     let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
     let containerHeight: number = this.element.offsetHeight + 30;
     this.zone.run(() => {
@@ -726,7 +725,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
-  private parseUrl(url: string): any {
+  public parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

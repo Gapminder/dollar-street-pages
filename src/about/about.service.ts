@@ -1,8 +1,9 @@
-import { Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Config } from '../app.config';
 
+@Injectable()
 export class AboutService {
   public http: Http;
 

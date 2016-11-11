@@ -147,13 +147,17 @@
   margin: 10px auto;
 }
 
-.bubbles-container .footer-container social-share-buttons .share-button:first-child {
+.bubbles-container .footer-container social-share-buttons >>> .share-button:first-child {
   margin: 0;
 }
 
-.bubbles-container .footer-container social-share-buttons i {
-  color: #edf0f5;
-  font-size: 28px;
+.bubbles-container .footer-container social-share-buttons >>> .share-button-container svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bubbles-container .footer-container social-share-buttons >>> .share-button-container svg .cls-1 {
+  fill: #e0e7ef;
 }
 
 .bubbles-container .footer-container a {
@@ -364,7 +368,7 @@
     width: 170px;
   }
 
-  .bubbles-container .footer-container social-share-buttons .share-button:first-child {
+  .bubbles-container .footer-container social-share-buttons >>> .share-button:first-child {
     margin-left: 14px;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { compact } from 'lodash';
@@ -14,26 +14,25 @@ import {
 @Component({
   selector: 'footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./footer.component.css']
 })
 
 export class FooterComponent implements OnInit, OnDestroy {
-  private page: string;
-  private footerData: any;
-  private window: Window = window;
-  private isMatrixComponent: boolean;
-  private streetData: DrawDividersInterface;
+  public page: string;
+  public footerData: any;
+  public window: Window = window;
+  public isMatrixComponent: boolean;
+  public streetData: DrawDividersInterface;
 
-  private router: Router;
-  private footerService: FooterService;
-  private footerServiceSubscribe: Subscription;
-  private routerEventsSubscribe: Subscription;
-  private streetServiceSubscribe: Subscription;
-  private streetSettingsService: StreetSettingsService;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
+  public router: Router;
+  public footerService: FooterService;
+  public footerServiceSubscribe: Subscription;
+  public routerEventsSubscribe: Subscription;
+  public streetServiceSubscribe: Subscription;
+  public streetSettingsService: StreetSettingsService;
+  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
 
   public constructor(router: Router,
                      footerService: FooterService,
@@ -97,7 +96,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.footerServiceSubscribe.unsubscribe();
   }
 
-  protected goToMatrixPage(): void {
+  public goToMatrixPage(): void {
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from footer', {});
 
     let queryParams: any = {
@@ -129,7 +128,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   };
 
-  private objToQuery(data: any): string {
+  public objToQuery(data: any): string {
     return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
