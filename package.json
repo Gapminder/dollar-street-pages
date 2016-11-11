@@ -41,7 +41,7 @@
     "@angular/router": "3.1.2",
     "@types/d3": "4.3.0",
     "@types/jasmine": "2.5.37",
-    "@types/lodash": "4.14.37",
+    "@types/lodash": "4.14.38",
     "@types/node": "6.0.46",
     "@types/selenium-webdriver": "2.53.33",
     "angular2-infinite-scroll": "0.2.6",

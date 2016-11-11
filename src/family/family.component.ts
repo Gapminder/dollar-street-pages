@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
-import { forEach, difference } from 'lodash';
+import { forEach, difference, map } from 'lodash';
 
 import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
 
@@ -224,7 +224,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
 
         forEach(this.locations, (location: any) => {
           if (regions.indexOf(location.region) !== -1) {
-            regionCountries = regionCountries.concat(_.map(location.countries, 'country') as string[]);
+            regionCountries = regionCountries.concat(map(location.countries, 'country') as string[]);
             sumCountries = +location.countries.length;
           }
         });
