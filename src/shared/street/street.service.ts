@@ -594,7 +594,6 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
-
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
@@ -676,8 +675,6 @@ export class StreetDrawService {
     if (init) {
       return this;
     }
-
-    this.drawScrollLabel();
 
     return this;
   };
