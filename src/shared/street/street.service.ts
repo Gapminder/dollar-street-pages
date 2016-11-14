@@ -676,6 +676,8 @@ export class StreetDrawService {
       return this;
     }
 
+    this.drawScrollLabel();
+
     return this;
   };
 
