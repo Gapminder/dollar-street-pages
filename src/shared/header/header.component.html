@@ -10,20 +10,26 @@
                    (selectedFilter)="urlTransfer($event)">
     </things-filter>
 
-    <span class="map-things-text" *ngIf="mapComponent">on the World map</span>
+    <span class="map-things-text" *ngIf="mapComponent">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
 
     <div class="some-filter-container incomeby" *ngIf="matrixComponent">
-      <span class="mobile-ver">in</span>
+      <span class="mobile-ver">{{ 'IN' | translate }}</span>
       <countries-filter [url]="query"
                         (isFilterGotData)="isFilterGotData($event)"
                         (selectedFilter)="urlTransfer($event)">
       </countries-filter>
 
       <span class="income-title-container">
-        <span class="income-title" (click)="openIncomeFilter()">by $</span>
-        <span class="income-title">by income</span>
+        <span class="income-title" (click)="openIncomeFilter()">{{ 'BY' | translate }} $</span>
+        <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
       </span>
     </div>
+  </div>
+
+  <div style="display: block">
+    <div style="cursor: pointer; display: inline-block" (click)="changeLanguage('ru')">Рус</div>
+    <div style="cursor: pointer; display: inline-block" (click)="changeLanguage('en')">En</div>
+    <div style="cursor: pointer; display: inline-block" (click)="changeLanguage('pt')">Pt</div>
   </div>
 
   <main-menu class="pull-right"

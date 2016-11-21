@@ -54,6 +54,19 @@ import { StreetFamilyDrawService } from './street-family/street-family.service';
 import { IncomeFilterComponent } from './income-filter/income-filter.component';
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
+import { LanguageService } from './languageSelector/language.service';
+
+import { TranslateModule, TranslateLoader } from 'ng2-translate';
+import { Observable } from 'rxjs';
+
+/* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
+class CustomLoader implements TranslateLoader {
+  public getTranslation(lang: string): Observable<any> {
+    return Observable.of({KEY: 'value'});
+  }
+}
+/* tslint:enable:no-unused-variable */
+
 @NgModule({
   declarations: [
     HeaderWithoutFiltersComponent,
@@ -83,10 +96,15 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
     HttpModule,
     RouterModule,
     CommonModule,
-    Angulartics2Module.forRoot()
+    Angulartics2Module.forRoot(),
+    TranslateModule.forRoot({
+      provide: TranslateLoader,
+      useClass: CustomLoader
+    })
   ],
   providers: [
     HeaderService,
+    LanguageService,
     SocialShareButtonsService,
     FooterService,
     ThingsFilterService,
@@ -111,7 +129,8 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
     StreetFamilyComponent,
     IncomeFilterComponent,
     MainMenuComponent,
-    IsImageLoadedDirective
+    IsImageLoadedDirective,
+    TranslateModule
   ]
 })
 

@@ -10,22 +10,22 @@
       <div class="image-footer-container">
         <div class="photographer-container">
           <p><img src="/assets/img/cc-icon-small.svg">
-            Photo: <a [routerLink]="['/photographer', imageData.photographer._id]"
+            {{ 'PHOTO' | translate }}: <a [routerLink]="['/photographer', imageData.photographer._id]"
                       [queryParams]="{}"
                       angulartics2On="click"
                       angularticsEvent="Photographer profile">
-              {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> for Dollar Street
+              {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> {{ 'FOR' | translate }} Dollar Street
             <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> (CC BY 4.0)</a>
           </p>
         </div>
 
         <div class="zoom-download-container">
           <a class="download" target="_blank" [href]="api + '/consumer/api/v1/download-image/' + imageData.imageId">
-            <img src="/assets/img/download-icon.svg" alt=""> Download
+            <img src="/assets/img/download-icon.svg" alt=""> {{ 'DOWNLOAD' | translate }}
           </a>
 
           <a (click)="openPopUp()">
-            <img src="/assets/img/fullsize-icon.svg" alt=""> Fullsize
+            <img src="/assets/img/fullsize-icon.svg" alt=""> {{ 'FULLSIZE' | translate }}
           </a>
         </div>
       </div>
@@ -44,16 +44,16 @@
           [queryParams]="{}"
           angulartics2On="click"
           angularticsEvent="Article page">
-          Read more >></a></p>
+          {{ 'READ_MORE' | translate }} >></a></p>
 
         <div class="thing-button-container">
-          <p>Related searches</p>
+          <p>{{ 'RELATED_SEARCHES' | translate }}</p>
           <a
             [routerLink]="['/matrix']"
             [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
             angulartics2On="click"
             angularticsEvent="Matrix page">
-            <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{countryName}}</span> <img
+            <span>{{imageData.thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{countryName}}</span> <img
             src="/assets/img/arrow-right-icon.svg" alt=""><img
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
           <a
@@ -61,7 +61,7 @@
             [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
             angulartics2On="click"
             angularticsEvent="Matrix page">
-            <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{country?.region}}</span> <img
+            <span>{{imageData.thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{country?.region}}</span> <img
             src="/assets/img/arrow-right-icon.svg" alt=""><img
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
           <a
@@ -69,7 +69,7 @@
             [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
             angulartics2On="click"
             angularticsEvent="Matrix page">
-            <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>the World</span> <img
+            <span>{{imageData.thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{ 'THE_WORLD' | translate }}</span> <img
             src="/assets/img/arrow-right-icon.svg" alt=""><img
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
         </div>
@@ -107,12 +107,12 @@
     <div class="view-image-block-footer-container">
       <div class="photographer-container">
         <p><img src="/assets/img/cc-icon-small-white.svg">
-          Photo: <a [routerLink]="['/photographer', imageData.photographer._id]"
+          {{ 'PHOTO' | translate }}: <a [routerLink]="['/photographer', imageData.photographer._id]"
                     [queryParams]="{}"
                     angulartics2On="click"
                     angularticsEvent="Photographer profile">
             {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> <span class="tablet">
-            for Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
+            {{ 'FOR' | translate }} Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
           </span>
           <span class="mobile"><a href="https://creativecommons.org/licenses/by/4.0/"
                                   target="_blank">CC BY 4.0</a></span></p>
@@ -141,7 +141,7 @@
             [queryParams]="{}"
             angulartics2On="click"
             angularticsEvent="Article page">
-            Read more >></a></p>
+            {{ 'READ_MORE' | translate }} >></a></p>
         </div>
       </div>
 
@@ -150,7 +150,7 @@
          [queryParams]="{thing: imageData.thing.plural, countries: country?.name, regions: 'World', zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{countryName}}</span> <img
+        <span>{{imageData.thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{countryName}}</span> <img
         src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
@@ -158,7 +158,7 @@
          [queryParams]="{thing: imageData.thing.plural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>{{country?.region}}</span> <img
+        <span>{{imageData.thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{country?.region}}</span> <img
         src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
@@ -166,7 +166,7 @@
          [queryParams]="{thing: imageData.thing.plural, countries: 'World', regions: 'World', zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
          angulartics2On="click"
          angularticsEvent="Matrix page">
-        <span>{{imageData.thing.plural}}</span><span class="in"> in </span><span>the World</span> <img
+        <span>{{imageData.thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{ 'THE_WORLD' | translate }}</span> <img
         src="/assets/img/arrow-right-icon.svg" alt=""><img
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
     </div>

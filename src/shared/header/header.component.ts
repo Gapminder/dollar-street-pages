@@ -1,7 +1,9 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { TranslateService } from 'ng2-translate';
+import { stringify } from '@angular/core/src/facade/lang';
 
 import {
   MathService,
@@ -10,6 +12,7 @@ import {
   DrawDividersInterface,
   BrowserDetectionService
 } from '../../common';
+import { LanguageService } from '../languageSelector/language.service';
 
 @Component({
   selector: 'header',
@@ -18,6 +21,11 @@ import {
 })
 
 export class HeaderComponent implements OnInit, OnChanges {
+  public languageData:any = {};
+  public element: HTMLElement;
+  public translate: TranslateService;
+  public getLanguageService: LanguageService;
+
   @Input()
   protected query: string;
   @Input()
@@ -45,12 +53,16 @@ export class HeaderComponent implements OnInit, OnChanges {
   private device: BrowserDetectionService;
   private isDesktop: boolean;
   private isMobile: boolean;
+  private getLanguageToUseSubscribe: Subscription;
 
   public constructor(router: Router,
                      math: MathService,
+                     getLanguageService: LanguageService,
+                     translate: TranslateService,
                      activatedRoute: ActivatedRoute,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
+                     element: ElementRef,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -58,6 +70,10 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+
+    this.element = element.nativeElement;
+    this.translate = translate;
+    this.getLanguageService = getLanguageService;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
@@ -76,6 +92,20 @@ export class HeaderComponent implements OnInit, OnChanges {
         }
 
         this.streetData = res.data;
+      });
+  }
+
+  public changeLanguage (lang:string):void {
+    let langServ = stringify('lang=' + lang);
+
+    this.getLanguageToUseSubscribe = this.getLanguageService.getLanguage(langServ)
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+        this.translate.setTranslation(lang, res.data.translation);
+        this.translate.use(lang);
       });
   }
 
