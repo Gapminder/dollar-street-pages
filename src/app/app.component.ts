@@ -36,11 +36,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.translate.addLangs(['en', 'ru', 'pt']);
+    this.translate.addLangs(['en', 'ru', 'pt', 'fr', 'ch']);
     this.translate.setDefaultLang('en');
     this.getLanguageToUse = this.translate.getBrowserLang() || this.translate.getDefaultLang();
-
-    this.translate.use(this.getLanguageToUse);
 
     let lang = stringify('lang=' + this.getLanguageToUse);
 
@@ -51,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
           return;
         }
         this.translate.setTranslation(this.getLanguageToUse, res.data.translation);
+        this.translate.use(this.getLanguageToUse);
       });
 
     this.translate.onLangChange.subscribe((event: any) => {

@@ -24,12 +24,9 @@
         <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
       </span>
     </div>
-  </div>
 
-  <div style="display: block">
-    <div style="cursor: pointer; display: inline-block" (click)="changeLanguage('ru')">Рус</div>
-    <div style="cursor: pointer; display: inline-block" (click)="changeLanguage('en')">En</div>
-    <div style="cursor: pointer; display: inline-block" (click)="changeLanguage('pt')">Pt</div>
+    <language-selector></language-selector>
+
   </div>
 
   <main-menu class="pull-right"

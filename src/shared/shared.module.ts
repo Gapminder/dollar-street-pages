@@ -54,10 +54,13 @@ import { StreetFamilyDrawService } from './street-family/street-family.service';
 import { IncomeFilterComponent } from './income-filter/income-filter.component';
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
+import { LanguageSelectorComponent } from './languageSelector/language-selector.component';
 import { LanguageService } from './languageSelector/language.service';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { Observable } from 'rxjs';
+
+import { DropdownModule } from 'ng2-bootstrap/components/dropdown';
 
 /* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
 class CustomLoader implements TranslateLoader {
@@ -69,6 +72,7 @@ class CustomLoader implements TranslateLoader {
 
 @NgModule({
   declarations: [
+    LanguageSelectorComponent,
     HeaderWithoutFiltersComponent,
     MainMenuComponent,
     SocialShareButtonsComponent,
@@ -96,6 +100,7 @@ class CustomLoader implements TranslateLoader {
     HttpModule,
     RouterModule,
     CommonModule,
+    DropdownModule,
     Angulartics2Module.forRoot(),
     TranslateModule.forRoot({
       provide: TranslateLoader,
@@ -115,6 +120,7 @@ class CustomLoader implements TranslateLoader {
     StreetFamilyDrawService
   ],
   exports: [
+    LanguageSelectorComponent,
     HeaderWithoutFiltersComponent,
     FooterComponent,
     RegionMapComponent,
