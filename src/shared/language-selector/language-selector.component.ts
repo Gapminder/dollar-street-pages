@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from 'ng2-translate';
 import { stringify } from '@angular/core/src/facade/lang';
-import { LanguageService } from '../languageSelector/language.service';
+import { LanguageService } from '../language-selector/language.service';
 
 @Component({
   selector: 'language-selector',
@@ -32,7 +32,6 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
           return;
         }
         this.getLanguagesList = res.data;
-        console.log(this.getLanguagesList);
       });
   }
 

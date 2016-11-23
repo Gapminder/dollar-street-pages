@@ -10,8 +10,8 @@
 }
 
 .header .logo {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   margin: 9px 25px 9px 0;
   cursor: pointer;
   display: block;
@@ -24,13 +24,17 @@
 .header .heading {
   font-size: 28px;
   color: #374551;
-  width: calc(100% - 195px);
+  /*width: calc(100% - 195px);*/
   padding-bottom: 1px !important;
   margin-top: 17px;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.language-bar {
+  margin: 11px 108px;
 }
 
 @media (min-width: 1400px) {

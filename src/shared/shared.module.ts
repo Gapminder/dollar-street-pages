@@ -54,8 +54,8 @@ import { StreetFamilyDrawService } from './street-family/street-family.service';
 import { IncomeFilterComponent } from './income-filter/income-filter.component';
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
-import { LanguageSelectorComponent } from './languageSelector/language-selector.component';
-import { LanguageService } from './languageSelector/language.service';
+import { LanguageSelectorComponent } from './language-selector/language-selector.component';
+import { LanguageService } from './language-selector/language.service';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { Observable } from 'rxjs';

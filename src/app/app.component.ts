@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { LoaderService } from '../common';
-import { LanguageService } from '../shared/languageSelector/language.service';
+import { LanguageService } from '../shared/language-selector/language.service';
 import { TranslateService } from 'ng2-translate';
 import { stringify } from '@angular/core/src/facade/lang';
 
