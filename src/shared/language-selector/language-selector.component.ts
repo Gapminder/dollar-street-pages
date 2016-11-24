@@ -11,12 +11,12 @@ import { LanguageService } from '../language-selector/language.service';
 })
 
 export class LanguageSelectorComponent implements OnInit, OnDestroy {
-  public disabled:boolean = false;
-  public status:{isopen:boolean} = {isopen: false};
+  public disabled: boolean = false;
+  public status: {isopen: boolean} = {isopen: false};
   public translate: TranslateService;
   public getLanguageService: LanguageService;
   public getLanguageToUseSubscribe: Subscription;
-  public getLanguagesList:any;
+  public getLanguagesList: any;
 
   public constructor(getLanguageService: LanguageService,
                      translate: TranslateService,) {
@@ -41,7 +41,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
     }
   }
 
-  public changeLanguage (lang:string):void {
+  public changeLanguage(lang: string): void {
     let langServ = stringify('lang=' + lang);
 
     this.getLanguageToUseSubscribe = this.getLanguageService.getLanguage(langServ)

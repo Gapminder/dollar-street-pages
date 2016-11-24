@@ -21,7 +21,7 @@
       <div class="countries-search">
         <input class="form-control autofocus"
                type="search"
-               placeholder="Search country"
+               placeholder="{{ 'SEARCH_COUNTRY' | translate }}"
                #countriesSearch
                [value]="search"
                (input)="search = countriesSearch.value">
@@ -100,7 +100,7 @@
       <div class="countries-search">
         <input class="form-control"
                type="search"
-               placeholder="Search country"
+               placeholder="{{ SEARCH_COUNTRY | translate }}"
                (focus)="hideRegionsIfInFocus(regionsVisibility)"
                (focusout)="hideRegionsIfInFocus()"
                #countriesMobileSearch

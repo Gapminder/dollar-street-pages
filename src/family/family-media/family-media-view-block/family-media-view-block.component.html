@@ -20,7 +20,7 @@
         </div>
 
         <div class="zoom-download-container">
-          <a class="download" target="_blank" [href]="api + '/consumer/api/v1/download-image/' + imageData.imageId">
+          <a class="download" target="_blank" [href]="api + '/v1/download-image/' + imageData.imageId">
             <img src="/assets/img/download-icon.svg" alt=""> {{ 'DOWNLOAD' | translate }}
           </a>
 
@@ -119,7 +119,7 @@
       </div>
 
       <div class="download-container">
-        <a target="_blank" [href]="api + '/consumer/api/v1/download-image/' + imageData.imageId">
+        <a target="_blank" [href]="api + '/v1/download-image/' + imageData.imageId">
           <img src="/assets/img/download-icon-white.svg" alt="">
         </a>
       </div>

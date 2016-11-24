@@ -9,7 +9,7 @@ export class Config {
   // public static api: string = '//stage.dollarstreet.org';
   public static api: string = '//apidev.dollarstreet.org';
   // public static api: string = '//192.168.1.105';
-  // public static api: string = '//192.168.1.57';
+  // public static api: string = '//192.168.1.57:8015';
   // public static api: string = '//192.168.1.95';
 
   public static windowInnerWidth: number = window.innerWidth;

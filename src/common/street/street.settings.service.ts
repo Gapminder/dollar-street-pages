@@ -34,7 +34,7 @@ export class StreetSettingsService {
       return _cache;
     }
     _cache = this.http
-      .get(`${Config.api}/consumer/api/v1/street-settings`)
+      .get(`${Config.api}/v1/street-settings`)
       .map((res: any) => {
         let parseRes = JSON.parse(res._body);
         return {err: parseRes.error, data: parseRes.data as DrawDividersInterface};

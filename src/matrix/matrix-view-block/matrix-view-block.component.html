@@ -90,7 +90,7 @@
     </div>
 
     <div class="zoom-download-container">
-      <a class="download" target="_blank" [href]="api + '/consumer/api/v1/download-image/' + place.image">
+      <a class="download" target="_blank" [href]="api + '/v1/download-image/' + place.image">
         <img src="/assets/img/download-icon.svg" alt=""> {{ 'DOWNLOAD' | translate }}
       </a>
       <span (click)="openPopUp()">
@@ -139,7 +139,7 @@
       </div>
 
       <div class="download-container">
-        <a target="_blank" [href]="api + '/consumer/api/v1/download-image/' + place.image">
+        <a target="_blank" [href]="api + '/v1/download-image/' + place.image">
           <img src="/assets/img/download-icon-white.svg" alt="">
         </a>
       </div>

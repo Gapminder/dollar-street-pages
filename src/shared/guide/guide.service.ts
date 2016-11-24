@@ -14,7 +14,7 @@ export class GuideService {
   }
 
   public getGuide(): Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/onboarding`).map((res: any) => {
+    return this.http.get(`${Config.api}/v1/onboarding`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
       return {err: parseRes.error, data: parseRes.data};

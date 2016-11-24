@@ -2,7 +2,6 @@
   <span *ngFor="let language of getLanguagesList;">
     <div class="lang-outside" *ngIf="language.showOnPage" (click)="changeLanguage(language.language)">{{language.languageName}}</div>
   </span>
-  <div class="lang-outside" (click)="changeLanguage('da')">Danish</div>
 
   <div class="btn-group" dropdown [(isOpen)]="status.isopen">
     <button id="single-button" type="button" class="btn" dropdownToggle [disabled]="disabled">

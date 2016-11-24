@@ -12,14 +12,14 @@ export class LanguageService {
   }
 
   public getLanguage(query: string): Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/language?${query}`).map((res: any) => {
+    return this.http.get(`${Config.api}/v1/language?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });
   }
 
   public getLanguagesList(): Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/languagesList`).map((res: any) => {
+    return this.http.get(`${Config.api}/v1/languagesList`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });

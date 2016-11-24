@@ -28,7 +28,7 @@
 
   <div class="footer-profile organisation"
        *ngIf="photographer.company && photographer.company.name">
-    <h3>Organisation</h3>
+    <h3>{{ 'ORGANIZATION' | translate }}</h3>
 
     <p *ngIf="photographer?.company?.link"><a
       [href]="photographer.company.link"
