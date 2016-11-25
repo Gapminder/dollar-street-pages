@@ -107,7 +107,7 @@
       <div class="more-info" *ngIf="isShowInfoMore(photographer)">
         <p (click)="isShowInfo = !isShowInfo">
           <img src="/assets/img/read-more-icon.svg" alt="">
-          <span>{{!isShowInfo ? 'Show details' : 'Hide details'}}</span>
+          <span>{{!isShowInfo ? showDetailsTranslate : hideDetailsTranslate}}</span>
         </p>
       </div>
     </div>
@@ -122,7 +122,7 @@
       <div class="more-info">
         <p (click)="isShowInfo = !isShowInfo">
           <img src="/assets/img/read-more-icon.svg" alt="">
-          <span>{{!isShowInfo ? 'Show details' : 'Hide details'}}</span>
+          <span>{{!isShowInfo ? showDetailsTranslate : hideDetailsTranslate}}</span>
         </p>
       </div>
 
