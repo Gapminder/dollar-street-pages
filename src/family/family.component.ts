@@ -142,6 +142,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.countriesFilterServiceSubscribe.unsubscribe();
     this.streetSettingsServiceSubscribe.unsubscribe();
     this.translateGetTheWorldSubscribe.unsubscribe();
+    this.translateOnLangChangeSubscribe.unsubscribe();
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';

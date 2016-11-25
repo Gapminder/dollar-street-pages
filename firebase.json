@@ -1,5 +1,5 @@
 {
-  "firebase": "DSMTest01",
+  "firebase": "ds-dev-consumer",
   "public": "dist",
   "ignore": [
     "firebase.json",
