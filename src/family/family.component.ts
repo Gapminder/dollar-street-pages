@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { forEach, difference, map } from 'lodash';
+import { TranslateService } from 'ng2-translate';
 
 import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
 
@@ -23,6 +24,11 @@ export interface UrlParamsInterface {
 })
 
 export class FamilyComponent implements OnInit, OnDestroy {
+  public translate: TranslateService;
+  public theWorldTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetTheWorldSubscribe: Subscription;
+
   public streetFamilyData: {income: number, region: string};
   public titles: any = {};
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
@@ -49,7 +55,9 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
                      urlChangeService: UrlChangeService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
@@ -59,6 +67,18 @@ export class FamilyComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
+      this.theWorldTranslate = res;
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const noDataTranslation = event.translations;
+      /* tslint:disable:no-string-literal */
+      this.theWorldTranslate = noDataTranslation['THE_WORLD'];
+      /* tslint:enable:no-string-literal */
+      this.initData();
+    });
+
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams
       .subscribe((params: any) => {
@@ -121,6 +141,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.queryParamsSubscribe.unsubscribe();
     this.countriesFilterServiceSubscribe.unsubscribe();
     this.streetSettingsServiceSubscribe.unsubscribe();
+    this.translateGetTheWorldSubscribe.unsubscribe();
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
@@ -172,9 +193,11 @@ export class FamilyComponent implements OnInit, OnDestroy {
       return;
     }
 
+    let countries = 'the world' ? this.theWorldTranslate : this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(','));
+
     this.titles = {
       thing: this.urlParams.thing,
-      countries: this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(',')),
+      countries: countries,
       income: this.getIncomeTitle(this.urlParams.lowIncome, this.urlParams.highIncome)
     };
   }

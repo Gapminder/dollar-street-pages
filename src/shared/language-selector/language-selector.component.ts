@@ -19,7 +19,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public getLanguagesList: any;
 
   public constructor(getLanguageService: LanguageService,
-                     translate: TranslateService,) {
+                     translate: TranslateService) {
     this.translate = translate;
     this.getLanguageService = getLanguageService;
   }

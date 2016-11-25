@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { TranslateService } from 'ng2-translate';
 
 import * as _ from 'lodash';
 
@@ -43,6 +44,15 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
   @Output('filter')
   public filter: EventEmitter<any> = new EventEmitter<any>();
+
+  public translate: TranslateService;
+  public sorryWeHaveNoTranslate: string;
+  public onThisIncomeYetTranslate: string;
+  public inTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetSorryWeHaveNoSubscribe: Subscription;
+  public translateGetOnThisIncomeYetSubscribe: Subscription;
+  public translateGetInSubscribe: Subscription;
 
   public selectedCountries: any;
   public selectedRegions: any;
@@ -83,7 +93,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      math: MathService,
                      loaderService: LoaderService,
                      countriesFilterService: CountriesFilterService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -96,6 +108,30 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public ngOnInit(): any {
     let isInit: boolean = true;
     this.isDesktop = this.device.isDesktop();
+
+    this.translateGetSorryWeHaveNoSubscribe = this.translate.get('SORRY_WE_HAVE_NO').subscribe((res: any) => {
+      this.sorryWeHaveNoTranslate = res;
+    });
+
+    this.translateGetOnThisIncomeYetSubscribe = this.translate.get('ON_THIS_INCOME_YET').subscribe((res: any) => {
+      this.onThisIncomeYetTranslate = res;
+    });
+
+    this.translateGetInSubscribe = this.translate.get('IN').subscribe((res: any) => {
+      this.inTranslate = res;
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const noDataTranslation = event.translations;
+      /* tslint:disable:no-string-literal */
+      this.sorryWeHaveNoTranslate = noDataTranslation['SORRY_WE_HAVE_NO'];
+      this.onThisIncomeYetTranslate = noDataTranslation['ON_THIS_INCOME_YET'];
+      this.inTranslate = noDataTranslation['IN'];
+      /* tslint:enable:no-string-literal */
+      if (this.currentPlaces && this.query && !this.currentPlaces.length) {
+        this.buildErrorMsg(this.currentPlaces);
+      }
+    });
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
       this.showErrorMsg = false;
@@ -167,6 +203,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.placesSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
+    this.translateOnLangChangeSubscribe.unsubscribe();
+    this.translateGetSorryWeHaveNoSubscribe.unsubscribe();
+    this.translateGetOnThisIncomeYetSubscribe.unsubscribe();
+    this.translateGetInSubscribe.unsubscribe();
 
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
@@ -285,21 +325,15 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       let activeCountries = this.activeCountries.toString().replace(/,/g, ', ');
 
       if (this.activeCountries === 'the world') {
-
         this.showErrorMsg = true;
-        this.errorMsg = 'Sorry, we have no ' + this.selectedThing.toString().toLowerCase() + ' on this income yet.';
+        this.errorMsg = this.sorryWeHaveNoTranslate + ' ' +
+          this.selectedThing.toString().toLowerCase() + ' ' + this.onThisIncomeYetTranslate;
         return;
       } else {
-
-        if (!this.selectedRegions) {
-
-          this.showErrorMsg = true;
-          this.errorMsg = 'Sorry, there is no data by this query yet!';
-          return;
-        }
-
         this.showErrorMsg = true;
-        this.errorMsg = 'Sorry, we have no ' + this.selectedThing.toString().toLowerCase() + ' in ' + activeCountries + ' on this income yet.';
+        this.errorMsg = this.sorryWeHaveNoTranslate + ' ' +
+          this.selectedThing.toString().toLowerCase() +
+          ' ' + this.inTranslate + ' ' + activeCountries + ' ' + this.onThisIncomeYetTranslate;
         return;
       }
     }

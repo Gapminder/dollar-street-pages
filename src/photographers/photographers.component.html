@@ -5,7 +5,7 @@
         <span class="sort-country" (click)="toggleLeftSide($event)">{{ 'SORT_BY_COUNTRY' | translate }}</span>
         <input id="search"
                type="search"
-               placeholder="Search..."
+               placeholder="{{ 'SEARCH' | translate }}..."
                #photographersSearch
                (input)="search.text = photographersSearch.value">
         <img src="/assets/img/search-icon.svg" alt="Search icon">

@@ -4,6 +4,7 @@ import { Component, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { TranslateService } from 'ng2-translate';
 
 import {
   MathService,
@@ -23,6 +24,11 @@ import { MapService } from './map.service';
 })
 
 export class MapComponent implements OnInit, OnDestroy {
+  public translate: TranslateService;
+  public familyTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetFamilySubscribe: Subscription;
+
   private resizeSubscribe: Subscription;
   private mapServiceSubscribe: Subscription;
   private math: MathService;
@@ -70,7 +76,9 @@ export class MapComponent implements OnInit, OnDestroy {
                      urlChangeService: UrlChangeService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -90,6 +98,17 @@ export class MapComponent implements OnInit, OnDestroy {
 
     let isInit: boolean = true;
     this.loaderService.setLoader(false);
+
+    this.translateGetFamilySubscribe = this.translate.get('FAMILY').subscribe((res: any) => {
+      this.familyTranslate = res;
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const familyTranslation = event.translations;
+      /* tslint:disable:no-string-literal */
+      this.familyTranslate = familyTranslation['FAMILY'];
+      /* tslint:enable:no-string-literal */
+    });
 
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams
@@ -159,6 +178,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.resizeSubscribe.unsubscribe();
     this.mapServiceSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
+    this.translateOnLangChangeSubscribe.unsubscribe();
+    this.translateGetFamilySubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 

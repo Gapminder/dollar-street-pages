@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { AboutService } from './about.service';
 import { LoaderService, TitleHeaderService } from '../common';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'about',
@@ -17,11 +18,17 @@ export class AboutComponent implements OnInit, OnDestroy {
   public titleHeaderService: TitleHeaderService;
   public loaderService: LoaderService;
   public sanitizer: DomSanitizer;
+  public translate: TranslateService;
+  public aboutTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetAboutSubscribe: Subscription;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
                      sanitizer: DomSanitizer,
-                     titleHeaderService: TitleHeaderService) {
+                     titleHeaderService: TitleHeaderService,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.sanitizer = sanitizer;
     this.aboutService = aboutService;
     this.loaderService = loaderService;
@@ -30,7 +37,19 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.loaderService.setLoader(false);
-    this.titleHeaderService.setTitle('About');
+
+    this.translateGetAboutSubscribe = this.translate.get('ABOUT').subscribe((res: any) => {
+      this.aboutTranslate = res;
+      this.titleHeaderService.setTitle(this.aboutTranslate);
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const aboutTranslation = event.translations;
+      /* tslint:disable:no-string-literal */
+      this.aboutTranslate = aboutTranslation['ABOUT'];
+      /* tslint:enable:no-string-literal */
+      this.titleHeaderService.setTitle(this.aboutTranslate);
+    });
 
     this.aboutSubscribe = this.aboutService.getInfo().subscribe((val: any) => {
       if (val.err) {
@@ -46,6 +65,8 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.aboutSubscribe.unsubscribe();
+    this.translateOnLangChangeSubscribe.unsubscribe();
+    this.translateGetAboutSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 }
