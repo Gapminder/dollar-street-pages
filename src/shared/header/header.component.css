@@ -25,7 +25,7 @@
 .filters-container {
   float: left;
   margin-top: 11px;
-  width: calc(100% - 140px);
+  width: calc(100% - 275px);
 }
 
 .filters-container things-filter,
@@ -82,13 +82,21 @@
   display: inline-block
 }
 
+.menu-container {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
 @media (max-width: 1023px) {
   .filters-container things-filter {
     margin-bottom: 5px;
   }
 
   .filters-container {
-    width: calc(100% - 105px);
+    width: calc(100% - 240px);
   }
 
   .header-content .icon-container img {
@@ -110,6 +118,10 @@
 }
 
 @media (max-width: 599px) {
+  .header-content >>> .lang-container {
+    display: none;
+  }
+
   .filters-container .map-things-text {
     display: none;
   }

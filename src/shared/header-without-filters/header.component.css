@@ -32,10 +32,6 @@
   text-overflow: ellipsis;
 }
 
-.language-bar {
-  margin: 11px 66px;
-}
-
 @media (min-width: 1400px) {
   .container {
     width: 1400px;
