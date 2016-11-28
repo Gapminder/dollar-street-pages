@@ -63,7 +63,7 @@ import { Observable } from 'rxjs';
 import { DropdownModule } from 'ng2-bootstrap/components/dropdown';
 
 /* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
-class CustomLoader implements TranslateLoader {
+export class CustomLoader implements TranslateLoader {
   public getTranslation(lang: string): Observable<any> {
     return Observable.of({KEY: 'value'});
   }
