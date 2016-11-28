@@ -25,7 +25,7 @@
 .filters-container {
   float: left;
   margin-top: 11px;
-  width: calc(100% - 180px);
+  width: calc(100% - 140px);
 }
 
 .filters-container things-filter,

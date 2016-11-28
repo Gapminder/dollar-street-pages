@@ -24,7 +24,6 @@
 .header .heading {
   font-size: 28px;
   color: #374551;
-  /*width: calc(100% - 195px);*/
   padding-bottom: 1px !important;
   margin-top: 17px;
 
@@ -34,7 +33,7 @@
 }
 
 .language-bar {
-  margin: 11px 108px;
+  margin: 11px 66px;
 }
 
 @media (min-width: 1400px) {

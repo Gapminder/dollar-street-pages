@@ -2,7 +2,8 @@
   <span *ngFor="let language of getLanguagesList;">
     <div class="lang-outside"
          [ngClass]="{'lang-selected': currentLanguage === language.language}"
-         *ngIf="language.showOnPage" (click)="changeLanguage(language.language)">
+         *ngIf="language.showOnPage"
+         (click)="changeLanguage(language.language)">
       {{language.languageName}}
     </div>
   </span>
@@ -13,10 +14,11 @@
     </button>
     <ul dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-languages">
       <li class="selector" role="menuitem" *ngFor="let language of getLanguagesList;">
-        <div class="lang-selector" *ngIf="!language.showOnPage" (click)="changeLanguage(language.language)">
-          <span class="lang-selected" *ngIf="language.language === currentLanguage">{{language.languageName}}</span>
-          <span *ngIf="language.language !== currentLanguage">{{language.languageName}}</span>
-        </div>
+        <div class="lang-selector"
+             [ngClass]="{'lang-selected': currentLanguage === language.language}"
+             *ngIf="!language.showOnPage"
+             (click)="changeLanguage(language.language)">
+          {{language.languageName}}</div>
       </li>
     </ul>
   </div>

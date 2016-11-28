@@ -58,9 +58,13 @@ family-header {
   height: 56px;
 }
 
-.header-container .language-bar {
-  margin: -30px 35px;
+.header-container >>> language-selector .lang-container {
+  margin: -30px 4px;
   float: right;
+}
+
+.header-container >>> language-selector .lang-container button {
+  background-color: #f6f7f8;
 }
 
 @media (max-width: 1023px) {

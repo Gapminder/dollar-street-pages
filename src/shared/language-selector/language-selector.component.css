@@ -3,6 +3,7 @@
   float: right;
   line-height: 14px;
   font-size: 14px;
+  margin-top: 6px;
 }
 
 .lang-outside {
@@ -13,8 +14,12 @@
   color: #767d86;
 }
 
-.lang-outside:hover, .lang-selected {
+.lang-outside:hover, .lang-selected, .lang-selector.lang-selected {
   color: #364551;
+}
+
+.lang-selected, .lang-selector.lang-selected {
+  cursor: default;
 }
 
 .lang-selector {
