@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from 'ng2-translate';
 import { stringify } from '@angular/core/src/facade/lang';
@@ -17,10 +17,14 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public getLanguageService: LanguageService;
   public getLanguageToUseSubscribe: Subscription;
   public getLanguagesList: any;
+  public element: HTMLElement;
+  public currentLanguage: string;
 
   public constructor(getLanguageService: LanguageService,
+                     element: ElementRef,
                      translate: TranslateService) {
     this.translate = translate;
+    this.element = element.nativeElement;
     this.getLanguageService = getLanguageService;
   }
 
@@ -32,6 +36,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
           return;
         }
         this.getLanguagesList = res.data;
+        this.currentLanguage = this.translate.currentLang;
       });
   }
 
@@ -52,6 +57,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
         }
         this.translate.setTranslation(lang, res.data.translation);
         this.translate.use(lang);
+        this.currentLanguage = lang;
       });
   }
 }

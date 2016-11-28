@@ -41,9 +41,7 @@ export class TeamComponent implements OnInit, OnDestroy {
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const teamTranslation = event.translations;
-      /* tslint:disable:no-string-literal */
-      this.teamTranslate = teamTranslation['TEAM'];
-      /* tslint:enable:no-string-literal */
+      this.teamTranslate = teamTranslation.TEAM;
       this.titleHeaderService.setTitle('Dollar Street ' + this.teamTranslate);
     });
 
@@ -60,9 +58,15 @@ export class TeamComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (    this.translateGetTeamSubscribe.unsubscribe) {
+      this.translateGetTeamSubscribe.unsubscribe();
+    }
+
     this.teamSubscribe.unsubscribe();
-    this.translateOnLangChangeSubscribe.unsubscribe();
-    this.translateGetTeamSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 }

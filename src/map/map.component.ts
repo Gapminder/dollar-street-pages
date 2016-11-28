@@ -105,9 +105,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const familyTranslation = event.translations;
-      /* tslint:disable:no-string-literal */
-      this.familyTranslate = familyTranslation['FAMILY'];
-      /* tslint:enable:no-string-literal */
+      this.familyTranslate = familyTranslation.FAMILY;
     });
 
     this.queryParamsSubscribe = this.activatedRoute
@@ -175,11 +173,17 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetFamilySubscribe.unsubscribe) {
+      this.translateGetFamilySubscribe.unsubscribe();
+    }
+
     this.resizeSubscribe.unsubscribe();
     this.mapServiceSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
-    this.translateOnLangChangeSubscribe.unsubscribe();
-    this.translateGetFamilySubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 

@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public translate: TranslateService;
   public getLanguageService: LanguageService;
   public getLanguageToUseSubscribe: Subscription;
+  public translateOnLangChangeSubscribe: Subscription;
   public getLanguageToUse:string;
 
   public constructor(router: Router,
@@ -52,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.translate.use(this.getLanguageToUse);
       });
 
-    this.translate.onLangChange.subscribe((event: any) => {
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       let translations = event.translations;
       let langToUse = event.lang;
       this.translate.setTranslation(langToUse, translations);
@@ -84,12 +85,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.routerEventsSubscribe.unsubscribe();
     this.loaderServiceSubscribe.unsubscribe();
 
-    if (this.getLanguageToUseSubscribe.unsubscribe()) {
+    if (this.getLanguageToUseSubscribe.unsubscribe) {
       this.getLanguageToUseSubscribe.unsubscribe();
     }
 
-    if ( this.translate.onLangChange.unsubscribe()) {
-      this.translate.onLangChange.unsubscribe();
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
     }
   }
 }
