@@ -2,7 +2,7 @@
 
 const path = require('path');
 const cwd = process.cwd();
-const bsConfig = require(cwd+'/bs-config.json');
+const bsConfig = require(cwd+'/bs-config.js');
 
 let config = {
   baseUrl: 'http://consumer.dollarstreet.org/',

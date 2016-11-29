@@ -18,6 +18,12 @@ app/**/*.js
 app/**/*.js.map
 app/**/*.d.ts
 
+src/**/*.js
+src/**/*.js.map
+src/**/*.d.ts
+
+!src/assets/js/*.js
+
 #ts typings
 typings
 !typings/require.d.ts
@@ -35,3 +41,8 @@ test-e2e/app/**/*.d.ts
 
 # new relic log
 newrelic_agent.log
+
+# AoT
+**/*.ngfactory.ts
+**/*.css.ts
+**/*.shim.ts

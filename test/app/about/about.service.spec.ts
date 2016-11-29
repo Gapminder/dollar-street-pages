@@ -3,7 +3,7 @@ import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 import { Config } from '../../../app/app.config.ts';
-import { AboutService } from '../../../app/about/about.service';
+import { AboutService } from '../../../src/about/about.service';
 import { addProviders } from '@angular/core/testing/testing';
 
 describe('AboutService', () => {
@@ -24,7 +24,7 @@ describe('AboutService', () => {
   it('test getInfo()', fakeAsync(inject([AboutService, MockBackend],
     (infoContextService: AboutService, mockBackend: MockBackend) => {
       let res;
-      let context = '<p>&nbsp;</p>\n<h1 style=\"text-align: center;\">Welcome in Dollar Street project!</h1>\n<p style=\"text-align: center;\">In future here will be info about data of this project.</p>\n<p style=\"text-align: center;\"><br /><img src=\"http://www.web-and-art.com/wp-content/uploads/2015/05/dollar-street-4.png\" alt=\"test\" width=\"1200\" height=\"600\" /></p>\n<p style=\"text-align: center;\">&nbsp;</p>\n<p style=\"text-align: center;\">Some text about the data&nbsp;Some text about the data&nbsp;Some text about the data</p>\n<p style=\"text-align: center;\">&nbsp;</p>';
+      let context = '<p>&nbsp;</p>\n<h1 style=\"text-align: center;\">Welcome in Dollar Street project!</h1>\n<p style=\"text-align: center;\">In future here will be info about data of this project.</p>\n<p style=\"text-align: center;\"><br /><img src2=\"http://www.web-and-art.com/wp-content/uploads/2015/05/dollar-street-4.png\" alt=\"test\" width=\"1200\" height=\"600\" /></p>\n<p style=\"text-align: center;\">&nbsp;</p>\n<p style=\"text-align: center;\">Some text about the data&nbsp;Some text about the data&nbsp;Some text about the data</p>\n<p style=\"text-align: center;\">&nbsp;</p>';
 
       mockBackend.connections.subscribe((connection: any) => {
         expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/info`);

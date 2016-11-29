@@ -1,0 +1,40 @@
+<div class="float-footer-container">
+  <span>Share:</span>
+  <social-share-buttons></social-share-buttons>
+
+  <div class="follow-buttons-container hidden-xs">
+    <a class="twitter-follow-button"
+       href="https://twitter.com/Gapminder"
+       data-show-count="true"
+       data-show-screen-name="false"></a>
+
+    <div class="fb-like"
+         data-href="https://www.facebook.com/gapminder.org"
+         data-layout="button_count"
+         data-action="like"
+         data-size="small"
+         data-show-faces="true"
+         data-share="false">
+    </div>
+
+    <span class="back-to-top" (click)="scrollTop($event)"><img src="/assets/img/back-to-top.svg" alt=""></span>
+  </div>
+
+  <div class="follow-buttons-container visible-xs">
+    <a class="twitter-follow-button"
+       href="https://twitter.com/Gapminder"
+       data-show-count="false"
+       data-show-screen-name="false"></a>
+
+    <div class="fb-like"
+         data-href="https://www.facebook.com/gapminder.org"
+         data-layout="button"
+         data-action="like"
+         data-size="small"
+         data-show-faces="true"
+         data-share="false">
+    </div>
+
+    <span class="back-to-top" (click)="scrollTop($event)"><img src="/assets/img/back-to-top.svg" alt=""></span>
+  </div>
+</div>

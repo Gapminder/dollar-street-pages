@@ -11,22 +11,14 @@
     "noLib": false,
     "outDir": "dist",
     "stripInternal": true,
-    "lib": ["dom", "es6"],
-    "types": [
-      "lodash",
-      "node",
-      "webpack",
-      "jasmine",
-      "selenium-webdriver"
-    ]
+    "lib": ["dom", "es6"]
   },
   "exclude": [
     "node_modules",
     "bundles",
     "dist",
+    "src/aot",
     "./test",
-    "./test-e2e",
-    "./app/first",
-    "./app/common/row-loader"
+    "./test-e2e"
   ]
 }
