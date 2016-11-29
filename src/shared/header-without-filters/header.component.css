@@ -67,4 +67,12 @@
     margin: 15px 0 0;
     width: calc(100% - 90px);
   }
+
+  .header-without-search >>> .lang-container {
+    display: none;
+  }
+
+  .header-without-search >>> main-menu #main-mobile-menu .lang-container {
+    display: inline-block;
+  }
 }

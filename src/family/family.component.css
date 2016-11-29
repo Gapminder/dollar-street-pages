@@ -128,4 +128,17 @@ family-header {
     height: 55px;
     margin-top: 0;
   }
+
+  .header-container .header-content >>> language-selector .lang-container {
+    display: none;
+  }
+
+  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container {
+    display: inline-block;
+    margin: 5px 4px;
+  }
+
+  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container button {
+    background-color: white;
+  }
 }
