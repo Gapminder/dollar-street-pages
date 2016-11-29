@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Config } from '../../app.config';
 import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'family-header',
@@ -21,6 +22,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @Output('streetFamilyData')
   public streetFamilyData: EventEmitter<any> = new EventEmitter<any>();
 
+  public translate: TranslateService;
+  public readMoreTranslate: string;
+  public readLessTranslate: string;
   public home: any = {};
   public mapData: any;
   public math: MathService;
@@ -34,6 +38,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public maxHeightPopUp: number = this.windowHeight * .95 - 91;
   public familyHeaderService: FamilyHeaderService;
   public familyHeaderServiceSubscribe: Subscription;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetReadMoreSubscribe: Subscription;
+  public translateGetReadLessSubscribe: Subscription;
   public scrollSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public zone: NgZone;
@@ -53,7 +60,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      element: ElementRef,
                      streetSettingsService: StreetSettingsService,
                      familyHeaderService: FamilyHeaderService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.zone = zone;
     this.math = math;
     this.streetSettingsService = streetSettingsService;
@@ -67,6 +76,20 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.isMobile = this.device.isMobile();
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
     this.headerContentHeight = this.element.offsetHeight;
+
+    this.translateGetReadMoreSubscribe = this.translate.get('READ_MORE').subscribe((res: any) => {
+      this.readMoreTranslate = res;
+    });
+
+    this.translateGetReadLessSubscribe = this.translate.get('READ_LESS').subscribe((res: any) => {
+      this.readLessTranslate = res;
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const readMoreOrLessTranslations = event.translations;
+      this.readMoreTranslate = readMoreOrLessTranslations.READ_MORE;
+      this.readLessTranslate = readMoreOrLessTranslations.READ_LESS;
+    });
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
       .getFamilyHeaderData(`placeId=${this.placeId}`)
@@ -133,6 +156,18 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetReadMoreSubscribe.unsubscribe) {
+      this.translateGetReadMoreSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetReadLessSubscribe.unsubscribe) {
+      this.translateGetReadLessSubscribe.unsubscribe();
+    }
+
     this.familyHeaderServiceSubscribe.unsubscribe();
 
     if (this.resizeSubscribe) {

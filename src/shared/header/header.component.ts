@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -18,6 +18,8 @@ import {
 })
 
 export class HeaderComponent implements OnInit, OnChanges {
+  public element: HTMLElement;
+
   @Input()
   protected query: string;
   @Input()
@@ -51,6 +53,7 @@ export class HeaderComponent implements OnInit, OnChanges {
                      activatedRoute: ActivatedRoute,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
+                     element: ElementRef,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -58,6 +61,8 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+
+    this.element = element.nativeElement;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';

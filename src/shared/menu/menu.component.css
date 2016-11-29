@@ -136,6 +136,19 @@
   fill: #e0e7ef;
 }
 
+.container-menu >>> .lang-container {
+  display: inline-block;
+  margin: 5px 0;
+}
+
+.container-menu .language-selector {
+  width: 100%;
+  padding: 9px 10px 1px !important;
+  overflow: visible !important;
+  position: relative;
+  display: inline-block;
+}
+
 @media (max-width: 1023px) {
   #main-menu .menu-icon {
     width: 47px;

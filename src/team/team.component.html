@@ -1,6 +1,6 @@
 <div class="team-container">
   <div class="team-peoples" *ngFor="let team of teamList; let i = index;">
-    <h2>{{team.name === 'Core team' ? 'Core team' : team.name + 's'}}</h2>
+    <h2>{{team.name === 'Core team' ? team.name : team.name + 's'}}</h2>
 
     <div class="team-people-box">
       <div *ngFor="let ambassador of team.ambassadors"

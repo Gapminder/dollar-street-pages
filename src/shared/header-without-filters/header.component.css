@@ -10,8 +10,8 @@
 }
 
 .header .logo {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   margin: 9px 25px 9px 0;
   cursor: pointer;
   display: block;
@@ -24,7 +24,6 @@
 .header .heading {
   font-size: 28px;
   color: #374551;
-  width: calc(100% - 195px);
   padding-bottom: 1px !important;
   margin-top: 17px;
 
@@ -67,5 +66,13 @@
   .header .heading {
     margin: 15px 0 0;
     width: calc(100% - 90px);
+  }
+
+  .header-without-search >>> .lang-container {
+    display: none;
+  }
+
+  .header-without-search >>> main-menu #main-mobile-menu .lang-container {
+    display: inline-block;
   }
 }

@@ -53,9 +53,18 @@ family-header {
   clear: both;
 }
 
-.header-container main-menu >>> #main-menu .menu-icon {
+.header-content main-menu >>> #main-menu .menu-icon {
   width: 72px;
   height: 56px;
+}
+
+.header-container >>> language-selector .lang-container {
+  margin: -30px 4px;
+  float: right;
+}
+
+.header-container >>> language-selector .lang-container button {
+  background-color: #f6f7f8;
 }
 
 @media (max-width: 1023px) {
@@ -118,5 +127,18 @@ family-header {
     width: 48px;
     height: 55px;
     margin-top: 0;
+  }
+
+  .header-container .header-content >>> language-selector .lang-container {
+    display: none;
+  }
+
+  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container {
+    display: inline-block;
+    margin: 5px 4px;
+  }
+
+  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container button {
+    background-color: white;
   }
 }

@@ -3,6 +3,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { MathService, LoaderService, TitleHeaderService, BrowserDetectionService } from '../common';
 import { PhotographersService } from './photographers.service';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'photographers',
@@ -12,6 +13,10 @@ import { PhotographersService } from './photographers.service';
 
 export class PhotographersComponent implements OnInit, OnDestroy {
   public search: {text: string} = {text: ''};
+  public translate: TranslateService;
+  public photographersTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetPhotographersSubscribe: Subscription;
 
   public math: MathService;
   public photographersByCountry: any[] = [];
@@ -30,7 +35,9 @@ export class PhotographersComponent implements OnInit, OnDestroy {
                      loaderService: LoaderService,
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     photographersService: PhotographersService) {
+                     photographersService: PhotographersService,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.math = math;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
@@ -44,7 +51,17 @@ export class PhotographersComponent implements OnInit, OnDestroy {
 
     this.loaderService.setLoader(false);
     let searchInput = this.element.querySelector('#search') as HTMLInputElement;
-    this.titleHeaderService.setTitle('Photographers');
+
+    this.translateGetPhotographersSubscribe = this.translate.get('PHOTOGRAPHERS').subscribe((res: any) => {
+      this.photographersTranslate = res;
+      this.titleHeaderService.setTitle(this.photographersTranslate);
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const photographersTranslation = event.translations;
+      this.photographersTranslate = photographersTranslation.PHOTOGRAPHERS;
+      this.titleHeaderService.setTitle(this.photographersTranslate);
+    });
 
     this.photographersServiceSubscribe = this.photographersService.getPhotographers()
       .subscribe((res: any) => {
@@ -67,6 +84,14 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetPhotographersSubscribe.unsubscribe) {
+      this.translateGetPhotographersSubscribe.unsubscribe();
+    }
+
     this.keyUpSubscribe.unsubscribe();
     this.photographersServiceSubscribe.unsubscribe();
     this.loaderService.setLoader(false);

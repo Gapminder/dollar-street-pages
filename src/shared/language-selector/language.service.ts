@@ -1,23 +1,26 @@
 import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
 import { Config } from '../../app.config';
 
-import 'rxjs/add/operator/map';
-
 @Injectable()
-export class FamilyMediaService {
+export class LanguageService {
   public http: Http;
 
   public constructor(@Inject(Http) http: Http) {
     this.http = http;
   }
 
-  public getFamilyMedia(query: any): Observable<any> {
-    return this.http.get(`${Config.api}/v1/home-media?${query}`).map((res: any) => {
+  public getLanguage(query: string): Observable<any> {
+    return this.http.get(`${Config.api}/v1/language?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
+      return {err: parseRes.error, data: parseRes.data};
+    });
+  }
 
+  public getLanguagesList(): Observable<any> {
+    return this.http.get(`${Config.api}/v1/languagesList`).map((res: any) => {
+      let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });
   }
