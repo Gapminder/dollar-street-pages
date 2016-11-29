@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { TranslateService } from 'ng2-translate';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import {
@@ -31,12 +32,15 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public hoverPlaceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
   public streetServiceSubscribe: Subscription;
+  public translateOnLangChangeSubscribe: Subscription;
   public localStorageService: LocalStorageService;
   public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
+  public translate: TranslateService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public imgContent: HTMLElement;
 
   public constructor(router: Router,
                      element: ElementRef,
@@ -44,10 +48,12 @@ export class MainMenuComponent implements OnInit, OnDestroy {
                      localStorageService: LocalStorageService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
+                     translate: TranslateService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
+    this.translate = translate;
     this.device = browserDetectionService;
     this.localStorageService = localStorageService;
     this.streetSettingsService = streetSettingsService;
@@ -94,9 +100,27 @@ export class MainMenuComponent implements OnInit, OnDestroy {
             this.isOpenMenu = false;
           }
         });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange
+      .subscribe((event:any) => {
+        let shareWordTranslation:any = event.translations.SHARE;
+
+        this.openMenu(true);
+
+        this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
+        this.imgContent.classList.remove('long-text');
+
+        if (shareWordTranslation.length > 6) {
+          this.imgContent.classList.add('long-text');
+        }
+      });
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
     if (this.routerEventsSubscribe) {
       this.routerEventsSubscribe.unsubscribe();
     }

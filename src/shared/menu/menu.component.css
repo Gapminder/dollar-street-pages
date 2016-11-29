@@ -122,6 +122,16 @@
   padding: 19px 20px;
 }
 
+#main-menu .open .dropdown-menu li div.social-share-content.long-text {
+  padding: 5px 32px;
+}
+
+#main-menu .open .dropdown-menu li div.social-share-content.long-text span {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
 #main-menu social-share-buttons {
   display: inline-block;
   vertical-align: top;
