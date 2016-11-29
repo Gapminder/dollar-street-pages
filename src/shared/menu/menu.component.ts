@@ -102,16 +102,18 @@ export class MainMenuComponent implements OnInit, OnDestroy {
         });
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange
-      .subscribe((event:any) => {
-        let shareWordTranslation:any = event.translations.SHARE;
+      .subscribe((event: any) => {
+        let shareWordTranslation: string = event.translations.SHARE;
 
         this.openMenu(true);
 
-        this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
-        this.imgContent.classList.remove('long-text');
+        if (this.isDesktop) {
+          this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
+          this.imgContent.classList.remove('long-text');
 
-        if (shareWordTranslation.length > 6) {
-          this.imgContent.classList.add('long-text');
+          if (shareWordTranslation.length > 6) {
+            this.imgContent.classList.add('long-text');
+          }
         }
       });
   }

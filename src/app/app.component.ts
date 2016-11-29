@@ -5,6 +5,7 @@ import { LoaderService } from '../common';
 import { LanguageService } from '../shared/language-selector/language.service';
 import { TranslateService } from 'ng2-translate';
 import { stringify } from '@angular/core/src/facade/lang';
+import { map } from 'lodash';
 
 @Component({
   selector: 'consumer-app',
@@ -24,7 +25,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public getLanguageService: LanguageService;
   public getLanguageToUseSubscribe: Subscription;
   public translateOnLangChangeSubscribe: Subscription;
-  public getLanguageToUse:string;
+  public getLanguageToUse: string;
+  public getLangsSubscribe: Subscription;
 
   public constructor(router: Router,
                      getLanguageService: LanguageService,
@@ -37,7 +39,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.translate.addLangs(['en', 'ru', 'pt', 'fr', 'ch']);
+    this.getLangsSubscribe = this.getLanguageService.getLanguagesList()
+      .subscribe((res: any) => {
+        if (res.err) {
+          console.error(res.err);
+          return;
+        }
+
+        let availableLanguages: any[] = map(res.data, 'language');
+        this.translate.addLangs(availableLanguages);
+      });
+
     this.translate.setDefaultLang('en');
     this.getLanguageToUse = this.translate.getBrowserLang() || this.translate.getDefaultLang();
 
