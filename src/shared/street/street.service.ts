@@ -331,7 +331,7 @@ export class StreetDrawService {
     }
 
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
-      .subscribe((e: MouseEvent)=> {
+      .subscribe((e: MouseEvent) => {
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
@@ -389,7 +389,7 @@ export class StreetDrawService {
     }
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
-      .subscribe((e: TouchEvent)=> {
+      .subscribe((e: TouchEvent) => {
           if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
             return;
           }
@@ -444,7 +444,7 @@ export class StreetDrawService {
       );
 
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
-      .subscribe(()=> {
+      .subscribe(() => {
 
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
@@ -454,7 +454,7 @@ export class StreetDrawService {
       });
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
-      .subscribe(()=> {
+      .subscribe(() => {
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
@@ -956,17 +956,24 @@ export class StreetDrawService {
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
+
+    const leftScrollTextStyle: {width: any; height: any;} = this.leftScrollText.node().getBBox();
+    const rightScrollTextStyle: {width: any; height: any;} = this.rightScrollText.node().getBBox();
+
+    const leftScrollTextWidth: number = parseInt(leftScrollTextStyle.width, 10);
+    const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);
+
     if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       incomeL = Math.round(this.minIncome);
       incomeL = this.math.round(incomeL);
 
       this.leftScrollText
         .text(`$${incomeL}`)
-        .attr('x', ()=> this.leftPoint + this.streetOffset / 2 - 4.5 - parseInt(this.leftScrollText.style('width'), 10) / 2);
+        .attr('x', () => this.leftPoint + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
     } else {
       this.leftScrollText
         .text(`$${incomeL}`)
-        .attr('x', ()=> xL + this.streetOffset / 2 - 4.5 - parseInt(this.leftScrollText.style('width'), 10) / 2);
+        .attr('x', () => xL + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
     }
 
     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
@@ -975,11 +982,11 @@ export class StreetDrawService {
 
       this.rightScrollText
         .text(`$${incomeR}`)
-        .attr('x', ()=> this.rightPoint + this.streetOffset / 2 + 4.5 - parseInt(this.rightScrollText.style('width'), 10) / 2);
+        .attr('x', () => this.rightPoint + this.streetOffset / 2 + 4.5 - rightScrollTextWidth / 2);
     } else {
       this.rightScrollText
         .text(`$${incomeR}`)
-        .attr('x', ()=> xR + this.streetOffset / 2 + 4.5 - parseInt(this.rightScrollText.style('width'), 10) / 2);
+        .attr('x', () => xR + this.streetOffset / 2 + 4.5 - rightScrollTextWidth / 2);
     }
 
     return this;
