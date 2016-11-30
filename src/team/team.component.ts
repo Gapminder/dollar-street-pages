@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { TeamService } from './team.service';
 import { LoaderService, TitleHeaderService } from '../common';
 import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../shared/language-selector/language.service';
 
 @Component({
   selector: 'team',
@@ -20,18 +21,23 @@ export class TeamComponent implements OnInit, OnDestroy {
   public teamTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetTeamSubscribe: Subscription;
+  public languageService: LanguageService;
 
   public constructor(teamService: TeamService,
                      loaderService: LoaderService,
                      titleHeaderService: TitleHeaderService,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.teamService = teamService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
+    this.languageService.updateLangUrl();
+
     this.loaderService.setLoader(false);
 
     this.translateGetTeamSubscribe = this.translate.get('TEAM').subscribe((res: any) => {

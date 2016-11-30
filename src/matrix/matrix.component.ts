@@ -17,6 +17,7 @@ import {
   BrowserDetectionService
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { LanguageService } from '../shared/language-selector/language.service';
 
 @Component({
   selector: 'matrix',
@@ -89,6 +90,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public guideContainer: HTMLElement;
   public guideHeight: number;
   public device: BrowserDetectionService;
+  public languageService: LanguageService;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -101,7 +103,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     languageService: LanguageService) {
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -114,6 +117,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.countriesFilterService = countriesFilterService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -121,6 +125,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
+    this.languageService.updateLangUrl();
+
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
     this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
@@ -148,6 +154,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.locationStrategy.onPopState(() => {
       if (this.streetData && this.locations) {
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
         this.urlChanged({isBack: true});
 
         if (this.guideContainer) {
@@ -220,6 +227,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
 
         if (this.activeHouse) {
           this.query = this.query + `&activeHouse=${this.activeHouse}`;

@@ -13,6 +13,16 @@ export class UrlChangeService {
     this.location = location;
   }
 
+  public getUrlParams(name: string): any {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+
+    let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+
+    let results = regex.exec(location.search);
+
+    return results === undefined ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
   public replaceState(path: string, query: string, isReplace?: boolean): void {
     if (this.location.isCurrentPathEqualTo(path, query)) {
       return;

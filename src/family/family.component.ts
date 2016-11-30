@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { forEach, difference, map } from 'lodash';
 import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../shared/language-selector/language.service';
 
 import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
 
@@ -49,6 +50,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public windowHistory: any = history;
   public queryParamsSubscribe: Subscription;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public languageService: LanguageService;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -56,7 +58,8 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      streetSettingsService: StreetSettingsService,
                      urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -64,9 +67,12 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.streetSettingsService = streetSettingsService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
+    this.languageService.updateLangUrl();
+
     this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
       this.theWorldTranslate = res;
     });

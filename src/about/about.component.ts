@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AboutService } from './about.service';
 import { LoaderService, TitleHeaderService } from '../common';
 import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../shared/language-selector/language.service';
 
 @Component({
   selector: 'about',
@@ -22,20 +23,25 @@ export class AboutComponent implements OnInit, OnDestroy {
   public aboutTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetAboutSubscribe: Subscription;
+  public languageService: LanguageService;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
                      sanitizer: DomSanitizer,
                      titleHeaderService: TitleHeaderService,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.sanitizer = sanitizer;
     this.aboutService = aboutService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
+    this.languageService.updateLangUrl();
+
     this.loaderService.setLoader(false);
 
     this.translateGetAboutSubscribe = this.translate.get('ABOUT').subscribe((res: any) => {

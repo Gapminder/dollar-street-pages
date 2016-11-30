@@ -21,6 +21,7 @@ import { FamilyModule } from '../family';
 import { AboutModule } from '../about';
 
 import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
+import { LanguageService } from '../shared/language-selector/language.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
     routing
   ],
   providers: [
-    Angulartics2GoogleAnalytics
+    Angulartics2GoogleAnalytics,
+    LanguageService
   ],
   bootstrap: [AppComponent]
 })
