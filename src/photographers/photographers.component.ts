@@ -65,9 +65,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const photographersTranslation = event.translations;
-      /* tslint:disable:no-string-literal */
-      this.photographersTranslate = photographersTranslation['PHOTOGRAPHERS'];
-      /* tslint:enable:no-string-literal */
+      this.photographersTranslate = photographersTranslation.PHOTOGRAPHERS;
       this.titleHeaderService.setTitle(this.photographersTranslate);
     });
 
@@ -92,10 +90,16 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetPhotographersSubscribe.unsubscribe) {
+      this.translateGetPhotographersSubscribe.unsubscribe();
+    }
+
     this.keyUpSubscribe.unsubscribe();
     this.photographersServiceSubscribe.unsubscribe();
-    this.translateOnLangChangeSubscribe.unsubscribe();
-    this.translateGetPhotographersSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 

@@ -283,10 +283,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public interactiveIncomeText(): void {
-    let thingContainer = this.element.querySelector('things-filter') as HTMLElement;
-    let countriesFilter = this.element.querySelector('countries-filter') as HTMLElement;
-    let filtersContainer = this.element.querySelector('.filters-container') as HTMLElement;
-    let incomeContainer = this.element.querySelector('.income-title-container') as HTMLElement;
+    let thingContainer: any = this.element.querySelector('things-filter') as HTMLElement;
+    let countriesFilter: any = this.element.querySelector('countries-filter') as HTMLElement;
+    let filtersContainer: any = this.element.querySelector('.filters-container') as HTMLElement;
+    let incomeContainer: any = this.element.querySelector('.income-title-container') as HTMLElement;
     let filtersBlockWidth: number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
 
     setTimeout((): void => {
@@ -298,8 +298,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         incomeContainer.classList.remove('incomeby');
       }, 0);
     }
-
-    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 150) {
+    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 270) {
       setTimeout((): void => {
         incomeContainer.classList.add('incomeby');
       }, 0);
@@ -657,6 +656,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     } else {
       this.activeHouse = void 0;
     }
+
+    this.query = this.query.replace(/language\=\w{2}/, `language=${this.languageService.currentLanguage}`);
 
     this.urlChangeService.replaceState('/matrix', this.query, true);
   }

@@ -87,10 +87,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const readMoreOrLessTranslations = event.translations;
-/* tslint:disable:no-string-literal */
-      this.readMoreTranslate = readMoreOrLessTranslations['READ_MORE'];
-      this.readLessTranslate = readMoreOrLessTranslations['READ_LESS'];
-/* tslint:enable:no-string-literal */
+      this.readMoreTranslate = readMoreOrLessTranslations.READ_MORE;
+      this.readLessTranslate = readMoreOrLessTranslations.READ_LESS;
     });
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
@@ -158,10 +156,19 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetReadMoreSubscribe.unsubscribe) {
+      this.translateGetReadMoreSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetReadLessSubscribe.unsubscribe) {
+      this.translateGetReadLessSubscribe.unsubscribe();
+    }
+
     this.familyHeaderServiceSubscribe.unsubscribe();
-    this.translateOnLangChangeSubscribe.unsubscribe();
-    this.translateGetReadMoreSubscribe.unsubscribe();
-    this.translateGetReadLessSubscribe.unsubscribe();
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();

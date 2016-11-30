@@ -123,11 +123,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const noDataTranslation = event.translations;
-      /* tslint:disable:no-string-literal */
-      this.sorryWeHaveNoTranslate = noDataTranslation['SORRY_WE_HAVE_NO'];
-      this.onThisIncomeYetTranslate = noDataTranslation['ON_THIS_INCOME_YET'];
-      this.inTranslate = noDataTranslation['IN'];
-      /* tslint:enable:no-string-literal */
+      this.sorryWeHaveNoTranslate = noDataTranslation.SORRY_WE_HAVE_NO;
+      this.onThisIncomeYetTranslate = noDataTranslation.ON_THIS_INCOME_YET;
+      this.inTranslate = noDataTranslation.IN;
       if (this.currentPlaces && this.query && !this.currentPlaces.length) {
         this.buildErrorMsg(this.currentPlaces);
       }
@@ -201,16 +199,28 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.placesSubscribe.unsubscribe();
-    this.resizeSubscribe.unsubscribe();
-    this.translateOnLangChangeSubscribe.unsubscribe();
-    this.translateGetSorryWeHaveNoSubscribe.unsubscribe();
-    this.translateGetOnThisIncomeYetSubscribe.unsubscribe();
-    this.translateGetInSubscribe.unsubscribe();
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetSorryWeHaveNoSubscribe.unsubscribe) {
+      this.translateGetSorryWeHaveNoSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetOnThisIncomeYetSubscribe.unsubscribe) {
+      this.translateGetOnThisIncomeYetSubscribe.unsubscribe();
+    }
+
+    if (    this.translateGetInSubscribe.unsubscribe) {
+      this.translateGetInSubscribe.unsubscribe();
+    }
 
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
     }
+
+    this.placesSubscribe.unsubscribe();
+    this.resizeSubscribe.unsubscribe();
   }
 
   public onScrollDown(): void {

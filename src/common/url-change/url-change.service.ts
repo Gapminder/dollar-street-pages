@@ -20,7 +20,7 @@ export class UrlChangeService {
 
     let results = regex.exec(location.search);
 
-    return results === undefined ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    return !results ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   }
 
   public replaceState(path: string, query: string, isReplace?: boolean): void {

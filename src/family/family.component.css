@@ -58,9 +58,13 @@ family-header {
   height: 56px;
 }
 
-.header-container .language-bar {
-  margin: -30px 35px;
+.header-container >>> language-selector .lang-container {
+  margin: -30px 4px;
   float: right;
+}
+
+.header-container >>> language-selector .lang-container button {
+  background-color: #f6f7f8;
 }
 
 @media (max-width: 1023px) {
@@ -123,5 +127,18 @@ family-header {
     width: 48px;
     height: 55px;
     margin-top: 0;
+  }
+
+  .header-container .header-content >>> language-selector .lang-container {
+    display: none;
+  }
+
+  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container {
+    display: inline-block;
+    margin: 5px 4px;
+  }
+
+  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container button {
+    background-color: white;
   }
 }
