@@ -1,6 +1,11 @@
 <div class="lang-container">
   <span *ngFor="let language of getLanguagesList;">
-    <div class="lang-outside" *ngIf="language.showOnPage" (click)="changeLanguage(language.language)">{{language.languageName}}</div>
+    <div class="lang-outside"
+         [ngClass]="{'lang-selected': currentLanguage === language.language}"
+         *ngIf="language.showOnPage"
+         (click)="changeLanguage(language.language)">
+      {{language.languageName}}
+    </div>
   </span>
 
   <div class="btn-group" dropdown [(isOpen)]="status.isopen">
@@ -8,8 +13,12 @@
       <span class="caret"></span>
     </button>
     <ul dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-languages">
-      <li role="menuitem" *ngFor="let language of getLanguagesList;">
-        <div class="lang-selector" *ngIf="!language.showOnPage" (click)="changeLanguage(language.language)">{{language.languageName}}</div>
+      <li class="selector" role="menuitem" *ngFor="let language of getLanguagesList;">
+        <div class="lang-selector"
+             [ngClass]="{'lang-selected': currentLanguage === language.language}"
+             *ngIf="!language.showOnPage"
+             (click)="changeLanguage(language.language)">
+          {{language.languageName}}</div>
       </li>
     </ul>
   </div>

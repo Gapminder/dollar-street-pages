@@ -24,17 +24,12 @@
 .header .heading {
   font-size: 28px;
   color: #374551;
-  /*width: calc(100% - 195px);*/
   padding-bottom: 1px !important;
   margin-top: 17px;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.language-bar {
-  margin: 11px 108px;
 }
 
 @media (min-width: 1400px) {
@@ -71,5 +66,13 @@
   .header .heading {
     margin: 15px 0 0;
     width: calc(100% - 90px);
+  }
+
+  .header-without-search >>> .lang-container {
+    display: none;
+  }
+
+  .header-without-search >>> main-menu #main-mobile-menu .lang-container {
+    display: inline-block;
   }
 }

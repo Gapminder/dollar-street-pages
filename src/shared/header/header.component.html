@@ -20,17 +20,19 @@
       </countries-filter>
 
       <span class="income-title-container">
-        <span class="income-title" (click)="openIncomeFilter()">{{ 'BY' | translate }} $</span>
+        <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
         <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
       </span>
     </div>
-
-    <language-selector></language-selector>
-
   </div>
 
-  <main-menu class="pull-right"
-             [hoverPlace]="hoverPlace"
-             (selectedFilter)="urlTransfer($event)">
-  </main-menu>
+  <div class="menu-container pull-right">
+    <main-menu class="pull-right"
+               [hoverPlace]="hoverPlace"
+               (selectedFilter)="urlTransfer($event)">
+    </main-menu>
+
+    <language-selector></language-selector>
+  </div>
+
 </div>

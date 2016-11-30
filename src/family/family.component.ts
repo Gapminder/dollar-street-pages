@@ -79,9 +79,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const noDataTranslation = event.translations;
-      /* tslint:disable:no-string-literal */
-      this.theWorldTranslate = noDataTranslation['THE_WORLD'];
-      /* tslint:enable:no-string-literal */
+      this.theWorldTranslate = noDataTranslation.THE_WORLD;
       this.initData();
     });
 
