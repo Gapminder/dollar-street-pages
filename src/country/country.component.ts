@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { MathService, TitleHeaderService } from '../common';
+import { LanguageService } from '../shared/language-selector/language.service';
 
 @Component({
   selector: 'country',
@@ -16,16 +17,21 @@ export class CountryComponent implements OnInit, OnDestroy {
   public activatedRoute: ActivatedRoute;
   public queryParamsSubscribe: Subscription;
   public titleHeaderService: TitleHeaderService;
+  public languageService: LanguageService;
 
   public constructor(activatedRoute: ActivatedRoute,
                      math: MathService,
-                     titleHeaderService: TitleHeaderService) {
+                     titleHeaderService: TitleHeaderService,
+                     languageService: LanguageService) {
     this.activatedRoute = activatedRoute;
     this.titleHeaderService = titleHeaderService;
     this.math = math;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
+    this.languageService.updateLangUrl();
+
     this.titleHeaderService.setTitle('');
 
     this.queryParamsSubscribe = this.activatedRoute
