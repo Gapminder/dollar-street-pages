@@ -10,6 +10,7 @@ import {
   BrowserDetectionService,
   Angulartics2GoogleAnalytics
 } from '../../common';
+import { LanguageService } from '../language-selector/language.service';
 
 @Component({
   selector: 'main-menu',
@@ -41,10 +42,12 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public isMobile: boolean;
   public imgContent: HTMLElement;
+  private languageService: LanguageService;
 
   public constructor(router: Router,
                      element: ElementRef,
                      activatedRoute: ActivatedRoute,
+                     languageService: LanguageService,
                      localStorageService: LocalStorageService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
@@ -58,6 +61,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.localStorageService = localStorageService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -213,7 +217,8 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       zoom: 4,
       row: 1,
       lowIncome: this.streetData.poor,
-      highIncome: this.streetData.rich
+      highIncome: this.streetData.rich,
+      language: this.languageService.currentLanguage
     };
 
     if (!this.isDesktop) {

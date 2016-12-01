@@ -27,6 +27,17 @@ export class LanguageService {
     });
   }
 
+  public getLanguagesList(): Observable<any> {
+    return this.http.get(`${Config.api}/v1/languagesList`).map((res: any) => {
+      let parseRes = JSON.parse(res._body);
+      return {err: parseRes.error, data: parseRes.data};
+    });
+  }
+
+  public getLanguageParam(): string {
+    return `&language=${this.currentLanguage}`;
+  }
+
   public setCurrentLanguage(value: string): void {
     this.currentLanguage = value;
 
@@ -60,16 +71,5 @@ export class LanguageService {
     }
 
     this.location.replaceState(path, search);
-  }
-
-  public getLanguageParam(): string {
-    return `&language=${this.currentLanguage}`;
-  }
-
-  public getLanguagesList(): Observable<any> {
-    return this.http.get(`${Config.api}/v1/languagesList`).map((res: any) => {
-      let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, data: parseRes.data};
-    });
   }
 }

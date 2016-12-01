@@ -2,7 +2,7 @@ import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef }
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { LanguageService } from '../../shared/language-selector/language.service';
+import { LanguageService } from '../language-selector/language.service';
 
 import {
   MathService,
@@ -52,12 +52,12 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   public constructor(router: Router,
                      math: MathService,
+                     languageService: LanguageService,
                      activatedRoute: ActivatedRoute,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      element: ElementRef,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     languageService: LanguageService) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;

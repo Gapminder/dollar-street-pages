@@ -7,7 +7,6 @@ import {
   DrawDividersInterface,
   BrowserDetectionService
 } from '../../common';
-import { LanguageService } from '../../shared/language-selector/language.service';
 
 @Component({
   selector: 'header-without-filters',
@@ -30,20 +29,17 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   public streetSettingsService: StreetSettingsService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public languageService: LanguageService;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     streetSettingsService: StreetSettingsService,
-                     languageService: LanguageService) {
+                     streetSettingsService: StreetSettingsService) {
     this.renderer = renderer;
     this.headerService = headerService;
     this.device = browserDetectionService;
     this.titleHeaderService = titleHeaderService;
     this.streetSettingsService = streetSettingsService;
-    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
