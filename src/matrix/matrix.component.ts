@@ -17,7 +17,7 @@ import {
   BrowserDetectionService
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { LanguageService } from '../shared/language-selector/language.service';
+import { LanguageService } from '../shared';
 
 @Component({
   selector: 'matrix',
@@ -125,8 +125,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
-    this.languageService.updateLangUrl();
-
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
     this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;

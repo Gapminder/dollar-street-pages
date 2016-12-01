@@ -16,7 +16,7 @@ import {
   BrowserDetectionService
 } from '../common';
 import { MapService } from './map.service';
-import { LanguageService } from '../shared/language-selector/language.service';
+import { LanguageService } from '../shared';
 
 @Component({
   selector: 'map-component',

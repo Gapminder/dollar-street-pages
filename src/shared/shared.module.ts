@@ -55,7 +55,7 @@ import { IncomeFilterComponent } from './income-filter/income-filter.component';
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
 import { LanguageSelectorComponent } from './language-selector/language-selector.component';
-// import { LanguageService } from '../shared/language-selector/language.service';
+// import { LanguageService } from './language-selector/language.service';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { Observable } from 'rxjs';

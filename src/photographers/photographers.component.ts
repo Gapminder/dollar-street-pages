@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { MathService, LoaderService, TitleHeaderService, BrowserDetectionService } from '../common';
 import { PhotographersService } from './photographers.service';
 import { TranslateService } from 'ng2-translate';
-import { LanguageService } from '../shared/language-selector/language.service';
 
 @Component({
   selector: 'photographers',
@@ -30,7 +29,6 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public languageService: LanguageService;
 
   public constructor(element: ElementRef,
                      math: MathService,
@@ -38,8 +36,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
                      photographersService: PhotographersService,
-                     translate: TranslateService,
-                     languageService: LanguageService) {
+                     translate: TranslateService) {
     this.translate = translate;
     this.math = math;
     this.loaderService = loaderService;
@@ -47,12 +44,9 @@ export class PhotographersComponent implements OnInit, OnDestroy {
     this.titleHeaderService = titleHeaderService;
     this.photographersService = photographersService;
     this.device = browserDetectionService;
-    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
-    this.languageService.updateLangUrl();
-
     this.isDesktop = this.device.isDesktop();
 
     this.loaderService.setLoader(false);

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { LoaderService, LocalStorageService } from '../common';
-import { LanguageService } from '../shared/language-selector/language.service';
+import { LanguageService } from '../shared';
 import { TranslateService } from 'ng2-translate';
 import { UrlChangeService } from '../common/url-change/url-change.service';
 import { stringify } from '@angular/core/src/facade/lang';
@@ -51,8 +51,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.translate.setDefaultLang('en');
     this.getLanguageToUse = storageLanguage || urlLanguage || this.translate.getBrowserLang() || this.translate.getDefaultLang();
-
-    console.log(this.getLanguageToUse);
 
     this.getLangsSubscribe = this.getLanguageService.getLanguagesList()
       .subscribe((res: any) => {
@@ -115,6 +113,8 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         this.isVisibleHeader = !(activePage === '/matrix' || activePage === '/family' || activePage === '/map');
+
+        this.getLanguageService.updateLangUrl();
       }
     });
   }
