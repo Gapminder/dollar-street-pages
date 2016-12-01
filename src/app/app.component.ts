@@ -52,8 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.translate.setDefaultLang('en');
     this.getLanguageToUse = storageLanguage || urlLanguage || this.translate.getBrowserLang() || this.translate.getDefaultLang();
 
-    console.log(this.getLanguageToUse);
-
     this.getLangsSubscribe = this.getLanguageService.getLanguagesList()
       .subscribe((res: any) => {
         if (res.err) {
