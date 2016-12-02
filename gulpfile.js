@@ -8,6 +8,7 @@ gulp.paths = {
     '!node_modules/**/*',
     '!bundles/**/*',
     '!typings/**/*',
+    '!modules/**/*',
     '!test/**/*',
     '!dist/**/*',
     '!app/**/*.d.ts',

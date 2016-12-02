@@ -2,6 +2,7 @@ import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef }
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { LanguageService } from '../language-selector/language.service';
 
 import {
   MathService,
@@ -47,9 +48,11 @@ export class HeaderComponent implements OnInit, OnChanges {
   private device: BrowserDetectionService;
   private isDesktop: boolean;
   private isMobile: boolean;
+  private languageService: LanguageService;
 
   public constructor(router: Router,
                      math: MathService,
+                     languageService: LanguageService,
                      activatedRoute: ActivatedRoute,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
@@ -61,6 +64,7 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
 
     this.element = element.nativeElement;
 
@@ -123,7 +127,8 @@ export class HeaderComponent implements OnInit, OnChanges {
       zoom: 4,
       row: 1,
       lowIncome: this.streetData.poor,
-      highIncome: this.streetData.rich
+      highIncome: this.streetData.rich,
+      language: this.languageService.currentLanguage
     };
 
     if (!this.isDesktop) {

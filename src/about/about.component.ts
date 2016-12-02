@@ -22,7 +22,6 @@ export class AboutComponent implements OnInit, OnDestroy {
   public aboutTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetAboutSubscribe: Subscription;
-  public translateOnTransChangeSubscribe: Subscription;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
@@ -46,7 +45,9 @@ export class AboutComponent implements OnInit, OnDestroy {
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const aboutTranslation = event.translations;
-      this.aboutTranslate = aboutTranslation.ABOUT;
+      /* tslint:disable:no-string-literal */
+      this.aboutTranslate = aboutTranslation['ABOUT'];
+      /* tslint:enable:no-string-literal */
       this.titleHeaderService.setTitle(this.aboutTranslate);
     });
 
@@ -63,15 +64,9 @@ export class AboutComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetAboutSubscribe.unsubscribe) {
-      this.translateGetAboutSubscribe.unsubscribe();
-    }
-
     this.aboutSubscribe.unsubscribe();
+    this.translateOnLangChangeSubscribe.unsubscribe();
+    this.translateGetAboutSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 }

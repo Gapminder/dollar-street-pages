@@ -17,6 +17,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Config, ImageResolutionInterface } from '../../app.config';
 import { MathService, StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../common';
 import { FamilyInfoService } from './matrix-view-block.service';
+import { LanguageService } from '../../shared';
 
 @Component({
   selector: 'matrix-view-block',
@@ -51,6 +52,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public streetData: DrawDividersInterface;
   public streetSettingsService: StreetSettingsService;
   public streetServiceSubscribe: Subscription;
+  public languageService: LanguageService;
 
   @Input('positionInRow')
   public positionInRow: any;
@@ -74,7 +76,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      element: ElementRef,
                      familyInfoService: FamilyInfoService,
                      browserDetectionService: BrowserDetectionService,
-                     streetSettingsService: StreetSettingsService) {
+                     streetSettingsService: StreetSettingsService,
+                     languageService: LanguageService) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -82,6 +85,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.streetSettingsService = streetSettingsService;
     this.device = browserDetectionService;
     this.familyInfoService = familyInfoService;
+    this.languageService = languageService;
 
     this.isDesktop = this.device.isDesktop();
     this.imageResolution = Config.getImageResolution(this.isDesktop);
@@ -117,6 +121,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     let url = `placeId=${this.place._id}&thingId=${this.thing}`;
     let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
+
     this.privateZoom = parseUrl.zoom;
 
     setTimeout(() => this.setMarkerPosition(), 0);
