@@ -46,7 +46,7 @@ export class LanguageService {
 
   public updateLangUrl(): void {
     let currentSearch = window.location.search;
-    let newSearch = currentSearch.replace(/language\=\w*/, `language=${this.currentLanguage}`);
+    let newSearch = currentSearch.replace(/language\=\w{2}/, `language=${this.currentLanguage}`);
 
     let paths = [];
 
