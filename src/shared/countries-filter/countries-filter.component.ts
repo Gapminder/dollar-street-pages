@@ -57,6 +57,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
 
+  public getLanguage: string;
+
   public constructor(zone: NgZone,
                      element: ElementRef,
                      countriesFilterService: CountriesFilterService,
@@ -69,6 +71,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
+
+    this.getLanguage = 'fr';
 
     this.isOpenMobileFilterView();
 
@@ -196,7 +200,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    let getCountriesName = _.map(location.countries, 'country') as string[];
+    let getCountriesName = _.map(location.countries, 'originName') as string[];
 
     if (index !== -1) {
       this.selectedRegions.splice(index, 1);
@@ -215,7 +219,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.showSelected = false;
     this.regionsVisibility = true;
 
-    let indexCountry = this.selectedCountries.indexOf(country.country);
+    let indexCountry = this.selectedCountries.indexOf(country.originName);
 
     if (indexCountry === -1 && country.empty) {
       return;
@@ -233,10 +237,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.selectedCountries.push(country.country);
+    this.selectedCountries.push(country.originName);
 
     let regionObject = _.find(this.locations, {region});
-    let regionCountries = _.map(regionObject.countries, 'country');
+    let regionCountries = _.map(regionObject.countries, 'originName');
     if (!_.difference(regionCountries, this.selectedCountries).length) {
       this.selectedRegions.push(region);
     }
@@ -282,7 +286,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
       this.countriesFilterServiceSubscribe = this
         .countriesFilterService
-        .getCountries(this.url)
+        .getCountries(this.url + `&lang=${this.getLanguage}`)
         .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);

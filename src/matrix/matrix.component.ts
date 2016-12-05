@@ -179,7 +179,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
 
     this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.thing}`)
+      .getCountries(`thing=${this.thing}&lang=${this.getLanguage}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);

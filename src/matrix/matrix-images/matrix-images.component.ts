@@ -87,6 +87,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public locations: any[];
   public device: BrowserDetectionService;
 
+  public getLanguage: string = 'fr';
+
   public constructor(zone: NgZone,
                      router: Router,
                      element: ElementRef,
@@ -161,7 +163,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
 
     this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.thing}`)
+      .getCountries(`thing=${this.thing}&lang=${this.getLanguage}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
