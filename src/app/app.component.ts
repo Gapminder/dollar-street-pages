@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
     let storageLanguage: string = this.localStorageService.getItem('language');
 
     this.translate.setDefaultLang('en');
-    this.getLanguageToUse = storageLanguage || urlLanguage || this.translate.getBrowserLang() || this.translate.getDefaultLang();
+    this.getLanguageToUse = storageLanguage || this.translate.getBrowserLang() || this.translate.getDefaultLang();
 
     this.getLangsSubscribe = this.getLanguageService.getLanguagesList()
       .subscribe((res: any) => {
@@ -86,10 +86,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
       this.translate.setTranslation(langToUse, translations);
 
-      this.getLanguageService.setCurrentLanguage(langToUse);
-      this.localStorageService.setItem('language', langToUse);
+      this.getLanguageService.setCurrentLanguage(langToUse);      
 
       if(this.getLanguageToUse !== langToUse) {
+        this.localStorageService.setItem('language', langToUse);
+        
         let currentUrl: string = window.location.href;
         window.location.href = currentUrl;
       }
