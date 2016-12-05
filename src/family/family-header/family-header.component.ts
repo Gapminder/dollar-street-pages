@@ -55,6 +55,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public isMobile: boolean;
 
+  public getLanguage: string;
+
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,
@@ -72,6 +74,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+
+    this.getLanguage = 'fr';
+
     this.isDesktop = this.device.isDesktop();
     this.isMobile = this.device.isMobile();
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
@@ -92,7 +97,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     });
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
-      .getFamilyHeaderData(`placeId=${this.placeId}`)
+      .getFamilyHeaderData(`placeId=${this.placeId}&lang=${this.getLanguage}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);

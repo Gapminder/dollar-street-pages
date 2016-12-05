@@ -40,6 +40,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public device: BrowserDetectionService;
   public isDesktop: boolean;
 
+  public getLanguage: string;
+
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
@@ -54,6 +56,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnInit(): void {
+
+    this.getLanguage = 'fr';
+
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
       .subscribe((res: any) => {
@@ -79,6 +84,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnChanges(changes: any): void {
+
+    this.getLanguage = 'fr';
+
     if (changes.imageData) {
       this.country = void 0;
       this.loader = false;
@@ -102,7 +110,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
       }
 
       this.viewBlockServiceSubscribe = this.viewBlockService
-        .getData(`placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}`)
+        .getData(`placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}&lang=${this.getLanguage}`)
         .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);
@@ -111,6 +119,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
           this.country = res.data.country;
           this.article = res.data.article;
+
+          console.log('COUNTRY FAMILY THING: ', this.country);
 
           this.truncCountryName(this.country);
 
