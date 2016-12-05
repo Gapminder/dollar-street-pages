@@ -29,6 +29,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
   public streetServiceSubscribe: Subscription;
+  public getLanguage:string;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,
@@ -40,7 +41,11 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}`)
+
+// todo remove hardcode, use service to set certain language
+    this.getLanguage = 'fr';
+
+    this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}&lang=${this.getLanguage}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

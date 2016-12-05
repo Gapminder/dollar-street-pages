@@ -22,7 +22,6 @@ export class AboutComponent implements OnInit, OnDestroy {
   public aboutTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetAboutSubscribe: Subscription;
-  public translateOnTransChangeSubscribe: Subscription;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,

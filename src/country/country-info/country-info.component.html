@@ -10,7 +10,7 @@
     </div>
     <div class="country-link">
       <a [routerLink]="['/matrix']"
-         [queryParams]="{thing: 'Families', countries: country?.alias  , regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+         [queryParams]="{thing: 'Families', countries: country?.originName, regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}"
          angulartics2On="click"
          angularticsEvent="From '{{ country?.alias }} country page to Matrix page with all families in {{country?.alias }}">
         {{ 'ALL_FAMILIES_IN' | translate }} {{country?.alias}} >> </a>
@@ -45,7 +45,7 @@
                 angularticsEvent="From {{country.alias}} country page to Map page"></region-map>
     <div class="country-link">
       <a [routerLink]="['/matrix']"
-         [queryParams]="{thing: 'Families', countries: country?.alias , regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+         [queryParams]="{thing: 'Families', countries: country?.originName , regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}"
          angulartics2On="click"
          angularticsEvent="From '{{country?.alias}} country page to Matrix page with all families in {{country?.alias}} ">
         {{ 'ALL_FAMILIES_IN' | translate }} {{country?.alias}} >> </a>

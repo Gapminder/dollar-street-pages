@@ -46,7 +46,8 @@ export class AppComponent implements OnInit, OnDestroy {
           return;
         }
 
-        let availableLanguages: any[] = map(res.data, 'language');
+        let availableLanguages: any[] = map(res.data, (item: any) => item.language);
+
         this.translate.addLangs(availableLanguages);
       });
 
@@ -99,6 +100,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     if (this.getLanguageToUseSubscribe.unsubscribe) {
       this.getLanguageToUseSubscribe.unsubscribe();
+    }
+
+    if (this.getLangsSubscribe.unsubscribe) {
+      this.getLangsSubscribe.unsubscribe();
     }
 
     if (this.translateOnLangChangeSubscribe.unsubscribe) {

@@ -19,6 +19,8 @@ export class GuideComponent implements OnInit, OnDestroy {
   public guideService: GuideService;
   public guideServiceSubscribe: Subscription;
 
+  public getLanguage:string;
+
   @Output('startQuickGuide')
   public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
@@ -40,7 +42,10 @@ export class GuideComponent implements OnInit, OnDestroy {
         this.startQuickGuide.emit({});
       });
 
-    this.guideServiceSubscribe = this.guideService.getGuide()
+// todo remove hardcode, use service to set certain language
+    this.getLanguage = 'fr';
+
+    this.guideServiceSubscribe = this.guideService.getGuide(`lang=${this.getLanguage}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

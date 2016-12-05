@@ -51,6 +51,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public streetData: DrawDividersInterface;
   public streetSettingsService: StreetSettingsService;
   public streetServiceSubscribe: Subscription;
+  public getLanguage: string;
 
   @Input('positionInRow')
   public positionInRow: any;
@@ -88,6 +89,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnInit(): void {
+
+    this.getLanguage = 'fr';
+
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -112,10 +116,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnChanges(): void {
+    this.getLanguage = 'fr';
+
     this.loader = false;
     this.showblock = true;
 
-    let url = `placeId=${this.place._id}&thingId=${this.thing}`;
+    let url = `placeId=${this.place._id}&thingId=${this.thing}&lang=${this.getLanguage}`;
     let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
     this.privateZoom = parseUrl.zoom;
 
@@ -127,6 +133,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
+
+    console.log('URL:::', url);
 
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
       .subscribe((res: any) => {
@@ -144,6 +152,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
         this.isShowCountryButton = parseUrl.countries !== this.familyData.country.alias;
+
+        console.log('FAMILY DATA: ', this.familyData);
 
         let newImage = new Image();
 

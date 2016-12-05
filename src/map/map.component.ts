@@ -29,6 +29,8 @@ export class MapComponent implements OnInit, OnDestroy {
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetFamilySubscribe: Subscription;
 
+  public getLanguage: string;
+
   private resizeSubscribe: Subscription;
   private mapServiceSubscribe: Subscription;
   private math: MathService;
@@ -96,6 +98,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.isDesktop = this.device.isDesktop();
     this.isMobile = this.device.isMobile();
 
+    // todo remove hardcode, use service to set certain language
+    this.getLanguage = 'ru';
+
     let isInit: boolean = true;
     this.loaderService.setLoader(false);
 
@@ -112,7 +117,7 @@ export class MapComponent implements OnInit, OnDestroy {
       .queryParams
       .subscribe((params: {thing: string}) => {
         this.thing = params.thing ? params.thing : 'Families';
-        let query: any = {url: `thing=${this.thing}`};
+        let query: any = {url: `thing=${this.thing}&lang=${this.getLanguage}`};
 
         if (!params.thing || (params.thing && !isInit)) {
           query.isNotReplaceState = true;
@@ -147,7 +152,9 @@ export class MapComponent implements OnInit, OnDestroy {
         this.places = res.data.places;
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
-        this.query = `thing=${res.data.thing}`;
+        this.query = `thing=${res.data.thing}&lang=${this.getLanguage}`;
+
+        console.log('countries:::', res.data);
 
         if (!isNotReplaceState) {
           this.urlChangeService.replaceState('/map', this.query);

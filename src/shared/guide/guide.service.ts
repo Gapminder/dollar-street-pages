@@ -13,8 +13,8 @@ export class GuideService {
     this.http = http;
   }
 
-  public getGuide(): Observable<any> {
-    return this.http.get(`${Config.api}/v1/onboarding`).map((res: any) => {
+  public getGuide(query: string): Observable<any> {
+    return this.http.get(`${Config.api}/v1/onboarding?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
       return {err: parseRes.error, data: parseRes.data};
