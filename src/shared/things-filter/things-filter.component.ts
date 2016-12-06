@@ -54,6 +54,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public keyUpSubscribe: Subscription;
   public activatedRoute: ActivatedRoute;
   public element: HTMLElement;
+  public getLanguage: string;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
@@ -78,6 +79,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
+    this.getLanguage = 'fr';
+
     this.isDesktop = this.device.isDesktop();
 
     this.isOpenMobileFilterView();
@@ -122,7 +125,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
     let query = this.parseUrl(this.url);
-    query.thing = thing.plural;
+    query.thing = thing.originPlural;
 
     this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
     this.isOpenThingsFilter = false;
@@ -187,7 +190,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
       this.thingsFilterServiceSubscribe = this
         .thingsFilterService
-        .getThings(this.url)
+        .getThings(this.url + `&lang=${this.getLanguage}`)
         .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);
