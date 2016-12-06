@@ -17,6 +17,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @Input('placeId')
   public placeId: string;
 
+  @Output('thingNameChanged')
+  public thingNameChanged: EventEmitter<string> = new EventEmitter<string>();
+
   @Output('familyExpandBlock')
   public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output('streetFamilyData')
@@ -54,6 +57,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public getLanguage: string = 'fr';
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -92,7 +96,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     });
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
-      .getFamilyHeaderData(`placeId=${this.placeId}`)
+      .getFamilyHeaderData(`placeId=${this.placeId}&lang=${this.getLanguage}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
@@ -102,6 +106,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.home = res.data;
         this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
         this.mapData = this.home.country;
+
+        this.thingNameChanged.emit(this.home.thing);
 
         this.truncCountryName(this.home.country);
       });

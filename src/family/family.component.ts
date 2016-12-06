@@ -49,6 +49,8 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public windowHistory: any = history;
   public queryParamsSubscribe: Subscription;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public getLanguage: string = 'fr';
+  public thingName: string;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -64,6 +66,10 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.streetSettingsService = streetSettingsService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
+  }
+
+  public thingNameChanged(event: any): void {
+    this.thingName = event;
   }
 
   public ngOnInit(): void {
@@ -173,6 +179,10 @@ export class FamilyComponent implements OnInit, OnDestroy {
   }
 
   public initData(): void {
+    if (!this.homeIncomeData) {
+      return;
+    }
+
     this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
     this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
 

@@ -19,6 +19,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   public queryParamsSubscribe: Subscription;
   public titleHeaderService: TitleHeaderService;
   public loaderService: LoaderService;
+  public getLanguage: string = 'fr';
 
   public constructor(activatedRoute: ActivatedRoute,
                      loaderService: LoaderService,
@@ -39,7 +40,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       });
 
     this.articleServiceSubscribe = this.articleService
-      .getArticle(`id=${this.thingId}`)
+      .getArticle(`id=${this.thingId}&lang=${this.getLanguage}`)
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);

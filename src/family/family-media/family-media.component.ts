@@ -47,6 +47,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public loaderService: LoaderService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public getLanguage: string = 'fr';
 
   @Input('placeId')
   public placeId: string;
@@ -106,7 +107,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
         });
 
     this.familyPlaceServiceSubscribe = this.familyMediaService
-      .getFamilyMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}`)
+      .getFamilyMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}&lang=${this.getLanguage}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

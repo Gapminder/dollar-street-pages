@@ -10,11 +10,11 @@
 
     <p class="heading pull-left"
        [routerLink]="['/matrix']"
-       [queryParams]="urlParams"
+       [queryParams]="urlParams"       
        angulartics2On="click"
        angularticsEvent="From Place page to Matrix page (Thing:{{urlParams.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
       <img src="/assets/img/back-icon.svg" alt="Back">
-      {{titles?.thing}} {{ 'IN' | translate }} {{titles?.countries}}
+      {{ thingName }} {{ 'IN' | translate }} {{titles?.countries}}
     </p>
 
     <main-menu class="pull-right"></main-menu>
@@ -28,7 +28,10 @@
   </div>
 </div>
 
-<family-header [placeId]="placeId" (familyExpandBlock)="isOpenFamilyExpandBlock($event)" (streetFamilyData)="streetFamilyData = $event"></family-header>
+<family-header [placeId]="placeId"
+               (thingNameChanged)="thingNameChanged($event)"
+               (familyExpandBlock)="isOpenFamilyExpandBlock($event)"
+               (streetFamilyData)="streetFamilyData = $event"></family-header>
 
 <family-media [placeId]="placeId"
               [activeImageIndex]="activeImageIndex"

@@ -134,8 +134,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
 
-    console.log('URL:::', url);
-
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
       .subscribe((res: any) => {
         if (res.err) {
@@ -149,11 +147,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           this.familyData.description = this.getDescription(this.familyData.familyData);
         }
 
+        this.thing = this.familyData.activeThing;
         this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
         this.isShowCountryButton = parseUrl.countries !== this.familyData.country.alias;
 
-        console.log('FAMILY DATA: ', this.familyData);
+        // console.log("ACTIIIIIVE THINGGGG", res.data.activeThing);
+        // console.log('FAMILY DATA: ', this.familyData);
 
         let newImage = new Image();
 
