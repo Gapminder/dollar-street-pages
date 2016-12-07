@@ -8,7 +8,10 @@ import { UrlChangeService } from '../../common';
 @Injectable()
 export class LanguageService {
   public location: Location;
+<<<<<<< HEAD
   public window: Window = window;
+=======
+>>>>>>> af259359ac4fbe940e7e71e3c3d8a736d33581e2
   public http: Http;
   public urlChangeService: UrlChangeService;
   public currentLanguage: string;

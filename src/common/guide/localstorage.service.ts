@@ -9,7 +9,7 @@ export class LocalStorageService {
 
   public setItem(key: string, value: string | boolean): void {
     this.localStorage.setItem(key, value.toString());
-    this.itemEvents.next({key: key, value: value});
+    // this.itemEvents.next({key: key, value: value});
   }
 
   public removeItem(key: string): void {
