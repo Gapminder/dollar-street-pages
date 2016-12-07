@@ -309,28 +309,25 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  public findCountryTranslatedName (countries:any[]):any {
+  public findCountryTranslatedName(countries: any[]): any {
     return _.map(countries, (item: string): any => {
-      if (item) {
-        let findTransName = _.find(this.countries, {originName: item});
-        return findTransName.country;
-      }
+      const findTransName: any = _.find(this.countries, {originName: item});
+      return findTransName ? findTransName.country : item;
+
     });
   }
 
-  public findRegionTranslatedName (regions:any[]):any {
+  public findRegionTranslatedName(regions: any[]): any {
     return _.map(regions, (item: string): any => {
-      if (item) {
-        let findTransName = _.find(this.locations, {originRegionName: item});
-        return findTransName.region;
-      }
+      const findTransName: any = _.find(this.locations, {originRegionName: item});
+      return findTransName ? findTransName.region : item;
     });
   }
 
   public setTitle(url: string): void {
     let query: any = this.parseUrl(url);
-    let getTranslatedCountries:any;
-    let getTranslatedRegions:any;
+    let getTranslatedCountries: any;
+    let getTranslatedRegions: any;
 
     if (query.countries[0] !== 'World') {
       getTranslatedCountries = this.findCountryTranslatedName(query.countries);

@@ -554,8 +554,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
           }
 
-          // this.buildTitle(this.parseUrl(this.query));
-
           this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
 
           if (!isBack) {
@@ -570,73 +568,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         });
     });
   }
-
-  // public buildTitle(query: any): any {
-  //   let regions = query.regions.split(',');
-  //   let countries = query.countries.split(',');
-  //
-  //   if (regions[0] === 'World' && countries[0] === 'World') {
-  //     this.activeCountries = 'the world';
-  //
-  //     return;
-  //   }
-  //
-  //   if (regions[0] === 'World' && countries[0] !== 'World') {
-  //     if (countries.length > 2) {
-  //       this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-  //     } else {
-  //       this.activeCountries = countries.join(' & ');
-  //     }
-  //
-  //     this.selectedCountries = countries;
-  //
-  //     return;
-  //   }
-  //
-  //   if (regions[0] !== 'World') {
-  //     if (regions.length > 2) {
-  //       this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-  //     } else {
-  //       let sumCountries: number = 0;
-  //       let difference: string[] = [];
-  //       let regionCountries: string[] = [];
-  //
-  //       _.forEach(this.locations, (location: any) => {
-  //         if (regions.indexOf(location.region) !== -1) {
-  //           regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
-  //           sumCountries = +location.countries.length;
-  //         }
-  //       });
-  //
-  //       if (sumCountries !== countries.length) {
-  //         difference = _.difference(countries, regionCountries);
-  //       }
-  //
-  //       if (difference.length) {
-  //         this.activeCountries = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-  //         + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-  //       } else {
-  //         this.activeCountries = regions.join(' & ');
-  //       }
-  //     }
-  //
-  //     this.selectedRegions = regions;
-  //     this.selectedCountries = countries;
-  //
-  //     return;
-  //   }
-  //
-  //   let concatLocations: string[] = regions.concat(countries);
-  //
-  //   if (concatLocations.length > 2) {
-  //     this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
-  //   } else {
-  //     this.activeCountries = concatLocations.join(' & ');
-  //   }
-  //
-  //   this.selectedRegions = regions;
-  //   this.selectedCountries = countries;
-  // }
 
   public activeHouseOptions(options: any): void {
     let {row, activeHouseIndex} = options;
