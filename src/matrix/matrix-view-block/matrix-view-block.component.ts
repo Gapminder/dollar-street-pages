@@ -134,8 +134,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
 
-    console.log('URL:::', url);
-
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
       .subscribe((res: any) => {
         if (res.err) {

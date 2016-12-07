@@ -120,8 +120,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.country = res.data.country;
           this.article = res.data.article;
 
-          console.log('COUNTRY FAMILY THING: ', this.country);
-
           this.truncCountryName(this.country);
 
           if (this.article && this.article.shortDescription.length) {

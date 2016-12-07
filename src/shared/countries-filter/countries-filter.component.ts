@@ -192,7 +192,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.showSelected = false;
     this.search = '';
 
-    let index = this.selectedRegions.indexOf(location.region);
+    let index = this.selectedRegions.indexOf(location.originRegionName);
+
     let getEmptyCountries = _.map(location.countries, 'empty');
     let uniqEmptyCountries = _.uniq(getEmptyCountries);
 
@@ -210,12 +211,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.selectedRegions.push(location.region);
+    this.selectedRegions.push(location.originRegionName);
 
     this.selectedCountries = _.union(this.selectedCountries.concat(getCountriesName));
   }
 
-  public selectCountries(country: any, region: string): void {
+  public selectCountries(country: any, originRegionName: string, region: string): void {
     this.showSelected = false;
     this.regionsVisibility = true;
 
@@ -225,7 +226,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    let indexRegion = this.selectedRegions.indexOf(region);
+    let indexRegion = this.selectedRegions.indexOf(originRegionName);
 
     if (indexCountry !== -1) {
       this.selectedCountries.splice(indexCountry, 1);
@@ -242,7 +243,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let regionObject = _.find(this.locations, {region});
     let regionCountries = _.map(regionObject.countries, 'originName');
     if (!_.difference(regionCountries, this.selectedCountries).length) {
-      this.selectedRegions.push(region);
+      this.selectedRegions.push(originRegionName);
     }
   }
 
@@ -308,8 +309,36 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  public findCountryTranslatedName (countries:any[]):any {
+    return _.map(countries, (item: string): any => {
+      if (item) {
+        let findTransName = _.find(this.countries, {originName: item});
+        return findTransName.country;
+      }
+    });
+  }
+
+  public findRegionTranslatedName (regions:any[]):any {
+    return _.map(regions, (item: string): any => {
+      if (item) {
+        let findTransName = _.find(this.locations, {originRegionName: item});
+        return findTransName.region;
+      }
+    });
+  }
+
   public setTitle(url: string): void {
     let query: any = this.parseUrl(url);
+    let getTranslatedCountries:any;
+    let getTranslatedRegions:any;
+
+    if (query.countries[0] !== 'World') {
+      getTranslatedCountries = this.findCountryTranslatedName(query.countries);
+    }
+
+    if (query.regions[0] !== 'World') {
+      getTranslatedRegions = this.findRegionTranslatedName(query.regions);
+    }
 
     let regions: string[] = query.regions;
     let countries: string[] = query.countries;
@@ -324,9 +353,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
       if (countries.length > 2) {
-        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
       } else {
-        this.activeCountries = countries.join(' & ');
+        this.activeCountries = getTranslatedCountries.join(' & ');
       }
 
       this.selectedRegions.length = 0;
@@ -339,28 +368,28 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (regions[0] !== 'World') {
       if (regions.length > 2) {
-        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
       } else {
         let sumCountries: number = 0;
         let difference: string[] = [];
         let regionCountries: string[] = [];
 
         _.forEach(this.locations, (location: any) => {
-          if (regions.indexOf(location.region) !== -1) {
+          if (regions.indexOf(location.originRegionName) !== -1) {
             regionCountries = regionCountries.concat(_.map(location.countries, 'country') as string[]);
             sumCountries = +location.countries.length;
           }
         });
 
         if (sumCountries !== countries.length) {
-          difference = _.difference(countries, regionCountries);
+          difference = _.difference(getTranslatedCountries, regionCountries);
         }
 
         if (difference.length) {
-          this.activeCountries = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+          this.activeCountries = difference.length === 1 && regions.length === 1 ? getTranslatedRegions + ' & '
+          + difference[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
         } else {
-          this.activeCountries = regions.join(' & ');
+          this.activeCountries = getTranslatedRegions.join(' & ');
         }
       }
 
@@ -372,7 +401,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    let concatLocations: string[] = regions.concat(countries);
+    let concatLocations: string[] = regions.concat(getTranslatedCountries);
 
     if (concatLocations.length > 2) {
       this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
