@@ -22,6 +22,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   public aboutTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetAboutSubscribe: Subscription;
+  public getLanguage: string = 'fr';
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
@@ -49,7 +50,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       this.titleHeaderService.setTitle(this.aboutTranslate);
     });
 
-    this.aboutSubscribe = this.aboutService.getInfo().subscribe((val: any) => {
+    this.aboutSubscribe = this.aboutService.getInfo(`lang=${this.getLanguage}`).subscribe((val: any) => {
       if (val.err) {
         console.error(val.err);
         return;
