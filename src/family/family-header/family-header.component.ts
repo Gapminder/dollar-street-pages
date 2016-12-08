@@ -19,7 +19,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
   @Output('thingNameChanged')
   public thingNameChanged: EventEmitter<string> = new EventEmitter<string>();
-
   @Output('familyExpandBlock')
   public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output('streetFamilyData')
@@ -76,9 +75,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-
-    this.getLanguage = 'fr';
-
     this.isDesktop = this.device.isDesktop();
     this.isMobile = this.device.isMobile();
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
@@ -110,7 +106,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
         this.mapData = this.home.country;
 
-        this.thingNameChanged.emit(this.home.thing);
+        this.thingNameChanged.emit(this.home.thing.plural);
 
         this.truncCountryName(this.home.country);
       });

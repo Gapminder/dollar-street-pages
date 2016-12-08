@@ -15,6 +15,12 @@ import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService }
 })
 
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
+  @Input('imageData')
+  public imageData: any;
+
+  @Output('closeBigImageBlock')
+  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
+
   public api: string = Config.api;
   public loader: boolean = false;
   public popIsOpen: boolean = false;
@@ -22,12 +28,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public country: any;
   public countryName: any;
   public article: any;
-  @Input('imageData')
-  public imageData: any;
-
-  @Output('closeBigImageBlock')
-  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
-
+  public thing: any;
   public streetData: DrawDividersInterface;
   public zone: NgZone;
   public viewBlockService: FamilyMediaViewBlockService;
@@ -39,6 +40,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public streetSettingsService: StreetSettingsService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public originThingPlural: string;
+  public thingPlural: string;
+  public thingName: string;
   public getLanguage: string = 'fr';
 
   public constructor(zone: NgZone,
@@ -55,9 +59,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnInit(): void {
-
-    this.getLanguage = 'fr';
-
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
       .subscribe((res: any) => {
@@ -83,9 +84,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnChanges(changes: any): void {
-
-    this.getLanguage = 'fr';
-
     if (changes.imageData) {
       this.country = void 0;
       this.loader = false;
@@ -118,6 +116,11 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
           this.country = res.data.country;
           this.article = res.data.article;
+          this.thing = res.data.thing;
+
+          this.originThingPlural = this.thing.originPlural;
+          this.thingPlural = this.thing.plural;
+          this.thingName = this.thing.thingName;
 
           this.truncCountryName(this.country);
 
