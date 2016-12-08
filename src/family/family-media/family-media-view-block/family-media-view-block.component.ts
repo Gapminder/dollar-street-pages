@@ -41,8 +41,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public isDesktop: boolean;
   public getLanguage: string = 'fr';
 
-  public getLanguage: string;
-
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,

@@ -59,8 +59,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public isMobile: boolean;
   public getLanguage: string = 'fr';
 
-  public getLanguage: string;
-
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,

@@ -53,7 +53,7 @@
 
           <a *ngIf="isShowCountryButton"
              (click)="goToMatrixByCountry(familyData.country.originName)">
-            <span>{{ 'ALL' | translate }} {{thing.toLowerCase()}}</span>
+            <span>{{ 'ALL' | translate }} {{thing.plural.toLowerCase()}}</span>
             <span>{{ 'IN' | translate }}</span>
             <span>{{countryName}}</span>
             <img src="/assets/img/arrow-right-icon.svg" alt="">
