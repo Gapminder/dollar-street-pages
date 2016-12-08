@@ -41,6 +41,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public isDesktop: boolean;
   public getLanguage: string = 'fr';
 
+  public getLanguage: string;
+
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
@@ -55,6 +57,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnInit(): void {
+
+    this.getLanguage = 'fr';
+
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
       .subscribe((res: any) => {
@@ -80,6 +85,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnChanges(changes: any): void {
+
+    this.getLanguage = 'fr';
+
     if (changes.imageData) {
       this.country = void 0;
       this.loader = false;
