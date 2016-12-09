@@ -16,6 +16,7 @@ import * as _ from 'lodash';
 
 import { Config } from '../../app.config';
 import { BrowserDetectionService, CountriesFilterService } from '../../common';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'countries-filter',
@@ -24,6 +25,11 @@ import { BrowserDetectionService, CountriesFilterService } from '../../common';
 })
 
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
+  public translate: TranslateService;
+  public theWorldTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetTheWorldSubscribe: Subscription;
+
   public activeCountries: string;
   public showSelected: boolean;
   public locations: any[];
@@ -60,7 +66,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public constructor(zone: NgZone,
                      element: ElementRef,
                      countriesFilterService: CountriesFilterService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.device = browserDetectionService;
     this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
@@ -68,6 +76,15 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
+    this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
+      this.theWorldTranslate = res;
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const noDataTranslation = event.translations;
+      this.theWorldTranslate = noDataTranslation.THE_WORLD;
+    });
+
     this.isDesktop = this.device.isDesktop();
 
     this.isOpenMobileFilterView();

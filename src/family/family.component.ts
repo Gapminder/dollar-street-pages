@@ -4,8 +4,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { forEach, difference, map } from 'lodash';
 import { TranslateService } from 'ng2-translate';
+import * as _ from 'lodash';
 
 import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
+import { LanguageService } from '../shared';
 
 export interface UrlParamsInterface {
   thing: string;
@@ -28,6 +30,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public theWorldTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetTheWorldSubscribe: Subscription;
+  public languageService: LanguageService;
 
   public streetFamilyData: {income: number, region: string};
   public titles: any = {};
@@ -44,6 +47,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public countriesFilterService: CountriesFilterService;
   public countriesFilterServiceSubscribe: Subscription;
   public locations: any[];
+  public countries: any[];
   public activeImageIndex: number;
   public urlChangeService: UrlChangeService;
   public windowHistory: any = history;
@@ -56,7 +60,8 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      streetSettingsService: StreetSettingsService,
                      urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -64,6 +69,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.streetSettingsService = streetSettingsService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -118,7 +124,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
       });
 
     this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.urlParams.thing}`)
+      .getCountries(`thing=${this.urlParams.thing}${this.languageService.getLanguageParam()}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
@@ -126,6 +132,12 @@ export class FamilyComponent implements OnInit, OnDestroy {
         }
 
         this.locations = res.data;
+        this.countries = _
+          .chain(res.data)
+          .map('countries')
+          .flatten()
+          .sortBy('country')
+          .value();
 
         if (!this.homeIncomeData) {
           return;
@@ -196,7 +208,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let countries = 'the world' ? this.theWorldTranslate : this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(','));
+    let countries = this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(','));
 
     this.titles = {
       thing: this.urlParams.thing,
@@ -224,17 +236,43 @@ export class FamilyComponent implements OnInit, OnDestroy {
     return title;
   }
 
+  public findCountryTranslatedName(countries: any[]): any {
+    return _.map(countries, (item: string): any => {
+      const findTransName: any = _.find(this.countries, {originName: item});
+      return findTransName ? findTransName.country : item;
+
+    });
+  }
+
+  public findRegionTranslatedName(regions: any[]): any {
+    return _.map(regions, (item: string): any => {
+      const findTransName: any = _.find(this.locations, {originRegionName: item});
+      return findTransName ? findTransName.region : item;
+    });
+  }
+
   public getCountriesTitle(regions: string[], countries: string[]): string {
+    let getTranslatedCountries: any;
+    let getTranslatedRegions: any;
     let title: string;
+
+    if (countries[0] !== 'World') {
+      getTranslatedCountries = this.findCountryTranslatedName(countries);
+    }
+
+    if (regions[0] !== 'World') {
+      getTranslatedRegions = this.findRegionTranslatedName(regions);
+    }
+
     if (regions[0] === 'World' && countries[0] === 'World') {
-      return 'the world';
+      return this.theWorldTranslate;
     }
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
       if (countries.length > 2) {
-        title = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+        title = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
       } else {
-        title = countries.join(' & ');
+        title = getTranslatedCountries.join(' & ');
       }
 
       return title;
@@ -242,35 +280,35 @@ export class FamilyComponent implements OnInit, OnDestroy {
 
     if (regions[0] !== 'World') {
       if (regions.length > 2) {
-        title = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+        title = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
       } else {
         let sumCountries: number = 0;
         let getDifference: string[] = [];
         let regionCountries: string[] = [];
 
         forEach(this.locations, (location: any) => {
-          if (regions.indexOf(location.region) !== -1) {
+          if (regions.indexOf(location.originRegionName) !== -1) {
             regionCountries = regionCountries.concat(map(location.countries, 'country') as string[]);
             sumCountries = +location.countries.length;
           }
         });
 
         if (sumCountries !== countries.length) {
-          getDifference = difference(countries, regionCountries);
+          getDifference = difference(getTranslatedCountries, regionCountries);
         }
 
         if (getDifference.length) {
-          title = getDifference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + getDifference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
+          title = getDifference.length === 1 && regions.length === 1 ? getTranslatedRegions[0] + ' & '
+          + getDifference[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
         } else {
-          title = regions.join(' & ');
+          title = getTranslatedRegions.join(' & ');
         }
       }
 
       return title;
     }
 
-    let concatLocations: string[] = regions.concat(countries);
+    let concatLocations: string[] = regions.concat(getTranslatedCountries);
 
     if (concatLocations.length > 2) {
       title = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
