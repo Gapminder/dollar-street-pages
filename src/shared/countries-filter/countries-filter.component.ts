@@ -81,8 +81,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const theWorldTranslation = event.translations;
-      this.theWorldTranslate = theWorldTranslation.THE_WORLD;
+      const noDataTranslation = event.translations;
+      this.theWorldTranslate = noDataTranslation.THE_WORLD;
     });
 
     this.isDesktop = this.device.isDesktop();
@@ -287,8 +287,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.resizeSubscribe.unsubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
-    this.translateGetTheWorldSubscribe.unsubscribe();
-    this.translateOnLangChangeSubscribe.unsubscribe();
   }
 
   public ngOnChanges(changes: any): void {
@@ -356,7 +354,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let countries: string[] = query.countries;
 
     if (regions[0] === 'World' && countries[0] === 'World') {
-      this.activeCountries = this.theWorldTranslate;
+      this.activeCountries = 'the World';
       this.selectedCountries.length = 0;
       this.selectedRegions.length = 0;
 
