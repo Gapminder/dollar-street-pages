@@ -20,7 +20,6 @@ import {
 
 export class HeaderComponent implements OnInit, OnChanges {
   public element: HTMLElement;
-  public getLanguage: string;
 
   @Input()
   protected query: string;
@@ -76,8 +75,6 @@ export class HeaderComponent implements OnInit, OnChanges {
   public ngOnInit(): void {
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
-
-    this.getLanguage = 'fr';
 
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()

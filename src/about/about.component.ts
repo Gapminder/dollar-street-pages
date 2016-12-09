@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { AboutService } from './about.service';
+import { LanguageService } from '../shared';
 import { LoaderService, TitleHeaderService } from '../common';
 import { TranslateService } from 'ng2-translate';
 
@@ -22,18 +23,20 @@ export class AboutComponent implements OnInit, OnDestroy {
   public aboutTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetAboutSubscribe: Subscription;
-  public getLanguage: string = 'fr';
+  private languageService: LanguageService;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
                      sanitizer: DomSanitizer,
                      titleHeaderService: TitleHeaderService,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.sanitizer = sanitizer;
     this.aboutService = aboutService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -50,7 +53,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       this.titleHeaderService.setTitle(this.aboutTranslate);
     });
 
-    this.aboutSubscribe = this.aboutService.getInfo(`lang=${this.getLanguage}`).subscribe((val: any) => {
+    this.aboutSubscribe = this.aboutService.getInfo(this.languageService.getLanguageParam()).subscribe((val: any) => {
       if (val.err) {
         console.error(val.err);
         return;

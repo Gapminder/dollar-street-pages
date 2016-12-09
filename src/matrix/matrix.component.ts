@@ -92,8 +92,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public device: BrowserDetectionService;
   public languageService: LanguageService;
 
-  public getLanguage:string;
-
   public constructor(zone: NgZone,
                      router: Router,
                      activatedRoute: ActivatedRoute,
@@ -127,9 +125,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
-
-    this.getLanguage = 'fr';
-
     this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
     this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
@@ -184,7 +179,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
 
     this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.thing}&lang=${this.getLanguage}`)
+      .getCountries(`thing=${this.thing}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
@@ -505,7 +500,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
 
       this.matrixServiceSubscribe = this.matrixService
-        .getMatrixImages(this.query + `&resolution=${this.imageResolution.image}&lang=${this.getLanguage}`)
+        .getMatrixImages(this.query + `&resolution=${this.imageResolution.image}`)
         .subscribe((val: any) => {
           if (val.err) {
             console.error(val.err);

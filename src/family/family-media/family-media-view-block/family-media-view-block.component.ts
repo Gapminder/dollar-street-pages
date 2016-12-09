@@ -7,6 +7,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Config, ImageResolutionInterface } from '../../../app.config';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../../common';
+import { LanguageService } from '../../../shared';
 
 @Component({
   selector: 'family-media-view-block',
@@ -40,25 +41,23 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public device: BrowserDetectionService;
   public isDesktop: boolean;
 
-  public getLanguage: string;
+  private languageService: LanguageService;
 
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     viewBlockService: FamilyMediaViewBlockService) {
+                     viewBlockService: FamilyMediaViewBlockService,
+                     languageService: LanguageService) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
-
+    this.languageService = languageService;
     this.isDesktop = this.device.isDesktop();
     this.imageResolution = Config.getImageResolution(this.isDesktop);
   }
 
   public ngOnInit(): void {
-
-    this.getLanguage = 'fr';
-
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
       .subscribe((res: any) => {
@@ -84,9 +83,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnChanges(changes: any): void {
-
-    this.getLanguage = 'fr';
-
     if (changes.imageData) {
       this.country = void 0;
       this.loader = false;
@@ -110,7 +106,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
       }
 
       this.viewBlockServiceSubscribe = this.viewBlockService
-        .getData(`placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}&lang=${this.getLanguage}`)
+        .getData(`placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`)
         .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);

@@ -57,8 +57,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
 
-  public getLanguage: string;
-
   public constructor(zone: NgZone,
                      element: ElementRef,
                      countriesFilterService: CountriesFilterService,
@@ -71,8 +69,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
-
-    this.getLanguage = 'fr';
 
     this.isOpenMobileFilterView();
 
@@ -287,7 +283,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
       this.countriesFilterServiceSubscribe = this
         .countriesFilterService
-        .getCountries(this.url + `&lang=${this.getLanguage}`)
+        .getCountries(this.url)
         .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);

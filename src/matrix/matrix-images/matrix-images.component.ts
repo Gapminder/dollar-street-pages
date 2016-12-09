@@ -162,17 +162,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.thing}&lang=${this.getLanguage}`)
-      .subscribe((res: any): any => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.locations = res.data;
-      });
-
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {

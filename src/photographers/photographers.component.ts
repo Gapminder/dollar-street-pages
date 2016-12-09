@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { MathService, LoaderService, TitleHeaderService, BrowserDetectionService } from '../common';
+import { LanguageService } from '../shared';
 import { PhotographersService } from './photographers.service';
 import { TranslateService } from 'ng2-translate';
 
@@ -29,7 +30,8 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public getLanguage: string = 'fr';
+
+  private languageService: LanguageService;
 
   public constructor(element: ElementRef,
                      math: MathService,
@@ -37,7 +39,8 @@ export class PhotographersComponent implements OnInit, OnDestroy {
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
                      photographersService: PhotographersService,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.math = math;
     this.loaderService = loaderService;
@@ -45,6 +48,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
     this.titleHeaderService = titleHeaderService;
     this.photographersService = photographersService;
     this.device = browserDetectionService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -64,7 +68,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
       this.titleHeaderService.setTitle(this.photographersTranslate);
     });
 
-    this.photographersServiceSubscribe = this.photographersService.getPhotographers(`lang=${this.getLanguage}`)
+    this.photographersServiceSubscribe = this.photographersService.getPhotographers(this.languageService.getLanguageParam())
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
