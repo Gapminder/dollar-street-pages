@@ -152,10 +152,9 @@ export class MapComponent implements OnInit, OnDestroy {
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
 
-        this.query = this.query + this.languageService.getLanguageParam();
-
         if (!isNotReplaceState) {
-          this.urlChangeService.replaceState('/map', this.query);
+          this.query = url;
+          this.urlChangeService.replaceState('/map', url);
         }
 
         this.setMarkersCoord(this.places);
