@@ -16,6 +16,7 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public photographerPlacesServiceSubscribe: Subscription;
   public photographerPlacesService: PhotographerPlacesService;
+  public getLanguage: string = 'fr';
 
   public constructor(math: MathService,
                      loaderService: LoaderService,
@@ -29,7 +30,7 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
     this.loaderService.setLoader(false);
 
     this.photographerPlacesServiceSubscribe = this.photographerPlacesService
-      .getPhotographerPlaces(`id=${this.photographerId}`)
+      .getPhotographerPlaces(`id=${this.photographerId}&lang=${this.getLanguage}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

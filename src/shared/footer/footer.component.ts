@@ -33,6 +33,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public getLanguage: string = 'fr';
 
   public constructor(router: Router,
                      footerService: FooterService,
@@ -80,7 +81,7 @@ export class FooterComponent implements OnInit, OnDestroy {
         this.streetData = res.data;
       });
 
-    this.footerServiceSubscribe = this.footerService.getFooter()
+    this.footerServiceSubscribe = this.footerService.getFooter(`lang=${this.getLanguage}`)
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);

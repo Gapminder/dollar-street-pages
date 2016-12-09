@@ -29,6 +29,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public getLanguage: string = 'fr';
 
   public constructor(element: ElementRef,
                      math: MathService,
@@ -63,7 +64,7 @@ export class PhotographersComponent implements OnInit, OnDestroy {
       this.titleHeaderService.setTitle(this.photographersTranslate);
     });
 
-    this.photographersServiceSubscribe = this.photographersService.getPhotographers()
+    this.photographersServiceSubscribe = this.photographersService.getPhotographers(`lang=${this.getLanguage}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

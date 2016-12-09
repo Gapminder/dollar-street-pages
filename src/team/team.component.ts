@@ -20,6 +20,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   public teamTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetTeamSubscribe: Subscription;
+  public getLanguage: string = 'fr';
 
   public constructor(teamService: TeamService,
                      loaderService: LoaderService,
@@ -45,7 +46,7 @@ export class TeamComponent implements OnInit, OnDestroy {
       this.titleHeaderService.setTitle('Dollar Street ' + this.teamTranslate);
     });
 
-    this.teamSubscribe = this.teamService.getTeam()
+    this.teamSubscribe = this.teamService.getTeam(`lang=${this.getLanguage}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

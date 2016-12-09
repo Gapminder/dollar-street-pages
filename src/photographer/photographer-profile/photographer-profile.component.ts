@@ -19,6 +19,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   public translateGetPhotographerSubscribe: Subscription;
   public translateGetShowDetailsSubscribe: Subscription;
   public translateGetHideDetailsSubscribe: Subscription;
+  public getLanguage: string = 'fr';
 
   protected isShowInfo: boolean = false;
 
@@ -41,7 +42,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    let query = `id=${this.photographerId}`;
+    let query = `id=${this.photographerId}&lang=${this.getLanguage}`;
 
     this.translateGetPhotographerSubscribe = this.translate.get('PHOTOGRAPHER').subscribe((res: any) => {
       this.photographerTranslate = res;
