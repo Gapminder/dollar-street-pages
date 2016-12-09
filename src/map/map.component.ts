@@ -152,6 +152,8 @@ export class MapComponent implements OnInit, OnDestroy {
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
 
+        this.query = url;
+
         if (!isNotReplaceState) {
           this.query = url;
           this.urlChangeService.replaceState('/map', url);
