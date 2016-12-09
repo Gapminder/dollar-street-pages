@@ -53,7 +53,7 @@
 
           <a *ngIf="isShowCountryButton"
              (click)="goToMatrixByCountry(familyData.country.originName)">
-            <span>{{ 'ALL' | translate }} {{thing.toLowerCase()}}</span>
+            <span>{{ 'ALL' | translate }} {{familyData?.activeThing?.plural.toLowerCase()}}</span>
             <span>{{ 'IN' | translate }}</span>
             <span>{{countryName}}</span>
             <img src="/assets/img/arrow-right-icon.svg" alt="">
@@ -178,7 +178,7 @@
       <a class="link-to-page"
          *ngIf="isShowCountryButton"
          (click)="goToMatrixByCountry(familyData.country.alias)">
-        <span>{{ 'ALL' | translate }} {{thing.toLowerCase()}}</span>
+        <span>{{ 'ALL' | translate }} {{familyData?.activeThing?.plural.toLowerCase()}}</span>
         <span>{{ 'IN' | translate }}</span>
         <span>{{countryName}}</span>
         <img src="/assets/img/arrow-right-icon.svg" alt="">
