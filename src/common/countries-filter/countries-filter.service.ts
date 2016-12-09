@@ -19,6 +19,7 @@ export class CountriesFilterService {
       .get(`${Config.api}/v1/countries-filter?${query}`)
       .map((res: any) => {
         let parseRes = JSON.parse(res._body);
+
         return {err: parseRes.error, data: parseRes.data};
       });
   }

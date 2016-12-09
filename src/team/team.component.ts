@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TeamService } from './team.service';
 import { LoaderService, TitleHeaderService } from '../common';
+import { LanguageService } from '../shared';
 import { TranslateService } from 'ng2-translate';
 
 @Component({
@@ -20,15 +21,18 @@ export class TeamComponent implements OnInit, OnDestroy {
   public teamTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetTeamSubscribe: Subscription;
+  public languageService: LanguageService;
 
   public constructor(teamService: TeamService,
                      loaderService: LoaderService,
                      titleHeaderService: TitleHeaderService,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.teamService = teamService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -45,7 +49,7 @@ export class TeamComponent implements OnInit, OnDestroy {
       this.titleHeaderService.setTitle('Dollar Street ' + this.teamTranslate);
     });
 
-    this.teamSubscribe = this.teamService.getTeam()
+    this.teamSubscribe = this.teamService.getTeam(this.languageService.getLanguageParam())
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

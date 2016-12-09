@@ -116,7 +116,7 @@ export class MapComponent implements OnInit, OnDestroy {
       .queryParams
       .subscribe((params: {thing: string}) => {
         this.thing = params.thing ? params.thing : 'Families';
-        let query: any = {url: `thing=${this.thing}`};
+        let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
 
         if (!params.thing || (params.thing && !isInit)) {
           query.isNotReplaceState = true;
@@ -151,11 +151,10 @@ export class MapComponent implements OnInit, OnDestroy {
         this.places = res.data.places;
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
-        this.query = `thing=${res.data.thing}`;
-        this.query = this.query + this.languageService.getLanguageParam();
 
         if (!isNotReplaceState) {
-          this.urlChangeService.replaceState('/map', this.query);
+          this.query = url;
+          this.urlChangeService.replaceState('/map', url);
         }
 
         this.setMarkersCoord(this.places);

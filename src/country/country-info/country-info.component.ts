@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { MathService, StreetSettingsService, DrawDividersInterface } from '../../common';
 import { CountryInfoService } from './country-info.service';
+import { LanguageService } from '../../shared';
 
 @Component({
   selector: 'country-info',
@@ -29,18 +30,22 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
   public streetServiceSubscribe: Subscription;
+  private languageService: LanguageService;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,
-                     streetSettingsService: StreetSettingsService) {
+                     streetSettingsService: StreetSettingsService,
+                     languageService: LanguageService) {
     this.countryInfoService = countryInfoService;
     this.math = math;
     this.streetSettingsService = streetSettingsService;
     this.isShowInfo = false;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
-    this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}`)
+
+    this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}${this.languageService.getLanguageParam()}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

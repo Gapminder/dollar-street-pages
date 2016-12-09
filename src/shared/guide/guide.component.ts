@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Rx';
 import { find, difference } from 'lodash';
 import { GuideService } from './guide.service';
 import { LocalStorageService } from '../../common';
+import { LanguageService } from '../language-selector/language.service';
 
 @Component({
   selector: 'quick-guide',
@@ -19,13 +20,17 @@ export class GuideComponent implements OnInit, OnDestroy {
   public guideService: GuideService;
   public guideServiceSubscribe: Subscription;
 
+  public languageService: LanguageService;
+
   @Output('startQuickGuide')
   public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(guideService: GuideService,
-                     localStorageService: LocalStorageService) {
+                     localStorageService: LocalStorageService,
+                     languageService: LanguageService) {
     this.guideService = guideService;
     this.localStorageService = localStorageService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -40,7 +45,7 @@ export class GuideComponent implements OnInit, OnDestroy {
         this.startQuickGuide.emit({});
       });
 
-    this.guideServiceSubscribe = this.guideService.getGuide()
+    this.guideServiceSubscribe = this.guideService.getGuide(this.languageService.getLanguageParam())
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

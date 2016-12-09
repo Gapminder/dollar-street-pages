@@ -11,8 +11,8 @@ export class AboutService {
     this.http = http;
   }
 
-  public getInfo(): Observable<any> {
-    return this.http.get(`${Config.api}/v1/info`).map((res: any) => {
+  public getInfo(query: any): Observable<any> {
+    return this.http.get(`${Config.api}/v1/info?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });

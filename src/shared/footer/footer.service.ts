@@ -14,8 +14,8 @@ export class FooterService {
     this.http = http;
   }
 
-  public getFooter(): Observable<any> {
-    return this.http.get(`${Config.api}/v1/footer-text`).map((res: any) => {
+  public getFooter(query: any): Observable<any> {
+    return this.http.get(`${Config.api}/v1/footer-text?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });

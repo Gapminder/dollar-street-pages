@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    let storageLanguage: string = this.localStorageService.getItem('language');
+    let storageLanguage: any = this.localStorageService.getItem('language');
 
     this.translate.setDefaultLang('en');
     this.getLanguageToUse = storageLanguage || this.translate.getBrowserLang() || this.translate.getDefaultLang();
@@ -59,6 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         let availableLanguages: any[] = map(res.data, (item: any) => item.language);
+
         this.translate.addLangs(availableLanguages);
       });
 
@@ -81,7 +82,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       let translations = event.translations;
-      let langToUse: string = event.lang;
+      let langToUse: any = event.lang;
 
       this.translate.setTranslation(langToUse, translations);
 
@@ -125,6 +126,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     if (this.getLanguageToUseSubscribe.unsubscribe) {
       this.getLanguageToUseSubscribe.unsubscribe();
+    }
+
+    if (this.getLangsSubscribe.unsubscribe) {
+      this.getLangsSubscribe.unsubscribe();
     }
 
     if (this.translateOnLangChangeSubscribe.unsubscribe) {

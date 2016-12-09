@@ -6,6 +6,7 @@ import { Config } from '../../app.config';
 import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
 import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../../shared';
 
 @Component({
   selector: 'family-header',
@@ -55,13 +56,16 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public isMobile: boolean;
 
+  private languageService: LanguageService;
+
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,
                      streetSettingsService: StreetSettingsService,
                      familyHeaderService: FamilyHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.zone = zone;
     this.math = math;
@@ -69,6 +73,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.element = element.nativeElement;
     this.familyHeaderService = familyHeaderService;
     this.device = browserDetectionService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -92,7 +97,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     });
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
-      .getFamilyHeaderData(`placeId=${this.placeId}`)
+      .getFamilyHeaderData(`placeId=${this.placeId}${this.languageService.getLanguageParam()}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);

@@ -87,6 +87,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public locations: any[];
   public device: BrowserDetectionService;
 
+  public getLanguage: string = 'fr';
+
   public constructor(zone: NgZone,
                      router: Router,
                      element: ElementRef,
@@ -159,17 +161,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         }, 0);
       }
     });
-
-    this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.thing}`)
-      .subscribe((res: any): any => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.locations = res.data;
-      });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
@@ -256,72 +247,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  public buildTitle(query: any): any {
-    let regions = query.regions.split(',');
-    let countries = query.countries.split(',');
-    this.selectedThing = query.thing.split(',');
-    if (regions[0] === 'World' && countries[0] === 'World') {
-      this.activeCountries = 'the world';
-
-      return;
-    }
-
-    if (regions[0] === 'World' && countries[0] !== 'World') {
-      if (countries.length > 2) {
-        this.activeCountries = countries;
-      } else {
-        this.activeCountries = countries.join(' & ');
-      }
-
-      this.selectedCountries = countries;
-
-      return;
-    }
-
-    if (regions[0] !== 'World') {
-
-      if (regions.length > 3) {
-        this.activeCountries = 'the world';
-      } else {
-        let sumCountries: number = 0;
-        let difference: string[] = [];
-        let regionCountries: string[] = [];
-
-        _.forEach(this.locations, (location: any) => {
-          if (regions.indexOf(location.region) !== -1) {
-            regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
-            sumCountries = +location.countries.length;
-          }
-        });
-
-        if (sumCountries !== countries.length) {
-          difference = _.difference(countries, regionCountries);
-        }
-
-        if (difference.length) {
-
-          this.activeCountries = regions + ',' + difference;
-        } else {
-          this.activeCountries = regions.join(' & ');
-        }
-      }
-
-      this.selectedRegions = regions;
-      this.selectedCountries = countries;
-
-      return;
-    }
-
-    let concatLocations: string[] = regions.concat(countries);
-
-    if (concatLocations.length < 5) {
-      this.activeCountries = concatLocations.join(' & ');
-    }
-
-    this.selectedRegions = regions;
-    this.selectedCountries = countries;
-  }
-
   public imageIsUploaded(index: number): void {
     this.zone.run(() => {
       this.placesArr[index].isUploaded = true;
@@ -330,8 +255,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public buildErrorMsg(places: any): void {
     if (!places.length) {
-      this.buildTitle(this.parseUrl(this.query));
-
       let activeCountries = this.activeCountries.toString().replace(/,/g, ', ');
 
       if (this.activeCountries === 'the world') {

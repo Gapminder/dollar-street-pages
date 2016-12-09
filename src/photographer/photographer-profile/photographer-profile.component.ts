@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { MathService } from '../../common';
+import { LanguageService } from '../../shared';
 import { PhotographerProfileService } from './photographer-profile.service';
 import { TranslateService } from 'ng2-translate';
 
@@ -31,17 +32,20 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   private photographer: {firstName?: string, lastName?: string} = {};
   private photographerProfileServiceSubscribe: Subscription;
   private photographerProfileService: PhotographerProfileService;
+  private languageService: LanguageService;
 
   public constructor(math: MathService,
                      photographerProfileService: PhotographerProfileService,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.photographerProfileService = photographerProfileService;
     this.math = math;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
-    let query = `id=${this.photographerId}`;
+    let query = `id=${this.photographerId}${this.languageService.getLanguageParam()}`;
 
     this.translateGetPhotographerSubscribe = this.translate.get('PHOTOGRAPHER').subscribe((res: any) => {
       this.photographerTranslate = res;
