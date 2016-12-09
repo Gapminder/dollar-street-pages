@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { MathService, LoaderService } from '../../common';
 import { CountryPlacesService } from './country-places.service';
+import { LanguageService } from '../../shared';
 
 @Component({
   selector: 'country-places',
@@ -18,19 +19,23 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public countryPlacesService: CountryPlacesService;
   public countryPlacesServiceSubscribe: Subscription;
+  public languageService: LanguageService;
 
   public constructor(countryPlacesService: CountryPlacesService,
                      loaderService: LoaderService,
-                     math: MathService) {
+                     math: MathService,
+                     languageService: LanguageService) {
     this.countryPlacesService = countryPlacesService;
     this.math = math;
     this.loaderService = loaderService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
     this.loaderService.setLoader(false);
 
-    this.countryPlacesServiceSubscribe = this.countryPlacesService.getCountryPlaces(`id=${this.countryId}`)
+    this.countryPlacesServiceSubscribe = this.countryPlacesService
+      .getCountryPlaces(`id=${this.countryId}${this.languageService.getLanguageParam()}`)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

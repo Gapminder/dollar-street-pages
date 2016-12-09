@@ -40,6 +40,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public streetSettingsService: StreetSettingsService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public thing: any = {};
 
   private languageService: LanguageService;
 
@@ -115,6 +116,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
           this.country = res.data.country;
           this.article = res.data.article;
+          this.thing = res.data.thing;
 
           this.truncCountryName(this.country);
 

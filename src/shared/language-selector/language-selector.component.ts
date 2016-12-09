@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from 'ng2-translate';
-import { stringify } from '@angular/core/src/facade/lang';
 import { LanguageService } from '../language-selector/language.service';
+import { LocalStorageService } from '../../common';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'language-selector',
@@ -12,52 +13,65 @@ import { LanguageService } from '../language-selector/language.service';
 
 export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public disabled: boolean = false;
-  public status: {isopen: boolean} = {isopen: false};
+  public status: {isOpen: boolean} = {isOpen: false};
   public translate: TranslateService;
-  public getLanguageService: LanguageService;
-  public getLanguageToUseSubscribe: Subscription;
-  public getLanguagesList: any;
+  public languageService: LanguageService;
+  public getLanguagesListSubscribe: Subscription;
+  public languages: any[];
   public element: HTMLElement;
   public currentLanguage: string;
+  public window: Window = window;
+  public localStorageService: LocalStorageService;
+  public defaultLanguage: any;
+  public defaultSecondLanguage: any;
 
-  public constructor(getLanguageService: LanguageService,
+  public constructor(languageService: LanguageService,
                      element: ElementRef,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     localStorageService: LocalStorageService) {
     this.translate = translate;
     this.element = element.nativeElement;
-    this.getLanguageService = getLanguageService;
+    this.languageService = languageService;
+    this.localStorageService = localStorageService;
   }
 
   public ngOnInit(): void {
-    this.getLanguageToUseSubscribe = this.getLanguageService.getLanguagesList()
+    this.getLanguagesListSubscribe = this.languageService.getLanguagesList()
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
         }
-        this.getLanguagesList = res.data;
+
         this.currentLanguage = this.translate.currentLang;
+
+        this.languages = _.filter(res.data, (language: any): any => {
+          if (language.code === 'en') {
+            this.defaultLanguage = language;
+          }
+
+          if (language.code === this.currentLanguage) {
+            this.defaultSecondLanguage = language;
+          }
+
+          if (language.code !== 'en' && language.code !== this.currentLanguage) {
+            return language;
+          }
+        });
+
+        if (this.defaultSecondLanguage.code === 'en') {
+          this.defaultSecondLanguage = this.languages.length ? _.first(this.languages.splice(0, 1)) : undefined;
+        }
       });
   }
 
   public ngOnDestroy(): void {
-    if (this.getLanguageToUseSubscribe.unsubscribe()) {
-      this.getLanguageToUseSubscribe.unsubscribe();
-    }
+    this.getLanguagesListSubscribe.unsubscribe();
   }
 
   public changeLanguage(lang: string): void {
-    let langServ = stringify('lang=' + lang);
+    this.localStorageService.setItem('language', lang);
 
-    this.getLanguageToUseSubscribe = this.getLanguageService.getLanguage(langServ)
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-        this.translate.setTranslation(lang, res.data.translation);
-        this.translate.use(lang);
-        this.currentLanguage = lang;
-      });
+    this.window.location.href = this.window.location.href.replace(/lang\=\w*/, `lang=${lang}`);
   }
 }

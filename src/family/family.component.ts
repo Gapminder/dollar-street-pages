@@ -2,12 +2,17 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import * as _ from 'lodash';
 import { forEach, difference, map } from 'lodash';
 import { TranslateService } from 'ng2-translate';
-import * as _ from 'lodash';
-
-import { StreetSettingsService, CountriesFilterService, UrlChangeService, Angulartics2GoogleAnalytics } from '../common';
+import {
+  StreetSettingsService,
+  CountriesFilterService,
+  UrlChangeService,
+  Angulartics2GoogleAnalytics
+} from '../common';
 import { LanguageService } from '../shared';
+import { FamilyService } from './family.service';
 
 export interface UrlParamsInterface {
   thing: string;
@@ -42,6 +47,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public homeIncomeData: any;
   public rich: any;
   public poor: any;
+  public thing: any = {};
   public router: Router;
   public activatedRoute: ActivatedRoute;
   public countriesFilterService: CountriesFilterService;
@@ -53,6 +59,8 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public windowHistory: any = history;
   public queryParamsSubscribe: Subscription;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public familyService: FamilyService;
+  public familyServiceSetThingSubscribe: Subscription;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -61,6 +69,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      translate: TranslateService,
+                     familyService: FamilyService,
                      languageService: LanguageService) {
     this.translate = translate;
     this.router = router;
@@ -70,6 +79,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
     this.languageService = languageService;
+    this.familyService = familyService;
   }
 
   public ngOnInit(): void {
@@ -98,6 +108,18 @@ export class FamilyComponent implements OnInit, OnDestroy {
           lowIncome: parseInt(params.lowIncome, 10),
           highIncome: parseInt(params.highIncome, 10)
         };
+
+        this.familyServiceSetThingSubscribe = this.familyService
+          .getThing(`thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`)
+          .subscribe((res: any) => {
+            if (res.err) {
+              console.error(res.err);
+              return;
+            }
+
+            this.thing = res.data;
+            this.initData();
+          });
       });
 
     if (!isNaN(this.activeImageIndex) && 'scrollRestoration' in history) {
@@ -153,6 +175,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.streetSettingsServiceSubscribe.unsubscribe();
     this.translateGetTheWorldSubscribe.unsubscribe();
     this.translateOnLangChangeSubscribe.unsubscribe();
+    this.familyServiceSetThingSubscribe.unsubscribe();
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
@@ -211,7 +234,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     let countries = this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(','));
 
     this.titles = {
-      thing: this.urlParams.thing,
+      thing: this.thing,
       countries: countries,
       income: this.getIncomeTitle(this.urlParams.lowIncome, this.urlParams.highIncome)
     };

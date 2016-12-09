@@ -1,15 +1,23 @@
 import 'rxjs/operator/debounceTime';
-
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone, AfterViewChecked, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  NgZone,
+  AfterViewChecked,
+  ElementRef
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { find, isEqual, slice, concat } from 'lodash';
-
 import { Config, ImageResolutionInterface } from '../../app.config';
 import { LoaderService, BrowserDetectionService } from '../../common';
 import { FamilyMediaService } from './family-media.service';
+import { LanguageService } from '../../shared';
 
 @Component({
   selector: 'family-media',
@@ -57,17 +65,20 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
 
   @Output('activeImageOptions')
   public activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
+  public languageService: LanguageService;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
                      loaderService: LoaderService,
                      familyMediaService: FamilyMediaService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     languageService: LanguageService) {
     this.familyMediaService = familyMediaService;
     this.zone = zone;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.device = browserDetectionService;
+    this.languageService = languageService;
 
     this.isDesktop = this.device.isDesktop();
     this.imageResolution = Config.getImageResolution(this.isDesktop);
@@ -105,8 +116,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
           }
         });
 
+    const query: string = `placeId=${this.placeId}&resolution=${this.
+      imageResolution.image}${this.languageService.getLanguageParam()}`;
+
     this.familyPlaceServiceSubscribe = this.familyMediaService
-      .getFamilyMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}`)
+      .getFamilyMedia(query)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

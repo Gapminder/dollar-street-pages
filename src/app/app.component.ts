@@ -74,7 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.translate.setTranslation(this.getLanguageToUse, res.data.translation);
+        this.translate.setTranslation(this.getLanguageToUse, res.data.interface);
         this.translate.use(this.getLanguageToUse);
 
         this.getLanguageService.setCurrentLanguage(this.getLanguageToUse);
@@ -87,13 +87,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.translate.setTranslation(langToUse, translations);
 
       this.getLanguageService.setCurrentLanguage(langToUse);
-
-      if(this.getLanguageToUse !== langToUse) {
-        this.localStorageService.setItem('language', langToUse);
-
-        const currentUrl: string = this.window.location.href;
-        this.window.location.href = currentUrl;
-      }
     });
 
     this.loaderServiceSubscribe = this.loaderService
@@ -121,19 +114,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.getLangsSubscribe.unsubscribe();
     this.routerEventsSubscribe.unsubscribe();
     this.loaderServiceSubscribe.unsubscribe();
-
-    if (this.getLanguageToUseSubscribe.unsubscribe) {
-      this.getLanguageToUseSubscribe.unsubscribe();
-    }
-
-    if (this.getLangsSubscribe.unsubscribe) {
-      this.getLangsSubscribe.unsubscribe();
-    }
-
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
-    }
+    this.getLanguageToUseSubscribe.unsubscribe();
+    this.translateOnLangChangeSubscribe.unsubscribe();
   }
 }
