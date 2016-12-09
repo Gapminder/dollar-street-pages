@@ -6,11 +6,18 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class UrlChangeService {
   private location: Location;
+  private window: Window = window;
   private urlEvents: Subject<any>;
 
   public constructor(@Inject(Location) location: Location) {
     this.urlEvents = new Subject();
     this.location = location;
+  }
+
+  public getUrlParamByName(paramName: string): any {
+    const params = this.window.location.search.replace(/&/g, '\",\"').replace(/=/g, '\":\"').replace(/\?/g, '');
+
+    return params ? JSON.parse(`{"${params}"}`)[paramName] : undefined;
   }
 
   public replaceState(path: string, query: string, isReplace?: boolean): void {

@@ -173,6 +173,10 @@ export class FamilyComponent implements OnInit, OnDestroy {
   }
 
   public initData(): void {
+    if (!this.homeIncomeData) {
+      return;
+    }
+
     this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
     this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
 
