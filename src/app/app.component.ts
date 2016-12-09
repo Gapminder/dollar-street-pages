@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { LoaderService } from '../common';
-import { LanguageService } from '../shared/language-selector/language.service';
+import { LoaderService, LocalStorageService, UrlChangeService } from '../common';
+import { LanguageService } from '../shared';
 import { TranslateService } from 'ng2-translate';
 import { stringify } from '@angular/core/src/facade/lang';
 import { map } from 'lodash';
@@ -14,31 +14,43 @@ import { map } from 'lodash';
 })
 
 export class AppComponent implements OnInit, OnDestroy {
+  public window: Window = window;
   public isLoader: boolean = false;
   public isVisibleHeader: boolean;
   public router: Router;
-  public loaderService: LoaderService;
   public routerEventsSubscribe: Subscription;
   public loaderServiceSubscribe: Subscription;
-
-  public translate: TranslateService;
-  public getLanguageService: LanguageService;
   public getLanguageToUseSubscribe: Subscription;
   public translateOnLangChangeSubscribe: Subscription;
   public getLanguageToUse: string;
   public getLangsSubscribe: Subscription;
 
+  public translate: TranslateService;
+  public getLanguageService: LanguageService;
+  public loaderService: LoaderService;
+  public urlChangeService: UrlChangeService;
+  public localStorageService: LocalStorageService;
+
   public constructor(router: Router,
                      getLanguageService: LanguageService,
                      translate: TranslateService,
-                     loaderService: LoaderService) {
+                     loaderService: LoaderService,
+                     urlChangeService: UrlChangeService,
+                     localStorageService: LocalStorageService) {
     this.router = router;
     this.loaderService = loaderService;
     this.translate = translate;
     this.getLanguageService = getLanguageService;
+    this.urlChangeService = urlChangeService;
+    this.localStorageService = localStorageService;
   }
 
   public ngOnInit(): void {
+    let storageLanguage: any = this.localStorageService.getItem('language');
+
+    this.translate.setDefaultLang('en');
+    this.getLanguageToUse = storageLanguage || this.translate.getBrowserLang() || this.translate.getDefaultLang();
+
     this.getLangsSubscribe = this.getLanguageService.getLanguagesList()
       .subscribe((res: any) => {
         if (res.err) {
@@ -51,8 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.translate.addLangs(availableLanguages);
       });
 
-    this.translate.setDefaultLang('en');
-    this.getLanguageToUse = this.translate.getBrowserLang() || this.translate.getDefaultLang();
+    this.getLanguageService.setCurrentLanguage(this.getLanguageToUse);
 
     let lang = stringify('lang=' + this.getLanguageToUse);
 
@@ -62,14 +73,27 @@ export class AppComponent implements OnInit, OnDestroy {
           console.error(res.err);
           return;
         }
+
         this.translate.setTranslation(this.getLanguageToUse, res.data.translation);
         this.translate.use(this.getLanguageToUse);
+
+        this.getLanguageService.setCurrentLanguage(this.getLanguageToUse);
       });
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       let translations = event.translations;
-      let langToUse = event.lang;
+      let langToUse: any = event.lang;
+
       this.translate.setTranslation(langToUse, translations);
+
+      this.getLanguageService.setCurrentLanguage(langToUse);
+
+      if(this.getLanguageToUse !== langToUse) {
+        this.localStorageService.setItem('language', langToUse);
+
+        const currentUrl: string = this.window.location.href;
+        this.window.location.href = currentUrl;
+      }
     });
 
     this.loaderServiceSubscribe = this.loaderService
@@ -90,6 +114,8 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         this.isVisibleHeader = !(activePage === '/matrix' || activePage === '/family' || activePage === '/map');
+
+        this.getLanguageService.updateLangUrl();
       }
     });
   }

@@ -17,6 +17,7 @@ import {
   BrowserDetectionService
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { LanguageService } from '../shared';
 
 @Component({
   selector: 'matrix',
@@ -89,6 +90,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public guideContainer: HTMLElement;
   public guideHeight: number;
   public device: BrowserDetectionService;
+  public languageService: LanguageService;
 
   public getLanguage:string;
 
@@ -103,7 +105,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     languageService: LanguageService) {
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -116,6 +119,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.countriesFilterService = countriesFilterService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -153,6 +157,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.locationStrategy.onPopState(() => {
       if (this.streetData && this.locations) {
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
         this.urlChanged({isBack: true});
 
         if (this.guideContainer) {
@@ -225,6 +230,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
 
         if (this.activeHouse) {
           this.query = this.query + `&activeHouse=${this.activeHouse}`;
@@ -584,6 +590,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     } else {
       this.activeHouse = void 0;
     }
+
+    this.query = this.query.replace(/lang\=\w*/, `lang=${this.languageService.currentLanguage}`);
 
     this.urlChangeService.replaceState('/matrix', this.query, true);
   }

@@ -16,6 +16,7 @@ import {
   BrowserDetectionService
 } from '../common';
 import { MapService } from './map.service';
+import { LanguageService } from '../shared';
 
 @Component({
   selector: 'map-component',
@@ -67,6 +68,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private streetServiceSubscribe: Subscription;
   private windowInnerWidth: number = window.innerWidth;
   private device: BrowserDetectionService;
+  private languageService: LanguageService;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -79,7 +81,8 @@ export class MapComponent implements OnInit, OnDestroy {
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     languageService: LanguageService) {
     this.translate = translate;
     this.zone = zone;
     this.math = math;
@@ -92,6 +95,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -152,7 +156,8 @@ export class MapComponent implements OnInit, OnDestroy {
         this.places = res.data.places;
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
-        this.query = `thing=${res.data.thing}&lang=${this.getLanguage}`;
+
+        this.query = this.query + this.languageService.getLanguageParam();
 
         if (!isNotReplaceState) {
           this.urlChangeService.replaceState('/map', this.query);

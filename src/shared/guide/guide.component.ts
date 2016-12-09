@@ -31,7 +31,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.isShowGuide = this.localStorageService.getItem('quick-guide');
+    this.isShowGuide = !(this.localStorageService.getItem('quick-guide'));
 
     this.localStorageService
       .getItemEvent()
