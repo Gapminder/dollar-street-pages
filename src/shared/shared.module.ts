@@ -117,7 +117,8 @@ export class CustomLoader implements TranslateLoader {
     StreetDrawService,
     StreetMobileDrawService,
     StreetFilterDrawService,
-    StreetFamilyDrawService
+    StreetFamilyDrawService,
+    LanguageService
   ],
   exports: [
     LanguageSelectorComponent,
