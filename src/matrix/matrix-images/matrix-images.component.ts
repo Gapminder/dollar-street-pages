@@ -46,12 +46,14 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public filter: EventEmitter<any> = new EventEmitter<any>();
 
   public translate: TranslateService;
+  public theWorldTranslate: string;
   public sorryWeHaveNoTranslate: string;
   public onThisIncomeYetTranslate: string;
   public inTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetSorryWeHaveNoSubscribe: Subscription;
   public translateGetOnThisIncomeYetSubscribe: Subscription;
+  public translateGetTheWorldSubscribe: Subscription;
   public translateGetInSubscribe: Subscription;
 
   public selectedCountries: any;
@@ -87,8 +89,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public locations: any[];
   public device: BrowserDetectionService;
 
-  public getLanguage: string = 'fr';
-
   public constructor(zone: NgZone,
                      router: Router,
                      element: ElementRef,
@@ -111,6 +111,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     let isInit: boolean = true;
     this.isDesktop = this.device.isDesktop();
 
+    this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
+      this.theWorldTranslate = res;
+    });
+
     this.translateGetSorryWeHaveNoSubscribe = this.translate.get('SORRY_WE_HAVE_NO').subscribe((res: any) => {
       this.sorryWeHaveNoTranslate = res;
     });
@@ -127,6 +131,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       const noDataTranslation = event.translations;
       this.sorryWeHaveNoTranslate = noDataTranslation.SORRY_WE_HAVE_NO;
       this.onThisIncomeYetTranslate = noDataTranslation.ON_THIS_INCOME_YET;
+      this.theWorldTranslate = noDataTranslation.THE_WORLD;
       this.inTranslate = noDataTranslation.IN;
       if (this.currentPlaces && this.query && !this.currentPlaces.length) {
         this.buildErrorMsg(this.currentPlaces);
@@ -202,7 +207,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.translateGetOnThisIncomeYetSubscribe.unsubscribe();
     }
 
-    if (    this.translateGetInSubscribe.unsubscribe) {
+    if (this.translateGetInSubscribe.unsubscribe) {
       this.translateGetInSubscribe.unsubscribe();
     }
 
@@ -253,11 +258,79 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
   }
 
+  public buildTitle(query: any): any {
+    let regions = query.regions.split(',');
+    let countries = query.countries.split(',');
+    this.selectedThing = query.thing.split(',');
+    if (regions[0] === 'World' && countries[0] === 'World') {
+      this.activeCountries = this.theWorldTranslate;
+
+      return;
+    }
+
+    if (regions[0] === 'World' && countries[0] !== 'World') {
+      if (countries.length > 2) {
+        this.activeCountries = countries;
+      } else {
+        this.activeCountries = countries.join(' & ');
+      }
+
+      this.selectedCountries = countries;
+
+      return;
+    }
+
+    if (regions[0] !== 'World') {
+
+      if (regions.length > 3) {
+        this.activeCountries = this.theWorldTranslate;
+      } else {
+        let sumCountries: number = 0;
+        let difference: string[] = [];
+        let regionCountries: string[] = [];
+
+        _.forEach(this.locations, (location: any) => {
+          if (regions.indexOf(location.region) !== -1) {
+            regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
+            sumCountries = +location.countries.length;
+          }
+        });
+
+        if (sumCountries !== countries.length) {
+          difference = _.difference(countries, regionCountries);
+        }
+
+        if (difference.length) {
+
+          this.activeCountries = regions + ',' + difference;
+        } else {
+          this.activeCountries = regions.join(' & ');
+        }
+      }
+
+      this.selectedRegions = regions;
+      this.selectedCountries = countries;
+
+      return;
+    }
+
+    let concatLocations: string[] = regions.concat(countries);
+
+    if (concatLocations.length < 5) {
+      this.activeCountries = concatLocations.join(' & ');
+    }
+
+    this.selectedRegions = regions;
+    this.selectedCountries = countries;
+  }
+
   public buildErrorMsg(places: any): void {
     if (!places.length) {
+      this.buildTitle(this.parseUrl(this.query));
+
       let activeCountries = this.activeCountries.toString().replace(/,/g, ', ');
 
-      if (this.activeCountries === 'the world') {
+      if (this.activeCountries === this.theWorldTranslate) {
         this.showErrorMsg = true;
         this.errorMsg = this.sorryWeHaveNoTranslate + ' ' +
           this.selectedThing.toString().toLowerCase() + ' ' + this.onThisIncomeYetTranslate;

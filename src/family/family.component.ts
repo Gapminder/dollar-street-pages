@@ -196,7 +196,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let countries = 'the world' ? this.theWorldTranslate : this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(','));
+    let countries = this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(','));
 
     this.titles = {
       thing: this.urlParams.thing,
@@ -227,7 +227,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public getCountriesTitle(regions: string[], countries: string[]): string {
     let title: string;
     if (regions[0] === 'World' && countries[0] === 'World') {
-      return 'the world';
+      return this.theWorldTranslate;
     }
 
     if (regions[0] === 'World' && countries[0] !== 'World') {

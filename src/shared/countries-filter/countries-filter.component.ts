@@ -16,6 +16,7 @@ import * as _ from 'lodash';
 
 import { Config } from '../../app.config';
 import { BrowserDetectionService, CountriesFilterService } from '../../common';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'countries-filter',
@@ -24,6 +25,11 @@ import { BrowserDetectionService, CountriesFilterService } from '../../common';
 })
 
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
+  public translate: TranslateService;
+  public theWorldTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetTheWorldSubscribe: Subscription;
+
   public activeCountries: string;
   public showSelected: boolean;
   public locations: any[];
@@ -60,7 +66,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public constructor(zone: NgZone,
                      element: ElementRef,
                      countriesFilterService: CountriesFilterService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.device = browserDetectionService;
     this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
@@ -68,6 +76,15 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
+    this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
+      this.theWorldTranslate = res;
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const theWorldTranslation = event.translations;
+      this.theWorldTranslate = theWorldTranslation.THE_WORLD;
+    });
+
     this.isDesktop = this.device.isDesktop();
 
     this.isOpenMobileFilterView();
@@ -270,6 +287,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.resizeSubscribe.unsubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
+    this.translateGetTheWorldSubscribe.unsubscribe();
+    this.translateOnLangChangeSubscribe.unsubscribe();
   }
 
   public ngOnChanges(changes: any): void {
@@ -337,7 +356,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let countries: string[] = query.countries;
 
     if (regions[0] === 'World' && countries[0] === 'World') {
-      this.activeCountries = 'the World';
+      this.activeCountries = this.theWorldTranslate;
       this.selectedCountries.length = 0;
       this.selectedRegions.length = 0;
 
