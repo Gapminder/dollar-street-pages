@@ -34,7 +34,7 @@
     <div class="house-info-container">
       <div class="house-info-content">
         <div class="header-container">
-          <img [src]="thing.icon" alt="">
+          <img *ngIf="thing.icon" [src]="thing.icon" alt="">
           <span>{{thing.thingName}}</span>
         </div>
 
