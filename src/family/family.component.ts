@@ -84,12 +84,12 @@ export class FamilyComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
-      this.theWorldTranslate = res;
+      this.theWorldTranslate = res.toLowerCase();
     });
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const noDataTranslation = event.translations;
-      this.theWorldTranslate = noDataTranslation.THE_WORLD;
+      const dataTranslation = event.translations;
+      this.theWorldTranslate = dataTranslation.THE_WORLD.toLowerCase();
       this.initData();
     });
 
