@@ -62,9 +62,9 @@
            alt="Close">
 
       <ul class="menu-list">
-        <li>
+        <li [ngStyle]="{display: languagesSelectorVisibility}">
           <div class="language-selector">
-            <language-selector></language-selector>
+            <language-selector (languagesLoaded)="onLangLoaded($event)"></language-selector>
           </div>
         </li>
         <li>
