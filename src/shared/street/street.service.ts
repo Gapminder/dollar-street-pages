@@ -107,17 +107,17 @@ export class StreetDrawService {
     this.windowInnerWidth = window.innerWidth;
 
     this.translateGetPoorestSubscribe = this.translate.get('POOREST').subscribe((res: any) => {
-      this.poorest = res;
+      this.poorest = res.toUpperCase();
     });
 
     this.translateGetRichestSubscribe = this.translate.get('RICHEST').subscribe((res: any) => {
-      this.richest = res;
+      this.richest = res.toUpperCase();
     });
 
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const dataTranslation = event.translations;
-      this.poorest = dataTranslation.POOREST;
-      this.richest = dataTranslation.RICHEST;
+      this.poorest = dataTranslation.POOREST.toUpperCase();
+      this.richest = dataTranslation.RICHEST.toUpperCase();
     });
 
     this.scale = scaleLog()
