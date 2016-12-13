@@ -341,6 +341,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let query: any = this.parseUrl(url);
     let getTranslatedCountries: any;
     let getTranslatedRegions: any;
+    let regions: string[] = query.regions;
+    let countries: string[] = query.countries;
 
     if (query.countries[0] !== 'World') {
       getTranslatedCountries = this.findCountryTranslatedName(query.countries);
@@ -349,9 +351,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (query.regions[0] !== 'World') {
       getTranslatedRegions = this.findRegionTranslatedName(query.regions);
     }
-
-    let regions: string[] = query.regions;
-    let countries: string[] = query.countries;
 
     if (regions[0] === 'World' && countries[0] === 'World') {
       this.activeCountries = this.theWorldTranslate;
@@ -396,7 +395,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         if (difference.length) {
-          this.activeCountries = difference.length === 1 && regions.length === 1 ? getTranslatedRegions + ' & '
+          this.activeCountries = difference.length === 1 && regions.length === 1 ? getTranslatedRegions[0] + ' & '
           + difference[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
         } else {
           this.activeCountries = getTranslatedRegions.join(' & ');
