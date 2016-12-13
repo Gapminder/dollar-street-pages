@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from 'ng2-translate';
 import { LanguageService } from '../language-selector/language.service';
@@ -12,9 +12,6 @@ import * as _ from 'lodash';
 })
 
 export class LanguageSelectorComponent implements OnInit, OnDestroy {
-  @Output('languagesLoaded')
-  public languagesLoaded: EventEmitter<number> = new EventEmitter<number>();
-
   public disabled: boolean = false;
   public status: {isOpen: boolean} = {isOpen: false};
   public translate: TranslateService;
@@ -62,8 +59,6 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
             return language;
           }
         });
-
-        this.languagesLoaded.emit(res.data.length);
 
         if (this.defaultSecondLanguage.code === 'en') {
           this.defaultSecondLanguage = this.languages.length ? _.first(this.languages.splice(0, 1)) : undefined;

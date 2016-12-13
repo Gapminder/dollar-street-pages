@@ -42,7 +42,6 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public isMobile: boolean;
   public imgContent: HTMLElement;
-  public languagesSelectorVisibility: string;
 
   private languageService: LanguageService;
 
@@ -139,12 +138,6 @@ export class MainMenuComponent implements OnInit, OnDestroy {
 
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
-    }
-  }
-
-  public onLangLoaded(event: number):void {
-    if(event < 2) {
-      this.languagesSelectorVisibility = 'none';
     }
   }
 
