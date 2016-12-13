@@ -725,18 +725,18 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let getTranslatedCountries: any;
     let getTranslatedRegions: any;
 
+    if (regions[0] === 'World' && countries[0] === 'World') {
+      this.activeCountries = this.theWorldTranslate;
+
+      return;
+    }
+
     if (query.countries[0] !== 'World') {
       getTranslatedCountries = this.findCountryTranslatedName(query.countries);
     }
 
     if (query.regions[0] !== 'World') {
       getTranslatedRegions = this.findRegionTranslatedName(query.regions);
-    }
-
-    if (regions[0] === 'World' && countries[0] === 'World') {
-      this.activeCountries = this.theWorldTranslate;
-
-      return;
     }
 
     if (regions[0] === 'World' && countries[0] !== 'World') {

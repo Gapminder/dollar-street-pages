@@ -344,20 +344,20 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let regions: string[] = query.regions;
     let countries: string[] = query.countries;
 
-    if (query.countries[0] !== 'World') {
-      getTranslatedCountries = this.findCountryTranslatedName(query.countries);
-    }
-
-    if (query.regions[0] !== 'World') {
-      getTranslatedRegions = this.findRegionTranslatedName(query.regions);
-    }
-
     if (regions[0] === 'World' && countries[0] === 'World') {
       this.activeCountries = this.theWorldTranslate;
       this.selectedCountries.length = 0;
       this.selectedRegions.length = 0;
 
       return;
+    }
+
+    if (query.countries[0] !== 'World') {
+      getTranslatedCountries = this.findCountryTranslatedName(query.countries);
+    }
+
+    if (query.regions[0] !== 'World') {
+      getTranslatedRegions = this.findRegionTranslatedName(query.regions);
     }
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
