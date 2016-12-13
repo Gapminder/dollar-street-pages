@@ -581,8 +581,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
           this.buildTitle(this.query);
 
-          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
-
           if (!isBack) {
             this.urlChangeService.replaceState('/matrix', this.query);
           }
@@ -592,6 +590,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           } else {
             document.documentElement.scrollTop = 0;
           }
+
+          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
         });
     });
   }
