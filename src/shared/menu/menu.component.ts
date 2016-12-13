@@ -42,6 +42,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public isMobile: boolean;
   public imgContent: HTMLElement;
+
   private languageService: LanguageService;
 
   public constructor(router: Router,
