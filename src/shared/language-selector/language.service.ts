@@ -7,18 +7,18 @@ import { UrlChangeService } from '../../common';
 
 @Injectable()
 export class LanguageService {
+  public http: Http;
   public location: Location;
   public window: Window = window;
-  public http: Http;
-  public urlChangeService: UrlChangeService;
   public currentLanguage: string;
+  public urlChangeService: UrlChangeService;
 
   public constructor(@Inject(Http) http: Http,
-                     @Inject(UrlChangeService) urlChangeService: UrlChangeService,
-                     @Inject(Location) location: Location) {
+                     @Inject(Location) location: Location,
+                     @Inject(UrlChangeService) urlChangeService: UrlChangeService) {
     this.http = http;
-    this.urlChangeService = urlChangeService;
     this.location = location;
+    this.urlChangeService = urlChangeService;
   }
 
   public getLanguage(query: string): Observable<any> {
@@ -39,28 +39,19 @@ export class LanguageService {
     return `&lang=${this.currentLanguage}`;
   }
 
-  public setCurrentLanguage(value: string): void {
-    this.currentLanguage = value;
+  public updateLangUrl(currentLanguage: string): void {
+    this.currentLanguage = currentLanguage;
 
-    this.updateLangUrl();
-  }
+    const currentUrl: string = this.location.path();
 
-  public updateLangUrl(): void {
-    const currentSearch = this.window.location.search;
-    const newSearch = currentSearch.replace(/lang\=\w*/, `lang=${this.currentLanguage}`);
+    const pathAndQueryParams: string[] = currentUrl.split('?');
+    const queryParamsString: string = pathAndQueryParams[1];
 
-    const path = '/' + this.window.location.pathname.split('/dollar-street/')[1];
+    const path: string = pathAndQueryParams[0];
+    const queryParams: any = queryParamsString ? Config.parseUrl(queryParamsString) : {};
 
-    const language = this.urlChangeService.getUrlParamByName('lang');
+    queryParams.lang = this.currentLanguage;
 
-    let search: string = '';
-
-    if(!language) {
-      search = !currentSearch ? currentSearch + `lang=${this.currentLanguage}` : currentSearch + `&lang=${this.currentLanguage}`;
-    } else {
-      search = newSearch;
-    }
-
-    this.location.replaceState(path, search);
+    this.urlChangeService.replaceState(path, Config.objToQuery(queryParams), true);
   }
 }

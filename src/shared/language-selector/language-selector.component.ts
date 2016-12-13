@@ -70,8 +70,12 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public changeLanguage(lang: string): void {
+    if (this.currentLanguage === lang) {
+      return;
+    }
+
     this.localStorageService.setItem('language', lang);
 
-    this.window.location.href = this.window.location.href.replace(/lang\=\w*/, `lang=${lang}`);
+    this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${lang}`);
   }
 }

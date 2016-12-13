@@ -1,5 +1,4 @@
 import 'rxjs/add/operator/debounceTime';
-
 import { Component, OnInit, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
@@ -572,21 +571,26 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public activeHouseOptions(options: any): void {
     let {row, activeHouseIndex} = options;
+    let queryParams: any = this.parseUrl(this.query);
 
-    this.query = this.query.replace(/&activeHouse\=\d*/, '');
+    delete queryParams.activeHouse;
 
     if (row) {
-      this.query = this.query.replace(/row\=\d*/, `row=${row}`);
+      queryParams.row = row;
     }
 
     if (activeHouseIndex) {
       this.activeHouse = activeHouseIndex;
-      this.query = this.query + `&activeHouse=${activeHouseIndex}`;
+      queryParams.activeHouse = activeHouseIndex;
     } else {
       this.activeHouse = void 0;
     }
 
-    this.query = this.query.replace(/lang\=\w*/, `lang=${this.languageService.currentLanguage}`);
+    if (!queryParams.lang) {
+      queryParams.lang = this.languageService.currentLanguage;
+    }
+
+    this.query = Config.objToQuery(queryParams);
 
     this.urlChangeService.replaceState('/matrix', this.query, true);
   }
