@@ -262,6 +262,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     let regions = query.regions.split(',');
     let countries = query.countries.split(',');
     this.selectedThing = query.thing.split(',');
+
     if (regions[0] === 'World' && countries[0] === 'World') {
       this.activeCountries = this.theWorldTranslate;
 
