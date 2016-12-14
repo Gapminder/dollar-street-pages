@@ -103,7 +103,7 @@
 
 #main-menu .open .dropdown-menu li .feedback {
   background: url("/assets/img/feedback-icon.svg") no-repeat;
-  background-position: 20px;
+  background-position: 0px;
   font-size: 14px;
   padding: 4px 0 2px 0;
   text-transform: uppercase;
