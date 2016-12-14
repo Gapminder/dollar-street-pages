@@ -192,11 +192,7 @@
 
 .view-image-block-container .view-image-block-footer-container .zoom-download-container {
   text-align: right;
-  width: 225px;
-}
-
-.view-image-block-container .photographer-container {
-  width: calc(100% - 225px);
+  float: right;
 }
 
 .view-image-block-container .photographer-container p {
