@@ -24,6 +24,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public localStorageService: LocalStorageService;
   public defaultLanguage: any;
   public defaultSecondLanguage: any;
+  public languageCountToShow: number = 2;
 
   public constructor(languageService: LanguageService,
                      element: ElementRef,
@@ -69,11 +70,25 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
         if (this.defaultSecondLanguage.code === 'en') {
           this.defaultSecondLanguage = this.languages.length ? _.first(this.languages.splice(0, 1)) : undefined;
         }
+
+        this.languageSelectorDisplay(res.data.length);
       });
   }
 
   public ngOnDestroy(): void {
     this.getLanguagesListSubscribe.unsubscribe();
+  }
+
+  public languageSelectorDisplay(langCount: number): void {
+    const languagesCount: number = langCount;
+
+    let parentElement: HTMLElement = this.element.parentElement;
+
+    if (parentElement.classList.contains('language-selector') || parentElement.classList.contains('language-selector-header')) {
+      if (languagesCount < this.languageCountToShow) {
+        parentElement.classList.add('hidden');
+      }
+    }
   }
 
   public changeLanguage(lang: string): void {
