@@ -85,16 +85,22 @@
   cursor: pointer;
 }
 
-#countries-filter-mobile .title {
-  width: 100%;
+#countries-filter-mobile .title-container {
   height: 55px;
   border-bottom: 1px solid #c6c7c9;
   background-color: #f6f7f8;
-  color: #374551;
+  color: #374551;  
+  padding: 19px 20px 18px;
+  margin-bottom: 16px;  
+}
+
+#countries-filter-mobile .title-container .title {
   font-size: 24px;
   line-height: 20px;
-  padding: 19px 20px 18px;
-  margin-bottom: 16px;
+  display: inline-block;
+  width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #countries-filter-mobile .all-filter {
@@ -476,7 +482,7 @@
     padding: 10px 8px;
   }
 
-  #countries-filter-mobile .title {
+  #countries-filter-mobile .title-container {
     padding: 18px 8px;
   }
 
