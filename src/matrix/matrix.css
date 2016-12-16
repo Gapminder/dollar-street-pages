@@ -2,6 +2,10 @@ matrix-images {
   display: block;
 }
 
+.matrix-container {
+  position: relative;
+}
+
 .matrix-header {
   position: fixed !important;
   top: 0;
@@ -20,7 +24,7 @@ matrix-images {
 
 .zoom-column.stop {
   position: absolute;
-  bottom: 336px;
+  bottom: 36px;
 }
 
 .zoom-column button {
@@ -98,6 +102,12 @@ matrix-images {
 
 .short-title span {
   color: #767d86;
+}
+
+@media (max-width: 1024px) {
+  .zoom-column {
+    
+  }
 }
 
 @media (min-width: 600px) {
