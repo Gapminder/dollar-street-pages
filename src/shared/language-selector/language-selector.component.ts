@@ -46,7 +46,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
 
         this.currentLanguage = this.translate.currentLang;
 
-        let isLangPublishedOrExists = _.find(res.data, {code: this.currentLanguage});
+        let isLangPublishedOrExists = _.find(res.data, {code: this.translate.currentLang});
 
         if (!isLangPublishedOrExists) {
           this.localStorageService.setItem('language', this.translate.getDefaultLang());
@@ -54,6 +54,10 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
         }
 
         this.languages = _.filter(res.data, (language: any): any => {
+          if (!language) {
+            return;
+          }
+
           if (language.code === 'en') {
             this.defaultLanguage = language;
           }
@@ -67,7 +71,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
           }
         });
 
-        if (this.defaultSecondLanguage.code === 'en') {
+        if (this.defaultSecondLanguage && this.defaultSecondLanguage.code === 'en') {
           this.defaultSecondLanguage = this.languages.length ? _.first(this.languages.splice(0, 1)) : undefined;
         }
 

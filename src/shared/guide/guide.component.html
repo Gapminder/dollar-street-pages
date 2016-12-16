@@ -1,9 +1,10 @@
 <div class="quick-guide-container" *ngIf="isShowGuide">
-  <div class="quick-guide-content">
-    <div class="guide-logo-container">
-      <img src="/assets/img/new-road-sign.png" alt="Logo">
-    </div>
 
+  <div class="guide-logo-container">
+    <img src="/assets/img/new-road-sign.png" alt="Logo">
+  </div>
+
+  <div class="quick-guide-content">
     <div class="quick-guide-description-container">
       <h1>Dollar Street</h1>
       <div class="guide-description" *ngIf="description" [innerHtml]="description"></div>
