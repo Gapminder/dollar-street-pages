@@ -26,8 +26,8 @@
 }
 
 #photographer-places .place .place-description {
-  width: calc(100% - 380px);
-  margin: 43px 20px 0 100px;
+  width: calc(100% - 420px);
+  margin: 43px 0 0 100px;
 }
 
 #photographer-places .place-description > div {
@@ -122,8 +122,8 @@
 
 @media (max-width: 1399px) {
   #photographer-places .place .place-description {
-    width: calc(100% - 340px);
-    margin: 43px 20px 0 58px;
+    width: calc(100% - 380px);
+    margin: 43px 0 0 58px;
   }
 }
 
@@ -151,8 +151,8 @@
   }
 
   #photographer-places .place .place-description {
-    width: calc(100% - 327px);
-    margin: 37px 20px 0 58px;
+    width: calc(100% - 367px);
+    margin: 37px 0 0 58px;
   }
 
   #photographer-places .place-description .family > span {
