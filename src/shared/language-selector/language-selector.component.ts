@@ -59,8 +59,10 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
           }
         });
 
-        if (this.defaultSecondLanguage.code === 'en') {
-          this.defaultSecondLanguage = this.languages.length ? _.first(this.languages.splice(0, 1)) : undefined;
+        if (this.defaultSecondLanguage) {
+          if (this.defaultSecondLanguage.code === 'en') {
+            this.defaultSecondLanguage = this.languages.length ? _.first(this.languages.splice(0, 1)) : undefined;
+          }
         }
       });
   }
