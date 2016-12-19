@@ -1,14 +1,14 @@
 <div class="lang-container">
-  <div class="active-languages" *ngIf="defaultSecondLanguage && defaultLanguage">
+  <div class="active-languages" *ngIf="defaultLanguage && defaultSecondLanguage">
     <span class="lang-outside"
-          [ngClass]="{'lang-selected': currentLanguage === defaultLanguage.code}"
+          [ngClass]="{'lang-selected': currentLanguage === defaultLanguage?.code}"
           (click)="changeLanguage(defaultLanguage.code)">
       {{defaultLanguage?.name}}
     </span>
 
     <span class="lang-outside"
           [ngClass]="{
-            'lang-selected': currentLanguage === defaultSecondLanguage.code,
+            'lang-selected': currentLanguage === defaultSecondLanguage?.code,
             'without-border': !languages || !languages.length
           }"
           (click)="changeLanguage(defaultSecondLanguage.code)">

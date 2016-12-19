@@ -37,6 +37,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.currentLanguage = this.languageService.currentLanguage;
     this.getLanguagesListSubscribe = this.languageService.getLanguagesList()
       .subscribe((res: any) => {
         if (res.err) {
@@ -44,9 +45,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.currentLanguage = this.translate.currentLang;
-
-        let isLangPublishedOrExists = _.find(res.data, {code: this.translate.currentLang});
+        let isLangPublishedOrExists = _.find(res.data, {code: this.currentLanguage});
 
         if (!isLangPublishedOrExists && this.translate.currentLang) {
           this.localStorageService.setItem('language', this.translate.getDefaultLang());
