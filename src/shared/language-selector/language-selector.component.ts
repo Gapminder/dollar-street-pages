@@ -48,7 +48,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
 
         let isLangPublishedOrExists = _.find(res.data, {code: this.translate.currentLang});
 
-        if (!isLangPublishedOrExists) {
+        if (!isLangPublishedOrExists && this.translate.currentLang) {
           this.localStorageService.setItem('language', this.translate.getDefaultLang());
           this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${this.translate.getDefaultLang()}`);
         }
