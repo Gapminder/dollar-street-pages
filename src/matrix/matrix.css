@@ -104,12 +104,6 @@ matrix-images {
   color: #767d86;
 }
 
-@media (max-width: 1024px) {
-  .zoom-column {
-    
-  }
-}
-
 @media (min-width: 600px) {
   matrix-images {
     padding-top: 112px;
