@@ -1,6 +1,9 @@
 .follow-button-container {
   text-align: right;
   margin-top: 11px;
+  white-space: nowrap;
+  position: absolute;
+  right: 0px;
 }
 
 .follow-button-container .follow-button {
@@ -21,6 +24,7 @@
   .follow-button-container {
     text-align: center;
     margin-top: 24px;
+    position: static;
   }
 
   .follow-button-container .follow-text {

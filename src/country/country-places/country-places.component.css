@@ -26,8 +26,8 @@
 }
 
 #country-place .place .place-description {
-  width: calc(100% - 380px);
-  margin: 43px 20px 0 100px;
+  width: calc(100% - 420px);
+  margin: 43px 0 0 100px;
 }
 
 #country-place .place-description > div {
@@ -95,8 +95,8 @@
 
 @media (max-width: 1399px) {
   #country-place .place .place-description {
-    width: calc(100% - 340px);
-    margin: 43px 20px 0 58px;
+    width: calc(100% - 380px);
+    margin: 43px 0 0 58px;
   }
 }
 
@@ -120,7 +120,7 @@
   }
 
   #country-place .place .place-description {
-    margin: 39px 20px 0 58px;
+    margin: 39px 0 0 58px;
   }
 
   #country-place .country-income {
