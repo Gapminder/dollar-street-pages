@@ -358,24 +358,24 @@
 
 ::-webkit-input-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 ::-moz-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* Firefox 19+ */
 :-moz-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* Firefox 18- */
 :-ms-input-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* IE */

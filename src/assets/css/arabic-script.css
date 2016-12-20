@@ -1,0 +1,54 @@
+@font-face {
+  font-family: 'Font Light';
+  src: url("../fonts/arabic/traditional_arabic_regular.ttf") format('truetype');
+  /*src: url("../fonts/arabic/arabic_regular.eot");*/
+  /*src: url("../fonts/arabic/arabic_regular.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/arabic/arabic_regular.ttf') format('truetype'),*/
+  /*url('../fonts/arabic/arabic_regular.woff') format('woff');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Regular';
+  src: url("../fonts/arabic/traditional_arabic_regular.ttf") format('truetype');
+  /*src: url("../fonts/arabic/arabic_regular.eot");*/
+  /*src: url("../fonts/arabic/arabic_regular.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/arabic/arabic_regular.ttf') format('truetype'),*/
+  /*url('../fonts/arabic/arabic_regular.woff') format('woff');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Bold';
+  src: url("../fonts/arabic/traditional_arabic_regular.ttf") format('truetype');
+  /*src: url("../fonts/arabic/arabic_regular.eot");*/
+  /*src: url("../fonts/arabic/arabic_regular.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/arabic/arabic_regular.ttf') format('truetype'),*/
+  /*url('../fonts/arabic/arabic_regular.woff') format('woff');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Light Italic';
+  src: url("../fonts/arabic/traditional_arabic_regular.ttf") format('truetype');
+  /*src: url("../fonts/arabic/arabic_regular.eot");*/
+  /*src: url("../fonts/arabic/arabic_regular.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/arabic/arabic_regular.ttf') format('truetype'),*/
+  /*url('../fonts/arabic/arabic_regular.woff') format('woff');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Regular Italic';
+  src: url("../fonts/arabic/traditional_arabic_regular.ttf") format('truetype');
+  /*src: url("../fonts/arabic/arabic_regular.eot");*/
+  /*src: url("../fonts/arabic/arabic_regular.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/arabic/arabic_regular.ttf') format('truetype'),*/
+  /*url('../fonts/arabic/arabic_regular.woff') format('woff');*/
+  font-weight: normal;
+  font-style: normal;
+}

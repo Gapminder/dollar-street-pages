@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'Font Light';
+  src: url("../fonts/cyrillic/pt_sans_regular.eot");
+  src: url("../fonts/cyrillic/pt_sans_regular.eot?#iefix")format("embedded-opentype"),
+  url('../fonts/cyrillic/open_sans_light.ttf') format('truetype'),
+  url('../fonts/cyrillic/pt_sans_regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Regular';
+  src: url("../fonts/cyrillic/pt_sans_regular.eot");
+  src: url("../fonts/cyrillic/pt_sans_regular.eot?#iefix")format("embedded-opentype"),
+  url('../fonts/cyrillic/pt_sans_regular.ttf') format('truetype'),
+  url('../fonts/cyrillic/pt_sans_regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Bold';
+  src: url("../fonts/cyrillic/pt_sans_bold.eot");
+  src: url("../fonts/cyrillic/pt_sans_bold.eot?#iefix")format("embedded-opentype"),
+  url('../fonts/cyrillic/pt_sans_bold.ttf') format('truetype'),
+  url('../fonts/cyrillic/pt_sans_bold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Light Italic';
+  src: url("../fonts/cyrillic/pt_sans_italic.eot");
+  src: url("../fonts/cyrillic/pt_sans_italic.eot?#iefix")format("embedded-opentype"),
+  url('../fonts/cyrillic/open_sans_light_italic.ttf') format('truetype'),
+  url('../fonts/cyrillic/pt_sans_italic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Regular Italic';
+  src: url('../fonts/cyrillic/pt_sans_italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

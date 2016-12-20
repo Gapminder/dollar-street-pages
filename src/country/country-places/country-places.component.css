@@ -45,12 +45,12 @@
   color: #767d86;
   margin-top: -2px;
   display: block;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
 }
 
 #country-place .place-description .family h3 {
   font-size: 24px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   line-height: 20px;
 }
 
@@ -68,7 +68,7 @@
   margin-top: 13px;
   width: 50%;
   float: left;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   text-align: left;
   padding-left: 50px;
 }
@@ -81,7 +81,7 @@
 
 #country-place .place-description .income {
   font-size: 24px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   line-height: 20px;
   width: 50%;
   float: right;

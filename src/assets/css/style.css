@@ -1,69 +1,9 @@
-@font-face {
-  font-family: 'Bariol Light';
-  src: url('../fonts/bariol_light-webfont.eot');
-  src: url('../fonts/bariol_light-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/bariol_light-webfont.woff2') format('woff2'),
-  url('../fonts/bariol_light-webfont.woff') format('woff'),
-  url('../fonts/bariol_light-webfont.ttf') format('truetype'),
-  url('../fonts/bariol_light-webfont.svg#bariolthin') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Bariol Regular';
-  src: url('../fonts/bariol_regular-webfont.eot');
-  src: url('../fonts/bariol_regular-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/bariol_regular-webfont.woff2') format('woff2'),
-  url('../fonts/bariol_regular-webfont.woff') format('woff'),
-  url('../fonts/bariol_regular-webfont.ttf') format('truetype'),
-  url('../fonts/bariol_regular-webfont.svg#bariol_regularregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Bariol Bold';
-  src: url('../fonts/bariol_bold-webfont.eot');
-  src: url('../fonts/bariol_bold-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/bariol_bold-webfont.woff2') format('woff2'),
-  url('../fonts/bariol_bold-webfont.woff') format('woff'),
-  url('../fonts/bariol_bold-webfont.ttf') format('truetype'),
-  url('../fonts/bariol_bold-webfont.svg#bariol_boldbold') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Bariol Light Italic';
-  src: url('../fonts/bariol_light_italic-webfont.eot');
-  src: url('../fonts/bariol_light_italic-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/bariol_light_italic-webfont.woff2') format('woff2'),
-  url('../fonts/bariol_light_italic-webfont.woff') format('woff'),
-  url('../fonts/bariol_light_italic-webfont.ttf') format('truetype'),
-  url('../fonts/bariol_light_italic-webfont.svg#bariol_boldbold') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Bariol Regular Italic';
-  src: url('../fonts/bariol_regular_italic-webfont.eot');
-  src: url('../fonts/bariol_regular_italic-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/bariol_regular_italic-webfont.woff2') format('woff2'),
-  url('../fonts/bariol_regular_italic-webfont.woff') format('woff'),
-  url('../fonts/bariol_regular_italic-webfont.ttf') format('truetype'),
-  url('../fonts/bariol_regular_italic-webfont.svg#bariol_boldbold') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
 html {
   height: 100%;
 }
 
 body {
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
   overflow-x: hidden;
   color: #374551;
   position: relative;
@@ -126,7 +66,7 @@ matrix {
 
 .custom-button {
   background-color: #374551;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   color: white;
   font-size: 18px;
   display: inline-block;
@@ -198,7 +138,7 @@ matrix {
   color: #374551;
   font-size: 18px;
   line-height: 40px;
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
   background-color: #ffc300;
   border: 1px solid #f1b902;
   border-radius: 2px;

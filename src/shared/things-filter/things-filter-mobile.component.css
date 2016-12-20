@@ -298,7 +298,7 @@
 }
 
 #things-filter-mobile .things-filter-button .thing-pop-up-content p {
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #5f6a74;
@@ -311,7 +311,7 @@
 
 #things-filter-mobile .things-filter-button .thing-pop-up-content p a {
   color: #0567bf;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 @media (min-width: 1024px) {

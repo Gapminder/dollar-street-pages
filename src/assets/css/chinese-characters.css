@@ -1,0 +1,45 @@
+@font-face {
+  font-family: 'Font Light';
+  src: url("../fonts/chinese/han_wang_hei_light.ttf") format('truetype');
+  /*src: url("../fonts/pt_sans/pt_sans_regular.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/pt_sans/pt_sans_narrow_regular.ttf') format('truetype');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Regular';
+  src: url("../fonts/chinese/han_wang_hei_light.ttf") format('truetype');
+  /*src: url("../fonts/pt_sans/pt_sans_regular.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/pt_sans/pt_sans_regular.ttf') format('truetype'),*/
+  /*url('../fonts/pt_sans/pt_sans_regular.woff') format('woff');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Bold';
+  src: url("../fonts/chinese/han_wang_hei_light.ttf") format('truetype');
+  /*src: url("../fonts/pt_sans/pt_sans_bold.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/pt_sans/pt_sans_bold.ttf') format('truetype'),*/
+  /*url('../fonts/pt_sans/pt_sans_bold.woff') format('woff');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Light Italic';
+  src: url("../fonts/chinese/han_wang_hei_light.ttf") format('truetype');
+  /*src: url("../fonts/pt_sans/pt_sans_italic.eot?#iefix")format("embedded-opentype"),*/
+  /*url('../fonts/pt_sans/pt_sans_italic.ttf') format('truetype'),*/
+  /*url('../fonts/pt_sans/pt_sans_italic.woff') format('woff');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Regular Italic';
+  src: url('../fonts/chinese/han_wang_hei_light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
