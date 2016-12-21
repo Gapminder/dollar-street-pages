@@ -15,15 +15,16 @@
 
 .footer .cc-container {
   margin-top: 8px;
-  width: calc((100% - 430px) / 2);
+  width: calc((100% - 630px) / 2);
 }
 
 .footer .social-follow-buttons-container {
-  width: calc((100% - 430px) / 2);
+  width: calc((100% - 630px) / 2);
+  position: relative;
 }
 
 .footer .description-container {
-  width: 430px;
+  width: 630px;
 }
 
 .footer .cc-container img {
@@ -175,7 +176,7 @@
   }
 
   .footer .description-container {
-    width: 440px;
+    width: 640px;
     margin: 30px auto 0;
 
     -webkit-box-ordinal-group: 2;
