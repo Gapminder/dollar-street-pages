@@ -89,7 +89,8 @@
   </div>
   <div class="countries-filter-container"
        *ngIf="isOpenCountriesFilter">
-    <div class="title">{{ 'SELECT_COUNTRIES' | translate }}
+    <div class="title-container">
+      <div class="title">{{ 'SELECT_COUNTRIES' | translate }}</div>
       <img class="close-button pull-right"
            src="/assets/img/close-button.svg"
            (click)="cancelCountriesFilter()"
