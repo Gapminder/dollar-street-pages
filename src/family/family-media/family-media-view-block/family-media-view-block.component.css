@@ -69,10 +69,6 @@
   font-size: 20px;
 }
 
-.view-image-block-container .view-image-block-content .image-footer-container .photographer-container {
-  /*width: calc(100% - 225px);*/
-}
-
 .view-image-block-container .view-image-block-content .image-footer-container .photographer-container a,
 .view-image-block-container .view-image-block-content .image-footer-container .photographer-container p {
   color: #374551;
