@@ -432,8 +432,8 @@
 
   #countries-filter .regions-container span.name {
     font-size: 16px;
-    line-height: 10px;
-    margin-top: 10px;
+    line-height: 14px;
+    margin-top: 8px;
     width: calc(100% - 20px);
   }
 
