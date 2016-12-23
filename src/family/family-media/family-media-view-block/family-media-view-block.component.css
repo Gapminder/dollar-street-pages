@@ -70,7 +70,7 @@
 }
 
 .view-image-block-container .view-image-block-content .image-footer-container .photographer-container {
-  width: calc(100% - 225px);
+  /*width: calc(100% - 225px);*/
 }
 
 .view-image-block-container .view-image-block-content .image-footer-container .photographer-container a,
@@ -90,7 +90,11 @@
 
 .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container {
   text-align: right;
-  width: 225px;
+  float: right;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container .button-text {
+  margin-left: 10px;
 }
 
 .view-image-block-container .view-image-block-content .zoom-download-container a.download img {
@@ -108,7 +112,7 @@
 
 .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container a.download {
   display: inline-block;
-  margin-right: 20px;
+  margin-right: 16px;
 }
 
 .view-image-block-container .view-image-block-content .house-info-container {
@@ -299,5 +303,13 @@
 
   .view-image-block-container .active-house.house-3 {
     left: calc(((100% / 3) / 2) + (100% / 3 * 2) - 16px);
+  }
+
+  .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container .button-text {
+    display: none;
+  }
+
+  .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container a.download {
+    margin-right: 10px;
   }
 }
