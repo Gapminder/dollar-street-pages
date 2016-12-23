@@ -21,11 +21,11 @@
 
         <div class="zoom-download-container">
           <a class="download" target="_blank" [href]="api + '/v1/download-image/' + imageData.imageId">
-            <img src="/assets/img/download-icon.svg" alt=""> {{ 'DOWNLOAD' | translate }}
+            <img src="/assets/img/download-icon.svg" alt=""><span class="button-text">{{ 'DOWNLOAD' | translate }}</span>
           </a>
 
           <a (click)="openPopUp()">
-            <img src="/assets/img/fullsize-icon.svg" alt=""> {{ 'FULLSIZE' | translate }}
+            <img src="/assets/img/fullsize-icon.svg" alt=""><span class="button-text">{{ 'FULLSIZE' | translate }}</span>
           </a>
         </div>
       </div>
