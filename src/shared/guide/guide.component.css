@@ -4,6 +4,7 @@
 }
 
 .quick-guide-container {
+  position: relative;
   background: #d5eaf6 url("/assets/img/clouds.jpg") center center no-repeat;
   border-bottom: 1px solid #c6c7c9;
   padding: 50px 0 0;
@@ -12,16 +13,16 @@
 }
 
 .quick-guide-container .quick-guide-content {
-  width: 925px;
+  width: 75%;
   margin: 0 auto;
   display: inline-block;
   vertical-align: top;
 }
 
 .quick-guide-container .guide-logo-container {
+  position: absolute;
   width: 290px;
-  float: left;
-  margin-top: -29px;
+  bottom: 0;
 }
 
 .quick-guide-container .guide-logo-container img {
@@ -29,7 +30,7 @@
 }
 
 .quick-guide-container .quick-guide-description-container {
-  width: calc(100% - 310px);
+  width: 74%;
   float: right;
   margin-left: 10px;
   text-align: center;
@@ -98,6 +99,10 @@
 }
 
 @media (max-width: 1400px) {
+  .quick-guide-container  .quick-guide-content {
+    width: 81%;
+  }
+
   .quick-guide-container {
     padding: 20px 0 0;
   }
@@ -106,9 +111,8 @@
     margin-bottom: 18px;
   }
 
-  .quick-guide-container .guide-logo-container img {
-    width: 74%;
-    margin-top: 12px;
+  .quick-guide-container .guide-logo-container {
+    width: 200px;
   }
 
   .quick-guide-container h1 {
@@ -136,20 +140,16 @@
 
 @media (max-width: 1024px) {
   .quick-guide-container {
-    padding: 15px 0 0;
+    padding: 5px 0 0;
   }
 
-  .quick-guide-container .quick-guide-content {
-    width: 745px;
+  .quick-guide-container  .quick-guide-content {
+    width: 90%;
   }
 
   .quick-guide-container .guide-logo-container {
-    width: 180px;
-    margin-top: -21px;
-  }
-
-  .quick-guide-container .guide-logo-container img {
-    width: 100%;
+    width: 160px;
+    left: 5%;
   }
 
   .quick-guide-container h1 {
@@ -175,7 +175,6 @@
   }
 
   .quick-guide-container .quick-guide-description-container {
-    width: calc(100% - 180px);
     margin-left: 0;
     margin-bottom: 7px;
   }
@@ -190,33 +189,81 @@
   }
 }
 
-@media (max-width: 733px) {
+@media (max-width: 870px) {
   .quick-guide-container .quick-guide-content {
-    width: 685px;
-  }
-}
-
-@media (max-width: 667px) {
-  .quick-guide-container .quick-guide-content {
-    width: 667px;
+    width: 95%;
   }
 
   .quick-guide-container .guide-description {
-    font-size: 17px;
+    font-size: 16px;
+  }
+
+  .quick-guide-container h2 {
+    font-size: 24px;
+    line-height: 20px;
+  }
+
+  .quick-guide-container button {
+    padding: 0 10px;
+  }
+
+  .quick-guide-container button {
+    font-size: 20px;
+    padding: 3px 10px;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 750px) {
   .quick-guide-container .quick-guide-content {
-    width: 640px;
+    width: 100%;
+  }
+
+  .quick-guide-container .guide-logo-container {
+    width: 140px;
+    left: 2%;
   }
 
   .quick-guide-container .guide-description {
     font-size: 15px;
+    margin: 2px 0;
+  }
+
+  .quick-guide-container h2 {
+    font-size: 22px;
+    line-height: 18px;
+  }
+}
+
+@media (max-width: 667px) {
+  .quick-guide-container .quick-guide-description-container {
+    margin-top: 5px;
+  }
+
+  .quick-guide-container .guide-description {
+    font-size: 15px;
+    margin: 2px 0;
+  }
+
+  .quick-guide-container h2 {
+    font-size: 20px;
+    line-height: 16px;
   }
 
   .quick-guide-container .guide-logo-container {
-    width: 175px;
+    left: 5px;
+  }
+
+  .quick-guide-container .button-container {
+    margin-top: 10px;
+  }
+
+  .quick-guide-container button {
+    padding: 0 10px;
+  }
+
+  .quick-guide-container button {
+    font-size: 20px;
+    padding: 2px 10px;
   }
 }
 

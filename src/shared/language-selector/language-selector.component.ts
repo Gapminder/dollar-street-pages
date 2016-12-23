@@ -24,6 +24,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public localStorageService: LocalStorageService;
   public defaultLanguage: any;
   public defaultSecondLanguage: any;
+  public languageCountToShow: number = 2;
 
   public constructor(languageService: LanguageService,
                      element: ElementRef,
@@ -36,6 +37,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.currentLanguage = this.languageService.currentLanguage;
     this.getLanguagesListSubscribe = this.languageService.getLanguagesList()
       .subscribe((res: any) => {
         if (res.err) {
@@ -43,9 +45,18 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.currentLanguage = this.translate.currentLang;
+        let isLangPublishedOrExists = _.find(res.data, {code: this.currentLanguage});
+
+        if (!isLangPublishedOrExists && this.translate.currentLang) {
+          this.localStorageService.setItem('language', this.translate.getDefaultLang());
+          this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${this.translate.getDefaultLang()}`);
+        }
 
         this.languages = _.filter(res.data, (language: any): any => {
+          if (!language) {
+            return;
+          }
+
           if (language.code === 'en') {
             this.defaultLanguage = language;
           }
@@ -59,14 +70,28 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
           }
         });
 
-        if (this.defaultSecondLanguage.code === 'en') {
+        if (this.defaultSecondLanguage && this.defaultSecondLanguage.code === 'en') {
           this.defaultSecondLanguage = this.languages.length ? _.first(this.languages.splice(0, 1)) : undefined;
         }
+
+        this.languageSelectorDisplay(res.data.length);
       });
   }
 
   public ngOnDestroy(): void {
     this.getLanguagesListSubscribe.unsubscribe();
+  }
+
+  public languageSelectorDisplay(langCount: number): void {
+    const languagesCount: number = langCount;
+
+    let parentElement: HTMLElement = this.element.parentElement;
+
+    if (parentElement.classList.contains('language-selector') || parentElement.classList.contains('language-selector-header')) {
+      if (languagesCount < this.languageCountToShow) {
+        parentElement.classList.add('hidden');
+      }
+    }
   }
 
   public changeLanguage(lang: string): void {

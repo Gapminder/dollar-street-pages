@@ -25,7 +25,7 @@
 .filters-container {
   float: left;
   margin-top: 11px;
-  width: calc(100% - 275px);
+  width: calc(100% - 305px);
 }
 
 .filters-container things-filter,
@@ -137,13 +137,13 @@
   .filters-container {
     float: left;
     margin-top: 11px;
-    width: calc(100% - 43px);
+    width: calc(100% - 47px);
   }
 
   .filters-container things-filter {
     display: inline-block;
     vertical-align: middle;
-    width:100%;
+    width: 100%;
     margin-bottom: 0;
   }
 
@@ -152,9 +152,9 @@
   }
 
   countries-filter {
-    width: calc(100% - 74px);
+    width: calc(100% - 80px);
     vertical-align: top;
-    display: block;
+    display: inline-block;
     left: 0;
     right: 0;
   }

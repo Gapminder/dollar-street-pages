@@ -228,9 +228,16 @@ export class StreetDrawService {
       .append('text')
       .attr('class', 'richest')
       .text(this.richest)
-      .attr('x', this.width + this.streetOffset - 50)
       .attr('y', this.height - 4)
       .attr('fill', '#767d86');
+
+    const richestWidth: number = parseFloat(this.svg
+      .selectAll('text.richest')
+      .style('width').toString());
+
+    this.svg
+      .selectAll('text.richest')
+      .attr('x', this.width + this.streetOffset - richestWidth);
 
     if (places && places.length) {
       this.svg
