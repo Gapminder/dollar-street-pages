@@ -3,7 +3,9 @@ import { Http } from '@angular/http';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Config } from '../../app.config';
+import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../../common';
+import { TranslateService } from 'ng2-translate';
 
 @Injectable()
 export class LanguageService {
@@ -12,13 +14,17 @@ export class LanguageService {
   public window: Window = window;
   public currentLanguage: string;
   public urlChangeService: UrlChangeService;
+  public translate: TranslateService;
+  public translateSubscribe: Subscription;
 
   public constructor(@Inject(Http) http: Http,
                      @Inject(Location) location: Location,
-                     @Inject(UrlChangeService) urlChangeService: UrlChangeService) {
+                     @Inject(UrlChangeService) urlChangeService: UrlChangeService,
+                     @Inject(TranslateService) translate: TranslateService) {
     this.http = http;
     this.location = location;
     this.urlChangeService = urlChangeService;
+    this.translate = translate;
   }
 
   public getLanguage(query: string): Observable<any> {
@@ -37,6 +43,16 @@ export class LanguageService {
 
   public getLanguageParam(): string {
     return `&lang=${this.currentLanguage}`;
+  }
+
+  public getTranslatedDescription(callback: Function): void {
+    this.translateSubscribe = this.translate.get(['SEE_HOW_PEOPLE', 'REALLY', 'LIVE']).subscribe((res: any) => {
+      callback(res.SEE_HOW_PEOPLE+' '+res.REALLY+' '+res.LIVE);
+    });
+
+    if(this.translateSubscribe) {
+      this.translateSubscribe.unsubscribe();
+    }
   }
 
   public updateLangUrl(currentLanguage: string): void {

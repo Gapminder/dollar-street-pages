@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../language-selector/language.service';
 import { SocialShareButtonsService } from './social-share-buttons.service';
 
 @Component({
@@ -10,31 +10,34 @@ import { SocialShareButtonsService } from './social-share-buttons.service';
   styleUrls: ['social-share-buttons.component.css']
 })
 
-export class SocialShareButtonsComponent implements OnDestroy {
+export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   public url: string;
   public locationPath: string;
   public newWindow: any;
   public location: any = location;
   public window: Window = window;
-  public translate: TranslateService;
   public socialShareButtonsServiceSubscribe: Subscription;
   public socialShareButtonsService: SocialShareButtonsService;
   public shareMessageTranslated: string;
-  public translateSubscribe: Subscription;
+  public languageService: LanguageService;
 
   public constructor(socialShareButtonsService: SocialShareButtonsService,
-                     translate: TranslateService) {
+                     languageService: LanguageService) {
     this.socialShareButtonsService = socialShareButtonsService;
-    this.translate = translate;
+    this.languageService = languageService;
+  }
+
+  public ngOnInit(): void {
+    setTimeout(() => {
+      this.languageService.getTranslatedDescription((desc: string) => {
+        this.shareMessageTranslated = desc;
+      });
+    }, 2000);
   }
 
   public ngOnDestroy(): void {
     if (this.socialShareButtonsServiceSubscribe) {
       this.socialShareButtonsServiceSubscribe.unsubscribe();
-    }
-
-    if (this.translateSubscribe) {
-      this.translateSubscribe.unsubscribe();
     }
   }
 
@@ -68,26 +71,14 @@ export class SocialShareButtonsComponent implements OnDestroy {
       break;
     }
 
-    if(!this.translateSubscribe) {
-      this.translateSubscribe = this.translate.get(['SEE_HOW_PEOPLE', 'REALLY', 'LIVE']).subscribe((res: any) => {
-        this.shareMessageTranslated = res.SEE_HOW_PEOPLE+' '+res.REALLY+' '+res.LIVE+' - Dollar Street';
-      });
-    }
-
     let left: number = (this.window.innerWidth - 490) / 2;
     this.newWindow = this.window.open('', '_blank', 'width=490, height=368, top=100, left=' + left);
+
+    this.locationPath = this.location.pathname + this.location.search;
 
     if (this.socialShareButtonsServiceSubscribe) {
       this.socialShareButtonsServiceSubscribe.unsubscribe();
     }
-
-    if (this.locationPath === this.location.pathname + this.location.search) {
-      this.openWindow(originalUrl, this.url);
-
-      return;
-    }
-
-    this.locationPath = this.location.pathname + this.location.search;
 
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl({url: this.locationPath})
       .subscribe((res: any) => {
@@ -97,11 +88,31 @@ export class SocialShareButtonsComponent implements OnDestroy {
         }
 
         let params: URLSearchParams = new URLSearchParams();
-        params.set('url', res.url);
-        params.set('text', this.shareMessageTranslated);
 
-        if(target === 'linkedin') {
-          params.set('mini', 'true');
+        switch(target) {
+          case 'twitter':
+            params.set('url', res.url);
+            params.set('text', this.shareMessageTranslated + '- Dollar Street');
+          break;
+
+          case 'facebook':
+            params.set('u', res.url);
+            params.set('description', this.shareMessageTranslated);
+          break;
+
+          case 'linkedin':
+            params.set('mini', 'true');
+            params.set('url', res.url);
+            params.set('summary', this.shareMessageTranslated);
+          break;
+
+          case 'google':
+            params.set('url', res.url);
+            params.set('text', this.shareMessageTranslated);
+          break;
+
+          default:
+          break;
         }
 
         this.url = params.toString();

@@ -43,6 +43,7 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   private streetServiceSubscribe: Subscription;
   private resize: any;
   private drawOnMap: boolean = false;
+  private isStreetInit: boolean = false;
 
   private placesSubscribe: Subscription;
   private hoverPlaceSubscribe: Subscription;
@@ -167,7 +168,9 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       query.lowIncome = filter.lowIncome;
       query.highIncome = filter.highIncome;
 
-      if (filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+      if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+        this.isStreetInit = true;
+
         return;
       }
 
