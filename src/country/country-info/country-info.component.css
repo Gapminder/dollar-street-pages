@@ -56,19 +56,28 @@
   padding: 16px 0;
 }
 
-#item-profile .main .photo {
-  margin: 10px 0;
+#item-profile .main .total-text {
+  width: 90%;
 }
 
-#item-profile .main .home img {
-  width: 13px;
-  margin-top: -6px;
-  margin-right: 2px;
+#item-profile .main .photo {
+  margin: 10px 0;
+  width: 90%;
 }
 
 #item-profile .main .photo img {
   height: 13px;
   margin-top: -5px;
+  margin-right: 2px;
+}
+
+#item-profile .main .home {
+  width: 90%;
+}
+
+#item-profile .main .home img {
+  width: 13px;
+  margin-top: -6px;
   margin-right: 2px;
 }
 
