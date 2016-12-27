@@ -178,7 +178,7 @@
 
       <a class="link-to-page"
          *ngIf="isShowCountryButton"
-         (click)="goToMatrixByCountry(familyData.country.alias)">
+         (click)="goToMatrixByCountry(familyData.country.originName)">
         <span>{{ 'ALL' | translate }} {{familyData?.activeThing?.plural.toLowerCase()}}</span>
         <span>{{ 'IN' | translate }}</span>
         <span>{{countryName}}</span>
