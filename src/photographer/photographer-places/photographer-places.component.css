@@ -26,7 +26,7 @@
 }
 
 #photographer-places .place .place-description {
-  width: calc(100% - 420px);
+  width: calc(100% - 520px);
   margin: 43px 0 0 100px;
 }
 
@@ -61,7 +61,7 @@
 
 #photographer-places .country-income {
   overflow: hidden;
-  width: 66%
+  width: 66%;
 }
 
 #photographer-places .place-description .place-country {
@@ -123,7 +123,7 @@
 @media (max-width: 1399px) {
   #photographer-places .place .place-description {
     width: calc(100% - 380px);
-    margin: 43px 0 0 58px;
+    margin: 43px 0 0 18px;
   }
 }
 
@@ -151,7 +151,7 @@
   }
 
   #photographer-places .place .place-description {
-    width: calc(100% - 367px);
+    width: calc(100% - 467px);
     margin: 37px 0 0 58px;
   }
 

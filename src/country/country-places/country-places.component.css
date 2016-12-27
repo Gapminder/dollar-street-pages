@@ -26,7 +26,7 @@
 }
 
 #country-place .place .place-description {
-  width: calc(100% - 420px);
+  width: calc(100% - 520px);
   margin: 43px 0 0 100px;
 }
 
@@ -96,11 +96,15 @@
 @media (max-width: 1399px) {
   #country-place .place .place-description {
     width: calc(100% - 380px);
-    margin: 43px 0 0 58px;
+    margin: 43px 0 0 38px;
   }
 }
 
 @media (max-width: 1199px) {
+  #country-place .place-description {
+    width: calc(100% - 380px);
+  }
+
   #country-place .place-description .family h3 {
     font-size: 22px;
   }
@@ -120,6 +124,7 @@
   }
 
   #country-place .place .place-description {
+    width: calc(100% - 380px);
     margin: 39px 0 0 58px;
   }
 
@@ -221,7 +226,7 @@
   }
 
   #country-place .place .place-description .income {
-    width: 65px !important;
+    /*width: 65px !important;*/
     font-size: 22px !important;
     line-height: 22px;
     text-align: right;

@@ -360,6 +360,10 @@
     height: 420px;
   }
 
+  .view-image-block-container .zoom-download-container .button-text {
+    display: none;
+  }
+
   .view-image-block-container .view-image-block-content .house-info-container .header-container {
     margin: 0;
   }
@@ -389,10 +393,6 @@
 }
 
 @media (max-width: 1024px) {
-  .view-image-block-container .zoom-download-container .button-text {
-    display: none;
-  }
-
   .view-image-block-container .zoom-download-container .download {
     margin-right: 10px;
   }

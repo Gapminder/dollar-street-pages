@@ -571,7 +571,7 @@ export class StreetFilterDrawService {
         .append('text')
         .attr('class', 'left-scroll-label')
         .text(`$${incomeL}`)
-        .attr('y', 10)
+        .attr('y', 12)
         .attr('fill', '#767d86');
     }
 
@@ -580,7 +580,7 @@ export class StreetFilterDrawService {
         .append('text')
         .attr('class', 'right-scroll-label')
         .text(`$${incomeR}`)
-        .attr('y', 10)
+        .attr('y', 12)
         .attr('fill', '#767d86');
     }
 

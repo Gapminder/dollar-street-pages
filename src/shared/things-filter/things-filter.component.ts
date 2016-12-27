@@ -120,13 +120,14 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
     let query = this.parseUrl(this.url);
     query.thing = thing.originPlural;
 
     this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
+
+    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
   }
 
   public setActiveThingsColumn(column: string): void {

@@ -286,6 +286,10 @@
   .view-image-block-container .view-image-block-content .view-image-container .view-image-content {
     height: 420px;
   }
+
+  .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container .button-text {
+    display: none;
+  }
 }
 
 @media (max-width: 1023px) {
@@ -299,11 +303,7 @@
 
   .view-image-block-container .active-house.house-3 {
     left: calc(((100% / 3) / 2) + (100% / 3 * 2) - 16px);
-  }
-
-  .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container .button-text {
-    display: none;
-  }
+  }  
 
   .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container a.download {
     margin-right: 10px;
