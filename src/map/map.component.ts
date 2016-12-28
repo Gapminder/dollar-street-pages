@@ -47,6 +47,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private urlChangeService: UrlChangeService;
   private query: string;
   private currentCountry: string;
+  private originCurrentCountry: string;
   private leftSideCountries: any;
   private seeAllHomes: boolean = false;
   private leftArrowTop: any;
@@ -217,7 +218,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = mapImage.src;
   }
 
-  public hoverOnMarker(index: number, country: any): void {
+  public hoverOnMarker(index: number, country: any, countryOriginName: any): void {
     if (!this.isDesktop) {
       return;
     }
@@ -227,6 +228,8 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     this.onMarker = true;
+
+    this.originCurrentCountry = countryOriginName;
     this.currentCountry = country;
 
     this.leftSideCountries = this.places.filter((place: any): boolean => {
@@ -297,7 +300,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.hoverPlace.familyImg.background;
   };
 
-  public hoverOnMarkerTablet(index: number, country: any): void {
+  public hoverOnMarkerTablet(index: number, country: any, countryOriginName: any): void {
     if (this.isMobile || this.isDesktop) {
       return;
     }
@@ -308,6 +311,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.onMarker = true;
     this.currentCountry = country;
+    this.originCurrentCountry = countryOriginName;
 
     this.leftSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;
@@ -420,12 +424,12 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public clickOnMarker(e: MouseEvent, index: number, country: any): void {
+  public clickOnMarker(e: MouseEvent, index: number, country: any, countryOriginName: any): void {
     if (this.isOpenLeftSide) {
       this.isOpenLeftSide = !this.isOpenLeftSide;
 
       this.closeLeftSideBar(e);
-      this.hoverOnMarker(index, country);
+      this.hoverOnMarker(index, country, countryOriginName);
 
       return;
     }
@@ -437,8 +441,9 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public mobileClickOnMarker(country: any): void {
+  public mobileClickOnMarker(country: any, countryOriginName: any): void {
     this.currentCountry = country;
+    this.originCurrentCountry = countryOriginName;
 
     this.leftSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;
