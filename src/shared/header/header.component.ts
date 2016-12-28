@@ -65,7 +65,6 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
-
     this.element = element.nativeElement;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';

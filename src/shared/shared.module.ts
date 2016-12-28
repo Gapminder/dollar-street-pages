@@ -57,6 +57,8 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
 import { LanguageSelectorComponent } from './language-selector/language-selector.component';
 import { LanguageService } from './language-selector/language.service';
 
+import { ActiveThingService } from './things-filter/active-thing.service';
+
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { Observable } from 'rxjs';
 
@@ -117,7 +119,8 @@ export class CustomLoader implements TranslateLoader {
     StreetDrawService,
     StreetMobileDrawService,
     StreetFilterDrawService,
-    StreetFamilyDrawService
+    StreetFamilyDrawService,
+    ActiveThingService
   ],
   exports: [
     LanguageSelectorComponent,

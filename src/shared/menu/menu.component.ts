@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { TranslateService } from 'ng2-translate';
 import { Observable } from 'rxjs/Observable';
@@ -18,7 +18,7 @@ import { LanguageService } from '../language-selector/language.service';
   styleUrls: ['menu.component.css', 'menu.component.mobile.css']
 })
 
-export class MainMenuComponent implements OnInit, OnDestroy {
+export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input('hoverPlace') public hoverPlace: Observable<any>;
   @Output('selectedFilter') public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
@@ -34,6 +34,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public routerEventsSubscribe: Subscription;
   public streetServiceSubscribe: Subscription;
   public translateOnLangChangeSubscribe: Subscription;
+  public translationsReceiveSubscribe: Subscription;
   public localStorageService: LocalStorageService;
   public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
@@ -62,6 +63,10 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
+  }
+
+  public ngAfterViewInit(): void {
+    this.processShareTranslation();
   }
 
   public ngOnInit(): void {
@@ -99,32 +104,36 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
-        .subscribe(() => {
-          if (this.isOpenMenu) {
-            this.isOpenMenu = false;
-          }
-        });
-
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange
-      .subscribe((event: any) => {
-        let shareWordTranslation: string = event.translations.SHARE;
-
-        this.openMenu(true);
-
-        if (this.isDesktop) {
-          this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
-          this.imgContent.classList.remove('long-text');
-
-          if (shareWordTranslation.length > 6) {
-            this.imgContent.classList.add('long-text');
-          }
+      .subscribe(() => {
+        if (this.isOpenMenu) {
+          this.isOpenMenu = false;
         }
+      });
+
+    this.translationsReceiveSubscribe = this.languageService.translationsReceivedEvent.subscribe(() => {
+        this.processShareTranslation();
       });
   }
 
+  public processShareTranslation(): void {
+    if (!this.languageService.translations) {
+      return;
+    }
+
+    this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
+
+    if (this.isDesktop) {
+      this.imgContent.classList.remove('long-text');
+
+      if (this.languageService.translations.SHARE.length > 6) {
+        this.imgContent.classList.add('long-text');
+      }
+    }
+  }
+
   public ngOnDestroy(): void {
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
+    if (this.translationsReceiveSubscribe) {
+      this.translationsReceiveSubscribe.unsubscribe();
     }
 
     if (this.routerEventsSubscribe) {

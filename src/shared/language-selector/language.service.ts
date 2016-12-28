@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, EventEmitter } from '@angular/core';
 import { Http } from '@angular/http';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
@@ -16,6 +16,9 @@ export class LanguageService {
   public urlChangeService: UrlChangeService;
   public translate: TranslateService;
   public translateSubscribe: Subscription;
+  public translations: any;
+  public translationsReceivedEvent: EventEmitter<any> = new EventEmitter<any>();
+  public onLangChangeSubscribe: Subscription;
 
   public constructor(@Inject(Http) http: Http,
                      @Inject(Location) location: Location,
@@ -25,6 +28,17 @@ export class LanguageService {
     this.location = location;
     this.urlChangeService = urlChangeService;
     this.translate = translate;
+
+    if (this.onLangChangeSubscribe) {
+      this.onLangChangeSubscribe.unsubscribe();
+    }
+
+    this.onLangChangeSubscribe = this.translate.onLangChange
+      .subscribe((data: any) => {
+        this.translations = data.translations;
+
+        this.translationsReceivedEvent.emit(this.translations);
+    });
   }
 
   public getLanguage(query: string): Observable<any> {
