@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StreetSettingsService } from '../../common';
@@ -25,9 +25,12 @@ export class IncomeFilterComponent implements OnInit {
   public streetData: any;
   public streetSettingsService: StreetSettingsService;
   public streetServiceSubscribe: Subscription;
+  public element: HTMLElement;
 
-  public constructor(streetSettingsService: StreetSettingsService) {
+  public constructor(streetSettingsService: StreetSettingsService,
+                     element: ElementRef) {
     this.streetSettingsService = streetSettingsService;
+    this.element = element.nativeElement;
   }
 
   public ngOnInit(): void {
@@ -38,6 +41,23 @@ export class IncomeFilterComponent implements OnInit {
           return;
         }
         this.streetData = res.data;
+
+        let buttonContainer = this.element.querySelector('.income-filter-button-container') as HTMLElement;
+
+        if (buttonContainer) {
+          let captureContainer = this.element.querySelector('.income-filter-header-container') as HTMLElement;
+          let shortenWidth = buttonContainer.querySelector('.show-all') as HTMLElement;
+          let okayButton = buttonContainer.querySelector('.ok-button') as HTMLElement;
+          let cancelButton = buttonContainer.querySelector('.close-button') as HTMLElement;
+          let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
+
+          if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
+            shortenWidth.classList.add('decreaseFontSize');
+            cancelButton.classList.add('decreaseFontSize');
+            okayButton.classList.add('decreaseFontSize');
+            captureContainer.classList.add('decreaseFontSizeCapture');
+          }
+        }
       });
   }
 

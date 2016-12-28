@@ -44,14 +44,22 @@
 }
 
 .income-filter-button-container button {
-  height: 56px;  
+  height: 56px;
   border: 0;
   outline: 0;
   padding: 0;
-  font-size: 18px;
+  font-size: 24px;
   box-shadow: none;
   background: transparent;
   float: right;
+}
+
+.decreaseFontSize {
+  font-size: 18px !important;
+}
+
+.decreaseFontSizeCapture span {
+  font-size: 22px !important;
 }
 
 .income-filter-button-container button:first-child {
