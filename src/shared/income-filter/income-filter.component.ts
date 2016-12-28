@@ -41,26 +41,24 @@ export class IncomeFilterComponent implements OnInit {
           return;
         }
         this.streetData = res.data;
-      });
 
-    setTimeout(() => {
-      let buttonContainer = this.element.querySelector('.income-filter-button-container') as HTMLElement;
+        let buttonContainer = this.element.querySelector('.income-filter-button-container') as HTMLElement;
 
-      if (buttonContainer) {
-        let captureContainer = this.element.querySelector('.income-filter-header-container') as HTMLElement;
-        let shortenWidth = buttonContainer.querySelector('.show-all') as HTMLElement;
-        let okayButton = buttonContainer.querySelector('.ok-button') as HTMLElement;
-        let cancelButton = buttonContainer.querySelector('.close-button') as HTMLElement;
-        let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
+        if (buttonContainer) {
+          let captureContainer = this.element.querySelector('.income-filter-header-container') as HTMLElement;
+          let shortenWidth = buttonContainer.querySelector('.show-all') as HTMLElement;
+          let okayButton = buttonContainer.querySelector('.ok-button') as HTMLElement;
+          let cancelButton = buttonContainer.querySelector('.close-button') as HTMLElement;
+          let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
 
-        if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
-          shortenWidth.classList.add('decreaseFontSize');
-          cancelButton.classList.add('decreaseFontSize');
-          okayButton.classList.add('decreaseFontSize');
-          captureContainer.classList.add('decreaseFontSizeCapture');
+          if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
+            shortenWidth.classList.add('decreaseFontSize');
+            cancelButton.classList.add('decreaseFontSize');
+            okayButton.classList.add('decreaseFontSize');
+            captureContainer.classList.add('decreaseFontSizeCapture');
+          }
         }
-      }
-    }, 0);
+      });
   }
 
   public closeFilter(isClose?: boolean): void {
