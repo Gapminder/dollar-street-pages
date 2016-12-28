@@ -162,8 +162,10 @@
         <span class="normal">{{ 'SHOW_ALL_COUNTRIES' | translate }}</span>
         <span class="shorten">{{ 'SHOW_ALL' | translate }}</span>
       </button>
+
       <button class="cancel" type="button" (click)="cancelCountriesFilter()">{{ 'CANCEL' | translate }}</button>
-      <button type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
+      <button class="okay" type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
+
     </div>
   </div>
 </div>

@@ -89,18 +89,19 @@
   height: 55px;
   border-bottom: 1px solid #c6c7c9;
   background-color: #f6f7f8;
-  color: #374551;  
+  color: #374551;
   padding: 19px 20px 18px;
-  margin-bottom: 16px;  
+  margin-bottom: 16px;
 }
 
 #countries-filter-mobile .title-container .title {
   font-size: 24px;
-  line-height: 20px;
+  line-height: 26px;
   display: inline-block;
   width: 90%;
   overflow: hidden;
   white-space: nowrap;
+  margin-top: -4px;
 }
 
 #countries-filter-mobile .all-filter {
@@ -258,6 +259,16 @@
   color: #767d86;
 }
 
+
+#countries-filter-mobile .button-container .decreaseFontSize {
+  font-size: 18px;
+  padding: 3px 5px !important;
+}
+
+#countries-filter-mobile .button-container .decreaseFontSize.okay {
+  padding: 1px 5px !important;
+}
+
 #countries-filter-mobile .button-container button {
   color: #2e4350;
   font-size: 24px;
@@ -304,7 +315,7 @@
 }
 
 #countries-filter-mobile .title .regions-names {
-  margin-left: 6px;
+  margin-left: 4px;
 }
 
 #countries-filter-mobile .title .selected img,
@@ -415,11 +426,11 @@
   }
 
   #countries-filter-mobile .regions-container:nth-child(odd) {
-    width: 40%;
+    width: 50%;
   }
 
   #countries-filter-mobile .regions-container:nth-child(even) {
-    width: 60%;
+    width: 50%;
   }
 
   #countries-filter-mobile .pointer-container {
@@ -445,7 +456,11 @@
   }
 
   #countries-filter-mobile .button-container .cancel {
-   margin-top: 16px;
+   margin-top: 15px;
+  }
+
+  #countries-filter-mobile .button-container .okay {
+    margin-top: -1px;
   }
 
   #countries-filter-mobile .button-container button:last-child {
@@ -467,7 +482,7 @@
 
   #countries-filter-mobile .regions-container,
   #countries-filter-mobile .pointer-search-container {
-    padding: 0 8px;
+    padding: 0 6px;
   }
 
   #countries-filter-mobile .countries-container {
@@ -479,7 +494,7 @@
   }
 
   #countries-filter-mobile .country-content {
-    padding: 10px 8px;
+    padding: 10px 6px;
   }
 
   #countries-filter-mobile .title-container {
