@@ -52,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const lang: string = stringify('lang=' + this.currentLanguage);
 
     (this.window as any).currentLanguage = this.currentLanguage;
+    (this.window as any).detectFont(this.currentLanguage);
 
     this.languageToUseSubscribe = this.languageService.getLanguage(lang)
       .subscribe((res: any) => {

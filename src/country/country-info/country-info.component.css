@@ -57,6 +57,7 @@
 }
 
 #item-profile .main .total-text {
+  font-size: 18px;
   width: 90%;
 }
 
@@ -101,7 +102,7 @@
 
 #item-profile .footer-profile h3,
 #item-profile .item-profile-header h2 {
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
   font-size: 18px;
   margin: 0 0 5px;
   text-transform: uppercase;
@@ -271,7 +272,7 @@
 #item-profile-mobile .company-container h3 {
   margin: 0 0 10px;
   font-size: 14px;
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
   text-transform: uppercase;
 }
 
