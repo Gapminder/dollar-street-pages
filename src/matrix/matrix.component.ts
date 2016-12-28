@@ -68,6 +68,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public matrixServiceStreetSubscribe: Subscription;
   public countriesFilterServiceSubscribe: Subscription;
   public thing: string;
+  public thingPlural: string;
   public query: string;
   public regions: string;
   public countries: string;
@@ -151,7 +152,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
 
     this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
-      this.thing = thing.plural;
+      this.thingPlural = thing.plural;
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')

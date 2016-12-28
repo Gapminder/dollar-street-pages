@@ -83,12 +83,10 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public languageSelectorDisplay(langCount: number): void {
-    const languagesCount: number = langCount;
-
     let parentElement: HTMLElement = this.element.parentElement;
 
     if (parentElement.classList.contains('language-selector') || parentElement.classList.contains('language-selector-header')) {
-      if (languagesCount < this.languageCountToShow) {
+      if (langCount < this.languageCountToShow) {
         parentElement.classList.add('hidden');
       }
     }
