@@ -1,30 +1,34 @@
 @font-face {
   font-family: 'Font Light';
-  /*src: url('../fonts/cyrillic/Roboto-Thin.ttf') format('truetype');*/
   src: url('../fonts/cyrillic/RobotoCondensed-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
   font-family: 'Font Regular';
-  /*src: url('../fonts/cyrillic/Roboto-Light.ttf') format('truetype');*/
   src: url('../fonts/cyrillic/RobotoCondensed-Light.ttf') format('truetype');
-  font-weight: 200;
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
   font-family: 'Font Bold';
-  /*src: url('../fonts/cyrillic/Roboto-Bold.ttf') format('truetype');*/
-  src: url('../fonts/cyrillic/RobotoCondensed-Bold.ttf') format('truetype');
+  src: url('../fonts/cyrillic/RobotoCondensed-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
   font-family: 'Font Light Italic';
-  /*src: url('../fonts/cyrillic/Roboto-LightItalic.ttf') format('truetype');*/
   src: url('../fonts/cyrillic/RobotoCondensed-LightItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
   font-family: 'Font Regular Italic';
-  /*src: url('../fonts/cyrillic/Roboto-Italic.ttf') format('truetype');*/
   src: url('../fonts/cyrillic/RobotoCondensed-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
