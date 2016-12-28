@@ -458,6 +458,23 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public isOpenMobileFilterView(): void {
     if (window.innerWidth < 1024 || !this.isDesktop) {
+      let pointerContainer = this.element.querySelector('.pointer-container') as HTMLElement;
+
+      let buttonContainer = this.element.querySelector('.button-container') as HTMLElement;
+
+      let shortenWidth = this.element.querySelector('.shorten') as HTMLElement;
+      let cancelButton = this.element.querySelector('.cancel') as HTMLElement;
+      let okayButton = this.element.querySelector('.okay') as HTMLElement;
+
+      if (pointerContainer) {
+        let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + pointerContainer.offsetWidth;
+        if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
+          shortenWidth.classList.add('decreaseFontSize');
+          cancelButton.classList.add('decreaseFontSize');
+          okayButton.classList.add('decreaseFontSize');
+        }
+      }
+
       this.openMobileFilterView = true;
       return;
     }
