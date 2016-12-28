@@ -17,6 +17,7 @@ import {
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { LanguageService } from '../shared';
+import { ActiveThingService } from '../shared';
 import { TranslateService } from 'ng2-translate';
 
 @Component({
@@ -96,6 +97,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public theWorldTranslate: string;
   public translateOnLangChangeSubscribe: Subscription;
   public translateGetTheWorldSubscribe: Subscription;
+  public activeThingService: ActiveThingService;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -110,7 +112,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     translate: TranslateService) {
+                     translate: TranslateService,
+                     activeThingService: ActiveThingService) {
     this.translate = translate;
     this.zone = zone;
     this.router = router;
@@ -125,6 +128,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
+    this.activeThingService = activeThingService;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -144,6 +148,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
       const noDataTranslation = event.translations;
       this.theWorldTranslate = noDataTranslation.THE_WORLD;
+    });
+
+    this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
+      this.thing = thing.plural;
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')

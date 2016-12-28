@@ -26,7 +26,7 @@
 }
 
 #country-place .place .place-description {
-  width: calc(100% - 420px);
+  width: calc(100% - 520px);
   margin: 43px 0 0 100px;
 }
 
@@ -45,12 +45,12 @@
   color: #767d86;
   margin-top: -2px;
   display: block;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
 }
 
 #country-place .place-description .family h3 {
   font-size: 24px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   line-height: 20px;
 }
 
@@ -68,7 +68,7 @@
   margin-top: 13px;
   width: 50%;
   float: left;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   text-align: left;
   padding-left: 50px;
 }
@@ -81,7 +81,7 @@
 
 #country-place .place-description .income {
   font-size: 24px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   line-height: 20px;
   width: 50%;
   float: right;
@@ -96,11 +96,15 @@
 @media (max-width: 1399px) {
   #country-place .place .place-description {
     width: calc(100% - 380px);
-    margin: 43px 0 0 58px;
+    margin: 43px 0 0 38px;
   }
 }
 
 @media (max-width: 1199px) {
+  #country-place .place-description {
+    width: calc(100% - 380px);
+  }
+
   #country-place .place-description .family h3 {
     font-size: 22px;
   }
@@ -120,6 +124,7 @@
   }
 
   #country-place .place .place-description {
+    width: calc(100% - 380px);
     margin: 39px 0 0 58px;
   }
 
@@ -221,7 +226,7 @@
   }
 
   #country-place .place .place-description .income {
-    width: 65px !important;
+    /*width: 65px !important;*/
     font-size: 22px !important;
     line-height: 22px;
     text-align: right;

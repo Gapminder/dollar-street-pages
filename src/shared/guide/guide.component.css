@@ -42,7 +42,7 @@
   line-height: 48px;
   margin: -6px 0 0;
   text-transform: uppercase;
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
 }
 
 .quick-guide-container .guide-description {
@@ -62,7 +62,7 @@
 }
 
 .quick-guide-container h2 span {
-  font-family: 'Bariol Regular Italic', sans-serif;
+  font-family: 'Font Regular Italic', sans-serif;
   background: url("/assets/img/underline.svg") no-repeat 100% calc(100% - 2px);
   padding: 0 4px 0 2px;
   margin: 0 -4px 0 -2px;
@@ -120,7 +120,7 @@
     line-height: 40px;
     margin: -6px 0 0;
     text-transform: uppercase;
-    font-family: 'Bariol Bold', sans-serif;
+    font-family: 'Font Bold', sans-serif;
   }
 
   .quick-guide-container h2 {
@@ -157,7 +157,7 @@
     line-height: 36px;
     margin: -6px 0 0;
     text-transform: uppercase;
-    font-family: 'Bariol Bold', sans-serif;
+    font-family: 'Font Bold', sans-serif;
   }
 
   .quick-guide-container h2 {
