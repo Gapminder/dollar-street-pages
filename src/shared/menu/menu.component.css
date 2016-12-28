@@ -66,7 +66,6 @@
 }
 
 #main-menu .open .dropdown-menu li div {
-  padding: 12px 20px;
   overflow: hidden;
 }
 
@@ -98,12 +97,28 @@
 }
 
 #main-menu .open .dropdown-menu li .feedback-container {
-  padding: 5px 20px 5px 35px;
+  padding: 5px 20px 5px 15px;
+  text-align: center;
+}
+
+#main-menu .open .dropdown-menu li .feedback-container .feedback-content {
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+}
+
+#main-menu .open .dropdown-menu li .feedback-container .feedback-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url("/assets/img/feedback-icon.svg") no-repeat;
+  background-position: 0px;
 }
 
 #main-menu .open .dropdown-menu li .feedback {
-  background: url("/assets/img/feedback-icon.svg") no-repeat;
-  background-position: 0px;
+  display: inline-block;
+  float: left;
+  margin-left: 4px;
   font-size: 14px;
   padding: 4px 0 2px 0;
   text-transform: uppercase;
