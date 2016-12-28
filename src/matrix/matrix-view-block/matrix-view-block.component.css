@@ -114,7 +114,7 @@
   border: 1px solid #374551;
   color: #374551;
   font-size: 20px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   padding: 4px 35px 4px 14px;
   position: relative;
   margin: 0 0 20px;
@@ -360,6 +360,10 @@
     height: 420px;
   }
 
+  .view-image-block-container .zoom-download-container .button-text {
+    display: none;
+  }
+
   .view-image-block-container .view-image-block-content .house-info-container .header-container {
     margin: 0;
   }
@@ -389,10 +393,6 @@
 }
 
 @media (max-width: 1024px) {
-  .view-image-block-container .zoom-download-container .button-text {
-    display: none;
-  }
-
   .view-image-block-container .zoom-download-container .download {
     margin-right: 10px;
   }

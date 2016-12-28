@@ -79,12 +79,12 @@
 .bubbles-container .bubbles-description {
   font-size: 20px;
   line-height: 24px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
 }
 
 .bubbles-container .welcome {
   font-size: 24px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   margin: 30px 0 25px;
 }
 
@@ -116,7 +116,7 @@
   border-radius: 14px;
   color: #2e4350;
   font-size: 16px;
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
   box-shadow: none;
   outline: none;
   border: 0;

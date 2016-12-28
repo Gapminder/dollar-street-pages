@@ -58,7 +58,7 @@
 #photographers .photographer-country {
   text-transform: uppercase;
   color: #374551;
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
 }
 
 #photographers .photographers-country > li {
@@ -153,22 +153,22 @@
 
 ::-webkit-input-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 ::-moz-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 :-moz-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 :-ms-input-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 @media (max-width: 1199px) and (min-width: 1024px) {

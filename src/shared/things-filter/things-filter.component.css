@@ -257,7 +257,7 @@
 }
 
 .things-filter-button .thing-pop-up-content p {
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #5f6a74;
@@ -270,7 +270,7 @@
 
 .things-filter-button .thing-pop-up-content p a {
   color: #b04514;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -280,24 +280,24 @@
 
 ::-webkit-input-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 ::-moz-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* Firefox 19+ */
 :-moz-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* Firefox 18- */
 :-ms-input-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* IE */
