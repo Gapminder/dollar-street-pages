@@ -1,40 +1,39 @@
-/* eslint-disable */    //3d party code
+/* eslint-disable */
 
 var fontsSchema = [
-    {name: "arabic-script", langs: ["ar"]},
-    {name: "cyrillic-script", langs: ["ru"]},
-    {name: "latin-script", langs: ["en", "es-ES", "de", "pt-BR", "sv-SE"]},
-    {name: "bosnian-cyrillic", langs: []},
-    {name: "devanagari", langs: []},
-    {name: "greek-script", langs: []},
-    {name: "tamil-script", langs: []},
-    {name: "chinese-characters", langs: ["zh-CN"]},
-    {name: "telugu-script", langs: []},
-    {name: "thai-script", langs: []}
+  {name: 'arabic-script', codes: ['ar']},
+  {name: 'cyrillic-script', codes: ['ru']},
+  {name: 'latin-script', codes: ['en', 'es-ES', 'de', 'pt-BR', 'sv-SE']},
+  {name: 'bosnian-cyrillic', codes: []},
+  {name: 'devanagari', codes: []},
+  {name: 'greek-script', codes: []},
+  {name: 'tamil-script', codes: []},
+  {name: 'chinese-characters', codes: ['zh-CN']},
+  {name: 'telugu-script', codes: []},
+  {name: 'thai-script', codes: []}
 ];
 
-function detectFont(ln) {
-    var style = document.createElement('link');
-    style.rel = "stylesheet";
-    style.type = "text/css";
+function detectFont(currentLang) {
+  var style = document.createElement('link');
+  style.rel = 'stylesheet';
+  style.type = 'text/css';
 
-    var head = document.getElementsByTagName('head')[0];
+  var head = document.getElementsByTagName('head')[0];
 
-    var styleDetected = undefined;
+  var styleDetected = null;
 
-    for(var i = 0; i < fontsSchema.length; i++) {
-        var fontSchema = fontsSchema[i];
-        var fontLangs = fontSchema['langs'];
+  fontsSchema.forEach(function (font) {
+      if (font.codes.indexOf(currentLang) === -1) {
+        return;
+      }
 
-        for(var a = 0; a < fontLangs.length; a++) {
-            if(ln === fontLangs[a]){                
-                styleDetected = '/assets/css/' + fontSchema['name'] + '.css';
-                break;
-            }
-        }
+      styleDetected = '/assets/css/' + font.name + '.css';
     }
+  );
 
-    style.href = styleDetected ? styleDetected : "/assets/css/default-fonts.css";
+  style.href = styleDetected ? styleDetected : '/assets/css/default-fonts.css';
 
-    head.appendChild(style);
+  head.appendChild(style);
 }
+
+/* eslint-enable */
