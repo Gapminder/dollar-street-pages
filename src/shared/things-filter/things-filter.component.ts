@@ -17,6 +17,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Angulartics2GoogleAnalytics, BrowserDetectionService } from '../../common';
 import { ThingsFilterService } from './things-filter.service';
+import { ActiveThingService } from './active-thing.service';
 import { Config } from '../../app.config';
 
 @Component({
@@ -54,19 +55,22 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public keyUpSubscribe: Subscription;
   public activatedRoute: ActivatedRoute;
   public element: HTMLElement;
+  public activeThingService: ActiveThingService;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
                      zone: NgZone,
                      thingsFilterService: ThingsFilterService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     activeThingService: ActiveThingService) {
     this.thingsFilterService = thingsFilterService;
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
     this.device = browserDetectionService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.activeThingService = activeThingService;
   }
 
   @HostListener('document:click', ['$event'])
@@ -199,7 +203,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.popularThings = res.data.popularThings;
           this.otherThings = res.data.otherThings;
           this.activeThing = res.data.thing;
+
           this.isFilterGotData.emit('isThingFilterReady');
+
+          this.activeThingService.setActiveThing(this.activeThing);
         });
     }
   }
