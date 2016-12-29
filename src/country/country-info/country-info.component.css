@@ -59,6 +59,7 @@
 #item-profile .main .total-text {
   font-size: 18px;
   width: 90%;
+  color: #374551;
 }
 
 #item-profile .main .photo {
@@ -298,7 +299,7 @@
 
   #item-profile .main .total-text {
     font-size: 14px;
-    color: #374551;;
+    color: #374551;
   }
 
   #item-profile .main span {
