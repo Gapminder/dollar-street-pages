@@ -300,11 +300,11 @@
 
   .quick-guide-container h2 {
     font-size: 27px;
+    line-height: 27px;
     margin-top: 12px;
   }
 
   .quick-guide-container .guide-description {
-    margin: 0 -5px;
     font-size: 11px;
     line-height: 18px;
     padding-top: 3px;

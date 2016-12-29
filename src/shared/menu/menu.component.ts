@@ -122,7 +122,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
 
-    if (this.isDesktop) {
+    if (this.imgContent) {
       this.imgContent.classList.remove('long-text');
 
       if (this.languageService.translations.SHARE.length > 6) {
