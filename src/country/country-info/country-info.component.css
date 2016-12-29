@@ -294,7 +294,11 @@
 @media (max-width: 1200px) {
   #item-profile {
     font-size: 14px;
-    margin-left: 11px;
+  }
+
+  #item-profile .main .total-text {
+    font-size: 14px;
+    color: #374551;;
   }
 
   #item-profile .main span {
