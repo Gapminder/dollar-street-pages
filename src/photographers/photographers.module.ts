@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared';
 
-import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 
 import { PhotographersComponent } from './photographers.component';
 import { PhotographersService } from './photographers.service';
@@ -20,7 +20,7 @@ import { PhotographersFilterPipe } from './photographers-filter.pipe';
     RouterModule,
     CommonModule,
     SharedModule,
-    Angulartics2Module.forRoot()
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   providers: [PhotographersService],
   exports: []

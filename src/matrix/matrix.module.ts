@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
-import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 
 import { SharedModule } from '../shared';
@@ -30,7 +30,7 @@ import { FamilyInfoService } from './matrix-view-block/matrix-view-block.service
     CommonModule,
     SharedModule,
     InfiniteScrollModule,
-    Angulartics2Module.forRoot()
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   providers: [
     MatrixService,

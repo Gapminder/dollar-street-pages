@@ -6,8 +6,8 @@ import { SocialShareButtonsService } from './social-share-buttons.service';
 
 @Component({
   selector: 'social-share-buttons',
-  templateUrl: 'social-share-buttons.component.html',
-  styleUrls: ['social-share-buttons.component.css']
+  templateUrl: './social-share-buttons.component.html',
+  styleUrls: ['./social-share-buttons.component.css']
 })
 
 export class SocialShareButtonsComponent implements OnInit, OnDestroy {

@@ -10,8 +10,8 @@ import {
 
 @Component({
   selector: 'header-without-filters',
-  templateUrl: 'header.component.html',
-  styleUrls: ['header.component.css']
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
 })
 
 export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterViewInit {

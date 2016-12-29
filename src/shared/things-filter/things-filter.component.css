@@ -1,3 +1,7 @@
+:host(things-filter) {
+  max-width: 50%;
+}
+
 #things-filter .close-button {
   width: 15px;
   margin: -6px -3px 0 0;
@@ -8,6 +12,7 @@
   display: inline-block;
   position: relative;
   vertical-align: bottom;
+  width: 100%;
 }
 
 #things-filter .things-filter-button {
@@ -19,12 +24,15 @@
   border: 1px solid #e4e6e7;
   border-radius: 6px;
   min-width: 150px;
-  text-align: right;
+  text-align: left;
   padding: 9px 35px 10px 14px;
   cursor: pointer;
   color: #374551;
   font-size: 28px;
   line-height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 #things-filter .things-filter-button .things-filter-button-content img {
@@ -32,10 +40,6 @@
   height: 25px;
   float: left;
   margin: -3px 10px 0 0;
-}
-
-#things-filter .things-filter-button span {
-
 }
 
 #things-filter .things-filter-button .things-filter-button-content span.arrow {
@@ -374,5 +378,11 @@
   #things-filter .things-filter-button .things-filter-button-content img {
     width: 23px;
     margin: -3px 9px 0 0;
+  }
+}
+
+@media (max-width: 600px) {
+  :host(things-filter) {
+    max-width: 100%;
   }
 }

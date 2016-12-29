@@ -40,7 +40,7 @@ family-header {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: calc(100% - 135px);
+  width: calc(100% - 280px);
 }
 
 .header-container .heading img {
@@ -51,11 +51,6 @@ family-header {
 
 .street-family-container {
   clear: both;
-}
-
-.header-container >>> language-selector .lang-container {
-  margin: -30px 4px;
-  float: right;
 }
 
 .header-container >>> language-selector .lang-container button {
@@ -75,7 +70,7 @@ family-header {
   .header-container .heading {
     margin: 11px 0 0;
     font-size: 20px;
-    width: calc(100% - 105px);
+    width: calc(100% - 250px);
   }
 
   .header-container .heading img {
@@ -105,7 +100,7 @@ family-header {
   .header-container .heading {
     margin: 14px 0 0;
     font-size: 20px;
-    width: calc(100% - 50px);
+    width: calc(100% - 55px);
   }
 
   .header-container .heading img {

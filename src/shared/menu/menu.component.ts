@@ -15,7 +15,7 @@ import { LanguageService } from '../language-selector/language.service';
 @Component({
   selector: 'main-menu',
   templateUrl: './menu.template.html',
-  styleUrls: ['menu.component.css', 'menu.component.mobile.css']
+  styleUrls: ['./menu.component.css', './menu.component.mobile.css']
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 
 import { HeaderWithoutFiltersComponent } from './header-without-filters/header.component';
 import { RouterModule } from '@angular/router';
@@ -103,7 +103,7 @@ export class CustomLoader implements TranslateLoader {
     RouterModule,
     CommonModule,
     DropdownModule,
-    Angulartics2Module.forRoot(),
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     TranslateModule.forRoot({
       provide: TranslateLoader,
       useClass: CustomLoader
