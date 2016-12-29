@@ -53,11 +53,6 @@ family-header {
   clear: both;
 }
 
-.header-content main-menu >>> #main-menu .menu-icon {
-  width: 72px;
-  height: 56px;
-}
-
 .header-container >>> language-selector .lang-container {
   margin: -30px 4px;
   float: right;
@@ -86,11 +81,6 @@ family-header {
   .header-container .heading img {
     width: 8px;
     margin: 0 12px -2px 15px;
-  }
-
-  .header-container main-menu >>> #main-menu .menu-icon {
-    width: 53px;
-    height: 46px;
   }
 }
 

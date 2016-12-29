@@ -225,11 +225,6 @@ matrix .matrix-header header {
   margin-left: 22px !important;
 }
 
-body.family #main-menu .menu-icon,
-body.matrix #main-menu .menu-icon {
-  width: 72px;
-}
-
 .matrix #app-container.container,
 .family #app-container.container {
   width: 100% !important;

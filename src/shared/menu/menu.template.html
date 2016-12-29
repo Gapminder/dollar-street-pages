@@ -30,8 +30,11 @@
         </li>
         <li>
           <div class="feedback-container">
-            <a class="feedback" (click)="goToPage('https://getsatisfaction.com/gapminder')">
-              {{ 'SEND_FEEDBACK' | translate }}</a>
+            <div class="feedback-content">
+              <span class="feedback-icon"></span>
+              <a class="feedback" (click)="goToPage('https://getsatisfaction.com/gapminder')">
+                {{ 'SEND_FEEDBACK' | translate }}</a>
+            </div>
           </div>
         </li>
         <li>
