@@ -211,6 +211,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
       this.selectedCountries = _.difference(this.selectedCountries, getCountriesNames) as string[];
 
+      this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
+
       return;
     }
 
@@ -236,6 +238,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       if (indexRegion !== -1) {
         this.selectedRegions.splice(indexRegion, 1);
       }
+
+      this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
       return;
     }
@@ -302,7 +306,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
             return;
           }
 
-          this.locations = _.chain(res.data).sortBy('originRegionName').value();
+          this.locations = res.data;
 
           this.countries = _
             .chain(res.data)
