@@ -60,41 +60,37 @@
   display: inline-block;
   font-size: 18px;  
   color: #374551;
-  margin-left: 18px;
+  margin-left: 4px;
   width: 150px;
+  line-height: 16px;
 }
 
 #item-profile .main .total-count {
   display: inline-block;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-}
-
-#item-profile .main .photo {
-  margin-top: 10px;
-  width: 100%;
-  position: relative;
-}
-
-#item-profile .main .photo img {
-  height: 13px;
-  margin-right: 2px;
-  position: absolute;
-  top: 6px;
+  padding-top: 2px;
 }
 
 #item-profile .main .home {
-  width: 100%;
-  position: relative;
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#item-profile .main .photo {
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 #item-profile .main .home img {
   width: 13px;
-  margin-right: 2px;
-  position: absolute;
-  top: 6px;
-  left: 2px;
+}
+
+#item-profile .main .photo img {
+  height: 13px;
+  padding-bottom: 2px;
 }
 
 #item-profile .main .camera img {
@@ -106,7 +102,6 @@
 #item-profile .main span {
   font-size: 14px;
   color: #767d86;
-  /*margin-top: 5px;*/
 }
 
 #item-profile .footer-profile + .footer-profile {
@@ -370,33 +365,37 @@
     display: inline-block;
     font-size: 18px;  
     color: #374551;
-    margin-left: 18px;
-    float: left;
+    width: 86px;
+    padding-left: 2px;
+    line-height: 12px;
+  }
+
+  #item-profile-mobile .total-count {
+    padding-top: 2px;
   }
 
   #item-profile-mobile .home {
     width: 100%;
-    position: relative;
-  }
-
-  #item-profile-mobile .home img {
-    width: 13px;
-    margin-right: 2px;
-    position: absolute;
-    top: 2px;
-    left: 2px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   #item-profile-mobile .photo {
     width: 100%;
-    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  #item-profile-mobile .home img {
+    width: 13px;
+    padding-bottom: 2px;
   }
 
   #item-profile-mobile .photo img {
     height: 13px;
-    margin-right: 2px;
-    position: absolute;
-    top: 2px;
+    padding-bottom: 2px;
   }
 
   #item-profile-mobile .box-container {
@@ -409,8 +408,7 @@
   }
 
   #item-profile-mobile .item-description {
-    width: calc(100% - 198px);
-    /*width: 110px;*/
+    width: calc(100% - 194px);
     float: left;
   }
 
