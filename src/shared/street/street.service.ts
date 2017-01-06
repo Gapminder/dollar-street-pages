@@ -303,6 +303,7 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
+        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -322,6 +323,7 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
+        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -341,6 +343,7 @@ export class StreetDrawService {
       .style('cursor', 'grab')
 
       .on('mousedown', (): void => {
+        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -362,6 +365,7 @@ export class StreetDrawService {
 
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
       .subscribe((e: MouseEvent)=> {
+
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
@@ -624,6 +628,7 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
+          event.preventDefault();
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
@@ -775,6 +780,7 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', 'white')
         .on('mousedown', (): void => {
+          event.preventDefault();
           this.sliderRightMove = true;
         })
         .on('touchstart', (): any => this.sliderRightMove = true);
@@ -986,6 +992,7 @@ export class StreetDrawService {
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
+
     if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       incomeL = Math.round(this.minIncome);
       incomeL = this.math.round(incomeL);
@@ -1075,6 +1082,7 @@ export class StreetDrawService {
         this.rightScrollText.text('');
       }
 
+      return;
     }
 
     if (this.sliderLeftMove && (!this.currentLowIncome || this.currentLowIncome === this.lowIncome)) {
