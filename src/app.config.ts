@@ -11,8 +11,9 @@ export class Config {
   // public static api: string = '//consumer-api-dev.dollarstreet.org';
   // public static api: string = '//192.168.1.105:8015';
   // public static api: string = '//192.168.1.57:8015';
-  public static api: string = '//52.211.52.39:8015';
+  // public static api: string = '//52.211.52.39:8015';
   // public static api: string = '//192.168.1.95';
+  public static api: string = '//localhost:8015';
 
   public static windowInnerWidth: number = window.innerWidth;
 

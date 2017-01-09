@@ -283,40 +283,12 @@
     display: block;
     margin-bottom: 10px;
   }
-}
-
-@media (max-width: 599px) {
-  #photographers {
-    padding-top: 120px;
-  }
-
-  #photographers .photographer-card {
-    width: 50%;
-    margin-bottom: 10px;
-    padding: 0 5px 0 8px;
-  }
-
-  #photographers .photographer-card:nth-child(2n) {
-    padding: 0 8px 0 5px;
-  }
-
-  #photographers .photographers-country {
-    top: 101px;
-  }
 
   #photographers .search-input {
     height: 55px;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  #photographers .search-input input {
-    margin-left: 20px;
-  }
-
-  #photographers .search-input img {
-    margin-top: 2px;
   }
 
   #photographers .search-input .sort-country {
@@ -346,6 +318,39 @@
 
   #photographers .search-input input {
     width: calc(100% - 120px);
+    margin-left: 20px;    
+  }
+
+  #photographers .search-input img {
+    margin-top: 2px;
+  }
+}
+
+@media (max-width: 599px) {
+  #photographers {
+    padding-top: 120px;
+  }
+
+  #photographers .photographer-card {
+    width: 50%;
+    margin-bottom: 10px;
+    padding: 0 5px 0 8px;
+  }
+
+  #photographers .photographer-card:nth-child(2n) {
+    padding: 0 8px 0 5px;
+  }
+
+  #photographers .photographers-country {
+    top: 101px;
+  }
+
+  #photographers .search-input .sort-country {
+    font-size: 16px;
+    width: 100px;
+    display: inline-block;
+    line-height: 12px;
+    padding-bottom: 4px;
   }
 
   #photographers .photographers-container h3 {
