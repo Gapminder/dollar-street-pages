@@ -144,7 +144,7 @@
 
 #things-filter-mobile .tabs-content-container {
   position: relative;
-  height: calc(100% - 160px);
+  /*height: calc(100% - 160px);*/
   overflow-y: auto;
 }
 
@@ -372,6 +372,10 @@
 
   #things-filter-mobile .tabs-content-container {
     height: calc(100% - 160px);
+  }
+
+  .tabs-content-container-two-rows {
+    height: calc(100% - 209px) !important;
   }
 
   #things-filter-mobile .thing-content {

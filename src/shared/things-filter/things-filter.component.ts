@@ -79,6 +79,15 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.isOpenThingsFilter = false;
       this.search = {text: ''};
     }
+
+    let tabsHeaderContainer: HTMLElement = this.element.querySelector('.tabs-header-container') as HTMLElement;
+    let tabsContentContainer: HTMLElement = this.element.querySelector('.tabs-content-container') as HTMLElement;
+
+    if (tabsHeaderContainer) {
+      if (tabsHeaderContainer.clientHeight > 60) {
+        tabsContentContainer.classList.add('tabs-content-container-two-rows');
+      }
+    }
   }
 
   public ngOnInit(): void {
