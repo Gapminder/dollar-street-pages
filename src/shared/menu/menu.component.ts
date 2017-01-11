@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { TranslateService } from 'ng2-translate';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import {
@@ -10,7 +9,7 @@ import {
   BrowserDetectionService,
   Angulartics2GoogleAnalytics
 } from '../../common';
-import { LanguageService } from '../language-selector/language.service';
+import { LanguageService } from '../../common';
 
 @Component({
   selector: 'main-menu',
@@ -33,17 +32,16 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public hoverPlaceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
   public streetServiceSubscribe: Subscription;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translationsReceiveSubscribe: Subscription;
+  public getTranslationSubscribe: Subscription;
   public localStorageService: LocalStorageService;
   public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
-  public translate: TranslateService;
   public isDesktop: boolean;
   public isMobile: boolean;
   public imgContent: HTMLElement;
-  private languageService: LanguageService;
+  public languageService: LanguageService;
+  public shareTranslation: string;
 
   public constructor(router: Router,
                      element: ElementRef,
@@ -52,12 +50,10 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
                      localStorageService: LocalStorageService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     translate: TranslateService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
-    this.translate = translate;
     this.device = browserDetectionService;
     this.localStorageService = localStorageService;
     this.streetSettingsService = streetSettingsService;
@@ -110,13 +106,15 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
 
-    this.translationsReceiveSubscribe = this.languageService.translationsReceivedEvent.subscribe(() => {
+    this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
+        this.shareTranslation = trans;
+
         this.processShareTranslation();
       });
   }
 
   public processShareTranslation(): void {
-    if (!this.languageService.translations) {
+    if (!this.shareTranslation) {
       return;
     }
 
@@ -125,17 +123,13 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.imgContent) {
       this.imgContent.classList.remove('long-text');
 
-      if (this.languageService.translations.SHARE.length > 6) {
+      if (this.shareTranslation.length > 6) {
         this.imgContent.classList.add('long-text');
       }
     }
   }
 
   public ngOnDestroy(): void {
-    if (this.translationsReceiveSubscribe) {
-      this.translationsReceiveSubscribe.unsubscribe();
-    }
-
     if (this.routerEventsSubscribe) {
       this.routerEventsSubscribe.unsubscribe();
     }
@@ -143,6 +137,8 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
     }
+
+    this.getTranslationSubscribe.unsubscribe();
 
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');

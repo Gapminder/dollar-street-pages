@@ -5,8 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Config } from '../../app.config';
 import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
-import { TranslateService } from 'ng2-translate';
-import { LanguageService } from '../../shared';
+import { LanguageService } from '../../common';
 
 @Component({
   selector: 'family-header',
@@ -23,7 +22,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @Output('streetFamilyData')
   public streetFamilyData: EventEmitter<any> = new EventEmitter<any>();
 
-  public translate: TranslateService;
   public readMoreTranslate: string;
   public readLessTranslate: string;
   public home: any = {};
@@ -39,9 +37,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public maxHeightPopUp: number = this.windowHeight * .95 - 91;
   public familyHeaderService: FamilyHeaderService;
   public familyHeaderServiceSubscribe: Subscription;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translateGetReadMoreSubscribe: Subscription;
-  public translateGetReadLessSubscribe: Subscription;
   public scrollSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public zone: NgZone;
@@ -55,6 +50,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public getTranslationSubscribe: Subscription;
 
   private languageService: LanguageService;
 
@@ -64,9 +60,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      streetSettingsService: StreetSettingsService,
                      familyHeaderService: FamilyHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     translate: TranslateService,
                      languageService: LanguageService) {
-    this.translate = translate;
     this.zone = zone;
     this.math = math;
     this.streetSettingsService = streetSettingsService;
@@ -82,18 +76,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
     this.headerContentHeight = this.element.offsetHeight;
 
-    this.translateGetReadMoreSubscribe = this.translate.get('READ_MORE').subscribe((res: any) => {
-      this.readMoreTranslate = res;
-    });
-
-    this.translateGetReadLessSubscribe = this.translate.get('READ_LESS').subscribe((res: any) => {
-      this.readLessTranslate = res;
-    });
-
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const readMoreOrLessTranslations = event.translations;
-      this.readMoreTranslate = readMoreOrLessTranslations.READ_MORE;
-      this.readLessTranslate = readMoreOrLessTranslations.READ_LESS;
+    this.getTranslationSubscribe = this.languageService.getTranslation(['READ_MORE', 'READ_LESS']).subscribe((trans: any) => {
+      this.readMoreTranslate = trans.READ_MORE;
+      this.readLessTranslate = trans.READ_LESS;
     });
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
@@ -161,19 +146,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetReadMoreSubscribe.unsubscribe) {
-      this.translateGetReadMoreSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetReadLessSubscribe.unsubscribe) {
-      this.translateGetReadLessSubscribe.unsubscribe();
-    }
-
     this.familyHeaderServiceSubscribe.unsubscribe();
+    this.getTranslationSubscribe.unsubscribe();
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();

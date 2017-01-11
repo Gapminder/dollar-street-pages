@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TeamService } from './team.service';
 import { LoaderService, TitleHeaderService } from '../common';
-import { LanguageService } from '../shared';
-import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../common';
 
 @Component({
   selector: 'team',
@@ -17,18 +16,13 @@ export class TeamComponent implements OnInit, OnDestroy {
   public teamSubscribe: Subscription;
   public titleHeaderService: TitleHeaderService;
   public loaderService: LoaderService;
-  public translate: TranslateService;
-  public teamTranslate: string;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translateGetTeamSubscribe: Subscription;
   public languageService: LanguageService;
+  public getTranslationSubscribe: Subscription;
 
   public constructor(teamService: TeamService,
                      loaderService: LoaderService,
                      titleHeaderService: TitleHeaderService,
-                     translate: TranslateService,
                      languageService: LanguageService) {
-    this.translate = translate;
     this.teamService = teamService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
@@ -38,15 +32,8 @@ export class TeamComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.loaderService.setLoader(false);
 
-    this.translateGetTeamSubscribe = this.translate.get('TEAM').subscribe((res: any) => {
-      this.teamTranslate = res;
-      this.titleHeaderService.setTitle('Dollar Street ' + this.teamTranslate);
-    });
-
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const teamTranslation = event.translations;
-      this.teamTranslate = teamTranslation.TEAM;
-      this.titleHeaderService.setTitle('Dollar Street ' + this.teamTranslate);
+    this.getTranslationSubscribe = this.languageService.getTranslation('TEAM').subscribe((trans: any) => {
+      this.titleHeaderService.setTitle('Dollar Street ' + trans);
     });
 
     this.teamSubscribe = this.teamService.getTeam(this.languageService.getLanguageParam())
@@ -62,15 +49,8 @@ export class TeamComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
-    }
-
-    if (    this.translateGetTeamSubscribe.unsubscribe) {
-      this.translateGetTeamSubscribe.unsubscribe();
-    }
-
     this.teamSubscribe.unsubscribe();
+    this.getTranslationSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 }

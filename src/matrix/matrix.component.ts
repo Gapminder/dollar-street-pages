@@ -16,9 +16,8 @@ import {
   BrowserDetectionService
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { LanguageService } from '../shared';
-import { ActiveThingService } from '../shared';
-import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../common';
+import { ActiveThingService } from '../common';
 
 @Component({
   selector: 'matrix',
@@ -94,11 +93,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public guideHeight: number;
   public device: BrowserDetectionService;
   public languageService: LanguageService;
-  public translate: TranslateService;
   public theWorldTranslate: string;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translateGetTheWorldSubscribe: Subscription;
   public activeThingService: ActiveThingService;
+  public getTranslationSubscribe: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -113,9 +110,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     translate: TranslateService,
                      activeThingService: ActiveThingService) {
-    this.translate = translate;
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -142,13 +137,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
     this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
 
-    this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
-      this.theWorldTranslate = res;
-    });
-
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const noDataTranslation = event.translations;
-      this.theWorldTranslate = noDataTranslation.THE_WORLD;
+    this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
+      this.theWorldTranslate = trans;
     });
 
     this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
@@ -348,6 +338,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.scrollSubscribeForMobile.unsubscribe();
     }
 
+    this.getTranslationSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
     this.matrixServiceSubscribe.unsubscribe();

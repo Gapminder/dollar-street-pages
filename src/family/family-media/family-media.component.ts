@@ -17,7 +17,7 @@ import { find, isEqual, slice, concat } from 'lodash';
 import { Config, ImageResolutionInterface } from '../../app.config';
 import { LoaderService, BrowserDetectionService } from '../../common';
 import { FamilyMediaService } from './family-media.service';
-import { LanguageService } from '../../shared';
+import { LanguageService } from '../../common';
 
 @Component({
   selector: 'family-media',

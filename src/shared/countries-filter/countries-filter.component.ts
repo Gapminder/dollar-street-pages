@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 import { Config } from '../../app.config';
 import { BrowserDetectionService, CountriesFilterService } from '../../common';
-import { LanguageService } from '../language-selector/language.service';
+import { LanguageService } from '../../common';
 
 @Component({
   selector: 'countries-filter',
@@ -24,7 +24,6 @@ import { LanguageService } from '../language-selector/language.service';
 })
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public theWorldTranslate: string;
-  public translateOnLangChangeSubscribe: Subscription;
   public translateGetTheWorldSubscribe: Subscription;
   public languageService: LanguageService;
 
@@ -49,6 +48,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public countriesFilterService: CountriesFilterService;
   public countriesFilterServiceSubscribe: Subscription;
+  public getTranslationSubscribe: Subscription;
 
   public cloneSelectedRegions: string[] = ['World'];
   public cloneSelectedCountries: string[] = ['World'];
@@ -74,8 +74,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
-    this.languageService.translationsReceivedEvent.subscribe((translations: any) => {
-      this.theWorldTranslate = translations.THE_WORLD;
+    this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
+      this.theWorldTranslate = trans;
+
+      if(!this.activeCountries) {
+        this.activeCountries = this.theWorldTranslate;
+      }
     });
 
     this.isDesktop = this.device.isDesktop();
@@ -278,6 +282,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnDestroy(): void {
     this.countriesFilterServiceSubscribe.unsubscribe();
+    this.getTranslationSubscribe.unsubscribe();
 
     if (this.keyUpSubscribe) {
       this.keyUpSubscribe.unsubscribe();

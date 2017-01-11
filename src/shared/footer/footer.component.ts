@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { compact } from 'lodash';
 import { Config } from '../../app.config';
 import { FooterService } from './footer.service';
-import { LanguageService } from '../language-selector/language.service';
+import { LanguageService } from '../../common';
 import {
   StreetSettingsService,
   DrawDividersInterface,

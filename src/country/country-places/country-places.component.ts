@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { MathService, LoaderService } from '../../common';
 import { CountryPlacesService } from './country-places.service';
-import { LanguageService } from '../../shared';
+import { LanguageService } from '../../common';
 
 @Component({
   selector: 'country-places',

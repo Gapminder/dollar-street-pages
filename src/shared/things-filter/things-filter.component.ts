@@ -17,7 +17,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Angulartics2GoogleAnalytics, BrowserDetectionService } from '../../common';
 import { ThingsFilterService } from './things-filter.service';
-import { ActiveThingService } from './active-thing.service';
+import { ActiveThingService } from '../../common';
 import { Config } from '../../app.config';
 
 @Component({

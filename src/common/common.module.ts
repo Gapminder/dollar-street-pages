@@ -9,6 +9,10 @@ import { MathService } from './math/math.service';
 import { UrlChangeService } from './url-change/url-change.service';
 import { CountriesFilterService } from './countries-filter/countries-filter.service';
 
+import { LanguageService } from './language/language.service';
+
+import { ActiveThingService } from './things/active-thing.service';
+
 @NgModule({
   providers: [
     LoaderService,
@@ -18,7 +22,9 @@ import { CountriesFilterService } from './countries-filter/countries-filter.serv
     LocalStorageService,
     MathService,
     UrlChangeService,
-    CountriesFilterService
+    CountriesFilterService,
+    LanguageService,
+    ActiveThingService
   ]
 })
 export class CommonAppModule {

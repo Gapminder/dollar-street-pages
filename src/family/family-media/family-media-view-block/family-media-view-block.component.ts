@@ -7,7 +7,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Config, ImageResolutionInterface } from '../../../app.config';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../../common';
-import { LanguageService } from '../../../shared';
+import { LanguageService } from '../../../common';
 
 @Component({
   selector: 'family-media-view-block',
@@ -21,7 +21,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public popIsOpen: boolean = false;
   public fancyBoxImage: string;
   public country: any;
-  public countryName: any;
+  public countryName: string;
   public article: any;
   @Input('imageData')
   public imageData: any;
@@ -42,7 +42,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public isDesktop: boolean;
   public thing: any = {};
 
-  private languageService: LanguageService;
+  public languageService: LanguageService;
 
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,

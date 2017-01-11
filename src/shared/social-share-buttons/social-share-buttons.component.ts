@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
-import { LanguageService } from '../language-selector/language.service';
+import { LanguageService } from '../../common';
 import { SocialShareButtonsService } from './social-share-buttons.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   public newWindow: any;
   public location: any = location;
   public window: Window = window;
+  public getTranslationSubscribe: Subscription;
   public socialShareButtonsServiceSubscribe: Subscription;
   public socialShareButtonsService: SocialShareButtonsService;
   public shareMessageTranslated: string;
@@ -28,17 +29,17 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    setTimeout(() => {
-      this.languageService.getTranslatedDescription((desc: string) => {
-        this.shareMessageTranslated = desc;
-      });
-    }, 2000);
+    this.getTranslationSubscribe = this.languageService.getTranslation(['SEE_HOW_PEOPLE', 'REALLY', 'LIVE']).subscribe((trans: any) => {
+        this.shareMessageTranslated = trans.SEE_HOW_PEOPLE+' '+trans.REALLY+' '+trans.LIVE;
+    });
   }
 
   public ngOnDestroy(): void {
     if (this.socialShareButtonsServiceSubscribe) {
       this.socialShareButtonsServiceSubscribe.unsubscribe();
     }
+
+    this.getTranslationSubscribe.unsubscribe();
   }
 
   public openPopUp(target: string): void {

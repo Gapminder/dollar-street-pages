@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from 'ng2-translate';
-import { LanguageService } from '../language-selector/language.service';
+import { LanguageService } from '../../common';
 import { LocalStorageService } from '../../common';
 import * as _ from 'lodash';
 
@@ -14,7 +13,6 @@ import * as _ from 'lodash';
 export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public disabled: boolean = false;
   public status: {isOpen: boolean} = {isOpen: false};
-  public translate: TranslateService;
   public languageService: LanguageService;
   public getLanguagesListSubscribe: Subscription;
   public languages: any[];
@@ -28,9 +26,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
 
   public constructor(languageService: LanguageService,
                      element: ElementRef,
-                     translate: TranslateService,
                      localStorageService: LocalStorageService) {
-    this.translate = translate;
     this.element = element.nativeElement;
     this.languageService = languageService;
     this.localStorageService = localStorageService;
@@ -47,9 +43,9 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
 
         let isLangPublishedOrExists = _.find(res.data, {code: this.currentLanguage});
 
-        if (!isLangPublishedOrExists && this.translate.currentLang) {
-          this.localStorageService.setItem('language', this.translate.getDefaultLang());
-          this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${this.translate.getDefaultLang()}`);
+        if (!isLangPublishedOrExists) {
+          this.localStorageService.setItem('language', this.languageService.defaultLanguage);
+          this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${this.languageService.defaultLanguage}`);
         }
 
         this.languages = _.filter(res.data, (language: any): any => {

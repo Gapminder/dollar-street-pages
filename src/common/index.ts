@@ -9,3 +9,5 @@ export { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
 export { MathService } from './math/math.service';
 export { UrlChangeService } from './url-change/url-change.service';
 export { CountriesFilterService } from './countries-filter/countries-filter.service';
+export { LanguageService } from './language/language.service';
+export { ActiveThingService } from './things/active-thing.service';

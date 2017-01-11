@@ -21,20 +21,20 @@
   <div class="main">
     <p class="home">
       <img src="/assets/img/house-icon.png" alt=""> 
-      <span class="total-text">{{ 'VISITED_FAMILIES' | translate }}:</span> 
-      <span class="total-count">{{math.round(placesQuantity)}}</span>
+      <span class="total-text">{{ 'VISITED_FAMILIES' | translate }}:</span>
+      <span class="total-count">{{placesQuantity}}</span>
     </p>
 
     <p class="photo">
       <img src="/assets/img/camera.svg" alt=""> 
-      <span class="total-text">{{ 'TOTAL_PHOTOS' | translate }}:</span> 
-      <span class="total-count">{{math.round(photosQuantity)}}</span>
+      <span class="total-text">{{ 'TOTAL_PHOTOS' | translate }}:</span>
+      <span class="total-count">{{photosQuantity}}</span>
     </p>
 
     <p class="camera" *ngIf="videosQuantity">
       <img src="/assets/img/video-camera.svg" alt="">
-      <span class="total-text">{{ 'TOTAL_VIDEOS' | translate }}:</span> 
-      <span class="total-count">{{math.round(videosQuantity)}}</span>
+      <span class="total-text">{{ 'TOTAL_VIDEOS' | translate }}:</span>
+      <span class="total-count">{{videosQuantity}}</span>
     </p>
   </div>
 </div>
@@ -61,19 +61,19 @@
       <div class="home">
         <img src="/assets/img/house-icon.png" alt="">
         <span class="total-text">{{ 'VISITED_FAMILIES' | translate }}:</span>
-        <span class="total-count">{{math.round(placesQuantity)}}</span>        
+        <span class="total-count">{{placesQuantity}}</span>        
       </div>
 
       <div class="photo">
         <img src="/assets/img/camera.svg" alt="">
         <span class="total-text">{{ 'TOTAL_PHOTOS' | translate }}:</span>
-        <span class="total-count">{{math.round(photosQuantity)}}</span>
+        <span class="total-count">{{photosQuantity}}</span>
       </div>
 
       <div class="camera" *ngIf="videosQuantity">
         <img src="/assets/img/video-camera.svg" alt="">
         <span class="total-text">{{ 'TOTAL_VIDEOS' | translate }}:</span>
-        <span class="total-count">{{math.round(videosQuantity)}}</span>
+        <span class="total-count">{{videosQuantity}}</span>
       </div>
     </div>
 

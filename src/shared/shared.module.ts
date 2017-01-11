@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
-
 import { HeaderWithoutFiltersComponent } from './header-without-filters/header.component';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -55,14 +53,13 @@ import { IncomeFilterComponent } from './income-filter/income-filter.component';
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
 import { LanguageSelectorComponent } from './language-selector/language-selector.component';
-import { LanguageService } from './language-selector/language.service';
-
-import { ActiveThingService } from './things-filter/active-thing.service';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { Observable } from 'rxjs';
 
 import { DropdownModule } from 'ng2-bootstrap/components/dropdown';
+
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 
 /* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
 export class CustomLoader implements TranslateLoader {
@@ -111,7 +108,6 @@ export class CustomLoader implements TranslateLoader {
   ],
   providers: [
     HeaderService,
-    LanguageService,
     SocialShareButtonsService,
     FooterService,
     ThingsFilterService,
@@ -119,8 +115,7 @@ export class CustomLoader implements TranslateLoader {
     StreetDrawService,
     StreetMobileDrawService,
     StreetFilterDrawService,
-    StreetFamilyDrawService,
-    ActiveThingService
+    StreetFamilyDrawService
   ],
   exports: [
     LanguageSelectorComponent,
@@ -144,5 +139,4 @@ export class CustomLoader implements TranslateLoader {
 })
 
 export class SharedModule {
-
 }

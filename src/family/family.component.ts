@@ -4,14 +4,13 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
 import { forEach, difference, map } from 'lodash';
-import { TranslateService } from 'ng2-translate';
 import {
   StreetSettingsService,
   CountriesFilterService,
   UrlChangeService,
   Angulartics2GoogleAnalytics
 } from '../common';
-import { LanguageService } from '../shared';
+import { LanguageService } from '../common';
 import { FamilyService } from './family.service';
 
 export interface UrlParamsInterface {
@@ -31,10 +30,7 @@ export interface UrlParamsInterface {
 })
 
 export class FamilyComponent implements OnInit, OnDestroy {
-  public translate: TranslateService;
   public theWorldTranslate: string;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translateGetTheWorldSubscribe: Subscription;
   public languageService: LanguageService;
 
   public streetFamilyData: {income: number, region: string};
@@ -61,6 +57,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public familyService: FamilyService;
   public familyServiceSetThingSubscribe: Subscription;
+  public getTranslationSubscribe: Subscription;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -68,10 +65,8 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      streetSettingsService: StreetSettingsService,
                      urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     translate: TranslateService,
                      familyService: FamilyService,
                      languageService: LanguageService) {
-    this.translate = translate;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
@@ -83,13 +78,9 @@ export class FamilyComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
-      this.theWorldTranslate = res.toLowerCase();
-    });
+    this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
+      this.theWorldTranslate = trans.toLowerCase();
 
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const dataTranslation = event.translations;
-      this.theWorldTranslate = dataTranslation.THE_WORLD.toLowerCase();
       this.initData();
     });
 
@@ -173,9 +164,8 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.queryParamsSubscribe.unsubscribe();
     this.countriesFilterServiceSubscribe.unsubscribe();
     this.streetSettingsServiceSubscribe.unsubscribe();
-    this.translateGetTheWorldSubscribe.unsubscribe();
-    this.translateOnLangChangeSubscribe.unsubscribe();
     this.familyServiceSetThingSubscribe.unsubscribe();
+    this.getTranslationSubscribe.unsubscribe();
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';

@@ -69,7 +69,7 @@
   display: inline-block;
   padding-top: 2px;
   color: #767d86;
-  width: 27px;
+  width: 34px;
   text-align: right;
 }
 
@@ -317,8 +317,12 @@
 
 @media (max-width: 1400px) {
   #item-profile .main .total-text {
-      width: 120px;
-    }
+    width: 120px;
+  }
+
+  #item-profile .main .total-count {
+    width: 34px;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -383,7 +387,7 @@
   #item-profile-mobile .total-text {
     display: inline-block;
     color: #374551;
-    width: 188px;
+    /*width: 188px;*/
     font-size: 14px;
     padding-left: 2px;
     line-height: 12px;
@@ -391,10 +395,12 @@
 
   #item-profile-mobile .total-count {
     padding-top: 2px;
-    width: 27px;
+    /*width: 34px;*/
+    padding-left: 2px;
     font-size: 13px;
     text-align: right;
     color: #767d86;
+    white-space: nowrap;
   }
 
   #item-profile-mobile .home {
