@@ -226,6 +226,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public selectCountries(country: any, originRegionName: string, region: string): void {
+    const showSelected = this.showSelected;
+
     this.showSelected = false;
     this.regionsVisibility = true;
 
@@ -233,6 +235,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let indexRegion = this.selectedRegions.indexOf(originRegionName);
 
     if (indexCountry === -1 && country.empty) {
+      this.showSelected = showSelected ? true : false;
       return;
     }
 

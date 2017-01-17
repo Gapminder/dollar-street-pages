@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
-import { LanguageService } from '../../common';
+import { LanguageService, SocialShareService } from '../../common';
 import { SocialShareButtonsService } from './social-share-buttons.service';
 
 @Component({
@@ -21,11 +21,14 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   public socialShareButtonsService: SocialShareButtonsService;
   public shareMessageTranslated: string;
   public languageService: LanguageService;
+  public socialShareService: SocialShareService;
 
   public constructor(socialShareButtonsService: SocialShareButtonsService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     socialShareService: SocialShareService) {
     this.socialShareButtonsService = socialShareButtonsService;
     this.languageService = languageService;
+    this.socialShareService = socialShareService;
   }
 
   public ngOnInit(): void {

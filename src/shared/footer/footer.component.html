@@ -18,22 +18,19 @@
       <div class="links">
         <a (click)="goToMatrixPage()">{{ 'HOME' | translate }} </a>
 
-        <a class="dividers" [routerLink]="['/about']"
+        <a class="dividers-before dividers-after"
+           [routerLink]="['/about']"
            [queryParams]="{}"
            angulartics2On="click"
            angularticsEvent="From footer to About page">{{ 'ABOUT' | translate }} </a>
 
-        <a href="https://www.gapminder.org/category/dollarstreet/"
-           target="_blank"
-           angulartics2On="click"
-           angularticsEvent="From footer to Blog page">{{ 'BLOG' | translate }} </a>
-
-        <a class="dividers" [routerLink]="['/team']"
+        <a [routerLink]="['/team']"
            [queryParams]="{}"
            angulartics2On="click"
            angularticsEvent="From footer to DollarStreet team page">{{ 'TEAM' | translate }} </a>
 
-        <a [routerLink]="['/photographers']"
+        <a class="dividers-before"
+           [routerLink]="['/photographers']"
            [queryParams]="{}"
            angulartics2On="click"
            angularticsEvent="From footer to Photographers page">{{ 'PHOTOGRAPHERS' | translate }} </a>
