@@ -24,6 +24,7 @@ export class LanguageService {
   public onLangChangeSubscribe: Subscription;
   public localStorageService: LocalStorageService;
   public translationsLoadedSubscribe: Subscription;
+  public documentLoadedSubscription: Subscription;
 
   public constructor(@Inject(Http) http: Http,
                      @Inject(Location) location: Location,
@@ -35,6 +36,17 @@ export class LanguageService {
     this.urlChangeService = urlChangeService;
     this.translate = translate;
     this.localStorageService = localStorageService;
+
+    if (this.documentLoadedSubscription) {
+      this.documentLoadedSubscription.unsubscribe();
+    }
+
+    this.documentLoadedSubscription = Observable.fromEvent(document, 'DOMContentLoaded')
+      .subscribe(() => {
+        const htmlElement = document.getElementsByTagName('html')[0];
+        let elementAttribute = htmlElement.attributes.getNamedItem('lang');
+        elementAttribute.value = this.currentLanguage;
+      });
 
     if (this.onLangChangeSubscribe) {
       this.onLangChangeSubscribe.unsubscribe();
@@ -55,9 +67,6 @@ export class LanguageService {
 
     this.updateLangInUrl();
 
-    (this.window as any).currentLanguage = this.currentLanguage;
-    (this.window as any).detectFont(this.currentLanguage);
-
     this.loadLanguage().subscribe((trans: any) => {
       this.translations = trans;
     });
@@ -65,6 +74,10 @@ export class LanguageService {
     this.onLangChangeSubscribe = this.translate.onLangChange.subscribe((data: any) => {
       this.translations = data.translations;
     });
+  }
+
+  public getLanguageIso(): string {
+    return this.currentLanguage.length === 2 ? this.currentLanguage + '_' + this.currentLanguage.toUpperCase() : this.currentLanguage.replace(/-/g, '_');
   }
 
   public getTranslation(key: string | string[]): Observable<any> {

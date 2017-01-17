@@ -11,3 +11,6 @@ export { UrlChangeService } from './url-change/url-change.service';
 export { CountriesFilterService } from './countries-filter/countries-filter.service';
 export { LanguageService } from './language/language.service';
 export { ActiveThingService } from './things/active-thing.service';
+export { SocialShareService } from './social/social-share.service';
+export { FontDetectorService } from './font/font-detector.service';
+export { GoogleAnalyticsService } from './analytics/google-analytics.service';
