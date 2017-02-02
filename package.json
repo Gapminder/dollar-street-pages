@@ -31,6 +31,7 @@
     "lint"
   ],
   "dependencies": {
+    "@angular/cli": "^1.0.0-beta.32.3",
     "@angular/common": "2.4.1",
     "@angular/compiler": "2.4.1",
     "@angular/core": "2.4.1",
@@ -61,7 +62,6 @@
     "zone.js": "0.7.4"
   },
   "devDependencies": {
-    "angular-cli": "1.0.0-beta.24",
     "babel-polyfill": "6.20.0",
     "browserstack-wrapper": "1.0.0",
     "browserstacktunnel-wrapper": "2.0.0",
