@@ -9,6 +9,7 @@ import { Angulartics2Module } from 'angulartics2';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 
 import { FamilyComponent }  from './family.component';
+import { FamilyService }  from './family.service';
 import { FamilyHeaderComponent } from './family-header/family-header.component';
 import { FamilyHeaderService } from './family-header/family-header.service';
 import { FamilyMediaComponent } from './family-media/family-media.component';
@@ -34,7 +35,8 @@ import { FamilyMediaViewBlockService } from './family-media/family-media-view-bl
   providers: [
     FamilyHeaderService,
     FamilyMediaService,
-    FamilyMediaViewBlockService
+    FamilyMediaViewBlockService,
+    FamilyService
   ],
   exports: []
 })

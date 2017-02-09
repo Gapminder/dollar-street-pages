@@ -14,8 +14,8 @@ export class TeamService {
     this.http = http;
   }
 
-  public getTeam(): Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/team`).map((res: any) => {
+  public getTeam(query: any): Observable<any> {
+    return this.http.get(`${Config.api}/v1/team?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
       return {err: parseRes.error, data: this.sortTeamSpecial(parseRes.data)};

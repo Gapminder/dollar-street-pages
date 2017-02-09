@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { compact } from 'lodash';
 import { Config } from '../../app.config';
 import { FooterService } from './footer.service';
+import { LanguageService } from '../language-selector/language.service';
 import {
   StreetSettingsService,
   DrawDividersInterface,
@@ -34,16 +35,20 @@ export class FooterComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
 
+  public languageService: LanguageService;
+
   public constructor(router: Router,
                      footerService: FooterService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     languageService: LanguageService) {
     this.router = router;
     this.footerService = footerService;
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): any {
@@ -80,7 +85,7 @@ export class FooterComponent implements OnInit, OnDestroy {
         this.streetData = res.data;
       });
 
-    this.footerServiceSubscribe = this.footerService.getFooter()
+    this.footerServiceSubscribe = this.footerService.getFooter(this.languageService.getLanguageParam())
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);

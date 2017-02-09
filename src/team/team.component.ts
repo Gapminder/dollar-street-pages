@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TeamService } from './team.service';
 import { LoaderService, TitleHeaderService } from '../common';
+import { LanguageService } from '../shared';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'team',
@@ -15,20 +17,39 @@ export class TeamComponent implements OnInit, OnDestroy {
   public teamSubscribe: Subscription;
   public titleHeaderService: TitleHeaderService;
   public loaderService: LoaderService;
+  public translate: TranslateService;
+  public teamTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetTeamSubscribe: Subscription;
+  public languageService: LanguageService;
 
   public constructor(teamService: TeamService,
                      loaderService: LoaderService,
-                     titleHeaderService: TitleHeaderService) {
+                     titleHeaderService: TitleHeaderService,
+                     translate: TranslateService,
+                     languageService: LanguageService) {
+    this.translate = translate;
     this.teamService = teamService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
     this.loaderService.setLoader(false);
-    this.titleHeaderService.setTitle('Dollar Street Team');
 
-    this.teamSubscribe = this.teamService.getTeam()
+    this.translateGetTeamSubscribe = this.translate.get('TEAM').subscribe((res: any) => {
+      this.teamTranslate = res;
+      this.titleHeaderService.setTitle('Dollar Street ' + this.teamTranslate);
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const teamTranslation = event.translations;
+      this.teamTranslate = teamTranslation.TEAM;
+      this.titleHeaderService.setTitle('Dollar Street ' + this.teamTranslate);
+    });
+
+    this.teamSubscribe = this.teamService.getTeam(this.languageService.getLanguageParam())
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -41,6 +62,14 @@ export class TeamComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (    this.translateGetTeamSubscribe.unsubscribe) {
+      this.translateGetTeamSubscribe.unsubscribe();
+    }
+
     this.teamSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }

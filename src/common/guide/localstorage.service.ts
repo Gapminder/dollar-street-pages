@@ -7,7 +7,7 @@ export class LocalStorageService {
   public localStorage: Storage = localStorage;
   public itemEvents: Subject<any> = new Subject<any>();
 
-  public setItem(key: string, value: boolean): void {
+  public setItem(key: string, value: string | boolean): void {
     this.localStorage.setItem(key, value.toString());
     this.itemEvents.next({key: key, value: value});
   }
@@ -17,8 +17,8 @@ export class LocalStorageService {
     this.itemEvents.next({key: key});
   }
 
-  public getItem(key: string): boolean {
-    return !Boolean(this.localStorage.getItem(key));
+  public getItem(key: string): string {
+    return this.localStorage.getItem(key);
   }
 
   public getItemEvent(): Observable<{key: string, value: string}> {

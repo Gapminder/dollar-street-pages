@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { TranslateService } from 'ng2-translate';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import {
@@ -9,6 +10,7 @@ import {
   BrowserDetectionService,
   Angulartics2GoogleAnalytics
 } from '../../common';
+import { LanguageService } from '../language-selector/language.service';
 
 @Component({
   selector: 'main-menu',
@@ -31,27 +33,35 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public hoverPlaceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
   public streetServiceSubscribe: Subscription;
+  public translateOnLangChangeSubscribe: Subscription;
   public localStorageService: LocalStorageService;
   public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
+  public translate: TranslateService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public imgContent: HTMLElement;
+  private languageService: LanguageService;
 
   public constructor(router: Router,
                      element: ElementRef,
                      activatedRoute: ActivatedRoute,
+                     languageService: LanguageService,
                      localStorageService: LocalStorageService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
+                     translate: TranslateService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
+    this.translate = translate;
     this.device = browserDetectionService;
     this.localStorageService = localStorageService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -94,9 +104,29 @@ export class MainMenuComponent implements OnInit, OnDestroy {
             this.isOpenMenu = false;
           }
         });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange
+      .subscribe((event: any) => {
+        let shareWordTranslation: string = event.translations.SHARE;
+
+        this.openMenu(true);
+
+        if (this.isDesktop) {
+          this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
+          this.imgContent.classList.remove('long-text');
+
+          if (shareWordTranslation.length > 6) {
+            this.imgContent.classList.add('long-text');
+          }
+        }
+      });
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
     if (this.routerEventsSubscribe) {
       this.routerEventsSubscribe.unsubscribe();
     }
@@ -187,7 +217,8 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       zoom: 4,
       row: 1,
       lowIncome: this.streetData.poor,
-      highIncome: this.streetData.rich
+      highIncome: this.streetData.rich,
+      lang: this.languageService.currentLanguage
     };
 
     if (!this.isDesktop) {

@@ -4,6 +4,7 @@ import { Component, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { TranslateService } from 'ng2-translate';
 
 import {
   MathService,
@@ -15,6 +16,7 @@ import {
   BrowserDetectionService
 } from '../common';
 import { MapService } from './map.service';
+import { LanguageService } from '../shared';
 
 @Component({
   selector: 'map-component',
@@ -23,6 +25,11 @@ import { MapService } from './map.service';
 })
 
 export class MapComponent implements OnInit, OnDestroy {
+  public translate: TranslateService;
+  public familyTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetFamilySubscribe: Subscription;
+
   private resizeSubscribe: Subscription;
   private mapServiceSubscribe: Subscription;
   private math: MathService;
@@ -59,6 +66,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private streetServiceSubscribe: Subscription;
   private windowInnerWidth: number = window.innerWidth;
   private device: BrowserDetectionService;
+  private languageService: LanguageService;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -70,7 +78,10 @@ export class MapComponent implements OnInit, OnDestroy {
                      urlChangeService: UrlChangeService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     translate: TranslateService,
+                     languageService: LanguageService) {
+    this.translate = translate;
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -82,6 +93,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -91,11 +103,20 @@ export class MapComponent implements OnInit, OnDestroy {
     let isInit: boolean = true;
     this.loaderService.setLoader(false);
 
+    this.translateGetFamilySubscribe = this.translate.get('FAMILY').subscribe((res: any) => {
+      this.familyTranslate = res;
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const familyTranslation = event.translations;
+      this.familyTranslate = familyTranslation.FAMILY;
+    });
+
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams
       .subscribe((params: {thing: string}) => {
         this.thing = params.thing ? params.thing : 'Families';
-        let query: any = {url: `thing=${this.thing}`};
+        let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
 
         if (!params.thing || (params.thing && !isInit)) {
           query.isNotReplaceState = true;
@@ -130,10 +151,12 @@ export class MapComponent implements OnInit, OnDestroy {
         this.places = res.data.places;
         this.countries = res.data.countries;
         this.map = this.element.querySelector('.mapBox');
-        this.query = `thing=${res.data.thing}`;
+
+        this.query = url;
 
         if (!isNotReplaceState) {
-          this.urlChangeService.replaceState('/map', this.query);
+          this.query = url;
+          this.urlChangeService.replaceState('/map', url);
         }
 
         this.setMarkersCoord(this.places);
@@ -156,6 +179,14 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetFamilySubscribe.unsubscribe) {
+      this.translateGetFamilySubscribe.unsubscribe();
+    }
+
     this.resizeSubscribe.unsubscribe();
     this.mapServiceSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();

@@ -15,7 +15,7 @@ export class CountryInfoService {
   }
 
   public getCountryInfo(query: any): Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/country-info?${query}`).map((res: any) => {
+    return this.http.get(`${Config.api}/v1/country-info?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
       return {err: parseRes.error, data: parseRes.data};

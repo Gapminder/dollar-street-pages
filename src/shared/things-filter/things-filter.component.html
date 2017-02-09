@@ -18,7 +18,7 @@
              [routerLink]="['/article', activeThing._id]"
              [queryParams]="{}"
              angulartics2On="click"
-             angularticsEvent="Move to Article about {{activeThing.thingName}} page with Read More button">Read more >></a>
+             angularticsEvent="Move to Article about {{activeThing.thingName}} page with Read More button">{{ 'READ_MORE' | translate }} >></a>
         </p>
       </div>
     </div>
@@ -27,7 +27,7 @@
   <div *ngIf="isDesktop && !openMobileFilterView"
        class="things-filter-container">
     <div class="related-things-container">
-      <h3 class="title">Related</h3>
+      <h3 class="title">{{ 'RELATED' | translate }}</h3>
 
       <div class="related-things-content">
         <div class="thing-content"
@@ -44,7 +44,7 @@
     </div>
 
     <div class="popular-things-container">
-      <h3 class="title">Popular</h3>
+      <h3 class="title">{{ 'POPULAR' | translate }}</h3>
 
       <div class="popular-things-content">
         <div class="thing-content"
@@ -62,7 +62,7 @@
 
     <div class="other-things-container">
 
-      <h3 class="title">All topics
+      <h3 class="title">{{ 'ALL_TOPICS' | translate }}
         <img class="close-button pull-right"
              src="/assets/img/close-button.svg"
              (click)="openThingsFilter(true)"
@@ -72,7 +72,7 @@
       <div class="things-search">
         <input class="form-control"
                type="search"
-               placeholder="Search things"
+               placeholder="{{ 'SEARCH_THINGS' | translate }}"
                #thingsSearch
                [value]="search.text"
                (input)="search.text = thingsSearch.value">
@@ -130,7 +130,7 @@
         <div class="things-search">
           <input class="form-control"
                  type="search"
-                 placeholder="Search things"
+                 placeholder="{{ 'SEARCH_THINGS' | translate }}"
                  #thingsMobileSearch
                  [value]="search.text"
                  (input)="search.text = thingsMobileSearch.value">
@@ -138,9 +138,9 @@
         </div>
       </div>
       <div class="tabs-header-container">
-        <span (click)="setActiveThingsColumn('related')" [class.active]="activeColumn === 'related'">Related</span>
-        <span (click)="setActiveThingsColumn('popular')" [class.active]="activeColumn === 'popular'">Popular</span>
-        <span (click)="setActiveThingsColumn('all')" [class.active]="activeColumn === 'all'">All topics</span>
+        <span (click)="setActiveThingsColumn('related')" [class.active]="activeColumn === 'related'">{{ 'RELATED' | translate }}</span>
+        <span (click)="setActiveThingsColumn('popular')" [class.active]="activeColumn === 'popular'">{{ 'POPULAR' | translate }}</span>
+        <span (click)="setActiveThingsColumn('all')" [class.active]="activeColumn === 'all'">{{ 'ALL_TOPICS' | translate }}</span>
       </div>
       <div class="tabs-content-container">
         <div class="things-content">

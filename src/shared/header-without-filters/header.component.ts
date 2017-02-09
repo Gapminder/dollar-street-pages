@@ -45,17 +45,6 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
 
-    this.headerServiceSubscribe = this.headerService
-      .getDefaultThing()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.defaultThing = res.data;
-      });
-
     this.title = this.titleHeaderService.getTitle();
 
     this.titleHeaderSubscribe = this.titleHeaderService
@@ -78,7 +67,6 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
   public ngOnDestroy(): void {
     this.titleHeaderSubscribe.unsubscribe();
-    this.headerServiceSubscribe.unsubscribe();
   }
 
   public ngAfterViewInit(): any {

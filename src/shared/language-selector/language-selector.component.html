@@ -1,0 +1,30 @@
+<div class="lang-container">
+  <div class="active-languages" *ngIf="defaultSecondLanguage && defaultLanguage">
+    <span class="lang-outside"
+          [ngClass]="{'lang-selected': currentLanguage === defaultLanguage.code}"
+          (click)="changeLanguage(defaultLanguage.code)">
+      {{defaultLanguage.name}}
+    </span>
+
+    <span class="lang-outside"
+          [ngClass]="{
+            'lang-selected': currentLanguage === defaultSecondLanguage.code,
+            'without-border': !languages || !languages.length
+          }"
+          (click)="changeLanguage(defaultSecondLanguage.code)">
+      {{defaultSecondLanguage.name}}
+    </span>
+  </div>
+
+  <div class="btn-group" dropdown [(isOpen)]="status.isOpen" *ngIf="languages && languages.length">
+    <button id="single-button" type="button" class="btn" dropdownToggle [disabled]="disabled">
+      <span class="caret"></span>
+    </button>
+
+    <ul dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-languages">
+      <li class="selector" role="menuitem" *ngFor="let language of languages;">
+        <span class="lang-selector" (click)="changeLanguage(language.code)">{{language.name}}</span>
+      </li>
+    </ul>
+  </div>
+</div>

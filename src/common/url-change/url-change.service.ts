@@ -14,7 +14,7 @@ export class UrlChangeService {
   }
 
   public replaceState(path: string, query: string, isReplace?: boolean): void {
-    if (this.location.isCurrentPathEqualTo(path, query)) {
+    if (this.isCurrentPathEqualTo(path, query)) {
       return;
     }
 

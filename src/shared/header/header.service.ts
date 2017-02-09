@@ -14,19 +14,10 @@ export class HeaderService {
     this.http = http;
   }
 
-  public getDefaultThing(): Observable<any> {
-    return this.http
-      .get(`${Config.api}/consumer/api/v1/default-thing`)
-      .map((res: any) => {
-        let parseRes = JSON.parse(res._body);
-        return {err: parseRes.error, data: parseRes.data};
-      });
-  }
-
   public getPlaceHeader(query: string): Observable<any> {
     // return
     return this.http
-      .get(`${Config.api}/consumer/api/v1/place-header?${query}`)
+      .get(`${Config.api}/v1/place-header?${query}`)
       .map((res: any) => {
         let parseRes = JSON.parse(res._body);
 

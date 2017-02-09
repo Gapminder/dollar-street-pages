@@ -1,7 +1,8 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { LanguageService } from '../language-selector/language.service';
 
 import {
   MathService,
@@ -18,6 +19,8 @@ import {
 })
 
 export class HeaderComponent implements OnInit, OnChanges {
+  public element: HTMLElement;
+
   @Input()
   protected query: string;
   @Input()
@@ -45,12 +48,15 @@ export class HeaderComponent implements OnInit, OnChanges {
   private device: BrowserDetectionService;
   private isDesktop: boolean;
   private isMobile: boolean;
+  private languageService: LanguageService;
 
   public constructor(router: Router,
                      math: MathService,
+                     languageService: LanguageService,
                      activatedRoute: ActivatedRoute,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
+                     element: ElementRef,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -58,6 +64,9 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
+
+    this.element = element.nativeElement;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
@@ -118,7 +127,8 @@ export class HeaderComponent implements OnInit, OnChanges {
       zoom: 4,
       row: 1,
       lowIncome: this.streetData.poor,
-      highIncome: this.streetData.rich
+      highIncome: this.streetData.rich,
+      lang: this.languageService.currentLanguage
     };
 
     if (!this.isDesktop) {

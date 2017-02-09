@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { MathService, LoaderService, TitleHeaderService, BrowserDetectionService } from '../common';
+import { LanguageService } from '../shared';
 import { PhotographersService } from './photographers.service';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'photographers',
@@ -12,6 +14,10 @@ import { PhotographersService } from './photographers.service';
 
 export class PhotographersComponent implements OnInit, OnDestroy {
   public search: {text: string} = {text: ''};
+  public translate: TranslateService;
+  public photographersTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetPhotographersSubscribe: Subscription;
 
   public math: MathService;
   public photographersByCountry: any[] = [];
@@ -25,18 +31,24 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
 
+  private languageService: LanguageService;
+
   public constructor(element: ElementRef,
                      math: MathService,
                      loaderService: LoaderService,
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     photographersService: PhotographersService) {
+                     photographersService: PhotographersService,
+                     translate: TranslateService,
+                     languageService: LanguageService) {
+    this.translate = translate;
     this.math = math;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.titleHeaderService = titleHeaderService;
     this.photographersService = photographersService;
     this.device = browserDetectionService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): void {
@@ -44,9 +56,19 @@ export class PhotographersComponent implements OnInit, OnDestroy {
 
     this.loaderService.setLoader(false);
     let searchInput = this.element.querySelector('#search') as HTMLInputElement;
-    this.titleHeaderService.setTitle('Photographers');
 
-    this.photographersServiceSubscribe = this.photographersService.getPhotographers()
+    this.translateGetPhotographersSubscribe = this.translate.get('PHOTOGRAPHERS').subscribe((res: any) => {
+      this.photographersTranslate = res;
+      this.titleHeaderService.setTitle(this.photographersTranslate);
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const photographersTranslation = event.translations;
+      this.photographersTranslate = photographersTranslation.PHOTOGRAPHERS;
+      this.titleHeaderService.setTitle(this.photographersTranslate);
+    });
+
+    this.photographersServiceSubscribe = this.photographersService.getPhotographers(this.languageService.getLanguageParam())
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -67,6 +89,14 @@ export class PhotographersComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    if (this.translateOnLangChangeSubscribe.unsubscribe) {
+      this.translateOnLangChangeSubscribe.unsubscribe();
+    }
+
+    if (this.translateGetPhotographersSubscribe.unsubscribe) {
+      this.translateGetPhotographersSubscribe.unsubscribe();
+    }
+
     this.keyUpSubscribe.unsubscribe();
     this.photographersServiceSubscribe.unsubscribe();
     this.loaderService.setLoader(false);

@@ -21,7 +21,7 @@
       <div class="countries-search">
         <input class="form-control autofocus"
                type="search"
-               placeholder="Search country"
+               placeholder="{{ 'SEARCH_COUNTRY' | translate }}"
                #countriesSearch
                [value]="search"
                (input)="search = countriesSearch.value">
@@ -32,7 +32,7 @@
     <div class="regions-container" *ngFor="let location of locations">
       <h3 class="title"
           (click)="selectRegions(location)"
-          [ngClass]="{empty: location.empty,active: selectedRegions.indexOf(location.region) !== -1}">
+          [ngClass]="{empty: location.empty,active: selectedRegions.indexOf(location.originRegionName) !== -1}">
         <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
         </span>
@@ -47,8 +47,8 @@
       <div class="countries-container">
         <div class="country-content"
              *ngFor="let country of location.countries | CountriesFilterPipe:search"
-             [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
-             (click)="selectCountries(country, location.region)">
+             [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.originName) !== -1}"
+             (click)="selectCountries(country, location.originRegionName, location.region)">
           <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
           </span>
@@ -71,10 +71,10 @@
                alt=""
                [ngClass]="{active: showSelected}">
         </div>
-        <span>Show all countries</span>
+        <span>{{ 'SHOW_ALL_COUNTRIES' | translate }}</span>
       </div>
-      <button class="cancel" type="button" (click)="cancelCountriesFilter()">Cancel</button>
-      <button type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">Ok</button>
+      <button class="cancel" type="button" (click)="cancelCountriesFilter()">{{ 'CANCEL' | translate }}</button>
+      <button type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
     </div>
   </div>
 </div>
@@ -89,7 +89,7 @@
   </div>
   <div class="countries-filter-container"
        *ngIf="isOpenCountriesFilter">
-    <div class="title">Select countries
+    <div class="title">{{ 'SELECT_COUNTRIES' | translate }}
       <img class="close-button pull-right"
            src="/assets/img/close-button.svg"
            (click)="cancelCountriesFilter()"
@@ -100,7 +100,7 @@
       <div class="countries-search">
         <input class="form-control"
                type="search"
-               placeholder="Search country"
+               placeholder="{{ 'SEARCH_COUNTRY' | translate }}"
                (focus)="hideRegionsIfInFocus(regionsVisibility)"
                (focusout)="hideRegionsIfInFocus()"
                #countriesMobileSearch
@@ -116,7 +116,7 @@
         <h3 class="title"
             (click)="selectRegions(location)"
             [ngClass]="{empty: location.empty,
-                        active: selectedRegions.indexOf(location.region) !== -1}">
+                        active: selectedRegions.indexOf(location.originRegionName) !== -1}">
         <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
         </span>
@@ -132,9 +132,10 @@
 
     <div class="countries-container" [class.close-regions-section]="!regionsVisibility">
       <div class="country-content"
-           *ngFor="let country of countries | CountriesFilterPipe:search"
-           [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.country) !== -1}"
-           (click)="selectCountries(country, country.region)">
+        *ngFor="let country of countries | CountriesFilterPipe:search"
+        [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.originName) !== -1}"
+        (click)="selectCountries(country, country.originRegionName, country.region)">
+
           <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
           </span>
@@ -157,11 +158,11 @@
                alt=""
                [ngClass]="{active: showSelected}">
         </div>
-        <span class="normal">Show all countries</span>
-        <span class="shorten">Show all</span>
+        <span class="normal">{{ 'SHOW_ALL_COUNTRIES' | translate }}</span>
+        <span class="shorten">{{ 'SHOW_ALL' | translate }}</span>
       </button>
-      <button class="cancel" type="button" (click)="cancelCountriesFilter()">Cancel</button>
-      <button type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">Ok</button>
+      <button class="cancel" type="button" (click)="cancelCountriesFilter()">{{ 'CANCEL' | translate }}</button>
+      <button type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
     </div>
   </div>
 </div>

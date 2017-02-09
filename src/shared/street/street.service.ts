@@ -1,14 +1,21 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
 import { MathService, DrawDividersInterface, BrowserDetectionService } from '../../common';
 import * as _ from 'lodash';
 import { scaleLog } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
+import { TranslateService } from 'ng2-translate';
 
 @Injectable()
 export class StreetDrawService {
+  public translate: TranslateService;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetPoorestSubscribe: Subscription;
+  public translateGetRichestSubscribe: Subscription;
+
   public width: number;
   public height: number;
   public halfOfHeight: number;
@@ -77,8 +84,10 @@ export class StreetDrawService {
   };
 
   public constructor(math: MathService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     translate: TranslateService) {
     this.math = math;
+    this.translate = translate;
     this.device = browserDetectionService;
     this.isDesktop = this.device.isDesktop();
     this.isMobile = this.device.isMobile();
@@ -96,6 +105,20 @@ export class StreetDrawService {
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
+
+    this.translateGetPoorestSubscribe = this.translate.get('POOREST').subscribe((res: any) => {
+      this.poorest = res.toUpperCase();
+    });
+
+    this.translateGetRichestSubscribe = this.translate.get('RICHEST').subscribe((res: any) => {
+      this.richest = res.toUpperCase();
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const dataTranslation = event.translations;
+      this.poorest = dataTranslation.POOREST.toUpperCase();
+      this.richest = dataTranslation.RICHEST.toUpperCase();
+    });
 
     this.scale = scaleLog()
       .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])

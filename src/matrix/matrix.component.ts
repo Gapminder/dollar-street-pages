@@ -1,5 +1,4 @@
 import 'rxjs/add/operator/debounceTime';
-
 import { Component, OnInit, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
@@ -17,6 +16,8 @@ import {
   BrowserDetectionService
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { LanguageService } from '../shared';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'matrix',
@@ -48,6 +49,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public windowInnerHeight: number = window.innerHeight;
   public placesVal: any;
   public locations: any;
+  public countriesTranslations: any[];
   public streetData: any;
   public selectedRegions: any;
   public activeCountries: any;
@@ -89,6 +91,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public guideContainer: HTMLElement;
   public guideHeight: number;
   public device: BrowserDetectionService;
+  public languageService: LanguageService;
+  public translate: TranslateService;
+  public theWorldTranslate: string;
+  public translateOnLangChangeSubscribe: Subscription;
+  public translateGetTheWorldSubscribe: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -101,7 +108,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     languageService: LanguageService,
+                     translate: TranslateService) {
+    this.translate = translate;
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -114,6 +124,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.countriesFilterService = countriesFilterService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -125,6 +136,15 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
     this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
     this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
+
+    this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
+      this.theWorldTranslate = res;
+    });
+
+    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
+      const noDataTranslation = event.translations;
+      this.theWorldTranslate = noDataTranslation.THE_WORLD;
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -148,6 +168,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.locationStrategy.onPopState(() => {
       if (this.streetData && this.locations) {
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
         this.urlChanged({isBack: true});
 
         if (this.guideContainer) {
@@ -182,6 +203,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.locations = res.data;
+
+        this.countriesTranslations = _
+          .chain(res.data)
+          .map('countries')
+          .flatten()
+          .sortBy('country')
+          .value();
       });
 
     if ('scrollRestoration' in history) {
@@ -220,6 +248,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
 
         if (this.activeHouse) {
           this.query = this.query + `&activeHouse=${this.activeHouse}`;
@@ -275,10 +304,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public interactiveIncomeText(): void {
-    let thingContainer = this.element.querySelector('things-filter') as HTMLElement;
-    let countriesFilter = this.element.querySelector('countries-filter') as HTMLElement;
-    let filtersContainer = this.element.querySelector('.filters-container') as HTMLElement;
-    let incomeContainer = this.element.querySelector('.income-title-container') as HTMLElement;
+    let thingContainer: any = this.element.querySelector('things-filter') as HTMLElement;
+    let countriesFilter: any = this.element.querySelector('countries-filter') as HTMLElement;
+    let filtersContainer: any = this.element.querySelector('.filters-container') as HTMLElement;
+    let incomeContainer: any = this.element.querySelector('.income-title-container') as HTMLElement;
     let filtersBlockWidth: number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
 
     setTimeout((): void => {
@@ -290,8 +319,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         incomeContainer.classList.remove('incomeby');
       }, 0);
     }
-
-    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 150) {
+    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 270) {
       setTimeout((): void => {
         incomeContainer.classList.add('incomeby');
       }, 0);
@@ -550,9 +578,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
           }
 
-          this.buildTitle(this.parseUrl(this.query));
-
-          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
+          this.buildTitle(this.query);
 
           if (!isBack) {
             this.urlChangeService.replaceState('/matrix', this.query);
@@ -563,92 +589,34 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           } else {
             document.documentElement.scrollTop = 0;
           }
+
+          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
         });
     });
   }
 
-  public buildTitle(query: any): any {
-    let regions = query.regions.split(',');
-    let countries = query.countries.split(',');
-
-    if (regions[0] === 'World' && countries[0] === 'World') {
-      this.activeCountries = 'the world';
-
-      return;
-    }
-
-    if (regions[0] === 'World' && countries[0] !== 'World') {
-      if (countries.length > 2) {
-        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-      } else {
-        this.activeCountries = countries.join(' & ');
-      }
-
-      this.selectedCountries = countries;
-
-      return;
-    }
-
-    if (regions[0] !== 'World') {
-      if (regions.length > 2) {
-        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-      } else {
-        let sumCountries: number = 0;
-        let difference: string[] = [];
-        let regionCountries: string[] = [];
-
-        _.forEach(this.locations, (location: any) => {
-          if (regions.indexOf(location.region) !== -1) {
-            regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
-            sumCountries = +location.countries.length;
-          }
-        });
-
-        if (sumCountries !== countries.length) {
-          difference = _.difference(countries, regionCountries);
-        }
-
-        if (difference.length) {
-          this.activeCountries = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-        } else {
-          this.activeCountries = regions.join(' & ');
-        }
-      }
-
-      this.selectedRegions = regions;
-      this.selectedCountries = countries;
-
-      return;
-    }
-
-    let concatLocations: string[] = regions.concat(countries);
-
-    if (concatLocations.length > 2) {
-      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
-    } else {
-      this.activeCountries = concatLocations.join(' & ');
-    }
-
-    this.selectedRegions = regions;
-    this.selectedCountries = countries;
-  }
-
   public activeHouseOptions(options: any): void {
     let {row, activeHouseIndex} = options;
+    let queryParams: any = this.parseUrl(this.query);
 
-    this.query = this.query.replace(/&activeHouse\=\d*/, '');
+    delete queryParams.activeHouse;
 
     if (row) {
-      this.query = this.query.replace(/row\=\d*/, `row=${row}`);
+      queryParams.row = row;
     }
 
     if (activeHouseIndex) {
       this.activeHouse = activeHouseIndex;
-      this.query = this.query + `&activeHouse=${activeHouseIndex}`;
+      queryParams.activeHouse = activeHouseIndex;
     } else {
       this.activeHouse = void 0;
     }
+
+    if (!queryParams.lang) {
+      queryParams.lang = this.languageService.currentLanguage;
+    }
+
+    this.query = Config.objToQuery(queryParams);
 
     this.urlChangeService.replaceState('/matrix', this.query, true);
   }
@@ -727,5 +695,108 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+  }
+
+  public findCountryTranslatedName(countries: any[]): any {
+    return _.map(countries, (item: string): any => {
+      const findTransName: any = _.find(this.countriesTranslations, {originName: item});
+      return findTransName ? findTransName.country : item;
+
+    });
+  }
+
+  public findRegionTranslatedName(regions: any[]): any {
+    return _.map(regions, (item: string): any => {
+      const findTransName: any = _.find(this.locations, {originRegionName: item});
+      return findTransName ? findTransName.region : item;
+    });
+  }
+
+  public parseLocations(url: string): any {
+    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
+    let query = JSON.parse(urlForParse);
+
+    query.regions = query.regions.split(',');
+    query.countries = query.countries.split(',');
+
+    return query;
+  }
+
+  public buildTitle(url: any): any {
+    let query: any = this.parseLocations(url);
+    let regions: string[] = query.regions;
+    let countries: string[] = query.countries;
+    let getTranslatedCountries: any;
+    let getTranslatedRegions: any;
+
+    if (regions[0] === 'World' && countries[0] === 'World') {
+      this.activeCountries = this.theWorldTranslate;
+
+      return;
+    }
+
+    if (query.countries[0] !== 'World') {
+      getTranslatedCountries = this.findCountryTranslatedName(query.countries);
+    }
+
+    if (query.regions[0] !== 'World') {
+      getTranslatedRegions = this.findRegionTranslatedName(query.regions);
+    }
+
+    if (regions[0] === 'World' && countries[0] !== 'World') {
+      if (countries.length > 2) {
+        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+      } else {
+        this.activeCountries = getTranslatedCountries.join(' & ');
+      }
+
+      this.selectedCountries = countries;
+
+      return;
+    }
+
+    if (regions[0] !== 'World') {
+      if (regions.length > 2) {
+        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+      } else {
+        let sumCountries: number = 0;
+        let difference: string[] = [];
+        let regionCountries: string[] = [];
+
+        _.forEach(this.locations, (location: any) => {
+          if (regions.indexOf(location.originRegionName) !== -1) {
+            regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
+            sumCountries = +location.countries.length;
+          }
+        });
+
+        if (sumCountries !== countries.length) {
+          difference = _.difference(getTranslatedCountries, regionCountries);
+        }
+
+        if (difference.length) {
+          this.activeCountries = difference.length === 1 && regions.length === 1 ? getTranslatedRegions[0] + ' & '
+          + difference[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+        } else {
+          this.activeCountries = getTranslatedRegions.join(' & ');
+        }
+      }
+
+      this.selectedRegions = regions;
+      this.selectedCountries = countries;
+
+      return;
+    }
+
+    let concatLocations: string[] = regions.concat(getTranslatedCountries);
+
+    if (concatLocations.length > 2) {
+      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
+    } else {
+      this.activeCountries = concatLocations.join(' & ');
+    }
+
+    this.selectedRegions = regions;
+    this.selectedCountries = countries;
   }
 }
