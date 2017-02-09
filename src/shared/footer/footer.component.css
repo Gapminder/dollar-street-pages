@@ -53,7 +53,7 @@
   font-size: 21px;
 }
 
-.footer .links .dividers:before {
+.footer .links .dividers-before:before {
   content: "";
   width: 1px;
   display: inline-block;
@@ -62,7 +62,7 @@
   margin: 0 15px -5px 10px;
 }
 
-.footer .links .dividers:after {
+.footer .links .dividers-after:after {
   content: "";
   width: 1px;
   display: inline-block;
@@ -257,8 +257,8 @@
     margin: 0 3px;
   }
 
-  .footer .links .dividers:before,
-  .footer .links .dividers:after {
+  .footer .links .dividers-before:before,
+  .footer .links .dividers-after:after {
     display: none;
   }
 
