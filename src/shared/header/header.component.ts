@@ -78,12 +78,12 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
       let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
 
       setTimeout(() => {
-        incomeContainer.classList.remove('incomeby');
+        //incomeContainer.classList.remove('incomeby');
       }, 0);
 
       if (incomeText.length > 20 && this.window.innerWidth < 920) {
         setTimeout(() => {
-          incomeContainer.classList.add('incomeby');
+          //incomeContainer.classList.add('incomeby');
         },0);
       }
     });

@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/debounceTime';
 
-import { Component, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, NgZone, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
@@ -24,6 +24,21 @@ import { MapService } from './map.service';
 })
 
 export class MapComponent implements OnInit, OnDestroy {
+  @ViewChild('mapBox')
+  public map: ElementRef;
+
+  @ViewChild('hoverPortrait')
+  public hoverPortrait: ElementRef;
+
+  @ViewChildren('marker')
+  public markers: QueryList<ElementRef>;
+
+  @ViewChild('mapColor')
+  public mapColor: ElementRef;
+
+  @ViewChild('infoBoxContainer')
+  public infoBoxContainer: ElementRef;
+
   public familyTranslate: string;
   public getTranslationSubscribe: Subscription;
 
@@ -35,9 +50,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public places: any[] = [];
   public countries: any[] = [];
   public element: any;
-  public map: HTMLImageElement;
   public hoverPlace: any = void 0;
-  public markers: any;
   public hoverPortraitTop: any;
   public hoverPortraitLeft: any;
   public thing: any;
@@ -144,7 +157,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
         this.places = res.data.places;
         this.countries = res.data.countries;
-        this.map = this.element.querySelector('.mapBox');
 
         this.query = url;
 
@@ -182,7 +194,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public setMarkersCoord(places: any): void {
     let img = new Image();
-    let mapImage: HTMLImageElement = this.element.querySelector('.map-color');
+    let mapImage: HTMLImageElement = this.mapColor.nativeElement as HTMLImageElement;
 
     img.onload = () => {
       this.zone.run(() => {
@@ -224,8 +236,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.seeAllHomes = this.leftSideCountries.length > 1;
 
-    this.markers = this.map.querySelectorAll('.marker');
-
     this.places.forEach((place: any, i: number) => {
       if (i !== index) {
         return;
@@ -238,7 +248,9 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker: HTMLElement, i: number): void => {
+    Array.prototype.forEach.call(this.markers, (markerRef: ElementRef, i: number): void => {
+      let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
+
       if (i === index) {
         return;
       }
@@ -248,7 +260,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     let img = new Image();
 
-    let portraitBox = this.map.querySelector('.hover_portrait') as HTMLElement;
+    let portraitBox = this.hoverPortrait.nativeElement as HTMLElement;
     portraitBox.style.opacity = '0';
 
     img.onload = () => {
@@ -305,8 +317,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.seeAllHomes = this.leftSideCountries.length > 1;
 
-    this.markers = this.map.querySelectorAll('.marker');
-
     this.places.forEach((place: any, i: number) => {
       if (i !== index) {
         return;
@@ -319,7 +329,9 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker: HTMLElement, i: number): void => {
+    Array.prototype.forEach.call(this.markers, (markerRef: ElementRef, i: number): void => {
+      let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
+
       if (i === index) {
         return;
       }
@@ -356,7 +368,9 @@ export class MapComponent implements OnInit, OnDestroy {
         return;
       }
 
-      Array.prototype.forEach.call(this.markers, (marker: HTMLElement): void => {
+      Array.prototype.forEach.call(this.markers, (markerRef: ElementRef): void => {
+        let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
+
         marker.style.opacity = '1';
       });
 
@@ -364,7 +378,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.hoverPlace = void 0;
       this.hoverPortraitTop = void 0;
       this.hoverPortraitLeft = void 0;
-      this.markers = void 0;
     }, 300);
   }
 
@@ -377,7 +390,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public closeLeftSideBar(e: MouseEvent): void {
-    let infoBoxContainer = this.element.querySelector('.info-box-container') as HTMLElement;
+    let infoBoxContainer = this.infoBoxContainer.nativeElement as HTMLElement;
     infoBoxContainer.scrollTop = 0;
 
     let el = e.target as HTMLElement;
