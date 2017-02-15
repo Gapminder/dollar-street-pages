@@ -14,7 +14,7 @@ import { AboutService } from './about.service';
     CommonModule
   ],
   providers: [AboutService],
-  exports: []
+  exports: [AboutComponent]
 })
 
 export class AboutModule {

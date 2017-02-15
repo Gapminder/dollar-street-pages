@@ -7,10 +7,11 @@
 <div id="places">
   <div class="row">
     <div class="col-md-12 places_header">
-      <div class="col-md-12 col-sm-12 mapBox">
+      <div #mapBox class="col-md-12 col-sm-12 mapBox">
         <div class="mapBoxContainer" (click)="closeLeftSideBar($event)">
-          <img class="map-color" src="/assets/img/original-map.svg" alt="">
-          <img class="marker"
+          <img #mapColor class="map-color" src="/assets/img/original-map.svg" alt="">
+          <img #marker
+               class="marker"
                src="/assets/img/dark-marker.svg"
                alt="marker"
                *ngFor="let place of places; let i = index"
@@ -20,7 +21,8 @@
                (mouseleave)="unHoverOnMarker($event)"
                (touchstart)="isDesktop ? hoverOnMarker(i, place.country, place.countryOriginName) : hoverOnMarkerTablet(i, place.country, place.countryOriginName)"
                (click)="isDesktop ? clickOnMarker($event, i, place.country, place.countryOriginName) : mobileClickOnMarker(place.country, place.countryOriginName)">
-          <div class="hover_portrait"
+          <div #hoverPortrait
+               class="hover_portrait"
                *ngIf="isDesktop"
                [hidden]="!hoverPlace"
                [ngClass]="shadowClass"
@@ -92,7 +94,7 @@
                    alt="Close">
         </span>
   </div>
-  <div class="info-box-container">
+  <div #infoBoxContainer class="info-box-container">
     <div class="info-box"
          *ngFor="let place of leftSideCountries"
          [routerLink]="['/family']"
