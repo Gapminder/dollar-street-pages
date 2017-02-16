@@ -10,7 +10,7 @@
     </header>
 
     <div class="street-and-title-container">
-      <div class="street-container" #streetContainer (click)="scrollTop($event, streetContainer)">
+      <div #streetContainer class="street-container" (click)="scrollTop($event, streetContainer)">
         <div class="short-title">{{activeThing?.plural}} <span>{{ 'IN' | translate }}</span> {{activeCountries}} <span>{{ 'BY_DOLLAR' | translate }}</span></div>
 
         <div class="street-content">

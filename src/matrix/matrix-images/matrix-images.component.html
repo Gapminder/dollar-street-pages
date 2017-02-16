@@ -1,10 +1,11 @@
-<div class="images-container" *ngIf="currentPlaces?.length">
+<div #imagesContainer class="images-container" *ngIf="currentPlaces?.length">
   <div class="flex-container column-{{zoom}}"
     infinite-scroll
     [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="0"
     (scrolled)="onScrollDown()">
-    <div class="image-content"
+    <div #imageContent
+         class="image-content"
          *ngFor="let place of placesArr; let i = index"
          [style.-webkit-box-ordinal-group]="i"
          [style.-moz-box-ordinal-group]="i"

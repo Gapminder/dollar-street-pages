@@ -1,8 +1,14 @@
+<<<<<<< 52877b4563cf2b2119088b49e9ff9c265ab9da7e
 import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+=======
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, ViewChild } from '@angular/core';
+>>>>>>> ref(matrix): add viewchild to matrix page
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { LanguageService } from '../../common';
+import { ThingsFilterComponent } from '../things-filter/things-filter.component';
+import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
 import {
   MathService,
@@ -20,6 +26,15 @@ import {
 
 export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   public element: HTMLElement;
+
+  @ViewChild(ThingsFilterComponent)
+  public thingsFilterComponent: ThingsFilterComponent;
+  @ViewChild(CountriesFilterComponent)
+  public countriesFilterComponent: CountriesFilterComponent;
+  @ViewChild('filtersContainer')
+  public filtersContainer: ElementRef;
+  @ViewChild('incomeTitleContainer')
+  public incomeTitleContainer: ElementRef;
 
   @Input()
   public query: string;
