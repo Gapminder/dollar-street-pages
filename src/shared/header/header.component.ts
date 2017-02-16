@@ -1,8 +1,10 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { LanguageService } from '../../common';
+import { ThingsFilterComponent } from '../things-filter/things-filter.component';
+import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
 import {
   MathService,
@@ -21,12 +23,22 @@ import {
 export class HeaderComponent implements OnInit, OnChanges {
   public element: HTMLElement;
 
+  @ViewChild(ThingsFilterComponent)
+  public thingsFilterComponent: ThingsFilterComponent;
+  @ViewChild(CountriesFilterComponent)
+  public countriesFilterComponent: CountriesFilterComponent;
+  @ViewChild('filtersContainer')
+  public filtersContainer: ElementRef;
+  @ViewChild('incomeTitleContainer')
+  public incomeTitleContainer: ElementRef;
+
   @Input()
   protected query: string;
   @Input()
   protected thing: string;
   @Input('hoverPlace')
   protected hoverPlace: Observable<any>;
+
   protected header: any = {};
   protected isCountryFilterReady: boolean = false;
   protected isThingFilterReady: boolean = false;
@@ -35,6 +47,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   private filter: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
+
   private streetData: DrawDividersInterface;
   private activeThing: any;
   private router: Router;

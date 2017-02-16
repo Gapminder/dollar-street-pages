@@ -8,7 +8,8 @@ import {
   EventEmitter,
   NgZone,
   OnDestroy,
-  ElementRef
+  ElementRef,
+  ViewChild
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
@@ -65,6 +66,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output('goToMatrixWithCountry')
   public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('viewImageBlockContainer')
+  public viewImageBlockContainer: ElementRef;
+  @ViewChild('mobileViewImageBlockContainer')
+  public mobileViewImageBlockContainer: ElementRef;
+
   public imageResolution: ImageResolutionInterface;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
@@ -211,10 +218,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public setMarkerPosition(): void {
     this.widthScroll = window.innerWidth - document.body.offsetWidth;
 
-    let boxContainer = this.element.querySelector('.view-image-block-container') as HTMLElement;
+    let boxContainer: HTMLElement = this.viewImageBlockContainer.nativeElement as HTMLElement;
 
     if (!boxContainer) {
-      boxContainer = this.element.querySelector('.mobile-view-image-block-container') as HTMLElement;
+      boxContainer = this.mobileViewImageBlockContainer.nativeElement as HTMLElement;
     }
 
     this.boxContainer = boxContainer;
