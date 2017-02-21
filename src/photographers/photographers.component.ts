@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { MathService, LoaderService, TitleHeaderService, BrowserDetectionService } from '../common';
-import { LanguageService } from '../common';
+import { MathService, LoaderService, TitleHeaderService, BrowserDetectionService, LanguageService } from '../common';
 import { PhotographersService } from './photographers.service';
 
 @Component({

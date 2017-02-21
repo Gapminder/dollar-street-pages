@@ -15,9 +15,8 @@ import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { find, isEqual, slice, concat } from 'lodash';
 import { Config, ImageResolutionInterface } from '../../app.config';
-import { LoaderService, BrowserDetectionService } from '../../common';
+import { LoaderService, BrowserDetectionService, LanguageService } from '../../common';
 import { FamilyMediaService } from './family-media.service';
-import { LanguageService } from '../../common';
 
 @Component({
   selector: 'family-media',

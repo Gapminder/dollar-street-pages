@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TeamService } from './team.service';
-import { LoaderService, TitleHeaderService } from '../common';
-import { LanguageService } from '../common';
+import { LoaderService, TitleHeaderService, LanguageService } from '../common';
 
 @Component({
   selector: 'team',

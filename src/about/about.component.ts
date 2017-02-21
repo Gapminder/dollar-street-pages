@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { AboutService } from './about.service';
-import { LanguageService } from '../common';
-import { LoaderService, TitleHeaderService } from '../common';
+import { LoaderService, TitleHeaderService, LanguageService } from '../common';
 
 @Component({
   selector: 'about',

@@ -6,8 +6,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 
 import { Config, ImageResolutionInterface } from '../../../app.config';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
-import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../../common';
-import { LanguageService } from '../../../common';
+import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService, LanguageService } from '../../../common';
 
 @Component({
   selector: 'family-media-view-block',

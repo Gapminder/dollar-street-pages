@@ -7,9 +7,9 @@ import {
   DrawDividersInterface,
   LocalStorageService,
   BrowserDetectionService,
-  Angulartics2GoogleAnalytics
+  Angulartics2GoogleAnalytics,
+  LanguageService
 } from '../../common';
-import { LanguageService } from '../../common';
 
 @Component({
   selector: 'main-menu',

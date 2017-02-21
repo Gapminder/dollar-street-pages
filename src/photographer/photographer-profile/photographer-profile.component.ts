@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { MathService } from '../../common';
-import { LanguageService } from '../../common';
+import { MathService, LanguageService } from '../../common';
 import { PhotographerProfileService } from './photographer-profile.service';
 
 @Component({

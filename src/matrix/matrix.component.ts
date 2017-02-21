@@ -13,11 +13,11 @@ import {
   CountriesFilterService,
   Angulartics2GoogleAnalytics,
   StreetSettingsService,
-  BrowserDetectionService
+  BrowserDetectionService,
+  LanguageService,
+  ActiveThingService
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { LanguageService } from '../common';
-import { ActiveThingService } from '../common';
 
 @Component({
   selector: 'matrix',

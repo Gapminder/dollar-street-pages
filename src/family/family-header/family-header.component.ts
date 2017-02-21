@@ -3,9 +3,8 @@ import { Component, OnInit, OnDestroy, Input, NgZone, ElementRef, EventEmitter, 
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Config } from '../../app.config';
-import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService } from '../../common';
+import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService, LanguageService } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
-import { LanguageService } from '../../common';
 
 @Component({
   selector: 'family-header',

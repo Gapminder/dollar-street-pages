@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { MathService, StreetSettingsService, DrawDividersInterface } from '../../common';
+import { MathService, StreetSettingsService, DrawDividersInterface, LanguageService, BrowserDetectionService } from '../../common';
 import { CountryInfoService } from './country-info.service';
-import { LanguageService, BrowserDetectionService } from '../../common';
 
 @Component({
   selector: 'country-info',

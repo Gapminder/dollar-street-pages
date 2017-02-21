@@ -12,10 +12,10 @@ import {
   Angulartics2GoogleAnalytics,
   StreetSettingsService,
   DrawDividersInterface,
-  BrowserDetectionService
+  BrowserDetectionService,
+  LanguageService
 } from '../common';
 import { MapService } from './map.service';
-import { LanguageService } from '../common';
 
 @Component({
   selector: 'map-component',

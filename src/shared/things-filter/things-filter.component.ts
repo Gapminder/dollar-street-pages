@@ -15,9 +15,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Angulartics2GoogleAnalytics, BrowserDetectionService } from '../../common';
+import { Angulartics2GoogleAnalytics, BrowserDetectionService, ActiveThingService } from '../../common';
 import { ThingsFilterService } from './things-filter.service';
-import { ActiveThingService } from '../../common';
 import { Config } from '../../app.config';
 
 @Component({

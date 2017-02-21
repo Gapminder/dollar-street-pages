@@ -14,8 +14,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 import { Config } from '../../app.config';
-import { BrowserDetectionService, CountriesFilterService } from '../../common';
-import { LanguageService } from '../../common';
+import { BrowserDetectionService, CountriesFilterService, LanguageService } from '../../common';
 
 @Component({
   selector: 'countries-filter',

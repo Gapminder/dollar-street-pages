@@ -2,12 +2,12 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { Injectable, Inject } from '@angular/core';
-import { MathService, DrawDividersInterface, BrowserDetectionService } from '../../common';
-import * as _ from 'lodash';
+import { MathService, DrawDividersInterface, BrowserDetectionService, LanguageService } from '../../common';
 import { scaleLog } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
-import { LanguageService } from '../../common';
+
+import * as _ from 'lodash';
 
 @Injectable()
 export class StreetDrawService {
