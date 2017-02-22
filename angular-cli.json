@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.24",
+    "version": "1.0.0-beta.30",
     "name": "dollarstreet"
   },
   "apps": [
@@ -34,7 +34,7 @@
   },
   "test": {
     "karma": {
-      "config": "./.config/karma.conf.js"
+      "config": "./karma.conf.js"
     }
   },
   "defaults": {

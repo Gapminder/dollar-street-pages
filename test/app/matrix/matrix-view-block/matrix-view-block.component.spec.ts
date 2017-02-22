@@ -1,8 +1,8 @@
 import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
 import { MockService } from '../../../app/common-mocks/mock.service.template';
-import { blockData } from './mocks/data.ts';
-import { MatrixViewBlockComponent } from '../../../../app/matrix/matrix-view-block/matrix-view-block.component';
+import { blockData } from './mocks/data';
+import { MatrixViewBlockComponent } from '../../../../src/matrix/matrix-view-block/matrix-view-block.component';
 
 describe('MatrixViewBlockComponent', () => {
   let mockFamilyInfoService = new MockService();

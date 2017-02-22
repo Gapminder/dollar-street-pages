@@ -1,5 +1,5 @@
 import { it, describe } from '@angular/core/testing';
-import { PhotographersFilter } from '../../../app/photographers/photographers-filter.pipe';
+import { PhotographersFilter } from '../../../src/photographers/photographers-filter.pipe';
 import { photographers } from './mocks/data';
 
 let countryList = photographers.data.countryList;

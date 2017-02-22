@@ -1,6 +1,6 @@
 import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
-import { MatrixImagesComponent } from '../../../../app/matrix/matrix-images/matrix-images.component';
+import { MatrixImagesComponent } from '../../../../src/matrix/matrix-images/matrix-images.component';
 import { Observable } from 'rxjs';
 
 describe('MatrixImagesComponent', () => {

@@ -52,8 +52,14 @@ export class AboutComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.aboutSubscribe.unsubscribe();
-    this.getTranslationSubscribe.unsubscribe();
+    if (this.aboutSubscribe) {
+      this.aboutSubscribe.unsubscribe();
+    }
+
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
+
     this.loaderService.setLoader(false);
   }
 }

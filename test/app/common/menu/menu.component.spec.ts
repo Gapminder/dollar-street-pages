@@ -1,6 +1,6 @@
 import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
-import { MainMenuComponent } from '../../../../app/common/menu/menu.component';
+import { MainMenuComponent } from '../../../../src/shared/menu/menu.component';
 
 describe('MainMenuComponent', () => {
   let mockCommonDependency = new MockCommonDependency();

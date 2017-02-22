@@ -1,6 +1,6 @@
 import { it, describe, inject, async, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
-import { HeaderWithoutFiltersComponent } from '../../../../app/common/header-without-filters/header.component';
+import { HeaderWithoutFiltersComponent } from '../../../../src/shared/header-without-filters/header.component';
 
 describe('HeaderWithoutFiltersComponent', () => {
   let mockCommonDependency = new MockCommonDependency();

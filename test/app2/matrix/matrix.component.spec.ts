@@ -1,9 +1,9 @@
 import { it, describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
-import { MockService } from '../common-mocks/mock.service.template.ts';
-import { MatrixComponent } from '../../../app/matrix/matrix.component';
-import { places } from './mocks/data.ts';
+import { MockService } from '../common-mocks/mock.service.template';
+import { MatrixComponent } from '../../../src/matrix/matrix.component';
+import { places } from './mocks/data';
 
 let tmpl = require('./mocks/matrix.template.html');
 

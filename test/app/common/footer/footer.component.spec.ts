@@ -1,6 +1,6 @@
 import { it, inject, async, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
-import { FooterComponent } from '../../../../app/common/footer/footer.component';
+import { FooterComponent } from '../../../../src/shared/footer/footer.component';
 import { MockService } from '../../common-mocks/mock.service.template';
 import { footerInfo } from './mocks/data';
 describe('FooterComponent', () => {

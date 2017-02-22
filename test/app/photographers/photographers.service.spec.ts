@@ -2,8 +2,8 @@ import { it, describe, beforeEachProviders, tick, inject, fakeAsync } from '@ang
 import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
-import { Config } from '../../../app/app.config.ts';
-import { PhotographersService } from '../../../app/photographers/photographers.service.ts';
+import { Config } from '../../../src/app.config';
+import { PhotographersService } from '../../../src/photographers/photographers.service';
 
 describe('PhotographersService', () => {
   beforeEachProviders(() => {

@@ -1,6 +1,6 @@
 import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
-import { CountryComponent } from '../../../app/country/country.component';
+import { CountryComponent } from '../../../src/country/country.component';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
