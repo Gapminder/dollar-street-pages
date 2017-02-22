@@ -1,8 +1,8 @@
 import { it, describe, inject, async, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
 import { MockService } from '../../app/common-mocks/mock.service.template';
-import { team } from './mocks/data.ts';
-import { TeamComponent } from '../../../app/team/team.component';
+import { team } from './mocks/data';
+import { TeamComponent } from '../../../src/team/team.component';
 
 describe('TeamComponent', () => {
   let mockTeamService = new MockService();

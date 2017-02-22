@@ -2,7 +2,7 @@ import { it, describe, inject, async, beforeEach, addProviders, TestComponentBui
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
-import { PhotographerComponent } from '../../../app/photographer/photographer.component';
+import { PhotographerComponent } from '../../../src/photographer/photographer.component';
 
 describe('PhotographerComponent', () => {
   let mockCommonDependency = new MockCommonDependency();

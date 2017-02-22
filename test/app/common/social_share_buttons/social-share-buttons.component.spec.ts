@@ -1,6 +1,6 @@
 import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
-import { SocialShareButtonsComponent } from '../../../../app/common/social_share_buttons/social-share-buttons.component';
+import { SocialShareButtonsComponent } from '../../../../src/shared/social-share-buttons/social-share-buttons.component';
 
 describe('SocialShareButtonsComponent', () => {
   let mockCommonDependency = new MockCommonDependency();

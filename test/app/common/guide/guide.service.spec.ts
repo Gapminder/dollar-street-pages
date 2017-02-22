@@ -3,8 +3,8 @@ import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 import { guideContext } from './mocks/data';
-import { Config } from '../../../../app/app.config.ts';
-import { GuideService } from '../../../../app/common/guide/guide.service';
+import { Config } from '../../../../src/app.config';
+import { GuideService } from '../../../../src/shared/guide/guide.service';
 
 describe('ArticleService', () => {
   beforeEach(() => {

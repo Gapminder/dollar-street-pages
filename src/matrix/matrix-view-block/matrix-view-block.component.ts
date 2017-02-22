@@ -223,6 +223,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public setMarkerPosition(): void {
     this.widthScroll = window.innerWidth - document.body.offsetWidth;
 
+    if(!this.viewImageBlockContainer) {
+      return;
+    }
+
     let boxContainer: HTMLElement = this.viewImageBlockContainer.nativeElement as HTMLElement;
 
     if (!boxContainer) {

@@ -2,8 +2,8 @@ import { it, describe, tick, inject, fakeAsync } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
-import { Config } from '../../../../app/app.config.ts';
-import { FooterService } from '../../../../app/common/footer/footer.service';
+import { Config } from '../../../../src/app.config';
+import { FooterService } from '../../../../src/shared/footer/footer.service';
 import { addProviders } from '@angular/core/testing/testing';
 import { footerInfo } from './mocks/data';
 

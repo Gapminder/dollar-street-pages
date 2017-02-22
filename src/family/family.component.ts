@@ -196,11 +196,26 @@ export class FamilyComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.queryParamsSubscribe.unsubscribe();
-    this.countriesFilterServiceSubscribe.unsubscribe();
-    this.streetSettingsServiceSubscribe.unsubscribe();
-    this.familyServiceSetThingSubscribe.unsubscribe();
-    this.getTranslationSubscribe.unsubscribe();
+    if(this.queryParamsSubscribe) {
+      this.queryParamsSubscribe.unsubscribe();
+    }
+
+    if(this.countriesFilterServiceSubscribe) {
+      this.countriesFilterServiceSubscribe.unsubscribe();
+    }
+
+    if(this.streetSettingsServiceSubscribe) {
+      this.streetSettingsServiceSubscribe.unsubscribe();
+    }
+
+    if(this.familyServiceSetThingSubscribe) {
+      this.familyServiceSetThingSubscribe.unsubscribe();
+    }
+
+    if(this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
+
     this.scrollSubscribe.unsubscribe();
 
     if ('scrollRestoration' in history) {

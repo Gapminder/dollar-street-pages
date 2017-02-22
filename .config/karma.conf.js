@@ -1,51 +1,46 @@
-'use strict';
-
-const webpackConfig = require('./webpack-karma.config');
 module.exports = function (config) {
+  let browser = ['Chrome'];
+  if (process.env.TRAVIS) {
+    browser = ['Chrome_travis_ci'];
+  }
   config.set({
-    basePath: './',
-
-    frameworks: ['jasmine'],
-
-    files: [
-      {pattern: 'test.bundle.js', watched: false}
+    basePath: '',
+    frameworks: ['jasmine', '@angular/cli'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-coverage-istanbul-reporter'),
+      require('@angular/cli/plugins/karma')
     ],
-    proxies: {
-      '/assets/img/': 'http://localhost:8080/app/assets/img/'
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
     },
-
-    exclude: [],
-
-    reporters: ['progress', 'coverage'],
-
-    preprocessors: {
-      'test.bundle.js': ['webpack']
+    files: [
+     {pattern: './src/test.ts', watched: false}
+    ],
+    preprocessors: {'./src/test.ts': ['@angular/cli']},
+    mime: {'text/x-typescript': ['ts', 'tsx']},
+    coverageIstanbulReporter: {
+      reports: {
+        html: 'coverage',
+        lcovonly: './coverage/coverage.lcov'
+      }
     },
-    webpack: webpackConfig,
-
-    coverageReporter: {
-      dir: '../coverage/',
-      reporters: [
-        {type: 'text-summary'},
-        {type: 'json'},
-        {type: 'html'},
-        {type: 'lcov', subdir: 'report-lcov'}
-      ]
+    angularCli: {
+      config: './angular-cli.json',
+      environment: 'dev'
     },
-
-
-    webpackServer: {noInfo: true},
-
+    reporters: config.angularCli && config.angularCli.codeCoverage
+     ? ['progress', 'coverage-istanbul']
+     : ['progress'],
     port: 9876,
-
     colors: true,
-
     logLevel: config.LOG_INFO,
-
     autoWatch: true,
-
-    //browsers: ['Chrome']
-    browsers: ['PhantomJS']
-
+    browsers: browser,
+    singleRun: false
   });
 };

@@ -1,9 +1,9 @@
 import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@angular/core/testing';
 import { TestComponentBuilder } from '@angular/compiler/testing';
-import { MockCommonDependency } from '../../app/common-mocks/mocked.services.ts';
-import { MockService } from '../common-mocks/mock.service.template.ts';
-import { mapdata } from './mocks/data.ts';
-import { MapComponent } from '../../../app/map/map.component';
+import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
+import { MockService } from '../common-mocks/mock.service.template';
+import { mapdata } from './mocks/data';
+import { MapComponent } from '../../../src/map/map.component';
 
 /** todo: remove this crutch */
 interface ObjectCreator extends ObjectConstructor {

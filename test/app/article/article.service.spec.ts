@@ -3,8 +3,8 @@ import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 import { aboutContext } from './mocks/data';
-import { Config } from '../../../app/app.config.ts';
-import { ArticleService } from '../../../app/article/article.service';
+import { Config } from '../../../src/app.config';
+import { ArticleService } from '../../../src/article/article.service';
 
 describe('ArticleService', () => {
   beforeEach(() => {

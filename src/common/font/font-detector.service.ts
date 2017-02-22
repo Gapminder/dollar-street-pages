@@ -18,18 +18,21 @@ export class FontDetectorService {
 
     public languageService: LanguageService;
 
+    public document: Document;
+
     public constructor(@Inject(LanguageService) languageService: LanguageService) {
         this.languageService = languageService;
+        this.document = document;
     }
 
     public detectFont(): void {
         const currentLang: string = this.languageService.currentLanguage;
 
-        let style: HTMLElement = document.createElement('link') as HTMLElement;
+        let style: HTMLElement = this.document.createElement('link') as HTMLElement;
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('type', 'text/css');
 
-        let head: HTMLElement = document.getElementsByTagName('head')[0] as HTMLElement;
+        let head: HTMLElement = this.document.getElementsByTagName('head')[0] as HTMLElement;
 
         let styleDetected: string;
 

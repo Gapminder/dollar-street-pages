@@ -26,16 +26,12 @@ import { MapService } from './map.service';
 export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapBox')
   public map: ElementRef;
-
   @ViewChild('hoverPortrait')
   public hoverPortrait: ElementRef;
-
   @ViewChildren('marker')
   public markers: QueryList<ElementRef>;
-
   @ViewChild('mapColor')
   public mapColor: ElementRef;
-
   @ViewChild('infoBoxContainer')
   public infoBoxContainer: ElementRef;
 
