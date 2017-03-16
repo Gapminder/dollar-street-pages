@@ -1,8 +1,8 @@
 import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
 import { MockService } from '../../../app/common-mocks/mock.service.template';
-import { profile } from '../mocks/data.ts';
-import { PhotographerProfileComponent } from '../../../../app/photographer/photographer-profile/photographer-profile.component';
+import { profile } from '../mocks/data';
+import { PhotographerProfileComponent } from '../../../../src/photographer/photographer-profile/photographer-profile.component';
 
 describe('PhotographerProfileComponent', () => {
   let getPhotographer = new MockService();

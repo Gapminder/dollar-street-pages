@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/debounceTime';
-import { Component, OnInit, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy, AfterViewChecked, NgZone, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
@@ -19,6 +19,9 @@ import {
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
+import { GuideComponent, HeaderComponent } from '../shared';
+import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
+
 @Component({
   selector: 'matrix',
   templateUrl: './matrix.template.html',
@@ -26,6 +29,17 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild(MatrixImagesComponent)
+  public matrixImagesComponent: MatrixImagesComponent;
+  @ViewChild(GuideComponent)
+  public quickGuideComponent: GuideComponent;
+  @ViewChild(HeaderComponent)
+  public headerComponent: HeaderComponent;
+  @ViewChild('streetContainer')
+  public streetContainerRef: ElementRef;
+  @ViewChild('matrixHeader')
+  public matrixHeader: ElementRef;
+
   public zoomPositionFixed: boolean = false;
   public isOpenIncomeFilter: boolean = false;
   public isMobile: boolean;
@@ -132,10 +146,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
-    this.streetContainer = this.element.querySelector('.street-container') as HTMLElement;
-    this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
-    this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
-    this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
+    this.streetContainer = this.streetContainerRef.nativeElement as HTMLElement;
+    this.headerContainer = this.matrixHeader.nativeElement as HTMLElement;
+    this.matrixImagesContainer = this.matrixImagesComponent.element as HTMLElement;
+    this.guideContainer = this.quickGuideComponent.element as HTMLElement;
 
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
       this.theWorldTranslate = trans;
@@ -303,10 +317,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public interactiveIncomeText(): void {
-    let thingContainer: any = this.element.querySelector('things-filter') as HTMLElement;
-    let countriesFilter: any = this.element.querySelector('countries-filter') as HTMLElement;
-    let filtersContainer: any = this.element.querySelector('.filters-container') as HTMLElement;
-    let incomeContainer: any = this.element.querySelector('.income-title-container') as HTMLElement;
+    let thingContainer: HTMLElement = this.headerComponent.thingsFilterComponent.element as HTMLElement;
+    let countriesFilter: HTMLElement = this.headerComponent.countriesFilterComponent.element as HTMLElement;
+
+    let filtersContainer: HTMLElement = this.headerComponent.filtersContainer.nativeElement as HTMLElement;
+    let incomeContainer: HTMLElement = this.headerComponent.incomeTitleContainer.nativeElement as HTMLElement;
+
     let filtersBlockWidth: number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
 
     setTimeout((): void => {
@@ -348,25 +364,27 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public ngAfterViewChecked(): void {
     this.zone.run(() => {
-      let footer = document.querySelector('.footer') as HTMLElement;
-      this.imgContent = this.element.querySelector('.image-content') as HTMLElement;
+      if (!this.matrixImagesComponent.imageContent) {
+        return;
+      }
+
+      this.imgContent = this.matrixImagesComponent.imageContent.nativeElement as HTMLElement;
 
       if (!this.imgContent) {
         return;
       }
-
-      let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
 
       if (this.matrixImagesContainerHeight !== this.matrixImagesContainer.offsetHeight) {
         this.matrixImagesContainerHeight = this.matrixImagesContainer.offsetHeight;
         this.setZoomButtonPosition();
       }
 
-      if (
-        !this.element.querySelector('.image-content') || !imageClientRect.height ||
-        this.imageHeight === imageClientRect.height &&
-        this.guideHeight === this.guideContainer.offsetHeight) {
-        return;
+      let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
+
+      if (!imageClientRect.height ||
+          this.imageHeight === imageClientRect.height &&
+          this.guideHeight === this.guideContainer.offsetHeight) {
+          return;
       }
 
       this.imageHeight = imageClientRect.height;
@@ -374,6 +392,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       let imageMarginLeft: string = window.getComputedStyle(this.imgContent).getPropertyValue('margin-left');
       this.imageMargin = parseFloat(imageMarginLeft) * 2;
 
+      let footer = document.querySelector('.footer') as HTMLElement;
       this.footerHeight = footer.offsetHeight;
 
       setTimeout(() => {
@@ -382,7 +401,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       if (this.row === 1) {
         setTimeout(() => {
-
           this.getPaddings({});
           return;
         }, 0);
@@ -406,7 +424,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     if (this.isMobile) {
-      let fixedStreet = this.element.querySelector('.street-container.fixed') as HTMLElement;
+      let fixedStreet: HTMLElement = this.streetContainer.classList.contains('fixed') ? this.streetContainer as HTMLElement : undefined;
 
       if (fixedStreet) {
         this.getVisibleRows(fixedStreet.offsetHeight);

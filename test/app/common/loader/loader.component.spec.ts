@@ -1,6 +1,6 @@
 import { it, describe, inject, async, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
-import { LoaderComponent } from '../../../../app/common/loader/loader.component';
+import { LoaderComponent } from '../../../../src/shared/loader/loader.component';
 
 describe('LoaderComponent', () => {
   let mockCommonDependency = new MockCommonDependency();

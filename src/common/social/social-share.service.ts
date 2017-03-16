@@ -6,7 +6,6 @@ import { LanguageService } from '../language/language.service';
 @Injectable()
 export class SocialShareService {
     public document: Document = document;
-    public window: Window = window;
     public elementTagName: string = 'script';
     public facebookElementId: string = 'facebook-jssdk';
     public twitterElementId: string = 'twitter-wjs';

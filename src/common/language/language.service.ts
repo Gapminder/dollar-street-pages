@@ -14,7 +14,6 @@ import { stringify } from '@angular/core/src/facade/lang';
 export class LanguageService {
   public http: Http;
   public location: Location;
-  public window: Window = window;
   public currentLanguage: string;
   public defaultLanguage: string;
   public urlChangeService: UrlChangeService;
@@ -100,7 +99,7 @@ export class LanguageService {
       });
     } else {
         return Observable.create((observer: Observer<any>) => {
-           this.loadLanguage().subscribe((trans: any) => {
+          this.loadLanguage().subscribe((trans: any) => {
             if(typeof key === 'string') {
               observer.next(trans[key as string]);
 

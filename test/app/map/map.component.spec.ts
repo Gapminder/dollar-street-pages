@@ -1,8 +1,8 @@
 import { it, describe, inject, async, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
-import { MockCommonDependency } from '../../app/common-mocks/mocked.services.ts';
-import { MockService } from '../common-mocks/mock.service.template.ts';
-import { mapdata } from './mocks/data.ts';
-import { MapComponent } from '../../../app/map/map.component';
+import { MockCommonDependency } from '../../app/common-mocks/mocked.services';
+import { MockService } from '../common-mocks/mock.service.template';
+import { mapdata } from './mocks/data';
+import { MapComponent } from '../../../src/map/map.component';
 import { Observable } from 'rxjs';
 
 let tmpl = require('./mocks/map.template.html');
