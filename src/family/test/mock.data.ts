@@ -5,7 +5,7 @@ export const mockCountriesData: any = {"success":true,
                                      {"region":"58b69787f5b316278d56419b",
                                       "originRegionName":"58b69787f5b316278d56419b",
                                       "countries":[
-                                          {"country":"Bolivia",
+                                          {"country":"Боливия",
                                            "empty":false,
                                            "region":"58b69787f5b316278d56419b",
                                            "originRegionName":"58b69787f5b316278d56419b",
