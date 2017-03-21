@@ -131,8 +131,17 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnDestroy(): void {
-    this.resizeSubscribe.unsubscribe();
-    this.viewBlockServiceSubscribe.unsubscribe();
+    if(this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
+    if(this.viewBlockServiceSubscribe) {
+      this.viewBlockServiceSubscribe.unsubscribe();
+    }
+
+    if(this.streetServiceSubscribe) {
+      this.streetServiceSubscribe.unsubscribe();
+    }
   }
 
   public openPopUp(): void {
