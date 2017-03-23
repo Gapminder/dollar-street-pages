@@ -9,6 +9,7 @@ import { UrlChangeService } from '../url-change/url-change.service';
 import { LocalStorageService } from '../guide/localstorage.service';
 import { TranslateService } from 'ng2-translate';
 import { stringify } from '@angular/core/src/facade/lang';
+import { EventEmitter } from 'events';
 
 @Injectable()
 export class LanguageService {
@@ -25,6 +26,8 @@ export class LanguageService {
   public localStorageService: LocalStorageService;
   public translationsLoadedSubscribe: Subscription;
   public documentLoadedSubscription: Subscription;
+  public translationsLoadedEvent: EventEmitter = new EventEmitter();
+  public translationsLoadedString: string = 'TRANSLATIONS_LOADED';
 
   public constructor(@Inject(Http) http: Http,
                      @Inject(Location) location: Location,
@@ -69,6 +72,7 @@ export class LanguageService {
 
     this.loadLanguage().subscribe((trans: any) => {
       this.translations = trans;
+      this.translationsLoadedEvent.emit(this.translationsLoadedString, trans);
     });
 
     this.onLangChangeSubscribe = this.translate.onLangChange.subscribe((data: any) => {
@@ -81,43 +85,15 @@ export class LanguageService {
   }
 
   public getTranslation(key: string | string[]): Observable<any> {
-    if (this.translations) {
-      return Observable.create((observer: Observer<any>) => {
-        if(typeof key === 'string') {
-          observer.next(this.translations[key as string]);
-
-        } else if (typeof key === 'object') {
-          let obj: any = {};
-
-          key.forEach((el: any) => {
-            obj[el] = this.translations[el];
-          });
-
-          observer.next(obj);
-        }
-
-        observer.complete();
-      });
-    } else {
-        return Observable.create((observer: Observer<any>) => {
-           this.loadLanguage().subscribe((trans: any) => {
-            if(typeof key === 'string') {
-              observer.next(trans[key as string]);
-
-            } else if (typeof key === 'object') {
-              let obj: any = {};
-
-              key.forEach((el: any) => {
-                obj[el] = trans[el];
-              });
-
-              observer.next(obj);
-            }
-
-            observer.complete();
-          });
+    return Observable.create((observer: Observer<any>) => {
+      if (this.translations) {
+        this.processTranslation(observer, this.translations, key);
+      } else {
+        Observable.fromEvent(this.translationsLoadedEvent, this.translationsLoadedString).subscribe((trans: any) => {
+          this.processTranslation(observer, trans, key);
         });
       }
+    });
   }
 
   public loadLanguage(): Observable<any> {
@@ -130,7 +106,7 @@ export class LanguageService {
           return;
         }
 
-        const translation: any = res.data.interface;
+        const translation: any = res.data;
 
         this.translations = translation;
 
@@ -173,5 +149,20 @@ export class LanguageService {
     queryParams.lang = this.currentLanguage;
 
     this.urlChangeService.replaceState(path, Config.objToQuery(queryParams), true);
+  }
+
+  private processTranslation(observer: Observer<any>, translations: any, key: string | string[]): void {
+    if(typeof key === 'string') {
+      observer.next(translations[key as string]);
+
+    } else if (typeof key === 'object') {
+      let obj: any = {};
+
+      key.forEach((el: any) => {
+        obj[el] = translations[el];
+      });
+
+      observer.next(obj);
+    }
   }
 }
