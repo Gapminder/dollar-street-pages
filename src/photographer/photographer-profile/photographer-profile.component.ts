@@ -60,10 +60,6 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
       this.photographerTranslate = trans.PHOTOGRAPHER;
       this.showDetailsTranslate = trans.SHOW_DETAILS;
       this.hideDetailsTranslate = trans.HIDE_DETAILS;
-
-      if (this.getPhotographer) {
-        this.getPhotographer.emit(`<span class="sub-title">${this.photographerTranslate}:</span> ${this.photographer.firstName} ${this.photographer.lastName}`);
-      }
     });
 
     this.photographerProfileServiceSubscribe = this.photographerProfileService.getPhotographerProfile(query)
@@ -85,11 +81,15 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   }
 
   public isShowInfoMore(photographer: any): boolean {
-    return photographer.company ||
+    if(photographer) {
+      return photographer.company ||
       photographer.description ||
       photographer.google ||
       photographer.facebook ||
       photographer.twitter ||
       photographer.linkedIn;
+    }
+
+    return false;
   }
 }
