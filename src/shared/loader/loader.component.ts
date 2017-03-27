@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class LoaderComponent implements OnInit {
-  private top: number = 0;
+  public top: number = 0;
 
   public ngOnInit(): void {
     let header = document.querySelector('.main-header');

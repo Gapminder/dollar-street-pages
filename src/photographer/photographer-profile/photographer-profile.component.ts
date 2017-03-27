@@ -3,6 +3,22 @@ import { Subscription } from 'rxjs/Subscription';
 import { MathService, LanguageService } from '../../common';
 import { PhotographerProfileService } from './photographer-profile.service';
 
+interface Photographer {
+  firstName?: string;
+  lastName?: string;
+  country?: any;
+  description: string;
+  video?: any;
+  company?: any;
+  google?: string;
+  twitter?: string;
+  facebook?: string;
+  linkedIn?: string;
+  avatar?: string;
+  imagesCount?: number;
+  placesCount?: number;
+}
+
 @Component({
   selector: 'photographer-profile',
   templateUrl: './photographer-profile.component.html',
@@ -16,18 +32,18 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   public getTranslationSubscribe: Subscription;
 
-  protected isShowInfo: boolean = false;
+  public isShowInfo: boolean = false;
 
   @Input()
-  private photographerId: string;
+  public photographerId: string;
   @Output()
-  private getPhotographer: EventEmitter<any> = new EventEmitter<any>();
+  public getPhotographer: EventEmitter<any> = new EventEmitter<any>();
 
-  private math: MathService;
-  private photographer: {firstName?: string, lastName?: string} = {};
-  private photographerProfileServiceSubscribe: Subscription;
-  private photographerProfileService: PhotographerProfileService;
-  private languageService: LanguageService;
+  public math: MathService;
+  public photographer: Photographer;
+  public photographerProfileServiceSubscribe: Subscription;
+  public photographerProfileService: PhotographerProfileService;
+  public languageService: LanguageService;
 
   public constructor(math: MathService,
                      photographerProfileService: PhotographerProfileService,
@@ -68,7 +84,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
     this.getTranslationSubscribe.unsubscribe();
   }
 
-  protected isShowInfoMore(photographer: any): boolean {
+  public isShowInfoMore(photographer: any): boolean {
     return photographer.company ||
       photographer.description ||
       photographer.google ||
