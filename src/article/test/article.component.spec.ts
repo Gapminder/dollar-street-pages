@@ -13,7 +13,6 @@ import { ArticleComponent } from '../article.component';
 import { ArticleService } from '../article.service';
 
 describe('ArticleComponent Test', () => {
-
   let componentInstance: ArticleComponent;
   let componentFixture: ComponentFixture<ArticleComponent>;
   let debugElement: DebugElement;
