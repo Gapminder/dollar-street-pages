@@ -1,0 +1,275 @@
+  <div class="donate-header">
+    <div class="container-2">
+      <div class="flex-row heading-wrap">
+        <div class="description">
+          <h1 class="donate-heading">{{'SUPPORT_DOLLAR_STREET' | translate}}</h1>
+          <p class="donate-text" [innerHTML]="supportDescription"></p>
+        </div>
+        <div class="video">
+          <div class="w-embed w-video" style="padding-top: 56.17021276595745%;">
+            <iframe class="embedly-embed" src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FrU0WukbxQ7A%3Ffeature%3Doembed&url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DrU0WukbxQ7A&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FrU0WukbxQ7A%2Fhqdefault.jpg&key=c4e54deccf4d4ec997a64902e9a30300&type=text%2Fhtml&schema=youtube" scrolling="no" frameborder="0" allowfullscreen=""></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="donate-money-section">
+      <h2 class="donate-title money">{{'DONATE_MONEY' | translate}}</h2>
+      <div class="donate-money flex-row">
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/1home.png" width="60">
+              </div>
+              <h3 class="opt-name">{{'ADD_HOME_SMALL' | translate}}</h3>
+              <p class="opt-desc">{{'ADD_HOME_SMALL_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 1,500</div><a (click)="purchaseClicked(1500)" class="donate-btn w-button">{{'DONATE' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/5homes.png" width="155">
+              </div>
+              <h3 class="opt-name">{{'ADD_FIVE_HOMES' | translate}}</h3>
+              <p class="opt-desc">{{'ADD_FIVE_HOMES_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 7,000</div><a (click)="purchaseClicked(1500)" class="donate-btn w-button">{{'DONATE' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img sizes="(max-width: 479px) 100vw, (max-width: 767px) 38vw, (max-width: 991px) 270px, 19vw" src="assets/img/donate/10homes.png" srcset="assets/img/donate/10homes-p-500x.png 500w, assets/img/donate/10homes.png 539w" width="270">
+              </div>
+              <h3 class="opt-name">{{'ADD_TEN_HOMES' | translate}}</h3>
+              <p class="opt-desc">{{'ADD_TEN_HOMES_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 12,000</div><a (click)="purchaseClicked(12000)" class="donate-btn w-button">{{'DONATE' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img sizes="(max-width: 479px) 100vw, (max-width: 767px) 38vw, (max-width: 991px) 253px, 19vw" src="assets/img/donate/video.png" srcset="assets/img/donate/video-p-500x.png 500w, assets/img/donate/video.png 506w" width="253">
+              </div>
+              <h3 class="opt-name">{{'ADD_VIDEOS' | translate}}</h3>
+              <p class="opt-desc">{{'ADD_VIDEOS_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 500</div><a (click)="purchaseClicked(500)" class="donate-btn w-button">{{'DONATE' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/currency.png" width="71">
+              </div>
+              <h3 class="opt-name">{{'ADD_YOUR_CURRENCY' | translate}}</h3>
+              <p class="opt-desc">{{'ADD_YOUR_CURRENCY_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 100</div><a (click)="purchaseClicked(100)" class="donate-btn w-button">{{'DONATE' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/unit.png" width="65">
+              </div>
+              <h3 class="opt-name">{{'CHANGE_TIME_UNIT' | translate}}</h3>
+              <p class="opt-desc">{{'CHANGE_TIME_UNIT_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 100</div><a (click)="purchaseClicked(100)" class="donate-btn w-button">{{'DONATE' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/custom.png" width="65">
+              </div>
+              <h3 class="opt-name">{{'CUSTOM' | translate}}</h3>
+              <p class="opt-desc">{{'CUSTOM_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="form-wrapper w-form">                
+                  <div class="w-embed">
+                    <input #donateValue class="custom-input w-input" type="text" maxlength="6" placeholder="Your Amount" data-name="Amount" name="Amount" id="Amount" required="required" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                  </div>
+              </div>
+              <a (click)="purchaseClicked(null)" class="donate-btn w-button">{{'DONATE' | translate}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="donate-time-section">
+      <h2 class="donate-title time">{{'DONATE_TIME' | translate}}</h2>
+      <div class="donate-time flex-row">
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/translate.png" width="54">
+              </div>
+              <h3 class="opt-name">{{'TRANSLATE' | translate}}</h3>
+              <p class="opt-desc">{{'TRANSLATE_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap"><a class="donate-btn w-button" href="https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform" target="_blank">{{'SIGN_UP' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/1home.png" width="60">
+              </div>
+              <h3 class="opt-name">{{'ADD_YOUR_HOME' | translate}}</h3>
+              <p class="opt-desc">{{'ADD_YOUR_HOME_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap"><a class="donate-btn w-button" href="https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform" target="_blank">{{'SIGN_UP' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/teach.png" width="51">
+              </div>
+              <h3 class="opt-name">{{'TEACH' | translate}}</h3>
+              <p class="opt-desc">{{'TEACH_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap"><a class="donate-btn w-button" href="https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform" target="_blank">{{'SIGN_UP' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/idea.png" width="64">
+              </div>
+              <h3 class="opt-name">{{'SOME_IDEA' | translate}}</h3>
+              <p class="opt-desc">{{'SOME_IDEA_DESCRIPTION' | translate}}</p>
+            </div>
+            <div class="cost-wrap"><a class="donate-btn w-button" href="https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform" target="_blank">{{'SIGN_UP' | translate}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="backers-section">
+      <div class="additional-info">
+        <div class="backers-row flex-row">
+          <div class="backers-wrap hidden">
+            <h2 class="backers donate-title">{{'SOME_BACKERS' | translate}}</h2>
+            <div class="backers-list">
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Chad Engle</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Johanna Arnold</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Jakob Lehmann</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Lian Baumann</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Ulrike Nebert</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Joshua Berger</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Xaver Richter</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Lena Ludwig</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Finn Kuhn</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Wolfgang Jung</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Emelie Busch</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Emelie Heinrich</div>
+                </div>
+              </div>
+              <div class="backer-flex-col">
+                <div class="backer"><img class="backer-photo" src="assets/img/donate/photo-example.jpg">
+                  <div class="backer-name">Robin Sommer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="faq-wrap">
+            <h2 class="donate-title faq-title">{{'FAQ' | translate}}</h2>
+            <accordion [accordionData]="accordionData"></accordion>
+            <p class="all-flags" [innerHTML]="faqLink"></p>
+          </div>
+        </div>
+      </div>
+  </div>
+
+<div #aboutDialog
+     class="about-data-container closeMenu"
+     [style.left.px]="isShowAboutData ? aboutDataPosition.left : '-1000'"
+     [style.top.px]="isShowAboutData ? aboutDataPosition.top : '-1000'"
+     [style.lineHeight.px]="isShowAboutDataFullScreen ? aboutDataPosition.windowHeight : 0"
+     [class.open]="isShowAboutDataFullScreen"
+     (click)="closeAboutPopUp($event)">
+  <div class="about-data-content"
+       [style.width.px]="aboutDataPosition.windowWidth">
+    <div class="about-data-header">
+      <h3>{{'DONATE' | translate}}</h3>
+      <span class="closeMenu">
+        <img class="closeMenu close-button pull-right"
+            src="/assets/img/close-button.svg"
+            alt="Close">
+       </span>
+    </div>
+
+    <div class="about-data-body"
+         [style.maxHeight.px]="maxHeightPopUp">
+      <p>Thanks for donate!</p>
+    </div>
+  </div>
+</div>

@@ -17,6 +17,8 @@ export class Config {
 
   public static windowInnerWidth: number = window.innerWidth;
 
+  public static stripPublicKey: string = 'pk_test_t5Ct4SMWKOD7uycxzbmaerp3';
+
   public static getCoordinates(querySelector: string, cb: any): any {
     let box: any = document.querySelector(querySelector).getBoundingClientRect();
 

@@ -59,6 +59,8 @@ import { Observable } from 'rxjs';
 
 import { DropdownModule } from 'ng2-bootstrap/components/dropdown';
 
+import { AccordionComponent } from './accordion/accordion.component';
+
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 
 /* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
@@ -93,7 +95,8 @@ export class CustomLoader implements TranslateLoader {
     StreetFilterComponent,
     StreetFamilyComponent,
     IncomeFilterComponent,
-    IsImageLoadedDirective
+    IsImageLoadedDirective,
+    AccordionComponent
   ],
   imports: [
     HttpModule,
@@ -134,7 +137,8 @@ export class CustomLoader implements TranslateLoader {
     IncomeFilterComponent,
     MainMenuComponent,
     IsImageLoadedDirective,
-    TranslateModule
+    TranslateModule,
+    AccordionComponent
   ]
 })
 

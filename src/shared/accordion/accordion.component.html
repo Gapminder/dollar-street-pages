@@ -1,0 +1,13 @@
+<div class="accordion-super-wrap">
+  <div class="accordion-section"
+       *ngFor="let section of accordionData; let i = index">
+    <div class="accordion-toggle"
+         [ngClass]="{first: i == 0}">
+      <div class="accordion-title">{{section.sectionName}}</div>
+      <div class="accordion-arrow"></div>
+    </div>
+    <nav class="accordion-list">    
+      <p class="list-item">{{section.sectionContent}}</p>
+    </nav>
+  </div>
+</div>

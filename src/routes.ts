@@ -10,6 +10,7 @@ import { AboutComponent } from './about';
 import { MapComponent } from './map';
 import { MatrixComponent } from './matrix';
 import { PhotographerComponent } from './photographer';
+import { DonateComponent } from './donate';
 
 export const routes: Routes = [
   {path: 'matrix', component: MatrixComponent},
@@ -21,6 +22,7 @@ export const routes: Routes = [
   {path: 'country/:id', component: CountryComponent},
   {path: 'about', component: AboutComponent},
   {path: 'article/:id', component: ArticleComponent},
+  {path: 'donate', component: DonateComponent},
   {path: '**', redirectTo: 'matrix'}
 ];
 
