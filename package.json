@@ -80,7 +80,11 @@
     "firebase": "3.6.4",
     "gh-pages": "0.12.0",
     "gulp": "3.9.1",
+<<<<<<< 6b8371432acba7daa152d1f92505fc58858dab37
     "gulp-tslint": "7.1.0",
+=======
+    "gulp-tslint": "8.0.0",
+>>>>>>> test(photographer): add tests for photographer page
     "html-loader": "0.4.4",
     "istanbul-instrumenter-loader": "1.2.0",
     "jasmine": "2.5.2",
@@ -92,9 +96,9 @@
     "karma-chrome-launcher": "2.0.0",
     "karma-cli": "1.0.1",
     "karma-coverage": "1.1.1",
+    "karma-coverage-istanbul-reporter": "0.2.0",
     "karma-jasmine": "1.1.0",
     "karma-jasmine-html-reporter": "0.2.2",
-    "karma-coverage-istanbul-reporter": "0.2.0",
     "karma-phantomjs-launcher": "1.0.2",
     "karma-remap-istanbul": "0.4.0",
     "karma-sauce-launcher": "1.1.0",
@@ -112,7 +116,11 @@
     "ts-node": "1.7.3",
     "tslint": "4.5.1",
     "tslint-config-valorsoft": "1.1.1",
+<<<<<<< 6b8371432acba7daa152d1f92505fc58858dab37
     "typescript": "2.2.0",
+=======
+    "typescript": "2.2.2",
+>>>>>>> test(photographer): add tests for photographer page
     "url-loader": "0.5.7"
   },
   "repository": {

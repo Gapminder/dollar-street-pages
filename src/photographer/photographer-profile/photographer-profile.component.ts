@@ -31,6 +31,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   public hideDetailsTranslate: string;
 
   public getTranslationSubscribe: Subscription;
+  public photographerProfileServiceSubscribe: Subscription;
 
   public isShowInfo: boolean = false;
 
