@@ -59,7 +59,7 @@ describe('LanguageService', () => {
                 })
             ],
             providers: [
-                LanguageService,
+                LanguageService,                
                 UrlChangeService,
                 TranslateService,
                 LocationStrategy,
@@ -76,7 +76,7 @@ describe('LanguageService', () => {
                         return new Http(backend, defaultOptions);
                     }
                 },
-                { provide: Location, useClass: SpyLocation }
+                { provide: Location, useClass: SpyLocation },
             ]
         });
 
@@ -90,6 +90,8 @@ describe('LanguageService', () => {
 
         let aboutTranslation: string = void 0;
         let worldTranslation: string = void 0;
+
+        languageService.translations = { ABOUT: 'About', WORLD: 'World'};
 
         expect(languageService.getLanguageIso()).toBe('en_US');
 

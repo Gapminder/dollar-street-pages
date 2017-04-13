@@ -1,0 +1,65 @@
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { By }              from '@angular/platform-browser';
+import { DebugElement }    from '@angular/core';
+import { Location, LocationStrategy } from '@angular/common';
+
+import { HttpModule } from '@angular/http';
+
+import { Observable } from 'rxjs/Observable';
+
+import { MathService, LanguageService, UrlChangeService, LoaderService } from '../../../common';
+
+import { PhotographerPlacesComponent } from '../photographer-places.component';
+import { PhotographerPlacesService } from '../photographer-places.service';
+
+describe('PhotographerPlacesComponent', () => {
+    let componentInstance: PhotographerPlacesComponent;
+    let componentFixture: ComponentFixture<PhotographerPlacesComponent>;
+
+    class MockUserLanguageService {
+        public getLanguageParam(): string {
+            return 'lang=en';
+        }
+    }
+
+    class MockPhotographerPlacesService {
+        public getPhotographerPlaces(): Observable<any> {
+            return Observable.of({data: {places: [{},{}]}});
+        }
+    }
+
+    beforeEach(async() => {
+        TestBed.configureTestingModule({
+            imports: [HttpModule],
+            declarations: [PhotographerPlacesComponent],
+            providers: [
+                Location,
+                LocationStrategy,
+                MathService,
+                LoaderService,
+                { provide: PhotographerPlacesService, useClass: MockPhotographerPlacesService },
+                { provide: LanguageService, useClass: MockUserLanguageService }
+            ]
+        });
+
+        componentFixture = TestBed.overrideComponent(PhotographerPlacesComponent, {
+            set: {
+                template: ''
+            }
+        }).createComponent(PhotographerPlacesComponent);
+
+        componentInstance = componentFixture.componentInstance;
+    });
+
+    it('ngOnInit(), ngOnDestroy()', () => {
+        componentInstance.ngOnInit();
+
+        expect(componentInstance.photographerPlacesServiceSubscribe).toBeDefined();
+
+        spyOn(componentInstance.photographerPlacesServiceSubscribe, 'unsubscribe');
+
+        componentInstance.ngOnDestroy();
+
+        expect(componentInstance.photographerPlacesServiceSubscribe.unsubscribe).toHaveBeenCalled();
+    });
+});
