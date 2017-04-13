@@ -3,23 +3,24 @@
 import { DataProvider } from '../Data/DataProvider';
 import { FooterPage } from '../Pages/FooterPage';
 let using = require ('jasmine-data-provider');
-import { browser } from 'protractor/globals';
+import { browser } from 'protractor';
 
-describe('Ambassadors Page test', () => {
+describe('Team Page test', () => {
   beforeAll(() => {
-    browser.get('/ambassadors');
+    browser.get('team');
+    browser.sleep(2000);
   });
   afterAll(() => {
     FooterPage.checkFooterText();
     FooterPage.checkFooterImages();
   });
   using(DataProvider.ambassadorsPageText, (data:any, description:string) => {
-    it('Check ' + description + ' on Ambassadors Page', () => {
+    it('Check ' + description + ' on Team Page', () => {
       expect(data.element().getText()).toEqual(data.actualResult);
     });
   });
   using(DataProvider.ambassadorsPageBoolean, (data:any, description:string) => {
-    it('Check ' + description + ' on Ambassadors Page', () => {
+    it('Check ' + description + ' on Team Page', () => {
       expect(data.element().isDisplayed()).toBeTruthy();
     });
   });
