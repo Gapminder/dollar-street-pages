@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { sortBy, chain, differenceBy } from 'lodash';
 
-import { MathService, StreetSettingsService } from '../../common';
+import { MathService, StreetSettingsService, LanguageService } from '../../common';
 import { StreetDrawService } from './street.service';
 
 @Component({
@@ -31,6 +31,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   public hoverPlace: Subject<any>;
   @Output('filterStreet')
   public filterStreet: EventEmitter<any> = new EventEmitter<any>();
+  public languageService: LanguageService;
+  public getTranslationSubscribe: Subscription;
   public street: any;
   public regions: any;
   public thingname: any;
@@ -57,12 +59,14 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
                      activatedRoute: ActivatedRoute,
                      math: MathService,
                      streetSettingsService: StreetSettingsService,
-                     streetDrawService: StreetDrawService) {
+                     streetDrawService: StreetDrawService,
+                     languageService: LanguageService) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
     this.street = streetDrawService;
     this.streetSettingsService = streetSettingsService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): any {
@@ -73,6 +77,11 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
     this.street.set('isInit', true);
     this.street.set('chosenPlaces', []);
+
+    this.getTranslationSubscribe = this.languageService.getTranslation(['POOREST', 'RICHEST']).subscribe((trans: any) => {
+      this.street.poorest = trans.POOREST.toUpperCase();
+      this.street.richest = trans.RICHEST.toUpperCase();
+    });
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
       let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
@@ -217,6 +226,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     if (this.chosenPlacesSubscribe) {
       this.chosenPlacesSubscribe.unsubscribe();
     }
+
+    this.getTranslationSubscribe.unsubscribe();
 
     this.streetFilterSubscribe.unsubscribe();
     this.streetServiceSubscribe.unsubscribe();
