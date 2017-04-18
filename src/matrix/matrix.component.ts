@@ -443,6 +443,10 @@ export class MatrixComponent implements OnInit, OnDestroy {
   }
 
   public getPaddings(options: {isGuide?: boolean}): void {
+    if (!this.imgContent) {
+      return;
+    }
+
     let {isGuide} = options;
 
     let headerHeight: number = this.headerContainer.offsetHeight;
