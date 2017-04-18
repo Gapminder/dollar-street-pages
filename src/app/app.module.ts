@@ -19,6 +19,7 @@ import { ArticleModule } from '../article';
 import { MatrixModule } from '../matrix';
 import { FamilyModule } from '../family';
 import { AboutModule } from '../about';
+import { DonateModule } from '../donate';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { AboutModule } from '../about';
     FamilyModule,
     FormsModule,
     AboutModule,
+    DonateModule,
     routing
   ],
   bootstrap: [AppComponent]

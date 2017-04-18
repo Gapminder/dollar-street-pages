@@ -107,10 +107,10 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
-        this.shareTranslation = trans;
+      this.shareTranslation = trans;
 
-        this.processShareTranslation();
-      });
+      this.processShareTranslation();
+    });
   }
 
   public processShareTranslation(): void {
@@ -165,28 +165,33 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     switch (url) {
       case '/matrix':
         this.goToMatrixPage(removeStorage);
-
         break;
+
       case '/about':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
-        this.router.navigate([url], {queryParams: {}});
-
+        this.router.navigate([url], { queryParams: {} });
         break;
+
       case 'https://www.gapminder.org/category/dollarstreet/':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page', {});
         this.window.open(url, '_blank');
-
         break;
+
+      case '/donate':
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Donate page', {});
+        this.router.navigate([url], { queryParams: {} });
+        break;
+
       case '/map':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
-        this.router.navigate([url], {queryParams: {thing: 'Families'}});
-
+        this.router.navigate([url], { queryParams: { thing: 'Families' } });
         break;
+
       case 'https://www.gapminder.org':
         this.angulartics2GoogleAnalytics.eventTrack('Go to Gapminder.org from menu', {});
         this.window.open(url, '_blank');
-
         break;
+
       case 'https://getsatisfaction.com/gapminder':
         this.angulartics2GoogleAnalytics.eventTrack('Go to Getsatisfaction.com/gapminder from menu', {});
         this.window.open(url, '_blank');
@@ -231,9 +236,9 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (this.isMatrixComponent) {
-      this.selectedFilter.emit({url: this.objToQuery(queryParams)});
+      this.selectedFilter.emit({ url: this.objToQuery(queryParams) });
     } else {
-      this.router.navigate(['/matrix'], {queryParams: queryParams});
+      this.router.navigate(['/matrix'], { queryParams: queryParams });
     }
 
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
