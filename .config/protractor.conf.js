@@ -2,7 +2,7 @@
 
 exports.config = {
 
-  baseUrl: 'http://www.gapminder.org/dollar-street/',
+  baseUrl: 'http://localhost:4200/dollar-street/',
 
   specs: [
     '../test-e2e/app/Tests/**/*.e2e.js'

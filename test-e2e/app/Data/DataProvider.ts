@@ -4,7 +4,7 @@ import { ElementFinder, ElementArrayFinder } from 'protractor/built/index';
 
 export class DataProvider {
 
-  public static blogPage:any = {
+  /*public static blogPage:any = {
     'h1': {element: ():ElementFinder => $('h2[class*="heading pull-left"]'), actualResult: 'Blog'}
   };
 
@@ -16,7 +16,7 @@ export class DataProvider {
 
   public static blogPosts:any = {
     'PostTitle': {element: ():ElementFinder => $('.dynamic-details.col-md-12>h1')}
-  };
+  };*/
 
   public static countryPageText:any = {
     'VisitedFamilies': {element: ():ElementFinder => $('p[class*="home"]')},
@@ -28,9 +28,8 @@ export class DataProvider {
     'getDollarStreet': {element: ():ElementFinder => $('.logo-container>p'), actualResult: 'DOLLAR STREET'},
     'Home': {element: ():ElementFinder => element.all(by.css('.links>a')).get(0), actualResult: 'Home'},
     'About': {element: ():ElementFinder => element.all(by.css('.links>a')).get(1), actualResult: 'About'},
-    'Blog': {element: ():ElementFinder => element.all(by.css('.links>a')).get(2), actualResult: 'Blog'},
-    'Team': {element: ():ElementFinder => element.all(by.css('.links>a')).get(3), actualResult: 'Team'},
-    'Photographers': {element: ():ElementFinder => element.all(by.css('.links>a')).get(4), actualResult: 'Photographers'}
+    'Team': {element: ():ElementFinder => element.all(by.css('.links>a')).get(2), actualResult: 'Team'},
+    'Photographers': {element: ():ElementFinder => element.all(by.css('.links>a')).get(3), actualResult: 'Photographers'}
   };
 
   public static footerBooleanInfo:any = {

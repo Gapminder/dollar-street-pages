@@ -209,9 +209,11 @@ export class StreetDrawService {
       .attr('y', this.height - 4)
       .attr('fill', '#767d86');
 
-    const richestWidth: number = parseFloat(this.svg
+    let richestWidth: number = parseFloat(this.svg
       .selectAll('text.richest')
       .style('width').toString());
+
+    richestWidth = !isNaN(richestWidth) ? richestWidth : 54;
 
     this.svg
       .selectAll('text.richest')
@@ -281,7 +283,6 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -301,7 +302,6 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -321,7 +321,6 @@ export class StreetDrawService {
       .style('cursor', 'grab')
 
       .on('mousedown', (): void => {
-        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -605,7 +604,6 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
-          event.preventDefault();
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
@@ -757,7 +755,6 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', 'white')
         .on('mousedown', (): void => {
-          event.preventDefault();
           this.sliderRightMove = true;
         })
         .on('touchstart', (): any => this.sliderRightMove = true);

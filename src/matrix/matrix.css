@@ -7,7 +7,6 @@ matrix-images {
 }
 
 .matrix-header {
-  position: fixed !important;
   top: 0;
   left: 0;
   right: 0;
@@ -104,19 +103,14 @@ matrix-images {
   color: #767d86;
 }
 
-@media (min-width: 600px) {
-  matrix-images {
-    padding-top: 112px;
-  }
-}
-
 @media (max-width: 599px) {
   .matrix-header {
-    position: absolute !important;
+    position: relative;
   }
 
   .street-container.fixed {
     position: fixed;
+    z-index: 999;
     top: 0;
   }
 

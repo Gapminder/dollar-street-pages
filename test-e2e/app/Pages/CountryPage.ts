@@ -7,8 +7,8 @@ import { Instance } from '../Data/TypeInstance';
 
 export class CountryPage {
   public static countryName:ElementFinder = $('h2[class*="heading"]');
-  public static numberOfFamilies:ElementFinder = $('div[id*="item-profile' + Instance.additionToInstance + '"] .home span[class*="pull-right"]');
-  public static numberOfPhotos:ElementFinder = $('p[class="photo"] span[class="pull-right"]');
+  public static numberOfFamilies:ElementFinder = $('div[id*="item-profile' + Instance.additionToInstance + '"] .home span[class*="total-count"]');
+  public static numberOfPhotos:ElementFinder = $('p[class="photo"] span[class="total-count"]');
   public static numberOfFamiliesEach:ElementArrayFinder = element.all(by.css('.custom-button'));
   public static numberOfPhotosEachFamily:ElementArrayFinder = element.all(by.css('.place-country>p>span'));
   public static bigMap:ElementFinder = $('div[class*="header"] img[class*="map map_gray"]');
