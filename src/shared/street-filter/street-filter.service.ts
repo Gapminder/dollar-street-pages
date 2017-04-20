@@ -584,13 +584,19 @@ export class StreetFilterDrawService {
         .attr('fill', '#767d86');
     }
 
+    const leftScrollTextStyle: {width: any; height: any;} = this.leftScrollText.node().getBBox();
+    const rightScrollTextStyle: {width: any; height: any;} = this.rightScrollText.node().getBBox();
+
+    const leftScrollTextWidth: number = parseInt(leftScrollTextStyle.width, 10);
+    const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);
+
     this.leftScrollText
       .text(`$${incomeL}`)
-      .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - parseInt(this.leftScrollText.style('width'), 10) / 2);
+      .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - leftScrollTextWidth / 2);
 
     this.rightScrollText
       .text(`$${incomeR}`)
-      .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - parseInt(this.rightScrollText.style('width'), 10) / 2);
+      .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - rightScrollTextWidth / 2);
     return this;
   };
 }

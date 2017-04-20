@@ -2,16 +2,15 @@
 
 exports.config = {
 
-  baseUrl: 'http://www.gapminder.org/dollar-street/',
+   baseUrl: '', // todo need to add url to CMS
 
   specs: [
-    '../test-e2e/app/Tests/**/*.e2e.js'
+    '../test-e2e/app/CMS/**/*.e2e.js'
   ],
-   exclude: ['../test-e2e/**/MatrixPageTestsForPerformance.e2e.js', '../test-e2e/app/CMS/**/*.e2e.js', '../test-e2e/**/BlogPageTests.e2e.js'],
 
   framework: 'jasmine',
 
-  allScriptsTimeout: 11000,
+  allScriptsTimeout: 110000,
 
   jasmineNodeOpts: {
     showTiming: true,
@@ -26,20 +25,21 @@ exports.config = {
     {
       browserName: 'chrome',
       shardTestFiles: true,
-      maxInstances: 1,
+      maxInstances:2,
       count: 1
     }
-    /*{
+   /* {
       browserName: 'firefox',
-     'marionette': 'true' //TODO need to test it
       shardTestFiles: true,
+      marionette: 'true',
       maxInstances: 1
     }*/
   ],
+  chromeDriver: '/home/vs/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25',
+  seleniumServerJar: '/home/vs/node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-2.53.1.jar',
 
-  useAllAngular2AppRoots: true,
 
-onPrepare: function() {
+  onPrepare: function() {
    browser.driver.manage().window().maximize();
   }
   };

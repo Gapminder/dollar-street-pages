@@ -1,8 +1,8 @@
 'use strict';
 
 import { DataProvider } from '../Data/DataProvider';
-import { $ } from 'protractor/globals';
-import { using } from 'rxjs/observable/using';
+import { $ } from 'protractor';
+let using = require ('jasmine-data-provider');
 
 export class FooterPage {
   public static checkFooterText():any {
@@ -13,7 +13,7 @@ export class FooterPage {
 
   public static checkFooterImages():any {
     using(DataProvider.footerBooleanInfo, (data:any) => {
-      expect($(data.logoCSS).isDisplayed()).toBeTruthy();
+      expect($(data.logoCSS).isPresent()).toBeTruthy();
     });
   };
 }

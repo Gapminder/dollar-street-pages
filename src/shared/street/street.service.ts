@@ -342,8 +342,7 @@ export class StreetDrawService {
     }
 
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
-      .subscribe((e: MouseEvent)=> {
-
+      .subscribe((e: MouseEvent) => {
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
@@ -401,7 +400,7 @@ export class StreetDrawService {
     }
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
-      .subscribe((e: TouchEvent)=> {
+      .subscribe((e: TouchEvent) => {
           if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
             return;
           }
@@ -456,7 +455,7 @@ export class StreetDrawService {
       );
 
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
-      .subscribe(()=> {
+      .subscribe(() => {
 
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
@@ -466,7 +465,7 @@ export class StreetDrawService {
       });
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
-      .subscribe(()=> {
+      .subscribe(() => {
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
@@ -971,8 +970,11 @@ export class StreetDrawService {
         .attr('fill', '#767d86');
     }
 
-    let leftScrollTextWidth: number = this.svg.selectAll('text.left-scroll-label').node().getBoundingClientRect().width;
-    let rightScrollTextWidth: number = this.svg.selectAll('text.right-scroll-label').node().getBoundingClientRect().width;
+    const leftScrollTextStyle: {width: any; height: any;} = this.leftScrollText.node().getBBox();
+    const rightScrollTextStyle: {width: any; height: any;} = this.rightScrollText.node().getBBox();
+
+    const leftScrollTextWidth: number = parseInt(leftScrollTextStyle.width, 10);
+    const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);
 
     if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       incomeL = Math.round(this.minIncome);

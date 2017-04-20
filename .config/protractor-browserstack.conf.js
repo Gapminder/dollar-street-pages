@@ -2,14 +2,15 @@
 
 const path = require('path');
 const cwd = process.cwd();
-const bsConfig = require(cwd+'/bs-config.js');
+const bsConfig = require(cwd+'/bs-config.json');
 
 let config = {
-  baseUrl: 'http://consumer.dollarstreet.org/',
+  baseUrl: 'http://www.gapminder.org/dollar-street/',
 
   specs: [path.resolve(cwd)+'/test-e2e/*.js',
-          path.resolve(cwd)+'/test-e2e/**/*.e2e.ts'],
-  exclude: [],
+          path.resolve(cwd)+'/test-e2e/app/Tests/*.e2e.js'],
+  exclude: [path.resolve(cwd)+'/test-e2e/app/Tests/MatrixPageTestsForPerformance.e2e.js',
+            path.resolve(cwd)+'/test-e2e/app/Tests/BlogPageTests.e2e.js'],
 
   framework: 'jasmine',
 
@@ -35,7 +36,7 @@ let config = {
 
 if (process.env.TRAVIS) {
   config.multiCapabilities = [
-   /* {
+    /*{
       'browserName': 'chrome',
       'version': '50',
       'browserstack.user': process.env.BROWSER_STACK_USERNAME,
@@ -44,7 +45,10 @@ if (process.env.TRAVIS) {
       'browserstack.debug': 'true',
       'tunnel-identifier': process.env.TRAVIS_BUILD_NUMBER,
       'browserstack.local': 'true',
-    },*/
+     // shardTestFiles: true,
+      //maxInstances: 1,
+      //count: 1
+    }*/
     {
       'browserName': 'firefox',
       'version': '42.0',
@@ -53,9 +57,9 @@ if (process.env.TRAVIS) {
       'build': process.env.TRAVIS_BUILD_NUMBER,
       'browserstack.debug': 'true',
       'tunnel-identifier': process.env.TRAVIS_BUILD_NUMBER,
-      'browserstack.local': 'true',
-      shardTestFiles: true,
-      maxInstances: 4
+      'browserstack.local': 'true'
+      //shardTestFiles: true,
+      //maxInstances: 1
     },
   ];
   config.seleniumAddress = 'http://hub.browserstack.com/wd/hub';
