@@ -215,6 +215,8 @@ export class StreetDrawService {
     let svgElementNodes: any = svgElement.childNodes;
     let richestWidth = svgElementNodes[1].getBBox().width;
 
+    richestWidth = !isNaN(richestWidth) ? richestWidth : 54;
+
     this.svg
       .selectAll('text.richest')
       .attr('x', this.width + this.streetOffset - richestWidth);
