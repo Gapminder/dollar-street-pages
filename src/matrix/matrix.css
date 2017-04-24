@@ -110,7 +110,6 @@ matrix-images {
 
   .street-container.fixed {
     position: fixed;
-    z-index: 999;
     top: 0;
   }
 
