@@ -103,7 +103,7 @@
 
       <div class="hover_portrait_description">
         <div class="pull-left">
-          <span class="name" *ngIf="place.family">{{place.family}} {{ 'FAMILY' | translate }}</span>
+          <span class="name" *ngIf="place.family">{{place.family}} <span *ngIf="currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span></span>
           <span class="country" *ngIf="currentCountry">{{currentCountry}}</span>
         </div>
 

@@ -1,0 +1,105 @@
+<div class="donate-header">
+  <div class="container-2">
+    <div class="flex-row heading-wrap">
+      <div class="description">
+        <h1 class="donate-heading">SUPPORT DOLLAR STREET</h1>
+        <p class="donate-text">
+          Adding more homes and features, hosting all photos online and developing materials for classrooms is not free. Dollar Street is developed by Gapminder - a not-for-profit educational foundation (read more about Gapminder <a href="http://www.gapminder.org" target="_blank" class="donate-link">here</a>) - that depends on grants and donations.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="donate-section">
+    <div class="container-2">
+      <div class="donate-money flex-row">
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/1home-case1.png" width="185">
+              </div>
+              <h3 class="opt-name">Add a home</h3>
+              <p class="opt-desc">Your donation will make it possible for us to send out one of our photographers to do one more home for Dollar Street.</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 2,000</div><a (click)="purchaseClicked(2000)" class="donate-btn w-button">Donate</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/10homes-case1.png" width="185">
+              </div>
+              <h3 class="opt-name">Add 10 homes</h3>
+              <p class="opt-desc">Your donation will make it possible for us to send out one of our photographers to do 10 homes for Dollar Street.</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 17,000</div><a (click)="purchaseClicked(17000)" class="donate-btn w-button">Donate</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/star-case2.png" width="185">
+              </div>
+              <h3 class="opt-name">Where it's most needed</h3>
+              <p class="opt-desc">Help us develop the features most needed at the moment.</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="form-wrapper w-form">
+                <form data-name="Email Form" id="email-form" name="email-form">
+                  <div class="input-wrap">
+                    <div class="dollar-symbhol">$</div>
+                    <div class="w-embed">
+                      <input #donateValue class="custom-input w-input" type="text" maxlength="6" placeholder="Add Amount" data-name="Amount" name="Amount" id="Amount" required="required" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+                  </div>
+                </form>                
+              </div><a (click)="purchaseClicked(null)" class="donate-btn w-button">Donate</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/donate-time-case1-2.png" width="185">
+              </div>
+              <h3 class="opt-name">Volunteer</h3>
+              <p class="opt-desc">You think you can contribute in other ways? Please sign up to get started!
+                <br>(If you want to add your home, translate or teach, for example).</p>
+            </div>
+            <div class="cost-wrap"><a class="donate-btn w-button" target="_blank" href="https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform">Sign up!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div #aboutDialog
+     class="about-data-container closeMenu"
+     [style.left.px]="isShowAboutData ? aboutDataPosition.left : '-1000'"
+     [style.top.px]="isShowAboutData ? aboutDataPosition.top : '-1000'"
+     [style.lineHeight.px]="isShowAboutDataFullScreen ? aboutDataPosition.windowHeight : 0"
+     [class.open]="isShowAboutDataFullScreen"
+     (click)="closeAboutPopUp($event)">
+  <div class="about-data-content"
+       [style.width.px]="aboutDataPosition.windowWidth">
+    <div class="about-data-header">
+      <h3>{{'DONATE' | translate}}</h3>
+      <span class="closeMenu">
+        <img class="closeMenu close-button pull-right"
+            src="/assets/img/close-button.svg"
+            alt="Close">
+       </span>
+    </div>
+
+    <div class="about-data-body"
+         [style.maxHeight.px]="maxHeightPopUp">
+      <p>Thank you very much for your donation to<br>Dollar Street!</p>
+    </div>
+  </div>
+</div>
