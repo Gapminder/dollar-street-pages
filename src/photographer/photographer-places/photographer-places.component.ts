@@ -16,8 +16,8 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public photographerPlacesServiceSubscribe: Subscription;
   public photographerPlacesService: PhotographerPlacesService;
-
   public languageService: LanguageService;
+  public currentLanguage: string;
 
   public constructor(math: MathService,
                      loaderService: LoaderService,
@@ -27,6 +27,8 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
     this.loaderService = loaderService;
     this.photographerPlacesService = photographerPlacesService;
     this.languageService = languageService;
+
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {

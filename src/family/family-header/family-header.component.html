@@ -8,7 +8,7 @@
       <div class="title-info">
         <div class="left-title">
           <p class="sub-title">{{ 'HOME_OF' | translate }}</p>
-          <p class="title desktop">{{home.familyName}} {{ 'FAMILY' | translate }}</p>
+          <p class="title desktop">{{home.familyName}} <span *ngIf="currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span></p>
           <p class="title mobile">{{home.familyName}}, <a *ngIf="home.country"
                                                           [routerLink]="['/country', home.country?._id]"
                                                           [queryParams]="{}"
@@ -84,7 +84,7 @@
 
   <div class="description-container">
     <div class="left-title">
-      <p class="title desktop">{{home.familyName}} {{ 'FAMILY' | translate }}, {{home.country?.alias}}</p>
+      <p class="title desktop">{{home.familyName}} <span *ngIf="currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span>, {{home.country?.alias}}</p>
       <p class="title mobile">{{home.familyName}}, {{home.country?.alias}}</p>
     </div>
 

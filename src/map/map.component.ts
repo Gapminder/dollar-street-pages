@@ -65,6 +65,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public windowInnerWidth: number = window.innerWidth;
   public device: BrowserDetectionService;
   public languageService: LanguageService;
+  public currentLanguage: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -90,6 +91,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
+
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {

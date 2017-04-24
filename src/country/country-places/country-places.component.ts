@@ -19,6 +19,7 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   public countryPlacesService: CountryPlacesService;
   public countryPlacesServiceSubscribe: Subscription;
   public languageService: LanguageService;
+  public currentLanguage: string;
 
   public constructor(countryPlacesService: CountryPlacesService,
                      loaderService: LoaderService,
@@ -28,6 +29,8 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
     this.math = math;
     this.loaderService = loaderService;
     this.languageService = languageService;
+
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {
