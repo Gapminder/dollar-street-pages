@@ -3,9 +3,11 @@
 import { AbstractPage } from './AbstractPage';
 import { element, by, $ } from 'protractor';
 import { ElementFinder, ElementArrayFinder } from 'protractor';
+import { $$ } from 'protractor';
 
 export class MatrixPage {
   public static filterByThing:ElementFinder = $('.things-filter-button-content');
+  public static filterByCountry:ElementFinder = $('.countries-filter-button');
   public static thingLinkInSearch:ElementArrayFinder = element.all(by.css('.thing-name'));
   public static searchInFilterByThing:ElementFinder = $('input[placeholder*="things"]');
   public static thingNameOnFilter:ElementFinder = element.all(by.css('.things-filter-button-content>span')).first();
@@ -21,6 +23,8 @@ export class MatrixPage {
   public static getButtonMaybeLaterOnWelcomeHeader:ElementFinder = element.all(by.css('div[class*="quick-guide"] button[type*="button"]')).last();
   public static zoomIncrease:ElementFinder = $('button[class="increase"]');
   public static zoomDecrease:ElementFinder = $('button[class="decrease"]');
+  public static countryInFilter:ElementArrayFinder = $$('.name');
+  public static okButtonInCountryFilter:ElementFinder = $('.ok-img');
   public static getThingLinkInSearch(thingNumber: number):ElementFinder {
     return this.thingLinkInSearch.get(thingNumber);
   };
