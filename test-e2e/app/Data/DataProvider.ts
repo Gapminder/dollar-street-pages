@@ -29,7 +29,8 @@ export class DataProvider {
     'Home': {element: ():ElementFinder => element.all(by.css('.links>a')).get(0), actualResult: 'Home'},
     'About': {element: ():ElementFinder => element.all(by.css('.links>a')).get(1), actualResult: 'About'},
     'Team': {element: ():ElementFinder => element.all(by.css('.links>a')).get(2), actualResult: 'Team'},
-    'Photographers': {element: ():ElementFinder => element.all(by.css('.links>a')).get(3), actualResult: 'Photographers'}
+    'Donate': {element: ():ElementFinder => element.all(by.css('.links>a')).get(3), actualResult: 'Donate'},
+    'Photographers': {element: ():ElementFinder => element.all(by.css('.links>a')).get(4), actualResult: 'Photographers'}
   };
 
   public static footerBooleanInfo:any = {
@@ -262,7 +263,7 @@ export class DataProvider {
     'welcomeHeaderDescription': {
       element: ():ElementFinder => $('div[class^="guide-description"]'),
       actualResult: 'In the news people in other cultures seem stranger than they are.' + '\n' +
-      'We visited 240 families in 46 countries and collected 30,000 photos.' + '\n' +
+      'We visited 265 families in 50 countries and collected 30,000 photos.' + '\n' +
       'We sorted the homes by income, from left to right.'
     },
     'quickTour': {element: ():ElementFinder => $('.bg-orange'), actualResult: 'Quick tour'},

@@ -2,7 +2,7 @@ import { FooterPage } from '../Pages/FooterPage';
 import { MatrixPage } from '../Pages/MatrixPage';
 import { browser } from 'protractor';
 
-xdescribe('Click on each link', ()=> {
+describe('Click on each link', ()=> {
   beforeAll(()=>{
     browser.get('matrix');
   });

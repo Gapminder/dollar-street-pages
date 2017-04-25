@@ -1,7 +1,6 @@
 'use strict';
 
 exports.config = {
-
   baseUrl: 'http://localhost:4200/dollar-street/',
 
   specs: [
@@ -39,7 +38,7 @@ exports.config = {
 
   useAllAngular2AppRoots: true,
 
-onPrepare: function() {
-   browser.driver.manage().window().maximize();
+  onPrepare: function() {
+    browser.driver.manage().window().maximize();
   }
-  };
+};
