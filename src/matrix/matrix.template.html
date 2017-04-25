@@ -46,7 +46,7 @@
                 (activeHouseOptions)="activeHouseOptions($event)">
   </matrix-images>
 
-  <div class="zoom-column pull-right" [ngClass]="{stop: zoomPositionFixed}" *ngIf="isDesktop">
+  <div class="zoom-column pull-right" [class.stop]="zoomPositionFixed" *ngIf="isDesktop">
     <button type="button"
             class="increase"
             [disabled]="zoom === 2"
