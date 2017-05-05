@@ -7,7 +7,6 @@ matrix-images {
 }
 
 .matrix-header {
-  position: fixed !important;
   top: 0;
   left: 0;
   right: 0;
@@ -105,9 +104,6 @@ matrix-images {
 }
 
 @media (max-width: 599px) {
-  .matrix-header {
-    position: relative;
-  }
 
   .street-container.fixed {
     position: fixed;

@@ -88,6 +88,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public streetContainer: HTMLElement;
   public headerContainer: HTMLElement;
   public matrixImagesContainer: HTMLElement;
+  public streetAndTitleContainer: HTMLElement;
+  public imagesContainer: HTMLElement;
   public matrixImagesContainerHeight: number;
   public locationStrategy: LocationStrategy;
   public guidePositionTop: number = 0;
@@ -141,6 +143,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
     this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
     this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
+    this.streetAndTitleContainer = this.element.querySelector('.street-and-title-container') as HTMLElement;
 
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
       this.theWorldTranslate = trans;
@@ -274,7 +277,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.zone.run(() => {
           let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-          if (this.guideContainer && this.guideContainer.offsetHeight && this.windowInnerWidth > 599 && this.imgContent) {
+          if (this.guideContainer && this.guideContainer.offsetHeight && !this.isMobile && this.imgContent) {
             if (this.guideContainer.offsetHeight > scrollTop) {
               this.guidePositionTop = scrollTop;
               this.getPaddings({isGuide: true});
@@ -286,7 +289,17 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
             }
           }
 
-          if (this.windowInnerWidth < 600) {
+          let headerHeight: number = this.headerContainer.clientHeight;
+
+          if (scrollTop > headerHeight) {
+            this.headerContainer.style.position = 'fixed';
+            this.matrixImagesContainer.style.paddingTop = this.headerContainer.clientHeight + 'px';
+          } else {
+            this.headerContainer.style.position = 'static';
+            this.matrixImagesContainer.style.paddingTop = '0px';
+          }
+
+          if (this.isMobile) {
             this.showMobileHeader();
           }
 
@@ -455,8 +468,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     let headerHeight: number = this.headerContainer.offsetHeight;
 
-    this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
-
     if (this.guideContainer) {
       headerHeight -= this.guidePositionTop;
     }
@@ -579,11 +590,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
             return;
           }
 
-          if (!this.filtredPlaces.length) {
-            let headerHeight: number = this.headerContainer.offsetHeight;
-            this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
-          }
-
           this.buildTitle(this.query);
 
           if (!isBack) {
@@ -676,18 +682,35 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
     this.guidePositionTop = 0;
-    if (scrollTop > this.headerContainer.offsetHeight - 10) {
+
+    this.imagesContainer = this.matrixImagesContainer.querySelector('.images-container') as HTMLElement;
+
+    if (scrollTop > this.headerContainer.clientHeight) {
       if (this.streetContainer.className.indexOf('fixed') !== -1) {
         return;
       }
 
       this.streetContainer.classList.add('fixed');
+      this.streetAndTitleContainer.style.position = 'fixed';
+      this.streetAndTitleContainer.style.zIndex = '1000';
+      this.imagesContainer.style.paddingTop = this.streetContainer.clientHeight * 2 + 'px';
+
+      if (this.guideContainer) {
+        this.headerContainer.style.marginTop = '-' + this.guideContainer.clientHeight + 'px';
+      }
     } else {
       if (this.streetContainer.className.indexOf('fixed') === -1) {
         return;
       }
 
       this.streetContainer.classList.remove('fixed');
+      this.streetAndTitleContainer.style.position = 'static';
+      this.streetAndTitleContainer.style.zIndex = '1';
+      this.imagesContainer.style.paddingTop = '0px';
+
+      if (this.guideContainer) {
+        this.headerContainer.style.marginTop = '0px';
+      }
     }
   }
 
