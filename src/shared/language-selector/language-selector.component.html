@@ -1,5 +1,5 @@
 <div class="lang-container">
-  <div class="active-languages" *ngIf="defaultLanguage && defaultSecondLanguage">
+  <div class="active-languages">
     <span class="lang-outside"
           [ngClass]="{'lang-selected': currentLanguage === defaultLanguage?.code}"
           (click)="changeLanguage(defaultLanguage.code)">

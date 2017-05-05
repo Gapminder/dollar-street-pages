@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { LanguageService, LocalStorageService } from '../../common';
+import { LanguageService } from '../../common';
 
 import * as _ from 'lodash';
 
@@ -19,33 +19,23 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public element: HTMLElement;
   public currentLanguage: string;
   public window: Window = window;
-  public localStorageService: LocalStorageService;
   public defaultLanguage: any;
   public defaultSecondLanguage: any;
-  public languageCountToShow: number = 2;
 
   public constructor(languageService: LanguageService,
-                     element: ElementRef,
-                     localStorageService: LocalStorageService) {
+                     element: ElementRef) {
     this.element = element.nativeElement;
     this.languageService = languageService;
-    this.localStorageService = localStorageService;
   }
 
   public ngOnInit(): void {
     this.currentLanguage = this.languageService.currentLanguage;
+
     this.getLanguagesListSubscribe = this.languageService.getLanguagesList()
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
           return;
-        }
-
-        let isLangPublishedOrExists = _.find(res.data, {code: this.currentLanguage});
-
-        if (!isLangPublishedOrExists) {
-          this.localStorageService.setItem('language', this.languageService.defaultLanguage);
-          this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${this.languageService.defaultLanguage}`);
         }
 
         this.languages = _.filter(res.data, (language: any): any => {
@@ -82,7 +72,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
     let parentElement: HTMLElement = this.element.parentElement;
 
     if (parentElement.classList.contains('language-selector') || parentElement.classList.contains('language-selector-header')) {
-      if (langCount < this.languageCountToShow) {
+      if (langCount < 2) {
         parentElement.classList.add('hidden');
       }
     }
@@ -93,8 +83,6 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.localStorageService.setItem('language', lang);
-
-    this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${lang}`);
+    this.languageService.changeLanguage(lang);
   }
 }

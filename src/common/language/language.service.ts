@@ -59,13 +59,13 @@ export class LanguageService {
     }
 
     this.translate.setDefaultLang('en');
-
     this.defaultLanguage = this.translate.getDefaultLang();
 
-    const browserLanguage: string = this.translate.getBrowserCultureLang();
+    const urlLanguage: string = this.getLanguageFromUrl(this.urlChangeService.location.path());
     const storageLanguage: any = this.localStorageService.getItem('language');
+    const browserLanguage: string = this.translate.getBrowserCultureLang();
 
-    this.currentLanguage = storageLanguage || browserLanguage || this.defaultLanguage;
+    this.currentLanguage = urlLanguage !== 'en' ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
 
     this.updateLangInUrl();
 
@@ -116,6 +116,23 @@ export class LanguageService {
         observer.complete();
       });
     });
+  }
+
+  public getLanguageFromUrl(url: string): string {
+    let regex = new RegExp('[?&]' + 'lang' + '(=([^&#]*)|&|#|$)');
+    let results = regex.exec(url);
+
+    if (!results || !results[2]) {
+      return this.defaultLanguage;
+    }
+
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
+  public changeLanguage(lang: string): void {
+    this.localStorageService.setItem('language', lang);
+
+    this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${lang}`);
   }
 
   public getLanguage(query: string): Observable<any> {
