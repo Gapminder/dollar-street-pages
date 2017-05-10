@@ -12,7 +12,7 @@
 
         <div class="home-description-container">
           <h3>
-            <span *ngIf="familyData?.familyName">{{familyData?.familyName}} <span *ngIf="currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span>,</span>
+            <span *ngIf="familyData?.familyName">{{familyData?.familyName}}<span *ngIf="currentLanguage == 'en'"> {{ 'FAMILY' | translate }}</span>,</span>
             <span style="cursor:pointer"
                   [routerLink]="['/country', familyData?.country?._id]"
                   [queryParams]="{}"
