@@ -222,8 +222,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public openMedia(image: any, index: number): void {
     this.activeImage = image;
     this.indexViewBoxImage = index;
+
     let countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
     let offset: number = this.zoom - countByIndex;
+
+    let row: number = Math.ceil((this.indexViewBoxImage + 1) / this.zoom);
 
     this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
 
@@ -255,7 +258,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
 
       this.showImageBlock = !this.showImageBlock;
 
-      this.changeUrl(Math.ceil((this.indexViewBoxImage + 1) / this.zoom), this.indexViewBoxImage + 1);
+      this.changeUrl(row, this.indexViewBoxImage + 1);
 
       return;
     }
@@ -272,7 +275,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
       this.prevImage = image;
       this.showImageBlock = true;
 
-      this.changeUrl(Math.ceil((this.indexViewBoxImage + 1) / this.zoom), this.indexViewBoxImage + 1);
+      this.changeUrl(row, this.indexViewBoxImage + 1);
     }
   }
 
@@ -304,7 +307,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
     let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
-    document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize + headerHeight - 45;
+    let scrollTop: number = row * this.itemSize;
+
+    setTimeout(() => {
+      document.body.scrollTop = document.documentElement.scrollTop = scrollTop  + headerHeight - 45;
+    }, 0);
   }
 
   public getImageHeight(): void {
