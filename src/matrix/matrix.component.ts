@@ -32,6 +32,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public isOpenIncomeFilter: boolean = false;
   public isMobile: boolean;
   public isDesktop: boolean;
+  public window: Window = window;
   public hoverPlace: Subject<any> = new Subject<any>();
   public streetPlaces: Subject<any> = new Subject<any>();
   public matrixPlaces: Subject<any> = new Subject<any>();
@@ -99,6 +100,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public theWorldTranslate: string;
   public activeThingService: ActiveThingService;
   public getTranslationSubscribe: Subscription;
+  public byIncomeText: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -142,8 +144,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
     this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
 
-    this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
-      this.theWorldTranslate = trans;
+    this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'BY_INCOME']).subscribe((trans: any) => {
+      this.theWorldTranslate = trans.THE_WORLD;
+      this.byIncomeText = trans.BY_INCOME;
     });
 
     this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
@@ -382,25 +385,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public interactiveIncomeText(): void {
-    let thingContainer: any = this.element.querySelector('things-filter') as HTMLElement;
-    let countriesFilter: any = this.element.querySelector('countries-filter') as HTMLElement;
-    let filtersContainer: any = this.element.querySelector('.filters-container') as HTMLElement;
-    let incomeContainer: any = this.element.querySelector('.income-title-container') as HTMLElement;
-    let filtersBlockWidth: number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
+    let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
 
-    setTimeout((): void => {
+    setTimeout(() => {
       incomeContainer.classList.remove('incomeby');
     }, 0);
 
-    if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
-      setTimeout((): void => {
-        incomeContainer.classList.remove('incomeby');
-      }, 0);
-    }
-    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 270) {
-      setTimeout((): void => {
+    if (this.byIncomeText.length > 20 && this.window.innerWidth < 920) {
+      setTimeout(() => {
         incomeContainer.classList.add('incomeby');
-      }, 0);
+      },0);
     }
   }
 
