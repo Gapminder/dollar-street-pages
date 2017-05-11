@@ -23,8 +23,8 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 
 @Component({
   selector: 'matrix',
-  templateUrl: './matrix.template.html',
-  styleUrls: ['./matrix.css']
+  templateUrl: './matrix.component.html',
+  styleUrls: ['./matrix.component.css']
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {

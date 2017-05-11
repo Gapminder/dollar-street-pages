@@ -1,14 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
 import { forEach, difference, map } from 'lodash';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   StreetSettingsService,
   CountriesFilterService,
   UrlChangeService,
-  Angulartics2GoogleAnalytics
+  Angulartics2GoogleAnalytics,
+  BrowserDetectionService
 } from '../common';
 import { LanguageService } from '../common';
 import { FamilyService } from './family.service';
@@ -58,6 +60,12 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public familyService: FamilyService;
   public familyServiceSetThingSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
+  public scrollSubscribe: Subscription;
+  public device: BrowserDetectionService;
+  public windowInnerHeight: number = window.innerHeight;
+  public isDesktop: boolean;
+  public zoomPositionFixed: boolean;
+  public element: HTMLElement;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -66,7 +74,9 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      familyService: FamilyService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     browserDetectionService: BrowserDetectionService,
+                     elementRef: ElementRef) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
@@ -75,6 +85,10 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
     this.languageService = languageService;
     this.familyService = familyService;
+    this.device = browserDetectionService;
+    this.element = elementRef.nativeElement;
+
+    this.isDesktop = this.device.isDesktop();
   }
 
   public ngOnInit(): void {
@@ -158,6 +172,12 @@ export class FamilyComponent implements OnInit, OnDestroy {
 
         this.initData();
       });
+
+    this.scrollSubscribe = fromEvent(window, 'scroll')
+      .debounceTime(150)
+      .subscribe(() => {
+          this.setZoomButtonPosition();
+      });
   }
 
   public ngOnDestroy(): void {
@@ -166,10 +186,21 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.streetSettingsServiceSubscribe.unsubscribe();
     this.familyServiceSetThingSubscribe.unsubscribe();
     this.getTranslationSubscribe.unsubscribe();
+    this.scrollSubscribe.unsubscribe();
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
     }
+  }
+
+  public setZoomButtonPosition(): void {
+    this.windowInnerHeight = window.innerHeight;
+
+    let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
+
+    let containerHeight: number = this.element.offsetHeight + 30;
+
+    this.zoomPositionFixed = scrollTop > containerHeight;
   }
 
   public activeImageOptions(options: {activeImageIndex?: number;}): void {
