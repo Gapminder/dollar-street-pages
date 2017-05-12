@@ -19,8 +19,59 @@
   position: relative;
 }
 
-.family-images-container .family-image-container {
+.family-images-container.column-2 .family-image-container {
+  width: calc(50% - 10px);
+}
+
+.family-images-container.column-3 .family-image-container {
+  width: calc(33.33% - 10px);
+}
+
+.family-images-container.column-4 .family-image-container {
   width: calc(25% - 10px);
+}
+
+.family-images-container.column-5 .family-image-container {
+  width: calc(20% - 10px);
+}
+
+.family-images-container.column-6 .family-image-container {
+  width: calc(16.66% - 5px);
+  margin: 2.5px;
+}
+
+.family-images-container.column-7 .family-image-container {
+  width: calc(14.28% - 5px);
+  margin: 2.5px;
+}
+
+.family-images-container.column-8 .family-image-container {
+  width: calc(12.5% - 5px);
+  margin: 2.5px;
+}
+
+.family-images-container.column-9 .family-image-container {
+  width: calc(11.11% - 2px);
+  margin: 1px;
+}
+
+.family-images-container.column-10 .family-image-container {
+  width: calc(10% - 2px);
+  margin: 1px;
+}
+
+.family-images-container.column-6,
+.family-images-container.column-7,
+.family-images-container.column-8 {
+  padding: 0 2.5px;
+}
+
+.family-images-container.column-9,
+.family-images-container.column-10 {
+  padding: 0 4px;
+}
+
+.family-images-container .family-image-container {
   margin: 5px;
   float: left;
   position: relative;

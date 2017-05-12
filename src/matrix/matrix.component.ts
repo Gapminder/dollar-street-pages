@@ -629,10 +629,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public changeZoom(zoom: any): void {
     this.urlChanged({
-      url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`),
-      isZoom: true
+     url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`),
+     isZoom: true
     });
-  };
+  }
 
   public startQuickGuide(): void {
     setTimeout(() => {

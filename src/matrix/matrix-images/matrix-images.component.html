@@ -13,7 +13,8 @@
          [style.order]="i"
          [ngStyle]="{'background-image': place.isUploaded && toUrl(place?.background), height: imageHeight + 'px'}"
          [ngClass]="{'no-row': zoom > 5 || !isDesktop, active: prevPlaceId === place._id}"
-         isImageLoaded [imageLoadedUrl]="place?.background" (imageLoadedEvent)="imageIsUploaded(i)"
+         isImageLoaded [imageLoadedUrl]="place?.background"
+         (imageLoadedEvent)="imageIsUploaded(i)"
          (mouseenter)="hoverImage(place)"
          (mouseleave)="hoverImage()"
          (click)="goToImageBlock(place, i)">

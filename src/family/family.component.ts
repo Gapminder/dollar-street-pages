@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
@@ -14,6 +14,8 @@ import {
 } from '../common';
 import { LanguageService } from '../common';
 import { FamilyService } from './family.service';
+
+import { FamilyMediaComponent } from './family-media/family-media.component';
 
 export interface UrlParamsInterface {
   thing: string;
@@ -32,10 +34,16 @@ export interface UrlParamsInterface {
 })
 
 export class FamilyComponent implements OnInit, OnDestroy {
+  @ViewChild(FamilyMediaComponent)
+  public familyMediaComponent: FamilyMediaComponent;
+
   public theWorldTranslate: string;
   public languageService: LanguageService;
 
+  public window: Window = window;
+  public document: Document = document;
   public streetFamilyData: {income: number, region: string};
+  public zoom: number;
   public titles: any = {};
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
   public placeId: string;
@@ -62,10 +70,11 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public getTranslationSubscribe: Subscription;
   public scrollSubscribe: Subscription;
   public device: BrowserDetectionService;
-  public windowInnerHeight: number = window.innerHeight;
   public isDesktop: boolean;
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
+  public familyContainer: HTMLElement;
+  public query: string;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -92,11 +101,21 @@ export class FamilyComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.familyContainer = this.element.querySelector('.family-container') as HTMLElement;
+
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
       this.theWorldTranslate = trans.toLowerCase();
 
       this.initData();
     });
+
+    setTimeout(() => {
+      this.scrollSubscribe = fromEvent(this.window, 'scroll')
+          .debounceTime(10)
+          .subscribe(() => {
+              this.setZoomButtonPosition();
+          });
+    }, 100);
 
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams
@@ -114,6 +133,9 @@ export class FamilyComponent implements OnInit, OnDestroy {
           highIncome: parseInt(params.highIncome, 10)
         };
 
+        this.query = `place=${this.placeId}&thing=${this.urlParams.thing}&countries=${this.urlParams.countries}&regions=${this.urlParams.regions}&zoom=${this.urlParams.zoom}&row=${this.urlParams.row}&lowIncome=${this.urlParams.lowIncome}&highIncome=${this.urlParams.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
+
         this.familyServiceSetThingSubscribe = this.familyService
           .getThing(`thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`)
           .subscribe((res: any) => {
@@ -123,6 +145,9 @@ export class FamilyComponent implements OnInit, OnDestroy {
             }
 
             this.thing = res.data;
+
+            this.setZoom(this.urlParams.zoom);
+
             this.initData();
           });
       });
@@ -166,17 +191,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
           .sortBy('country')
           .value();
 
-        if (!this.homeIncomeData) {
-          return;
-        }
-
         this.initData();
-      });
-
-    this.scrollSubscribe = fromEvent(window, 'scroll')
-      .debounceTime(150)
-      .subscribe(() => {
-          this.setZoomButtonPosition();
       });
   }
 
@@ -193,12 +208,32 @@ export class FamilyComponent implements OnInit, OnDestroy {
     }
   }
 
+  public changeZoom(zoom: any): void {
+    let prevZoom: number = this.zoom;
+
+    this.zoom = zoom;
+
+    this.query = this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`);
+
+    this.urlChangeService.replaceState('/family', this.query);
+
+    this.familyMediaComponent.changeZoom(prevZoom);
+  }
+
+  public setZoom(zoom: number): void {
+    if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
+      this.zoom = zoom ? zoom : 4;
+    }
+
+    if (!this.isDesktop) {
+      this.zoom = 3;
+    }
+  }
+
   public setZoomButtonPosition(): void {
-    this.windowInnerHeight = window.innerHeight;
+    let scrollTop: number = (this.document.body.scrollTop || this.document.documentElement.scrollTop) + this.window.innerHeight;
 
-    let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
-
-    let containerHeight: number = this.element.offsetHeight + 30;
+    let containerHeight: number = this.familyContainer.offsetHeight + 30;
 
     this.zoomPositionFixed = scrollTop > containerHeight;
   }
