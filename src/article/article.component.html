@@ -1,1 +1,5 @@
 <div id="article-content" [innerHtml]="article?.description"></div>
+
+<div *ngIf="!article?.translated && isShowing" [ngClass]="{'translate-me-section': isDesktop}">
+    <translate-me></translate-me>
+</div>

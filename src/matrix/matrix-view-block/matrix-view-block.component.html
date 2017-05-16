@@ -66,6 +66,7 @@
                       [mapData]="mapData"
                       angulartics2On="click"
                       angularticsEvent="From Matrix page to {{familyData.country?.alias}} page"></region-map>
+          <translate-me *ngIf="!familyData.translated"></translate-me>
         </div>
       </div>
 
@@ -167,7 +168,9 @@
       <p *ngIf="familyData?.familyData">
         {{familyData.familyData}}
       </p>
-
+      <div *ngIf="!familyData.translated" class="translate-me-block">
+        <translate-me></translate-me>
+      </div>
       <a *ngIf="familyData.goToPlaceData"
          [routerLink]="['/family']"
          [queryParams]="familyData.goToPlaceData"

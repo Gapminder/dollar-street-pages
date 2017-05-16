@@ -7,6 +7,7 @@ import { Config } from '../../app.config';
 import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../url-change/url-change.service';
 import { LocalStorageService } from '../guide/localstorage.service';
+import * as _ from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
 
@@ -17,6 +18,7 @@ export class LanguageService {
   public window: Window = window;
   public currentLanguage: string;
   public defaultLanguage: string;
+  public languageName: string;
   public urlChangeService: UrlChangeService;
   public translate: TranslateService;
   public translateSubscribe: Subscription;
@@ -128,6 +130,13 @@ export class LanguageService {
   public getLanguagesList(): Observable<any> {
     return this.http.get(`${Config.api}/v1/languagesList`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
+
+      let currentLanguageObject: any = _.find(parseRes.data, {code: this.currentLanguage});
+
+      if (currentLanguageObject) {
+        this.languageName = currentLanguageObject.name;
+      }
+
       return {err: parseRes.error, data: parseRes.data};
     });
   }

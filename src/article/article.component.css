@@ -1,3 +1,11 @@
+.translate-me-section {
+  position: fixed;
+  width: 300px;
+  height: 50px;
+  bottom: 80px;
+  right: 80px;
+}
+
 #article-content {
   padding-top: 125px;
   margin: 0 auto 100px;

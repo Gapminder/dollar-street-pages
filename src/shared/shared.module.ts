@@ -54,6 +54,8 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
 
 import { LanguageSelectorComponent } from './language-selector/language-selector.component';
 
+import { TranslateMeComponent } from './translate-me/translate-me.component';
+
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { Observable } from 'rxjs';
 
@@ -93,7 +95,8 @@ export class CustomLoader implements TranslateLoader {
     StreetFilterComponent,
     StreetFamilyComponent,
     IncomeFilterComponent,
-    IsImageLoadedDirective
+    IsImageLoadedDirective,
+    TranslateMeComponent
   ],
   imports: [
     HttpModule,
@@ -118,6 +121,7 @@ export class CustomLoader implements TranslateLoader {
     StreetFamilyDrawService
   ],
   exports: [
+    TranslateModule,
     LanguageSelectorComponent,
     HeaderWithoutFiltersComponent,
     FooterComponent,
@@ -134,7 +138,7 @@ export class CustomLoader implements TranslateLoader {
     IncomeFilterComponent,
     MainMenuComponent,
     IsImageLoadedDirective,
-    TranslateModule
+    TranslateMeComponent
   ]
 })
 
