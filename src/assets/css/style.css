@@ -20,6 +20,11 @@ body.draggingSliders #chart * {
   cursor: grabbing !important;
 }
 
+.gapminder-link {
+  color: #b0450a;
+  text-decoration: none;
+}
+
 a:focus,
 input:focus {
   outline: 0;

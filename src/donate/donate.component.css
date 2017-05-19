@@ -329,11 +329,6 @@
   line-height: 30px;
 }
 
-.donate-link {
-  color: #b0450a;
-  text-decoration: none;
-}
-
 @media (max-width: 991px) {
   .main-nav {
     max-height: 56px;

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { AboutService } from './about.service';
 import { LoaderService, TitleHeaderService, LanguageService } from '../common';
@@ -12,6 +12,7 @@ import { LoaderService, TitleHeaderService, LanguageService } from '../common';
 
 export class AboutComponent implements OnInit, OnDestroy {
   public about: any;
+  public aboutContent: SafeHtml;
   public aboutService: AboutService;
   public aboutSubscribe: Subscription;
   public titleHeaderService: TitleHeaderService;
@@ -45,9 +46,11 @@ export class AboutComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.about = val.data;
       this.loaderService.setLoader(true);
-      this.about.context = this.sanitizer.bypassSecurityTrustHtml(this.about.context);
+
+      this.about = val.data;
+
+      this.aboutContent = this.languageService.getSunitizedString(this.about.context);
     });
   }
 
