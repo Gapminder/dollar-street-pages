@@ -42,12 +42,16 @@
         </div>
       </div>
 
+      <translate-me *ngIf="isMobile || isTablet && !home?.translated"></translate-me>
+
       <div class="show-info">
         <span (click)="openInfo(isOpenArticle)">
           <img src="/assets/img/read-more-icon.svg"
                alt=""
                [class.rotate]="isOpenArticle"> {{isOpenArticle ? readLessTranslate : readMoreTranslate}}</span>
       </div>
+
+      <translate-me *ngIf="isDesktop && !home?.translated"></translate-me>
     </div>
 
     <div class="home-country-container">

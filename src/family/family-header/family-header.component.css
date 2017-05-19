@@ -41,6 +41,7 @@
 }
 
 .description-container .home-info-container {
+  position: relative;
   width: calc(100% - 355px);
   margin-right: 110px;
 }

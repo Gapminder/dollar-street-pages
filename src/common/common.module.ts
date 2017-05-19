@@ -13,6 +13,7 @@ import { ActiveThingService } from './things/active-thing.service';
 import { SocialShareService } from './social/social-share.service';
 import { FontDetectorService } from './font/font-detector.service';
 import { GoogleAnalyticsService } from './analytics/google-analytics.service';
+import { CountryDetectorService } from './country-detector/country-detector.service';
 
 @NgModule({
   providers: [
@@ -28,7 +29,8 @@ import { GoogleAnalyticsService } from './analytics/google-analytics.service';
     ActiveThingService,
     SocialShareService,
     FontDetectorService,
-    GoogleAnalyticsService
+    GoogleAnalyticsService,
+    CountryDetectorService
   ]
 })
 export class CommonAppModule {

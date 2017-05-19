@@ -79,6 +79,8 @@
       <div class="close-block" (click)="closeImageBlock()">
         <img src="/assets/img/close-button.svg" alt="">
       </div>
+
+      <translate-me *ngIf="!article?.translated"></translate-me>
     </div>
   </div>
 
@@ -145,6 +147,8 @@
             {{ 'READ_MORE' | translate }} >></a></p>
         </div>
       </div>
+
+      <translate-me *ngIf="!article?.translated"></translate-me>
 
       <a class="link"
          [routerLink]="['/matrix']"
