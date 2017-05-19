@@ -31,8 +31,7 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public window: Window = window;
     public siteName: string = 'Dollar Street';
     public siteDescription: string = 'See how people really live';
-    public supportDescription: SafeHtml;
-    public faqLink: SafeHtml;
+    public donateDescription: SafeHtml;
     public isShowAboutData: boolean;
     public isShowAboutDataFullScreen: boolean;
     public maxHeightPopUp: number;
@@ -57,11 +56,10 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public ngOnInit(): void {
         this.loaderService.setLoader(true);
 
-        this.getTranslationSubscribe = this.languageService.getTranslation(['DONATE', 'SUPPORT_DESCRIPTION', 'FAQ_LINK']).subscribe((trans: any) => {
-            this.titleHeaderService.setTitle('Donate');
+        this.getTranslationSubscribe = this.languageService.getTranslation(['DONATE', 'DONATE_DESCRIPTION']).subscribe((trans: any) => {
+            this.titleHeaderService.setTitle(trans.DONATE);
 
-            this.supportDescription = this.sanitizer.bypassSecurityTrustHtml(trans.SUPPORT_DESCRIPTION);
-            this.faqLink = this.sanitizer.bypassSecurityTrustHtml(trans.FAQ_LINK);
+            this.donateDescription = this.languageService.getSunitizedString(trans.DONATE_DESCRIPTION);
         });
     }
 

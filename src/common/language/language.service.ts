@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Location } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { Config } from '../../app.config';
@@ -27,17 +28,20 @@ export class LanguageService {
   public documentLoadedSubscription: Subscription;
   public translationsLoadedEvent: EventEmitter = new EventEmitter();
   public translationsLoadedString: string = 'TRANSLATIONS_LOADED';
+  public sanitizer: DomSanitizer;
 
   public constructor(@Inject(Http) http: Http,
                      @Inject(Location) location: Location,
                      @Inject(UrlChangeService) urlChangeService: UrlChangeService,
                      @Inject(TranslateService) translate: TranslateService,
-                     @Inject(LocalStorageService) localStorageService: LocalStorageService) {
+                     @Inject(LocalStorageService) localStorageService: LocalStorageService,
+                     @Inject(DomSanitizer) sanitizer: DomSanitizer) {
     this.http = http;
     this.location = location;
     this.urlChangeService = urlChangeService;
     this.translate = translate;
     this.localStorageService = localStorageService;
+    this.sanitizer = sanitizer;
 
     if (this.documentLoadedSubscription) {
       this.documentLoadedSubscription.unsubscribe();
@@ -105,17 +109,22 @@ export class LanguageService {
           return;
         }
 
-        const translation: any = res.data;
+        this.translations = res.data;
 
-        this.translations = translation;
-
-        this.translate.setTranslation(this.currentLanguage, translation);
+        this.translate.setTranslation(this.currentLanguage, this.translations);
         this.translate.use(this.currentLanguage);
 
-        observer.next(translation);
+        observer.next(this.translations);
         observer.complete();
       });
     });
+  }
+
+  public getSunitizedString(value: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(value.replace(/^\<p\>/, '')
+                                                        .replace(/\<\/p\>$/, '')
+                                                        .replace(/&lt;/g, '<')
+                                                        .replace(/&gt;/g, '>'));
   }
 
   public getLanguageFromUrl(url: string): string {
