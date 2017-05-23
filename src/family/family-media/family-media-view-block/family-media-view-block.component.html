@@ -80,7 +80,7 @@
         <img src="/assets/img/close-button.svg" alt="">
       </div>
 
-      <translate-me *ngIf="!article?.translated"></translate-me>
+      <translate-me *ngIf="article && !article?.translated"></translate-me>
     </div>
   </div>
 
@@ -148,7 +148,7 @@
         </div>
       </div>
 
-      <translate-me *ngIf="!article?.translated"></translate-me>
+      <translate-me *ngIf="article && !article?.translated"></translate-me>
 
       <a class="link"
          [routerLink]="['/matrix']"
