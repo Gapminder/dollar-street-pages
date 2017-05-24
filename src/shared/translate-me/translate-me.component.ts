@@ -54,10 +54,6 @@ export class TranslateMeComponent implements OnInit, OnDestroy {
         this.infoText = `${trans.NOT_TRANSLATED} ${this.languageService.languageName}. ${trans.MAKE_USEFUL} ${this.countryName}.`;
       });
     });
-
-    const viewMode: string = this.isDesktop ? 'desktop' : (this.isMobile || this.isTablet ? 'mobile' : 'desktop');
-
-    this.setViewMode(viewMode);
   }
 
   public ngOnDestroy(): void {
@@ -67,27 +63,6 @@ export class TranslateMeComponent implements OnInit, OnDestroy {
 
     if (this.getCountryNameSubscribe) {
       this.getCountryNameSubscribe.unsubscribe();
-    }
-  }
-
-  public setViewMode(mode: string): void {
-    if (mode) {
-      this.mode = mode;
-    }
-
-    switch(this.mode) {
-      case 'mobile':
-        this.translateMeContainer.classList.remove('translate-me-desktop');
-        this.translateMeContainer.classList.add('translate-me-mobile');
-      break;
-
-      case 'desktop':
-        this.translateMeContainer.classList.remove('translate-me-mobile');
-        this.translateMeContainer.classList.add('translate-me-desktop');
-      break;
-
-      default:
-      break;
     }
   }
 }

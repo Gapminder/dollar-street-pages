@@ -1,5 +1,9 @@
-.translate-me-block {
+.translate-me-mobile {
   margin-bottom: 8px;
+}
+
+.translate-me-desktop {
+  margin-bottom: 10px;
 }
 
 .view-image-block-container {

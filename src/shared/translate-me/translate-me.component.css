@@ -1,9 +1,4 @@
-.translate-me-container a {
-    text-decoration: none;
-    color: #767d86;
-}
-
-.translate-me-mobile {
+.translate-me-container {
     visibility: visible;
     width: 100%;
     border-radius: 4px;
@@ -11,57 +6,16 @@
     padding: 4px 10px 0 10px;
 }
 
-.translate-me-mobile img {
+.translate-me-container a {
+    text-decoration: none;
+    color: #767d86;
+}
+
+.translate-me-container img {
     display: none;
 }
 
-.translate-me-desktop {
-    position: absolute;
-    bottom: 0px;
-    right: 10px;
-    width: 48px;
-    height: 48px;
-    cursor: pointer;
-    overflow: hidden;
-}
-
-.translate-me-desktop:hover {
-    background: #eaeaea;
-    width: 300px;
-    border-radius: 10px 26px 26px 10px;
-}
-
-.translate-me-desktop:hover p {
-    visibility: visible;
-}
-
-.translate-me-desktop img {
-    width: 36px;
-    height: 36px;
-    float: right;
-    margin: 6px 6px 0 0;
-
-    opacity: 0.2;
-
-    border: none;
-    border-radius: 50%;
-    outline: 0;
-    box-shadow: 0 0 3.9px 0.1px rgba(0, 0, 0, 0.32);
-    background: rgba(255, 255, 255, 0.8) center center no-repeat;
-    background-size: 16px auto !important;
-}
-
-.translate-me-mobile p {
+.translate-me-container p {
     padding: 4px 0 0 10px;
-    line-height: 14px;
-}
-
-.translate-me-desktop p {
-    margin: 0;
-    height: 100%;
-    padding: 4px 0 0 14px;
-    visibility: hidden;
-    margin-right: 50px;
-    transition: visibility 0.4 ease-in;
     line-height: 14px;
 }

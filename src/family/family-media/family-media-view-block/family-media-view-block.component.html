@@ -46,8 +46,10 @@
           angularticsEvent="Article page">
           {{ 'READ_MORE' | translate }} >></a></p>
 
+        <translate-me *ngIf="article && !article?.translated"></translate-me>
+
         <div class="thing-button-container">
-          <p>{{ 'RELATED_SEARCHES' | translate }}</p>
+          <p>{{ 'RELATED_SEARCHES' | translate }}</p>          
 
           <a
             [routerLink]="['/matrix']"
@@ -79,8 +81,6 @@
       <div class="close-block" (click)="closeImageBlock()">
         <img src="/assets/img/close-button.svg" alt="">
       </div>
-
-      <translate-me *ngIf="article && !article?.translated"></translate-me>
     </div>
   </div>
 

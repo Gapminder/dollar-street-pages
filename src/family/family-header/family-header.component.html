@@ -42,7 +42,9 @@
         </div>
       </div>
 
-      <translate-me *ngIf="isMobile || isTablet && !home?.translated"></translate-me>
+      <div class="translate-me-container">
+        <translate-me *ngIf="!home?.translated"></translate-me>
+      </div>
 
       <div class="show-info">
         <span (click)="openInfo(isOpenArticle)">
@@ -50,8 +52,6 @@
                alt=""
                [class.rotate]="isOpenArticle"> {{isOpenArticle ? readLessTranslate : readMoreTranslate}}</span>
       </div>
-
-      <translate-me *ngIf="isDesktop && !home?.translated"></translate-me>
     </div>
 
     <div class="home-country-container">
