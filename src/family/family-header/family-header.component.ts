@@ -45,7 +45,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public headerContentHeight: number;
   public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
-  public streetServiceSubscribe: Subscription;
+  public streetSettingsServiceSubscribe: Subscription;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
@@ -95,7 +95,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.truncCountryName(this.home.country);
       });
 
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+    this.streetSettingsServiceSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -145,8 +145,17 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.familyHeaderServiceSubscribe.unsubscribe();
-    this.getTranslationSubscribe.unsubscribe();
+    if(this.streetSettingsServiceSubscribe) {
+      this.streetSettingsServiceSubscribe.unsubscribe();
+    }
+
+    if(this.familyHeaderServiceSubscribe) {
+      this.familyHeaderServiceSubscribe.unsubscribe();
+    }
+
+    if(this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();

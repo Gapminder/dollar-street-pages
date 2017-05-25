@@ -302,6 +302,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     let header = document.querySelector('.header-container') as HTMLElement;
     let homeDescription = document.querySelector('.home-description-container') as HTMLElement;
     let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
+    console.log(row);
     let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
     document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize + headerHeight - 45;
