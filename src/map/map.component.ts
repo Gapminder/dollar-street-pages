@@ -57,7 +57,13 @@ export class MapComponent implements OnInit, OnDestroy {
   public places: any[] = [];
   public countries: any[] = [];
   public element: any;
+<<<<<<< 60b089046dee40061a822e2bea3fba058b3b783a
   public hoverPlace: any = void 0;
+=======
+  // public map: HTMLImageElement;
+  public hoverPlace: any = void 0;
+  // public markers: any;
+>>>>>>> fix():
   public hoverPortraitTop: any;
   public hoverPortraitLeft: any;
   public thing: any;

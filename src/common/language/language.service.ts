@@ -16,6 +16,7 @@ import { EventEmitter } from 'events';
 export class LanguageService {
   public http: Http;
   public location: Location;
+  public window: Window = window;
   public currentLanguage: string;
   public defaultLanguage: string;
   public languageName: string;

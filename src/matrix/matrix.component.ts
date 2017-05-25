@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/debounceTime';
 import {
-  Component, OnInit, ElementRef, OnDestroy, NgZone, AfterViewChecked, ChangeDetectorRef
+  Component, OnInit, ElementRef, OnDestroy, NgZone, AfterViewChecked, ChangeDetectorRef, ViewChild
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
@@ -21,7 +21,10 @@ import {
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
+<<<<<<< 60b089046dee40061a822e2bea3fba058b3b783a
 import { GuideComponent, HeaderComponent } from '../shared';
+=======
+>>>>>>> fix():
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 
 @Component({
@@ -31,6 +34,9 @@ import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild(MatrixImagesComponent)
+  public matrixImagesComponent: MatrixImagesComponent;
+
   public zoomPositionFixed: boolean;
   public isOpenIncomeFilter: boolean = false;
   public isMobile: boolean;
