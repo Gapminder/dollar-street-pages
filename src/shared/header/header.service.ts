@@ -15,7 +15,6 @@ export class HeaderService {
   }
 
   public getPlaceHeader(query: string): Observable<any> {
-    // return
     return this.http
       .get(`${Config.api}/v1/place-header?${query}`)
       .map((res: any) => {

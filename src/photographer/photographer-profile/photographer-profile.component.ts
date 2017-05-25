@@ -15,6 +15,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   public hideDetailsTranslate: string;
 
   public getTranslationSubscribe: Subscription;
+  public photographerProfileServiceSubscribe: Subscription;
 
   protected isShowInfo: boolean = false;
 
@@ -25,7 +26,6 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   private math: MathService;
   private photographer: {firstName?: string, lastName?: string} = {};
-  private photographerProfileServiceSubscribe: Subscription;
   private photographerProfileService: PhotographerProfileService;
   private languageService: LanguageService;
 
@@ -68,7 +68,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
     this.getTranslationSubscribe.unsubscribe();
   }
 
-  protected isShowInfoMore(photographer: any): boolean {
+  public isShowInfoMore(photographer: any): boolean {
     return photographer.company ||
       photographer.description ||
       photographer.google ||
