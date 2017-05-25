@@ -8,30 +8,37 @@
     <div class="dropdown-menu">
       <ul class="header-menu-list">
         <li>
-          <a (click)="goToPage('/matrix')">Home</a>
+          <a (click)="goToPage('/matrix')">{{ 'HOME' | translate }}</a>
         </li>
         <li>
-          <a (click)="goToPage('/matrix', true)">Quick guide</a>
+          <a (click)="goToPage('/matrix', true)">{{ 'QUICK_GUIDE' | translate }}</a>
         </li>
         <li>
-          <a (click)="goToPage('/about')">About</a>
+          <a (click)="goToPage('/about')">{{ 'ABOUT' | translate }}</a>
         </li>
         <li>
-          <a (click)="goToPage('/map')">Map</a>
+          <a (click)="goToPage('/donate')">{{ 'DONATE' | translate }}</a>
+        </li>
+        <li>
+          <a (click)="goToPage('/map')">{{ 'MAP' | translate }}</a>
         </li>
         <li class="social-share-container">
           <div class="social-share-content">
-            <span>Share: </span>
+            <span>{{ 'SHARE' | translate }}: </span>
             <social-share-buttons></social-share-buttons>
           </div>
         </li>
         <li>
           <div class="feedback-container">
-            <a class="feedback" (click)="goToPage('https://getsatisfaction.com/gapminder')">Send feedback</a>
+            <div class="feedback-content">
+              <span class="feedback-icon"></span>
+              <a class="feedback" (click)="goToPage('https://getsatisfaction.com/gapminder')">
+                {{ 'SEND_FEEDBACK' | translate }}</a>
+            </div>
           </div>
         </li>
         <li>
-          <a class="menu-links" (click)="goToPage('https://www.gapminder.org')">More from gapminder >></a>
+          <a class="menu-links" (click)="goToPage('https://www.gapminder.org')">{{ 'MORE_FROM' | translate }} gapminder >></a>
         </li>
       </ul>
     </div>
@@ -59,30 +66,35 @@
 
       <ul class="menu-list">
         <li>
-          <a (click)="goToPage('/matrix')">Home</a>
+          <div class="language-selector">
+            <language-selector></language-selector>
+          </div>
+        </li>
+        <li>
+          <a (click)="goToPage('/matrix')">{{ 'HOME' | translate }}</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a (click)="goToPage('/matrix', true)">Quick guide</a>
+          <a (click)="goToPage('/matrix', true)">{{ 'QUICK_GUIDE' | translate }}</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a (click)="goToPage('/about')">About</a>
+          <a (click)="goToPage('/about')">{{ 'ABOUT' | translate }}</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a (click)="goToPage('https://www.gapminder.org/category/dollarstreet/')">Blog</a>
+          <a (click)="goToPage('/donate')">{{ 'DONATE' | translate }}</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a (click)="goToPage('/map')">Map</a>
+          <a (click)="goToPage('/map')">{{ 'MAP' | translate }}</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
 
         <li class="social-share-container">
           <div class="social-share-content">
             <div class="share-text">
-              Share:
+              {{ 'SHARE' | translate }}:
             </div>
             <social-share-buttons></social-share-buttons>
           </div>
@@ -95,11 +107,11 @@
 
         <div class="feedback-container">
           <a class="feedback" (click)="goToPage('https://getsatisfaction.com/gapminder')">
-            Send feedback</a>
+            {{ 'SEND_FEEDBACK' | translate }}</a>
         </div>
 
         <div class="gapminder">
-          <a (click)="goToPage('https://www.gapminder.org')">More from gapminder >></a>
+          <a (click)="goToPage('https://www.gapminder.org')">{{ 'MORE_FROM' | translate }} gapminder >></a>
         </div>
       </ul>
     </div>

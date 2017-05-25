@@ -11,8 +11,8 @@ export class PhotographersService {
     this.http = http;
   }
 
-  public getPhotographers(): Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/photographers`).map((res: any) => {
+  public getPhotographers(query: any): Observable<any> {
+    return this.http.get(`${Config.api}/v1/photographers?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });

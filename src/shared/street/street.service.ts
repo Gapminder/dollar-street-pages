@@ -2,22 +2,24 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { MathService, DrawDividersInterface, BrowserDetectionService } from '../../common';
-import * as _ from 'lodash';
 import { scaleLog } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
 
+import * as _ from 'lodash';
+
 @Injectable()
 export class StreetDrawService {
   public width: number;
+  public widthParsed: number;
   public height: number;
   public halfOfHeight: number;
   public lowIncome: number;
   public highIncome: number;
   public streetOffset: number = 60;
   public chosenPlaces: any;
-  public poorest: string = 'POOREST';
-  public richest: string = 'RICHEST';
+  public poorest: string;
+  public richest: string;
   public scale: any;
   public axisLabel: number[] = [];
   public svg: any;
@@ -92,7 +94,8 @@ export class StreetDrawService {
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
-    this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
+    this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
+    this.width = (this.widthParsed !== this.width) ? this.widthParsed - 15 : this.widthParsed;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
@@ -205,9 +208,18 @@ export class StreetDrawService {
       .append('text')
       .attr('class', 'richest')
       .text(this.richest)
-      .attr('x', this.width + this.streetOffset - 50)
       .attr('y', this.height - 4)
       .attr('fill', '#767d86');
+
+    let svgElement: any = document.getElementById('chart');
+    let svgElementNodes: any = svgElement.childNodes;
+    let richestWidth = svgElementNodes[1].getBBox().width;
+
+    richestWidth = !isNaN(richestWidth) ? richestWidth : 54;
+
+    this.svg
+      .selectAll('text.richest')
+      .attr('x', this.width + this.streetOffset - richestWidth);
 
     if (places && places.length) {
       this.svg
@@ -250,7 +262,7 @@ export class StreetDrawService {
           }
 
           return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+            point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
         })
         .attr('stroke-width', 1)
         .style('fill', '#aaacb0')
@@ -505,7 +517,7 @@ export class StreetDrawService {
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke-width', 1)
       .attr('stroke', (datum: any): any => {
@@ -1030,7 +1042,7 @@ export class StreetDrawService {
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke', '#303e4a')
       .attr('stroke-width', 1)
@@ -1052,6 +1064,7 @@ export class StreetDrawService {
         this.rightScrollText.text('');
       }
 
+      return;
     }
 
     if (this.sliderLeftMove && (!this.currentLowIncome || this.currentLowIncome === this.lowIncome)) {

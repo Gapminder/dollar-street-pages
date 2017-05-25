@@ -1,0 +1,103 @@
+<div class="donate-header">
+  <div class="container-2">
+    <div class="flex-row heading-wrap">
+      <div class="description">
+        <h1 class="donate-heading">{{ 'SUPPORT_DOLLAR_STREET' | translate }}</h1>
+        <p class="donate-text" [innerHtml]="donateDescription"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="donate-section">
+    <div class="container-2">
+      <div class="donate-money flex-row">
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/1home-case1.png" width="185">
+              </div>
+              <h3 class="opt-name">{{ 'ADD_A_HOME' | translate }}</h3>
+              <p class="opt-desc">{{ 'ADD_A_HOME_DESC' | translate }}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 2,000</div><a (click)="purchaseClicked(2000)" class="donate-btn w-button">{{ 'DONATE' | translate }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/10homes-case1.png" width="185">
+              </div>
+              <h3 class="opt-name">{{ 'ADD_TEN_HOMES' | translate }}</h3>
+              <p class="opt-desc">{{ 'ADD_TEN_HOMES_DESC' | translate }}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="cost">$ 17,000</div><a (click)="purchaseClicked(17000)" class="donate-btn w-button">{{ 'DONATE' | translate }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/star-case2.png" width="185">
+              </div>
+              <h3 class="opt-name">{{ 'HELP_US' | translate }}</h3>
+              <p class="opt-desc">{{ 'HELP_US_DESC' | translate }}</p>
+            </div>
+            <div class="cost-wrap">
+              <div class="form-wrapper w-form">
+                <form data-name="Email Form" id="email-form" name="email-form">
+                  <div class="input-wrap">
+                    <div class="dollar-symbhol">$</div>
+                    <div class="w-embed">
+                      <input #donateValue class="custom-input w-input" type="text" maxlength="6" placeholder="Add Amount" data-name="Amount" name="Amount" id="Amount" required="required"
+                             onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.keyCode === 46 || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40">
+                    </div>
+                  </div>
+                </form>                
+              </div><a (click)="purchaseClicked(null)" class="donate-btn w-button">{{ 'DONATE' | translate }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col-donate">
+          <div class="donate-col-wrap">
+            <div class="donate-opt-wrap">
+              <div class="donate-opt-img"><img src="assets/img/donate/donate-time-case1-2.png" width="185">
+              </div>
+              <h3 class="opt-name">{{ 'VOLUNTEER' | translate }}</h3>
+              <p class="opt-desc">{{ 'VOLUNTEER_DESC' | translate }}</p>
+            </div>
+            <div class="cost-wrap"><a class="donate-btn w-button" target="_blank" href="https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform">{{ 'SIGN_UP' | translate }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div #aboutDialog
+     class="about-data-container closeMenu"
+     [style.left.px]="isShowAboutData ? aboutDataPosition.left : '-1000'"
+     [style.top.px]="isShowAboutData ? aboutDataPosition.top : '-1000'"
+     [style.lineHeight.px]="isShowAboutDataFullScreen ? aboutDataPosition.windowHeight : 0"
+     [class.open]="isShowAboutDataFullScreen"
+     (click)="closeAboutPopUp($event)">
+  <div class="about-data-content"
+       [style.width.px]="aboutDataPosition.windowWidth">
+    <div class="about-data-header">
+      <h3>{{ 'DONATE' | translate }}</h3>
+      <span class="closeMenu">
+        <img class="closeMenu close-button pull-right"
+            src="/assets/img/close-button.svg"
+            alt="Close">
+       </span>
+    </div>
+
+    <div class="about-data-body"
+         [style.maxHeight.px]="maxHeightPopUp">
+      <p>{{ 'THANKS_FOR_DONATE' | translate }}</p>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@ const gulp = require('gulp');
 gulp.paths = {
   tssrc: [
     '**/*.ts',
+    '!aot/**/*',
     '!node_modules/**/*',
     '!bundles/**/*',
     '!typings/**/*',
@@ -14,7 +15,8 @@ gulp.paths = {
     '!test-e2e/**/*',
     '!e2e/**/*',
     '!src2/**/*',
-    '!**/*.{ts,coffee}.js'
+    '!**/*.{ts,coffee,map}.js',
+    '!**/*.{ngstyle, ngfactory, ngsummary}.ts'
   ]
 };
 

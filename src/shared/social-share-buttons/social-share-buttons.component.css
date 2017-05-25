@@ -11,7 +11,7 @@
 
 @media (max-width: 599px) {
   .share-button-container > div:first-child {
-    margin-left: 14px;
+    margin-left: 5px;
     text-align: center;
   }
 

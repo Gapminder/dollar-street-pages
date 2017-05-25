@@ -5,12 +5,17 @@ export interface ImageResolutionInterface {
 }
 
 export class Config {
-  public static api: string = '//prod-api.dollarstreet.org';
+  // public static api: string = '//prod-api.dollarstreet.org';
   // public static api: string = '//stage.dollarstreet.org';
-  // public static api: string = '//apidev.dollarstreet.org';
-  // public static api: string = '//192.168.1.105';
-  // public static api: string = '//192.168.1.57';
+  // public static api: string = '//consumer-docker.dollarstreet.org';
+  // public static api: string = '//consumer-api-dev.dollarstreet.org';
+  // public static api: string = '//192.168.1.105:8015';
+  // public static api: string = '//192.168.1.57:8015';
+  // public static api: string = '//52.211.52.39:8015';
   // public static api: string = '//192.168.1.95';
+  public static api: string = '//localhost:8015';
+
+  public static stripPublicKey: string = 'pk_test_t5Ct4SMWKOD7uycxzbmaerp3';
 
   public static windowInnerWidth: number = window.innerWidth;
 
@@ -92,5 +97,25 @@ export class Config {
     } else {
       document.documentElement.scrollTop += step;
     }
+  }
+
+  public static parseUrl(url: string): any {
+    let params = JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+
+    if (params.regions) {
+      params.regions = params.regions.split(',');
+    }
+
+    if (params.countries) {
+      params.countries = params.countries.split(',');
+    }
+
+    return params;
+  }
+
+  public static objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
+      return encodeURIComponent(k) + '=' + data[k];
+    }).join('&');
   }
 }

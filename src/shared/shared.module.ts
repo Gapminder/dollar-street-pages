@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { Angulartics2Module } from 'angulartics2';
-
 import { HeaderWithoutFiltersComponent } from './header-without-filters/header.component';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -54,8 +52,28 @@ import { StreetFamilyDrawService } from './street-family/street-family.service';
 import { IncomeFilterComponent } from './income-filter/income-filter.component';
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
+import { LanguageSelectorComponent } from './language-selector/language-selector.component';
+
+import { TranslateMeComponent } from './translate-me/translate-me.component';
+
+import { TranslateModule, TranslateLoader } from 'ng2-translate';
+import { Observable } from 'rxjs';
+
+import { DropdownModule } from 'ng2-bootstrap/components/dropdown';
+
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
+
+/* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
+export class CustomLoader implements TranslateLoader {
+  public getTranslation(lang: string): Observable<any> {
+    return Observable.of({KEY: 'value'});
+  }
+}
+/* tslint:enable:no-unused-variable */
+
 @NgModule({
   declarations: [
+    LanguageSelectorComponent,
     HeaderWithoutFiltersComponent,
     MainMenuComponent,
     SocialShareButtonsComponent,
@@ -77,13 +95,19 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
     StreetFilterComponent,
     StreetFamilyComponent,
     IncomeFilterComponent,
-    IsImageLoadedDirective
+    IsImageLoadedDirective,
+    TranslateMeComponent
   ],
   imports: [
     HttpModule,
     RouterModule,
     CommonModule,
-    Angulartics2Module.forRoot()
+    DropdownModule,
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+    TranslateModule.forRoot({
+      provide: TranslateLoader,
+      useClass: CustomLoader
+    })
   ],
   providers: [
     HeaderService,
@@ -97,6 +121,8 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
     StreetFamilyDrawService
   ],
   exports: [
+    TranslateModule,
+    LanguageSelectorComponent,
     HeaderWithoutFiltersComponent,
     FooterComponent,
     RegionMapComponent,
@@ -111,10 +137,10 @@ import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.direct
     StreetFamilyComponent,
     IncomeFilterComponent,
     MainMenuComponent,
-    IsImageLoadedDirective
+    IsImageLoadedDirective,
+    TranslateMeComponent
   ]
 })
 
 export class SharedModule {
-
 }

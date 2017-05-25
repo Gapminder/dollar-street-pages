@@ -1,7 +1,8 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { LanguageService } from '../../common';
 
 import {
   MathService,
@@ -17,40 +18,47 @@ import {
   styleUrls: ['./header.component.css']
 })
 
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+  public element: HTMLElement;
+
   @Input()
-  protected query: string;
+  public query: string;
   @Input()
-  protected thing: string;
+  public thing: string;
   @Input('hoverPlace')
-  protected hoverPlace: Observable<any>;
-  protected header: any = {};
-  protected isCountryFilterReady: boolean = false;
-  protected isThingFilterReady: boolean = false;
+  public hoverPlace: Observable<any>;
+  public header: any = {};
+  public isCountryFilterReady: boolean = false;
+  public isThingFilterReady: boolean = false;
 
   @Output()
-  private filter: EventEmitter<any> = new EventEmitter<any>();
+  public filter: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  private isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
-  private streetData: DrawDividersInterface;
-  private activeThing: any;
-  private router: Router;
-  private activatedRoute: ActivatedRoute;
-  private matrixComponent: boolean;
-  private mapComponent: boolean;
-  private math: MathService;
-  private streetServiceSubscribe: Subscription;
-  private streetSettingsService: StreetSettingsService;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
-  private isMobile: boolean;
+  public isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
+  public streetData: DrawDividersInterface;
+  public activeThing: any;
+  public window: Window = window;
+  public router: Router;
+  public activatedRoute: ActivatedRoute;
+  public matrixComponent: boolean;
+  public mapComponent: boolean;
+  public math: MathService;
+  public streetServiceSubscribe: Subscription;
+  public streetSettingsService: StreetSettingsService;
+  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
+  public isMobile: boolean;
+  public languageService: LanguageService;
+  public getTranslationSubscribe: Subscription;
 
   public constructor(router: Router,
                      math: MathService,
+                     languageService: LanguageService,
                      activatedRoute: ActivatedRoute,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
+                     element: ElementRef,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -58,9 +66,27 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
+    this.element = element.nativeElement;
 
     this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
+  }
+
+  public ngAfterViewInit(): void {
+    this.getTranslationSubscribe = this.languageService.getTranslation('BY_INCOME').subscribe((incomeText: string) => {
+      let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
+
+      setTimeout(() => {
+        incomeContainer.classList.remove('incomeby');
+      }, 0);
+
+      if (incomeText.length > 20 && this.window.innerWidth < 920) {
+        setTimeout(() => {
+          incomeContainer.classList.add('incomeby');
+        },0);
+      }
+    });
   }
 
   public ngOnInit(): void {
@@ -77,6 +103,10 @@ export class HeaderComponent implements OnInit, OnChanges {
 
         this.streetData = res.data;
       });
+  }
+
+  public ngOnDestroy(): void {
+    this.getTranslationSubscribe.unsubscribe();
   }
 
   public ngOnChanges(changes: any): void {
@@ -110,7 +140,7 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.activeThing = thing;
   }
 
-  protected goToMatrixPage(): void {
+  public goToMatrixPage(): void {
     let queryParams = {
       thing: 'Families',
       countries: 'World',
@@ -118,7 +148,8 @@ export class HeaderComponent implements OnInit, OnChanges {
       zoom: 4,
       row: 1,
       lowIncome: this.streetData.poor,
-      highIncome: this.streetData.rich
+      highIncome: this.streetData.rich,
+      lang: this.languageService.currentLanguage
     };
 
     if (!this.isDesktop) {
@@ -134,7 +165,7 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }
 
-  protected isFilterGotData(event: any): any {
+  public isFilterGotData(event: any): any {
     this[event] = true;
   }
 

@@ -144,7 +144,6 @@
 
 
 #countries-filter .pointer-container {
-  width: 275px;
   display: inline-block;
   padding-right: 38px;
   cursor: pointer;
@@ -237,6 +236,7 @@
   background: none;
   box-shadow: none;
   padding-right: 27px;
+  display: inline-block;
 }
 
 #countries-filter .button-container button:focus {
@@ -331,24 +331,24 @@
 
 ::-webkit-input-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 ::-moz-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* Firefox 19+ */
 :-moz-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* Firefox 18- */
 :-ms-input-placeholder {
   color: #767d86;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
 }
 
 /* IE */
@@ -405,7 +405,6 @@
   }
 
   #countries-filter .pointer-container {
-    width: 210px;
     margin-top: 4px;
   }
 
@@ -433,8 +432,8 @@
 
   #countries-filter .regions-container span.name {
     font-size: 16px;
-    line-height: 10px;
-    margin-top: 10px;
+    line-height: 14px;
+    margin-top: 8px;
     width: calc(100% - 20px);
   }
 

@@ -15,7 +15,7 @@ export class ArticleService {
   }
 
   public getArticle(query: string): Observable<any> {
-    return this.http.get(`${Config.api}/consumer/api/v1/article?${query}`).map((res: any) => {
+    return this.http.get(`${Config.api}/v1/article?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
       return {err: parseRes.error, data: parseRes.data};

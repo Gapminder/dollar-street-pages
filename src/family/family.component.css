@@ -2,6 +2,10 @@ family-header {
   display: block;
 }
 
+.family-container {
+  position: relative;
+}
+
 .header-container {
   width: 100%;
   position: fixed;
@@ -40,7 +44,7 @@ family-header {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: calc(100% - 135px);
+  width: calc(100% - 280px);
 }
 
 .header-container .heading img {
@@ -53,9 +57,45 @@ family-header {
   clear: both;
 }
 
-.header-container main-menu >>> #main-menu .menu-icon {
-  width: 72px;
-  height: 56px;
+.header-container >>> language-selector .lang-container button {
+  background-color: #f6f7f8;
+}
+
+.zoom-column {
+  position: fixed;
+  right: 32px;
+  bottom: 52px;
+  z-index: 10;
+}
+
+.zoom-column.stop {
+  position: absolute;
+  bottom: 36px;
+}
+
+.zoom-column button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  outline: 0;
+  box-shadow: 0 0 3.9px 0.1px rgba(0, 0, 0, 0.32);
+  background: rgba(255, 255, 255, 0.8) center center no-repeat;
+  background-size: 16px auto !important;
+}
+
+.zoom-column button[disabled] {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.zoom-column .increase {
+  background-image: url('/assets/img/plus.svg');
+  margin-right: 8px;
+}
+
+.zoom-column .decrease {
+  background-image: url('/assets/img/minus.svg');
 }
 
 @media (max-width: 1023px) {
@@ -71,17 +111,12 @@ family-header {
   .header-container .heading {
     margin: 11px 0 0;
     font-size: 20px;
-    width: calc(100% - 105px);
+    width: calc(100% - 250px);
   }
 
   .header-container .heading img {
     width: 8px;
     margin: 0 12px -2px 15px;
-  }
-
-  .header-container main-menu >>> #main-menu .menu-icon {
-    width: 53px;
-    height: 46px;
   }
 }
 
@@ -106,7 +141,7 @@ family-header {
   .header-container .heading {
     margin: 14px 0 0;
     font-size: 20px;
-    width: calc(100% - 50px);
+    width: calc(100% - 55px);
   }
 
   .header-container .heading img {
@@ -118,5 +153,18 @@ family-header {
     width: 48px;
     height: 55px;
     margin-top: 0;
+  }
+
+  .header-container .header-content >>> language-selector .lang-container {
+    display: none;
+  }
+
+  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container {
+    display: inline-block;
+    margin: 5px 4px;
+  }
+
+  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container button {
+    background-color: white;
   }
 }

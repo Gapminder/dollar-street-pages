@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { sortBy, chain, differenceBy } from 'lodash';
 
-import { MathService, StreetSettingsService } from '../../common';
+import { MathService, StreetSettingsService, LanguageService } from '../../common';
 import { StreetDrawService } from './street.service';
 
 @Component({
@@ -20,48 +20,53 @@ import { StreetDrawService } from './street.service';
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   public data: any;
   @Input('thing')
-  protected thing: string;
+  public thing: string;
   @Input('query')
-  private query: string;
+  public query: string;
   @Input('places')
-  private places: Observable<any>;
+  public places: Observable<any>;
   @Input('chosenPlaces')
-  private chosenPlaces: Observable<any>;
+  public chosenPlaces: Observable<any>;
   @Input('hoverPlace')
-  private hoverPlace: Subject<any>;
+  public hoverPlace: Subject<any>;
   @Output('filterStreet')
-  private filterStreet: EventEmitter<any> = new EventEmitter<any>();
-  private street: any;
-  private regions: any;
-  private thingname: any;
-  private countries: any;
-  private math: MathService;
-  private streetSettingsService: StreetSettingsService;
-  private streetData: any;
-  private element: HTMLElement;
-  private activatedRoute: ActivatedRoute;
-  private streetServiceSubscribe: Subscription;
-  private resize: any;
-  private drawOnMap: boolean = false;
+  public filterStreet: EventEmitter<any> = new EventEmitter<any>();
+  public languageService: LanguageService;
+  public getTranslationSubscribe: Subscription;
+  public street: any;
+  public regions: any;
+  public thingname: any;
+  public countries: any;
+  public math: MathService;
+  public streetSettingsService: StreetSettingsService;
+  public streetData: any;
+  public element: HTMLElement;
+  public activatedRoute: ActivatedRoute;
+  public streetServiceSubscribe: Subscription;
+  public resize: any;
+  public drawOnMap: boolean = false;
+  public isStreetInit: boolean = false;
 
-  private placesSubscribe: Subscription;
-  private hoverPlaceSubscribe: Subscription;
-  private chosenPlacesSubscribe: Subscription;
-  private streetFilterSubscribe: Subscription;
-  private placesArr: any;
-  private streetBoxContainer: HTMLElement;
-  private streetBoxContainerMargin: number;
+  public placesSubscribe: Subscription;
+  public hoverPlaceSubscribe: Subscription;
+  public chosenPlacesSubscribe: Subscription;
+  public streetFilterSubscribe: Subscription;
+  public placesArr: any;
+  public streetBoxContainer: HTMLElement;
+  public streetBoxContainerMargin: number;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
                      math: MathService,
                      streetSettingsService: StreetSettingsService,
-                     streetDrawService: StreetDrawService) {
+                     streetDrawService: StreetDrawService,
+                     languageService: LanguageService) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
     this.street = streetDrawService;
     this.streetSettingsService = streetSettingsService;
+    this.languageService = languageService;
   }
 
   public ngOnInit(): any {
@@ -71,24 +76,24 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       .getPropertyValue('margin-left');
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
     this.street.set('isInit', true);
+    this.street.set('chosenPlaces', []);
+
+    this.getTranslationSubscribe = this.languageService.getTranslation(['POOREST', 'RICHEST']).subscribe((trans: any) => {
+      this.street.poorest = trans.POOREST.toUpperCase();
+      this.street.richest = trans.RICHEST.toUpperCase();
+    });
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
-        let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+      let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+      if (this.street.width + this.street.streetOffset + this.streetBoxContainerMargin !== document.body.offsetWidth &&
+        this.placesArr &&
+        this.streetData) {
+        this.setDividers(this.placesArr, this.streetData);
 
-        if (
-          this.street.width + this.street.streetOffset + this.streetBoxContainerMargin !== document.body.offsetWidth &&
-          this.placesArr &&
-          this.streetData
-        ) {
-          this.setDividers(this.placesArr, this.streetData);
+        return;
+      }
 
-          return;
-        }
-
-        if (!difference.length) {
-          return;
-        }
-
+      if (difference.length || chosenPlaces.length !== this.street.chosenPlaces.length) {
         this.street.set('chosenPlaces', chosenPlaces.length ? chosenPlaces : []);
 
         if (!this.street.scale) {
@@ -96,68 +101,68 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         this.street.clearAndRedraw(chosenPlaces);
-      });
+      }
+    });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace: any): void => {
-        if (this.drawOnMap) {
-          this.drawOnMap = !this.drawOnMap;
+      if (this.drawOnMap) {
+        this.drawOnMap = !this.drawOnMap;
 
-          return;
-        }
+        return;
+      }
 
-        if (!this.street.scale && this.street.isInit) {
-          this.street.set('hoverPlace', hoverPlace);
-
-          return;
-        }
-
-        if (!hoverPlace) {
-          this.street.removeHouses('hover');
-          this.street.set('hoverPlace', undefined);
-          this.street.clearAndRedraw(this.street.chosenPlaces);
-
-          return;
-        }
-
+      if (!this.street.scale && this.street.isInit) {
         this.street.set('hoverPlace', hoverPlace);
-        this.street.drawHoverHouse(hoverPlace);
-      });
+
+        return;
+      }
+
+      if (!hoverPlace) {
+        this.street.removeHouses('hover');
+        this.street.set('hoverPlace', undefined);
+        this.street.clearAndRedraw(this.street.chosenPlaces);
+
+        return;
+      }
+
+      this.street.set('hoverPlace', hoverPlace);
+      this.street.drawHoverHouse(hoverPlace);
+    });
 
     this.placesSubscribe = this.places && this.places.subscribe((places: any): void => {
-        this.placesArr = places;
+      this.placesArr = places;
 
-        if (!this.streetData) {
-          return;
-        }
+      if (!this.streetData) {
+        return;
+      }
 
-        if (!places.length) {
-          this.street
-            .clearSvg()
-            .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
-            .set('places', [])
-            .set('fullIncomeArr', [])
-            .drawScale(places, this.streetData)
-            .removeSliders();
-        }
+      if (!places.length) {
+        this.street
+          .clearSvg()
+          .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
+          .set('places', [])
+          .set('fullIncomeArr', [])
+          .drawScale(places, this.streetData)
+          .removeSliders();
+      }
 
-        this.setDividers(this.placesArr, this.streetData);
-      });
+      this.setDividers(this.placesArr, this.streetData);
+    });
 
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings().subscribe((res: any) => {
+      if (res.err) {
+        console.error(res.err);
+        return;
+      }
 
-        this.streetData = res.data;
+      this.streetData = res.data;
 
-        if (!this.placesArr) {
-          return;
-        }
+      if (!this.placesArr) {
+        return;
+      }
 
-        this.setDividers(this.placesArr, this.streetData);
-      });
+      this.setDividers(this.placesArr, this.streetData);
+    });
 
     this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
       let query: any = {};
@@ -167,7 +172,9 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       query.lowIncome = filter.lowIncome;
       query.highIncome = filter.highIncome;
 
-      if (filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+      if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+        this.isStreetInit = true;
+
         return;
       }
 
@@ -219,6 +226,8 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     if (this.chosenPlacesSubscribe) {
       this.chosenPlacesSubscribe.unsubscribe();
     }
+
+    this.getTranslationSubscribe.unsubscribe();
 
     this.streetFilterSubscribe.unsubscribe();
     this.streetServiceSubscribe.unsubscribe();

@@ -79,12 +79,12 @@
 .bubbles-container .bubbles-description {
   font-size: 20px;
   line-height: 24px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
 }
 
 .bubbles-container .welcome {
   font-size: 24px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   margin: 30px 0 25px;
 }
 
@@ -116,7 +116,7 @@
   border-radius: 14px;
   color: #2e4350;
   font-size: 16px;
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
   box-shadow: none;
   outline: none;
   border: 0;
@@ -149,6 +149,11 @@
 
 .bubbles-container .footer-container social-share-buttons >>> .share-button:first-child {
   margin: 0;
+}
+
+.bubbles-container .footer-container social-share-buttons i {
+  color: #edf0f5;
+  font-size: 28px;
 }
 
 .bubbles-container .footer-container social-share-buttons >>> .share-button-container svg {
@@ -271,6 +276,10 @@
 }
 
 @media (max-width: 599px) {
+  .bubbles-container .bubbles-description {
+    font-size: 16px;
+  }
+
   .mobile {
     display: block;
   }
@@ -362,10 +371,6 @@
   .bubbles-container .footer-container {
     margin-top: 0;
     padding: 10px 27px;
-  }
-
-  .bubbles-container .footer-container social-share-buttons {
-    width: 170px;
   }
 
   .bubbles-container .footer-container social-share-buttons >>> .share-button:first-child {

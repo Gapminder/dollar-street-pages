@@ -1,6 +1,7 @@
 import 'rxjs/add/operator/debounceTime';
-
-import { Component, OnInit, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
+import {
+  Component, OnInit, ElementRef, OnDestroy, NgZone, AfterViewChecked, ChangeDetectorRef
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
@@ -14,21 +15,24 @@ import {
   CountriesFilterService,
   Angulartics2GoogleAnalytics,
   StreetSettingsService,
-  BrowserDetectionService
+  BrowserDetectionService,
+  LanguageService,
+  ActiveThingService
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
 @Component({
   selector: 'matrix',
-  templateUrl: './matrix.template.html',
-  styleUrls: ['./matrix.css']
+  templateUrl: './matrix.component.html',
+  styleUrls: ['./matrix.component.css']
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
-  public zoomPositionFixed: boolean = false;
+  public zoomPositionFixed: boolean;
   public isOpenIncomeFilter: boolean = false;
   public isMobile: boolean;
   public isDesktop: boolean;
+  public window: Window = window;
   public hoverPlace: Subject<any> = new Subject<any>();
   public streetPlaces: Subject<any> = new Subject<any>();
   public matrixPlaces: Subject<any> = new Subject<any>();
@@ -48,6 +52,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public windowInnerHeight: number = window.innerHeight;
   public placesVal: any;
   public locations: any;
+  public countriesTranslations: any[];
   public streetData: any;
   public selectedRegions: any;
   public activeCountries: any;
@@ -65,10 +70,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public matrixServiceStreetSubscribe: Subscription;
   public countriesFilterServiceSubscribe: Subscription;
   public thing: string;
+  public activeThing: any;
   public query: string;
   public regions: string;
   public countries: string;
   public zone: NgZone;
+  public ref: ChangeDetectorRef;
   public router: Router;
   public matrixService: MatrixService;
   public loaderService: LoaderService;
@@ -82,6 +89,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public streetContainer: HTMLElement;
   public headerContainer: HTMLElement;
   public matrixImagesContainer: HTMLElement;
+  public streetAndTitleContainer: HTMLElement;
+  public imagesContainer: HTMLElement;
   public matrixImagesContainerHeight: number;
   public locationStrategy: LocationStrategy;
   public guidePositionTop: number = 0;
@@ -89,6 +98,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public guideContainer: HTMLElement;
   public guideHeight: number;
   public device: BrowserDetectionService;
+  public languageService: LanguageService;
+  public theWorldTranslate: string;
+  public activeThingService: ActiveThingService;
+  public getTranslationSubscribe: Subscription;
+  public byIncomeText: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -101,7 +115,11 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      countriesFilterService: CountriesFilterService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     languageService: LanguageService,
+                     activeThingService: ActiveThingService,
+                     ref: ChangeDetectorRef) {
+    this.ref = ref;
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -114,6 +132,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.countriesFilterService = countriesFilterService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
+    this.activeThingService = activeThingService;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -125,6 +145,16 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.headerContainer = this.element.querySelector('.matrix-header') as HTMLElement;
     this.matrixImagesContainer = this.element.querySelector('matrix-images') as HTMLElement;
     this.guideContainer = this.element.querySelector('quick-guide') as HTMLElement;
+    this.streetAndTitleContainer = this.element.querySelector('.street-and-title-container') as HTMLElement;
+
+    this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'BY_INCOME']).subscribe((trans: any) => {
+      this.theWorldTranslate = trans.THE_WORLD;
+      this.byIncomeText = trans.BY_INCOME;
+    });
+
+    this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
+      this.activeThing = thing;
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -148,6 +178,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.locationStrategy.onPopState(() => {
       if (this.streetData && this.locations) {
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
         this.urlChanged({isBack: true});
 
         if (this.guideContainer) {
@@ -182,6 +213,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.locations = res.data;
+
+        this.countriesTranslations = _
+          .chain(res.data)
+          .map('countries')
+          .flatten()
+          .sortBy('country')
+          .value();
       });
 
     if ('scrollRestoration' in history) {
@@ -220,6 +258,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+        this.query = this.query + this.languageService.getLanguageParam();
 
         if (this.activeHouse) {
           this.query = this.query + `&activeHouse=${this.activeHouse}`;
@@ -241,7 +280,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.zone.run(() => {
           let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-          if (this.guideContainer && this.guideContainer.offsetHeight && this.windowInnerWidth > 599 && this.imgContent) {
+          if (this.guideContainer && this.guideContainer.offsetHeight && !this.isMobile && this.imgContent) {
             if (this.guideContainer.offsetHeight > scrollTop) {
               this.guidePositionTop = scrollTop;
               this.getPaddings({isGuide: true});
@@ -253,7 +292,17 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
             }
           }
 
-          if (this.windowInnerWidth < 600) {
+          let headerHeight: number = this.headerContainer.clientHeight;
+
+          if (scrollTop > headerHeight) {
+            this.headerContainer.style.position = 'fixed';
+            this.matrixImagesContainer.style.paddingTop = this.headerContainer.clientHeight + 'px';
+          } else {
+            this.headerContainer.style.position = 'static';
+            this.matrixImagesContainer.style.paddingTop = '0px';
+          }
+
+          if (this.isMobile) {
             this.showMobileHeader();
           }
 
@@ -274,30 +323,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public interactiveIncomeText(): void {
-    let thingContainer = this.element.querySelector('things-filter') as HTMLElement;
-    let countriesFilter = this.element.querySelector('countries-filter') as HTMLElement;
-    let filtersContainer = this.element.querySelector('.filters-container') as HTMLElement;
-    let incomeContainer = this.element.querySelector('.income-title-container') as HTMLElement;
-    let filtersBlockWidth: number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
-
-    setTimeout((): void => {
-      incomeContainer.classList.remove('incomeby');
-    }, 0);
-
-    if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
-      setTimeout((): void => {
-        incomeContainer.classList.remove('incomeby');
-      }, 0);
-    }
-
-    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 150) {
-      setTimeout((): void => {
-        incomeContainer.classList.add('incomeby');
-      }, 0);
-    }
-  }
-
   public ngOnDestroy(): void {
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
@@ -311,6 +336,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.scrollSubscribeForMobile.unsubscribe();
     }
 
+    this.getTranslationSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
     this.matrixServiceSubscribe.unsubscribe();
@@ -371,12 +397,22 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
+  public interactiveIncomeText(): void {
+    let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
+
+    setTimeout(() => {
+      incomeContainer.classList.remove('incomeby');
+    }, 0);
+
+    if (this.byIncomeText.length > 20 && this.window.innerWidth < 920) {
+      setTimeout(() => {
+        incomeContainer.classList.add('incomeby');
+      },0);
+    }
+  }
+
   /** each document usage breaks possible server side rendering */
   public stopScroll(): void {
-    if (!this.imageHeight) {
-      return;
-    }
-
     if (this.isMobile) {
       let fixedStreet = this.element.querySelector('.street-container.fixed') as HTMLElement;
 
@@ -386,6 +422,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     this.setZoomButtonPosition();
+
     let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - this.guidePositionTop;
     let distance = scrollTop / (this.imageHeight + this.imageMargin);
 
@@ -416,12 +453,14 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  public getPaddings(options: {isGuide?: boolean}): void {
+  public getPaddings(options: { isGuide?: boolean }): void {
+    if (!this.imgContent) {
+      return;
+    }
+
     let {isGuide} = options;
 
     let headerHeight: number = this.headerContainer.offsetHeight;
-
-    this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
 
     if (this.guideContainer) {
       headerHeight -= this.guidePositionTop;
@@ -545,14 +584,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
             return;
           }
 
-          if (!this.filtredPlaces.length) {
-            let headerHeight: number = this.headerContainer.offsetHeight;
-            this.matrixImagesContainer.style.paddingTop = `${headerHeight}px`;
-          }
-
-          this.buildTitle(this.parseUrl(this.query));
-
-          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
+          this.buildTitle(this.query);
 
           if (!isBack) {
             this.urlChangeService.replaceState('/matrix', this.query);
@@ -563,102 +595,44 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           } else {
             document.documentElement.scrollTop = 0;
           }
+
+          this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
         });
     });
   }
 
-  public buildTitle(query: any): any {
-    let regions = query.regions.split(',');
-    let countries = query.countries.split(',');
-
-    if (regions[0] === 'World' && countries[0] === 'World') {
-      this.activeCountries = 'the world';
-
-      return;
-    }
-
-    if (regions[0] === 'World' && countries[0] !== 'World') {
-      if (countries.length > 2) {
-        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-      } else {
-        this.activeCountries = countries.join(' & ');
-      }
-
-      this.selectedCountries = countries;
-
-      return;
-    }
-
-    if (regions[0] !== 'World') {
-      if (regions.length > 2) {
-        this.activeCountries = countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-      } else {
-        let sumCountries: number = 0;
-        let difference: string[] = [];
-        let regionCountries: string[] = [];
-
-        _.forEach(this.locations, (location: any) => {
-          if (regions.indexOf(location.region) !== -1) {
-            regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
-            sumCountries = +location.countries.length;
-          }
-        });
-
-        if (sumCountries !== countries.length) {
-          difference = _.difference(countries, regionCountries);
-        }
-
-        if (difference.length) {
-          this.activeCountries = difference.length === 1 && regions.length === 1 ? regions[0] + ' & '
-          + difference[0] : countries.slice(0, 2).join(', ') + ' (+' + (countries.length - 2) + ')';
-        } else {
-          this.activeCountries = regions.join(' & ');
-        }
-      }
-
-      this.selectedRegions = regions;
-      this.selectedCountries = countries;
-
-      return;
-    }
-
-    let concatLocations: string[] = regions.concat(countries);
-
-    if (concatLocations.length > 2) {
-      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
-    } else {
-      this.activeCountries = concatLocations.join(' & ');
-    }
-
-    this.selectedRegions = regions;
-    this.selectedCountries = countries;
-  }
-
   public activeHouseOptions(options: any): void {
     let {row, activeHouseIndex} = options;
+    let queryParams: any = this.parseUrl(this.query);
 
-    this.query = this.query.replace(/&activeHouse\=\d*/, '');
+    delete queryParams.activeHouse;
 
     if (row) {
-      this.query = this.query.replace(/row\=\d*/, `row=${row}`);
+      queryParams.row = row;
     }
 
     if (activeHouseIndex) {
       this.activeHouse = activeHouseIndex;
-      this.query = this.query + `&activeHouse=${activeHouseIndex}`;
+      queryParams.activeHouse = activeHouseIndex;
     } else {
       this.activeHouse = void 0;
     }
+
+    if (!queryParams.lang) {
+      queryParams.lang = this.languageService.currentLanguage;
+    }
+
+    this.query = Config.objToQuery(queryParams);
 
     this.urlChangeService.replaceState('/matrix', this.query, true);
   }
 
   public changeZoom(zoom: any): void {
     this.urlChanged({
-      url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`),
-      isZoom: true
+     url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`),
+     isZoom: true
     });
-  };
+  }
 
   public startQuickGuide(): void {
     setTimeout(() => {
@@ -702,30 +676,149 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
     this.guidePositionTop = 0;
-    if (scrollTop > this.headerContainer.offsetHeight - 10) {
+
+    this.imagesContainer = this.matrixImagesContainer.querySelector('.images-container') as HTMLElement;
+
+    if (scrollTop > this.headerContainer.clientHeight) {
       if (this.streetContainer.className.indexOf('fixed') !== -1) {
         return;
       }
 
       this.streetContainer.classList.add('fixed');
+      this.streetAndTitleContainer.style.position = 'fixed';
+      this.streetAndTitleContainer.style.zIndex = '1000';
+      this.imagesContainer.style.paddingTop = this.streetContainer.clientHeight * 2 + 'px';
+
+      if (this.guideContainer) {
+        this.headerContainer.style.marginTop = '-' + this.guideContainer.clientHeight + 'px';
+      }
     } else {
       if (this.streetContainer.className.indexOf('fixed') === -1) {
         return;
       }
 
       this.streetContainer.classList.remove('fixed');
+      this.streetAndTitleContainer.style.position = 'static';
+      this.streetAndTitleContainer.style.zIndex = '1';
+      this.imagesContainer.style.paddingTop = '0px';
+
+      if (this.guideContainer) {
+        this.headerContainer.style.marginTop = '0px';
+      }
     }
   }
 
   public setZoomButtonPosition(): void {
     let scrollTop: number = (document.body.scrollTop || document.documentElement.scrollTop) + this.windowInnerHeight;
     let containerHeight: number = this.element.offsetHeight + 30;
-    this.zone.run(() => {
-      this.zoomPositionFixed = scrollTop > containerHeight;
-    });
+    this.zoomPositionFixed = scrollTop > containerHeight;
+    this.ref.detectChanges();
   }
 
   public parseUrl(url: string): any {
     return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+  }
+
+  public findCountryTranslatedName(countries: any[]): any {
+    return _.map(countries, (item: string): any => {
+      const findTransName: any = _.find(this.countriesTranslations, {originName: item});
+      return findTransName ? findTransName.country : item;
+
+    });
+  }
+
+  public findRegionTranslatedName(regions: any[]): any {
+    return _.map(regions, (item: string): any => {
+      const findTransName: any = _.find(this.locations, {originRegionName: item});
+      return findTransName ? findTransName.region : item;
+    });
+  }
+
+  public parseLocations(url: string): any {
+    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
+    let query = JSON.parse(urlForParse);
+
+    query.regions = query.regions.split(',');
+    query.countries = query.countries.split(',');
+
+    return query;
+  }
+
+  public buildTitle(url: any): any {
+    let query: any = this.parseLocations(url);
+    let regions: string[] = query.regions;
+    let countries: string[] = query.countries;
+    let getTranslatedCountries: any;
+    let getTranslatedRegions: any;
+
+    if (regions[0] === 'World' && countries[0] === 'World') {
+      this.activeCountries = this.theWorldTranslate;
+
+      return;
+    }
+
+    if (query.countries[0] !== 'World') {
+      getTranslatedCountries = this.findCountryTranslatedName(query.countries);
+    }
+
+    if (query.regions[0] !== 'World') {
+      getTranslatedRegions = this.findRegionTranslatedName(query.regions);
+    }
+
+    if (regions[0] === 'World' && countries[0] !== 'World') {
+      if (countries.length > 2) {
+        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+      } else {
+        this.activeCountries = getTranslatedCountries.join(' & ');
+      }
+
+      this.selectedCountries = countries;
+
+      return;
+    }
+
+    if (regions[0] !== 'World') {
+      if (regions.length > 2) {
+        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+      } else {
+        let sumCountries: number = 0;
+        let difference: string[] = [];
+        let regionCountries: string[] = [];
+
+        _.forEach(this.locations, (location: any) => {
+          if (regions.indexOf(location.originRegionName) !== -1) {
+            regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
+            sumCountries = +location.countries.length;
+          }
+        });
+
+        if (sumCountries !== countries.length) {
+          difference = _.difference(getTranslatedCountries, regionCountries);
+        }
+
+        if (difference.length) {
+          this.activeCountries = difference.length === 1 && regions.length === 1 ? getTranslatedRegions[0] + ' & '
+            + difference[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+        } else {
+          this.activeCountries = getTranslatedRegions.join(' & ');
+        }
+      }
+
+      this.selectedRegions = regions;
+      this.selectedCountries = countries;
+
+      return;
+    }
+
+    let concatLocations: string[] = regions.concat(getTranslatedCountries);
+
+    if (concatLocations.length > 2) {
+      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
+    } else {
+      this.activeCountries = concatLocations.join(' & ');
+    }
+
+    this.selectedRegions = regions;
+    this.selectedCountries = countries;
   }
 }

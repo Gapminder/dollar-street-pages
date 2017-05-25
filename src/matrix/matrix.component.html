@@ -1,0 +1,62 @@
+<div class="matrix-container">
+  <div class="matrix-header main-header" [style.top.px]="-guidePositionTop">
+    <quick-guide (startQuickGuide)="startQuickGuide()"></quick-guide>
+
+    <header [query]="query"
+            [thing]="thing"
+            [hoverPlace]="hoverPlace"
+            (filter)="urlChanged($event)"
+            (isOpenIncomeFilter)="openIncomeFilter()">
+    </header>
+
+    <div class="street-and-title-container">
+      <div class="street-container" #streetContainer (click)="scrollTop($event, streetContainer)">
+        <div class="short-title">{{activeThing?.plural}} <span>{{ 'IN' | translate }}</span> {{activeCountries}} <span>{{ 'BY_DOLLAR' | translate }}</span></div>
+
+        <div class="street-content">
+          <street [query]="query"
+                  [thing]="thing"
+                  [places]="streetPlaces"
+                  [hoverPlace]="hoverPlace"
+                  [chosenPlaces]="chosenPlaces"
+                  (filterStreet)="urlChanged($event)"></street>
+
+          <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
+        </div>
+      </div>
+    </div>
+
+    <income-filter *ngIf="!isDesktop && isOpenIncomeFilter"
+                  [places]="streetPlacesData"
+                  [lowIncome]="lowIncome"
+                  [highIncome]="highIncome"
+                  (sendResponse)="getResponseFromIncomeFilter($event)"></income-filter>
+  </div>
+
+  <matrix-images [row]="row"
+                [zoom]="zoom"
+                [query]="query"
+                [thing]="thing"
+                [places]="matrixPlaces"
+                [activeHouse]="activeHouse"
+                [guidePositionTop]="guideHeight"
+                [clearActiveHomeViewBox]="clearActiveHomeViewBox"
+                (filter)="urlChanged($event)"
+                (hoverPlace)="hoverPlaceS($event)"
+                (activeHouseOptions)="activeHouseOptions($event)">
+  </matrix-images>
+
+  <div class="zoom-column pull-right" [class.stop]="zoomPositionFixed" *ngIf="isDesktop">
+    <button type="button"
+            class="increase"
+            [disabled]="zoom === 2"
+            (click)="changeZoom(zoom - 1)">
+    </button>
+
+    <button type="button"
+            class="decrease"
+            [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
+            (click)="changeZoom(zoom + 1)">
+    </button>
+  </div>
+</div>

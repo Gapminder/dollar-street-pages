@@ -1,0 +1,21 @@
+.translate-me-container {
+    visibility: visible;
+    width: 100%;
+    border-radius: 4px;
+    border: #eaeaea 1px solid;
+    padding: 4px 10px 0 10px;
+}
+
+.translate-me-container a {
+    text-decoration: none;
+    color: #767d86;
+}
+
+.translate-me-container img {
+    display: none;
+}
+
+.translate-me-container p {
+    padding: 4px 0 0 10px;
+    line-height: 14px;
+}

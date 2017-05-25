@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UrlChangeService {
-  private location: Location;
+  public location: Location;
   private urlEvents: Subject<any>;
 
   public constructor(@Inject(Location) location: Location) {
@@ -14,7 +14,7 @@ export class UrlChangeService {
   }
 
   public replaceState(path: string, query: string, isReplace?: boolean): void {
-    if (this.location.isCurrentPathEqualTo(path, query)) {
+    if (this.isCurrentPathEqualTo(path, query)) {
       return;
     }
 

@@ -8,12 +8,11 @@
 
     <div class="house-info-container">
       <div class="house-info-content">
-        <div class="header-container">$ {{math.round(place.income)}}<span>/month</span></div>
+        <div class="header-container">$ {{math.round(place.income)}}<span>/{{ 'MONTH' | translate }}</span></div>
 
         <div class="home-description-container">
           <h3>
-            <span
-              *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} family,</span>
+            <span *ngIf="familyData?.familyName">{{familyData?.familyName}}<span *ngIf="currentLanguage == 'en'"> {{ 'FAMILY' | translate }}</span>,</span>
             <span style="cursor:pointer"
                   [routerLink]="['/country', familyData?.country?._id]"
                   [queryParams]="{}"
@@ -44,17 +43,21 @@
 
           <p *ngIf="familyData?.description">{{familyData.description}}</p>
 
+          <div class="translate-me-desktop">
+            <translate-me *ngIf="!familyData.translated"></translate-me>            
+          </div>
+
           <a *ngIf="familyData.goToPlaceData"
              [routerLink]="['/family']"
              [queryParams]="familyData.goToPlaceData"
              angulartics2On="click"
-             angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">Visit this home <img
+             angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }} <img
             src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
 
           <a *ngIf="isShowCountryButton"
-             (click)="goToMatrixByCountry(familyData.country.alias)">
-            <span>All {{thing.toLowerCase()}}</span>
-            <span>in</span>
+             (click)="goToMatrixByCountry(familyData.country.originName)">
+            <span>{{ 'ALL' | translate }} {{familyData?.activeThing?.plural.toLowerCase()}}</span>
+            <span>{{ 'IN' | translate }}</span>
             <span>{{countryName}}</span>
             <img src="/assets/img/arrow-right-icon.svg" alt="">
             <img src="/assets/img/arrow-right-icon-white.svg" alt="">
@@ -79,22 +82,23 @@
   <div class="view-image-block-footer-container">
     <div class="photographer-container">
       <p><img src="/assets/img/cc-icon-small.svg">
-        Photo: <a *ngIf="familyData?.photographer?.id"
+        {{ 'PHOTO' | translate }}: <a *ngIf="familyData?.photographer?.id"
                   [routerLink]="['/photographer', familyData.photographer.id]"
                   [queryParams]="{}"
                   angulartics2On="click"
                   angularticsEvent="From Matrix page to {{familyData.photographer.name}} Photographer profile">
-          {{familyData.photographer?.name}}</a> for Dollar Street <a
+          {{familyData.photographer?.name}}</a> {{ 'FOR' | translate }} Dollar Street <a
           href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
       </p>
     </div>
 
     <div class="zoom-download-container">
-      <a class="download" target="_blank" [href]="api + '/consumer/api/v1/download-image/' + place.image">
-        <img src="/assets/img/download-icon.svg" alt=""> Download
+      <a class="download" target="_blank" [href]="api + '/v1/download-image/' + place.image">
+        <img src="/assets/img/download-icon.svg" alt=""><span class="button-text">{{ 'DOWNLOAD' | translate }}</span>
       </a>
+
       <span (click)="openPopUp()">
-        <img src="/assets/img/fullsize-icon.svg" alt=""> Fullsize
+        <img src="/assets/img/fullsize-icon.svg" alt=""><span class="button-text">{{ 'FULLSIZE' | translate }}</span>
       </span>
     </div>
   </div>
@@ -125,13 +129,13 @@
     <div class="view-image-block-footer-container">
       <div class="photographer-container">
         <p><img src="/assets/img/cc-icon-small-white.svg">
-          Photo: <a *ngIf="familyData?.photographer?.id"
+          {{ 'PHOTO' | translate }}: <a *ngIf="familyData?.photographer?.id"
                     [routerLink]="['/photographer', familyData.photographer.id]"
                     [queryParams]="{}"
                     angulartics2On="click"
                     angularticsEvent="From Matrix page to {{familyData.photographer.name}} Photographer profile">
             {{familyData.photographer?.name}}</a> <span class="tablet">
-            for Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
+            {{ 'FOR' | translate }} Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
           </span>
           <span class="mobile"><a href="https://creativecommons.org/licenses/by/4.0/"
                                   target="_blank">CC BY 4.0</a></span>
@@ -139,7 +143,7 @@
       </div>
 
       <div class="download-container">
-        <a target="_blank" [href]="api + '/consumer/api/v1/download-image/' + place.image">
+        <a target="_blank" [href]="api + '/v1/download-image/' + place.image">
           <img src="/assets/img/download-icon-white.svg" alt="">
         </a>
       </div>
@@ -151,7 +155,7 @@
       <div class="title-container">
         <h3>
           <span
-            *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} family,</span>
+            *ngIf="familyData?.familyName && familyData?.familyName !== ''">{{familyData?.familyName}} <span *ngIf="currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span>,</span>
           <span
             [routerLink]="['/country', familyData?.country?._id]"
             [queryParams]="{}"
@@ -160,26 +164,28 @@
         </h3>
       </div>
 
-      <div class="income-container">$ {{math.round(place.income)}}<span>/month</span></div>
+      <div class="income-container">$ {{math.round(place.income)}}<span>/{{ 'MONTH' | translate }}</span></div>
     </div>
 
     <div class="home-description-container">
       <p *ngIf="familyData?.familyData">
         {{familyData.familyData}}
       </p>
-
+      <div *ngIf="!familyData.translated" class="translate-me-mobile">
+        <translate-me></translate-me>
+      </div>
       <a *ngIf="familyData.goToPlaceData"
          [routerLink]="['/family']"
          [queryParams]="familyData.goToPlaceData"
          angulartics2On="click"
-         angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">Visit this home <img
+         angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }} <img
         src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
 
       <a class="link-to-page"
          *ngIf="isShowCountryButton"
-         (click)="goToMatrixByCountry(familyData.country.alias)">
-        <span>All {{thing.toLowerCase()}}</span>
-        <span>in</span>
+         (click)="goToMatrixByCountry(familyData.country.originName)">
+        <span>{{ 'ALL' | translate }} {{familyData?.activeThing?.plural.toLowerCase()}}</span>
+        <span>{{ 'IN' | translate }}</span>
         <span>{{countryName}}</span>
         <img src="/assets/img/arrow-right-icon.svg" alt="">
         <img src="/assets/img/arrow-right-icon-white.svg" alt="">

@@ -1,33 +1,56 @@
-<div class="header-container">
-  <div class="header-content">
-    <a class="logo pull-left"
-       [routerLink]="['/matrix']"
-       [queryParams]="{thing: 'Families', countries: 'World', regions: 'World', zoom: 4, row: 1, lowIncome: poor, highIncome: rich}"
-       angulartics2On="click"
-       angularticsEvent="From Place page to Matrix page (Thing: Families, Countries: World, Zoom: 4, Row: 1, Incomes: {{poor}} - {{rich}}">
-      <img src="/assets/img/dollar-street.svg" alt="">
-    </a>
+<div class="family-container">
+  <div class="header-container">
+    <div class="header-content">
+      <a class="logo pull-left"
+        [routerLink]="['/matrix']"
+        [queryParams]="{thing: 'Families', countries: 'World', regions: 'World', zoom: 4, row: 1, lowIncome: poor, highIncome: rich}"
+        angulartics2On="click"
+        angularticsEvent="From Place page to Matrix page (Thing: Families, Countries: World, Zoom: 4, Row: 1, Incomes: {{poor}} - {{rich}}">
+        <img src="/assets/img/dollar-street.svg" alt="">
+      </a>
 
-    <p class="heading pull-left"
-       [routerLink]="['/matrix']"
-       [queryParams]="urlParams"
-       angulartics2On="click"
-       angularticsEvent="From Place page to Matrix page (Thing:{{urlParams.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
-      <img src="/assets/img/back-icon.svg" alt="Back">
-      {{titles?.thing}} in {{titles?.countries}}
-    </p>
+      <p class="heading pull-left"
+        [routerLink]="['/matrix']"
+        [queryParams]="urlParams"
+        angulartics2On="click"
+        angularticsEvent="From Place page to Matrix page (Thing:{{urlParams?.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
+        <img src="/assets/img/back-icon.svg" alt="Back">
+        {{titles?.thing?.plural}} {{ 'IN' | translate }} {{titles?.countries}}
+      </p>
 
-    <main-menu class="pull-right"></main-menu>
+      <main-menu class="pull-right"></main-menu>
+
+      <language-selector></language-selector>
+
+    </div>
+
+    <div class="street-family-container">
+      <street-family *ngIf="streetFamilyData" [place]="streetFamilyData"></street-family>
+    </div>
   </div>
 
-  <div class="street-family-container">
-    <street-family *ngIf="streetFamilyData" [place]="streetFamilyData"></street-family>
+  <family-header [placeId]="placeId" (familyExpandBlock)="isOpenFamilyExpandBlock($event)" (streetFamilyData)="streetFamilyData = $event"></family-header>
+
+  <family-media [zoom]="zoom"
+                [placeId]="placeId"
+                [activeImageIndex]="activeImageIndex"
+                [openFamilyExpandBlock]="openFamilyExpandBlock"
+                (activeImageOptions)="activeImageOptions($event)">
+  </family-media>
+
+  <div *ngIf="isDesktop"
+      class="zoom-column pull-right"
+      [class.stop]="zoomPositionFixed">
+       <button type="button"
+              class="increase"
+              [disabled]="zoom === 2"
+              (click)="changeZoom(zoom - 1)">
+      </button>
+
+      <button type="button"
+              class="decrease"
+              [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
+              (click)="changeZoom(zoom + 1)">
+      </button>
   </div>
 </div>
-
-<family-header [placeId]="placeId" (familyExpandBlock)="isOpenFamilyExpandBlock($event)" (streetFamilyData)="streetFamilyData = $event"></family-header>
-
-<family-media [placeId]="placeId"
-              [activeImageIndex]="activeImageIndex"
-              [openFamilyExpandBlock]="openFamilyExpandBlock"
-              (activeImageOptions)="activeImageOptions($event)"></family-media>

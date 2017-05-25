@@ -3,20 +3,18 @@
 import { DataProvider } from '../Data/DataProvider';
 import { AbstractPage } from '../Pages/AbstractPage';
 import { FooterPage } from '../Pages/FooterPage';
-let using = require('jasmine-data-provider');
-import { browser, $ } from 'protractor/globals';
+import { browser, $ } from 'protractor';
 import { PhotographersPage } from '../Pages/PhotographersPage';
-
-browser.driver.manage().window().maximize();
+let using = require('jasmine-data-provider');
 
 describe('Photographer Page test', () => {
   beforeEach(() => {
-    browser.get('/photographers');
-    browser.wait(AbstractPage.getEC().visibilityOf(PhotographersPage.getLastPhotographer()), AbstractPage.getTimeout(), PhotographersPage.setErrorMessage());
+    browser.get('photographers');
+    browser.wait(AbstractPage.getEC().visibilityOf(PhotographersPage.lastPhotographer.last()), AbstractPage.getTimeout, PhotographersPage.setErrorMessage());
   });
   afterEach(() => {
     using(DataProvider.photographerPageBoolean, (data:any) => {
-      expect($(data.photographerDataCSS).isDisplayed()).toBeTruthy();
+      expect($(data.photographerDataCSS).isPresent()).toBeTruthy();
     });
   });
   afterAll(() => {
@@ -25,9 +23,19 @@ describe('Photographer Page test', () => {
   });
   using(DataProvider.photographersPageField, (data:any, description:string) => {
     it('Check ' + description + ' on Photographer Page', () => {
-      PhotographersPage.getSearchButton().sendKeys(data.photographerQuery + '\n');
-      PhotographersPage.getFoundPhotographer().click();
-      browser.wait(AbstractPage.getEC().visibilityOf(PhotographersPage.getFamiliesIcon()), AbstractPage.getTimeout(), PhotographersPage.setFamilyErrorMessage(description));
+      PhotographersPage.searchButton.sendKeys(data.photographerQuery + '\n');
+      PhotographersPage.foundPhotographer.click();
+      browser.wait(AbstractPage.getEC().visibilityOf(PhotographersPage.familiesIcon), AbstractPage.getTimeout, PhotographersPage.setFamilyErrorMessage(description));
+    });
+  });
+});
+describe('Photographer Page: test direct opening', () => {
+  using(DataProvider.photographerLinks, (data:any, description:string) => {
+    it('Check direct opening profile' + description + 'photographer: images, texts', () => {
+      browser.get(data.photographerLink);
+      using(DataProvider.photographerPageBoolean, (data:any) => {
+        expect($(data.photographerDataCSS).isPresent()).toBeTruthy();
+      });
     });
   });
 });

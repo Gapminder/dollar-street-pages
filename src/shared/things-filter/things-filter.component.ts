@@ -15,7 +15,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Angulartics2GoogleAnalytics, BrowserDetectionService } from '../../common';
+import { Angulartics2GoogleAnalytics, BrowserDetectionService, ActiveThingService } from '../../common';
 import { ThingsFilterService } from './things-filter.service';
 import { Config } from '../../app.config';
 
@@ -54,19 +54,22 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public keyUpSubscribe: Subscription;
   public activatedRoute: ActivatedRoute;
   public element: HTMLElement;
+  public activeThingService: ActiveThingService;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
                      zone: NgZone,
                      thingsFilterService: ThingsFilterService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     activeThingService: ActiveThingService) {
     this.thingsFilterService = thingsFilterService;
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
     this.device = browserDetectionService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.activeThingService = activeThingService;
   }
 
   @HostListener('document:click', ['$event'])
@@ -74,6 +77,15 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.element.contains(event.target) && this.isOpenThingsFilter) {
       this.isOpenThingsFilter = false;
       this.search = {text: ''};
+    }
+
+    let tabsHeaderContainer: HTMLElement = this.element.querySelector('.tabs-header-container') as HTMLElement;
+    let tabsContentContainer: HTMLElement = this.element.querySelector('.tabs-content-container') as HTMLElement;
+
+    if (tabsHeaderContainer) {
+      if (tabsHeaderContainer.clientHeight > 60) {
+        tabsContentContainer.classList.add('tabs-content-container-two-rows');
+      }
     }
   }
 
@@ -120,13 +132,14 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
     let query = this.parseUrl(this.url);
-    query.thing = thing.plural;
+    query.thing = thing.originPlural;
 
     this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
+
+    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
   }
 
   public setActiveThingsColumn(column: string): void {
@@ -198,7 +211,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.popularThings = res.data.popularThings;
           this.otherThings = res.data.otherThings;
           this.activeThing = res.data.thing;
+
           this.isFilterGotData.emit('isThingFilterReady');
+
+          this.activeThingService.setActiveThing(this.activeThing);
         });
     }
   }
