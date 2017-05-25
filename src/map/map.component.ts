@@ -36,41 +36,41 @@ export class MapComponent implements OnInit, OnDestroy {
   public infoBoxContainer: ElementRef;
 
   public familyTranslate: string;
+  public places: any[] = [];
   public getTranslationSubscribe: Subscription;
+  public queryParamsSubscribe: Subscription;
+  public streetServiceSubscribe: Subscription;
+  public isDesktop: boolean;
+  public isMobile: boolean;
+  public hoverPlace: any = void 0;
+  public hoverPortraitTop: any;
+  public currentCountry: string;
+  public onMarker: boolean = false;
+  public isOpenLeftSide: boolean = false;
+  public originCurrentCountry: string;
 
   private resizeSubscribe: Subscription;
   private mapServiceSubscribe: Subscription;
   private math: MathService;
   private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   private mapService: MapService;
-  private places: any[] = [];
   private countries: any[] = [];
   private element: any;
-  private hoverPlace: any = void 0;
-  private hoverPortraitTop: any;
   private hoverPortraitLeft: any;
   private thing: any;
   private urlChangeService: UrlChangeService;
   private query: string;
-  private currentCountry: string;
-  private originCurrentCountry: string;
   private leftSideCountries: any;
   private seeAllHomes: boolean = false;
   private leftArrowTop: any;
   private onThumb: boolean = false;
-  private onMarker: boolean = false;
-  private isOpenLeftSide: boolean = false;
   private router: Router;
   private activatedRoute: ActivatedRoute;
-  private isDesktop: boolean;
-  private isMobile: boolean;
   private zone: NgZone;
   private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
-  private queryParamsSubscribe: Subscription;
   private loaderService: LoaderService;
   private streetData: DrawDividersInterface;
   private streetSettingsService: StreetSettingsService;
-  private streetServiceSubscribe: Subscription;
   private windowInnerWidth: number = window.innerWidth;
   private device: BrowserDetectionService;
   private languageService: LanguageService;
@@ -178,11 +178,25 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.resizeSubscribe.unsubscribe();
-    this.mapServiceSubscribe.unsubscribe();
-    this.queryParamsSubscribe.unsubscribe();
-    this.getTranslationSubscribe.unsubscribe();
-    this.loaderService.setLoader(false);
+    if(this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
+    if(this.mapServiceSubscribe) {
+      this.mapServiceSubscribe.unsubscribe();
+    }
+
+    if(this.queryParamsSubscribe) {
+      this.queryParamsSubscribe.unsubscribe();
+    }
+
+    if(this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
+
+    if(this.loaderService) {
+      this.loaderService.setLoader(false);
+    }
   }
 
   public setMarkersCoord(places: any): void {
@@ -242,6 +256,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     Array.prototype.forEach.call(this.markers, (markerRef: ElementRef, i: number): void => {
+
       let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
 
       if (i === index) {
