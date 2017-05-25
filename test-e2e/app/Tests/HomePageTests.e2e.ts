@@ -1,14 +1,12 @@
 'use strict';
 
 import { DataProvider } from '../Data/DataProvider';
-import { AbstractPage } from '../Pages/AbstractPage';
 import { FooterPage } from '../Pages/FooterPage';
 import { browser } from 'protractor';
 import { MatrixPage } from '../Pages/MatrixPage';
 import { HomePage } from '../Pages/HomePage';
 import { ElementFinder } from 'protractor';
 import { CountryPage } from '../Pages/CountryPage';
-import { forEach } from '@angular/router/src/utils/collection';
 let using = require('jasmine-data-provider');
 
 describe('Home Page test (go to Home after Matrix)', ()=> {
@@ -22,12 +20,12 @@ describe('Home Page test (go to Home after Matrix)', ()=> {
       MatrixPage.familyLink.get(i).click().then(()=> {
         browser.actions().mouseMove(MatrixPage.homeLink).click().perform();
           using(DataProvider.homePageBoolean, (data:any)=> {
+            browser.sleep(1000);
             expect(data.element().isPresent()).toBeTruthy();
           });
           }).then(() => {
           using(DataProvider.homePageText, (data:any)=> {
             expect(data.element().getText()).toEqual(data.actualResult);
-        //  });
         });
       });
     });
@@ -70,7 +68,7 @@ describe('Home Page (direct opening): ', ()=> {
 });
 describe('Home Page: ', ()=> {
   using(DataProvider.homePageLinks, (data: any, description:any) => {
-    fit('Open ' + description + ', go to Country Page and check info', ()=> {
+    it('Open ' + description + ', go to Country Page and check info', ()=> {
       browser.get('family?place=' + data.element());
       HomePage.mapWithLinkToCountryPage.click().then(()=>{
         let visitedFamilies;

@@ -6,7 +6,8 @@ exports.config = {
   specs: [
     '../test-e2e/app/Tests/**/*.e2e.js'
   ],
-   exclude: ['../test-e2e/**/MatrixPageTestsForPerformance.e2e.js', '../test-e2e/app/CMS/**/*.e2e.js', '../test-e2e/**/BlogPageTests.e2e.js'],
+  exclude: ['../test-e2e/**/MatrixPageTestsForPerformance.e2e.js', '../test-e2e/app/CMS/**/*.e2e.js',
+    '../test-e2e/**/BlogPageTests.e2e.js','../test-e2e/**/ClickEachLink.e2e.js'],
 
   framework: 'jasmine',
 

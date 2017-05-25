@@ -13,7 +13,7 @@ describe('Country Places tests: check json from 2 instances: ', () => {
     browser.get('');
   });
   using(DataProvider.countryId, (data: any, description: any) => {
-    fit(description + ' Check json', () => {
+    it(description + ' Check json', () => {
       request(Instances.prodApi + Instances.secondPartLinkForCountryPlaces + data.countryId, (error: any, response: any, body: any) => {
         if (!error && response.statusCode === 200) {
           using(DataProvider.keysJsonForCountryPlaces, (data: any) => {

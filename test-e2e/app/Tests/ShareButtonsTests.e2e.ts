@@ -23,8 +23,8 @@ describe('Matrix Page Social share buttons, hamburger menu:', () => {
         browser.ignoreSynchronization = true;
         browser.switchTo().window(handles[1]).then(()=> {
           browser.ignoreSynchronization = true;
-          expect(browser.getCurrentUrl()).toContain('https://twitter.com/intent/tweet?text=See%20how%20people%20really%20live%20-%20Dollar%20Street%20&url=https://is.gd/');
-          expect(SharePages.inputFieldTwitter.getText()).toContain('See how people really live - Dollar Street  https://is.gd/');
+          expect(browser.getCurrentUrl()).toContain('https://twitter.com/intent/tweet?url=https://is.gd/A1wFyq&text=See%20how%20people%20really%20live-%20Dollar%20Street');
+          expect(SharePages.inputFieldTwitter.getText()).toContain('See how people really live- Dollar Street https://is.gd/A1wFyq');
           expect(SharePages.buttonPostOnTwitter.isDisplayed()).toBeTruthy();
         });
         browser.switchTo().window(handles[0]);
@@ -55,8 +55,8 @@ describe('Matrix Page Social share buttons, hamburger menu:', () => {
         browser.switchTo().window(handles[3]).then(()=> {
           browser.ignoreSynchronization = true;
           expect(SharePages.logoLinkedin.isDisplayed()).toBeTruthy();
-          expect(browser.getCurrentUrl()).toContain('https://www.linkedin.com/uas/login?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2FshareArticle%3Fmini%3Dtrue%26url%3Dhttps%253A%252F%252Fis%252Egd');
-          expect(SharePages.logInLinkedin.isDisplayed()).toBeTruthy();
+          expect(browser.getCurrentUrl()).toContain('https://www.linkedin.com/start/join?trk=login_reg_redirect&session_redirect=https%3A%2F%2Fwww.linkedin.com%2Fsharing%2Fshare-offsite%3Fmini%3Dtrue%26url%3Dhttps%3A%2F%2Fis.gd%2FA1wFyq%26summary%3DSee%2520how%2520people%2520really%2520live');
+          //expect(SharePages.logInLinkedin.isDisplayed()).toBeTruthy();
         });
         browser.switchTo().window(handles[0]);
       });
@@ -70,7 +70,7 @@ describe('Matrix Page Social share buttons, hamburger menu:', () => {
         browser.sleep(1000);
         browser.switchTo().window(handles[4]).then(()=> {
           browser.ignoreSynchronization = true;
-          expect(browser.getCurrentUrl()).toContain('https://accounts.google.com/ServiceLogin?service=oz&passive=1209600&continue=https://plus.google.com/up/?continue%3Dhttps://plus.google.com/share?url%253Dhttps://is.gd/');
+          expect(browser.getCurrentUrl()).toContain('https://accounts.google.com/signin/v2/identifier?service=oz&passive=1209600&continue=https%3A%2F%2Fplus.google.com%2Fup%2F%3Fcontinue%3Dhttps%3A%2F%2Fplus.google.com%2Fshare%3Furl%253Dhttps%3A%2F%2Fis.gd%2FA1wFyq%2526text%253DSee%252Bhow%252Bpeople%252Breally%252Blive%26gpsrc%3Dgplp0&flowName=GlifWebSignIn&flowEntry=ServiceLogin');
           expect(SharePages.inputEmailGoogle.isDisplayed).toBeTruthy();
           expect(SharePages.logoGoogle.isDisplayed()).toBe(true);
           expect(SharePages.buttonNextGoogle.isDisplayed()).toBe(true);

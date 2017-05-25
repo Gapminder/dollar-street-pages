@@ -2,7 +2,7 @@ import { browser } from 'protractor';
 import { AbstractPage } from '../Pages/AbstractPage';
 import { MatrixPage } from '../../Pages/MatrixPage';
 describe('Check url with language on ', ()=>{
-  fit('', ()=>{
+  it('', ()=>{
     let n:any = new Date('-3482418870000');
     let d:any = n.getFullYear();
     console.log(d);

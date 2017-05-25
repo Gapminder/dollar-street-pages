@@ -263,7 +263,7 @@ export class DataProvider {
     'welcomeHeaderDescription': {
       element: ():ElementFinder => $('div[class^="guide-description"]'),
       actualResult: 'In the news people in other cultures seem stranger than they are.' + '\n' +
-      'We visited 265 families in 50 countries and collected 30,000 photos.' + '\n' +
+      'We visited 264 families in 50 countries and collected 30,000 photos.' + '\n' +
       'We sorted the homes by income, from left to right.'
     },
     'quickTour': {element: ():ElementFinder => $('.bg-orange'), actualResult: 'Quick tour'},
@@ -305,7 +305,7 @@ export class DataProvider {
     'Burundi27': {element: ():string => '54afe95c80d862d9767cf32e', actualFamilyName: ():string => 'Butoyi', actualCountry: ():string => 'Burundi', actualIncome: ():string => '27'},
     'Romania163': {element: ():string => '56446ce95ace839829fe897f', actualFamilyName: ():string => 'Mezei', actualCountry: ():string => 'Romania', actualIncome: ():string => '163'},
     'India466': {element: ():string => '54b520ed05df73e55431912b', actualFamilyName: ():string => 'Gada', actualCountry: ():string => 'India', actualIncome: ():string => '466'},
-    'Latvia11381': {element: ():string => '55646e1512d20a701a1e19eb', actualFamilyName: ():string => 'Lukomete', actualCountry: ():string => 'Latvia', actualIncome: ():string => '11 381'},
+    'Latvia11381': {element: ():string => '55646e1512d20a701a1e19eb', actualFamilyName: ():string => 'Lokometi', actualCountry: ():string => 'Latvia', actualIncome: ():string => '11 381'},
     'India29': {element: ():string => '557036781e788ebf3eb00f99', actualFamilyName: ():string => 'Chowdhury', actualCountry: ():string => 'India', actualIncome: ():string => '29'},
     'Colombia163': {element: ():string => '54b3de069f0c8d666e1ac0d1', actualFamilyName: ():string => 'Collo Ocoro', actualCountry: ():string => 'Colombia', actualIncome: ():string => '163'},
     'Rwanda460': {element: ():string => '54b816d8c53d4fa64fb896a5', actualFamilyName: ():string => 'Niyonsaba', actualCountry: ():string => 'Rwanda', actualIncome: ():string => '460'},
@@ -319,7 +319,7 @@ export class DataProvider {
     'Jordan7433': {element: ():string => '5571821aa5d751682cc9a72d', actualFamilyName: ():string => 'Murad', actualCountry: ():string => 'Jordan', actualIncome: ():string => '7 433'},
     'Zimbabwe34': {element: ():string => '54b92ab002f7310b2e0bac93', actualFamilyName: ():string => 'Majuru', actualCountry: ():string => 'Zimbabwe', actualIncome: ():string => '34'},
     'Tunisia176': {element: ():string => '54b8d5f66a3b3a496537fe88', actualFamilyName: ():string => 'Haji', actualCountry: ():string => 'Tunisia', actualIncome: ():string => '176'},
-    'Latvia480': {element: ():string => '5564770b398632ef199dcd39', actualFamilyName: ():string => 'Balode', actualCountry: ():string => 'Latvia', actualIncome: ():string => '480'},
+    'Latvia480': {element: ():string => '5564770b398632ef199dcd39', actualFamilyName: ():string => 'Baloži', actualCountry: ():string => 'Latvia', actualIncome: ():string => '480'},
     'Mexico6342': {element: ():string => '54b7c01f25003a824f648898', actualFamilyName: ():string => 'Ortiz', actualCountry: ():string => 'Mexico', actualIncome: ():string => '6 342'},
     'Haiti39': {element: ():string => '54b4eb529f0c8d666e1ac327', actualFamilyName: ():string => 'Jacques', actualCountry: ():string => 'Haiti', actualIncome: ():string => '39'},
     'Colombia145': {element: ():string => '54b3daaf57de10366ed135ab', actualFamilyName: ():string => 'Iquira Collo', actualCountry: ():string => 'Colombia', actualIncome: ():string => '145'},
