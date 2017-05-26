@@ -39,12 +39,10 @@ describe('AboutComponent', () => {
     TestBed.configureTestingModule({
       imports: [ HttpModule ],
       declarations: [ AboutComponent ],
-      providers: [
-                     { provide: AboutService, useValue: userAboutService },
-                     { provide: LoaderService, useValue: userLoaderService },
-                     { provide: TitleHeaderService, useValue: userTitleHeaderService },
-                     { provide: LanguageService, useValue: userLanguageService }
-                 ]
+      providers: [{ provide: AboutService, useValue: userAboutService },
+                  { provide: LoaderService, useValue: userLoaderService },
+                  { provide: TitleHeaderService, useValue: userTitleHeaderService },
+                  { provide: LanguageService, useValue: userLanguageService }]
     });
 
     componentFixture = TestBed.createComponent(AboutComponent);

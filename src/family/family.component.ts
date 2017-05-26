@@ -216,7 +216,9 @@ export class FamilyComponent implements OnInit, OnDestroy {
       this.getTranslationSubscribe.unsubscribe();
     }
 
-    this.scrollSubscribe.unsubscribe();
+    if(this.scrollSubscribe) {
+      this.scrollSubscribe.unsubscribe();
+    }
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';

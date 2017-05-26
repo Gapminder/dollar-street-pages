@@ -40,7 +40,7 @@ describe('LanguageService', () => {
     let mockBackend: MockBackend;
     let languageService: LanguageService;
 
-    const query: string = 'lang=en-US';
+    const query: string = 'lang=en-EN';
 
     let context: any = {
         ABOUT: 'About',
@@ -59,7 +59,7 @@ describe('LanguageService', () => {
                 })
             ],
             providers: [
-                LanguageService,                
+                LanguageService,
                 UrlChangeService,
                 TranslateService,
                 LocationStrategy,
@@ -76,7 +76,7 @@ describe('LanguageService', () => {
                         return new Http(backend, defaultOptions);
                     }
                 },
-                { provide: Location, useClass: SpyLocation },
+                { provide: Location, useClass: SpyLocation }
             ]
         });
 
@@ -93,7 +93,7 @@ describe('LanguageService', () => {
 
         languageService.translations = { ABOUT: 'About', WORLD: 'World'};
 
-        expect(languageService.getLanguageIso()).toBe('en_US');
+        expect(languageService.getLanguageIso()).toBe('en_EN');
 
         mockBackend.connections.subscribe((connection: MockConnection) => {
             expect(connection.request.url.indexOf(`/v1/language?${query}`)).toBeGreaterThan(-1);

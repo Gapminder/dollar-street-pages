@@ -21,7 +21,7 @@ import { FamilyMediaService } from '../family-media.service';
 
 import { mockFamilyMediaData } from './mock.component.data';
 
-describe('FamilyComponent', () => {
+describe('FamilyMediaComponent', () => {
     let componentInstance: FamilyMediaComponent;
     let componentFixture: ComponentFixture<FamilyMediaComponent>;
     let debugElement: DebugElement;

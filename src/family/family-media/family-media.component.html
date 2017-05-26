@@ -3,6 +3,7 @@
        infinite-scroll
        [infiniteScrollDistance]="2"
        [infiniteScrollThrottle]="0"
+       #familyImagesContainer
        (scrolled)="onScrollDown()">
     <div class="family-image-container"
          *ngFor="let image of currentImages; let i = index"

@@ -10,6 +10,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 
+import { TranslateMeComponent } from '../../../../shared';
+
 import { mockFamilyMediaText } from './mock.data';
 
 import {
@@ -63,7 +65,7 @@ describe('FamilyMediaViewBlockComponent', () => {
                             useClass: CustomLoader
                         })
                      ],
-            declarations: [ FamilyMediaViewBlockComponent, BlankComponent ],
+            declarations: [ FamilyMediaViewBlockComponent, BlankComponent, TranslateMeComponent ],
             providers: [
                             FamilyMediaViewBlockService,
                             BrowserDetectionService,

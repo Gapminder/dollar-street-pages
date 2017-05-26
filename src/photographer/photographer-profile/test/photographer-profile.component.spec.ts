@@ -1,6 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { By }              from '@angular/platform-browser';
-import { DebugElement }    from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Location, LocationStrategy } from '@angular/common';
 
 import { Observable } from 'rxjs/Observable';
@@ -29,6 +27,7 @@ describe('PhotographerProfileComponent', () => {
     }
 
     class MockPhotographerProfileService {
+        /* tslint:disable-next-line */
         public getPhotographerProfile(query: string): Observable<any> {
             return Observable.of({data: {firstName: 'John', lastName: 'Travolta'}});
         }

@@ -38,15 +38,8 @@ export class MapComponent implements OnInit, OnDestroy {
   public familyTranslate: string;
   public places: any[] = [];
   public getTranslationSubscribe: Subscription;
-  public queryParamsSubscribe: Subscription;
-  public streetServiceSubscribe: Subscription;
-  public isDesktop: boolean;
-  public isMobile: boolean;
   public hoverPlace: any = void 0;
-  public hoverPortraitTop: any;
   public currentCountry: string;
-  public onMarker: boolean = false;
-  public isOpenLeftSide: boolean = false;
   public originCurrentCountry: string;
 
   public resizeSubscribe: Subscription;
@@ -54,23 +47,13 @@ export class MapComponent implements OnInit, OnDestroy {
   public math: MathService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public mapService: MapService;
-  public places: any[] = [];
   public countries: any[] = [];
   public element: any;
-<<<<<<< 60b089046dee40061a822e2bea3fba058b3b783a
-  public hoverPlace: any = void 0;
-=======
-  // public map: HTMLImageElement;
-  public hoverPlace: any = void 0;
-  // public markers: any;
->>>>>>> fix():
   public hoverPortraitTop: any;
   public hoverPortraitLeft: any;
   public thing: any;
   public urlChangeService: UrlChangeService;
   public query: string;
-  public currentCountry: string;
-  public originCurrentCountry: string;
   public leftSideCountries: any;
   public seeAllHomes: boolean = false;
   public leftArrowTop: any;

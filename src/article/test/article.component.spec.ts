@@ -9,6 +9,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { LoaderService, TitleHeaderService, LanguageService } from '../../common';
 
+import { TranslateMeComponent } from '../../shared';
+
 import { ArticleComponent } from '../article.component';
 import { ArticleService } from '../article.service';
 
@@ -47,7 +49,7 @@ describe('ArticleComponent Test', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpModule ],
-      declarations: [ ArticleComponent ],
+      declarations: [ ArticleComponent, TranslateMeComponent ],
       providers: [
                      { provide: ActivatedRoute, useValue: userActivatedRoute },
                      { provide: ArticleService, useValue: userArticleService },

@@ -17,6 +17,8 @@ import { find, isEqual, slice, concat } from 'lodash';
 import { Config, ImageResolutionInterface } from '../../app.config';
 import { LoaderService, BrowserDetectionService, LanguageService } from '../../common';
 import { FamilyMediaService } from './family-media.service';
+import { ViewChild } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'family-media',
@@ -24,7 +26,7 @@ import { FamilyMediaService } from './family-media.service';
   styleUrls: ['./family-media.component.css']
 })
 
-export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
   @Input('zoom')
   public zoom: number;
 
@@ -57,7 +59,9 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public languageService: LanguageService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public familyImagesContainer: HTMLElement;
+
+  @ViewChild('familyImagesContainer')
+  public familyImagesContainer: any;
 
   @Input('placeId')
   public placeId: string;
@@ -86,13 +90,15 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.imageResolution = Config.getImageResolution(this.isDesktop);
   }
 
-  public ngOnInit(): void {
-    this.familyImagesContainer = this.element.querySelector('.family-images-container') as HTMLElement;
-
+  public ngAfterViewInit(): void {
     setTimeout(() => {
-      this.familyImagesContainer.classList.add('column-' + this.zoom);
+      console.log(this.familyImagesContainer);
+      this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
+      this.loaderService.setLoader(true);
     }, 0);
+  }
 
+  public ngOnInit(): void {
     this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this.openFamilyExpandBlock
         .subscribe((data: any): void => {
           let familyImageIndex: number = 0;
@@ -222,8 +228,8 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
 
   public changeZoom(prevZoom: number): void {
     setTimeout(() => {
-      this.familyImagesContainer.classList.remove('column-' + prevZoom);
-      this.familyImagesContainer.classList.add('column-' + this.zoom);
+      this.familyImagesContainer.nativeElement.classList.remove('column-' + prevZoom);
+      this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
 
       this.getImageHeight();
     },0);
@@ -336,6 +342,10 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public getImageHeight(): void {
     let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
     let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
+
+    if (!boxContainer || !imgContent) {
+      return;
+    }
 
     let widthScroll: number = window.innerWidth - document.body.offsetWidth;
 

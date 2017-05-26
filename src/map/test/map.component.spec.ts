@@ -1,13 +1,11 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { By }              from '@angular/platform-browser';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, ElementRef, QueryList }    from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { HttpModule } from '@angular/http';
 
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { 
+import {
             MathService,
             LoaderService,
             UrlChangeService,
@@ -24,7 +22,7 @@ import { MapService } from '../map.service';
 
 import { mockMapData } from './mock.data';
 
-fdescribe('', () => {
+describe('', () => {
     let componentInstance: MapComponent;
     let componentFixture: ComponentFixture<MapComponent>;
 
@@ -37,7 +35,7 @@ fdescribe('', () => {
         public getStreetSettings(): Observable<any> {
             let context: any = {_id:'57963211cc4aaed63a02504c',showDividers:false,low:30,medium:300,high:3000,poor:26,rich:15000,lowDividerCoord:78,mediumDividerCoord:490,highDividerCoord:920,__v:0};
             let response: any = {success:true,error:false,msg:[],data:context};
- 
+
             return Observable.of(response);
         }
     }
@@ -57,43 +55,43 @@ fdescribe('', () => {
         }
     }
 
-
     class MockMapService {
         public getMainPlaces(): Observable<any> {
-            return Observable.of({err: null, data: { mockMapData }});
+            return Observable.of({err: undefined, data: { mockMapData }});
         }
     }
 
     class MockLoaderService {
-        public setLoader(b: boolean): void {
-
-        }
+        // tslint:disable-next-line
+        public setLoader(b: boolean): void {}
     }
 
     class MockElementRef implements ElementRef {
-        nativeElement = {style: {opacity: 0}};
+        public nativeElement: any = {style: {opacity: 0}};
     }
 
     class MockQueryList extends QueryList<ElementRef> {
-        private counter = 0;
+        private counter: number = 0;
 
-        constructor(public components: ElementRef[]) {
+        public constructor(public components: ElementRef[]) {
             super();
             this.reset(this.components);
         }
 
-        [Symbol.iterator](): IterableIterator<ElementRef> {
+        public [Symbol.iterator](): IterableIterator<ElementRef> {
             return this;
         }
 
-        public next(): IteratorResult<ElementRef> { 
+        public next(): IteratorResult<ElementRef> {
             if(this.counter < this.components.length) {
                 return {
                     done: false,
                     value: this.components[this.counter++]
-                }
-            } else return {done: true, value: null}
-        }        
+                };
+            } else {
+                return {done: true, value: undefined};
+            }
+        }
     }
 
     beforeEach(() => {
@@ -103,14 +101,14 @@ fdescribe('', () => {
                         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}])
                      ],
             providers: [
-                            MathService,                            
+                            MathService,
                             UrlChangeService,
                             BrowserDetectionService,
                             { provide: LoaderService, useClass: MockLoaderService },
                             { provide: MapService, useClass: MockMapService },
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
-                            { provide: LanguageService, useClass: MockLanguageService }                            
+                            { provide: LanguageService, useClass: MockLanguageService }
                        ],
             declarations: [MapComponent, BlankComponent]
         });
@@ -206,7 +204,7 @@ fdescribe('', () => {
         componentInstance.places = mockMapData.places;
         componentInstance.markers =  new MockQueryList([new ElementRef({}), new ElementRef({})]);
 
-        let country: any = componentInstance.places[0];       
+        let country: any = componentInstance.places[0];
 
         componentInstance.mobileClickOnMarker(country, 'Burundi');
 

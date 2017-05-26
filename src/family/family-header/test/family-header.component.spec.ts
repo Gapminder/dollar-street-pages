@@ -26,7 +26,7 @@ class CustomLoader implements TranslateLoader {
 }
 /* tslint:enable */
 
-fdescribe('FamilyHeaderComponent', () => {
+describe('FamilyHeaderComponent', () => {
     let componentInstance: FamilyHeaderComponent;
     let componentFixture: ComponentFixture<FamilyHeaderComponent>;
 
@@ -119,5 +119,7 @@ fdescribe('FamilyHeaderComponent', () => {
         componentInstance.truncCountryName(mockCountryName);
 
         expect(componentInstance.countryName).toEqual('USA');
+
+        componentInstance.ngOnDestroy();
     });
 });

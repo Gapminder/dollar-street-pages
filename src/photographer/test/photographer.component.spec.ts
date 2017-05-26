@@ -9,7 +9,6 @@ import { TitleHeaderService } from '../../common';
 describe('PhotographerComponent', () => {
   let componentInstance: PhotographerComponent;
   let componentFixture: ComponentFixture<PhotographerComponent>;
-  let nativeElement: HTMLElement;
 
   const userTitleHeaderService = {
 

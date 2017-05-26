@@ -42,7 +42,6 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   public math: MathService;
   public photographer: Photographer;
-  public photographerProfileServiceSubscribe: Subscription;
   public photographerProfileService: PhotographerProfileService;
   public languageService: LanguageService;
 

@@ -21,10 +21,6 @@ import {
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
-<<<<<<< 60b089046dee40061a822e2bea3fba058b3b783a
-import { GuideComponent, HeaderComponent } from '../shared';
-=======
->>>>>>> fix():
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 
 @Component({
@@ -359,7 +355,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
         return;
       }
 
-      this.imgContent = this.matrixImagesComponent.imageContent.nativeElement as HTMLElement;
+      this.imgContent = this.matrixImagesComponent.imageContent.nativeElement;
 
       if (!this.imgContent) {
         return;

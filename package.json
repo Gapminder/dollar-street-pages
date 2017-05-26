@@ -5,24 +5,25 @@
   "description": "consumer.dollarstreet.org angular2 client application",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/ng serve",
-    "build": "./node_modules/.bin/ng build --aot --prod",
-    "test": "./node_modules/.bin/ng test",
-    "test:coverage": "./node_modules/.bin/ng test --code-coverage",
-    "postinstall": "./node_modules/.bin/concurrent \"npm run update-webdriver\"",
-    "update-webdriver": "./node_modules/.bin/webdriver-manager update",
+    "start": "ng serve",
+    "build": "ng build --aot --prod",
+    "test": "ng test -sr -cc",
+    "test:w": "ng test",
+    "test:coverage": "ng test --code-coverage",
+    "postinstall": "concurrent \"npm run update-webdriver\"",
+    "update-webdriver": "webdriver-manager update",
     "deploy:github": "npm run build && npm run publish:gh-pages",
     "deploy:firebase": "npm run build && npm run publish:firebase",
     "publish:gh-pages": "./tools/gh-pages-publish.js",
     "publish:firebase": "firebase deploy",
-    "codecov": "cat ./coverage/report-lcov/lcov.info | ./node_modules/.bin/codecov -t $CODECOV_KEY",
-    "pre-commit-test": "./node_modules/.bin/karma start ./.config/karma-pre.config.js",
-    "eslint": "./node_modules/.bin/eslint --ignore-path .gitignore --ignore-path .eslintignore --ext js --fix . .config",
+    "codecov": "cat ./coverage/report-lcov/lcov.info | codecov -t $CODECOV_KEY",
+    "pre-commit-test": "karma start ./.config/karma-pre.config.js",
+    "eslint": "eslint --ignore-path .gitignore --ignore-path .eslintignore --ext js --fix . .config",
     "lint": "npm run tslint && npm run eslint",
-    "tslint": "./node_modules/.bin/gulp tslint",
-    "e2e:local": "./node_modules/.bin/protractor ./.config/protractor.conf.js",
+    "tslint": "gulp tslint",
+    "e2e:local": "protractor ./.config/protractor.conf.js",
     "e2e:bstack:tunnel": ".config/tools/bstack-local.js",
-    "e2e:bstack": ".config/tools/wait4tunnel.js && ./node_modules/.bin/protractor ./.config/protractor-browserstack.conf.js"
+    "e2e:bstack": ".config/tools/wait4tunnel.js && protractor ./.config/protractor-browserstack.conf.js"
   },
   "pre-commit": [
     "lint"
@@ -49,7 +50,7 @@
     "angular2-infinite-scroll": "0.2.8",
     "angulartics2": "1.6.1",
     "bootstrap": "3.3.7",
-    "d3-axis": "1.0.6",    
+    "d3-axis": "1.0.6",
     "d3-scale": "1.0.5",
     "d3-selection": "1.0.5",
     "d3-interpolate": "1.1.4",
@@ -80,11 +81,7 @@
     "firebase": "3.6.4",
     "gh-pages": "0.12.0",
     "gulp": "3.9.1",
-<<<<<<< 6b8371432acba7daa152d1f92505fc58858dab37
     "gulp-tslint": "7.1.0",
-=======
-    "gulp-tslint": "8.0.0",
->>>>>>> test(photographer): add tests for photographer page
     "html-loader": "0.4.4",
     "istanbul-instrumenter-loader": "1.2.0",
     "jasmine": "2.5.2",
@@ -116,11 +113,7 @@
     "ts-node": "1.7.3",
     "tslint": "4.5.1",
     "tslint-config-valorsoft": "1.1.1",
-<<<<<<< 6b8371432acba7daa152d1f92505fc58858dab37
     "typescript": "2.2.0",
-=======
-    "typescript": "2.2.2",
->>>>>>> test(photographer): add tests for photographer page
     "url-loader": "0.5.7"
   },
   "repository": {

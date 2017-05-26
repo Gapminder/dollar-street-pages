@@ -1,13 +1,11 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { By }              from '@angular/platform-browser';
-import { DebugElement }    from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Location, LocationStrategy } from '@angular/common';
 
 import { HttpModule } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { MathService, LanguageService, UrlChangeService, LoaderService } from '../../../common';
+import { MathService, LanguageService, LoaderService } from '../../../common';
 
 import { PhotographerPlacesComponent } from '../photographer-places.component';
 import { PhotographerPlacesService } from '../photographer-places.service';
