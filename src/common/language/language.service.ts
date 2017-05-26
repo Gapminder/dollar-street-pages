@@ -8,7 +8,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../url-change/url-change.service';
 import { LocalStorageService } from '../guide/localstorage.service';
 import { TranslateService } from 'ng2-translate';
-import { stringify } from '@angular/core/src/facade/lang';
 import { EventEmitter } from 'events';
 
 @Injectable()
@@ -97,7 +96,7 @@ export class LanguageService {
   }
 
   public loadLanguage(): Observable<any> {
-    const lang: string = stringify('lang=' + this.currentLanguage);
+    const lang: string = `lang=${this.currentLanguage}`;
 
     return Observable.create((observer: Observer<any>) => {
        this.translationsLoadedSubscribe = this.getLanguage(lang).subscribe((res: any) => {

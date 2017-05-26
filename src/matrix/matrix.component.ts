@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/debounceTime';
-import { Component, OnInit, ElementRef, OnDestroy, AfterViewChecked, NgZone } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
@@ -25,7 +25,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
   styleUrls: ['./matrix.css']
 })
 
-export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class MatrixComponent implements OnInit, OnDestroy {
   public zoomPositionFixed: boolean = false;
   public isOpenIncomeFilter: boolean = false;
   public isMobile: boolean;
@@ -300,53 +300,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
           });
         });
     }
-  }
 
-  public interactiveIncomeText(): void {
-    let thingContainer: any = this.element.querySelector('things-filter') as HTMLElement;
-    let countriesFilter: any = this.element.querySelector('countries-filter') as HTMLElement;
-    let filtersContainer: any = this.element.querySelector('.filters-container') as HTMLElement;
-    let incomeContainer: any = this.element.querySelector('.income-title-container') as HTMLElement;
-    let filtersBlockWidth: number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
-
-    setTimeout((): void => {
-      incomeContainer.classList.remove('incomeby');
-    }, 0);
-
-    if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
-      setTimeout((): void => {
-        incomeContainer.classList.remove('incomeby');
-      }, 0);
-    }
-    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 270) {
-      setTimeout((): void => {
-        incomeContainer.classList.add('incomeby');
-      }, 0);
-    }
-  }
-
-  public ngOnDestroy(): void {
-    if ('scrollRestoration' in history) {
-      this.windowHistory.scrollRestoration = 'auto';
-    }
-
-    if (this.headerFixedSubscribe) {
-      this.headerFixedSubscribe.unsubscribe();
-    }
-
-    if (this.scrollSubscribeForMobile) {
-      this.scrollSubscribeForMobile.unsubscribe();
-    }
-
-    this.getTranslationSubscribe.unsubscribe();
-    this.resizeSubscribe.unsubscribe();
-    this.queryParamsSubscribe.unsubscribe();
-    this.matrixServiceSubscribe.unsubscribe();
-    this.matrixServiceStreetSubscribe.unsubscribe();
-    this.loaderService.setLoader(false);
-  }
-
-  public ngAfterViewChecked(): void {
     this.zone.run(() => {
       let footer = document.querySelector('.footer') as HTMLElement;
       this.imgContent = this.element.querySelector('.image-content') as HTMLElement;
@@ -399,6 +353,50 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
+  public ngOnDestroy(): void {
+    if ('scrollRestoration' in history) {
+      this.windowHistory.scrollRestoration = 'auto';
+    }
+
+    if (this.headerFixedSubscribe) {
+      this.headerFixedSubscribe.unsubscribe();
+    }
+
+    if (this.scrollSubscribeForMobile) {
+      this.scrollSubscribeForMobile.unsubscribe();
+    }
+
+    this.getTranslationSubscribe.unsubscribe();
+    this.resizeSubscribe.unsubscribe();
+    this.queryParamsSubscribe.unsubscribe();
+    this.matrixServiceSubscribe.unsubscribe();
+    this.matrixServiceStreetSubscribe.unsubscribe();
+    this.loaderService.setLoader(false);
+  }
+
+  public interactiveIncomeText(): void {
+    let thingContainer: any = this.element.querySelector('things-filter') as HTMLElement;
+    let countriesFilter: any = this.element.querySelector('countries-filter') as HTMLElement;
+    let filtersContainer: any = this.element.querySelector('.filters-container') as HTMLElement;
+    let incomeContainer: any = this.element.querySelector('.income-title-container') as HTMLElement;
+    let filtersBlockWidth: number = thingContainer.offsetWidth + countriesFilter.offsetWidth + 55;
+
+    setTimeout((): void => {
+      incomeContainer.classList.remove('incomeby');
+    }, 0);
+
+    if (filtersContainer.offsetWidth < (filtersBlockWidth + incomeContainer.offsetWidth)) {
+      setTimeout((): void => {
+        incomeContainer.classList.remove('incomeby');
+      }, 0);
+    }
+    if ((filtersContainer.offsetWidth - filtersBlockWidth) > 75 && (filtersContainer.offsetWidth - filtersBlockWidth) < 270) {
+      setTimeout((): void => {
+        incomeContainer.classList.add('incomeby');
+      }, 0);
+    }
+  }
+
   /** each document usage breaks possible server side rendering */
   public stopScroll(): void {
     if (!this.imageHeight) {
@@ -445,6 +443,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public getPaddings(options: {isGuide?: boolean}): void {
+    if (!this.imgContent) {
+      return;
+    }
+
     let {isGuide} = options;
 
     let headerHeight: number = this.headerContainer.offsetHeight;

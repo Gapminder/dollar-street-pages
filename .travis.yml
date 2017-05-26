@@ -26,10 +26,9 @@ before_script:
 # update webdrived for karma tests
 - npm run update-webdriver
 # build client project
-- npm run build:dev
+- npm run build
 # start file server in background
-- npm run serve &
-- sleep 3
+- npm run start
 # up browserstack tunnel
 - npm run e2e:bstack:tunnel &
 
