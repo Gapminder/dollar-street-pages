@@ -151,6 +151,11 @@
   margin: 0;
 }
 
+.bubbles-container .footer-container social-share-buttons i {
+  color: #edf0f5;
+  font-size: 28px;
+}
+
 .bubbles-container .footer-container social-share-buttons >>> .share-button-container svg {
   width: 24px;
   height: 24px;
@@ -271,6 +276,10 @@
 }
 
 @media (max-width: 599px) {
+  .bubbles-container .bubbles-description {
+    font-size: 16px;
+  }
+
   .mobile {
     display: block;
   }
@@ -362,10 +371,6 @@
   .bubbles-container .footer-container {
     margin-top: 0;
     padding: 10px 27px;
-  }
-
-  .bubbles-container .footer-container social-share-buttons {
-    width: 170px;
   }
 
   .bubbles-container .footer-container social-share-buttons >>> .share-button:first-child {

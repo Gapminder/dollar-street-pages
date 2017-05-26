@@ -4,12 +4,12 @@ import { Subscription } from 'rxjs/Subscription';
 import { compact } from 'lodash';
 import { Config } from '../../app.config';
 import { FooterService } from './footer.service';
-import { LanguageService } from '../language-selector/language.service';
 import {
   StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService,
-  Angulartics2GoogleAnalytics
+  Angulartics2GoogleAnalytics,
+  LanguageService
 } from '../../common';
 
 @Component({

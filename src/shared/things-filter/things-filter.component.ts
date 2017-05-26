@@ -15,9 +15,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Angulartics2GoogleAnalytics, BrowserDetectionService } from '../../common';
+import { Angulartics2GoogleAnalytics, BrowserDetectionService, ActiveThingService } from '../../common';
 import { ThingsFilterService } from './things-filter.service';
-import { ActiveThingService } from './active-thing.service';
 import { Config } from '../../app.config';
 
 @Component({
@@ -78,6 +77,15 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.element.contains(event.target) && this.isOpenThingsFilter) {
       this.isOpenThingsFilter = false;
       this.search = {text: ''};
+    }
+
+    let tabsHeaderContainer: HTMLElement = this.element.querySelector('.tabs-header-container') as HTMLElement;
+    let tabsContentContainer: HTMLElement = this.element.querySelector('.tabs-content-container') as HTMLElement;
+
+    if (tabsHeaderContainer) {
+      if (tabsHeaderContainer.clientHeight > 60) {
+        tabsContentContainer.classList.add('tabs-content-container-two-rows');
+      }
     }
   }
 

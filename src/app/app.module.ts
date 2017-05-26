@@ -20,8 +20,6 @@ import { MatrixModule } from '../matrix';
 import { FamilyModule } from '../family';
 import { AboutModule } from '../about';
 
-import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
-
 @NgModule({
   declarations: [
     AppComponent
@@ -43,9 +41,6 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
     FormsModule,
     AboutModule,
     routing
-  ],
-  providers: [
-    Angulartics2GoogleAnalytics
   ],
   bootstrap: [AppComponent]
 })

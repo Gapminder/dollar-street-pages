@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { MathService, StreetSettingsService, DrawDividersInterface } from '../../common';
+import { MathService, StreetSettingsService, DrawDividersInterface, LanguageService, BrowserDetectionService } from '../../common';
 import { CountryInfoService } from './country-info.service';
-import { LanguageService } from '../../shared';
 
 @Component({
   selector: 'country-info',
@@ -21,21 +20,24 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public isShowInfo: boolean;
   public country: any;
   public thing: any;
-  public placesQuantity: number;
-  public photosQuantity: number;
-  public videosQuantity: number;
+  public placesQuantity: string;
+  public photosQuantity: string;
+  public videosQuantity: string;
   public math: MathService;
   public countryInfoService: CountryInfoService;
   public countryInfoServiceSubscribe: Subscription;
   public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
   public streetServiceSubscribe: Subscription;
-  private languageService: LanguageService;
+  public languageService: LanguageService;
+  public device: BrowserDetectionService;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,
                      streetSettingsService: StreetSettingsService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     browserDetectionService: BrowserDetectionService) {
+    this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
     this.streetSettingsService = streetSettingsService;
@@ -44,7 +46,6 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-
     this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}${this.languageService.getLanguageParam()}`)
       .subscribe((res: any) => {
         if (res.err) {
@@ -55,9 +56,9 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         this.country = res.data.country;
         this.mapData = res.data.country;
         this.thing = res.data.thing;
-        this.placesQuantity = res.data.places;
-        this.photosQuantity = res.data.images;
-        this.videosQuantity = res.data.video;
+        this.placesQuantity = this.device.isMobile() !== true ? this.math.round(res.data.places).toString() : this.math.round(res.data.places).toString().replace(/\s+/g, '');
+        this.photosQuantity = this.device.isMobile() !== true ? this.math.round(res.data.images).toString() : this.math.round(res.data.images).toString().replace(/\s+/g, '');
+        this.videosQuantity = Math.round(res.data.video) > 0 ? this.math.round(res.data.video).toString() : '';
         this.getCountry.emit(this.country.alias || this.country.country);
       });
 

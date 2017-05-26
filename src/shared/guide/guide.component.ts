@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/cor
 import { Subscription } from 'rxjs/Rx';
 import { find, difference } from 'lodash';
 import { GuideService } from './guide.service';
-import { LocalStorageService } from '../../common';
-import { LanguageService } from '../language-selector/language.service';
+import { LocalStorageService, LanguageService } from '../../common';
 
 @Component({
   selector: 'quick-guide',

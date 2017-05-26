@@ -2,7 +2,7 @@ import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef }
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { LanguageService } from '../language-selector/language.service';
+import { LanguageService } from '../../common';
 
 import {
   MathService,

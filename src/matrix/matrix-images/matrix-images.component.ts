@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../../common';
 
 import * as _ from 'lodash';
 
@@ -45,16 +45,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   @Output('filter')
   public filter: EventEmitter<any> = new EventEmitter<any>();
 
-  public translate: TranslateService;
+  public languageService: LanguageService;
   public theWorldTranslate: string;
   public sorryWeHaveNoTranslate: string;
   public onThisIncomeYetTranslate: string;
   public inTranslate: string;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translateGetSorryWeHaveNoSubscribe: Subscription;
-  public translateGetOnThisIncomeYetSubscribe: Subscription;
-  public translateGetTheWorldSubscribe: Subscription;
-  public translateGetInSubscribe: Subscription;
 
   public selectedCountries: any;
   public selectedRegions: any;
@@ -88,6 +83,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public locations: any[];
   public device: BrowserDetectionService;
+  public getTranslationSubscribe: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -96,8 +92,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      loaderService: LoaderService,
                      countriesFilterService: CountriesFilterService,
                      browserDetectionService: BrowserDetectionService,
-                     translate: TranslateService) {
-    this.translate = translate;
+                     languageService: LanguageService) {
+    this.languageService = languageService;
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -111,28 +107,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     let isInit: boolean = true;
     this.isDesktop = this.device.isDesktop();
 
-    this.translateGetTheWorldSubscribe = this.translate.get('THE_WORLD').subscribe((res: any) => {
-      this.theWorldTranslate = res;
-    });
+    this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'SORRY_WE_HAVE_NO', 'ON_THIS_INCOME_YET', 'ON_THIS_INCOME_YET', 'IN']).subscribe((trans: any) => {
+      this.sorryWeHaveNoTranslate = trans.SORRY_WE_HAVE_NO;
+      this.onThisIncomeYetTranslate = trans.ON_THIS_INCOME_YET;
+      this.theWorldTranslate = trans.THE_WORLD;
+      this.inTranslate = trans.IN;
 
-    this.translateGetSorryWeHaveNoSubscribe = this.translate.get('SORRY_WE_HAVE_NO').subscribe((res: any) => {
-      this.sorryWeHaveNoTranslate = res;
-    });
-
-    this.translateGetOnThisIncomeYetSubscribe = this.translate.get('ON_THIS_INCOME_YET').subscribe((res: any) => {
-      this.onThisIncomeYetTranslate = res;
-    });
-
-    this.translateGetInSubscribe = this.translate.get('IN').subscribe((res: any) => {
-      this.inTranslate = res;
-    });
-
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const noDataTranslation = event.translations;
-      this.sorryWeHaveNoTranslate = noDataTranslation.SORRY_WE_HAVE_NO;
-      this.onThisIncomeYetTranslate = noDataTranslation.ON_THIS_INCOME_YET;
-      this.theWorldTranslate = noDataTranslation.THE_WORLD;
-      this.inTranslate = noDataTranslation.IN;
       if (this.currentPlaces && this.query && !this.currentPlaces.length) {
         this.buildErrorMsg(this.currentPlaces);
       }
@@ -195,25 +175,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetSorryWeHaveNoSubscribe.unsubscribe) {
-      this.translateGetSorryWeHaveNoSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetOnThisIncomeYetSubscribe.unsubscribe) {
-      this.translateGetOnThisIncomeYetSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetInSubscribe.unsubscribe) {
-      this.translateGetInSubscribe.unsubscribe();
-    }
-
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
     }
+
+    this.getTranslationSubscribe.unsubscribe();
 
     this.placesSubscribe.unsubscribe();
     this.resizeSubscribe.unsubscribe();

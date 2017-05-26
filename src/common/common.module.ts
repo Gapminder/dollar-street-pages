@@ -8,6 +8,11 @@ import { LocalStorageService } from './guide/localstorage.service';
 import { MathService } from './math/math.service';
 import { UrlChangeService } from './url-change/url-change.service';
 import { CountriesFilterService } from './countries-filter/countries-filter.service';
+import { LanguageService } from './language/language.service';
+import { ActiveThingService } from './things/active-thing.service';
+import { SocialShareService } from './social/social-share.service';
+import { FontDetectorService } from './font/font-detector.service';
+import { GoogleAnalyticsService } from './analytics/google-analytics.service';
 
 @NgModule({
   providers: [
@@ -18,7 +23,12 @@ import { CountriesFilterService } from './countries-filter/countries-filter.serv
     LocalStorageService,
     MathService,
     UrlChangeService,
-    CountriesFilterService
+    CountriesFilterService,
+    LanguageService,
+    ActiveThingService,
+    SocialShareService,
+    FontDetectorService,
+    GoogleAnalyticsService
   ]
 })
 export class CommonAppModule {

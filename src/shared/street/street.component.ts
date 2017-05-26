@@ -72,24 +72,19 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
       .getPropertyValue('margin-left');
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
     this.street.set('isInit', true);
+    this.street.set('chosenPlaces', []);
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
-        let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+      let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+      if (this.street.width + this.street.streetOffset + this.streetBoxContainerMargin !== document.body.offsetWidth &&
+        this.placesArr &&
+        this.streetData) {
+        this.setDividers(this.placesArr, this.streetData);
 
-        if (
-          this.street.width + this.street.streetOffset + this.streetBoxContainerMargin !== document.body.offsetWidth &&
-          this.placesArr &&
-          this.streetData
-        ) {
-          this.setDividers(this.placesArr, this.streetData);
+        return;
+      }
 
-          return;
-        }
-
-        if (!difference.length) {
-          return;
-        }
-
+      if (difference.length || chosenPlaces.length !== this.street.chosenPlaces.length) {
         this.street.set('chosenPlaces', chosenPlaces.length ? chosenPlaces : []);
 
         if (!this.street.scale) {
@@ -97,68 +92,68 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         this.street.clearAndRedraw(chosenPlaces);
-      });
+      }
+    });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace: any): void => {
-        if (this.drawOnMap) {
-          this.drawOnMap = !this.drawOnMap;
+      if (this.drawOnMap) {
+        this.drawOnMap = !this.drawOnMap;
 
-          return;
-        }
+        return;
+      }
 
-        if (!this.street.scale && this.street.isInit) {
-          this.street.set('hoverPlace', hoverPlace);
-
-          return;
-        }
-
-        if (!hoverPlace) {
-          this.street.removeHouses('hover');
-          this.street.set('hoverPlace', undefined);
-          this.street.clearAndRedraw(this.street.chosenPlaces);
-
-          return;
-        }
-
+      if (!this.street.scale && this.street.isInit) {
         this.street.set('hoverPlace', hoverPlace);
-        this.street.drawHoverHouse(hoverPlace);
-      });
+
+        return;
+      }
+
+      if (!hoverPlace) {
+        this.street.removeHouses('hover');
+        this.street.set('hoverPlace', undefined);
+        this.street.clearAndRedraw(this.street.chosenPlaces);
+
+        return;
+      }
+
+      this.street.set('hoverPlace', hoverPlace);
+      this.street.drawHoverHouse(hoverPlace);
+    });
 
     this.placesSubscribe = this.places && this.places.subscribe((places: any): void => {
-        this.placesArr = places;
+      this.placesArr = places;
 
-        if (!this.streetData) {
-          return;
-        }
+      if (!this.streetData) {
+        return;
+      }
 
-        if (!places.length) {
-          this.street
-            .clearSvg()
-            .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
-            .set('places', [])
-            .set('fullIncomeArr', [])
-            .drawScale(places, this.streetData)
-            .removeSliders();
-        }
+      if (!places.length) {
+        this.street
+          .clearSvg()
+          .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
+          .set('places', [])
+          .set('fullIncomeArr', [])
+          .drawScale(places, this.streetData)
+          .removeSliders();
+      }
 
-        this.setDividers(this.placesArr, this.streetData);
-      });
+      this.setDividers(this.placesArr, this.streetData);
+    });
 
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings().subscribe((res: any) => {
+      if (res.err) {
+        console.error(res.err);
+        return;
+      }
 
-        this.streetData = res.data;
+      this.streetData = res.data;
 
-        if (!this.placesArr) {
-          return;
-        }
+      if (!this.placesArr) {
+        return;
+      }
 
-        this.setDividers(this.placesArr, this.streetData);
-      });
+      this.setDividers(this.placesArr, this.streetData);
+    });
 
     this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
       let query: any = {};

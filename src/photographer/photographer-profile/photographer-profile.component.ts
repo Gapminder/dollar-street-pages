@@ -1,9 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { MathService } from '../../common';
-import { LanguageService } from '../../shared';
+import { MathService, LanguageService } from '../../common';
 import { PhotographerProfileService } from './photographer-profile.service';
-import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'photographer-profile',
@@ -12,14 +10,11 @@ import { TranslateService } from 'ng2-translate';
 })
 
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
-  public translate: TranslateService;
   public photographerTranslate: string;
   public showDetailsTranslate: string;
   public hideDetailsTranslate: string;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translateGetPhotographerSubscribe: Subscription;
-  public translateGetShowDetailsSubscribe: Subscription;
-  public translateGetHideDetailsSubscribe: Subscription;
+
+  public getTranslationSubscribe: Subscription;
 
   protected isShowInfo: boolean = false;
 
@@ -36,9 +31,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   public constructor(math: MathService,
                      photographerProfileService: PhotographerProfileService,
-                     translate: TranslateService,
                      languageService: LanguageService) {
-    this.translate = translate;
     this.photographerProfileService = photographerProfileService;
     this.math = math;
     this.languageService = languageService;
@@ -47,27 +40,13 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     let query = `id=${this.photographerId}${this.languageService.getLanguageParam()}`;
 
-    this.translateGetPhotographerSubscribe = this.translate.get('PHOTOGRAPHER').subscribe((res: any) => {
-      this.photographerTranslate = res;
-    });
-
-    this.translateGetShowDetailsSubscribe = this.translate.get('SHOW_DETAILS').subscribe((res: any) => {
-      this.showDetailsTranslate = res;
-    });
-
-    this.translateGetHideDetailsSubscribe = this.translate.get('HIDE_DETAILS').subscribe((res: any) => {
-      this.hideDetailsTranslate = res;
-    });
-
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const photographerTranslation = event.translations;
-      this.photographerTranslate = photographerTranslation.PHOTOGRAPHER;
-      this.showDetailsTranslate = photographerTranslation.SHOW_DETAILS;
-      this.hideDetailsTranslate = photographerTranslation.HIDE_DETAILS;
+    this.getTranslationSubscribe = this.languageService.getTranslation(['PHOTOGRAPHER', 'SHOW_DETAILS', 'HIDE_DETAILS']).subscribe((trans: any) => {
+      this.photographerTranslate = trans.PHOTOGRAPHER;
+      this.showDetailsTranslate = trans.SHOW_DETAILS;
+      this.hideDetailsTranslate = trans.HIDE_DETAILS;
 
       if (this.getPhotographer) {
-        this.getPhotographer
-          .emit(`<span class="sub-title">${this.photographerTranslate}:</span> ${this.photographer.firstName} ${this.photographer.lastName}`);
+        this.getPhotographer.emit(`<span class="sub-title">${this.photographerTranslate}:</span> ${this.photographer.firstName} ${this.photographer.lastName}`);
       }
     });
 
@@ -85,23 +64,8 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetPhotographerSubscribe.unsubscribe) {
-      this.translateGetPhotographerSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetShowDetailsSubscribe.unsubscribe) {
-      this.translateGetShowDetailsSubscribe.unsubscribe();
-    }
-
-    if (    this.translateGetHideDetailsSubscribe.unsubscribe) {
-      this.translateGetHideDetailsSubscribe.unsubscribe();
-    }
-
     this.photographerProfileServiceSubscribe.unsubscribe();
+    this.getTranslationSubscribe.unsubscribe();
   }
 
   protected isShowInfoMore(photographer: any): boolean {

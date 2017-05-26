@@ -15,9 +15,8 @@ import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
 import { Config, ImageResolutionInterface } from '../../app.config';
-import { MathService, StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../common';
+import { MathService, StreetSettingsService, DrawDividersInterface, BrowserDetectionService, LanguageService } from '../../common';
 import { FamilyInfoService } from './matrix-view-block.service';
-import { LanguageService } from '../../shared';
 
 @Component({
   selector: 'matrix-view-block',

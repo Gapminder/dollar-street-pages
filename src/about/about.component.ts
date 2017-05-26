@@ -2,9 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { AboutService } from './about.service';
-import { LanguageService } from '../shared';
-import { LoaderService, TitleHeaderService } from '../common';
-import { TranslateService } from 'ng2-translate';
+import { LoaderService, TitleHeaderService, LanguageService } from '../common';
 
 @Component({
   selector: 'about',
@@ -19,19 +17,14 @@ export class AboutComponent implements OnInit, OnDestroy {
   public titleHeaderService: TitleHeaderService;
   public loaderService: LoaderService;
   public sanitizer: DomSanitizer;
-  public translate: TranslateService;
-  public aboutTranslate: string;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translateGetAboutSubscribe: Subscription;
-  private languageService: LanguageService;
+  public languageService: LanguageService;
+  public getTranslationSubscribe: Subscription;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
                      sanitizer: DomSanitizer,
                      titleHeaderService: TitleHeaderService,
-                     translate: TranslateService,
                      languageService: LanguageService) {
-    this.translate = translate;
     this.sanitizer = sanitizer;
     this.aboutService = aboutService;
     this.loaderService = loaderService;
@@ -42,15 +35,8 @@ export class AboutComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.loaderService.setLoader(false);
 
-    this.translateGetAboutSubscribe = this.translate.get('ABOUT').subscribe((res: any) => {
-      this.aboutTranslate = res;
-      this.titleHeaderService.setTitle(this.aboutTranslate);
-    });
-
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const aboutTranslation = event.translations;
-      this.aboutTranslate = aboutTranslation.ABOUT;
-      this.titleHeaderService.setTitle(this.aboutTranslate);
+    this.getTranslationSubscribe = this.languageService.getTranslation('ABOUT').subscribe((trans: any) => {
+      this.titleHeaderService.setTitle(trans);
     });
 
     this.aboutSubscribe = this.aboutService.getInfo(this.languageService.getLanguageParam()).subscribe((val: any) => {
@@ -66,15 +52,8 @@ export class AboutComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetAboutSubscribe.unsubscribe) {
-      this.translateGetAboutSubscribe.unsubscribe();
-    }
-
     this.aboutSubscribe.unsubscribe();
+    this.getTranslationSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 }

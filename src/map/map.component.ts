@@ -4,7 +4,6 @@ import { Component, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { TranslateService } from 'ng2-translate';
 
 import {
   MathService,
@@ -13,10 +12,10 @@ import {
   Angulartics2GoogleAnalytics,
   StreetSettingsService,
   DrawDividersInterface,
-  BrowserDetectionService
+  BrowserDetectionService,
+  LanguageService
 } from '../common';
 import { MapService } from './map.service';
-import { LanguageService } from '../shared';
 
 @Component({
   selector: 'map-component',
@@ -25,10 +24,8 @@ import { LanguageService } from '../shared';
 })
 
 export class MapComponent implements OnInit, OnDestroy {
-  public translate: TranslateService;
   public familyTranslate: string;
-  public translateOnLangChangeSubscribe: Subscription;
-  public translateGetFamilySubscribe: Subscription;
+  public getTranslationSubscribe: Subscription;
 
   private resizeSubscribe: Subscription;
   private mapServiceSubscribe: Subscription;
@@ -80,9 +77,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     translate: TranslateService,
                      languageService: LanguageService) {
-    this.translate = translate;
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -104,13 +99,8 @@ export class MapComponent implements OnInit, OnDestroy {
     let isInit: boolean = true;
     this.loaderService.setLoader(false);
 
-    this.translateGetFamilySubscribe = this.translate.get('FAMILY').subscribe((res: any) => {
-      this.familyTranslate = res;
-    });
-
-    this.translateOnLangChangeSubscribe = this.translate.onLangChange.subscribe((event: any) => {
-      const familyTranslation = event.translations;
-      this.familyTranslate = familyTranslation.FAMILY;
+    this.getTranslationSubscribe = this.languageService.getTranslation('FAMILY').subscribe((trans: any) => {
+      this.familyTranslate = trans;
     });
 
     this.queryParamsSubscribe = this.activatedRoute
@@ -180,17 +170,10 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.translateOnLangChangeSubscribe.unsubscribe) {
-      this.translateOnLangChangeSubscribe.unsubscribe();
-    }
-
-    if (this.translateGetFamilySubscribe.unsubscribe) {
-      this.translateGetFamilySubscribe.unsubscribe();
-    }
-
     this.resizeSubscribe.unsubscribe();
     this.mapServiceSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
+    this.getTranslationSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 
