@@ -15,8 +15,8 @@
   </div>
 
   <div class="income-filter-button-container">
-    <button type="button" (click)="showAll()">{{ 'SHOW_ALL' | translate }}</button>
-    <button type="button" (click)="closeFilter()"><img src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
+    <button class="show-all" type="button" (click)="showAll()">{{ 'SHOW_ALL' | translate }}</button>
+    <button class="ok-button" type="button" (click)="closeFilter()"><img src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
     <button class="close-button" type="button" (click)="closeFilter(true)">{{ 'CANCEL' | translate }}</button>
   </div>
 </div>

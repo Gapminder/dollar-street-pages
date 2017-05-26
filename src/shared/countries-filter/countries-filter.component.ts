@@ -141,21 +141,22 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.regionsVisibility = true;
 
     if (this.isOpenCountriesFilter && !this.isDesktop) {
-      let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
-      let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+      setTimeout(() => {
+        let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
+        let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
 
-      this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
-        .subscribe((e: KeyboardEvent) => {
-          if (e.keyCode === 13) {
-            inputElement.blur();
-          }
-        });
+        this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
+          .subscribe((e: KeyboardEvent) => {
+            if (e.keyCode === 13) {
+              inputElement.blur();
+            }
+          });
 
-      if (tabContent) {
-        setTimeout(() => {
+        if (tabContent) {
+
           tabContent.scrollTop = 0;
-        }, 0);
-      }
+        }
+      }, 0);
     }
 
     this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
@@ -396,7 +397,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
         if (difference.length) {
           this.activeCountries = difference.length === 1 && regions.length === 1 ? getTranslatedRegions[0] + ' & '
-          + difference[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+            + difference[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
         } else {
           this.activeCountries = getTranslatedRegions.join(' & ');
         }
@@ -458,6 +459,23 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public isOpenMobileFilterView(): void {
     if (window.innerWidth < 1024 || !this.isDesktop) {
+      let pointerContainer = this.element.querySelector('.pointer-container') as HTMLElement;
+
+      let buttonContainer = this.element.querySelector('.button-container') as HTMLElement;
+
+      let shortenWidth = this.element.querySelector('.shorten') as HTMLElement;
+      let cancelButton = this.element.querySelector('.cancel') as HTMLElement;
+      let okayButton = this.element.querySelector('.okay') as HTMLElement;
+
+      if (pointerContainer) {
+        let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + pointerContainer.offsetWidth;
+        if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
+          shortenWidth.classList.add('decreaseFontSize');
+          cancelButton.classList.add('decreaseFontSize');
+          okayButton.classList.add('decreaseFontSize');
+        }
+      }
+
       this.openMobileFilterView = true;
       return;
     }

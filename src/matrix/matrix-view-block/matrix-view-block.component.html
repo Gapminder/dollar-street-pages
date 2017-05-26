@@ -91,10 +91,11 @@
 
     <div class="zoom-download-container">
       <a class="download" target="_blank" [href]="api + '/v1/download-image/' + place.image">
-        <img src="/assets/img/download-icon.svg" alt=""> {{ 'DOWNLOAD' | translate }}
+        <img src="/assets/img/download-icon.svg" alt=""><span class="button-text">{{ 'DOWNLOAD' | translate }}</span>
       </a>
+
       <span (click)="openPopUp()">
-        <img src="/assets/img/fullsize-icon.svg" alt=""> {{ 'FULLSIZE' | translate }}
+        <img src="/assets/img/fullsize-icon.svg" alt=""><span class="button-text">{{ 'FULLSIZE' | translate }}</span>
       </span>
     </div>
   </div>
@@ -177,7 +178,7 @@
 
       <a class="link-to-page"
          *ngIf="isShowCountryButton"
-         (click)="goToMatrixByCountry(familyData.country.alias)">
+         (click)="goToMatrixByCountry(familyData.country.originName)">
         <span>{{ 'ALL' | translate }} {{familyData?.activeThing?.plural.toLowerCase()}}</span>
         <span>{{ 'IN' | translate }}</span>
         <span>{{countryName}}</span>

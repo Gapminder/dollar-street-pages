@@ -56,19 +56,30 @@
   padding: 16px 0;
 }
 
-#item-profile .main .photo {
-  margin: 10px 0;
+#item-profile .main .total-text {
+  font-size: 18px;
+  width: 90%;
+  color: #374551;
 }
 
-#item-profile .main .home img {
-  width: 13px;
-  margin-top: -6px;
-  margin-right: 2px;
+#item-profile .main .photo {
+  margin: 10px 0;
+  width: 90%;
 }
 
 #item-profile .main .photo img {
   height: 13px;
   margin-top: -5px;
+  margin-right: 2px;
+}
+
+#item-profile .main .home {
+  width: 90%;
+}
+
+#item-profile .main .home img {
+  width: 13px;
+  margin-top: -6px;
   margin-right: 2px;
 }
 
@@ -92,7 +103,7 @@
 
 #item-profile .footer-profile h3,
 #item-profile .item-profile-header h2 {
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
   font-size: 18px;
   margin: 0 0 5px;
   text-transform: uppercase;
@@ -262,7 +273,7 @@
 #item-profile-mobile .company-container h3 {
   margin: 0 0 10px;
   font-size: 14px;
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
   text-transform: uppercase;
 }
 
@@ -284,7 +295,11 @@
 @media (max-width: 1200px) {
   #item-profile {
     font-size: 14px;
-    margin-left: 11px;
+  }
+
+  #item-profile .main .total-text {
+    font-size: 14px;
+    color: #374551;
   }
 
   #item-profile .main span {

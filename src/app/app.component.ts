@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { LoaderService, LocalStorageService, UrlChangeService } from '../common';
-import { LanguageService } from '../shared';
 import { TranslateService } from 'ng2-translate';
+import { LanguageService } from '../shared/language-selector/language.service';
 import { stringify } from '@angular/core/src/facade/lang';
 
 @Component({
@@ -19,17 +19,17 @@ export class AppComponent implements OnInit, OnDestroy {
   public router: Router;
   public routerEventsSubscribe: Subscription;
   public loaderServiceSubscribe: Subscription;
-  public getLanguageToUseSubscribe: Subscription;
+  public languageToUseSubscribe: Subscription;
   public currentLanguage: string;
 
   public translate: TranslateService;
-  public getLanguageService: LanguageService;
+  public languageService: LanguageService;
   public loaderService: LoaderService;
   public urlChangeService: UrlChangeService;
   public localStorageService: LocalStorageService;
 
   public constructor(router: Router,
-                     getLanguageService: LanguageService,
+                     languageService: LanguageService,
                      translate: TranslateService,
                      loaderService: LoaderService,
                      urlChangeService: UrlChangeService,
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.router = router;
     this.loaderService = loaderService;
     this.translate = translate;
-    this.getLanguageService = getLanguageService;
+    this.languageService = languageService;
     this.urlChangeService = urlChangeService;
     this.localStorageService = localStorageService;
   }
@@ -47,11 +47,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.translate.setDefaultLang('en');
     this.currentLanguage = storageLanguage || this.translate.getBrowserLang() || this.translate.getDefaultLang();
-    this.getLanguageService.updateLangUrl(this.currentLanguage);
+    this.languageService.updateLangUrl(this.currentLanguage);
 
     const lang: string = stringify('lang=' + this.currentLanguage);
 
-    this.getLanguageToUseSubscribe = this.getLanguageService.getLanguage(lang)
+    (this.window as any).currentLanguage = this.currentLanguage;
+    (this.window as any).detectFont(this.currentLanguage);
+
+    this.languageToUseSubscribe = this.languageService.getLanguage(lang)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -90,7 +93,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.isVisibleHeader = !(activePage === '/matrix' || activePage === '/family' || activePage === '/map');
 
-        this.getLanguageService.updateLangUrl(this.currentLanguage);
+        this.languageService.updateLangUrl(this.currentLanguage);
       }
     });
   }
@@ -98,6 +101,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.routerEventsSubscribe.unsubscribe();
     this.loaderServiceSubscribe.unsubscribe();
-    this.getLanguageToUseSubscribe.unsubscribe();
+    this.languageToUseSubscribe.unsubscribe();
   }
 }
