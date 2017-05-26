@@ -15,6 +15,8 @@ export class Config {
   // public static api: string = '//192.168.1.95';
   public static api: string = '//localhost:8015';
 
+  public static stripPublicKey: string = 'pk_test_t5Ct4SMWKOD7uycxzbmaerp3';
+
   public static windowInnerWidth: number = window.innerWidth;
 
   public static getCoordinates(querySelector: string, cb: any): any {

@@ -2,24 +2,23 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
-
 import { SharedModule } from '../shared';
 
-import { ArticleComponent } from './article.component';
-import { ArticleService } from './article.service';
+import { DonateComponent } from './donate.component';
+import { DonateService } from './donate.service';
 
 @NgModule({
-  declarations: [ArticleComponent],
+  declarations: [DonateComponent],
   imports: [
     HttpModule,
     RouterModule,
     CommonModule,
     SharedModule
   ],
-  providers: [ArticleService],
+  providers: [DonateService],
   exports: []
 })
 
-export class ArticleModule {
+export class DonateModule {
 
 }

@@ -172,7 +172,7 @@
     float: right;
   }
 
-  .filters-container .income-title-container.incomeby .income-title + .income-title,
+  .filters-container .income-title-container.incomeby .income-title,
   .filters-container .income-title {
     width: 100%;
     display: block;

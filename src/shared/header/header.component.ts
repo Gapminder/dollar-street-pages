@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -18,7 +18,7 @@ import {
   styleUrls: ['./header.component.css']
 })
 
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   public element: HTMLElement;
 
   @Input()
@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   public isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
   public streetData: DrawDividersInterface;
   public activeThing: any;
+  public window: Window = window;
   public router: Router;
   public activatedRoute: ActivatedRoute;
   public matrixComponent: boolean;
@@ -49,6 +50,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   public isDesktop: boolean;
   public isMobile: boolean;
   public languageService: LanguageService;
+  public getTranslationSubscribe: Subscription;
 
   public constructor(router: Router,
                      math: MathService,
@@ -71,6 +73,22 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
   }
 
+  public ngAfterViewInit(): void {
+    this.getTranslationSubscribe = this.languageService.getTranslation('BY_INCOME').subscribe((incomeText: string) => {
+      let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
+
+      setTimeout(() => {
+        incomeContainer.classList.remove('incomeby');
+      }, 0);
+
+      if (incomeText.length > 20 && this.window.innerWidth < 920) {
+        setTimeout(() => {
+          incomeContainer.classList.add('incomeby');
+        },0);
+      }
+    });
+  }
+
   public ngOnInit(): void {
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -85,6 +103,10 @@ export class HeaderComponent implements OnInit, OnChanges {
 
         this.streetData = res.data;
       });
+  }
+
+  public ngOnDestroy(): void {
+    this.getTranslationSubscribe.unsubscribe();
   }
 
   public ngOnChanges(changes: any): void {

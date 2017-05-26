@@ -104,12 +104,10 @@ matrix-images {
 }
 
 @media (max-width: 599px) {
-  .matrix-header {
-    position: relative;
-  }
 
   .street-container.fixed {
     position: fixed;
+    z-index: 999;
     top: 0;
   }
 

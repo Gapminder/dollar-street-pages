@@ -49,6 +49,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public isTablet: boolean;
   public getTranslationSubscribe: Subscription;
   public languageService: LanguageService;
   public currentLanguage: string;
@@ -74,6 +75,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
     this.isMobile = this.device.isMobile();
+    this.isTablet = this.device.isTablet();
+
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
     this.headerContentHeight = this.element.offsetHeight;
 

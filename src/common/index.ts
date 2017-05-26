@@ -14,3 +14,4 @@ export { ActiveThingService } from './things/active-thing.service';
 export { SocialShareService } from './social/social-share.service';
 export { FontDetectorService } from './font/font-detector.service';
 export { GoogleAnalyticsService } from './analytics/google-analytics.service';
+export { CountryDetectorService } from './country-detector/country-detector.service';

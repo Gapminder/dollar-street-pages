@@ -16,21 +16,28 @@
       </div>
 
       <div class="links">
-        <a (click)="goToMatrixPage()">{{ 'HOME' | translate }} </a>
+        <a class="dividers-after"
+           (click)="goToMatrixPage()">{{ 'HOME' | translate }} </a>
 
-        <a class="dividers-before dividers-after"
+        <a class="dividers-after"
            [routerLink]="['/about']"
            [queryParams]="{}"
            angulartics2On="click"
            angularticsEvent="From footer to About page">{{ 'ABOUT' | translate }} </a>
 
-        <a [routerLink]="['/team']"
+        <a class="dividers-after"
+           [routerLink]="['/team']"
            [queryParams]="{}"
            angulartics2On="click"
            angularticsEvent="From footer to DollarStreet team page">{{ 'TEAM' | translate }} </a>
 
-        <a class="dividers-before"
-           [routerLink]="['/photographers']"
+        <a class="dividers-after"
+           [routerLink]="['/donate']"
+           [queryParams]="{}"
+           angulartics2On="click"
+           angularticsEvent="From footer to Donate page">{{ 'DONATE' | translate }}</a>
+
+        <a [routerLink]="['/photographers']"
            [queryParams]="{}"
            angulartics2On="click"
            angularticsEvent="From footer to Photographers page">{{ 'PHOTOGRAPHERS' | translate }} </a>
