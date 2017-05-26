@@ -12,7 +12,7 @@
        [routerLink]="['/matrix']"
        [queryParams]="urlParams"
        angulartics2On="click"
-       angularticsEvent="From Place page to Matrix page (Thing:{{urlParams?.thing?.plural}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
+       angularticsEvent="From Place page to Matrix page (Thing:{{urlParams?.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
       <img src="/assets/img/back-icon.svg" alt="Back">
       {{titles?.thing?.plural}} {{ 'IN' | translate }} {{titles?.countries}}
     </p>

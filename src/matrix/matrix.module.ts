@@ -12,7 +12,6 @@ import { MatrixComponent } from './matrix.component';
 import { MatrixService } from './matrix.service';
 
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
-import { IsImageLoadedDirective } from './matrix-images/is-image-loaded.directive';
 
 import { MatrixViewBlockComponent } from './matrix-view-block/matrix-view-block.component';
 import { FamilyInfoService } from './matrix-view-block/matrix-view-block.service';
@@ -21,7 +20,6 @@ import { FamilyInfoService } from './matrix-view-block/matrix-view-block.service
   declarations: [
     MatrixComponent,
     MatrixImagesComponent,
-    IsImageLoadedDirective,
     MatrixViewBlockComponent
   ],
   imports: [

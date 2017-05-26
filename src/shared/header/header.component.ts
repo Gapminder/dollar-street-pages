@@ -22,33 +22,33 @@ export class HeaderComponent implements OnInit, OnChanges {
   public element: HTMLElement;
 
   @Input()
-  protected query: string;
+  public query: string;
   @Input()
-  protected thing: string;
+  public thing: string;
   @Input('hoverPlace')
-  protected hoverPlace: Observable<any>;
-  protected header: any = {};
-  protected isCountryFilterReady: boolean = false;
-  protected isThingFilterReady: boolean = false;
+  public hoverPlace: Observable<any>;
+  public header: any = {};
+  public isCountryFilterReady: boolean = false;
+  public isThingFilterReady: boolean = false;
 
   @Output()
-  private filter: EventEmitter<any> = new EventEmitter<any>();
+  public filter: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  private isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
-  private streetData: DrawDividersInterface;
-  private activeThing: any;
-  private router: Router;
-  private activatedRoute: ActivatedRoute;
-  private matrixComponent: boolean;
-  private mapComponent: boolean;
-  private math: MathService;
-  private streetServiceSubscribe: Subscription;
-  private streetSettingsService: StreetSettingsService;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  private device: BrowserDetectionService;
-  private isDesktop: boolean;
-  private isMobile: boolean;
-  private languageService: LanguageService;
+  public isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
+  public streetData: DrawDividersInterface;
+  public activeThing: any;
+  public router: Router;
+  public activatedRoute: ActivatedRoute;
+  public matrixComponent: boolean;
+  public mapComponent: boolean;
+  public math: MathService;
+  public streetServiceSubscribe: Subscription;
+  public streetSettingsService: StreetSettingsService;
+  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public device: BrowserDetectionService;
+  public isDesktop: boolean;
+  public isMobile: boolean;
+  public languageService: LanguageService;
 
   public constructor(router: Router,
                      math: MathService,
@@ -118,7 +118,7 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.activeThing = thing;
   }
 
-  protected goToMatrixPage(): void {
+  public goToMatrixPage(): void {
     let queryParams = {
       thing: 'Families',
       countries: 'World',
@@ -143,7 +143,7 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }
 
-  protected isFilterGotData(event: any): any {
+  public isFilterGotData(event: any): any {
     this[event] = true;
   }
 

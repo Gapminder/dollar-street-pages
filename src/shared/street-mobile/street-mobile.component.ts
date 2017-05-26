@@ -15,7 +15,7 @@ import { StreetMobileDrawService } from './street-mobile.service';
 
 export class StreetMobileComponent implements OnInit, OnDestroy {
   @Input('places')
-  private places: Observable<any>;
+  public places: Observable<any>;
 
   private street: any;
   private streetSettingsService: StreetSettingsService;

@@ -8,7 +8,8 @@ import {
   EventEmitter,
   NgZone,
   OnDestroy,
-  ElementRef
+  ElementRef,
+  SimpleChanges
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
@@ -113,7 +114,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  public ngOnChanges(): void {
+  // tslint:disable-next-line
+  public ngOnChanges(changes: SimpleChanges): void {
     this.loader = false;
     this.showblock = true;
 

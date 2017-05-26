@@ -20,38 +20,38 @@ import { StreetDrawService } from './street.service';
 export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   public data: any;
   @Input('thing')
-  protected thing: string;
+  public thing: string;
   @Input('query')
-  private query: string;
+  public query: string;
   @Input('places')
-  private places: Observable<any>;
+  public places: Observable<any>;
   @Input('chosenPlaces')
-  private chosenPlaces: Observable<any>;
+  public chosenPlaces: Observable<any>;
   @Input('hoverPlace')
-  private hoverPlace: Subject<any>;
+  public hoverPlace: Subject<any>;
   @Output('filterStreet')
-  private filterStreet: EventEmitter<any> = new EventEmitter<any>();
-  private street: any;
-  private regions: any;
-  private thingname: any;
-  private countries: any;
-  private math: MathService;
-  private streetSettingsService: StreetSettingsService;
-  private streetData: any;
-  private element: HTMLElement;
-  private activatedRoute: ActivatedRoute;
-  private streetServiceSubscribe: Subscription;
-  private resize: any;
-  private drawOnMap: boolean = false;
-  private isStreetInit: boolean = false;
+  public filterStreet: EventEmitter<any> = new EventEmitter<any>();
+  public street: any;
+  public regions: any;
+  public thingname: any;
+  public countries: any;
+  public math: MathService;
+  public streetSettingsService: StreetSettingsService;
+  public streetData: any;
+  public element: HTMLElement;
+  public activatedRoute: ActivatedRoute;
+  public streetServiceSubscribe: Subscription;
+  public resize: any;
+  public drawOnMap: boolean = false;
+  public isStreetInit: boolean = false;
 
-  private placesSubscribe: Subscription;
-  private hoverPlaceSubscribe: Subscription;
-  private chosenPlacesSubscribe: Subscription;
-  private streetFilterSubscribe: Subscription;
-  private placesArr: any;
-  private streetBoxContainer: HTMLElement;
-  private streetBoxContainerMargin: number;
+  public placesSubscribe: Subscription;
+  public hoverPlaceSubscribe: Subscription;
+  public chosenPlacesSubscribe: Subscription;
+  public streetFilterSubscribe: Subscription;
+  public placesArr: any;
+  public streetBoxContainer: HTMLElement;
+  public streetBoxContainerMargin: number;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,

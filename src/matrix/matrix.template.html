@@ -1,12 +1,12 @@
 <div class="matrix-container">
   <div class="matrix-header main-header" [style.top.px]="-guidePositionTop">
-    <quick-guide (startQuickGuide)="startQuickGuide($event)"></quick-guide>
+    <quick-guide (startQuickGuide)="startQuickGuide()"></quick-guide>
 
     <header [query]="query"
             [thing]="thing"
             [hoverPlace]="hoverPlace"
             (filter)="urlChanged($event)"
-            (isOpenIncomeFilter)="openIncomeFilter($event)">
+            (isOpenIncomeFilter)="openIncomeFilter()">
     </header>
 
     <div class="street-and-title-container">
