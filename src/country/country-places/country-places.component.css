@@ -20,6 +20,10 @@
   width: 125px;
 }
 
+.paddingTop {
+  padding-top: 20px;
+}
+
 #country-place .place .image img {
   width: 100%;
   cursor: pointer;

@@ -1,37 +1,23 @@
 'use strict';
 
-import { browser } from 'protractor/globals';
+import { browser } from 'protractor';
 import { BlogPage } from '../Pages/BlogPage';
-import { DataProvider } from '../Data/DataProvider';
-let using = require('jasmine-data-provider');
-browser.driver.manage().window().maximize();
+import { AbstractPage } from '../Pages/AbstractPage';
 
-describe('Blog Page test', ()=> {
-  beforeAll(() => {
-    browser.get('/blog');
-  });
-
-  using(DataProvider.blogPagePosts, (data:any, description:string) => {
-      it('Check ' + description, () => {
-        expect(data.element().getText()).toEqual(data.actualResult);
-      });
-    }
-  );
-  using(DataProvider.ambassadorsPageBoolean, (data:any, description:string) => {
-    it('Check ' + description, () => {
-      expect(data.element().isDisplayed()).toBeTruthy();
-    });
-  });
-  for (let i = 0; i < 1; i++) {
-    it('Blog Page - click on ' + i + ' post and check texts', () => {
-      browser.get('/blog');
-      let post = BlogPage.getPost().get(i);
-      browser.actions().mouseMove(post).click(post).perform().then(()=> {
-        using(DataProvider.blogPagePosts, (data:any) => {
-          expect(data.element().isDisplayed()).toBeTruthy();
-          expect(data.element().isEnabled()).toBe(true);
+describe('Blog page redirect', ()=> {
+  it('Check redirect blog', ()=> {
+    browser.get('about');
+    AbstractPage.menuIcon.click();
+    AbstractPage.gamburgerMenuLinks.get(3).click().then(()=> {
+      browser.sleep(1000);
+      browser.getAllWindowHandles().then((handles:any)=> {
+        browser.switchTo().window(handles[1]).then(()=> {
+          browser.ignoreSynchronization = true;
+          expect(browser.getCurrentUrl()).toContain('gapminder.org/category/dollarstreet/');
+          expect(BlogPage.getPostHeader.getText()).toEqual('A dream come true');
+          expect(BlogPage.gapminderLogo.isPresent()).toBe(true);
         });
-      });
+        });
+        });
     });
-  }
 });

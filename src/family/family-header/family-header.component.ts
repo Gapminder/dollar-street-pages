@@ -50,8 +50,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public isMobile: boolean;
   public getTranslationSubscribe: Subscription;
-
-  private languageService: LanguageService;
+  public languageService: LanguageService;
+  public currentLanguage: string;
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -67,6 +67,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.familyHeaderService = familyHeaderService;
     this.device = browserDetectionService;
     this.languageService = languageService;
+
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {

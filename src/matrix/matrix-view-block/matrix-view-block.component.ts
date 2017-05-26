@@ -69,6 +69,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public imageResolution: ImageResolutionInterface;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public currentLanguage: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -88,6 +89,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.languageService = languageService;
     this.isDesktop = this.device.isDesktop();
     this.imageResolution = Config.getImageResolution(this.isDesktop);
+
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {

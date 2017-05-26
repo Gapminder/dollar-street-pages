@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 @Injectable()
 export class StreetDrawService {
   public width: number;
+  public widthParsed: number;
   public height: number;
   public halfOfHeight: number;
   public lowIncome: number;
@@ -93,7 +94,8 @@ export class StreetDrawService {
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
-    this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
+    this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
+    this.width = (this.widthParsed !== this.width) ? this.widthParsed - 15 : this.widthParsed;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
@@ -209,9 +211,9 @@ export class StreetDrawService {
       .attr('y', this.height - 4)
       .attr('fill', '#767d86');
 
-    const richestWidth: number = parseFloat(this.svg
-      .selectAll('text.richest')
-      .style('width').toString());
+    let svgElement: any = document.getElementById('chart');
+    let svgElementNodes: any = svgElement.childNodes;
+    let richestWidth = svgElementNodes[1].getBBox().width;
 
     this.svg
       .selectAll('text.richest')
@@ -258,7 +260,7 @@ export class StreetDrawService {
           }
 
           return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+            point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
         })
         .attr('stroke-width', 1)
         .style('fill', '#aaacb0')
@@ -281,7 +283,6 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -301,7 +302,6 @@ export class StreetDrawService {
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
-        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -321,7 +321,6 @@ export class StreetDrawService {
       .style('cursor', 'grab')
 
       .on('mousedown', (): void => {
-        event.preventDefault();
         this.draggingSliders = true;
       })
       .on('touchstart', (): any => this.draggingSliders = true);
@@ -342,8 +341,7 @@ export class StreetDrawService {
     }
 
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
-      .subscribe((e: MouseEvent)=> {
-
+      .subscribe((e: MouseEvent) => {
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
@@ -401,7 +399,7 @@ export class StreetDrawService {
     }
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
-      .subscribe((e: TouchEvent)=> {
+      .subscribe((e: TouchEvent) => {
           if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
             return;
           }
@@ -456,7 +454,7 @@ export class StreetDrawService {
       );
 
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
-      .subscribe(()=> {
+      .subscribe(() => {
 
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
@@ -466,7 +464,7 @@ export class StreetDrawService {
       });
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
-      .subscribe(()=> {
+      .subscribe(() => {
         if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
@@ -517,7 +515,7 @@ export class StreetDrawService {
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke-width', 1)
       .attr('stroke', (datum: any): any => {
@@ -606,7 +604,6 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', '#ffffff')
         .on('mousedown', (): void => {
-          event.preventDefault();
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
@@ -758,7 +755,6 @@ export class StreetDrawService {
         .attr('stroke-width', 0.5)
         .attr('stroke', 'white')
         .on('mousedown', (): void => {
-          event.preventDefault();
           this.sliderRightMove = true;
         })
         .on('touchstart', (): any => this.sliderRightMove = true);
@@ -971,8 +967,11 @@ export class StreetDrawService {
         .attr('fill', '#767d86');
     }
 
-    let leftScrollTextWidth: number = this.svg.selectAll('text.left-scroll-label').node().getBoundingClientRect().width;
-    let rightScrollTextWidth: number = this.svg.selectAll('text.right-scroll-label').node().getBoundingClientRect().width;
+    const leftScrollTextStyle: {width: any; height: any;} = this.leftScrollText.node().getBBox();
+    const rightScrollTextStyle: {width: any; height: any;} = this.rightScrollText.node().getBBox();
+
+    const leftScrollTextWidth: number = parseInt(leftScrollTextStyle.width, 10);
+    const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);
 
     if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       incomeL = Math.round(this.minIncome);
@@ -980,11 +979,11 @@ export class StreetDrawService {
 
       this.leftScrollText
         .text(`$${incomeL}`)
-        .attr('x', ()=> this.leftPoint + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
+        .attr('x', () => this.leftPoint + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
     } else {
       this.leftScrollText
         .text(`$${incomeL}`)
-        .attr('x', ()=> xL + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
+        .attr('x', () => xL + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
     }
 
     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
@@ -993,11 +992,11 @@ export class StreetDrawService {
 
       this.rightScrollText
         .text(`$${incomeR}`)
-        .attr('x', ()=> this.rightPoint + this.streetOffset / 2 + 4.5 - rightScrollTextWidth / 2);
+        .attr('x', () => this.rightPoint + this.streetOffset / 2 + 4.5 - rightScrollTextWidth / 2);
     } else {
       this.rightScrollText
         .text(`$${incomeR}`)
-        .attr('x', ()=> xR + this.streetOffset / 2 + 4.5 - rightScrollTextWidth / 2);
+        .attr('x', () => xR + this.streetOffset / 2 + 4.5 - rightScrollTextWidth / 2);
     }
 
     return this;
@@ -1041,7 +1040,7 @@ export class StreetDrawService {
         }
 
         return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
       })
       .attr('stroke', '#303e4a')
       .attr('stroke-width', 1)

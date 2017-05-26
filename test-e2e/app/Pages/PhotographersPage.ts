@@ -1,7 +1,7 @@
 'use strict';
 
 import { AbstractPage } from '../Pages/AbstractPage';
-import { element, by, $ } from 'protractor/globals';
+import { element, by, $ } from 'protractor';
 import { ElementArrayFinder, ElementFinder } from 'protractor/built/index';
 
 export class PhotographersPage {
@@ -10,13 +10,9 @@ export class PhotographersPage {
   public static camerasIcon:ElementArrayFinder = element.all(by.css('.fa.fa-camera'));
   public static homesIcon:ElementArrayFinder = element.all(by.css('.photographer-material>span>img'));
   public static lastPhotographer:ElementArrayFinder = element.all(by.css('.photographer-portrait'));
-  public static searchFieldElement:ElementFinder = $('#search');
+  public static searchButton:ElementFinder = $('#search');
   public static foundPhotographer:ElementFinder = $('.photographer-card>h3');
   public static familiesIcon:ElementFinder = $('.place');
-
-  public static getSearchButton():ElementFinder {
-    return this.searchFieldElement;
-  };
 
   public static isDisplayedPhotographerName():boolean {
     return this.photographerName.isDisplayed();
@@ -40,14 +36,6 @@ export class PhotographersPage {
 
   public static setErrorMessage():string {
     return 'Last photographer on Photographers Page is not loaded';
-  };
-
-  public static getFoundPhotographer():ElementFinder {
-    return this.foundPhotographer;
-  };
-
-  public static getFamiliesIcon():ElementFinder {
-    return this.familiesIcon;
   };
 
   public static setFamilyErrorMessage(name:string):string {

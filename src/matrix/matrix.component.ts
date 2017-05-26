@@ -96,6 +96,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
   public theWorldTranslate: string;
   public activeThingService: ActiveThingService;
   public getTranslationSubscribe: Subscription;
+  public window: Window = window;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -286,6 +287,14 @@ export class MatrixComponent implements OnInit, OnDestroy {
           }
 
           if (this.isDesktop) {
+            if (this.window.scrollY > 0) {
+              this.headerContainer.style.position = 'fixed';
+              this.element.style.paddingTop = '128px';
+            } else {
+              this.headerContainer.style.position = 'static';
+              this.element.style.paddingTop = '0px';
+            }
+
             this.stopScroll();
           }
         });
@@ -399,10 +408,6 @@ export class MatrixComponent implements OnInit, OnDestroy {
 
   /** each document usage breaks possible server side rendering */
   public stopScroll(): void {
-    if (!this.imageHeight) {
-      return;
-    }
-
     if (this.isMobile) {
       let fixedStreet = this.element.querySelector('.street-container.fixed') as HTMLElement;
 
@@ -412,6 +417,7 @@ export class MatrixComponent implements OnInit, OnDestroy {
     }
 
     this.setZoomButtonPosition();
+
     let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - this.guidePositionTop;
     let distance = scrollTop / (this.imageHeight + this.imageMargin);
 
