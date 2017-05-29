@@ -2,7 +2,7 @@
   position: fixed;
   overflow: hidden;
   background-color: #fff;
-  z-index: 999;
+  z-index: 1000;
 }
 
 #loader-container .loader-content,
@@ -22,7 +22,7 @@
 
 #loader-container .loader-content h1 {
   text-transform: uppercase;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
 }
 
 #loader-container .loader {

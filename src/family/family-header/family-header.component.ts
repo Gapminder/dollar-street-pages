@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, Input, NgZone, ElementRef, EventEmitter, 
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Config } from '../../app.config';
-import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService } from '../../common';
+import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService, LanguageService } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
 
 @Component({
@@ -21,6 +21,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @Output('streetFamilyData')
   public streetFamilyData: EventEmitter<any> = new EventEmitter<any>();
 
+  public readMoreTranslate: string;
+  public readLessTranslate: string;
   public home: any = {};
   public mapData: any;
   public math: MathService;
@@ -43,33 +45,48 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public headerContentHeight: number;
   public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
-  public streetServiceSubscribe: Subscription;
+  public streetSettingsServiceSubscribe: Subscription;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public isTablet: boolean;
+  public getTranslationSubscribe: Subscription;
+  public languageService: LanguageService;
+  public currentLanguage: string;
 
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,
                      streetSettingsService: StreetSettingsService,
                      familyHeaderService: FamilyHeaderService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     languageService: LanguageService) {
     this.zone = zone;
     this.math = math;
     this.streetSettingsService = streetSettingsService;
     this.element = element.nativeElement;
     this.familyHeaderService = familyHeaderService;
     this.device = browserDetectionService;
+    this.languageService = languageService;
+
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
     this.isMobile = this.device.isMobile();
+    this.isTablet = this.device.isTablet();
+
     this.headerElement = document.querySelector('.header-container') as HTMLElement;
     this.headerContentHeight = this.element.offsetHeight;
 
+    this.getTranslationSubscribe = this.languageService.getTranslation(['READ_MORE', 'READ_LESS']).subscribe((trans: any) => {
+      this.readMoreTranslate = trans.READ_MORE;
+      this.readLessTranslate = trans.READ_LESS;
+    });
+
     this.familyHeaderServiceSubscribe = this.familyHeaderService
-      .getFamilyHeaderData(`placeId=${this.placeId}`)
+      .getFamilyHeaderData(`placeId=${this.placeId}${this.languageService.getLanguageParam()}`)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
@@ -83,7 +100,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.truncCountryName(this.home.country);
       });
 
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
+    this.streetSettingsServiceSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -133,7 +150,17 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.familyHeaderServiceSubscribe.unsubscribe();
+    if(this.streetSettingsServiceSubscribe) {
+      this.streetSettingsServiceSubscribe.unsubscribe();
+    }
+
+    if(this.familyHeaderServiceSubscribe) {
+      this.familyHeaderServiceSubscribe.unsubscribe();
+    }
+
+    if(this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();

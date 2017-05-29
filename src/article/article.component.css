@@ -1,3 +1,8 @@
+.translate-me-section {
+  height: 50px;
+  margin-bottom: 20px;
+}
+
 #article-content {
   padding-top: 125px;
   margin: 0 auto 100px;
@@ -23,7 +28,7 @@
 #article-content >>> > h1:first-child + h4 {
   margin: 0;
   font-size: 22px;
-  font-family: 'Bariol Light Italic', sans-serif;
+  font-family: 'Font Light Italic', sans-serif;
   color: #767d86;
   line-height: 30px;
 }
@@ -34,7 +39,7 @@
 #info-context >>> h5,
 #info-context >>> h6 {
   color: #374551;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
   font-size: 24px;
   line-height: 30px;
   margin: 0;

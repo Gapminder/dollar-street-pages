@@ -19,8 +19,7 @@ import { ArticleModule } from '../article';
 import { MatrixModule } from '../matrix';
 import { FamilyModule } from '../family';
 import { AboutModule } from '../about';
-
-import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
+import { DonateModule } from '../donate';
 
 @NgModule({
   declarations: [
@@ -42,10 +41,8 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
     FamilyModule,
     FormsModule,
     AboutModule,
+    DonateModule,
     routing
-  ],
-  providers: [
-    Angulartics2GoogleAnalytics
   ],
   bootstrap: [AppComponent]
 })

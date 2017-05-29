@@ -1,11 +1,13 @@
 import 'rxjs/operator/debounceTime';
 
-import { Component, Input, EventEmitter, ElementRef, Output, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, Input, EventEmitter, ElementRef, Output, OnInit, OnDestroy, NgZone, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { LanguageService } from '../../common';
+import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
 
 import * as _ from 'lodash';
 
@@ -44,6 +46,19 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   @Output('filter')
   public filter: EventEmitter<any> = new EventEmitter<any>();
 
+  @ViewChild(MatrixViewBlockComponent)
+  public matrixViewBlockComponent: MatrixViewBlockComponent;
+  @ViewChild('imagesContainer')
+  public imagesContainer: ElementRef;
+  @ViewChild('imageContent')
+  public imageContent: ElementRef;
+
+  public languageService: LanguageService;
+  public theWorldTranslate: string;
+  public sorryWeHaveNoTranslate: string;
+  public onThisIncomeYetTranslate: string;
+  public inTranslate: string;
+
   public selectedCountries: any;
   public selectedRegions: any;
   public activeCountries: any;
@@ -76,6 +91,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public locations: any[];
   public device: BrowserDetectionService;
+  public getTranslationSubscribe: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -83,7 +99,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      math: MathService,
                      loaderService: LoaderService,
                      countriesFilterService: CountriesFilterService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     languageService: LanguageService) {
+    this.languageService = languageService;
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -96,6 +114,17 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public ngOnInit(): any {
     let isInit: boolean = true;
     this.isDesktop = this.device.isDesktop();
+
+    this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'SORRY_WE_HAVE_NO', 'ON_THIS_INCOME_YET', 'ON_THIS_INCOME_YET', 'IN']).subscribe((trans: any) => {
+      this.sorryWeHaveNoTranslate = trans.SORRY_WE_HAVE_NO;
+      this.onThisIncomeYetTranslate = trans.ON_THIS_INCOME_YET;
+      this.theWorldTranslate = trans.THE_WORLD;
+      this.inTranslate = trans.IN;
+
+      if (this.currentPlaces && this.query && !this.currentPlaces.length) {
+        this.buildErrorMsg(this.currentPlaces);
+      }
+    });
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
       this.showErrorMsg = false;
@@ -126,17 +155,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.thing}`)
-      .subscribe((res: any): any => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.locations = res.data;
-      });
-
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
@@ -165,12 +183,14 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.placesSubscribe.unsubscribe();
-    this.resizeSubscribe.unsubscribe();
-
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
     }
+
+    this.getTranslationSubscribe.unsubscribe();
+
+    this.placesSubscribe.unsubscribe();
+    this.resizeSubscribe.unsubscribe();
   }
 
   public onScrollDown(): void {
@@ -206,12 +226,19 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
+  public imageIsUploaded(index: number): void {
+    this.zone.run(() => {
+      this.placesArr[index].isUploaded = true;
+    });
+  }
+
   public buildTitle(query: any): any {
     let regions = query.regions.split(',');
     let countries = query.countries.split(',');
     this.selectedThing = query.thing.split(',');
+
     if (regions[0] === 'World' && countries[0] === 'World') {
-      this.activeCountries = 'the world';
+      this.activeCountries = this.theWorldTranslate;
 
       return;
     }
@@ -231,7 +258,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     if (regions[0] !== 'World') {
 
       if (regions.length > 3) {
-        this.activeCountries = 'the world';
+        this.activeCountries = this.theWorldTranslate;
       } else {
         let sumCountries: number = 0;
         let difference: string[] = [];
@@ -272,34 +299,22 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.selectedCountries = countries;
   }
 
-  public imageIsUploaded(index: number): void {
-    this.zone.run(() => {
-      this.placesArr[index].isUploaded = true;
-    });
-  }
-
   public buildErrorMsg(places: any): void {
     if (!places.length) {
       this.buildTitle(this.parseUrl(this.query));
 
       let activeCountries = this.activeCountries.toString().replace(/,/g, ', ');
 
-      if (this.activeCountries === 'the world') {
-
+      if (this.activeCountries === this.theWorldTranslate) {
         this.showErrorMsg = true;
-        this.errorMsg = 'Sorry, we have no ' + this.selectedThing.toString().toLowerCase() + ' on this income yet.';
+        this.errorMsg = this.sorryWeHaveNoTranslate + ' ' +
+          this.selectedThing.toString().toLowerCase() + ' ' + this.onThisIncomeYetTranslate;
         return;
       } else {
-
-        if (!this.selectedRegions) {
-
-          this.showErrorMsg = true;
-          this.errorMsg = 'Sorry, there is no data by this query yet!';
-          return;
-        }
-
         this.showErrorMsg = true;
-        this.errorMsg = 'Sorry, we have no ' + this.selectedThing.toString().toLowerCase() + ' in ' + activeCountries + ' on this income yet.';
+        this.errorMsg = this.sorryWeHaveNoTranslate + ' ' +
+          this.selectedThing.toString().toLowerCase() +
+          ' ' + this.inTranslate + ' ' + activeCountries + ' ' + this.onThisIncomeYetTranslate;
         return;
       }
     }
@@ -315,9 +330,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.familyData = JSON.parse(JSON.stringify(place));
 
     setTimeout(() => {
-      let viewBlockBox = this.element.querySelector('matrix-view-block') as HTMLElement;
-
-      this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+      this.viewBlockHeight = this.matrixViewBlockComponent ? this.matrixViewBlockComponent.element.offsetHeight : 0;
     }, 0);
 
     let row: number = Math.ceil((this.indexViewBoxHouse + 1) / this.zoom);
@@ -394,13 +407,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public getImageHeight(): void {
-    let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
+    let boxContainer: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
 
     if (!boxContainer) {
       return;
     }
 
-    let imgContent = this.element.querySelector('.image-content') as HTMLElement;
+    let imgContent: HTMLElement = this.imageContent.nativeElement as HTMLElement;
 
     let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
 
@@ -415,7 +428,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public getVisibleRows(): void {
-    let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
+    let boxContainer: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
 
     if (!boxContainer) {
       return;

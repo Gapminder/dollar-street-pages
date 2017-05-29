@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,16 +7,17 @@ import {
   DrawDividersInterface,
   LocalStorageService,
   BrowserDetectionService,
-  Angulartics2GoogleAnalytics
+  Angulartics2GoogleAnalytics,
+  LanguageService
 } from '../../common';
 
 @Component({
   selector: 'main-menu',
   templateUrl: './menu.template.html',
-  styleUrls: ['menu.component.css', 'menu.component.mobile.css']
+  styleUrls: ['./menu.component.css', './menu.component.mobile.css']
 })
 
-export class MainMenuComponent implements OnInit, OnDestroy {
+export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input('hoverPlace') public hoverPlace: Observable<any>;
   @Output('selectedFilter') public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
@@ -31,16 +32,21 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   public hoverPlaceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
   public streetServiceSubscribe: Subscription;
+  public getTranslationSubscribe: Subscription;
   public localStorageService: LocalStorageService;
   public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public imgContent: HTMLElement;
+  public languageService: LanguageService;
+  public shareTranslation: string;
 
   public constructor(router: Router,
                      element: ElementRef,
                      activatedRoute: ActivatedRoute,
+                     languageService: LanguageService,
                      localStorageService: LocalStorageService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
@@ -52,6 +58,11 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.localStorageService = localStorageService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
+  }
+
+  public ngAfterViewInit(): void {
+    this.processShareTranslation();
   }
 
   public ngOnInit(): void {
@@ -89,11 +100,33 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
-        .subscribe(() => {
-          if (this.isOpenMenu) {
-            this.isOpenMenu = false;
-          }
-        });
+      .subscribe(() => {
+        if (this.isOpenMenu) {
+          this.isOpenMenu = false;
+        }
+      });
+
+    this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
+        this.shareTranslation = trans;
+
+        this.processShareTranslation();
+      });
+  }
+
+  public processShareTranslation(): void {
+    if (!this.shareTranslation) {
+      return;
+    }
+
+    this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
+
+    if (this.imgContent) {
+      this.imgContent.classList.remove('long-text');
+
+      if (this.shareTranslation.length > 6) {
+        this.imgContent.classList.add('long-text');
+      }
+    }
   }
 
   public ngOnDestroy(): void {
@@ -104,6 +137,8 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     if (this.hoverPlaceSubscribe) {
       this.hoverPlaceSubscribe.unsubscribe();
     }
+
+    this.getTranslationSubscribe.unsubscribe();
 
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
@@ -130,33 +165,38 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     switch (url) {
       case '/matrix':
         this.goToMatrixPage(removeStorage);
-
         break;
+
       case '/about':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
         this.router.navigate([url], {queryParams: {}});
-
         break;
+
       case 'https://www.gapminder.org/category/dollarstreet/':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page', {});
         this.window.open(url, '_blank');
-
         break;
+
+      case '/donate':
+        this.angulartics2GoogleAnalytics.eventTrack('From menu to Donate page', {});
+        this.router.navigate([url], { queryParams: {} });
+        break;
+
       case '/map':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
         this.router.navigate([url], {queryParams: {thing: 'Families'}});
-
         break;
+
       case 'https://www.gapminder.org':
         this.angulartics2GoogleAnalytics.eventTrack('Go to Gapminder.org from menu', {});
         this.window.open(url, '_blank');
-
         break;
+
       case 'https://getsatisfaction.com/gapminder':
         this.angulartics2GoogleAnalytics.eventTrack('Go to Getsatisfaction.com/gapminder from menu', {});
         this.window.open(url, '_blank');
-
         break;
+
       default:
         this.goToMatrixPage();
     }
@@ -187,7 +227,8 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       zoom: 4,
       row: 1,
       lowIncome: this.streetData.poor,
-      highIncome: this.streetData.rich
+      highIncome: this.streetData.rich,
+      lang: this.languageService.currentLanguage
     };
 
     if (!this.isDesktop) {

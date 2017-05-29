@@ -1,14 +1,14 @@
 <div class="team-container">
   <div class="team-peoples" *ngFor="let team of teamList; let i = index;">
-    <h2>{{team.name === 'Core team' ? 'Core team' : team.name + 's'}}</h2>
+    <h2>{{team.name}}</h2>
 
     <div class="team-people-box">
       <div *ngFor="let ambassador of team.ambassadors"
            class="team-people show">
         <div class="portrait">
-          <img *ngIf="team.name !== 'Organization' && team.name !== 'Contributor'"
+          <img *ngIf="team.originTypeName !== 'Organization' && team.originTypeName !== 'Contributor'"
                [src]="ambassador.avatar || 'assets/img/default-am.jpg'" alt="">
-          <span *ngIf="team.name === 'Organization' || team.name === 'Contributor'">
+          <span *ngIf="team.originTypeName === 'Organization' || team.originTypeName === 'Contributor'">
             <a target="_blank"
                *ngIf="ambassador?.company?.link"
                [href]="ambassador?.company?.link"
@@ -22,21 +22,21 @@
         </div>
 
         <p class="name">
-          <span *ngIf="team.name !== 'Organization' && team.name !== 'Contributor'">{{ambassador.name}}</span>
-          <span *ngIf="team.name === 'Organization' || team.name === 'Contributor'">
+          <span *ngIf="team.originTypeName !== 'Organization' && team.originTypeName !== 'Contributor'">{{ambassador.name}}</span>
+          <span *ngIf="team.originTypeName === 'Organization' || team.originTypeName === 'Contributor'">
             <a target="_blank"
                *ngIf="ambassador?.company?.link"
                [href]="ambassador?.company?.link"
                angulartics2On="click"
                angularticsEvent=" Moved to {{ambassador?.company?.link}} link ">
-              <span *ngIf="team.name === 'Organization'">{{ambassador.name}}</span>
-              <div *ngIf="team.name === 'Contributor'">{{ambassador.company.name}}</div>
+              <span *ngIf="team.originTypeName === 'Organization'">{{ambassador.name}}</span>
+              <div *ngIf="team.originTypeName === 'Contributor'">{{ambassador.company.name}}</div>
             </a>
             <span *ngIf="!ambassador?.company?.link">{{ambassador.name}}</span>
           </span>
         </p>
         <p class="country"><img class="marker" src="/assets/img/grey-marker.svg" alt="">{{ambassador.country}}</p>
-        <p class="description" *ngIf="team.name !== 'Organization' && ambassador.description">
+        <p class="description" *ngIf="team.originTypeName !== 'Organization' && ambassador.description">
           {{ambassador.description}}</p>
       </div>
     </div>

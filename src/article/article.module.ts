@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
+import { SharedModule } from '../shared';
+
 import { ArticleComponent } from './article.component';
 import { ArticleService } from './article.service';
 
@@ -11,7 +13,8 @@ import { ArticleService } from './article.service';
   imports: [
     HttpModule,
     RouterModule,
-    CommonModule
+    CommonModule,
+    SharedModule
   ],
   providers: [ArticleService],
   exports: []

@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { find, difference } from 'lodash';
 import { GuideService } from './guide.service';
-import { LocalStorageService } from '../../common';
+import { LocalStorageService, LanguageService } from '../../common';
 
 @Component({
   selector: 'quick-guide',
@@ -18,18 +18,25 @@ export class GuideComponent implements OnInit, OnDestroy {
   public isShowBubble: boolean = false;
   public guideService: GuideService;
   public guideServiceSubscribe: Subscription;
+  public element: Element;
+
+  public languageService: LanguageService;
 
   @Output('startQuickGuide')
   public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(guideService: GuideService,
-                     localStorageService: LocalStorageService) {
+                     localStorageService: LocalStorageService,
+                     languageService: LanguageService,
+                     element: ElementRef) {
     this.guideService = guideService;
     this.localStorageService = localStorageService;
+    this.languageService = languageService;
+    this.element = element.nativeElement;
   }
 
   public ngOnInit(): void {
-    this.isShowGuide = this.localStorageService.getItem('quick-guide');
+    this.isShowGuide = !(this.localStorageService.getItem('quick-guide'));
 
     this.localStorageService
       .getItemEvent()
@@ -40,7 +47,7 @@ export class GuideComponent implements OnInit, OnDestroy {
         this.startQuickGuide.emit({});
       });
 
-    this.guideServiceSubscribe = this.guideService.getGuide()
+    this.guideServiceSubscribe = this.guideService.getGuide(this.languageService.getLanguageParam())
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

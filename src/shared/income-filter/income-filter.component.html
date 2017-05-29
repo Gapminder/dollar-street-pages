@@ -1,6 +1,6 @@
 <div class="income-filter-container">
   <div class="income-filter-header-container">
-    <span>Select income range</span>
+    <span>{{ 'SELECT_INCOME_RANGE' | translate }}</span>
     <img class="close-button pull-right"
          src="/assets/img/close-button.svg"
          (click)="closeFilter(true)"
@@ -15,8 +15,8 @@
   </div>
 
   <div class="income-filter-button-container">
-    <button type="button" (click)="showAll()">Show all</button>
-    <button type="button" (click)="closeFilter()"><img src="/assets/img/apply.svg">Ok</button>
-    <button class="close-button" type="button" (click)="closeFilter(true)">Cancel</button>
+    <button class="show-all" type="button" (click)="showAll()">{{ 'SHOW_ALL' | translate }}</button>
+    <button class="ok-button" type="button" (click)="closeFilter()"><img src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
+    <button class="close-button" type="button" (click)="closeFilter(true)">{{ 'CANCEL' | translate }}</button>
   </div>
 </div>

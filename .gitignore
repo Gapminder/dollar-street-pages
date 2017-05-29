@@ -44,5 +44,7 @@ newrelic_agent.log
 
 # AoT
 **/*.ngfactory.ts
+**/*.ngsummary.json
+**/*.ngstyle.ts
 **/*.css.ts
 **/*.shim.ts

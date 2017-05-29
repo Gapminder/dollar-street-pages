@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/debounceTime';
 
-import { Component, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, NgZone, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
@@ -12,7 +12,8 @@ import {
   Angulartics2GoogleAnalytics,
   StreetSettingsService,
   DrawDividersInterface,
-  BrowserDetectionService
+  BrowserDetectionService,
+  LanguageService
 } from '../common';
 import { MapService } from './map.service';
 
@@ -23,42 +24,57 @@ import { MapService } from './map.service';
 })
 
 export class MapComponent implements OnInit, OnDestroy {
-  private resizeSubscribe: Subscription;
-  private mapServiceSubscribe: Subscription;
-  private math: MathService;
-  private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  private mapService: MapService;
-  private places: any[] = [];
-  private countries: any[] = [];
-  private element: any;
-  private map: HTMLImageElement;
-  private hoverPlace: any = void 0;
-  private markers: any;
-  private hoverPortraitTop: any;
-  private hoverPortraitLeft: any;
-  private thing: any;
-  private urlChangeService: UrlChangeService;
-  private query: string;
-  private currentCountry: string;
-  private leftSideCountries: any;
-  private seeAllHomes: boolean = false;
-  private leftArrowTop: any;
-  private onThumb: boolean = false;
-  private onMarker: boolean = false;
-  private isOpenLeftSide: boolean = false;
-  private router: Router;
-  private activatedRoute: ActivatedRoute;
-  private isDesktop: boolean;
-  private isMobile: boolean;
-  private zone: NgZone;
-  private shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
-  private queryParamsSubscribe: Subscription;
-  private loaderService: LoaderService;
-  private streetData: DrawDividersInterface;
-  private streetSettingsService: StreetSettingsService;
-  private streetServiceSubscribe: Subscription;
-  private windowInnerWidth: number = window.innerWidth;
-  private device: BrowserDetectionService;
+  @ViewChild('mapBox')
+  public map: ElementRef;
+  @ViewChild('hoverPortrait')
+  public hoverPortrait: ElementRef;
+  @ViewChildren('marker')
+  public markers: QueryList<ElementRef>;
+  @ViewChild('mapColor')
+  public mapColor: ElementRef;
+  @ViewChild('infoBoxContainer')
+  public infoBoxContainer: ElementRef;
+
+  public familyTranslate: string;
+  public places: any[] = [];
+  public getTranslationSubscribe: Subscription;
+  public hoverPlace: any = void 0;
+  public currentCountry: string;
+  public originCurrentCountry: string;
+
+  public resizeSubscribe: Subscription;
+  public mapServiceSubscribe: Subscription;
+  public math: MathService;
+  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
+  public mapService: MapService;
+  public countries: any[] = [];
+  public element: any;
+  public hoverPortraitTop: any;
+  public hoverPortraitLeft: any;
+  public thing: any;
+  public urlChangeService: UrlChangeService;
+  public query: string;
+  public leftSideCountries: any;
+  public seeAllHomes: boolean = false;
+  public leftArrowTop: any;
+  public onThumb: boolean = false;
+  public onMarker: boolean = false;
+  public isOpenLeftSide: boolean = false;
+  public router: Router;
+  public activatedRoute: ActivatedRoute;
+  public isDesktop: boolean;
+  public isMobile: boolean;
+  public zone: NgZone;
+  public shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
+  public queryParamsSubscribe: Subscription;
+  public loaderService: LoaderService;
+  public streetData: DrawDividersInterface;
+  public streetSettingsService: StreetSettingsService;
+  public streetServiceSubscribe: Subscription;
+  public windowInnerWidth: number = window.innerWidth;
+  public device: BrowserDetectionService;
+  public languageService: LanguageService;
+  public currentLanguage: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -70,7 +86,8 @@ export class MapComponent implements OnInit, OnDestroy {
                      urlChangeService: UrlChangeService,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     languageService: LanguageService) {
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -82,6 +99,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
+    this.languageService = languageService;
+
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {
@@ -91,11 +111,15 @@ export class MapComponent implements OnInit, OnDestroy {
     let isInit: boolean = true;
     this.loaderService.setLoader(false);
 
+    this.getTranslationSubscribe = this.languageService.getTranslation('FAMILY').subscribe((trans: any) => {
+      this.familyTranslate = trans;
+    });
+
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams
       .subscribe((params: {thing: string}) => {
         this.thing = params.thing ? params.thing : 'Families';
-        let query: any = {url: `thing=${this.thing}`};
+        let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
 
         if (!params.thing || (params.thing && !isInit)) {
           query.isNotReplaceState = true;
@@ -129,11 +153,12 @@ export class MapComponent implements OnInit, OnDestroy {
 
         this.places = res.data.places;
         this.countries = res.data.countries;
-        this.map = this.element.querySelector('.mapBox');
-        this.query = `thing=${res.data.thing}`;
+
+        this.query = url;
 
         if (!isNotReplaceState) {
-          this.urlChangeService.replaceState('/map', this.query);
+          this.query = url;
+          this.urlChangeService.replaceState('/map', url);
         }
 
         this.setMarkersCoord(this.places);
@@ -156,15 +181,30 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.resizeSubscribe.unsubscribe();
-    this.mapServiceSubscribe.unsubscribe();
-    this.queryParamsSubscribe.unsubscribe();
-    this.loaderService.setLoader(false);
+    if(this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
+    if(this.mapServiceSubscribe) {
+      this.mapServiceSubscribe.unsubscribe();
+    }
+
+    if(this.queryParamsSubscribe) {
+      this.queryParamsSubscribe.unsubscribe();
+    }
+
+    if(this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
+
+    if(this.loaderService) {
+      this.loaderService.setLoader(false);
+    }
   }
 
   public setMarkersCoord(places: any): void {
     let img = new Image();
-    let mapImage: HTMLImageElement = this.element.querySelector('.map-color');
+    let mapImage: HTMLImageElement = this.mapColor.nativeElement as HTMLImageElement;
 
     img.onload = () => {
       this.zone.run(() => {
@@ -186,7 +226,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = mapImage.src;
   }
 
-  public hoverOnMarker(index: number, country: any): void {
+  public hoverOnMarker(index: number, country: any, countryOriginName: any): void {
     if (!this.isDesktop) {
       return;
     }
@@ -196,6 +236,8 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     this.onMarker = true;
+
+    this.originCurrentCountry = countryOriginName;
     this.currentCountry = country;
 
     this.leftSideCountries = this.places.filter((place: any): boolean => {
@@ -203,8 +245,6 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     this.seeAllHomes = this.leftSideCountries.length > 1;
-
-    this.markers = this.map.querySelectorAll('.marker');
 
     this.places.forEach((place: any, i: number) => {
       if (i !== index) {
@@ -218,7 +258,10 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker: HTMLElement, i: number): void => {
+    Array.prototype.forEach.call(this.markers, (markerRef: ElementRef, i: number): void => {
+
+      let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
+
       if (i === index) {
         return;
       }
@@ -228,7 +271,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     let img = new Image();
 
-    let portraitBox = this.map.querySelector('.hover_portrait') as HTMLElement;
+    let portraitBox = this.hoverPortrait.nativeElement as HTMLElement;
     portraitBox.style.opacity = '0';
 
     img.onload = () => {
@@ -266,7 +309,7 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.hoverPlace.familyImg.background;
   };
 
-  public hoverOnMarkerTablet(index: number, country: any): void {
+  public hoverOnMarkerTablet(index: number, country: any, countryOriginName: any): void {
     if (this.isMobile || this.isDesktop) {
       return;
     }
@@ -277,14 +320,13 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.onMarker = true;
     this.currentCountry = country;
+    this.originCurrentCountry = countryOriginName;
 
     this.leftSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;
     });
 
     this.seeAllHomes = this.leftSideCountries.length > 1;
-
-    this.markers = this.map.querySelectorAll('.marker');
 
     this.places.forEach((place: any, i: number) => {
       if (i !== index) {
@@ -298,7 +340,9 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    Array.prototype.forEach.call(this.markers, (marker: HTMLElement, i: number): void => {
+    Array.prototype.forEach.call(this.markers, (markerRef: ElementRef, i: number): void => {
+      let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
+
       if (i === index) {
         return;
       }
@@ -335,7 +379,9 @@ export class MapComponent implements OnInit, OnDestroy {
         return;
       }
 
-      Array.prototype.forEach.call(this.markers, (marker: HTMLElement): void => {
+      Array.prototype.forEach.call(this.markers, (markerRef: ElementRef): void => {
+        let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
+
         marker.style.opacity = '1';
       });
 
@@ -343,7 +389,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.hoverPlace = void 0;
       this.hoverPortraitTop = void 0;
       this.hoverPortraitLeft = void 0;
-      this.markers = void 0;
     }, 300);
   }
 
@@ -356,7 +401,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public closeLeftSideBar(e: MouseEvent): void {
-    let infoBoxContainer = this.element.querySelector('.info-box-container') as HTMLElement;
+    let infoBoxContainer = this.infoBoxContainer.nativeElement as HTMLElement;
     infoBoxContainer.scrollTop = 0;
 
     let el = e.target as HTMLElement;
@@ -389,12 +434,12 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public clickOnMarker(e: MouseEvent, index: number, country: any): void {
+  public clickOnMarker(e: MouseEvent, index: number, country: any, countryOriginName: any): void {
     if (this.isOpenLeftSide) {
       this.isOpenLeftSide = !this.isOpenLeftSide;
 
       this.closeLeftSideBar(e);
-      this.hoverOnMarker(index, country);
+      this.hoverOnMarker(index, country, countryOriginName);
 
       return;
     }
@@ -406,8 +451,9 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public mobileClickOnMarker(country: any): void {
+  public mobileClickOnMarker(country: any, countryOriginName: any): void {
     this.currentCountry = country;
+    this.originCurrentCountry = countryOriginName;
 
     this.leftSideCountries = this.places.filter((place: any): boolean => {
       return place.country === this.currentCountry;

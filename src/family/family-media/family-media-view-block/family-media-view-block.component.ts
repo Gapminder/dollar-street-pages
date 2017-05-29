@@ -6,7 +6,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 
 import { Config, ImageResolutionInterface } from '../../../app.config';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
-import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../../common';
+import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService, LanguageService } from '../../../common';
 
 @Component({
   selector: 'family-media-view-block',
@@ -20,7 +20,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public popIsOpen: boolean = false;
   public fancyBoxImage: string;
   public country: any;
-  public countryName: any;
+  public countryName: string;
   public article: any;
   @Input('imageData')
   public imageData: any;
@@ -39,16 +39,20 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public streetSettingsService: StreetSettingsService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public thing: any = {};
+
+  public languageService: LanguageService;
 
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     viewBlockService: FamilyMediaViewBlockService) {
+                     viewBlockService: FamilyMediaViewBlockService,
+                     languageService: LanguageService) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
-
+    this.languageService = languageService;
     this.isDesktop = this.device.isDesktop();
     this.imageResolution = Config.getImageResolution(this.isDesktop);
   }
@@ -102,7 +106,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
       }
 
       this.viewBlockServiceSubscribe = this.viewBlockService
-        .getData(`placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}`)
+        .getData(`placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`)
         .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);
@@ -111,6 +115,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
           this.country = res.data.country;
           this.article = res.data.article;
+          this.thing = res.data.thing;
 
           this.truncCountryName(this.country);
 
@@ -126,8 +131,17 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnDestroy(): void {
-    this.resizeSubscribe.unsubscribe();
-    this.viewBlockServiceSubscribe.unsubscribe();
+    if(this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
+    if(this.viewBlockServiceSubscribe) {
+      this.viewBlockServiceSubscribe.unsubscribe();
+    }
+
+    if(this.streetServiceSubscribe) {
+      this.streetServiceSubscribe.unsubscribe();
+    }
   }
 
   public openPopUp(): void {

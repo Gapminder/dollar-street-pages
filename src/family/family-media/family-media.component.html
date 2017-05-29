@@ -3,6 +3,7 @@
        infinite-scroll
        [infiniteScrollDistance]="2"
        [infiniteScrollThrottle]="0"
+       #familyImagesContainer
        (scrolled)="onScrollDown()">
     <div class="family-image-container"
          *ngFor="let image of currentImages; let i = index"
@@ -13,7 +14,9 @@
          [style.-webkit-order]="i"
          [style.order]="i"
          [style.height.px]="imageHeight"
-         isImageLoaded [imageLoadedUrl]="convertImageUrlWithoutWrapper(image?.background)" (imageLoadedEvent)="imageIsUploaded(i)">
+         isImageLoaded
+         [imageLoadedUrl]="convertImageUrlWithoutWrapper(image?.background)"
+         (imageLoadedEvent)="imageIsUploaded(i)">
       <div class="family-image"
            [ngStyle]="{'background-image': image.isUploaded && image.background}">
         <div class="image-description">

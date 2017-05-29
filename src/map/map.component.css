@@ -259,7 +259,7 @@
 #places .familyPortraits .portrait .description {
   overflow: hidden;
   margin-top: 7px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
 }
 
 #places .familyPortraits .portrait .description .name {
@@ -355,7 +355,7 @@
 .countries-list .country-letter {
   display: block;
   padding: 10px 0;
-  font-family: 'Bariol Bold', sans-serif;
+  font-family: 'Font Bold', sans-serif;
 }
 
 .countries-list .country-name:hover {
@@ -418,7 +418,7 @@
 
 .left-side-info .header a {
   font-size: 18px;
-  font-family: 'Bariol Regular', sans-serif;
+  font-family: 'Font Regular', sans-serif;
   color: #374551;
   margin: 0 15px;
   line-height: 54px;

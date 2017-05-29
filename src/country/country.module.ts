@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
-import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 
 import { CountryComponent } from './country.component';
 import { CountryInfoComponent, CountryInfoService } from './country-info';
@@ -21,7 +21,7 @@ import { SharedModule } from '../shared';
     RouterModule,
     CommonModule,
     SharedModule,
-    Angulartics2Module.forRoot()
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   providers: [
     CountryInfoService,

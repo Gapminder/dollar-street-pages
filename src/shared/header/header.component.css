@@ -25,7 +25,7 @@
 .filters-container {
   float: left;
   margin-top: 11px;
-  width: calc(100% - 180px);
+  width: calc(100% - 305px);
 }
 
 .filters-container things-filter,
@@ -82,13 +82,21 @@
   display: inline-block
 }
 
+.menu-container {
+  display: block;
+  position: relative;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
 @media (max-width: 1023px) {
   .filters-container things-filter {
     margin-bottom: 5px;
   }
 
   .filters-container {
-    width: calc(100% - 105px);
+    width: calc(100% - 272px);
   }
 
   .header-content .icon-container img {
@@ -110,6 +118,10 @@
 }
 
 @media (max-width: 599px) {
+  .header-content >>> .lang-container {
+    display: none;
+  }
+
   .filters-container .map-things-text {
     display: none;
   }
@@ -121,13 +133,13 @@
   .filters-container {
     float: left;
     margin-top: 11px;
-    width: calc(100% - 43px);
+    width: calc(100% - 47px);
   }
 
   .filters-container things-filter {
     display: inline-block;
     vertical-align: middle;
-    width:100%;
+    width: 100%;
     margin-bottom: 0;
   }
 
@@ -136,9 +148,9 @@
   }
 
   countries-filter {
-    width: calc(100% - 74px);
+    width: calc(100% - 80px);
     vertical-align: top;
-    display: block;
+    display: inline-block;
     left: 0;
     right: 0;
   }
@@ -160,14 +172,14 @@
     float: right;
   }
 
-  .filters-container .income-title-container.incomeby .income-title + .income-title,
+  .filters-container .income-title-container.incomeby .income-title,
   .filters-container .income-title {
     width: 100%;
     display: block;
     height: 35px;
     border: 1px solid #e4e6e7;
     border-radius: 6px;
-    padding: 7px 12px;
+    padding: 7px;
     color: #394451;
     font-size: 24px;
     vertical-align: top;

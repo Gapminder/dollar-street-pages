@@ -1,15 +1,24 @@
 import 'rxjs/operator/debounceTime';
-
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone, AfterViewChecked, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  NgZone,
+  AfterViewChecked,
+  ElementRef
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { find, isEqual, slice, concat } from 'lodash';
-
 import { Config, ImageResolutionInterface } from '../../app.config';
-import { LoaderService, BrowserDetectionService } from '../../common';
+import { LoaderService, BrowserDetectionService, LanguageService } from '../../common';
 import { FamilyMediaService } from './family-media.service';
+import { ViewChild } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'family-media',
@@ -17,14 +26,16 @@ import { FamilyMediaService } from './family-media.service';
   styleUrls: ['./family-media.component.css']
 })
 
-export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
+  @Input('zoom')
+  public zoom: number;
+
   public windowInnerWidth: number = window.innerWidth;
   public itemSize: number;
   public imageData: any = {};
   public imageBlockLocation: number;
   public showImageBlock: boolean = false;
   public activeImage: any;
-  public zoom: number = this.windowInnerWidth < 1024 ? 3 : 4;
   public prevImage: Object;
   public familyMediaService: FamilyMediaService;
   public images: any = [];
@@ -45,8 +56,12 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public currentImages: any = [];
   public viewBlockHeight: number;
   public loaderService: LoaderService;
+  public languageService: LanguageService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+
+  @ViewChild('familyImagesContainer')
+  public familyImagesContainer: any;
 
   @Input('placeId')
   public placeId: string;
@@ -62,20 +77,29 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
                      element: ElementRef,
                      loaderService: LoaderService,
                      familyMediaService: FamilyMediaService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     languageService: LanguageService) {
     this.familyMediaService = familyMediaService;
     this.zone = zone;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.device = browserDetectionService;
+    this.languageService = languageService;
 
     this.isDesktop = this.device.isDesktop();
     this.imageResolution = Config.getImageResolution(this.isDesktop);
   }
 
+  public ngAfterViewInit(): void {
+    setTimeout(() => {
+      console.log(this.familyImagesContainer);
+      this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
+      this.loaderService.setLoader(true);
+    }, 0);
+  }
+
   public ngOnInit(): void {
-    this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this
-        .openFamilyExpandBlock
+    this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this.openFamilyExpandBlock
         .subscribe((data: any): void => {
           let familyImageIndex: number = 0;
 
@@ -105,8 +129,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
           }
         });
 
+    const query: string = `placeId=${this.placeId}&resolution=${this.
+      imageResolution.image}${this.languageService.getLanguageParam()}`;
+
     this.familyPlaceServiceSubscribe = this.familyMediaService
-      .getFamilyMedia(`placeId=${this.placeId}&resolution=${this.imageResolution.image}`)
+      .getFamilyMedia(query)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);
@@ -129,6 +156,8 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
           }
 
           this.currentImages = slice(this.images, 0, numberSplice);
+
+          this.changeZoom(0);
         }, 0);
       });
 
@@ -141,7 +170,6 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
           }
 
           this.windowInnerWidth = window.innerWidth;
-          this.zoom = this.windowInnerWidth < 1024 ? 3 : 4;
 
           this.getImageHeight();
 
@@ -160,7 +188,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
 
   public ngAfterViewChecked(): void {
     let footer = document.querySelector('.footer') as HTMLElement;
-    let imgContent = document.querySelector('.family-image-container') as HTMLElement;
+    let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
     let headerContainer = document.querySelector('.header-container') as HTMLElement;
 
     if (!imgContent) {
@@ -168,7 +196,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     }
 
     if (this.headerHeight === headerContainer.offsetHeight && this.footerHeight === footer.offsetHeight &&
-      this.imageOffsetHeight === imgContent.offsetHeight || !document.querySelector('.family-image-container')) {
+      this.imageOffsetHeight === imgContent.offsetHeight || !imgContent) {
       return;
     }
 
@@ -198,6 +226,15 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.loaderService.setLoader(false);
   }
 
+  public changeZoom(prevZoom: number): void {
+    setTimeout(() => {
+      this.familyImagesContainer.nativeElement.classList.remove('column-' + prevZoom);
+      this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
+
+      this.getImageHeight();
+    },0);
+  }
+
   public onScrollDown(): void {
     if (this.currentImages.length && this.currentImages.length !== this.images.length) {
       let images: any = slice(this.images, this.currentImages.length, this.currentImages.length + this.visibleImages);
@@ -209,8 +246,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public openMedia(image: any, index: number): void {
     this.activeImage = image;
     this.indexViewBoxImage = index;
+
     let countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
     let offset: number = this.zoom - countByIndex;
+
+    let row: number = Math.ceil((this.indexViewBoxImage + 1) / this.zoom);
 
     this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
 
@@ -242,7 +282,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
 
       this.showImageBlock = !this.showImageBlock;
 
-      this.changeUrl(Math.ceil((this.indexViewBoxImage + 1) / this.zoom), this.indexViewBoxImage + 1);
+      this.changeUrl(row, this.indexViewBoxImage + 1);
 
       return;
     }
@@ -259,7 +299,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
       this.prevImage = image;
       this.showImageBlock = true;
 
-      this.changeUrl(Math.ceil((this.indexViewBoxImage + 1) / this.zoom), this.indexViewBoxImage + 1);
+      this.changeUrl(row, this.indexViewBoxImage + 1);
     }
   }
 
@@ -289,14 +329,23 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     let header = document.querySelector('.header-container') as HTMLElement;
     let homeDescription = document.querySelector('.home-description-container') as HTMLElement;
     let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
+    console.log(row);
     let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
-    document.body.scrollTop = document.documentElement.scrollTop = row * this.itemSize + headerHeight - 45;
+    let scrollTop: number = row * this.itemSize;
+
+    setTimeout(() => {
+      document.body.scrollTop = document.documentElement.scrollTop = scrollTop  + headerHeight - 45;
+    }, 0);
   }
 
   public getImageHeight(): void {
     let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
     let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
+
+    if (!boxContainer || !imgContent) {
+      return;
+    }
 
     let widthScroll: number = window.innerWidth - document.body.offsetWidth;
 

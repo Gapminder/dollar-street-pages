@@ -1,3 +1,7 @@
+.translate-me-container {
+  margin-top: 10px;
+}
+
 .close-button {
   width: 8px;
   height: 8px;
@@ -41,6 +45,7 @@
 }
 
 .description-container .home-info-container {
+  position: relative;
   width: calc(100% - 355px);
   margin-right: 110px;
 }
@@ -80,7 +85,6 @@
 .title-info .sub-title {
   color: #374551;
   font-size: 18px;
-  margin-top: -5px;
 }
 
 .left-title {
@@ -134,7 +138,7 @@
   border: 1px solid #374551;
   color: #374551;
   font-size: 20px;
-  font-family: 'Bariol Light', sans-serif;
+  font-family: 'Font Light', sans-serif;
   padding: 4px 30px 4px 8px;
   position: relative;
   margin: 9px 0 0;

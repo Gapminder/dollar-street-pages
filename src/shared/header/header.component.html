@@ -3,31 +3,39 @@
     <a (click)="goToMatrixPage()"><img src="/assets/img/dollar-street.svg" alt=""/></a>
   </div>
 
-  <div class="filters-container"
+  <div #filtersContainer
+       class="filters-container"
        [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (mapComponent && isThingFilterReady)) ? 'visible' : 'hidden'}">
     <things-filter [url]="query"
                    (isFilterGotData)="isFilterGotData($event)"
                    (selectedFilter)="urlTransfer($event)">
     </things-filter>
 
-    <span class="map-things-text" *ngIf="mapComponent">on the World map</span>
+    <span class="map-things-text" *ngIf="mapComponent">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
 
     <div class="some-filter-container incomeby" *ngIf="matrixComponent">
-      <span class="mobile-ver">in</span>
+      <span class="mobile-ver">{{ 'IN' | translate }}</span>
       <countries-filter [url]="query"
                         (isFilterGotData)="isFilterGotData($event)"
                         (selectedFilter)="urlTransfer($event)">
       </countries-filter>
 
-      <span class="income-title-container">
-        <span class="income-title" (click)="openIncomeFilter()">by $</span>
-        <span class="income-title">by income</span>
+      <span #incomeTitleContainer class="income-title-container">
+        <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
+        <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
       </span>
     </div>
   </div>
 
-  <main-menu class="pull-right"
-             [hoverPlace]="hoverPlace"
-             (selectedFilter)="urlTransfer($event)">
-  </main-menu>
+  <div class="menu-container pull-right">
+    <main-menu class="pull-right"
+               [hoverPlace]="hoverPlace"
+               (selectedFilter)="urlTransfer($event)">
+    </main-menu>
+
+    <span class="language-selector-header">
+       <language-selector></language-selector>
+    </span>
+  </div>
+
 </div>

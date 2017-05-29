@@ -2,8 +2,8 @@ import { it, describe, fakeAsync, inject, beforeEachProviders, tick } from '@ang
 import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
-import { Config } from '../../../app/app.config.ts';
-import { MapService } from '../../../app/map/map.service.ts';
+import { Config } from '../../../src/app.config';
+import { MapService } from '../../../src/map/map.service';
 
 describe('MapService', () => {
   beforeEachProviders(() => {

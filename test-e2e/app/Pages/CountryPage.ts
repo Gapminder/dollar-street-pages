@@ -1,13 +1,14 @@
 'use strict';
 
 import { AbstractPage } from './AbstractPage';
-import { element, by, $ } from 'protractor/globals';
+import { element, by, $ } from 'protractor';
 import { ElementFinder, ElementArrayFinder } from 'protractor/built/index';
+import { Instance } from '../Data/TypeInstance';
 
 export class CountryPage {
   public static countryName:ElementFinder = $('h2[class*="heading"]');
-  public static numberOfFamilies:ElementFinder = $('p[class="home"] span[class="pull-right"]');
-  public static numberOfPhotos:ElementFinder = $('p[class="photo"] span[class="pull-right"]');
+  public static numberOfFamilies:ElementFinder = $('div[id*="item-profile' + Instance.additionToInstance + '"] .home span[class*="total-count"]');
+  public static numberOfPhotos:ElementFinder = $('p[class="photo"] span[class="total-count"]');
   public static numberOfFamiliesEach:ElementArrayFinder = element.all(by.css('.custom-button'));
   public static numberOfPhotosEachFamily:ElementArrayFinder = element.all(by.css('.place-country>p>span'));
   public static bigMap:ElementFinder = $('div[class*="header"] img[class*="map map_gray"]');
@@ -31,22 +32,6 @@ export class CountryPage {
 
   public static count():number {
     return this.numberOfPhotosEachFamily.count();
-  };
-
-  public static getBigMap():ElementFinder {
-    return this.bigMap;
-  };
-
-  public static getMarkerOnMap():ElementFinder {
-    return this.markerOnMap;
-  };
-
-  public static getFamilyImage():ElementFinder {
-    return this.familyImage;
-  };
-
-  public static getLinkVisitFamily():ElementFinder {
-    return this.linkVisitFamily;
   };
 }
 CountryPage.prototype = Object.create(AbstractPage.prototype);

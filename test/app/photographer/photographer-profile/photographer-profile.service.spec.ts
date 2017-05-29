@@ -2,8 +2,8 @@ import { it, describe, inject, fakeAsync, tick, addProviders } from '@angular/co
 import { MockBackend } from '@angular/http/testing';
 import { provide } from '@angular/core';
 import { Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
-import { Config } from '../../../../app/app.config.ts';
-import { PhotographerProfileService } from '../../../../app/photographer/photographer-profile/photographer-profile.service';
+import { Config } from '../../../../src/app.config';
+import { PhotographerProfileService } from '../../../../src/photographer/photographer-profile/photographer-profile.service';
 
 describe('PhotographersService', () => {
   beforeEach(() => {
@@ -28,10 +28,10 @@ describe('PhotographersService', () => {
         expect(connection.request.url).toBe(`${Config.api}/consumer/api/v1/photographer-profile?id=56ec091caf72e9437cbccfab`);
 
         let response = new ResponseOptions({
-          body: `{"success":true,"msg":[],"data":{"_id":"56ec091caf72e9437cbccfab","username":"aj-sharma","lastName":"Sharma",
-        "firstName":"AJ","email":"aj.sharma@dollarstreet.org","role":"photographer","__v":0,
-        "avatar":"http://static.dollarstreet.org.s3.amazonaws.com/users/56ec091caf72e9437cbccfab/avatar.jpg",
-        "imagesCount":289,"placesCount":4},"error":false}`
+          body: `{'success':true,'msg':[],'data':{'_id':'56ec091caf72e9437cbccfab','username':'aj-sharma','lastName':'Sharma',
+        'firstName':'AJ','email':'aj.sharma@dollarstreet.org','role':'photographer','__v':0,
+        'avatar':'http://static.dollarstreet.org.s3.amazonaws.com/users/56ec091caf72e9437cbccfab/avatar.jpg',
+        'imagesCount':289,'placesCount':4},'error':false}`
         });
 
         connection.mockRespond(new Response(response));

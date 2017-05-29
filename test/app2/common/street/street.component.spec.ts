@@ -1,10 +1,10 @@
 import { describe, async, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { provide } from '@angular/core';
-import { MockCommonDependency } from '../../../app/common-mocks/mocked.services.ts';
-import { MockService } from '../../common-mocks/mock.service.template.ts';
-import { StreetComponent } from '../../../../app/common/street/street.component';
-import { places } from './mocks/data.ts';
+import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
+import { MockService } from '../../common-mocks/mock.service.template';
+import { StreetComponent } from '../../../../src/shared/street/street.component';
+import { places } from './mocks/data';
 
 class StreetDrawServiceMock {
   public width:number;

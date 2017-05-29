@@ -8,14 +8,16 @@ import {
   EventEmitter,
   NgZone,
   OnDestroy,
-  ElementRef
+  ElementRef,
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
 import { Config, ImageResolutionInterface } from '../../app.config';
-import { MathService, StreetSettingsService, DrawDividersInterface, BrowserDetectionService } from '../../common';
+import { MathService, StreetSettingsService, DrawDividersInterface, BrowserDetectionService, LanguageService } from '../../common';
 import { FamilyInfoService } from './matrix-view-block.service';
 
 @Component({
@@ -51,6 +53,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public streetData: DrawDividersInterface;
   public streetSettingsService: StreetSettingsService;
   public streetServiceSubscribe: Subscription;
+  public languageService: LanguageService;
 
   @Input('positionInRow')
   public positionInRow: any;
@@ -64,9 +67,16 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output('goToMatrixWithCountry')
   public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('viewImageBlockContainer')
+  public viewImageBlockContainer: ElementRef;
+  @ViewChild('mobileViewImageBlockContainer')
+  public mobileViewImageBlockContainer: ElementRef;
+
   public imageResolution: ImageResolutionInterface;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public currentLanguage: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -74,7 +84,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      element: ElementRef,
                      familyInfoService: FamilyInfoService,
                      browserDetectionService: BrowserDetectionService,
-                     streetSettingsService: StreetSettingsService) {
+                     streetSettingsService: StreetSettingsService,
+                     languageService: LanguageService) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -82,9 +93,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.streetSettingsService = streetSettingsService;
     this.device = browserDetectionService;
     this.familyInfoService = familyInfoService;
-
+    this.languageService = languageService;
     this.isDesktop = this.device.isDesktop();
     this.imageResolution = Config.getImageResolution(this.isDesktop);
+
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {
@@ -111,11 +124,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  public ngOnChanges(): void {
+  // tslint:disable-next-line
+  public ngOnChanges(changes: SimpleChanges): void {
     this.loader = false;
     this.showblock = true;
 
-    let url = `placeId=${this.place._id}&thingId=${this.thing}`;
+    let url = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
     let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
     this.privateZoom = parseUrl.zoom;
 
@@ -143,7 +157,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
         this.countryName = this.truncCountryName(this.familyData.country);
         this.familyData.goToPlaceData = parseUrl;
-        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.alias;
+        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.originName;
 
         let newImage = new Image();
 
@@ -209,10 +223,14 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public setMarkerPosition(): void {
     this.widthScroll = window.innerWidth - document.body.offsetWidth;
 
-    let boxContainer = this.element.querySelector('.view-image-block-container') as HTMLElement;
+    if(!this.viewImageBlockContainer) {
+      return;
+    }
+
+    let boxContainer: HTMLElement = this.viewImageBlockContainer.nativeElement as HTMLElement;
 
     if (!boxContainer) {
-      boxContainer = this.element.querySelector('.mobile-view-image-block-container') as HTMLElement;
+      boxContainer = this.mobileViewImageBlockContainer.nativeElement as HTMLElement;
     }
 
     this.boxContainer = boxContainer;

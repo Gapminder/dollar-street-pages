@@ -2,8 +2,8 @@ import { it, describe, inject, async, beforeEachProviders, beforeEach } from '@a
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
 import { MockService } from '../../../app/common-mocks/mock.service.template';
-import { HeaderComponent } from '../../../../app/common/header/header.component';
-import { thing } from './mocks/data.ts';
+import { HeaderComponent } from '../../../../src/shared/header/header.component';
+import { thing } from './mocks/data';
 
 describe('HeaderComponent', () => {
   let headerService = new MockService();

@@ -1,8 +1,8 @@
 import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../app/common-mocks/mocked.services';
 import { MockService } from '../../../app/common-mocks/mock.service.template';
-import { GuideComponent } from '../../../../app/common/guide/guide.component';
-import { guideContext, welcomeHeader } from './mocks/data.ts';
+import { GuideComponent } from '../../../../src/shared/guide/guide.component';
+import { guideContext, welcomeHeader } from './mocks/data';
 
 describe('GuideComponent', () => {
   let mockArticleService = new MockService();
