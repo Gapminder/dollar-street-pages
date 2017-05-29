@@ -1,24 +1,24 @@
 'use strict';
 
 exports.config = {
-
   baseUrl: 'http://localhost:4200/dollar-street/',
 
   specs: [
     '../test-e2e/app/Tests/**/*.e2e.js'
   ],
-   exclude: ['../test-e2e/**/MatrixPageTestsForPerformance.e2e.js', '../test-e2e/app/CMS/**/*.e2e.js', '../test-e2e/**/BlogPageTests.e2e.js'],
+  exclude: ['../test-e2e/**/MatrixPageTestsForPerformance.e2e.js', '../test-e2e/app/CMS/**/*.e2e.js',
+    '../test-e2e/**/BlogPageTests.e2e.js','../test-e2e/**/ClickEachLink.e2e.js'],
 
   framework: 'jasmine',
 
-  allScriptsTimeout: 11000,
+  allScriptsTimeout: 1100000,
 
   jasmineNodeOpts: {
     showTiming: true,
     showColors: true,
     isVerbose: false,
     includeStackTrace: false,
-    defaultTimeoutInterval: 500000
+    defaultTimeoutInterval: 5000000
   },
   directConnect: true,
 
@@ -39,7 +39,7 @@ exports.config = {
 
   useAllAngular2AppRoots: true,
 
-onPrepare: function() {
-   browser.driver.manage().window().maximize();
+  onPrepare: function() {
+    browser.driver.manage().window().maximize();
   }
-  };
+};

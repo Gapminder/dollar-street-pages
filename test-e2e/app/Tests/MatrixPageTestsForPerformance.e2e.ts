@@ -1,7 +1,7 @@
 'use strict';
 
 import { AbstractPage } from '../Pages/AbstractPage';
-import { browser, protractor } from 'protractor';
+import { browser} from 'protractor';
 import { MatrixPage } from '../Pages/MatrixPage';
 
 describe('Matrix Page test', () => {
@@ -30,7 +30,7 @@ describe('Matrix BIS performance, center row', ()=> {
     browser.get('matrix?thing=Families&countries=World&regions=World&zoom=4&row=19&lowIncome=26&highIncome=15000&activeHouse=71');
     browser.wait(AbstractPage.getEC().not(AbstractPage.getEC().visibilityOf(AbstractPage.loader)), 80000);
   });
-  fit('Check img in BIS and another info in BIS', ()=> {
+  it('Check img in BIS and another info in BIS', ()=> {
     expect(MatrixPage.bigImageFromBigSection.isDisplayed()).toBeTruthy();
     expect(MatrixPage.familyLink.isDisplayed()).toBeTruthy();
   });
