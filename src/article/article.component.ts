@@ -30,6 +30,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public languageService: LanguageService;
   public element: HTMLElement;
+  public showTranslateMe: boolean;
 
   public constructor(activatedRoute: ActivatedRoute,
                      loaderService: LoaderService,
@@ -63,6 +64,11 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
         this.article = val.data;
         this.titleHeaderService.setTitle(this.article.thing);
+
+        if (!this.article.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
+          this.showTranslateMe = true;
+        }
+
         this.loaderService.setLoader(true);
       });
   }

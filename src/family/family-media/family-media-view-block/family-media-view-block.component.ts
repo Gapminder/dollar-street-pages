@@ -40,8 +40,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public thing: any = {};
-
   public languageService: LanguageService;
+  public showTranslateMe: boolean;
 
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
@@ -118,6 +118,10 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.thing = res.data.thing;
 
           this.truncCountryName(this.country);
+
+          if (this.article && !this.article.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
+            this.showTranslateMe = true;
+          }
 
           if (this.article && this.article.shortDescription.length) {
             this.article.description = this.getDescription(this.article.shortDescription);

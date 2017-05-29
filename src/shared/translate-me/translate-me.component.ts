@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { LanguageService, CountryDetectorService, BrowserDetectionService } from '../../common';
+import { LanguageService } from '../../common';
 
 @Component({
   selector: 'translate-me',
@@ -10,59 +10,27 @@ import { LanguageService, CountryDetectorService, BrowserDetectionService } from
 })
 export class TranslateMeComponent implements OnInit, OnDestroy {
   public url: string = 'https://crowdin.com/project/dollar-street/';
-  public mode: string;
   public languageService: LanguageService;
-  public countryDetectorService: CountryDetectorService;
-  public device: BrowserDetectionService;
 
-  public isDesktop: boolean;
-  public isMobile: boolean;
-  public isTablet: boolean;
-
-  public getCountryNameSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
 
-  public element: HTMLElement;
-  public countryName: string;
-  public translateMeContainer: HTMLElement;
   public infoText: string;
 
-  public constructor(elementRef: ElementRef,
-                     languageService: LanguageService,
-                     countryDetectorService: CountryDetectorService,
-                     browserDetectionService: BrowserDetectionService) {
+  public constructor(languageService: LanguageService) {
     this.languageService = languageService;
-    this.countryDetectorService = countryDetectorService;
-    this.device = browserDetectionService;
-
-    this.isDesktop = this.device.isDesktop();
-    this.isMobile = this.device.isMobile();
-    this.isTablet = this.device.isTablet();
-
-    this.element = elementRef.nativeElement as HTMLElement;
   }
 
   public ngOnInit(): void {
     this.url = this.url + this.languageService.currentLanguage;
 
-    this.translateMeContainer = this.element.querySelector('.translate-me-container') as HTMLElement;
-
-    this.getCountryNameSubscribe = this.countryDetectorService.getCountry().subscribe((res: any) => {
-      this.countryName = res.data.country;
-
-      this.getTranslationSubscribe = this.languageService.getTranslation(['NOT_TRANSLATED', 'MAKE_USEFUL']).subscribe((trans: any) => {
-        this.infoText = `${trans.NOT_TRANSLATED} ${this.languageService.languageName}. ${trans.MAKE_USEFUL} ${this.countryName}.`;
-      });
+    this.getTranslationSubscribe = this.languageService.getTranslation('HELP_TRANSLATE_TO').subscribe((trans: any) => {
+      this.infoText = `${trans} ${this.languageService.languageName}`;
     });
   }
 
   public ngOnDestroy(): void {
     if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
-    }
-
-    if (this.getCountryNameSubscribe) {
-      this.getCountryNameSubscribe.unsubscribe();
     }
   }
 }
