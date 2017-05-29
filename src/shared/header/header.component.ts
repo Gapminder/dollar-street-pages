@@ -1,8 +1,9 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, AfterViewInit, OnDestroy, ViewChild, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { LanguageService } from '../../common';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
@@ -11,7 +12,8 @@ import {
   Angulartics2GoogleAnalytics,
   StreetSettingsService,
   DrawDividersInterface,
-  BrowserDetectionService
+  BrowserDetectionService,
+  LanguageService
 } from '../../common';
 
 @Component({
@@ -49,6 +51,7 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   public streetData: DrawDividersInterface;
   public activeThing: any;
   public window: Window = window;
+  public zone: NgZone;
   public router: Router;
   public activatedRoute: ActivatedRoute;
   public matrixComponent: boolean;
@@ -60,18 +63,25 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public isTablet: boolean;
   public languageService: LanguageService;
   public getTranslationSubscribe: Subscription;
+  public resizeSubscribe: Subscription;
+  public orientationChange: Subscription;
+  public incomeContainer: HTMLElement;
 
   public constructor(router: Router,
                      math: MathService,
+                     zone: NgZone,
                      languageService: LanguageService,
                      activatedRoute: ActivatedRoute,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      element: ElementRef,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics
+                     ) {
     this.router = router;
+    this.zone = zone;
     this.activatedRoute = activatedRoute;
     this.math = math;
     this.device = browserDetectionService;
@@ -84,12 +94,16 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
   }
 
-  /* tslint:disable-next-line */
-  public ngAfterViewInit(): void {}
+  public ngAfterViewInit(): void {
+    this.incomeContainer = this.element.querySelector('.income-title-container') as HTMLElement;
+
+    this.calcIncomeSize();
+  }
 
   public ngOnInit(): void {
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
+    this.isTablet = this.device.isTablet();
 
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
@@ -101,11 +115,31 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
 
         this.streetData = res.data;
       });
+
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+         this.calcIncomeSize();
+        });
+      });
+
+    this.orientationChange = fromEvent(window, 'orientationchange')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.calcIncomeSize();
+        });
+      });
   }
 
   public ngOnDestroy(): void {
     if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
+    }
+
+    if (this.orientationChange) {
+      this.orientationChange.unsubscribe();
     }
   }
 
@@ -120,6 +154,35 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
 
       if (currentQuery.place === previousQuery.place) {
         return;
+      }
+    }
+  }
+
+  public calcIncomeSize(): void {
+    this.incomeContainer.classList.remove('short');
+    this.incomeContainer.classList.remove('long');
+
+    if (this.isMobile) {
+      if (this.window.innerWidth < 740) {
+        this.incomeContainer.classList.add('short');
+      } else {
+        this.incomeContainer.classList.add('long');
+      }
+    }
+
+    if (this.isTablet) {
+       if (this.window.innerWidth < 1040) {
+        this.incomeContainer.classList.add('short');
+      } else {
+        this.incomeContainer.classList.add('long');
+      }
+    }
+
+    if (this.isDesktop) {
+      if (this.window.innerWidth < 1240) {
+        this.incomeContainer.classList.add('short');
+      } else {
+        this.incomeContainer.classList.add('long');
       }
     }
   }

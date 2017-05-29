@@ -405,15 +405,15 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public interactiveIncomeText(): void {
-    let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
+    // let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
 
     setTimeout(() => {
-      incomeContainer.classList.remove('incomeby');
+      // incomeContainer.classList.remove('incomeby');
     }, 0);
 
     if (this.byIncomeText.length > 20 && this.window.innerWidth < 920) {
       setTimeout(() => {
-        incomeContainer.classList.add('incomeby');
+        // incomeContainer.classList.add('incomeby');
       },0);
     }
   }

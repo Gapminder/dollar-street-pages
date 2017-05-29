@@ -52,6 +52,7 @@ matrix-images {
 }
 
 .street-and-title-container {
+  width: 100%;
   height: 64px;
 }
 

@@ -406,14 +406,21 @@
   }
 }
 
+@media (max-width: 680px) {
+  .countries-filter-button {
+    max-width: 140px;
+  }
+}
+
 @media (max-width: 599px) {
   #countries-filter-mobile {
     width: 100%;
     margin: 6px 0;
   }
 
-   .countries-filter-button {
+  .countries-filter-button {
     min-width: 100%;
+    max-width: 100%;
   }
 
   .countries-filter-button span.arrow,
