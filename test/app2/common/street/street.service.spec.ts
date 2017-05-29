@@ -1,5 +1,5 @@
 import { it, describe, inject, beforeEachProviders, beforeEach } from '@angular/core/testing';
-import { StreetDrawService } from '../../../../app/common/street/street.service';
+import { StreetDrawService } from '../../../../src/shared/street/street.service';
 
 describe('StreetDrawService', () => {
   let streetDrawService:StreetDrawService;

@@ -1,4 +1,4 @@
-<div class="view-image-block-container zoom-{{privateZoom}}" *ngIf="showblock && isDesktop">
+<div #viewImageBlockContainer class="view-image-block-container zoom-{{privateZoom}}" *ngIf="showblock && isDesktop">
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
   <div class="view-image-block-content">
     <div class="view-image-container">
@@ -13,6 +13,7 @@
         <div class="home-description-container">
           <h3>
             <span *ngIf="familyData?.familyName">{{familyData?.familyName}}<span *ngIf="currentLanguage == 'en'"> {{ 'FAMILY' | translate }}</span>,</span>
+
             <span style="cursor:pointer"
                   [routerLink]="['/country', familyData?.country?._id]"
                   [queryParams]="{}"
@@ -117,7 +118,7 @@
   </div>
 </div>
 
-<div class="mobile-view-image-block-container zoom-{{privateZoom}}" *ngIf="showblock && !isDesktop">
+<div #mobileViewImageBlockContainer class="mobile-view-image-block-container zoom-{{privateZoom}}" *ngIf="showblock && !isDesktop">
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
 
   <div class="view-image-container">

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { find, difference } from 'lodash';
 import { GuideService } from './guide.service';
@@ -18,6 +18,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   public isShowBubble: boolean = false;
   public guideService: GuideService;
   public guideServiceSubscribe: Subscription;
+  public element: Element;
 
   public languageService: LanguageService;
 
@@ -26,10 +27,12 @@ export class GuideComponent implements OnInit, OnDestroy {
 
   public constructor(guideService: GuideService,
                      localStorageService: LocalStorageService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     element: ElementRef) {
     this.guideService = guideService;
     this.localStorageService = localStorageService;
     this.languageService = languageService;
+    this.element = element.nativeElement;
   }
 
   public ngOnInit(): void {

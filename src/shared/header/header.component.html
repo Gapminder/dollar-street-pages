@@ -3,7 +3,8 @@
     <a (click)="goToMatrixPage()"><img src="/assets/img/dollar-street.svg" alt=""/></a>
   </div>
 
-  <div class="filters-container"
+  <div #filtersContainer
+       class="filters-container"
        [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (mapComponent && isThingFilterReady)) ? 'visible' : 'hidden'}">
     <things-filter [url]="query"
                    (isFilterGotData)="isFilterGotData($event)"
@@ -19,7 +20,7 @@
                         (selectedFilter)="urlTransfer($event)">
       </countries-filter>
 
-      <span class="income-title-container">
+      <span #incomeTitleContainer class="income-title-container">
         <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
         <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
       </span>

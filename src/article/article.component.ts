@@ -68,8 +68,14 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.queryParamsSubscribe.unsubscribe();
-    this.articleServiceSubscribe.unsubscribe();
+    if (this.queryParamsSubscribe) {
+      this.queryParamsSubscribe.unsubscribe();
+    }
+
+    if (this.articleServiceSubscribe) {
+      this.articleServiceSubscribe.unsubscribe();
+    }
+
     this.loaderService.setLoader(false);
   }
 }

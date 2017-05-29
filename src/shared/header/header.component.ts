@@ -1,8 +1,10 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { LanguageService } from '../../common';
+import { ThingsFilterComponent } from '../things-filter/things-filter.component';
+import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 
 import {
   MathService,
@@ -20,6 +22,15 @@ import {
 
 export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   public element: HTMLElement;
+
+  @ViewChild(ThingsFilterComponent)
+  public thingsFilterComponent: ThingsFilterComponent;
+  @ViewChild(CountriesFilterComponent)
+  public countriesFilterComponent: CountriesFilterComponent;
+  @ViewChild('filtersContainer')
+  public filtersContainer: ElementRef;
+  @ViewChild('incomeTitleContainer')
+  public incomeTitleContainer: ElementRef;
 
   @Input()
   public query: string;
@@ -73,21 +84,8 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
     this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
   }
 
-  public ngAfterViewInit(): void {
-    this.getTranslationSubscribe = this.languageService.getTranslation('BY_INCOME').subscribe((incomeText: string) => {
-      let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
-
-      setTimeout(() => {
-        incomeContainer.classList.remove('incomeby');
-      }, 0);
-
-      if (incomeText.length > 20 && this.window.innerWidth < 920) {
-        setTimeout(() => {
-          incomeContainer.classList.add('incomeby');
-        },0);
-      }
-    });
-  }
+  /* tslint:disable-next-line */
+  public ngAfterViewInit(): void {}
 
   public ngOnInit(): void {
     this.isMobile = this.device.isMobile();
@@ -106,7 +104,9 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   }
 
   public ngOnDestroy(): void {
-    this.getTranslationSubscribe.unsubscribe();
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
   }
 
   public ngOnChanges(changes: any): void {

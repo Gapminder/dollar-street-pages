@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/debounceTime';
 import {
-  Component, OnInit, ElementRef, OnDestroy, NgZone, AfterViewChecked, ChangeDetectorRef
+  Component, OnInit, ElementRef, OnDestroy, NgZone, AfterViewChecked, ChangeDetectorRef, ViewChild
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
@@ -21,6 +21,8 @@ import {
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
+import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
+
 @Component({
   selector: 'matrix',
   templateUrl: './matrix.component.html',
@@ -28,6 +30,9 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 })
 
 export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild(MatrixImagesComponent)
+  public matrixImagesComponent: MatrixImagesComponent;
+
   public zoomPositionFixed: boolean;
   public isOpenIncomeFilter: boolean = false;
   public isMobile: boolean;
@@ -346,25 +351,27 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public ngAfterViewChecked(): void {
     this.zone.run(() => {
-      let footer = document.querySelector('.footer') as HTMLElement;
-      this.imgContent = this.element.querySelector('.image-content') as HTMLElement;
+      if (!this.matrixImagesComponent.imageContent) {
+        return;
+      }
+
+      this.imgContent = this.matrixImagesComponent.imageContent.nativeElement;
 
       if (!this.imgContent) {
         return;
       }
-
-      let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
 
       if (this.matrixImagesContainerHeight !== this.matrixImagesContainer.offsetHeight) {
         this.matrixImagesContainerHeight = this.matrixImagesContainer.offsetHeight;
         this.setZoomButtonPosition();
       }
 
-      if (
-        !this.element.querySelector('.image-content') || !imageClientRect.height ||
-        this.imageHeight === imageClientRect.height &&
-        this.guideHeight === this.guideContainer.offsetHeight) {
-        return;
+      let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
+
+      if (!imageClientRect.height ||
+          this.imageHeight === imageClientRect.height &&
+          this.guideHeight === this.guideContainer.offsetHeight) {
+          return;
       }
 
       this.imageHeight = imageClientRect.height;
@@ -372,6 +379,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       let imageMarginLeft: string = window.getComputedStyle(this.imgContent).getPropertyValue('margin-left');
       this.imageMargin = parseFloat(imageMarginLeft) * 2;
 
+      let footer = document.querySelector('.footer') as HTMLElement;
       this.footerHeight = footer.offsetHeight;
 
       setTimeout(() => {
@@ -380,7 +388,6 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       if (this.row === 1) {
         setTimeout(() => {
-
           this.getPaddings({});
           return;
         }, 0);
@@ -414,7 +421,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   /** each document usage breaks possible server side rendering */
   public stopScroll(): void {
     if (this.isMobile) {
-      let fixedStreet = this.element.querySelector('.street-container.fixed') as HTMLElement;
+      let fixedStreet: HTMLElement = this.streetContainer.classList.contains('fixed') ? this.streetContainer as HTMLElement : undefined;
 
       if (fixedStreet) {
         this.getVisibleRows(fixedStreet.offsetHeight);

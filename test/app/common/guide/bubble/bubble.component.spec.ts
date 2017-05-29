@@ -1,6 +1,6 @@
 import { it, describe, async, inject, beforeEach, addProviders, TestComponentBuilder } from '@angular/core/testing';
 import { MockCommonDependency } from '../../../../app/common-mocks/mocked.services';
-import { BubbleComponent } from '../../../../../app/common/guide/bubble/bubble.component';
+import { BubbleComponent } from '../../../../../src/shared/guide/bubble/bubble.component';
 
 describe('BubbleComponent', () => {
   let mockCommonDependency = new MockCommonDependency();

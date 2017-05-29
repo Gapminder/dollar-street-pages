@@ -31,6 +31,7 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   public hideDetailsTranslate: string;
 
   public getTranslationSubscribe: Subscription;
+  public photographerProfileServiceSubscribe: Subscription;
 
   public isShowInfo: boolean = false;
 
@@ -41,7 +42,6 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
 
   public math: MathService;
   public photographer: Photographer;
-  public photographerProfileServiceSubscribe: Subscription;
   public photographerProfileService: PhotographerProfileService;
   public languageService: LanguageService;
 

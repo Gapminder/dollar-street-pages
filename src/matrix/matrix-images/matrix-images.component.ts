@@ -1,12 +1,13 @@
 import 'rxjs/operator/debounceTime';
 
-import { Component, Input, EventEmitter, ElementRef, Output, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, Input, EventEmitter, ElementRef, Output, OnInit, OnDestroy, NgZone, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { LanguageService } from '../../common';
+import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
 
 import * as _ from 'lodash';
 
@@ -44,6 +45,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
   @Output('filter')
   public filter: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild(MatrixViewBlockComponent)
+  public matrixViewBlockComponent: MatrixViewBlockComponent;
+  @ViewChild('imagesContainer')
+  public imagesContainer: ElementRef;
+  @ViewChild('imageContent')
+  public imageContent: ElementRef;
 
   public languageService: LanguageService;
   public theWorldTranslate: string;
@@ -322,9 +330,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.familyData = JSON.parse(JSON.stringify(place));
 
     setTimeout(() => {
-      let viewBlockBox = this.element.querySelector('matrix-view-block') as HTMLElement;
-
-      this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+      this.viewBlockHeight = this.matrixViewBlockComponent ? this.matrixViewBlockComponent.element.offsetHeight : 0;
     }, 0);
 
     let row: number = Math.ceil((this.indexViewBoxHouse + 1) / this.zoom);
@@ -401,13 +407,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public getImageHeight(): void {
-    let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
+    let boxContainer: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
 
     if (!boxContainer) {
       return;
     }
 
-    let imgContent = this.element.querySelector('.image-content') as HTMLElement;
+    let imgContent: HTMLElement = this.imageContent.nativeElement as HTMLElement;
 
     let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
 
@@ -422,7 +428,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public getVisibleRows(): void {
-    let boxContainer = this.element.querySelector('.images-container') as HTMLElement;
+    let boxContainer: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
 
     if (!boxContainer) {
       return;
