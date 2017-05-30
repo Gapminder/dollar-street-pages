@@ -445,7 +445,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       if (countries.length > 2) {
         this.activeCountries = getTranslatedCountries.slice(0, this.sliceCount).join(', ') + ' (+' + (getTranslatedCountries.length - this.sliceCount) + ')';
       } else {
-        if (this.sliceCount === 1) {
+        if (this.sliceCount === 1 && countries.length > 1) {
           this.activeCountries = getTranslatedCountries.slice(0, this.sliceCount).join(', ') + ' (+' + (getTranslatedCountries.length - this.sliceCount) + ')';
         } else {
           this.activeCountries = getTranslatedCountries.join(' & ');

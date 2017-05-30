@@ -133,6 +133,13 @@
   .filters-container {
     width: calc(100% - 210px);
   }
+
+  .filters-container .some-filter-container > span,
+  .filters-container > span {
+    margin: 0 2px;
+    font-size: 24px;
+    vertical-align: sub;
+  }
 }
 
 @media (max-width: 599px) {
