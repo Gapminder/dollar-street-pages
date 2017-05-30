@@ -18,7 +18,7 @@ export class LanguageService {
   public location: Location;
   public window: Window = window;
   public currentLanguage: string;
-  public defaultLanguage: string;
+  public defaultLanguage: string = 'en';
   public languageName: string;
   public urlChangeService: UrlChangeService;
   public translate: TranslateService;
@@ -64,14 +64,14 @@ export class LanguageService {
       this.translationsLoadedSubscribe.unsubscribe();
     }
 
-    this.translate.setDefaultLang('en');
+    this.translate.setDefaultLang(this.defaultLanguage);
     this.defaultLanguage = this.translate.getDefaultLang();
 
     const urlLanguage: string = this.getLanguageFromUrl(this.urlChangeService.location.path());
     const storageLanguage: any = this.localStorageService.getItem('language');
     const browserLanguage: string = this.translate.getBrowserCultureLang();
 
-    this.currentLanguage = urlLanguage !== 'en' ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
+    this.currentLanguage = urlLanguage !== this.defaultLanguage ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
 
     this.updateLangInUrl();
 

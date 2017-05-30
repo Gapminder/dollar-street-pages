@@ -42,8 +42,8 @@
         </div>
       </div>
 
-      <div class="translate-me-container">
-        <translate-me *ngIf="!home?.translated"></translate-me>
+      <div *ngIf="showTranslateMe" class="translate-me-container">
+        <translate-me></translate-me>
       </div>
 
       <div class="show-info">

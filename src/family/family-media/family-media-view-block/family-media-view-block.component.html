@@ -46,10 +46,10 @@
           angularticsEvent="Article page">
           {{ 'READ_MORE' | translate }} >></a></p>
 
-        <translate-me *ngIf="article && !article?.translated"></translate-me>
+        <translate-me *ngIf="showTranslateMe"></translate-me>
 
         <div class="thing-button-container">
-          <p>{{ 'RELATED_SEARCHES' | translate }}</p>          
+          <p>{{ 'RELATED_SEARCHES' | translate }}</p>
 
           <a
             [routerLink]="['/matrix']"
@@ -148,7 +148,7 @@
         </div>
       </div>
 
-      <translate-me *ngIf="article && !article?.translated"></translate-me>
+      <translate-me *ngIf="showTranslateMe"></translate-me>
 
       <a class="link"
          [routerLink]="['/matrix']"

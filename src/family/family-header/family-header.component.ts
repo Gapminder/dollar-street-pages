@@ -52,7 +52,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public isTablet: boolean;
   public getTranslationSubscribe: Subscription;
   public languageService: LanguageService;
-  public currentLanguage: string;
+  public showTranslateMe: boolean;
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -68,8 +68,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.familyHeaderService = familyHeaderService;
     this.device = browserDetectionService;
     this.languageService = languageService;
-
-    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnInit(): void {
@@ -96,6 +94,10 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.home = res.data;
         this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
         this.mapData = this.home.country;
+
+        if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
+          this.showTranslateMe = true;
+        }
 
         this.truncCountryName(this.home.country);
       });

@@ -44,8 +44,8 @@
 
           <p *ngIf="familyData?.description">{{familyData.description}}</p>
 
-          <div class="translate-me-desktop">
-            <translate-me *ngIf="!familyData.translated"></translate-me>            
+          <div *ngIf="showTranslateMe" class="translate-me-desktop">
+            <translate-me></translate-me>
           </div>
 
           <a *ngIf="familyData.goToPlaceData"
@@ -172,7 +172,7 @@
       <p *ngIf="familyData?.familyData">
         {{familyData.familyData}}
       </p>
-      <div *ngIf="!familyData.translated" class="translate-me-mobile">
+      <div *ngIf="showTranslateMe" class="translate-me-mobile">
         <translate-me></translate-me>
       </div>
       <a *ngIf="familyData.goToPlaceData"

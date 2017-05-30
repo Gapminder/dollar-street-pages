@@ -54,6 +54,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public streetSettingsService: StreetSettingsService;
   public streetServiceSubscribe: Subscription;
   public languageService: LanguageService;
+  public showTranslateMe: boolean;
 
   @Input('positionInRow')
   public positionInRow: any;
@@ -150,6 +151,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.familyData = res.data;
+
+        if (!this.familyData.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
+          this.showTranslateMe = true;
+        }
 
         if (this.familyData && this.familyData.familyData && this.familyData.familyData.length) {
           this.familyData.description = this.getDescription(this.familyData.familyData);
