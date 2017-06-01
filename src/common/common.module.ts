@@ -14,6 +14,7 @@ import { SocialShareService } from './social/social-share.service';
 import { FontDetectorService } from './font/font-detector.service';
 import { GoogleAnalyticsService } from './analytics/google-analytics.service';
 import { CountryDetectorService } from './country-detector/country-detector.service';
+import { UtilsService } from './utils/utils.service';
 
 @NgModule({
   providers: [
@@ -30,7 +31,8 @@ import { CountryDetectorService } from './country-detector/country-detector.serv
     SocialShareService,
     FontDetectorService,
     GoogleAnalyticsService,
-    CountryDetectorService
+    CountryDetectorService,
+    UtilsService
   ]
 })
 export class CommonAppModule {

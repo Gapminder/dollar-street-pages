@@ -13,7 +13,8 @@ import { FamilyModule } from '../../family.module';
 import { UrlChangeService,
          LanguageService,
          BrowserDetectionService,
-         LoaderService
+         LoaderService,
+         UtilsService
        } from '../../../common';
 
 import { FamilyMediaComponent } from '../family-media.component';
@@ -65,6 +66,7 @@ describe('FamilyMediaComponent', () => {
                             BrowserDetectionService,
                             LoaderService,
                             SpyLocation,
+                            UtilsService,
                             { provide: FamilyMediaService, useClass: MockFamilyMediaService },
                             { provide: LanguageService, useClass: MockLanguageService },
                             { provide: Location, useClass: SpyLocation }

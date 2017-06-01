@@ -7,7 +7,6 @@ import { LocationStrategy } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
-import { Config, ImageResolutionInterface } from '../app.config';
 import { MatrixService } from './matrix.service';
 import {
   LoaderService,
@@ -17,10 +16,12 @@ import {
   StreetSettingsService,
   BrowserDetectionService,
   LanguageService,
-  ActiveThingService
+  ActiveThingService,
+  UtilsService
 } from '../common';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
+import { ImageResolutionInterface } from '../interfaces';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 
 @Component({
@@ -84,6 +85,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
   public router: Router;
   public matrixService: MatrixService;
   public loaderService: LoaderService;
+  public utilsService: UtilsService;
   public activatedRoute: ActivatedRoute;
   public urlChangeService: UrlChangeService;
   public countriesFilterService: CountriesFilterService;
@@ -123,7 +125,8 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      activeThingService: ActiveThingService,
-                     ref: ChangeDetectorRef) {
+                     ref: ChangeDetectorRef,
+                     utilsService: UtilsService) {
     this.ref = ref;
     this.zone = zone;
     this.router = router;
@@ -139,10 +142,12 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
     this.activeThingService = activeThingService;
+    this.utilsService = utilsService;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
-    this.imageResolution = Config.getImageResolution(this.isDesktop);
+
+    this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
   }
 
   public ngOnInit(): void {
@@ -629,7 +634,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
       queryParams.lang = this.languageService.currentLanguage;
     }
 
-    this.query = Config.objToQuery(queryParams);
+    this.query = this.utilsService.objToQuery(queryParams);
 
     this.urlChangeService.replaceState('/matrix', this.query, true);
   }
@@ -676,7 +681,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     e.preventDefault();
 
-    Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
+    this.utilsService.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   };
 
   public showMobileHeader(): void {

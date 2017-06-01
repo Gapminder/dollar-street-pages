@@ -22,6 +22,7 @@ import { SocialShareService } from '../social-share.service';
 import { LanguageService } from '../../language/language.service';
 import { UrlChangeService } from '../../url-change/url-change.service';
 import { LocalStorageService } from '../../guide/localstorage.service';
+import { UtilsService } from '../../utils/utils.service';
 
 /* tslint:disable */
 class CustomLoader implements TranslateLoader {
@@ -52,6 +53,7 @@ describe('SocialShareService Test', () => {
                 UrlChangeService,
                 MockBackend,
                 BaseRequestOptions,
+                UtilsService,
                 {
                     deps: [
                         MockBackend,

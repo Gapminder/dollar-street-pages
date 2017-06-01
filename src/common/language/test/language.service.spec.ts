@@ -25,6 +25,7 @@ import { TranslateModule, TranslateLoader, TranslateService } from 'ng2-translat
 import { LanguageService } from '../language.service';
 import { UrlChangeService } from '../../url-change/url-change.service';
 import { LocalStorageService } from '../../guide/localstorage.service';
+import { UtilsService } from '../../utils/utils.service';
 
 import { SpyLocation } from '@angular/common/testing';
 
@@ -66,6 +67,7 @@ describe('LanguageService', () => {
                 LocalStorageService,
                 MockBackend,
                 BaseRequestOptions,
+                UtilsService,
                 {
                     deps: [
                         MockBackend,

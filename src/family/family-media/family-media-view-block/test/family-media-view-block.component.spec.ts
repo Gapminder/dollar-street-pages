@@ -11,6 +11,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 
 import { TranslateMeComponent } from '../../../../shared';
+import { UtilsService } from '../../../../common';
 
 import { mockFamilyMediaText } from './mock.data';
 
@@ -69,6 +70,7 @@ describe('FamilyMediaViewBlockComponent', () => {
             providers: [
                             FamilyMediaViewBlockService,
                             BrowserDetectionService,
+                            UtilsService,
                             { provide: LanguageService, useClass: MockLanguageService },
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService }
                        ]

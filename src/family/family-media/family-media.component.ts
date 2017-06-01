@@ -14,11 +14,15 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { find, isEqual, slice, concat } from 'lodash';
-import { Config, ImageResolutionInterface } from '../../app.config';
-import { LoaderService, BrowserDetectionService, LanguageService } from '../../common';
+import { LoaderService,
+         BrowserDetectionService,
+         LanguageService,
+         UtilsService } from '../../common';
 import { FamilyMediaService } from './family-media.service';
 import { ViewChild } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
+
+import { ImageResolutionInterface } from '../../interfaces';
 
 @Component({
   selector: 'family-media',
@@ -57,6 +61,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public viewBlockHeight: number;
   public loaderService: LoaderService;
   public languageService: LanguageService;
+  public utilsService: UtilsService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
 
@@ -78,16 +83,19 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
                      loaderService: LoaderService,
                      familyMediaService: FamilyMediaService,
                      browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     utilsService: UtilsService) {
     this.familyMediaService = familyMediaService;
     this.zone = zone;
     this.loaderService = loaderService;
     this.element = element.nativeElement;
     this.device = browserDetectionService;
     this.languageService = languageService;
+    this.utilsService = utilsService;
 
     this.isDesktop = this.device.isDesktop();
-    this.imageResolution = Config.getImageResolution(this.isDesktop);
+
+    this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
   }
 
   public ngAfterViewInit(): void {

@@ -7,6 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 
+import { UtilsService } from '../../../common';
+
 import { FamilyHeaderComponent } from '../family-header.component';
 import { FamilyHeaderService } from '../family-header.service';
 
@@ -74,6 +76,7 @@ describe('FamilyHeaderComponent', () => {
                             MathService,
                             FamilyHeaderService,
                             BrowserDetectionService,
+                            UtilsService,
                             { provide: LanguageService, useClass: MockLanguageService },
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics }

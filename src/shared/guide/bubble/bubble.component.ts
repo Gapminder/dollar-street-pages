@@ -2,8 +2,10 @@ import { Component, Input, OnInit, OnDestroy, ElementRef, NgZone } from '@angula
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { find } from 'lodash';
-import { Config } from '../../../app.config';
-import { LocalStorageService, BrowserDetectionService } from '../../../common';
+
+import { LocalStorageService,
+         BrowserDetectionService,
+         UtilsService } from '../../../common';
 
 @Component({
   selector: 'bubble',
@@ -12,32 +14,34 @@ import { LocalStorageService, BrowserDetectionService } from '../../../common';
 })
 
 export class BubbleComponent implements OnInit, OnDestroy {
+  @Input('bubbles')
+  public bubbles: any[];
+
   public step: number = 1;
   public bubble: any = {};
   public windowInnerWidth: number = window.innerWidth;
   public position: any = {left: this.windowInnerWidth / 2 - 228, top: -1000};
   public isCloseBubble: boolean = false;
-
-  @Input('bubbles')
-  public bubbles: any[];
   public keyUpSubscribe: Subscription;
   public element: HTMLElement;
   public zone: NgZone;
   public resizeSubscribe: Subscription;
-  public getCoordinates: Function = Config.getCoordinates;
   public localStorageService: LocalStorageService;
   public device: BrowserDetectionService;
+  public utilsService: UtilsService;
   public isTablet: boolean;
   public isMobile: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
                      browserDetectionService: BrowserDetectionService,
-                     localStorageService: LocalStorageService) {
+                     localStorageService: LocalStorageService,
+                     utilsService: UtilsService) {
     this.zone = zone;
     this.element = element.nativeElement;
     this.device = browserDetectionService;
     this.localStorageService = localStorageService;
+    this.utilsService = utilsService;
   }
 
   public ngOnInit(): void {
@@ -133,7 +137,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
 
     setTimeout(() => {
-      this.getCoordinates(baloonDirector, (data: any) => {
+      this.utilsService.getCoordinates(baloonDirector, (data: any) => {
         let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
 
         let baloonWidth: number = baloonElement.width;

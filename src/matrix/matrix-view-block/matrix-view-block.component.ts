@@ -16,8 +16,15 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
-import { Config, ImageResolutionInterface } from '../../app.config';
-import { MathService, StreetSettingsService, DrawDividersInterface, BrowserDetectionService, LanguageService } from '../../common';
+import { ImageResolutionInterface } from '../../interfaces';
+
+import { MathService,
+         StreetSettingsService,
+         DrawDividersInterface,
+         BrowserDetectionService,
+         LanguageService,
+         UtilsService } from '../../common';
+
 import { FamilyInfoService } from './matrix-view-block.service';
 
 @Component({
@@ -27,7 +34,23 @@ import { FamilyInfoService } from './matrix-view-block.service';
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  public api: string = Config.api;
+  @Input('positionInRow')
+  public positionInRow: any;
+  @Input('query')
+  public query: any;
+  @Input('place')
+  public place: any;
+  @Input('thing')
+  public thing: string;
+  @Output('closeBigImageBlock')
+  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
+  @Output('goToMatrixWithCountry')
+  public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('viewImageBlockContainer')
+  public viewImageBlockContainer: ElementRef;
+  @ViewChild('mobileViewImageBlockContainer')
+  public mobileViewImageBlockContainer: ElementRef;
 
   public familyInfoServiceSubscribe: Subscription;
   public fancyBoxImage: any;
@@ -52,28 +75,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public countryName: string;
   public streetData: DrawDividersInterface;
   public streetSettingsService: StreetSettingsService;
+  public utilsServece: UtilsService;
   public streetServiceSubscribe: Subscription;
   public languageService: LanguageService;
   public showTranslateMe: boolean;
-
-  @Input('positionInRow')
-  public positionInRow: any;
-  @Input('query')
-  public query: any;
-  @Input('place')
-  public place: any;
-  @Input('thing')
-  public thing: string;
-  @Output('closeBigImageBlock')
-  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
-  @Output('goToMatrixWithCountry')
-  public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
-
-  @ViewChild('viewImageBlockContainer')
-  public viewImageBlockContainer: ElementRef;
-  @ViewChild('mobileViewImageBlockContainer')
-  public mobileViewImageBlockContainer: ElementRef;
-
   public imageResolution: ImageResolutionInterface;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
@@ -86,7 +91,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      familyInfoService: FamilyInfoService,
                      browserDetectionService: BrowserDetectionService,
                      streetSettingsService: StreetSettingsService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     utilsService: UtilsService) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -95,10 +101,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.device = browserDetectionService;
     this.familyInfoService = familyInfoService;
     this.languageService = languageService;
+    this.utilsServece = utilsService;
+
     this.isDesktop = this.device.isDesktop();
-    this.imageResolution = Config.getImageResolution(this.isDesktop);
 
     this.currentLanguage = this.languageService.currentLanguage;
+
+    this.imageResolution = this.utilsServece.getImageResolution(this.isDesktop);
   }
 
   public ngOnInit(): void {

@@ -2,9 +2,11 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } fr
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Config } from '../app.config';
-
-import { LoaderService, TitleHeaderService, LanguageService, BrowserDetectionService } from '../common';
+import { LoaderService,
+         TitleHeaderService,
+         LanguageService,
+         BrowserDetectionService,
+         UtilsService } from '../common';
 
 import { DonateService } from './donate.service';
 
@@ -23,6 +25,7 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public device: BrowserDetectionService;
     public loaderService: LoaderService;
     public donateService: DonateService;
+    public utilsService: UtilsService;
     public titleHeaderService: TitleHeaderService;
     public languageService: LanguageService;
     public sanitizer: DomSanitizer;
@@ -43,6 +46,7 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
                        donateService: DonateService,
                        titleHeaderService: TitleHeaderService,
                        languageService: LanguageService,
+                       utilsService: UtilsService,
                        browserDetectionService: BrowserDetectionService,
                        sanitizer: DomSanitizer) {
         this.loaderService = loaderService;
@@ -50,6 +54,7 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
         this.titleHeaderService = titleHeaderService;
         this.languageService = languageService;
         this.device = browserDetectionService;
+        this.utilsService = utilsService;
         this.sanitizer = sanitizer;
     }
 
@@ -76,7 +81,7 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
         let aboutDataContainer = this.aboutDialog.nativeElement as HTMLElement;
         let targetElement = document.querySelector('.container') as HTMLElement;
 
-        Config.getCoordinates(`.${targetElement.className}`, (data: any) => {
+        this.utilsService.getCoordinates(`.${targetElement.className}`, (data: any) => {
             this.aboutDataPosition.left = data.left - aboutDataContainer.clientWidth + 28;
             this.aboutDataPosition.top = data.top + 28;
 
