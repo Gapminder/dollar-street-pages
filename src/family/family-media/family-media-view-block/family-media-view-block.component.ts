@@ -4,9 +4,13 @@ import { Component, Input, Output, OnChanges, OnDestroy, NgZone, EventEmitter, O
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
-import { Config, ImageResolutionInterface } from '../../../app.config';
+import { ImageResolutionInterface } from '../../../interfaces';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
-import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService, LanguageService } from '../../../common';
+import { StreetSettingsService,
+         DrawDividersInterface,
+         BrowserDetectionService,
+         LanguageService,
+         UtilsService } from '../../../common';
 
 @Component({
   selector: 'family-media-view-block',
@@ -15,19 +19,18 @@ import { StreetSettingsService, DrawDividersInterface, BrowserDetectionService, 
 })
 
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  public api: string = Config.api;
-  public loader: boolean = false;
-  public popIsOpen: boolean = false;
-  public fancyBoxImage: string;
-  public country: any;
-  public countryName: string;
-  public article: any;
   @Input('imageData')
   public imageData: any;
 
   @Output('closeBigImageBlock')
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
+  public loader: boolean = false;
+  public popIsOpen: boolean = false;
+  public fancyBoxImage: string;
+  public country: any;
+  public countryName: string;
+  public article: any;
   public streetData: DrawDividersInterface;
   public zone: NgZone;
   public viewBlockService: FamilyMediaViewBlockService;
@@ -38,6 +41,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public streetServiceSubscribe: Subscription;
   public streetSettingsService: StreetSettingsService;
   public device: BrowserDetectionService;
+  public utilsService: UtilsService;
   public isDesktop: boolean;
   public thing: any = {};
   public languageService: LanguageService;
@@ -47,14 +51,18 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      viewBlockService: FamilyMediaViewBlockService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     utilsService: UtilsService) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.languageService = languageService;
+    this.utilsService = utilsService;
+
     this.isDesktop = this.device.isDesktop();
-    this.imageResolution = Config.getImageResolution(this.isDesktop);
+
+    this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
   }
 
   public ngOnInit(): void {

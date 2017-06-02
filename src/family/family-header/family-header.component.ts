@@ -2,8 +2,12 @@ import 'rxjs/operator/debounceTime';
 import { Component, OnInit, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Config } from '../../app.config';
-import { BrowserDetectionService, StreetSettingsService, DrawDividersInterface, MathService, LanguageService } from '../../common';
+import { BrowserDetectionService,
+         StreetSettingsService,
+         DrawDividersInterface,
+         MathService,
+         LanguageService,
+         UtilsService } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
 
 @Component({
@@ -52,6 +56,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public isTablet: boolean;
   public getTranslationSubscribe: Subscription;
   public languageService: LanguageService;
+  public utilsService: UtilsService;
   public currentLanguage: string;
   public showTranslateMe: boolean;
 
@@ -61,7 +66,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      streetSettingsService: StreetSettingsService,
                      familyHeaderService: FamilyHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     utilsService: UtilsService) {
     this.zone = zone;
     this.math = math;
     this.streetSettingsService = streetSettingsService;
@@ -69,6 +75,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.familyHeaderService = familyHeaderService;
     this.device = browserDetectionService;
     this.languageService = languageService;
+    this.utilsService = utilsService;
   }
 
   public ngOnInit(): void {
@@ -210,7 +217,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     let aboutDataContainer = this.element.querySelector('.about-data-container') as HTMLElement;
     let targetElement = event.target as HTMLElement;
 
-    Config.getCoordinates(`.${targetElement.className}`, (data: any) => {
+    this.utilsService.getCoordinates(`.${targetElement.className}`, (data: any) => {
       this.aboutDataPosition.left = data.left - aboutDataContainer.clientWidth + 28;
       this.aboutDataPosition.top = data.top + 28;
 
@@ -228,7 +235,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
     event.preventDefault();
 
-    Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
+    this.utilsService.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   }
 
   public truncCountryName(countryData: any): any {

@@ -15,9 +15,11 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Angulartics2GoogleAnalytics, BrowserDetectionService, ActiveThingService } from '../../common';
+import { Angulartics2GoogleAnalytics,
+         BrowserDetectionService,
+         ActiveThingService,
+         UtilsService } from '../../common';
 import { ThingsFilterService } from './things-filter.service';
-import { Config } from '../../app.config';
 
 @Component({
   selector: 'things-filter',
@@ -41,6 +43,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public zone: NgZone;
   public resizeSubscribe: Subscription;
+  public utilsService: UtilsService;
   public openMobileFilterView: boolean = false;
   @Output('isFilterGotData')
   public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
@@ -62,7 +65,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
                      thingsFilterService: ThingsFilterService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     activeThingService: ActiveThingService) {
+                     activeThingService: ActiveThingService,
+                     utilsService: UtilsService) {
     this.thingsFilterService = thingsFilterService;
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
@@ -70,6 +74,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.device = browserDetectionService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.activeThingService = activeThingService;
+    this.utilsService = utilsService;
   }
 
   @HostListener('document:click', ['$event'])
@@ -113,7 +118,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     if (this.isOpenThingsFilter) {
-      Config.getCoordinates('things-filter', (data: any) => {
+      this.utilsService.getCoordinates('things-filter', (data: any) => {
         this.filterTopDistance = data.top;
 
         setTimeout(() => {

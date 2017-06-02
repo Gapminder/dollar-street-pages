@@ -2,14 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { compact } from 'lodash';
-import { Config } from '../../app.config';
 import { FooterService } from './footer.service';
 import {
   StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService,
   Angulartics2GoogleAnalytics,
-  LanguageService
+  LanguageService,
+  UtilsService
 } from '../../common';
 
 @Component({
@@ -27,6 +27,7 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   public router: Router;
   public footerService: FooterService;
+  public utilsService: UtilsService;
   public footerServiceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
   public streetServiceSubscribe: Subscription;
@@ -42,9 +43,11 @@ export class FooterComponent implements OnInit, OnDestroy {
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     utilsService: UtilsService) {
     this.router = router;
     this.footerService = footerService;
+    this.utilsService = utilsService;
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
@@ -130,7 +133,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public scrollTop(e: MouseEvent): void {
     e.preventDefault();
 
-    Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
+    this.utilsService.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   };
 
   public objToQuery(data: any): string {

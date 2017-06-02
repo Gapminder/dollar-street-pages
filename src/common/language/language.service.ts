@@ -12,6 +12,8 @@ import * as _ from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
 
+import { UtilsService } from '../utils/utils.service';
+
 @Injectable()
 export class LanguageService {
   public http: Http;
@@ -22,6 +24,7 @@ export class LanguageService {
   public languageName: string;
   public urlChangeService: UrlChangeService;
   public translate: TranslateService;
+  public utilsService: UtilsService;
   public translateSubscribe: Subscription;
   public translations: any;
   public onLangChangeSubscribe: Subscription;
@@ -37,12 +40,14 @@ export class LanguageService {
                      @Inject(UrlChangeService) urlChangeService: UrlChangeService,
                      @Inject(TranslateService) translate: TranslateService,
                      @Inject(LocalStorageService) localStorageService: LocalStorageService,
-                     @Inject(DomSanitizer) sanitizer: DomSanitizer) {
+                     @Inject(DomSanitizer) sanitizer: DomSanitizer,
+                     @Inject(UtilsService) utilsService: UtilsService) {
     this.http = http;
     this.location = location;
     this.urlChangeService = urlChangeService;
     this.translate = translate;
     this.localStorageService = localStorageService;
+    this.utilsService = utilsService;
     this.sanitizer = sanitizer;
 
     if (this.documentLoadedSubscription) {
@@ -178,11 +183,11 @@ export class LanguageService {
     const queryParamsString: string = pathAndQueryParams[1];
 
     const path: string = pathAndQueryParams[0];
-    const queryParams: any = queryParamsString ? Config.parseUrl(queryParamsString) : {};
+    const queryParams: any = queryParamsString ? this.utilsService.parseUrl(queryParamsString) : {};
 
     queryParams.lang = this.currentLanguage;
 
-    this.urlChangeService.replaceState(path, Config.objToQuery(queryParams), true);
+    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams), true);
   }
 
   private processTranslation(observer: Observer<any>, translations: any, key: string | string[]): void {

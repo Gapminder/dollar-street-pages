@@ -13,8 +13,10 @@ import {
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
-import { Config } from '../../app.config';
-import { BrowserDetectionService, CountriesFilterService, LanguageService } from '../../common';
+import { BrowserDetectionService,
+         CountriesFilterService,
+         LanguageService,
+         UtilsService } from '../../common';
 
 @Component({
   selector: 'countries-filter',
@@ -33,6 +35,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public theWorldTranslate: string;
   public translateGetTheWorldSubscribe: Subscription;
   public languageService: LanguageService;
+  public utilsService: UtilsService;
   public window: Window = window;
   public sliceCount: number;
   public activeCountries: string;
@@ -66,10 +69,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
                      element: ElementRef,
                      countriesFilterService: CountriesFilterService,
                      browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     utilsService: UtilsService) {
     this.languageService = languageService;
     this.device = browserDetectionService;
     this.countriesFilterService = countriesFilterService;
+    this.utilsService = utilsService;
+
     this.element = element.nativeElement;
     this.zone = zone;
   }
@@ -552,7 +558,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public setPosition(): void {
-    Config.getCoordinates('countries-filter', (data: any) => {
+    this.utilsService.getCoordinates('countries-filter', (data: any) => {
       this.filterTopDistance = data.top;
 
       if (data.left + 787 + 10 > window.innerWidth) {

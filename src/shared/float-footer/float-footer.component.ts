@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Config } from '../../app.config';
-import { BrowserDetectionService } from '../../common';
+import { BrowserDetectionService,
+         UtilsService } from '../../common';
 
 @Component({
   selector: 'float-footer',
@@ -15,14 +15,17 @@ export class FloatFooterComponent implements OnInit, OnDestroy {
   public element: HTMLElement;
   public scrollSubscribe: Subscription;
   public device: BrowserDetectionService;
+  public utilsService: UtilsService;
   public isDesktop: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     utilsService: UtilsService) {
     this.zone = zone;
     this.element = element.nativeElement;
     this.device = browserDetectionService;
+    this.utilsService = utilsService;
   }
 
   public ngOnInit(): any {
@@ -52,6 +55,6 @@ export class FloatFooterComponent implements OnInit, OnDestroy {
   public scrollTop(e: MouseEvent): void {
     e.preventDefault();
 
-    Config.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
+    this.utilsService.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   };
 }
