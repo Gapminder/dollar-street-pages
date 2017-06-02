@@ -22,10 +22,19 @@ import { BrowserDetectionService, CountriesFilterService, LanguageService } from
   styleUrls: ['./countries-filter-mobile/countries-filter-mobile.component.css', './countries-filter.component.css']
 })
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
+  @Input()
+  public url: string;
+
+  @Output()
+  public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+
   public theWorldTranslate: string;
   public translateGetTheWorldSubscribe: Subscription;
   public languageService: LanguageService;
-
+  public window: Window = window;
+  public sliceCount: number;
   public activeCountries: string;
   public showSelected: boolean;
   public locations: any[];
@@ -37,28 +46,21 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public selectedCountries: string[] = [];
   public positionLeft: number = 0;
   public filterTopDistance: number = 0;
-  @Input()
-  public url: string;
-
-  @Output('isFilterGotData')
-  public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
-
   public countriesFilterService: CountriesFilterService;
   public countriesFilterServiceSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
-
   public cloneSelectedRegions: string[] = ['World'];
   public cloneSelectedCountries: string[] = ['World'];
-
   public element: HTMLElement;
   public zone: NgZone;
   public resizeSubscribe: Subscription;
   public keyUpSubscribe: Subscription;
+  public orientationChange: Subscription;
   public openMobileFilterView: boolean = false;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public isTablet: boolean;
+  public isMobile: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -82,7 +84,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.isDesktop = this.device.isDesktop();
+    this.isMobile = this.device.isMobile();
+    this.isTablet = this.device.isTablet();
+
     this.isOpenMobileFilterView();
+
+    this.calcSliceCount();
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -90,8 +97,42 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         this.zone.run(() => {
           this.setPosition();
           this.isOpenMobileFilterView();
+
+          this.calcSliceCount();
+          this.setTitle(this.url);
         });
       });
+
+    this.orientationChange = fromEvent(window, 'orientationchange')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.calcSliceCount();
+          this.setTitle(this.url);
+        });
+      });
+  }
+
+  public calcSliceCount(): void {
+    if (this.isMobile) {
+      this.sliceCount = 1;
+    }
+
+    if (this.isTablet) {
+      if (this.window.innerWidth < 610) {
+        this.sliceCount = 1;
+      } else {
+        this.sliceCount = 1;
+      }
+    }
+
+    if (this.isDesktop) {
+      if (this.window.innerWidth < 920) {
+        this.sliceCount = 1;
+      } else {
+        this.sliceCount = 2;
+      }
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -293,6 +334,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.resizeSubscribe.unsubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
+
+    if (this.orientationChange) {
+      this.orientationChange.unsubscribe();
+    }
   }
 
   public ngOnChanges(changes: any): void {
@@ -397,9 +442,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
       if (countries.length > 2) {
-        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+        this.activeCountries = `${getTranslatedCountries.slice(0, this.sliceCount).join(', ')} (+${getTranslatedCountries.length - this.sliceCount})`;
       } else {
-        this.activeCountries = getTranslatedCountries.join(' & ');
+        if (this.sliceCount === 1 && countries.length > 1) {
+          this.activeCountries = `${getTranslatedCountries.slice(0, this.sliceCount).join(', ')} (+${getTranslatedCountries.length - this.sliceCount})`;
+        } else {
+          this.activeCountries = getTranslatedCountries.join(' & ');
+        }
       }
 
       this.selectedRegions.length = 0;
@@ -412,7 +461,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (regions[0] !== 'World') {
       if (regions.length > 2) {
-        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+        this.activeCountries = `${getTranslatedCountries.slice(0, this.sliceCount).join(', ')} (+${getTranslatedCountries.length - this.sliceCount})`;
       } else {
         let difference: string[] = [];
         let regionCountries: string[] = [];
@@ -443,7 +492,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
           this.activeCountries = difference.length === 1 && regions.length === 1 ?
                                 getTranslatedRegions[0] + ' & ' + difference[0] :
-                                getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (activeCountriesNum) + ')';
+                                `${getTranslatedCountries.slice(0, this.sliceCount).join(', ')} (+${activeCountriesNum - this.sliceCount})`;
         } else {
           if (regions.length > 2) {
             let activeCountriesNum: number = 0;
@@ -452,7 +501,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
               activeCountriesNum += resultRegionsCountries[currentRegion].length;
             });
 
-            this.activeCountries = resultRegionsCountries[getTranslatedRegions[0]].slice(0, 2).join(' & ') + ' (+' + (activeCountriesNum - 2) + ')';
+            this.activeCountries = `${resultRegionsCountries[getTranslatedRegions[0]].slice(0, 2).join(' & ')} (+${activeCountriesNum - 2})`;
           } else {
             this.activeCountries = getTranslatedRegions.join(' & ');
           }
@@ -470,7 +519,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let concatLocations: string[] = regions.concat(getTranslatedCountries);
 
     if (concatLocations.length > 2) {
-      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
+      this.activeCountries = `${concatLocations.slice(0, this.sliceCount).join(', ')} (+${concatLocations.length - this.sliceCount})`;
     } else {
       this.activeCountries = concatLocations.join(' & ');
     }
@@ -524,7 +573,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       let cancelButton = this.element.querySelector('.cancel') as HTMLElement;
       let okayButton = this.element.querySelector('.okay') as HTMLElement;
 
-      if (pointerContainer) {
+      if (okayButton && cancelButton && pointerContainer && shortenWidth) {
         let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + pointerContainer.offsetWidth;
         if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
           shortenWidth.classList.add('decreaseFontSize');

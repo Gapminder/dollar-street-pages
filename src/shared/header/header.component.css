@@ -72,13 +72,15 @@
   margin: 7px 0 0;
 }
 
-.filters-container .income-title-container.incomeby .income-title + .income-title,
-.filters-container .income-title {
+.filters-container .income-title-container .income-title {
   display: none;
 }
 
-.filters-container .income-title-container.incomeby .income-title,
-.filters-container .income-title + .income-title {
+.filters-container .income-title-container.short .income-title:nth-child(1) {
+  display: inline-block
+}
+
+.filters-container .income-title-container.long .income-title:nth-child(2) {
   display: inline-block
 }
 
@@ -96,7 +98,7 @@
   }
 
   .filters-container {
-    width: calc(100% - 272px);
+    width: calc(100% - 250px);
   }
 
   .header-content .icon-container img {
@@ -112,6 +114,19 @@
   .filters-container .some-filter-container > span,
   .filters-container > span {
     margin: 0 11px;
+    font-size: 24px;
+    vertical-align: sub;
+  }
+}
+
+@media (max-width: 920px) {
+  .filters-container {
+    width: calc(100% - 210px);
+  }
+
+  .filters-container .some-filter-container > span,
+  .filters-container > span {
+    margin: 0 2px;
     font-size: 24px;
     vertical-align: sub;
   }
@@ -160,8 +175,6 @@
   }
 
   .filters-container .some-filter-container .mobile-ver,
-  .filters-container .income-title-container.incomeby .income-title,
-  .filters-container .income-title + .income-title,
   .header-content .icon-container {
     display: none;
   }
@@ -172,7 +185,6 @@
     float: right;
   }
 
-  .filters-container .income-title-container.incomeby .income-title,
   .filters-container .income-title {
     width: 100%;
     display: block;
