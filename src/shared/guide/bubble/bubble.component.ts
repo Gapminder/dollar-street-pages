@@ -14,7 +14,7 @@ import { LocalStorageService,
 })
 
 export class BubbleComponent implements OnInit, OnDestroy {
-  @Input('bubbles')
+  @Input()
   public bubbles: any[];
 
   public step: number = 1;
