@@ -30,6 +30,8 @@ before_script:
 # start file server in background
 - npm run start &
 - sleep 3
+# run unit tests
+- npm run test
 # up browserstack tunnel
 - npm run e2e:bstack:tunnel &
 
