@@ -9,7 +9,8 @@ import { LanguageService } from '../../common';
   styleUrls: ['./translate-me.component.css']
 })
 export class TranslateMeComponent implements OnInit, OnDestroy {
-  public url: string = 'https://crowdin.com/project/dollar-street/';
+  public url: string = 'https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform';
+
   public languageService: LanguageService;
 
   public getTranslationSubscribe: Subscription;
@@ -21,8 +22,6 @@ export class TranslateMeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.url = this.url + this.languageService.currentLanguage;
-
     this.getTranslationSubscribe = this.languageService.getTranslation('HELP_TRANSLATE_TO').subscribe((trans: any) => {
       this.infoText = `${trans} ${this.languageService.languageName}`;
     });
