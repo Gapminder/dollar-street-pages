@@ -91,6 +91,10 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   }
 
   public ngAfterViewInit(): void {
+    if (!this.incomeTitleContainer) {
+      return;
+    }
+
     this.incomeContainer = this.incomeTitleContainer.nativeElement;
 
     this.calcIncomeSize();
