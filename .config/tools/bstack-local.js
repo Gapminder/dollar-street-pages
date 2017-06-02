@@ -8,14 +8,11 @@ const fs = require('fs');
 const BrowserStackTunnel = require('browserstacktunnel-wrapper');
 const cwd = path.dirname(require.main.filename);
 
-const confDir = path.dirname(cwd);
-const bsConfig = require(path.dirname(confDir)+'/bs-config.json');
-
 const TUNNEL_IDENTIFIER = process.env.TRAVIS_BUILD_NUMBER;
 const READY_FILE = path.join(' ', 'tmp', 'bstack-' + TUNNEL_IDENTIFIER + '.ready').trim();
 const ACCESS_KEY = process.env.BROWSER_STACK_ACCESS_KEY;
 const HOST = 'localhost';
-const PORT = process.env.PORT || bsConfig.port;
+const PORT = process.env.PORT || 4200;
 
 console.log('Starting tunnel on port', PORT);
 

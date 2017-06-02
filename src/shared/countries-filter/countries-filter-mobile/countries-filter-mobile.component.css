@@ -9,7 +9,6 @@
   background-color: white;
   border: 1px solid #e4e6e7;
   border-radius: 6px;
-  min-width: 125px;
   padding: 7px 30px 6px 11px;
   position: relative;
   cursor: pointer;
@@ -403,6 +402,12 @@
     padding: 9px 35px 10px 14px;
     font-size: 28px;
     line-height: 20px;
+  }
+}
+
+@media (max-width: 680px) {
+  .countries-filter-button {
+    max-width: 140px;
   }
 }
 

@@ -28,7 +28,8 @@ before_script:
 # build client project
 - npm run build
 # start file server in background
-- npm run start
+- npm run start &
+- sleep 3
 # up browserstack tunnel
 - npm run e2e:bstack:tunnel &
 
