@@ -6,12 +6,16 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { LanguageService } from '../../common';
-import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
 
 import * as _ from 'lodash';
 
-import { MathService, LoaderService, CountriesFilterService, BrowserDetectionService } from '../../common';
+import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
+
+import { MathService,
+         LoaderService,
+         CountriesFilterService,
+         LanguageService,
+         BrowserDetectionService } from '../../common';
 
 @Component({
   selector: 'matrix-images',

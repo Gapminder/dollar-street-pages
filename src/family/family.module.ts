@@ -5,17 +5,21 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../shared';
 
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+
+import { FamilyRouting } from './family.routing';
 
 import { FamilyComponent }  from './family.component';
 import { FamilyService }  from './family.service';
-import { FamilyHeaderComponent } from './family-header/family-header.component';
-import { FamilyHeaderService } from './family-header/family-header.service';
-import { FamilyMediaComponent } from './family-media/family-media.component';
-import { FamilyMediaService } from './family-media/family-media.service';
-import { FamilyMediaViewBlockComponent } from './family-media/family-media-view-block/family-media-view-block.component';
-import { FamilyMediaViewBlockService } from './family-media/family-media-view-block/family-media-view-block.service';
+
+import { FamilyHeaderComponent,
+         FamilyHeaderService } from './family-header';
+
+import { FamilyMediaComponent,
+         FamilyMediaService } from './family-media';
+
+import { FamilyMediaViewBlockComponent,
+         FamilyMediaViewBlockService } from './family-media/family-media-view-block';
 
 @NgModule({
   declarations: [
@@ -25,18 +29,18 @@ import { FamilyMediaViewBlockService } from './family-media/family-media-view-bl
     FamilyMediaViewBlockComponent
   ],
   imports: [
+    FamilyRouting,
     HttpModule,
     RouterModule,
     CommonModule,
-    SharedModule,
     InfiniteScrollModule,
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
+    SharedModule
   ],
   providers: [
+    FamilyService,
     FamilyHeaderService,
     FamilyMediaService,
-    FamilyMediaViewBlockService,
-    FamilyService
+    FamilyMediaViewBlockService
   ],
   exports: []
 })

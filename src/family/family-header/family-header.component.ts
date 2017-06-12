@@ -8,6 +8,7 @@ import { BrowserDetectionService,
          MathService,
          LanguageService,
          UtilsService } from '../../common';
+
 import { FamilyHeaderService } from './family-header.service';
 
 @Component({

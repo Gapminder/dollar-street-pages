@@ -21,7 +21,7 @@ import { BrowserDetectionService,
 @Component({
   selector: 'countries-filter',
   templateUrl: './countries-filter.component.html',
-  styleUrls: ['./countries-filter-mobile/countries-filter-mobile.component.css', './countries-filter.component.css']
+  styleUrls: ['./countries-filter.component.mobile.css', './countries-filter.component.css']
 })
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input()

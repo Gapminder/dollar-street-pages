@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Config } from '../../app.config';
 
 @Injectable()
-export class FamilyInfoService {
+export class MatrixViewBlockService {
   public http: Http;
 
   public constructor(@Inject(Http) http: Http) {

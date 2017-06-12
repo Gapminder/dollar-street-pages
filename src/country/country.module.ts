@@ -3,12 +3,17 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { SharedModule } from '../shared';
+
+import { CountryRouting } from './country.routing';
 
 import { CountryComponent } from './country.component';
-import { CountryInfoComponent, CountryInfoService } from './country-info';
-import { CountryPlacesComponent, CountryPlacesService } from './country-places';
-import { SharedModule } from '../shared';
+
+import { CountryInfoComponent,
+         CountryInfoService } from './country-info';
+
+import { CountryPlacesComponent,
+         CountryPlacesService } from './country-places';
 
 @NgModule({
   declarations: [
@@ -17,11 +22,11 @@ import { SharedModule } from '../shared';
     CountryPlacesComponent
   ],
   imports: [
+    CountryRouting,
     HttpModule,
     RouterModule,
     CommonModule,
-    SharedModule,
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
+    SharedModule
   ],
   providers: [
     CountryInfoService,
@@ -30,6 +35,4 @@ import { SharedModule } from '../shared';
   exports: []
 })
 
-export class CountryModule {
-
-}
+export class CountryModule {}

@@ -3,14 +3,17 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from '../shared';
-
 import { ArticleComponent } from './article.component';
 import { ArticleService } from './article.service';
+
+import { ArticleRouting } from './article.routing';
+
+import { SharedModule } from '../shared';
 
 @NgModule({
   declarations: [ArticleComponent],
   imports: [
+    ArticleRouting,
     HttpModule,
     RouterModule,
     CommonModule,
@@ -20,6 +23,4 @@ import { ArticleService } from './article.service';
   exports: []
 })
 
-export class ArticleModule {
-
-}
+export class ArticleModule {}

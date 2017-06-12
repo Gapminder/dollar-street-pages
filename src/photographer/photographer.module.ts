@@ -2,13 +2,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
+
 import { SharedModule } from '../shared';
 
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { PhotographerRouting } from './photographer.routing';
 
 import { PhotographerComponent } from './photographer.component';
-import { PhotographerPlacesComponent, PhotographerPlacesService } from './photographer-places';
-import { PhotographerProfileComponent, PhotographerProfileService } from './photographer-profile';
+
+import { PhotographerPlacesComponent,
+         PhotographerPlacesService } from './photographer-places';
+
+import { PhotographerProfileComponent,
+         PhotographerProfileService } from './photographer-profile';
 
 @NgModule({
   declarations: [
@@ -17,11 +22,11 @@ import { PhotographerProfileComponent, PhotographerProfileService } from './phot
     PhotographerProfileComponent
   ],
   imports: [
+    PhotographerRouting,
     HttpModule,
     RouterModule,
     CommonModule,
-    SharedModule,
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
+    SharedModule
   ],
   providers: [
     PhotographerPlacesService,
@@ -30,6 +35,4 @@ import { PhotographerProfileComponent, PhotographerProfileService } from './phot
   exports: []
 })
 
-export class PhotographerModule {
-
-}
+export class PhotographerModule {}
