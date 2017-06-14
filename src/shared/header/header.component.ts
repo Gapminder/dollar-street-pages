@@ -45,6 +45,7 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   public isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
 
   public header: any = {};
+  public location: Location = window.location;
   public isCountryFilterReady: boolean = false;
   public isThingFilterReady: boolean = false;
   public element: HTMLElement;
@@ -85,9 +86,6 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
     this.element = element.nativeElement;
-
-    this.matrixComponent = this.activatedRoute.snapshot.url[0].path === 'matrix';
-    this.mapComponent = this.activatedRoute.snapshot.url[0].path === 'map';
   }
 
   public ngAfterViewInit(): void {
@@ -101,6 +99,9 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   }
 
   public ngOnInit(): void {
+    this.matrixComponent = this.location.href.indexOf('matrix') !== -1;
+    this.mapComponent = this.location.href.indexOf('map') !== -1;
+
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
     this.isTablet = this.device.isTablet();

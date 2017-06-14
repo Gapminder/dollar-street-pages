@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 
 import { SharedModule } from '../shared';
@@ -11,10 +9,10 @@ import { SharedModule } from '../shared';
 import { MatrixComponent } from './matrix.component';
 import { MatrixService } from './matrix.service';
 
-import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
+import { MatrixImagesComponent } from './matrix-images';
 
-import { MatrixViewBlockComponent } from './matrix-view-block/matrix-view-block.component';
-import { FamilyInfoService } from './matrix-view-block/matrix-view-block.service';
+import { MatrixViewBlockComponent,
+         MatrixViewBlockService } from './matrix-view-block';
 
 @NgModule({
   declarations: [
@@ -24,19 +22,15 @@ import { FamilyInfoService } from './matrix-view-block/matrix-view-block.service
   ],
   imports: [
     HttpModule,
-    RouterModule,
     CommonModule,
     SharedModule,
-    InfiniteScrollModule,
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
+    InfiniteScrollModule
   ],
   providers: [
     MatrixService,
-    FamilyInfoService
+    MatrixViewBlockService
   ],
   exports: []
 })
 
-export class MatrixModule {
-
-}
+export class MatrixModule {}

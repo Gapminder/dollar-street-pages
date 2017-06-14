@@ -13,8 +13,8 @@ import {
 
 @Component({
   selector: 'main-menu',
-  templateUrl: './menu.template.html',
-  styleUrls: ['./menu.component.css', './menu.component.mobile.css']
+  templateUrl: './main-menu.template.html',
+  styleUrls: ['./main-menu.component.css', './main-menu.component.mobile.css']
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {

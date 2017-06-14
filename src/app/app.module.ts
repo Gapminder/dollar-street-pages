@@ -2,48 +2,46 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { routing } from '../routes';
 
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
+
+import { AppRoutingModule } from './app.routing';
+
+import { MatrixModule } from '../matrix/matrix.module';
 
 import { SharedModule } from '../shared';
+
 import { CommonAppModule } from '../common';
 
-import { TeamModule } from '../team';
-import { PhotographersModule } from '../photographers';
-import { PhotographerModule } from '../photographer';
-import { CountryModule } from '../country';
-import { MapModule } from '../map';
-import { ArticleModule } from '../article';
-import { MatrixModule } from '../matrix';
-import { FamilyModule } from '../family';
-import { AboutModule } from '../about';
-import { DonateModule } from '../donate';
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Observable } from 'rxjs';
+
+import { TranslateModule, TranslateLoader } from 'ng2-translate';
+
+/* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
+export class CustomLoader implements TranslateLoader {
+  public getTranslation(lang: string): Observable<any> {
+    return Observable.of({KEY: 'value'});
+  }
+}
+/* tslint:enable:no-unused-variable */
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpModule,
-    SharedModule,
-    CommonAppModule,
-    RouterModule,
-    TeamModule,
-    PhotographersModule,
-    PhotographerModule,
-    CountryModule,
-    MapModule,
-    ArticleModule,
-    MatrixModule,
-    FamilyModule,
     FormsModule,
-    AboutModule,
-    DonateModule,
-    routing
+    CommonAppModule,
+    AppRoutingModule,
+    SharedModule,
+    MatrixModule,
+    TranslateModule.forRoot({
+      provide: TranslateLoader,
+      useClass: CustomLoader
+    }),
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

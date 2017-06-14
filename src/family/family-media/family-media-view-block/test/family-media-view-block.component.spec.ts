@@ -10,7 +10,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 
-import { TranslateMeComponent } from '../../../../shared';
+import { Angulartics2Module, Angulartics2GoogleAnalytics, Angulartics2 } from 'angulartics2';
+
+import { SharedModule } from '../../../../shared';
+
 import { UtilsService } from '../../../../common';
 
 import { mockFamilyMediaText } from './mock.data';
@@ -60,16 +63,20 @@ describe('FamilyMediaViewBlockComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
+                        SharedModule,
+                        Angulartics2Module,
                         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
                         TranslateModule.forRoot({
                             provide: TranslateLoader,
                             useClass: CustomLoader
                         })
                      ],
-            declarations: [ FamilyMediaViewBlockComponent, BlankComponent, TranslateMeComponent ],
+            declarations: [ FamilyMediaViewBlockComponent, BlankComponent ],
             providers: [
                             FamilyMediaViewBlockService,
                             BrowserDetectionService,
+                            Angulartics2GoogleAnalytics,
+                            Angulartics2,
                             UtilsService,
                             { provide: LanguageService, useClass: MockLanguageService },
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService }

@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-
-import { HeaderWithoutFiltersComponent } from './header-without-filters/header.component';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
@@ -8,16 +6,17 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { HeaderService } from './header/header.service';
 
-import { MainMenuComponent } from './menu/menu.component';
+import { HeaderWithoutFiltersComponent } from './header-without-filters/header-without-filters.component';
+
+import { MainMenuComponent } from './main-menu/main-menu.component';
 
 import { SocialShareButtonsService } from './social-share-buttons/social-share-buttons.service';
 import { SocialShareButtonsComponent } from './social-share-buttons/social-share-buttons.component';
 
 import { FooterComponent } from './footer/footer.component';
 import { FooterService } from './footer/footer.service';
-import { FooterSpaceDirective } from './footer-space/footer-space.directive';
 
-import { RegionMapComponent } from './region-map/region-map.component';
+import { FooterSpaceDirective } from './footer-space/footer-space.directive';
 
 import { FloatFooterComponent } from './float-footer/float-footer.component';
 
@@ -50,26 +49,20 @@ import { StreetFamilyComponent } from './street-family/street-family.component';
 import { StreetFamilyDrawService } from './street-family/street-family.service';
 
 import { IncomeFilterComponent } from './income-filter/income-filter.component';
+
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
 
 import { LanguageSelectorComponent } from './language-selector/language-selector.component';
 
 import { TranslateMeComponent } from './translate-me/translate-me.component';
 
-import { TranslateModule, TranslateLoader } from 'ng2-translate';
-import { Observable } from 'rxjs';
+import { RegionMapComponent } from './region-map/region-map.component';
 
 import { DropdownModule } from 'ng2-bootstrap/components/dropdown';
 
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { TranslateModule } from 'ng2-translate';
 
-/* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
-export class CustomLoader implements TranslateLoader {
-  public getTranslation(lang: string): Observable<any> {
-    return Observable.of({KEY: 'value'});
-  }
-}
-/* tslint:enable:no-unused-variable */
+import { Angulartics2Module } from 'angulartics2';
 
 @NgModule({
   declarations: [
@@ -103,11 +96,8 @@ export class CustomLoader implements TranslateLoader {
     RouterModule,
     CommonModule,
     DropdownModule,
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
-    TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useClass: CustomLoader
-    })
+    Angulartics2Module,
+    TranslateModule
   ],
   providers: [
     HeaderService,
@@ -121,6 +111,8 @@ export class CustomLoader implements TranslateLoader {
     StreetFamilyDrawService
   ],
   exports: [
+    RouterModule,
+    Angulartics2Module,
     TranslateModule,
     LanguageSelectorComponent,
     HeaderWithoutFiltersComponent,
@@ -131,6 +123,8 @@ export class CustomLoader implements TranslateLoader {
     FooterSpaceDirective,
     HeaderComponent,
     GuideComponent,
+    SocialFollowButtonsComponent,
+    SocialShareButtonsComponent,
     StreetComponent,
     StreetMobileComponent,
     StreetFilterComponent,
@@ -142,5 +136,4 @@ export class CustomLoader implements TranslateLoader {
   ]
 })
 
-export class SharedModule {
-}
+export class SharedModule {}

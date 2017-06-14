@@ -25,12 +25,12 @@ import { MathService,
          LanguageService,
          UtilsService } from '../../common';
 
-import { FamilyInfoService } from './matrix-view-block.service';
+import { MatrixViewBlockService } from './matrix-view-block.service';
 
 @Component({
   selector: 'matrix-view-block',
   templateUrl: './matrix-view-block.component.html',
-  styleUrls: ['./matrix-view-block.component.css', './mobile/matrix-view-block-mobile.component.css']
+  styleUrls: ['./matrix-view-block.component.css', './matrix-view-block.component.mobile.css']
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
@@ -63,7 +63,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public resizeSubscribe: Subscription;
   public popIsOpen: boolean;
   public mapData: any;
-  public familyInfoService: FamilyInfoService;
+  public familyInfoService: MatrixViewBlockService;
   public zone: NgZone;
   public router: Router;
   public boxContainerPadding: number;
@@ -88,7 +88,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      router: Router,
                      math: MathService,
                      element: ElementRef,
-                     familyInfoService: FamilyInfoService,
+                     familyInfoService: MatrixViewBlockService,
                      browserDetectionService: BrowserDetectionService,
                      streetSettingsService: StreetSettingsService,
                      languageService: LanguageService,

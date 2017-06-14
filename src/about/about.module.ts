@@ -6,17 +6,21 @@ import { CommonModule } from '@angular/common';
 import { AboutComponent } from './about.component';
 import { AboutService } from './about.service';
 
+import { SharedModule } from '../shared';
+
+import { AboutRouting } from './about.routing';
+
 @NgModule({
   declarations: [AboutComponent],
   imports: [
+    AboutRouting,
     HttpModule,
     RouterModule,
-    CommonModule
+    CommonModule,
+    SharedModule
   ],
   providers: [AboutService],
   exports: [AboutComponent]
 })
 
-export class AboutModule {
-
-}
+export class AboutModule {}
