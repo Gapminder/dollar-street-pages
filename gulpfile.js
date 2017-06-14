@@ -1,6 +1,7 @@
 'use strict';
 
 const gulp = require('gulp');
+const fs = require('fs');
 
 gulp.paths = {
   tssrc: [
@@ -33,6 +34,31 @@ gulp.task('tslint', () =>
       reportLimit: 0
     }))
 );
+
+gulp.task('env', () => {
+  const prodEnvFile = './src/environments/environment.prod.ts';
+  const envInputKey = 'CONSUMER_URL';
+
+  fs.readFile(prodEnvFile, 'utf8', function (err, data) {
+    if (err) {
+      return console.log(err);
+    }
+
+    let textByLine = data.split("\n");
+
+    textByLine.forEach((line, index) => {
+      if(line.match(/consumerApi:/g)) {
+        textByLine[index] = `  consumerApi: \'${process.env[envInputKey]}\',`;
+      }
+    });
+
+    fs.writeFile(prodEnvFile, textByLine.join('\n'), 'utf8', function (err) {
+      if (err) {
+        return console.log(err);
+      }
+    });
+  });
+});
 
 gulp.task('default', () => {
   gulp.start('tslint');

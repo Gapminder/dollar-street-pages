@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Config } from '../app.config';
+
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class MapService {
@@ -12,7 +13,7 @@ export class MapService {
   }
 
   public getMainPlaces(query: any): Observable<any> {
-    return this.http.get(`${Config.api}/v1/map?${query}`).map((res: any) => {
+    return this.http.get(`${environment.consumerApi}/v1/map?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });

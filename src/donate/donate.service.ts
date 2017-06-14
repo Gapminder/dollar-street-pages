@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { Config } from '../app.config';
+import { environment } from '../environments/environment';
 
 import 'rxjs/add/operator/map';
 
@@ -17,7 +17,7 @@ export class DonateService {
 
   public showStripeDialog(config: any, cb: Function): void {
     let stripeHandler = (this.window as any).StripeCheckout.configure({
-      key: Config.stripPublicKey,
+      key: environment.stripPublicKey,
       image: '/assets/img/dollar-street.svg',
       locale: 'auto',
       // tslint:disable-next-line
@@ -40,7 +40,7 @@ export class DonateService {
   }
 
   public makeDonate(query: any): Observable<any> {
-    return this.http.post(`${Config.api}/v1/donate`, query).map((res: any) => {
+    return this.http.post(`${environment.consumerApi}/v1/donate`, query).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
       return parseRes;
