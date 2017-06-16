@@ -8,15 +8,18 @@ import {
   HostListener,
   ElementRef,
   OnInit,
-  NgZone
+  NgZone,
+  ViewChild
 } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
-import { BrowserDetectionService,
-         CountriesFilterService,
-         LanguageService,
-         UtilsService } from '../../common';
+import {
+  BrowserDetectionService,
+  CountriesFilterService,
+  LanguageService,
+  UtilsService
+} from '../../common';
 
 @Component({
   selector: 'countries-filter',
@@ -24,6 +27,15 @@ import { BrowserDetectionService,
   styleUrls: ['./countries-filter.component.mobile.css', './countries-filter.component.css']
 })
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
+  @ViewChild('underlineK')
+  public underlineK: ElementRef;
+  @ViewChild('countriesSearch')
+  public countriesSearch: ElementRef;
+  @ViewChild('countriesMobileSearch')
+  public countriesMobileSearch: ElementRef;
+  @ViewChild('countriesMobileContainer')
+  public countriesMobileContainer: ElementRef;
+
   @Input()
   public url: string;
 
@@ -144,7 +156,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   @HostListener('document:click', ['$event'])
   public isOutsideThingsFilterClick(event: any): void {
     if (!this.element.contains(event.target) && this.isOpenCountriesFilter) {
-
       this.openCloseCountriesFilter(true);
     }
   }
@@ -154,7 +165,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public hideRegions(isShown: boolean): void {
-    let tabContent = this.element.querySelector('.underline-k') as HTMLElement;
+    let tabContent: HTMLElement = this.underlineK.nativeElement;
 
     if (isShown && tabContent) {
       this.regionsVisibility = false;
@@ -163,7 +174,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.keyUpSubscribe.unsubscribe();
         }
 
-        let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+        let inputElement: HTMLInputElement = this.countriesMobileSearch.nativeElement;
+
         this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
           .subscribe((e: KeyboardEvent) => {
             if (e.keyCode === 13) {
@@ -184,8 +196,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.isOpenCountriesFilter && !this.isDesktop) {
       setTimeout(() => {
-        let tabContent = this.element.querySelector('.countries-container') as HTMLElement;
-        let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+        let tabContent: HTMLElement = this.countriesMobileContainer.nativeElement;
+        let inputElement: HTMLElement = this.countriesMobileSearch.nativeElement;
 
         this.keyUpSubscribe = fromEvent(inputElement, 'keyup').subscribe((e: KeyboardEvent) => {
           if (e.keyCode === 13) {
@@ -206,7 +218,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
       setTimeout(() => {
         if (this.isDesktop && !this.openMobileFilterView) {
-          (this.element.querySelector('.autofocus') as HTMLInputElement).focus();
+          this.countriesSearch.nativeElement.focus();
         }
 
         this.isOpenMobileFilterView();
@@ -588,6 +600,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
       this.openMobileFilterView = true;
+
       return;
     }
 

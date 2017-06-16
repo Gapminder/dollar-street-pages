@@ -1,14 +1,31 @@
 import 'rxjs/operator/debounceTime';
-
-import { Component, OnInit, Input, Output, ElementRef, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+
+import {
+  Component,
+  Input,
+  Output,
+  ElementRef,
+  OnDestroy,
+  OnChanges,
+  EventEmitter,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
+
+import { ActivatedRoute } from '@angular/router';
+
 import { sortBy, chain, differenceBy } from 'lodash';
 
-import { MathService, StreetSettingsService, LanguageService } from '../../common';
+import {
+  MathService,
+  StreetSettingsService,
+  LanguageService
+} from '../../common';
+
 import { StreetDrawService } from './street.service';
 
 @Component({
@@ -17,8 +34,12 @@ import { StreetDrawService } from './street.service';
   styleUrls: ['./street.component.css']
 })
 
-export class StreetComponent implements OnInit, OnDestroy, OnChanges {
-  public data: any;
+export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
+  @ViewChild('streetBox')
+  public streetBox: ElementRef;
+  @ViewChild('svg')
+  public svg: ElementRef;
+
   @Input('thing')
   public thing: string;
   @Input('query')
@@ -31,6 +52,9 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
   public hoverPlace: Subject<any>;
   @Output('filterStreet')
   public filterStreet: EventEmitter<any> = new EventEmitter<any>();
+
+  public data: any;
+  public window: Window = window;
   public languageService: LanguageService;
   public getTranslationSubscribe: Subscription;
   public street: any;
@@ -69,12 +93,15 @@ export class StreetComponent implements OnInit, OnDestroy, OnChanges {
     this.languageService = languageService;
   }
 
-  public ngOnInit(): any {
-    this.street.setSvg = this.element.querySelector('.street-box svg') as SVGElement;
-    this.streetBoxContainer = this.element.querySelector('.street-box') as HTMLElement;
-    let streetBoxContainerMarginLeft: string = window.getComputedStyle(this.streetBoxContainer)
+  public ngAfterViewInit(): any {
+    this.street.setSvg = this.svg.nativeElement;
+    this.streetBoxContainer = this.streetBox.nativeElement;
+
+    let streetBoxContainerMarginLeft: string = this.window.getComputedStyle(this.streetBoxContainer)
       .getPropertyValue('margin-left');
+
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
+
     this.street.set('isInit', true);
     this.street.set('chosenPlaces', []);
 

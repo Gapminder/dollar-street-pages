@@ -19,10 +19,10 @@
 
     <div class="pointer-search-container">
       <div class="countries-search">
-        <input class="form-control autofocus"
+        <input #countriesSearch
+               class="form-control autofocus"
                type="search"
                placeholder="{{ 'SEARCH_COUNTRY' | translate }}"
-               #countriesSearch
                [value]="search"
                (input)="search = countriesSearch.value">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
@@ -39,9 +39,7 @@
         <span class="selected">
             <img src="/assets/img/check-icon.svg" alt="">
         </span>
-        <span class="regions-names">
-            {{location.region}}
-        </span>
+        <span class="regions-names">{{location.region}}</span>
       </h3>
 
       <div class="countries-container">
@@ -55,9 +53,7 @@
           <span class="selected">
             <img src="/assets/img/check-icon.svg" alt="">
           </span>
-          <span class="name">
-            {{country.country}}
-          </span>
+          <span class="name">{{country.country}}</span>
         </div>
       </div>
     </div>
@@ -99,12 +95,12 @@
 
     <div class="pointer-search-container">
       <div class="countries-search">
-        <input class="form-control"
+        <input #countriesMobileSearch
+               class="form-control"
                type="search"
                placeholder="{{ 'SEARCH_COUNTRY' | translate }}"
                (focus)="hideRegionsIfInFocus(regionsVisibility)"
                (focusout)="hideRegionsIfInFocus()"
-               #countriesMobileSearch
                [value]="search"
                (input)="search = countriesMobileSearch.value"
                (click)="hideRegions(true)">
@@ -112,8 +108,11 @@
       </div>
     </div>
 
-    <div class="underline-k" [ngStyle]="{display: regionsVisibility ? 'inline-block' : 'none'}">
-      <div class="regions-container" *ngFor="let location of locations">
+    <div #underlineK
+         class="underline-k"
+         [ngStyle]="{display: regionsVisibility ? 'inline-block' : 'none'}">
+      <div class="regions-container"
+           *ngFor="let location of locations">
         <h3 class="title"
             (click)="selectRegions(location)"
             [ngClass]="{empty: location.empty,
@@ -121,31 +120,28 @@
         <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
         </span>
-          <span class="selected">
+        <span class="selected">
             <img src="/assets/img/check-icon.svg" alt="">
         </span>
-          <span class="regions-names">
-            {{location.region}}
-        </span>
+        <span class="regions-names">{{location.region}}</span>
         </h3>
       </div>
     </div>
 
-    <div class="countries-container" [class.close-regions-section]="!regionsVisibility">
+    <div #countriesMobileContainer
+         class="countries-container"
+         [class.close-regions-section]="!regionsVisibility">
       <div class="country-content"
-        *ngFor="let country of countries | CountriesFilterPipe:search"
-        [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.originName) !== -1}"
-        (click)="selectCountries(country, country.originRegionName, country.region)">
-
-          <span class="not-selected">
+           *ngFor="let country of countries | CountriesFilterPipe:search"
+           [ngClass]="{empty: country.empty, active: selectedCountries.indexOf(country.originName) !== -1}"
+           (click)="selectCountries(country, country.originRegionName, country.region)">
+        <span class="not-selected">
             <img src="/assets/img/empty-check.png" alt="">
-          </span>
+        </span>
         <span class="selected">
             <img src="/assets/img/check-icon.svg" alt="">
-          </span>
-        <span class="name">
-            {{country.country}}
-          </span>
+        </span>
+        <span class="name">{{country.country}}</span>
       </div>
     </div>
 
@@ -165,7 +161,6 @@
 
       <button class="cancel" type="button" (click)="cancelCountriesFilter()">{{ 'CANCEL' | translate }}</button>
       <button class="okay" type="button" (click)="goToLocation()"><img class="ok-img" src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
-
     </div>
   </div>
 </div>

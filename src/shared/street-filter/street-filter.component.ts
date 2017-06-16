@@ -1,10 +1,25 @@
-import { Component, OnInit, Input, ElementRef, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ElementRef,
+  OnDestroy,
+  Output,
+  EventEmitter,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
+
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
 import { sortBy, chain } from 'lodash';
 
-import { MathService, StreetSettingsService } from '../../common';
+import {
+  MathService,
+  StreetSettingsService
+} from '../../common';
+
 import { StreetFilterDrawService } from './street-filter.service';
 
 @Component({
@@ -13,8 +28,10 @@ import { StreetFilterDrawService } from './street-filter.service';
   styleUrls: ['./street-filter.component.css']
 })
 
-export class StreetFilterComponent implements OnInit, OnDestroy {
-  public math: MathService;
+export class StreetFilterComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('svg')
+  public svg: ElementRef;
+
   @Input('places')
   public places: any[];
   @Input('lowIncome')
@@ -23,6 +40,8 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
   public highIncome: number;
   @Output('filterStreet')
   public filterStreet: EventEmitter<any> = new EventEmitter<any>();
+
+  public math: MathService;
   public street: any;
   public streetSettingsService: StreetSettingsService;
   public streetData: any;
@@ -41,10 +60,17 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
     this.streetSettingsService = streetSettingsService;
   }
 
-  public ngOnInit(): any {
-    this.street.setSvg = this.element.querySelector('.street-box svg') as SVGElement;
+  public ngAfterViewInit(): void {
+    this.street.setSvg = this.svg.nativeElement;
+
     this.street.set('isInit', true);
 
+    this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
+      this.filterStreet.emit(filter);
+    });
+  }
+
+  public ngOnInit(): void {
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
       .subscribe((res: any) => {
@@ -57,10 +83,6 @@ export class StreetFilterComponent implements OnInit, OnDestroy {
 
         this.setDividers(this.places, this.streetData);
       });
-
-    this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
-      this.filterStreet.emit(filter);
-    });
 
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)

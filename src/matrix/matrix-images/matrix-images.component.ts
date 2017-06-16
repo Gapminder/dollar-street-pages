@@ -24,6 +24,13 @@ import { MathService,
 })
 
 export class MatrixImagesComponent implements OnInit, OnDestroy {
+  @ViewChild(MatrixViewBlockComponent)
+  public matrixViewBlockComponent: MatrixViewBlockComponent;
+  @ViewChild('imagesContainer')
+  public imagesContainer: ElementRef;
+  @ViewChild('imageContent')
+  public imageContent: ElementRef;
+
   @Input('query')
   public query: string;
   @Input('thing')
@@ -49,13 +56,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
   @Output('filter')
   public filter: EventEmitter<any> = new EventEmitter<any>();
-
-  @ViewChild(MatrixViewBlockComponent)
-  public matrixViewBlockComponent: MatrixViewBlockComponent;
-  @ViewChild('imagesContainer')
-  public imagesContainer: ElementRef;
-  @ViewChild('imageContent')
-  public imageContent: ElementRef;
 
   public languageService: LanguageService;
   public theWorldTranslate: string;

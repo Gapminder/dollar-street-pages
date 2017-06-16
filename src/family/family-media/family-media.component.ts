@@ -1,4 +1,8 @@
 import 'rxjs/operator/debounceTime';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import {
   Component,
   OnInit,
@@ -8,19 +12,26 @@ import {
   EventEmitter,
   NgZone,
   AfterViewChecked,
-  ElementRef
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  forwardRef,
+  Inject
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import { find, isEqual, slice, concat } from 'lodash';
-import { LoaderService,
-         BrowserDetectionService,
-         LanguageService,
-         UtilsService } from '../../common';
+
+import {
+  LoaderService,
+  BrowserDetectionService,
+  LanguageService,
+  UtilsService
+} from '../../common';
+
 import { FamilyMediaService } from './family-media.service';
-import { ViewChild } from '@angular/core';
-import { AfterViewInit } from '@angular/core';
+
+import { FamilyComponent } from '../family.component';
+import { FamilyMediaViewBlockComponent } from './family-media-view-block';
 
 import { ImageResolutionInterface } from '../../interfaces';
 
@@ -31,8 +42,26 @@ import { ImageResolutionInterface } from '../../interfaces';
 })
 
 export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
+  @ViewChild(FamilyMediaViewBlockComponent)
+  public familyMediaViewBlock: FamilyMediaViewBlockComponent;
+  @ViewChild('familyImageContainer')
+  public familyImageContainer: ElementRef;
+  @ViewChild('familyImagesContainer')
+  public familyImagesContainer: ElementRef;
+  @ViewChild('familyThingsContainer')
+  public familyThingsContainer: ElementRef;
+
+  @Input('placeId')
+  public placeId: string;
+  @Input('activeImageIndex')
+  public activeImageIndex: number;
+  @Input('openFamilyExpandBlock')
+  public openFamilyExpandBlock: Observable<any>;
   @Input('zoom')
   public zoom: number;
+
+  @Output('activeImageOptions')
+  public activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
   public windowInnerWidth: number = window.innerWidth;
   public itemSize: number;
@@ -64,19 +93,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public utilsService: UtilsService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-
-  @ViewChild('familyImagesContainer')
-  public familyImagesContainer: any;
-
-  @Input('placeId')
-  public placeId: string;
-  @Input('activeImageIndex')
-  public activeImageIndex: number;
-  @Input('openFamilyExpandBlock')
-  public openFamilyExpandBlock: Observable<any>;
-
-  @Output('activeImageOptions')
-  public activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
+  public familyComponent: FamilyComponent;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -84,7 +101,9 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
                      familyMediaService: FamilyMediaService,
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     /*tslint:disable-next-line*/
+                     @Inject(forwardRef(() => FamilyComponent)) familyComponent: FamilyComponent) {
     this.familyMediaService = familyMediaService;
     this.zone = zone;
     this.loaderService = loaderService;
@@ -92,6 +111,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.device = browserDetectionService;
     this.languageService = languageService;
     this.utilsService = utilsService;
+    this.familyComponent = familyComponent;
 
     this.isDesktop = this.device.isDesktop();
 
@@ -194,13 +214,14 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   public ngAfterViewChecked(): void {
-    let footer = document.querySelector('.footer') as HTMLElement;
-    let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
-    let headerContainer = document.querySelector('.header-container') as HTMLElement;
-
-    if (!imgContent) {
+    if (!this.familyImageContainer) {
       return;
     }
+
+    let headerContainer: HTMLElement = document.querySelector('.header-container') as HTMLElement;
+    let footer: HTMLElement = document.querySelector('.footer') as HTMLElement;
+
+    let imgContent: HTMLElement = this.familyImageContainer.nativeElement;
 
     if (this.headerHeight === headerContainer.offsetHeight && this.footerHeight === footer.offsetHeight &&
       this.imageOffsetHeight === imgContent.offsetHeight || !imgContent) {
@@ -279,9 +300,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.imageData = Object.assign({}, this.imageData);
 
     setTimeout(() => {
-      let viewBlockBox = this.element.querySelector('family-media-view-block') as HTMLElement;
+      if (this.familyMediaViewBlock) {
+        let viewBlockBox: HTMLElement = this.familyMediaViewBlock.element;
 
-      this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+        this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+      }
     }, 0);
 
     if (!this.prevImage) {
@@ -333,9 +356,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   public goToRow(row: number): void {
-    let header = document.querySelector('.header-container') as HTMLElement;
-    let homeDescription = document.querySelector('.home-description-container') as HTMLElement;
-    let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
+    let header: HTMLElement = document.querySelector('.header-container') as HTMLElement;
+
+    let homeDescription: HTMLElement = this.familyComponent.familyHeaderComponent.homeDescriptionContainer.nativeElement;
+
+    let shortFamilyInfo: HTMLElement = this.familyComponent.familyHeaderComponent.shortFamilyInfoContainer.nativeElement;
 
     let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
@@ -347,8 +372,8 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   public getImageHeight(): void {
-    let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
-    let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
+    let boxContainer: HTMLElement = this.familyThingsContainer.nativeElement;
+    let imgContent: HTMLElement = this.familyImageContainer.nativeElement;
 
     if (!boxContainer || !imgContent) {
       return;
@@ -368,9 +393,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   public getVisibleRows(): void {
-    let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
+    let boxContainer: HTMLElement = this.familyThingsContainer.nativeElement;
+
     let imageHeight: number = boxContainer.offsetWidth / this.zoom;
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
+
     this.visibleImages = this.zoom * visibleRows;
   }
 }

@@ -1,11 +1,22 @@
-import { Component, Input, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  NgZone,
+  ViewChild
+} from '@angular/core';
+
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { find } from 'lodash';
 
-import { LocalStorageService,
-         BrowserDetectionService,
-         UtilsService } from '../../../common';
+import {
+  LocalStorageService,
+  BrowserDetectionService,
+  UtilsService
+} from '../../../common';
 
 @Component({
   selector: 'bubble',
@@ -14,6 +25,9 @@ import { LocalStorageService,
 })
 
 export class BubbleComponent implements OnInit, OnDestroy {
+  @ViewChild('bubblesContainer')
+  public bubblesContainer: ElementRef;
+
   @Input()
   public bubbles: any[];
 
@@ -47,6 +61,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.isTablet = this.device.isTablet();
     this.isMobile = this.device.isMobile();
+
     this.getBubble(this.step);
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -138,10 +153,10 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.utilsService.getCoordinates(baloonDirector, (data: any) => {
-        let baloonElement: ClientRect = this.element.querySelector('.bubbles-container').getBoundingClientRect();
+        let baloonElementRect: ClientRect = this.bubblesContainer.nativeElement.getBoundingClientRect();
 
-        let baloonWidth: number = baloonElement.width;
-        let baloonHeight: number = baloonElement.height;
+        let baloonWidth: number = baloonElementRect.width;
+        let baloonHeight: number = baloonElementRect.height;
 
         data.top += data.height;
 

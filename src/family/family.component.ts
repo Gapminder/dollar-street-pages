@@ -1,21 +1,32 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
+
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
-import * as _ from 'lodash';
-import { forEach, difference, map } from 'lodash';
+
+import { forEach, difference, map, find, chain } from 'lodash';
+
 import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import {
   StreetSettingsService,
   CountriesFilterService,
   UrlChangeService,
   Angulartics2GoogleAnalytics,
-  BrowserDetectionService
+  BrowserDetectionService,
+  LanguageService
 } from '../common';
-import { LanguageService } from '../common';
+
 import { FamilyService } from './family.service';
 
-import { FamilyMediaComponent } from './family-media/family-media.component';
+import { FamilyMediaComponent } from './family-media';
+import { FamilyHeaderComponent } from './family-header';
 
 export interface UrlParamsInterface {
   thing: string;
@@ -36,10 +47,13 @@ export interface UrlParamsInterface {
 export class FamilyComponent implements OnInit, OnDestroy {
   @ViewChild(FamilyMediaComponent)
   public familyMediaComponent: FamilyMediaComponent;
+  @ViewChild(FamilyHeaderComponent)
+  public familyHeaderComponent: FamilyHeaderComponent;
+  @ViewChild('familyContainer')
+  public familyContainer: ElementRef;
 
   public theWorldTranslate: string;
   public languageService: LanguageService;
-
   public window: Window = window;
   public document: Document = document;
   public streetFamilyData: {income: number, region: string};
@@ -73,7 +87,6 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
-  public familyContainer: HTMLElement;
   public query: string;
 
   public constructor(router: Router,
@@ -101,8 +114,6 @@ export class FamilyComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.familyContainer = this.element.querySelector('.family-container') as HTMLElement;
-
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
       this.theWorldTranslate = trans.toLowerCase();
 
@@ -184,8 +195,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
         }
 
         this.locations = res.data;
-        this.countries = _
-          .chain(res.data)
+        this.countries = chain(res.data)
           .map('countries')
           .flatten()
           .sortBy('country')
@@ -250,7 +260,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public setZoomButtonPosition(): void {
     let scrollTop: number = (this.document.body.scrollTop || this.document.documentElement.scrollTop) + this.window.innerHeight;
 
-    let containerHeight: number = this.familyContainer.offsetHeight + 30;
+    let containerHeight: number = this.familyContainer.nativeElement.offsetHeight + 30;
 
     this.zoomPositionFixed = scrollTop > containerHeight;
   }
@@ -333,16 +343,16 @@ export class FamilyComponent implements OnInit, OnDestroy {
   }
 
   public findCountryTranslatedName(countries: any[]): any {
-    return _.map(countries, (item: string): any => {
-      const findTransName: any = _.find(this.countries, {originName: item});
+    return map(countries, (item: string): any => {
+      const findTransName: any = find(this.countries, {originName: item});
       return findTransName ? findTransName.country : item;
 
     });
   }
 
   public findRegionTranslatedName(regions: any[]): any {
-    return _.map(regions, (item: string): any => {
-      const findTransName: any = _.find(this.locations, {originRegionName: item});
+    return map(regions, (item: string): any => {
+      const findTransName: any = find(this.locations, {originRegionName: item});
       return findTransName ? findTransName.region : item;
     });
   }

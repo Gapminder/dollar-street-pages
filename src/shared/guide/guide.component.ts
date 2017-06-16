@@ -18,7 +18,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   public isShowBubble: boolean = false;
   public guideService: GuideService;
   public guideServiceSubscribe: Subscription;
-  public element: Element;
+  public element: HTMLElement;
 
   public languageService: LanguageService;
 

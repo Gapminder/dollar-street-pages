@@ -1,16 +1,28 @@
 import 'rxjs/operator/debounceTime';
 
-import { Component, Input, Output, OnChanges, OnDestroy, NgZone, EventEmitter, OnInit } from '@angular/core';
+import { Component,
+         Input,
+         Output,
+         OnChanges,
+         OnDestroy,
+         NgZone,
+         EventEmitter,
+         OnInit,
+         ElementRef,
+         ViewChild } from '@angular/core';
+
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
-import { ImageResolutionInterface } from '../../../interfaces';
-import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { StreetSettingsService,
          DrawDividersInterface,
          BrowserDetectionService,
          LanguageService,
          UtilsService } from '../../../common';
+
+import { FamilyMediaViewBlockService } from './family-media-view-block.service';
+
+import { ImageResolutionInterface } from '../../../interfaces';
 
 @Component({
   selector: 'family-media-view-block',
@@ -19,10 +31,13 @@ import { StreetSettingsService,
 })
 
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  @Input('imageData')
+  @ViewChild('homeDescriptionContainer')
+  public homeDescriptionContainer: ElementRef;
+
+  @Input()
   public imageData: any;
 
-  @Output('closeBigImageBlock')
+  @Output()
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
   public loader: boolean = false;
@@ -46,19 +61,22 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public thing: any = {};
   public languageService: LanguageService;
   public showTranslateMe: boolean;
+  public element: HTMLElement;
 
   public constructor(zone: NgZone,
                      streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      viewBlockService: FamilyMediaViewBlockService,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     elementRef: ElementRef) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
     this.streetSettingsService = streetSettingsService;
     this.languageService = languageService;
     this.utilsService = utilsService;
+    this.element = elementRef.nativeElement;
 
     this.isDesktop = this.device.isDesktop();
 

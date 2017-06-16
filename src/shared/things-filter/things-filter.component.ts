@@ -12,13 +12,18 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
+
 import { ActivatedRoute } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Angulartics2GoogleAnalytics,
-         BrowserDetectionService,
-         ActiveThingService,
-         UtilsService } from '../../common';
+
+import {
+  Angulartics2GoogleAnalytics,
+  BrowserDetectionService,
+  ActiveThingService,
+  UtilsService
+} from '../../common';
+
 import { ThingsFilterService } from './things-filter.service';
 
 @Component({
@@ -28,6 +33,13 @@ import { ThingsFilterService } from './things-filter.service';
 })
 
 export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
+  @Output('isFilterGotData')
+  public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
+  @Input()
+  public url: string;
+  @Output()
+  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+
   public relatedThings: any[];
   public popularThings: any[];
   public otherThings: any[];
@@ -40,18 +52,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public filterTopDistance: number = 0;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-
   public zone: NgZone;
   public resizeSubscribe: Subscription;
   public utilsService: UtilsService;
   public openMobileFilterView: boolean = false;
-  @Output('isFilterGotData')
-  public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
-
-  @Input()
-  public url: string;
-  @Output()
-  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
   public thingsFilterService: any;
   public thingsFilterServiceSubscribe: Subscription;
   public keyUpSubscribe: Subscription;

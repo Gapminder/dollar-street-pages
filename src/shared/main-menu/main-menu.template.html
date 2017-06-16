@@ -23,7 +23,8 @@
           <a (click)="goToPage('/map')">{{ 'MAP' | translate }}</a>
         </li>
         <li class="social-share-container">
-          <div class="social-share-content">
+          <div #socialShareContent
+               class="social-share-content">
             <span>{{ 'SHARE' | translate }}: </span>
             <social-share-buttons></social-share-buttons>
           </div>
