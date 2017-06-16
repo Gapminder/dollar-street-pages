@@ -10,7 +10,8 @@ import {
   EventEmitter,
   ElementRef,
   HostListener,
-  NgZone
+  NgZone,
+  ViewChild
 } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
@@ -29,10 +30,17 @@ import { ThingsFilterService } from './things-filter.service';
 @Component({
   selector: 'things-filter',
   templateUrl: './things-filter.component.html',
-  styleUrls: ['./things-filter.component.css', './things-filter-mobile.component.css']
+  styleUrls: ['./things-filter.component.css', './things-filter.component.mobile.css']
 })
 
 export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
+  @ViewChild('tabsHeaderContainer')
+  public tabsHeaderContainer: ElementRef;
+  @ViewChild('tabsContentContainer')
+  public tabsContentContainer: ElementRef;
+  @ViewChild('thingsSearch')
+  public thingsSearch: ElementRef;
+
   @Output('isFilterGotData')
   public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
   @Input()
@@ -88,12 +96,9 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.search = {text: ''};
     }
 
-    let tabsHeaderContainer: HTMLElement = this.element.querySelector('.tabs-header-container') as HTMLElement;
-    let tabsContentContainer: HTMLElement = this.element.querySelector('.tabs-content-container') as HTMLElement;
-
-    if (tabsHeaderContainer) {
-      if (tabsHeaderContainer.clientHeight > 60) {
-        tabsContentContainer.classList.add('tabs-content-container-two-rows');
+    if (this.tabsHeaderContainer && this.tabsContentContainer) {
+      if (this.tabsHeaderContainer.nativeElement.clientHeight > 60) {
+        this.tabsContentContainer.nativeElement.classList.add('tabs-content-container-two-rows');
       }
     }
   }
@@ -154,7 +159,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public setActiveThingsColumn(column: string): void {
     this.activeColumn = column;
     this.search = {text: ''};
-    let tabContent = this.element.querySelector('.tabs-content-container') as HTMLElement;
+
     switch (column) {
       case 'related' :
         this.things = this.relatedThings;
@@ -171,8 +176,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       default:
         this.things = this.relatedThings;
     }
-    if (tabContent) {
-      tabContent.scrollTop = 0;
+    if (this.tabsContentContainer) {
+      this.tabsContentContainer.nativeElement.scrollTop = 0;
     }
   }
 
@@ -182,6 +187,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     let inputElement = this.element.querySelector('.form-control') as HTMLInputElement;
+
     this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
       .subscribe((e: KeyboardEvent) => {
         if (e.keyCode === 13) {

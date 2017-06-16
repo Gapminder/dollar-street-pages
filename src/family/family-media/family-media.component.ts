@@ -5,7 +5,6 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 
 import {
   Component,
-  OnInit,
   OnDestroy,
   Input,
   Output,
@@ -15,8 +14,7 @@ import {
   AfterViewInit,
   ElementRef,
   ViewChild,
-  forwardRef,
-  Inject
+  ViewContainerRef
 } from '@angular/core';
 
 import { find, isEqual, slice, concat } from 'lodash';
@@ -41,7 +39,7 @@ import { ImageResolutionInterface } from '../../interfaces';
   styleUrls: ['./family-media.component.css']
 })
 
-export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
+export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   @ViewChild(FamilyMediaViewBlockComponent)
   public familyMediaViewBlock: FamilyMediaViewBlockComponent;
   @ViewChild('familyImageContainer')
@@ -102,8 +100,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     /*tslint:disable-next-line*/
-                     @Inject(forwardRef(() => FamilyComponent)) familyComponent: FamilyComponent) {
+                     viewContainerRef: ViewContainerRef) {
     this.familyMediaService = familyMediaService;
     this.zone = zone;
     this.loaderService = loaderService;
@@ -111,7 +108,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.device = browserDetectionService;
     this.languageService = languageService;
     this.utilsService = utilsService;
-    this.familyComponent = familyComponent;
+    this.familyComponent = (viewContainerRef as any)._data.componentView.parent.component as FamilyComponent;
 
     this.isDesktop = this.device.isDesktop();
 
@@ -120,41 +117,13 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
+      if (!this.familyImagesContainer) {
+        return;
+      }
+
       this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
       this.loaderService.setLoader(true);
     }, 0);
-  }
-
-  public ngOnInit(): void {
-    this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this.openFamilyExpandBlock
-        .subscribe((data: any): void => {
-          let familyImageIndex: number = 0;
-
-          let familyImage: any = find(this.images, (image: any, index: number) => {
-            if (image.thing === data.thingId) {
-              familyImageIndex = index;
-
-              return image;
-            }
-          });
-
-          if (familyImage) {
-            let numberSplice: number = this.visibleImages * 2;
-
-            if (familyImageIndex && familyImageIndex > this.visibleImages) {
-              let positionInRow: number = familyImageIndex % this.zoom;
-              let offset: number = this.zoom - positionInRow;
-
-              numberSplice = familyImageIndex + offset + this.visibleImages;
-            }
-
-            this.currentImages = slice(this.images, 0, numberSplice);
-
-            setTimeout(() => {
-              this.openMedia(familyImage, familyImageIndex);
-            }, 0);
-          }
-        });
 
     const query: string = `placeId=${this.placeId}&resolution=${this.
       imageResolution.image}${this.languageService.getLanguageParam()}`;
@@ -211,6 +180,37 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
           }
         });
       });
+
+      /*tslint:disable-next-line*/
+      this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this.openFamilyExpandBlock
+        .subscribe((data: any): void => {
+          let familyImageIndex: number = 0;
+
+          let familyImage: any = find(this.images, (image: any, index: number) => {
+            if (image.thing === data.thingId) {
+              familyImageIndex = index;
+
+              return image;
+            }
+          });
+
+          if (familyImage) {
+            let numberSplice: number = this.visibleImages * 2;
+
+            if (familyImageIndex && familyImageIndex > this.visibleImages) {
+              let positionInRow: number = familyImageIndex % this.zoom;
+              let offset: number = this.zoom - positionInRow;
+
+              numberSplice = familyImageIndex + offset + this.visibleImages;
+            }
+
+            this.currentImages = slice(this.images, 0, numberSplice);
+
+            setTimeout(() => {
+              this.openMedia(familyImage, familyImageIndex);
+            }, 0);
+          }
+        });
   }
 
   public ngAfterViewChecked(): void {

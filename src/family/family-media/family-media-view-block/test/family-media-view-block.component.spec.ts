@@ -10,7 +10,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 
-import { Angulartics2Module, Angulartics2GoogleAnalytics, Angulartics2 } from 'angulartics2';
+import {
+    Angulartics2Module,
+    Angulartics2GoogleAnalytics,
+    Angulartics2
+} from 'angulartics2';
 
 import { SharedModule } from '../../../../shared';
 
@@ -19,10 +23,10 @@ import { UtilsService } from '../../../../common';
 import { mockFamilyMediaText } from './mock.data';
 
 import {
-         LanguageService,
-         StreetSettingsService,
-         BrowserDetectionService
-       } from '../../../../common';
+    LanguageService,
+    StreetSettingsService,
+    BrowserDetectionService
+} from '../../../../common';
 
 /* tslint:disable */
 class CustomLoader implements TranslateLoader {
