@@ -1,4 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
 import {
   Component,
   AfterViewInit,
@@ -11,6 +13,9 @@ import {
   LanguageService
 } from '../common';
 import { AboutService } from './about.service';
+import { AppStateInterface, appState } from '../ngrx/app.state';
+import { AppActions, setAction } from '../ngrx/app.actions';
+import { AppEffects } from '../ngrx/app.effects';
 
 @Component({
   selector: 'about',
@@ -26,18 +31,32 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
   public loaderService: LoaderService;
   public languageService: LanguageService;
   public getTranslationSubscribe: Subscription;
+  public store: Store<AppStateInterface>;
+  public storeState: Observable<AppStateInterface>;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
                      titleHeaderService: TitleHeaderService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     store: Store<AppStateInterface>) {
     this.aboutService = aboutService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
     this.languageService = languageService;
+    this.store = store;
+
+    this.storeState = store.select(appState);
+
+    this.storeState.subscribe((state: AppStateInterface) => {
+      console.log(state);
+    });
   }
 
   public ngAfterViewInit(): void {
+    setInterval(()=>{
+      this.store.dispatch(setAction(AppEffects.GET_STREET_SETTINGS))
+    }, 1000);
+
     this.loaderService.setLoader(false);
 
     this.getTranslationSubscribe = this.languageService.getTranslation('ABOUT').subscribe((trans: any) => {

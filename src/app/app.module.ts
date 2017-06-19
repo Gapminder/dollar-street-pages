@@ -3,6 +3,13 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects'
+
+import { appReducer } from '../ngrx/app.reducer';
+import { appDefaultState } from '../ngrx/app.state';
+import { AppEffects } from '../ngrx/app.effects';
+
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app.routing';
@@ -36,6 +43,8 @@ export class CustomLoader implements TranslateLoader {
     AppRoutingModule,
     SharedModule,
     MatrixModule,
+    StoreModule.provideStore({appState: appReducer}, appDefaultState),
+    EffectsModule.run(AppEffects),
     TranslateModule.forRoot({
       provide: TranslateLoader,
       useClass: CustomLoader
