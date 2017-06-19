@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { Config } from '../../app.config';
+import { environment } from '../../environments/environment';
 
 import 'rxjs/add/operator/map';
 
@@ -16,7 +16,7 @@ export class CountriesFilterService {
 
   public getCountries(query: string): Observable<any> {
     return this.http
-      .get(`${Config.api}/v1/countries-filter?${query}`)
+      .get(`${environment.consumerApi}/v1/countries-filter?${query}`)
       .map((res: any) => {
         let parseRes = JSON.parse(res._body);
 

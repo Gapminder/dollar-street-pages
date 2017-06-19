@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { Config } from '../../app.config';
+import { environment } from '../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../url-change/url-change.service';
 import { LocalStorageService } from '../guide/localstorage.service';
@@ -152,14 +152,14 @@ export class LanguageService {
   }
 
   public getLanguage(query: string): Observable<any> {
-    return this.http.get(`${Config.api}/v1/language?${query}`).map((res: any) => {
+    return this.http.get(`${environment.consumerApi}/v1/language?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });
   }
 
   public getLanguagesList(): Observable<any> {
-    return this.http.get(`${Config.api}/v1/languagesList`).map((res: any) => {
+    return this.http.get(`${environment.consumerApi}/v1/languagesList`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
       let currentLanguageObject: any = _.find(parseRes.data, {code: this.currentLanguage});

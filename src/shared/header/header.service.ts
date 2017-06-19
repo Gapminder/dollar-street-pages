@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { Config } from '../../app.config';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class HeaderService {
@@ -16,7 +16,7 @@ export class HeaderService {
 
   public getPlaceHeader(query: string): Observable<any> {
     return this.http
-      .get(`${Config.api}/v1/place-header?${query}`)
+      .get(`${environment.consumerApi}/v1/place-header?${query}`)
       .map((res: any) => {
         let parseRes = JSON.parse(res._body);
 

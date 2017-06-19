@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Config } from '../../app.config';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SocialShareButtonsService {
@@ -12,7 +12,7 @@ export class SocialShareButtonsService {
   }
 
   public getUrl(query: any): Observable<any> {
-    return this.http.post(`${Config.api}/v1/shorturl`, query).map((res: any) => {
+    return this.http.post(`${environment.consumerApi}/v1/shorturl`, query).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, url: parseRes.data};
     });

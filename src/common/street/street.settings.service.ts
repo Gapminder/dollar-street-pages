@@ -5,7 +5,7 @@ import 'rxjs/add/operator/share';
 import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { Config } from '../../app.config';
+import { environment } from '../../environments/environment';
 
 export interface DrawDividersInterface {
   showDividers: boolean;
@@ -34,7 +34,7 @@ export class StreetSettingsService {
       return _cache;
     }
     _cache = this.http
-      .get(`${Config.api}/v1/street-settings`)
+      .get(`${environment.consumerApi}/v1/street-settings`)
       .map((res: any) => {
         let parseRes = JSON.parse(res._body);
         return {err: parseRes.error, data: parseRes.data as DrawDividersInterface};
