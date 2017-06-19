@@ -134,12 +134,17 @@
   text-align: center;
 }
 
+#main-mobile-menu .open .feedback-icon {
+  width: 16px;
+  height: 16px;
+  margin-bottom: 6px;
+}
+
 #main-mobile-menu .open .feedback {
-  background: url('/assets/img/like-icon-dark.svg') no-repeat;
   font-size: 14px;
   border-bottom: 0;
   color: #374551;
-  padding-left: 18px;
+  padding-left: 10px;
   text-transform: uppercase;
   line-height: 27px
 }
