@@ -43,15 +43,15 @@
       class="zoom-column pull-right"
       [class.stop]="zoomPositionFixed">
        <button type="button"
-              class="increase"
               [disabled]="zoom === 2"
               (click)="changeZoom(zoom - 1)">
+          <img class="sign" src="assets/img/plus.svg"/>
       </button>
 
       <button type="button"
-              class="decrease"
               [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
               (click)="changeZoom(zoom + 1)">
+          <img class="sign" src="assets/img/minus.svg"/>
       </button>
   </div>
 </div>
