@@ -3,12 +3,12 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
-import { TranslateModule } from 'ng2-translate';
-
 import { DonateComponent } from './donate.component';
 import { DonateService } from './donate.service';
 
 import { DonateRouting } from './donate.routing';
+
+import { SharedModule } from '../shared';
 
 @NgModule({
   declarations: [DonateComponent],
@@ -17,12 +17,10 @@ import { DonateRouting } from './donate.routing';
     HttpModule,
     RouterModule,
     CommonModule,
-    TranslateModule
+    SharedModule
   ],
   providers: [DonateService],
   exports: []
 })
 
-export class DonateModule {
-
-}
+export class DonateModule {}
