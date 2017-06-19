@@ -10,10 +10,6 @@ import { SharedModule } from '../shared';
 
 import { MapRouting } from './map.routing';
 
-import { Angulartics2Module } from 'angulartics2';
-
-import { TranslateModule } from 'ng2-translate';
-
 @NgModule({
   declarations: [MapComponent],
   imports: [
@@ -21,9 +17,7 @@ import { TranslateModule } from 'ng2-translate';
     HttpModule,
     RouterModule,
     CommonModule,
-    TranslateModule,
-    SharedModule,
-    Angulartics2Module
+    SharedModule
   ],
   providers: [MapService],
   exports: []
