@@ -3,10 +3,9 @@
     <div class="col-md-2 left-side-bar">
       <div class="search-input">
         <span class="sort-country" (click)="toggleLeftSide($event)">{{ 'SORT_BY_COUNTRY' | translate }}</span>
-        <input id="search"
+        <input #photographersSearch
                type="search"
                placeholder="{{ 'SEARCH' | translate }}..."
-               #photographersSearch
                (input)="search.text = photographersSearch.value">
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>

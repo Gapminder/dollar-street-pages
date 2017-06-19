@@ -1,7 +1,20 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { MathService, LoaderService, TitleHeaderService, BrowserDetectionService, LanguageService } from '../common';
+import {
+  MathService,
+  LoaderService,
+  TitleHeaderService,
+  BrowserDetectionService,
+  LanguageService
+} from '../common';
+
 import { PhotographersService } from './photographers.service';
 
 @Component({
@@ -10,7 +23,10 @@ import { PhotographersService } from './photographers.service';
   styleUrls: ['./photographers.component.css']
 })
 
-export class PhotographersComponent implements OnInit, OnDestroy {
+export class PhotographersComponent implements OnDestroy, AfterViewInit {
+  @ViewChild('photographersSearch')
+  public photographersSearch: ElementRef;
+
   public search: {text: string} = {text: ''};
   public math: MathService;
   public photographersByCountry: any[] = [];
@@ -42,11 +58,19 @@ export class PhotographersComponent implements OnInit, OnDestroy {
     this.languageService = languageService;
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
+    let searchInput = this.photographersSearch.nativeElement;
+
+    this.keyUpSubscribe = fromEvent(searchInput, 'keyup')
+      .subscribe((e: KeyboardEvent) => {
+        if (!this.isDesktop && e.keyCode === 13) {
+          searchInput.blur();
+        }
+      });
+
     this.isDesktop = this.device.isDesktop();
 
     this.loaderService.setLoader(false);
-    let searchInput = this.element.querySelector('#search') as HTMLInputElement;
 
     this.getTranslationSubscribe = this.languageService.getTranslation('PHOTOGRAPHERS').subscribe((trans: any) => {
       this.titleHeaderService.setTitle(trans);
@@ -62,13 +86,6 @@ export class PhotographersComponent implements OnInit, OnDestroy {
         this.photographersByCountry = res.data.countryList;
         this.photographersByName = res.data.photographersList;
         this.loaderService.setLoader(true);
-      });
-
-    this.keyUpSubscribe = fromEvent(searchInput, 'keyup')
-      .subscribe((e: KeyboardEvent) => {
-        if (!this.isDesktop && e.keyCode === 13) {
-          searchInput.blur();
-        }
       });
   }
 

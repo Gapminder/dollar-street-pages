@@ -61,7 +61,6 @@
     </div>
 
     <div class="other-things-container">
-
       <h3 class="title">{{ 'ALL_TOPICS' | translate }}
         <img class="close-button pull-right"
              src="/assets/img/close-button.svg"
@@ -70,12 +69,13 @@
       </h3>
 
       <div class="things-search">
-        <input class="form-control"
+        <input #thingsSearch
+               class="form-control"
                type="search"
                placeholder="{{ 'SEARCH_THINGS' | translate }}"
-               #thingsSearch
                [value]="search.text"
                (input)="search.text = thingsSearch.value">
+
         <img src="/assets/img/search-icon.svg" alt="Search icon">
       </div>
 
@@ -137,12 +137,14 @@
           <img src="/assets/img/search-icon.svg" alt="Search icon">
         </div>
       </div>
-      <div class="tabs-header-container">
+      <div #tabsHeaderContainer
+           class="tabs-header-container">
         <span (click)="setActiveThingsColumn('related')" [class.active]="activeColumn === 'related'">{{ 'RELATED' | translate }}</span>
         <span (click)="setActiveThingsColumn('popular')" [class.active]="activeColumn === 'popular'">{{ 'POPULAR' | translate }}</span>
         <span (click)="setActiveThingsColumn('all')" [class.active]="activeColumn === 'all'">{{ 'ALL_TOPICS' | translate }}</span>
       </div>
-      <div class="tabs-content-container">
+      <div #tabsContentContainer
+           class="tabs-content-container">
         <div class="things-content">
           <div class="thing-content"
                *ngFor="let thing of things | ThingsFilterPipe:search.text"

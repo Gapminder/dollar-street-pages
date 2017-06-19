@@ -1,6 +1,13 @@
-import { Component, Output, EventEmitter, Input, OnInit, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  ElementRef,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { StreetSettingsService } from '../../common';
 
 @Component({
@@ -9,15 +16,27 @@ import { StreetSettingsService } from '../../common';
   styleUrls: ['./income-filter.component.css']
 })
 
-export class IncomeFilterComponent implements OnInit {
-  @Input('places')
+export class IncomeFilterComponent implements AfterViewInit {
+  @ViewChild('incomeFilterHeaderContainer')
+  public incomeFilterHeaderContainer: ElementRef;
+  @ViewChild('incomeFilterButtonContainer')
+  public incomeFilterButtonContainer: ElementRef;
+  @ViewChild('showAll')
+  public showAll: ElementRef;
+  @ViewChild('okButton')
+  public okButton: ElementRef;
+  @ViewChild('closeButton')
+  public closeButton: ElementRef;
+
+  @Input()
   public places: any[];
-  @Input('lowIncome')
+  @Input()
   public lowIncome: number;
-  @Input('highIncome')
+  @Input()
   public highIncome: number;
-  @Output('sendResponse')
+  @Output()
   public sendResponse: EventEmitter<any> = new EventEmitter<any>();
+
   public range: {lowIncome: number; highIncome: number; close?: boolean} = {
     lowIncome: this.lowIncome,
     highIncome: this.highIncome
@@ -33,7 +52,7 @@ export class IncomeFilterComponent implements OnInit {
     this.element = element.nativeElement;
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
     this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((res: any) => {
         if (res.err) {
@@ -42,13 +61,15 @@ export class IncomeFilterComponent implements OnInit {
         }
         this.streetData = res.data;
 
-        let buttonContainer = this.element.querySelector('.income-filter-button-container') as HTMLElement;
+        let buttonContainer: HTMLElement = this.incomeFilterButtonContainer.nativeElement;
 
         if (buttonContainer) {
-          let captureContainer = this.element.querySelector('.income-filter-header-container') as HTMLElement;
-          let shortenWidth = buttonContainer.querySelector('.show-all') as HTMLElement;
-          let okayButton = buttonContainer.querySelector('.ok-button') as HTMLElement;
-          let cancelButton = buttonContainer.querySelector('.close-button') as HTMLElement;
+          let captureContainer = this.incomeFilterHeaderContainer.nativeElement;
+
+          let shortenWidth: HTMLElement = this.showAll.nativeElement;
+          let okayButton: HTMLElement = this.okButton.nativeElement;
+          let cancelButton: HTMLElement = this.closeButton.nativeElement;
+
           let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
 
           if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
@@ -76,7 +97,7 @@ export class IncomeFilterComponent implements OnInit {
     this.range = data;
   }
 
-  public showAll(): void {
+  public showAllRange(): void {
     this.range.lowIncome = this.streetData.poor;
     this.range.highIncome = this.streetData.rich;
     this.range.close = true;

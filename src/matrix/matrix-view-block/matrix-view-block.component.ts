@@ -34,23 +34,23 @@ import { MatrixViewBlockService } from './matrix-view-block.service';
 })
 
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
-  @Input('positionInRow')
-  public positionInRow: any;
-  @Input('query')
-  public query: any;
-  @Input('place')
-  public place: any;
-  @Input('thing')
-  public thing: string;
-  @Output('closeBigImageBlock')
-  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
-  @Output('goToMatrixWithCountry')
-  public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
-
   @ViewChild('viewImageBlockContainer')
   public viewImageBlockContainer: ElementRef;
   @ViewChild('mobileViewImageBlockContainer')
   public mobileViewImageBlockContainer: ElementRef;
+
+  @Input()
+  public positionInRow: any;
+  @Input()
+  public query: any;
+  @Input()
+  public place: any;
+  @Input()
+  public thing: string;
+  @Output()
+  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
 
   public familyInfoServiceSubscribe: Subscription;
   public fancyBoxImage: any;

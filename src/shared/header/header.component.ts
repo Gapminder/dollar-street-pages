@@ -1,12 +1,21 @@
-import { Component, Input, Output, OnChanges, EventEmitter, OnInit, ElementRef, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
+import {
+  Component,
+  Input,
+  Output,
+  OnChanges,
+  EventEmitter,
+  ElementRef,
+  AfterViewInit,
+  OnInit,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
-
 import {
   MathService,
   Angulartics2GoogleAnalytics,
@@ -22,21 +31,19 @@ import {
   styleUrls: ['./header.component.css']
 })
 
-export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnInit {
   @ViewChild(ThingsFilterComponent)
   public thingsFilterComponent: ThingsFilterComponent;
   @ViewChild(CountriesFilterComponent)
   public countriesFilterComponent: CountriesFilterComponent;
   @ViewChild('filtersContainer')
   public filtersContainer: ElementRef;
-  @ViewChild('incomeTitleContainer')
-  public incomeTitleContainer: ElementRef;
 
   @Input()
   public query: string;
   @Input()
   public thing: string;
-  @Input('hoverPlace')
+  @Input()
   public hoverPlace: Observable<any>;
 
   @Output()
@@ -68,7 +75,7 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   public getTranslationSubscription: Subscription;
   public resizeSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
-  public incomeContainer: HTMLElement;
+  public incomeTitleContainerElement: HTMLElement;
 
   public constructor(router: Router,
                      math: MathService,
@@ -89,23 +96,6 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   }
 
   public ngAfterViewInit(): void {
-    if (!this.incomeTitleContainer) {
-      return;
-    }
-
-    this.incomeContainer = this.incomeTitleContainer.nativeElement;
-
-    this.calcIncomeSize();
-  }
-
-  public ngOnInit(): void {
-    this.matrixComponent = this.location.href.indexOf('matrix') !== -1;
-    this.mapComponent = this.location.href.indexOf('map') !== -1;
-
-    this.isMobile = this.device.isMobile();
-    this.isDesktop = this.device.isDesktop();
-    this.isTablet = this.device.isTablet();
-
     this.streetServiceSubscription = this.streetSettingsService
       .getStreetSettings()
       .subscribe((res: any) => {
@@ -128,6 +118,17 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
       .subscribe(() => {
         this.calcIncomeSize();
       });
+
+    this.calcIncomeSize();
+  }
+
+  public ngOnInit(): void {
+    this.matrixComponent = this.location.href.indexOf('matrix') !== -1;
+    this.mapComponent = this.location.href.indexOf('map') !== -1;
+
+    this.isMobile = this.device.isMobile();
+    this.isDesktop = this.device.isDesktop();
+    this.isTablet = this.device.isTablet();
   }
 
   public ngOnDestroy(): void {
@@ -160,34 +161,36 @@ export class HeaderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   }
 
   public calcIncomeSize(): void {
-    if(!this.incomeContainer) {
+    this.incomeTitleContainerElement = this.element.querySelector('.income-title-container') as HTMLElement;
+
+    if(!this.incomeTitleContainerElement) {
       return;
     }
 
-    this.incomeContainer.classList.remove('short');
-    this.incomeContainer.classList.remove('long');
+    this.incomeTitleContainerElement.classList.remove('short');
+    this.incomeTitleContainerElement.classList.remove('long');
 
     if (this.isMobile) {
       if (this.window.innerWidth < 740) {
-        this.incomeContainer.classList.add('short');
+        this.incomeTitleContainerElement.classList.add('short');
       } else {
-        this.incomeContainer.classList.add('long');
+        this.incomeTitleContainerElement.classList.add('long');
       }
     }
 
     if (this.isTablet) {
       if (this.window.innerWidth < 1040) {
-        this.incomeContainer.classList.add('short');
+        this.incomeTitleContainerElement.classList.add('short');
       } else {
-        this.incomeContainer.classList.add('long');
+        this.incomeTitleContainerElement.classList.add('long');
       }
     }
 
     if (this.isDesktop) {
       if (this.window.innerWidth < 1240) {
-        this.incomeContainer.classList.add('short');
+        this.incomeTitleContainerElement.classList.add('short');
       } else {
-        this.incomeContainer.classList.add('long');
+        this.incomeTitleContainerElement.classList.add('long');
       }
     }
   }

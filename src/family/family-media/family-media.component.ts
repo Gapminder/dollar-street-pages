@@ -1,26 +1,35 @@
 import 'rxjs/operator/debounceTime';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import {
   Component,
-  OnInit,
   OnDestroy,
   Input,
   Output,
   EventEmitter,
   NgZone,
   AfterViewChecked,
-  ElementRef
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import { find, isEqual, slice, concat } from 'lodash';
-import { LoaderService,
-         BrowserDetectionService,
-         LanguageService,
-         UtilsService } from '../../common';
+
+import {
+  LoaderService,
+  BrowserDetectionService,
+  LanguageService,
+  UtilsService
+} from '../../common';
+
 import { FamilyMediaService } from './family-media.service';
-import { ViewChild } from '@angular/core';
-import { AfterViewInit } from '@angular/core';
+
+import { FamilyComponent } from '../family.component';
+import { FamilyMediaViewBlockComponent } from './family-media-view-block';
 
 import { ImageResolutionInterface } from '../../interfaces';
 
@@ -30,9 +39,27 @@ import { ImageResolutionInterface } from '../../interfaces';
   styleUrls: ['./family-media.component.css']
 })
 
-export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
-  @Input('zoom')
+export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
+  @ViewChild(FamilyMediaViewBlockComponent)
+  public familyMediaViewBlock: FamilyMediaViewBlockComponent;
+  @ViewChild('familyImageContainer')
+  public familyImageContainer: ElementRef;
+  @ViewChild('familyImagesContainer')
+  public familyImagesContainer: ElementRef;
+  @ViewChild('familyThingsContainer')
+  public familyThingsContainer: ElementRef;
+
+  @Input()
+  public placeId: string;
+  @Input()
+  public activeImageIndex: number;
+  @Input()
+  public openFamilyExpandBlock: Observable<any>;
+  @Input()
   public zoom: number;
+
+  @Output()
+  public activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
   public windowInnerWidth: number = window.innerWidth;
   public itemSize: number;
@@ -64,19 +91,10 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   public utilsService: UtilsService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-
-  @ViewChild('familyImagesContainer')
-  public familyImagesContainer: any;
-
-  @Input('placeId')
-  public placeId: string;
-  @Input('activeImageIndex')
-  public activeImageIndex: number;
-  @Input('openFamilyExpandBlock')
-  public openFamilyExpandBlock: Observable<any>;
-
-  @Output('activeImageOptions')
-  public activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
+  public familyComponent: FamilyComponent;
+  public familyImageContainerElement: HTMLElement;
+  public familyThingsContainerElement: HTMLElement;
+  public familyImagesContainerElement: HTMLElement;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -84,7 +102,8 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
                      familyMediaService: FamilyMediaService,
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     viewContainerRef: ViewContainerRef) {
     this.familyMediaService = familyMediaService;
     this.zone = zone;
     this.loaderService = loaderService;
@@ -92,6 +111,7 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.device = browserDetectionService;
     this.languageService = languageService;
     this.utilsService = utilsService;
+    this.familyComponent = (viewContainerRef as any)._data.componentView.parent.component as FamilyComponent;
 
     this.isDesktop = this.device.isDesktop();
 
@@ -99,42 +119,18 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   public ngAfterViewInit(): void {
+    this.familyImageContainerElement = this.familyImagesContainer.nativeElement;
+    this.familyThingsContainerElement = this.familyThingsContainer.nativeElement;
+    this.familyImagesContainerElement = this.familyImagesContainer.nativeElement;
+
     setTimeout(() => {
-      this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
+      if (!this.familyImagesContainer) {
+        return;
+      }
+
+      this.familyImagesContainerElement.classList.add('column-' + this.zoom);
       this.loaderService.setLoader(true);
     }, 0);
-  }
-
-  public ngOnInit(): void {
-    this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this.openFamilyExpandBlock
-        .subscribe((data: any): void => {
-          let familyImageIndex: number = 0;
-
-          let familyImage: any = find(this.images, (image: any, index: number) => {
-            if (image.thing === data.thingId) {
-              familyImageIndex = index;
-
-              return image;
-            }
-          });
-
-          if (familyImage) {
-            let numberSplice: number = this.visibleImages * 2;
-
-            if (familyImageIndex && familyImageIndex > this.visibleImages) {
-              let positionInRow: number = familyImageIndex % this.zoom;
-              let offset: number = this.zoom - positionInRow;
-
-              numberSplice = familyImageIndex + offset + this.visibleImages;
-            }
-
-            this.currentImages = slice(this.images, 0, numberSplice);
-
-            setTimeout(() => {
-              this.openMedia(familyImage, familyImageIndex);
-            }, 0);
-          }
-        });
 
     const query: string = `placeId=${this.placeId}&resolution=${this.
       imageResolution.image}${this.languageService.getLanguageParam()}`;
@@ -191,25 +187,55 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
           }
         });
       });
+
+      /*tslint:disable-next-line*/
+      this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this.openFamilyExpandBlock
+        .subscribe((data: any): void => {
+          let familyImageIndex: number = 0;
+
+          let familyImage: any = find(this.images, (image: any, index: number) => {
+            if (image.thing === data.thingId) {
+              familyImageIndex = index;
+
+              return image;
+            }
+          });
+
+          if (familyImage) {
+            let numberSplice: number = this.visibleImages * 2;
+
+            if (familyImageIndex && familyImageIndex > this.visibleImages) {
+              let positionInRow: number = familyImageIndex % this.zoom;
+              let offset: number = this.zoom - positionInRow;
+
+              numberSplice = familyImageIndex + offset + this.visibleImages;
+            }
+
+            this.currentImages = slice(this.images, 0, numberSplice);
+
+            setTimeout(() => {
+              this.openMedia(familyImage, familyImageIndex);
+            }, 0);
+          }
+        });
   }
 
   public ngAfterViewChecked(): void {
-    let footer = document.querySelector('.footer') as HTMLElement;
-    let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
-    let headerContainer = document.querySelector('.header-container') as HTMLElement;
-
-    if (!imgContent) {
+    if (!this.familyImageContainer) {
       return;
     }
 
+    let headerContainer: HTMLElement = document.querySelector('.header-container') as HTMLElement;
+    let footer: HTMLElement = document.querySelector('.footer') as HTMLElement;
+
     if (this.headerHeight === headerContainer.offsetHeight && this.footerHeight === footer.offsetHeight &&
-      this.imageOffsetHeight === imgContent.offsetHeight || !imgContent) {
+      this.imageOffsetHeight === this.familyImageContainerElement.offsetHeight || !this.familyImageContainerElement) {
       return;
     }
 
     this.headerHeight = headerContainer.offsetHeight;
     this.footerHeight = footer.offsetHeight;
-    this.imageOffsetHeight = imgContent.offsetHeight;
+    this.imageOffsetHeight = this.familyImageContainerElement.offsetHeight;
 
     setTimeout(() => {
       this.getImageHeight();
@@ -235,8 +261,8 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
 
   public changeZoom(prevZoom: number): void {
     setTimeout(() => {
-      this.familyImagesContainer.nativeElement.classList.remove('column-' + prevZoom);
-      this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
+      this.familyImageContainerElement.classList.remove('column-' + prevZoom);
+      this.familyImageContainerElement.classList.add('column-' + this.zoom);
 
       this.getImageHeight();
     },0);
@@ -279,9 +305,11 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
     this.imageData = Object.assign({}, this.imageData);
 
     setTimeout(() => {
-      let viewBlockBox = this.element.querySelector('family-media-view-block') as HTMLElement;
+      if (this.familyMediaViewBlock) {
+        let viewBlockBox: HTMLElement = this.familyMediaViewBlock.element;
 
-      this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+        this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
+      }
     }, 0);
 
     if (!this.prevImage) {
@@ -333,9 +361,10 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   public goToRow(row: number): void {
-    let header = document.querySelector('.header-container') as HTMLElement;
-    let homeDescription = document.querySelector('.home-description-container') as HTMLElement;
-    let shortFamilyInfo = document.querySelector('.short-family-info-container') as HTMLElement;
+    let header: HTMLElement = document.querySelector('.header-container') as HTMLElement;
+
+    let homeDescription: HTMLElement = this.familyComponent.familyHeaderComponent.homeDescriptionContainer.nativeElement;
+    let shortFamilyInfo: HTMLElement = this.familyComponent.familyHeaderComponent.shortFamilyInfoContainer.nativeElement;
 
     let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
@@ -347,30 +376,27 @@ export class FamilyMediaComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   public getImageHeight(): void {
-    let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
-    let imgContent = this.element.querySelector('.family-image-container') as HTMLElement;
-
-    if (!boxContainer || !imgContent) {
+    if (!this.familyThingsContainerElement || !this.familyImageContainerElement) {
       return;
     }
 
     let widthScroll: number = window.innerWidth - document.body.offsetWidth;
 
-    let imageMarginLeft: string = window.getComputedStyle(imgContent).getPropertyValue('margin-left');
-    let boxPaddingLeft: string = window.getComputedStyle(boxContainer).getPropertyValue('padding-left');
+    let imageMarginLeft: string = window.getComputedStyle(this.familyImageContainerElement).getPropertyValue('margin-left');
+    let boxPaddingLeft: string = window.getComputedStyle(this.familyThingsContainerElement).getPropertyValue('padding-left');
 
     this.imageMargin = parseFloat(imageMarginLeft) * 2;
     let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
 
-    this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
+    this.imageHeight = (this.familyThingsContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
     this.itemSize = this.imageHeight + this.imageMargin;
     this.loaderService.setLoader(true);
   }
 
   public getVisibleRows(): void {
-    let boxContainer = this.element.querySelector('.family-things-container') as HTMLElement;
-    let imageHeight: number = boxContainer.offsetWidth / this.zoom;
+    let imageHeight: number = this.familyThingsContainerElement.offsetWidth / this.zoom;
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
+
     this.visibleImages = this.zoom * visibleRows;
   }
 }

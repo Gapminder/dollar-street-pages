@@ -1,4 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+    ComponentFixture,
+    TestBed
+} from '@angular/core/testing';
+
 import { By }              from '@angular/platform-browser';
 import { DebugElement, Component }    from '@angular/core';
 
@@ -10,13 +14,16 @@ import { Observable } from 'rxjs/Observable';
 
 import { FamilyModule } from '../../family.module';
 
-import { UrlChangeService,
-         LanguageService,
-         BrowserDetectionService,
-         LoaderService,
-         UtilsService
-       } from '../../../common';
+import {
+    UrlChangeService,
+    LanguageService,
+    BrowserDetectionService,
+    LoaderService,
+    UtilsService
+} from '../../../common';
 
+/*tslint:disable-next-line*/
+import { FamilyComponent } from '../../family.component';
 import { FamilyMediaComponent } from '../family-media.component';
 import { FamilyMediaService } from '../family-media.service';
 
@@ -84,36 +91,36 @@ describe('FamilyMediaComponent', () => {
         componentFixture.detectChanges();
     }));
 
-    it('ngOnInit() ngOnDestroy()', () => {
-        componentInstance.ngOnInit();
+    it('ngAfterViewInit() ngOnDestroy()', (() => {
+        componentFixture.whenStable().then(() => {
+            expect(componentInstance.familyMediaService).toBeDefined();
+            expect(componentInstance.languageService).toBeDefined();
+            expect(componentInstance.loaderService).toBeDefined();
+            expect(componentInstance.device).toBeDefined();
 
-        expect(componentInstance.familyMediaService).toBeDefined();
-        expect(componentInstance.languageService).toBeDefined();
-        expect(componentInstance.loaderService).toBeDefined();
-        expect(componentInstance.device).toBeDefined();
+            expect(componentInstance.images).toBeDefined();
 
-        expect(componentInstance.images).toBeDefined();
+            expect(componentInstance.isDesktop).toBeTruthy();
 
-        expect(componentInstance.isDesktop).toBeTruthy();
+            spyOn(componentInstance.familyPlaceServiceSubscribe, 'unsubscribe');
+            spyOn(componentInstance.resizeSubscribe, 'unsubscribe');
 
-        spyOn(componentInstance.familyPlaceServiceSubscribe, 'unsubscribe');
-        spyOn(componentInstance.resizeSubscribe, 'unsubscribe');
+            componentInstance.ngOnDestroy();
 
-        componentInstance.ngOnDestroy();
+            expect(componentInstance.familyPlaceServiceSubscribe.unsubscribe).toHaveBeenCalled();
+            expect(componentInstance.resizeSubscribe.unsubscribe).toHaveBeenCalled();
+        });
+    }));
 
-        expect(componentInstance.familyPlaceServiceSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.resizeSubscribe.unsubscribe).toHaveBeenCalled();
-    });
+    it('openMedia()', (() => {
+        componentFixture.whenStable().then(() => {
+            componentInstance.goToRow = (row: number) => {
+                return row;
+            };
 
-    it('openMedia()', () => {
-        componentInstance.ngOnInit();
+            componentInstance.openMedia(componentInstance.images[0], 0);
 
-        componentInstance.goToRow = (row: number) => {
-            return row;
-        };
-
-        componentInstance.openMedia(componentInstance.images[0], 0);
-
-        expect(componentInstance.imageData.imageId).toEqual(componentInstance.images[0]._id);
-    });
+            expect(componentInstance.imageData.imageId).toEqual(componentInstance.images[0]._id);
+        });
+    }));
 });

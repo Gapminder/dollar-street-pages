@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  Renderer,
+  OnInit,
+  AfterViewInit
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { HeaderService } from '../header/header.service';
 import {
@@ -42,6 +50,10 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
     this.streetSettingsService = streetSettingsService;
   }
 
+  public ngAfterViewInit(): any {
+    this.rendererTitle(this.title);
+  }
+
   public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
 
@@ -67,10 +79,6 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
   public ngOnDestroy(): void {
     this.titleHeaderSubscribe.unsubscribe();
-  }
-
-  public ngAfterViewInit(): any {
-    this.rendererTitle(this.title);
   }
 
   public rendererTitle(title: string): void {

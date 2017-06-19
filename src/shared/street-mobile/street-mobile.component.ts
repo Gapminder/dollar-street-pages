@@ -1,9 +1,15 @@
-import { Component, OnInit, Input, ElementRef, OnDestroy } from '@angular/core';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Rx';
+import {
+  Component,
+  Input,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { sortBy, chain } from 'lodash';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { StreetSettingsService } from '../../common';
 import { StreetMobileDrawService } from './street-mobile.service';
 
@@ -13,8 +19,11 @@ import { StreetMobileDrawService } from './street-mobile.service';
   styleUrls: ['./street-mobile.component.css']
 })
 
-export class StreetMobileComponent implements OnInit, OnDestroy {
-  @Input('places')
+export class StreetMobileComponent implements OnDestroy, AfterViewInit {
+  @ViewChild('svg')
+  public svg: ElementRef;
+
+  @Input()
   public places: Observable<any>;
 
   private street: any;
@@ -36,9 +45,20 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
     this.streetSettingsService = streetSettingsService;
   }
 
-  public ngOnInit(): any {
-    this.street.setSvg = this.element.querySelector('.street-box svg') as SVGElement;
+  public ngAfterViewInit(): void {
+    this.street.setSvg = this.svg.nativeElement;
+
     this.street.set('isInit', true);
+
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(150)
+      .subscribe(() => {
+        if (!this.street.places || this.windowInnerWidth === window.innerWidth) {
+          return;
+        }
+
+        this.setDividers(this.placesArr);
+      });
 
     this.placesSubscribe = this.places && this.places
         .subscribe((places: any): void => {
@@ -62,16 +82,6 @@ export class StreetMobileComponent implements OnInit, OnDestroy {
         this.streetData = res.data;
 
         if (!this.placesArr) {
-          return;
-        }
-
-        this.setDividers(this.placesArr);
-      });
-
-    this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
-      .subscribe(() => {
-        if (!this.street.places || this.windowInnerWidth === window.innerWidth) {
           return;
         }
 

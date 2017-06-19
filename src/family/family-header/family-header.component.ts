@@ -1,13 +1,27 @@
 import 'rxjs/operator/debounceTime';
-import { Component, OnInit, OnDestroy, Input, NgZone, ElementRef, EventEmitter, Output } from '@angular/core';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { BrowserDetectionService,
-         StreetSettingsService,
-         DrawDividersInterface,
-         MathService,
-         LanguageService,
-         UtilsService } from '../../common';
+
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  NgZone,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild
+} from '@angular/core';
+
+import {
+  BrowserDetectionService,
+  StreetSettingsService,
+  DrawDividersInterface,
+  MathService,
+  LanguageService,
+  UtilsService
+} from '../../common';
 
 import { FamilyHeaderService } from './family-header.service';
 
@@ -18,12 +32,21 @@ import { FamilyHeaderService } from './family-header.service';
 })
 
 export class FamilyHeaderComponent implements OnInit, OnDestroy {
-  @Input('placeId')
+  @ViewChild('homeDescriptionContainer')
+  public homeDescriptionContainer: ElementRef;
+
+  @ViewChild('aboutDataContainer')
+  public aboutDataContainer: ElementRef;
+
+  @ViewChild('shortFamilyInfoContainer')
+  public shortFamilyInfoContainer: ElementRef;
+
+  @Input()
   public placeId: string;
 
-  @Output('familyExpandBlock')
+  @Output()
   public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
-  @Output('streetFamilyData')
+  @Output()
   public streetFamilyData: EventEmitter<any> = new EventEmitter<any>();
 
   public readMoreTranslate: string;
@@ -215,8 +238,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let aboutDataContainer = this.element.querySelector('.about-data-container') as HTMLElement;
-    let targetElement = event.target as HTMLElement;
+    let aboutDataContainer: HTMLElement = this.aboutDataContainer.nativeElement;
+    let targetElement: HTMLElement = event.target as HTMLElement;
 
     this.utilsService.getCoordinates(`.${targetElement.className}`, (data: any) => {
       this.aboutDataPosition.left = data.left - aboutDataContainer.clientWidth + 28;

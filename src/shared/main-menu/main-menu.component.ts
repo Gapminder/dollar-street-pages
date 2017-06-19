@@ -1,7 +1,20 @@
-import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  HostListener,
+  ElementRef,
+  Output,
+  EventEmitter,
+  AfterViewInit,
+  ViewChild
+} from '@angular/core';
+
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
 import {
   StreetSettingsService,
   DrawDividersInterface,
@@ -18,15 +31,19 @@ import {
 })
 
 export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input('hoverPlace') public hoverPlace: Observable<any>;
-  @Output('selectedFilter') public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('socialShareContent')
+  public socialShareContent: ElementRef;
+
+  @Input()
+  public hoverPlace: Observable<any>;
+  @Output()
+  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
   public element: HTMLElement;
   public window: Window = window;
   public isMatrixComponent: boolean;
   public isOpenMenu: boolean = false;
   public streetData: DrawDividersInterface;
-
   public router: Router;
   public activatedRoute: ActivatedRoute;
   public hoverPlaceSubscribe: Subscription;
@@ -39,7 +56,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
-  public imgContent: HTMLElement;
+  public socialShareContentElement: HTMLElement;
   public languageService: LanguageService;
   public shareTranslation: string;
 
@@ -62,7 +79,11 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this.processShareTranslation();
+    this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
+        this.shareTranslation = trans;
+
+        this.processShareTranslation();
+      });
   }
 
   public ngOnInit(): void {
@@ -105,26 +126,20 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
           this.isOpenMenu = false;
         }
       });
-
-    this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
-        this.shareTranslation = trans;
-
-        this.processShareTranslation();
-      });
   }
 
   public processShareTranslation(): void {
-    if (!this.shareTranslation) {
+    if (!this.shareTranslation || !this.socialShareContent) {
       return;
     }
 
-    this.imgContent = this.element.querySelector('.social-share-content') as HTMLElement;
+    this.socialShareContentElement = this.socialShareContent.nativeElement;
 
-    if (this.imgContent) {
-      this.imgContent.classList.remove('long-text');
+    if (this.socialShareContentElement) {
+      this.socialShareContentElement.classList.remove('long-text');
 
       if (this.shareTranslation.length > 6) {
-        this.imgContent.classList.add('long-text');
+        this.socialShareContentElement.classList.add('long-text');
       }
     }
   }

@@ -1,4 +1,14 @@
-import { Component, OnInit, OnChanges, OnDestroy, Input, ElementRef, NgZone } from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  OnDestroy,
+  Input,
+  ElementRef,
+  NgZone,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
+
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -8,12 +18,16 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./region-map.component.css']
 })
 
-export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
-  public markerPosition: any = {};
+export class RegionMapComponent implements OnChanges, OnDestroy, AfterViewInit {
+  @ViewChild('map')
+  public map: ElementRef;
+  @ViewChild('marker')
+  public marker: ElementRef;
 
-  @Input('mapData')
+  @Input()
   public mapData: any;
 
+  public markerPosition: any = {};
   public mapImage: HTMLImageElement;
   public element: HTMLElement;
   public zone: NgZone;
@@ -25,7 +39,7 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
     this.element = element.nativeElement;
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
     this.resizeSubscriber = fromEvent(window, 'resize')
       .subscribe(()=> {
         this.draw(this.mapData);
@@ -47,7 +61,7 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
   public draw(place: any): void {
     let img = new Image();
 
-    this.mapImage = this.element.querySelector('.map') as HTMLImageElement;
+    this.mapImage = this.map.nativeElement;
 
     img.onload = () => {
       this.zone.run(() => {
@@ -59,13 +73,14 @@ export class RegionMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public drawMarker(place: any, mapImage: any): void {
+    let marker = this.marker.nativeElement;
+
     let stepTop: number;
     let stepRight: number;
     let widthOfMap = mapImage.offsetWidth;
     let heightOfMap = mapImage.offsetHeight;
     let greenwich = widthOfMap * 0.437;
     let equator = heightOfMap * 0.545;
-    let marker = this.element.querySelector('.marker') as HTMLImageElement;
 
     if (place.lat > 0) {
       stepTop = equator / 75;
