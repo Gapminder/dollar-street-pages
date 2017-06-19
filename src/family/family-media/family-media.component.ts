@@ -228,16 +228,14 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
     let headerContainer: HTMLElement = document.querySelector('.header-container') as HTMLElement;
     let footer: HTMLElement = document.querySelector('.footer') as HTMLElement;
 
-    let imgContent: HTMLElement = this.familyImageContainerElement;
-
     if (this.headerHeight === headerContainer.offsetHeight && this.footerHeight === footer.offsetHeight &&
-      this.imageOffsetHeight === imgContent.offsetHeight || !imgContent) {
+      this.imageOffsetHeight === this.familyImageContainerElement.offsetHeight || !this.familyImageContainerElement) {
       return;
     }
 
     this.headerHeight = headerContainer.offsetHeight;
     this.footerHeight = footer.offsetHeight;
-    this.imageOffsetHeight = imgContent.offsetHeight;
+    this.imageOffsetHeight = this.familyImageContainerElement.offsetHeight;
 
     setTimeout(() => {
       this.getImageHeight();
@@ -378,30 +376,25 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
   }
 
   public getImageHeight(): void {
-    let boxContainer: HTMLElement = this.familyThingsContainerElement;
-    let imgContent: HTMLElement = this.familyImageContainerElement;
-
-    if (!boxContainer || !imgContent) {
+    if (!this.familyThingsContainerElement || !this.familyImageContainerElement) {
       return;
     }
 
     let widthScroll: number = window.innerWidth - document.body.offsetWidth;
 
-    let imageMarginLeft: string = window.getComputedStyle(imgContent).getPropertyValue('margin-left');
-    let boxPaddingLeft: string = window.getComputedStyle(boxContainer).getPropertyValue('padding-left');
+    let imageMarginLeft: string = window.getComputedStyle(this.familyImageContainerElement).getPropertyValue('margin-left');
+    let boxPaddingLeft: string = window.getComputedStyle(this.familyThingsContainerElement).getPropertyValue('padding-left');
 
     this.imageMargin = parseFloat(imageMarginLeft) * 2;
     let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
 
-    this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
+    this.imageHeight = (this.familyThingsContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
     this.itemSize = this.imageHeight + this.imageMargin;
     this.loaderService.setLoader(true);
   }
 
   public getVisibleRows(): void {
-    let boxContainer: HTMLElement = this.familyThingsContainerElement;
-
-    let imageHeight: number = boxContainer.offsetWidth / this.zoom;
+    let imageHeight: number = this.familyThingsContainerElement.offsetWidth / this.zoom;
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
 
     this.visibleImages = this.zoom * visibleRows;

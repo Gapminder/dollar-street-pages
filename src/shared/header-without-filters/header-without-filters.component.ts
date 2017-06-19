@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  Renderer,
+  OnInit,
+  AfterViewInit
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { HeaderService } from '../header/header.service';
 import {

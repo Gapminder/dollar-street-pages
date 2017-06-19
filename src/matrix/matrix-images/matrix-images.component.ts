@@ -418,33 +418,33 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public getImageHeight(): void {
-    let boxContainer: HTMLElement = this.imagesContainer.nativeElement;
-    let imgContent: HTMLElement = this.imageContent.nativeElement;
+    let imagesContainerElement: HTMLElement = this.imagesContainer.nativeElement;
+    let imageContentElement: HTMLElement = this.imageContent.nativeElement;
 
-    if (!boxContainer || !imgContent) {
+    if (!imagesContainerElement || !imageContentElement) {
       return;
     }
 
     let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
 
-    let imageMarginLeft: string = window.getComputedStyle(imgContent).getPropertyValue('margin-left');
-    let boxPaddingLeft: string = window.getComputedStyle(boxContainer).getPropertyValue('padding-left');
+    let imageMarginLeft: string = window.getComputedStyle(imageContentElement).getPropertyValue('margin-left');
+    let boxPaddingLeft: string = window.getComputedStyle(imagesContainerElement).getPropertyValue('padding-left');
 
     this.imageMargin = parseFloat(imageMarginLeft) * 2;
     let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
 
-    this.imageHeight = (boxContainer.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
+    this.imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
     this.itemSize = this.imageHeight + this.imageMargin;
   }
 
   public getVisibleRows(): void {
-    let boxContainer: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
+    let imagesContainerElement: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
 
-    if (!boxContainer) {
+    if (!imagesContainerElement) {
       return;
     }
 
-    let imageHeight: number = boxContainer.offsetWidth / this.zoom;
+    let imageHeight: number = imagesContainerElement.offsetWidth / this.zoom;
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
     this.visibleImages = this.zoom * visibleRows;
   }

@@ -116,7 +116,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public matrixImagesContainerHeight: number;
   public locationStrategy: LocationStrategy;
   public guidePositionTop: number = 0;
-  public imgContent: HTMLElement;
+  public imageContentElement: HTMLElement;
   public guideContainer: HTMLElement;
   public guideHeight: number;
   public device: BrowserDetectionService;
@@ -304,7 +304,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
         this.zone.run(() => {
           let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-          if (this.guideContainer && this.guideContainer.offsetHeight && !this.isMobile && this.imgContent) {
+          if (this.guideContainer && this.guideContainer.offsetHeight && !this.isMobile && this.imageContentElement) {
             if (this.guideContainer.offsetHeight > scrollTop) {
               this.guidePositionTop = scrollTop;
               this.getPaddings({isGuide: true});
@@ -374,9 +374,9 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
         return;
       }
 
-      this.imgContent = this.matrixImagesComponent.imageContent.nativeElement;
+      this.imageContentElement = this.matrixImagesComponent.imageContent.nativeElement;
 
-      if (!this.imgContent) {
+      if (!this.imageContentElement) {
         return;
       }
 
@@ -385,7 +385,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
         this.setZoomButtonPosition();
       }
 
-      let imageClientRect: ClientRect = this.imgContent.getBoundingClientRect();
+      let imageClientRect: ClientRect = this.imageContentElement.getBoundingClientRect();
 
       if (!imageClientRect.height ||
           this.imageHeight === imageClientRect.height &&
@@ -395,7 +395,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
       this.imageHeight = imageClientRect.height;
 
-      let imageMarginLeft: string = window.getComputedStyle(this.imgContent).getPropertyValue('margin-left');
+      let imageMarginLeft: string = window.getComputedStyle(this.imageContentElement).getPropertyValue('margin-left');
       this.imageMargin = parseFloat(imageMarginLeft) * 2;
 
       let footer = document.querySelector('.footer') as HTMLElement;
@@ -480,7 +480,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   }
 
   public getPaddings(options: { isGuide?: boolean }): void {
-    if (!this.imgContent) {
+    if (!this.imageContentElement) {
       return;
     }
 
@@ -494,10 +494,10 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
     this.getVisibleRows(headerHeight);
 
-    let scrollTo: number = (this.row - 1) * (this.imgContent.offsetHeight + this.imageMargin);
+    let scrollTo: number = (this.row - 1) * (this.imageContentElement.offsetHeight + this.imageMargin);
 
     if (this.activeHouse && Math.ceil(this.activeHouse / this.zoom) === this.row) {
-      scrollTo = this.row * (this.imgContent.offsetHeight + this.imageMargin) - 60;
+      scrollTo = this.row * (this.imageContentElement.offsetHeight + this.imageMargin) - 60;
     }
 
     if (this.guidePositionTop || this.guidePositionTop === 0) {
