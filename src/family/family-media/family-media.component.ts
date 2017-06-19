@@ -49,16 +49,16 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
   @ViewChild('familyThingsContainer')
   public familyThingsContainer: ElementRef;
 
-  @Input('placeId')
+  @Input()
   public placeId: string;
-  @Input('activeImageIndex')
+  @Input()
   public activeImageIndex: number;
-  @Input('openFamilyExpandBlock')
+  @Input()
   public openFamilyExpandBlock: Observable<any>;
-  @Input('zoom')
+  @Input()
   public zoom: number;
 
-  @Output('activeImageOptions')
+  @Output()
   public activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
   public windowInnerWidth: number = window.innerWidth;
@@ -92,6 +92,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public familyComponent: FamilyComponent;
+  public familyImageContainerElement: HTMLElement;
+  public familyThingsContainerElement: HTMLElement;
+  public familyImagesContainerElement: HTMLElement;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -116,12 +119,16 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
   }
 
   public ngAfterViewInit(): void {
+    this.familyImageContainerElement = this.familyImagesContainer.nativeElement;
+    this.familyThingsContainerElement = this.familyThingsContainer.nativeElement;
+    this.familyImagesContainerElement = this.familyImagesContainer.nativeElement;
+
     setTimeout(() => {
       if (!this.familyImagesContainer) {
         return;
       }
 
-      this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
+      this.familyImagesContainerElement.classList.add('column-' + this.zoom);
       this.loaderService.setLoader(true);
     }, 0);
 
@@ -221,7 +228,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
     let headerContainer: HTMLElement = document.querySelector('.header-container') as HTMLElement;
     let footer: HTMLElement = document.querySelector('.footer') as HTMLElement;
 
-    let imgContent: HTMLElement = this.familyImageContainer.nativeElement;
+    let imgContent: HTMLElement = this.familyImageContainerElement;
 
     if (this.headerHeight === headerContainer.offsetHeight && this.footerHeight === footer.offsetHeight &&
       this.imageOffsetHeight === imgContent.offsetHeight || !imgContent) {
@@ -256,8 +263,8 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
 
   public changeZoom(prevZoom: number): void {
     setTimeout(() => {
-      this.familyImagesContainer.nativeElement.classList.remove('column-' + prevZoom);
-      this.familyImagesContainer.nativeElement.classList.add('column-' + this.zoom);
+      this.familyImageContainerElement.classList.remove('column-' + prevZoom);
+      this.familyImageContainerElement.classList.add('column-' + this.zoom);
 
       this.getImageHeight();
     },0);
@@ -359,7 +366,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
     let header: HTMLElement = document.querySelector('.header-container') as HTMLElement;
 
     let homeDescription: HTMLElement = this.familyComponent.familyHeaderComponent.homeDescriptionContainer.nativeElement;
-
     let shortFamilyInfo: HTMLElement = this.familyComponent.familyHeaderComponent.shortFamilyInfoContainer.nativeElement;
 
     let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
@@ -372,8 +378,8 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
   }
 
   public getImageHeight(): void {
-    let boxContainer: HTMLElement = this.familyThingsContainer.nativeElement;
-    let imgContent: HTMLElement = this.familyImageContainer.nativeElement;
+    let boxContainer: HTMLElement = this.familyThingsContainerElement;
+    let imgContent: HTMLElement = this.familyImageContainerElement;
 
     if (!boxContainer || !imgContent) {
       return;
@@ -393,7 +399,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
   }
 
   public getVisibleRows(): void {
-    let boxContainer: HTMLElement = this.familyThingsContainer.nativeElement;
+    let boxContainer: HTMLElement = this.familyThingsContainerElement;
 
     let imageHeight: number = boxContainer.offsetWidth / this.zoom;
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);

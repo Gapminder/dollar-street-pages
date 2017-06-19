@@ -11,6 +11,9 @@ import { LocalStorageService, LanguageService } from '../../common';
 })
 
 export class GuideComponent implements OnInit, OnDestroy {
+  @Output()
+  public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
+
   public localStorageService: LocalStorageService;
   public isShowGuide: boolean;
   public description: string;
@@ -19,11 +22,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   public guideService: GuideService;
   public guideServiceSubscribe: Subscription;
   public element: HTMLElement;
-
   public languageService: LanguageService;
-
-  @Output('startQuickGuide')
-  public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
   public constructor(guideService: GuideService,
                      localStorageService: LocalStorageService,

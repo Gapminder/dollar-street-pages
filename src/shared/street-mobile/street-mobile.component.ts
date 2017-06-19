@@ -1,20 +1,15 @@
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Rx';
 import {
   Component,
-  OnInit,
   Input,
   ElementRef,
   OnDestroy,
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Rx';
-
 import { sortBy, chain } from 'lodash';
-
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { StreetSettingsService } from '../../common';
 import { StreetMobileDrawService } from './street-mobile.service';
 
@@ -24,11 +19,11 @@ import { StreetMobileDrawService } from './street-mobile.service';
   styleUrls: ['./street-mobile.component.css']
 })
 
-export class StreetMobileComponent implements OnInit, OnDestroy, AfterViewInit {
+export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
 
-  @Input('places')
+  @Input()
   public places: Observable<any>;
 
   private street: any;
@@ -64,9 +59,7 @@ export class StreetMobileComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.setDividers(this.placesArr);
       });
-  }
 
-  public ngOnInit(): any {
     this.placesSubscribe = this.places && this.places
         .subscribe((places: any): void => {
           this.placesArr = places;

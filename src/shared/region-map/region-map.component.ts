@@ -24,7 +24,7 @@ export class RegionMapComponent implements OnChanges, OnDestroy, AfterViewInit {
   @ViewChild('marker')
   public marker: ElementRef;
 
-  @Input('mapData')
+  @Input()
   public mapData: any;
 
   public markerPosition: any = {};

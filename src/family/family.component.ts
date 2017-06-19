@@ -1,3 +1,6 @@
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 import {
   Component,
   OnInit,
@@ -5,15 +8,8 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
-
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-
 import { forEach, difference, map, find, chain } from 'lodash';
-
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import {
   StreetSettingsService,
   CountriesFilterService,
@@ -22,9 +18,7 @@ import {
   BrowserDetectionService,
   LanguageService
 } from '../common';
-
 import { FamilyService } from './family.service';
-
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
 

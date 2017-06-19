@@ -41,7 +41,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('thingsSearch')
   public thingsSearch: ElementRef;
 
-  @Output('isFilterGotData')
+  @Output()
   public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
   @Input()
   public url: string;

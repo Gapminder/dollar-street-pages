@@ -46,11 +46,13 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(() => {
         let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
+        let floatFooterContainerElement: HTMLElement = this.floatFooterContainer.nativeElement;
+
         this.zone.run(() => {
-          this.floatFooterContainer.nativeElement.classList.add('show-float-footer');
+          floatFooterContainerElement.classList.add('show-float-footer');
 
           if (!scrollTop) {
-            this.floatFooterContainer.nativeElement.classList.remove('show-float-footer');
+            floatFooterContainerElement.classList.remove('show-float-footer');
           }
         });
       });

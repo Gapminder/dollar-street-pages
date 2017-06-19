@@ -1,39 +1,43 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
+import {
+  Component,
+  AfterViewInit,
+  OnDestroy
+} from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
+import {
+  LoaderService,
+  TitleHeaderService,
+  LanguageService
+} from '../common';
 import { AboutService } from './about.service';
-import { LoaderService, TitleHeaderService, LanguageService } from '../common';
 
 @Component({
   selector: 'about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.css']
 })
-
-export class AboutComponent implements OnInit, OnDestroy {
+export class AboutComponent implements AfterViewInit, OnDestroy {
   public about: any;
   public aboutContent: SafeHtml;
   public aboutService: AboutService;
   public aboutSubscribe: Subscription;
   public titleHeaderService: TitleHeaderService;
   public loaderService: LoaderService;
-  public sanitizer: DomSanitizer;
   public languageService: LanguageService;
   public getTranslationSubscribe: Subscription;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
-                     sanitizer: DomSanitizer,
                      titleHeaderService: TitleHeaderService,
                      languageService: LanguageService) {
-    this.sanitizer = sanitizer;
     this.aboutService = aboutService;
     this.loaderService = loaderService;
     this.titleHeaderService = titleHeaderService;
     this.languageService = languageService;
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
     this.loaderService.setLoader(false);
 
     this.getTranslationSubscribe = this.languageService.getTranslation('ABOUT').subscribe((trans: any) => {

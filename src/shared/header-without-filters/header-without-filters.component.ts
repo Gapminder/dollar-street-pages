@@ -42,6 +42,10 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
     this.streetSettingsService = streetSettingsService;
   }
 
+  public ngAfterViewInit(): any {
+    this.rendererTitle(this.title);
+  }
+
   public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
 
@@ -67,10 +71,6 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
   public ngOnDestroy(): void {
     this.titleHeaderSubscribe.unsubscribe();
-  }
-
-  public ngAfterViewInit(): any {
-    this.rendererTitle(this.title);
   }
 
   public rendererTitle(title: string): void {

@@ -1,24 +1,28 @@
 import 'rxjs/operator/debounceTime';
 
-import { Component,
-         Input,
-         Output,
-         OnChanges,
-         OnDestroy,
-         NgZone,
-         EventEmitter,
-         OnInit,
-         ElementRef,
-         ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  OnChanges,
+  OnDestroy,
+  NgZone,
+  EventEmitter,
+  OnInit,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
 
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 
-import { StreetSettingsService,
-         DrawDividersInterface,
-         BrowserDetectionService,
-         LanguageService,
-         UtilsService } from '../../../common';
+import {
+  StreetSettingsService,
+  DrawDividersInterface,
+  BrowserDetectionService,
+  LanguageService,
+  UtilsService
+} from '../../../common';
 
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 

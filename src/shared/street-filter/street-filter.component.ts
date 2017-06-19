@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs/Subscription';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
-  OnInit,
   Input,
   ElementRef,
   OnDestroy,
@@ -9,17 +10,11 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { sortBy, chain } from 'lodash';
-
 import {
   MathService,
   StreetSettingsService
 } from '../../common';
-
 import { StreetFilterDrawService } from './street-filter.service';
 
 @Component({
@@ -28,17 +23,17 @@ import { StreetFilterDrawService } from './street-filter.service';
   styleUrls: ['./street-filter.component.css']
 })
 
-export class StreetFilterComponent implements OnInit, OnDestroy, AfterViewInit {
+export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
 
-  @Input('places')
+  @Input()
   public places: any[];
-  @Input('lowIncome')
+  @Input()
   public lowIncome: number;
-  @Input('highIncome')
+  @Input()
   public highIncome: number;
-  @Output('filterStreet')
+  @Output()
   public filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
   public math: MathService;
@@ -65,12 +60,8 @@ export class StreetFilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.street.set('isInit', true);
 
-    this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
-      this.filterStreet.emit(filter);
-    });
-  }
+    this.streetFilterSubscribe = this.street.filter.subscribe(this.filterStreet);
 
-  public ngOnInit(): void {
     this.streetServiceSubscribe = this.streetSettingsService
       .getStreetSettings()
       .subscribe((res: any) => {
@@ -101,7 +92,6 @@ export class StreetFilterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public setDividers(places: any, drawDividers: any): void {
-
     this.street
       .clearSvg()
       .init(this.lowIncome, this.highIncome, this.streetData)

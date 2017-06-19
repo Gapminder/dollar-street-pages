@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import {
   Component,
   Output,
@@ -7,9 +8,6 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-
-import { Subscription } from 'rxjs/Subscription';
-
 import { StreetSettingsService } from '../../common';
 
 @Component({
@@ -30,13 +28,13 @@ export class IncomeFilterComponent implements AfterViewInit {
   @ViewChild('closeButton')
   public closeButton: ElementRef;
 
-  @Input('places')
+  @Input()
   public places: any[];
-  @Input('lowIncome')
+  @Input()
   public lowIncome: number;
-  @Input('highIncome')
+  @Input()
   public highIncome: number;
-  @Output('sendResponse')
+  @Output()
   public sendResponse: EventEmitter<any> = new EventEmitter<any>();
 
   public range: {lowIncome: number; highIncome: number; close?: boolean} = {
@@ -68,9 +66,9 @@ export class IncomeFilterComponent implements AfterViewInit {
         if (buttonContainer) {
           let captureContainer = this.incomeFilterHeaderContainer.nativeElement;
 
-          let shortenWidth = this.showAll.nativeElement;
-          let okayButton = this.okButton.nativeElement;
-          let cancelButton = this.closeButton.nativeElement;
+          let shortenWidth: HTMLElement = this.showAll.nativeElement;
+          let okayButton: HTMLElement = this.okButton.nativeElement;
+          let cancelButton: HTMLElement = this.closeButton.nativeElement;
 
           let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
 

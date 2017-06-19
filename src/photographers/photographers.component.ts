@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   OnDestroy,
   ElementRef,
   ViewChild,
@@ -24,7 +23,7 @@ import { PhotographersService } from './photographers.service';
   styleUrls: ['./photographers.component.css']
 })
 
-export class PhotographersComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PhotographersComponent implements OnDestroy, AfterViewInit {
   @ViewChild('photographersSearch')
   public photographersSearch: ElementRef;
 
@@ -68,9 +67,7 @@ export class PhotographersComponent implements OnInit, OnDestroy, AfterViewInit 
           searchInput.blur();
         }
       });
-  }
 
-  public ngOnInit(): void {
     this.isDesktop = this.device.isDesktop();
 
     this.loaderService.setLoader(false);

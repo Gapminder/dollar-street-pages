@@ -1,22 +1,18 @@
 import 'rxjs/operator/debounceTime';
+import { Subscription } from 'rxjs/Rx';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
-  OnInit,
   Input,
   ElementRef,
   OnDestroy,
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-
-import { Subscription } from 'rxjs/Rx';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import {
   StreetSettingsService,
   DrawDividersInterface
 } from '../../common';
-
 import { StreetFamilyDrawService } from './street-family.service';
 
 @Component({
@@ -25,13 +21,13 @@ import { StreetFamilyDrawService } from './street-family.service';
   styleUrls: ['./street-family.component.css']
 })
 
-export class StreetFamilyComponent implements OnInit, OnDestroy, AfterViewInit {
+export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
   @ViewChild('streetFamilyBoxContainer')
   public streetFamilyBoxContainer: ElementRef;
 
-  @Input('place')
+  @Input()
   public place: any;
 
   public window: Window = window;
@@ -75,9 +71,7 @@ export class StreetFamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.drawStreet(this.streetData, this.place);
       });
-  }
 
-  public ngOnInit(): any {
     this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((res: any) => {
         if (res.err) {

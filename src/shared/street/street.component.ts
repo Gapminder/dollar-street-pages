@@ -40,17 +40,17 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
 
-  @Input('thing')
+  @Input()
   public thing: string;
-  @Input('query')
+  @Input()
   public query: string;
-  @Input('places')
+  @Input()
   public places: Observable<any>;
-  @Input('chosenPlaces')
+  @Input()
   public chosenPlaces: Observable<any>;
-  @Input('hoverPlace')
+  @Input()
   public hoverPlace: Subject<any>;
-  @Output('filterStreet')
+  @Output()
   public filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
   public data: any;

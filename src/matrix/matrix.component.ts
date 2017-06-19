@@ -1,7 +1,8 @@
 import 'rxjs/add/operator/debounceTime';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 import {
   Component,
-  OnInit,
   ElementRef,
   OnDestroy,
   NgZone,
@@ -12,8 +13,6 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 import { chain, cloneDeep, find, map, difference, forEach } from 'lodash';
 import {
   LoaderService,
@@ -26,15 +25,10 @@ import {
   ActiveThingService,
   UtilsService
 } from '../common';
-
 import { GuideComponent } from '../shared';
-
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { MatrixService } from './matrix.service';
-
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
-
 import { ImageResolutionInterface } from '../interfaces';
 
 @Component({
@@ -43,7 +37,7 @@ import { ImageResolutionInterface } from '../interfaces';
   styleUrls: ['./matrix.component.css']
 })
 
-export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
+export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   @ViewChild(MatrixImagesComponent)
   public matrixImagesComponent: MatrixImagesComponent;
   @ViewChild(GuideComponent)
@@ -55,6 +49,9 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
   @ViewChild('matrixHeader')
   public headerContainer: ElementRef;
 
+  public headerContainerElement: HTMLElement;
+  public streetContainerElement: HTMLElement;
+  public streetAndTitleContainerElement: HTMLElement;
   public zoomPositionFixed: boolean;
   public isOpenIncomeFilter: boolean = false;
   public isMobile: boolean;
@@ -171,9 +168,10 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
   public ngAfterViewInit(): void {
     this.matrixImagesContainer = this.matrixImagesComponent.element;
     this.guideContainer = this.guideComponent.element;
-  }
+    this.headerContainerElement = this.headerContainer.nativeElement;
+    this.streetContainerElement = this.streetContainer.nativeElement;
+    this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
 
-  public ngOnInit(): void {
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'BY_INCOME']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
       this.byIncomeText = trans.BY_INCOME;
@@ -318,13 +316,13 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
             }
           }
 
-          let headerHeight: number = this.headerContainer.nativeElement.clientHeight;
+          let headerHeight: number = this.headerContainerElement.clientHeight;
 
           if (scrollTop > headerHeight) {
-            this.headerContainer.nativeElement.style.position = 'fixed';
-            this.matrixImagesContainer.style.paddingTop = this.headerContainer.nativeElement.clientHeight + 'px';
+            this.headerContainerElement.style.position = 'fixed';
+            this.matrixImagesContainer.style.paddingTop = this.headerContainerElement.clientHeight + 'px';
           } else {
-            this.headerContainer.nativeElement.style.position = 'static';
+            this.headerContainerElement.style.position = 'static';
             this.matrixImagesContainer.style.paddingTop = '0px';
           }
 
@@ -442,7 +440,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
   /** each document usage breaks possible server side rendering */
   public stopScroll(): void {
     if (this.isMobile) {
-      let fixedStreet: HTMLElement = this.streetContainer.nativeElement.classList.contains('fixed') ? this.streetContainer.nativeElement as HTMLElement : undefined;
+      let fixedStreet: HTMLElement = this.streetContainerElement.classList.contains('fixed') ? this.streetContainerElement : undefined;
 
       if (fixedStreet) {
         this.getVisibleRows(fixedStreet.offsetHeight);
@@ -488,7 +486,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
 
     let {isGuide} = options;
 
-    let headerHeight: number = this.headerContainer.nativeElement.offsetHeight;
+    let headerHeight: number = this.headerContainerElement.offsetHeight;
 
     if (this.guideContainer) {
       headerHeight -= this.guidePositionTop;
@@ -706,31 +704,31 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
 
     this.imagesContainer = this.matrixImagesComponent.imagesContainer.nativeElement;
 
-    if (scrollTop > this.headerContainer.nativeElement.clientHeight) {
-      if (this.streetContainer.nativeElement.className.indexOf('fixed') !== -1) {
+    if (scrollTop > this.headerContainerElement.clientHeight) {
+      if (this.streetContainerElement.className.indexOf('fixed') !== -1) {
         return;
       }
 
-      this.streetContainer.nativeElement.classList.add('fixed');
-      this.streetAndTitleContainer.nativeElement.style.position = 'fixed';
-      this.streetAndTitleContainer.nativeElement.style.zIndex = '1000';
-      this.imagesContainer.style.paddingTop = this.streetContainer.nativeElement.clientHeight * 2 + 'px';
+      this.streetContainerElement.classList.add('fixed');
+      this.streetAndTitleContainerElement.style.position = 'fixed';
+      this.streetAndTitleContainerElement.style.zIndex = '1000';
+      this.imagesContainer.style.paddingTop = this.streetContainerElement.clientHeight * 2 + 'px';
 
       if (this.guideContainer) {
-        this.headerContainer.nativeElement.style.marginTop = '-' + this.guideContainer.clientHeight + 'px';
+        this.headerContainerElement.style.marginTop = '-' + this.guideContainer.clientHeight + 'px';
       }
     } else {
-      if (this.streetContainer.nativeElement.className.indexOf('fixed') === -1) {
+      if (this.streetContainerElement.className.indexOf('fixed') === -1) {
         return;
       }
 
-      this.streetContainer.nativeElement.classList.remove('fixed');
-      this.streetAndTitleContainer.nativeElement.style.position = 'static';
-      this.streetAndTitleContainer.nativeElement.style.zIndex = '1';
+      this.streetContainerElement.classList.remove('fixed');
+      this.streetAndTitleContainerElement.style.position = 'static';
+      this.streetAndTitleContainerElement.style.zIndex = '1';
       this.imagesContainer.style.paddingTop = '0px';
 
       if (this.guideContainer) {
-        this.headerContainer.nativeElement.style.marginTop = '0px';
+        this.headerContainerElement.style.marginTop = '0px';
       }
     }
   }
@@ -794,7 +792,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
       if (countries.length > 2) {
-        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+        this.activeCountries = `${getTranslatedCountries.slice(0, 2).join(', ')} (+${getTranslatedCountries.length - 2})`;
       } else {
         this.activeCountries = getTranslatedCountries.join(' & ');
       }
@@ -806,7 +804,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
 
     if (regions[0] !== 'World') {
       if (regions.length > 2) {
-        this.activeCountries = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+        this.activeCountries = `${getTranslatedCountries.slice(0, 2).join(', ')} (+${getTranslatedCountries.length - 2})`;
       } else {
         let sumCountries: number = 0;
         let countriesDiff: string[] = [];
@@ -840,7 +838,7 @@ export class MatrixComponent implements OnInit, OnDestroy, AfterViewChecked, Aft
     let concatLocations: string[] = regions.concat(getTranslatedCountries);
 
     if (concatLocations.length > 2) {
-      this.activeCountries = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
+      this.activeCountries = `${concatLocations.slice(0, 2).join(', ')} (+${concatLocations.length - 2})`;
     } else {
       this.activeCountries = concatLocations.join(' & ');
     }

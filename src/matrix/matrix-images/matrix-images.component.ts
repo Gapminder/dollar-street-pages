@@ -1,28 +1,35 @@
 import 'rxjs/operator/debounceTime';
-
-import { Component, Input, EventEmitter, ElementRef, Output, OnInit, OnDestroy, NgZone, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
+import {
+  Component,
+  Input,
+  EventEmitter,
+  ElementRef,
+  Output,
+  OnInit,
+  OnDestroy,
+  NgZone,
+  ViewChild
+} from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
-
 import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
-
-import { MathService,
-         LoaderService,
-         CountriesFilterService,
-         LanguageService,
-         BrowserDetectionService } from '../../common';
+import {
+  MathService,
+  LoaderService,
+  CountriesFilterService,
+  LanguageService,
+  BrowserDetectionService
+} from '../../common';
 
 @Component({
   selector: 'matrix-images',
   templateUrl: './matrix-images.component.html',
   styleUrls: ['./matrix-images.component.css']
 })
-
 export class MatrixImagesComponent implements OnInit, OnDestroy {
   @ViewChild(MatrixViewBlockComponent)
   public matrixViewBlockComponent: MatrixViewBlockComponent;
@@ -31,30 +38,30 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   @ViewChild('imageContent')
   public imageContent: ElementRef;
 
-  @Input('query')
+  @Input()
   public query: string;
-  @Input('thing')
+  @Input()
   public thing: string;
-  @Input('places')
+  @Input()
   public places: Observable<any>;
-  @Input('activeHouse')
+  @Input()
   public activeHouse: number;
-  @Input('zoom')
+  @Input()
   public zoom: number;
-  @Input('showblock')
+  @Input()
   public showblock: boolean = false;
-  @Input('row')
+  @Input()
   public row: number;
-  @Input('guidePositionTop')
+  @Input()
   public guidePositionTop: number;
-  @Input('clearActiveHomeViewBox')
+  @Input()
   public clearActiveHomeViewBox: Subject<any>;
 
-  @Output('hoverPlace')
+  @Output()
   public hoverPlace: EventEmitter<any> = new EventEmitter<any>();
-  @Output('activeHouseOptions')
+  @Output()
   public activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
-  @Output('filter')
+  @Output()
   public filter: EventEmitter<any> = new EventEmitter<any>();
 
   public languageService: LanguageService;
@@ -62,7 +69,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public sorryWeHaveNoTranslate: string;
   public onThisIncomeYetTranslate: string;
   public inTranslate: string;
-
   public selectedCountries: any;
   public selectedRegions: any;
   public activeCountries: any;
@@ -117,6 +123,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): any {
     let isInit: boolean = true;
+
     this.isDesktop = this.device.isDesktop();
 
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'SORRY_WE_HAVE_NO', 'ON_THIS_INCOME_YET', 'ON_THIS_INCOME_YET', 'IN']).subscribe((trans: any) => {
@@ -411,13 +418,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public getImageHeight(): void {
-    let boxContainer: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
+    let boxContainer: HTMLElement = this.imagesContainer.nativeElement;
+    let imgContent: HTMLElement = this.imageContent.nativeElement;
 
-    if (!boxContainer) {
+    if (!boxContainer || !imgContent) {
       return;
     }
-
-    let imgContent: HTMLElement = this.imageContent.nativeElement as HTMLElement;
 
     let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
 

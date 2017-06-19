@@ -1,23 +1,27 @@
 import 'rxjs/operator/debounceTime';
-import { Component,
-         OnInit,
-         OnDestroy,
-         Input,
-         NgZone,
-         ElementRef,
-         EventEmitter,
-         Output,
-         ViewChild } from '@angular/core';
-
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { Subscription } from 'rxjs/Subscription';
-import { BrowserDetectionService,
-         StreetSettingsService,
-         DrawDividersInterface,
-         MathService,
-         LanguageService,
-         UtilsService } from '../../common';
+
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  NgZone,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild
+} from '@angular/core';
+
+import {
+  BrowserDetectionService,
+  StreetSettingsService,
+  DrawDividersInterface,
+  MathService,
+  LanguageService,
+  UtilsService
+} from '../../common';
 
 import { FamilyHeaderService } from './family-header.service';
 
@@ -37,12 +41,12 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('shortFamilyInfoContainer')
   public shortFamilyInfoContainer: ElementRef;
 
-  @Input('placeId')
+  @Input()
   public placeId: string;
 
-  @Output('familyExpandBlock')
+  @Output()
   public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
-  @Output('streetFamilyData')
+  @Output()
   public streetFamilyData: EventEmitter<any> = new EventEmitter<any>();
 
   public readMoreTranslate: string;
