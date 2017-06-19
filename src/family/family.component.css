@@ -82,6 +82,7 @@ family-header {
   box-shadow: 0 0 3.9px 0.1px rgba(0, 0, 0, 0.32);
   background: rgba(255, 255, 255, 0.8) center center no-repeat;
   background-size: 16px auto !important;
+  margin: 4px;
 }
 
 .zoom-column button[disabled] {
@@ -89,13 +90,8 @@ family-header {
   opacity: .5;
 }
 
-.zoom-column .increase {
-  background-image: url('/assets/img/plus.svg');
-  margin-right: 8px;
-}
-
-.zoom-column .decrease {
-  background-image: url('/assets/img/minus.svg');
+.sign {
+  margin-bottom: 4px;
 }
 
 @media (max-width: 1023px) {
