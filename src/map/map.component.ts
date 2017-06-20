@@ -10,7 +10,6 @@ import {
   LoaderService,
   UrlChangeService,
   Angulartics2GoogleAnalytics,
-  StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService,
   LanguageService
@@ -69,7 +68,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public queryParamsSubscribe: Subscription;
   public loaderService: LoaderService;
   public streetData: DrawDividersInterface;
-  public streetSettingsService: StreetSettingsService;
   public streetServiceSubscribe: Subscription;
   public windowInnerWidth: number = window.innerWidth;
   public device: BrowserDetectionService;
@@ -84,7 +82,6 @@ export class MapComponent implements OnInit, OnDestroy {
                      loaderService: LoaderService,
                      activatedRoute: ActivatedRoute,
                      urlChangeService: UrlChangeService,
-                     streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService) {
@@ -97,7 +94,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.activatedRoute = activatedRoute;
     this.device = browserDetectionService;
     this.urlChangeService = urlChangeService;
-    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
 
@@ -127,17 +123,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
         this.urlChanged(query);
         isInit = false;
-      });
-
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
       });
   }
 

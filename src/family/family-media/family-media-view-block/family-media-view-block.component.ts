@@ -1,5 +1,6 @@
 import 'rxjs/operator/debounceTime';
-
+import { Subscription } from 'rxjs/Subscription';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
   Input,
@@ -12,20 +13,13 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
-
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import {
-  StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService,
   LanguageService,
   UtilsService
 } from '../../../common';
-
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
-
 import { ImageResolutionInterface } from '../../../interfaces';
 
 @Component({
@@ -57,8 +51,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public resizeSubscribe: Subscription;
   public imageResolution: ImageResolutionInterface;
   public windowInnerWidth: number = window.innerWidth;
-  public streetServiceSubscribe: Subscription;
-  public streetSettingsService: StreetSettingsService;
   public device: BrowserDetectionService;
   public utilsService: UtilsService;
   public isDesktop: boolean;
@@ -68,7 +60,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public element: HTMLElement;
 
   public constructor(zone: NgZone,
-                     streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      viewBlockService: FamilyMediaViewBlockService,
                      languageService: LanguageService,
@@ -77,7 +68,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
-    this.streetSettingsService = streetSettingsService;
     this.languageService = languageService;
     this.utilsService = utilsService;
     this.element = elementRef.nativeElement;
@@ -88,17 +78,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnInit(): void {
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-      });
-
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -173,9 +152,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
       this.viewBlockServiceSubscribe.unsubscribe();
     }
 
-    if(this.streetServiceSubscribe) {
+    /*if(this.streetServiceSubscribe) {
       this.streetServiceSubscribe.unsubscribe();
-    }
+    }*/
   }
 
   public openPopUp(): void {

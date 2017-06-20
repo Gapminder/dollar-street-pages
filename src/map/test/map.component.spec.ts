@@ -106,7 +106,7 @@ describe('', () => {
                             BrowserDetectionService,
                             { provide: LoaderService, useClass: MockLoaderService },
                             { provide: MapService, useClass: MockMapService },
-                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
+                            // { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
                             { provide: LanguageService, useClass: MockLanguageService }
                        ],

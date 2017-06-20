@@ -19,7 +19,7 @@ import {
   UrlChangeService,
   CountriesFilterService,
   Angulartics2GoogleAnalytics,
-  StreetSettingsService,
+  // StreetSettingsService,
   BrowserDetectionService,
   LanguageService,
   ActiveThingService,
@@ -91,7 +91,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public queryParamsSubscribe: Subscription;
   public headerFixedSubscribe: Subscription;
   public matrixServiceSubscribe: Subscription;
-  public matrixServiceStreetSubscribe: Subscription;
+  // public matrixServiceStreetSubscribe: Subscription;
   public countriesFilterServiceSubscribe: Subscription;
   public thing: string;
   public activeThing: any;
@@ -107,7 +107,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public activatedRoute: ActivatedRoute;
   public urlChangeService: UrlChangeService;
   public countriesFilterService: CountriesFilterService;
-  public streetSettingsService: StreetSettingsService;
+  // public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public element: HTMLElement;
   public imageResolution: ImageResolutionInterface;
@@ -135,7 +135,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
                      loaderService: LoaderService,
                      urlChangeService: UrlChangeService,
                      countriesFilterService: CountriesFilterService,
-                     streetSettingsService: StreetSettingsService,
+                    //  streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
@@ -153,7 +153,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.device = browserDetectionService;
     this.urlChangeService = urlChangeService;
     this.countriesFilterService = countriesFilterService;
-    this.streetSettingsService = streetSettingsService;
+    // this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
     this.activeThingService = activeThingService;
@@ -250,7 +250,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    this.matrixServiceStreetSubscribe = this.streetSettingsService.getStreetSettings()
+    /*this.matrixServiceStreetSubscribe = this.streetSettingsService.getStreetSettings()
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
@@ -297,7 +297,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
         }
 
         this.urlChanged({isInit: true});
-      });
+      });*/
 
     this.headerFixedSubscribe = fromEvent(document, 'scroll')
       .subscribe(() => {
@@ -364,7 +364,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.resizeSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
     this.matrixServiceSubscribe.unsubscribe();
-    this.matrixServiceStreetSubscribe.unsubscribe();
+    // this.matrixServiceStreetSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 

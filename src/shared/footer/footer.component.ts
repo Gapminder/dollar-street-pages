@@ -1,10 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import { compact } from 'lodash';
 import { FooterService } from './footer.service';
 import {
-  StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService,
   Angulartics2GoogleAnalytics,
@@ -17,7 +23,6 @@ import {
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-
 export class FooterComponent implements OnInit, OnDestroy {
   public page: string;
   public footerData: any;
@@ -30,28 +35,27 @@ export class FooterComponent implements OnInit, OnDestroy {
   public utilsService: UtilsService;
   public footerServiceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
-  public streetServiceSubscribe: Subscription;
-  public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public store: Store<AppStateInterface>;
 
   public languageService: LanguageService;
 
   public constructor(router: Router,
                      footerService: FooterService,
-                     streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     store: Store<AppStateInterface>) {
     this.router = router;
     this.footerService = footerService;
     this.utilsService = utilsService;
     this.device = browserDetectionService;
-    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
+    this.store = store;
   }
 
   public ngOnInit(): any {
@@ -77,16 +81,9 @@ export class FooterComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-      });
+    AppEffects.checkForDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+    });
 
     this.footerServiceSubscribe = this.footerService.getFooter(this.languageService.getLanguageParam())
       .subscribe((val: any) => {

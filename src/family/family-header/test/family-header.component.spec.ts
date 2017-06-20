@@ -78,7 +78,7 @@ describe('FamilyHeaderComponent', () => {
                             BrowserDetectionService,
                             UtilsService,
                             { provide: LanguageService, useClass: MockLanguageService },
-                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
+                            // { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics }
                        ]
         });

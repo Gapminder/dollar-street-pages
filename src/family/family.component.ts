@@ -1,6 +1,9 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../ngrx/app.state';
+import { AppEffects } from '../ngrx/app.effects';
 import {
   Component,
   OnInit,
@@ -11,7 +14,6 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { forEach, difference, map, find, chain } from 'lodash';
 import {
-  StreetSettingsService,
   CountriesFilterService,
   UrlChangeService,
   Angulartics2GoogleAnalytics,
@@ -56,7 +58,6 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
   public placeId: string;
   public urlParams: UrlParamsInterface;
-  public streetSettingsService: StreetSettingsService;
   public streetSettingsServiceSubscribe: Subscription;
   public homeIncomeData: any;
   public rich: any;
@@ -82,27 +83,28 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
   public query: string;
+  public store: Store<AppStateInterface>;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
                      countriesFilterService: CountriesFilterService,
-                     streetSettingsService: StreetSettingsService,
                      urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      familyService: FamilyService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
-                     elementRef: ElementRef) {
+                     elementRef: ElementRef,
+                     store: Store<AppStateInterface>) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.streetSettingsService = streetSettingsService;
     this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
     this.languageService = languageService;
     this.familyService = familyService;
     this.device = browserDetectionService;
     this.element = elementRef.nativeElement;
+    this.store = store;
 
     this.isDesktop = this.device.isDesktop();
   }
@@ -161,24 +163,18 @@ export class FamilyComponent implements OnInit, OnDestroy {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    this.streetSettingsServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((val: any) => {
-        if (val.err) {
-          console.error(val.err);
-          return;
-        }
+    AppEffects.checkForDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.homeIncomeData = data;
 
-        this.homeIncomeData = val.data;
+      this.poor = this.homeIncomeData.poor;
+      this.rich = this.homeIncomeData.rich;
 
-        this.poor = this.homeIncomeData.poor;
-        this.rich = this.homeIncomeData.rich;
+      if (!this.locations) {
+        return;
+      }
 
-        if (!this.locations) {
-          return;
-        }
-
-        this.initData();
-      });
+      this.initData();
+    });
 
     this.countriesFilterServiceSubscribe = this.countriesFilterService
       .getCountries(`thing=${this.urlParams.thing}${this.languageService.getLanguageParam()}`)

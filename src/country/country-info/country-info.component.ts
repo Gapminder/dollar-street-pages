@@ -1,7 +1,20 @@
-import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-
-import { MathService, StreetSettingsService, DrawDividersInterface, LanguageService, BrowserDetectionService } from '../../common';
+import { Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  EventEmitter,
+  Output
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
+import {
+  MathService,
+  DrawDividersInterface,
+  LanguageService,
+  BrowserDetectionService
+} from '../../common';
 import { CountryInfoService } from './country-info.service';
 
 @Component({
@@ -26,23 +39,23 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public math: MathService;
   public countryInfoService: CountryInfoService;
   public countryInfoServiceSubscribe: Subscription;
-  public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
   public streetServiceSubscribe: Subscription;
   public languageService: LanguageService;
   public device: BrowserDetectionService;
+  public store: Store<AppStateInterface>;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,
-                     streetSettingsService: StreetSettingsService,
                      languageService: LanguageService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     store: Store<AppStateInterface>) {
     this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
-    this.streetSettingsService = streetSettingsService;
     this.isShowInfo = false;
     this.languageService = languageService;
+    this.store = store;
   }
 
   public ngOnInit(): void {
@@ -62,13 +75,9 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         this.getCountry.emit(this.country.alias || this.country.country);
       });
 
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-        this.streetData = res.data;
+      AppEffects.checkForDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+        this.streetData = data;
+        // console.log(data);
       });
   }
 

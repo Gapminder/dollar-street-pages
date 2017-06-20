@@ -1,7 +1,9 @@
 import 'rxjs/operator/debounceTime';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import {
   Component,
   OnInit,
@@ -13,7 +15,6 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-
 import {
   BrowserDetectionService,
   StreetSettingsService,
@@ -22,7 +23,6 @@ import {
   LanguageService,
   UtilsService
 } from '../../common';
-
 import { FamilyHeaderService } from './family-header.service';
 
 @Component({
@@ -71,7 +71,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public headerElement: HTMLElement;
   public headerHeight: number;
   public headerContentHeight: number;
-  public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
   public streetSettingsServiceSubscribe: Subscription;
   public device: BrowserDetectionService;
@@ -83,23 +82,24 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public utilsService: UtilsService;
   public currentLanguage: string;
   public showTranslateMe: boolean;
+  public store: Store<AppStateInterface>;
 
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,
-                     streetSettingsService: StreetSettingsService,
                      familyHeaderService: FamilyHeaderService,
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     store: Store<AppStateInterface>) {
     this.zone = zone;
     this.math = math;
-    this.streetSettingsService = streetSettingsService;
     this.element = element.nativeElement;
     this.familyHeaderService = familyHeaderService;
     this.device = browserDetectionService;
     this.languageService = languageService;
     this.utilsService = utilsService;
+    this.store = store;
   }
 
   public ngOnInit(): void {
@@ -134,16 +134,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         }
 
         this.truncCountryName(this.home.country);
-      });
-
-    this.streetSettingsServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
       });
 
     this.scrollSubscribe = fromEvent(document, 'scroll')
@@ -186,9 +176,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if(this.streetSettingsServiceSubscribe) {
+    /*if(this.streetSettingsServiceSubscribe) {
       this.streetSettingsServiceSubscribe.unsubscribe();
-    }
+    }*/
 
     if(this.familyHeaderServiceSubscribe) {
       this.familyHeaderServiceSubscribe.unsubscribe();

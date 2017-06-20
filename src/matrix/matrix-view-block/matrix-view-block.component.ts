@@ -1,4 +1,6 @@
 import 'rxjs/operator/debounceTime';
+import { Subscription } from 'rxjs/Rx';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
   Input,
@@ -12,19 +14,16 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { ImageResolutionInterface } from '../../interfaces';
-
 import { MathService,
-         StreetSettingsService,
          DrawDividersInterface,
          BrowserDetectionService,
          LanguageService,
          UtilsService } from '../../common';
-
 import { MatrixViewBlockService } from './matrix-view-block.service';
 
 @Component({
@@ -74,15 +73,14 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public isShowCountryButton: boolean;
   public countryName: string;
   public streetData: DrawDividersInterface;
-  public streetSettingsService: StreetSettingsService;
   public utilsServece: UtilsService;
-  public streetServiceSubscribe: Subscription;
   public languageService: LanguageService;
   public showTranslateMe: boolean;
   public imageResolution: ImageResolutionInterface;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public currentLanguage: string;
+  public store: Store<AppStateInterface>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -90,18 +88,18 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      element: ElementRef,
                      familyInfoService: MatrixViewBlockService,
                      browserDetectionService: BrowserDetectionService,
-                     streetSettingsService: StreetSettingsService,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     store: Store<AppStateInterface>) {
     this.math = math;
     this.zone = zone;
     this.router = router;
     this.element = element.nativeElement;
-    this.streetSettingsService = streetSettingsService;
     this.device = browserDetectionService;
     this.familyInfoService = familyInfoService;
     this.languageService = languageService;
     this.utilsServece = utilsService;
+    this.store = store;
 
     this.isDesktop = this.device.isDesktop();
 
@@ -124,14 +122,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         });
       });
 
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-        this.streetData = res.data;
-      });
+    AppEffects.checkForDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+    });
   }
 
   // tslint:disable-next-line

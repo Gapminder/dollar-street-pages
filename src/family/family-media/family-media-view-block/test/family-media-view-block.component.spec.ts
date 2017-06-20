@@ -83,7 +83,7 @@ describe('FamilyMediaViewBlockComponent', () => {
                             Angulartics2,
                             UtilsService,
                             { provide: LanguageService, useClass: MockLanguageService },
-                            { provide: StreetSettingsService, useClass: MockStreetSettingsService }
+                            // { provide: StreetSettingsService, useClass: MockStreetSettingsService }
                        ]
         }).compileComponents();
 
