@@ -4,7 +4,7 @@ import { Effect, Actions, toPayload } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
 
 import { AppActions, setAction } from './app.actions';
-import { AppStateInterface, appStateName, AppState } from './app.state';
+import { AppStateInterface, appStateName } from './app.state';
 import { EffectStateRel } from './effect-state-relations';
 
 import { StreetSettingsService } from '../common';
@@ -25,11 +25,11 @@ export class AppEffects {
         this.storeState = store.select(appStateName);
     }
 
-    public static checkForDispatch(store: Store<AppStateInterface>, action: string): Promise<any> {
+    public getDataOrDispatch(store: Store<AppStateInterface>, action: string): Promise<any> {
         return new Promise((resolve, reject) => {
             switch (action) {
                 case AppEffects.GET_STREET_SETTINGS:
-                    AppEffects.processGetStreetSettings(store, resolve);
+                    this.processGetStreetSettings(store, resolve);
                 break;
 
                 default:
@@ -38,26 +38,11 @@ export class AppEffects {
         });
     }
 
-    public static processGetStreetSettings(store: Store<AppStateInterface>, cb: Function): void {
-        /*let storeState: Observable<AppStateInterface> = store.select(appStateName);
-
-        storeState.subscribe((data: AppStateInterface) => {
-            let storeData: any = data[EffectStateRel.GET_STREET_SETTINGS];
-
-            if (!storeData) {
-                store.dispatch(setAction(AppEffects.GET_STREET_SETTINGS));
-
-                AppActions.actionsEvent.on(AppActions.SET_STREET_SETTINGS, (data: any) => {
-                    cb(data[EffectStateRel.GET_STREET_SETTINGS]);
-                });
-            } else {
-                cb(storeData);
-            }
-        });*/
-        AppEffects.processRequest(AppEffects.GET_STREET_SETTINGS, AppActions.SET_STREET_SETTINGS, store, cb);
+    public processGetStreetSettings(store: Store<AppStateInterface>, cb: Function): void {
+        this.processRequest(AppEffects.GET_STREET_SETTINGS, AppActions.SET_STREET_SETTINGS, store, cb);
     }
 
-    public static processRequest(getRequest: string, setRequest: string, store: Store<AppStateInterface>, cb: Function): void {
+    public processRequest(getRequest: string, setRequest: string, store: Store<AppStateInterface>, cb: Function): void {
         let storeState: Observable<AppStateInterface> = store.select(appStateName);
 
         const storeDataKey: string = EffectStateRel[getRequest];

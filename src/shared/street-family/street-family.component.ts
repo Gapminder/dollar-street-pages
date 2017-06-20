@@ -1,6 +1,9 @@
 import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import {
   Component,
   Input,
@@ -10,7 +13,6 @@ import {
   AfterViewInit
 } from '@angular/core';
 import {
-  StreetSettingsService,
   DrawDividersInterface
 } from '../../common';
 import { StreetFamilyDrawService } from './street-family.service';
@@ -20,7 +22,6 @@ import { StreetFamilyDrawService } from './street-family.service';
   templateUrl: './street-family.component.html',
   styleUrls: ['./street-family.component.css']
 })
-
 export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
@@ -32,20 +33,20 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
   public window: Window = window;
   public street: any;
-  public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
   public element: HTMLElement;
-  public streetServiceSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
+  public store: Store<AppStateInterface>;
 
   public constructor(element: ElementRef,
-                     streetSettingsService: StreetSettingsService,
-                     streetDrawService: StreetFamilyDrawService) {
+                     streetDrawService: StreetFamilyDrawService,
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
-    this.streetSettingsService = streetSettingsService;
+    this.store = store;
   }
 
   public ngAfterViewInit(): void {
@@ -56,6 +57,12 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
       .getPropertyValue('margin-left');
 
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
+
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+
+      this.drawStreet(this.streetData, this.place);
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -68,18 +75,6 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
           .getPropertyValue('margin-left');
 
         this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
-
-        this.drawStreet(this.streetData, this.place);
-      });
-
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
 
         this.drawStreet(this.streetData, this.place);
       });

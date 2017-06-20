@@ -48,7 +48,8 @@ export class FooterComponent implements OnInit, OnDestroy {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStateInterface>) {
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.router = router;
     this.footerService = footerService;
     this.utilsService = utilsService;
@@ -60,6 +61,10 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): any {
     this.isDesktop = this.device.isDesktop();
+
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+    });
 
     this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
@@ -79,10 +84,6 @@ export class FooterComponent implements OnInit, OnDestroy {
 
         this.page = activePage;
       }
-    });
-
-    AppEffects.checkForDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
-      this.streetData = data;
     });
 
     this.footerServiceSubscribe = this.footerService.getFooter(this.languageService.getLanguageParam())

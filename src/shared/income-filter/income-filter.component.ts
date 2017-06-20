@@ -8,14 +8,15 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-import { StreetSettingsService } from '../../common';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 
 @Component({
   selector: 'income-filter',
   templateUrl: './income-filter.component.html',
   styleUrls: ['./income-filter.component.css']
 })
-
 export class IncomeFilterComponent implements AfterViewInit {
   @ViewChild('incomeFilterHeaderContainer')
   public incomeFilterHeaderContainer: ElementRef;
@@ -42,44 +43,43 @@ export class IncomeFilterComponent implements AfterViewInit {
     highIncome: this.highIncome
   };
   public streetData: any;
-  public streetSettingsService: StreetSettingsService;
-  public streetServiceSubscribe: Subscription;
   public element: HTMLElement;
+  public store: Store<AppStateInterface>;
 
-  public constructor(streetSettingsService: StreetSettingsService,
-                     element: ElementRef) {
-    this.streetSettingsService = streetSettingsService;
+  public constructor(store: Store<AppStateInterface>,
+                     element: ElementRef,
+                     private appEffects: AppEffects) {
     this.element = element.nativeElement;
+    this.store = store;
   }
 
   public ngAfterViewInit(): void {
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-        this.streetData = res.data;
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
 
-        let buttonContainer: HTMLElement = this.incomeFilterButtonContainer.nativeElement;
+      this.initData();
+    });
+  }
 
-        if (buttonContainer) {
-          let captureContainer = this.incomeFilterHeaderContainer.nativeElement;
+  public initData(): void {
+    let buttonContainer: HTMLElement = this.incomeFilterButtonContainer.nativeElement;
 
-          let shortenWidth: HTMLElement = this.showAll.nativeElement;
-          let okayButton: HTMLElement = this.okButton.nativeElement;
-          let cancelButton: HTMLElement = this.closeButton.nativeElement;
+    if (buttonContainer) {
+      let captureContainer = this.incomeFilterHeaderContainer.nativeElement;
 
-          let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
+      let shortenWidth: HTMLElement = this.showAll.nativeElement;
+      let okayButton: HTMLElement = this.okButton.nativeElement;
+      let cancelButton: HTMLElement = this.closeButton.nativeElement;
 
-          if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
-            shortenWidth.classList.add('decreaseFontSize');
-            cancelButton.classList.add('decreaseFontSize');
-            okayButton.classList.add('decreaseFontSize');
-            captureContainer.classList.add('decreaseFontSizeCapture');
-          }
-        }
-      });
+      let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
+
+      if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
+        shortenWidth.classList.add('decreaseFontSize');
+        cancelButton.classList.add('decreaseFontSize');
+        okayButton.classList.add('decreaseFontSize');
+        captureContainer.classList.add('decreaseFontSizeCapture');
+      }
+    }
   }
 
   public closeFilter(isClose?: boolean): void {

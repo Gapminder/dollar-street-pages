@@ -1,14 +1,12 @@
-import { ActionReducer, Action } from '@ngrx/store';
-
-import { AppState, AppStateInterface, appDefaultState } from './app.state';
-
+import { ActionReducer, Action, combineReducers } from '@ngrx/store';
+import { AppState, AppStateInterface, appStateName } from './app.state';
 import { AppActions } from './app.actions';
 
-export const appReducer: ActionReducer<AppStateInterface> = (state: AppState, action: Action) => {
+export const appReducerFunc: ActionReducer<AppStateInterface> = (state: AppState, action: Action) => {
     let newState: AppState;
 
     if(!state) {
-        state = appDefaultState;
+        state = new AppState();
     }
 
     switch (action.type) {
@@ -22,4 +20,12 @@ export const appReducer: ActionReducer<AppStateInterface> = (state: AppState, ac
     }
 
     return newState;
+}
+
+const reducers = { appState: appReducerFunc };
+
+const productionReducer: ActionReducer<AppStateInterface> = combineReducers(reducers);
+
+export function appReducer(state: AppState, action: Action) {
+    return productionReducer(state, action);
 }

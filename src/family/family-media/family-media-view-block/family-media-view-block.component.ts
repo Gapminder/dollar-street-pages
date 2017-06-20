@@ -13,6 +13,9 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../../ngrx/app.state';
+import { AppEffects } from '../../../ngrx/app.effects';
 import {
   DrawDividersInterface,
   BrowserDetectionService,
@@ -58,19 +61,23 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public languageService: LanguageService;
   public showTranslateMe: boolean;
   public element: HTMLElement;
+  public store: Store<AppStateInterface>;
 
   public constructor(zone: NgZone,
                      browserDetectionService: BrowserDetectionService,
                      viewBlockService: FamilyMediaViewBlockService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     elementRef: ElementRef) {
+                     elementRef: ElementRef,
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
     this.languageService = languageService;
     this.utilsService = utilsService;
     this.element = elementRef.nativeElement;
+    this.store = store;
 
     this.isDesktop = this.device.isDesktop();
 
@@ -78,6 +85,10 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnInit(): void {
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+    });
+
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -151,10 +162,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     if(this.viewBlockServiceSubscribe) {
       this.viewBlockServiceSubscribe.unsubscribe();
     }
-
-    /*if(this.streetServiceSubscribe) {
-      this.streetServiceSubscribe.unsubscribe();
-    }*/
   }
 
   public openPopUp(): void {

@@ -1,3 +1,8 @@
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import {
   Component,
   Input,
@@ -10,13 +15,8 @@ import {
   AfterViewInit,
   ViewChild
 } from '@angular/core';
-
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
 import {
-  StreetSettingsService,
   DrawDividersInterface,
   LocalStorageService,
   BrowserDetectionService,
@@ -29,7 +29,6 @@ import {
   templateUrl: './main-menu.template.html',
   styleUrls: ['./main-menu.component.css', './main-menu.component.mobile.css']
 })
-
 export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('socialShareContent')
   public socialShareContent: ElementRef;
@@ -48,10 +47,8 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public activatedRoute: ActivatedRoute;
   public hoverPlaceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
-  public streetServiceSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public localStorageService: LocalStorageService;
-  public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
@@ -59,23 +56,25 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public socialShareContentElement: HTMLElement;
   public languageService: LanguageService;
   public shareTranslation: string;
+  public store: Store<AppStateInterface>;
 
   public constructor(router: Router,
                      element: ElementRef,
                      activatedRoute: ActivatedRoute,
                      languageService: LanguageService,
                      localStorageService: LocalStorageService,
-                     streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.device = browserDetectionService;
     this.localStorageService = localStorageService;
-    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
+    this.store = store;
   }
 
   public ngAfterViewInit(): void {
@@ -109,16 +108,9 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-      });
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+    });
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
       .subscribe(() => {

@@ -94,7 +94,8 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
                      elementRef: ElementRef,
-                     store: Store<AppStateInterface>) {
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
@@ -163,7 +164,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    AppEffects.checkForDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.homeIncomeData = data;
 
       this.poor = this.homeIncomeData.poor;

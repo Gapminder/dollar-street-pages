@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import {
   Component,
   OnDestroy,
@@ -7,11 +8,12 @@ import {
   OnInit,
   AfterViewInit
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import { HeaderService } from '../header/header.service';
 import {
   TitleHeaderService,
-  StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService
 } from '../../common';
@@ -32,22 +34,22 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   public streetData: DrawDividersInterface;
   public titleHeaderSubscribe: Subscription;
   public headerServiceSubscribe: Subscription;
-  public streetServiceSubscribe: Subscription;
   public titleHeaderService: TitleHeaderService;
-  public streetSettingsService: StreetSettingsService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
+  public store: Store<AppStateInterface>;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     streetSettingsService: StreetSettingsService) {
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.renderer = renderer;
     this.headerService = headerService;
     this.device = browserDetectionService;
     this.titleHeaderService = titleHeaderService;
-    this.streetSettingsService = streetSettingsService;
+    this.store = store;
   }
 
   public ngAfterViewInit(): any {
@@ -59,21 +61,14 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
     this.title = this.titleHeaderService.getTitle();
 
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+    });
+
     this.titleHeaderSubscribe = this.titleHeaderService
       .getTitleEvent()
       .subscribe((data: {title: string}) => {
         this.rendererTitle(data.title);
-      });
-
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
       });
   }
 

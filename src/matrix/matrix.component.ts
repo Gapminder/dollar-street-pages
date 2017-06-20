@@ -1,6 +1,9 @@
 import 'rxjs/add/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../ngrx/app.state';
+import { AppEffects } from '../ngrx/app.effects';
 import {
   Component,
   ElementRef,
@@ -19,7 +22,6 @@ import {
   UrlChangeService,
   CountriesFilterService,
   Angulartics2GoogleAnalytics,
-  // StreetSettingsService,
   BrowserDetectionService,
   LanguageService,
   ActiveThingService,
@@ -36,7 +38,6 @@ import { ImageResolutionInterface } from '../interfaces';
   templateUrl: './matrix.component.html',
   styleUrls: ['./matrix.component.css']
 })
-
 export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   @ViewChild(MatrixImagesComponent)
   public matrixImagesComponent: MatrixImagesComponent;
@@ -91,7 +92,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public queryParamsSubscribe: Subscription;
   public headerFixedSubscribe: Subscription;
   public matrixServiceSubscribe: Subscription;
-  // public matrixServiceStreetSubscribe: Subscription;
   public countriesFilterServiceSubscribe: Subscription;
   public thing: string;
   public activeThing: any;
@@ -107,7 +107,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public activatedRoute: ActivatedRoute;
   public urlChangeService: UrlChangeService;
   public countriesFilterService: CountriesFilterService;
-  // public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public element: HTMLElement;
   public imageResolution: ImageResolutionInterface;
@@ -125,6 +124,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public activeThingService: ActiveThingService;
   public getTranslationSubscribe: Subscription;
   public byIncomeText: string;
+  public store: Store<AppStateInterface>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -135,13 +135,14 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
                      loaderService: LoaderService,
                      urlChangeService: UrlChangeService,
                      countriesFilterService: CountriesFilterService,
-                    //  streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      activeThingService: ActiveThingService,
                      ref: ChangeDetectorRef,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.ref = ref;
     this.zone = zone;
     this.router = router;
@@ -153,11 +154,11 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.device = browserDetectionService;
     this.urlChangeService = urlChangeService;
     this.countriesFilterService = countriesFilterService;
-    // this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
     this.activeThingService = activeThingService;
     this.utilsService = utilsService;
+    this.store = store;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -175,6 +176,12 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'BY_INCOME']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
       this.byIncomeText = trans.BY_INCOME;
+    });
+
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+
+      this.initData();
     });
 
     this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
@@ -250,55 +257,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    /*this.matrixServiceStreetSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((val: any) => {
-        if (val.err) {
-          console.error(val.err);
-
-          return;
-        }
-
-        this.streetData = val.data;
-        this.lowIncome = this.lowIncome ? this.lowIncome : this.streetData.poor;
-        this.highIncome = this.highIncome ? this.highIncome : this.streetData.rich;
-
-        if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-          this.zoom = 4;
-        }
-
-        if (!this.isDesktop) {
-          this.zoom = 3;
-        }
-
-        this.thing = this.thing ? this.thing : 'Families';
-        this.zoom = this.zoom ? this.zoom : 4;
-        this.regions = this.regions ? this.regions : 'World';
-
-        this.lowIncome = this.lowIncome && this.lowIncome < val.data.poor ? val.data.poor : this.lowIncome;
-        this.highIncome = this.highIncome && this.highIncome > val.data.rich ? val.data.rich : this.highIncome;
-
-        if (this.lowIncome > this.highIncome) {
-          this.lowIncome = val.data.poor;
-        }
-
-        this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
-        this.query = this.query + this.languageService.getLanguageParam();
-
-        if (this.activeHouse) {
-          this.query = this.query + `&activeHouse=${this.activeHouse}`;
-        }
-
-        if (this.guideContainer) {
-          this.guideHeight = this.guideContainer.offsetHeight;
-        }
-
-        if (this.guideContainer && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
-          this.guidePositionTop = this.guideContainer.offsetHeight;
-        }
-
-        this.urlChanged({isInit: true});
-      });*/
-
     this.headerFixedSubscribe = fromEvent(document, 'scroll')
       .subscribe(() => {
         this.zone.run(() => {
@@ -364,7 +322,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.resizeSubscribe.unsubscribe();
     this.queryParamsSubscribe.unsubscribe();
     this.matrixServiceSubscribe.unsubscribe();
-    // this.matrixServiceStreetSubscribe.unsubscribe();
     this.loaderService.setLoader(false);
   }
 
@@ -421,6 +378,47 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       }
       this.getPaddings({});
     });
+  }
+
+  public initData(): void {
+    this.lowIncome = this.lowIncome ? this.lowIncome : this.streetData.poor;
+    this.highIncome = this.highIncome ? this.highIncome : this.streetData.rich;
+
+    if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
+      this.zoom = 4;
+    }
+
+    if (!this.isDesktop) {
+      this.zoom = 3;
+    }
+
+    this.thing = this.thing ? this.thing : 'Families';
+    this.zoom = this.zoom ? this.zoom : 4;
+    this.regions = this.regions ? this.regions : 'World';
+
+    this.lowIncome = this.lowIncome && this.lowIncome < this.streetData.poor ? this.streetData.poor : this.lowIncome;
+    this.highIncome = this.highIncome && this.highIncome > this.streetData.rich ? this.streetData.rich : this.highIncome;
+
+    if (this.lowIncome > this.highIncome) {
+      this.lowIncome = this.streetData.poor;
+    }
+
+    this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+    this.query = this.query + this.languageService.getLanguageParam();
+
+    if (this.activeHouse) {
+      this.query = this.query + `&activeHouse=${this.activeHouse}`;
+    }
+
+    if (this.guideContainer) {
+      this.guideHeight = this.guideContainer.offsetHeight;
+    }
+
+    if (this.guideContainer && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
+      this.guidePositionTop = this.guideContainer.offsetHeight;
+    }
+
+    this.urlChanged({isInit: true});
   }
 
   public interactiveIncomeText(): void {

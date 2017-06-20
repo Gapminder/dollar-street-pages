@@ -13,13 +13,15 @@ import {
   OnDestroy,
   ViewChild
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 import {
   MathService,
   Angulartics2GoogleAnalytics,
-  StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService,
   LanguageService
@@ -30,7 +32,6 @@ import {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-
 export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnInit {
   @ViewChild(ThingsFilterComponent)
   public thingsFilterComponent: ThingsFilterComponent;
@@ -64,8 +65,6 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
   public matrixComponent: boolean;
   public mapComponent: boolean;
   public math: MathService;
-  public streetServiceSubscription: Subscription;
-  public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
@@ -76,37 +75,28 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
   public resizeSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
   public incomeTitleContainerElement: HTMLElement;
+  public store: Store<AppStateInterface>;
 
   public constructor(router: Router,
                      math: MathService,
                      languageService: LanguageService,
                      activatedRoute: ActivatedRoute,
-                     streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      element: ElementRef,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
     this.device = browserDetectionService;
-    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
     this.element = element.nativeElement;
+    this.store = store;
   }
 
   public ngAfterViewInit(): void {
-    this.streetServiceSubscription = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-      });
-
     this.resizeSubscription = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -129,6 +119,10 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
     this.isTablet = this.device.isTablet();
+
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+    });
   }
 
   public ngOnDestroy(): void {

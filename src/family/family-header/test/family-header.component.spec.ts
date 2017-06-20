@@ -3,21 +3,25 @@ import { Component }    from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { AppEffects } from '../../../ngrx/app.effects';
+
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
-
-import { UtilsService } from '../../../common';
 
 import { FamilyHeaderComponent } from '../family-header.component';
 import { FamilyHeaderService } from '../family-header.service';
 
 import {
-         MathService,
-         StreetSettingsService,
-         BrowserDetectionService,
-         LanguageService,
-         Angulartics2GoogleAnalytics
+    MathService,
+    BrowserDetectionService,
+    LanguageService,
+    Angulartics2GoogleAnalytics,
+    UtilsService,
+    StreetSettingsService
 } from '../../../common';
 
 /* tslint:disable */
@@ -65,6 +69,8 @@ describe('FamilyHeaderComponent', () => {
         TestBed.configureTestingModule({
             schemas: [],
             imports: [
+                        StoreModule.provideStore({}),
+                        EffectsModule.run(AppEffects),
                         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
                         TranslateModule.forRoot({
                             provide: TranslateLoader,
@@ -77,8 +83,8 @@ describe('FamilyHeaderComponent', () => {
                             FamilyHeaderService,
                             BrowserDetectionService,
                             UtilsService,
+                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: LanguageService, useClass: MockLanguageService },
-                            // { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics }
                        ]
         });
@@ -99,17 +105,14 @@ describe('FamilyHeaderComponent', () => {
 
         expect(componentInstance.getTranslationSubscribe).toBeDefined();
         expect(componentInstance.familyHeaderServiceSubscribe).toBeDefined();
-        expect(componentInstance.streetSettingsServiceSubscribe).toBeDefined();
 
         spyOn(componentInstance.getTranslationSubscribe, 'unsubscribe');
         spyOn(componentInstance.familyHeaderServiceSubscribe, 'unsubscribe');
-        spyOn(componentInstance.streetSettingsServiceSubscribe, 'unsubscribe');
 
         componentInstance.ngOnDestroy();
 
         expect(componentInstance.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
         expect(componentInstance.familyHeaderServiceSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.streetSettingsServiceSubscribe.unsubscribe).toHaveBeenCalled();
     });
 
     it('truncCountryName()', () => {

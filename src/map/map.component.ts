@@ -1,10 +1,20 @@
 import 'rxjs/add/operator/debounceTime';
-
-import { Component, OnInit, OnDestroy, ElementRef, NgZone, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  NgZone,
+  ViewChild,
+  ViewChildren,
+  QueryList
+} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../ngrx/app.state';
+import { AppEffects } from '../ngrx/app.effects';
 import {
   MathService,
   LoaderService,
@@ -73,6 +83,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public languageService: LanguageService;
   public currentLanguage: string;
+  public store: Store<AppStateInterface>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -84,7 +95,9 @@ export class MapComponent implements OnInit, OnDestroy {
                      urlChangeService: UrlChangeService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -96,6 +109,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
+    this.store = store;
 
     this.currentLanguage = this.languageService.currentLanguage;
   }
@@ -109,6 +123,10 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.getTranslationSubscribe = this.languageService.getTranslation('FAMILY').subscribe((trans: any) => {
       this.familyTranslate = trans;
+    });
+
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
     });
 
     this.queryParamsSubscribe = this.activatedRoute

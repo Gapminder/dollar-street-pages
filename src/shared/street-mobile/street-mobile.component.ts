@@ -9,8 +9,10 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import { sortBy, chain } from 'lodash';
-import { StreetSettingsService } from '../../common';
 import { StreetMobileDrawService } from './street-mobile.service';
 
 @Component({
@@ -18,7 +20,6 @@ import { StreetMobileDrawService } from './street-mobile.service';
   templateUrl: './street-mobile.component.html',
   styleUrls: ['./street-mobile.component.css']
 })
-
 export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
@@ -26,29 +27,38 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   @Input()
   public places: Observable<any>;
 
-  private street: any;
-  private streetSettingsService: StreetSettingsService;
-  private streetData: any;
-  private element: HTMLElement;
-  private streetServiceSubscribe: Subscription;
-  private resizeSubscribe: Subscription;
-  private windowInnerWidth: number = window.innerWidth;
-
-  private placesSubscribe: Subscription;
-  private placesArr: any;
+  public street: any;
+  public streetData: any;
+  public element: HTMLElement;
+  public resizeSubscribe: Subscription;
+  public windowInnerWidth: number = window.innerWidth;
+  public placesSubscribe: Subscription;
+  public placesArr: any;
+  public store: Store<AppStateInterface>;
 
   public constructor(element: ElementRef,
-                     streetSettingsService: StreetSettingsService,
-                     streetDrawService: StreetMobileDrawService) {
+                     streetDrawService: StreetMobileDrawService,
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
-    this.streetSettingsService = streetSettingsService;
+    this.store = store;
   }
 
   public ngAfterViewInit(): void {
     this.street.setSvg = this.svg.nativeElement;
 
     this.street.set('isInit', true);
+
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+
+      if (!this.placesArr) {
+        return;
+      }
+
+      this.setDividers(this.placesArr);
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -70,23 +80,6 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
 
           this.setDividers(this.placesArr);
         });
-
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-
-        if (!this.placesArr) {
-          return;
-        }
-
-        this.setDividers(this.placesArr);
-      });
   }
 
   public ngOnDestroy(): void {
@@ -95,8 +88,6 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
     if (this.placesSubscribe) {
       this.placesSubscribe.unsubscribe();
     }
-
-    this.streetServiceSubscribe.unsubscribe();
   }
 
   private setDividers(places: any): void {

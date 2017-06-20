@@ -1,28 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement, Component }    from '@angular/core';
-
 import { HttpModule } from '@angular/http';
-
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from '../../ngrx/app.effects';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { FamilyModule } from '../family.module';
-
 import { Observable } from 'rxjs/Observable';
-
 import * as _ from 'lodash';
-
 import { CountriesFilterService,
-         StreetSettingsService,
          UrlChangeService,
          LanguageService,
          LocalStorageService,
          BrowserDetectionService,
          MathService,
          LoaderService,
-         Angulartics2GoogleAnalytics
+         Angulartics2GoogleAnalytics,
+         StreetSettingsService
        } from '../../common';
-
 import { FamilyComponent } from '../family.component';
 import { FamilyService } from '../family.service';
 
@@ -51,18 +47,18 @@ describe('FamilyComponent', () => {
         }
     }
 
-    class MockStreetSettingsService {
-        public getStreetSettings(): Observable<any> {
-            let context: any = {_id:'57963211cc4aaed63a02504c',showDividers:false,low:30,medium:300,high:3000,poor:26,rich:15000,lowDividerCoord:78,mediumDividerCoord:490,highDividerCoord:920,__v:0};
-            let response: any = {success:true,error:false,msg:[],data:context};
+    class MockFamilyService {
+        public getThing(): Observable<any> {
+            let response: any = {success:true,data:{_id:'546ccf730f7ddf45c017962f',thingName:'Family',plural:'Familias',originPlural:'Families',originThingName:'Family'},error:undefined};
 
             return Observable.of(response);
         }
     }
 
-    class MockFamilyService {
-        public getThing(): Observable<any> {
-            let response: any = {success:true,data:{_id:'546ccf730f7ddf45c017962f',thingName:'Family',plural:'Familias',originPlural:'Families',originThingName:'Family'},error:undefined};
+    class MockStreetSettingsService {
+        public getStreetSettings(): Observable<any> {
+            let context: any = {_id:'57963211cc4aaed63a02504c',showDividers:false,low:30,medium:300,high:3000,poor:26,rich:15000,lowDividerCoord:78,mediumDividerCoord:490,highDividerCoord:920,__v:0};
+            let response: any = {success:true,error:false,msg:[],data:context};
 
             return Observable.of(response);
         }
@@ -87,6 +83,8 @@ describe('FamilyComponent', () => {
             imports: [
                         HttpModule,
                         FamilyModule,
+                        StoreModule.provideStore({}),
+                        EffectsModule.run(AppEffects),
                         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}, {path: 'matrix', component: BlankComponent}])
                      ],
             declarations: [ BlankComponent ],
@@ -96,9 +94,9 @@ describe('FamilyComponent', () => {
                             BrowserDetectionService,
                             MathService,
                             LoaderService,
+                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: FamilyService, useClass: MockFamilyService },
                             { provide: CountriesFilterService, useClass: MockCountriesFilterService },
-                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
                             { provide: LanguageService, useClass: MockLanguageService }
                         ]
@@ -118,53 +116,56 @@ describe('FamilyComponent', () => {
     }));
 
     it('ngOnInit() ngOnDestroy()', () => {
-        componentInstance.ngOnInit();
+        componentFixture.whenStable().then(() => {
+            componentInstance.ngOnInit();
 
-        expect(componentInstance.router).toBeDefined();
-        expect(componentInstance.activatedRoute).toBeDefined();
-        expect(componentInstance.angulartics2GoogleAnalytics).toBeDefined();
-        expect(componentInstance.streetSettingsService).toBeDefined();
-        expect(componentInstance.countriesFilterService).toBeDefined();
-        expect(componentInstance.urlChangeService).toBeDefined();
-        expect(componentInstance.languageService).toBeDefined();
-        expect(componentInstance.familyService).toBeDefined();
+            expect(componentInstance.homeIncomeData._id).toEqual('57963211cc4aaed63a02504c');
+            expect(componentInstance.homeIncomeData.poor).toEqual(26);
+            expect(componentInstance.homeIncomeData.rich).toEqual(15000);
 
-        expect(componentInstance.theWorldTranslate).toEqual('the world');
+            expect(componentInstance.router).toBeDefined();
+            expect(componentInstance.activatedRoute).toBeDefined();
+            expect(componentInstance.angulartics2GoogleAnalytics).toBeDefined();
+            expect(componentInstance.countriesFilterService).toBeDefined();
+            expect(componentInstance.urlChangeService).toBeDefined();
+            expect(componentInstance.languageService).toBeDefined();
+            expect(componentInstance.familyService).toBeDefined();
 
-        spyOn(componentInstance.queryParamsSubscribe, 'unsubscribe');
-        spyOn(componentInstance.countriesFilterServiceSubscribe, 'unsubscribe');
-        spyOn(componentInstance.streetSettingsServiceSubscribe, 'unsubscribe');
-        spyOn(componentInstance.familyServiceSetThingSubscribe, 'unsubscribe');
-        spyOn(componentInstance.getTranslationSubscribe, 'unsubscribe');
+            expect(componentInstance.theWorldTranslate).toEqual('the world');
 
-        expect(componentInstance.homeIncomeData._id).toEqual('57963211cc4aaed63a02504c');
-        expect(componentInstance.homeIncomeData.poor).toEqual(26);
-        expect(componentInstance.homeIncomeData.rich).toEqual(15000);
+            spyOn(componentInstance.queryParamsSubscribe, 'unsubscribe');
+            spyOn(componentInstance.countriesFilterServiceSubscribe, 'unsubscribe');
+            spyOn(componentInstance.familyServiceSetThingSubscribe, 'unsubscribe');
+            spyOn(componentInstance.getTranslationSubscribe, 'unsubscribe');
 
-        componentInstance.ngOnDestroy();
+            componentInstance.ngOnDestroy();
 
-        expect(componentInstance.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.countriesFilterServiceSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.streetSettingsServiceSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.familyServiceSetThingSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
+            expect(componentInstance.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();
+            expect(componentInstance.countriesFilterServiceSubscribe.unsubscribe).toHaveBeenCalled();
+            expect(componentInstance.familyServiceSetThingSubscribe.unsubscribe).toHaveBeenCalled();
+            expect(componentInstance.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
+        });
     });
 
     it('getIncomeTitle()', () => {
-        componentInstance.ngOnInit();
+        componentFixture.whenStable().then(() => {
+            componentInstance.ngOnInit();
 
-        expect(componentInstance.getIncomeTitle(10, 100)).toEqual('all incomes');
+            expect(componentInstance.getIncomeTitle(10, 100)).toEqual('all incomes');
+        });
     });
 
     it('findCountryTranslatedName()', () => {
-        componentInstance.ngOnInit();
+        componentFixture.whenStable().then(() => {
+            componentInstance.ngOnInit();
 
-        const countries: any = componentInstance.countries;
+            const countries: any = componentInstance.countries;
 
-        let translatedCountries: any[] = componentInstance.findCountryTranslatedName(countries);
+            let translatedCountries: any[] = componentInstance.findCountryTranslatedName(countries);
 
-        let country = _.find(translatedCountries, {country: 'Боливия'});
+            let country = _.find(translatedCountries, {country: 'Боливия'});
 
-        expect(country).toBeDefined();
+            expect(country).toBeDefined();
+        });
     });
 });

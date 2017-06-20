@@ -90,7 +90,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStateInterface>) {
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -122,7 +123,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         });
       });
 
-    AppEffects.checkForDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
     });
   }

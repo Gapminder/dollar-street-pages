@@ -22,7 +22,6 @@ import { CountryInfoService } from './country-info.service';
   templateUrl: './country-info.component.html',
   styleUrls: ['./country-info.component.css']
 })
-
 export class CountryInfoComponent implements OnInit, OnDestroy {
   @Input()
   public countryId: string;
@@ -49,7 +48,8 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
                      math: MathService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppStateInterface>) {
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
@@ -59,6 +59,10 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+    });
+
     this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}${this.languageService.getLanguageParam()}`)
       .subscribe((res: any) => {
         if (res.err) {
@@ -73,11 +77,6 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         this.photosQuantity = this.device.isMobile() !== true ? this.math.round(res.data.images).toString() : this.math.round(res.data.images).toString().replace(/\s+/g, '');
         this.videosQuantity = Math.round(res.data.video) > 0 ? this.math.round(res.data.video).toString() : '';
         this.getCountry.emit(this.country.alias || this.country.country);
-      });
-
-      AppEffects.checkForDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
-        this.streetData = data;
-        // console.log(data);
       });
   }
 

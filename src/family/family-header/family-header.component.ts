@@ -17,7 +17,6 @@ import {
 } from '@angular/core';
 import {
   BrowserDetectionService,
-  StreetSettingsService,
   DrawDividersInterface,
   MathService,
   LanguageService,
@@ -91,7 +90,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStateInterface>) {
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.zone = zone;
     this.math = math;
     this.element = element.nativeElement;
@@ -115,6 +115,10 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.getTranslationSubscribe = this.languageService.getTranslation(['READ_MORE', 'READ_LESS']).subscribe((trans: any) => {
       this.readMoreTranslate = trans.READ_MORE;
       this.readLessTranslate = trans.READ_LESS;
+    });
+
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
     });
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
@@ -176,10 +180,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    /*if(this.streetSettingsServiceSubscribe) {
-      this.streetSettingsServiceSubscribe.unsubscribe();
-    }*/
-
     if(this.familyHeaderServiceSubscribe) {
       this.familyHeaderServiceSubscribe.unsubscribe();
     }

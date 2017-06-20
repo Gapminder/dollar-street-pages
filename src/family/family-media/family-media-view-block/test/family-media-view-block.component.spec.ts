@@ -6,6 +6,11 @@ import { FamilyMediaViewBlockService } from '../family-media-view-block.service'
 
 import { Observable } from 'rxjs/Observable';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { AppEffects } from '../../../../ngrx/app.effects';
+
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
@@ -18,14 +23,13 @@ import {
 
 import { SharedModule } from '../../../../shared';
 
-import { UtilsService } from '../../../../common';
-
 import { mockFamilyMediaText } from './mock.data';
 
 import {
     LanguageService,
-    StreetSettingsService,
-    BrowserDetectionService
+    BrowserDetectionService,
+    UtilsService,
+    StreetSettingsService
 } from '../../../../common';
 
 /* tslint:disable */
@@ -69,6 +73,8 @@ describe('FamilyMediaViewBlockComponent', () => {
             imports: [
                         SharedModule,
                         Angulartics2Module,
+                        StoreModule.provideStore({}),
+                        EffectsModule.run(AppEffects),
                         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
                         TranslateModule.forRoot({
                             provide: TranslateLoader,
@@ -82,8 +88,8 @@ describe('FamilyMediaViewBlockComponent', () => {
                             Angulartics2GoogleAnalytics,
                             Angulartics2,
                             UtilsService,
-                            { provide: LanguageService, useClass: MockLanguageService },
-                            // { provide: StreetSettingsService, useClass: MockStreetSettingsService }
+                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
+                            { provide: LanguageService, useClass: MockLanguageService }
                        ]
         }).compileComponents();
 
@@ -105,13 +111,7 @@ describe('FamilyMediaViewBlockComponent', () => {
     it('ngOnInit() ngOnDestroy()', () => {
         componentInstance.ngOnInit();
 
-        expect(componentInstance.streetServiceSubscribe).toBeDefined();
-
-        spyOn(componentInstance.streetServiceSubscribe, 'unsubscribe');
-
         componentInstance.ngOnDestroy();
-
-        expect(componentInstance.streetServiceSubscribe.unsubscribe).toHaveBeenCalled();
     });
 
     it('openPopUp()', () => {

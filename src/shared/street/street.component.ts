@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import {
   Component,
   Input,
@@ -15,17 +14,15 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-
+import { Store } from '@ngrx/store';
+import { AppStateInterface } from '../../ngrx/app.state';
+import { AppEffects } from '../../ngrx/app.effects';
 import { ActivatedRoute } from '@angular/router';
-
 import { sortBy, chain, differenceBy } from 'lodash';
-
 import {
   MathService,
-  StreetSettingsService,
   LanguageService
 } from '../../common';
-
 import { StreetDrawService } from './street.service';
 
 @Component({
@@ -33,7 +30,6 @@ import { StreetDrawService } from './street.service';
   templateUrl: './street.component.html',
   styleUrls: ['./street.component.css']
 })
-
 export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   @ViewChild('streetBox')
   public streetBox: ElementRef;
@@ -62,15 +58,12 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   public thingname: any;
   public countries: any;
   public math: MathService;
-  public streetSettingsService: StreetSettingsService;
   public streetData: any;
   public element: HTMLElement;
   public activatedRoute: ActivatedRoute;
-  public streetServiceSubscribe: Subscription;
   public resize: any;
   public drawOnMap: boolean = false;
   public isStreetInit: boolean = false;
-
   public placesSubscribe: Subscription;
   public hoverPlaceSubscribe: Subscription;
   public chosenPlacesSubscribe: Subscription;
@@ -78,19 +71,21 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   public placesArr: any;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
+  public store: Store<AppStateInterface>;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
                      math: MathService,
-                     streetSettingsService: StreetSettingsService,
                      streetDrawService: StreetDrawService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     store: Store<AppStateInterface>,
+                     private appEffects: AppEffects) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
     this.street = streetDrawService;
-    this.streetSettingsService = streetSettingsService;
     this.languageService = languageService;
+    this.store = store;
   }
 
   public ngAfterViewInit(): any {
@@ -108,6 +103,16 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.getTranslationSubscribe = this.languageService.getTranslation(['POOREST', 'RICHEST']).subscribe((trans: any) => {
       this.street.poorest = trans.POOREST.toUpperCase();
       this.street.richest = trans.RICHEST.toUpperCase();
+    });
+
+    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+      this.streetData = data;
+
+      if (!this.placesArr) {
+        return;
+      }
+
+      this.setDividers(this.placesArr, this.streetData);
     });
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
@@ -171,21 +176,6 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
           .set('fullIncomeArr', [])
           .drawScale(places, this.streetData)
           .removeSliders();
-      }
-
-      this.setDividers(this.placesArr, this.streetData);
-    });
-
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings().subscribe((res: any) => {
-      if (res.err) {
-        console.error(res.err);
-        return;
-      }
-
-      this.streetData = res.data;
-
-      if (!this.placesArr) {
-        return;
       }
 
       this.setDividers(this.placesArr, this.streetData);
@@ -257,7 +247,6 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.getTranslationSubscribe.unsubscribe();
 
     this.streetFilterSubscribe.unsubscribe();
-    this.streetServiceSubscribe.unsubscribe();
 
     this.street.clearAndRedraw();
     this.street.clearSvg();
