@@ -4,7 +4,7 @@ import { DebugElement, Component }    from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppEffects } from '../../app/app.effects';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FamilyModule } from '../family.module';
 import { Observable } from 'rxjs/Observable';

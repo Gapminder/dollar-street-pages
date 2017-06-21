@@ -15,8 +15,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 import { ActivatedRoute } from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
 import {
@@ -71,15 +70,14 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   public placesArr: any;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
                      math: MathService,
                      streetDrawService: StreetDrawService,
                      languageService: LanguageService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -105,7 +103,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
 
       if (!this.placesArr) {
@@ -113,7 +111,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       }
 
       this.setDividers(this.placesArr, this.streetData);
-    });
+    });*/
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
       let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');

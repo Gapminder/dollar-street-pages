@@ -15,8 +15,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 import { Router } from '@angular/router';
 import { ImageResolutionInterface } from '../../interfaces';
 import { MathService,
@@ -80,7 +79,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public currentLanguage: string;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -90,8 +89,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -123,9 +121,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         });
       });
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
-    });
+    });*/
   }
 
   // tslint:disable-next-line

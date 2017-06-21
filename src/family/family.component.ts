@@ -2,8 +2,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../ngrx/app.state';
-import { AppEffects } from '../ngrx/app.effects';
+import { AppStore } from '../app/app.store';
 import {
   Component,
   OnInit,
@@ -39,7 +38,6 @@ export interface UrlParamsInterface {
   templateUrl: './family.component.html',
   styleUrls: ['./family.component.css']
 })
-
 export class FamilyComponent implements OnInit, OnDestroy {
   @ViewChild(FamilyMediaComponent)
   public familyMediaComponent: FamilyMediaComponent;
@@ -83,7 +81,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
   public query: string;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -94,8 +92,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
                      elementRef: ElementRef,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
@@ -164,7 +161,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.homeIncomeData = data;
 
       this.poor = this.homeIncomeData.poor;
@@ -175,7 +172,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
       }
 
       this.initData();
-    });
+    });*/
 
     this.countriesFilterServiceSubscribe = this.countriesFilterService
       .getCountries(`thing=${this.urlParams.thing}${this.languageService.getLanguageParam()}`)

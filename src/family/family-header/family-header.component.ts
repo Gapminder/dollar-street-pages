@@ -2,8 +2,7 @@ import 'rxjs/operator/debounceTime';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 import {
   Component,
   OnInit,
@@ -81,7 +80,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public utilsService: UtilsService;
   public currentLanguage: string;
   public showTranslateMe: boolean;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -90,8 +89,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.zone = zone;
     this.math = math;
     this.element = element.nativeElement;
@@ -117,9 +115,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.readLessTranslate = trans.READ_LESS;
     });
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
-    });
+    });*/
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
       .getFamilyHeaderData(`placeId=${this.placeId}${this.languageService.getLanguageParam()}`)

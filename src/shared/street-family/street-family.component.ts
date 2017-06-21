@@ -2,8 +2,7 @@ import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Rx';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 import {
   Component,
   Input,
@@ -38,12 +37,11 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public resizeSubscribe: Subscription;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetFamilyDrawService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
     this.store = store;
@@ -58,11 +56,11 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
 
       this.drawStreet(this.streetData, this.place);
-    });
+    });*/
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)

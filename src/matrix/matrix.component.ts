@@ -1,9 +1,10 @@
 import 'rxjs/add/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../ngrx/app.state';
-import { AppEffects } from '../ngrx/app.effects';
+import { AppStore } from '../app/app.store';
+import { AppActions } from '../app/app.actions';
 import {
   Component,
   ElementRef,
@@ -25,7 +26,8 @@ import {
   BrowserDetectionService,
   LanguageService,
   ActiveThingService,
-  UtilsService
+  UtilsService,
+  DrawDividersInterface
 } from '../common';
 import { GuideComponent } from '../shared';
 import { fromEvent } from 'rxjs/observable/fromEvent';
@@ -78,7 +80,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public placesVal: any;
   public locations: any;
   public countriesTranslations: any[];
-  public streetData: any;
+  public streetData: DrawDividersInterface;
   public selectedRegions: any;
   public activeCountries: any;
   public streetPlacesData: any;
@@ -124,7 +126,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public activeThingService: ActiveThingService;
   public getTranslationSubscribe: Subscription;
   public byIncomeText: string;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -141,8 +144,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
                      activeThingService: ActiveThingService,
                      ref: ChangeDetectorRef,
                      utilsService: UtilsService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>,
+                     private appActions: AppActions) {
     this.ref = ref;
     this.zone = zone;
     this.router = router;
@@ -164,6 +167,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.isDesktop = this.device.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
+
+    this.streetSettingsState = this.store.select((dataSet) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -178,10 +183,15 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       this.byIncomeText = trans.BY_INCOME;
     });
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
-      this.streetData = data;
+    this.streetSettingsState.subscribe(data => {
+      if (!data) {
+        console.log('MATRIX');
+        this.store.dispatch(this.appActions.getStreetSettings());
+      } else {
+        this.streetData = data;
 
-      this.initData();
+        this.initData();
+      }
     });
 
     this.activeThingService.activeThingEmitter.subscribe((thing: any) => {

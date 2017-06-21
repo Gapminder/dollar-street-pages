@@ -13,8 +13,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../ngrx/app.state';
-import { AppEffects } from '../ngrx/app.effects';
+import { AppStore } from '../app/app.store';
 import {
   MathService,
   LoaderService,
@@ -83,7 +82,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public languageService: LanguageService;
   public currentLanguage: string;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -96,8 +95,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -125,9 +123,9 @@ export class MapComponent implements OnInit, OnDestroy {
       this.familyTranslate = trans;
     });
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
-    });
+    });*/
 
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams

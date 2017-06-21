@@ -9,8 +9,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 import { HeaderService } from '../header/header.service';
 import {
   TitleHeaderService,
@@ -37,14 +36,13 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   public titleHeaderService: TitleHeaderService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.renderer = renderer;
     this.headerService = headerService;
     this.device = browserDetectionService;
@@ -61,9 +59,9 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
     this.title = this.titleHeaderService.getTitle();
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
-    });
+    });*/
 
     this.titleHeaderSubscribe = this.titleHeaderService
       .getTitleEvent()

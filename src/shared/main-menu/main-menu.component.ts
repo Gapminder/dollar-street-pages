@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 import {
   Component,
   Input,
@@ -56,7 +55,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public socialShareContentElement: HTMLElement;
   public languageService: LanguageService;
   public shareTranslation: string;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(router: Router,
                      element: ElementRef,
@@ -65,8 +64,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
                      localStorageService: LocalStorageService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -108,9 +106,9 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
-    });
+    });*/
 
     this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
       .subscribe(() => {

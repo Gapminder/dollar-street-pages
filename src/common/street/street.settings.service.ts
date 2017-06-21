@@ -29,7 +29,7 @@ export class StreetSettingsService {
     this.http = http;
   }
 
-  public getStreetSettings(): Observable<any> {
+  public getStreetSettings(): Observable<any> {console.log('API CALLED');
     if (_cache) {
       return _cache;
     }

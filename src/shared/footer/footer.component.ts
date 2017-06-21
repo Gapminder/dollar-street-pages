@@ -6,8 +6,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 import { compact } from 'lodash';
 import { FooterService } from './footer.service';
 import {
@@ -38,7 +37,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public languageService: LanguageService;
 
@@ -48,8 +47,7 @@ export class FooterComponent implements OnInit, OnDestroy {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.router = router;
     this.footerService = footerService;
     this.utilsService = utilsService;
@@ -62,9 +60,9 @@ export class FooterComponent implements OnInit, OnDestroy {
   public ngOnInit(): any {
     this.isDesktop = this.device.isDesktop();
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
-    });
+    });*/
 
     this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {

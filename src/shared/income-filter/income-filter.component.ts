@@ -9,8 +9,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 
 @Component({
   selector: 'income-filter',
@@ -44,21 +43,20 @@ export class IncomeFilterComponent implements AfterViewInit {
   };
   public streetData: any;
   public element: HTMLElement;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
-  public constructor(store: Store<AppStateInterface>,
-                     element: ElementRef,
-                     private appEffects: AppEffects) {
+  public constructor(store: Store<AppStore>,
+                     element: ElementRef) {
     this.element = element.nativeElement;
     this.store = store;
   }
 
   public ngAfterViewInit(): void {
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
 
       this.initData();
-    });
+    });*/
   }
 
   public initData(): void {

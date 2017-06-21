@@ -14,8 +14,8 @@ import {
   ViewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
+import { AppActions } from '../../app/app.actions';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
@@ -75,7 +75,8 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
   public resizeSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
   public incomeTitleContainerElement: HTMLElement;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(router: Router,
                      math: MathService,
@@ -84,8 +85,8 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
                      browserDetectionService: BrowserDetectionService,
                      element: ElementRef,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>,
+                     private appActions: AppActions) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -94,6 +95,8 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     this.languageService = languageService;
     this.element = element.nativeElement;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -120,8 +123,13 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     this.isDesktop = this.device.isDesktop();
     this.isTablet = this.device.isTablet();
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
-      this.streetData = data;
+    this.streetSettingsState.subscribe(data => {
+      if (!data) {
+        console.log('HEADER');
+        this.store.dispatch(this.appActions.getStreetSettings());
+      } else {
+        this.streetData = data;
+      }
     });
   }
 

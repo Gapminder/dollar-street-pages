@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { Component,
   OnInit,
   OnDestroy,
@@ -7,8 +8,8 @@ import { Component,
   Output
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
+import { AppActions } from '../../app/app.actions';
 import {
   MathService,
   DrawDividersInterface,
@@ -42,25 +43,32 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public streetServiceSubscribe: Subscription;
   public languageService: LanguageService;
   public device: BrowserDetectionService;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>,
+                     private appActions: AppActions) {
     this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
     this.isShowInfo = false;
     this.languageService = languageService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
-      this.streetData = data;
+    this.streetSettingsState.subscribe(data => {
+      if (!data) {
+        this.store.dispatch(this.appActions.getStreetSettings());
+      } else {
+        this.streetData = data;
+      }
     });
 
     this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}${this.languageService.getLanguageParam()}`)

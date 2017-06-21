@@ -11,8 +11,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStateInterface } from '../../ngrx/app.state';
-import { AppEffects } from '../../ngrx/app.effects';
+import { AppStore } from '../../app/app.store';
 import { sortBy, chain } from 'lodash';
 import {
   MathService,
@@ -43,13 +42,12 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public element: HTMLElement;
   public streetFilterSubscribe: Subscription;
   public resize: any;
-  public store: Store<AppStateInterface>;
+  public store: Store<AppStore>;
 
   public constructor(element: ElementRef,
                      math: MathService,
                      streetDrawService: StreetFilterDrawService,
-                     store: Store<AppStateInterface>,
-                     private appEffects: AppEffects) {
+                     store: Store<AppStore>) {
     this.element = element.nativeElement;
     this.math = math;
     this.street = streetDrawService;
@@ -63,11 +61,11 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
 
     this.streetFilterSubscribe = this.street.filter.subscribe(this.filterStreet);
 
-    this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
       this.streetData = data;
 
       this.setDividers(this.places, this.streetData);
-    });
+    });*/
 
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)
