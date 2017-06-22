@@ -6,7 +6,6 @@ import {
   Component,
   Input,
   Output,
-  OnChanges,
   EventEmitter,
   ElementRef,
   AfterViewInit,
@@ -33,7 +32,7 @@ import {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnInit {
+export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   @ViewChild(ThingsFilterComponent)
   public thingsFilterComponent: ThingsFilterComponent;
   @ViewChild(CountriesFilterComponent)
@@ -78,6 +77,7 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
   public incomeTitleContainerElement: HTMLElement;
   public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public languages: any;
 
   public constructor(router: Router,
                      math: MathService,
@@ -126,7 +126,11 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     this.isTablet = this.device.isTablet();
 
     this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-        this.streetData = data;
+      this.streetData = data;
+    });
+
+    this.languageService.languagesList.subscribe((data: any) => {
+      this.languages = data;
     });
   }
 
@@ -233,6 +237,8 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     } else {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
+
+    this.store.dispatch(this.thingsFilterActions.getThingsFilter(this.objToQuery(queryParams)));
 
     this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }

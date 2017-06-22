@@ -141,5 +141,4 @@ import { Angulartics2Module } from 'angulartics2';
     TranslateMeComponent
   ]
 })
-
 export class SharedModule {}

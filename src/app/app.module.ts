@@ -14,9 +14,16 @@ import { AppRoutingModule } from './app.routing';
 
 import { MatrixModule } from '../matrix/matrix.module';
 
-import { SharedModule, ThingsFilterEffects, CountriesFilterEffects } from '../shared';
+import {
+  SharedModule,
+  ThingsFilterEffects,
+  CountriesFilterEffects
+} from '../shared';
 
-import { CommonAppModule } from '../common';
+import {
+  CommonAppModule,
+  StreetSettingsEffects
+} from '../common';
 
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { Observable } from 'rxjs';
@@ -42,12 +49,10 @@ export class CustomLoader implements TranslateLoader {
     SharedModule,
     MatrixModule,
     StoreModule.provideStore(rootReducer),
+    EffectsModule.run(StreetSettingsEffects),
     EffectsModule.run(ThingsFilterEffects),
     EffectsModule.run(CountriesFilterEffects),
-    TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useClass: CustomLoader
-    }),
+    TranslateModule.forRoot({ provide: TranslateLoader, useClass: CustomLoader }),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   bootstrap: [AppComponent]

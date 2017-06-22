@@ -174,6 +174,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
 
+    this.store.dispatch(this.thingsFilterActions.getThingsFilter(newUrl));
+
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
   }
 

@@ -31,7 +31,6 @@ import { MapService } from './map.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-
 export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapBox')
   public map: ElementRef;
