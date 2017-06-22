@@ -6,9 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { rootReducer } from './app.store';
-import { AppEffects } from './app.effects';
-import { AppActions } from './app.actions';
+import { rootReducer } from './app.state';
 
 import { AppComponent } from './app.component';
 
@@ -16,7 +14,7 @@ import { AppRoutingModule } from './app.routing';
 
 import { MatrixModule } from '../matrix/matrix.module';
 
-import { SharedModule } from '../shared';
+import { SharedModule, ThingsFilterEffects, CountriesFilterEffects } from '../shared';
 
 import { CommonAppModule } from '../common';
 
@@ -35,7 +33,6 @@ export class CustomLoader implements TranslateLoader {
 
 @NgModule({
   declarations: [AppComponent],
-  providers: [AppActions],
   imports: [
     BrowserModule,
     HttpModule,
@@ -45,7 +42,8 @@ export class CustomLoader implements TranslateLoader {
     SharedModule,
     MatrixModule,
     StoreModule.provideStore(rootReducer),
-    EffectsModule.run(AppEffects),
+    EffectsModule.run(ThingsFilterEffects),
+    EffectsModule.run(CountriesFilterEffects),
     TranslateModule.forRoot({
       provide: TranslateLoader,
       useClass: CustomLoader

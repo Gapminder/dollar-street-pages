@@ -3,8 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../app/app.store';
-import { AppActions } from '../app/app.actions';
+import { AppState } from '../app/app.state';
 import {
   Component,
   ElementRef,
@@ -21,7 +20,6 @@ import { chain, cloneDeep, find, map, difference, forEach } from 'lodash';
 import {
   LoaderService,
   UrlChangeService,
-  CountriesFilterService,
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
   LanguageService,
@@ -29,7 +27,9 @@ import {
   UtilsService,
   DrawDividersInterface
 } from '../common';
-import { GuideComponent } from '../shared';
+import {
+  GuideComponent,
+} from '../shared';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { MatrixService } from './matrix.service';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
@@ -94,7 +94,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public queryParamsSubscribe: Subscription;
   public headerFixedSubscribe: Subscription;
   public matrixServiceSubscribe: Subscription;
-  public countriesFilterServiceSubscribe: Subscription;
   public thing: string;
   public activeThing: any;
   public query: string;
@@ -108,7 +107,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public utilsService: UtilsService;
   public activatedRoute: ActivatedRoute;
   public urlChangeService: UrlChangeService;
-  public countriesFilterService: CountriesFilterService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public element: HTMLElement;
   public imageResolution: ImageResolutionInterface;
@@ -126,8 +124,9 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public activeThingService: ActiveThingService;
   public getTranslationSubscribe: Subscription;
   public byIncomeText: string;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public countriesFilterState: Observable<any>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -137,15 +136,13 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
                      matrixService: MatrixService,
                      loaderService: LoaderService,
                      urlChangeService: UrlChangeService,
-                     countriesFilterService: CountriesFilterService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      activeThingService: ActiveThingService,
                      ref: ChangeDetectorRef,
                      utilsService: UtilsService,
-                     store: Store<AppStore>,
-                     private appActions: AppActions) {
+                     store: Store<AppState>) {
     this.ref = ref;
     this.zone = zone;
     this.router = router;
@@ -156,7 +153,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.element = element.nativeElement;
     this.device = browserDetectionService;
     this.urlChangeService = urlChangeService;
-    this.countriesFilterService = countriesFilterService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
     this.activeThingService = activeThingService;
@@ -168,7 +164,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
-    this.streetSettingsState = this.store.select((dataSet) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.countriesFilterState = this.store.select((dataSet: AppState) => dataSet.countriesFilter);
   }
 
   public ngAfterViewInit(): void {
@@ -181,17 +178,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'BY_INCOME']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
       this.byIncomeText = trans.BY_INCOME;
-    });
-
-    this.streetSettingsState.subscribe(data => {
-      if (!data) {
-        console.log('MATRIX');
-        this.store.dispatch(this.appActions.getStreetSettings());
-      } else {
-        this.streetData = data;
-
-        this.initData();
-      }
     });
 
     this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
@@ -244,19 +230,20 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
         this.highIncome = parseInt(params.highIncome, 10);
         this.activeHouse = parseInt(params.activeHouse, 10);
         this.row = parseInt(params.row, 10) || 1;
+
+        this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+          this.streetData = data;
+
+          if (this.streetData) {
+            this.initData();
+          }
+        });
       });
 
-    this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.thing}`)
-      .subscribe((res: any): any => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+      this.countriesFilterState.subscribe((data: any) => {
+        this.locations = data;
 
-        this.locations = res.data;
-
-        this.countriesTranslations = chain(res.data)
+        this.countriesTranslations = chain(data)
           .map('countries')
           .flatten()
           .sortBy('country')
@@ -831,7 +818,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
         if (countriesDiff.length) {
           this.activeCountries = countriesDiff.length === 1 && regions.length === 1 ? getTranslatedRegions[0] + ' & '
-            + countriesDiff[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+            + countriesDiff[0] : `${getTranslatedCountries.slice(0, 2).join(', ')} (+${getTranslatedCountries.length - 2})`;
         } else {
           this.activeCountries = getTranslatedRegions.join(' & ');
         }

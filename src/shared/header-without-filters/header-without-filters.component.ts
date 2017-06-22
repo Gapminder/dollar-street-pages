@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import {
   Component,
   OnDestroy,
@@ -9,7 +10,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import { AppState } from '../../app/app.state';
 import { HeaderService } from '../header/header.service';
 import {
   TitleHeaderService,
@@ -36,18 +37,21 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   public titleHeaderService: TitleHeaderService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.renderer = renderer;
     this.headerService = headerService;
     this.device = browserDetectionService;
     this.titleHeaderService = titleHeaderService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): any {
@@ -59,9 +63,9 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
     this.title = this.titleHeaderService.getTitle();
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
-    });*/
+    });
 
     this.titleHeaderSubscribe = this.titleHeaderService
       .getTitleEvent()

@@ -10,7 +10,10 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import {
+  DrawDividersInterface
+} from '../../common';
+import { AppState } from '../../app/app.state';
 import { sortBy, chain } from 'lodash';
 import { StreetMobileDrawService } from './street-mobile.service';
 
@@ -33,14 +36,17 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   public windowInnerWidth: number = window.innerWidth;
   public placesSubscribe: Subscription;
   public placesArr: any;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetMobileDrawService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -48,7 +54,7 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
 
     this.street.set('isInit', true);
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       if (!this.placesArr) {
@@ -56,7 +62,7 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
       }
 
       this.setDividers(this.placesArr);
-    });*/
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)

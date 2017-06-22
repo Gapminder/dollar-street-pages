@@ -66,7 +66,9 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.getLanguagesListSubscribe.unsubscribe();
+    if (this.getLanguagesListSubscribe) {
+      this.getLanguagesListSubscribe.unsubscribe();
+    }
   }
 
   public languageSelectorDisplay(langCount: number): void {

@@ -1,5 +1,6 @@
 import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
@@ -15,7 +16,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import { AppState } from '../../app/app.state';
 import { Router } from '@angular/router';
 import { ImageResolutionInterface } from '../../interfaces';
 import { MathService,
@@ -79,7 +80,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public currentLanguage: string;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -89,7 +91,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -105,9 +107,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.currentLanguage = this.languageService.currentLanguage;
 
     this.imageResolution = this.utilsServece.getImageResolution(this.isDesktop);
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
+    });
+
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -120,10 +128,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
       });
-
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
-      this.streetData = data;
-    });*/
   }
 
   // tslint:disable-next-line

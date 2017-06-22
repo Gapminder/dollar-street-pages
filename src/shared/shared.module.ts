@@ -24,12 +24,15 @@ import { SocialFollowButtonsComponent } from './social-follow-buttons/social-fol
 
 import { LoaderComponent } from './loader/loader.component';
 
+import { ThingsFilterActions } from './things-filter/things-filter.actions';
 import { ThingsFilterComponent } from './things-filter/things-filter.component';
 import { ThingsFilterService } from './things-filter/things-filter.service';
 import { ThingsFilterPipe } from './things-filter/things-filter.pipe';
 
 import { CountriesFilterComponent } from './countries-filter/countries-filter.component';
 import { CountriesFilterPipe } from './countries-filter/countries-filter.pipe';
+import { CountriesFilterService } from './countries-filter/countries-filter.service';
+import { CountriesFilterActions } from './countries-filter/countries-filter.actions';
 
 import { GuideComponent } from './guide/guide.component';
 import { GuideService } from './guide/guide.service';
@@ -103,6 +106,9 @@ import { Angulartics2Module } from 'angulartics2';
     HeaderService,
     SocialShareButtonsService,
     FooterService,
+    CountriesFilterActions,
+    CountriesFilterService,
+    ThingsFilterActions,
     ThingsFilterService,
     GuideService,
     StreetDrawService,

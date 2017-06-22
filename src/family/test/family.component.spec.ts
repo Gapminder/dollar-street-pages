@@ -4,21 +4,21 @@ import { DebugElement, Component }    from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from '../../app/app.effects';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FamilyModule } from '../family.module';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { CountriesFilterService,
-         UrlChangeService,
-         LanguageService,
-         LocalStorageService,
-         BrowserDetectionService,
-         MathService,
-         LoaderService,
-         Angulartics2GoogleAnalytics,
-         StreetSettingsService
-       } from '../../common';
+import {
+    UrlChangeService,
+    LanguageService,
+    LocalStorageService,
+    BrowserDetectionService,
+    MathService,
+    LoaderService,
+    Angulartics2GoogleAnalytics,
+    StreetSettingsService,
+    StreetSettingsEffects
+} from '../../common';
 import { FamilyComponent } from '../family.component';
 import { FamilyService } from '../family.service';
 
@@ -64,13 +64,13 @@ describe('FamilyComponent', () => {
         }
     }
 
-    class MockCountriesFilterService {
+    // class MockCountriesFilterService {
         /* tslint:disable */
-        public getCountries(query: string): Observable<any> {
-            return Observable.of(mockCountriesData);
-        }
+        // public getCountries(query: string): Observable<any> {
+            // return Observable.of(mockCountriesData);
+        // }
         /* tslint:enable */
-    }
+    // }
 
     class MockAngulartics {
         // tslint:disable-next-line
@@ -84,7 +84,7 @@ describe('FamilyComponent', () => {
                         HttpModule,
                         FamilyModule,
                         StoreModule.provideStore({}),
-                        EffectsModule.run(AppEffects),
+                        EffectsModule.run(StreetSettingsEffects),
                         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}, {path: 'matrix', component: BlankComponent}])
                      ],
             declarations: [ BlankComponent ],
@@ -96,7 +96,7 @@ describe('FamilyComponent', () => {
                             LoaderService,
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: FamilyService, useClass: MockFamilyService },
-                            { provide: CountriesFilterService, useClass: MockCountriesFilterService },
+                            // { provide: CountriesFilterService, useClass: MockCountriesFilterService },
                             { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
                             { provide: LanguageService, useClass: MockLanguageService }
                         ]
@@ -126,7 +126,7 @@ describe('FamilyComponent', () => {
             expect(componentInstance.router).toBeDefined();
             expect(componentInstance.activatedRoute).toBeDefined();
             expect(componentInstance.angulartics2GoogleAnalytics).toBeDefined();
-            expect(componentInstance.countriesFilterService).toBeDefined();
+            // expect(componentInstance.countriesFilterService).toBeDefined();
             expect(componentInstance.urlChangeService).toBeDefined();
             expect(componentInstance.languageService).toBeDefined();
             expect(componentInstance.familyService).toBeDefined();
@@ -134,14 +134,14 @@ describe('FamilyComponent', () => {
             expect(componentInstance.theWorldTranslate).toEqual('the world');
 
             spyOn(componentInstance.queryParamsSubscribe, 'unsubscribe');
-            spyOn(componentInstance.countriesFilterServiceSubscribe, 'unsubscribe');
+            // spyOn(componentInstance.countriesFilterServiceSubscribe, 'unsubscribe');
             spyOn(componentInstance.familyServiceSetThingSubscribe, 'unsubscribe');
             spyOn(componentInstance.getTranslationSubscribe, 'unsubscribe');
 
             componentInstance.ngOnDestroy();
 
             expect(componentInstance.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();
-            expect(componentInstance.countriesFilterServiceSubscribe.unsubscribe).toHaveBeenCalled();
+            // expect(componentInstance.countriesFilterServiceSubscribe.unsubscribe).toHaveBeenCalled();
             expect(componentInstance.familyServiceSetThingSubscribe.unsubscribe).toHaveBeenCalled();
             expect(componentInstance.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
         });

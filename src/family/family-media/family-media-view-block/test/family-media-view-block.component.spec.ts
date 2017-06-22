@@ -9,8 +9,6 @@ import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { AppEffects } from '../../../../app/app.effects';
-
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
@@ -29,7 +27,8 @@ import {
     LanguageService,
     BrowserDetectionService,
     UtilsService,
-    StreetSettingsService
+    StreetSettingsService,
+    StreetSettingsEffects
 } from '../../../../common';
 
 /* tslint:disable */
@@ -74,7 +73,7 @@ describe('FamilyMediaViewBlockComponent', () => {
                         SharedModule,
                         Angulartics2Module,
                         StoreModule.provideStore({}),
-                        EffectsModule.run(AppEffects),
+                        EffectsModule.run(StreetSettingsEffects),
                         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
                         TranslateModule.forRoot({
                             provide: TranslateLoader,

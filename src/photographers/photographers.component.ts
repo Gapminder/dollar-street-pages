@@ -14,6 +14,7 @@ import {
   BrowserDetectionService,
   LanguageService
 } from '../common';
+import { KeyCodes } from '../enums';
 
 import { PhotographersService } from './photographers.service';
 
@@ -63,7 +64,7 @@ export class PhotographersComponent implements OnDestroy, AfterViewInit {
 
     this.keyUpSubscribe = fromEvent(searchInput, 'keyup')
       .subscribe((e: KeyboardEvent) => {
-        if (!this.isDesktop && e.keyCode === 13) {
+        if (!this.isDesktop && e.keyCode === KeyCodes.enter) {
           searchInput.blur();
         }
       });

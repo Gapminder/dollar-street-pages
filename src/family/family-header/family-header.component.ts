@@ -1,8 +1,9 @@
 import 'rxjs/operator/debounceTime';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import { AppState } from '../../app/app.state';
 import {
   Component,
   OnInit,
@@ -80,7 +81,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public utilsService: UtilsService;
   public currentLanguage: string;
   public showTranslateMe: boolean;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -89,7 +91,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.zone = zone;
     this.math = math;
     this.element = element.nativeElement;
@@ -98,6 +100,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.languageService = languageService;
     this.utilsService = utilsService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {
@@ -115,9 +119,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.readLessTranslate = trans.READ_LESS;
     });
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
-    });*/
+    });
 
     this.familyHeaderServiceSubscribe = this.familyHeaderService
       .getFamilyHeaderData(`placeId=${this.placeId}${this.languageService.getLanguageParam()}`)

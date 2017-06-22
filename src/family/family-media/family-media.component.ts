@@ -78,7 +78,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
   public footerHeight: number;
   public headerHeight: number;
   public imageOffsetHeight: any;
-  public isInit: boolean = true;
   public indexViewBoxImage: number;
   public element: HTMLElement;
   public imageMargin: number;
@@ -162,6 +161,14 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
 
           this.changeZoom(0);
         }, 0);
+
+        if (this.activeImageIndex) {
+          setTimeout(() => {
+            this.getImageHeight();
+
+            this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1);
+          });
+        }
       });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -183,7 +190,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
             this.imageData.index = !countByIndex ? this.zoom : countByIndex;
             this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
 
-            this.zone.run(() => this.goToRow(Math.ceil((this.indexViewBoxImage + 1) / this.zoom)));
+            const row: number = Math.ceil((this.indexViewBoxImage + 1) / this.zoom);
+
+            this.zone.run(() => this.goToRow(row));
           }
         });
       });
@@ -241,10 +250,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
       this.getImageHeight();
     }, 0);
 
-    if (this.activeImageIndex && this.isInit) {
-      this.isInit = false;
+    if (this.activeImageIndex) {
+      const row: number = Math.ceil((this.indexViewBoxImage + 1) / this.zoom);
 
-      setTimeout(() => this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1));
+      this.goToRow(row);
     }
   }
 

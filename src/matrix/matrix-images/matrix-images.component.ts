@@ -20,10 +20,11 @@ import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block
 import {
   MathService,
   LoaderService,
-  CountriesFilterService,
   LanguageService,
   BrowserDetectionService
 } from '../../common';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app/app.state';
 
 @Component({
   selector: 'matrix-images',
@@ -88,8 +89,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public placesSubscribe: Subscription;
   public itemSize: number;
   public imageHeight: number;
-  public countriesFilterService: CountriesFilterService;
-  public countriesFilterServiceSubscribe: Subscription;
   public familyData: any;
   public prevPlaceId: string;
   public resizeSubscribe: Subscription;
@@ -108,7 +107,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      element: ElementRef,
                      math: MathService,
                      loaderService: LoaderService,
-                     countriesFilterService: CountriesFilterService,
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService) {
     this.languageService = languageService;
@@ -117,7 +115,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.router = router;
     this.loaderService = loaderService;
     this.device = browserDetectionService;
-    this.countriesFilterService = countriesFilterService;
     this.element = element.nativeElement;
   }
 
@@ -141,7 +138,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.showErrorMsg = false;
       this.showblock = false;
       this.currentPlaces = places;
+
       this.buildErrorMsg(this.currentPlaces);
+
       setTimeout(() => {
         this.getVisibleRows();
         let numberSplice: number = this.visibleImages * 2;

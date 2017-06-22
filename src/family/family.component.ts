@@ -1,8 +1,10 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../app/app.store';
+import { AppState } from '../app/app.state';
+// import { CountriesFilterActions } from '../shared/countries-filter/countries-filter.actions';
 import {
   Component,
   OnInit,
@@ -13,25 +15,16 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { forEach, difference, map, find, chain } from 'lodash';
 import {
-  CountriesFilterService,
   UrlChangeService,
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
-  LanguageService
+  LanguageService,
+  DrawDividersInterface
 } from '../common';
 import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
-
-export interface UrlParamsInterface {
-  thing: string;
-  countries: string;
-  regions: string;
-  zoom: number;
-  row: number;
-  lowIncome?: number;
-  highIncome?: number;
-}
+import { UrlParamsInterface } from '../interfaces';
 
 @Component({
   selector: 'family',
@@ -56,15 +49,12 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
   public placeId: string;
   public urlParams: UrlParamsInterface;
-  public streetSettingsServiceSubscribe: Subscription;
   public homeIncomeData: any;
   public rich: any;
   public poor: any;
   public thing: any = {};
   public router: Router;
   public activatedRoute: ActivatedRoute;
-  public countriesFilterService: CountriesFilterService;
-  public countriesFilterServiceSubscribe: Subscription;
   public locations: any[];
   public countries: any[];
   public activeImageIndex: number;
@@ -81,22 +71,22 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
   public query: string;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public countriesFilterState: Observable<any>;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
-                     countriesFilterService: CountriesFilterService,
                      urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      familyService: FamilyService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
                      elementRef: ElementRef,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.countriesFilterService = countriesFilterService;
     this.urlChangeService = urlChangeService;
     this.languageService = languageService;
     this.familyService = familyService;
@@ -105,6 +95,9 @@ export class FamilyComponent implements OnInit, OnDestroy {
     this.store = store;
 
     this.isDesktop = this.device.isDesktop();
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.countriesFilterState = this.store.select((dataSet: AppState) => dataSet.countriesFilter);
   }
 
   public ngOnInit(): void {
@@ -161,7 +154,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.homeIncomeData = data;
 
       this.poor = this.homeIncomeData.poor;
@@ -172,38 +165,28 @@ export class FamilyComponent implements OnInit, OnDestroy {
       }
 
       this.initData();
-    });*/
+    });
 
-    this.countriesFilterServiceSubscribe = this.countriesFilterService
-      .getCountries(`thing=${this.urlParams.thing}${this.languageService.getLanguageParam()}`)
-      .subscribe((res: any): any => {
-        if (res.err) {
-          console.error(res.err);
-          return;
+    this.countriesFilterState.subscribe((data: any) => {
+        if (!data) {
+          // this.store.dispatch(this.countriesFilterActions.getCountriesFilter(`thing=${this.urlParams.thing}${this.languageService.getLanguageParam()}`));
+        } else {
+          this.locations = data;
+
+          this.countries = chain(data)
+            .map('countries')
+            .flatten()
+            .sortBy('country')
+            .value();
+
+          this.initData();
         }
-
-        this.locations = res.data;
-        this.countries = chain(res.data)
-          .map('countries')
-          .flatten()
-          .sortBy('country')
-          .value();
-
-        this.initData();
-      });
+    });
   }
 
   public ngOnDestroy(): void {
     if(this.queryParamsSubscribe) {
       this.queryParamsSubscribe.unsubscribe();
-    }
-
-    if(this.countriesFilterServiceSubscribe) {
-      this.countriesFilterServiceSubscribe.unsubscribe();
-    }
-
-    if(this.streetSettingsServiceSubscribe) {
-      this.streetSettingsServiceSubscribe.unsubscribe();
     }
 
     if(this.familyServiceSetThingSubscribe) {

@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   Component,
   Input,
@@ -11,12 +12,12 @@ import {
   AfterViewInit,
   OnInit,
   OnDestroy,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
-import { AppActions } from '../../app/app.actions';
-import { Router, ActivatedRoute } from '@angular/router';
+import { AppState } from '../../app/app.state';
+import { ThingsFilterActions } from '../things-filter/things-filter.actions';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 import {
@@ -75,7 +76,7 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
   public resizeSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
   public incomeTitleContainerElement: HTMLElement;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(router: Router,
@@ -84,9 +85,10 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
                      activatedRoute: ActivatedRoute,
                      browserDetectionService: BrowserDetectionService,
                      element: ElementRef,
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private thingsFilterActions: ThingsFilterActions,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     store: Store<AppStore>,
-                     private appActions: AppActions) {
+                     store: Store<AppState>) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -96,7 +98,7 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     this.element = element.nativeElement;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -123,13 +125,8 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     this.isDesktop = this.device.isDesktop();
     this.isTablet = this.device.isTablet();
 
-    this.streetSettingsState.subscribe(data => {
-      if (!data) {
-        console.log('HEADER');
-        this.store.dispatch(this.appActions.getStreetSettings());
-      } else {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
         this.streetData = data;
-      }
     });
   }
 
@@ -229,6 +226,8 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
       queryParams.zoom = 3;
     }
 
+    this.store.dispatch(this.thingsFilterActions.getThingsFilter(this.objToQuery(queryParams)));
+
     if (this.matrixComponent) {
       this.filter.emit({url: this.objToQuery(queryParams)});
     } else {
@@ -240,6 +239,8 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
 
   public isFilterGotData(event: any): any {
     this[event] = true;
+
+    this.changeDetectorRef.detectChanges();
   }
 
   private parseUrl(url: string): any {
