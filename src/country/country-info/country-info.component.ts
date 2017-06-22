@@ -8,8 +8,7 @@ import { Component,
   Output
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
-import { AppActions } from '../../app/app.actions';
+import { AppState } from '../../app/app.state';
 import {
   MathService,
   DrawDividersInterface,
@@ -43,15 +42,14 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public streetServiceSubscribe: Subscription;
   public languageService: LanguageService;
   public device: BrowserDetectionService;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppStore>,
-                     private appActions: AppActions) {
+                     store: Store<AppState>) {
     this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
@@ -59,16 +57,12 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
     this.languageService = languageService;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {
-    this.streetSettingsState.subscribe(data => {
-      if (!data) {
-        this.store.dispatch(this.appActions.getStreetSettings());
-      } else {
-        this.streetData = data;
-      }
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
     });
 
     this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}${this.languageService.getLanguageParam()}`)

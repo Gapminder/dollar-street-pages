@@ -9,12 +9,12 @@ import {
     LanguageService,
     StreetSettingsService,
     BrowserDetectionService,
-    Angulartics2GoogleAnalytics
+    Angulartics2GoogleAnalytics,
+    StreetSettingsEffects
 } from '../../common';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from '../../app/app.effects';
 import { MapComponent } from '../map.component';
 import { MapService } from '../map.service';
 import { mockMapData } from './mock.data';
@@ -96,7 +96,7 @@ describe('', () => {
             imports: [
                         HttpModule,
                         StoreModule.provideStore({}),
-                        EffectsModule.run(AppEffects),
+                        EffectsModule.run(StreetSettingsEffects),
                         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}])
                      ],
             providers: [

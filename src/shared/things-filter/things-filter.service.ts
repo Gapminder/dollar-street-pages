@@ -14,7 +14,7 @@ export class ThingsFilterService {
     this.http = http;
   }
 
-  public getThings(query: string): Observable<any> {
+  public getThings(query: string): Observable<any> {console.log('THINGS FILTER CALL');
     return this.http
       .get(`${environment.consumerApi}/v1/things-filter?${query}`)
       .map((res: any) => {

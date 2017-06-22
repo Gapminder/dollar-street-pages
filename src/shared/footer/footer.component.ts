@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import {
   Component,
   OnInit,
@@ -6,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import { AppState } from '../../app/app.state';
 import { compact } from 'lodash';
 import { FooterService } from './footer.service';
 import {
@@ -28,7 +29,6 @@ export class FooterComponent implements OnInit, OnDestroy {
   public window: Window = window;
   public isMatrixComponent: boolean;
   public streetData: DrawDividersInterface;
-
   public router: Router;
   public footerService: FooterService;
   public utilsService: UtilsService;
@@ -37,7 +37,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public languageService: LanguageService;
 
@@ -47,7 +48,7 @@ export class FooterComponent implements OnInit, OnDestroy {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.router = router;
     this.footerService = footerService;
     this.utilsService = utilsService;
@@ -55,14 +56,16 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngOnInit(): any {
     this.isDesktop = this.device.isDesktop();
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
-      this.streetData = data;
-    });*/
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+        this.streetData = data;
+    });
 
     this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {

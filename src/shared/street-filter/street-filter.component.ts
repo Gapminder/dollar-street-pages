@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
@@ -11,10 +12,11 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import { AppState } from '../../app/app.state';
 import { sortBy, chain } from 'lodash';
 import {
   MathService,
+  DrawDividersInterface
 } from '../../common';
 import { StreetFilterDrawService } from './street-filter.service';
 
@@ -42,16 +44,19 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public element: HTMLElement;
   public streetFilterSubscribe: Subscription;
   public resize: any;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(element: ElementRef,
                      math: MathService,
                      streetDrawService: StreetFilterDrawService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.element = element.nativeElement;
     this.math = math;
     this.street = streetDrawService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -61,11 +66,11 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
 
     this.streetFilterSubscribe = this.street.filter.subscribe(this.filterStreet);
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       this.setDividers(this.places, this.streetData);
-    });*/
+    });
 
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)

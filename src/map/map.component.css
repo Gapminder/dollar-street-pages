@@ -6,17 +6,6 @@
   right: 6px;
 }
 
-.map-header {
-  background-color: #fff;
-  border-bottom: 1px solid #ffce00;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
-
 .map-header .logo {
   margin-top: 4px;
 }
@@ -494,6 +483,17 @@
 .left-side-info ::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: #ced1d5;
+}
+
+.map-header {
+  background-color: #fff;
+  border-bottom: 1px solid #ffce00;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
 }
 
 @media (min-width: 1400px) {

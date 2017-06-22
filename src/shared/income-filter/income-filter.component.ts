@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import {
   Component,
   Output,
@@ -8,8 +9,11 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
+import {
+  DrawDividersInterface
+} from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import { AppState } from '../../app/app.state';
 
 @Component({
   selector: 'income-filter',
@@ -41,22 +45,25 @@ export class IncomeFilterComponent implements AfterViewInit {
     lowIncome: this.lowIncome,
     highIncome: this.highIncome
   };
-  public streetData: any;
+  public streetData: DrawDividersInterface;
   public element: HTMLElement;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
-  public constructor(store: Store<AppStore>,
+  public constructor(store: Store<AppState>,
                      element: ElementRef) {
     this.element = element.nativeElement;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       this.initData();
-    });*/
+    });
   }
 
   public initData(): void {

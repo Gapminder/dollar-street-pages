@@ -1,7 +1,5 @@
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
 import {
   Component,
   Input,
@@ -14,7 +12,11 @@ import {
   AfterViewInit,
   ViewChild
 } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import {
+  Router,
+  NavigationEnd,
+  ActivatedRoute
+} from '@angular/router';
 import {
   DrawDividersInterface,
   LocalStorageService,
@@ -22,6 +24,8 @@ import {
   Angulartics2GoogleAnalytics,
   LanguageService
 } from '../../common';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app/app.state';
 
 @Component({
   selector: 'main-menu',
@@ -55,7 +59,9 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public socialShareContentElement: HTMLElement;
   public languageService: LanguageService;
   public shareTranslation: string;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public languages: any;
 
   public constructor(router: Router,
                      element: ElementRef,
@@ -64,7 +70,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
                      localStorageService: LocalStorageService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -73,14 +79,16 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
     this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
-        this.shareTranslation = trans;
+      this.shareTranslation = trans;
 
-        this.processShareTranslation();
-      });
+      this.processShareTranslation();
+    });
   }
 
   public ngOnInit(): void {
@@ -106,16 +114,19 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
-    });*/
+    });
 
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
-      .subscribe(() => {
-        if (this.isOpenMenu) {
-          this.isOpenMenu = false;
-        }
-      });
+    this.languageService.languagesList.subscribe((data: any) => {
+      this.languages = data;
+    });
+
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe(() => {
+      if (this.isOpenMenu) {
+        this.isOpenMenu = false;
+      }
+    });
   }
 
   public processShareTranslation(): void {
@@ -143,7 +154,9 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       this.hoverPlaceSubscribe.unsubscribe();
     }
 
-    this.getTranslationSubscribe.unsubscribe();
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
 
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');

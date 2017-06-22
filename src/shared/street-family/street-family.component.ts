@@ -1,8 +1,9 @@
 import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import { AppState } from '../../app/app.state';
 import {
   Component,
   Input,
@@ -37,14 +38,17 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public resizeSubscribe: Subscription;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetFamilyDrawService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -56,11 +60,11 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       this.drawStreet(this.streetData, this.place);
-    });*/
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)

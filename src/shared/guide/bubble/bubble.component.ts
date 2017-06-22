@@ -7,23 +7,21 @@ import {
   NgZone,
   ViewChild
 } from '@angular/core';
-
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { find } from 'lodash';
-
 import {
   LocalStorageService,
   BrowserDetectionService,
   UtilsService
 } from '../../../common';
+import { KeyCodes } from '../../../enums';
 
 @Component({
   selector: 'bubble',
   templateUrl: './bubble.component.html',
   styleUrls: ['./bubble.component.css']
 })
-
 export class BubbleComponent implements OnInit, OnDestroy {
   @ViewChild('bubblesContainer')
   public bubblesContainer: ElementRef;
@@ -83,11 +81,11 @@ export class BubbleComponent implements OnInit, OnDestroy {
           return;
         }
 
-        if (e.keyCode === 37) {
+        if (e.keyCode === KeyCodes.leftArrow) {
           this.back();
         }
 
-        if (e.keyCode === 39) {
+        if (e.keyCode === KeyCodes.rightArrow) {
           this.next();
         }
       });

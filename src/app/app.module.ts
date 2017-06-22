@@ -6,9 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { rootReducer } from './app.store';
-import { AppEffects } from './app.effects';
-import { AppActions } from './app.actions';
+import { rootReducer } from './app.state';
 
 import { AppComponent } from './app.component';
 
@@ -16,9 +14,16 @@ import { AppRoutingModule } from './app.routing';
 
 import { MatrixModule } from '../matrix/matrix.module';
 
-import { SharedModule } from '../shared';
+import {
+  SharedModule,
+  ThingsFilterEffects,
+  CountriesFilterEffects
+} from '../shared';
 
-import { CommonAppModule } from '../common';
+import {
+  CommonAppModule,
+  StreetSettingsEffects
+} from '../common';
 
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { Observable } from 'rxjs';
@@ -35,7 +40,6 @@ export class CustomLoader implements TranslateLoader {
 
 @NgModule({
   declarations: [AppComponent],
-  providers: [AppActions],
   imports: [
     BrowserModule,
     HttpModule,
@@ -45,11 +49,10 @@ export class CustomLoader implements TranslateLoader {
     SharedModule,
     MatrixModule,
     StoreModule.provideStore(rootReducer),
-    EffectsModule.run(AppEffects),
-    TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useClass: CustomLoader
-    }),
+    EffectsModule.run(StreetSettingsEffects),
+    EffectsModule.run(ThingsFilterEffects),
+    EffectsModule.run(CountriesFilterEffects),
+    TranslateModule.forRoot({ provide: TranslateLoader, useClass: CustomLoader }),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   bootstrap: [AppComponent]

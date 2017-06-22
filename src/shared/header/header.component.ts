@@ -1,22 +1,22 @@
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   Component,
   Input,
   Output,
-  OnChanges,
   EventEmitter,
   ElementRef,
   AfterViewInit,
   OnInit,
   OnDestroy,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
-import { AppActions } from '../../app/app.actions';
-import { Router, ActivatedRoute } from '@angular/router';
+import { AppState } from '../../app/app.state';
+import { ThingsFilterActions } from '../things-filter/things-filter.actions';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 import {
@@ -32,7 +32,7 @@ import {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnInit {
+export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   @ViewChild(ThingsFilterComponent)
   public thingsFilterComponent: ThingsFilterComponent;
   @ViewChild(CountriesFilterComponent)
@@ -75,8 +75,9 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
   public resizeSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
   public incomeTitleContainerElement: HTMLElement;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public languages: any;
 
   public constructor(router: Router,
                      math: MathService,
@@ -84,9 +85,10 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
                      activatedRoute: ActivatedRoute,
                      browserDetectionService: BrowserDetectionService,
                      element: ElementRef,
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private thingsFilterActions: ThingsFilterActions,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     store: Store<AppStore>,
-                     private appActions: AppActions) {
+                     store: Store<AppState>) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -96,7 +98,7 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     this.element = element.nativeElement;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -123,13 +125,12 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
     this.isDesktop = this.device.isDesktop();
     this.isTablet = this.device.isTablet();
 
-    this.streetSettingsState.subscribe(data => {
-      if (!data) {
-        console.log('HEADER');
-        this.store.dispatch(this.appActions.getStreetSettings());
-      } else {
-        this.streetData = data;
-      }
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
+    });
+
+    this.languageService.languagesList.subscribe((data: any) => {
+      this.languages = data;
     });
   }
 
@@ -235,11 +236,15 @@ export class HeaderComponent implements OnChanges, OnDestroy, AfterViewInit, OnI
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
 
+    this.store.dispatch(this.thingsFilterActions.getThingsFilter(this.objToQuery(queryParams)));
+
     this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }
 
   public isFilterGotData(event: any): any {
     this[event] = true;
+
+    this.changeDetectorRef.detectChanges();
   }
 
   private parseUrl(url: string): any {

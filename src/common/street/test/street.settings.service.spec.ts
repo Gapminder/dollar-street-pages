@@ -14,7 +14,7 @@ import {
     HttpModule
 } from '@angular/http';
 
-import { StreetSettingsService } from '../street.settings.service';
+import { StreetSettingsService } from '../street-settings.service';
 
 export interface DrawDividersInterface {
   showDividers: boolean;

@@ -15,12 +15,13 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../app/app.store';
+import { AppState } from '../../app/app.state';
 import { ActivatedRoute } from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
 import {
   MathService,
-  LanguageService
+  LanguageService,
+  DrawDividersInterface
 } from '../../common';
 import { StreetDrawService } from './street.service';
 
@@ -70,20 +71,23 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   public placesArr: any;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
                      math: MathService,
                      streetDrawService: StreetDrawService,
                      languageService: LanguageService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
     this.street = streetDrawService;
     this.languageService = languageService;
     this.store = store;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): any {
@@ -103,7 +107,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       if (!this.placesArr) {
@@ -111,7 +115,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       }
 
       this.setDividers(this.placesArr, this.streetData);
-    });*/
+    });
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
       let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');

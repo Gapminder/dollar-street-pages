@@ -1,15 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { LoaderService, LanguageService, FontDetectorService, GoogleAnalyticsService } from '../common';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import {
+  LoaderService,
+  LanguageService,
+  FontDetectorService,
+  GoogleAnalyticsService
+} from '../common';
 
 @Component({
   selector: 'consumer-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-
 export class AppComponent implements OnInit, OnDestroy {
   public window: Window = window;
   public navigator: any = navigator;
@@ -19,7 +27,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public routerEventsSubscribe: Subscription;
   public loaderServiceSubscribe: Subscription;
   public documentCreatedSubscribe: Subscription;
-
   public languageService: LanguageService;
   public loaderService: LoaderService;
   public googleAnalyticsService: GoogleAnalyticsService;

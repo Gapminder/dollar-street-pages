@@ -1,5 +1,6 @@
 import 'rxjs/add/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
@@ -13,7 +14,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../app/app.store';
+import { AppState } from '../app/app.state';
 import {
   MathService,
   LoaderService,
@@ -30,7 +31,6 @@ import { MapService } from './map.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-
 export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapBox')
   public map: ElementRef;
@@ -82,7 +82,8 @@ export class MapComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public languageService: LanguageService;
   public currentLanguage: string;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -95,7 +96,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -110,6 +111,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.store = store;
 
     this.currentLanguage = this.languageService.currentLanguage;
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {
@@ -123,9 +126,9 @@ export class MapComponent implements OnInit, OnDestroy {
       this.familyTranslate = trans;
     });
 
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
-    });*/
+    });
 
     this.queryParamsSubscribe = this.activatedRoute
       .queryParams

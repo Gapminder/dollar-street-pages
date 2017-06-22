@@ -1,3 +1,6 @@
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import {
   Component,
   OnDestroy,
@@ -11,15 +14,16 @@ import {
   NgZone,
   ViewChild
 } from '@angular/core';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 import {
   BrowserDetectionService,
-  CountriesFilterService,
   LanguageService,
   UtilsService
 } from '../../common';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app/app.state';
+import { CountriesFilterActions } from './countries-filter.actions';
+import { KeyCodes } from '../../enums';
 
 @Component({
   selector: 'countries-filter',
@@ -61,8 +65,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public selectedCountries: string[] = [];
   public positionLeft: number = 0;
   public filterTopDistance: number = 0;
-  public countriesFilterService: CountriesFilterService;
-  public countriesFilterServiceSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public cloneSelectedRegions: string[] = ['World'];
   public cloneSelectedCountries: string[] = ['World'];
@@ -76,20 +78,26 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public isDesktop: boolean;
   public isTablet: boolean;
   public isMobile: boolean;
+  public store: Store<AppState>;
+  public countriesFilterState: Observable<any>;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
-                     countriesFilterService: CountriesFilterService,
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     store: Store<AppState>,
+                     private countriesFilterActions: CountriesFilterActions) {
     this.languageService = languageService;
     this.device = browserDetectionService;
-    this.countriesFilterService = countriesFilterService;
     this.utilsService = utilsService;
 
     this.element = element.nativeElement;
     this.zone = zone;
+
+    this.store = store;
+
+    this.countriesFilterState = this.store.select((dataSet: AppState) => dataSet.countriesFilter);
   }
 
   public ngOnInit(): void {
@@ -178,7 +186,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
         this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
           .subscribe((e: KeyboardEvent) => {
-            if (e.keyCode === 13) {
+            if (e.keyCode === KeyCodes.enter) {
               this.regionsVisibility = true;
               inputElement.blur();
             }
@@ -200,7 +208,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         let inputElement: HTMLElement = this.countriesMobileSearch.nativeElement;
 
         this.keyUpSubscribe = fromEvent(inputElement, 'keyup').subscribe((e: KeyboardEvent) => {
-          if (e.keyCode === 13) {
+          if (e.keyCode === KeyCodes.enter) {
             inputElement.blur();
           }
         });
@@ -342,7 +350,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnDestroy(): void {
-    this.countriesFilterServiceSubscribe.unsubscribe();
     this.getTranslationSubscribe.unsubscribe();
 
     if (this.keyUpSubscribe) {
@@ -362,32 +369,24 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.search = '';
 
     if (changes.url && changes.url.currentValue) {
-      if (this.countriesFilterServiceSubscribe) {
-        this.countriesFilterServiceSubscribe.unsubscribe();
-        this.countriesFilterServiceSubscribe = void 0;
-      }
+      this.countriesFilterState.subscribe((data: any) => {
+          if (!data) {
+            this.store.dispatch(this.countriesFilterActions.getCountriesFilter(this.url));
+          } else {
+            this.locations = data;
 
-      this.countriesFilterServiceSubscribe = this
-        .countriesFilterService
-        .getCountries(this.url)
-        .subscribe((res: any) => {
-          if (res.err) {
-            console.error(res.err);
-            return;
-          }
+            this.countries = _
+              .chain(data)
+              .map('countries')
+              .flatten()
+              .sortBy('country')
+              .value();
 
-          this.locations = res.data;
+            this.setTitle(this.url);
 
-          this.countries = _
-            .chain(res.data)
-            .map('countries')
-            .flatten()
-            .sortBy('country')
-            .value();
-
-          this.setTitle(this.url);
-          this.isFilterGotData.emit('isCountryFilterReady');
-        });
+            this.isFilterGotData.emit('isCountryFilterReady');
+         }
+      });
     }
   }
 

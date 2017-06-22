@@ -1,5 +1,7 @@
 import 'rxjs/add/operator/debounceTime';
-
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import {
   OnInit,
   Component,
@@ -13,26 +15,23 @@ import {
   NgZone,
   ViewChild
 } from '@angular/core';
-
 import { ActivatedRoute } from '@angular/router';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Subscription';
-
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app/app.state';
+import { ThingsFilterActions } from './things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
   ActiveThingService,
   UtilsService
 } from '../../common';
-
-import { ThingsFilterService } from './things-filter.service';
+import { KeyCodes } from '../../enums';
 
 @Component({
   selector: 'things-filter',
   templateUrl: './things-filter.component.html',
   styleUrls: ['./things-filter.component.css', './things-filter.component.mobile.css']
 })
-
 export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('tabsHeaderContainer')
   public tabsHeaderContainer: ElementRef;
@@ -64,22 +63,23 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public resizeSubscribe: Subscription;
   public utilsService: UtilsService;
   public openMobileFilterView: boolean = false;
-  public thingsFilterService: any;
-  public thingsFilterServiceSubscribe: Subscription;
   public keyUpSubscribe: Subscription;
   public activatedRoute: ActivatedRoute;
   public element: HTMLElement;
   public activeThingService: ActiveThingService;
+  public store: Store<AppState>;
+  public thingsFilterState: Observable<any>;
+  public isInit: boolean;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
                      zone: NgZone,
-                     thingsFilterService: ThingsFilterService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      activeThingService: ActiveThingService,
-                     utilsService: UtilsService) {
-    this.thingsFilterService = thingsFilterService;
+                     utilsService: UtilsService,
+                     store: Store<AppState>,
+                     private thingsFilterActions: ThingsFilterActions) {
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
@@ -87,6 +87,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.activeThingService = activeThingService;
     this.utilsService = utilsService;
+
+    this.store = store;
+
+    this.thingsFilterState = this.store.select((dataSet: AppState) => dataSet.thingsFilter);
   }
 
   @HostListener('document:click', ['$event'])
@@ -107,6 +111,19 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.isDesktop = this.device.isDesktop();
 
     this.isOpenMobileFilterView();
+
+    this.thingsFilterState.subscribe((data: any) => {
+      if(data) {
+        this.relatedThings = data.relatedThings;
+        this.popularThings = data.popularThings;
+        this.otherThings = data.otherThings;
+        this.activeThing = data.thing;
+
+        this.isFilterGotData.emit('isThingFilterReady');
+
+        this.activeThingService.setActiveThing(this.activeThing);
+      }
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -146,12 +163,16 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    let query = this.parseUrl(this.url);
+    let query: any = this.parseUrl(this.url);
     query.thing = thing.originPlural;
 
-    this.selectedFilter.emit({url: this.objToQuery(query), thing: this.activeThing});
+    const newUrl: string = this.objToQuery(query);
+
+    this.selectedFilter.emit({url: newUrl, thing: this.activeThing});
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
+
+    this.store.dispatch(this.thingsFilterActions.getThingsFilter(newUrl));
 
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
   }
@@ -190,14 +211,13 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
       .subscribe((e: KeyboardEvent) => {
-        if (e.keyCode === 13) {
+        if (e.keyCode === KeyCodes.enter) {
           inputElement.blur();
         }
       });
   }
 
   public ngOnDestroy(): void {
-    this.thingsFilterServiceSubscribe.unsubscribe();
     if (this.keyUpSubscribe) {
       this.keyUpSubscribe.unsubscribe();
     }
@@ -209,28 +229,11 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public ngOnChanges(changes: any): void {
     if (changes.url && changes.url.currentValue) {
-      if (this.thingsFilterServiceSubscribe) {
-        this.thingsFilterServiceSubscribe.unsubscribe();
+      if(!this.isInit) {
+        this.isInit = true;
+
+        this.store.dispatch(this.thingsFilterActions.getThingsFilter(changes.url.currentValue));
       }
-
-      this.thingsFilterServiceSubscribe = this
-        .thingsFilterService
-        .getThings(this.url)
-        .subscribe((res: any) => {
-          if (res.err) {
-            console.error(res.err);
-            return;
-          }
-
-          this.relatedThings = res.data.relatedThings;
-          this.popularThings = res.data.popularThings;
-          this.otherThings = res.data.otherThings;
-          this.activeThing = res.data.thing;
-
-          this.isFilterGotData.emit('isThingFilterReady');
-
-          this.activeThingService.setActiveThing(this.activeThing);
-        });
     }
   }
 

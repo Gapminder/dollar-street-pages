@@ -1,5 +1,6 @@
 import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
@@ -14,7 +15,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../../app/app.store';
+import { AppState } from '../../../app/app.state';
 import {
   DrawDividersInterface,
   BrowserDetectionService,
@@ -60,7 +61,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public languageService: LanguageService;
   public showTranslateMe: boolean;
   public element: HTMLElement;
-  public store: Store<AppStore>;
+  public store: Store<AppState>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(zone: NgZone,
                      browserDetectionService: BrowserDetectionService,
@@ -68,7 +70,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      languageService: LanguageService,
                      utilsService: UtilsService,
                      elementRef: ElementRef,
-                     store: Store<AppStore>) {
+                     store: Store<AppState>) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
@@ -80,12 +82,14 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     this.isDesktop = this.device.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
+
+    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {
-    /*this.appEffects.getDataOrDispatch(this.store, AppEffects.GET_STREET_SETTINGS).then((data: any) => {
+    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
-    });*/
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
