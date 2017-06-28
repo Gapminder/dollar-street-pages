@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../app/app.state';
+import { AppState } from '../interfaces';
 import {
   MathService,
   LoaderService,

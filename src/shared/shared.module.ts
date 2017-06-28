@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
+import { HeaderActions } from './header/header.actions';
 import { HeaderComponent } from './header/header.component';
 import { HeaderService } from './header/header.service';
 
@@ -103,6 +104,7 @@ import { Angulartics2Module } from 'angulartics2';
     TranslateModule
   ],
   providers: [
+    HeaderActions,
     HeaderService,
     SocialShareButtonsService,
     FooterService,

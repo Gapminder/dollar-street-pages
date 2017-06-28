@@ -21,7 +21,7 @@ import {
   UtilsService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 import { CountriesFilterActions } from './countries-filter.actions';
 import { KeyCodes } from '../../enums';
 

@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import {
   DrawDividersInterface
 } from '../../common';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 import { sortBy, chain } from 'lodash';
 import { StreetMobileDrawService } from './street-mobile.service';
 
