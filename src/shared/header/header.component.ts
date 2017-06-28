@@ -15,7 +15,11 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import {
+  AppState,
+  HeaderState
+} from '../../interfaces';
+import { HeaderActions } from './header.actions';
 import { ThingsFilterActions } from '../things-filter/things-filter.actions';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
@@ -77,6 +81,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public incomeTitleContainerElement: HTMLElement;
   public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public headerState: Observable<HeaderState>;
+  public headerData: HeaderState;
   public languages: any;
 
   public constructor(router: Router,
@@ -87,6 +93,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
                      element: ElementRef,
                      private changeDetectorRef: ChangeDetectorRef,
                      private thingsFilterActions: ThingsFilterActions,
+                     private headerActions: HeaderActions,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      store: Store<AppState>) {
     this.router = router;
@@ -99,6 +106,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store = store;
 
     this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.headerState = this.store.select((dataSet: AppState) => dataSet.header);
   }
 
   public ngAfterViewInit(): void {
@@ -128,6 +136,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
+
+    this.headerState.subscribe((data: HeaderState) => {
+      this.headerData = data;
+      console.log(data);
+    });
+
+    // this.store.dispatch(this.headerActions.setQuery('QUUUEROIOI'));
+    // this.store.dispatch(this.headerActions.setThing({thing: 'THIS is THING'}));
+    // this.store.dispatch(this.headerActions.setHoverPlace({place: 'set hover place'}));
 
     this.languageService.languagesList.subscribe((data: any) => {
       this.languages = data;

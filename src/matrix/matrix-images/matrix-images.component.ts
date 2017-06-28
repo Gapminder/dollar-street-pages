@@ -24,7 +24,7 @@ import {
   BrowserDetectionService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 
 @Component({
   selector: 'matrix-images',

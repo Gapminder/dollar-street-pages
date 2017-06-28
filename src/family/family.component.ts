@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppState } from '../app/app.state';
+import { AppState } from '../interfaces';
 // import { CountriesFilterActions } from '../shared/countries-filter/countries-filter.actions';
 import {
   Component,

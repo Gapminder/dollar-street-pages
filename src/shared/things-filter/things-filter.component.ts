@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 import { ThingsFilterActions } from './things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 import { compact } from 'lodash';
 import { FooterService } from './footer.service';
 import {

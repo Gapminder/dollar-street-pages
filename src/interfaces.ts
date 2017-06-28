@@ -13,3 +13,16 @@ export interface UrlParamsInterface {
   lowIncome?: number;
   highIncome?: number;
 }
+
+export interface HeaderState {
+    query: string;
+    thing: any;
+    hoverPlace: any;
+}
+
+export interface AppState {
+    streetSettings: any;
+    thingsFilter: any;
+    countriesFilter: any;
+    header: HeaderState;
+}

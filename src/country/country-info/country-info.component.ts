@@ -8,7 +8,7 @@ import { Component,
   Output
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 import {
   MathService,
   DrawDividersInterface,
