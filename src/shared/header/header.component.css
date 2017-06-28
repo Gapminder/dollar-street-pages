@@ -25,7 +25,6 @@
 .filters-container {
   float: left;
   margin-top: 11px;
-  width: calc(100% - 305px);
 }
 
 .filters-container things-filter,
@@ -97,10 +96,6 @@
     margin-bottom: 5px;
   }
 
-  .filters-container {
-    width: calc(100% - 250px);
-  }
-
   .header-content .icon-container img {
     width: 42px;
     height: 42px;
@@ -120,10 +115,6 @@
 }
 
 @media (max-width: 920px) {
-  .filters-container {
-    width: calc(100% - 210px);
-  }
-
   .filters-container .some-filter-container > span,
   .filters-container > span {
     margin: 0 2px;
@@ -132,9 +123,15 @@
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 700px) {
   .header-content >>> .lang-container {
     display: none;
+  }
+
+  .filters-container {
+    float: left;
+    margin-top: 11px;
+    width: calc(100% - 47px);
   }
 
   .filters-container .map-things-text {
@@ -143,12 +140,6 @@
 
   .filters-container .some-filter-container > span {
     margin: 0;
-  }
-
-  .filters-container {
-    float: left;
-    margin-top: 11px;
-    width: calc(100% - 47px);
   }
 
   .filters-container things-filter {

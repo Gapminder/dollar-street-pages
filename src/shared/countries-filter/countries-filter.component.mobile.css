@@ -405,19 +405,25 @@
   }
 }
 
+@media (max-width: 800px) {
+  #countries-filter-mobile .countries-filter-button {
+    max-width: 210px;
+  }
+}
+
 @media (max-width: 680px) {
   .countries-filter-button {
     max-width: 140px;
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 700px) {
   #countries-filter-mobile {
     width: 100%;
     margin: 6px 0;
   }
 
-   .countries-filter-button {
+  .countries-filter-button {
     min-width: 100%;
   }
 

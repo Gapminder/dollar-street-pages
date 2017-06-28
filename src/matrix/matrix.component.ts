@@ -25,7 +25,7 @@ import {
   ActiveThingService,
   UtilsService
 } from '../common';
-import { GuideComponent } from '../shared';
+import { GuideComponent, HeaderComponent } from '../shared';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { MatrixService } from './matrix.service';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
@@ -42,6 +42,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public matrixImagesComponent: MatrixImagesComponent;
   @ViewChild(GuideComponent)
   public guideComponent: GuideComponent;
+  @ViewChild(HeaderComponent)
+  public headerComponent: HeaderComponent;
   @ViewChild('streetAndTitleContainer')
   public streetAndTitleContainer: ElementRef;
   @ViewChild('streetContainer')
@@ -50,6 +52,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public headerContainer: ElementRef;
 
   public headerContainerElement: HTMLElement;
+  public headerComponentElement: HTMLElement;
   public streetContainerElement: HTMLElement;
   public streetAndTitleContainerElement: HTMLElement;
   public zoomPositionFixed: boolean;
@@ -171,6 +174,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.headerContainerElement = this.headerContainer.nativeElement;
     this.streetContainerElement = this.streetContainer.nativeElement;
     this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
+    this.headerComponentElement = this.headerComponent.element;
 
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'BY_INCOME']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
@@ -319,10 +323,20 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
           let headerHeight: number = this.headerContainerElement.clientHeight;
 
           if (scrollTop > headerHeight) {
-            this.headerContainerElement.style.position = 'fixed';
-            this.matrixImagesContainer.style.paddingTop = this.headerContainerElement.clientHeight + 'px';
+            if (this.isMobile) {
+              this.headerComponentElement.style.display = 'none';
+            } else {
+              this.headerContainerElement.style.position = 'fixed';
+            }
+
+            this.matrixImagesContainer.style.paddingTop = this.headerComponentElement.clientHeight + 'px';
           } else {
-            this.headerContainerElement.style.position = 'static';
+            if (this.isMobile) {
+              this.headerComponentElement.style.display = 'block';
+            } else {
+              this.headerContainerElement.style.position = 'static';
+            }
+
             this.matrixImagesContainer.style.paddingTop = '0px';
           }
 

@@ -321,11 +321,15 @@
   }
 }
 
-@media (max-width: 599px) {
-  #things-filter-mobile .close-button {
-    position: absolute;
-    top: 18px;
-    right: 8px;
+@media (max-width: 701px) {
+  #things-filter-mobile .things-filter-button .things-filter-button-content {
+    /*max-width: 190px;*/
+  }
+}
+
+@media (max-width: 700px) {
+  #things-filter-mobile .things-filter-button .things-filter-button-content {
+    max-width: 100%;
   }
 
   #things-filter-mobile {
@@ -333,6 +337,12 @@
     position: relative;
     vertical-align: bottom;
     width: 100%
+  }
+
+  #things-filter-mobile .close-button {
+    position: absolute;
+    top: 18px;
+    right: 8px;
   }
 
   #things-filter-mobile .tabs-header-container span {
