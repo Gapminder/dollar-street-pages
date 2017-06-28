@@ -31,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public loaderService: LoaderService;
   public googleAnalyticsService: GoogleAnalyticsService;
   public fontDetectorService: FontDetectorService;
+  public isMatrix: boolean;
 
   public constructor(router: Router,
                      languageService: LanguageService,
@@ -69,6 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         this.isVisibleHeader = !(activePage === '/matrix' || activePage === '/family' || activePage === '/map');
+        this.isMatrix = activePage === '/matrix';
 
         this.languageService.updateLangInUrl();
       }

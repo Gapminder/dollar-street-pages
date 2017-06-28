@@ -1,8 +1,8 @@
 .header-content {
-  display: inline-block;
   vertical-align: top;
   width: 100%;
   background-color: white;
+  z-index: 998;
 }
 
 .header-content .icon-container {

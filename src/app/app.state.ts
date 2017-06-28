@@ -15,6 +15,4 @@ const reducers = {
     header: headerReducer
 };
 
-export const rootReducer = (() => {
-    return combineReducers(reducers);
-})();
+export const rootReducer = combineReducers(reducers);

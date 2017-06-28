@@ -1,4 +1,4 @@
-<div class="header-content">
+<div class="container header-content">
   <div class="icon-container pull-left">
     <a (click)="goToMatrixPage()"><img src="/assets/img/dollar-street.svg" alt=""/></a>
   </div>
@@ -8,7 +8,7 @@
        [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (mapComponent && isThingFilterReady)) ? 'visible' : 'hidden'}">
     <things-filter [url]="query"
                    (isFilterGotData)="isFilterGotData($event)"
-                   (selectedFilter)="urlTransfer($event)">
+                   (selectedFilter)="thingSelected($event)">
     </things-filter>
 
     <span *ngIf="mapComponent" class="map-things-text">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
@@ -17,10 +17,11 @@
       <span class="mobile-ver">{{ 'IN' | translate }}</span>
       <countries-filter [url]="query"
                         (isFilterGotData)="isFilterGotData($event)"
-                        (selectedFilter)="urlTransfer($event)">
+                        (selectedFilter)="countrySelected($event)">
       </countries-filter>
 
-      <span class="income-title-container">
+      <span #incomeTitleContainer
+            class="income-title-container">
         <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
         <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
       </span>

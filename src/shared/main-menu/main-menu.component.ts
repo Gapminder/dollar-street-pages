@@ -260,7 +260,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (this.isMatrixComponent) {
-      this.selectedFilter.emit({url: this.objToQuery(queryParams)});
+      // this.selectedFilter.emit({url: this.objToQuery(queryParams)});
     } else {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
