@@ -25,7 +25,7 @@
                   [chosenPlaces]="chosenPlaces"
                   (filterStreet)="urlChanged($event)"></street>
 
-          <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
+          <street-mobile *ngIf="isMobile" [places]="streetPlaces"></street-mobile>
         </div>
       </div>
     </div>

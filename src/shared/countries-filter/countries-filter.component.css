@@ -353,6 +353,13 @@
 
 /* IE */
 
+@media (max-width: 1023px) {
+  #countries-filter .countries-filter-button {
+    font-size: 24px;
+    padding: 6px 30px 6px 11px;
+  }
+}
+
 @media (max-width: 1400px), (max-height: 600px) {
   .close-button {
     margin-right: 3px;
@@ -461,12 +468,5 @@
   #countries-filter .button-container .ok-img {
     padding-top: 0;
     margin-top: -7px;
-  }
-}
-
-@media (max-width: 1023px) {
-  #countries-filter .countries-filter-button {
-    font-size: 24px;
-    padding: 6px 30px 6px 11px;
   }
 }

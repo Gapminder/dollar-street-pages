@@ -1,7 +1,3 @@
-:host(things-filter) {
-  max-width: 50%;
-}
-
 #things-filter .close-button {
   width: 15px;
   margin: -6px -3px 0 0;
@@ -54,7 +50,7 @@
 }
 
 #things-filter.open-things-filter .things-filter-button .things-filter-button-content {
-  box-shadow: 0 0 10px rgba(55, 69, 81, 0.1)
+  box-shadow: 0 0 10px rgba(55, 69, 81, 0.1);
 }
 
 #things-filter.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
