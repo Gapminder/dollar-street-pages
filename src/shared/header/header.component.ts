@@ -22,13 +22,15 @@ import {
 import { HeaderActions } from './header.actions';
 import { ThingsFilterActions } from '../things-filter/things-filter.actions';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
+import { CountriesFilterActions } from '../countries-filter/countries-filter.actions';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 import {
   MathService,
   Angulartics2GoogleAnalytics,
   DrawDividersInterface,
   BrowserDetectionService,
-  LanguageService
+  LanguageService,
+  UrlChangeService
 } from '../../common';
 
 @Component({
@@ -43,6 +45,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public countriesFilterComponent: CountriesFilterComponent;
   @ViewChild('filtersContainer')
   public filtersContainer: ElementRef;
+  @ViewChild('incomeTitleContainer')
+  public incomeTitleContainer: ElementRef;
 
   @Input()
   public query: string;
@@ -78,12 +82,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public getTranslationSubscription: Subscription;
   public resizeSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
+  public getTranslationSubscribtion: Subscription;
+  public queryParamsSubscribe: Subscription;
   public incomeTitleContainerElement: HTMLElement;
   public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public headerState: Observable<HeaderState>;
   public headerData: HeaderState;
   public languages: any;
+  public byIncomeText: string;
 
   public constructor(router: Router,
                      math: MathService,
@@ -93,7 +100,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
                      element: ElementRef,
                      private changeDetectorRef: ChangeDetectorRef,
                      private thingsFilterActions: ThingsFilterActions,
+                     private countriesFilterActions: CountriesFilterActions,
                      private headerActions: HeaderActions,
+                     private urlChangeService: UrlChangeService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      store: Store<AppState>) {
     this.router = router;
@@ -126,12 +135,25 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public ngOnInit(): void {
-    this.matrixComponent = this.location.href.indexOf('matrix') !== -1;
-    this.mapComponent = this.location.href.indexOf('map') !== -1;
-
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
     this.isTablet = this.device.isTablet();
+
+    this.getTranslationSubscribtion = this.languageService.getTranslation(['BY_INCOME']).subscribe((trans: any) => {
+      this.byIncomeText = trans.BY_INCOME;
+    });
+
+    this.queryParamsSubscribe = this.activatedRoute
+      .queryParams
+      .subscribe((params: any) => {
+        this.matrixComponent = this.location.href.indexOf('matrix') !== -1;
+        this.mapComponent = this.location.href.indexOf('map') !== -1;
+
+        this.changeDetectorRef.detectChanges();
+
+        this.interactiveIncomeText();
+        this.calcIncomeSize();
+      });
 
     this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
@@ -139,12 +161,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.headerState.subscribe((data: HeaderState) => {
       this.headerData = data;
-      console.log(data);
-    });
 
-    // this.store.dispatch(this.headerActions.setQuery('QUUUEROIOI'));
-    // this.store.dispatch(this.headerActions.setThing({thing: 'THIS is THING'}));
-    // this.store.dispatch(this.headerActions.setHoverPlace({place: 'set hover place'}));
+      if(data) {
+        this.query = data.query;
+      }
+    });
 
     this.languageService.languagesList.subscribe((data: any) => {
       this.languages = data;
@@ -163,6 +184,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
+
+    if (this.queryParamsSubscribe) {
+      this.queryParamsSubscribe.unsubscribe();
+    }
   }
 
   public ngOnChanges(changes: any): void {
@@ -171,8 +196,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       typeof changes.query.previousValue === 'string' &&
       typeof changes.query.currentValue === 'string'
     ) {
-      let currentQuery = this.parseUrl(changes.query.currentValue);
-      let previousQuery = this.parseUrl(changes.query.previousValue);
+      let currentQuery = this.urlChangeService.parseUrl(changes.query.currentValue);
+      let previousQuery = this.urlChangeService.parseUrl(changes.query.previousValue);
 
       if (currentQuery.place === previousQuery.place) {
         return;
@@ -180,12 +205,30 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public calcIncomeSize(): void {
-    this.incomeTitleContainerElement = this.element.querySelector('.income-title-container') as HTMLElement;
+  public interactiveIncomeText(): void {
+    let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
 
-    if(!this.incomeTitleContainerElement) {
+    if (!incomeContainer || !this.byIncomeText) {
       return;
     }
+
+    setTimeout(() => {
+      incomeContainer.classList.remove('incomeby');
+    }, 0);
+
+    if (this.byIncomeText.length > 20 && this.window.innerWidth < 920) {
+      setTimeout(() => {
+        incomeContainer.classList.add('incomeby');
+      },0);
+    }
+  }
+
+  public calcIncomeSize(): void {
+    if(!this.incomeTitleContainer) {
+      return;
+    }
+
+    this.incomeTitleContainerElement = this.incomeTitleContainer.nativeElement;
 
     this.incomeTitleContainerElement.classList.remove('short');
     this.incomeTitleContainerElement.classList.remove('long');
@@ -223,8 +266,17 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.isOpenIncomeFilter.emit({});
   }
 
-  public urlTransfer(data: any): void {
-    this.filter.emit(data);
+  public thingSelected(data: any): void {
+    this.store.dispatch(this.headerActions.setQuery(data.url));
+    this.store.dispatch(this.headerActions.setThing(data.thing));
+
+    this.urlChangeService.replaceState('/matrix', data.url);
+  }
+
+  public countrySelected(data: any): void {
+    this.store.dispatch(this.headerActions.setQuery(data.url));
+
+    this.urlChangeService.replaceState('/matrix', data.url);
   }
 
   public activeThingTransfer(thing: any): void {
@@ -248,12 +300,17 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
 
     if (this.matrixComponent) {
-      this.filter.emit({url: this.objToQuery(queryParams)});
+      // this.filter.emit({url: this.urlChangeService.objToQuery(queryParams)});
     } else {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
 
-    this.store.dispatch(this.thingsFilterActions.getThingsFilter(this.objToQuery(queryParams)));
+    let queryUrl: string = this.urlChangeService.objToQuery(queryParams);
+
+    this.store.dispatch(this.thingsFilterActions.getThingsFilter(queryUrl));
+    this.store.dispatch(this.countriesFilterActions.getCountriesFilter(queryUrl));
+
+    this.urlChangeService.replaceState('/matrix', queryUrl);
 
     this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }
@@ -262,26 +319,5 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this[event] = true;
 
     this.changeDetectorRef.detectChanges();
-  }
-
-  private parseUrl(url: string): any {
-    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
-    let query = JSON.parse(urlForParse);
-
-    if (query.regions) {
-      query.regions = query.regions.split(',');
-    }
-
-    if (query.countries) {
-      query.countries = query.countries.split(',');
-    }
-
-    return query;
-  }
-
-  private objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
   }
 }

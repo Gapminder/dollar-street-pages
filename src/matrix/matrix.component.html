@@ -2,14 +2,14 @@
   <div #matrixHeader
        class="matrix-header main-header"
        [style.top.px]="-guidePositionTop">
-    <quick-guide (startQuickGuide)="startQuickGuide()"></quick-guide>
+    <!--<quick-guide (startQuickGuide)="startQuickGuide()"></quick-guide>-->
 
-    <header [query]="query"
+    <!--<header [query]="query"
             [thing]="thing"
             [hoverPlace]="hoverPlace"
             (filter)="urlChanged($event)"
             (isOpenIncomeFilter)="openIncomeFilter()">
-    </header>
+    </header>-->
 
     <div #streetAndTitleContainer
          class="street-and-title-container">
@@ -23,7 +23,7 @@
                   [places]="streetPlaces"
                   [hoverPlace]="hoverPlace"
                   [chosenPlaces]="chosenPlaces"
-                  (filterStreet)="urlChanged($event)"></street>
+                  (filterStreet)="streetChanged($event)"></street>
 
           <street-mobile [places]="streetPlaces" *ngIf="!isDesktop"></street-mobile>
         </div>
@@ -46,7 +46,7 @@
                 [guidePositionTop]="guideHeight"
                 [clearActiveHomeViewBox]="clearActiveHomeViewBox"
                 (filter)="urlChanged($event)"
-                (hoverPlace)="hoverPlaceS($event)"
+                (hoverPlace)="hoverPlaces($event)"
                 (activeHouseOptions)="activeHouseOptions($event)">
   </matrix-images>
 

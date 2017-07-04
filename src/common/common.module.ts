@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { EffectsModule } from '@ngrx/effects';
+
 import { LoaderService } from './loader/loader.service';
 import { TitleHeaderService } from './title-header/title-header.service';
 import { StreetSettingsService } from './street/street-settings.service';

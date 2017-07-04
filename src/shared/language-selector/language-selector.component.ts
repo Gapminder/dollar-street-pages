@@ -33,11 +33,9 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-
   }
 
   public ngOnDestroy(): void {
-
   }
 
   public languageSelectorDisplay(langCount: number): void {

@@ -118,6 +118,13 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       this.streetData = data;
     });
 
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
+      .subscribe(() => {
+        if (this.isOpenMenu) {
+          this.isOpenMenu = false;
+        }
+      });
+
     this.languageService.languagesList.subscribe((data: any) => {
       this.languages = data;
     });
@@ -254,7 +261,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (this.isMatrixComponent) {
-      this.selectedFilter.emit({url: this.objToQuery(queryParams)});
+      // this.selectedFilter.emit({url: this.objToQuery(queryParams)});
     } else {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }

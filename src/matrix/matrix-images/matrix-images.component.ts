@@ -332,7 +332,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
     this.indexViewBoxHouse = index;
+
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
+
     let offset: number = this.zoom - this.positionInRow;
 
     this.imageBlockLocation = this.positionInRow ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;

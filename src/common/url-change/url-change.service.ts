@@ -27,11 +27,32 @@ export class UrlChangeService {
     this.urlEvents.next('my event');
   }
 
-  public isCurrentPathEqualTo(path: string, query: string): boolean {
+  private isCurrentPathEqualTo(path: string, query: string): boolean {
     return this.location.isCurrentPathEqualTo(path, query);
   }
 
   public getUrlEvents(): Observable<any> {
     return this.urlEvents;
+  }
+
+  public parseUrl(url: string): any {
+    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
+    let query = JSON.parse(urlForParse);
+
+    if (query.regions) {
+      query.regions = query.regions.split(',');
+    }
+
+    if (query.countries) {
+      query.countries = query.countries.split(',');
+    }
+
+    return query;
+  }
+
+  public objToQuery(data: any): string {
+    return Object.keys(data).map((k: string) => {
+      return encodeURIComponent(k) + '=' + data[k];
+    }).join('&');
   }
 }
