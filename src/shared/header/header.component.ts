@@ -299,8 +299,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       queryParams.zoom = 3;
     }
 
-    this.store.dispatch(this.thingsFilterActions.getThingsFilter(this.objToQuery(queryParams)));
-
     if (this.matrixComponent) {
       // this.filter.emit({url: this.urlChangeService.objToQuery(queryParams)});
     } else {
