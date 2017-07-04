@@ -125,8 +125,8 @@ export class DataProvider {
     'StreetWidgetImage': {element: ():ElementFinder => $('polygon[class="road"]')},
     'ThingsFilter': {element: ():ElementFinder => $('div[class*="things-filter-button-content"]')},
     'CountryFilter': {element: ():ElementFinder => $('div[class*="countries-filter-button"]')},
-    'ZoomButtonPlus': {element: ():ElementFinder => $('button[class*="increase"]'), actualResult: '+'},
-    'ZoomButtonMinus': {element: ():ElementFinder => $('button[class*="decrease"]'), actualResult: '-'}
+    'ZoomButtonPlus': {element: ():ElementFinder => element.all(by.css('img[class="sign"]')).get(0), actualResult: '+'},
+    'ZoomButtonMinus': {element: ():ElementFinder => element.all(by.css('img[class="sign"]')).get(1), actualResult: '-'}
   };
 
   public static matrixPageImages:any = {
