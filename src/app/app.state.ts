@@ -2,19 +2,17 @@ import { combineReducers } from '@ngrx/store';
 import { compose } from '@ngrx/core/compose';
 
 import { streetSettingsReducer } from '../common';
-import { thingsFilterReducer } from '../shared/things-filter/things-filter.reducers';
-import { countriesFilterReducer } from '../shared/countries-filter/countries-filter.reducers';
-
-export interface AppState {
-    streetSettings: any;
-    thingsFilter: any;
-    countriesFilter: any;
-}
+import {
+    thingsFilterReducer,
+    countriesFilterReducer,
+    headerReducer
+} from '../shared';
 
 const reducers = {
     streetSettings: streetSettingsReducer,
     thingsFilter: thingsFilterReducer,
-    countriesFilter: countriesFilterReducer
+    countriesFilter: countriesFilterReducer,
+    header: headerReducer
 };
 
 export const rootReducer = combineReducers(reducers);

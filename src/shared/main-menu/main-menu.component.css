@@ -49,6 +49,7 @@
   border-radius: 0;
   box-shadow: none;
   width: 232px;
+  z-index: 10;
 }
 
 #main-menu .open .dropdown-menu ul {

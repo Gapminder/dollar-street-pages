@@ -24,7 +24,7 @@ import {
   BrowserDetectionService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 
 @Component({
   selector: 'matrix-images',
@@ -332,7 +332,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
     this.indexViewBoxHouse = index;
+
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
+
     let offset: number = this.zoom - this.positionInRow;
 
     this.imageBlockLocation = this.positionInRow ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;

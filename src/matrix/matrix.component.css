@@ -10,7 +10,7 @@ matrix-images {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9995;
+  z-index: 8;
   background-color: #fff;
 }
 
@@ -101,10 +101,9 @@ matrix-images {
 }
 
 @media (max-width: 599px) {
-
   .street-container.fixed {
     position: fixed;
-    z-index: 999;
+    z-index: 10;
     top: 0;
   }
 

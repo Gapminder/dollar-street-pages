@@ -6,7 +6,6 @@ import { LoaderService } from './loader/loader.service';
 import { TitleHeaderService } from './title-header/title-header.service';
 import { StreetSettingsService } from './street/street-settings.service';
 import { StreetSettingsActions } from './street/street-settings.actions';
-import { StreetSettingsEffects } from './street/street-settings.effects';
 import { BrowserDetectionService } from './browser-detection/browser-detection.service';
 import { LocalStorageService } from './guide/localstorage.service';
 import { MathService } from './math/math.service';
@@ -20,9 +19,7 @@ import { CountryDetectorService } from './country-detector/country-detector.serv
 import { UtilsService } from './utils/utils.service';
 
 @NgModule({
-  imports: [
-    EffectsModule.run(StreetSettingsEffects)
-  ],
+  imports: [],
   providers: [
     StreetSettingsActions,
     LoaderService,

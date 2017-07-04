@@ -6,6 +6,9 @@ export function thingsFilterReducer(state: any, action: Action): any {
         case ThingsFilterActions.GET_THINGS_FILTER_SUCCESS:
             return action.payload;
 
+        case ThingsFilterActions.SELECT_THING:
+            return action.payload;
+
         default:
             return state;
     }

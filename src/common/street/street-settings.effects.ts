@@ -15,6 +15,6 @@ export class StreetSettingsEffects {
     getThigsFilter$ = this.action$
         .ofType(StreetSettingsActions.NGRX_INIT)
         .map((action: Action) => action.payload)
-        .switchMap((query) => this.streetSettingsService.getStreetSettings())
-        .map((data: any) => data.data).map((data: any) => this.streetSettingsActions.getStreetSettingsSuccess(data));
+        .switchMap((query) => this.streetSettingsService.getStreetSettings()
+        .map((data: any) => data.data).map((data: any) => this.streetSettingsActions.getStreetSettingsSuccess(data)));
 }

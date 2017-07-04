@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../app/app.state';
+import { AppState } from '../interfaces';
 import {
   MathService,
   LoaderService,
@@ -31,7 +31,6 @@ import { MapService } from './map.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-
 export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapBox')
   public map: ElementRef;

@@ -17,13 +17,14 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 import { ThingsFilterActions } from './things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
   ActiveThingService,
-  UtilsService
+  UtilsService,
+  UrlChangeService
 } from '../../common';
 import { KeyCodes } from '../../enums';
 
@@ -79,7 +80,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
                      activeThingService: ActiveThingService,
                      utilsService: UtilsService,
                      store: Store<AppState>,
-                     private thingsFilterActions: ThingsFilterActions) {
+                     private thingsFilterActions: ThingsFilterActions,
+                     private urlChangeService: UrlChangeService) {
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
@@ -163,16 +165,16 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    let query: any = this.parseUrl(this.url);
+    let query: any = this.urlChangeService.parseUrl(this.url);
     query.thing = thing.originPlural;
 
-    const newUrl: string = this.objToQuery(query);
+    const newUrl: string = this.urlChangeService.objToQuery(query);
 
-    this.store.dispatch(this.thingsFilterActions.getThingsFilter(newUrl));
-
-    this.selectedFilter.emit({url: newUrl, thing: this.activeThing});
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
+
+    this.store.dispatch(this.thingsFilterActions.getThingsFilter(newUrl));
+    this.selectedFilter.emit({url: newUrl, thing: this.activeThing});
 
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
   }
@@ -235,27 +237,6 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
         this.store.dispatch(this.thingsFilterActions.getThingsFilter(changes.url.currentValue));
       }
     }
-  }
-
-  public objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
-  }
-
-  public parseUrl(url: string): any {
-    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
-    let query = JSON.parse(urlForParse);
-
-    if (query.regions) {
-      query.regions = query.regions.split(',');
-    }
-
-    if (query.countries) {
-      query.countries = query.countries.split(',');
-    }
-
-    return query;
   }
 
   public isOpenMobileFilterView(): void {

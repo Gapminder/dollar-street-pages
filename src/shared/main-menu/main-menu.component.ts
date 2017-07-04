@@ -25,7 +25,7 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 
 @Component({
   selector: 'main-menu',
@@ -61,6 +61,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public shareTranslation: string;
   public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public languages: any;
 
   public constructor(router: Router,
                      element: ElementRef,
@@ -123,6 +124,15 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
           this.isOpenMenu = false;
         }
       });
+    this.languageService.languagesList.subscribe((data: any) => {
+      this.languages = data;
+    });
+
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe(() => {
+      if (this.isOpenMenu) {
+        this.isOpenMenu = false;
+      }
+    });
   }
 
   public processShareTranslation(): void {
@@ -250,7 +260,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (this.isMatrixComponent) {
-      this.selectedFilter.emit({url: this.objToQuery(queryParams)});
+      // this.selectedFilter.emit({url: this.objToQuery(queryParams)});
     } else {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }

@@ -10,12 +10,13 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 import { HeaderService } from '../header/header.service';
 import {
   TitleHeaderService,
   DrawDividersInterface,
-  BrowserDetectionService
+  BrowserDetectionService,
+  LanguageService
 } from '../../common';
 
 @Component({
@@ -39,12 +40,14 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   public isDesktop: boolean;
   public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public languages: any;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppState>) {
+                     store: Store<AppState>,
+                     private languageService: LanguageService) {
     this.renderer = renderer;
     this.headerService = headerService;
     this.device = browserDetectionService;
@@ -65,6 +68,10 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
     this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
+    });
+
+    this.languageService.languagesList.subscribe((data: any) => {
+      this.languages = data;
     });
 
     this.titleHeaderSubscribe = this.titleHeaderService

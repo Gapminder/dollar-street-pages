@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppState } from '../app/app.state';
+import { AppState } from '../interfaces';
 import {
   Component,
   ElementRef,
@@ -29,6 +29,8 @@ import {
 } from '../common';
 import {
   GuideComponent,
+  HeaderActions,
+  ThingsFilterActions
 } from '../shared';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { MatrixService } from './matrix.service';
@@ -43,16 +45,14 @@ import { ImageResolutionInterface } from '../interfaces';
 export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   @ViewChild(MatrixImagesComponent)
   public matrixImagesComponent: MatrixImagesComponent;
-  @ViewChild(GuideComponent)
-  public guideComponent: GuideComponent;
   @ViewChild('streetAndTitleContainer')
   public streetAndTitleContainer: ElementRef;
   @ViewChild('streetContainer')
   public streetContainer: ElementRef;
   @ViewChild('matrixHeader')
-  public headerContainer: ElementRef;
+  public matrixHeader: ElementRef;
 
-  public headerContainerElement: HTMLElement;
+  public matrixHeaderElement: HTMLElement;
   public streetContainerElement: HTMLElement;
   public streetAndTitleContainerElement: HTMLElement;
   public zoomPositionFixed: boolean;
@@ -116,7 +116,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public locationStrategy: LocationStrategy;
   public guidePositionTop: number = 0;
   public imageContentElement: HTMLElement;
-  public guideContainer: HTMLElement;
+  public guideContainerElement: HTMLElement;
   public guideHeight: number;
   public device: BrowserDetectionService;
   public languageService: LanguageService;
@@ -126,7 +126,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   public byIncomeText: string;
   public store: Store<AppState>;
   public streetSettingsState: Observable<DrawDividersInterface>;
-  public countriesFilterState: Observable<any>;
+  public headerState: Observable<any>;
+  public headerElement: HTMLElement;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -142,7 +143,9 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
                      activeThingService: ActiveThingService,
                      ref: ChangeDetectorRef,
                      utilsService: UtilsService,
-                     store: Store<AppState>) {
+                     store: Store<AppState>,
+                     private headerActions: HeaderActions,
+                     private thingsFilterActions: ThingsFilterActions) {
     this.ref = ref;
     this.zone = zone;
     this.router = router;
@@ -165,23 +168,36 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
     this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
-    this.countriesFilterState = this.store.select((dataSet: AppState) => dataSet.countriesFilter);
+    this.headerState = this.store.select((dataSet: AppState) => dataSet.header);
   }
 
   public ngAfterViewInit(): void {
+    this.guideContainerElement = document.querySelector('.quick-guide-container') as HTMLElement;
+
     this.matrixImagesContainer = this.matrixImagesComponent.element;
-    this.guideContainer = this.guideComponent.element;
-    this.headerContainerElement = this.headerContainer.nativeElement;
+    this.matrixHeaderElement = this.matrixHeader.nativeElement;
     this.streetContainerElement = this.streetContainer.nativeElement;
     this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
+    this.headerElement = document.querySelector('.header-content') as HTMLElement;
 
-    this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'BY_INCOME']).subscribe((trans: any) => {
+    this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
-      this.byIncomeText = trans.BY_INCOME;
     });
 
     this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
       this.activeThing = thing;
+    });
+
+    this.headerState.subscribe((data: any) => {
+      if (data) {
+        if (this.query !== data.query) {
+          console.log('aaaa');
+          this.urlChanged({url: data.query});
+        }
+
+        this.query = data.query;
+        this.thing = data.thing;
+      }
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -192,14 +208,12 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
             return;
           }
 
-          if (this.guideContainer) {
-            this.guideHeight = this.guideContainer.offsetHeight;
+          if (this.guideContainerElement) {
+            this.guideHeight = this.guideContainerElement.offsetHeight;
           }
 
           this.windowInnerHeight = window.innerHeight;
           this.windowInnerWidth = window.innerWidth;
-
-          this.interactiveIncomeText();
         });
       });
 
@@ -207,14 +221,17 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       if (this.streetData && this.locations) {
         this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
         this.query = this.query + this.languageService.getLanguageParam();
+
+        this.store.dispatch(this.headerActions.setQuery(this.query));
+
         this.urlChanged({isBack: true});
 
-        if (this.guideContainer) {
-          this.guideHeight = this.guideContainer.offsetHeight;
+        if (this.guideContainerElement) {
+          this.guideHeight = this.guideContainerElement.offsetHeight;
         }
 
-        if (this.guideContainer && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
-          this.guidePositionTop = this.guideContainer.offsetHeight;
+        if (this.guideContainerElement && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
+          this.guidePositionTop = this.guideContainerElement.offsetHeight;
         }
       }
     });
@@ -231,6 +248,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
         this.activeHouse = parseInt(params.activeHouse, 10);
         this.row = parseInt(params.row, 10) || 1;
 
+        this.store.dispatch(this.headerActions.setThing(this.thing));
+
         this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
           this.streetData = data;
 
@@ -238,16 +257,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
             this.initData();
           }
         });
-      });
-
-      this.countriesFilterState.subscribe((data: any) => {
-        this.locations = data;
-
-        this.countriesTranslations = chain(data)
-          .map('countries')
-          .flatten()
-          .sortBy('country')
-          .value();
       });
 
     if ('scrollRestoration' in history) {
@@ -259,25 +268,36 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
         this.zone.run(() => {
           let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-          if (this.guideContainer && this.guideContainer.offsetHeight && !this.isMobile && this.imageContentElement) {
-            if (this.guideContainer.offsetHeight > scrollTop) {
+          if (this.guideContainerElement && this.guideContainerElement.offsetHeight && !this.isMobile && this.imageContentElement) {
+            if (this.guideContainerElement.offsetHeight > scrollTop) {
               this.guidePositionTop = scrollTop;
               this.getPaddings({isGuide: true});
             }
 
-            if (scrollTop > this.guideContainer.offsetHeight && this.guideContainer.offsetHeight !== this.guidePositionTop) {
-              this.guidePositionTop = this.guideContainer.offsetHeight;
+            if (scrollTop > this.guideContainerElement.offsetHeight && this.guideContainerElement.offsetHeight !== this.guidePositionTop) {
+              this.guidePositionTop = this.guideContainerElement.offsetHeight;
               this.getPaddings({isGuide: true});
             }
           }
 
-          let headerHeight: number = this.headerContainerElement.clientHeight;
+          let headerHeight: number = this.matrixHeaderElement.clientHeight;
+
+          if (this.guideContainerElement) {
+            headerHeight = headerHeight + this.guideContainerElement.offsetHeight;
+          }
 
           if (scrollTop > headerHeight) {
-            this.headerContainerElement.style.position = 'fixed';
-            this.matrixImagesContainer.style.paddingTop = this.headerContainerElement.clientHeight + 'px';
+            this.headerElement.style.position = 'fixed';
+            this.headerElement.style.top = '0px';
+
+            this.matrixHeaderElement.style.position = 'fixed';
+            this.matrixHeaderElement.style.top = this.headerElement.clientHeight + 'px';
+            this.matrixImagesContainer.style.paddingTop = this.matrixHeaderElement.clientHeight + this.headerElement.offsetHeight + 'px';
           } else {
-            this.headerContainerElement.style.position = 'static';
+            this.headerElement.style.position = 'static';
+
+            this.matrixHeaderElement.style.position = 'static';
+            this.matrixHeaderElement.style.top = '0px';
             this.matrixImagesContainer.style.paddingTop = '0px';
           }
 
@@ -288,6 +308,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
           if (this.isDesktop) {
             this.stopScroll();
           }
+
+          this.getPaddings({});
         });
       });
 
@@ -324,7 +346,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
   public ngAfterViewChecked(): void {
     this.zone.run(() => {
-      if (!this.matrixImagesComponent.imageContent) {
+      /*if (!this.matrixImagesComponent.imageContent) {
         return;
       }
 
@@ -341,10 +363,12 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
       let imageClientRect: ClientRect = this.imageContentElement.getBoundingClientRect();
 
-      if (!imageClientRect.height ||
+      if (this.guideContainerElement) {
+        if (!imageClientRect.height ||
           this.imageHeight === imageClientRect.height &&
-          this.guideHeight === this.guideContainer.offsetHeight) {
+          this.guideHeight === this.guideContainerElement.offsetHeight) {
           return;
+        }
       }
 
       this.imageHeight = imageClientRect.height;
@@ -356,7 +380,9 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       this.footerHeight = footer.offsetHeight;
 
       setTimeout(() => {
-        this.guideHeight = this.guideContainer.offsetHeight;
+        if (this.guideContainerElement) {
+          this.guideHeight = this.guideContainerElement.offsetHeight;
+        }
       }, 0);
 
       if (this.row === 1) {
@@ -373,7 +399,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
           return;
         }, 0);
       }
-      this.getPaddings({});
+      this.getPaddings({});*/
     });
   }
 
@@ -392,7 +418,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.thing = this.thing ? this.thing : 'Families';
     this.zoom = this.zoom ? this.zoom : 4;
     this.regions = this.regions ? this.regions : 'World';
-
     this.lowIncome = this.lowIncome && this.lowIncome < this.streetData.poor ? this.streetData.poor : this.lowIncome;
     this.highIncome = this.highIncome && this.highIncome > this.streetData.rich ? this.streetData.rich : this.highIncome;
 
@@ -407,29 +432,22 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       this.query = this.query + `&activeHouse=${this.activeHouse}`;
     }
 
-    if (this.guideContainer) {
-      this.guideHeight = this.guideContainer.offsetHeight;
+    this.store.dispatch(this.headerActions.setQuery(this.query));
+    this.store.dispatch(this.headerActions.setThing(this.thing));
+
+    if (this.guideContainerElement) {
+      this.guideHeight = this.guideContainerElement.offsetHeight;
     }
 
-    if (this.guideContainer && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
-      this.guidePositionTop = this.guideContainer.offsetHeight;
+    if (this.guideContainerElement && (this.activeHouse || this.row > 1 || Math.ceil(this.activeHouse / this.zoom) === this.row)) {
+      this.guidePositionTop = this.guideContainerElement.offsetHeight;
     }
 
     this.urlChanged({isInit: true});
   }
 
-  public interactiveIncomeText(): void {
-    let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
-
-    setTimeout(() => {
-      incomeContainer.classList.remove('incomeby');
-    }, 0);
-
-    if (this.byIncomeText.length > 20 && this.window.innerWidth < 920) {
-      setTimeout(() => {
-        incomeContainer.classList.add('incomeby');
-      },0);
-    }
+  public streetChanged(event: any): void {
+    this.urlChanged(event);
   }
 
   /** each document usage breaks possible server side rendering */
@@ -481,9 +499,9 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
     let {isGuide} = options;
 
-    let headerHeight: number = this.headerContainerElement.offsetHeight;
+    let headerHeight: number = this.matrixHeaderElement.offsetHeight;
 
-    if (this.guideContainer) {
+    if (this.guideContainerElement) {
       headerHeight -= this.guidePositionTop;
     }
 
@@ -524,7 +542,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.clonePlaces = cloneDeep(this.filtredPlaces);
   }
 
-  public hoverPlaceS(place: any): void {
+  public hoverPlaces(place: any): void {
     this.hoverPlace.next(place);
   }
 
@@ -547,6 +565,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
       let parseQuery = this.parseUrl(this.query);
       this.thing = decodeURI(parseQuery.thing);
+
       this.loaderService.setLoader(false);
 
       if (this.matrixServiceSubscribe) {
@@ -561,8 +580,6 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
             console.error(val.err);
             return;
           }
-
-          this.interactiveIncomeText();
 
           this.placesVal = val.data.zoomPlaces;
           this.streetPlacesData = val.data.streetPlaces;
@@ -615,7 +632,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
           } else {
             document.documentElement.scrollTop = 0;
           }
-
+          // this.store.dispatch(this.headerActions.setQuery(this.query));
           this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
         });
     });
@@ -644,6 +661,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
     this.query = this.utilsService.objToQuery(queryParams);
 
+    this.store.dispatch(this.headerActions.setQuery(this.query));
+
     this.urlChangeService.replaceState('/matrix', this.query, true);
   }
 
@@ -654,11 +673,11 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     });
   }
 
-  public startQuickGuide(): void {
+  /*public startQuickGuide(): void {
     setTimeout(() => {
       this.getPaddings({});
     }, 0);
-  }
+  }*/
 
   public openIncomeFilter(): void {
     if (!this.isMobile) {
@@ -677,6 +696,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       this.lowIncome = params.lowIncome;
       this.highIncome = params.highIncome;
       this.urlChanged({url: this.query});
+
+      this.store.dispatch(this.headerActions.setQuery(this.query));
     }
 
     this.isOpenIncomeFilter = false;
@@ -699,7 +720,13 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
     this.imagesContainer = this.matrixImagesComponent.imagesContainer.nativeElement;
 
-    if (scrollTop > this.headerContainerElement.clientHeight) {
+    let headerHeight: number = this.matrixHeaderElement.clientHeight;
+
+    if (this.guideContainerElement) {
+      headerHeight = headerHeight + this.guideContainerElement.offsetHeight;
+    }
+
+    if (scrollTop > headerHeight) {
       if (this.streetContainerElement.className.indexOf('fixed') !== -1) {
         return;
       }
@@ -709,8 +736,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       this.streetAndTitleContainerElement.style.zIndex = '1000';
       this.imagesContainer.style.paddingTop = this.streetContainerElement.clientHeight * 2 + 'px';
 
-      if (this.guideContainer) {
-        this.headerContainerElement.style.marginTop = '-' + this.guideContainer.clientHeight + 'px';
+      if (this.guideContainerElement) {
+        this.matrixHeaderElement.style.marginTop = '-' + this.guideContainerElement.clientHeight + 'px';
       }
     } else {
       if (this.streetContainerElement.className.indexOf('fixed') === -1) {
@@ -722,8 +749,8 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
       this.streetAndTitleContainerElement.style.zIndex = '1';
       this.imagesContainer.style.paddingTop = '0px';
 
-      if (this.guideContainer) {
-        this.headerContainerElement.style.marginTop = '0px';
+      if (this.guideContainerElement) {
+        this.matrixHeaderElement.style.marginTop = '0px';
       }
     }
   }

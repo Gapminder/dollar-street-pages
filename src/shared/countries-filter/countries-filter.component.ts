@@ -18,10 +18,11 @@ import * as _ from 'lodash';
 import {
   BrowserDetectionService,
   LanguageService,
-  UtilsService
+  UtilsService,
+  UrlChangeService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app/app.state';
+import { AppState } from '../../interfaces';
 import { CountriesFilterActions } from './countries-filter.actions';
 import { KeyCodes } from '../../enums';
 
@@ -80,6 +81,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public isMobile: boolean;
   public store: Store<AppState>;
   public countriesFilterState: Observable<any>;
+  public isInit: boolean;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -87,7 +89,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
                      languageService: LanguageService,
                      utilsService: UtilsService,
                      store: Store<AppState>,
-                     private countriesFilterActions: CountriesFilterActions) {
+                     private countriesFilterActions: CountriesFilterActions,
+                     private urlChangeService: UrlChangeService) {
     this.languageService = languageService;
     this.device = browserDetectionService;
     this.utilsService = utilsService;
@@ -101,6 +104,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
+    this.isDesktop = this.device.isDesktop();
+    this.isMobile = this.device.isMobile();
+    this.isTablet = this.device.isTablet();
+
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
       this.theWorldTranslate = trans;
 
@@ -109,9 +116,22 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
 
-    this.isDesktop = this.device.isDesktop();
-    this.isMobile = this.device.isMobile();
-    this.isTablet = this.device.isTablet();
+    this.countriesFilterState.subscribe((data: any) => {
+      if (data) {
+        this.locations = data;
+
+        this.countries = _
+          .chain(data)
+          .map('countries')
+          .flatten()
+          .sortBy('country')
+          .value();
+
+        this.isFilterGotData.emit('isCountryFilterReady');
+
+        this.setTitle(location.href);
+      }
+    });
 
     this.isOpenMobileFilterView();
 
@@ -333,7 +353,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToLocation(): void {
-    let query = this.parseUrl(this.url);
+    let query = this.urlChangeService.parseUrl(this.url);
 
     this.search = '';
     this.regionsVisibility = true;
@@ -341,9 +361,12 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
     query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
 
-    this.selectedFilter.emit({url: this.objToQuery(query), isCountriesFilter: true});
-    this.isOpenCountriesFilter = false;
+    const queryUrl: string = this.urlChangeService.objToQuery(query);
 
+    this.store.dispatch(this.countriesFilterActions.getCountriesFilter(queryUrl));
+    this.selectedFilter.emit({url: queryUrl, isCountriesFilter: true});
+
+    this.isOpenCountriesFilter = false;
     this.cloneSelectedCountries = ['World'];
     this.cloneSelectedRegions = ['World'];
     this.openMobileFilterView = window.innerWidth < 1024 || !this.isDesktop;
@@ -369,24 +392,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.search = '';
 
     if (changes.url && changes.url.currentValue) {
-      this.countriesFilterState.subscribe((data: any) => {
-          if (!data) {
-            this.store.dispatch(this.countriesFilterActions.getCountriesFilter(this.url));
-          } else {
-            this.locations = data;
+      if(!this.isInit) {
+        this.isInit = true;
 
-            this.countries = _
-              .chain(data)
-              .map('countries')
-              .flatten()
-              .sortBy('country')
-              .value();
+        this.store.dispatch(this.countriesFilterActions.getCountriesFilter(changes.url.currentValue));
+      }
 
-            this.setTitle(this.url);
-
-            this.isFilterGotData.emit('isCountryFilterReady');
-         }
-      });
+      // this.setTitle(changes.url.currentValue);
     }
   }
 
@@ -405,7 +417,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public setTitle(url: string): void {
-    let query: any = this.parseUrl(url);
+    let query: any = this.urlChangeService.parseUrl(url);
 
     let regions: string[] = query.regions;
     let countries: string[] = query.countries;
@@ -550,22 +562,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public cloneSelectedLocations(regions: any[], countries: any[]): void {
     this.cloneSelectedRegions = _.clone(regions);
     this.cloneSelectedCountries = _.clone(countries);
-  }
-
-  public objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
-  }
-
-  public parseUrl(url: string): any {
-    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
-    let query = JSON.parse(urlForParse);
-
-    query.regions = query.regions.split(',');
-    query.countries = query.countries.split(',');
-
-    return query;
   }
 
   public setPosition(): void {
