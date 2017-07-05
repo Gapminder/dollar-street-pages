@@ -10,7 +10,7 @@ export class PhotographersPage {
   public static camerasIcon:ElementArrayFinder = element.all(by.css('.fa.fa-camera'));
   public static homesIcon:ElementArrayFinder = element.all(by.css('.photographer-material>span>img'));
   public static lastPhotographer:ElementArrayFinder = element.all(by.css('.photographer-portrait'));
-  public static searchButton:ElementFinder = $('#search');
+  public static searchButton:ElementFinder = $('input[placeholder="Search..."]');
   public static foundPhotographer:ElementFinder = $('.photographer-card>h3');
   public static familiesIcon:ElementFinder = $('.place');
 
