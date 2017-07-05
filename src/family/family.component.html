@@ -1,6 +1,6 @@
 <div #familyContainer
      class="family-container">
-  <div class="header-container">
+  <!--<div class="header-container">
     <div class="header-content">
       <a class="logo pull-left"
         [routerLink]="['/matrix']"
@@ -23,10 +23,10 @@
 
       <language-selector></language-selector>
     </div>
+  </div>-->
 
-    <div class="street-family-container">
-      <street-family *ngIf="streetFamilyData" [place]="streetFamilyData"></street-family>
-    </div>
+  <div class="street-family-container">
+     <street-family *ngIf="streetFamilyData" [place]="streetFamilyData"></street-family>
   </div>
 
   <family-header [placeId]="placeId" (familyExpandBlock)="isOpenFamilyExpandBlock($event)" (streetFamilyData)="streetFamilyData = $event"></family-header>

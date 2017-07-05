@@ -17,14 +17,13 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import { ThingsFilterActions } from './things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
   ActiveThingService,
-  UtilsService,
-  UrlChangeService
+  UtilsService
 } from '../../common';
 import { KeyCodes } from '../../enums';
 
@@ -68,7 +67,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public activatedRoute: ActivatedRoute;
   public element: HTMLElement;
   public activeThingService: ActiveThingService;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public thingsFilterState: Observable<any>;
   public isInit: boolean;
 
@@ -79,9 +78,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      activeThingService: ActiveThingService,
                      utilsService: UtilsService,
-                     store: Store<AppState>,
-                     private thingsFilterActions: ThingsFilterActions,
-                     private urlChangeService: UrlChangeService) {
+                     store: Store<AppStore>,
+                     private thingsFilterActions: ThingsFilterActions) {
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
@@ -92,7 +90,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.store = store;
 
-    this.thingsFilterState = this.store.select((dataSet: AppState) => dataSet.thingsFilter);
+    this.thingsFilterState = this.store.select((dataSet: AppStore) => dataSet.thingsFilter);
   }
 
   @HostListener('document:click', ['$event'])
@@ -165,10 +163,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    let query: any = this.urlChangeService.parseUrl(this.url);
+    let query: any = this.utilsService.parseUrl(this.url);
     query.thing = thing.originPlural;
 
-    const newUrl: string = this.urlChangeService.objToQuery(query);
+    const newUrl: string = this.utilsService.objToQuery(query);
 
     this.isOpenThingsFilter = false;
     this.search = {text: ''};

@@ -10,7 +10,7 @@
   position: relative;
   padding: 13px 5px 0;
   background-color: #fff;
-  z-index: 11;
+  /*z-index: 11;*/
 }
 
 .view-image-block-container .view-image-block-content {
@@ -259,7 +259,7 @@
   border-bottom: 17px solid #fff;
   position: absolute;
   top: -17px;
-  z-index: 9;
+  /*z-index: 9;*/
 }
 
 .view-image-block-container.zoom-6,
@@ -288,7 +288,7 @@
 .fancyBox-container {
   position: fixed !important;
   background-color: rgba(0, 0, 0, .7);
-  z-index: 9999;
+  /*z-index: 9999;*/
   width: 100%;
   height: 100%;
 }

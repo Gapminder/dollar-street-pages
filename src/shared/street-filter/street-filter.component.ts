@@ -12,7 +12,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import { sortBy, chain } from 'lodash';
 import {
   MathService,
@@ -44,19 +44,19 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public element: HTMLElement;
   public streetFilterSubscribe: Subscription;
   public resize: any;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(element: ElementRef,
                      math: MathService,
                      streetDrawService: StreetFilterDrawService,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.element = element.nativeElement;
     this.math = math;
     this.street = streetDrawService;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {

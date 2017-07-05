@@ -16,14 +16,16 @@ import {
   ViewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import { Router } from '@angular/router';
 import { ImageResolutionInterface } from '../../interfaces';
-import { MathService,
-         DrawDividersInterface,
-         BrowserDetectionService,
-         LanguageService,
-         UtilsService } from '../../common';
+import {
+  MathService,
+  DrawDividersInterface,
+  BrowserDetectionService,
+  LanguageService,
+  UtilsService
+} from '../../common';
 import { MatrixViewBlockService } from './matrix-view-block.service';
 
 @Component({
@@ -31,7 +33,6 @@ import { MatrixViewBlockService } from './matrix-view-block.service';
   templateUrl: './matrix-view-block.component.html',
   styleUrls: ['./matrix-view-block.component.css', './matrix-view-block.component.mobile.css']
 })
-
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('viewImageBlockContainer')
   public viewImageBlockContainer: ElementRef;
@@ -80,7 +81,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public currentLanguage: string;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(zone: NgZone,
@@ -91,7 +92,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -108,7 +109,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     this.imageResolution = this.utilsServece.getImageResolution(this.isDesktop);
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {
@@ -147,7 +148,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
-
+console.log(url, 'REEEE');
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
       .subscribe((res: any) => {
         if (res.err) {
@@ -223,7 +224,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     delete query.activeHouse;
 
-    this.goToMatrixWithCountry.emit({url: this.objToQuery(query), isCountriesFilter: true});
+    this.goToMatrixWithCountry.emit({url: this.utilsServece.objToQuery(query), isCountriesFilter: true});
   }
 
   public parseUrl(url: string): any {
@@ -270,11 +271,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public objToQuery(data: any): string {
+  /*public objToQuery(data: any): string {
     return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
-  }
+  }*/
 
   public truncCountryName(countryData: any): string {
     let countryName: string;

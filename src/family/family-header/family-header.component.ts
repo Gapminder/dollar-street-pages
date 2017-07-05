@@ -3,7 +3,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import {
   Component,
   OnInit,
@@ -33,16 +33,13 @@ import { FamilyHeaderService } from './family-header.service';
 export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('homeDescriptionContainer')
   public homeDescriptionContainer: ElementRef;
-
   @ViewChild('aboutDataContainer')
   public aboutDataContainer: ElementRef;
-
   @ViewChild('shortFamilyInfoContainer')
   public shortFamilyInfoContainer: ElementRef;
 
   @Input()
   public placeId: string;
-
   @Output()
   public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output()
@@ -81,7 +78,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public utilsService: UtilsService;
   public currentLanguage: string;
   public showTranslateMe: boolean;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(zone: NgZone,
@@ -91,7 +88,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.zone = zone;
     this.math = math;
     this.element = element.nativeElement;
@@ -101,7 +98,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.utilsService = utilsService;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {

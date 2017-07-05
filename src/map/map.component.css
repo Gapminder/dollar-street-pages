@@ -60,7 +60,7 @@
 }
 
 #places {
-  padding-top: 80px;
+  padding-top: 40px;
 }
 
 #places .places_header {
@@ -572,7 +572,6 @@
 
   #places .places_header {
     padding-top: 20px;
-    padding-bottom: 20px;
   }
 
   #places .mapBox {

@@ -12,7 +12,7 @@
 
 .home-description-container {
   overflow: hidden;
-  padding: 100px 22px 20px;
+  padding: 20px 22px 20px;
   background-color: #f6f7f8;
   border-bottom: 1px solid #c6c7c9;
 }
@@ -170,19 +170,20 @@
 .short-family-info-container {
   overflow: hidden;
   padding: 5px 22px;
-  background-color: #f6f7f8;
+  /*background-color: #f6f7f8;*/
+  background-color: white;
   border-bottom: 1px solid #c6c7c9;
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 20;
   cursor: pointer;
+  max-height: 0;
 
-  -webkit-transition: top .5s ease;
-  -moz-transition: top .5s ease;
-  -ms-transition: top .5s ease;
-  -o-transition: top .5s ease;
-  transition: top .5s ease;
+  -webkit-transition: max-height .5s ease;
+  -moz-transition: max-height .5s ease;
+  -ms-transition: max-height .5s ease;
+  -o-transition: max-height .5s ease;
+  transition: max-height .5s ease;
 }
 
 .short-family-info-container .image-container {
@@ -245,14 +246,17 @@
 }
 
 .short-about-info-image {
-  margin: 0 0 0 7px;
+  margin: 10px 0 0 7px;
+}
+
+.about-info-image {
+  margin-top: 8px;
 }
 
 .about-data-container {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
 }
 
 .about-data-container.open {
@@ -262,7 +266,6 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, .6);
-  z-index: 9999;
   text-align: center;
 }
 
@@ -352,7 +355,8 @@
   }
 
   .home-description-container {
-    padding: 88px 10px 15px;
+    /*padding: 88px 10px 15px;*/
+    padding: 20px 10px 15px 10px;
   }
 
   .home-description-container .image-container {
@@ -454,7 +458,7 @@
 
 @media (max-width: 599px) {
   .home-description-container {
-    padding: 97px 5px 5px;
+    padding: 20px 5px 5px;
     background-color: #fff;
     border-bottom: 0;
   }
@@ -486,6 +490,14 @@
     margin: 0 0 7px;
   }
 
+  .about-info-image {
+    margin-top: 4px;
+  }
+
+  .short-about-info-image {
+    margin: 4px 0 0 7px;
+  }
+
   .home-description-container .description-container {
     width: 100%;
   }
@@ -511,10 +523,6 @@
   .show-info img {
     width: 12px;
     margin-right: 3px;
-  }
-
-  .about-info-image {
-    margin-top: 0;
   }
 
   .short-family-info-container {

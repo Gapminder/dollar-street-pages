@@ -55,7 +55,7 @@ svg circle {
 }
 
 .main-header {
-  z-index: 1000 !important;
+  /*z-index: 1000 !important;*/
 }
 
 matrix {

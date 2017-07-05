@@ -1,18 +1,21 @@
 import { ActionReducer, Action } from '@ngrx/store';
-import { HeaderActions } from './header.actions';
-import { HeaderState } from '../../interfaces';
+import { AppActions } from './app.actions';
 
-export function headerReducer(state: HeaderState, action: Action): any {
+export function appReducer(state: any, action: Action): any {
     switch (action.type) {
-        case HeaderActions.SET_QUERY: {
+        case AppActions.OPEN_INCOME_FILTER: {
+            return Object.assign({}, state, {incomeFilter: action.payload});
+        }
+
+        case AppActions.SET_QUERY: {
             return Object.assign({}, state, {query: action.payload});
         }
 
-        case HeaderActions.SET_THING: {
+        case AppActions.SET_THING: {
             return Object.assign({}, state, {thing: action.payload});
         }
 
-        case HeaderActions.SET_HOVER_PLACE: {
+        case AppActions.SET_HOVER_PLACE: {
             return Object.assign({}, state, {hoverThing: action.payload});
         }
 

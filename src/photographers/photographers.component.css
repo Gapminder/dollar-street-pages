@@ -1,5 +1,5 @@
 #photographers {
-  padding-top: 122px;
+  padding-top: 40px;
   height: 100%;
 }
 
@@ -182,10 +182,6 @@
 }
 
 @media (max-width: 1023px) {
-  #photographers {
-    padding-top: 120px;
-  }
-
   #photographers .row > div {
     float: none;
     width: 100%;
@@ -318,7 +314,7 @@
 
   #photographers .search-input input {
     width: calc(100% - 120px);
-    margin-left: 20px;    
+    margin-left: 20px;
   }
 
   #photographers .search-input img {
@@ -327,10 +323,6 @@
 }
 
 @media (max-width: 599px) {
-  #photographers {
-    padding-top: 120px;
-  }
-
   #photographers .photographer-card {
     width: 50%;
     margin-bottom: 10px;

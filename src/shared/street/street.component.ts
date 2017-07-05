@@ -15,7 +15,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
 import {
@@ -71,7 +71,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   public placesArr: any;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(element: ElementRef,
@@ -79,7 +79,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
                      math: MathService,
                      streetDrawService: StreetDrawService,
                      languageService: LanguageService,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -87,7 +87,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.languageService = languageService;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): any {

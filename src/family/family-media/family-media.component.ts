@@ -230,7 +230,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
   }
 
   public ngAfterViewChecked(): void {
-    if (!this.familyImageContainer) {
+    /*if (!this.familyImageContainer) {
       return;
     }
 
@@ -254,7 +254,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
       const row: number = Math.ceil((this.indexViewBoxImage + 1) / this.zoom);
 
       this.goToRow(row);
-    }
+    }*/
   }
 
   public ngOnDestroy(): void {

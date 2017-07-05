@@ -1,41 +1,69 @@
-<div class="container header-content">
-  <div class="icon-container pull-left">
-    <a (click)="goToMatrixPage()"><img src="/assets/img/dollar-street.svg" alt=""/></a>
-  </div>
+<div class="header-container">
+  <div class="container header-content"
+      [ngClass]="{'small-container': isMapPage || isAboutPage || isDonatePage}">
+    <div *ngIf="(isMatrixPage && !isMobile ) ||
+                isAboutPage || isDonatePage || isPhotographersPage || isPhotographerPage ||
+                isCountryPage || isTeamPage || (isFamilyPage && (isDesktop || isTablet)) ||
+                (isMapPage && (isDesktop || isTablet))"
+         class="icon-container pull-left">
+      <img (click)="goToMatrixPage()" src="/assets/img/dollar-street.svg" alt=""/>
+    </div>
 
-  <div #filtersContainer
-       class="filters-container"
-       [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (mapComponent && isThingFilterReady)) ? 'visible' : 'hidden'}">
-    <things-filter [url]="query"
-                   (isFilterGotData)="isFilterGotData($event)"
-                   (selectedFilter)="thingSelected($event)">
-    </things-filter>
+    <div #filtersContainer>
+      <div *ngIf="isMatrixPage || isMapPage"
+          class="filters-container"
+          [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
+        <things-filter [url]="query"
+                      (isFilterGotData)="isFilterGotData($event)"
+                      (selectedFilter)="thingSelected($event)">
+        </things-filter>
 
-    <span *ngIf="mapComponent" class="map-things-text">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
+        <span *ngIf="isMapPage"
+              class="map-things-text">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
 
-    <div *ngIf="matrixComponent" class="some-filter-container incomeby">
-      <span class="mobile-ver">{{ 'IN' | translate }}</span>
-      <countries-filter [url]="query"
-                        (isFilterGotData)="isFilterGotData($event)"
-                        (selectedFilter)="countrySelected($event)">
-      </countries-filter>
+        <div *ngIf="isMatrixPage"
+            class="some-filter-container incomeby">
+          <span class="mobile-ver">{{ 'IN' | translate }}</span>
+          <countries-filter [url]="query"
+                            (isFilterGotData)="isFilterGotData($event)"
+                            (selectedFilter)="countrySelected($event)">
+          </countries-filter>
 
-      <span #incomeTitleContainer
-            class="income-title-container">
-        <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
-        <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
+          <span #incomeTitleContainer
+                class="income-title-container">
+            <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
+            <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
+          </span>
+        </div>
+      </div>
+
+      <div *ngIf="isFamilyPage"
+          class="family-header">
+        <p class="heading pull-left"
+          [routerLink]="['/matrix']"
+          [queryParams]="urlParams"
+          angulartics2On="click"
+          angularticsEvent="From Place page to Matrix page (Thing:{{urlParams?.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
+          <img src="/assets/img/back-icon.svg" alt="Back">{{urlParams?.thing}} {{ 'IN' | translate }} {{urlParams?.countries}}
+        </p>
+      </div>
+
+      <div *ngIf="isAboutPage || isDonatePage || isPhotographersPage || isPhotographerPage || isCountryPage || isTeamPage"
+          class="without-filters-header">
+        <h2 #headerTitle
+            class="heading pull-left"></h2>
+      </div>
+    </div>
+
+    <div class="menu-container pull-right">
+      <main-menu class="pull-right"
+                [hoverPlace]="hoverPlace"
+                (selectedFilter)="urlTransfer($event)">
+      </main-menu>
+
+      <span class="language-selector-header">
+        <language-selector [languages]="languages"></language-selector>
       </span>
     </div>
-  </div>
-
-  <div class="menu-container pull-right">
-    <main-menu class="pull-right"
-               [hoverPlace]="hoverPlace"
-               (selectedFilter)="urlTransfer($event)">
-    </main-menu>
-
-    <span class="language-selector-header">
-       <language-selector [languages]="languages"></language-selector>
-    </span>
   </div>
 </div>

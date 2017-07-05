@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../interfaces';
+import { AppStore } from '../interfaces';
 import {
   MathService,
   LoaderService,
@@ -24,6 +24,9 @@ import {
   BrowserDetectionService,
   LanguageService
 } from '../common';
+import {
+  AppActions
+} from '../app/app.actions';
 import { MapService } from './map.service';
 
 @Component({
@@ -82,8 +85,9 @@ export class MapComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public languageService: LanguageService;
   public currentLanguage: string;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public appState: Observable<any>;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -96,7 +100,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -112,7 +116,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.currentLanguage = this.languageService.currentLanguage;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
   }
 
   public ngOnInit(): void {
@@ -128,6 +133,26 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
+    });
+
+    this.appState.subscribe((data: any) => {
+      if (data && !isInit) {
+        /*if (this.query !== data.query) {
+          this.urlChanged({url: data.query});
+        }*/
+
+        this.query = data.query;
+
+        if (data.thing) {
+          this.thing = data.thing;
+
+          let query: any = {url: `thing=${this.thing.originPlural}${this.languageService.getLanguageParam()}`};
+
+          if (query !== data.query) {
+            this.urlChanged(query);
+          }
+        }
+      }
     });
 
     this.queryParamsSubscribe = this.activatedRoute

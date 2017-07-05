@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import { compact } from 'lodash';
 import { FooterService } from './footer.service';
 import {
@@ -37,7 +37,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public languageService: LanguageService;
@@ -48,7 +48,7 @@ export class FooterComponent implements OnInit, OnDestroy {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.router = router;
     this.footerService = footerService;
     this.utilsService = utilsService;
@@ -57,7 +57,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.languageService = languageService;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngOnInit(): any {

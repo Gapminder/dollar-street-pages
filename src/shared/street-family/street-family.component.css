@@ -8,7 +8,7 @@
   position: relative;
   width: 100%;
   height: 30px;
-  z-index: 9;
+  /*z-index: 9;*/
   vertical-align: top;
 }
 

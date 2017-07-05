@@ -1,5 +1,5 @@
 #main-mobile-menu {
-  z-index: 1000;
+  /*z-index: 1000;*/
 }
 
 #main-mobile-menu .close-button {
@@ -68,7 +68,7 @@
 
 #main-mobile-menu > div {
   float: right;
-  z-index: 666;
+  /*z-index: 666;*/
 }
 
 #main-mobile-menu .open .menu-icon {

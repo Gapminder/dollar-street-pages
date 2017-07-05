@@ -3,14 +3,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppState } from '../interfaces';
-// import { CountriesFilterActions } from '../shared/countries-filter/countries-filter.actions';
+import { AppStore } from '../interfaces';
 import {
   Component,
   OnInit,
   OnDestroy,
   ElementRef,
-  ViewChild
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { forEach, difference, map, find, chain } from 'lodash';
@@ -31,7 +31,7 @@ import { UrlParamsInterface } from '../interfaces';
   templateUrl: './family.component.html',
   styleUrls: ['./family.component.css']
 })
-export class FamilyComponent implements OnInit, OnDestroy {
+export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(FamilyMediaComponent)
   public familyMediaComponent: FamilyMediaComponent;
   @ViewChild(FamilyHeaderComponent)
@@ -71,9 +71,12 @@ export class FamilyComponent implements OnInit, OnDestroy {
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
   public query: string;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public countriesFilterState: Observable<any>;
+  public headerElement: HTMLElement;
+  public streetFamilyContainerElement: HTMLElement;
+  public shortFamilyInfoContainerElement: HTMLElement;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -83,7 +86,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
                      elementRef: ElementRef,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
@@ -96,8 +99,14 @@ export class FamilyComponent implements OnInit, OnDestroy {
 
     this.isDesktop = this.device.isDesktop();
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
-    this.countriesFilterState = this.store.select((dataSet: AppState) => dataSet.countriesFilter);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.countriesFilterState = this.store.select((dataSet: AppStore) => dataSet.countriesFilter);
+  }
+
+  public ngAfterViewInit(): void {
+    this.headerElement = document.querySelector('.header-content') as HTMLElement;
+    this.streetFamilyContainerElement = this.element.querySelector('.street-family-container') as HTMLElement;
+    this.shortFamilyInfoContainerElement = this.element.querySelector('.short-family-info-container') as HTMLElement;
   }
 
   public ngOnInit(): void {
@@ -109,10 +118,40 @@ export class FamilyComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.scrollSubscribe = fromEvent(this.window, 'scroll')
-          .debounceTime(10)
-          .subscribe(() => {
-              this.setZoomButtonPosition();
-          });
+        .debounceTime(10)
+        .subscribe(() => {
+          let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+          let headerHeight: number = this.headerElement.clientHeight;
+
+          if (scrollTop > 0) {
+            // this.headerElement.style.position = 'fixed';
+            // this.headerElement.style.top = '0px';
+
+            this.streetFamilyContainerElement.style.position = 'fixed';
+            this.streetFamilyContainerElement.style.top = this.headerElement.clientHeight + 'px';
+            this.streetFamilyContainerElement.style.zIndex = '999';
+
+            this.familyContainer.nativeElement.style.paddingTop = this.headerElement.clientHeight + 'px';
+
+            this.shortFamilyInfoContainerElement.style.top = '86px';
+            this.shortFamilyInfoContainerElement.style.maxHeight = '86px';
+            this.shortFamilyInfoContainerElement.style.zIndex = '998';
+          } else {
+            // this.headerElement.style.position = 'static';
+
+            this.streetFamilyContainerElement.style.position = 'static';
+            this.streetFamilyContainerElement.style.top = '0px';
+            this.streetFamilyContainerElement.style.zIndex = '0';
+
+            this.familyContainer.nativeElement.style.paddingTop = '0px';
+
+            this.shortFamilyInfoContainerElement.style.maxHeight = '0px';
+            this.shortFamilyInfoContainerElement.style.zIndex = '0';
+          }
+
+          this.setZoomButtonPosition();
+        });
     }, 100);
 
     this.queryParamsSubscribe = this.activatedRoute
@@ -287,14 +326,14 @@ export class FamilyComponent implements OnInit, OnDestroy {
 
     let countries = this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(','));
 
-    this.titles = {
+    /*this.titles = {
       thing: this.thing,
       countries: countries,
       income: this.getIncomeTitle(this.urlParams.lowIncome, this.urlParams.highIncome)
-    };
+    };*/
   }
 
-  public getIncomeTitle(min: number, max: number): string {
+  /*public getIncomeTitle(min: number, max: number): string {
     let poor: number = this.homeIncomeData.poor;
     let rich: number = this.homeIncomeData.rich;
     let title: string = 'all incomes';
@@ -311,7 +350,7 @@ export class FamilyComponent implements OnInit, OnDestroy {
     }
 
     return title;
-  }
+  }*/
 
   public findCountryTranslatedName(countries: any[]): any {
     return map(countries, (item: string): any => {

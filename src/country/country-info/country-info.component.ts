@@ -8,7 +8,7 @@ import { Component,
   Output
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import {
   MathService,
   DrawDividersInterface,
@@ -42,14 +42,14 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public streetServiceSubscribe: Subscription;
   public languageService: LanguageService;
   public device: BrowserDetectionService;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
@@ -57,7 +57,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
     this.languageService = languageService;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {

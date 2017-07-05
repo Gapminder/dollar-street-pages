@@ -18,11 +18,10 @@ import * as _ from 'lodash';
 import {
   BrowserDetectionService,
   LanguageService,
-  UtilsService,
-  UrlChangeService
+  UtilsService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import { CountriesFilterActions } from './countries-filter.actions';
 import { KeyCodes } from '../../enums';
 
@@ -79,7 +78,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public isDesktop: boolean;
   public isTablet: boolean;
   public isMobile: boolean;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public countriesFilterState: Observable<any>;
   public isInit: boolean;
 
@@ -88,9 +87,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppState>,
-                     private countriesFilterActions: CountriesFilterActions,
-                     private urlChangeService: UrlChangeService) {
+                     store: Store<AppStore>,
+                     private countriesFilterActions: CountriesFilterActions) {
     this.languageService = languageService;
     this.device = browserDetectionService;
     this.utilsService = utilsService;
@@ -100,7 +98,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.store = store;
 
-    this.countriesFilterState = this.store.select((dataSet: AppState) => dataSet.countriesFilter);
+    this.countriesFilterState = this.store.select((dataSet: AppStore) => dataSet.countriesFilter);
   }
 
   public ngOnInit(): void {
@@ -353,7 +351,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToLocation(): void {
-    let query = this.urlChangeService.parseUrl(this.url);
+    let query = this.utilsService.parseUrl(this.url);
 
     this.search = '';
     this.regionsVisibility = true;
@@ -361,7 +359,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
     query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
 
-    const queryUrl: string = this.urlChangeService.objToQuery(query);
+    const queryUrl: string = this.utilsService.objToQuery(query);
 
     this.store.dispatch(this.countriesFilterActions.getCountriesFilter(queryUrl));
     this.selectedFilter.emit({url: queryUrl, isCountriesFilter: true});
@@ -417,7 +415,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public setTitle(url: string): void {
-    let query: any = this.urlChangeService.parseUrl(url);
+    let query: any = this.utilsService.parseUrl(url);
 
     let regions: string[] = query.regions;
     let countries: string[] = query.countries;

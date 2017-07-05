@@ -14,15 +14,15 @@ export interface UrlParamsInterface {
   highIncome?: number;
 }
 
-export interface HeaderState {
+export interface AppState {
     query: string;
     thing: any;
     hoverPlace: any;
 }
 
-export interface AppState {
+export interface AppStore {
+    app: any;
     streetSettings: any;
     thingsFilter: any;
     countriesFilter: any;
-    header: HeaderState;
 }

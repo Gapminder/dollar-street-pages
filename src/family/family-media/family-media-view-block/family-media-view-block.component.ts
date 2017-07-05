@@ -15,7 +15,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../interfaces';
+import { AppStore } from '../../../interfaces';
 import {
   DrawDividersInterface,
   BrowserDetectionService,
@@ -61,7 +61,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public languageService: LanguageService;
   public showTranslateMe: boolean;
   public element: HTMLElement;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
 
   public constructor(zone: NgZone,
@@ -70,7 +70,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      languageService: LanguageService,
                      utilsService: UtilsService,
                      elementRef: ElementRef,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
@@ -83,7 +83,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {

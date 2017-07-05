@@ -25,7 +25,7 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 
 @Component({
   selector: 'main-menu',
@@ -59,7 +59,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public socialShareContentElement: HTMLElement;
   public languageService: LanguageService;
   public shareTranslation: string;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public languages: any;
 
@@ -70,7 +70,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
                      localStorageService: LocalStorageService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     store: Store<AppState>) {
+                     store: Store<AppStore>) {
     this.element = element.nativeElement;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -80,7 +80,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.languageService = languageService;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {

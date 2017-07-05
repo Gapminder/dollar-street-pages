@@ -35,7 +35,7 @@ export class UrlChangeService {
     return this.urlEvents;
   }
 
-  public parseUrl(url: string): any {
+  /*public parseUrl(url: string): any {
     let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
     let query = JSON.parse(urlForParse);
 
@@ -54,5 +54,5 @@ export class UrlChangeService {
     return Object.keys(data).map((k: string) => {
       return encodeURIComponent(k) + '=' + data[k];
     }).join('&');
-  }
+  }*/
 }

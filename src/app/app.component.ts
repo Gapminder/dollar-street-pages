@@ -32,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public googleAnalyticsService: GoogleAnalyticsService;
   public fontDetectorService: FontDetectorService;
   public isMatrix: boolean;
+  public currentPage: string;
 
   public constructor(router: Router,
                      languageService: LanguageService,
@@ -60,6 +61,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
+        this.currentPage = '';
+
         let activePage: string = event
           .urlAfterRedirects
           .split('?')
@@ -70,7 +73,10 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         this.isVisibleHeader = !(activePage === '/matrix' || activePage === '/family' || activePage === '/map');
-        this.isMatrix = activePage === '/matrix';
+
+        if (activePage === '/matrix') {
+          this.currentPage = 'matrix';
+        }
 
         this.languageService.updateLangInUrl();
       }

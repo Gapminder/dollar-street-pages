@@ -13,7 +13,8 @@ import {
   DrawDividersInterface
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
+import { AppActions } from '../../app/app.actions';
 
 @Component({
   selector: 'income-filter',
@@ -47,15 +48,18 @@ export class IncomeFilterComponent implements AfterViewInit {
   };
   public streetData: DrawDividersInterface;
   public element: HTMLElement;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public appState: Observable<any>;
 
-  public constructor(store: Store<AppState>,
-                     element: ElementRef) {
+  public constructor(store: Store<AppStore>,
+                     element: ElementRef,
+                     private appActions: AppActions) {
     this.element = element.nativeElement;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
   }
 
   public ngAfterViewInit(): void {
@@ -90,6 +94,9 @@ export class IncomeFilterComponent implements AfterViewInit {
   public closeFilter(isClose?: boolean): void {
     if (isClose) {
       this.sendResponse.emit({close: true});
+
+      this.store.dispatch(this.appActions.openIncomeFilter(false));
+
       return;
     }
 
@@ -98,7 +105,7 @@ export class IncomeFilterComponent implements AfterViewInit {
     this.sendResponse.emit(this.range);
   }
 
-  public getFilter(data: {lowIncome: number;highIncome: number}): void {
+  public getFilter(data: {lowIncome: number; highIncome: number}): void {
     this.range = data;
   }
 
@@ -108,5 +115,7 @@ export class IncomeFilterComponent implements AfterViewInit {
     this.range.close = true;
 
     this.sendResponse.emit(this.range);
+
+    this.store.dispatch(this.appActions.openIncomeFilter(false));
   }
 }

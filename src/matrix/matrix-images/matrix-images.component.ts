@@ -24,7 +24,7 @@ import {
   BrowserDetectionService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 
 @Component({
   selector: 'matrix-images',
@@ -439,14 +439,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public getVisibleRows(): void {
-    let imagesContainerElement: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
-
-    if (!imagesContainerElement) {
+    if (!this.imagesContainer) {
       return;
     }
 
+    let imagesContainerElement: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
+
     let imageHeight: number = imagesContainerElement.offsetWidth / this.zoom;
+
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
+
     this.visibleImages = this.zoom * visibleRows;
   }
 

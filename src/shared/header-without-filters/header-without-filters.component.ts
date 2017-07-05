@@ -10,7 +10,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../interfaces';
+import { AppStore } from '../../interfaces';
 import { HeaderService } from '../header/header.service';
 import {
   TitleHeaderService,
@@ -38,7 +38,7 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   public titleHeaderService: TitleHeaderService;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public store: Store<AppState>;
+  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public languages: any;
 
@@ -46,7 +46,7 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
                      headerService: HeaderService,
                      titleHeaderService: TitleHeaderService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppState>,
+                     store: Store<AppStore>,
                      private languageService: LanguageService) {
     this.renderer = renderer;
     this.headerService = headerService;
@@ -54,7 +54,7 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
     this.titleHeaderService = titleHeaderService;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppState) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): any {
