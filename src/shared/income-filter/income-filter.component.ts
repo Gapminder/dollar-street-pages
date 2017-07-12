@@ -7,7 +7,8 @@ import {
   Input,
   ElementRef,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  OnDestroy
 } from '@angular/core';
 import {
   DrawDividersInterface
@@ -21,7 +22,7 @@ import { AppActions } from '../../app/app.actions';
   templateUrl: './income-filter.component.html',
   styleUrls: ['./income-filter.component.css']
 })
-export class IncomeFilterComponent implements AfterViewInit {
+export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
   @ViewChild('incomeFilterHeaderContainer')
   public incomeFilterHeaderContainer: ElementRef;
   @ViewChild('incomeFilterButtonContainer')
@@ -51,6 +52,8 @@ export class IncomeFilterComponent implements AfterViewInit {
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public appState: Observable<any>;
+  public streetSettingsStateSubscription: Subscription;
+  public appStateSubscription: Subscription;
 
   public constructor(store: Store<AppStore>,
                      element: ElementRef,
@@ -63,11 +66,17 @@ export class IncomeFilterComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       this.initData();
     });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
   }
 
   public initData(): void {

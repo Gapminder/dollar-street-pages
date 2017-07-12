@@ -40,6 +40,7 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public streetBoxContainerMargin: number;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetFamilyDrawService,
@@ -60,7 +61,7 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       this.drawStreet(this.streetData, this.place);
@@ -85,6 +86,10 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public ngOnDestroy(): void {
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
 
     this.street.clearSvg();

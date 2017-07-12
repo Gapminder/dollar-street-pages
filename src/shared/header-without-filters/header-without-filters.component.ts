@@ -41,6 +41,7 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public languages: any;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(renderer: Renderer,
                      headerService: HeaderService,
@@ -66,7 +67,7 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
     this.title = this.titleHeaderService.getTitle();
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
@@ -83,6 +84,10 @@ export class HeaderWithoutFiltersComponent implements OnInit, OnDestroy, AfterVi
 
   public ngOnDestroy(): void {
     this.titleHeaderSubscribe.unsubscribe();
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
   }
 
   public rendererTitle(title: string): void {

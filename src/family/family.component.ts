@@ -77,6 +77,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public headerElement: HTMLElement;
   public streetFamilyContainerElement: HTMLElement;
   public shortFamilyInfoContainerElement: HTMLElement;
+  public streetSettingsStateSubscription: Subscription;
+  public countriesFilterStateSubscription: Subscription;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -193,7 +195,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.homeIncomeData = data;
 
       this.poor = this.homeIncomeData.poor;
@@ -206,7 +208,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.initData();
     });
 
-    this.countriesFilterState.subscribe((data: any) => {
+    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
         if (!data) {
           // this.store.dispatch(this.countriesFilterActions.getCountriesFilter(`thing=${this.urlParams.thing}${this.languageService.getLanguageParam()}`));
         } else {
@@ -242,6 +244,14 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.countriesFilterStateSubscription) {
+      this.countriesFilterStateSubscription.unsubscribe();
     }
   }
 

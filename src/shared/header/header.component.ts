@@ -107,6 +107,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isCountryPage: boolean;
   public isTeamPage: boolean;
   public routerEventsSubscribe: Subscription;
+  public streetSettingsStateSubscription: Subscription;
+  public appStateSubscription: Subscription;
+  public languagesListSubscription: Subscription;
 
   public constructor(router: Router,
                      math: MathService,
@@ -170,31 +173,28 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           paddingHeight += headerContainerElement.clientHeight;
 
           if (this.isMatrixPage) {
-            let matrixHeaderElement = document.querySelector('.matrix-header') as HTMLElement;
-
-            paddingHeight += matrixHeaderElement.clientHeight;
-
-            matrixHeaderElement.style.position = 'fixed';
-            matrixHeaderElement.style.top = headerContainerElement.clientHeight + 'px';
-
             let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+
+            paddingHeight += streetContainerElement.clientHeight;
+
             streetContainerElement.style.position = 'fixed';
+            streetContainerElement.style.top = headerContainerElement.clientHeight + 'px';
+            streetContainerElement.style.zIndex = '100';
           }
 
           paddingPlaceElement.style.height = paddingHeight + 'px';
+
           this.toggleStyleClass(headerContainerElement, 'position-fixed', true);
         } else {
           if (this.isMatrixPage) {
-            let matrixHeaderElement = document.querySelector('.matrix-header') as HTMLElement;
-
-            matrixHeaderElement.style.position = 'static';
-            matrixHeaderElement.style.top = '0px';
-
             let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+
             streetContainerElement.style.position = 'static';
+            streetContainerElement.style.zIndex = '0';
           }
 
           paddingPlaceElement.style.height = '0px';
+
           this.toggleStyleClass(headerContainerElement, 'position-fixed', false);
         }
       });
@@ -266,35 +266,33 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
     });
 
-    this.queryParamsSubscribe = this.activatedRoute
-      .queryParams
-      .subscribe((params: any) => {
-        this.urlParams = {
-          thing: params.thing ? decodeURI(params.thing) : 'Families',
-          countries: params.countries ? decodeURI(params.countries) : 'World',
-          regions: params.regions ? decodeURI(params.regions) : 'World',
-          zoom: parseInt(params.zoom, 10) || 4,
-          row: parseInt(params.row, 10) || 1,
-          lowIncome: parseInt(params.lowIncome, 10),
-          highIncome: parseInt(params.highIncome, 10)
-        };
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
+      this.urlParams = {
+        thing: params.thing ? decodeURI(params.thing) : 'Families',
+        countries: params.countries ? decodeURI(params.countries) : 'World',
+        regions: params.regions ? decodeURI(params.regions) : 'World',
+        zoom: parseInt(params.zoom, 10) || 4,
+        row: parseInt(params.row, 10) || 1,
+        lowIncome: parseInt(params.lowIncome, 10),
+        highIncome: parseInt(params.highIncome, 10)
+      };
 
-        this.interactiveIncomeText();
-        this.calcIncomeSize();
-        this.applyStyles();
-      });
+      this.interactiveIncomeText();
+      this.calcIncomeSize();
+      this.applyStyles();
+    });
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
-    this.appState.subscribe((data: any) => {
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
       if(data) {
         this.query = data.query;
       }
     });
 
-    this.languageService.languagesList.subscribe((data: any) => {
+    this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
       this.languages = data;
     });
 
@@ -306,10 +304,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public isCurrentPage(name: string): boolean {
-    let shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path))[0];
+    let shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
 
     if (shap) {
-      if (shap[0] === name) {
+      if (shap[0][0] === name) {
         return true;
       }
     }
@@ -340,6 +338,18 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     if (this.scrollSubscription) {
       this.scrollSubscription.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
+    }
+
+    if (this.languagesListSubscription) {
+      this.languagesListSubscription.unsubscribe();
     }
   }
 
@@ -431,9 +441,18 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   public thingSelected(data: any): void {
     this.store.dispatch(this.appActions.setQuery(data.url));
-    this.store.dispatch(this.appActions.setThing(data.thing));
 
-    this.urlChangeService.replaceState('/matrix', data.url);
+    let pageName: string = '';
+
+    if (this.isMatrixPage) {
+      pageName = '/matrix';
+    }
+
+    if (this.isMapPage) {
+      pageName = '/map';
+    }
+
+    this.urlChangeService.replaceState(pageName, data.url);
   }
 
   public countrySelected(data: any): void {
@@ -472,6 +491,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.store.dispatch(this.thingsFilterActions.getThingsFilter(queryUrl));
     this.store.dispatch(this.countriesFilterActions.getCountriesFilter(queryUrl));
+
+    this.store.dispatch(this.appActions.setQuery(queryUrl));
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 

@@ -38,6 +38,7 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   public placesArr: any;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetMobileDrawService,
@@ -54,7 +55,7 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
 
     this.street.set('isInit', true);
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       if (!this.placesArr) {
@@ -91,6 +92,10 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
 
     if (this.placesSubscribe) {
       this.placesSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
   }
 

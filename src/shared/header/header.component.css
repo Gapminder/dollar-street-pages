@@ -14,17 +14,11 @@
 
 .position-fixed {
   position: fixed;
-  top: 0px;
   z-index: 999;
   width: 100%;
+  top: 0;
 }
 
-.position-fixed2 {
-  position: fixed;
-  top: 40px;
-  z-index: 999;
-  width: 100%;
-}
 
 .small-container {
   display: block;

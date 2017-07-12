@@ -15,12 +15,10 @@
          class="street-and-title-container">
       <div #streetContainer
            class="street-container" (click)="scrollTop($event, streetContainer)">
-        <div class="short-title">{{activeThing?.plural}} <span>{{ 'IN' | translate }}</span> {{activeCountries}} <span>{{ 'BY_DOLLAR' | translate }}</span></div>
+        <div class="short-title">{{thing}} <span>{{ 'IN' | translate }}</span> {{activeCountries}} <span>{{ 'BY_DOLLAR' | translate }}</span></div>
 
         <div class="street-content">
-          <street [query]="query"
-                  [thing]="thing"
-                  [places]="streetPlaces"
+          <street [places]="streetPlaces"
                   [hoverPlace]="hoverPlace"
                   [chosenPlaces]="chosenPlaces"
                   (filterStreet)="streetChanged($event)"></street>
@@ -61,7 +59,7 @@
 
     <button type="button"
             [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
-            (click)="changeZoom(zoom + 1)">
+            (click)="changeZoom(1*zoom + 1*1)">
         <img class="sign" src="assets/img/minus.svg"/>
     </button>
   </div>

@@ -21,7 +21,9 @@ import { sortBy, chain, differenceBy } from 'lodash';
 import {
   MathService,
   LanguageService,
-  DrawDividersInterface
+  DrawDividersInterface,
+  UtilsService,
+  ActiveThingService
 } from '../../common';
 import { StreetDrawService } from './street.service';
 
@@ -39,8 +41,6 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input()
   public thing: string;
   @Input()
-  public query: string;
-  @Input()
   public places: Observable<any>;
   @Input()
   public chosenPlaces: Observable<any>;
@@ -49,6 +49,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output()
   public filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
+  public query: string;
   public data: any;
   public window: Window = window;
   public languageService: LanguageService;
@@ -73,13 +74,19 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   public streetBoxContainerMargin: number;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
+  public appState: Observable<any>;
+  public appStateSubscription: Subscription;
+  public activeThingServiceSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
                      math: MathService,
                      streetDrawService: StreetDrawService,
                      languageService: LanguageService,
-                     store: Store<AppStore>) {
+                     store: Store<AppStore>,
+                     private utilsService: UtilsService,
+                     private activeThingService: ActiveThingService) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -88,6 +95,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.store = store;
 
     this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
   }
 
   public ngAfterViewInit(): any {
@@ -107,7 +115,11 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.activeThingServiceSubscription = this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
+      this.thing = thing.originPlural;
+    });
+
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       if (!this.placesArr) {
@@ -115,6 +127,20 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       }
 
       this.setDividers(this.placesArr, this.streetData);
+    });
+
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if (data && data.query) {
+        this.query = data.query;
+
+        let parseUrl = this.utilsService.parseUrl(this.query);
+
+        this.street.set('lowIncome', parseUrl.lowIncome);
+        this.street.set('highIncome', parseUrl.highIncome);
+        this.thingname = parseUrl.thing;
+        this.countries = parseUrl.countries;
+        this.regions = parseUrl.regions;
+      }
     });
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
@@ -185,9 +211,11 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
 
     this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
       let query: any = {};
+
       if (this.query) {
-        query = this.parseUrl(this.query);
+        query = this.utilsService.parseUrl(this.query);
       }
+
       query.lowIncome = filter.lowIncome;
       query.highIncome = filter.highIncome;
 
@@ -197,7 +225,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
         return;
       }
 
-      this.filterStreet.emit({url: this.objToQuery(query)});
+      this.filterStreet.emit({url: this.utilsService.objToQuery(query)});
     });
 
     this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
@@ -218,15 +246,27 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   public ngOnChanges(changes: any): void {
-    if (changes.query && changes.query.currentValue) {
-      let parseUrl = this.parseUrl(this.query);
+    /*if (changes.query && changes.query.currentValue) {
+      let parseUrl = this.utilsService.parseUrl(this.query);
 
       this.street.set('lowIncome', parseUrl.lowIncome);
       this.street.set('highIncome', parseUrl.highIncome);
       this.thingname = parseUrl.thing;
       this.countries = parseUrl.countries;
       this.regions = parseUrl.regions;
-    }
+
+      if (!this.places) {
+        this.street
+          .clearSvg()
+          .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
+          .set('places', [])
+          .set('fullIncomeArr', [])
+          .drawScale(this.places, this.streetData)
+          .removeSliders();
+      }
+
+      this.setDividers(this.placesArr, this.streetData);
+    }*/
   }
 
   public ngOnDestroy(): void {
@@ -244,6 +284,14 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
 
     if (this.chosenPlacesSubscribe) {
       this.chosenPlacesSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.activeThingServiceSubscription) {
+      this.activeThingServiceSubscription.unsubscribe();
     }
 
     this.getTranslationSubscribe.unsubscribe();
@@ -275,21 +323,5 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
       this.street.clearAndRedraw(this.street.chosenPlaces);
     }
-  }
-
-  private objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
-  }
-
-  private parseUrl(url: string): any {
-    let urlForParse = ('{\"' + url.replace(/&/g, '\",\"') + '\"}').replace(/=/g, '\":\"');
-    let query = JSON.parse(urlForParse);
-
-    query.regions = query.regions.split(',');
-    query.countries = query.countries.split(',');
-
-    return query;
   }
 }

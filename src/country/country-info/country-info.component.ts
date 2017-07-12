@@ -39,11 +39,11 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public countryInfoService: CountryInfoService;
   public countryInfoServiceSubscribe: Subscription;
   public streetData: DrawDividersInterface;
-  public streetServiceSubscribe: Subscription;
   public languageService: LanguageService;
   public device: BrowserDetectionService;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(countryInfoService: CountryInfoService,
                      math: MathService,
@@ -61,7 +61,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
@@ -84,5 +84,9 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.countryInfoServiceSubscribe.unsubscribe();
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
   }
 }

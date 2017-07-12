@@ -13,7 +13,8 @@ import {
   OnDestroy,
   ElementRef,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../interfaces';
@@ -83,6 +84,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public currentLanguage: string;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public viewImage: string;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -92,7 +95,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStore>) {
+                     store: Store<AppStore>,
+                     private changeDetectorRef: ChangeDetectorRef) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -113,7 +117,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
@@ -133,22 +137,24 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   // tslint:disable-next-line
   public ngOnChanges(changes: SimpleChanges): void {
-    this.loader = false;
+    this.loader = true;
     this.showblock = true;
 
     let url = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
     let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
     this.privateZoom = parseUrl.zoom;
 
-    setTimeout(() => this.setMarkerPosition(), 0);
-
     this.place.background = this.place.background.replace(this.imageResolution.image, this.imageResolution.expand);
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
+
+    this.viewImage = this.place.background;
+
+    setTimeout(() => this.setMarkerPosition(), 0);
 
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
-console.log(url, 'REEEE');
+
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
       .subscribe((res: any) => {
         if (res.err) {
@@ -170,7 +176,7 @@ console.log(url, 'REEEE');
         this.familyData.goToPlaceData = parseUrl;
         this.isShowCountryButton = parseUrl.countries !== this.familyData.country.originName;
 
-        let newImage = new Image();
+        /*let newImage = new Image();
 
         newImage.onload = () => {
           this.zone.run(() => {
@@ -178,7 +184,7 @@ console.log(url, 'REEEE');
           });
         };
 
-        newImage.src = this.place.background;
+        newImage.src = this.place.background;*/
       });
   }
 
@@ -187,6 +193,10 @@ console.log(url, 'REEEE');
 
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
   }
 

@@ -56,7 +56,7 @@ matrix-images {
 .street-and-title-container,
 .street-container .street-content,
 .street-container {
-  position: relative;
+  /*position: relative;*/
 }
 
 .street-container {

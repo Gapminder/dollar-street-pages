@@ -46,6 +46,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public resize: any;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      math: MathService,
@@ -66,7 +67,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
 
     this.streetFilterSubscribe = this.street.filter.subscribe(this.filterStreet);
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
 
       this.setDividers(this.places, this.streetData);
@@ -82,6 +83,10 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public ngOnDestroy(): void {
     if (this.resize) {
       this.resize.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
 
     this.streetFilterSubscribe.unsubscribe();

@@ -22,7 +22,8 @@ import {
   Angulartics2GoogleAnalytics,
   DrawDividersInterface,
   BrowserDetectionService,
-  LanguageService
+  LanguageService,
+  ActiveThingService
 } from '../common';
 import {
   AppActions
@@ -88,6 +89,9 @@ export class MapComponent implements OnInit, OnDestroy {
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public appState: Observable<any>;
+  public streetSettingsStateSubscription: Subscription;
+  public appStateSubscription: Subscription;
+  public activeThingServiceSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -100,7 +104,8 @@ export class MapComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     store: Store<AppStore>) {
+                     store: Store<AppStore>,
+                     private activeThingService: ActiveThingService) {
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -131,17 +136,25 @@ export class MapComponent implements OnInit, OnDestroy {
       this.familyTranslate = trans;
     });
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
-    this.appState.subscribe((data: any) => {
+    this.activeThingServiceSubscription = this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
+      this.thing = thing.originPlural;
+
+      let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
+
+      this.urlChanged(query);
+    });
+
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data && !isInit) {
         /*if (this.query !== data.query) {
           this.urlChanged({url: data.query});
         }*/
 
-        this.query = data.query;
+        /*this.query = data.query;
 
         if (data.thing) {
           this.thing = data.thing;
@@ -151,7 +164,7 @@ export class MapComponent implements OnInit, OnDestroy {
           if (query !== data.query) {
             this.urlChanged(query);
           }
-        }
+        }*/
       }
     });
 
@@ -228,6 +241,18 @@ export class MapComponent implements OnInit, OnDestroy {
 
     if(this.loaderService) {
       this.loaderService.setLoader(false);
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
+    }
+
+    if (this.activeThingServiceSubscription) {
+      this.activeThingServiceSubscription.unsubscribe();
     }
   }
 

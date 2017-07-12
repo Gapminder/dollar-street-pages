@@ -1,20 +1,24 @@
 import { compose } from '@ngrx/core/compose';
-import { combineReducers } from '@ngrx/store';
-
+import { combineReducers, ActionReducer } from '@ngrx/store';
+import { AppStore } from '../interfaces';
 import { streetSettingsReducer } from '../common';
 import {
     thingsFilterReducer,
     countriesFilterReducer
 } from '../shared';
-import {
-    appReducer
-} from './app.reducers';
+import { appReducer } from './app.reducers';
+import { matrixReducer } from '../matrix/matrix.reducers';
 
 export const reducers = {
     app: appReducer,
+    matrix: matrixReducer,
     streetSettings: streetSettingsReducer,
     thingsFilter: thingsFilterReducer,
     countriesFilter: countriesFilterReducer
 };
 
-export const rootReducer = combineReducers(reducers);
+const productionReducer: ActionReducer<AppStore> = combineReducers(reducers);
+
+export function rootReducer(state: any, action: any) {
+    return productionReducer(state, action);
+};

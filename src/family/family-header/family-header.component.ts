@@ -80,6 +80,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public showTranslateMe: boolean;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -116,7 +117,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.readLessTranslate = trans.READ_LESS;
     });
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
@@ -193,6 +194,10 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
     if (this.scrollSubscribe) {
       this.scrollSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
   }
 

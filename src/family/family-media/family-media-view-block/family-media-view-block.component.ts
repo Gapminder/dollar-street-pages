@@ -63,6 +63,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public element: HTMLElement;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
+  public viewImage: string;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      browserDetectionService: BrowserDetectionService,
@@ -87,7 +89,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnInit(): void {
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
@@ -107,8 +109,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public ngOnChanges(changes: any): void {
     if (changes.imageData) {
       this.country = void 0;
-      this.loader = false;
-      let isImageLoaded: boolean = false;
+      this.loader = true;
+
+      /*let isImageLoaded: boolean = false;
       let image: any = new Image();
 
       image.onload = () => {
@@ -121,7 +124,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
         });
       };
 
-      image.src = this.imageData.image;
+      image.src = this.imageData.image;*/
+
+      this.viewImage = this.imageData.image;
 
       if (this.viewBlockServiceSubscribe && this.viewBlockServiceSubscribe.unsubscribe) {
         this.viewBlockServiceSubscribe.unsubscribe();
@@ -149,9 +154,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
             this.article.description = this.getDescription(this.article.shortDescription);
           }
 
-          if (isImageLoaded) {
+          /*if (isImageLoaded) {
             this.loader = true;
-          }
+          }*/
         });
     }
   }
@@ -163,6 +168,10 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
     if(this.viewBlockServiceSubscribe) {
       this.viewBlockServiceSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
   }
 

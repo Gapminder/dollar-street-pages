@@ -14,7 +14,7 @@ import {
   NgZone,
   ViewChild
 } from '@angular/core';
-import * as _ from 'lodash';
+import { chain, clone, difference, union, filter, find, map, forEach, omit } from 'lodash';
 import {
   BrowserDetectionService,
   LanguageService,
@@ -81,6 +81,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public store: Store<AppStore>;
   public countriesFilterState: Observable<any>;
   public isInit: boolean;
+  public countriesFilterStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
@@ -114,12 +115,11 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
 
-    this.countriesFilterState.subscribe((data: any) => {
+    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
       if (data) {
         this.locations = data;
 
-        this.countries = _
-          .chain(data)
+        this.countries = chain(data)
           .map('countries')
           .flatten()
           .sortBy('country')
@@ -127,7 +127,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
         this.isFilterGotData.emit('isCountryFilterReady');
 
-        this.setTitle(location.href);
+        this.setTitle(this.url);
       }
     });
 
@@ -155,6 +155,42 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.setTitle(this.url);
         });
       });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
+
+    if (this.keyUpSubscribe) {
+      this.keyUpSubscribe.unsubscribe();
+    }
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.orientationChange) {
+      this.orientationChange.unsubscribe();
+    }
+
+    if (this.countriesFilterStateSubscription) {
+      this.countriesFilterStateSubscription.unsubscribe();
+    }
+  }
+
+  public ngOnChanges(changes: any): void {
+    this.search = '';
+
+    if (changes.url && changes.url.currentValue) {
+      if(!this.isInit) {
+        this.isInit = true;
+
+        this.store.dispatch(this.countriesFilterActions.getCountriesFilter(changes.url.currentValue));
+      }
+
+      this.setTitle(changes.url.currentValue);
+    }
   }
 
   public calcSliceCount(): void {
@@ -253,13 +289,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (!this.isOpenCountriesFilter) {
       if (this.cloneSelectedRegions[0] !== 'World') {
-        this.selectedRegions = _.clone(this.cloneSelectedRegions);
+        this.selectedRegions = clone(this.cloneSelectedRegions);
       } else {
         this.selectedRegions.length = 0;
       }
 
       if (this.cloneSelectedCountries[0] !== 'World') {
-        this.selectedCountries = _.clone(this.cloneSelectedCountries);
+        this.selectedCountries = clone(this.cloneSelectedCountries);
       } else {
         this.selectedCountries.length = 0;
       }
@@ -284,11 +320,11 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.showSelected = false;
     this.search = '';
 
-    let getCountriesNames: string[] = _.map(location.countries, (country: any)=> {
+    let getCountriesNames: string[] = map(location.countries, (country: any)=> {
         return country.empty !== true ? country.originName : undefined;
     });
 
-    getCountriesNames = _.filter(getCountriesNames, (name: any)=> {
+    getCountriesNames = filter(getCountriesNames, (name: any)=> {
       return name !== undefined ? true : false;
     });
 
@@ -297,7 +333,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (indexRegion !== -1) {
       this.selectedRegions.splice(indexRegion, 1);
 
-      this.selectedCountries = _.difference(this.selectedCountries, getCountriesNames) as string[];
+      this.selectedCountries = difference(this.selectedCountries, getCountriesNames) as string[];
 
       this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
@@ -306,7 +342,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.selectedRegions.push(location.originRegionName);
 
-    this.selectedCountries = _.union(this.selectedCountries.concat(getCountriesNames));
+    this.selectedCountries = union(this.selectedCountries.concat(getCountriesNames));
   }
 
   public selectCountries(country: any, originRegionName: string, region: string): void {
@@ -337,15 +373,15 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.selectedCountries.push(country.originName);
 
-    let regionObject = _.find(this.locations, {region});
+    let regionObject = find(this.locations, {region});
 
-    let filtetredRegionCountries = _.filter(regionObject.countries, (currentCountry: any) => {
+    let filtetredRegionCountries = filter(regionObject.countries, (currentCountry: any) => {
       return currentCountry.empty !== true;
     });
 
-    let regionCountries = _.map(filtetredRegionCountries, 'originName');
+    let regionCountries = map(filtetredRegionCountries, 'originName');
 
-    if (!_.difference(regionCountries, this.selectedCountries).length) {
+    if (!difference(regionCountries, this.selectedCountries).length) {
       this.selectedRegions.push(originRegionName);
     }
   }
@@ -370,46 +406,16 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.openMobileFilterView = window.innerWidth < 1024 || !this.isDesktop;
   }
 
-  public ngOnDestroy(): void {
-    this.getTranslationSubscribe.unsubscribe();
-
-    if (this.keyUpSubscribe) {
-      this.keyUpSubscribe.unsubscribe();
-    }
-
-    if (this.resizeSubscribe.unsubscribe) {
-      this.resizeSubscribe.unsubscribe();
-    }
-
-    if (this.orientationChange) {
-      this.orientationChange.unsubscribe();
-    }
-  }
-
-  public ngOnChanges(changes: any): void {
-    this.search = '';
-
-    if (changes.url && changes.url.currentValue) {
-      if(!this.isInit) {
-        this.isInit = true;
-
-        this.store.dispatch(this.countriesFilterActions.getCountriesFilter(changes.url.currentValue));
-      }
-
-      // this.setTitle(changes.url.currentValue);
-    }
-  }
-
   public findCountryTranslatedName(countries: any[]): any {
-    return _.map(countries, (item: string): any => {
-      const findTransName: any = _.find(this.countries, {originName: item});
+    return map(countries, (item: string): any => {
+      const findTransName: any = find(this.countries, {originName: item});
       return findTransName ? findTransName.country : item;
     });
   }
 
   public findRegionTranslatedName(regions: any[]): any {
-    return _.map(regions, (item: string): any => {
-      const findTransName: any = _.find(this.locations, {originRegionName: item});
+    return map(regions, (item: string): any => {
+      const findTransName: any = find(this.locations, {originRegionName: item});
       return findTransName ? findTransName.region : item;
     });
   }
@@ -423,16 +429,16 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     let resultCountriesNames: string[] = [];
     let resultRegionsCountries: any = {};
 
-    _.forEach(this.locations, (location: any) => {
+    forEach(this.locations, (location: any) => {
       let currentRegionName: string = location.originRegionName;
 
       let filteredCountries: any[] = [];
 
-      filteredCountries = _.filter(location.countries, (country: any) => {
+      filteredCountries = filter(location.countries, (country: any) => {
         return country.empty !== true && countries.indexOf(country.originName) !== -1 ? true : false;
       });
 
-      _.forEach(filteredCountries, (country: any) => {
+      forEach(filteredCountries, (country: any) => {
         let originCountryName: string = country.originName;
 
         if (regions.indexOf(currentRegionName) !== -1) {
@@ -468,7 +474,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
-      if (countries.length > 2) {
+      if (countries.length > 2) {//console.log(getTranslatedCountries.slice(0, this.sliceCount), 'ppp');
         this.activeCountries = `${getTranslatedCountries.slice(0, this.sliceCount).join(', ')} (+${getTranslatedCountries.length - this.sliceCount})`;
       } else {
         if (this.sliceCount === 1 && countries.length > 1) {
@@ -490,13 +496,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       if (regions.length > 2) {
         this.activeCountries = `${getTranslatedCountries.slice(0, this.sliceCount).join(', ')} (+${getTranslatedCountries.length - this.sliceCount})`;
       } else {
-        let difference: string[] = [];
+        let countriesDiff: string[] = [];
         let regionCountries: string[] = [];
 
-        _.forEach(this.locations, (location: any) => {
+        forEach(this.locations, (location: any) => {
           let currentRegionName: any = location.originRegionName;
 
-          let locationCountriesLength: number = _.filter(location.countries, (country: any) => {
+          let locationCountriesLength: number = filter(location.countries, (country: any) => {
             return country.empty !== true ? true : false;
           }).length;
 
@@ -504,27 +510,27 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
             if (locationCountriesLength === resultRegionsCountries[currentRegionName].length) {
               regionCountries.push(...resultRegionsCountries[currentRegionName]);
             } else {
-              resultRegionsCountries = _.omit(resultRegionsCountries, currentRegionName);
+              resultRegionsCountries = omit(resultRegionsCountries, currentRegionName);
             }
           }
         });
 
         if (resultCountriesNames.length !== regionCountries.length) {
-          difference = _.difference(resultCountriesNames, regionCountries);
+          countriesDiff = difference(resultCountriesNames, regionCountries);
         }
 
-        if (difference.length) {
+        if (countriesDiff.length) {
           let countriesCountDiff: number = countries.length - resultCountriesNames.length;
           let activeCountriesNum: number = countries.length - countriesCountDiff - 2;
 
-          this.activeCountries = difference.length === 1 && regions.length === 1 ?
-                                getTranslatedRegions[0] + ' & ' + difference[0] :
+          this.activeCountries = countriesDiff.length === 1 && regions.length === 1 ?
+                                getTranslatedRegions[0] + ' & ' + countriesDiff[0] :
                                 `${getTranslatedCountries.slice(0, this.sliceCount).join(', ')} (+${activeCountriesNum - this.sliceCount})`;
         } else {
           if (regions.length > 2) {
             let activeCountriesNum: number = 0;
 
-            _.forEach(regions, (currentRegion: any) => {
+            forEach(regions, (currentRegion: any) => {
               activeCountriesNum += resultRegionsCountries[currentRegion].length;
             });
 
@@ -558,8 +564,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public cloneSelectedLocations(regions: any[], countries: any[]): void {
-    this.cloneSelectedRegions = _.clone(regions);
-    this.cloneSelectedCountries = _.clone(countries);
+    this.cloneSelectedRegions = clone(regions);
+    this.cloneSelectedCountries = clone(countries);
   }
 
   public setPosition(): void {

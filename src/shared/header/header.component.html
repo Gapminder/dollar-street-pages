@@ -1,9 +1,11 @@
 <div class="header-container">
   <div class="container header-content"
-      [ngClass]="{'small-container': isMapPage || isAboutPage || isDonatePage}">
+      [ngClass]="{'small-container': isMapPage || isAboutPage || isDonatePage || isCountryPage}">
     <div *ngIf="(isMatrixPage && !isMobile ) ||
-                isAboutPage || isDonatePage || isPhotographersPage || isPhotographerPage ||
-                isCountryPage || isTeamPage || (isFamilyPage && (isDesktop || isTablet)) ||
+                isAboutPage || isDonatePage ||
+                isPhotographersPage || isPhotographerPage ||
+                isCountryPage || isTeamPage ||
+                (isFamilyPage && (isDesktop || isTablet)) ||
                 (isMapPage && (isDesktop || isTablet))"
          class="icon-container pull-left">
       <img (click)="goToMatrixPage()" src="/assets/img/dollar-street.svg" alt=""/>
@@ -57,8 +59,7 @@
 
     <div class="menu-container pull-right">
       <main-menu class="pull-right"
-                [hoverPlace]="hoverPlace"
-                (selectedFilter)="urlTransfer($event)">
+                 [hoverPlace]="hoverPlace">
       </main-menu>
 
       <span class="language-selector-header">

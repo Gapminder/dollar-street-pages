@@ -70,6 +70,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public store: Store<AppStore>;
   public thingsFilterState: Observable<any>;
   public isInit: boolean;
+  public thingsFilterStateSubscribtion: Subscription;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
@@ -112,7 +113,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.isOpenMobileFilterView();
 
-    this.thingsFilterState.subscribe((data: any) => {
+    this.thingsFilterStateSubscribtion = this.thingsFilterState.subscribe((data: any) => {
       if(data) {
         this.relatedThings = data.relatedThings;
         this.popularThings = data.popularThings;
@@ -172,6 +173,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.search = {text: ''};
 
     this.store.dispatch(this.thingsFilterActions.getThingsFilter(newUrl));
+
     this.selectedFilter.emit({url: newUrl, thing: this.activeThing});
 
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
@@ -224,6 +226,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.resizeSubscribe.unsubscribe) {
       this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.thingsFilterStateSubscribtion) {
+      this.thingsFilterStateSubscribtion.unsubscribe();
     }
   }
 

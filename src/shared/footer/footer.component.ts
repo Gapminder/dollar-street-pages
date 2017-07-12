@@ -39,8 +39,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
-
   public languageService: LanguageService;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(router: Router,
                      footerService: FooterService,
@@ -63,7 +63,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public ngOnInit(): any {
     this.isDesktop = this.device.isDesktop();
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
         this.streetData = data;
     });
 
@@ -101,6 +101,10 @@ export class FooterComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.routerEventsSubscribe.unsubscribe();
     this.footerServiceSubscribe.unsubscribe();
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
   }
 
   public goToMatrixPage(): void {

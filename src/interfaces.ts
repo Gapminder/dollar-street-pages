@@ -22,6 +22,7 @@ export interface AppState {
 
 export interface AppStore {
     app: any;
+    matrix: any;
     streetSettings: any;
     thingsFilter: any;
     countriesFilter: any;

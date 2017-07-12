@@ -38,8 +38,6 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input()
   public hoverPlace: Observable<any>;
-  @Output()
-  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
   public element: HTMLElement;
   public window: Window = window;
@@ -62,6 +60,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public languages: any;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(router: Router,
                      element: ElementRef,
@@ -114,7 +113,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
@@ -163,6 +162,10 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
 
     if (this.isMobile) {

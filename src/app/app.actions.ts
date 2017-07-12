@@ -12,10 +12,10 @@ export class AppActions {
     }
 
     public static SET_QUERY: string = 'SET_QUERY';
-    setQuery(data: any): Action {
+    setQuery(query: string): Action {
         return {
             type: AppActions.SET_QUERY,
-            payload: data
+            payload: query
         };
     }
 
