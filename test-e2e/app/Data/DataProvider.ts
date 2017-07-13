@@ -98,7 +98,7 @@ export class DataProvider {
   };
 
   public static ambassadorsPageBoolean:any = {
-    'LogoImgInHeader': {element: ():ElementFinder => $('.logo.pull-left>img')},
+    'LogoImgInHeader': {element: ():ElementFinder => $('.icon-container.pull-left>img')},
     'MenuIconInHeader': {element: ():ElementFinder => $('.menu-icon')}
   };
 
@@ -120,13 +120,13 @@ export class DataProvider {
 
   public static matrixPageBoolean:any = {
     'HomeIconInHeader': {element: ():ElementFinder => $('.things-filter-button-content>img')},
-    'LogoImageInHeader': {element: ():ElementFinder => $('.icon-container.pull-left>a>img')},
+    'LogoImageInHeader': {element: ():ElementFinder => $('.icon-container.pull-left>img')},
     'MenuIconInHeader': {element: ():ElementFinder => $('.unactive')},
     'StreetWidgetImage': {element: ():ElementFinder => $('polygon[class="road"]')},
     'ThingsFilter': {element: ():ElementFinder => $('div[class*="things-filter-button-content"]')},
     'CountryFilter': {element: ():ElementFinder => $('div[class*="countries-filter-button"]')},
-    'ZoomButtonPlus': {element: ():ElementFinder => $('button[class*="increase"]'), actualResult: '+'},
-    'ZoomButtonMinus': {element: ():ElementFinder => $('button[class*="decrease"]'), actualResult: '-'}
+    'ZoomButtonPlus': {element: ():ElementFinder => element.all(by.css('img[class="sign"]')).get(0), actualResult: '+'},
+    'ZoomButtonMinus': {element: ():ElementFinder => element.all(by.css('img[class="sign"]')).get(1), actualResult: '-'}
   };
 
   public static matrixPageImages:any = {
@@ -232,7 +232,7 @@ export class DataProvider {
   };
 
   public static homePageBoolean:any = {
-    'LogoImgInHeader': {element: ():ElementFinder => element.all(by.css('.logo.pull-left>img')).first()},
+    'LogoImgInHeader': {element: ():ElementFinder => element.all(by.css('.icon-container.pull-left>img')).first()},
     'LinkToFilter': {element: ():ElementFinder => element.all(by.css('.heading.pull-left')).first()},
     'FamilyImage': {element: ():ElementFinder => element.all(by.css('.image-container>img')).first()},
     'MapImage': {element: ():ElementFinder => $('.map.map_gray')},
