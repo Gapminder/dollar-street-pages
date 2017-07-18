@@ -22,11 +22,11 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
   public about: any;
   public aboutContent: SafeHtml;
   public aboutService: AboutService;
-  public aboutSubscribe: Subscription;
+  public aboutSubscription: Subscription;
   public titleHeaderService: TitleHeaderService;
   public loaderService: LoaderService;
   public languageService: LanguageService;
-  public getTranslationSubscribe: Subscription;
+  public getTranslationSubscription: Subscription;
 
   public constructor(aboutService: AboutService,
                      loaderService: LoaderService,
@@ -41,11 +41,11 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
   public ngAfterViewInit(): void {
     this.loaderService.setLoader(false);
 
-    this.getTranslationSubscribe = this.languageService.getTranslation('ABOUT').subscribe((trans: any) => {
+    this.getTranslationSubscription = this.languageService.getTranslation('ABOUT').subscribe((trans: any) => {
       this.titleHeaderService.setTitle(trans);
     });
 
-    this.aboutSubscribe = this.aboutService.getInfo(this.languageService.getLanguageParam()).subscribe((val: any) => {
+    this.aboutSubscription = this.aboutService.getInfo(this.languageService.getLanguageParam()).subscribe((val: any) => {
       if (val.err) {
         console.error(val.err);
         return;
@@ -60,12 +60,12 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.aboutSubscribe) {
-      this.aboutSubscribe.unsubscribe();
+    if (this.aboutSubscription) {
+      this.aboutSubscription.unsubscribe();
     }
 
-    if (this.getTranslationSubscribe) {
-      this.getTranslationSubscribe.unsubscribe();
+    if (this.getTranslationSubscription) {
+      this.getTranslationSubscription.unsubscribe();
     }
 
     this.loaderService.setLoader(false);

@@ -156,7 +156,6 @@ family-header .header-content {
   vertical-align: top;
   width: 100%;
   background-color: white;
-  z-index: 998;
 }
 
 .header-content .icon-container {
@@ -283,7 +282,7 @@ family-header .header-content {
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 700px) {
   countries-filter {
     width: calc(100% - 80px);
     vertical-align: top;

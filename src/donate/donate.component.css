@@ -92,6 +92,7 @@
 .donate-header {
   padding-top: 40px;
   padding-bottom: 30px;
+  min-height: 224px;
 }
 
 .donate-header .donate-heading {
@@ -342,7 +343,6 @@
     font-size: 24px;
   }
   .donate-header {
-    /*padding-top: 76px;*/
     padding-bottom: 0px;
   }
   .flex-row.heading-wrap {
@@ -360,9 +360,6 @@
   }
   .donate-text {
     margin-bottom: 25px;
-  }
-  .donate-section {
-    /*padding-top: 40px;*/
   }
   .flex-col-donate {
     -webkit-flex-basis: 50%;
@@ -396,9 +393,6 @@
   .donate-text {
     font-size: 16px;
     line-height: 24px;
-  }
-  .donate-section {
-    /*padding-top: 20px;*/
   }
   .donate-opt-img {
     min-height: 200px;

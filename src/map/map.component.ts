@@ -25,9 +25,7 @@ import {
   LanguageService,
   ActiveThingService
 } from '../common';
-import {
-  AppActions
-} from '../app/app.actions';
+import { AppActions } from '../app/app.actions';
 import { MapService } from './map.service';
 
 @Component({
@@ -86,7 +84,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public device: BrowserDetectionService;
   public languageService: LanguageService;
   public currentLanguage: string;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public appState: Observable<any>;
   public streetSettingsStateSubscription: Subscription;
@@ -104,7 +101,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     store: Store<AppStore>,
+                     private store: Store<AppStore>,
                      private activeThingService: ActiveThingService) {
     this.zone = zone;
     this.math = math;
@@ -117,12 +114,11 @@ export class MapComponent implements OnInit, OnDestroy {
     this.urlChangeService = urlChangeService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
-    this.store = store;
 
     this.currentLanguage = this.languageService.currentLanguage;
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
     this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngOnInit(): void {
@@ -168,25 +164,26 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.queryParamsSubscribe = this.activatedRoute
-      .queryParams
-      .subscribe((params: {thing: string}) => {
-        this.thing = params.thing ? params.thing : 'Families';
-        let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: {thing: string}) => {
+      this.thing = params.thing ? params.thing : 'Families';
 
-        if (!params.thing || (params.thing && !isInit)) {
-          query.isNotReplaceState = true;
-        }
+      let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
 
-        this.urlChanged(query);
-        isInit = false;
-      });
+      if (!params.thing || (params.thing && !isInit)) {
+        query.isNotReplaceState = true;
+      }
+
+      this.urlChanged(query);
+
+      isInit = false;
+    });
   }
 
   public urlChanged(options: {url: string, isNotReplaceState?: any}): void {
     let {url, isNotReplaceState} = options;
 
-    this.mapServiceSubscribe = this.mapService.getMainPlaces(url)
+    this.mapServiceSubscribe = this.mapService
+      .getMainPlaces(url)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);

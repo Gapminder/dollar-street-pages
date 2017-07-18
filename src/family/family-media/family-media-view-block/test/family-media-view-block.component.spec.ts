@@ -28,7 +28,8 @@ import {
     BrowserDetectionService,
     UtilsService,
     StreetSettingsService,
-    StreetSettingsEffects
+    StreetSettingsEffects,
+    StreetSettingsActions
 } from '../../../../common';
 
 /* tslint:disable */
@@ -87,6 +88,7 @@ describe('FamilyMediaViewBlockComponent', () => {
                             Angulartics2GoogleAnalytics,
                             Angulartics2,
                             UtilsService,
+                            StreetSettingsActions,
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: LanguageService, useClass: MockLanguageService }
                        ]

@@ -2,14 +2,6 @@
   <div #matrixHeader
        class="matrix-header main-header"
        [style.top.px]="-guidePositionTop">
-    <!--<quick-guide (startQuickGuide)="startQuickGuide()"></quick-guide>-->
-
-    <!--<header [query]="query"
-            [thing]="thing"
-            [hoverPlace]="hoverPlace"
-            (filter)="urlChanged($event)"
-            (isOpenIncomeFilter)="openIncomeFilter()">
-    </header>-->
 
     <div #streetAndTitleContainer
          class="street-and-title-container">
@@ -21,7 +13,8 @@
           <street [places]="streetPlaces"
                   [hoverPlace]="hoverPlace"
                   [chosenPlaces]="chosenPlaces"
-                  (filterStreet)="streetChanged($event)"></street>
+                  (filterStreet)="streetChanged($event)">
+          </street>
 
           <street-mobile *ngIf="isMobile" [places]="streetPlaces"></street-mobile>
         </div>
@@ -32,7 +25,8 @@
                   [places]="streetPlacesData"
                   [lowIncome]="lowIncome"
                   [highIncome]="highIncome"
-                  (sendResponse)="getResponseFromIncomeFilter($event)"></income-filter>
+                  (sendResponse)="getResponseFromIncomeFilter($event)">
+    </income-filter>
   </div>
 
   <matrix-images [row]="row"
@@ -41,11 +35,11 @@
                 [thing]="thing"
                 [places]="matrixPlaces"
                 [activeHouse]="activeHouse"
-                [guidePositionTop]="guideHeight"
                 [clearActiveHomeViewBox]="clearActiveHomeViewBox"
                 (filter)="urlChanged($event)"
                 (hoverPlace)="hoverPlaces($event)"
-                (activeHouseOptions)="activeHouseOptions($event)">
+                (activeHouseOptions)="activeHouseOptions($event)"
+                (imageHeightChanged)="imageHeightChanged($event)">
   </matrix-images>
 
   <div class="zoom-column pull-right"

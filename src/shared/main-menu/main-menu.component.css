@@ -22,9 +22,12 @@
   display: block;
 }
 
+#main-menu {
+  z-index: 999;
+}
+
 #main-menu > div {
   float: right;
-  z-index: 666;
 }
 
 #main-menu .open .menu-icon {

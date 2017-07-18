@@ -1,3 +1,29 @@
+<div #shortFamilyInfoContainer
+     class="short-family-info-container"
+     (click)="scrollToStart($event)">
+  <div *ngIf="home.image" class="image-container">
+    <img class="portrait" (click)="openExpandBlock()" [src]="home.image" alt="">
+  </div>
+
+  <div class="description-container">
+    <div class="left-title">
+      <p class="title desktop">{{home.familyName}} <span *ngIf="currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span>, {{home.country?.alias}}</p>
+      <p class="title mobile">{{home.familyName}}, {{home.country?.alias}}</p>
+    </div>
+
+    <div class="right-title">
+      <p class="title">${{math.round(home.income)}}<span>/{{ 'MONTH' | translate }}</span>
+        <img *ngIf="home.aboutData"
+             class="short-about-info-image"
+             src="/assets/img/info-button.svg"
+             (click)="showAboutData($event, true)"
+             (mouseenter)="showAboutData($event)"
+             (mouseleave)="showAboutData()">
+      </p>
+    </div>
+  </div>
+</div>
+
 <div #homeDescriptionContainer
      class="home-description-container"
      [ngClass]="{'open-info': isOpenArticle}">
@@ -79,32 +105,6 @@
           {{ 'ALL_FAMILIES_IN' | translate }} {{countryName}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img
           src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       </div>
-    </div>
-  </div>
-</div>
-
-<div #shortFamilyInfoContainer
-     class="short-family-info-container"
-     [style.top.px]="familyShortInfoPosition"
-     (click)="scrollToStart($event)">
-  <div class="image-container" *ngIf="home.image">
-    <img class="portrait" (click)="openExpandBlock()" [src]="home.image" alt="">
-  </div>
-
-  <div class="description-container">
-    <div class="left-title">
-      <p class="title desktop">{{home.familyName}} <span *ngIf="currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span>, {{home.country?.alias}}</p>
-      <p class="title mobile">{{home.familyName}}, {{home.country?.alias}}</p>
-    </div>
-
-    <div class="right-title">
-      <p class="title">${{math.round(home.income)}}<span>/{{ 'MONTH' | translate }}</span><img class="short-about-info-image"
-                                                                           src="/assets/img/info-button.svg"
-                                                                           alt=""
-                                                                           *ngIf="home.aboutData"
-                                                                           (click)="showAboutData($event, true)"
-                                                                           (mouseenter)="showAboutData($event)"
-                                                                           (mouseleave)="showAboutData()"></p>
     </div>
   </div>
 </div>

@@ -21,10 +21,12 @@ import {
   MathService,
   LoaderService,
   LanguageService,
-  BrowserDetectionService
+  BrowserDetectionService,
+  UtilsService
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../interfaces';
+import { AppActions } from '../../app/app.actions';
 
 @Component({
   selector: 'matrix-images',
@@ -53,17 +55,17 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public showblock: boolean = false;
   @Input()
   public row: number;
-  @Input()
-  public guidePositionTop: number;
+
   @Input()
   public clearActiveHomeViewBox: Subject<any>;
-
   @Output()
   public hoverPlace: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   public activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   public filter: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  public itemSizeChanged: EventEmitter<any> = new EventEmitter<any>();
 
   public languageService: LanguageService;
   public theWorldTranslate: string;
@@ -101,6 +103,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public locations: any[];
   public device: BrowserDetectionService;
   public getTranslationSubscribe: Subscription;
+  public appState: Observable<any>;
+  public appStateSubscription: Subscription;
+  public quickGuideElement: HTMLElement;
+  public isInit: boolean;
+  public contentLoadedSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -108,7 +115,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      math: MathService,
                      loaderService: LoaderService,
                      browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     private utilsService: UtilsService,
+                     private store: Store<AppStore>,
+                     private appActions: AppActions) {
     this.languageService = languageService;
     this.zone = zone;
     this.math = math;
@@ -116,10 +126,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.loaderService = loaderService;
     this.device = browserDetectionService;
     this.element = element.nativeElement;
+
+    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
   }
 
   public ngOnInit(): any {
-    let isInit: boolean = true;
+    this.isInit = true;
 
     this.isDesktop = this.device.isDesktop();
 
@@ -153,15 +165,27 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       }, 0);
 
       setTimeout(() => {
-        this.getImageHeight();
+        this.calcItemSize();
         this.loaderService.setLoader(true);
       }, 0);
 
-      if (this.activeHouse && isInit) {
+      if (this.activeHouse && this.isInit) {
         setTimeout(() => {
           this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1, true);
-          isInit = false;
+          this.isInit = false;
         }, 0);
+      }
+    });
+
+    this.contentLoadedSubscription = fromEvent(document, 'DOMContentLoaded').subscribe(() => {
+      this.checkQuickGuide();
+    });
+
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if (data) {
+        if (data.quickGuide) {
+          this.checkQuickGuide();
+        }
       }
     });
 
@@ -175,7 +199,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
           this.windowInnerWidth = window.innerWidth;
           this.getVisibleRows();
-          this.getImageHeight();
+          this.calcItemSize();
         });
       });
 
@@ -192,9 +216,20 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       });
   }
 
+  public checkQuickGuide(): void {
+    setTimeout(() => this.quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement);
+  }
+
   public ngOnDestroy(): void {
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
+    }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
+    }
+    if (this.contentLoadedSubscription) {
+      this.contentLoadedSubscription.unsubscribe();
     }
 
     this.getTranslationSubscribe.unsubscribe();
@@ -243,8 +278,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public buildTitle(query: any): any {
-    let regions = query.regions.split(',');
-    let countries = query.countries.split(',');
+    let regions = query.regions;
+    let countries = query.countries;
+
     this.selectedThing = query.thing.split(',');
 
     if (regions[0] === 'World' && countries[0] === 'World') {
@@ -311,7 +347,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public buildErrorMsg(places: any): void {
     if (!places.length) {
-      this.buildTitle(this.parseUrl(this.query));
+      this.buildTitle(this.utilsService.parseUrl(this.query));
 
       let activeCountries = this.activeCountries.toString().replace(/,/g, ', ');
 
@@ -331,6 +367,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
+    this.familyData = JSON.parse(JSON.stringify(place));
+
     this.indexViewBoxHouse = index;
 
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
@@ -339,7 +377,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     this.imageBlockLocation = this.positionInRow ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;
 
-    this.familyData = JSON.parse(JSON.stringify(place));
+    if (this.positionInRow === 0) {
+      this.positionInRow = this.zoom;
+    }
 
     setTimeout(() => {
       this.viewBlockHeight = this.matrixViewBlockComponent ? this.matrixViewBlockComponent.element.offsetHeight : 0;
@@ -409,8 +449,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     let scrollTop: number = row * this.itemSize - showPartPrevImage;
 
-    if (this.guidePositionTop || this.guidePositionTop === 0) {
-      scrollTop += this.guidePositionTop;
+    if (this.quickGuideElement) {
+       scrollTop += this.quickGuideElement.offsetHeight;
     }
 
     setTimeout(() => {
@@ -418,24 +458,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
-  public getImageHeight(): void {
-    let imagesContainerElement: HTMLElement = this.imagesContainer.nativeElement;
-    let imageContentElement: HTMLElement = this.imageContent.nativeElement;
-
-    if (!imagesContainerElement || !imageContentElement) {
+  public calcItemSize(): void {
+    if (!this.imagesContainer || !this.imageContent) {
       return;
     }
 
-    let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
+    let imageContentElement: HTMLElement = this.imageContent.nativeElement;
 
-    let imageMarginLeft: string = window.getComputedStyle(imageContentElement).getPropertyValue('margin-left');
-    let boxPaddingLeft: string = window.getComputedStyle(imagesContainerElement).getPropertyValue('padding-left');
+    this.itemSize = imageContentElement.offsetWidth;
 
-    this.imageMargin = parseFloat(imageMarginLeft) * 2;
-    let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
-
-    this.imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - this.imageMargin;
-    this.itemSize = this.imageHeight + this.imageMargin;
+    this.itemSizeChanged.emit(this.itemSize);
   }
 
   public getVisibleRows(): void {
@@ -450,9 +482,5 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
 
     this.visibleImages = this.zoom * visibleRows;
-  }
-
-  public parseUrl(url: string): any {
-    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
   }
 }

@@ -223,7 +223,7 @@ export class LanguageService {
 
     queryParams.lang = this.currentLanguage;
 
-    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams), true);
+    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams));
   }
 
   private processTranslation(observer: Observer<any>, translations: any, key: string | string[]): void {

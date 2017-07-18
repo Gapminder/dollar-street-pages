@@ -2,6 +2,7 @@ import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { environment } from '../../environments/environment';
 import {
   Component,
   Input,
@@ -48,6 +49,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public place: any;
   @Input()
   public thing: string;
+  @Input()
+  public itemSize: number;
   @Output()
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output()
@@ -67,7 +70,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public familyInfoService: MatrixViewBlockService;
   public zone: NgZone;
   public router: Router;
-  public boxContainerPadding: number;
   public widthScroll: number;
   public element: HTMLElement;
   public boxContainer: HTMLElement;
@@ -75,7 +77,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public isShowCountryButton: boolean;
   public countryName: string;
   public streetData: DrawDividersInterface;
-  public utilsServece: UtilsService;
+  public utilsService: UtilsService;
   public languageService: LanguageService;
   public showTranslateMe: boolean;
   public imageResolution: ImageResolutionInterface;
@@ -86,6 +88,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public streetSettingsState: Observable<DrawDividersInterface>;
   public viewImage: string;
   public streetSettingsStateSubscription: Subscription;
+  public consumerApi: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -104,14 +107,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.device = browserDetectionService;
     this.familyInfoService = familyInfoService;
     this.languageService = languageService;
-    this.utilsServece = utilsService;
+    this.utilsService = utilsService;
     this.store = store;
+    this.consumerApi = environment.consumerApi;
 
     this.isDesktop = this.device.isDesktop();
 
     this.currentLanguage = this.languageService.currentLanguage;
 
-    this.imageResolution = this.utilsServece.getImageResolution(this.isDesktop);
+    this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
     this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
@@ -140,10 +144,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.loader = true;
     this.showblock = true;
 
-    let url = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
-    let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
-    this.privateZoom = parseUrl.zoom;
-
     this.place.background = this.place.background.replace(this.imageResolution.image, this.imageResolution.expand);
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 
@@ -154,6 +154,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
+
+    let url: string = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
 
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
       .subscribe((res: any) => {
@@ -173,8 +175,14 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.countryName = this.truncCountryName(this.familyData.country);
-        this.familyData.goToPlaceData = parseUrl;
-        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.originName;
+
+        let query = this.query.replace(/row\=\d*/, 'row=1').replace(/&activeHouse\=\d*/, '');
+
+        let parsedUrl: any = this.utilsService.parseUrl(`place=${this.place._id}&` + query);
+
+        this.familyData.goToPlaceData = parsedUrl;
+        this.isShowCountryButton = parsedUrl.countries !== this.familyData.country.originName;
+        this.privateZoom = parsedUrl.zoom;
 
         /*let newImage = new Image();
 
@@ -225,7 +233,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public goToMatrixByCountry(country: string): void {
-    let query: any = this.parseUrl(this.query);
+    let query: any = this.utilsService.parseUrl(this.query);
 
     query.regions = 'World';
     query.countries = country;
@@ -234,33 +242,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     delete query.activeHouse;
 
-    this.goToMatrixWithCountry.emit({url: this.utilsServece.objToQuery(query), isCountriesFilter: true});
-  }
-
-  public parseUrl(url: string): any {
-    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+    this.goToMatrixWithCountry.emit({url: this.utilsService.objToQuery(query), isCountriesFilter: true});
   }
 
   public setMarkerPosition(): void {
-    this.widthScroll = window.innerWidth - document.body.offsetWidth;
-
-    if(!this.viewImageBlockContainer) {
-      return;
-    }
-
-    let boxContainer: HTMLElement = this.viewImageBlockContainer.nativeElement as HTMLElement;
-
-    if (!boxContainer) {
-      boxContainer = this.mobileViewImageBlockContainer.nativeElement as HTMLElement;
-    }
-
-    this.boxContainer = boxContainer;
-    let paddingLeft: string = window.getComputedStyle(this.boxContainer).getPropertyValue('padding-left');
-    this.boxContainerPadding = parseFloat(paddingLeft);
-
-    let imageWidth: number = (this.boxContainer.offsetWidth - this.boxContainerPadding * 2 - this.widthScroll) / this.privateZoom;
-
-    this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
+    this.markerPositionLeft = (this.itemSize * this.positionInRow) - this.itemSize / 2;
   }
 
   public getDescription(shortDescription: string): string {
@@ -280,12 +266,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       return shortDescription;
     }
   }
-
-  /*public objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
-  }*/
 
   public truncCountryName(countryData: any): string {
     let countryName: string;

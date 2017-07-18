@@ -17,7 +17,9 @@ import {
     LoaderService,
     Angulartics2GoogleAnalytics,
     StreetSettingsService,
-    StreetSettingsEffects
+    StreetSettingsEffects,
+    StreetSettingsActions,
+    UtilsService
 } from '../../common';
 import { FamilyComponent } from '../family.component';
 import { FamilyService } from '../family.service';
@@ -94,6 +96,8 @@ describe('FamilyComponent', () => {
                             BrowserDetectionService,
                             MathService,
                             LoaderService,
+                            StreetSettingsActions,
+                            UtilsService,
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: FamilyService, useClass: MockFamilyService },
                             // { provide: CountriesFilterService, useClass: MockCountriesFilterService },

@@ -15,7 +15,7 @@
          [style.-ms-flex-order]="i"
          [style.-webkit-order]="i"
          [style.order]="i"
-         [style.height.px]="imageHeight"
+         [style.height.px]="itemSize"
          isImageLoaded
          [imageLoadedUrl]="convertImageUrlWithoutWrapper(image?.background)"
          (imageLoadedEvent)="imageIsUploaded(i)">

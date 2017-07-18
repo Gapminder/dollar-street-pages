@@ -1,8 +1,21 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter,
+  ElementRef
+} from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { find, difference } from 'lodash';
 import { GuideService } from './guide.service';
-import { LocalStorageService, LanguageService } from '../../common';
+import {
+  LocalStorageService,
+  LanguageService
+} from '../../common';
+import { Store } from '@ngrx/store';
+import { AppStore } from '../../interfaces';
+import { AppActions } from '../../app/app.actions';
 
 @Component({
   selector: 'quick-guide',
@@ -27,7 +40,9 @@ export class GuideComponent implements OnInit, OnDestroy {
   public constructor(guideService: GuideService,
                      localStorageService: LocalStorageService,
                      languageService: LanguageService,
-                     element: ElementRef) {
+                     element: ElementRef,
+                     private store: Store<AppStore>,
+                     private appActions: AppActions) {
     this.guideService = guideService;
     this.localStorageService = localStorageService;
     this.languageService = languageService;
@@ -64,16 +79,17 @@ export class GuideComponent implements OnInit, OnDestroy {
     this.guideServiceSubscribe.unsubscribe();
   }
 
-  public openQuickGuide(): void {
+  public openQuickTour(): void {
     this.isShowGuide = false;
     this.isShowBubble = true;
     this.startQuickGuide.emit({});
   }
 
-  public close(): void {
+  public closeQuickGuide(): void {
     this.isShowGuide = false;
     this.isShowBubble = false;
     this.startQuickGuide.emit({});
     this.localStorageService.setItem('quick-guide', true);
+    this.store.dispatch(this.appActions.openQuickGuide(false));
   }
 }

@@ -19,7 +19,8 @@ import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
   LanguageService,
-  DrawDividersInterface
+  DrawDividersInterface,
+  UtilsService
 } from '../common';
 import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
@@ -45,10 +46,9 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public document: Document = document;
   public streetFamilyData: {income: number, region: string};
   public zoom: number;
-  public titles: any = {};
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
   public placeId: string;
-  public urlParams: UrlParamsInterface;
+  public urlParams: any;
   public homeIncomeData: any;
   public rich: any;
   public poor: any;
@@ -71,7 +71,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
   public query: string;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public countriesFilterState: Observable<any>;
   public headerElement: HTMLElement;
@@ -79,6 +78,9 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public shortFamilyInfoContainerElement: HTMLElement;
   public streetSettingsStateSubscription: Subscription;
   public countriesFilterStateSubscription: Subscription;
+  public itemSize: number;
+  public row: number;
+  public rowEtalon: number;
 
   public constructor(router: Router,
                      activatedRoute: ActivatedRoute,
@@ -88,7 +90,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
                      elementRef: ElementRef,
-                     store: Store<AppStore>) {
+                     private store: Store<AppStore>,
+                     private utilsService: UtilsService) {
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
@@ -97,18 +100,11 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.familyService = familyService;
     this.device = browserDetectionService;
     this.element = elementRef.nativeElement;
-    this.store = store;
 
     this.isDesktop = this.device.isDesktop();
 
     this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
     this.countriesFilterState = this.store.select((dataSet: AppStore) => dataSet.countriesFilter);
-  }
-
-  public ngAfterViewInit(): void {
-    this.headerElement = document.querySelector('.header-content') as HTMLElement;
-    this.streetFamilyContainerElement = this.element.querySelector('.street-family-container') as HTMLElement;
-    this.shortFamilyInfoContainerElement = this.element.querySelector('.short-family-info-container') as HTMLElement;
   }
 
   public ngOnInit(): void {
@@ -118,82 +114,53 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.initData();
     });
 
-    setTimeout(() => {
-      this.scrollSubscribe = fromEvent(this.window, 'scroll')
-        .debounceTime(10)
-        .subscribe(() => {
-          let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
+      this.placeId = params.place;
 
-          let headerHeight: number = this.headerElement.clientHeight;
+      this.urlParams = {
+        thing: params.thing ? decodeURI(params.thing) : 'Families',
+        countries: params.countries ? decodeURI(params.countries) : 'World',
+        regions: params.regions ? decodeURI(params.regions) : 'World',
+        zoom: parseInt(params.zoom, 10) || 4,
+        row: parseInt(params.row, 10) || 1,
+        lowIncome: parseInt(params.lowIncome, 10),
+        highIncome: parseInt(params.highIncome, 10),
+        activeImage: parseInt(params.activeImage, 10)
+      };
 
-          if (scrollTop > 0) {
-            // this.headerElement.style.position = 'fixed';
-            // this.headerElement.style.top = '0px';
+      this.query = `place=${this.placeId}&thing=${this.urlParams.thing}&countries=${this.urlParams.countries}&regions=${this.urlParams.regions}&zoom=${this.urlParams.zoom}&row=${this.urlParams.row}&lowIncome=${this.urlParams.lowIncome}&highIncome=${this.urlParams.highIncome}`;
+      this.query += this.languageService.getLanguageParam();
 
-            this.streetFamilyContainerElement.style.position = 'fixed';
-            this.streetFamilyContainerElement.style.top = this.headerElement.clientHeight + 'px';
-            this.streetFamilyContainerElement.style.zIndex = '999';
+      if (this.urlParams.activeImage) {
+        this.query += `&activeImage=${this.urlParams.activeImage}`;
+        this.activeImageIndex = this.urlParams.activeImage;
+      }
 
-            this.familyContainer.nativeElement.style.paddingTop = this.headerElement.clientHeight + 'px';
+      this.row = this.urlParams.row;
 
-            this.shortFamilyInfoContainerElement.style.top = '86px';
-            this.shortFamilyInfoContainerElement.style.maxHeight = '86px';
-            this.shortFamilyInfoContainerElement.style.zIndex = '998';
-          } else {
-            // this.headerElement.style.position = 'static';
+      setTimeout(() => {
+        if (this.row > 1 && !this.activeImageIndex) {
+          this.familyMediaComponent.goToRow(this.row);
+        }
+      }, 700);
 
-            this.streetFamilyContainerElement.style.position = 'static';
-            this.streetFamilyContainerElement.style.top = '0px';
-            this.streetFamilyContainerElement.style.zIndex = '0';
+      let query: string = `thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`;
 
-            this.familyContainer.nativeElement.style.paddingTop = '0px';
-
-            this.shortFamilyInfoContainerElement.style.maxHeight = '0px';
-            this.shortFamilyInfoContainerElement.style.zIndex = '0';
+      this.familyServiceSetThingSubscribe = this.familyService
+        .getThing(query)
+        .subscribe((res: any) => {
+          if (res.err) {
+            console.error(res.err);
+            return;
           }
 
-          this.setZoomButtonPosition();
+          this.thing = res.data;
+
+          this.setZoom(this.urlParams.zoom);
+
+          this.initData();
         });
-    }, 100);
-
-    this.queryParamsSubscribe = this.activatedRoute
-      .queryParams
-      .subscribe((params: any) => {
-        this.placeId = params.place;
-        this.activeImageIndex = parseInt(params.activeImage, 10);
-
-        this.urlParams = {
-          thing: params.thing ? decodeURI(params.thing) : 'Families',
-          countries: params.countries ? decodeURI(params.countries) : 'World',
-          regions: params.regions ? decodeURI(params.regions) : 'World',
-          zoom: parseInt(params.zoom, 10) || 4,
-          row: parseInt(params.row, 10) || 1,
-          lowIncome: parseInt(params.lowIncome, 10),
-          highIncome: parseInt(params.highIncome, 10)
-        };
-
-        this.query = `place=${this.placeId}&thing=${this.urlParams.thing}&countries=${this.urlParams.countries}&regions=${this.urlParams.regions}&zoom=${this.urlParams.zoom}&row=${this.urlParams.row}&lowIncome=${this.urlParams.lowIncome}&highIncome=${this.urlParams.highIncome}`;
-        this.query = this.query + this.languageService.getLanguageParam();
-
-        this.familyServiceSetThingSubscribe = this.familyService
-          .getThing(`thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`)
-          .subscribe((res: any) => {
-            if (res.err) {
-              console.error(res.err);
-              return;
-            }
-
-            this.thing = res.data;
-
-            this.setZoom(this.urlParams.zoom);
-
-            this.initData();
-          });
       });
-
-    if (!isNaN(this.activeImageIndex) && 'scrollRestoration' in history) {
-      this.windowHistory.scrollRestoration = 'manual';
-    }
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.homeIncomeData = data;
@@ -223,6 +190,26 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
           this.initData();
         }
     });
+  }
+
+  public ngAfterViewInit(): void {
+    this.headerElement = document.querySelector('.header-content') as HTMLElement;
+    this.streetFamilyContainerElement = this.element.querySelector('.street-family-container') as HTMLElement;
+    this.shortFamilyInfoContainerElement = this.element.querySelector('.short-family-info-container') as HTMLElement;
+
+    this.scrollSubscribe = fromEvent(this.window, 'scroll')
+        .debounceTime(10)
+        .subscribe(() => {
+          setTimeout(() => {
+            if (!this.itemSize) {
+              this.calcItemSize();
+            }
+
+            this.processScroll();
+            this.applyStyles();
+            this.setZoomButtonPosition();
+          });
+        });
   }
 
   public ngOnDestroy(): void {
@@ -267,6 +254,65 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.familyMediaComponent.changeZoom(prevZoom);
   }
 
+  public processScroll(): void {
+    let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop); //- this.guidePositionTop;
+
+    let distance = scrollTop / this.itemSize;
+
+    if (isNaN(distance)) {
+      return;
+    }
+
+    let rest = distance % 1;
+    let row = distance - rest;
+
+    if (rest >= 0.85) {
+      row++;
+    }
+
+    this.row = row + 1;
+
+    if (this.rowEtalon !== this.row) {
+      this.rowEtalon = this.row;
+
+      let query = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`;
+
+      this.query = query;
+
+      this.urlChangeService.replaceState('/family', this.query);
+    }
+  }
+
+  public applyStyles(): void {
+    let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+    if (scrollTop > 0) {
+      this.streetFamilyContainerElement.style.position = 'fixed';
+      this.streetFamilyContainerElement.style.top = this.headerElement.clientHeight + 'px';
+      this.streetFamilyContainerElement.style.zIndex = '995';
+
+      this.familyContainer.nativeElement.style.paddingTop = this.headerElement.clientHeight + 'px';
+    } else {
+      this.streetFamilyContainerElement.style.position = 'static';
+      this.streetFamilyContainerElement.style.top = '0px';
+      this.streetFamilyContainerElement.style.zIndex = '0';
+
+      this.familyContainer.nativeElement.style.paddingTop = '0px';
+    }
+
+    if (scrollTop > 140) {
+      let offsetHeight: number = this.headerElement.clientHeight + this.streetFamilyContainerElement.clientHeight;
+
+      this.shortFamilyInfoContainerElement.style.top = offsetHeight + 'px';
+      this.shortFamilyInfoContainerElement.style.maxHeight = 100 + 'px';
+      this.shortFamilyInfoContainerElement.style.height = 50 + 'px';
+      this.shortFamilyInfoContainerElement.style.zIndex = '995';
+    } else {
+      this.shortFamilyInfoContainerElement.style.maxHeight = '0px';
+      this.shortFamilyInfoContainerElement.style.zIndex = '0';
+    }
+  }
+
   public setZoom(zoom: number): void {
     if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
       this.zoom = zoom ? zoom : 4;
@@ -277,6 +323,27 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  public calcItemSize(): void {
+    let familyThingsContainerElement: HTMLElement = this.element.querySelector('.family-things-container') as HTMLElement;
+    let familyImageContainerElement: HTMLElement = this.element.querySelector('.family-image-container') as HTMLElement;
+
+    if (!familyThingsContainerElement || !familyImageContainerElement) {
+      return;
+    }
+
+    let widthScroll: number = window.innerWidth - document.body.offsetWidth;
+
+    let imageMarginLeft: string = window.getComputedStyle(familyImageContainerElement).getPropertyValue('margin-left');
+    let boxPaddingLeft: string = window.getComputedStyle(familyThingsContainerElement).getPropertyValue('padding-left');
+
+    let imageMargin = parseFloat(imageMarginLeft) * 2;
+    let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
+
+    let imageHeight = (familyThingsContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - imageMargin;
+
+    this.itemSize = imageHeight + imageMargin;
+  }
+
   public setZoomButtonPosition(): void {
     let scrollTop: number = (this.document.body.scrollTop || this.document.documentElement.scrollTop) + this.window.innerHeight;
 
@@ -285,25 +352,31 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.zoomPositionFixed = scrollTop > containerHeight;
   }
 
-  public activeImageOptions(options: {activeImageIndex?: number;}): void {
-    let {activeImageIndex} = options;
+  public activeImageOptions(options: any): void {
+    let {row, activeImageIndex} = options;
 
-    if (activeImageIndex === this.activeImageIndex) {
-      return;
+    let queryParams = this.utilsService.parseUrl(this.query);
+
+    delete queryParams.activeImage;
+
+    if (row) {
+      queryParams.row = row;
     }
-
-    let url: string = location.search
-      .replace('?', '')
-      .replace(/&activeImage\=\d*/, '');
 
     if (activeImageIndex) {
       this.activeImageIndex = activeImageIndex;
-      url = url + `&activeImage=${activeImageIndex}`;
+      queryParams.activeImage = activeImageIndex;
     } else {
       this.activeImageIndex = void 0;
     }
 
-    this.urlChangeService.replaceState('/family', url, true);
+    if (!queryParams.lang) {
+      queryParams.lang = this.languageService.currentLanguage;
+    }
+
+    this.query = this.utilsService.objToQuery(queryParams);
+
+    this.urlChangeService.replaceState('/family', this.query);
   }
 
   public isOpenFamilyExpandBlock(data: any): void {
@@ -333,34 +406,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
       return;
     }
-
-    let countries = this.getCountriesTitle(this.urlParams.regions.split(','), this.urlParams.countries.split(','));
-
-    /*this.titles = {
-      thing: this.thing,
-      countries: countries,
-      income: this.getIncomeTitle(this.urlParams.lowIncome, this.urlParams.highIncome)
-    };*/
   }
-
-  /*public getIncomeTitle(min: number, max: number): string {
-    let poor: number = this.homeIncomeData.poor;
-    let rich: number = this.homeIncomeData.rich;
-    let title: string = 'all incomes';
-
-    if (min > poor && max < rich) {
-      title = 'incomes $' + min + ' - $' + max;
-    }
-
-    if (min > poor && max === rich) {
-      title = 'income over $' + min;
-    }
-    if (min === poor && max < rich) {
-      title = 'income lower $' + max;
-    }
-
-    return title;
-  }*/
 
   public findCountryTranslatedName(countries: any[]): any {
     return map(countries, (item: string): any => {

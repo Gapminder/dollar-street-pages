@@ -145,12 +145,9 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
       let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
-      if (this.street.width + this.street.streetOffset + this.streetBoxContainerMargin !== document.body.offsetWidth &&
-        this.placesArr &&
-        this.streetData) {
-        this.setDividers(this.placesArr, this.streetData);
 
-        return;
+      if (this.placesArr && this.streetData) {
+        this.setDividers(this.placesArr, this.streetData);
       }
 
       if (difference.length || chosenPlaces.length !== this.street.chosenPlaces.length) {

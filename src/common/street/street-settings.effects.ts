@@ -12,7 +12,7 @@ export class StreetSettingsEffects {
     }
 
     @Effect()
-    getThigsFilter$ = this.action$
+    getStreetSettings$ = this.action$
         .ofType(StreetSettingsActions.NGRX_INIT)
         .map((action: Action) => action.payload)
         .switchMap((query) => this.streetSettingsService.getStreetSettings()

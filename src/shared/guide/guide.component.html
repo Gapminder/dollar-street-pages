@@ -10,13 +10,13 @@
       <h2>{{ 'SEE_HOW_PEOPLE' | translate }}
         <span>{{ 'REALLY' | translate }}</span> {{ 'LIVE' | translate }}</h2>
       <div class="button-container">
-        <button class="bg-orange" type="button" (click)="openQuickGuide()">{{ 'QUICK_TOUR' | translate }}</button>
-        <button type="button" (click)="close()">{{ 'MAYBE_LATER' | translate }}</button>
+        <button class="bg-orange" type="button" (click)="openQuickTour()">{{ 'QUICK_TOUR' | translate }}</button>
+        <button type="button" (click)="closeQuickGuide()">{{ 'MAYBE_LATER' | translate }}</button>
       </div>
     </div>
   </div>
 
-  <img (click)="close()" src="/assets/img/close-button-welcome.png" alt="">
+  <img (click)="closeQuickGuide()" src="/assets/img/close-button-welcome.png" alt="">
 </div>
 
 <bubble *ngIf="!isShowGuide && isShowBubble" [bubbles]="bubbles"></bubble>

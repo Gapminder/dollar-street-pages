@@ -20,7 +20,8 @@ import {
     Angulartics2GoogleAnalytics,
     UtilsService,
     StreetSettingsService,
-    StreetSettingsEffects
+    StreetSettingsEffects,
+    StreetSettingsActions
 } from '../../../common';
 
 /* tslint:disable */
@@ -82,6 +83,7 @@ describe('FamilyHeaderComponent', () => {
                             FamilyHeaderService,
                             BrowserDetectionService,
                             UtilsService,
+                            StreetSettingsActions,
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: LanguageService, useClass: MockLanguageService },
                             { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics }

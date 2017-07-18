@@ -94,8 +94,9 @@ export class StreetDrawService {
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
-    this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
-    this.width = (this.widthParsed !== this.width) ? this.widthParsed - 15 : this.widthParsed;
+    // this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
+    // this.width = (this.widthParsed !== this.width) ? this.widthParsed  : this.widthParsed;
+    this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
@@ -859,6 +860,7 @@ export class StreetDrawService {
     this.removeHouses('hover');
     this.removeHouses('chosen');
     this.removeSliders();
+
     this.drawHouses(places);
     this.drawHoverHouse(this.hoverPlace);
     this.drawLeftSlider(this.scale(this.lowIncome), true);

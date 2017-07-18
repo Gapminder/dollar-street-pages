@@ -26,6 +26,7 @@ import {
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../interfaces';
+import { AppActions } from '../../app/app.actions';
 
 @Component({
   selector: 'main-menu',
@@ -36,17 +37,12 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('socialShareContent')
   public socialShareContent: ElementRef;
 
-  @Input()
-  public hoverPlace: Observable<any>;
-
   public element: HTMLElement;
   public window: Window = window;
-  public isMatrixComponent: boolean;
+  public isMatrixPage: boolean;
   public isOpenMenu: boolean = false;
   public streetData: DrawDividersInterface;
   public router: Router;
-  public activatedRoute: ActivatedRoute;
-  public hoverPlaceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public localStorageService: LocalStorageService;
@@ -57,27 +53,24 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public socialShareContentElement: HTMLElement;
   public languageService: LanguageService;
   public shareTranslation: string;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public languages: any;
   public streetSettingsStateSubscription: Subscription;
 
   public constructor(router: Router,
                      element: ElementRef,
-                     activatedRoute: ActivatedRoute,
                      languageService: LanguageService,
                      localStorageService: LocalStorageService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     store: Store<AppStore>) {
+                     private store: Store<AppStore>,
+                     private appActions: AppActions) {
     this.element = element.nativeElement;
     this.router = router;
-    this.activatedRoute = activatedRoute;
     this.device = browserDetectionService;
     this.localStorageService = localStorageService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
-    this.store = store;
 
     this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
@@ -94,44 +87,12 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
 
-    let activatedRoutePath = this.activatedRoute.snapshot.url.shift();
-
-    if (activatedRoutePath) {
-      this.isMatrixComponent = activatedRoutePath.path === 'matrix';
-    } else {
-      this.routerEventsSubscribe = this.router
-        .events
-        .subscribe((event: any) => {
-          if (event instanceof NavigationEnd) {
-            let activePage: string = event
-              .urlAfterRedirects
-              .split('?')
-              .shift();
-
-            this.isMatrixComponent = activePage === '/matrix';
-          }
-        });
-    }
-
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
     });
 
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
-      .subscribe(() => {
-        if (this.isOpenMenu) {
-          this.isOpenMenu = false;
-        }
-      });
-
     this.languageService.languagesList.subscribe((data: any) => {
       this.languages = data;
-    });
-
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe(() => {
-      if (this.isOpenMenu) {
-        this.isOpenMenu = false;
-      }
     });
   }
 
@@ -154,10 +115,6 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnDestroy(): void {
     if (this.routerEventsSubscribe) {
       this.routerEventsSubscribe.unsubscribe();
-    }
-
-    if (this.hoverPlaceSubscribe) {
-      this.hoverPlaceSubscribe.unsubscribe();
     }
 
     if (this.getTranslationSubscribe) {
@@ -185,14 +142,14 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public goToPage(url: string, removeStorage?: boolean): void {
+  public goToPage(url: string): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
 
     switch (url) {
       case '/matrix':
-        this.goToMatrixPage(removeStorage);
+        this.goToMatrixPage();
         break;
 
       case '/about':
@@ -239,13 +196,21 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public goToMatrixPage(removeStorage?: boolean): void {
+  public openQuickGuide(): void {
+    this.localStorageService.removeItem('quick-guide');
+
+    document.body.scrollTop = 0;
+
+    this.isOpenMenu = false;
+
+    this.store.dispatch(this.appActions.openQuickGuide(true));
+
+    this.goToMatrixPage();
+  }
+
+  public goToMatrixPage(): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
-    }
-
-    if (removeStorage) {
-      this.localStorageService.removeItem('quick-guide');
     }
 
     let queryParams = {
@@ -263,18 +228,8 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       queryParams.zoom = 3;
     }
 
-    if (this.isMatrixComponent) {
-      // this.selectedFilter.emit({url: this.objToQuery(queryParams)});
-    } else {
-      this.router.navigate(['/matrix'], {queryParams: queryParams});
-    }
+    this.router.navigate(['/matrix'], {queryParams: queryParams});
 
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
-  }
-
-  public objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
   }
 }

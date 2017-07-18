@@ -32,7 +32,8 @@ import {
   LanguageService,
   UtilsService,
   UrlChangeService,
-  TitleHeaderService
+  TitleHeaderService,
+  ActiveThingService
 } from '../../common';
 
 @Component({
@@ -57,8 +58,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   @Input()
   public thing: string;
   @Input()
-  public hoverPlace: Observable<any>;
-  @Input()
   public currentPage: string;
 
   @Output()
@@ -74,25 +73,22 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public streetData: DrawDividersInterface;
   public activeThing: any;
   public window: Window = window;
-  public router: Router;
   public activatedRoute: ActivatedRoute;
-  public math: MathService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
   public isTablet: boolean;
-  public languageService: LanguageService;
   public getTranslationSubscription: Subscription;
   public resizeSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
   public scrollSubscription: Subscription;
   public getTranslationSubscribtion: Subscription;
-  public queryParamsSubscribe: Subscription;
+  public queryParamsSubscription: Subscription;
   public incomeTitleContainerElement: HTMLElement;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public appState: Observable<any>;
+  public thingsFilterState: Observable<any>;
   public languages: any;
   public byIncomeText: string;
   public urlParams: any;
@@ -106,38 +102,37 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isPhotographerPage: boolean;
   public isCountryPage: boolean;
   public isTeamPage: boolean;
-  public routerEventsSubscribe: Subscription;
+  public isArticlePage: boolean;
+  public routerEventsSubscription: Subscription;
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
   public languagesListSubscription: Subscription;
+  public isInit: boolean;
 
-  public constructor(router: Router,
-                     math: MathService,
-                     languageService: LanguageService,
+  public constructor(private router: Router,
+                     private math: MathService,
+                     private languageService: LanguageService,
                      activatedRoute: ActivatedRoute,
                      browserDetectionService: BrowserDetectionService,
                      element: ElementRef,
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      private changeDetectorRef: ChangeDetectorRef,
                      private thingsFilterActions: ThingsFilterActions,
                      private countriesFilterActions: CountriesFilterActions,
                      private appActions: AppActions,
                      private utilsService: UtilsService,
                      private urlChangeService: UrlChangeService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     store: Store<AppStore>,
+                     private store: Store<AppStore>,
                      private titleHeaderService: TitleHeaderService,
-                     private renderer: Renderer) {
-    this.router = router;
+                     private renderer: Renderer,
+                     private activeThingService: ActiveThingService) {
     this.activatedRoute = activatedRoute;
-    this.math = math;
     this.device = browserDetectionService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.languageService = languageService;
     this.element = element.nativeElement;
-    this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
     this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
+    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -179,7 +174,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
             streetContainerElement.style.position = 'fixed';
             streetContainerElement.style.top = headerContainerElement.clientHeight + 'px';
-            streetContainerElement.style.zIndex = '100';
+            streetContainerElement.style.zIndex = '998';
           }
 
           paddingPlaceElement.style.height = paddingHeight + 'px';
@@ -202,29 +197,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.calcIncomeSize();
   }
 
-  public applyStyles(): void {
-    let headerContainerElement = this.element.querySelector('.header-container') as HTMLElement;
-    let iconContainer = this.element.querySelector('.icon-container') as HTMLElement;
-
-    if (headerContainerElement) {
-      if (this.isAboutPage || this.isDonatePage || this.isMapPage) {
-        this.toggleStyleClass(headerContainerElement, 'bottom-yellow-border', true);
-      } else {
-        this.toggleStyleClass(headerContainerElement, 'bottom-yellow-border', false);
-      }
-    }
-  }
-
-  public toggleVisibility(el: HTMLElement, show: boolean): void {
-    if (show) {
-      el.classList.remove('hidden');
-      el.classList.add('visible');
-    } else {
-      el.classList.remove('visible');
-      el.classList.add('hidden');
-    }
-  }
-
   public toggleStyleClass(el: HTMLElement, cls: string, toggle: boolean): void {
     if (toggle) {
       if (!el.classList.contains(cls)) {
@@ -244,7 +216,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.byIncomeText = trans.BY_INCOME;
     });
 
-    this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
+    this.routerEventsSubscription = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.isMatrixPage = this.isCurrentPage('matrix');
         this.isMapPage = this.isCurrentPage('map');
@@ -255,6 +227,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         this.isPhotographersPage = this.isCurrentPage('photographers');
         this.isCountryPage = this.isCurrentPage('country');
         this.isTeamPage = this.isCurrentPage('team');
+        this.isArticlePage = this.isCurrentPage('article');
 
         this.changeDetectorRef.detectChanges();
 
@@ -262,11 +235,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
         this.interactiveIncomeText();
         this.calcIncomeSize();
-        this.applyStyles();
       }
     });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
+    this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe((params: any) => {
       this.urlParams = {
         thing: params.thing ? decodeURI(params.thing) : 'Families',
         countries: params.countries ? decodeURI(params.countries) : 'World',
@@ -277,9 +249,19 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         highIncome: parseInt(params.highIncome, 10)
       };
 
+      this.query = this.utilsService.objToQuery(this.urlParams);
+
+      if(!this.isInit) {
+        this.isInit = true;
+
+        this.store.dispatch(this.thingsFilterActions.getThingsFilter(this.query));
+        this.store.dispatch(this.countriesFilterActions.getCountriesFilter(this.query));
+
+        // this.store.dispatch(this.appActions.setQuery(this.query));
+      }
+
       this.interactiveIncomeText();
       this.calcIncomeSize();
-      this.applyStyles();
     });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
@@ -296,11 +278,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.languages = data;
     });
 
-    this.titleHeaderSubscribe = this.titleHeaderService
-      .getTitleEvent()
-      .subscribe((data: {title: string}) => {
-        this.rendererTitle(data.title);
-      });
+    this.titleHeaderSubscribe = this.titleHeaderService.getTitleEvent().subscribe((data: {title: string}) => {
+      this.rendererTitle(data.title);
+    });
   }
 
   public isCurrentPage(name: string): boolean {
@@ -328,8 +308,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.resizeSubscription.unsubscribe();
     }
 
-    if (this.queryParamsSubscribe) {
-      this.queryParamsSubscribe.unsubscribe();
+    if (this.queryParamsSubscription) {
+      this.queryParamsSubscription.unsubscribe();
     }
 
     if (this.titleHeaderSubscribe) {
@@ -351,20 +331,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     if (this.languagesListSubscription) {
       this.languagesListSubscription.unsubscribe();
     }
-  }
 
-  public ngOnChanges(changes: any): void {
-    if (
-      changes.query &&
-      typeof changes.query.previousValue === 'string' &&
-      typeof changes.query.currentValue === 'string'
-    ) {
-      let currentQuery = this.utilsService.parseUrl(changes.query.currentValue);
-      let previousQuery = this.utilsService.parseUrl(changes.query.previousValue);
-
-      if (currentQuery.place === previousQuery.place) {
-        return;
-      }
+    if (this.routerEventsSubscription) {
+      this.routerEventsSubscription.unsubscribe();
     }
   }
 

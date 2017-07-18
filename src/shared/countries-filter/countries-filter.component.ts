@@ -41,7 +41,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public countriesMobileContainer: ElementRef;
 
   @Input()
-  public url: string;
+  public query: string;
 
   @Output()
   public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
@@ -78,7 +78,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public isDesktop: boolean;
   public isTablet: boolean;
   public isMobile: boolean;
-  public store: Store<AppStore>;
   public countriesFilterState: Observable<any>;
   public isInit: boolean;
   public countriesFilterStateSubscription: Subscription;
@@ -88,7 +87,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStore>,
+                     private store: Store<AppStore>,
                      private countriesFilterActions: CountriesFilterActions) {
     this.languageService = languageService;
     this.device = browserDetectionService;
@@ -96,8 +95,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.element = element.nativeElement;
     this.zone = zone;
-
-    this.store = store;
 
     this.countriesFilterState = this.store.select((dataSet: AppStore) => dataSet.countriesFilter);
   }
@@ -127,7 +124,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
         this.isFilterGotData.emit('isCountryFilterReady');
 
-        this.setTitle(this.url);
+        this.setTitle(this.query);
       }
     });
 
@@ -143,7 +140,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.isOpenMobileFilterView();
 
           this.calcSliceCount();
-          this.setTitle(this.url);
+          this.setTitle(this.query);
         });
       });
 
@@ -152,7 +149,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe(() => {
         this.zone.run(() => {
           this.calcSliceCount();
-          this.setTitle(this.url);
+          this.setTitle(this.query);
         });
       });
   }
@@ -248,6 +245,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       }, 0);
       return;
     }
+
     this.regionsVisibility = true;
   }
 
@@ -387,7 +385,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToLocation(): void {
-    let query = this.utilsService.parseUrl(this.url);
+    let query = this.utilsService.parseUrl(this.query);
 
     this.search = '';
     this.regionsVisibility = true;

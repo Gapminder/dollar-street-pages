@@ -41,7 +41,6 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public streetData: DrawDividersInterface;
   public languageService: LanguageService;
   public device: BrowserDetectionService;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
 
@@ -49,13 +48,12 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
                      math: MathService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
-                     store: Store<AppStore>) {
+                     private store: Store<AppStore>) {
     this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
     this.isShowInfo = false;
     this.languageService = languageService;
-    this.store = store;
 
     this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }

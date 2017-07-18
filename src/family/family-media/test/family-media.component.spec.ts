@@ -2,18 +2,13 @@ import {
     ComponentFixture,
     TestBed
 } from '@angular/core/testing';
-
 import { By }              from '@angular/platform-browser';
 import { DebugElement, Component }    from '@angular/core';
-
+import { ActivatedRoute } from '@angular/router';
 import { SpyLocation } from '@angular/common/testing';
-
 import { Location } from '@angular/common';
-
 import { Observable } from 'rxjs/Observable';
-
 import { FamilyModule } from '../../family.module';
-
 import {
     UrlChangeService,
     LanguageService,

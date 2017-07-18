@@ -6,8 +6,6 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { HeaderService } from './header/header.service';
 
-import { HeaderWithoutFiltersComponent } from './header-without-filters/header-without-filters.component';
-
 import { MainMenuComponent } from './main-menu/main-menu.component';
 
 import { SocialShareButtonsService } from './social-share-buttons/social-share-buttons.service';
@@ -70,7 +68,6 @@ import { Angulartics2Module } from 'angulartics2';
 @NgModule({
   declarations: [
     LanguageSelectorComponent,
-    HeaderWithoutFiltersComponent,
     MainMenuComponent,
     SocialShareButtonsComponent,
     FooterComponent,
@@ -121,7 +118,6 @@ import { Angulartics2Module } from 'angulartics2';
     Angulartics2Module,
     TranslateModule,
     LanguageSelectorComponent,
-    HeaderWithoutFiltersComponent,
     FooterComponent,
     RegionMapComponent,
     FloatFooterComponent,

@@ -52,7 +52,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public math: MathService;
   public countryName: any;
   public isOpenArticle: boolean = false;
-  public familyShortInfoPosition: number = -88;
   public isShowAboutData: boolean = false;
   public isShowAboutDataFullScreen: boolean = false;
   public aboutDataPosition: {left?: number;top?: number;} = {};
@@ -60,13 +59,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public maxHeightPopUp: number = this.windowHeight * .95 - 91;
   public familyHeaderService: FamilyHeaderService;
   public familyHeaderServiceSubscribe: Subscription;
-  public scrollSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public zone: NgZone;
   public element: HTMLElement;
-  public headerElement: HTMLElement;
-  public headerHeight: number;
-  public headerContentHeight: number;
   public streetData: DrawDividersInterface;
   public streetSettingsServiceSubscribe: Subscription;
   public device: BrowserDetectionService;
@@ -78,7 +73,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public utilsService: UtilsService;
   public currentLanguage: string;
   public showTranslateMe: boolean;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
 
@@ -89,7 +83,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStore>) {
+                     private store: Store<AppStore>) {
     this.zone = zone;
     this.math = math;
     this.element = element.nativeElement;
@@ -97,7 +91,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.device = browserDetectionService;
     this.languageService = languageService;
     this.utilsService = utilsService;
-    this.store = store;
 
     this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
   }
@@ -109,9 +102,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
     this.currentLanguage = this.languageService.currentLanguage;
 
-    this.headerElement = document.querySelector('.header-container') as HTMLElement;
-    this.headerContentHeight = this.element.offsetHeight;
-
     this.getTranslationSubscribe = this.languageService.getTranslation(['READ_MORE', 'READ_LESS']).subscribe((trans: any) => {
       this.readMoreTranslate = trans.READ_MORE;
       this.readLessTranslate = trans.READ_LESS;
@@ -121,51 +111,24 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.streetData = data;
     });
 
-    this.familyHeaderServiceSubscribe = this.familyHeaderService
-      .getFamilyHeaderData(`placeId=${this.placeId}${this.languageService.getLanguageParam()}`)
-      .subscribe((res: any): any => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+    let query: string = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
 
-        this.home = res.data;
-        this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
-        this.mapData = this.home.country;
+    this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
+      if (res.err) {
+        console.error(res.err);
+        return;
+      }
 
-        if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
-          this.showTranslateMe = true;
-        }
+      this.home = res.data;
+      this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
+      this.mapData = this.home.country;
 
-        this.truncCountryName(this.home.country);
-      });
+      if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
+        this.showTranslateMe = true;
+      }
 
-    this.scrollSubscribe = fromEvent(document, 'scroll')
-      .subscribe(() => {
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-
-        if (this.headerHeight !== this.headerElement.offsetHeight) {
-          this.headerHeight = this.headerElement.offsetHeight;
-        }
-
-        this.zone.run(() => {
-          if (scrollTop > this.element.offsetHeight - this.headerHeight && this.familyShortInfoPosition !== this.headerHeight) {
-            this.familyShortInfoPosition = this.headerHeight;
-
-            if (this.isMobile) {
-              this.headerElement.classList.add('sub-panel-shown');
-            }
-          }
-
-          if (scrollTop < this.element.offsetHeight - this.headerHeight && this.familyShortInfoPosition !== -this.headerHeight) {
-            this.familyShortInfoPosition = -this.headerHeight;
-
-            if (this.isMobile) {
-              this.headerElement.classList.remove('sub-panel-shown');
-            }
-          }
-        });
-      });
+      this.truncCountryName(this.home.country);
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
@@ -173,8 +136,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.zone.run(() => {
           this.windowHeight = window.innerHeight;
           this.maxHeightPopUp = this.windowHeight * .95 - 91;
-          this.headerHeight = this.headerElement.offsetHeight;
-          this.headerContentHeight = this.element.offsetHeight;
         });
       });
   }
@@ -190,10 +151,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
-    }
-
-    if (this.scrollSubscribe) {
-      this.scrollSubscribe.unsubscribe();
     }
 
     if (this.streetSettingsStateSubscription) {

@@ -1,8 +1,13 @@
-<div class="header-container">
+<div class="header-container"
+     [ngClass]="{'bottom-yellow-border': isAboutPage || isDonatePage ||
+                  isMapPage || isArticlePage || isCountryPage||
+                  isPhotographersPage || isPhotographerPage || isTeamPage}">
   <div class="container header-content"
-      [ngClass]="{'small-container': isMapPage || isAboutPage || isDonatePage || isCountryPage}">
+      [ngClass]="{'small-container': isMapPage || isAboutPage || isTeamPage ||
+                   isDonatePage || isCountryPage || isArticlePage ||
+                   isPhotographersPage || isPhotographerPage}">
     <div *ngIf="(isMatrixPage && !isMobile ) ||
-                isAboutPage || isDonatePage ||
+                isAboutPage || isDonatePage || isArticlePage ||
                 isPhotographersPage || isPhotographerPage ||
                 isCountryPage || isTeamPage ||
                 (isFamilyPage && (isDesktop || isTablet)) ||
@@ -15,9 +20,9 @@
       <div *ngIf="isMatrixPage || isMapPage"
           class="filters-container"
           [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
-        <things-filter [url]="query"
-                      (isFilterGotData)="isFilterGotData($event)"
-                      (selectedFilter)="thingSelected($event)">
+        <things-filter [query]="query"
+                       (isFilterGotData)="isFilterGotData($event)"
+                       (selectedFilter)="thingSelected($event)">
         </things-filter>
 
         <span *ngIf="isMapPage"
@@ -26,7 +31,7 @@
         <div *ngIf="isMatrixPage"
             class="some-filter-container incomeby">
           <span class="mobile-ver">{{ 'IN' | translate }}</span>
-          <countries-filter [url]="query"
+          <countries-filter [query]="query"
                             (isFilterGotData)="isFilterGotData($event)"
                             (selectedFilter)="countrySelected($event)">
           </countries-filter>
@@ -50,7 +55,7 @@
         </p>
       </div>
 
-      <div *ngIf="isAboutPage || isDonatePage || isPhotographersPage || isPhotographerPage || isCountryPage || isTeamPage"
+      <div *ngIf="isAboutPage || isDonatePage || isPhotographersPage || isPhotographerPage || isCountryPage || isTeamPage || isArticlePage"
           class="without-filters-header">
         <h2 #headerTitle
             class="heading pull-left"></h2>
@@ -58,9 +63,7 @@
     </div>
 
     <div class="menu-container pull-right">
-      <main-menu class="pull-right"
-                 [hoverPlace]="hoverPlace">
-      </main-menu>
+      <main-menu class="pull-right"></main-menu>
 
       <span class="language-selector-header">
         <language-selector [languages]="languages"></language-selector>

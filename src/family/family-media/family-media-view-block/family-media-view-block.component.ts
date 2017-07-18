@@ -2,6 +2,7 @@ import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { environment } from '../../../environments/environment';
 import {
   Component,
   Input,
@@ -30,7 +31,6 @@ import { ImageResolutionInterface } from '../../../interfaces';
   templateUrl: './family-media-view-block.component.html',
   styleUrls: ['./family-media-view-block.component.css', './family-media-view-block.component.mobile.css']
 })
-
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('homeDescriptionContainer')
   public homeDescriptionContainer: ElementRef;
@@ -65,6 +65,10 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public streetSettingsState: Observable<DrawDividersInterface>;
   public viewImage: string;
   public streetSettingsStateSubscription: Subscription;
+  public consumerApi: string;
+  public showInCountry: any;
+  public showInRegion: any;
+  public showInTheWorld: any;
 
   public constructor(zone: NgZone,
                      browserDetectionService: BrowserDetectionService,
@@ -80,6 +84,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     this.utilsService = utilsService;
     this.element = elementRef.nativeElement;
     this.store = store;
+    this.consumerApi = environment.consumerApi;
 
     this.isDesktop = this.device.isDesktop();
 
@@ -132,8 +137,10 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
         this.viewBlockServiceSubscribe.unsubscribe();
       }
 
+      let query: string = `placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`;
+
       this.viewBlockServiceSubscribe = this.viewBlockService
-        .getData(`placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`)
+        .getData(query)
         .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);
@@ -143,6 +150,39 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.country = res.data.country;
           this.article = res.data.article;
           this.thing = res.data.thing;
+
+          this.showInCountry = {
+            thing: this.thing.originPlural,
+            countries: this.country.originName,
+            regions: 'World',
+            zoom: '4',
+            row: '1',
+            lowIncome: this.streetData.poor,
+            highIncome: this.streetData.rich,
+            lang: this.languageService.currentLanguage
+          };
+
+          this.showInRegion = {
+            thing: this.thing.originPlural,
+            countries: this.country.countriesName.join(','),
+            regions: this.country.originRegionName,
+            zoom: '4',
+            row: '1',
+            lowIncome: this.streetData.poor,
+            highIncome: this.streetData.rich,
+            lang: this.languageService.currentLanguage
+          };
+
+          this.showInTheWorld = {
+            thing: this.thing.originPlural,
+            countries: 'World',
+            regions: 'World',
+            zoom: '4',
+            row: '1',
+            lowIncome: this.streetData.poor,
+            highIncome: this.streetData.rich,
+            lang: this.languageService.currentLanguage
+          };
 
           this.truncCountryName(this.country);
 

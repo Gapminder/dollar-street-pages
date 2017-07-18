@@ -32,7 +32,7 @@ import { KeyCodes } from '../../enums';
   templateUrl: './things-filter.component.html',
   styleUrls: ['./things-filter.component.css', './things-filter.component.mobile.css']
 })
-export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
+export class ThingsFilterComponent implements OnInit, OnDestroy {
   @ViewChild('tabsHeaderContainer')
   public tabsHeaderContainer: ElementRef;
   @ViewChild('tabsContentContainer')
@@ -43,7 +43,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Output()
   public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
   @Input()
-  public url: string;
+  public query: string;
   @Output()
   public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
@@ -67,7 +67,6 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   public activatedRoute: ActivatedRoute;
   public element: HTMLElement;
   public activeThingService: ActiveThingService;
-  public store: Store<AppStore>;
   public thingsFilterState: Observable<any>;
   public isInit: boolean;
   public thingsFilterStateSubscribtion: Subscription;
@@ -79,7 +78,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      activeThingService: ActiveThingService,
                      utilsService: UtilsService,
-                     store: Store<AppStore>,
+                     private store: Store<AppStore>,
                      private thingsFilterActions: ThingsFilterActions) {
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
@@ -88,8 +87,6 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.activeThingService = activeThingService;
     this.utilsService = utilsService;
-
-    this.store = store;
 
     this.thingsFilterState = this.store.select((dataSet: AppStore) => dataSet.thingsFilter);
   }
@@ -164,7 +161,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    let query: any = this.utilsService.parseUrl(this.url);
+    let query: any = this.utilsService.parseUrl(this.query);
     query.thing = thing.originPlural;
 
     const newUrl: string = this.utilsService.objToQuery(query);
@@ -230,16 +227,6 @@ export class ThingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.thingsFilterStateSubscribtion) {
       this.thingsFilterStateSubscribtion.unsubscribe();
-    }
-  }
-
-  public ngOnChanges(changes: any): void {
-    if (changes.url && changes.url.currentValue) {
-      if(!this.isInit) {
-        this.isInit = true;
-
-        this.store.dispatch(this.thingsFilterActions.getThingsFilter(changes.url.currentValue));
-      }
     }
   }
 

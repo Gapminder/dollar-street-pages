@@ -4,8 +4,8 @@
 }
 
 #article-content {
-  padding-top: 125px;
-  margin: 0 auto 100px;
+  padding-top: 40px;
+  margin: 0 auto;
 }
 
 #article-content >>> h1:first-child,
@@ -75,8 +75,7 @@
 
 @media (max-width: 1023px) {
   #article-content {
-    padding-top: 87px;
-    margin-bottom: 30px;
+
   }
 }
 

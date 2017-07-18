@@ -14,12 +14,6 @@ export interface UrlParamsInterface {
   highIncome?: number;
 }
 
-export interface AppState {
-    query: string;
-    thing: any;
-    hoverPlace: any;
-}
-
 export interface AppStore {
     app: any;
     matrix: any;

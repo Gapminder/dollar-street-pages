@@ -10,7 +10,9 @@ import {
     StreetSettingsService,
     BrowserDetectionService,
     Angulartics2GoogleAnalytics,
-    StreetSettingsEffects
+    StreetSettingsEffects,
+    StreetSettingsActions,
+    ActiveThingService
 } from '../../common';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
@@ -19,7 +21,7 @@ import { MapComponent } from '../map.component';
 import { MapService } from '../map.service';
 import { mockMapData } from './mock.data';
 
-describe('', () => {
+describe('MapComponent', () => {
     let componentInstance: MapComponent;
     let componentFixture: ComponentFixture<MapComponent>;
 
@@ -103,6 +105,8 @@ describe('', () => {
                             MathService,
                             UrlChangeService,
                             BrowserDetectionService,
+                            StreetSettingsActions,
+                            ActiveThingService,
                             { provide: StreetSettingsService, useClass: MockStreetSettingsService },
                             { provide: LoaderService, useClass: MockLoaderService },
                             { provide: MapService, useClass: MockMapService },
