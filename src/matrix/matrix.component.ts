@@ -182,6 +182,7 @@ export class MatrixComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.matrixHeaderElement = this.matrixHeader.nativeElement;
     this.streetContainerElement = this.streetContainer.nativeElement;
     this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
+    this.headerComponentElement = this.headerComponent.element;
 
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;

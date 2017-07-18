@@ -251,6 +251,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
 
       this.street.set('lowIncome', parseUrl.lowIncome);
       this.street.set('highIncome', parseUrl.highIncome);
+
       this.thingname = parseUrl.thing;
       this.countries = parseUrl.countries;
       this.regions = parseUrl.regions;

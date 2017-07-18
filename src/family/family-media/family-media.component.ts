@@ -191,7 +191,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewChecked, AfterV
             this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
 
             const row: number = Math.ceil((this.indexViewBoxImage + 1) / this.zoom);
-
             this.zone.run(() => this.goToRow(row));
           }
         });

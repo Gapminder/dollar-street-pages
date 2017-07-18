@@ -56,7 +56,8 @@ matrix-images {
 .street-and-title-container,
 .street-container .street-content,
 .street-container {
-  /*position: relative;*/
+  position: relative;
+  width: 100%;
 }
 
 .street-container {
@@ -101,7 +102,7 @@ matrix-images {
   color: #767d86;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 700px) {
   .street-container.fixed {
     position: fixed;
     z-index: 10;

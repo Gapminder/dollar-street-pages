@@ -179,7 +179,6 @@ family-header .header-content {
 .filters-container {
   float: left;
   margin-top: 11px;
-  width: calc(100% - 305px);
 }
 
 .filters-container things-filter,
@@ -251,10 +250,6 @@ family-header .header-content {
     margin-bottom: 5px;
   }
 
-  .filters-container {
-    width: calc(100% - 250px);
-  }
-
   .header-content .icon-container img {
     width: 42px;
     height: 42px;
@@ -274,10 +269,6 @@ family-header .header-content {
 }
 
 @media (max-width: 920px) {
-  .filters-container {
-    width: calc(100% - 210px);
-  }
-
   .filters-container .some-filter-container > span,
   .filters-container > span {
     margin: 0 2px;
@@ -305,18 +296,18 @@ family-header .header-content {
     display: none;
   }
 
+  .filters-container {
+    float: left;
+    margin-top: 11px;
+    width: calc(100% - 47px);
+  }
+
   .filters-container .map-things-text {
     display: none;
   }
 
   .filters-container .some-filter-container > span {
     margin: 0;
-  }
-
-  .filters-container {
-    float: left;
-    margin-top: 11px;
-    width: calc(100% - 47px);
   }
 
   .filters-container things-filter {
