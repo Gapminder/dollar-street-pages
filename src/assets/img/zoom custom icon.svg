@@ -1,0 +1,25 @@
+<svg id="zoom_custom_icon" data-name="zoom custom icon" xmlns="http://www.w3.org/2000/svg" width="62" height="62"
+     viewBox="0 0 62 62">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: none;
+      stroke: #fff;
+      stroke-linejoin: round;
+      stroke-width: 6px;
+      }
+
+      .cls-2 {
+      fill: #fff;
+      fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <circle class="cls-1" cx="28" cy="28" r="25"/>
+  <path id="Rounded_Rectangle_4" data-name="Rounded Rectangle 4" class="cls-2"
+        d="M706.807,2011.81a2.963,2.963,0,0,1,4.181.17l13.047,13.05a2.845,2.845,0,1,1-4.011,4.01l-13.048-13.05A2.963,2.963,0,0,1,706.807,2011.81Z"
+        transform="translate(-663 -1968)"/>
+  <path id="_" data-name="+" class="cls-2"
+        d="M683.992,1998.07h5.227v5.14a1.818,1.818,0,0,0,.546,1.32,1.813,1.813,0,0,0,2.6,0,1.815,1.815,0,0,0,.547-1.32v-5.14h5.227a1.714,1.714,0,0,0,1.264-.53,1.7,1.7,0,0,0,.536-1.25,1.838,1.838,0,0,0-1.8-1.8h-5.227v-5.19a1.815,1.815,0,0,0-.547-1.32,1.813,1.813,0,0,0-2.6,0,1.818,1.818,0,0,0-.546,1.32v5.19h-5.227a1.838,1.838,0,0,0-1.8,1.8,1.693,1.693,0,0,0,.536,1.25,1.713,1.713,0,0,0,1.264.53h0Z"
+        transform="translate(-663 -1968)"/>
+</svg>

@@ -1,0 +1,72 @@
+.lang-container {
+  display: inline-block;
+  float: right;
+  line-height: 14px;
+  font-size: 14px;
+  margin: 17px 4px;
+}
+
+.lang-container .active-languages {
+  display: inline-block;
+}
+
+.lang-outside {
+  cursor: pointer;
+  display: inline-block;
+  padding-right: 5px;
+  border-right: 2px solid #e4e7ea;
+  color: #767d86;
+}
+
+.without-border {
+  border: 0;
+}
+
+.lang-outside:hover, .lang-selected, .lang-selector.lang-selected {
+  color: #364551;
+}
+
+.lang-selected, .lang-selector.lang-selected {
+  cursor: default;
+}
+
+.lang-selector {
+  width: 100%;
+  cursor: pointer;
+  display: block;
+  color: #767d86;
+  padding-left: 5px;
+}
+
+.lang-selector:hover {
+  background-color: #f4f5f5;
+}
+
+.lang-container button {
+  padding: 0;
+  background-color: white;
+  box-shadow: none;
+}
+
+.caret {
+  color: #767d86;
+  border-top: 9px dashed;
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+  margin-bottom: 5px;
+}
+
+.btn-group .dropdown-menu {
+  left: auto;
+  right: 0;
+  border-radius: 0;
+  padding: 0;
+  border: 1px solid #e4e6e7;
+  box-shadow: 0 0 20px rgba(54, 69, 81, 0.1);
+}
+
+.dropdown-languages {
+  width: 100%;
+  line-height: 24px;
+  font-size: 14px;
+}

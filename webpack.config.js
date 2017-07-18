@@ -1,22 +1,21 @@
 /*eslint no-process-env:0, camelcase:0*/
 'use strict';
+const helpers = require('./helpers');
 
 const path = require('path');
 const webpack = require('webpack');
 
 const CompressionPlugin = require('compression-webpack-plugin');
-//const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const isProduction = (process.env.NODE_ENV || 'development') === 'production';
-const devtool = process.env.NODE_ENV !== 'test' ? 'source-map' : 'inline-source-map';
+const basePath = 'dollar-street';
+// const devtool = isProduction ? 'inline-source-map' : 'source-map';
 const dest = 'dist';
 const absDest = root(dest);
 
 const config = {
-  devtool: devtool,
   debug: false,
-
   verbose: true,
   displayErrorDetails: true,
   context: __dirname,
@@ -32,34 +31,19 @@ const config = {
   },
 
   entry: {
-    angular2: [
-      // Angular 2 Deps
-      'zone.js/dist/zone-microtask',
-      'reflect-metadata',
-      'rxjs',
-      'angular2/platform/browser',
-      'angular2/common',
-      'angular2/core'
-    ],
-    app: 'app'
+    polyfills: './app/polyfills.ts',
+    vendor: './app/vendor.ts',
+    app: './app/boot.ts'
   },
 
   output: {
     path: absDest,
-    filename: '[name].js',
-    sourceMapFilename: '[name].js.map',
-    chunkFilename: '[id].chunk.js'
+    filename: `${basePath}/[name].[hash].js`,
+    sourceMapFilename: `${basePath}/[name].[hash].js.map`,
+    chunkFilename: `${basePath}/[id].[hash].chunk.js`,
+    publicPath: '/'
   },
 
-  // our Development Server configs
-  /*devServer: {
-   inline: true,
-   colors: true,
-   historyApiFallback: true,
-   contentBase: dest,
-   //publicPath: dest,
-   watchOptions: {aggregateTimeout: 300, poll: 1000}
-   },*/
   module: {
     loaders: [
       // support markdown
@@ -92,18 +76,28 @@ const config = {
 
   plugins: [
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'angular2',
-      minChunks: Infinity,
-      filename: 'angular2.js'
-    }),
+    new webpack.optimize.OccurrenceOrderPlugin(true),
+    new webpack.optimize.CommonsChunkPlugin({name: helpers.reverse(['polyfills', 'vendor'])}),
     // static assets
     //new CopyWebpackPlugin([{from: 'demo/favicon.ico', to: 'favicon.ico'}]),
-    //new CopyWebpackPlugin([{from: 'demo/assets', to: 'assets'}]),
+    new CopyWebpackPlugin([{from: 'app/assets', to: 'assets'}]),
     // generating html
-    new HtmlWebpackPlugin({template: 'app/index.html'})
-  ]
+    new HtmlWebpackPlugin({
+      template: 'app/index.html',
+      chunksSortMode: helpers.packageSort(['polyfills', 'vendor', 'app'])
+    }),
+    new webpack.DefinePlugin({ENV: JSON.stringify(process.env.NODE_ENV || 'development')})
+  ],
+  devServer: {
+    contentBase: path.join(`${dest}/${basePath}`),
+    publicPath: '/',
+    noInfo: true,
+    hot: true,
+    inline: true,
+    host: '0.0.0.0',
+    historyApiFallback: true,
+    devtool: 'eval'
+  }
 };
 
 function pushPlugins(conf) {
@@ -111,20 +105,12 @@ function pushPlugins(conf) {
     return;
   }
 
-  conf.plugins.push.apply(conf.plugins, [
-    //production only
+  conf.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       mangle: false,
       comments: false,
-      compress: {
-        screw_ie8: true
-        //warnings: false,
-        //drop_debugger: false
-      }
-      //verbose: true,
-      //beautify: false,
-      //quote_style: 3
+      compress: {screw_ie8: true}
     }),
     new CompressionPlugin({
       asset: '{file}.gz',
@@ -133,13 +119,13 @@ function pushPlugins(conf) {
       threshold: 10240,
       minRatio: 0.8
     })
-  ]);
+  );
 }
 
 pushPlugins(config);
 
 module.exports = config;
 
-function root(p) {
-  return path.join(__dirname, p);
+function root(location) {
+  return path.join(__dirname, location);
 }

@@ -1,0 +1,24 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+     viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: #fff;
+      stroke: #119ab7;
+      stroke-linejoin: round;
+      stroke-width: 2px;
+      filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="1" y="1" width="22" height="22" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#15b0d1"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g style="fill: #fff; filter: url(#filter)">
+    <circle id="africa-marker" class="cls-1" cx="12" cy="12" r="11"
+            style="stroke: inherit; filter: none; fill: inherit"/>
+  </g>
+  <use xlink:href="#africa-marker" style="stroke: #119ab7; filter: none; fill: none"/>
+</svg>

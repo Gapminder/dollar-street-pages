@@ -1,0 +1,191 @@
+<div *ngIf="photographer" id="item-profile">
+  <div class="item-profile-header">
+    <div class="box-container">
+      <img *ngIf="photographer?.avatar" [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
+      <div class="country" *ngIf="photographer?.country?.country">
+        <img src="/assets/img/white-marker.svg" alt=""> {{photographer.country.alias || photographer.country.country}}
+      </div>
+    </div>
+
+    <p class="description" *ngIf="photographer?.description">{{photographer.description}}</p>
+  </div>
+
+  <div class="main">
+    <p class="home">
+      <img src="/assets/img/house-icon.png" alt="">
+      <span class="total-text">{{ 'VISITED_FAMILIES' | translate }}:</span>
+      <span class="total-count">{{math.round(photographer.placesCount)}}</span>
+    </p>
+
+    <p class="photo">
+      <img src="/assets/img/camera.svg" alt="">
+      <span class="total-text">{{ 'TOTAL_PHOTOS' | translate }}:</span>
+      <span class="total-count">{{math.round(photographer.imagesCount)}}</span>
+    </p>
+
+    <p class="camera" *ngIf="photographer?.video">
+      <img src="/assets/img/video-camera.svg" alt="">
+      <span class="total-text">{{ 'TOTAL_VIDEOS' | translate }}:</span>
+      <span class="total-count">{{math.round(photographer.video)}}</span>
+    </p>
+  </div>
+
+  <div class="footer-profile organisation"
+       *ngIf="photographer?.company?.name">
+    <h3>{{ 'ORGANIZATION' | translate }}</h3>
+
+    <p *ngIf="photographer?.company?.link"><a
+      [href]="photographer.company.link"
+      target="_blank"
+      angulartics2On="click"
+      angularticsEvent=" Moved to {{photographer.firstName}} {{photographer.lastName}} private link">{{photographer.company.name}}</a>
+    </p>
+
+    <p *ngIf="!photographer?.company?.link"> {{photographer.company.name}}</p>
+  </div>
+
+  <p class="photographer-link"
+     *ngIf="photographer?.company?.link"><a
+    [href]="photographer.company.link"
+    target="_blank">{{photographer.company.link}}</a></p>
+
+  <div class="footer-profile"
+       *ngIf="photographer?.google || photographer?.facebook || photographer?.twitter || photographer?.linkedIn">
+    <div class="social-network-container">
+      <a *ngIf="photographer?.google"
+         [href]="photographer.google"
+         target="_blank"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Google+ account">
+        <img src="/assets/img/g+-dark.svg" alt="">
+      </a>
+      <a *ngIf="photographer?.facebook"
+         [href]="photographer.facebook"
+         target="_blank"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Facebook account">
+        <img src="/assets/img/f-dark.svg" alt="">
+      </a>
+      <a *ngIf="photographer?.twitter"
+         [href]="photographer.twitter"
+         target="_blank"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}} Twitter account">
+        <img src="/assets/img/tw-dark.svg" alt="">
+      </a>
+      <a *ngIf="photographer?.linkedIn"
+         [href]="photographer.linkedIn"
+         target="_blank"
+         angulartics2On="click"
+         angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Linkedin account">
+        <img src="/assets/img/in-dark.svg" alt="">
+      </a>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="photographer" id="item-profile-mobile" [ngClass]="{'open': isShowInfo}">
+  <div class="box-container">
+    <div class="box-image-container">
+      <img *ngIf="photographer?.avatar" [src]="photographer.avatar || '/assets/img/empty-photographer.jpg'" alt="avatar">
+      <div class="country" *ngIf="photographer?.country?.country">
+        <img src="/assets/img/white-marker.svg" alt=""> {{photographer.country.alias || photographer.country.country}}
+      </div>
+    </div>
+  </div>
+
+  <div class="item-description">
+    <div class="item-description-header">
+      <div class="home">
+        <img src="/assets/img/house-icon.png" alt="">
+        <span class="total-text">{{ 'VISITED_FAMILIES' | translate }}:</span>
+        <span class="total-count">{{math.round(photographer.placesCount) || 0}}</span>
+      </div>
+
+      <div class="photo">
+        <img src="/assets/img/camera.svg" alt="">
+        <span class="total-text">{{ 'TOTAL_PHOTOS' | translate }}:</span>
+        <span class="total-count">{{math.round(photographer.imagesCount) || 0}}</span>
+      </div>
+
+      <div class="camera" *ngIf="photographer?.video">
+        <img src="/assets/img/video-camera.svg" alt="">
+        <span class="total-text">{{ 'TOTAL_VIDEOS' | translate }}:</span>
+        <span class="total-count">{{math.round(photographer.video) || 0}}</span>
+      </div>
+
+      <div class="more-info" *ngIf="isShowInfoMore(photographer)">
+        <p (click)="isShowInfo = !isShowInfo">
+          <img src="/assets/img/read-more-icon.svg" alt="">
+          <span>{{!isShowInfo ? showDetailsTranslate : hideDetailsTranslate}}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="item-description-footer"
+         *ngIf="isShowInfoMore(photographer)">
+      <div class="company-description line-clamp"
+           [ngClass]="{'line-clamp-3': !isShowInfo}"
+           *ngIf="photographer?.description">{{photographer.description}}
+      </div>
+
+      <div class="more-info">
+        <p (click)="isShowInfo = !isShowInfo">
+          <img src="/assets/img/read-more-icon.svg" alt="">
+          <span>{{!isShowInfo ? showDetailsTranslate : hideDetailsTranslate}}</span>
+        </p>
+      </div>
+
+      <div class="company-container">
+        <div class="company-name" *ngIf="photographer?.company?.name">
+          <h3>Organization</h3>
+          <p>{{photographer.company.name}}</p>
+        </div>
+
+        <div class="company-link">
+          <div class="social-network-container"
+               *ngIf="photographer?.google || photographer?.facebook || photographer?.twitter || photographer?.linkedIn">
+            <a *ngIf="photographer?.google"
+               [href]="photographer.google"
+               target="_blank"
+               angulartics2On="click"
+               angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Google+ account by mobile">
+              <img src="/assets/img/g+-dark.svg" alt="">
+            </a>
+
+            <a *ngIf="photographer?.facebook"
+               [href]="photographer.facebook"
+               target="_blank"
+               angulartics2On="click"
+               angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Facebook account by mobile">
+              <img src="/assets/img/f-dark.svg" alt="">
+            </a>
+
+            <a *ngIf="photographer?.twitter"
+               [href]="photographer.twitter"
+               target="_blank"
+               angulartics2On="click"
+               angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}} Twitter account by mobile">
+              <img src="/assets/img/tw-dark.svg" alt="">
+            </a>
+
+            <a *ngIf="photographer?.linkedIn"
+               [href]="photographer.linkedIn"
+               target="_blank"
+               angulartics2On="click"
+               angularticsEvent="Moved to {{photographer.firstName}} {{photographer.lastName}}  Linkedin account by mobile">
+              <img src="/assets/img/in-dark.svg" alt="">
+            </a>
+          </div>
+
+          <p *ngIf="photographer?.company?.link"><a
+            [href]="photographer.company.link"
+            target="_blank"
+            angulartics2On="click"
+            angularticsEvent=" Moved to {{photographer.firstName}} {{photographer.lastName}} private link by mobile">{{photographer.company.link}}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+{
+  "project": {
+    "name": "dollarstreet"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist/dollar-street",
+      "assets": ["assets"],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "prefix": "",
+      "mobile": false,
+      "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "addons": [],
+  "packages": [],
+  "e2e": {
+    "protractor": { "config": "./.config/protractor.conf.js" }
+  },
+  "lint": [
+    { "project": "src/tsconfig.app.json" },
+    { "project": "src/tsconfig.spec.json" },
+    { "project": "e2e/tsconfig.e2e.json" }
+  ],
+  "test": {
+    "karma": { "config": "./karma.conf.js" }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "prefixInterfaces": false
+  }
+}
