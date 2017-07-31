@@ -14,7 +14,7 @@ export class CountriesFilterService {
     this.http = http;
   }
 
-  public getCountries(query: string): Observable<any> {console.log('COUNTIES FILTER CALL');
+  public getCountries(query: string): Observable<any> {
     return this.http
       .get(`${environment.consumerApi}/v1/countries-filter?${query}`)
       .map((res: any) => {

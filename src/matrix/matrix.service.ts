@@ -11,7 +11,7 @@ export class MatrixService {
     this.http = http;
   }
 
-  public getMatrixImages(query: string): Observable<any> {console.log('MATRIX CALLED');
+  public getMatrixImages(query: string): Observable<any> {
     return this.http.get(`${environment.consumerApi}/v1/things?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
