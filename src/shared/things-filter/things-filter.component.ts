@@ -135,7 +135,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   public openThingsFilter(isOpenThingsFilter: boolean): void {
     this.isOpenThingsFilter = !isOpenThingsFilter;
 
+    let thingsContentElement: HTMLElement = this.element.querySelector('.other-things-content') as HTMLElement;
+
     this.search = {text: ''};
+
     if (this.isOpenThingsFilter && !this.isDesktop) {
       this.things = this.relatedThings;
       this.activeColumn = 'related';
@@ -149,6 +152,24 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
           this.isOpenMobileFilterView();
         }, 0);
       });
+
+      thingsContentElement.addEventListener('mousewheel', (e) => {
+        let whellDir: string = e.wheelDelta < 0 ? 'down' : 'up';
+
+        let deltaHeight: number = thingsContentElement.scrollHeight - thingsContentElement.offsetHeight;
+
+        if (whellDir === 'up' && thingsContentElement.scrollTop === 0) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        if (whellDir === 'down' && thingsContentElement.scrollTop >= deltaHeight) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, false);
+    } else {
+      thingsContentElement.removeEventListener('mousewheel');
     }
 
     if (!this.isOpenThingsFilter) {
