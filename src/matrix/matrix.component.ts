@@ -199,10 +199,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
         if (data.quickGuide) {
           this.isQuickGuideOpened = true;
-          this.guideContainerElement = document.querySelector('.quick-guide-container') as HTMLElement;
         } else {
           this.isQuickGuideOpened = false;
-          this.guideContainerElement = null;
         }
       }
     });
@@ -240,7 +238,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (this.row > 1 && !this.activeHouse) {
           this.matrixImagesComponent.goToRow(this.row);
         }
-      }, 500);
+      }, 1000);
 
       this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
         this.streetData = data;
@@ -333,7 +331,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public processScroll(): void {
-    let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - this.guidePositionTop;
+    if (!this.guideContainerElement) {
+      this.guideContainerElement = document.querySelector('.quick-guide-container') as HTMLElement;
+    }
+
+    let guideOffset: number = (this.guideContainerElement ? this.guideContainerElement.offsetHeight : 0);
+
+    let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - guideOffset;
 
     let distance = scrollTop / this.itemSize;
 
