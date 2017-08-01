@@ -291,6 +291,10 @@ family-header .header-content {
     right: 0;
   }
 
+  .header-content .icon-container {
+    display: block;
+  }
+
   .header-content >>> .lang-container {
     display: none;
   }
@@ -328,6 +332,44 @@ family-header .header-content {
     margin-left: 6px!important;
     margin-top: 6px!important;
     float: right;
+  }
+
+  .filters-container .income-title {
+    width: 100%;
+    display: block;
+    height: 35px;
+    border: 1px solid #e4e6e7;
+    border-radius: 6px;
+    padding: 7px;
+    color: #394451;
+    font-size: 24px;
+    vertical-align: top;
+  }
+}
+
+/* Nexus 7 */
+@media (max-width: 600px) {
+  .header-content .icon-container {
+    display: none;
+  }
+
+  .filters-container .income-title {
+    border: none;
+    width: 100%;
+    display: block;
+    height: 35px;
+    border-radius: 0px;
+    padding: 7px;
+    color: #767d86;
+    font-size: 24px;
+    vertical-align: top;
+  }
+}
+
+/* iPhone 5 */
+@media (max-width: 599px) {
+  .header-content .icon-container {
+    display: block;
   }
 
   .filters-container .income-title {

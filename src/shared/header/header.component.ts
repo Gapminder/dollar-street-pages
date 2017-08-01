@@ -108,6 +108,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public appStateSubscription: Subscription;
   public languagesListSubscription: Subscription;
   public isInit: boolean;
+  public iconContainerShow: boolean;
 
   public constructor(private router: Router,
                      private math: MathService,
