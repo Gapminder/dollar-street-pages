@@ -39,6 +39,7 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
+  public orientationChangeSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetMobileDrawService,
@@ -75,6 +76,12 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
         this.setDividers(this.placesArr);
       });
 
+    this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.street.clearSvg();
+      });
+
     this.placesSubscribe = this.places && this.places
         .subscribe((places: any): void => {
           this.placesArr = places;
@@ -96,6 +103,10 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
 
     if (this.streetSettingsStateSubscription) {
       this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.orientationChangeSubscription) {
+      this.orientationChangeSubscription.unsubscribe();
     }
   }
 
