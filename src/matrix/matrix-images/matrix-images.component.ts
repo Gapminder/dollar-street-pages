@@ -245,6 +245,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
+  public changeZoom(prevZoom: number): void {
+    setTimeout(() => {
+      this.calcItemSize();
+    },0);
+  }
+
   public hoverImage(place: any): void {
     if (!this.isDesktop) {
       return;
