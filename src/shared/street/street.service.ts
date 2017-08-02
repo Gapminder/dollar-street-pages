@@ -543,7 +543,7 @@ export class StreetDrawService {
   };
 
   public drawLeftSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566 && Math.round(this.lowIncome) === this.dividersData.poor) {
+    if (this.windowInnerWidth <= 568 && Math.round(this.lowIncome) === this.dividersData.poor) {
       return;
     }
 
