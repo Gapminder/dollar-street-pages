@@ -137,6 +137,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.row = this.urlParams.row;
+      this.setZoom(this.urlParams.zoom);
 
       setTimeout(() => {
         if (this.row > 1 && !this.activeImageIndex) {
@@ -155,8 +156,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
           }
 
           this.thing = res.data;
-
-          this.setZoom(this.urlParams.zoom);
 
           this.initData();
         });

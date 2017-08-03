@@ -144,7 +144,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
           this.currentImages = slice(this.images, 0, numberSplice);
 
           this.changeZoom(0);
-        }, 0);
+        });
 
         if (this.activeImageIndex) {
           setTimeout(() => {
@@ -207,12 +207,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
           setTimeout(() => {
             this.openMedia(familyImage, familyImageIndex);
-          }, 0);
+          });
         }
       });
 
-    
-    this.makeGridForZoom();
   }
 
   public ngOnDestroy(): void {
@@ -230,25 +228,13 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.loaderService.setLoader(false);
   }
 
-  public makeGridForZoom(): void {
-    setTimeout(() => {
-      if (!this.familyImagesContainerElement || !this.zoom) {
-        return;
-      }
-
-      this.familyImagesContainerElement.classList.add('column-' + this.zoom);
-
-      this.loaderService.setLoader(true);
-    }, 0);
-  }
-
   public changeZoom(prevZoom: number): void {
     setTimeout(() => {
       this.familyImageContainerElement.classList.remove('column-' + prevZoom);
       this.familyImageContainerElement.classList.add('column-' + this.zoom);
 
       this.calcItemSize();
-    },0);
+    });
   }
 
   public onScrollDown(): void {
