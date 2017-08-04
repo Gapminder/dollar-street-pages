@@ -142,7 +142,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.row > 1 && !this.activeImageIndex) {
           this.familyMediaComponent.goToRow(this.row);
         }
-      }, 700);
+      }, 1000);
 
       let query: string = `thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`;
 
