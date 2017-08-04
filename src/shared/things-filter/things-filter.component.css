@@ -204,6 +204,10 @@
   display: block;
 }
 
+.things-filter-button-content span {
+  cursor: pointer;
+}
+
 .things-filter-button .thing-pop-up {
   position: absolute;
   top: 100%;

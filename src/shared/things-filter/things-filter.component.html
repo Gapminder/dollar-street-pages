@@ -11,7 +11,8 @@
       <span class="arrow"></span>
     </div>
 
-    <div class="thing-pop-up" *ngIf="isDesktop && activeThing.shortDescription && !isOpenThingsFilter">
+    <div class="thing-pop-up"
+         *ngIf="isDesktop && activeThing.shortDescription && !isOpenThingsFilter">
       <div class="thing-pop-up-content">
         <p> {{activeThing?.shortDescription}}
           <a *ngIf="activeThing?.isShowReadMore"
@@ -108,6 +109,19 @@
            alt="Icon">
       <span>{{activeThing?.plural || activeThing?.thingName}}</span>
       <span class="arrow"></span>
+    </div>
+
+    <div class="thing-pop-up"
+         *ngIf="isDesktop && activeThing.shortDescription && !isOpenThingsFilter">
+      <div class="thing-pop-up-content">
+        <p> {{activeThing?.shortDescription}}
+          <a *ngIf="activeThing?.isShowReadMore"
+             [routerLink]="['/article', activeThing._id]"
+             [queryParams]="{}"
+             angulartics2On="click"
+             angularticsEvent="Move to Article about {{activeThing.thingName}} page with Read More button">{{ 'READ_MORE' | translate }} >></a>
+        </p>
+      </div>
     </div>
   </div>
 
