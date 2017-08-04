@@ -247,7 +247,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.zoom = zoom;
 
-    this.query = this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`);
+    this.query = this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`);
 
     this.urlChangeService.replaceState('/family', this.query);
 

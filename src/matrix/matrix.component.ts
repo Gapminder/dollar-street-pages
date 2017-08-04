@@ -549,9 +549,17 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public changeZoom(zoom: any): void {
+    let prevZoom: number = this.zoom;
+
+    this.zoom = zoom;
+
     this.calcItemSize();
 
-    this.urlChanged({isZoom: true, url: this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`)});
+    this.query = this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`);
+
+    this.urlChangeService.replaceState('/matrix', this.query);
+
+    this.matrixImagesComponent.changeZoom(prevZoom);
   }
 
   public getResponseFromIncomeFilter(params: any): void {
