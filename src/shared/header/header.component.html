@@ -1,18 +1,18 @@
 <div class="header-container"
      [ngClass]="{'bottom-yellow-border': isAboutPage || isDonatePage ||
-                  isMapPage || isArticlePage || isCountryPage||
-                  isPhotographersPage || isPhotographerPage || isTeamPage}">
+                                         isMapPage || isArticlePage || isCountryPage||
+                                         isPhotographersPage || isPhotographerPage || isTeamPage}">
   <div class="container header-content"
       [ngClass]="{'small-container': isMapPage || isAboutPage || isTeamPage ||
-                   isDonatePage || isCountryPage || isArticlePage ||
-                   isPhotographersPage || isPhotographerPage}">
-    <div *ngIf="(isMatrixPage && !isMobile ) ||
+                                     isDonatePage || isCountryPage || isArticlePage ||
+                                     isPhotographersPage || isPhotographerPage}">
+    <div class="icon-container pull-left"
+         *ngIf="(isMatrixPage && !isMobile) ||
                 isAboutPage || isDonatePage || isArticlePage ||
                 isPhotographersPage || isPhotographerPage ||
                 isCountryPage || isTeamPage ||
                 (isFamilyPage && (isDesktop || isTablet)) ||
-                (isMapPage && (isDesktop || isTablet))"
-         class="icon-container pull-left">
+                (isMapPage && (isDesktop || isTablet))">
       <img (click)="goToMatrixPage()" src="/assets/img/dollar-street.svg" alt=""/>
     </div>
 
