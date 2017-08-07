@@ -15,9 +15,10 @@ export class FooterService {
   }
 
   public getFooter(query: any): Observable<any> {
-    return this.http.get(`${environment.consumerApi}/v1/footer-text?${query}`).map((res: any) => {
-      let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, data: parseRes.data};
-    });
+    return this.http.get(`${environment.consumerApi}/v1/footer-text?${query}`)
+      .map((res: any) => {
+        let parseRes = JSON.parse(res._body);
+        return {err: parseRes.error, data: parseRes.data};
+      });
   }
 }

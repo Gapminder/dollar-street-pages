@@ -1,0 +1,70 @@
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
+import {
+    MathService,
+    LanguageService,
+    BrowserDetectionService
+} from '../../../common';
+import { StoreModule } from '@ngrx/store';
+import { CountryInfoComponent } from '../country-info.component';
+import { CountryInfoService } from '../country-info.service';
+
+describe('CountryInfoComponent', () => {
+    let componentFixture: ComponentFixture<CountryInfoComponent>;
+    let componentInstance: CountryInfoComponent;
+
+    const countryInfo = {"success":true,
+                         "msg":[],
+                         "data":{"country":{"_id":"55ef338d0d2b3c82037884eb","code":"PK","region":"Asia","country":"Pakistan","lat":30,"lng":70,"alias":"Pakistan","originName":"Pakistan"},"places":1,"images":174,"thing":"Families"},
+                         "error":null};
+
+    const countryInfoServiceStub = {
+        getCountryInfo(): Observable<any> {
+            return Observable.of(countryInfo);
+        }
+    };
+
+    const userLanguageService = {
+        getLanguageParam: () => {
+            return 'lang=en';
+        }
+    };
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                StoreModule.provideStore({}),
+            ],
+            declarations: [CountryInfoComponent],
+            providers: [
+                MathService,
+                BrowserDetectionService,
+                { provide: LanguageService, useValue: userLanguageService },
+                { provide: CountryInfoService, useValue: countryInfoServiceStub }
+            ]
+        });
+
+        componentFixture = TestBed.overrideComponent(CountryInfoComponent, {
+            set: {
+                template: ''
+            }
+        }).createComponent(CountryInfoComponent);
+
+        componentInstance = componentFixture.componentInstance;
+    }));
+
+    it('ngOnInit(), ngOnDestroy()', () => {
+        componentInstance.ngOnInit();
+
+        expect(componentInstance.countryInfoServiceSubscribe).toBeDefined();
+        expect(componentInstance.streetSettingsStateSubscription).toBeDefined();
+
+        spyOn(componentInstance.countryInfoServiceSubscribe, 'unsubscribe');
+        spyOn(componentInstance.streetSettingsStateSubscription, 'unsubscribe');
+
+        componentInstance.ngOnDestroy();
+
+        expect(componentInstance.countryInfoServiceSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(componentInstance.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
+    });
+});
