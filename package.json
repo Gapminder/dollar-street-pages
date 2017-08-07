@@ -115,7 +115,7 @@
     "ts-loader": "2.1.0",
     "ts-node": "3.0.6",
     "tslint": "5.4.3",
-    "tslint-config-valorsoft": "1.1.1",
+    "tslint-config-valorsoft": "2.1.0",
     "typescript": "2.3.4",
     "url-loader": "0.5.8"
   },
