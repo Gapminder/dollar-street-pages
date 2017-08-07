@@ -8,7 +8,6 @@ import { MathService, TitleHeaderService } from '../common';
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.css']
 })
-
 export class CountryComponent implements OnInit, OnDestroy {
   public title: string;
   public countryId: string;

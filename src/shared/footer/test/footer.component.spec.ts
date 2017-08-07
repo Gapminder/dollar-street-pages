@@ -1,6 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Observable } from 'rxjs/Observable';
+import {
+    BrowserDetectionService,
+    LanguageService,
+    UtilsService
+} from '../../../common';
+import { StoreModule } from '@ngrx/store';
+import { Angulartics2GoogleAnalytics } from 'angulartics2';
 import { FooterComponent } from '../footer.component';
 import { FooterService } from '../footer.service';
 
@@ -8,12 +16,45 @@ describe('FooterComponent', () => {
     let componentInstance: FooterComponent;
     let componentFixture: ComponentFixture<FooterComponent>;
 
-    beforeEach(() => {
+    const footer = {"success":true,
+                    "msg":[],
+                    "data":{"text":"<p>Dollar Street is a Gapminder project - free for anyone to use.</p>\n<p>Today we feature more than 264 homes in 50 countries.</p>\n<p>In total we have more than 30 000 photos, and counting!</p>"},
+                    "error":null};
+
+    const userFooterService = {
+        getFooter(): Observable<any> {
+            return Observable.of(footer);
+        }
+    };
+
+    class MockAngulartics {
+        // tslint:disable-next-line
+        public eventTrack(name: string, param: any): void {}
+    }
+
+    class MockLanguageService {
+        public getTranslation(): Observable<any> {
+            return Observable.of('the world');
+        }
+
+         public getLanguageParam(): string {
+            return '&lang=en';
+        }
+    }
+
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [ RouterTestingModule ],
+            imports: [
+                RouterTestingModule,
+                StoreModule.provideStore({})
+            ],
             declarations: [ FooterComponent ],
             providers: [
-                FooterService
+                BrowserDetectionService,
+                UtilsService,
+                { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
+                { provide: FooterService, useValue: userFooterService },
+                { provide: LanguageService, useClass: MockLanguageService }
             ]
         });
 
@@ -26,25 +67,23 @@ describe('FooterComponent', () => {
         componentInstance = componentFixture.componentInstance;
 
         componentFixture.detectChanges();
-    });
+    }));
 
     it('ngOnInit()', () => {
-        componentFixture.whenStable().then(() => {
-            componentInstance.ngOnInit();
+        componentInstance.ngOnInit();
 
-            expect(componentInstance.streetSettingsStateSubscription).toBeDefined();
-            expect(componentInstance.routerEventsSubscribe).toBeDefined();
-            expect(componentInstance.footerServiceSubscribe).toBeDefined();
+        expect(componentInstance.streetSettingsStateSubscription).toBeDefined();
+        expect(componentInstance.routerEventsSubscribe).toBeDefined();
+        expect(componentInstance.footerServiceSubscribe).toBeDefined();
 
-            spyOn(componentInstance.streetSettingsStateSubscription, 'unsubscribe');
-            spyOn(componentInstance.routerEventsSubscribe, 'unsubscribe');
-            spyOn(componentInstance.footerServiceSubscribe, 'unsubscribe');
+        spyOn(componentInstance.streetSettingsStateSubscription, 'unsubscribe');
+        spyOn(componentInstance.routerEventsSubscribe, 'unsubscribe');
+        spyOn(componentInstance.footerServiceSubscribe, 'unsubscribe');
 
-            componentInstance.ngOnDestroy();
+        componentInstance.ngOnDestroy();
 
-            expect(componentInstance.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-            expect(componentInstance.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
-            expect(componentInstance.footerServiceSubscribe.unsubscribe).toHaveBeenCalled();
-        });
+        expect(componentInstance.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
+        expect(componentInstance.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(componentInstance.footerServiceSubscribe.unsubscribe).toHaveBeenCalled();
     });
 });

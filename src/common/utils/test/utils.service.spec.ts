@@ -20,7 +20,7 @@ describe('UtilsService', () => {
         expect(urlParams.region).toEqual('World');
     });
 
-    fit('objToQuery()', () => {
+    it('objToQuery()', () => {
         const queryObject: any = {
             thing: 'Families',
             country: 'Cambodja',
@@ -31,3 +31,4 @@ describe('UtilsService', () => {
 
         expect(utilsService.objToQuery(queryObject)).toEqual(queryString);
     });
+});
