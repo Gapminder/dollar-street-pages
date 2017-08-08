@@ -2,15 +2,19 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { HttpModule } from '@angular/http';
-
 import { Observable } from 'rxjs/Observable';
-
-import { LoaderService, TitleHeaderService, LanguageService } from '../../common';
-
+import {
+  LoaderService,
+  TitleHeaderService,
+  LanguageService
+} from '../../common';
+import {
+  LoaderServiceMock,
+  LanguageServiceMock,
+  TitleHeaderServiceMock
+} from '../../test/';
 import { SharedModule } from '../../shared';
-
 import { ArticleComponent } from '../article.component';
 import { ArticleService } from '../article.service';
 
@@ -20,29 +24,13 @@ describe('ArticleComponent Test', () => {
   let debugElement: DebugElement;
   let nativeElement: HTMLElement;
 
-  const userArticleService = {
-    getArticle: () => {
+  class ArticleServiceMock {
+    public getArticle(): void {
       return;
     }
   };
 
-  const userLoaderService = {
-    setLoader: (b: boolean) => {
-      return b;
-    }
-  };
-
-  const userTitleHeaderService = {
-
-  };
-
-  const userLanguageService = {
-    getLanguageParam: () => {
-      return;
-    }
-  };
-
-  const userActivatedRoute = {
+  const ActivatedRouteStub = {
     params: Observable.of({'id': 1})
   };
 
@@ -51,12 +39,12 @@ describe('ArticleComponent Test', () => {
       imports: [ HttpModule, SharedModule ],
       declarations: [ ArticleComponent ],
       providers: [
-                     { provide: ActivatedRoute, useValue: userActivatedRoute },
-                     { provide: ArticleService, useValue: userArticleService },
-                     { provide: LoaderService, useValue: userLoaderService },
-                     { provide: TitleHeaderService, useValue: userTitleHeaderService },
-                     { provide: LanguageService, useValue: userLanguageService }
-                 ]
+          { provide: ActivatedRoute, useValue: ActivatedRouteStub },
+          { provide: ArticleService, useClass: ArticleServiceMock },
+          { provide: LoaderService, useClass: LoaderServiceMock },
+          { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },
+          { provide: LanguageService, useClass: LanguageServiceMock }
+      ]
     });
 
     componentFixture = TestBed.createComponent(ArticleComponent);

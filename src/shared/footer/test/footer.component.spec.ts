@@ -7,6 +7,10 @@ import {
     LanguageService,
     UtilsService
 } from '../../../common';
+import {
+    LanguageServiceMock,
+    AngularticsMock
+} from '../../../test/';
 import { StoreModule } from '@ngrx/store';
 import { Angulartics2GoogleAnalytics } from 'angulartics2';
 import { FooterComponent } from '../footer.component';
@@ -21,26 +25,11 @@ describe('FooterComponent', () => {
                     "data":{"text":"<p>Dollar Street is a Gapminder project - free for anyone to use.</p>\n<p>Today we feature more than 264 homes in 50 countries.</p>\n<p>In total we have more than 30 000 photos, and counting!</p>"},
                     "error":null};
 
-    const userFooterService = {
+    class FooterServiceMock {
         getFooter(): Observable<any> {
             return Observable.of(footer);
         }
     };
-
-    class MockAngulartics {
-        // tslint:disable-next-line
-        public eventTrack(name: string, param: any): void {}
-    }
-
-    class MockLanguageService {
-        public getTranslation(): Observable<any> {
-            return Observable.of('the world');
-        }
-
-         public getLanguageParam(): string {
-            return '&lang=en';
-        }
-    }
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -52,9 +41,9 @@ describe('FooterComponent', () => {
             providers: [
                 BrowserDetectionService,
                 UtilsService,
-                { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
-                { provide: FooterService, useValue: userFooterService },
-                { provide: LanguageService, useClass: MockLanguageService }
+                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+                { provide: FooterService, useClass: FooterServiceMock },
+                { provide: LanguageService, useClass: LanguageServiceMock }
             ]
         });
 

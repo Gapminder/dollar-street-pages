@@ -1,26 +1,20 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { PhotographerComponent } from '../photographer.component';
-
 import { TitleHeaderService } from '../../common';
+import { TitleHeaderServiceMock } from '../../test/';
 
 describe('PhotographerComponent', () => {
   let componentInstance: PhotographerComponent;
   let componentFixture: ComponentFixture<PhotographerComponent>;
-
-  const userTitleHeaderService = {
-
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule ],
       declarations: [ PhotographerComponent ],
       providers: [
-                     { provide: TitleHeaderService, useValue: userTitleHeaderService }
-                 ]
+        { provide: TitleHeaderService, useValue: TitleHeaderServiceMock }
+      ]
     });
 
     componentFixture = TestBed.overrideComponent(PhotographerComponent, {

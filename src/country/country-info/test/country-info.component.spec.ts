@@ -6,6 +6,9 @@ import {
     BrowserDetectionService
 } from '../../../common';
 import { StoreModule } from '@ngrx/store';
+import {
+    LanguageServiceMock
+} from '../../../test/';
 import { CountryInfoComponent } from '../country-info.component';
 import { CountryInfoService } from '../country-info.service';
 
@@ -18,15 +21,9 @@ describe('CountryInfoComponent', () => {
                          "data":{"country":{"_id":"55ef338d0d2b3c82037884eb","code":"PK","region":"Asia","country":"Pakistan","lat":30,"lng":70,"alias":"Pakistan","originName":"Pakistan"},"places":1,"images":174,"thing":"Families"},
                          "error":null};
 
-    const countryInfoServiceStub = {
-        getCountryInfo(): Observable<any> {
+    class CountryInfoServiceMock {
+        public getCountryInfo(): Observable<any> {
             return Observable.of(countryInfo);
-        }
-    };
-
-    const userLanguageService = {
-        getLanguageParam: () => {
-            return 'lang=en';
         }
     };
 
@@ -39,8 +36,8 @@ describe('CountryInfoComponent', () => {
             providers: [
                 MathService,
                 BrowserDetectionService,
-                { provide: LanguageService, useValue: userLanguageService },
-                { provide: CountryInfoService, useValue: countryInfoServiceStub }
+                { provide: LanguageService, useClass: LanguageServiceMock },
+                { provide: CountryInfoService, useClass: CountryInfoServiceMock }
             ]
         });
 

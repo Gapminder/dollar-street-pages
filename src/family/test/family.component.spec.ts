@@ -21,6 +21,13 @@ import {
     StreetSettingsActions,
     UtilsService
 } from '../../common';
+import {
+    LoaderServiceMock,
+    LanguageServiceMock,
+    StreetSettingsServiceMock,
+    AngularticsMock,
+    BlankComponent
+} from '../../test/';
 import { FamilyComponent } from '../family.component';
 import { FamilyService } from '../family.service';
 
@@ -34,21 +41,6 @@ describe('FamilyComponent', () => {
 
     let urlChangeService: UrlChangeService;
 
-    @Component({
-        template: ''
-    })
-    class BlankComponent { }
-
-    class MockLanguageService {
-        public getTranslation(): Observable<any> {
-            return Observable.of('the world');
-        }
-
-        public getLanguageParam(): string {
-            return '&lang=en';
-        }
-    }
-
     class MockFamilyService {
         public getThing(): Observable<any> {
             let response: any = {success:true,data:{_id:'546ccf730f7ddf45c017962f',thingName:'Family',plural:'Familias',originPlural:'Families',originThingName:'Family'},error:undefined};
@@ -57,53 +49,31 @@ describe('FamilyComponent', () => {
         }
     }
 
-    class MockStreetSettingsService {
-        public getStreetSettings(): Observable<any> {
-            let context: any = {_id:'57963211cc4aaed63a02504c',showDividers:false,low:30,medium:300,high:3000,poor:26,rich:15000,lowDividerCoord:78,mediumDividerCoord:490,highDividerCoord:920,__v:0};
-            let response: any = {success:true,error:false,msg:[],data:context};
-
-            return Observable.of(response);
-        }
-    }
-
-    // class MockCountriesFilterService {
-        /* tslint:disable */
-        // public getCountries(query: string): Observable<any> {
-            // return Observable.of(mockCountriesData);
-        // }
-        /* tslint:enable */
-    // }
-
-    class MockAngulartics {
-        // tslint:disable-next-line
-        public eventTrack(name: string, param: any): void {}
-    }
-
     beforeEach((() => {
         TestBed.configureTestingModule({
             schemas: [  ],
             imports: [
-                        HttpModule,
-                        FamilyModule,
-                        StoreModule.provideStore({}),
-                        EffectsModule.run(StreetSettingsEffects),
-                        RouterTestingModule.withRoutes([{path: '', component: BlankComponent}, {path: 'matrix', component: BlankComponent}])
-                     ],
+                HttpModule,
+                FamilyModule,
+                StoreModule.provideStore({}),
+                EffectsModule.run(StreetSettingsEffects),
+                RouterTestingModule.withRoutes([{path: '', component: BlankComponent}, {path: 'matrix', component: BlankComponent}])
+            ],
             declarations: [ BlankComponent ],
             providers: [
-                            UrlChangeService,
-                            LocalStorageService,
-                            BrowserDetectionService,
-                            MathService,
-                            LoaderService,
-                            StreetSettingsActions,
-                            UtilsService,
-                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
-                            { provide: FamilyService, useClass: MockFamilyService },
-                            // { provide: CountriesFilterService, useClass: MockCountriesFilterService },
-                            { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
-                            { provide: LanguageService, useClass: MockLanguageService }
-                        ]
+                UrlChangeService,
+                LocalStorageService,
+                BrowserDetectionService,
+                MathService,
+                StreetSettingsActions,
+                UtilsService,
+                { provide: LoaderService, useClass: LoaderServiceMock },
+                { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
+                { provide: FamilyService, useClass: MockFamilyService },
+                // { provide: CountriesFilterService, useClass: MockCountriesFilterService },
+                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+                { provide: LanguageService, useClass: LanguageServiceMock }
+            ]
         });
 
         componentFixture = TestBed.overrideComponent(FamilyComponent, {
