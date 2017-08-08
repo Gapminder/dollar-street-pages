@@ -25,7 +25,11 @@ import {
 import {
     LanguageServiceMock,
     StreetSettingsServiceMock,
-    BlankComponent
+    BlankComponent,
+    BrowserDetectionServiceMock,
+    UtilsServiceMock,
+    AngularticsMock,
+    Angulartics2GoogleAnalyticsMock
 } from '../../../../test/';
 
 /* tslint:disable */
@@ -43,27 +47,27 @@ describe('FamilyMediaViewBlockComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                        SharedModule,
-                        Angulartics2Module,
-                        StoreModule.provideStore({}),
-                        EffectsModule.run(StreetSettingsEffects),
-                        RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
-                        TranslateModule.forRoot({
-                            provide: TranslateLoader,
-                            useClass: CustomLoader
-                        })
-                     ],
+                SharedModule,
+                Angulartics2Module,
+                StoreModule.provideStore({}),
+                EffectsModule.run(StreetSettingsEffects),
+                RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
+                TranslateModule.forRoot({
+                    provide: TranslateLoader,
+                    useClass: CustomLoader
+                })
+            ],
             declarations: [ FamilyMediaViewBlockComponent, BlankComponent ],
             providers: [
-                            FamilyMediaViewBlockService,
-                            BrowserDetectionService,
-                            Angulartics2GoogleAnalytics,
-                            Angulartics2,
-                            UtilsService,
-                            StreetSettingsActions,
-                            { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
-                            { provide: LanguageService, useClass: LanguageServiceMock }
-                       ]
+                FamilyMediaViewBlockService,
+                StreetSettingsActions,
+                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+                { provide: Angulartics2, useClass: AngularticsMock },
+                { provide: UtilsService, useClass: UtilsServiceMock },
+                { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
+                { provide: LanguageService, useClass: LanguageServiceMock }
+            ]
         }).compileComponents();
 
         componentFixture = TestBed.createComponent(FamilyMediaViewBlockComponent);

@@ -1,6 +1,8 @@
 import { TestBed, async, getTestBed, fakeAsync } from '@angular/core/testing';
-
 import { BrowserDetectionService } from '../browser-detection.service';
+import {
+    BrowserDetectionServiceMock
+} from '../../../test/';
 
 describe('BrowserDetectionService', () => {
     let browserDetectionService: BrowserDetectionService;
@@ -17,7 +19,7 @@ describe('BrowserDetectionService', () => {
         TestBed.configureTestingModule({
             imports: [],
             providers: [
-                BrowserDetectionService,
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: Window, useValue: mockWindow }
             ]
         });

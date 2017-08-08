@@ -1,10 +1,8 @@
 import { TestBed, async, getTestBed, fakeAsync, tick } from '@angular/core/testing';
-
 import {
     MockBackend,
     MockConnection
 } from '@angular/http/testing';
-
 import {
     BaseRequestOptions,
     Http,
@@ -13,20 +11,11 @@ import {
     XHRBackend,
     HttpModule
 } from '@angular/http';
-
 import { StreetSettingsService } from '../street-settings.service';
-
-export interface DrawDividersInterface {
-  showDividers: boolean;
-  low: number;
-  medium: number;
-  high: number;
-  poor: number;
-  rich: number;
-  lowDividerCoord: number;
-  mediumDividerCoord: number;
-  highDividerCoord: number;
-}
+import {
+    StreetSettingsServiceMock
+} from '../../../test/';
+import { DrawDividersInterface } from '../../../interfaces';
 
 describe('StreetSettingsService', () => {
     let mockBackend: MockBackend;
@@ -36,7 +25,7 @@ describe('StreetSettingsService', () => {
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
-                StreetSettingsService,
+                { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
                 MockBackend,
                 BaseRequestOptions,
                 {

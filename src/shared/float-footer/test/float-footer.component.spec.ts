@@ -4,6 +4,10 @@ import {
     BrowserDetectionService,
     UtilsService
 } from '../../../common';
+import {
+    UtilsServiceMock,
+    BrowserDetectionServiceMock
+} from '../../../test/';
 import { FloatFooterComponent } from '../float-footer.component';
 
 describe('FloatFooterComponent', () => {
@@ -15,8 +19,8 @@ describe('FloatFooterComponent', () => {
             imports: [],
             declarations: [ FloatFooterComponent ],
             providers: [
-                BrowserDetectionService,
-                UtilsService
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+                { provide: UtilsService, useClass: UtilsServiceMock }
             ]
         });
 

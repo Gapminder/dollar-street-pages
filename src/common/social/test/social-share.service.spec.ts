@@ -16,14 +16,15 @@ import {
     TranslateLoader,
     TranslateService
 } from 'ng2-translate';
-import {
-    LanguageServiceMock
-} from '../../../test/';
 import { SocialShareService } from '../social-share.service';
 import { LanguageService } from '../../language/language.service';
 import { UrlChangeService } from '../../url-change/url-change.service';
 import { LocalStorageService } from '../../guide/localstorage.service';
 import { UtilsService } from '../../utils/utils.service';
+import {
+    LanguageServiceMock,
+    UtilsServiceMock
+} from '../../../test/';
 
 /* tslint:disable */
 class CustomLoader implements TranslateLoader {
@@ -48,13 +49,13 @@ describe('SocialShareService', () => {
             ],
             providers: [
                 SocialShareService,
-                { provide: LanguageService, useClass: LanguageServiceMock },
                 TranslateService,
                 LocalStorageService,
                 UrlChangeService,
                 MockBackend,
                 BaseRequestOptions,
-                UtilsService,
+                { provide: UtilsService, useClass: UtilsServiceMock },
+                { provide: LanguageService, useClass: LanguageServiceMock },
                 {
                     deps: [
                         MockBackend,

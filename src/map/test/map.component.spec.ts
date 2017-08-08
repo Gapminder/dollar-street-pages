@@ -19,7 +19,8 @@ import {
     StreetSettingsServiceMock,
     LoaderServiceMock,
     AngularticsMock,
-    BlankComponent
+    BlankComponent,
+    BrowserDetectionServiceMock
 } from '../../test/';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
@@ -77,7 +78,7 @@ describe('MapComponent', () => {
             providers: [
                 MathService,
                 UrlChangeService,
-                BrowserDetectionService,
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 StreetSettingsActions,
                 ActiveThingService,
                 { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },

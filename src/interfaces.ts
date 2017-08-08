@@ -21,3 +21,15 @@ export interface AppStore {
     thingsFilter: any;
     countriesFilter: any;
 }
+
+export interface DrawDividersInterface {
+  showDividers: boolean;
+  low: number;
+  medium: number;
+  high: number;
+  poor: number;
+  rich: number;
+  lowDividerCoord: number;
+  mediumDividerCoord: number;
+  highDividerCoord: number;
+}

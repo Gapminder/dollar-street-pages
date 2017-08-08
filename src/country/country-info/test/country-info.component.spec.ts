@@ -7,7 +7,8 @@ import {
 } from '../../../common';
 import { StoreModule } from '@ngrx/store';
 import {
-    LanguageServiceMock
+    LanguageServiceMock,
+    BrowserDetectionServiceMock
 } from '../../../test/';
 import { CountryInfoComponent } from '../country-info.component';
 import { CountryInfoService } from '../country-info.service';
@@ -35,7 +36,7 @@ describe('CountryInfoComponent', () => {
             declarations: [CountryInfoComponent],
             providers: [
                 MathService,
-                BrowserDetectionService,
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: CountryInfoService, useClass: CountryInfoServiceMock }
             ]
