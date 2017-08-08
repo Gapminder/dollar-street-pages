@@ -63,6 +63,10 @@ export class StreetSettingsServiceMock {
     }
 }
 
+export class UrlChangeServiceMock {
+
+}
+
 export class AngularticsMock {
     // tslint:disable-next-line
     public eventTrack(name: string, param: any): void {}
@@ -82,6 +86,14 @@ export class UtilsServiceMock {
             };
         }
     }
+
+    public parseUrl(url: string): any {
+        return {
+            thing: 'Families',
+            countries: 'World',
+            region: 'World'
+        };
+    }
 }
 
 export class BrowserDetectionServiceMock {
@@ -98,4 +110,8 @@ export class BrowserDetectionServiceMock {
     public isTablet(): boolean {
         return false;
     }
+}
+
+export class TranslateServiceMock {
+
 }

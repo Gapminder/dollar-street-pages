@@ -23,7 +23,8 @@ import { LocalStorageService } from '../../guide/localstorage.service';
 import { UtilsService } from '../../utils/utils.service';
 import {
     LanguageServiceMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    UrlChangeServiceMock
 } from '../../../test/';
 
 /* tslint:disable */
@@ -51,9 +52,9 @@ describe('SocialShareService', () => {
                 SocialShareService,
                 TranslateService,
                 LocalStorageService,
-                UrlChangeService,
                 MockBackend,
                 BaseRequestOptions,
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 {
