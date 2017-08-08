@@ -1,10 +1,8 @@
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-
 import { environment } from '../environments/environment';
-
-import 'rxjs/add/operator/map';
 
 @Injectable()
 export class DonateService {

@@ -21,7 +21,9 @@ import {
     LanguageServiceMock,
     StreetSettingsServiceMock,
     AngularticsMock,
-    BlankComponent
+    BlankComponent,
+    BrowserDetectionServiceMock,
+    UtilsServiceMock
 } from '../../../test/';
 
 /* tslint:disable */
@@ -52,9 +54,9 @@ describe('FamilyHeaderComponent', () => {
             providers: [
                 MathService,
                 FamilyHeaderService,
-                BrowserDetectionService,
-                UtilsService,
                 StreetSettingsActions,
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+                { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock }

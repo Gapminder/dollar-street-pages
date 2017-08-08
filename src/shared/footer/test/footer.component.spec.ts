@@ -9,7 +9,9 @@ import {
 } from '../../../common';
 import {
     LanguageServiceMock,
-    AngularticsMock
+    AngularticsMock,
+    BrowserDetectionServiceMock,
+    UtilsServiceMock
 } from '../../../test/';
 import { StoreModule } from '@ngrx/store';
 import { Angulartics2GoogleAnalytics } from 'angulartics2';
@@ -39,8 +41,8 @@ describe('FooterComponent', () => {
             ],
             declarations: [ FooterComponent ],
             providers: [
-                BrowserDetectionService,
-                UtilsService,
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+                { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
                 { provide: FooterService, useClass: FooterServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock }

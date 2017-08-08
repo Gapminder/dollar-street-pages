@@ -4,5 +4,8 @@ export {
     TitleHeaderServiceMock,
     StreetSettingsServiceMock,
     AngularticsMock,
-    BlankComponent
+    BlankComponent,
+    UtilsServiceMock,
+    BrowserDetectionServiceMock,
+    Angulartics2GoogleAnalyticsMock
 } from './services.mock';
