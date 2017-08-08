@@ -18,7 +18,8 @@ import {
     BlankComponent,
     LanguageServiceMock,
     BrowserDetectionServiceMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    UrlChangeServiceMock
 } from '../../../test/';
 
 /*tslint:disable-next-line*/
@@ -53,9 +54,9 @@ describe('FamilyMediaComponent', () => {
                      ],
             declarations: [ BlankComponent ],
             providers: [
-                            UrlChangeService,
-                            { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                             SpyLocation,
+                            { provide: UrlChangeService, useClass: UrlChangeServiceMock },
+                            { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                             { provide: UtilsService, useClass: UtilsServiceMock },
                             { provide: LoaderService, useClass: LoaderServiceMock },
                             { provide: FamilyMediaService, useClass: FamilyMediaServiceMock },

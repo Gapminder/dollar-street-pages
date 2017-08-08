@@ -7,5 +7,7 @@ export {
     BlankComponent,
     UtilsServiceMock,
     BrowserDetectionServiceMock,
-    Angulartics2GoogleAnalyticsMock
+    Angulartics2GoogleAnalyticsMock,
+    UrlChangeServiceMock,
+    TranslateServiceMock
 } from './services.mock';

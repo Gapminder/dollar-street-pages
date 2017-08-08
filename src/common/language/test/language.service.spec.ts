@@ -22,7 +22,8 @@ import { UtilsService } from '../../utils/utils.service';
 import { SpyLocation } from '@angular/common/testing';
 import {
     UtilsServiceMock,
-    LanguageServiceMock
+    LanguageServiceMock,
+    UrlChangeServiceMock
 } from '../../../test/';
 
 /* tslint:disable */
@@ -56,7 +57,7 @@ describe('LanguageService', () => {
                 })
             ],
             providers: [
-                UrlChangeService,
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 TranslateService,
                 LocationStrategy,
                 LocalStorageService,

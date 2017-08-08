@@ -28,7 +28,8 @@ import {
     AngularticsMock,
     BlankComponent,
     BrowserDetectionServiceMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    UrlChangeServiceMock
 } from '../../test/';
 import { FamilyComponent } from '../family.component';
 import { FamilyService } from '../family.service';
@@ -63,11 +64,11 @@ describe('FamilyComponent', () => {
             ],
             declarations: [ BlankComponent ],
             providers: [
-                UrlChangeService,
                 LocalStorageService,
-                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 MathService,
                 StreetSettingsActions,
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },

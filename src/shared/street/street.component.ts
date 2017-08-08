@@ -292,12 +292,18 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.activeThingServiceSubscription.unsubscribe();
     }
 
-    this.getTranslationSubscribe.unsubscribe();
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
 
-    this.streetFilterSubscribe.unsubscribe();
+    if (this.streetFilterSubscribe) {
+      this.streetFilterSubscribe.unsubscribe();
+    }
 
-    this.street.clearAndRedraw();
-    this.street.clearSvg();
+    if (this.street) {
+      this.street.clearAndRedraw();
+      this.street.clearSvg();
+    }
   }
 
   private setDividers(places: any, drawDividers: any): void {

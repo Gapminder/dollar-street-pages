@@ -320,9 +320,18 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.activeThingServiceSubscription.unsubscribe();
     }
 
-    this.getTranslationSubscribe.unsubscribe();
-    this.resizeSubscribe.unsubscribe();
-    this.queryParamsSubscribe.unsubscribe();
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
+
+    if (this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.queryParamsSubscribe) {
+      this.queryParamsSubscribe.unsubscribe();
+    }
+
     this.loaderService.setLoader(false);
   }
 
