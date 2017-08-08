@@ -1,11 +1,17 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
-
 import { HttpModule } from '@angular/http';
-
-import { LoaderService, TitleHeaderService, LanguageService } from '../../common';
-
+import {
+  LoaderService,
+  TitleHeaderService,
+  LanguageService
+} from '../../common';
+import {
+  LoaderServiceMock,
+  LanguageServiceMock,
+  TitleHeaderServiceMock
+} from '../../test/';
 import { AboutComponent } from '../about.component';
 import { AboutService } from '../about.service';
 
@@ -15,34 +21,18 @@ describe('AboutComponent', () => {
   let debugElement: DebugElement;
   let nativeElement: HTMLElement;
 
-  const userAboutService = {
-
-  };
-
-  const userLoaderService = {
-    setLoader: (b: boolean) => {
-      return b;
-    }
-  };
-
-  const userTitleHeaderService = {
-
-  };
-
-  const userLanguageService = {
-    getTranslation: () => {
-      return;
-    }
-  };
+  class AboutServiceMock {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpModule ],
       declarations: [ AboutComponent ],
-      providers: [{ provide: AboutService, useValue: userAboutService },
-                  { provide: LoaderService, useValue: userLoaderService },
-                  { provide: TitleHeaderService, useValue: userTitleHeaderService },
-                  { provide: LanguageService, useValue: userLanguageService }]
+      providers: [
+        { provide: AboutService, useClass: AboutServiceMock },
+        { provide: LoaderService, useClass: LoaderServiceMock },
+        { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },
+        { provide: LanguageService, useClass: LanguageServiceMock }
+      ]
     });
 
     componentFixture = TestBed.createComponent(AboutComponent);

@@ -4,6 +4,9 @@ import {
     MathService,
     TitleHeaderService
 } from '../../common';
+import {
+    TitleHeaderServiceMock
+} from '../../test/';
 import { CountryComponent } from '../country.component';
 
 describe('CountryComponent', () => {
@@ -16,7 +19,7 @@ describe('CountryComponent', () => {
             declarations: [CountryComponent],
             providers: [
                 MathService,
-                TitleHeaderService
+                { provide: TitleHeaderService, useClass: TitleHeaderServiceMock }
             ]
         });
 

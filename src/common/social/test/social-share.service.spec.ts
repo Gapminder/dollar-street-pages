@@ -1,23 +1,24 @@
 import { TestBed, async, getTestBed, fakeAsync } from '@angular/core/testing';
-
 import {
     MockBackend
 } from '@angular/http/testing';
-
 import {
     BaseRequestOptions,
     Http,
     XHRBackend,
     HttpModule
 } from '@angular/http';
-
 import { Observable } from 'rxjs/Rx';
-
 import { SpyLocation } from '@angular/common/testing';
 import { Location } from '@angular/common';
-
-import { TranslateModule, TranslateLoader, TranslateService } from 'ng2-translate';
-
+import {
+    TranslateModule,
+    TranslateLoader,
+    TranslateService
+} from 'ng2-translate';
+import {
+    LanguageServiceMock
+} from '../../../test/';
 import { SocialShareService } from '../social-share.service';
 import { LanguageService } from '../../language/language.service';
 import { UrlChangeService } from '../../url-change/url-change.service';
@@ -32,7 +33,7 @@ class CustomLoader implements TranslateLoader {
 }
 /* tslint:enable */
 
-describe('SocialShareService Test', () => {
+describe('SocialShareService', () => {
     let socialShareService: SocialShareService;
     let mockedDocumentObject: Document;
 
@@ -47,7 +48,7 @@ describe('SocialShareService Test', () => {
             ],
             providers: [
                 SocialShareService,
-                LanguageService,
+                { provide: LanguageService, useClass: LanguageServiceMock },
                 TranslateService,
                 LocalStorageService,
                 UrlChangeService,

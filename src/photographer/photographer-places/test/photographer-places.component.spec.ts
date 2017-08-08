@@ -1,12 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Location, LocationStrategy } from '@angular/common';
-
 import { HttpModule } from '@angular/http';
-
 import { Observable } from 'rxjs/Observable';
-
-import { MathService, LanguageService, LoaderService } from '../../../common';
-
+import {
+    MathService,
+    LanguageService,
+    LoaderService
+} from '../../../common';
+import {
+    LoaderServiceMock,
+    LanguageServiceMock
+} from '../../../test/';
 import { PhotographerPlacesComponent } from '../photographer-places.component';
 import { PhotographerPlacesService } from '../photographer-places.service';
 
@@ -14,11 +18,11 @@ describe('PhotographerPlacesComponent', () => {
     let componentInstance: PhotographerPlacesComponent;
     let componentFixture: ComponentFixture<PhotographerPlacesComponent>;
 
-    class MockUserLanguageService {
+    /*class MockUserLanguageService {
         public getLanguageParam(): string {
             return 'lang=en';
         }
-    }
+    }*/
 
     class MockPhotographerPlacesService {
         public getPhotographerPlaces(): Observable<any> {
@@ -34,9 +38,9 @@ describe('PhotographerPlacesComponent', () => {
                 Location,
                 LocationStrategy,
                 MathService,
-                LoaderService,
+                { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: PhotographerPlacesService, useClass: MockPhotographerPlacesService },
-                { provide: LanguageService, useClass: MockUserLanguageService }
+                { provide: LanguageService, useClass: LanguageServiceMock }
             ]
         });
 

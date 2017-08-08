@@ -1,14 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Location, LocationStrategy } from '@angular/common';
-
 import { Observable } from 'rxjs/Observable';
-
 import { SpyLocation } from '@angular/common/testing';
-
 import { HttpModule } from '@angular/http';
-
 import { MathService, LanguageService, UrlChangeService } from '../../../common';
-
+import {
+    LanguageServiceMock
+} from '../../../test/';
 import { PhotographerProfileService } from '../photographer-profile.service';
 import { PhotographerProfileComponent } from '../photographer-profile.component';
 
@@ -16,7 +14,7 @@ describe('PhotographerProfileComponent', () => {
     let componentInstance: PhotographerProfileComponent;
     let componentFixture: ComponentFixture<PhotographerProfileComponent>;
 
-    class MockUserLanguageService {
+    /*class MockUserLanguageService {
         public getTranslation(): Observable<any> {
             return Observable.of({PHOTOGRAPHER: 'Photograper', SHOW_DETAILS: 'Show Details', HIDE_DETAILS: 'Hide details'});
         }
@@ -24,7 +22,7 @@ describe('PhotographerProfileComponent', () => {
         public getLanguageParam(): string {
             return 'lang=en';
         }
-    }
+    }*/
 
     class MockPhotographerProfileService {
         /* tslint:disable-next-line */
@@ -44,7 +42,7 @@ describe('PhotographerProfileComponent', () => {
                 UrlChangeService,
                 { provide: PhotographerProfileService, useClass: MockPhotographerProfileService },
                 { provide: Location, useClass: SpyLocation },
-                { provide: LanguageService, useClass: MockUserLanguageService }
+                { provide: LanguageService, useClass: LanguageServiceMock }
             ]
         });
 

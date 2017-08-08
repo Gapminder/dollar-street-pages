@@ -14,6 +14,13 @@ import {
     StreetSettingsActions,
     ActiveThingService
 } from '../../common';
+import {
+    LanguageServiceMock,
+    StreetSettingsServiceMock,
+    LoaderServiceMock,
+    AngularticsMock,
+    BlankComponent
+} from '../../test/';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -25,44 +32,10 @@ describe('MapComponent', () => {
     let componentInstance: MapComponent;
     let componentFixture: ComponentFixture<MapComponent>;
 
-    @Component({
-         template: ''
-    })
-    class BlankComponent { }
-
-    class MockStreetSettingsService {
-        public getStreetSettings(): Observable<any> {
-            let context: any = {_id:'57963211cc4aaed63a02504c',showDividers:false,low:30,medium:300,high:3000,poor:26,rich:15000,lowDividerCoord:78,mediumDividerCoord:490,highDividerCoord:920,__v:0};
-            let response: any = {success:true,error:false,msg:[],data:context};
-
-            return Observable.of(response);
-        }
-    }
-
-    class MockAngulartics {
-        // tslint:disable-next-line
-        public eventTrack(name: string, param: any): void {}
-    }
-
-    class MockLanguageService {
-        public getTranslation(): Observable<any> {
-            return Observable.of('the world');
-        }
-
-         public getLanguageParam(): string {
-            return '&lang=en';
-        }
-    }
-
-    class MockMapService {
+    class MapServiceMock {
         public getMainPlaces(): Observable<any> {
             return Observable.of({err: undefined, data: { mockMapData }});
         }
-    }
-
-    class MockLoaderService {
-        // tslint:disable-next-line
-        public setLoader(b: boolean): void {}
     }
 
     class MockElementRef implements ElementRef {
@@ -96,23 +69,23 @@ describe('MapComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                        HttpModule,
-                        StoreModule.provideStore({}),
-                        EffectsModule.run(StreetSettingsEffects),
-                        RouterTestingModule.withRoutes([{path: '', component: BlankComponent}])
-                     ],
+                HttpModule,
+                StoreModule.provideStore({}),
+                EffectsModule.run(StreetSettingsEffects),
+                RouterTestingModule.withRoutes([{path: '', component: BlankComponent}])
+            ],
             providers: [
-                            MathService,
-                            UrlChangeService,
-                            BrowserDetectionService,
-                            StreetSettingsActions,
-                            ActiveThingService,
-                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
-                            { provide: LoaderService, useClass: MockLoaderService },
-                            { provide: MapService, useClass: MockMapService },
-                            { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
-                            { provide: LanguageService, useClass: MockLanguageService }
-                       ],
+                MathService,
+                UrlChangeService,
+                BrowserDetectionService,
+                StreetSettingsActions,
+                ActiveThingService,
+                { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
+                { provide: LoaderService, useClass: LoaderServiceMock },
+                { provide: MapService, useClass: MapServiceMock },
+                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+                { provide: LanguageService, useClass: LanguageServiceMock }
+            ],
             declarations: [MapComponent, BlankComponent]
         });
 

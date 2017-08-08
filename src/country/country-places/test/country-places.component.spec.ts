@@ -5,6 +5,10 @@ import {
     LanguageService
 } from '../../../common';
 import { Observable } from 'rxjs/Observable';
+import {
+    LoaderServiceMock,
+    LanguageServiceMock
+} from '../../../test/';
 import { CountryPlacesComponent } from '../country-places.component';
 import { CountryPlacesService } from '../country-places.service';
 
@@ -24,26 +28,14 @@ describe('CountryPlacesComponent', () => {
         }
     }
 
-    const userLanguageService = {
-        getLanguageParam: () => {
-            return 'lang=en';
-        }
-    };
-
-    const userLoaderService = {
-        setLoader: (b: boolean) => {
-            return b;
-        }
-    };
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [],
             declarations: [CountryPlacesComponent],
             providers: [
-                { provide: LoaderService, useValue: userLoaderService },
                 MathService,
-                { provide: LanguageService, useValue: userLanguageService },
+                { provide: LoaderService, useClass: LoaderServiceMock },
+                { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: CountryPlacesService, useClass: MockCountryPlacesService }
             ]
         });
