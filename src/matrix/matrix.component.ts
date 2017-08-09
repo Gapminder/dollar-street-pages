@@ -485,20 +485,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.streetPlaces.next(this.streetPlacesData);
     this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-    if (!this.filtredPlaces.length) {
-      let lowIncome: number = Math.floor(incomesArr[0] - 10);
-      let highIncome: number = Math.ceil(incomesArr[incomesArr.length - 1] + 10);
-
-      this.query = this.query
-        .replace(/lowIncome\=\d*/, `lowIncome=${lowIncome}`)
-        .replace(/highIncome\=\d*/, `highIncome=${highIncome}`);
-
-      this.lowIncome = lowIncome;
-      this.highIncome = highIncome;
-      this.urlChanged({url: this.query});
-      return;
-    }
-
     this.buildTitle(this.query);
 
     this.scrollTopZero();
@@ -517,13 +503,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.query = this.query.replace(/row\=\d*/, 'row=1');
     }
 
-    if (!isBack) {
-      this.query = this.query.replace(/&activeHouse\=\d*/, '');
-      this.activeHouse = void 0;
+    // if (!isBack) {
+      // this.query = this.query.replace(/&activeHouse\=\d*/, '');
+      // this.activeHouse = void 0;
 
-      this.hoverPlace.next(undefined);
-      this.clearActiveHomeViewBox.next(true);
-    }
+      // this.hoverPlace.next(undefined);
+      // this.clearActiveHomeViewBox.next(true);
+    // }
 
     this.urlChangeService.replaceState('/matrix', this.query);
 

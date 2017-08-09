@@ -52,12 +52,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   @Input()
   public zoom: number;
   @Input()
-  public showblock: boolean = false;
+  public showBlock: boolean;
   @Input()
   public row: number;
-
   @Input()
   public clearActiveHomeViewBox: Subject<any>;
+
   @Output()
   public hoverPlace: EventEmitter<any> = new EventEmitter<any>();
   @Output()
@@ -140,18 +140,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.onThisIncomeYetTranslate = trans.ON_THIS_INCOME_YET;
       this.theWorldTranslate = trans.THE_WORLD;
       this.inTranslate = trans.IN;
-
-      if (this.currentPlaces && this.query && !this.currentPlaces.length) {
-        this.buildErrorMsg(this.currentPlaces);
-      }
     });
 
     this.placesSubscribe = this.places.subscribe((places: any) => {
       this.showErrorMsg = false;
-      this.showblock = false;
+      this.showBlock = false;
       this.currentPlaces = places;
 
-      this.buildErrorMsg(this.currentPlaces);
+      if (this.currentPlaces && this.query && !this.currentPlaces.length) {
+        this.buildErrorMsg(this.currentPlaces);
+      }
 
       setTimeout(() => {
         this.getVisibleRows();
@@ -162,18 +160,18 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         }
 
         this.placesArr = _.slice(this.currentPlaces, 0, numberSplice);
-      }, 0);
+      });
 
       setTimeout(() => {
         this.calcItemSize();
         this.loaderService.setLoader(true);
-      }, 0);
+      });
 
       if (this.activeHouse && this.isInit) {
         setTimeout(() => {
           this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1, true);
           this.isInit = false;
-        }, 0);
+        });
       }
     });
 
@@ -210,7 +208,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
           this.familyData = void 0;
           this.imageBlockLocation = void 0;
           this.indexViewBoxHouse = void 0;
-          this.showblock = void 0;
+          this.showBlock = void 0;
           this.showErrorMsg = void 0;
         }
       });
@@ -396,7 +394,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     if (!this.prevPlaceId) {
       this.prevPlaceId = place._id;
-      this.showblock = !this.showblock;
+      this.showBlock = !this.showBlock;
 
       if (isInit) {
         this.changeUrl({activeHouseIndex: activeHouseIndex});
@@ -409,16 +407,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
 
     if (this.prevPlaceId === place._id) {
-      this.showblock = !this.showblock;
+      this.showBlock = !this.showBlock;
 
-      if (!this.showblock) {
+      if (!this.showBlock) {
         this.prevPlaceId = '';
       }
 
       this.changeUrl({row: row});
     } else {
       this.prevPlaceId = place._id;
-      this.showblock = true;
+      this.showBlock = true;
 
       this.changeUrl({row: row, activeHouseIndex: activeHouseIndex});
     }

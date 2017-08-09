@@ -859,10 +859,13 @@ export class StreetDrawService {
 
     this.removeHouses('hover');
     this.removeHouses('chosen');
+
     this.removeSliders();
 
     this.drawHouses(places);
+
     this.drawHoverHouse(this.hoverPlace);
+
     this.drawLeftSlider(this.scale(this.lowIncome), true);
     this.drawRightSlider(this.scale(this.highIncome), true);
 
