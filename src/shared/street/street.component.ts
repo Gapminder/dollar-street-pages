@@ -9,7 +9,6 @@ import {
   Output,
   ElementRef,
   OnDestroy,
-  OnChanges,
   EventEmitter,
   ViewChild,
   AfterViewInit
@@ -32,14 +31,12 @@ import { StreetDrawService } from './street.service';
   templateUrl: './street.component.html',
   styleUrls: ['./street.component.css']
 })
-export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
+export class StreetComponent implements OnDestroy, AfterViewInit {
   @ViewChild('streetBox')
   public streetBox: ElementRef;
   @ViewChild('svg')
   public svg: ElementRef;
 
-  @Input()
-  public thing: string;
   @Input()
   public places: Observable<any>;
   @Input()
@@ -56,7 +53,8 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   public getTranslationSubscribe: Subscription;
   public street: any;
   public regions: any;
-  public thingname: any;
+  public thing: string;
+  public thingName: any;
   public countries: any;
   public math: MathService;
   public streetData: any;
@@ -137,7 +135,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
 
         this.street.set('lowIncome', parseUrl.lowIncome);
         this.street.set('highIncome', parseUrl.highIncome);
-        this.thingname = parseUrl.thing;
+        this.thingName = parseUrl.thing;
         this.countries = parseUrl.countries;
         this.regions = parseUrl.regions;
       }
@@ -196,7 +194,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       if (!places.length) {
         this.street
           .clearSvg()
-          .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
+          .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
           .set('places', [])
           .set('fullIncomeArr', [])
           .drawScale(places, this.streetData)
@@ -216,16 +214,16 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
       query.lowIncome = filter.lowIncome;
       query.highIncome = filter.highIncome;
 
-      if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+      /*if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
         this.isStreetInit = true;
 
         return;
-      }
+      }*/
 
       this.filterStreet.emit({url: this.utilsService.objToQuery(query)});
     });
 
-    this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
+    //this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -240,31 +238,6 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
 
         this.setDividers(this.placesArr, this.streetData);
       });
-  }
-
-  public ngOnChanges(changes: any): void {
-    /*if (changes.query && changes.query.currentValue) {
-      let parseUrl = this.utilsService.parseUrl(this.query);
-
-      this.street.set('lowIncome', parseUrl.lowIncome);
-      this.street.set('highIncome', parseUrl.highIncome);
-
-      this.thingname = parseUrl.thing;
-      this.countries = parseUrl.countries;
-      this.regions = parseUrl.regions;
-
-      if (!this.places) {
-        this.street
-          .clearSvg()
-          .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
-          .set('places', [])
-          .set('fullIncomeArr', [])
-          .drawScale(this.places, this.streetData)
-          .removeSliders();
-      }
-
-      this.setDividers(this.placesArr, this.streetData);
-    }*/
   }
 
   public ngOnDestroy(): void {
@@ -309,7 +282,7 @@ export class StreetComponent implements OnDestroy, OnChanges, AfterViewInit {
   private setDividers(places: any, drawDividers: any): void {
     this.street
       .clearSvg()
-      .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingname)
+      .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
       .set('places', sortBy(places, 'income'))
       .set('fullIncomeArr', chain(this.street.places)
         .sortBy('income')

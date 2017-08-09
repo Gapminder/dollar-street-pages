@@ -51,6 +51,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public thing: string;
   @Input()
   public itemSize: number;
+
   @Output()
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output()
