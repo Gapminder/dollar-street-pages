@@ -230,10 +230,17 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.contentLoadedSubscription.unsubscribe();
     }
 
-    this.getTranslationSubscribe.unsubscribe();
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
 
-    this.placesSubscribe.unsubscribe();
-    this.resizeSubscribe.unsubscribe();
+    if (this.placesSubscribe) {
+      this.placesSubscribe.unsubscribe();
+    }
+
+    if (this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
   }
 
   public onScrollDown(): void {
@@ -281,7 +288,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
   }
 
-  public buildTitle(query: any): any {
+  public buildTitle(query: any): void {
     let regions = query.regions;
     let countries = query.countries;
 
