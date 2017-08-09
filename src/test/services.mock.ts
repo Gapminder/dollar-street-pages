@@ -94,6 +94,12 @@ export class UtilsServiceMock {
             region: 'World'
         };
     }
+
+    public objToQuery(data: any): string {
+        return Object.keys(data).map((k: string) => {
+            return encodeURIComponent(k) + '=' + data[k];
+        }).join('&');
+    }
 }
 
 export class BrowserDetectionServiceMock {
