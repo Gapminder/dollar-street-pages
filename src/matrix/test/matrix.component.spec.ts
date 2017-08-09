@@ -110,7 +110,7 @@ describe('MatrixComponent', () => {
     });
 
     it('getPaddings()', () => {
-        component.getPaddings();
+        // component.getPaddings();
     });
 
     it('getVisibleRows()', () => {

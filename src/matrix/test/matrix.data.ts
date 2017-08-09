@@ -1,0 +1,6 @@
+export const matrixData: any = {zoomPlaces:[
+{_id:"54afe95c80d862d9767cf32e",incomeQuality:10,country:"Burundi",income:26.99458113,image:"54afea8f993307fb769cc6f4",region:"Africa",lat:-3.5,lng:30,background:"//static.dollarstreet.org/media/Burundi 3/image/061693d6-6491-46a7-a5b6-599296677954/480x480-061693d6-6491-46a7-a5b6-599296677954.jpg"},
+{_id:"54be2ac36c9e7cf91e2ed92d",incomeQuality:10,country:"Bolivia",income:180.2371102,image:"54be2ce58f6cdb1217b1dda9",region:"The Americas",lat:-17,lng:-65,background:"//static.dollarstreet.org/media/Bolivia 3/image/f95ebc6f-76a1-44f2-b98e-6acd1bab9afa/480x480-f95ebc6f-76a1-44f2-b98e-6acd1bab9afa.jpg"},
+{_id:"557164e181375e0f2c132073",incomeQuality:10,country:"Jordan",income:583.1693665,image:"557168292d54dcff2baec36f",region:"Asia",lat:31,lng:36,background:"//static.dollarstreet.org/media/Jordan 2/image/ccfd1fe3-bdd8-49dc-a118-67fcd781b4b7/480x480-ccfd1fe3-bdd8-49dc-a118-67fcd781b4b7.jpg"},
+{_id:"55646e1512d20a701a1e19eb",incomeQuality:10,country:"Latvia",income:11381.3733,image:"55647887398632ef199dcd57",region:"Europe",lat:57,lng:25,background:"//static.dollarstreet.org/media/Latvia 2/image/a77cb482-a8c4-449f-9313-0b8fe0679c6f/480x480-a77cb482-a8c4-449f-9313-0b8fe0679c6f.jpg"}
+]};
