@@ -9,7 +9,7 @@
     "build": "ng build --aot --prod --base-href /dollar-street/",
     "test": "ng test -sr -cc",
     "test:w": "ng test",
-    "test:coverage": "ng test --code-coverage",
+    "test:c": "ng test --code-coverage",
     "postinstall": "concurrent \"npm run update-webdriver\"",
     "update-webdriver": "webdriver-manager update",
     "deploy:github": "npm run build && npm run publish:gh-pages",

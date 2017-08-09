@@ -11,18 +11,19 @@ import {
     XHRBackend,
     HttpModule
 } from '@angular/http';
-import { MapService } from '../map.service';
-import { mockMapData } from './mock.data';
+import { MatrixService } from '../matrix.service';
+import { matrixData } from './matrix.data';
 
-describe('MapService', () => {
+describe('MatrixService', () => {
     let mockBackend: MockBackend;
-    let mapService: MapService;
+    let matrixService: MatrixService;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpModule],
+            declarations: [],
             providers: [
-                MapService,
+                MatrixService,
                 MockBackend,
                 BaseRequestOptions,
                 {
@@ -38,32 +39,31 @@ describe('MapService', () => {
             ]
         });
 
-        const testBed = getTestBed();
-        mockBackend = testBed.get(MockBackend);
-        mapService = testBed.get(MapService);
-    }));
+        mockBackend = TestBed.get(MockBackend);
+        matrixService = TestBed.get(MatrixService);
+    });
 
     it('getMainPlaces()', fakeAsync(() => {
         const query: string = 'lang=en';
         let response: any = void 0;
 
         mockBackend.connections.subscribe((connection: MockConnection) => {
-            expect(connection.request.url.indexOf(`/v1/map?${query}`)).toBeGreaterThan(-1);
+            expect(connection.request.url.indexOf(`/v1/things?${query}`)).toBeGreaterThan(-1);
 
             let mockResponse = new ResponseOptions({
-                body: `{"success":true,"msg":[],"data":${JSON.stringify(mockMapData)}}`
+                body: `{"success":true,"msg":[],"data":${JSON.stringify(matrixData)}}`
             });
 
             connection.mockRespond(new Response(mockResponse));
         });
 
-        mapService.getMainPlaces(query).subscribe((_data: any) => {
+        matrixService.getMatrixImages(query).subscribe((_data: any) => {
             response = _data;
         });
 
         tick();
 
         expect(!response.err).toBe(true);
-        expect(response.data).toEqual(mockMapData);
+        expect(response.data).toEqual(matrixData);
     }));
 });
