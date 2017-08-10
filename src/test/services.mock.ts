@@ -1,11 +1,17 @@
 import { Observable } from 'rxjs/Observable';
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { ImageResolutionInterface } from '../interfaces';
 
 @Component({
     template: ''
 })
 export class BlankComponent {}
+
+@NgModule({
+  declarations: [BlankComponent],
+  exports: [BlankComponent]
+})
+export class AppTestModule {}
 
 export class LoaderServiceMock {
     public setLoader(b: boolean): boolean {
