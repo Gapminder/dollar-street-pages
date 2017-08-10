@@ -21,6 +21,7 @@ import {
     LanguageServiceMock,
     StreetSettingsServiceMock,
     AngularticsMock,
+    AppTestModule,
     BlankComponent,
     BrowserDetectionServiceMock,
     UtilsServiceMock
@@ -42,6 +43,7 @@ describe('FamilyHeaderComponent', () => {
         TestBed.configureTestingModule({
             schemas: [],
             imports: [
+                AppTestModule,
                 StoreModule.provideStore({}),
                 EffectsModule.run(StreetSettingsEffects),
                 RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
@@ -50,7 +52,7 @@ describe('FamilyHeaderComponent', () => {
                     useClass: CustomLoader
                 })
             ],
-            declarations: [BlankComponent, FamilyHeaderComponent],
+            declarations: [FamilyHeaderComponent],
             providers: [
                 MathService,
                 FamilyHeaderService,

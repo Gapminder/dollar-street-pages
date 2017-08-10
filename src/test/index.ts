@@ -9,5 +9,6 @@ export {
     BrowserDetectionServiceMock,
     Angulartics2GoogleAnalyticsMock,
     UrlChangeServiceMock,
-    TranslateServiceMock
+    TranslateServiceMock,
+    AppTestModule
 } from './services.mock';
