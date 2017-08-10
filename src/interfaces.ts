@@ -1,3 +1,11 @@
+export interface AppStates {
+    app: any;
+    matrix: any;
+    streetSettings: any;
+    thingsFilter: any;
+    countriesFilter: any;
+}
+
 export interface ImageResolutionInterface {
     image: string;
     expand: string;
@@ -12,14 +20,6 @@ export interface UrlParamsInterface {
   row: number;
   lowIncome?: number;
   highIncome?: number;
-}
-
-export interface AppStore {
-    app: any;
-    matrix: any;
-    streetSettings: any;
-    thingsFilter: any;
-    countriesFilter: any;
 }
 
 export interface DrawDividersInterface {

@@ -33,7 +33,7 @@ describe('MatrixViewBlockComponent', () => {
                 RouterTestingModule,
                 Angulartics2Module,
                 SharedModule,
-                StoreModule.provideStore({})
+                StoreModule.forRoot({})
             ],
             declarations: [MatrixViewBlockComponent],
             providers: [

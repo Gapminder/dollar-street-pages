@@ -14,8 +14,8 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
-import { AppActions } from '../../app/app.actions';
+import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 
 @Component({
   selector: 'quick-guide',
@@ -41,8 +41,7 @@ export class GuideComponent implements OnInit, OnDestroy {
                      localStorageService: LocalStorageService,
                      languageService: LanguageService,
                      element: ElementRef,
-                     private store: Store<AppStore>,
-                     private appActions: AppActions) {
+                     private store: Store<AppStates>) {
     this.guideService = guideService;
     this.localStorageService = localStorageService;
     this.languageService = languageService;
@@ -90,6 +89,6 @@ export class GuideComponent implements OnInit, OnDestroy {
     this.isShowBubble = false;
     this.startQuickGuide.emit({});
     this.localStorageService.setItem('quick-guide', true);
-    this.store.dispatch(this.appActions.openQuickGuide(false));
+    this.store.dispatch(new AppActions.OpenQuickGuide(false));
   }
 }

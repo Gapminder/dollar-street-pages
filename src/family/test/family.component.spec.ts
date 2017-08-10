@@ -18,7 +18,7 @@ import {
     Angulartics2GoogleAnalytics,
     StreetSettingsService,
     StreetSettingsEffects,
-    StreetSettingsActions,
+    // StreetSettingsActions,
     UtilsService
 } from '../../common';
 import {
@@ -58,15 +58,15 @@ describe('FamilyComponent', () => {
             imports: [
                 HttpModule,
                 FamilyModule,
-                StoreModule.provideStore({}),
-                EffectsModule.run(StreetSettingsEffects),
+                StoreModule.forRoot({}),
+                EffectsModule.forFeature([StreetSettingsEffects]),
                 RouterTestingModule.withRoutes([{path: '', component: BlankComponent}, {path: 'matrix', component: BlankComponent}])
             ],
             declarations: [ BlankComponent ],
             providers: [
                 LocalStorageService,
                 MathService,
-                StreetSettingsActions,
+                // StreetSettingsActions,
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },

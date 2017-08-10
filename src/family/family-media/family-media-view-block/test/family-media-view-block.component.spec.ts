@@ -20,7 +20,7 @@ import {
     UtilsService,
     StreetSettingsService,
     StreetSettingsEffects,
-    StreetSettingsActions
+    // StreetSettingsActions
 } from '../../../../common';
 import {
     LanguageServiceMock,
@@ -49,8 +49,8 @@ describe('FamilyMediaViewBlockComponent', () => {
             imports: [
                 SharedModule,
                 Angulartics2Module,
-                StoreModule.provideStore({}),
-                EffectsModule.run(StreetSettingsEffects),
+                StoreModule.forRoot({}),
+                EffectsModule.forFeature([StreetSettingsEffects]),
                 RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
                 TranslateModule.forRoot({
                     provide: TranslateLoader,
@@ -60,7 +60,7 @@ describe('FamilyMediaViewBlockComponent', () => {
             declarations: [ FamilyMediaViewBlockComponent, BlankComponent ],
             providers: [
                 FamilyMediaViewBlockService,
-                StreetSettingsActions,
+                // StreetSettingsActions,
                 { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: Angulartics2, useClass: AngularticsMock },

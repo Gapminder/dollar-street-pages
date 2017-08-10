@@ -1,7 +1,20 @@
-import { ActionReducer, Action } from '@ngrx/store';
-import { AppActions } from './app.actions';
+import * as AppActions from './app.actions';
 
-export function appReducer(state: any, action: Action): any {
+export interface State {
+    query: string;
+    thing: null;
+    incomeFilter: boolean;
+    quickGuide: boolean;
+};
+
+export const initialState: State = {
+    query: '',
+    thing: null,
+    incomeFilter: false,
+    quickGuide: false
+};
+
+export function appReducer(state: any, action: AppActions.Actions): any {
     switch (action.type) {
         case AppActions.SET_QUERY: {
             return Object.assign({}, state, {query: action.payload});
@@ -18,10 +31,6 @@ export function appReducer(state: any, action: Action): any {
         case AppActions.OPEN_QUICK_GUIDE: {
             return Object.assign({}, state, {quickGuide: action.payload});
         }
-
-        /*case AppActions.SET_HOVER_PLACE: {
-            return Object.assign({}, state, {hoverThing: action.payload});
-        }*/
 
         default:
             return state;

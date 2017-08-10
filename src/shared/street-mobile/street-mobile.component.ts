@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import {
   DrawDividersInterface
 } from '../../common';
-import { AppStore } from '../../interfaces';
+import { AppStates } from '../../interfaces';
 import { sortBy, chain } from 'lodash';
 import { StreetMobileDrawService } from './street-mobile.service';
 
@@ -36,19 +36,17 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   public windowInnerWidth: number = window.innerWidth;
   public placesSubscribe: Subscription;
   public placesArr: any;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetMobileDrawService,
-                     store: Store<AppStore>) {
+                     private store: Store<AppStates>) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
-    this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngAfterViewInit(): void {

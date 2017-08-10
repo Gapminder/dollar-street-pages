@@ -17,8 +17,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
-import { ThingsFilterActions } from './things-filter.actions';
+import { AppStates } from '../../interfaces';
+import * as ThingsFilterActions from './ngrx/things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
@@ -78,8 +78,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      activeThingService: ActiveThingService,
                      utilsService: UtilsService,
-                     private store: Store<AppStore>,
-                     private thingsFilterActions: ThingsFilterActions) {
+                     private store: Store<AppStates>) {
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
@@ -88,7 +87,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     this.activeThingService = activeThingService;
     this.utilsService = utilsService;
 
-    this.thingsFilterState = this.store.select((dataSet: AppStore) => dataSet.thingsFilter);
+    this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
   }
 
   @HostListener('document:click', ['$event'])
@@ -190,7 +189,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
 
-    this.store.dispatch(this.thingsFilterActions.getThingsFilter(newUrl));
+    this.store.dispatch(new ThingsFilterActions.GetThingsFilter(newUrl));
 
     this.selectedFilter.emit({url: newUrl, thing: this.activeThing});
 

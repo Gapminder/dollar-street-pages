@@ -37,7 +37,7 @@ describe('FooterComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule,
-                StoreModule.provideStore({})
+                StoreModule.forRoot({})
             ],
             declarations: [ FooterComponent ],
             providers: [

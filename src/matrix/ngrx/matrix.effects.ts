@@ -1,13 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Action } from '@ngrx/store';
 import { Effect, Actions, toPayload } from "@ngrx/effects";
-import { MatrixActions } from './matrix.actions';
-import { MatrixService } from './matrix.service';
+import * as MatrixActions from './matrix.actions';
+import { MatrixService } from '../matrix.service';
 
 @Injectable()
 export class MatrixEffects {
     constructor(private actions: Actions,
-                private matrixActions: MatrixActions,
                 private matrixService: MatrixService) {
     }
 
@@ -17,5 +16,5 @@ export class MatrixEffects {
         .map(toPayload)
         .switchMap((query: string) => this.matrixService.getMatrixImages(query))
         .map(data => data.data)
-        .map((data: any) => this.matrixActions.getMatrixImagesSuccess(data));
+        .map((data: any) => new MatrixActions.GetMatrixImagesSuccess(data));
 }

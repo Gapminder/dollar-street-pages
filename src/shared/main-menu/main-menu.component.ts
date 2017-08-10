@@ -25,8 +25,8 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
-import { AppActions } from '../../app/app.actions';
+import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 
 @Component({
   selector: 'main-menu',
@@ -63,8 +63,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
                      localStorageService: LocalStorageService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     private store: Store<AppStore>,
-                     private appActions: AppActions) {
+                     private store: Store<AppStates>) {
     this.element = element.nativeElement;
     this.router = router;
     this.device = browserDetectionService;
@@ -72,7 +71,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -203,7 +202,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.isOpenMenu = false;
 
-    this.store.dispatch(this.appActions.openQuickGuide(true));
+    this.store.dispatch(new AppActions.OpenQuickGuide(true));
 
     this.goToMatrixPage();
   }

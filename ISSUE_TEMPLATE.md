@@ -6,7 +6,7 @@
 
 [ordered list the process to finding and recreating the issue, example below]
 
-1. User goes to delete a dataset (to save space or whatever)
+1. User goes to delete a appStates (to save space or whatever)
 2. User gets popup modal warning
 3. User deletes and it's lost forever
 

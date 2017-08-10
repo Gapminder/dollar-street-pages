@@ -1,13 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Action } from '@ngrx/store';
 import { Effect, Actions, toPayload } from "@ngrx/effects";
-import { ThingsFilterActions } from './things-filter.actions';
-import { ThingsFilterService } from './things-filter.service';
+import * as ThingsFilterActions from './things-filter.actions';
+import { ThingsFilterService } from '../things-filter.service';
 
 @Injectable()
 export class ThingsFilterEffects {
     constructor(private action$: Actions,
-                private thingsFilterActions: ThingsFilterActions,
                 private thingsFilterService: ThingsFilterService) {
     }
 
@@ -17,5 +16,5 @@ export class ThingsFilterEffects {
         .map(toPayload)
         .switchMap((query) => this.thingsFilterService.getThings(query))
         .map(data => data.data)
-        .map((data: any) => this.thingsFilterActions.getThingsFilterSuccess(data));
+        .map((data: any) => new ThingsFilterActions.GetThingsFilterSuccess(data));
 }

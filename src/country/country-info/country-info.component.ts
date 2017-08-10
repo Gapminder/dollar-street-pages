@@ -8,7 +8,7 @@ import { Component,
   Output
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
+import { AppStates } from '../../interfaces';
 import {
   MathService,
   DrawDividersInterface,
@@ -48,14 +48,14 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
                      math: MathService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
-                     private store: Store<AppStore>) {
+                     private store: Store<AppStates>) {
     this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
     this.isShowInfo = false;
     this.languageService = languageService;
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {

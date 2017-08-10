@@ -18,7 +18,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
+import { AppStates } from '../../interfaces';
 import { Router } from '@angular/router';
 import { ImageResolutionInterface } from '../../interfaces';
 import {
@@ -85,7 +85,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public currentLanguage: string;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public viewImage: string;
   public streetSettingsStateSubscription: Subscription;
@@ -99,7 +98,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     store: Store<AppStore>,
+                     private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef) {
     this.math = math;
     this.zone = zone;
@@ -109,7 +108,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.familyInfoService = familyInfoService;
     this.languageService = languageService;
     this.utilsService = utilsService;
-    this.store = store;
     this.consumerApi = environment.consumerApi;
 
     this.isDesktop = this.device.isDesktop();
@@ -118,7 +116,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {

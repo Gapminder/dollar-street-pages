@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../interfaces';
+import { AppStates } from '../interfaces';
 import {
   MathService,
   LoaderService,
@@ -25,7 +25,7 @@ import {
   LanguageService,
   ActiveThingService
 } from '../common';
-import { AppActions } from '../app/app.actions';
+import * as AppActions from '../app/ngrx/app.actions';
 import { MapService } from './map.service';
 
 @Component({
@@ -101,7 +101,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     private store: Store<AppStore>,
+                     private store: Store<AppStates>,
                      private activeThingService: ActiveThingService) {
     this.zone = zone;
     this.math = math;
@@ -117,8 +117,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.currentLanguage = this.languageService.currentLanguage;
 
-    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {

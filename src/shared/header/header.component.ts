@@ -17,12 +17,12 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
-  AppStore
+  AppStates
 } from '../../interfaces';
-import { AppActions } from '../../app/app.actions';
-import { ThingsFilterActions } from '../things-filter/things-filter.actions';
+import * as AppActions from '../../app/ngrx/app.actions';
+import * as ThingsFilterActions from '../things-filter/ngrx/things-filter.actions';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
-import { CountriesFilterActions } from '../countries-filter/countries-filter.actions';
+import * as CountriesFilterActions from '../countries-filter/ngrx/countries-filter.actions';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 import {
   MathService,
@@ -118,12 +118,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
                      element: ElementRef,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      private changeDetectorRef: ChangeDetectorRef,
-                     private thingsFilterActions: ThingsFilterActions,
-                     private countriesFilterActions: CountriesFilterActions,
-                     private appActions: AppActions,
                      private utilsService: UtilsService,
                      private urlChangeService: UrlChangeService,
-                     private store: Store<AppStore>,
+                     private store: Store<AppStates>,
                      private titleHeaderService: TitleHeaderService,
                      private renderer: Renderer,
                      private activeThingService: ActiveThingService) {
@@ -132,8 +129,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.element = element.nativeElement;
 
-    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -255,8 +252,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       if(!this.isInit) {
         this.isInit = true;
 
-        this.store.dispatch(this.thingsFilterActions.getThingsFilter(this.query));
-        this.store.dispatch(this.countriesFilterActions.getCountriesFilter(this.query));
+        this.store.dispatch(new ThingsFilterActions.GetThingsFilter(this.query));
+        this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.query));
 
         // this.store.dispatch(this.appActions.setQuery(this.query));
       }
@@ -406,11 +403,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return;
     }
 
-    this.store.dispatch(this.appActions.openIncomeFilter(true));
+    this.store.dispatch(new AppActions.OpenIncomeFilter(true));
   }
 
   public thingSelected(data: any): void {
-    this.store.dispatch(this.appActions.setQuery(data.url));
+    this.store.dispatch(new AppActions.SetQuery(data.url));
 
     let pageName: string = '';
 
@@ -426,7 +423,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public countrySelected(data: any): void {
-    this.store.dispatch(this.appActions.setQuery(data.url));
+    this.store.dispatch(new AppActions.SetQuery(data.url));
 
     this.urlChangeService.replaceState('/matrix', data.url);
   }
@@ -459,10 +456,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     let queryUrl: string = this.utilsService.objToQuery(queryParams);
 
-    this.store.dispatch(this.thingsFilterActions.getThingsFilter(queryUrl));
-    this.store.dispatch(this.countriesFilterActions.getCountriesFilter(queryUrl));
+    this.store.dispatch(new ThingsFilterActions.GetThingsFilter(queryUrl));
+    this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
 
-    this.store.dispatch(this.appActions.setQuery(queryUrl));
+    this.store.dispatch(new AppActions.SetQuery(queryUrl));
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 

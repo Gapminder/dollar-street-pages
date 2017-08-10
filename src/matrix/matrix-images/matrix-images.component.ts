@@ -25,8 +25,8 @@ import {
   UtilsService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
-import { AppActions } from '../../app/app.actions';
+import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 
 @Component({
   selector: 'matrix-images',
@@ -117,8 +117,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      private utilsService: UtilsService,
-                     private store: Store<AppStore>,
-                     private appActions: AppActions) {
+                     private store: Store<AppStates>) {
     this.languageService = languageService;
     this.zone = zone;
     this.math = math;
@@ -127,7 +126,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.device = browserDetectionService;
     this.element = element.nativeElement;
 
-    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
   }
 
   public ngOnInit(): any {

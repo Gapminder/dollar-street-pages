@@ -15,7 +15,7 @@ import {
     UtilsService,
     StreetSettingsService,
     StreetSettingsEffects,
-    StreetSettingsActions
+    // StreetSettingsActions
 } from '../../../common';
 import {
     LanguageServiceMock,
@@ -44,8 +44,8 @@ describe('FamilyHeaderComponent', () => {
             schemas: [],
             imports: [
                 AppTestModule,
-                StoreModule.provideStore({}),
-                EffectsModule.run(StreetSettingsEffects),
+                StoreModule.forRoot({}),
+                EffectsModule.forFeature([StreetSettingsEffects]),
                 RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
                 TranslateModule.forRoot({
                     provide: TranslateLoader,
@@ -56,7 +56,7 @@ describe('FamilyHeaderComponent', () => {
             providers: [
                 MathService,
                 FamilyHeaderService,
-                StreetSettingsActions,
+                // StreetSettingsActions,
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },

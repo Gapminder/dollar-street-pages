@@ -1,7 +1,14 @@
-import { ActionReducer, Action } from '@ngrx/store';
-import { CountriesFilterActions } from './countries-filter.actions';
+import * as CountriesFilterActions from './countries-filter.actions';
 
-export function countriesFilterReducer(state: any, action: Action): any {
+export interface State {
+
+};
+
+export const initialState: State = {
+
+};
+
+export function countriesFilterReducer(state: any, action: CountriesFilterActions.Actions): any {
     switch (action.type) {
         case CountriesFilterActions.SELECT_COUNTRIES:
             return action.payload;

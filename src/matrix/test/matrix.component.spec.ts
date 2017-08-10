@@ -3,13 +3,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Angulartics2GoogleAnalytics } from 'angulartics2';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from 'ng2-translate';
-import { AppActions } from '../../app/app.actions';
-import { MatrixActions } from '../matrix.actions';
+// import { AppActions } from '../../app/app.actions';
+// import { MatrixActions } from '../matrix.actions';
 import { MatrixImagesComponent } from '../matrix-images';
 import { MatrixViewBlockComponent } from '../matrix-view-block';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import {
-    ThingsFilterActions,
+    // ThingsFilterActions,
     SharedModule
 } from '../../shared';
 import {
@@ -40,7 +40,7 @@ describe('MatrixComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule,
-                StoreModule.provideStore({}),
+                StoreModule.forRoot({}),
                 TranslateModule,
                 SharedModule,
                 InfiniteScrollModule
@@ -52,9 +52,9 @@ describe('MatrixComponent', () => {
             ],
             providers: [
                 ActiveThingService,
-                AppActions,
-                MatrixActions,
-                ThingsFilterActions,
+                // AppActions,
+                // MatrixActions,
+                // ThingsFilterActions,
                 MathService,
                 { provide: TranslateService, useClass: TranslateServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },

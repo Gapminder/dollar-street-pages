@@ -31,7 +31,7 @@ describe('CountryInfoComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                StoreModule.provideStore({}),
+                StoreModule.forRoot({}),
             ],
             declarations: [CountryInfoComponent],
             providers: [
