@@ -253,6 +253,40 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.search = '';
     this.regionsVisibility = true;
 
+    this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
+
+    let regionsContainerElementList: NodeListOf<HTMLElement> = this.element.querySelectorAll('.countries-container') as NodeListOf<HTMLElement>;
+
+    if (this.isOpenCountriesFilter) {
+      this.utilsService.getCoordinates('things-filter', (data: any) => {
+        this.filterTopDistance = data.top;
+
+        setTimeout(() => {
+          this.isOpenMobileFilterView();
+        }, 0);
+      });
+
+      for(let i = 0; i < regionsContainerElementList.length; i++) {
+        let regionsContainerElement = regionsContainerElementList[i];
+
+          regionsContainerElement.addEventListener('mousewheel', (e) => {
+          let whellDir: string = e.wheelDelta < 0 ? 'down' : 'up';
+
+          let deltaHeight: number = regionsContainerElement.scrollHeight - regionsContainerElement.offsetHeight;
+
+          if (whellDir === 'up' && regionsContainerElement.scrollTop === 0) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+
+          if (whellDir === 'down' && regionsContainerElement.scrollTop >= deltaHeight) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, false);
+      }
+    }
+
     if (this.isOpenCountriesFilter && !this.isDesktop) {
       setTimeout(() => {
         let tabContent: HTMLElement = this.countriesMobileContainer.nativeElement;
@@ -269,8 +303,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         }
       }, 0);
     }
-
-    this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
     if (this.isOpenCountriesFilter) {
       this.setPosition();

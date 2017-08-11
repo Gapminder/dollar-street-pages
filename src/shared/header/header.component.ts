@@ -150,6 +150,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       });
 
     this.scrollSubscription = fromEvent(document, 'scroll')
+      .debounceTime(10)
       .subscribe(() => {
         let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
