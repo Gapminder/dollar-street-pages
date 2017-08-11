@@ -167,8 +167,6 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
           e.stopPropagation();
         }
       }, false);
-    } else {
-      thingsContentElement.removeEventListener('mousewheel');
     }
 
     if (!this.isOpenThingsFilter) {
