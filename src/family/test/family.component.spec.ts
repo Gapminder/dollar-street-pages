@@ -18,7 +18,6 @@ import {
     Angulartics2GoogleAnalytics,
     StreetSettingsService,
     StreetSettingsEffects,
-    StreetSettingsActions,
     UtilsService
 } from '../../common';
 import {
@@ -58,22 +57,20 @@ describe('FamilyComponent', () => {
             imports: [
                 HttpModule,
                 FamilyModule,
-                StoreModule.provideStore({}),
-                EffectsModule.run(StreetSettingsEffects),
+                StoreModule.forRoot({}),
+                EffectsModule.forRoot([StreetSettingsEffects]),
                 RouterTestingModule.withRoutes([{path: '', component: BlankComponent}, {path: 'matrix', component: BlankComponent}])
             ],
             declarations: [ BlankComponent ],
             providers: [
                 LocalStorageService,
                 MathService,
-                StreetSettingsActions,
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
                 { provide: FamilyService, useClass: MockFamilyService },
-                // { provide: CountriesFilterService, useClass: MockCountriesFilterService },
                 { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
                 { provide: LanguageService, useClass: LanguageServiceMock }
             ]
@@ -90,6 +87,18 @@ describe('FamilyComponent', () => {
         nativeElement = debugElement.nativeElement;
 
         urlChangeService = TestBed.get(UrlChangeService);
+
+        componentInstance.homeIncomeData = {
+            _id: '57963211cc4aaed63a02504c',
+            poor: 26,
+            rich: 15000,
+            lowIncome: 26
+        };
+
+        componentInstance.urlParams = {
+            lowIncome: 26,
+            highIncome: 15000
+        };
     }));
 
     it('ngOnInit() ngOnDestroy()', () => {
@@ -108,7 +117,7 @@ describe('FamilyComponent', () => {
             expect(componentInstance.languageService).toBeDefined();
             expect(componentInstance.familyService).toBeDefined();
 
-            expect(componentInstance.theWorldTranslate).toEqual('the world');
+            expect(componentInstance.theWorldTranslate).toEqual('translated');
 
             spyOn(componentInstance.queryParamsSubscribe, 'unsubscribe');
             // spyOn(componentInstance.countriesFilterServiceSubscribe, 'unsubscribe');
@@ -129,20 +138,6 @@ describe('FamilyComponent', () => {
             componentInstance.ngOnInit();
 
             // expect(componentInstance.getIncomeTitle(10, 100)).toEqual('all incomes');
-        });
-    });
-
-    it('findCountryTranslatedName()', () => {
-        componentFixture.whenStable().then(() => {
-            componentInstance.ngOnInit();
-
-            const countries: any = componentInstance.countries;
-
-            let translatedCountries: any[] = componentInstance.findCountryTranslatedName(countries);
-
-            let country = _.find(translatedCountries, {country: 'Боливия'});
-
-            expect(country).toBeDefined();
         });
     });
 });

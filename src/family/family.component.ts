@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../interfaces';
+import { AppStates } from '../interfaces';
 import {
   Component,
   OnInit,
@@ -90,7 +90,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
                      elementRef: ElementRef,
-                     private store: Store<AppStore>,
+                     private store: Store<AppStates>,
                      private utilsService: UtilsService) {
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -103,8 +103,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.isDesktop = this.device.isDesktop();
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
-    this.countriesFilterState = this.store.select((dataSet: AppStore) => dataSet.countriesFilter);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
   public ngOnInit(): void {
@@ -162,16 +162,18 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.homeIncomeData = data;
+      if(data) {
+        this.homeIncomeData = data;
 
-      this.poor = this.homeIncomeData.poor;
-      this.rich = this.homeIncomeData.rich;
+        this.poor = this.homeIncomeData.poor;
+        this.rich = this.homeIncomeData.rich;
 
-      if (!this.locations) {
-        return;
+        if (!this.locations) {
+          return;
+        }
+
+        this.initData();
       }
-
-      this.initData();
     });
 
     this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
@@ -411,7 +413,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     return map(countries, (item: string): any => {
       const findTransName: any = find(this.countries, {originName: item});
       return findTransName ? findTransName.country : item;
-
     });
   }
 

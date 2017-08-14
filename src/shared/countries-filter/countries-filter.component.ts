@@ -21,8 +21,8 @@ import {
   UtilsService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
-import { CountriesFilterActions } from './countries-filter.actions';
+import { AppStates } from '../../interfaces';
+import * as CountriesFilterActions from './ngrx/countries-filter.actions';
 import { KeyCodes } from '../../enums';
 
 @Component({
@@ -87,8 +87,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     private store: Store<AppStore>,
-                     private countriesFilterActions: CountriesFilterActions) {
+                     private store: Store<AppStates>) {
     this.languageService = languageService;
     this.device = browserDetectionService;
     this.utilsService = utilsService;
@@ -96,7 +95,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.element = element.nativeElement;
     this.zone = zone;
 
-    this.countriesFilterState = this.store.select((dataSet: AppStore) => dataSet.countriesFilter);
+    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
   public ngOnInit(): void {
@@ -183,7 +182,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       if(!this.isInit) {
         this.isInit = true;
 
-        this.store.dispatch(this.countriesFilterActions.getCountriesFilter(changes.url.currentValue));
+        this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(changes.url.currentValue));
       }
 
       this.setTitle(changes.url.currentValue);
@@ -254,6 +253,40 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.search = '';
     this.regionsVisibility = true;
 
+    this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
+
+    let regionsContainerElementList: NodeListOf<HTMLElement> = this.element.querySelectorAll('.countries-container') as NodeListOf<HTMLElement>;
+
+    if (this.isOpenCountriesFilter) {
+      this.utilsService.getCoordinates('things-filter', (data: any) => {
+        this.filterTopDistance = data.top;
+
+        setTimeout(() => {
+          this.isOpenMobileFilterView();
+        }, 0);
+      });
+
+      for(let i = 0; i < regionsContainerElementList.length; i++) {
+        let regionsContainerElement = regionsContainerElementList[i];
+
+          regionsContainerElement.addEventListener('mousewheel', (e) => {
+          let whellDir: string = e.wheelDelta < 0 ? 'down' : 'up';
+
+          let deltaHeight: number = regionsContainerElement.scrollHeight - regionsContainerElement.offsetHeight;
+
+          if (whellDir === 'up' && regionsContainerElement.scrollTop === 0) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+
+          if (whellDir === 'down' && regionsContainerElement.scrollTop >= deltaHeight) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, false);
+      }
+    }
+
     if (this.isOpenCountriesFilter && !this.isDesktop) {
       setTimeout(() => {
         let tabContent: HTMLElement = this.countriesMobileContainer.nativeElement;
@@ -270,8 +303,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         }
       }, 0);
     }
-
-    this.showSelected = !(this.selectedCountries.length || this.selectedRegions.length);
 
     if (this.isOpenCountriesFilter) {
       this.setPosition();
@@ -395,7 +426,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     const queryUrl: string = this.utilsService.objToQuery(query);
 
-    this.store.dispatch(this.countriesFilterActions.getCountriesFilter(queryUrl));
+    this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
     this.selectedFilter.emit({url: queryUrl, isCountriesFilter: true});
 
     this.isOpenCountriesFilter = false;

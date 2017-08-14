@@ -12,8 +12,7 @@ import { SharedModule } from '../shared';
 import { MatrixComponent } from './matrix.component';
 import { MatrixService } from './matrix.service';
 
-import { MatrixActions } from './matrix.actions';
-import { MatrixEffects } from './matrix.effects';
+import { MatrixEffects } from './ngrx/matrix.effects';
 
 import { MatrixImagesComponent } from './matrix-images';
 
@@ -31,12 +30,11 @@ import { MatrixViewBlockComponent,
     CommonModule,
     SharedModule,
     InfiniteScrollModule,
-    EffectsModule.run(MatrixEffects)
+    EffectsModule.forFeature([MatrixEffects])
   ],
   providers: [
     MatrixService,
-    MatrixViewBlockService,
-    MatrixActions
+    MatrixViewBlockService
   ],
   exports: []
 })

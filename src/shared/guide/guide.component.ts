@@ -14,15 +14,14 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
-import { AppActions } from '../../app/app.actions';
+import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 
 @Component({
   selector: 'quick-guide',
   templateUrl: './guide.component.html',
   styleUrls: ['./guide.component.css']
 })
-
 export class GuideComponent implements OnInit, OnDestroy {
   @Output()
   public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
@@ -36,13 +35,13 @@ export class GuideComponent implements OnInit, OnDestroy {
   public guideServiceSubscribe: Subscription;
   public element: HTMLElement;
   public languageService: LanguageService;
+  public localStorageServiceSubscription: Subscription;
 
   public constructor(guideService: GuideService,
                      localStorageService: LocalStorageService,
                      languageService: LanguageService,
                      element: ElementRef,
-                     private store: Store<AppStore>,
-                     private appActions: AppActions) {
+                     private store: Store<AppStates>) {
     this.guideService = guideService;
     this.localStorageService = localStorageService;
     this.languageService = languageService;
@@ -52,7 +51,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.isShowGuide = !(this.localStorageService.getItem('quick-guide'));
 
-    this.localStorageService
+    this.localStorageServiceSubscription = this.localStorageService
       .getItemEvent()
       .subscribe((data: {key: any, value?: any}): void => {
         let {key, value} = data;
@@ -77,6 +76,7 @@ export class GuideComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.guideServiceSubscribe.unsubscribe();
+    this.localStorageServiceSubscription.unsubscribe();
   }
 
   public openQuickTour(): void {
@@ -90,6 +90,6 @@ export class GuideComponent implements OnInit, OnDestroy {
     this.isShowBubble = false;
     this.startQuickGuide.emit({});
     this.localStorageService.setItem('quick-guide', true);
-    this.store.dispatch(this.appActions.openQuickGuide(false));
+    this.store.dispatch(new AppActions.OpenQuickGuide(false));
   }
 }

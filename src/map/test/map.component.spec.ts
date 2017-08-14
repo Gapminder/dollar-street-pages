@@ -11,7 +11,6 @@ import {
     BrowserDetectionService,
     Angulartics2GoogleAnalytics,
     StreetSettingsEffects,
-    StreetSettingsActions,
     ActiveThingService
 } from '../../common';
 import {
@@ -72,13 +71,12 @@ describe('MapComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 HttpModule,
-                StoreModule.provideStore({}),
-                EffectsModule.run(StreetSettingsEffects),
+                StoreModule.forRoot({}),
+                EffectsModule.forRoot([StreetSettingsEffects]),
                 RouterTestingModule.withRoutes([{path: '', component: BlankComponent}])
             ],
             providers: [
                 MathService,
-                StreetSettingsActions,
                 ActiveThingService,
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },

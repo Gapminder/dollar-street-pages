@@ -26,6 +26,8 @@ describe('MatrixViewBlockComponent', () => {
     let component: MatrixViewBlockComponent;
     let fixture: ComponentFixture<MatrixViewBlockComponent>;
 
+    class MatrixViewBlockServiceMock {}
+
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -33,12 +35,12 @@ describe('MatrixViewBlockComponent', () => {
                 RouterTestingModule,
                 Angulartics2Module,
                 SharedModule,
-                StoreModule.provideStore({})
+                StoreModule.forRoot({})
             ],
             declarations: [MatrixViewBlockComponent],
             providers: [
                 MathService,
-                MatrixViewBlockService,
+                { provide: MatrixViewBlockService, useClass: MatrixViewBlockServiceMock },
                 { provide: TranslateService, useClass: TranslateServiceMock },
                 { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
                 { provide: TranslateService, useClass: TranslateServiceMock },

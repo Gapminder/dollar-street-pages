@@ -39,7 +39,7 @@ describe('StreetFilterComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                StoreModule.provideStore({})
+                StoreModule.forRoot({})
             ],
             declarations: [ StreetFilterComponent ],
             providers: [

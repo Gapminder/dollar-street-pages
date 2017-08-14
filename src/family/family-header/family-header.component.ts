@@ -3,7 +3,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
+import { AppStates } from '../../interfaces';
 import {
   Component,
   OnInit,
@@ -83,7 +83,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     private store: Store<AppStore>) {
+                     private store: Store<AppStates>) {
     this.zone = zone;
     this.math = math;
     this.element = element.nativeElement;
@@ -92,7 +92,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.languageService = languageService;
     this.utilsService = utilsService;
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {

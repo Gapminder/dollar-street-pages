@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
+import { AppStates } from '../../interfaces';
 import {
   Component,
   Input,
@@ -38,18 +38,16 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public resizeSubscribe: Subscription;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public store: Store<AppStore>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetFamilyDrawService,
-                     store: Store<AppStore>) {
+                     private store: Store<AppStates>) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
-    this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngAfterViewInit(): void {

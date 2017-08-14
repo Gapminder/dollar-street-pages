@@ -1,7 +1,15 @@
 import { ActionReducer, Action } from '@ngrx/store';
-import { ThingsFilterActions } from './things-filter.actions';
+import * as ThingsFilterActions from './things-filter.actions';
 
-export function thingsFilterReducer(state: any, action: Action): any {
+export interface State {
+    activeThing: object;
+};
+
+export const initialState: State = {
+    activeThing: null
+};
+
+export function thingsFilterReducer(state: any, action: ThingsFilterActions.Actions): any {
     switch (action.type) {
         case ThingsFilterActions.GET_THINGS_FILTER_SUCCESS:
             return action.payload;

@@ -14,8 +14,8 @@ import {
   DrawDividersInterface
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../../interfaces';
-import { AppActions } from '../../app/app.actions';
+import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 
 @Component({
   selector: 'income-filter',
@@ -49,20 +49,19 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
   };
   public streetData: DrawDividersInterface;
   public element: HTMLElement;
-  public store: Store<AppStore>;
+  public store: Store<AppStates>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public appState: Observable<any>;
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
 
-  public constructor(store: Store<AppStore>,
-                     element: ElementRef,
-                     private appActions: AppActions) {
+  public constructor(store: Store<AppStates>,
+                     element: ElementRef) {
     this.element = element.nativeElement;
     this.store = store;
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
-    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
   }
 
   public ngAfterViewInit(): void {
@@ -104,7 +103,7 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
     if (isClose) {
       this.sendResponse.emit({close: true});
 
-      this.store.dispatch(this.appActions.openIncomeFilter(false));
+      this.store.dispatch(new AppActions.OpenIncomeFilter(false));
 
       return;
     }
@@ -125,6 +124,6 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
 
     this.sendResponse.emit(this.range);
 
-    this.store.dispatch(this.appActions.openIncomeFilter(false));
+    this.store.dispatch(new AppActions.OpenIncomeFilter(false));
   }
 }

@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStore } from '../interfaces';
+import { AppStates } from '../interfaces';
+import * as StreetSettingsActions from '../common';
 import {
   Component,
   ElementRef,
@@ -29,10 +30,9 @@ import {
 } from '../common';
 import {
   GuideComponent,
-  ThingsFilterActions
 } from '../shared';
-import { AppActions } from '../app/app.actions';
-import { MatrixActions } from './matrix.actions';
+import * as AppActions from '../app/ngrx/app.actions';
+import * as MatrixActions from './ngrx/matrix.actions';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 
@@ -95,7 +95,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public regions: string;
   public countries: string;
   public zone: NgZone;
-  public ref: ChangeDetectorRef;
   public router: Router;
   public loaderService: LoaderService;
   public utilsService: UtilsService;
@@ -139,13 +138,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      activeThingService: ActiveThingService,
-                     ref: ChangeDetectorRef,
+                     private changeDetectorRef: ChangeDetectorRef,
                      utilsService: UtilsService,
-                     private store: Store<AppStore>,
-                     private appActions: AppActions,
-                     private matrixActions: MatrixActions,
-                     private thingsFilterActions: ThingsFilterActions) {
-    this.ref = ref;
+                     private store: Store<AppStates>) {
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -164,9 +159,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
-    this.streetSettingsState = this.store.select((dataSet: AppStore) => dataSet.streetSettings);
-    this.appState = this.store.select((dataSet: AppStore) => dataSet.app);
-    this.matrixState = this.store.select((dataSet: AppStore) => dataSet.matrix);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngAfterViewInit(): void {
@@ -188,7 +183,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
         if (data.query) {
-          this.store.dispatch(this.matrixActions.getMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
+          this.store.dispatch(new MatrixActions.GetMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
         }
 
         if (data.incomeFilter) {
@@ -234,6 +229,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.activeHouse = parseInt(params.activeHouse, 10);
       this.row = parseInt(params.row, 10) || 1;
 
+      this.changeDetectorRef.detectChanges();
+
       setTimeout(() => {
         if (this.row > 1 && !this.activeHouse) {
           this.matrixImagesComponent.goToRow(this.row);
@@ -274,6 +271,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           }
 
           this.urlChanged({isBack: true, url: this.query});
+
+          this.changeDetectorRef.detectChanges();
         }
       });
     });
@@ -293,6 +292,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         this.setZoomButtonPosition();
         this.getPaddings();
       });
+
+    this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
   }
 
   public ngOnDestroy(): void {
@@ -513,7 +514,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.urlChangeService.replaceState('/matrix', this.query);
 
-    this.store.dispatch(this.appActions.setQuery(this.query));
+    this.store.dispatch(new AppActions.SetQuery(this.query));
   }
 
   public activeHouseOptions(options: any): void {
@@ -569,7 +570,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.urlChanged({url: this.query});
     }
 
-    this.store.dispatch(this.appActions.openIncomeFilter(false));
+    this.store.dispatch(new AppActions.OpenIncomeFilter(false));
   }
 
   public scrollTop(e: MouseEvent, element: HTMLElement): void {
@@ -588,7 +589,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.zoomPositionFixed = scrollTop > containerHeight;
 
-    this.ref.detectChanges();
+    this.changeDetectorRef.detectChanges();
   }
 
   public findCountryTranslatedName(countries: any[]): any {

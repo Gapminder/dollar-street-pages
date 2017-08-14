@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
-import { AppActions } from '../../../app/app.actions';
+// import { AppActions } from '../../../app/app.actions';
 import {
     SharedModule
 } from '../../../shared';
@@ -33,12 +33,12 @@ describe('MatrixImagesComponent', () => {
                 InfiniteScrollModule,
                 SharedModule,
                 RouterTestingModule,
-                StoreModule.provideStore({})
+                StoreModule.forRoot({})
             ],
             declarations: [MatrixImagesComponent, MatrixViewBlockComponent],
             providers: [
                 MathService,
-                AppActions,
+                // AppActions,
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
