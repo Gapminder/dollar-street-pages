@@ -20,6 +20,8 @@ export class LoaderServiceMock {
 }
 
 export class LanguageServiceMock {
+    public languagesList: Observable<any> = Observable.of(['English', 'Brasilian']);
+
     public  getLanguageParam (): string {
         return '&lang=en';
     }
