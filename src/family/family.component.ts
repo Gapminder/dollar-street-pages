@@ -162,16 +162,18 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.homeIncomeData = data;
+      if(data) {
+        this.homeIncomeData = data;
 
-      this.poor = this.homeIncomeData.poor;
-      this.rich = this.homeIncomeData.rich;
+        this.poor = this.homeIncomeData.poor;
+        this.rich = this.homeIncomeData.rich;
 
-      if (!this.locations) {
-        return;
+        if (!this.locations) {
+          return;
+        }
+
+        this.initData();
       }
-
-      this.initData();
     });
 
     this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
@@ -411,7 +413,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     return map(countries, (item: string): any => {
       const findTransName: any = find(this.countries, {originName: item});
       return findTransName ? findTransName.country : item;
-
     });
   }
 

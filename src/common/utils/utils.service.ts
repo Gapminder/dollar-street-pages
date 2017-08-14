@@ -7,7 +7,7 @@ export class UtilsService {
   public window: Window = window;
   public document: Document = document;
 
-  public getCoordinates(querySelector: string, cb: any): any {
+  public getCoordinates(querySelector: string, cb: any): void {
     let box: any = this.document.querySelector(querySelector).getBoundingClientRect();
 
     let body: HTMLElement = this.document.body;
