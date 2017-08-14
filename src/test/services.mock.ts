@@ -42,6 +42,9 @@ export class LanguageServiceMock {
                     value = 'World';
                     break;
                 }
+
+                default:
+                    value = 'Translated';
             }
 
             return Observable.of(value);
@@ -69,10 +72,6 @@ export class StreetSettingsServiceMock {
     }
 }
 
-export class UrlChangeServiceMock {
-
-}
-
 export class AngularticsMock {
     // tslint:disable-next-line
     public eventTrack(name: string, param: any): void {}
@@ -80,6 +79,10 @@ export class AngularticsMock {
 
 export class Angulartics2GoogleAnalyticsMock {
 
+}
+
+export class UrlChangeServiceMock {
+    public replaceState(path: string, query: string): void {}
 }
 
 export class UtilsServiceMock {
@@ -106,6 +109,8 @@ export class UtilsServiceMock {
             return encodeURIComponent(k) + '=' + data[k];
         }).join('&');
     }
+
+    public getCoordinates(querySelector: string, cb: any): void {}
 }
 
 export class BrowserDetectionServiceMock {

@@ -95,7 +95,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public regions: string;
   public countries: string;
   public zone: NgZone;
-  public ref: ChangeDetectorRef;
   public router: Router;
   public loaderService: LoaderService;
   public utilsService: UtilsService;
@@ -139,10 +138,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      activeThingService: ActiveThingService,
-                     ref: ChangeDetectorRef,
+                     private changeDetectorRef: ChangeDetectorRef,
                      utilsService: UtilsService,
                      private store: Store<AppStates>) {
-    this.ref = ref;
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -231,7 +229,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.activeHouse = parseInt(params.activeHouse, 10);
       this.row = parseInt(params.row, 10) || 1;
 
-      this.ref.detectChanges();
+      this.changeDetectorRef.detectChanges();
 
       setTimeout(() => {
         if (this.row > 1 && !this.activeHouse) {
@@ -274,7 +272,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
           this.urlChanged({isBack: true, url: this.query});
 
-          this.ref.detectChanges();
+          this.changeDetectorRef.detectChanges();
         }
       });
     });
@@ -591,7 +589,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.zoomPositionFixed = scrollTop > containerHeight;
 
-    this.ref.detectChanges();
+    this.changeDetectorRef.detectChanges();
   }
 
   public findCountryTranslatedName(countries: any[]): any {

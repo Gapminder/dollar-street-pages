@@ -196,7 +196,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.resizeSubscribe.unsubscribe();
+    if (this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
 
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();

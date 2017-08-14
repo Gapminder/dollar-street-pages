@@ -22,7 +22,6 @@ import * as AppActions from '../../app/ngrx/app.actions';
   templateUrl: './guide.component.html',
   styleUrls: ['./guide.component.css']
 })
-
 export class GuideComponent implements OnInit, OnDestroy {
   @Output()
   public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
@@ -36,6 +35,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   public guideServiceSubscribe: Subscription;
   public element: HTMLElement;
   public languageService: LanguageService;
+  public localStorageServiceSubscription: Subscription;
 
   public constructor(guideService: GuideService,
                      localStorageService: LocalStorageService,
@@ -51,7 +51,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.isShowGuide = !(this.localStorageService.getItem('quick-guide'));
 
-    this.localStorageService
+    this.localStorageServiceSubscription = this.localStorageService
       .getItemEvent()
       .subscribe((data: {key: any, value?: any}): void => {
         let {key, value} = data;
@@ -76,6 +76,7 @@ export class GuideComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.guideServiceSubscribe.unsubscribe();
+    this.localStorageServiceSubscription.unsubscribe();
   }
 
   public openQuickTour(): void {
