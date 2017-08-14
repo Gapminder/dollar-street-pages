@@ -43,7 +43,6 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public isOpenMenu: boolean = false;
   public streetData: DrawDividersInterface;
   public router: Router;
-  public routerEventsSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public localStorageService: LocalStorageService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
@@ -56,6 +55,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public streetSettingsState: Observable<DrawDividersInterface>;
   public languages: any;
   public streetSettingsStateSubscription: Subscription;
+  public languagesListSubscription: Subscription;
 
   public constructor(router: Router,
                      element: ElementRef,
@@ -90,7 +90,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       this.streetData = data;
     });
 
-    this.languageService.languagesList.subscribe((data: any) => {
+    this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
       this.languages = data;
     });
   }
@@ -112,8 +112,8 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnDestroy(): void {
-    if (this.routerEventsSubscribe) {
-      this.routerEventsSubscribe.unsubscribe();
+    if (this.languagesListSubscription) {
+      this.languagesListSubscription.unsubscribe();
     }
 
     if (this.getTranslationSubscribe) {
