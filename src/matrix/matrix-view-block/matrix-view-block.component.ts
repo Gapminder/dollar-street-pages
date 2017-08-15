@@ -177,7 +177,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
         let query = this.query.replace(/row\=\d*/, 'row=1').replace(/&activeHouse\=\d*/, '');
 
-        let parsedUrl: any = this.utilsService.parseUrl(`place=${this.place._id}&` + query);
+        let parsedUrl: any = this.utilsService.parseUrl(`place=${this.place._id}`);
 
         this.familyData.goToPlaceData = parsedUrl;
         this.isShowCountryButton = parsedUrl.countries !== this.familyData.country.originName;

@@ -15,6 +15,7 @@ import {
 import {
   DrawDividersInterface
 } from '../../common';
+import { GetStreetSettings } from '../../common/street/ngrx/street-settings.actions';
 import { StreetFamilyDrawService } from './street-family.service';
 
 @Component({
@@ -60,9 +61,13 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.streetData = data;
+      if (!data) {
+        this.store.dispatch(new GetStreetSettings());
+      } else {
+        this.streetData = data;
 
-      this.drawStreet(this.streetData, this.place);
+        this.drawStreet(this.streetData, this.place);
+      }
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
