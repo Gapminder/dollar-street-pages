@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Component, NgModule } from '@angular/core';
 import { ImageResolutionInterface } from '../interfaces';
 

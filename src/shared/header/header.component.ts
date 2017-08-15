@@ -83,7 +83,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public resizeSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
   public scrollSubscription: Subscription;
-  public getTranslationSubscribtion: Subscription;
   public queryParamsSubscription: Subscription;
   public incomeTitleContainerElement: HTMLElement;
   public streetSettingsState: Observable<DrawDividersInterface>;
@@ -211,7 +210,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.isDesktop = this.device.isDesktop();
     this.isTablet = this.device.isTablet();
 
-    this.getTranslationSubscribtion = this.languageService.getTranslation(['BY_INCOME']).subscribe((trans: any) => {
+    this.getTranslationSubscription = this.languageService.getTranslation(['BY_INCOME']).subscribe((trans: any) => {
       this.byIncomeText = trans.BY_INCOME;
     });
 
