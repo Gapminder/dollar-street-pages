@@ -135,6 +135,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     this.isOpenThingsFilter = !isOpenThingsFilter;
 
     let thingsContentElement: HTMLElement = this.element.querySelector('.other-things-content') as HTMLElement;
+    let popularContentElement: HTMLElement = this.element.querySelector('.popular-things-content') as HTMLElement;
+    let relatedContentElement: HTMLElement = this.element.querySelector('.related-things-content') as HTMLElement;
 
     this.search = {text: ''};
 
@@ -153,24 +155,36 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
       });
 
       thingsContentElement.addEventListener('mousewheel', (e) => {
-        let whellDir: string = e.wheelDelta < 0 ? 'down' : 'up';
+        this.scrollFilters(thingsContentElement, e);
+      }, false);
 
-        let deltaHeight: number = thingsContentElement.scrollHeight - thingsContentElement.offsetHeight;
+      popularContentElement.addEventListener('mousewheel', (e) => {
+        this.scrollFilters(popularContentElement, e);
+      }, false);
 
-        if (whellDir === 'up' && thingsContentElement.scrollTop === 0) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-
-        if (whellDir === 'down' && thingsContentElement.scrollTop >= deltaHeight) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
+      relatedContentElement.addEventListener('mousewheel', (e) => {
+        this.scrollFilters(relatedContentElement, e);
       }, false);
     }
 
     if (!this.isOpenThingsFilter) {
       this.openMobileFilterView = window.innerWidth < 1024 || !this.isDesktop;
+    }
+  }
+
+  public scrollFilters(element: HTMLElement, e: any): void {
+    let whellDir: string = e.wheelDelta < 0 ? 'down' : 'up';
+
+    let deltaHeight: number = element.scrollHeight - element.offsetHeight;
+
+    if (whellDir === 'up' && element.scrollTop === 0) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (whellDir === 'down' && element.scrollTop >= deltaHeight) {
+      e.preventDefault();
+      e.stopPropagation();
     }
   }
 
