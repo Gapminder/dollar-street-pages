@@ -64,19 +64,19 @@ export class DataProvider {
       actualResult: 'Bangladesh'
     },
     'CountryColombia': {
-      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(6),
+      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(8),
       actualResult: 'Colombia'
     },
     'CountryIndonesia': {
-      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(11),
+      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(13),
       actualResult: 'Indonesia'
     },
     'CountryLithuania': {
-      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(15),
+      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(17),
       actualResult: 'Liberia'
     },
     'CountryRwanda': {
-      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(29),
+      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(31),
       actualResult: 'Rwanda'
     }
   };
@@ -244,7 +244,7 @@ export class DataProvider {
   public static homePageText:any = {
     'TextFilterInHeaderHome': {
       element: ():ElementFinder => $('p[class*="heading pull-left"]'),
-      actualResult: 'Families in the world'
+      actualResult: 'Families in World'
     },
     'TextHomeOf': {element: ():ElementFinder => element.all(by.css('.sub-title')).first(), actualResult: 'Home of'},
     'TextHouseholdWeeklyIncome': {
