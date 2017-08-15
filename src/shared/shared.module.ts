@@ -4,7 +4,6 @@ import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
 import { HeaderComponent } from './header/header.component';
-import { HeaderService } from './header/header.service';
 
 import { MainMenuComponent } from './main-menu/main-menu.component';
 
@@ -98,7 +97,6 @@ import { Angulartics2Module } from 'angulartics2';
     TranslateModule
   ],
   providers: [
-    HeaderService,
     SocialShareButtonsService,
     FooterService,
     CountriesFilterService,

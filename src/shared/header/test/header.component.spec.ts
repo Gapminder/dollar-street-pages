@@ -31,7 +31,6 @@ import { ThingsFilterComponent } from '../../things-filter/things-filter.compone
 import { ThingsFilterPipe } from '../../things-filter/things-filter.pipe';
 import { SocialShareButtonsComponent } from '../../social-share-buttons/social-share-buttons.component';
 import { HeaderComponent } from '../header.component';
-import { HeaderService } from '../header.service';
 
 describe('HeaderComponent', () => {
     let component: HeaderComponent;
@@ -57,7 +56,6 @@ describe('HeaderComponent', () => {
                 SocialShareButtonsComponent
             ],
             providers: [
-                HeaderService,
                 MathService,
                 ActiveThingService,
                 LocalStorageService,
