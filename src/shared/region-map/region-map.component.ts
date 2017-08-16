@@ -17,7 +17,6 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './region-map.component.html',
   styleUrls: ['./region-map.component.css']
 })
-
 export class RegionMapComponent implements OnChanges, OnDestroy, AfterViewInit {
   @ViewChild('map')
   public map: ElementRef;
