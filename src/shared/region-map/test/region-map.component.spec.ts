@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { RegionMapComponent } from '../region-map.component';
 
-fdescribe('RegionMapComponent', () => {
+describe('RegionMapComponent', () => {
     let fixture: ComponentFixture<RegionMapComponent>;
     let component: RegionMapComponent;
 

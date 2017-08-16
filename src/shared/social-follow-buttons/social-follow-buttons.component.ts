@@ -5,6 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './social-follow-buttons.component.html',
   styleUrls: ['./social-follow-buttons.component.css']
 })
-
 export class SocialFollowButtonsComponent {
 }
