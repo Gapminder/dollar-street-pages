@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import { DonateComponent } from '../donate.component';
-import { DonateService } from '../donate.service';
+import { TranslateModule, TranslateService, TranslateLoader, TranslateParser } from "ng2-translate";
 import {
     LoaderService,
     TitleHeaderService,
@@ -16,6 +15,8 @@ import {
     UtilsServiceMock,
     BrowserDetectionServiceMock
 }from '../../test/';
+import { DonateComponent } from '../donate.component';
+import { DonateService } from '../donate.service';
 
 describe('DonateComponent', () => {
     let fixture: ComponentFixture<DonateComponent>;
@@ -29,9 +30,14 @@ describe('DonateComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [],
+            imports: [
+                TranslateModule
+            ],
             declarations: [DonateComponent],
             providers: [
+                TranslateService,
+                TranslateLoader,
+                TranslateParser,
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: DonateService, useClass: DonateServiceMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },
@@ -41,12 +47,7 @@ describe('DonateComponent', () => {
             ]
         });
 
-        fixture = TestBed.overrideComponent(DonateComponent, {
-            set: {
-                template: ''
-            }
-        }).createComponent(DonateComponent);
-
+        fixture = TestBed.createComponent(DonateComponent);
         component = fixture.componentInstance;
     }));
 

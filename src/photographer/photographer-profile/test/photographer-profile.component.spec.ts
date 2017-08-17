@@ -3,17 +3,24 @@ import { Location, LocationStrategy } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { SpyLocation } from '@angular/common/testing';
 import { HttpModule } from '@angular/http';
-import { MathService, LanguageService, UrlChangeService } from '../../../common';
+import { TranslateModule } from 'ng2-translate';
+import { Angulartics2Module, Angulartics2 } from 'angulartics2';
+import {
+    MathService,
+    LanguageService,
+    UrlChangeService
+} from '../../../common';
 import {
     LanguageServiceMock,
-    UrlChangeServiceMock
+    UrlChangeServiceMock,
+    AngularticsMock
 } from '../../../test/';
 import { PhotographerProfileService } from '../photographer-profile.service';
 import { PhotographerProfileComponent } from '../photographer-profile.component';
 
 describe('PhotographerProfileComponent', () => {
-    let componentInstance: PhotographerProfileComponent;
-    let componentFixture: ComponentFixture<PhotographerProfileComponent>;
+    let fixture: ComponentFixture<PhotographerProfileComponent>;
+    let component: PhotographerProfileComponent;
 
     class PhotographerProfileServiceMock {
         /* tslint:disable-next-line */
@@ -24,7 +31,11 @@ describe('PhotographerProfileComponent', () => {
 
     beforeEach(async() => {
         TestBed.configureTestingModule({
-            imports: [HttpModule],
+            imports: [
+                HttpModule,
+                TranslateModule,
+                Angulartics2Module
+            ],
             declarations: [PhotographerProfileComponent],
             providers: [
                 Location,
@@ -33,37 +44,33 @@ describe('PhotographerProfileComponent', () => {
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: PhotographerProfileService, useClass: PhotographerProfileServiceMock },
                 { provide: Location, useClass: SpyLocation },
-                { provide: LanguageService, useClass: LanguageServiceMock }
+                { provide: LanguageService, useClass: LanguageServiceMock },
+                { provide: Angulartics2, useClass: AngularticsMock }
             ]
         });
 
-        componentFixture = TestBed.overrideComponent(PhotographerProfileComponent, {
-            set: {
-                template: ''
-            }
-        }).createComponent(PhotographerProfileComponent);
-
-        componentInstance = componentFixture.componentInstance;
+        fixture = TestBed.createComponent(PhotographerProfileComponent);
+        component = fixture.componentInstance;
     });
 
     it('ngOnInit(), ngOnDestroy()', () => {
-        componentInstance.ngOnInit();
+        component.ngOnInit();
 
-        expect(componentInstance.getTranslationSubscribe).toBeDefined();
-        expect(componentInstance.photographerProfileServiceSubscribe).toBeDefined();
+        expect(component.getTranslationSubscribe).toBeDefined();
+        expect(component.photographerProfileServiceSubscribe).toBeDefined();
 
-        spyOn(componentInstance.getTranslationSubscribe, 'unsubscribe');
-        spyOn(componentInstance.photographerProfileServiceSubscribe, 'unsubscribe');
+        spyOn(component.getTranslationSubscribe, 'unsubscribe');
+        spyOn(component.photographerProfileServiceSubscribe, 'unsubscribe');
 
-        componentInstance.ngOnDestroy();
+        component.ngOnDestroy();
 
-        expect(componentInstance.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.photographerProfileServiceSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.photographerProfileServiceSubscribe.unsubscribe).toHaveBeenCalled();
     });
 
     it('isShowInfoMore()', () => {
-        componentInstance.ngOnInit();
+        component.ngOnInit();
 
-        expect(componentInstance.isShowInfoMore({})).toBeFalsy();
+        expect(component.isShowInfoMore({})).toBeFalsy();
     });
 });

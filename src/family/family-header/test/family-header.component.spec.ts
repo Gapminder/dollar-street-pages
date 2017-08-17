@@ -5,8 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
-import { FamilyHeaderComponent } from '../family-header.component';
-import { FamilyHeaderService } from '../family-header.service';
+import { Angulartics2Module, Angulartics2 } from "angulartics2";
 import {
     MathService,
     BrowserDetectionService,
@@ -25,6 +24,10 @@ import {
     BrowserDetectionServiceMock,
     UtilsServiceMock
 } from '../../../test/';
+import { TranslateMeComponent } from "../../../shared/translate-me/translate-me.component";
+import { RegionMapComponent } from "../../../shared/region-map/region-map.component";
+import { FamilyHeaderComponent } from '../family-header.component';
+import { FamilyHeaderService } from '../family-header.service';
 
 /* tslint:disable */
 class CustomLoader implements TranslateLoader {
@@ -35,14 +38,14 @@ class CustomLoader implements TranslateLoader {
 /* tslint:enable */
 
 describe('FamilyHeaderComponent', () => {
-    let componentInstance: FamilyHeaderComponent;
-    let componentFixture: ComponentFixture<FamilyHeaderComponent>;
+    let fixture: ComponentFixture<FamilyHeaderComponent>;
+    let component: FamilyHeaderComponent;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            schemas: [],
             imports: [
                 AppTestModule,
+                Angulartics2Module,
                 StoreModule.forRoot({}),
                 EffectsModule.forRoot([StreetSettingsEffects]),
                 RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
@@ -51,7 +54,11 @@ describe('FamilyHeaderComponent', () => {
                     useClass: CustomLoader
                 })
             ],
-            declarations: [FamilyHeaderComponent],
+            declarations: [
+                FamilyHeaderComponent,
+                TranslateMeComponent,
+                RegionMapComponent
+            ],
             providers: [
                 MathService,
                 FamilyHeaderService,
@@ -59,47 +66,43 @@ describe('FamilyHeaderComponent', () => {
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock }
+                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+                { provide: Angulartics2, useClass: AngularticsMock }
             ]
         });
 
-        componentFixture = TestBed.overrideComponent(FamilyHeaderComponent, {
-            set: {
-                template: '<div></div>'
-            }
-        }).createComponent(FamilyHeaderComponent);
+        fixture = TestBed.createComponent(FamilyHeaderComponent);
+        component = fixture.componentInstance;
 
-        componentInstance = componentFixture.componentInstance;
-
-        componentFixture.detectChanges();
+        fixture.detectChanges();
     });
 
     it('ngOnInit() ngOnDestroy()', () => {
-        componentInstance.ngOnInit();
+        component.ngOnInit();
 
-        expect(componentInstance.getTranslationSubscribe).toBeDefined();
-        expect(componentInstance.familyHeaderServiceSubscribe).toBeDefined();
+        expect(component.getTranslationSubscribe).toBeDefined();
+        expect(component.familyHeaderServiceSubscribe).toBeDefined();
 
-        spyOn(componentInstance.getTranslationSubscribe, 'unsubscribe');
-        spyOn(componentInstance.familyHeaderServiceSubscribe, 'unsubscribe');
+        spyOn(component.getTranslationSubscribe, 'unsubscribe');
+        spyOn(component.familyHeaderServiceSubscribe, 'unsubscribe');
 
-        componentInstance.ngOnDestroy();
+        component.ngOnDestroy();
 
-        expect(componentInstance.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.familyHeaderServiceSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.familyHeaderServiceSubscribe.unsubscribe).toHaveBeenCalled();
     });
 
     it('truncCountryName()', () => {
-        componentInstance.ngOnInit();
+        component.ngOnInit();
 
         const mockCountryName: any = {
             alias: 'United States'
         };
 
-        componentInstance.truncCountryName(mockCountryName);
+        component.truncCountryName(mockCountryName);
 
-        expect(componentInstance.countryName).toEqual('USA');
+        expect(component.countryName).toEqual('USA');
 
-        componentInstance.ngOnDestroy();
+        component.ngOnDestroy();
     });
 });

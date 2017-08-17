@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from "@angular/router/testing";
+import { Angulartics2Module, Angulartics2 } from "angulartics2";
+import { TranslateModule, TranslateService, TranslateLoader, TranslateParser } from "ng2-translate";
 import {
     LoaderService,
     MathService,
@@ -7,14 +10,15 @@ import {
 import { Observable } from 'rxjs/Observable';
 import {
     LoaderServiceMock,
-    LanguageServiceMock
+    LanguageServiceMock,
+    AngularticsMock
 } from '../../../test/';
 import { CountryPlacesComponent } from '../country-places.component';
 import { CountryPlacesService } from '../country-places.service';
 
 describe('CountryPlacesComponent', () => {
-    let componentFixture: ComponentFixture<CountryPlacesComponent>;
-    let componentInstance: CountryPlacesComponent;
+    let fixture: ComponentFixture<CountryPlacesComponent>;
+    let component: CountryPlacesComponent;
 
     const countryPlaces = {"success":null,
                             "msg":[],
@@ -30,36 +34,39 @@ describe('CountryPlacesComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [],
+            imports: [
+                RouterTestingModule,
+                Angulartics2Module,
+                TranslateModule
+            ],
             declarations: [CountryPlacesComponent],
             providers: [
                 MathService,
+                TranslateService,
+                TranslateLoader,
+                TranslateParser,
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
-                { provide: CountryPlacesService, useClass: MockCountryPlacesService }
+                { provide: CountryPlacesService, useClass: MockCountryPlacesService },
+                { provide: Angulartics2, useClass: AngularticsMock }
             ]
         });
 
-        componentFixture = TestBed.overrideComponent(CountryPlacesComponent, {
-            set: {
-                template: ''
-            }
-        }).createComponent(CountryPlacesComponent);
+        fixture = TestBed.createComponent(CountryPlacesComponent);
+        component = fixture.componentInstance;
 
-        componentInstance = componentFixture.componentInstance;
-
-        componentFixture.detectChanges();
+        fixture.detectChanges();
     }));
 
     it('ngOnInit(), ngOnDestroy()', (() => {
-        componentInstance.ngOnInit();
+        component.ngOnInit();
 
-        expect(componentInstance.countryPlacesServiceSubscribe).toBeDefined();
+        expect(component.countryPlacesServiceSubscribe).toBeDefined();
 
-        spyOn(componentInstance.countryPlacesServiceSubscribe, 'unsubscribe');
+        spyOn(component.countryPlacesServiceSubscribe, 'unsubscribe');
 
-        componentInstance.ngOnDestroy();
+        component.ngOnDestroy();
 
-        expect(componentInstance.countryPlacesServiceSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.countryPlacesServiceSubscribe.unsubscribe).toHaveBeenCalled();
     }));
 });
