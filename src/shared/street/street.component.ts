@@ -275,6 +275,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.clearAndRedraw();
       this.street.clearSvg();
     }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
+    }
   }
 
   private setDividers(places: any, drawDividers: any): void {
