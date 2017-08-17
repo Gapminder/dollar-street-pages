@@ -1,7 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Location, LocationStrategy } from '@angular/common';
+import { RouterTestingModule } from "@angular/router/testing";
 import { HttpModule } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Angulartics2Module } from "angulartics2";
+import { TranslateModule } from 'ng2-translate';
 import {
     MathService,
     LanguageService,
@@ -15,14 +18,8 @@ import { PhotographerPlacesComponent } from '../photographer-places.component';
 import { PhotographerPlacesService } from '../photographer-places.service';
 
 describe('PhotographerPlacesComponent', () => {
-    let componentInstance: PhotographerPlacesComponent;
-    let componentFixture: ComponentFixture<PhotographerPlacesComponent>;
-
-    /*class MockUserLanguageService {
-        public getLanguageParam(): string {
-            return 'lang=en';
-        }
-    }*/
+    let fixture: ComponentFixture<PhotographerPlacesComponent>;
+    let component: PhotographerPlacesComponent;
 
     class MockPhotographerPlacesService {
         public getPhotographerPlaces(): Observable<any> {
@@ -30,13 +27,16 @@ describe('PhotographerPlacesComponent', () => {
         }
     }
 
-    beforeEach(async() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [HttpModule],
+            imports: [
+                HttpModule,
+                RouterTestingModule,
+                Angulartics2Module,
+                TranslateModule
+            ],
             declarations: [PhotographerPlacesComponent],
             providers: [
-                Location,
-                LocationStrategy,
                 MathService,
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: PhotographerPlacesService, useClass: MockPhotographerPlacesService },
@@ -44,24 +44,19 @@ describe('PhotographerPlacesComponent', () => {
             ]
         });
 
-        componentFixture = TestBed.overrideComponent(PhotographerPlacesComponent, {
-            set: {
-                template: ''
-            }
-        }).createComponent(PhotographerPlacesComponent);
-
-        componentInstance = componentFixture.componentInstance;
-    });
+        fixture = TestBed.createComponent(PhotographerPlacesComponent);
+        component = fixture.componentInstance;
+    }));
 
     it('ngOnInit(), ngOnDestroy()', () => {
-        componentInstance.ngOnInit();
+        component.ngOnInit();
 
-        expect(componentInstance.photographerPlacesServiceSubscribe).toBeDefined();
+        expect(component.photographerPlacesServiceSubscribe).toBeDefined();
 
-        spyOn(componentInstance.photographerPlacesServiceSubscribe, 'unsubscribe');
+        spyOn(component.photographerPlacesServiceSubscribe, 'unsubscribe');
 
-        componentInstance.ngOnDestroy();
+        component.ngOnDestroy();
 
-        expect(componentInstance.photographerPlacesServiceSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.photographerPlacesServiceSubscribe.unsubscribe).toHaveBeenCalled();
     });
 });

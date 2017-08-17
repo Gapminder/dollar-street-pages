@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
+import { TranslateModule, TranslateService, TranslateLoader, TranslateParser } from 'ng2-translate';
 import {
     BrowserDetectionService,
     LanguageService,
@@ -17,10 +17,11 @@ import { StoreModule } from '@ngrx/store';
 import { Angulartics2GoogleAnalytics } from 'angulartics2';
 import { FooterComponent } from '../footer.component';
 import { FooterService } from '../footer.service';
+import { SocialFollowButtonsComponent } from '../../social-follow-buttons/social-follow-buttons.component';
 
 describe('FooterComponent', () => {
-    let componentInstance: FooterComponent;
-    let componentFixture: ComponentFixture<FooterComponent>;
+    let fixture: ComponentFixture<FooterComponent>;
+    let component: FooterComponent;
 
     const footer = {"success":true,
                     "msg":[],
@@ -37,10 +38,17 @@ describe('FooterComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule,
-                StoreModule.forRoot({})
+                StoreModule.forRoot({}),
+                TranslateModule
             ],
-            declarations: [ FooterComponent ],
+            declarations: [
+              FooterComponent,
+              SocialFollowButtonsComponent
+            ],
             providers: [
+                TranslateService,
+                TranslateLoader,
+                TranslateParser,
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
@@ -49,32 +57,27 @@ describe('FooterComponent', () => {
             ]
         });
 
-        componentFixture = TestBed.overrideComponent(FooterComponent, {
-            set: {
-                template: ''
-            }
-        }).createComponent(FooterComponent);
+        fixture = TestBed.createComponent(FooterComponent);
+        component = fixture.componentInstance;
 
-        componentInstance = componentFixture.componentInstance;
-
-        componentFixture.detectChanges();
+        fixture.detectChanges();
     }));
 
     it('ngOnInit()', () => {
-        componentInstance.ngOnInit();
+        component.ngOnInit();
 
-        expect(componentInstance.streetSettingsStateSubscription).toBeDefined();
-        expect(componentInstance.routerEventsSubscribe).toBeDefined();
-        expect(componentInstance.footerServiceSubscribe).toBeDefined();
+        expect(component.streetSettingsStateSubscription).toBeDefined();
+        expect(component.routerEventsSubscribe).toBeDefined();
+        expect(component.footerServiceSubscribe).toBeDefined();
 
-        spyOn(componentInstance.streetSettingsStateSubscription, 'unsubscribe');
-        spyOn(componentInstance.routerEventsSubscribe, 'unsubscribe');
-        spyOn(componentInstance.footerServiceSubscribe, 'unsubscribe');
+        spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
+        spyOn(component.routerEventsSubscribe, 'unsubscribe');
+        spyOn(component.footerServiceSubscribe, 'unsubscribe');
 
-        componentInstance.ngOnDestroy();
+        component.ngOnDestroy();
 
-        expect(componentInstance.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.footerServiceSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
+        expect(component.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.footerServiceSubscribe.unsubscribe).toHaveBeenCalled();
     });
 });

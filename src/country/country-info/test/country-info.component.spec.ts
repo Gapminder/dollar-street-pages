@@ -1,21 +1,28 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
+import { Angulartics2Module, Angulartics2 } from 'angulartics2';
+import { TranslateModule, TranslateService, TranslateLoader, TranslateParser } from 'ng2-translate';
 import {
     MathService,
     LanguageService,
-    BrowserDetectionService
+    BrowserDetectionService,
+    Angulartics2GoogleAnalytics
 } from '../../../common';
 import { StoreModule } from '@ngrx/store';
 import {
     LanguageServiceMock,
-    BrowserDetectionServiceMock
+    BrowserDetectionServiceMock,
+    Angulartics2GoogleAnalyticsMock,
+    AngularticsMock
 } from '../../../test/';
+import { RegionMapComponent } from "../../../shared/region-map/region-map.component";
 import { CountryInfoComponent } from '../country-info.component';
 import { CountryInfoService } from '../country-info.service';
 
 describe('CountryInfoComponent', () => {
-    let componentFixture: ComponentFixture<CountryInfoComponent>;
-    let componentInstance: CountryInfoComponent;
+    let fixture: ComponentFixture<CountryInfoComponent>;
+    let component: CountryInfoComponent;
 
     const countryInfo = {"success":true,
                          "msg":[],
@@ -32,37 +39,43 @@ describe('CountryInfoComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 StoreModule.forRoot({}),
+                RouterTestingModule,
+                Angulartics2Module,
+                TranslateModule
             ],
-            declarations: [CountryInfoComponent],
+            declarations: [
+                CountryInfoComponent,
+                RegionMapComponent
+            ],
             providers: [
                 MathService,
+                TranslateService,
+                TranslateLoader,
+                TranslateParser,
+                { provide: Angulartics2, useClass: AngularticsMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
-                { provide: CountryInfoService, useClass: CountryInfoServiceMock }
+                { provide: CountryInfoService, useClass: CountryInfoServiceMock },
+                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock }
             ]
         });
 
-        componentFixture = TestBed.overrideComponent(CountryInfoComponent, {
-            set: {
-                template: ''
-            }
-        }).createComponent(CountryInfoComponent);
-
-        componentInstance = componentFixture.componentInstance;
+        fixture = TestBed.createComponent(CountryInfoComponent);
+        component = fixture.componentInstance;
     }));
 
     it('ngOnInit(), ngOnDestroy()', () => {
-        componentInstance.ngOnInit();
+        component.ngOnInit();
 
-        expect(componentInstance.countryInfoServiceSubscribe).toBeDefined();
-        expect(componentInstance.streetSettingsStateSubscription).toBeDefined();
+        expect(component.countryInfoServiceSubscribe).toBeDefined();
+        expect(component.streetSettingsStateSubscription).toBeDefined();
 
-        spyOn(componentInstance.countryInfoServiceSubscribe, 'unsubscribe');
-        spyOn(componentInstance.streetSettingsStateSubscription, 'unsubscribe');
+        spyOn(component.countryInfoServiceSubscribe, 'unsubscribe');
+        spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
 
-        componentInstance.ngOnDestroy();
+        component.ngOnDestroy();
 
-        expect(componentInstance.countryInfoServiceSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(componentInstance.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
+        expect(component.countryInfoServiceSubscribe.unsubscribe).toHaveBeenCalled();
+        expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
     });
 });

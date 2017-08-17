@@ -1,51 +1,68 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By }              from '@angular/platform-browser';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { TranslateModule, TranslateService, TranslateLoader, TranslateParser } from 'ng2-translate';
 import {
     BrowserDetectionService,
-    UtilsService
+    UtilsService,
+    LanguageService,
+    SocialShareService
 } from '../../../common';
 import {
     UtilsServiceMock,
-    BrowserDetectionServiceMock
+    BrowserDetectionServiceMock,
+    LanguageServiceMock,
 } from '../../../test/';
 import { FloatFooterComponent } from '../float-footer.component';
+import { SocialShareButtonsComponent } from '../../social-share-buttons/social-share-buttons.component';
+import { SocialShareButtonsService } from '../../social-share-buttons/social-share-buttons.service';
 
 describe('FloatFooterComponent', () => {
-    let componentInstance: FloatFooterComponent;
-    let componentFixture: ComponentFixture<FloatFooterComponent>;
+    let fixture: ComponentFixture<FloatFooterComponent>;
+    let component: FloatFooterComponent;
 
-    beforeEach(() => {
+    class SocialShareButtonsServiceMock {
+
+    }
+
+    class SocialShareServiceMock {
+
+    }
+
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [],
-            declarations: [ FloatFooterComponent ],
+            imports: [
+                TranslateModule
+            ],
+            declarations: [
+                FloatFooterComponent,
+                SocialShareButtonsComponent
+            ],
             providers: [
+                TranslateService,
+                TranslateLoader,
+                TranslateParser,
+                { provide: SocialShareButtonsService, useClass: SocialShareButtonsServiceMock },
+                { provide: SocialShareService, useClass: SocialShareServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-                { provide: UtilsService, useClass: UtilsServiceMock }
+                { provide: UtilsService, useClass: UtilsServiceMock },
+                { provide: LanguageService, useClass: LanguageServiceMock }
             ]
         });
 
-        componentFixture = TestBed.overrideComponent(FloatFooterComponent, {
-            set: {
-                template: ''
-            }
-        }).createComponent(FloatFooterComponent);
-
-        componentInstance = componentFixture.componentInstance;
-    });
+        fixture = TestBed.createComponent(FloatFooterComponent);
+        component = fixture.componentInstance;
+    }));
 
     it('ngAfterViewInit()', () => {
-        componentFixture.whenStable().then(() => {
-            componentInstance.ngOnInit();
-            componentInstance.ngAfterViewInit();
+        component.ngOnInit();
+        component.ngAfterViewInit();
 
-            expect(componentInstance.isDesktop).toBeTruthy();
-            expect(componentInstance.scrollSubscribe).toBeDefined();
+        expect(component.isDesktop).toBeTruthy();
+        expect(component.scrollSubscribe).toBeDefined();
 
-            spyOn(componentInstance.scrollSubscribe, 'unsubscribe');
+        spyOn(component.scrollSubscribe, 'unsubscribe');
 
-            componentInstance.ngOnDestroy();
+        component.ngOnDestroy();
 
-            expect(componentInstance.scrollSubscribe.unsubscribe).toHaveBeenCalled();
-        });
+        expect(component.scrollSubscribe.unsubscribe).toHaveBeenCalled();
     });
 });
