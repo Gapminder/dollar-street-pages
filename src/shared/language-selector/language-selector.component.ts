@@ -5,11 +5,9 @@ import {
   ElementRef,
   Input
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import {
   LanguageService
 } from '../../common';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'language-selector',
