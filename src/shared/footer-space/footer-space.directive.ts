@@ -6,10 +6,10 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 
 @Directive({selector: '[footerSpace]'})
 export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy {
-  private footerHeight: number;
-  private element: HTMLElement;
-  private zone: NgZone;
-  private resizeSubscribe: Subscription;
+  public footerHeight: number;
+  public element: HTMLElement;
+  public zone: NgZone;
+  public resizeSubscribe: Subscription;
 
   public constructor(zone: NgZone,
                      element: ElementRef) {
