@@ -103,7 +103,7 @@ export class UtilsServiceMock {
         return {
             thing: 'Families',
             countries: 'World',
-            region: 'World'
+            regions: 'World'
         };
     }
 

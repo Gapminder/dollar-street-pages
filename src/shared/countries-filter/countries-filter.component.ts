@@ -49,7 +49,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
   public theWorldTranslate: string;
-  public translateGetTheWorldSubscribe: Subscription;
   public languageService: LanguageService;
   public utilsService: UtilsService;
   public window: Window = window;
@@ -503,7 +502,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     if (regions[0] === 'World' && countries[0] !== 'World') {
-      if (countries.length > 2) {//console.log(getTranslatedCountries.slice(0, this.sliceCount), 'ppp');
+      if (countries.length > 2) {
         this.activeCountries = `${getTranslatedCountries.slice(0, this.sliceCount).join(', ')} (+${getTranslatedCountries.length - this.sliceCount})`;
       } else {
         if (this.sliceCount === 1 && countries.length > 1) {
