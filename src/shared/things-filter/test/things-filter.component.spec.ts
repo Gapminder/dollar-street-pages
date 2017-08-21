@@ -63,7 +63,7 @@ describe('ThingsFilterComponent', () => {
 
         component.goToThing({empty: false});
 
-        const action = new ThingsFilterActions.GetThingsFilter('thing=undefined&countries=World&region=World');
+        const action = new ThingsFilterActions.GetThingsFilter('thing=undefined&countries=World&regions=World');
 
         expect(store.dispatch).toHaveBeenCalledWith(action);
     });
