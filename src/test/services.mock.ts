@@ -81,7 +81,7 @@ export class AngularticsMock {
 }
 
 export class Angulartics2GoogleAnalyticsMock {
-
+    public eventTrack(): void {}
 }
 
 export class UrlChangeServiceMock {

@@ -6,7 +6,6 @@ import {
   OnInit,
   Component,
   OnDestroy,
-  OnChanges,
   Input,
   Output,
   EventEmitter,
