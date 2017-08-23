@@ -19,31 +19,18 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public window: Window = window;
-  public navigator: any = navigator;
   public isLoader: boolean = false;
   public isVisibleHeader: boolean;
-  public router: Router;
   public routerEventsSubscribe: Subscription;
   public loaderServiceSubscribe: Subscription;
   public documentCreatedSubscribe: Subscription;
-  public languageService: LanguageService;
-  public loaderService: LoaderService;
-  public googleAnalyticsService: GoogleAnalyticsService;
-  public fontDetectorService: FontDetectorService;
-  public isMatrix: boolean;
   public currentPage: string;
 
-  public constructor(router: Router,
-                     languageService: LanguageService,
-                     loaderService: LoaderService,
-                     fontDetectorService: FontDetectorService,
-                     googleAnalyticsService: GoogleAnalyticsService) {
-    this.router = router;
-    this.loaderService = loaderService;
-    this.languageService = languageService;
-    this.googleAnalyticsService = googleAnalyticsService;
-    this.fontDetectorService = fontDetectorService;
+  public constructor(private router: Router,
+                     private languageService: LanguageService,
+                     private loaderService: LoaderService,
+                     private fontDetectorService: FontDetectorService,
+                     private googleAnalyticsService: GoogleAnalyticsService) {
   }
 
   public ngOnInit(): void {

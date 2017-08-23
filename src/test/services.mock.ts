@@ -18,6 +18,10 @@ export class LoaderServiceMock {
     public setLoader(b: boolean): boolean {
         return b;
     }
+
+    public getLoaderEvent(): Observable<any> {
+        return Observable.of([{}]);
+    }
 }
 
 export class LanguageServiceMock {
