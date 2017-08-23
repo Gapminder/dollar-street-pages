@@ -28,9 +28,6 @@ import {
   UtilsService,
   DrawDividersInterface
 } from '../common';
-import {
-  GuideComponent,
-} from '../shared';
 import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
