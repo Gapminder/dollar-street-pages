@@ -13,21 +13,27 @@ export class UrlChangeService {
     this.location = location;
   }
 
-  public replaceState(path: string, query: string, isReplace?: boolean): void {
+  public replaceState(path: string, query: string): void {
     if (this.isCurrentPathEqualTo(path, query)) {
       return;
     }
 
-    if (isReplace) {
-      this.location.replaceState(path, query);
-    } else {
-      this.location.go(path, query);
-    }
+    this.location.replaceState(path, query);
 
     this.urlEvents.next('my event');
   }
 
-  public isCurrentPathEqualTo(path: string, query: string): boolean {
+  public goToUrl(path: string, query: string): void {
+    if (this.isCurrentPathEqualTo(path, query)) {
+      return;
+    }
+
+    this.location.go(path, query);
+
+    this.urlEvents.next('my event');
+  }
+
+  private isCurrentPathEqualTo(path: string, query: string): boolean {
     return this.location.isCurrentPathEqualTo(path, query);
   }
 

@@ -1,5 +1,4 @@
 import { TestBed, async, getTestBed, fakeAsync } from '@angular/core/testing';
-
 import { LocalStorageService } from '../localstorage.service';
 
 describe('LocalStorageService', () => {

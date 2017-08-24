@@ -1,17 +1,14 @@
 import { TestBed, async, getTestBed, fakeAsync } from '@angular/core/testing';
-
 import { FontDetectorService } from '../font-detector.service';
-
+import {
+    LanguageServiceMock
+} from '../../../test/';
 import { LanguageService } from '../../language/language.service';
 
 describe('FontDetectorService', () => {
     let fontDetectorService: FontDetectorService;
 
     let mockedDocumentObject: Document;
-
-    const mockLanguageService = {
-        currentLanguage: 'en'
-    };
 
     const expectedStyle: string = 'latin-script';
 
@@ -20,7 +17,7 @@ describe('FontDetectorService', () => {
             imports: [],
             providers: [
                 FontDetectorService,
-                { provide: LanguageService, useValue: mockLanguageService },
+                { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: Document, useFactory: () => {
                     let newDocument: Document = document.implementation.createDocument ('http://www.w3.org/1999/xhtml', 'html', undefined);
                     let body = document.createElementNS('http://www.w3.org/1999/xhtml', 'body');

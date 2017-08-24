@@ -1,4 +1,8 @@
 import 'rxjs/operator/debounceTime';
+import { Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { environment } from '../../environments/environment';
 import {
   Component,
   Input,
@@ -10,21 +14,20 @@ import {
   OnDestroy,
   ElementRef,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import { ImageResolutionInterface } from '../../interfaces';
-
-import { MathService,
-         StreetSettingsService,
-         DrawDividersInterface,
-         BrowserDetectionService,
-         LanguageService,
-         UtilsService } from '../../common';
-
+import {
+  MathService,
+  DrawDividersInterface,
+  BrowserDetectionService,
+  LanguageService,
+  UtilsService
+} from '../../common';
 import { MatrixViewBlockService } from './matrix-view-block.service';
 
 @Component({
@@ -32,7 +35,6 @@ import { MatrixViewBlockService } from './matrix-view-block.service';
   templateUrl: './matrix-view-block.component.html',
   styleUrls: ['./matrix-view-block.component.css', './matrix-view-block.component.mobile.css']
 })
-
 export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('viewImageBlockContainer')
   public viewImageBlockContainer: ElementRef;
@@ -47,6 +49,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public place: any;
   @Input()
   public thing: string;
+  @Input()
+  public itemSize: number;
+
   @Output()
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output()
@@ -66,7 +71,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public familyInfoService: MatrixViewBlockService;
   public zone: NgZone;
   public router: Router;
-  public boxContainerPadding: number;
   public widthScroll: number;
   public element: HTMLElement;
   public boxContainer: HTMLElement;
@@ -74,15 +78,17 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public isShowCountryButton: boolean;
   public countryName: string;
   public streetData: DrawDividersInterface;
-  public streetSettingsService: StreetSettingsService;
-  public utilsServece: UtilsService;
-  public streetServiceSubscribe: Subscription;
+  public utilsService: UtilsService;
   public languageService: LanguageService;
   public showTranslateMe: boolean;
   public imageResolution: ImageResolutionInterface;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public currentLanguage: string;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public viewImage: string;
+  public streetSettingsStateSubscription: Subscription;
+  public consumerApi: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -90,27 +96,34 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      element: ElementRef,
                      familyInfoService: MatrixViewBlockService,
                      browserDetectionService: BrowserDetectionService,
-                     streetSettingsService: StreetSettingsService,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     private store: Store<AppStates>,
+                     private changeDetectorRef: ChangeDetectorRef) {
     this.math = math;
     this.zone = zone;
     this.router = router;
     this.element = element.nativeElement;
-    this.streetSettingsService = streetSettingsService;
     this.device = browserDetectionService;
     this.familyInfoService = familyInfoService;
     this.languageService = languageService;
-    this.utilsServece = utilsService;
+    this.utilsService = utilsService;
+    this.consumerApi = environment.consumerApi;
 
     this.isDesktop = this.device.isDesktop();
 
     this.currentLanguage = this.languageService.currentLanguage;
 
-    this.imageResolution = this.utilsServece.getImageResolution(this.isDesktop);
+    this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
+    });
+
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -123,34 +136,25 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
       });
-
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-        this.streetData = res.data;
-      });
   }
 
   // tslint:disable-next-line
   public ngOnChanges(changes: SimpleChanges): void {
-    this.loader = false;
+    this.loader = true;
     this.showblock = true;
-
-    let url = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
-    let parseUrl: any = this.parseUrl(`place=${this.place._id}&` + this.query.replace(/&activeHouse\=\d*/, ''));
-    this.privateZoom = parseUrl.zoom;
-
-    setTimeout(() => this.setMarkerPosition(), 0);
 
     this.place.background = this.place.background.replace(this.imageResolution.image, this.imageResolution.expand);
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
 
+    this.viewImage = this.place.background;
+
+    setTimeout(() => this.setMarkerPosition(), 0);
+
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
+
+    let url: string = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
 
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
       .subscribe((res: any) => {
@@ -170,10 +174,16 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.countryName = this.truncCountryName(this.familyData.country);
-        this.familyData.goToPlaceData = parseUrl;
-        this.isShowCountryButton = parseUrl.countries !== this.familyData.country.originName;
 
-        let newImage = new Image();
+        let query = this.query.replace(/row\=\d*/, 'row=1').replace(/&activeHouse\=\d*/, '');
+
+        let parsedUrl: any = this.utilsService.parseUrl(`place=${this.place._id}`);
+
+        this.familyData.goToPlaceData = parsedUrl;
+        this.isShowCountryButton = parsedUrl.countries !== this.familyData.country.originName;
+        this.privateZoom = parsedUrl.zoom;
+
+        /*let newImage = new Image();
 
         newImage.onload = () => {
           this.zone.run(() => {
@@ -181,15 +191,21 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           });
         };
 
-        newImage.src = this.place.background;
+        newImage.src = this.place.background;*/
       });
   }
 
   public ngOnDestroy(): void {
-    this.resizeSubscribe.unsubscribe();
+    if (this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
 
     if (this.familyInfoServiceSubscribe) {
       this.familyInfoServiceSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
   }
 
@@ -218,7 +234,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public goToMatrixByCountry(country: string): void {
-    let query: any = this.parseUrl(this.query);
+    let query: any = this.utilsService.parseUrl(this.query);
 
     query.regions = 'World';
     query.countries = country;
@@ -227,33 +243,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     delete query.activeHouse;
 
-    this.goToMatrixWithCountry.emit({url: this.objToQuery(query), isCountriesFilter: true});
-  }
-
-  public parseUrl(url: string): any {
-    return JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+    this.goToMatrixWithCountry.emit({url: this.utilsService.objToQuery(query), isCountriesFilter: true});
   }
 
   public setMarkerPosition(): void {
-    this.widthScroll = window.innerWidth - document.body.offsetWidth;
-
-    if(!this.viewImageBlockContainer) {
-      return;
-    }
-
-    let boxContainer: HTMLElement = this.viewImageBlockContainer.nativeElement as HTMLElement;
-
-    if (!boxContainer) {
-      boxContainer = this.mobileViewImageBlockContainer.nativeElement as HTMLElement;
-    }
-
-    this.boxContainer = boxContainer;
-    let paddingLeft: string = window.getComputedStyle(this.boxContainer).getPropertyValue('padding-left');
-    this.boxContainerPadding = parseFloat(paddingLeft);
-
-    let imageWidth: number = (this.boxContainer.offsetWidth - this.boxContainerPadding * 2 - this.widthScroll) / this.privateZoom;
-
-    this.markerPositionLeft = imageWidth * (this.positionInRow || this.privateZoom) - (imageWidth / 2 + 16);
+    this.markerPositionLeft = (this.itemSize * this.positionInRow) - this.itemSize / 2;
   }
 
   public getDescription(shortDescription: string): string {
@@ -272,12 +266,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       return shortDescription;
     }
-  }
-
-  public objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
   }
 
   public truncCountryName(countryData: any): string {

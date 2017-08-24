@@ -2,7 +2,6 @@
   position: relative;
   padding: 5px 5px 20px;
   background-color: #fff;
-  z-index: 11;
 }
 
 .mobile-view-image-block-container .view-image-container {
@@ -181,7 +180,6 @@
   border-bottom: 17px solid #fff;
   position: absolute;
   top: -17px;
-  z-index: 9;
 }
 
 .mobile-view-image-block-container .active-house.house-1 {

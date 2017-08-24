@@ -5,7 +5,7 @@
   <div class="view-image-block-content">
     <div class="view-image-container">
       <img (click)="openPopUp()"
-           [src]="place?.background">
+           [src]="viewImage">
     </div>
 
     <div class="house-info-container">
@@ -96,7 +96,7 @@
     </div>
 
     <div class="zoom-download-container">
-      <a class="download" target="_blank" [href]="api + '/v1/download-image/' + place.image">
+      <a class="download" target="_blank" [href]="consumerApi + '/v1/download-image/' + place.image">
         <img src="/assets/img/download-icon.svg" alt=""><span class="button-text">{{ 'DOWNLOAD' | translate }}</span>
       </a>
 
@@ -146,7 +146,7 @@
       </div>
 
       <div class="download-container">
-        <a target="_blank" [href]="api + '/v1/download-image/' + place.image">
+        <a target="_blank" [href]="consumerApi + '/v1/download-image/' + place.image">
           <img src="/assets/img/download-icon-white.svg" alt="">
         </a>
       </div>

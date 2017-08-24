@@ -1,10 +1,9 @@
+import { Observable } from 'rxjs/Rx';
 import { TestBed, async, getTestBed, fakeAsync, tick } from '@angular/core/testing';
-
 import {
     MockBackend,
     MockConnection
 } from '@angular/http/testing';
-
 import {
     BaseRequestOptions,
     Http,
@@ -13,21 +12,19 @@ import {
     XHRBackend,
     HttpModule
 } from '@angular/http';
-
-import { Observable } from 'rxjs/Rx';
-
 import * as _ from 'lodash';
-
 import { Location, LocationStrategy } from '@angular/common';
-
 import { TranslateModule, TranslateLoader, TranslateService } from 'ng2-translate';
-
 import { LanguageService } from '../language.service';
 import { UrlChangeService } from '../../url-change/url-change.service';
 import { LocalStorageService } from '../../guide/localstorage.service';
 import { UtilsService } from '../../utils/utils.service';
-
 import { SpyLocation } from '@angular/common/testing';
+import {
+    UtilsServiceMock,
+    LanguageServiceMock,
+    UrlChangeServiceMock
+} from '../../../test/';
 
 /* tslint:disable */
 class CustomLoader implements TranslateLoader {
@@ -60,14 +57,14 @@ describe('LanguageService', () => {
                 })
             ],
             providers: [
-                LanguageService,
-                UrlChangeService,
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 TranslateService,
                 LocationStrategy,
                 LocalStorageService,
                 MockBackend,
                 BaseRequestOptions,
-                UtilsService,
+                { provide: UtilsService, useClass: UtilsServiceMock },
+                { provide: LanguageService, useClass: LanguageServiceMock },
                 {
                     deps: [
                         MockBackend,

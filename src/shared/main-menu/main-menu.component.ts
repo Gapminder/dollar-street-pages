@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import {
   Component,
   Input,
@@ -10,48 +12,39 @@ import {
   AfterViewInit,
   ViewChild
 } from '@angular/core';
-
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
 import {
-  StreetSettingsService,
+  Router,
+  NavigationEnd,
+  ActivatedRoute
+} from '@angular/router';
+import {
   DrawDividersInterface,
   LocalStorageService,
   BrowserDetectionService,
   Angulartics2GoogleAnalytics,
   LanguageService
 } from '../../common';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 
 @Component({
   selector: 'main-menu',
   templateUrl: './main-menu.template.html',
   styleUrls: ['./main-menu.component.css', './main-menu.component.mobile.css']
 })
-
 export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('socialShareContent')
   public socialShareContent: ElementRef;
 
-  @Input()
-  public hoverPlace: Observable<any>;
-  @Output()
-  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
-
   public element: HTMLElement;
   public window: Window = window;
-  public isMatrixComponent: boolean;
+  public isMatrixPage: boolean;
   public isOpenMenu: boolean = false;
   public streetData: DrawDividersInterface;
   public router: Router;
-  public activatedRoute: ActivatedRoute;
-  public hoverPlaceSubscribe: Subscription;
-  public routerEventsSubscribe: Subscription;
-  public streetServiceSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public localStorageService: LocalStorageService;
-  public streetSettingsService: StreetSettingsService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
@@ -59,73 +52,47 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public socialShareContentElement: HTMLElement;
   public languageService: LanguageService;
   public shareTranslation: string;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public languages: any;
+  public streetSettingsStateSubscription: Subscription;
+  public languagesListSubscription: Subscription;
 
   public constructor(router: Router,
                      element: ElementRef,
-                     activatedRoute: ActivatedRoute,
                      languageService: LanguageService,
                      localStorageService: LocalStorageService,
-                     streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private store: Store<AppStates>) {
     this.element = element.nativeElement;
     this.router = router;
-    this.activatedRoute = activatedRoute;
     this.device = browserDetectionService;
     this.localStorageService = localStorageService;
-    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngAfterViewInit(): void {
     this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
-        this.shareTranslation = trans;
+      this.shareTranslation = trans;
 
-        this.processShareTranslation();
-      });
+      this.processShareTranslation();
+    });
   }
 
   public ngOnInit(): void {
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
 
-    let activatedRoutePath = this.activatedRoute.snapshot.url.shift();
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
+    });
 
-    if (activatedRoutePath) {
-      this.isMatrixComponent = activatedRoutePath.path === 'matrix';
-    } else {
-      this.routerEventsSubscribe = this.router
-        .events
-        .subscribe((event: any) => {
-          if (event instanceof NavigationEnd) {
-            let activePage: string = event
-              .urlAfterRedirects
-              .split('?')
-              .shift();
-
-            this.isMatrixComponent = activePage === '/matrix';
-          }
-        });
-    }
-
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-      });
-
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace
-      .subscribe(() => {
-        if (this.isOpenMenu) {
-          this.isOpenMenu = false;
-        }
-      });
+    this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
+      this.languages = data;
+    });
   }
 
   public processShareTranslation(): void {
@@ -145,15 +112,17 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnDestroy(): void {
-    if (this.routerEventsSubscribe) {
-      this.routerEventsSubscribe.unsubscribe();
+    if (this.languagesListSubscription) {
+      this.languagesListSubscription.unsubscribe();
     }
 
-    if (this.hoverPlaceSubscribe) {
-      this.hoverPlaceSubscribe.unsubscribe();
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
     }
 
-    this.getTranslationSubscribe.unsubscribe();
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
 
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
@@ -172,14 +141,14 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public goToPage(url: string, removeStorage?: boolean): void {
+  public goToPage(url: string): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
 
     switch (url) {
       case '/matrix':
-        this.goToMatrixPage(removeStorage);
+        this.goToMatrixPage();
         break;
 
       case '/about':
@@ -226,13 +195,21 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public goToMatrixPage(removeStorage?: boolean): void {
+  public openQuickGuide(): void {
+    this.localStorageService.removeItem('quick-guide');
+
+    document.body.scrollTop = 0;
+
+    this.isOpenMenu = false;
+
+    this.store.dispatch(new AppActions.OpenQuickGuide(true));
+
+    this.goToMatrixPage();
+  }
+
+  public goToMatrixPage(): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
-    }
-
-    if (removeStorage) {
-      this.localStorageService.removeItem('quick-guide');
     }
 
     let queryParams = {
@@ -250,18 +227,8 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       queryParams.zoom = 3;
     }
 
-    if (this.isMatrixComponent) {
-      this.selectedFilter.emit({url: this.objToQuery(queryParams)});
-    } else {
-      this.router.navigate(['/matrix'], {queryParams: queryParams});
-    }
+    this.router.navigate(['/matrix'], {queryParams: queryParams});
 
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
-  }
-
-  public objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
   }
 }

@@ -1,5 +1,8 @@
 import 'rxjs/operator/debounceTime';
-
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { environment } from '../../../environments/environment';
 import {
   Component,
   Input,
@@ -12,20 +15,15 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
-
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../../interfaces';
 import {
-  StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService,
   LanguageService,
   UtilsService
 } from '../../../common';
-
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
-
 import { ImageResolutionInterface } from '../../../interfaces';
 
 @Component({
@@ -33,7 +31,6 @@ import { ImageResolutionInterface } from '../../../interfaces';
   templateUrl: './family-media-view-block.component.html',
   styleUrls: ['./family-media-view-block.component.css', './family-media-view-block.component.mobile.css']
 })
-
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('homeDescriptionContainer')
   public homeDescriptionContainer: ElementRef;
@@ -57,8 +54,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public resizeSubscribe: Subscription;
   public imageResolution: ImageResolutionInterface;
   public windowInnerWidth: number = window.innerWidth;
-  public streetServiceSubscribe: Subscription;
-  public streetSettingsService: StreetSettingsService;
   public device: BrowserDetectionService;
   public utilsService: UtilsService;
   public isDesktop: boolean;
@@ -66,38 +61,42 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public languageService: LanguageService;
   public showTranslateMe: boolean;
   public element: HTMLElement;
+  public store: Store<AppStates>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public viewImage: string;
+  public streetSettingsStateSubscription: Subscription;
+  public consumerApi: string;
+  public showInCountry: any;
+  public showInRegion: any;
+  public showInTheWorld: any;
 
   public constructor(zone: NgZone,
-                     streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      viewBlockService: FamilyMediaViewBlockService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     elementRef: ElementRef) {
+                     elementRef: ElementRef,
+                     store: Store<AppStates>) {
     this.zone = zone;
     this.viewBlockService = viewBlockService;
     this.device = browserDetectionService;
-    this.streetSettingsService = streetSettingsService;
     this.languageService = languageService;
     this.utilsService = utilsService;
     this.element = elementRef.nativeElement;
+    this.store = store;
+    this.consumerApi = environment.consumerApi;
 
     this.isDesktop = this.device.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-      });
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -115,8 +114,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public ngOnChanges(changes: any): void {
     if (changes.imageData) {
       this.country = void 0;
-      this.loader = false;
-      let isImageLoaded: boolean = false;
+      this.loader = true;
+
+      /*let isImageLoaded: boolean = false;
       let image: any = new Image();
 
       image.onload = () => {
@@ -129,14 +129,18 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
         });
       };
 
-      image.src = this.imageData.image;
+      image.src = this.imageData.image;*/
+
+      this.viewImage = this.imageData.image;
 
       if (this.viewBlockServiceSubscribe && this.viewBlockServiceSubscribe.unsubscribe) {
         this.viewBlockServiceSubscribe.unsubscribe();
       }
 
+      let query: string = `placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`;
+
       this.viewBlockServiceSubscribe = this.viewBlockService
-        .getData(`placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`)
+        .getData(query)
         .subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);
@@ -146,6 +150,39 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.country = res.data.country;
           this.article = res.data.article;
           this.thing = res.data.thing;
+
+          this.showInCountry = {
+            thing: this.thing.originPlural,
+            countries: this.country.originName,
+            regions: 'World',
+            zoom: '4',
+            row: '1',
+            lowIncome: this.streetData.poor,
+            highIncome: this.streetData.rich,
+            lang: this.languageService.currentLanguage
+          };
+
+          this.showInRegion = {
+            thing: this.thing.originPlural,
+            countries: this.country.countriesName.join(','),
+            regions: this.country.originRegionName,
+            zoom: '4',
+            row: '1',
+            lowIncome: this.streetData.poor,
+            highIncome: this.streetData.rich,
+            lang: this.languageService.currentLanguage
+          };
+
+          this.showInTheWorld = {
+            thing: this.thing.originPlural,
+            countries: 'World',
+            regions: 'World',
+            zoom: '4',
+            row: '1',
+            lowIncome: this.streetData.poor,
+            highIncome: this.streetData.rich,
+            lang: this.languageService.currentLanguage
+          };
 
           this.truncCountryName(this.country);
 
@@ -157,9 +194,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
             this.article.description = this.getDescription(this.article.shortDescription);
           }
 
-          if (isImageLoaded) {
+          /*if (isImageLoaded) {
             this.loader = true;
-          }
+          }*/
         });
     }
   }
@@ -173,8 +210,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
       this.viewBlockServiceSubscribe.unsubscribe();
     }
 
-    if(this.streetServiceSubscribe) {
-      this.streetServiceSubscribe.unsubscribe();
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
   }
 

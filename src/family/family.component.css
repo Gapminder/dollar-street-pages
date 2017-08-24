@@ -1,71 +1,12 @@
-family-header {
-  display: block;
-}
-
-.family-container {
-  position: relative;
-}
-
-.header-container {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: block;
-  background-color: #f6f7f8;
-  z-index: 21;
-}
-
-.header-container .header-content {
-  display: inline-block;
-  width: 100%;
-  vertical-align: top;
-  margin-bottom: -6px;
-}
-
-.header-container .logo {
-  margin: 8px 0 8px 22px;
-  width: 39px;
-  display: block;
-}
-
-.header-container .logo img {
-  width: 100%;
-}
-
-.header-container .heading {
-  cursor: pointer;
-  display: inline-block;
-  margin: 13px 0 0;
-  color: #374551;
-  font-size: 22px;
-
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: calc(100% - 280px);
-}
-
-.header-container .heading img {
-  width: 8px;
-  margin: 0 12px 0 15px;
-  vertical-align: baseline;
-}
-
 .street-family-container {
-  clear: both;
-}
-
-.header-container >>> language-selector .lang-container button {
-  background-color: #f6f7f8;
+  width: 100%;
+  background-color: white;
 }
 
 .zoom-column {
   position: fixed;
   right: 32px;
   bottom: 52px;
-  z-index: 10;
 }
 
 .zoom-column.stop {
@@ -92,75 +33,4 @@ family-header {
 
 .sign {
   margin-bottom: 4px;
-}
-
-@media (max-width: 1023px) {
-  .header-container .header-content {
-    margin-bottom: -3px;
-  }
-
-  .header-container .logo {
-    margin: 5px 0 5px 10px;
-    width: 36px;
-  }
-
-  .header-container .heading {
-    margin: 11px 0 0;
-    font-size: 20px;
-    width: calc(100% - 250px);
-  }
-
-  .header-container .heading img {
-    width: 8px;
-    margin: 0 12px -2px 15px;
-  }
-}
-
-@media (max-width: 599px) {
-  .header-container {
-    -webkit-transition: background-color .2s ease-out;
-    -moz-transition: background-color .2s ease-out;
-    -o-transition: background-color .2s ease-out;
-    transition: background-color .2s ease-out;
-
-    background-color: #fff;
-  }
-
-  .header-container.sub-panel-shown {
-    background-color: #f6f7f8;
-  }
-
-  .header-container .logo {
-    display: none;
-  }
-
-  .header-container .heading {
-    margin: 14px 0 0;
-    font-size: 20px;
-    width: calc(100% - 55px);
-  }
-
-  .header-container .heading img {
-    width: 8px;
-    margin: 0 10px -1px 8px;
-  }
-
-  .header-container main-menu >>> #main-mobile-menu .menu-icon {
-    width: 48px;
-    height: 55px;
-    margin-top: 0;
-  }
-
-  .header-container .header-content >>> language-selector .lang-container {
-    display: none;
-  }
-
-  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container {
-    display: inline-block;
-    margin: 5px 4px;
-  }
-
-  .header-container .header-content main-menu >>> #main-mobile-menu language-selector .lang-container button {
-    background-color: white;
-  }
 }

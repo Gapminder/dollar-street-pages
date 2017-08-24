@@ -87,7 +87,6 @@
   padding: 15px 9px 6px;
   font-size: 20px;
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
-  z-index: 9;
 }
 
 .place-image-box-country,

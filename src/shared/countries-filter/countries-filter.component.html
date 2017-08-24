@@ -110,7 +110,7 @@
 
     <div #underlineK
          class="underline-k"
-         [ngStyle]="{display: regionsVisibility ? 'inline-block' : 'none'}">
+         [ngStyle]="{'max-height': regionsVisibility ? '68px' : '0px'}">
       <div class="regions-container"
            *ngFor="let location of locations">
         <h3 class="title"

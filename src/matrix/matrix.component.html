@@ -2,30 +2,19 @@
   <div #matrixHeader
        class="matrix-header main-header"
        [style.top.px]="-guidePositionTop">
-    <quick-guide (startQuickGuide)="startQuickGuide()"></quick-guide>
-
-    <header [query]="query"
-            [thing]="thing"
-            [hoverPlace]="hoverPlace"
-            (filter)="urlChanged($event)"
-            (isOpenIncomeFilter)="openIncomeFilter()">
-    </header>
 
     <div #streetAndTitleContainer
          class="street-and-title-container">
       <div #streetContainer
            class="street-container" (click)="scrollTop($event, streetContainer)">
-        <div class="short-title">{{activeThing?.plural}} <span>{{ 'IN' | translate }}</span> {{activeCountries}} <span>{{ 'BY_DOLLAR' | translate }}</span></div>
+        <div class="short-title">{{thing}} <span>{{ 'IN' | translate }}</span> {{activeCountries}} <span>{{ 'BY_DOLLAR' | translate }}</span></div>
 
         <div class="street-content">
-          <street [query]="query"
-                  [thing]="thing"
-                  [places]="streetPlaces"
+          <street [places]="streetPlaces"
                   [hoverPlace]="hoverPlace"
                   [chosenPlaces]="chosenPlaces"
-                  (filterStreet)="urlChanged($event)"></street>
-
-          <street-mobile *ngIf="isMobile" [places]="streetPlaces"></street-mobile>
+                  (filterStreet)="streetChanged($event)">
+          </street>
         </div>
       </div>
     </div>
@@ -34,7 +23,8 @@
                   [places]="streetPlacesData"
                   [lowIncome]="lowIncome"
                   [highIncome]="highIncome"
-                  (sendResponse)="getResponseFromIncomeFilter($event)"></income-filter>
+                  (sendResponse)="getResponseFromIncomeFilter($event)">
+    </income-filter>
   </div>
 
   <matrix-images [row]="row"
@@ -43,11 +33,11 @@
                 [thing]="thing"
                 [places]="matrixPlaces"
                 [activeHouse]="activeHouse"
-                [guidePositionTop]="guideHeight"
                 [clearActiveHomeViewBox]="clearActiveHomeViewBox"
                 (filter)="urlChanged($event)"
-                (hoverPlace)="hoverPlaceS($event)"
-                (activeHouseOptions)="activeHouseOptions($event)">
+                (hoverPlace)="hoverPlaces($event)"
+                (activeHouseOptions)="activeHouseOptions($event)"
+                (imageHeightChanged)="imageHeightChanged($event)">
   </matrix-images>
 
   <div class="zoom-column pull-right"
@@ -61,7 +51,7 @@
 
     <button type="button"
             [disabled]="!isDesktop ? zoom === 3 : zoom === 10"
-            (click)="changeZoom(zoom + 1)">
+            (click)="changeZoom(1*zoom + 1*1)">
         <img class="sign" src="assets/img/minus.svg"/>
     </button>
   </div>

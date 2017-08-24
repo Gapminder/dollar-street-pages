@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import {
   Component,
   Output,
@@ -6,17 +7,22 @@ import {
   Input,
   ElementRef,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  OnDestroy
 } from '@angular/core';
-import { StreetSettingsService } from '../../common';
+import {
+  DrawDividersInterface
+} from '../../common';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 
 @Component({
   selector: 'income-filter',
   templateUrl: './income-filter.component.html',
   styleUrls: ['./income-filter.component.css']
 })
-
-export class IncomeFilterComponent implements AfterViewInit {
+export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
   @ViewChild('incomeFilterHeaderContainer')
   public incomeFilterHeaderContainer: ElementRef;
   @ViewChild('incomeFilterButtonContainer')
@@ -41,50 +47,64 @@ export class IncomeFilterComponent implements AfterViewInit {
     lowIncome: this.lowIncome,
     highIncome: this.highIncome
   };
-  public streetData: any;
-  public streetSettingsService: StreetSettingsService;
-  public streetServiceSubscribe: Subscription;
+  public streetData: DrawDividersInterface;
   public element: HTMLElement;
+  public store: Store<AppStates>;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public appState: Observable<any>;
+  public streetSettingsStateSubscription: Subscription;
+  public appStateSubscription: Subscription;
 
-  public constructor(streetSettingsService: StreetSettingsService,
+  public constructor(store: Store<AppStates>,
                      element: ElementRef) {
-    this.streetSettingsService = streetSettingsService;
     this.element = element.nativeElement;
+    this.store = store;
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
   }
 
   public ngAfterViewInit(): void {
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-        this.streetData = res.data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
 
-        let buttonContainer: HTMLElement = this.incomeFilterButtonContainer.nativeElement;
+      this.initData();
+    });
+  }
 
-        if (buttonContainer) {
-          let captureContainer = this.incomeFilterHeaderContainer.nativeElement;
+  public ngOnDestroy(): void {
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
+  }
 
-          let shortenWidth: HTMLElement = this.showAll.nativeElement;
-          let okayButton: HTMLElement = this.okButton.nativeElement;
-          let cancelButton: HTMLElement = this.closeButton.nativeElement;
+  public initData(): void {
+    let buttonContainer: HTMLElement = this.incomeFilterButtonContainer.nativeElement;
 
-          let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
+    if (buttonContainer) {
+      let captureContainer = this.incomeFilterHeaderContainer.nativeElement;
 
-          if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
-            shortenWidth.classList.add('decreaseFontSize');
-            cancelButton.classList.add('decreaseFontSize');
-            okayButton.classList.add('decreaseFontSize');
-            captureContainer.classList.add('decreaseFontSizeCapture');
-          }
-        }
-      });
+      let shortenWidth: HTMLElement = this.showAll.nativeElement;
+      let okayButton: HTMLElement = this.okButton.nativeElement;
+      let cancelButton: HTMLElement = this.closeButton.nativeElement;
+
+      let buttonsContainerWidth = okayButton.offsetWidth + cancelButton.offsetWidth + shortenWidth.offsetWidth + 30;
+
+      if (buttonsContainerWidth && buttonsContainerWidth > buttonContainer.offsetWidth) {
+        shortenWidth.classList.add('decreaseFontSize');
+        cancelButton.classList.add('decreaseFontSize');
+        okayButton.classList.add('decreaseFontSize');
+        captureContainer.classList.add('decreaseFontSizeCapture');
+      }
+    }
   }
 
   public closeFilter(isClose?: boolean): void {
     if (isClose) {
       this.sendResponse.emit({close: true});
+
+      this.store.dispatch(new AppActions.OpenIncomeFilter(false));
+
       return;
     }
 
@@ -93,7 +113,7 @@ export class IncomeFilterComponent implements AfterViewInit {
     this.sendResponse.emit(this.range);
   }
 
-  public getFilter(data: {lowIncome: number;highIncome: number}): void {
+  public getFilter(data: {lowIncome: number; highIncome: number}): void {
     this.range = data;
   }
 
@@ -103,5 +123,7 @@ export class IncomeFilterComponent implements AfterViewInit {
     this.range.close = true;
 
     this.sendResponse.emit(this.range);
+
+    this.store.dispatch(new AppActions.OpenIncomeFilter(false));
   }
 }

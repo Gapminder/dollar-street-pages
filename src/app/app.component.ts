@@ -1,40 +1,36 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { LoaderService, LanguageService, FontDetectorService, GoogleAnalyticsService } from '../common';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import {
+  LoaderService,
+  LanguageService,
+  FontDetectorService,
+  GoogleAnalyticsService
+} from '../common';
 
 @Component({
   selector: 'consumer-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-
 export class AppComponent implements OnInit, OnDestroy {
-  public window: Window = window;
-  public navigator: any = navigator;
   public isLoader: boolean = false;
   public isVisibleHeader: boolean;
-  public router: Router;
   public routerEventsSubscribe: Subscription;
   public loaderServiceSubscribe: Subscription;
   public documentCreatedSubscribe: Subscription;
+  public currentPage: string;
 
-  public languageService: LanguageService;
-  public loaderService: LoaderService;
-  public googleAnalyticsService: GoogleAnalyticsService;
-  public fontDetectorService: FontDetectorService;
-
-  public constructor(router: Router,
-                     languageService: LanguageService,
-                     loaderService: LoaderService,
-                     fontDetectorService: FontDetectorService,
-                     googleAnalyticsService: GoogleAnalyticsService) {
-    this.router = router;
-    this.loaderService = loaderService;
-    this.languageService = languageService;
-    this.googleAnalyticsService = googleAnalyticsService;
-    this.fontDetectorService = fontDetectorService;
+  public constructor(private router: Router,
+                     private languageService: LanguageService,
+                     private loaderService: LoaderService,
+                     private fontDetectorService: FontDetectorService,
+                     private googleAnalyticsService: GoogleAnalyticsService) {
   }
 
   public ngOnInit(): void {
@@ -52,6 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
+        this.currentPage = '';
+
         let activePage: string = event
           .urlAfterRedirects
           .split('?')
@@ -63,14 +61,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.isVisibleHeader = !(activePage === '/matrix' || activePage === '/family' || activePage === '/map');
 
+        if (activePage === '/matrix') {
+          this.currentPage = 'matrix';
+        }
+
         this.languageService.updateLangInUrl();
       }
     });
   }
 
   public ngOnDestroy(): void {
-    this.routerEventsSubscribe.unsubscribe();
-    this.loaderServiceSubscribe.unsubscribe();
-    this.documentCreatedSubscribe.unsubscribe();
+      if (this.routerEventsSubscribe) {
+          this.routerEventsSubscribe.unsubscribe();
+      }
+
+      if (this.loaderServiceSubscribe) {
+          this.loaderServiceSubscribe.unsubscribe();
+      }
+
+      if (this.documentCreatedSubscribe) {
+          this.documentCreatedSubscribe.unsubscribe();
+      }
   }
 }

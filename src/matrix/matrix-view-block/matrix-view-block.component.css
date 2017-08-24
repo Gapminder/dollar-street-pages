@@ -10,7 +10,6 @@
   position: relative;
   padding: 13px 5px 0;
   background-color: #fff;
-  z-index: 11;
 }
 
 .view-image-block-container .view-image-block-content {
@@ -259,7 +258,6 @@
   border-bottom: 17px solid #fff;
   position: absolute;
   top: -17px;
-  z-index: 9;
 }
 
 .view-image-block-container.zoom-6,

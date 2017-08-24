@@ -1,46 +1,67 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { PhotographerComponent } from '../photographer.component';
-
-import { TitleHeaderService } from '../../common';
+import { TranslateModule } from 'ng2-translate';
+import { Angulartics2Module, Angulartics2, Angulartics2GoogleAnalytics } from 'angulartics2';
+import {
+  TitleHeaderService,
+  MathService,
+  LanguageService,
+  LoaderService
+} from '../../common';
+import {
+  TitleHeaderServiceMock,
+  AngularticsMock,
+  Angulartics2GoogleAnalyticsMock,
+  LanguageServiceMock,
+  LoaderServiceMock
+} from '../../test/';
+import { PhotographerProfileComponent } from '../photographer-profile/photographer-profile.component';
+import { PhotographerProfileService } from '../photographer-profile/photographer-profile.service';
+import { PhotographerPlacesComponent } from '../photographer-places/photographer-places.component';
+import { PhotographerPlacesService } from '../photographer-places/photographer-places.service';
 
 describe('PhotographerComponent', () => {
-  let componentInstance: PhotographerComponent;
-  let componentFixture: ComponentFixture<PhotographerComponent>;
-
-  const userTitleHeaderService = {
-
-  };
+  let fixture: ComponentFixture<PhotographerComponent>;
+  let component: PhotographerComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
-      declarations: [ PhotographerComponent ],
+      imports: [
+        RouterTestingModule,
+        TranslateModule,
+        Angulartics2Module
+      ],
+      declarations: [
+        PhotographerComponent,
+        PhotographerProfileComponent,
+        PhotographerPlacesComponent
+      ],
       providers: [
-                     { provide: TitleHeaderService, useValue: userTitleHeaderService }
-                 ]
+        MathService,
+        PhotographerProfileService,
+        PhotographerPlacesService,
+        { provide: TitleHeaderService, useValue: TitleHeaderServiceMock },
+        { provide: Angulartics2, useClass: AngularticsMock },
+        { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+        { provide: LanguageService, useClass: LanguageServiceMock },
+        { provide: LoaderService, useClass: LoaderServiceMock }
+      ]
     });
 
-    componentFixture = TestBed.overrideComponent(PhotographerComponent, {
-        set: {
-            template: ''
-        }
-    }).createComponent(PhotographerComponent);
-
-    componentInstance = componentFixture.componentInstance;
+    fixture = TestBed.createComponent(PhotographerComponent);
+    component = fixture.componentInstance;
   }));
 
   it('ngOnCreate() ngOnDestroy()', () => {
-    componentInstance.ngOnInit();
+    component.ngOnInit();
 
-    expect(componentInstance.titleHeaderService).toBeDefined();
+    expect(component.titleHeaderService).toBeDefined();
 
-    spyOn(componentInstance.queryParamsSubscribe, 'unsubscribe');
+    spyOn(component.queryParamsSubscribe, 'unsubscribe');
 
-    componentInstance.ngOnDestroy();
+    component.ngOnDestroy();
 
-    expect(componentInstance.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(component.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();
   });
 });

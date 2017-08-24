@@ -1,9 +1,3 @@
-<div class="map-header main-header" (click)="closeLeftSideBar($event)">
-  <div class="container">
-    <header [query]="query" (filter)="urlChanged($event)"></header>
-  </div>
-</div>
-
 <div id="places">
   <div class="row">
     <div class="col-md-12 places_header">
@@ -11,10 +5,10 @@
         <div class="mapBoxContainer" (click)="closeLeftSideBar($event)">
           <img #mapColor class="map-color" src="/assets/img/original-map.svg" alt="">
           <img #marker
+               *ngFor="let place of places; let i = index"
                class="marker"
                src="/assets/img/dark-marker.svg"
                alt="marker"
-               *ngFor="let place of places; let i = index"
                [style.left.px]="place.left"
                [style.top.px]="place.top"
                (mouseenter)="isDesktop ? hoverOnMarker(i, place.country, place.countryOriginName) : hoverOnMarkerTablet(i, place.country, place.countryOriginName)"
@@ -22,8 +16,8 @@
                (touchstart)="isDesktop ? hoverOnMarker(i, place.country, place.countryOriginName) : hoverOnMarkerTablet(i, place.country, place.countryOriginName)"
                (click)="isDesktop ? clickOnMarker($event, i, place.country, place.countryOriginName) : mobileClickOnMarker(place.country, place.countryOriginName)">
           <div #hoverPortrait
-               class="hover_portrait"
                *ngIf="isDesktop"
+               class="hover_portrait"
                [hidden]="!hoverPlace"
                [ngClass]="shadowClass"
                [style.top.px]="hoverPortraitTop"

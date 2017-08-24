@@ -64,19 +64,19 @@ export class DataProvider {
       actualResult: 'Bangladesh'
     },
     'CountryColombia': {
-      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(6),
+      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(8),
       actualResult: 'Colombia'
     },
     'CountryIndonesia': {
-      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(11),
+      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(13),
       actualResult: 'Indonesia'
     },
     'CountryLithuania': {
-      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(15),
+      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(17),
       actualResult: 'Liberia'
     },
     'CountryRwanda': {
-      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(29),
+      element: ():ElementFinder => element.all(by.css('span[class*="country-name"]')).get(31),
       actualResult: 'Rwanda'
     }
   };
@@ -98,7 +98,7 @@ export class DataProvider {
   };
 
   public static ambassadorsPageBoolean:any = {
-    'LogoImgInHeader': {element: ():ElementFinder => $('.logo.pull-left>img')},
+    'LogoImgInHeader': {element: ():ElementFinder => $('.icon-container.pull-left>img')},
     'MenuIconInHeader': {element: ():ElementFinder => $('.menu-icon')}
   };
 
@@ -120,7 +120,7 @@ export class DataProvider {
 
   public static matrixPageBoolean:any = {
     'HomeIconInHeader': {element: ():ElementFinder => $('.things-filter-button-content>img')},
-    'LogoImageInHeader': {element: ():ElementFinder => $('.icon-container.pull-left>a>img')},
+    'LogoImageInHeader': {element: ():ElementFinder => $('.icon-container.pull-left>img')},
     'MenuIconInHeader': {element: ():ElementFinder => $('.unactive')},
     'StreetWidgetImage': {element: ():ElementFinder => $('polygon[class="road"]')},
     'ThingsFilter': {element: ():ElementFinder => $('div[class*="things-filter-button-content"]')},
@@ -232,7 +232,7 @@ export class DataProvider {
   };
 
   public static homePageBoolean:any = {
-    'LogoImgInHeader': {element: ():ElementFinder => element.all(by.css('.logo.pull-left>img')).first()},
+    'LogoImgInHeader': {element: ():ElementFinder => element.all(by.css('.icon-container.pull-left>img')).first()},
     'LinkToFilter': {element: ():ElementFinder => element.all(by.css('.heading.pull-left')).first()},
     'FamilyImage': {element: ():ElementFinder => element.all(by.css('.image-container>img')).first()},
     'MapImage': {element: ():ElementFinder => $('.map.map_gray')},
@@ -244,7 +244,7 @@ export class DataProvider {
   public static homePageText:any = {
     'TextFilterInHeaderHome': {
       element: ():ElementFinder => $('p[class*="heading pull-left"]'),
-      actualResult: 'Families in the world'
+      actualResult: 'Families in World'
     },
     'TextHomeOf': {element: ():ElementFinder => element.all(by.css('.sub-title')).first(), actualResult: 'Home of'},
     'TextHouseholdWeeklyIncome': {

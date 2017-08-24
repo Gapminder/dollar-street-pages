@@ -11,7 +11,6 @@ import { LocalStorageService } from '../guide/localstorage.service';
 import * as _ from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
-
 import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
@@ -34,6 +33,7 @@ export class LanguageService {
   public translationsLoadedEvent: EventEmitter = new EventEmitter();
   public translationsLoadedString: string = 'TRANSLATIONS_LOADED';
   public sanitizer: DomSanitizer;
+  public languagesList: Observable<any>;
 
   public constructor(@Inject(Http) http: Http,
                      @Inject(Location) location: Location,
@@ -87,6 +87,42 @@ export class LanguageService {
 
     this.onLangChangeSubscribe = this.translate.onLangChange.subscribe((data: any) => {
       this.translations = data.translations;
+    });
+
+    this.languagesList = this.getLanguagesList().map((res: any) => {
+      if (res.err) {
+        console.error(res.err);
+        return;
+      }
+
+      const inputLanguages: any[] = res.data;
+      let resultLanguages: any = {};
+
+      let languages = _.filter(inputLanguages, (language: any): any => {
+        if (!language) {
+          return;
+        }
+
+        if (language.code === 'en') {
+          resultLanguages.primaryLanguage = language;
+        }
+
+        if (language.code === this.currentLanguage) {
+          resultLanguages.secondaryLanguage = language;
+        }
+
+        if (language.code !== 'en' && language.code !== this.currentLanguage) {
+          return language;
+        }
+      });
+
+      if (resultLanguages.secondaryLanguage && resultLanguages.secondaryLanguage.code === 'en') {
+        resultLanguages.secondaryLanguage = languages.length ? _.first(languages.splice(0, 1)) : undefined;
+      }
+
+      resultLanguages.filteredLanguages = languages;
+
+      return resultLanguages;
     });
   }
 
@@ -187,7 +223,7 @@ export class LanguageService {
 
     queryParams.lang = this.currentLanguage;
 
-    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams), true);
+    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams));
   }
 
   private processTranslation(observer: Observer<any>, translations: any, key: string | string[]): void {

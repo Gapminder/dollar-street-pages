@@ -19,7 +19,6 @@ import {
   templateUrl: './float-footer.component.html',
   styleUrls: ['./float-footer.component.css']
 })
-
 export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('floatFooterContainer')
   public floatFooterContainer: ElementRef;

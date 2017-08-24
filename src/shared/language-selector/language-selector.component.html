@@ -1,28 +1,28 @@
 <div class="lang-container">
   <div class="active-languages">
     <span class="lang-outside"
-          [ngClass]="{'lang-selected': currentLanguage === defaultLanguage?.code}"
-          (click)="changeLanguage(defaultLanguage.code)">
-      {{defaultLanguage?.name}}
+          [ngClass]="{'lang-selected': languageService?.currentLanguage === languages?.primaryLanguage?.code}"
+          (click)="changeLanguage(languages?.primaryLanguage?.code)">
+      {{languages?.primaryLanguage?.name}}
     </span>
 
     <span class="lang-outside"
           [ngClass]="{
-            'lang-selected': currentLanguage === defaultSecondLanguage?.code,
+            'lang-selected': languageService?.currentLanguage === languages?.secondaryLanguage?.code,
             'without-border': !languages || !languages.length
           }"
-          (click)="changeLanguage(defaultSecondLanguage.code)">
-      {{defaultSecondLanguage?.name}}
+          (click)="changeLanguage(languages?.secondaryLanguage?.code)">
+      {{languages?.secondaryLanguage?.name}}
     </span>
   </div>
 
-  <div class="btn-group" dropdown *ngIf="languages && languages.length" [(isOpen)]="status.isOpen">
+  <div *ngIf="languages && languages.length" dropdown class="btn-group" [(isOpen)]="status.isOpen">
     <button id="single-button" type="button" class="btn" dropdownToggle [disabled]="disabled">
       <span class="caret"></span>
     </button>
 
     <ul dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-languages">
-      <li class="selector" role="menuitem" *ngFor="let language of languages;">
+      <li *ngFor="let language of languages?.filteredLanguages;" class="selector" role="menuitem">
         <span class="lang-selector" (click)="changeLanguage(language.code)">{{language.name}}</span>
       </li>
     </ul>

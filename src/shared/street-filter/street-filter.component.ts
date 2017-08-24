@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
@@ -10,10 +11,12 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
 import { sortBy, chain } from 'lodash';
 import {
   MathService,
-  StreetSettingsService
+  DrawDividersInterface
 } from '../../common';
 import { StreetFilterDrawService } from './street-filter.service';
 
@@ -22,7 +25,6 @@ import { StreetFilterDrawService } from './street-filter.service';
   templateUrl: './street-filter.component.html',
   styleUrls: ['./street-filter.component.css']
 })
-
 export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
@@ -38,21 +40,22 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
 
   public math: MathService;
   public street: any;
-  public streetSettingsService: StreetSettingsService;
   public streetData: any;
   public element: HTMLElement;
   public streetFilterSubscribe: Subscription;
-  public streetServiceSubscribe: Subscription;
-  public resize: any;
+  public resizeSubscription: any;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      math: MathService,
-                     streetSettingsService: StreetSettingsService,
-                     streetDrawService: StreetFilterDrawService) {
+                     streetDrawService: StreetFilterDrawService,
+                     private store: Store<AppStates>) {
     this.element = element.nativeElement;
     this.math = math;
     this.street = streetDrawService;
-    this.streetSettingsService = streetSettingsService;
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -62,20 +65,13 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
 
     this.streetFilterSubscribe = this.street.filter.subscribe(this.filterStreet);
 
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
 
-        this.streetData = res.data;
+      this.setDividers(this.places, this.streetData);
+    });
 
-        this.setDividers(this.places, this.streetData);
-      });
-
-    this.resize = fromEvent(window, 'resize')
+    this.resizeSubscription = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
         this.setDividers(this.places, this.streetData);
@@ -83,12 +79,15 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   }
 
   public ngOnDestroy(): void {
-    if (this.resize) {
-      this.resize.unsubscribe();
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
 
     this.streetFilterSubscribe.unsubscribe();
-    this.streetServiceSubscribe.unsubscribe();
   }
 
   public setDividers(places: any, drawDividers: any): void {

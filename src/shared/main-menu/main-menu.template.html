@@ -11,7 +11,7 @@
           <a (click)="goToPage('/matrix')">{{ 'HOME' | translate }}</a>
         </li>
         <li>
-          <a (click)="goToPage('/matrix', true)">{{ 'QUICK_GUIDE' | translate }}</a>
+          <a (click)="openQuickGuide()">{{ 'QUICK_GUIDE' | translate }}</a>
         </li>
         <li>
           <a (click)="goToPage('/about')">{{ 'ABOUT' | translate }}</a>
@@ -68,7 +68,7 @@
       <ul class="menu-list">
         <li>
           <div class="language-selector">
-            <language-selector></language-selector>
+            <language-selector [languages]="languages"></language-selector>
           </div>
         </li>
         <li>
@@ -76,7 +76,7 @@
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
-          <a (click)="goToPage('/matrix', true)">{{ 'QUICK_GUIDE' | translate }}</a>
+          <a (click)="openQuickGuide()">{{ 'QUICK_GUIDE' | translate }}</a>
           <img class="thing-apply-icon" src="/assets/img/apply-icon.svg" alt="Apply icon">
         </li>
         <li>
@@ -119,4 +119,3 @@
     </div>
   </div>
 </div>
-

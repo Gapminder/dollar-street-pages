@@ -12,7 +12,7 @@
          [style.-ms-flex-order]="i"
          [style.-webkit-order]="i"
          [style.order]="i"
-         [ngStyle]="{'background-image': place.isUploaded && toUrl(place?.background), height: imageHeight + 'px'}"
+         [ngStyle]="{'background-image': place.isUploaded && toUrl(place?.background), height: itemSize + 'px'}"
          [ngClass]="{'no-row': zoom > 5 || !isDesktop, active: prevPlaceId === place._id}"
          isImageLoaded [imageLoadedUrl]="place?.background"
          (imageLoadedEvent)="imageIsUploaded(i)"
@@ -42,7 +42,8 @@
     </div>
 
     <matrix-view-block class="matrix-view-block"
-                       *ngIf="showblock"
+                       *ngIf="showBlock"
+                       [itemSize]="itemSize"
                        [query]="query"
                        [place]="familyData"
                        [thing]="thing"

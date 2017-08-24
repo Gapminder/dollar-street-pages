@@ -70,6 +70,8 @@
 #countries-filter-mobile .underline-k {
   width: 100%;
   border-bottom: 1px solid #e4e6e7;
+  transition: max-height .8s ease-in;
+  overflow: hidden;
 }
 
 #countries-filter-mobile .regions-container .title {

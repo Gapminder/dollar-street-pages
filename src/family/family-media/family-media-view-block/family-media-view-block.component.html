@@ -4,7 +4,8 @@
   <div class="view-image-block-content">
     <div class="view-image-container">
       <div class="view-image-content">
-        <img (click)="openPopUp()" [src]="imageData.image">
+        <img (click)="openPopUp()"
+             [src]="viewImage">
       </div>
 
       <div class="image-footer-container">
@@ -20,7 +21,7 @@
         </div>
 
         <div class="zoom-download-container">
-          <a class="download" target="_blank" [href]="api + '/v1/download-image/' + imageData.imageId">
+          <a class="download" target="_blank" [href]="consumerApi + '/v1/download-image/' + imageData.imageId">
             <img src="/assets/img/download-icon.svg" alt=""><span class="button-text">{{ 'DOWNLOAD' | translate }}</span>
           </a>
 
@@ -53,7 +54,7 @@
 
           <a
             [routerLink]="['/matrix']"
-            [queryParams]="{thing: thing.originPlural, countries: country?.originName, regions: 'World', zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+            [queryParams]="showInCountry"
             angulartics2On="click"
             angularticsEvent="Matrix page">
             <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{countryName}}</span> <img
@@ -61,7 +62,7 @@
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
           <a
             [routerLink]="['/matrix']"
-            [queryParams]="{thing: thing.originPlural, countries: country?.countriesName, regions: country?.originRegionName, zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+            [queryParams]="showInRegion"
             angulartics2On="click"
             angularticsEvent="Matrix page">
             <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{country?.region}}</span> <img
@@ -69,7 +70,7 @@
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
           <a
             [routerLink]="['/matrix']"
-            [queryParams]="{thing: thing.originPlural, countries: 'World', regions: 'World', zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+            [queryParams]="showInTheWorld"
             angulartics2On="click"
             angularticsEvent="Matrix page">
             <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{ 'THE_WORLD' | translate }}</span> <img
@@ -122,7 +123,7 @@
       </div>
 
       <div class="download-container">
-        <a target="_blank" [href]="api + '/v1/download-image/' + imageData.imageId">
+        <a target="_blank" [href]="consumerApi + '/v1/download-image/' + imageData.imageId">
           <img src="/assets/img/download-icon-white.svg" alt="">
         </a>
       </div>

@@ -9,7 +9,6 @@ import { SocialShareButtonsService } from './social-share-buttons.service';
   templateUrl: './social-share-buttons.component.html',
   styleUrls: ['./social-share-buttons.component.css']
 })
-
 export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   public url: string;
   public locationPath: string;

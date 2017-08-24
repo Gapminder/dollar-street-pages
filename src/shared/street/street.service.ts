@@ -94,8 +94,9 @@ export class StreetDrawService {
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
-    this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
-    this.width = (this.widthParsed !== this.width) ? this.widthParsed - 15 : this.widthParsed;
+    // this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
+    // this.width = (this.widthParsed !== this.width) ? this.widthParsed  : this.widthParsed;
+    this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
@@ -402,7 +403,7 @@ export class StreetDrawService {
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
       .subscribe((e: TouchEvent) => {
-          if (this.windowInnerWidth < 700 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+          if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
             return;
           }
 
@@ -458,7 +459,7 @@ export class StreetDrawService {
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
       .subscribe(() => {
 
-        if (this.windowInnerWidth < 700 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
 
@@ -467,7 +468,7 @@ export class StreetDrawService {
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
       .subscribe(() => {
-        if (this.windowInnerWidth < 700 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
 
@@ -542,7 +543,7 @@ export class StreetDrawService {
   };
 
   public drawLeftSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566 && Math.round(this.lowIncome) === this.dividersData.poor) {
+    if (this.windowInnerWidth <= 568 && Math.round(this.lowIncome) === this.dividersData.poor) {
       return;
     }
 
@@ -629,7 +630,7 @@ export class StreetDrawService {
           }
         }
 
-        if (this.windowInnerWidth < 700) {
+        if (this.windowInnerWidth < 600) {
           point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 1}`;
           point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5 - 1 - 1}`;
           point3 = `${x + 2 + this.streetOffset / 2 + 1},${ this.halfOfHeight + 14 - 5 - 1 - 1 }`;
@@ -694,7 +695,7 @@ export class StreetDrawService {
   };
 
   public drawRightSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 666 && Math.round(this.highIncome) === this.dividersData.rich) {
+    if (this.windowInnerWidth <= 566 && Math.round(this.highIncome) === this.dividersData.rich) {
       return;
     }
 
@@ -779,7 +780,7 @@ export class StreetDrawService {
         }
       }
 
-      if (this.windowInnerWidth < 700) {
+      if (this.windowInnerWidth < 600) {
         point1 = `${x - 2 + this.streetOffset / 2 - 1 },${this.halfOfHeight + 14 - 1}`;
         point2 = `${x - 2 + this.streetOffset / 2 - 1 },${this.halfOfHeight + 14 - 5 - 1 - 1}`;
         point3 = `${x - 2 + this.streetOffset / 2 + 9 },${this.halfOfHeight + 14 - 5 - 1 - 1}`;
@@ -858,9 +859,13 @@ export class StreetDrawService {
 
     this.removeHouses('hover');
     this.removeHouses('chosen');
+
     this.removeSliders();
+
     this.drawHouses(places);
+
     this.drawHoverHouse(this.hoverPlace);
+
     this.drawLeftSlider(this.scale(this.lowIncome), true);
     this.drawRightSlider(this.scale(this.highIncome), true);
 

@@ -1,13 +1,11 @@
 .photographer-container {
+  padding-top: 20px;
   margin-top: 66px;
-  padding-top: 61px;
-  padding-bottom: 70px;
 }
 
 @media (max-width: 1023px) {
   .photographer-container {
-    padding-top: 57px;
-    padding-bottom: 35px;
+
   }
 
   .photographer-container.row {

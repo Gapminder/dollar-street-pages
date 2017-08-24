@@ -1,19 +1,11 @@
-import {
-    ComponentFixture,
-    TestBed
-} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement, Component }    from '@angular/core';
-
+import { ActivatedRoute } from '@angular/router';
 import { SpyLocation } from '@angular/common/testing';
-
 import { Location } from '@angular/common';
-
 import { Observable } from 'rxjs/Observable';
-
 import { FamilyModule } from '../../family.module';
-
 import {
     UrlChangeService,
     LanguageService,
@@ -21,6 +13,14 @@ import {
     LoaderService,
     UtilsService
 } from '../../../common';
+import {
+    LoaderServiceMock,
+    BlankComponent,
+    LanguageServiceMock,
+    BrowserDetectionServiceMock,
+    UtilsServiceMock,
+    UrlChangeServiceMock
+} from '../../../test/';
 
 /*tslint:disable-next-line*/
 import { FamilyComponent } from '../../family.component';
@@ -37,22 +37,7 @@ describe('FamilyMediaComponent', () => {
 
     let urlChangeService: UrlChangeService;
 
-    @Component({
-        template: ''
-    })
-    class BlankComponent { }
-
-    class MockLanguageService {
-        public getTranslation(): Observable<any> {
-            return Observable.of('the world');
-        }
-
-        public getLanguageParam(): string {
-            return '&lang=en';
-        }
-    }
-
-    class MockFamilyMediaService {
+    class FamilyMediaServiceMock {
         /* tslint:disable */
         public getFamilyMedia(query: string): Observable<any> {
             let response: any = {success:true,data:mockFamilyMediaData,error:undefined};
@@ -69,13 +54,13 @@ describe('FamilyMediaComponent', () => {
                      ],
             declarations: [ BlankComponent ],
             providers: [
-                            UrlChangeService,
-                            BrowserDetectionService,
-                            LoaderService,
                             SpyLocation,
-                            UtilsService,
-                            { provide: FamilyMediaService, useClass: MockFamilyMediaService },
-                            { provide: LanguageService, useClass: MockLanguageService },
+                            { provide: UrlChangeService, useClass: UrlChangeServiceMock },
+                            { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+                            { provide: UtilsService, useClass: UtilsServiceMock },
+                            { provide: LoaderService, useClass: LoaderServiceMock },
+                            { provide: FamilyMediaService, useClass: FamilyMediaServiceMock },
+                            { provide: LanguageService, useClass: LanguageServiceMock },
                             { provide: Location, useClass: SpyLocation }
                         ]
         }).compileComponents();

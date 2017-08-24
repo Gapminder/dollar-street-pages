@@ -4,9 +4,6 @@ import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 
 import { HeaderComponent } from './header/header.component';
-import { HeaderService } from './header/header.service';
-
-import { HeaderWithoutFiltersComponent } from './header-without-filters/header-without-filters.component';
 
 import { MainMenuComponent } from './main-menu/main-menu.component';
 
@@ -30,6 +27,7 @@ import { ThingsFilterPipe } from './things-filter/things-filter.pipe';
 
 import { CountriesFilterComponent } from './countries-filter/countries-filter.component';
 import { CountriesFilterPipe } from './countries-filter/countries-filter.pipe';
+import { CountriesFilterService } from './countries-filter/countries-filter.service';
 
 import { GuideComponent } from './guide/guide.component';
 import { GuideService } from './guide/guide.service';
@@ -67,7 +65,6 @@ import { Angulartics2Module } from 'angulartics2';
 @NgModule({
   declarations: [
     LanguageSelectorComponent,
-    HeaderWithoutFiltersComponent,
     MainMenuComponent,
     SocialShareButtonsComponent,
     FooterComponent,
@@ -100,9 +97,9 @@ import { Angulartics2Module } from 'angulartics2';
     TranslateModule
   ],
   providers: [
-    HeaderService,
     SocialShareButtonsService,
     FooterService,
+    CountriesFilterService,
     ThingsFilterService,
     GuideService,
     StreetDrawService,
@@ -115,7 +112,6 @@ import { Angulartics2Module } from 'angulartics2';
     Angulartics2Module,
     TranslateModule,
     LanguageSelectorComponent,
-    HeaderWithoutFiltersComponent,
     FooterComponent,
     RegionMapComponent,
     FloatFooterComponent,
@@ -135,5 +131,4 @@ import { Angulartics2Module } from 'angulartics2';
     TranslateMeComponent
   ]
 })
-
 export class SharedModule {}

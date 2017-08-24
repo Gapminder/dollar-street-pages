@@ -1,5 +1,4 @@
 import { TestBed, async, fakeAsync } from '@angular/core/testing';
-
 import { TitleHeaderService } from '../title-header.service';
 
 describe('TitleHeaderService', () => {

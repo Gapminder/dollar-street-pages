@@ -9,8 +9,12 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import {
+  DrawDividersInterface
+} from '../../common';
+import { AppStates } from '../../interfaces';
 import { sortBy, chain } from 'lodash';
-import { StreetSettingsService } from '../../common';
 import { StreetMobileDrawService } from './street-mobile.service';
 
 @Component({
@@ -18,7 +22,6 @@ import { StreetMobileDrawService } from './street-mobile.service';
   templateUrl: './street-mobile.component.html',
   styleUrls: ['./street-mobile.component.css']
 })
-
 export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
@@ -26,29 +29,40 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   @Input()
   public places: Observable<any>;
 
-  private street: any;
-  private streetSettingsService: StreetSettingsService;
-  private streetData: any;
-  private element: HTMLElement;
-  private streetServiceSubscribe: Subscription;
-  private resizeSubscribe: Subscription;
-  private windowInnerWidth: number = window.innerWidth;
-
-  private placesSubscribe: Subscription;
-  private placesArr: any;
+  public street: any;
+  public streetData: any;
+  public element: HTMLElement;
+  public resizeSubscribe: Subscription;
+  public windowInnerWidth: number = window.innerWidth;
+  public placesSubscribe: Subscription;
+  public placesArr: any;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
+  public orientationChangeSubscription: Subscription;
 
   public constructor(element: ElementRef,
-                     streetSettingsService: StreetSettingsService,
-                     streetDrawService: StreetMobileDrawService) {
+                     streetDrawService: StreetMobileDrawService,
+                     private store: Store<AppStates>) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
-    this.streetSettingsService = streetSettingsService;
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngAfterViewInit(): void {
     this.street.setSvg = this.svg.nativeElement;
 
     this.street.set('isInit', true);
+
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
+
+      if (!this.placesArr) {
+        return;
+      }
+
+      this.setDividers(this.placesArr);
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -58,6 +72,12 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
         }
 
         this.setDividers(this.placesArr);
+      });
+
+    this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
+      .debounceTime(150)
+      .subscribe(() => {
+        this.street.clearSvg();
       });
 
     this.placesSubscribe = this.places && this.places
@@ -70,23 +90,6 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
 
           this.setDividers(this.placesArr);
         });
-
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-
-        if (!this.placesArr) {
-          return;
-        }
-
-        this.setDividers(this.placesArr);
-      });
   }
 
   public ngOnDestroy(): void {
@@ -96,7 +99,13 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
       this.placesSubscribe.unsubscribe();
     }
 
-    this.streetServiceSubscribe.unsubscribe();
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.orientationChangeSubscription) {
+      this.orientationChangeSubscription.unsubscribe();
+    }
   }
 
   private setDividers(places: any): void {

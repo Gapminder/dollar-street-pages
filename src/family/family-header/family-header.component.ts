@@ -1,7 +1,9 @@
 import 'rxjs/operator/debounceTime';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
 import {
   Component,
   OnInit,
@@ -13,16 +15,13 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-
 import {
   BrowserDetectionService,
-  StreetSettingsService,
   DrawDividersInterface,
   MathService,
   LanguageService,
   UtilsService
 } from '../../common';
-
 import { FamilyHeaderService } from './family-header.service';
 
 @Component({
@@ -34,16 +33,13 @@ import { FamilyHeaderService } from './family-header.service';
 export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('homeDescriptionContainer')
   public homeDescriptionContainer: ElementRef;
-
   @ViewChild('aboutDataContainer')
   public aboutDataContainer: ElementRef;
-
   @ViewChild('shortFamilyInfoContainer')
   public shortFamilyInfoContainer: ElementRef;
 
   @Input()
   public placeId: string;
-
   @Output()
   public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output()
@@ -56,7 +52,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public math: MathService;
   public countryName: any;
   public isOpenArticle: boolean = false;
-  public familyShortInfoPosition: number = -88;
   public isShowAboutData: boolean = false;
   public isShowAboutDataFullScreen: boolean = false;
   public aboutDataPosition: {left?: number;top?: number;} = {};
@@ -64,14 +59,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public maxHeightPopUp: number = this.windowHeight * .95 - 91;
   public familyHeaderService: FamilyHeaderService;
   public familyHeaderServiceSubscribe: Subscription;
-  public scrollSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public zone: NgZone;
   public element: HTMLElement;
-  public headerElement: HTMLElement;
-  public headerHeight: number;
-  public headerContentHeight: number;
-  public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
   public streetSettingsServiceSubscribe: Subscription;
   public device: BrowserDetectionService;
@@ -83,23 +73,26 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public utilsService: UtilsService;
   public currentLanguage: string;
   public showTranslateMe: boolean;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,
-                     streetSettingsService: StreetSettingsService,
                      familyHeaderService: FamilyHeaderService,
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     private store: Store<AppStates>) {
     this.zone = zone;
     this.math = math;
-    this.streetSettingsService = streetSettingsService;
     this.element = element.nativeElement;
     this.familyHeaderService = familyHeaderService;
     this.device = browserDetectionService;
     this.languageService = languageService;
     this.utilsService = utilsService;
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {
@@ -109,69 +102,33 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
     this.currentLanguage = this.languageService.currentLanguage;
 
-    this.headerElement = document.querySelector('.header-container') as HTMLElement;
-    this.headerContentHeight = this.element.offsetHeight;
-
     this.getTranslationSubscribe = this.languageService.getTranslation(['READ_MORE', 'READ_LESS']).subscribe((trans: any) => {
       this.readMoreTranslate = trans.READ_MORE;
       this.readLessTranslate = trans.READ_LESS;
     });
 
-    this.familyHeaderServiceSubscribe = this.familyHeaderService
-      .getFamilyHeaderData(`placeId=${this.placeId}${this.languageService.getLanguageParam()}`)
-      .subscribe((res: any): any => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
+    });
 
-        this.home = res.data;
-        this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
-        this.mapData = this.home.country;
+    let query: string = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
 
-        if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
-          this.showTranslateMe = true;
-        }
+    this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
+      if (res.err) {
+        console.error(res.err);
+        return;
+      }
 
-        this.truncCountryName(this.home.country);
-      });
+      this.home = res.data;
+      this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
+      this.mapData = this.home.country;
 
-    this.streetSettingsServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+      if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
+        this.showTranslateMe = true;
+      }
 
-        this.streetData = res.data;
-      });
-
-    this.scrollSubscribe = fromEvent(document, 'scroll')
-      .subscribe(() => {
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-
-        if (this.headerHeight !== this.headerElement.offsetHeight) {
-          this.headerHeight = this.headerElement.offsetHeight;
-        }
-
-        this.zone.run(() => {
-          if (scrollTop > this.element.offsetHeight - this.headerHeight && this.familyShortInfoPosition !== this.headerHeight) {
-            this.familyShortInfoPosition = this.headerHeight;
-
-            if (this.isMobile) {
-              this.headerElement.classList.add('sub-panel-shown');
-            }
-          }
-
-          if (scrollTop < this.element.offsetHeight - this.headerHeight && this.familyShortInfoPosition !== -this.headerHeight) {
-            this.familyShortInfoPosition = -this.headerHeight;
-
-            if (this.isMobile) {
-              this.headerElement.classList.remove('sub-panel-shown');
-            }
-          }
-        });
-      });
+      this.truncCountryName(this.home.country);
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
@@ -179,17 +136,11 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.zone.run(() => {
           this.windowHeight = window.innerHeight;
           this.maxHeightPopUp = this.windowHeight * .95 - 91;
-          this.headerHeight = this.headerElement.offsetHeight;
-          this.headerContentHeight = this.element.offsetHeight;
         });
       });
   }
 
   public ngOnDestroy(): void {
-    if(this.streetSettingsServiceSubscribe) {
-      this.streetSettingsServiceSubscribe.unsubscribe();
-    }
-
     if(this.familyHeaderServiceSubscribe) {
       this.familyHeaderServiceSubscribe.unsubscribe();
     }
@@ -202,8 +153,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.resizeSubscribe.unsubscribe();
     }
 
-    if (this.scrollSubscribe) {
-      this.scrollSubscribe.unsubscribe();
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
   }
 

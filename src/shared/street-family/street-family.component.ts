@@ -1,6 +1,9 @@
 import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
 import {
   Component,
   Input,
@@ -10,9 +13,9 @@ import {
   AfterViewInit
 } from '@angular/core';
 import {
-  StreetSettingsService,
   DrawDividersInterface
 } from '../../common';
+import { GetStreetSettings } from '../../common/street/ngrx/street-settings.actions';
 import { StreetFamilyDrawService } from './street-family.service';
 
 @Component({
@@ -20,7 +23,6 @@ import { StreetFamilyDrawService } from './street-family.service';
   templateUrl: './street-family.component.html',
   styleUrls: ['./street-family.component.css']
 })
-
 export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
   public svg: ElementRef;
@@ -32,20 +34,21 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
   public window: Window = window;
   public street: any;
-  public streetSettingsService: StreetSettingsService;
   public streetData: DrawDividersInterface;
   public element: HTMLElement;
-  public streetServiceSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsStateSubscription: Subscription;
 
   public constructor(element: ElementRef,
-                     streetSettingsService: StreetSettingsService,
-                     streetDrawService: StreetFamilyDrawService) {
+                     streetDrawService: StreetFamilyDrawService,
+                     private store: Store<AppStates>) {
     this.element = element.nativeElement;
     this.street = streetDrawService;
-    this.streetSettingsService = streetSettingsService;
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngAfterViewInit(): void {
@@ -56,6 +59,16 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
       .getPropertyValue('margin-left');
 
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
+
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      if (!data) {
+        this.store.dispatch(new GetStreetSettings());
+      } else {
+        this.streetData = data;
+
+        this.drawStreet(this.streetData, this.place);
+      }
+    });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -71,23 +84,15 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
         this.drawStreet(this.streetData, this.place);
       });
-
-    this.streetServiceSubscribe = this.streetSettingsService.getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
-
-        this.streetData = res.data;
-
-        this.drawStreet(this.streetData, this.place);
-      });
   }
 
   public ngOnDestroy(): void {
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
     }
 
     this.street.clearSvg();

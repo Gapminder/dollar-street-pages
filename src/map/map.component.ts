@@ -1,20 +1,31 @@
 import 'rxjs/add/operator/debounceTime';
-
-import { Component, OnInit, OnDestroy, ElementRef, NgZone, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  NgZone,
+  ViewChild,
+  ViewChildren,
+  QueryList
+} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../interfaces';
 import {
   MathService,
   LoaderService,
   UrlChangeService,
   Angulartics2GoogleAnalytics,
-  StreetSettingsService,
   DrawDividersInterface,
   BrowserDetectionService,
-  LanguageService
+  LanguageService,
+  ActiveThingService
 } from '../common';
+import * as AppActions from '../app/ngrx/app.actions';
 import { MapService } from './map.service';
 
 @Component({
@@ -22,7 +33,6 @@ import { MapService } from './map.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-
 export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapBox')
   public map: ElementRef;
@@ -69,12 +79,16 @@ export class MapComponent implements OnInit, OnDestroy {
   public queryParamsSubscribe: Subscription;
   public loaderService: LoaderService;
   public streetData: DrawDividersInterface;
-  public streetSettingsService: StreetSettingsService;
   public streetServiceSubscribe: Subscription;
   public windowInnerWidth: number = window.innerWidth;
   public device: BrowserDetectionService;
   public languageService: LanguageService;
   public currentLanguage: string;
+  public streetSettingsState: Observable<DrawDividersInterface>;
+  public appState: Observable<any>;
+  public streetSettingsStateSubscription: Subscription;
+  public appStateSubscription: Subscription;
+  public activeThingServiceSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -84,10 +98,11 @@ export class MapComponent implements OnInit, OnDestroy {
                      loaderService: LoaderService,
                      activatedRoute: ActivatedRoute,
                      urlChangeService: UrlChangeService,
-                     streetSettingsService: StreetSettingsService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     languageService: LanguageService) {
+                     languageService: LanguageService,
+                     private store: Store<AppStates>,
+                     private activeThingService: ActiveThingService) {
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -97,11 +112,13 @@ export class MapComponent implements OnInit, OnDestroy {
     this.activatedRoute = activatedRoute;
     this.device = browserDetectionService;
     this.urlChangeService = urlChangeService;
-    this.streetSettingsService = streetSettingsService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
 
     this.currentLanguage = this.languageService.currentLanguage;
+
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {
@@ -115,36 +132,58 @@ export class MapComponent implements OnInit, OnDestroy {
       this.familyTranslate = trans;
     });
 
-    this.queryParamsSubscribe = this.activatedRoute
-      .queryParams
-      .subscribe((params: {thing: string}) => {
-        this.thing = params.thing ? params.thing : 'Families';
-        let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+      this.streetData = data;
+    });
 
-        if (!params.thing || (params.thing && !isInit)) {
-          query.isNotReplaceState = true;
-        }
+    this.activeThingServiceSubscription = this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
+      this.thing = thing.originPlural;
 
-        this.urlChanged(query);
-        isInit = false;
-      });
+      let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
 
-    this.streetServiceSubscribe = this.streetSettingsService
-      .getStreetSettings()
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+      this.urlChanged(query);
+    });
 
-        this.streetData = res.data;
-      });
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if (data && !isInit) {
+        /*if (this.query !== data.query) {
+          this.urlChanged({url: data.query});
+        }*/
+
+        /*this.query = data.query;
+
+        if (data.thing) {
+          this.thing = data.thing;
+
+          let query: any = {url: `thing=${this.thing.originPlural}${this.languageService.getLanguageParam()}`};
+
+          if (query !== data.query) {
+            this.urlChanged(query);
+          }
+        }*/
+      }
+    });
+
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: {thing: string}) => {
+      this.thing = params.thing ? params.thing : 'Families';
+
+      let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
+
+      if (!params.thing || (params.thing && !isInit)) {
+        query.isNotReplaceState = true;
+      }
+
+      this.urlChanged(query);
+
+      isInit = false;
+    });
   }
 
   public urlChanged(options: {url: string, isNotReplaceState?: any}): void {
     let {url, isNotReplaceState} = options;
 
-    this.mapServiceSubscribe = this.mapService.getMainPlaces(url)
+    this.mapServiceSubscribe = this.mapService
+      .getMainPlaces(url)
       .subscribe((res: any): any => {
         if (res.err) {
           console.error(res.err);
@@ -199,6 +238,18 @@ export class MapComponent implements OnInit, OnDestroy {
 
     if(this.loaderService) {
       this.loaderService.setLoader(false);
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
+    }
+
+    if (this.activeThingServiceSubscription) {
+      this.activeThingServiceSubscription.unsubscribe();
     }
   }
 

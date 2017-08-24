@@ -1,69 +1,47 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, ElementRef, QueryList }    from '@angular/core';
-
 import { HttpModule } from '@angular/http';
-
 import { RouterTestingModule } from '@angular/router/testing';
-
+import { TranslateModule, TranslateService, TranslateParser, TranslateLoader } from "ng2-translate";
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from "angulartics2";
 import {
-            MathService,
-            LoaderService,
-            UrlChangeService,
-            LanguageService,
-            StreetSettingsService,
-            BrowserDetectionService,
-            Angulartics2GoogleAnalytics
-       } from '../../common';
-
+    MathService,
+    LoaderService,
+    UrlChangeService,
+    LanguageService,
+    StreetSettingsService,
+    BrowserDetectionService,
+    StreetSettingsEffects,
+    ActiveThingService
+} from '../../common';
+import {
+    LanguageServiceMock,
+    StreetSettingsServiceMock,
+    LoaderServiceMock,
+    AngularticsMock,
+    BlankComponent,
+    BrowserDetectionServiceMock,
+    UrlChangeServiceMock,
+    Angulartics2GoogleAnalyticsMock,
+    TranslateServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock
+} from '../../test/';
 import { Observable } from 'rxjs/Observable';
-
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { MapComponent } from '../map.component';
 import { MapService } from '../map.service';
-
 import { mockMapData } from './mock.data';
 
-describe('', () => {
-    let componentInstance: MapComponent;
-    let componentFixture: ComponentFixture<MapComponent>;
+describe('MapComponent', () => {
+    let fixture: ComponentFixture<MapComponent>;
+    let component: MapComponent;
 
-    @Component({
-         template: ''
-    })
-    class BlankComponent { }
-
-    class MockStreetSettingsService {
-        public getStreetSettings(): Observable<any> {
-            let context: any = {_id:'57963211cc4aaed63a02504c',showDividers:false,low:30,medium:300,high:3000,poor:26,rich:15000,lowDividerCoord:78,mediumDividerCoord:490,highDividerCoord:920,__v:0};
-            let response: any = {success:true,error:false,msg:[],data:context};
-
-            return Observable.of(response);
-        }
-    }
-
-    class MockAngulartics {
-        // tslint:disable-next-line
-        public eventTrack(name: string, param: any): void {}
-    }
-
-    class MockLanguageService {
-        public getTranslation(): Observable<any> {
-            return Observable.of('the world');
-        }
-
-         public getLanguageParam(): string {
-            return '&lang=en';
-        }
-    }
-
-    class MockMapService {
+    class MapServiceMock {
         public getMainPlaces(): Observable<any> {
             return Observable.of({err: undefined, data: { mockMapData }});
         }
-    }
-
-    class MockLoaderService {
-        // tslint:disable-next-line
-        public setLoader(b: boolean): void {}
     }
 
     class MockElementRef implements ElementRef {
@@ -97,120 +75,133 @@ describe('', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                        HttpModule,
-                        RouterTestingModule.withRoutes([{path: '', component: BlankComponent}])
-                     ],
+                HttpModule,
+                TranslateModule,
+                Angulartics2Module,
+                StoreModule.forRoot({}),
+                EffectsModule.forRoot([StreetSettingsEffects]),
+                RouterTestingModule.withRoutes([{path: '', component: BlankComponent}])
+            ],
             providers: [
-                            MathService,
-                            UrlChangeService,
-                            BrowserDetectionService,
-                            { provide: LoaderService, useClass: MockLoaderService },
-                            { provide: MapService, useClass: MockMapService },
-                            { provide: StreetSettingsService, useClass: MockStreetSettingsService },
-                            { provide: Angulartics2GoogleAnalytics, useClass: MockAngulartics },
-                            { provide: LanguageService, useClass: MockLanguageService }
-                       ],
+                MathService,
+                ActiveThingService,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
+                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+                { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
+                { provide: LoaderService, useClass: LoaderServiceMock },
+                { provide: MapService, useClass: MapServiceMock },
+                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+                { provide: LanguageService, useClass: LanguageServiceMock },
+                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock }
+            ],
             declarations: [MapComponent, BlankComponent]
         });
 
-        componentFixture = TestBed.overrideComponent(MapComponent, {
-            set: {
-                template: '<div></div>'
-            }
-        }).createComponent(MapComponent);
+        fixture = TestBed.createComponent(MapComponent);
+        component = fixture.componentInstance;
 
-        TestBed.compileComponents();
-
-        componentInstance = componentFixture.componentInstance;
-
-        componentInstance.mapColor = new ElementRef({});
+        component.mapColor = new ElementRef({});
     });
 
     it('ngOnInit() ngOnDestroy()', () => {
-        componentInstance.ngOnInit();
+        fixture.whenStable().then(() => {
+            component.ngOnInit();
 
-        expect(componentInstance.getTranslationSubscribe).toBeDefined();
-        expect(componentInstance.queryParamsSubscribe).toBeDefined();
-        expect(componentInstance.streetServiceSubscribe).toBeDefined();
+            expect(component.getTranslationSubscribe).toBeDefined();
+            expect(component.queryParamsSubscribe).toBeDefined();
 
-        spyOn(componentInstance.getTranslationSubscribe, 'unsubscribe');
+            spyOn(component.getTranslationSubscribe, 'unsubscribe');
 
-        componentInstance.ngOnDestroy();
+            component.ngOnDestroy();
 
-        expect(componentInstance.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
+            expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
+        });
     });
 
     it('urlChanged()', () => {
-        componentInstance.ngOnInit();
-        componentInstance.mapColor = new ElementRef({});
+        fixture.whenStable().then(() => {
+            component.ngOnInit();
+            component.mapColor = new ElementRef({});
 
-        componentInstance.urlChanged({url: 'http://dollar-street.org'});
+            component.urlChanged({url: 'http://dollar-street.org'});
 
-        componentInstance.ngOnDestroy();
+            component.ngOnDestroy();
+        });
     });
 
     it('hoverOnMarker()', () => {
-        componentInstance.ngOnInit();
+        fixture.whenStable().then(() => {
+            component.ngOnInit();
 
-        componentInstance.places = mockMapData.places;
-        componentInstance.markers =  new MockQueryList([new ElementRef({}), new ElementRef({})]);
-        componentInstance.hoverPortrait = new MockElementRef();
+            component.places = mockMapData.places;
+            component.markers =  new MockQueryList([new ElementRef({}), new ElementRef({})]);
+            component.hoverPortrait = new MockElementRef();
 
-        componentInstance.hoverPortraitTop = 5;
+            component.hoverPortraitTop = 5;
 
-        let country: any = componentInstance.places[0];
+            let country: any = component.places[0];
 
-        componentInstance.hoverOnMarker(0, country, 'Burundi');
+            component.hoverOnMarker(0, country, 'Burundi');
 
-        expect(componentInstance.onMarker).toBeTruthy();
-        expect(componentInstance.currentCountry).toEqual(country);
+            expect(component.onMarker).toBeTruthy();
+            expect(component.currentCountry).toEqual(country);
 
-        componentInstance.ngOnDestroy();
+            component.ngOnDestroy();
+        });
     });
 
     it('hoverOnMarkerTablet()', () => {
-        componentInstance.ngOnInit();
+        fixture.whenStable().then(() => {
+            component.ngOnInit();
 
-        componentInstance.places = mockMapData.places;
-        componentInstance.markers =  new MockQueryList([new ElementRef({}), new ElementRef({})]);
+            component.places = mockMapData.places;
+            component.markers =  new MockQueryList([new ElementRef({}), new ElementRef({})]);
 
-        let country: any = componentInstance.places[0];
+            let country: any = component.places[0];
 
-        componentInstance.isDesktop = false;
-        componentInstance.isMobile = false;
+            component.isDesktop = false;
+            component.isMobile = false;
 
-        componentInstance.hoverOnMarkerTablet(0, country, 'Burundi');
+            component.hoverOnMarkerTablet(0, country, 'Burundi');
 
-        expect(componentInstance.hoverPlace).toBeDefined();
+            expect(component.hoverPlace).toBeDefined();
 
-        componentInstance.ngOnDestroy();
+            component.ngOnDestroy();
+        });
     });
 
     it('unHoverOnMArker()', () => {
-        componentInstance.ngOnInit();
+        fixture.whenStable().then(() => {
+            component.ngOnInit();
 
-        componentInstance.isMobile = false;
+            component.isMobile = false;
 
-        componentInstance.unHoverOnMarker();
+            component.unHoverOnMarker();
 
-        expect(componentInstance.onMarker).toBeFalsy();
+            expect(component.onMarker).toBeFalsy();
 
-        componentInstance.ngOnDestroy();
+            component.ngOnDestroy();
+        });
     });
 
     it('mobileClickOnMarker()', () => {
-        componentInstance.ngOnInit();
+        fixture.whenStable().then(() => {
+            component.ngOnInit();
 
-        componentInstance.places = mockMapData.places;
-        componentInstance.markers =  new MockQueryList([new ElementRef({}), new ElementRef({})]);
+            component.places = mockMapData.places;
+            component.markers =  new MockQueryList([new ElementRef({}), new ElementRef({})]);
 
-        let country: any = componentInstance.places[0];
+            let country: any = component.places[0];
 
-        componentInstance.mobileClickOnMarker(country, 'Burundi');
+            component.mobileClickOnMarker(country, 'Burundi');
 
-        expect(componentInstance.currentCountry).toEqual(country);
-        expect(componentInstance.originCurrentCountry).toEqual('Burundi');
+            expect(component.currentCountry).toEqual(country);
+            expect(component.originCurrentCountry).toEqual('Burundi');
 
-        componentInstance.ngOnDestroy();
+            component.ngOnDestroy();
+        });
     });
 });

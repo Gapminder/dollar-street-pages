@@ -16,7 +16,7 @@ import {
 
 import { PhotographerProfileService } from '../photographer-profile.service';
 
-describe('', () => {
+describe('PhotographerProfileService', () => {
     let mockBackend: MockBackend;
     let photographerProfileService: PhotographerProfileService;
 

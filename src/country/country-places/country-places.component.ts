@@ -8,10 +8,10 @@ import { CountryPlacesService } from './country-places.service';
   templateUrl: './country-places.component.html',
   styleUrls: ['./country-places.component.css']
 })
-
 export class CountryPlacesComponent implements OnInit, OnDestroy {
   @Input()
   public countryId: string;
+
   public places: any = [];
   public country: any;
   public math: MathService;
@@ -36,8 +36,10 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.loaderService.setLoader(false);
 
+    const query: string = `id=${this.countryId}${this.languageService.getLanguageParam()}`;
+
     this.countryPlacesServiceSubscribe = this.countryPlacesService
-      .getCountryPlaces(`id=${this.countryId}${this.languageService.getLanguageParam()}`)
+      .getCountryPlaces(query)
       .subscribe((res: any) => {
         if (res.err) {
           console.error(res.err);

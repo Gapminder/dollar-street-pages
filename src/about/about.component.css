@@ -1,6 +1,5 @@
 #info-context {
-  padding-top: 125px;
-  padding-bottom: 100px;
+  padding-top: 40px;
 }
 
 #info-context >>> h1:first-child,
@@ -64,8 +63,6 @@
 
 @media (max-width: 1023px) {
   #info-context {
-    padding-bottom: 30px;
-    padding-top: 87px;
   }
 }
 
