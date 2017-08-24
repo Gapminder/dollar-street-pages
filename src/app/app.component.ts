@@ -71,8 +71,16 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.routerEventsSubscribe.unsubscribe();
-    this.loaderServiceSubscribe.unsubscribe();
-    this.documentCreatedSubscribe.unsubscribe();
+      if (this.routerEventsSubscribe) {
+          this.routerEventsSubscribe.unsubscribe();
+      }
+
+      if (this.loaderServiceSubscribe) {
+          this.loaderServiceSubscribe.unsubscribe();
+      }
+
+      if (this.documentCreatedSubscribe) {
+          this.documentCreatedSubscribe.unsubscribe();
+      }
   }
 }

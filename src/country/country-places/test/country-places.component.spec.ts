@@ -11,7 +11,10 @@ import { Observable } from 'rxjs/Observable';
 import {
     LoaderServiceMock,
     LanguageServiceMock,
-    AngularticsMock
+    AngularticsMock,
+    TranslateServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock
 } from '../../../test/';
 import { CountryPlacesComponent } from '../country-places.component';
 import { CountryPlacesService } from '../country-places.service';
@@ -42,9 +45,9 @@ describe('CountryPlacesComponent', () => {
             declarations: [CountryPlacesComponent],
             providers: [
                 MathService,
-                TranslateService,
-                TranslateLoader,
-                TranslateParser,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: CountryPlacesService, useClass: MockCountryPlacesService },
@@ -54,8 +57,6 @@ describe('CountryPlacesComponent', () => {
 
         fixture = TestBed.createComponent(CountryPlacesComponent);
         component = fixture.componentInstance;
-
-        fixture.detectChanges();
     }));
 
     it('ngOnInit(), ngOnDestroy()', (() => {

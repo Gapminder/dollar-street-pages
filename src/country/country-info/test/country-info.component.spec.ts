@@ -14,7 +14,10 @@ import {
     LanguageServiceMock,
     BrowserDetectionServiceMock,
     Angulartics2GoogleAnalyticsMock,
-    AngularticsMock
+    AngularticsMock,
+    TranslateServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock
 } from '../../../test/';
 import { RegionMapComponent } from "../../../shared/region-map/region-map.component";
 import { CountryInfoComponent } from '../country-info.component';
@@ -49,9 +52,9 @@ describe('CountryInfoComponent', () => {
             ],
             providers: [
                 MathService,
-                TranslateService,
-                TranslateLoader,
-                TranslateParser,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: Angulartics2, useClass: AngularticsMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },

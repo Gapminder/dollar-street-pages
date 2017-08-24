@@ -10,6 +10,10 @@ import {
     UtilsServiceMock,
     BrowserDetectionServiceMock,
     LanguageServiceMock,
+    BlankComponent,
+    TranslateLoaderMock,
+    TranslateParserMock,
+    TranslateServiceMock
 } from '../../../test/';
 import { FloatFooterComponent } from '../float-footer.component';
 import { SocialShareButtonsComponent } from '../../social-share-buttons/social-share-buttons.component';
@@ -37,9 +41,9 @@ describe('FloatFooterComponent', () => {
                 SocialShareButtonsComponent
             ],
             providers: [
-                TranslateService,
-                TranslateLoader,
-                TranslateParser,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: SocialShareButtonsService, useClass: SocialShareButtonsServiceMock },
                 { provide: SocialShareService, useClass: SocialShareServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },

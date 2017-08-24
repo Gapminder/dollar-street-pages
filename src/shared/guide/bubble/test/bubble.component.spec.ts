@@ -9,7 +9,10 @@ import {
 import {
     LoaderServiceMock,
     BrowserDetectionServiceMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock,
+    TranslateServiceMock
 } from '../../../../test/';
 import { BubbleComponent } from '../bubble.component';
 import { SocialShareButtonsComponent } from '../../../social-share-buttons/social-share-buttons.component';
@@ -29,9 +32,9 @@ describe('BubbleComponent', () => {
             ],
             providers: [
                 LocalStorageService,
-                TranslateService,
-                TranslateLoader,
-                TranslateParser,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock }

@@ -13,7 +13,10 @@ import {
     TitleHeaderServiceMock,
     LanguageServiceMock,
     UtilsServiceMock,
-    BrowserDetectionServiceMock
+    BrowserDetectionServiceMock,
+    TranslateServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock
 }from '../../test/';
 import { DonateComponent } from '../donate.component';
 import { DonateService } from '../donate.service';
@@ -35,9 +38,9 @@ describe('DonateComponent', () => {
             ],
             declarations: [DonateComponent],
             providers: [
-                TranslateService,
-                TranslateLoader,
-                TranslateParser,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: DonateService, useClass: DonateServiceMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },

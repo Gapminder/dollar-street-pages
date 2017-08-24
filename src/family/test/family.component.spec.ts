@@ -28,7 +28,10 @@ import {
     BlankComponent,
     BrowserDetectionServiceMock,
     UtilsServiceMock,
-    UrlChangeServiceMock
+    UrlChangeServiceMock,
+    TranslateServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock
 } from '../../test/';
 import { FamilyComponent } from '../family.component';
 import { FamilyService } from '../family.service';
@@ -62,9 +65,9 @@ xdescribe('FamilyComponent', () => {
             providers: [
                 LocalStorageService,
                 MathService,
-                TranslateService,
-                TranslateLoader,
-                TranslateParser,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: Angulartics2, useClass: AngularticsMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
