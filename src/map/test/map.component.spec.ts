@@ -22,7 +22,10 @@ import {
     BlankComponent,
     BrowserDetectionServiceMock,
     UrlChangeServiceMock,
-    Angulartics2GoogleAnalyticsMock
+    Angulartics2GoogleAnalyticsMock,
+    TranslateServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock
 } from '../../test/';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
@@ -82,9 +85,9 @@ describe('MapComponent', () => {
             providers: [
                 MathService,
                 ActiveThingService,
-                TranslateService,
-                TranslateParser,
-                TranslateLoader,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },

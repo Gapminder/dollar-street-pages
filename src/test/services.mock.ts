@@ -24,6 +24,10 @@ export class LoaderServiceMock {
     }
 }
 
+export class SocialShareServiceMock {
+
+}
+
 export class LanguageServiceMock {
     public languagesList: Observable<any> = Observable.of(['English', 'Brasilian']);
 
@@ -137,5 +141,13 @@ export class BrowserDetectionServiceMock {
 }
 
 export class TranslateServiceMock {
+
+}
+
+export class TranslateLoaderMock {
+
+}
+
+export class TranslateParserMock {
 
 }

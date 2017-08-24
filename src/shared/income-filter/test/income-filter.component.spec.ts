@@ -4,6 +4,11 @@ import { StoreModule } from '@ngrx/store';
 import {
     MathService
 } from '../../../common';
+import {
+    TranslateLoaderMock,
+    TranslateParserMock,
+    TranslateServiceMock
+} from '../../../test/';
 import { StreetFilterComponent } from '../../street-filter/street-filter.component';
 import { StreetFilterDrawService } from '../../street-filter/street-filter.service';
 import { IncomeFilterComponent } from '../income-filter.component';
@@ -25,9 +30,9 @@ describe('IncomeFilterComponent', () => {
             providers: [
                 MathService,
                 StreetFilterDrawService,
-                TranslateService,
-                TranslateLoader,
-                TranslateParser
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock }
             ]
         });
 

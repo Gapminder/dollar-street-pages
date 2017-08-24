@@ -11,7 +11,10 @@ import {
     LanguageServiceMock,
     AngularticsMock,
     BrowserDetectionServiceMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock,
+    TranslateServiceMock
 } from '../../../test/';
 import { StoreModule } from '@ngrx/store';
 import { Angulartics2GoogleAnalytics } from 'angulartics2';
@@ -46,9 +49,9 @@ describe('FooterComponent', () => {
               SocialFollowButtonsComponent
             ],
             providers: [
-                TranslateService,
-                TranslateLoader,
-                TranslateParser,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
@@ -59,8 +62,6 @@ describe('FooterComponent', () => {
 
         fixture = TestBed.createComponent(FooterComponent);
         component = fixture.componentInstance;
-
-        fixture.detectChanges();
     }));
 
     it('ngOnInit()', () => {

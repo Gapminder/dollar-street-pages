@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService, TranslateLoader, TranslateParser } from 'ng2-translate';
+import { StoreModule, Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
 import {
     LanguageService,
     LoaderService,
@@ -24,7 +25,11 @@ import {
     UtilsServiceMock,
     UrlChangeServiceMock,
     TitleHeaderServiceMock,
-    AngularticsMock
+    AngularticsMock,
+    SocialShareServiceMock,
+    TranslateServiceMock,
+    TranslateLoaderMock,
+    TranslateParserMock
 } from '../../test/';
 import { Angulartics2Module, Angulartics2GoogleAnalytics, Angulartics2 } from 'angulartics2';
 import {
@@ -35,6 +40,7 @@ import { AppComponent } from '../app.component';
 describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;
     let component: AppComponent;
+    let store: Store<AppStates>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -54,10 +60,10 @@ describe('AppComponent', () => {
                 MathService,
                 ActiveThingService,
                 LocalStorageService,
-                TranslateService,
-                TranslateLoader,
-                TranslateParser,
-                SocialShareService,
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateParser, useClass: TranslateParserMock },
+                { provide: SocialShareService, useClass: SocialShareServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
@@ -70,7 +76,11 @@ describe('AppComponent', () => {
         });
 
         fixture = TestBed.createComponent(AppComponent);
+        // fixture.detectChanges();
         component = fixture.componentInstance;
+        // store = TestBed.get(Store);
+
+        // spyOn(store, 'dispatch').and.callThrough();
     }));
 
     it('ngOnInit(), ngOnDestroy()', () => {

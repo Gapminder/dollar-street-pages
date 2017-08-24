@@ -2,6 +2,11 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
 import { TranslateModule, TranslateService, TranslateLoader, TranslateParser } from 'ng2-translate';
+import {
+    TranslateLoaderMock,
+    TranslateParserMock,
+    TranslateServiceMock
+} from '../../../test/';
 import { SocialFollowButtonsComponent } from '../social-follow-buttons.component';
 
 describe('SocialFollowButtonsComponent', () => {
@@ -17,9 +22,9 @@ describe('SocialFollowButtonsComponent', () => {
             ],
             declarations: [SocialFollowButtonsComponent],
             providers: [
-                TranslateLoader,
-                TranslateService,
-                TranslateParser
+                { provide: TranslateLoader, useClass: TranslateLoaderMock },
+                { provide: TranslateService, useClass: TranslateServiceMock },
+                { provide: TranslateParser, useClass: TranslateParserMock }
             ]
         });
 
