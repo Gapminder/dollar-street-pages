@@ -14,6 +14,41 @@
   box-shadow: 0.6px 0.8px 2.9px 0.1px rgba(0, 0, 0, 0.2);
 }
 
+.image-content.pin-mode {
+  
+}
+
+.image-content.pin-mode::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0;
+}
+
+.heart-container {
+  width: 100%;
+  height: 100%;
+}
+
+.heart-container .heart-circle {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  left: 40%;
+  top: 40%;
+  border-radius: 50%;
+  background-color: white;
+  opacity: 0.6;
+}
+
+.heart-container svg {
+  margin: 10px 0 0 10px;
+  width: 64px;
+  height: 64px;
+}
+
 .flex-container {
   display: -webkit-box;
   display: -moz-box;

@@ -20,6 +20,7 @@ import {
   AppStates
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import * as ThingsFilterActions from '../things-filter/ngrx/things-filter.actions';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import * as CountriesFilterActions from '../countries-filter/ngrx/countries-filter.actions';
@@ -108,6 +109,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public languagesListSubscription: Subscription;
   public isInit: boolean;
   public iconContainerShow: boolean;
+  public isPinMode: boolean;
+  public matrixState: Observable<any>;
+  public matrixStateSubscription: Subscription;
 
   public constructor(private router: Router,
                      private math: MathService,
@@ -130,6 +134,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngAfterViewInit(): void {
@@ -262,13 +267,31 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.calcIncomeSize();
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.streetData = data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (data) {
+        this.streetData = data;
+      }
+    });
+
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+      if (data) {
+        if (data.pinMode) {
+          this.isPinMode = true;
+
+          this.changeDetectorRef.detectChanges();
+
+          this.titleHeaderService.setTitle('Families by income');
+        } else {
+          this.isPinMode = false;
+        }
+      }
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if(data) {
-        this.query = data.query;
+      if (data) {
+        if (data.query) {
+          this.query = data.query;
+        }
       }
     });
 
@@ -332,6 +355,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     if (this.routerEventsSubscription) {
       this.routerEventsSubscription.unsubscribe();
+    }
+
+    if (this.matrixStateSubscription) {
+      this.matrixStateSubscription.unsubscribe();
     }
   }
 
@@ -403,11 +430,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return;
     }
 
-    this.store.dispatch(new AppActions.OpenIncomeFilter(true));
+    this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }
 
   public thingSelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     let pageName: string = '';
 
@@ -424,6 +452,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   public countrySelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', data.url);
   }
@@ -460,6 +489,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
 
     this.store.dispatch(new AppActions.SetQuery(queryUrl));
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 

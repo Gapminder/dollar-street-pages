@@ -26,7 +26,7 @@ import {
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'main-menu',
@@ -202,7 +202,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.isOpenMenu = false;
 
-    this.store.dispatch(new AppActions.OpenQuickGuide(true));
+    this.store.dispatch(new MatrixActions.OpenQuickGuide(true));
 
     this.goToMatrixPage();
   }

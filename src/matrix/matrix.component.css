@@ -50,7 +50,6 @@ matrix-images {
 
 .street-and-title-container {
   width: 100%;
-  height: 64px;
 }
 
 .street-and-title-container,
@@ -100,6 +99,88 @@ matrix-images {
 
 .short-title span {
   color: #767d86;
+}
+
+.pin-container {
+  width: 100%;
+  height: 400px;
+  margin-top: -2px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.pin-container .pin-info-text {
+  color: #344450;
+  font-size: 20px;
+  text-align: center;
+
+}
+
+.pin-footer {
+  height: 68px;
+  width: 100%;
+  background-color: #334450;
+  align-self: flex-end;
+  -webkit-align-self: flex-end;
+}
+
+.pin-footer .pin-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pin-buttons-container .pin-done-share {
+  color: white;
+  font-size: 24px;
+  border: 1px solid white;
+  background-color: #495863;
+  padding: 8px 40px;
+}
+
+.pin-buttons-container .pin-mode-close {
+  color: #737B84;
+  font-size: 18px;
+  padding: 12px 40px;
+  text-align: center;
+}
+
+.pin-footer .pin-buttons-container span {
+  display: inline-block;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.pin-header {
+  height: 44px;
+  margin-top: -2px;
+  background-color: #F7F7F9;
+  border-top: 1px solid #D6DDE0;
+  border-bottom: 1px solid #D6DDE0;
+}
+
+.pin-header p {
+  display: inline-block;
+  padding-left: 20px;
+  font-size: 18px;
+  line-height: 44px;
+}
+
+.pin-header .buttons-container {
+  float: right;
+  height: 100%;
+  padding-right: 20px;
+}
+
+.pin-header .buttons-container span {
+  display: inline-block;
+  width: 80px;
+  height: 100%;
+  background-color: yellow;
+  border-left: 1px solid #D6DDE0;
+  cursor: pointer;
 }
 
 @media (max-width: 700px) {

@@ -108,6 +108,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public quickGuideElement: HTMLElement;
   public isInit: boolean;
   public contentLoadedSubscription: Subscription;
+  public isPinMode: boolean;
+  public matrixState: Observable<any>;
+  public matrixStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -127,6 +130,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.element = element.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngOnInit(): any {
@@ -179,9 +183,19 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
+      
+    });
+
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data) {
         if (data.quickGuide) {
           this.checkQuickGuide();
+        }
+
+        if (data.pinMode) {
+          this.isPinMode = true;
+        } else {
+          this.isPinMode = false;
         }
       }
     });
@@ -217,6 +231,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     setTimeout(() => this.quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement);
   }
 
+  public addToSet(e: MouseEvent): void {
+    console.log('Add to set');
+    e.stopPropagation();
+  }
+
   public ngOnDestroy(): void {
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
@@ -239,6 +258,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.matrixStateSubscription) {
+      this.matrixStateSubscription.unsubscribe();
     }
   }
 

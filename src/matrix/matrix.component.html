@@ -17,6 +17,28 @@
           </street>
         </div>
       </div>
+
+      <div *ngIf="isPinMode && !isPinCollapsed"
+           class="pin-container">
+        <div class="pin-info-text">Add images here by clicking the image below. A click on an image moves it up here.</div>
+
+        <div class="pin-footer">
+          <div class="pin-buttons-container">
+            <span class="pin-done-share">Done, now I want to share it</span>
+            <span class="pin-mode-close"
+                  (click)="pinModeClose()">Cancel</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="isPinMode && isPinCollapsed"
+           class="pin-header">
+        <p>3 families in Malavi & China & Coread are pinned to compare</p>
+        <div class="buttons-container">
+          <span (click)="pinModeExpand()">Expand</span>
+          <span (click)="pinModeClose()">Close</span>
+        </div>
+      </div>
     </div>
 
     <income-filter *ngIf="!isDesktop && isOpenIncomeFilter"
