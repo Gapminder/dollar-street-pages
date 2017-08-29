@@ -16,7 +16,7 @@
     </span>
   </div>
 
-  <div *ngIf="languages && languages.length" dropdown class="btn-group" [(isOpen)]="status.isOpen">
+  <div *ngIf="languages && languages.filteredLanguages && languages.filteredLanguages.length" dropdown class="btn-group" [(isOpen)]="status.isOpen">
     <button id="single-button" type="button" class="btn" dropdownToggle [disabled]="disabled">
       <span class="caret"></span>
     </button>
