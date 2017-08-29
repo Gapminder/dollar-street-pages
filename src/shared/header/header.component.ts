@@ -244,7 +244,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         zoom: parseInt(params.zoom, 10) || 4,
         row: parseInt(params.row, 10) || 1,
         lowIncome: parseInt(params.lowIncome, 10),
-        highIncome: parseInt(params.highIncome, 10)
+        highIncome: parseInt(params.highIncome, 10),
+        lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage
       };
 
       this.query = this.utilsService.objToQuery(this.urlParams);
