@@ -88,6 +88,10 @@ export class UtilsService {
   }
 
   public parseUrl(url: string): any {
+    if (!url) {
+      return {};
+    }
+
     url = url.slice(url.indexOf('?') + 1);
 
     let params = JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
