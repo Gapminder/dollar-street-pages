@@ -15,7 +15,7 @@ import {
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'quick-guide',
@@ -90,6 +90,6 @@ export class GuideComponent implements OnInit, OnDestroy {
     this.isShowBubble = false;
     this.startQuickGuide.emit({});
     this.localStorageService.setItem('quick-guide', true);
-    this.store.dispatch(new AppActions.OpenQuickGuide(false));
+    this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
   }
 }

@@ -37,8 +37,8 @@
 
 .float-footer-container social-share-buttons {
   display: inline-block;
-  vertical-align: top;
-  margin-bottom: -3px;
+  float: left;
+  margin-top: 3px;
 }
 
 .float-footer-container social-share-buttons >>> .share-button svg {
@@ -87,6 +87,20 @@
   width: 19px;
   margin: 4px 0 0;
   vertical-align: top;
+}
+
+.float-footer-container .pin-icon {
+  width: 24px;
+  height: 24px;
+  float: left;
+  margin-left: 14px;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.float-footer-container .pin-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
 @media (max-width: 1023px) {

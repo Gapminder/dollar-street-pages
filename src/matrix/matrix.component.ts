@@ -47,6 +47,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetContainer: ElementRef;
   @ViewChild('matrixHeader')
   public matrixHeader: ElementRef;
+  /*@ViewChild('pinContainer')
+  public pinContainer: ElementRef;*/
 
   public matrixHeaderElement: HTMLElement;
   public streetContainerElement: HTMLElement;
@@ -123,6 +125,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public isQuickGuideOpened: boolean;
   public thingsFilterState: Observable<any>;
   public thingsFilterStateSubscription: Subscription;
+  public isPinMode: boolean;
+  public isPinCollapsed: boolean;
+  public pinContainerElement: HTMLElement;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -178,6 +183,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.query = data.query;
 
           this.store.dispatch(new MatrixActions.GetMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
+
+        if (data.pinMode) {
+          this.isPinMode = true;
+          this.isPinCollapsed = false;
+
+          this.changeDetectorRef.detectChanges();
+        } else {
+          this.isPinMode = false;
+
         }
 
         if (data.incomeFilter) {
@@ -188,15 +202,51 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
         if (data.quickGuide) {
           this.isQuickGuideOpened = true;
+          this.store.dispatch(new AppActions.OpenQuickGuide(false));
         } else {
           this.isQuickGuideOpened = false;
+        }
+
+        if (data.query) {
+          // this.store.dispatch(new MatrixActions.GetMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
+          // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
         }
       }
     });
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (data && this.query) {
-        this.getMatrixImagesProcess(data);
+      if (data) {
+        if (data.pinMode) {
+          this.isPinMode = true;
+          this.isPinCollapsed = false;
+
+          this.changeDetectorRef.detectChanges();
+        } else {
+          this.isPinMode = false;
+          this.isPinCollapsed = false;
+        }
+
+        if (data.incomeFilter) {
+          this.isOpenIncomeFilter = true;
+        } else {
+          this.isOpenIncomeFilter = false;
+        }
+
+        if (data.quickGuide) {
+          this.isQuickGuideOpened = true;
+          this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+        } else {
+          this.isQuickGuideOpened = false;
+        }
+
+        if (this.query && data.matrixImages) {
+          this.getMatrixImagesProcess(data.matrixImages);
+        }
+
+        if (this.query && data.updateMatrix) {console.log('aa');
+          this.store.dispatch(new MatrixActions.GetMatrixImages(this.query + `&resolution=${this.imageResolution.image}`));
+          this.store.dispatch(new MatrixActions.UpdateMatrix(false));
+        }
       }
     });
 
@@ -276,6 +326,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
           this.urlChanged({isBack: true, url: this.query});
 
+          this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+
           this.changeDetectorRef.detectChanges();
         }
       });
@@ -286,12 +338,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
 
     this.scrollSubscribtion = fromEvent(document, 'scroll')
-      .debounceTime(150)
+      .debounceTime(50)
       .subscribe(() => {
         if (!this.itemSize) {
           this.calcItemSize();
         }
 
+        this.processPinContainer();
         this.processScroll();
         this.setZoomButtonPosition();
         this.getPaddings();
@@ -342,6 +395,31 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public streetChanged(event: any): void {
     this.urlChanged(event);
+
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+  }
+
+  public processPinContainer(): void {
+    if (this.pinContainerElement) {
+      this.pinContainerElement.style.height = '0px';
+      this.isPinCollapsed = true;
+    } else {
+      this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
+    }
+  }
+
+  public pinModeExpand(): void {
+    this.isPinCollapsed = false;
+
+    this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
+
+    if (this.pinContainerElement) {
+      this.pinContainerElement.style.height = '400px';
+    }
+  }
+
+  public pinModeClose(): void {
+    this.store.dispatch(new MatrixActions.ActivatePinMode(false));
   }
 
   public processScroll(): void {
@@ -500,12 +578,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public urlChanged(options: any): void {
     let {url, isZoom, isBack} = options;
 
-    this.query = url;
-
     if (isZoom) {
       this.calcItemSize();
 
-      this.query = this.query.replace(/row\=\d*/, 'row=1');
+      url = url.replace(/row\=\d*/, 'row=1');
     }
 
     // if (!isBack) {
@@ -516,9 +592,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       // this.clearActiveHomeViewBox.next(true);
     // }
 
-    this.urlChangeService.replaceState('/matrix', this.query);
+    this.urlChangeService.replaceState('/matrix', url);
 
-    this.store.dispatch(new AppActions.SetQuery(this.query));
+    this.store.dispatch(new AppActions.SetQuery(url));
   }
 
   public activeHouseOptions(options: any): void {
@@ -543,9 +619,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       queryParams.lang = this.languageService.currentLanguage;
     }
 
-    this.query = this.utilsService.objToQuery(queryParams);
+    let url = this.utilsService.objToQuery(queryParams);
 
-    this.urlChangeService.replaceState('/matrix', this.query);
+    this.urlChanged({url: url});
   }
 
   public changeZoom(zoom: any): void {
@@ -574,7 +650,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.urlChanged({url: this.query});
     }
 
-    this.store.dispatch(new AppActions.OpenIncomeFilter(false));
+    this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
   }
 
   public scrollTop(e: MouseEvent, element: HTMLElement): void {

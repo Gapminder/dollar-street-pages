@@ -21,6 +21,7 @@ import {
   AppStates
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import * as ThingsFilterActions from '../things-filter/ngrx/things-filter.actions';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import * as CountriesFilterActions from '../countries-filter/ngrx/countries-filter.actions';
@@ -113,6 +114,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public countriesFilterStateSubscription: Subscription;
   public theWorldText: string;
   public backToCountries: string;
+  public isPinMode: boolean;
+  public matrixState: Observable<any>;
+  public matrixStateSubscription: Subscription;
 
   public constructor(private router: Router,
                      private math: MathService,
@@ -134,8 +138,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+
     this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
     this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngAfterViewInit(): void {
@@ -270,8 +276,24 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.calcIncomeSize();
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.streetData = data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (data) {
+        this.streetData = data;
+      }
+    });
+
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+      if (data) {
+        if (data.pinMode) {
+          this.isPinMode = true;
+
+          this.changeDetectorRef.detectChanges();
+
+          this.titleHeaderService.setTitle('Families by income');
+        } else {
+          this.isPinMode = false;
+        }
+      }
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
@@ -316,6 +338,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           this.backToCountries = this.getCountriesTitle(allLocations, selRegions.split(','), selCountries.split(','));
 
           this.changeDetectorRef.detectChanges();
+        }
+
+        if (data.query) {
+          this.query = data.query;
         }
       }
     });
@@ -384,6 +410,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     if (this.thingsFilterStateSubscription) {
       this.thingsFilterStateSubscription.unsubscribe();
+    }
+
+    if (this.matrixStateSubscription) {
+      this.matrixStateSubscription.unsubscribe();
     }
   }
 
@@ -455,11 +485,39 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return;
     }
 
-    this.store.dispatch(new AppActions.OpenIncomeFilter(true));
+    this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }
 
   public goToMatrixFromFamilyPage(): void {
     this.router.navigate(['/matrix'], {queryParams: this.utilsService.parseUrl(this.query)});
+  }
+
+  public thingSelected(data: any): void {
+    this.store.dispatch(new AppActions.SetQuery(data.url));
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+
+    let pageName: string = '';
+
+    if (this.isMatrixPage) {
+      pageName = '/matrix';
+    }
+
+    if (this.isMapPage) {
+      pageName = '/map';
+    }
+
+    this.urlChangeService.replaceState(pageName, data.url);
+  }
+
+  public countrySelected(data: any): void {
+    this.store.dispatch(new AppActions.SetQuery(data.url));
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+
+    this.urlChangeService.replaceState('/matrix', data.url);
+  }
+
+  public activeThingTransfer(thing: any): void {
+    this.activeThing = thing;
   }
 
   public goToMatrixPage(): void {
@@ -491,6 +549,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
+
+    this.store.dispatch(new AppActions.SetQuery(queryUrl));
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 
