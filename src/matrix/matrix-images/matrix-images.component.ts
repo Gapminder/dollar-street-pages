@@ -240,16 +240,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public addPlaceToSet(e: MouseEvent, place: any): void {
     e.stopPropagation();
 
-    if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
-      if (!place.pinned) {
+    if (!place.pinned) {
+      if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
         place.pinned = true;
 
         this.store.dispatch(new MatrixActions.AddPlaceToSet(place));
-      } else {
-        place.pinned = false;
-
-        this.store.dispatch(new MatrixActions.RemovePlaceFromSet(place));
       }
+    } else {
+      place.pinned = false;
+
+      this.store.dispatch(new MatrixActions.RemovePlaceFromSet(place));
     }
   }
 

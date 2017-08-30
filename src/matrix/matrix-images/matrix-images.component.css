@@ -32,6 +32,10 @@
   height: 100%;
 }
 
+.heart-container.place-pinned {
+  background-color: rgba(255, 255, 255, .4);
+}
+
 .heart-container .heart-circle {
   position: absolute;
   width: 84px;

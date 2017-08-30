@@ -10,20 +10,21 @@
         <div class="short-title">{{thing}} <span>{{ 'IN' | translate }}</span> {{activeCountries}} <span>{{ 'BY_DOLLAR' | translate }}</span></div>
 
         <div class="street-content">
-          <street [places]="streetPlaces"
+          <street *ngIf="!isPinMode || isPinCollapsed"
+                  [places]="streetPlaces"
                   [hoverPlace]="hoverPlace"
                   [chosenPlaces]="chosenPlaces"
                   (filterStreet)="streetChanged($event)">
           </street>
+
+          <street-pinned *ngIf="isPinMode && !isPinCollapsed"
+                         [places]="pinnedSet">
+          </street-pinned>
         </div>
       </div>
 
       <div *ngIf="isPinMode && !isPinCollapsed"
            class="pin-container">
-        <div *ngIf="placesSet && !placesSet.length"
-             class="pin-info-text">Add images here by clicking the image below. A click on an image moves it up here.
-        </div>
-
         <div class="places-container">
           <div *ngFor="let place of placesSet; let i = index"
                class="pin-place"
@@ -31,6 +32,12 @@
                isImageLoaded [imageLoadedUrl]="place?.background"
                (imageLoadedEvent)="imageIsUploaded(i)"
                >
+
+            <div class="image-description">
+              <span class="place-image-box-income">${{math.round(place?.income)}}</span>
+              <span class="place-image-box-country">{{place?.country}}</span>
+            </div>
+
             <div *ngIf="isPinMode"
                  class="heart-container">
               <div class="heart-circle"
@@ -43,6 +50,16 @@
                 </svg>
               </div>
             </div>
+          </div>
+
+          <div *ngIf="placesSet && !placesSet.length"
+                class="pin-info-text">Add images here by clicking the image below. A click on an image moves it up here.
+          </div>
+
+          <div *ngIf="placesSet && placesSet.length > 0 && placesSet.length < 3"
+                class="pin-info-text-2">
+                <span>Click the images below to add more images.</span><br/>
+                <span>Click the red heard to deselect images.</span>
           </div>
         </div>
 

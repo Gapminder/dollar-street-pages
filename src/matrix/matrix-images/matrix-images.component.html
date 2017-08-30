@@ -41,7 +41,8 @@
       </div>
 
       <div *ngIf="isPinMode"
-            class="heart-container">
+            class="heart-container"
+            [ngClass]="{'place-pinned': place?.pinned}">
         <div class="heart-circle"
               (click)="addPlaceToSet($event, place)"
               [ngClass]="{'heart-circle-opacity': !place.pinned}">
