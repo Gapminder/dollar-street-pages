@@ -15,7 +15,7 @@
 }
 
 .image-content.pin-mode {
-  
+
 }
 
 .image-content.pin-mode::after {
@@ -36,10 +36,14 @@
   position: absolute;
   width: 84px;
   height: 84px;
-  left: 40%;
-  top: 40%;
+  left: 38%;
+  top: 38%;
   border-radius: 50%;
   background-color: white;
+  cursor: pointer;
+}
+
+.heart-circle-opacity {
   opacity: 0.6;
 }
 
