@@ -128,6 +128,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public isPinMode: boolean;
   public isPinCollapsed: boolean;
   public pinContainerElement: HTMLElement;
+  public placesSet: Array<any>;
+  public pinItemSize: number;
+  public maxPinnedCount: number = 4;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -174,6 +177,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.streetContainerElement = this.streetContainer.nativeElement;
     this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
 
+    this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount - (this.maxPinnedCount - 1) * 10;
+    console.log(this.pinItemSize);
+
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
     });
@@ -184,30 +190,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
-        /*if (data.pinMode) {
-          this.isPinMode = true;
-          this.isPinCollapsed = false;
-
-          this.changeDetectorRef.detectChanges();
-        } else {
-          this.isPinMode = false;
-        }
-
-        if (data.incomeFilter) {
-          this.isOpenIncomeFilter = true;
-        } else {
-          this.isOpenIncomeFilter = false;
-        }
-
-        if (data.quickGuide) {
-          this.isQuickGuideOpened = true;
-          this.store.dispatch(new AppActions.OpenQuickGuide(false));
-        } else {
-          this.isQuickGuideOpened = false;
-        }*/
-
         if (data.query) {
-          // this.store.dispatch(new MatrixActions.GetMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
           // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
         }
       }
@@ -223,6 +206,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         } else {
           this.isPinMode = false;
           this.isPinCollapsed = false;
+
+          if (this.placesArr) {
+            this.placesArr = this.placesArr.map((place) => {
+              if (place && place.pinned) {
+                place.pinned = false;
+              }
+
+              return place;
+            });
+          }
         }
 
         if (data.incomeFilter) {
@@ -238,13 +231,23 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.isQuickGuideOpened = false;
         }
 
-        if (this.query && data.matrixImages) {
-          this.getMatrixImagesProcess(data.matrixImages);
+        if (data.placesSet) {
+          this.placesSet = data.placesSet;
         }
 
-        if (this.query && data.updateMatrix) {console.log('aa');
-          this.store.dispatch(new MatrixActions.GetMatrixImages(this.query + `&resolution=${this.imageResolution.image}`));
-          this.store.dispatch(new MatrixActions.UpdateMatrix(false));
+        if (this.query) {
+          if (data.processImages && data.matrixImages) {
+            this.getMatrixImagesProcess(data.matrixImages);
+
+            this.store.dispatch(new MatrixActions.ProcessMatrixImages(false));
+          }
+
+          if (data.updateMatrix) {
+            this.store.dispatch(new MatrixActions.GetMatrixImages(this.query + `&resolution=${this.imageResolution.image}`));
+            this.store.dispatch(new MatrixActions.UpdateMatrix(false));
+
+            this.store.dispatch(new MatrixActions.ProcessMatrixImages(true));
+          }
         }
       }
     });
@@ -342,6 +345,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
   }
 
+  public imageIsUploaded(index: number): void {
+    this.zone.run(() => {
+      this.placesSet[index].isUploaded = true;
+    });
+  }
+
+  public toUrl(image: any): string {
+    return `url("${image}")`;
+  }
+
   public ngOnDestroy(): void {
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
@@ -409,6 +422,18 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public pinModeClose(): void {
     this.store.dispatch(new MatrixActions.ActivatePinMode(false));
+  }
+
+  public removePlaceFromSet(e: MouseEvent, place: any): void {
+    e.stopPropagation();
+
+    if (this.placesSet && this.placesSet.length > 0) {
+      let currentPlace: any = this.placesArr.find(el => el._id === place._id);
+
+      currentPlace.pinned = false;
+
+      this.store.dispatch(new MatrixActions.RemovePlaceFromSet(place));
+    }
   }
 
   public processScroll(): void {
