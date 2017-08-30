@@ -101,9 +101,31 @@ matrix-images {
   color: #767d86;
 }
 
+.heart-container {
+  width: 100%;
+  height: 100%;
+}
+
+.heart-container .heart-circle {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  left: 38%;
+  top: 38%;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+}
+
+.heart-container svg {
+  margin: 10px 0 0 10px;
+  width: 64px;
+  height: 64px;
+}
+
 .pin-container {
   width: 100%;
-  height: 400px;
+  min-height: 410px;
   margin-top: -2px;
   background-color: white;
   display: flex;
@@ -115,7 +137,35 @@ matrix-images {
   color: #344450;
   font-size: 20px;
   text-align: center;
+}
 
+.pin-container .places-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  position: relative;
+  padding: 0 20px 10px 20px;
+}
+
+.pin-container .pin-place {
+  position: relative;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0.6px 0.8px 2.9px 0.1px rgba(0, 0, 0, 0.2);
+  width: calc(25% - 10px);
+}
+
+.pin-container .pin-place:not(:last-child) {
+  margin-right: 10px;
 }
 
 .pin-footer {

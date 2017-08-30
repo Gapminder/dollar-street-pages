@@ -26,7 +26,7 @@ import {
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'matrix-images',
@@ -111,6 +111,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public isPinMode: boolean;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
+  public placesSet: Array<any>;
+  public maxPinnedCount: number = 4;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -183,7 +185,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
-      
+
     });
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
@@ -196,6 +198,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
           this.isPinMode = true;
         } else {
           this.isPinMode = false;
+        }
+
+        if (data.placesSet) {
+          this.placesSet = data.placesSet;
         }
       }
     });
@@ -231,9 +237,20 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     setTimeout(() => this.quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement);
   }
 
-  public addToSet(e: MouseEvent): void {
-    console.log('Add to set');
+  public addPlaceToSet(e: MouseEvent, place: any): void {
     e.stopPropagation();
+
+    if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
+      if (!place.pinned) {
+        place.pinned = true;
+
+        this.store.dispatch(new MatrixActions.AddPlaceToSet(place));
+      } else {
+        place.pinned = false;
+
+        this.store.dispatch(new MatrixActions.RemovePlaceFromSet(place));
+      }
+    }
   }
 
   public ngOnDestroy(): void {

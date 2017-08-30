@@ -24,6 +24,7 @@ gulp.paths = {
 // Code linting
 const tslint = require('gulp-tslint');
 
+const ten = 1010;
 const paths = gulp.paths;
 
 gulp.task('tslint', () =>
