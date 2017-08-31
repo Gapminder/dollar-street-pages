@@ -137,6 +137,18 @@ matrix-images {
   color: #344450;
   font-size: 20px;
   text-align: center;
+  height: 100%;
+  width: 100%;
+  padding-top: 140px;
+}
+
+.pin-container .pin-info-text-2 {
+  color: #344450;
+  font-size: 20px;
+  text-align: center;
+  height: 100%;
+  padding-top: 140px;
+  padding-left: 60px;
 }
 
 .pin-container .places-container {
@@ -151,8 +163,26 @@ matrix-images {
   flex-wrap: nowrap;
   flex-direction: row;
   justify-content: flex-start;
+  flex-grow: 1;
   position: relative;
-  padding: 0 20px 10px 20px;
+  padding: 10px 20px 10px 20px;
+  height: 100%;
+}
+
+.places-container .image-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px 9px 6px;
+  font-size: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+}
+
+.places-container .place-image-box-country,
+.places-container .place-image-box-income {
+  color: white;
+  display: block;
 }
 
 .pin-container .pin-place {

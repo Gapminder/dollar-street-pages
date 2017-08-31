@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 export const UPDATE_MATRIX: string = 'UPDATE_MATRIX';
 export const ACTIVATE_PIN_MODE: string = 'ACTIVATE_PIN_MODE';
+export const SET_PIN_COLLAPSED: string = 'SET_PIN_COLLAPSED';
 export const OPEN_INCOME_FILTER: string = 'OPEN_INCOME_FILTER';
 export const OPEN_QUICK_GUIDE: string = 'OPEN_QUICK_GUIDE';
 export const ADD_PLACE_TO_SET: string = 'ADD_PLACE_TO_SET';
@@ -18,6 +19,12 @@ export class UpdateMatrix implements Action {
 
 export class ActivatePinMode implements Action {
     readonly type = ACTIVATE_PIN_MODE;
+
+    constructor(public payload: boolean) {}
+}
+
+export class SetPinCollapsed implements Action {
+    readonly type = SET_PIN_COLLAPSED;
 
     constructor(public payload: boolean) {}
 }
@@ -68,6 +75,7 @@ export type Actions =
     | UpdateMatrix
     | OpenIncomeFilter
     | ActivatePinMode
+    | SetPinCollapsed
     | OpenQuickGuide
     | GetMatrixImages
     | GetMatrixImagesSuccess

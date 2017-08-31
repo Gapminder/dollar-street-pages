@@ -46,6 +46,9 @@ import { StreetFilterDrawService } from './street-filter/street-filter.service';
 import { StreetFamilyComponent } from './street-family/street-family.component';
 import { StreetFamilyDrawService } from './street-family/street-family.service';
 
+import { StreetPinnedComponent } from './street-pinned/street-pinned.component';
+import { StreetPinnedDrawService } from './street-pinned/street-pinned.service';
+
 import { IncomeFilterComponent } from './income-filter/income-filter.component';
 
 import { IsImageLoadedDirective } from './is-image-loaded/is-image-loaded.directive';
@@ -86,7 +89,8 @@ import { Angulartics2Module } from 'angulartics2';
     StreetFamilyComponent,
     IncomeFilterComponent,
     IsImageLoadedDirective,
-    TranslateMeComponent
+    TranslateMeComponent,
+    StreetPinnedComponent
   ],
   imports: [
     HttpModule,
@@ -105,7 +109,8 @@ import { Angulartics2Module } from 'angulartics2';
     StreetDrawService,
     StreetMobileDrawService,
     StreetFilterDrawService,
-    StreetFamilyDrawService
+    StreetFamilyDrawService,
+    StreetPinnedDrawService
   ],
   exports: [
     RouterModule,
@@ -128,7 +133,8 @@ import { Angulartics2Module } from 'angulartics2';
     IncomeFilterComponent,
     MainMenuComponent,
     IsImageLoadedDirective,
-    TranslateMeComponent
+    TranslateMeComponent,
+    StreetPinnedComponent
   ]
 })
 export class SharedModule {}
