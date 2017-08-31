@@ -117,6 +117,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isPinMode: boolean;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
+  public isPinCollapsed: boolean;
 
   public constructor(private router: Router,
                      private math: MathService,

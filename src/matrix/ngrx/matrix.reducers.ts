@@ -4,6 +4,7 @@ export interface State {
     matrixImages: any;
     updateMatrix: boolean;
     pinMode: boolean;
+    pinCollapsed: boolean;
     incomeFilter: boolean;
     quickGuide: boolean;
     placesSet: Array<any>;
@@ -14,6 +15,7 @@ export const initialState: State = {
     matrixImages: null,
     updateMatrix: false,
     pinMode: false,
+    pinCollapsed: false,
     incomeFilter: false,
     quickGuide: false,
     placesSet: [],
@@ -30,6 +32,10 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
             return Object.assign({}, state, {placesSet: []}, {pinMode: action.payload});
         }
 
+        case MatrixActions.SET_PIN_COLLAPSED: {
+            return Object.assign({}, state, {pinCollapsed: action.payload});
+        }
+
         case MatrixActions.OPEN_INCOME_FILTER: {
             return Object.assign({}, state, {incomeFilter: action.payload});
         }
@@ -39,7 +45,7 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
         }
 
         case MatrixActions.ADD_PLACE_TO_SET: {
-            return Object.assign({}, state, {placesSet: [...state.placesSet, action.payload]});
+            return Object.assign({}, state, {placesSet: [...state.placesSet, action.payload].sort((a, b) => a.income > b.income ? 1 : -1)});
         }
 
         case MatrixActions.REMOVE_PLACE_FROM_SET: {

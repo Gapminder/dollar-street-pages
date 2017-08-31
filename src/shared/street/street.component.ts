@@ -137,9 +137,18 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
         this.street.set('lowIncome', parseUrl.lowIncome);
         this.street.set('highIncome', parseUrl.highIncome);
+
         this.thingName = parseUrl.thing;
         this.countries = parseUrl.countries;
         this.regions = parseUrl.regions;
+
+        this.street
+          .clearSvg()
+          .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
+          .set('places', [])
+          .set('fullIncomeArr', [])
+          .drawScale(this.placesArr, this.streetData)
+          .removeSliders();
       }
     });
 

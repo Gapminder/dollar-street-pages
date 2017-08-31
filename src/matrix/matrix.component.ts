@@ -25,7 +25,8 @@ import {
   BrowserDetectionService,
   LanguageService,
   UtilsService,
-  DrawDividersInterface
+  DrawDividersInterface,
+  MathService
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
@@ -144,7 +145,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      languageService: LanguageService,
                      private changeDetectorRef: ChangeDetectorRef,
                      utilsService: UtilsService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private math: MathService) {
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -177,7 +179,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
 
     this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount - (this.maxPinnedCount - 1) * 10;
-    console.log(this.pinItemSize);
 
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
@@ -224,12 +225,18 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       if (data) {
         if (data.pinMode) {
           this.isPinMode = true;
-          this.isPinCollapsed = false;
+
+          if (!this.isPinCollapsed) {
+            // this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
+          }
 
           this.changeDetectorRef.detectChanges();
         } else {
           this.isPinMode = false;
-          this.isPinCollapsed = false;
+
+          if (this.isPinCollapsed) {
+            this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
+          }
 
           if (this.placesArr) {
             this.placesArr = this.placesArr.map((place) => {
@@ -240,6 +247,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
               return place;
             });
           }
+
+          this.changeDetectorRef.detectChanges();
+        }
+
+        if (data.pinCollapsed) {
+          this.isPinCollapsed = true;
+        } else {
+          this.isPinCollapsed = false;
         }
 
         if (data.incomeFilter) {
@@ -438,14 +453,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public processPinContainer(): void {
     if (this.pinContainerElement) {
       this.pinContainerElement.style.height = '0px';
-      this.isPinCollapsed = true;
+      this.store.dispatch(new MatrixActions.SetPinCollapsed(true));
     } else {
       this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
     }
   }
 
   public pinModeExpand(): void {
-    this.isPinCollapsed = false;
+    this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
 
     this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
 
