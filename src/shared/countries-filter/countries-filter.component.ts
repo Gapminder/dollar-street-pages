@@ -12,16 +12,19 @@ import {
   ElementRef,
   OnInit,
   NgZone,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import { chain, clone, difference, union, filter, find, map, forEach, omit } from 'lodash';
 import {
   BrowserDetectionService,
   LanguageService,
-  UtilsService
+  UtilsService,
+  UrlChangeService
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 import * as CountriesFilterActions from './ngrx/countries-filter.actions';
 import { KeyCodes } from '../../enums';
 
@@ -40,14 +43,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('countriesMobileContainer')
   public countriesMobileContainer: ElementRef;
 
-  @Input()
-  public query: string;
-
   @Output()
   public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
+  public query: string;
   public theWorldTranslate: string;
   public languageService: LanguageService;
   public utilsService: UtilsService;
@@ -80,13 +79,17 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public countriesFilterState: Observable<any>;
   public isInit: boolean;
   public countriesFilterStateSubscription: Subscription;
+  public appState: Observable<any>;
+  public appStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      element: ElementRef,
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      utilsService: UtilsService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private urlChangeService: UrlChangeService,
+                     private changeDetectorRef: ChangeDetectorRef) {
     this.languageService = languageService;
     this.device = browserDetectionService;
     this.utilsService = utilsService;
@@ -94,6 +97,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.element = element.nativeElement;
     this.zone = zone;
 
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
@@ -110,19 +114,29 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
 
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if (data) {
+        if (data.query) {
+          this.query = data.query;
+
+          this.setTitle(this.query);
+        }
+      }
+    });
+
     this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
       if (data) {
-        this.locations = data;
+        if (data.countriesFilter) {
+          this.locations = data.countriesFilter;
 
-        this.countries = chain(data)
-          .map('countries')
-          .flatten()
-          .sortBy('country')
-          .value();
+          this.countries = chain(data)
+            .map('countries')
+            .flatten()
+            .sortBy('country')
+            .value();
 
-        this.isFilterGotData.emit('isCountryFilterReady');
-
-        this.setTitle(this.query);
+          this.isFilterGotData.emit('isCountryFilterReady');
+        }
       }
     });
 
@@ -171,6 +185,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.countriesFilterStateSubscription) {
       this.countriesFilterStateSubscription.unsubscribe();
+    }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
     }
   }
 
@@ -425,8 +443,14 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     const queryUrl: string = this.utilsService.objToQuery(query);
 
+    this.setTitle(queryUrl);
+
+    this.store.dispatch(new AppActions.SetQuery(queryUrl));
+    this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(query.countries));
+    this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(query.regions));
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
-    this.selectedFilter.emit({url: queryUrl, isCountriesFilter: true});
+
+    this.urlChangeService.replaceState('/matrix', queryUrl);
 
     this.isOpenCountriesFilter = false;
     this.cloneSelectedCountries = ['World'];

@@ -24,12 +24,12 @@ import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
   LanguageService,
-  ActiveThingService,
   UtilsService,
   DrawDividersInterface
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
+import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter.actions';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 
@@ -110,7 +110,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public device: BrowserDetectionService;
   public languageService: LanguageService;
   public theWorldTranslate: string;
-  public activeThingService: ActiveThingService;
   public getTranslationSubscribe: Subscription;
   public byIncomeText: string;
   public streetSettingsState: Observable<DrawDividersInterface>;
@@ -121,8 +120,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
   public matrixStateSubscription: Subscription;
-  public activeThingServiceSubscription: Subscription;
   public isQuickGuideOpened: boolean;
+  public thingsFilterState: Observable<any>;
+  public thingsFilterStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -134,7 +134,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     activeThingService: ActiveThingService,
                      private changeDetectorRef: ChangeDetectorRef,
                      utilsService: UtilsService,
                      private store: Store<AppStates>) {
@@ -148,7 +147,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.urlChangeService = urlChangeService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
-    this.activeThingService = activeThingService;
     this.utilsService = utilsService;
 
     this.isMobile = this.device.isMobile();
@@ -159,6 +157,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
+    this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
   }
 
   public ngAfterViewInit(): void {
@@ -173,13 +172,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.theWorldTranslate = trans.THE_WORLD;
     });
 
-    this.activeThingServiceSubscription = this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
-      this.thing = thing.originPlural;
-    });
-
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
         if (data.query) {
+          this.query = data.query;
+
           this.store.dispatch(new MatrixActions.GetMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
         }
 
@@ -200,6 +197,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data && this.query) {
         this.getMatrixImagesProcess(data);
+      }
+    });
+
+    this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
+      if (data) {
+        if (data.thingsFilter) {
+          this.thing = data.thingsFilter.thing.originPlural;
+
+          this.changeDetectorRef.detectChanges();
+        }
       }
     });
 
@@ -314,10 +321,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.matrixStateSubscription.unsubscribe();
     }
 
-    if (this.activeThingServiceSubscription) {
-      this.activeThingServiceSubscription.unsubscribe();
-    }
-
     if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
@@ -328,6 +331,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     if (this.queryParamsSubscribe) {
       this.queryParamsSubscribe.unsubscribe();
+    }
+
+    if (this.thingsFilterStateSubscription) {
+      this.thingsFilterStateSubscription.unsubscribe();
     }
 
     this.loaderService.setLoader(false);

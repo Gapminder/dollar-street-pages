@@ -13,7 +13,7 @@ export { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
 export { MathService } from './math/math.service';
 export { UrlChangeService } from './url-change/url-change.service';
 export { LanguageService } from './language/language.service';
-export { ActiveThingService } from './things/active-thing.service';
+// export { ActiveThingService } from './things/active-thing.service';
 export { SocialShareService } from './social/social-share.service';
 export { FontDetectorService } from './font/font-detector.service';
 export { GoogleAnalyticsService } from './analytics/google-analytics.service';

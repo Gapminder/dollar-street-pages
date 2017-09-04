@@ -11,7 +11,6 @@ import {
     UtilsService,
     UrlChangeService,
     TitleHeaderService,
-    ActiveThingService,
     LocalStorageService
 } from '../../../common';
 import {
@@ -57,7 +56,6 @@ describe('HeaderComponent', () => {
             ],
             providers: [
                 MathService,
-                ActiveThingService,
                 LocalStorageService,
                 TitleHeaderService,
                 { provide: Angulartics2, useClass: AngularticsMock },

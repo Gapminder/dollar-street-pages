@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 import { Router } from '@angular/router';
 import { ImageResolutionInterface } from '../../interfaces';
 import {
@@ -26,7 +27,8 @@ import {
   DrawDividersInterface,
   BrowserDetectionService,
   LanguageService,
-  UtilsService
+  UtilsService,
+  UrlChangeService
 } from '../../common';
 import { MatrixViewBlockService } from './matrix-view-block.service';
 
@@ -44,8 +46,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   public positionInRow: any;
   @Input()
-  public query: any;
-  @Input()
   public place: any;
   @Input()
   public thing: string;
@@ -57,6 +57,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
 
+  public query: any;
   public familyInfoServiceSubscribe: Subscription;
   public fancyBoxImage: any;
   public showblock: boolean;
@@ -89,6 +90,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public viewImage: string;
   public streetSettingsStateSubscription: Subscription;
   public consumerApi: string;
+  public appState: Observable<any>;
+  public appStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -99,7 +102,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      languageService: LanguageService,
                      utilsService: UtilsService,
                      private store: Store<AppStates>,
-                     private changeDetectorRef: ChangeDetectorRef) {
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private urlChangeService: UrlChangeService) {
     this.math = math;
     this.zone = zone;
     this.router = router;
@@ -117,11 +121,20 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
   }
 
   public ngOnInit(): void {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
       this.streetData = data;
+    });
+
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if (data) {
+        if (data.query) {
+          this.query = data.query;
+        }
+      }
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -207,6 +220,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     if (this.streetSettingsStateSubscription) {
       this.streetSettingsStateSubscription.unsubscribe();
     }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
+    }
   }
 
   public closeBlock(): void {
@@ -231,6 +248,18 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public fancyBoxClose(): void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
+  }
+
+  public visitThisHome(): void {
+    let queryUrl: any = this.utilsService.parseUrl(this.query);
+
+    queryUrl.place = this.familyData.goToPlaceData.place;
+
+    let query = this.utilsService.objToQuery(queryUrl);
+
+    this.store.dispatch(new AppActions.SetQuery(query));
+
+    this.router.navigate(['/family'], {queryParams: queryUrl});
   }
 
   public goToMatrixByCountry(country: string): void {

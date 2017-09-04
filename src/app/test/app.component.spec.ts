@@ -13,7 +13,6 @@ import {
     UtilsService,
     UrlChangeService,
     TitleHeaderService,
-    ActiveThingService,
     LocalStorageService,
     SocialShareService
 } from '../../common';
@@ -58,7 +57,6 @@ describe('AppComponent', () => {
                 FontDetectorService,
                 GoogleAnalyticsService,
                 MathService,
-                ActiveThingService,
                 LocalStorageService,
                 { provide: TranslateService, useClass: TranslateServiceMock },
                 { provide: TranslateLoader, useClass: TranslateLoaderMock },

@@ -11,8 +11,7 @@ import {
     LanguageService,
     StreetSettingsService,
     BrowserDetectionService,
-    StreetSettingsEffects,
-    ActiveThingService
+    StreetSettingsEffects
 } from '../../common';
 import {
     LanguageServiceMock,
@@ -84,7 +83,6 @@ describe('MapComponent', () => {
             ],
             providers: [
                 MathService,
-                ActiveThingService,
                 { provide: TranslateService, useClass: TranslateServiceMock },
                 { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: TranslateLoader, useClass: TranslateLoaderMock },

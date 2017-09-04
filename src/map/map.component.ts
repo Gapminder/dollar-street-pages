@@ -22,8 +22,7 @@ import {
   Angulartics2GoogleAnalytics,
   DrawDividersInterface,
   BrowserDetectionService,
-  LanguageService,
-  ActiveThingService
+  LanguageService
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import { MapService } from './map.service';
@@ -88,7 +87,8 @@ export class MapComponent implements OnInit, OnDestroy {
   public appState: Observable<any>;
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
-  public activeThingServiceSubscription: Subscription;
+  public thingsFilterState: Observable<any>;
+  public thingsFilterStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -101,8 +101,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
-                     private store: Store<AppStates>,
-                     private activeThingService: ActiveThingService) {
+                     private store: Store<AppStates>) {
     this.zone = zone;
     this.math = math;
     this.router = router;
@@ -119,6 +118,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.thingsFilterState = this.store.select((appState: AppStates) => appState.thingsFilter);
   }
 
   public ngOnInit(): void {
@@ -136,12 +136,16 @@ export class MapComponent implements OnInit, OnDestroy {
       this.streetData = data;
     });
 
-    this.activeThingServiceSubscription = this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
-      this.thing = thing.originPlural;
+    this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
+      if (data) {
+        if (data.thingsFilter) {
+          this.thing = data.thingsFilter.thing.originPlural;
 
-      let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
+          let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
 
-      this.urlChanged(query);
+          this.urlChanged(query);
+        }
+      }
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
@@ -248,8 +252,8 @@ export class MapComponent implements OnInit, OnDestroy {
       this.appStateSubscription.unsubscribe();
     }
 
-    if (this.activeThingServiceSubscription) {
-      this.activeThingServiceSubscription.unsubscribe();
+    if (this.thingsFilterStateSubscription) {
+      this.thingsFilterStateSubscription.unsubscribe();
     }
   }
 

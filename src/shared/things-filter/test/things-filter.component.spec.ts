@@ -8,13 +8,14 @@ import * as ThingsFilterActions from '../ngrx/things-filter.actions';
 import { thingsFilterReducer } from '../ngrx/things-filter.reducers';
 import {
     BrowserDetectionService,
-    ActiveThingService,
-    UtilsService
+    UtilsService,
+    UrlChangeService
 } from '../../../common';
 import {
     BrowserDetectionServiceMock,
     Angulartics2GoogleAnalyticsMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    UrlChangeServiceMock
 } from '../../../test/';
 import { ThingsFilterPipe } from '../things-filter.pipe';
 import { ThingsFilterComponent } from '../things-filter.component';
@@ -37,7 +38,7 @@ describe('ThingsFilterComponent', () => {
                 ThingsFilterPipe
             ],
             providers: [
-                ActiveThingService,
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
                 { provide: UtilsService, useClass: UtilsServiceMock }

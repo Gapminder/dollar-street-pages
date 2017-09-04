@@ -7,12 +7,14 @@ import { countriesFilterReducer } from '../ngrx/countries-filter.reducers';
 import {
     BrowserDetectionService,
     LanguageService,
-    UtilsService
+    UtilsService,
+    UrlChangeService
 } from '../../../common';
 import {
     BrowserDetectionServiceMock,
     LanguageServiceMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    UrlChangeServiceMock
 } from '../../../test/';
 import { CountriesFilterComponent } from '../countries-filter.component';
 import { CountriesFilterPipe } from '../countries-filter.pipe';
@@ -30,6 +32,7 @@ describe('CountriesFilterComponent', () => {
             ],
             declarations: [CountriesFilterComponent, CountriesFilterPipe],
             providers: [
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock }

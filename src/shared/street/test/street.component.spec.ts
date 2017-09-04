@@ -7,12 +7,13 @@ import {
     BrowserDetectionService,
     LanguageService,
     UtilsService,
-    ActiveThingService
+    UrlChangeService
 } from "../../../common";
 import {
     BrowserDetectionServiceMock,
     LanguageServiceMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    UrlChangeServiceMock
 } from '../../../test/';
 import { StreetComponent } from "../street.component";
 import { StreetDrawService } from "../street.service";
@@ -31,7 +32,7 @@ describe('StreetComponent', () => {
             providers: [
                 MathService,
                 StreetDrawService,
-                ActiveThingService,
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock }
@@ -48,14 +49,12 @@ describe('StreetComponent', () => {
         component.ngAfterViewInit();
 
         expect(component.getTranslationSubscribe).toBeDefined();
-        expect(component.activeThingServiceSubscription).toBeDefined();
         expect(component.streetSettingsStateSubscription).toBeDefined();
         expect(component.appStateSubscription).toBeDefined();
         expect(component.streetFilterSubscribe).toBeDefined();
         expect(component.resize).toBeDefined();
 
         spyOn(component.getTranslationSubscribe, 'unsubscribe');
-        spyOn(component.activeThingServiceSubscription, 'unsubscribe');
         spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
         spyOn(component.appStateSubscription, 'unsubscribe');
         spyOn(component.streetFilterSubscribe, 'unsubscribe');
@@ -64,7 +63,6 @@ describe('StreetComponent', () => {
         component.ngOnDestroy();
 
         expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(component.activeThingServiceSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.streetFilterSubscribe.unsubscribe).toHaveBeenCalled();
