@@ -14,7 +14,7 @@ import {
   OnDestroy,
   ViewChild,
   ChangeDetectorRef,
-  Renderer
+  Renderer,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
@@ -51,8 +51,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public filtersContainer: ElementRef;
   @ViewChild('incomeTitleContainer')
   public incomeTitleContainer: ElementRef;
-  @ViewChild('headerTitle')
-  public headerTitle: ElementRef;
+
+  private headerTitle: ElementRef;
+  @ViewChild('headerTitle') set controlElRef(elementRef: ElementRef) {
+    this.headerTitle = elementRef;
+
+    this.titleHeaderService.setTitle(this.familiesByIncomeTrans);
+  }
 
   @Input()
   public currentPage: string;
@@ -118,6 +123,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public isPinCollapsed: boolean;
+  public familiesByIncomeTrans: string = 'Families by income';
 
   public constructor(private router: Router,
                      private math: MathService,
@@ -268,6 +274,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         this.query = this.utilsService.objToQuery(this.urlParams);
 
         this.store.dispatch(new ThingsFilterActions.GetThingsFilter(this.query));
+
         this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.query));
         this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
         this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
@@ -275,6 +282,14 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
       this.interactiveIncomeText();
       this.calcIncomeSize();
+    });
+
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if(data) {
+        if (data.query) {
+          this.query = data.query;
+        }
+      }
     });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
@@ -288,20 +303,20 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         if (data.pinMode) {
           this.isPinMode = true;
 
-          this.changeDetectorRef.detectChanges();
+          //this.changeDetectorRef.detectChanges();
 
-          this.titleHeaderService.setTitle('Families by income');
+          //this.titleHeaderService.setTitle(this.familiesByIncomeTrans);
         } else {
           this.isPinMode = false;
         }
-      }
-    });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if(data) {
-        if (data.query) {
-          this.query = data.query;
+        if (data.pinCollapsed) {
+          this.isPinCollapsed = true;
+        } else {
+          this.isPinCollapsed = false;
         }
+
+        this.changeDetectorRef.detectChanges();
       }
     });
 
@@ -495,7 +510,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   public thingSelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    //this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     let pageName: string = '';
 
@@ -512,7 +527,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   public countrySelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    //this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', data.url);
   }
@@ -546,13 +561,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     let queryUrl: string = this.utilsService.objToQuery(queryParams);
 
     this.store.dispatch(new AppActions.SetQuery(queryUrl));
+
     this.store.dispatch(new ThingsFilterActions.GetThingsFilter(queryUrl));
+
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
-
-    this.store.dispatch(new AppActions.SetQuery(queryUrl));
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 

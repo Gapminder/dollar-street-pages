@@ -103,6 +103,18 @@
   height: 24px;
 }
 
+.float-footer-container .pin-icon svg:last-child {
+  display: none;
+}
+
+.float-footer-container .pin-icon:hover svg:last-child {
+  display: block;
+}
+
+.float-footer-container .pin-icon:hover svg:first-child {
+  display: none;
+}
+
 @media (max-width: 1023px) {
   .float-footer-container {
     padding: 9px 10px;

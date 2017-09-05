@@ -17,16 +17,16 @@
       <img (click)="goToMatrixPage()" src="/assets/img/dollar-street.svg" alt=""/>
     </div>
 
-    <div *ngIf="(isMatrixPage && isPinMode) ||
+    <div *ngIf="(isMatrixPage && isPinMode && !isPinCollapsed) ||
                 isAboutPage || isDonatePage ||
                 isPhotographersPage || isPhotographerPage ||
                 isCountryPage || isTeamPage || isArticlePage"
           class="without-filters-header">
-          <h2 #headerTitle class="heading pull-left"></h2>
+          <h2 #headerTitle class="header-title heading pull-left"></h2>
     </div>
 
     <div #filtersContainer>
-      <div *ngIf="(isMatrixPage && !isPinMode) || isMapPage"
+      <div *ngIf="((isMatrixPage && !isPinMode) || (isMatrixPage && isPinMode && isPinCollapsed)) || isMapPage"
           class="filters-container"
           [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
         <things-filter

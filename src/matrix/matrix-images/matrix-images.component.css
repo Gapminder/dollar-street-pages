@@ -30,42 +30,36 @@
 .heart-container {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .heart-container.place-pinned {
-  background-color: rgba(255, 255, 255, .4);
+  background-color: rgba(255, 255, 255, .7);
 }
 
 .heart-container .heart-circle {
-  position: absolute;
-  width: 84px;
-  height: 84px;
-  left: 38%;
-  top: 38%;
+  align-self: center;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   background-color: white;
   cursor: pointer;
 }
 
 .heart-circle-opacity {
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
 .heart-container svg {
-  margin: 10px 0 0 10px;
-  width: 64px;
-  height: 64px;
+  margin: 19px 17px 17px 17px;
+  width: 40px;
+  height: 37px;
 }
 
 .flex-container {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
-
-  -ms-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   position: relative;
 }

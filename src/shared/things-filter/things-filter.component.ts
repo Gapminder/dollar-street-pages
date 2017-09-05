@@ -19,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import * as ThingsFilterActions from './ngrx/things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,
@@ -44,9 +45,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   @Output()
   public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
 
-  /*@Input()*/
   public query: string;
-
   public relatedThings: any[];
   public popularThings: any[];
   public otherThings: any[];
@@ -71,6 +70,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   public thingsFilterStateSubscribtion: Subscription;
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
+  public thingsFilterTitle: string;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
@@ -126,6 +126,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
           this.popularThings = data.thingsFilter.popularThings;
           this.otherThings = data.thingsFilter.otherThings;
           this.activeThing = data.thingsFilter.thing;
+
+          this.thingsFilterTitle = data.thingsFilter.thing.plural;
 
           this.isFilterGotData.emit('isThingFilterReady');
 
@@ -232,7 +234,13 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     this.search = {text: ''};
 
     this.store.dispatch(new AppActions.SetQuery(newUrl));
+
     this.store.dispatch(new ThingsFilterActions.GetThingsFilter(newUrl));
+
+    this.thingsFilterTitle = thing.plural;
+    this.changeDetectorRef.detectChanges();
+
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     let pageName: string = '';
 

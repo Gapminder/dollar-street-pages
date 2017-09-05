@@ -26,6 +26,7 @@ import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as CountriesFilterActions from './ngrx/countries-filter.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { KeyCodes } from '../../enums';
 
 @Component({
@@ -129,7 +130,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         if (data.countriesFilter) {
           this.locations = data.countriesFilter;
 
-          this.countries = chain(data)
+          this.countries = chain(this.locations)
             .map('countries')
             .flatten()
             .sortBy('country')
@@ -444,11 +445,15 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     const queryUrl: string = this.utilsService.objToQuery(query);
 
     this.setTitle(queryUrl);
+    this.changeDetectorRef.detectChanges();
 
     this.store.dispatch(new AppActions.SetQuery(queryUrl));
+
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(query.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(query.regions));
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
+
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 

@@ -111,7 +111,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public placesSet: Array<any>;
-  public maxPinnedCount: number = 4;
+  public maxPinnedCount: number = 6;
 
   public constructor(zone: NgZone,
                      router: Router,

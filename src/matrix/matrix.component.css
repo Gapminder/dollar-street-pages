@@ -104,28 +104,28 @@ matrix-images {
 .heart-container {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .heart-container .heart-circle {
-  position: absolute;
-  width: 84px;
-  height: 84px;
-  left: 38%;
-  top: 38%;
+  align-self: center;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   background-color: white;
   cursor: pointer;
 }
 
 .heart-container svg {
-  margin: 10px 0 0 10px;
-  width: 64px;
-  height: 64px;
+  margin: 19px 17px 17px 17px;
+  width: 40px;
+  height: 37px;
 }
 
 .pin-container {
   width: 100%;
-  min-height: 410px;
   margin-top: -2px;
   background-color: white;
   display: flex;
@@ -152,21 +152,59 @@ matrix-images {
 }
 
 .pin-container .places-container {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
-
-  -ms-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
   flex-wrap: nowrap;
   flex-direction: row;
   justify-content: flex-start;
-  flex-grow: 1;
   position: relative;
-  padding: 10px 20px 10px 20px;
-  height: 100%;
+  padding: 10px 20px 4px 20px;
+}
+
+.places-container.column-2 .pin-place {
+  /*width: calc(50% - 10px);*/
+  width: calc(33.33% - 10px);
+  margin: 0 5px;
+}
+
+.places-container.column-3 .pin-place {
+  width: calc(33.33% - 10px);
+  margin: 0 5px;
+}
+
+.places-container.column-4 .pin-place {
+  width: calc(25% - 10px);
+  margin: 0 5px;
+}
+
+.places-container.column-5 .pin-place {
+  width: calc(20% - 10px);
+  margin: 0 5px;
+}
+
+.places-container.column-6 .pin-place {
+  width: calc(16.66% - 5px);
+  margin: 0 2.5px;
+}
+
+.places-container.height-2 {
+  /*min-height: 680px;*/
+  min-height: 450px;
+}
+
+.places-container.height-3 {
+  min-height: 450px;
+}
+
+.places-container.height-4 {
+  min-height: 336px;
+}
+
+.places-container.height-5 {
+  min-height: 266px;
+}
+
+.places-container.height-6 {
+  min-height: 225px;
 }
 
 .places-container .image-description {
@@ -191,54 +229,136 @@ matrix-images {
   background-repeat: no-repeat;
   background-size: cover;
   box-shadow: 0.6px 0.8px 2.9px 0.1px rgba(0, 0, 0, 0.2);
-  width: calc(25% - 10px);
-}
-
-.pin-container .pin-place:not(:last-child) {
-  margin-right: 10px;
 }
 
 .pin-footer {
-  height: 68px;
   width: 100%;
-  background-color: #334450;
   align-self: flex-end;
-  -webkit-align-self: flex-end;
 }
 
-.pin-footer .pin-buttons-container {
+.pin-footer .pin-footer-edit {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-top: 4px;
+  height: 60px;
+  background-color: #394450;
 }
 
-.pin-buttons-container .pin-done-share {
+.pin-footer-edit .pin-done-share {
   color: white;
   font-size: 24px;
   border: 1px solid white;
   background-color: #495863;
-  padding: 8px 40px;
+  padding: 0px 40px;
+  height: 38px;
+  line-height: 38px;
 }
 
-.pin-buttons-container .pin-mode-close {
+.pin-footer-edit .pin-mode-close {
   color: #737B84;
   font-size: 18px;
-  padding: 12px 40px;
+  padding: 0px 40px;
   text-align: center;
+  height: 38px;
+  line-height: 38px;
 }
 
-.pin-footer .pin-buttons-container span {
+.pin-footer .pin-footer-edit span {
   display: inline-block;
   margin-top: 8px;
   cursor: pointer;
 }
 
+.pin-footer .pin-footer-share {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 800px;
+}
+
+.pin-footer-share p {
+  width: 818px;
+  height: 54px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 30px;
+  color: #3a4450;
+  margin: 0 auto;
+  align-self: center;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pin-footer-share .share-buttons-container {
+  height: 21px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.pin-footer-share .share-buttons-container span {
+  width: 40px;
+  height: 21px;
+  color: #767d86;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  vertical-align: center;
+  display: inline-block;
+}
+
+.pin-footer-share .share-buttons-container svg {
+  width: 21px;
+  height: 21px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.pin-footer-share .share-link-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pin-footer-share .back-close-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pin-footer-share .back-close-buttons span {
+  width: 86px;
+  height: 32px;
+  display: inline-block;
+  color: #3a4450;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 30px;
+  cursor: pointer;
+  margin: 0 10px;
+  text-align: center;
+}
+
+.pin-footer-share .back-close-buttons span:last-child {
+  color: #777d86;
+}
+
+.pin-footer-share .share-link-container input {
+  width: 390px;
+  height: 38px;
+  border: 1px solid #9c9fa4;
+  background-color: #ffffff;
+  font-size: 24px;
+}
+
 .pin-header {
   height: 44px;
   margin-top: -2px;
-  background-color: #F7F7F9;
-  border-top: 1px solid #D6DDE0;
-  border-bottom: 1px solid #D6DDE0;
+  background-color: #394450;
 }
 
 .pin-header p {
@@ -246,6 +366,7 @@ matrix-images {
   padding-left: 20px;
   font-size: 18px;
   line-height: 44px;
+  color: #ffffff;
 }
 
 .pin-header .buttons-container {
@@ -256,11 +377,34 @@ matrix-images {
 
 .pin-header .buttons-container span {
   display: inline-block;
-  width: 80px;
+  width: 48px;
   height: 100%;
-  background-color: yellow;
-  border-left: 1px solid #D6DDE0;
+  border-left: 1px solid #333d48;
   cursor: pointer;
+  position: relative;
+}
+
+.pin-header span svg {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+}
+
+.pin-header .done-share-button {
+  height: 32px;
+  width: 132px;
+  color: white;
+  float: right;
+  cursor: pointer;
+  border: 1px solid white;
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 18px;
+  text-align: center;
+  line-height: 32px;
+  margin-right: 24px;
 }
 
 @media (max-width: 700px) {

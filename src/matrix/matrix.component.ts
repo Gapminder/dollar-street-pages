@@ -48,8 +48,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetContainer: ElementRef;
   @ViewChild('matrixHeader')
   public matrixHeader: ElementRef;
-  /*@ViewChild('pinContainer')
-  public pinContainer: ElementRef;*/
 
   public matrixHeaderElement: HTMLElement;
   public streetContainerElement: HTMLElement;
@@ -131,7 +129,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public pinContainerElement: HTMLElement;
   public placesSet: Array<any>;
   public pinItemSize: number;
-  public maxPinnedCount: number = 4;
+  public maxPinnedCount: number = 6;
+  public pinHeaderTitle: string;
+  public isDoneAndShare: boolean;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -178,8 +178,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.streetContainerElement = this.streetContainer.nativeElement;
     this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
 
-    this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount - (this.maxPinnedCount - 1) * 10;
-
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
     });
@@ -189,34 +187,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.query) {
           this.query = data.query;
 
-          this.store.dispatch(new MatrixActions.GetMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
-
-        if (data.pinMode) {
-          this.isPinMode = true;
-          this.isPinCollapsed = false;
-
-          this.changeDetectorRef.detectChanges();
-        } else {
-          this.isPinMode = false;
-
-        }
-
-        if (data.incomeFilter) {
-          this.isOpenIncomeFilter = true;
-        } else {
-          this.isOpenIncomeFilter = false;
-        }
-
-        if (data.quickGuide) {
-          this.isQuickGuideOpened = true;
-          this.store.dispatch(new AppActions.OpenQuickGuide(false));
-        } else {
-          this.isQuickGuideOpened = false;
-        }
-
-        if (data.query) {
-          // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-        }
+          //this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+          //this.store.dispatch(new MatrixActions.GetMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
         }
       }
     });
@@ -225,12 +197,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       if (data) {
         if (data.pinMode) {
           this.isPinMode = true;
-
-          if (!this.isPinCollapsed) {
-            // this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
-          }
-
-          this.changeDetectorRef.detectChanges();
         } else {
           this.isPinMode = false;
 
@@ -247,8 +213,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
               return place;
             });
           }
-
-          this.changeDetectorRef.detectChanges();
         }
 
         if (data.pinCollapsed) {
@@ -265,6 +229,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
         if (data.quickGuide) {
           this.isQuickGuideOpened = true;
+
           this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
         } else {
           this.isQuickGuideOpened = false;
@@ -272,6 +237,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
         if (data.placesSet) {
           this.placesSet = data.placesSet;
+
+          this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount;
+
+          this.setPinHeaderTitle();
         }
 
         if (this.query) {
@@ -288,6 +257,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             this.store.dispatch(new MatrixActions.ProcessMatrixImages(true));
           }
         }
+
+        this.changeDetectorRef.detectChanges();
       }
     });
 
@@ -394,6 +365,28 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
   }
 
+  public doneAndShare(): void {
+    this.isDoneAndShare = true;
+
+    this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
+  }
+
+  public backToEdit(): void {
+    this.isDoneAndShare = false;
+  }
+
+  public setPinHeaderTitle(): void {
+    if (!this.placesSet || !this.placesSet.length) {
+      return;
+    }
+
+    let result = this.placesSet.map(place => place.country);
+
+    this.pinHeaderTitle = `${result.length} families in ${result.join(', ')} are pinned to compare`;
+
+    this.changeDetectorRef.detectChanges();
+  }
+
   public imageIsUploaded(index: number): void {
     this.zone.run(() => {
       this.placesSet[index].isUploaded = true;
@@ -447,12 +440,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetChanged(event: any): void {
     this.urlChanged(event);
 
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    //this.store.dispatch(new MatrixActions.UpdateMatrix(true));
   }
 
   public processPinContainer(): void {
     if (this.pinContainerElement) {
-      this.pinContainerElement.style.height = '0px';
+      this.pinContainerElement.style.minHeight = '0px';
       this.store.dispatch(new MatrixActions.SetPinCollapsed(true));
     } else {
       this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
@@ -465,7 +458,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
 
     if (this.pinContainerElement) {
-      this.pinContainerElement.style.height = '400px';
+      this.pinContainerElement.style.minHeight = 'auto';
     }
   }
 
@@ -655,9 +648,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       // this.clearActiveHomeViewBox.next(true);
     // }
 
-    this.urlChangeService.replaceState('/matrix', url);
-
     this.store.dispatch(new AppActions.SetQuery(url));
+
+    this.urlChangeService.replaceState('/matrix', url);
   }
 
   public activeHouseOptions(options: any): void {
