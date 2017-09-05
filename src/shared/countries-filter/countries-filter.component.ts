@@ -129,7 +129,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         if (data.countriesFilter) {
           this.locations = data.countriesFilter;
 
-          this.countries = chain(data)
+          this.countries = chain(this.locations)
             .map('countries')
             .flatten()
             .sortBy('country')
