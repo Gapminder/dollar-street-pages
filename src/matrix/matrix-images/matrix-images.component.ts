@@ -42,8 +42,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public imageContent: ElementRef;
 
   @Input()
-  public query: string;
-  @Input()
   public thing: string;
   @Input()
   public places: Observable<any>;
@@ -67,6 +65,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   @Output()
   public itemSizeChanged: EventEmitter<any> = new EventEmitter<any>();
 
+  public query: string;
   public languageService: LanguageService;
   public theWorldTranslate: string;
   public sorryWeHaveNoTranslate: string;
@@ -108,6 +107,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public quickGuideElement: HTMLElement;
   public isInit: boolean;
   public contentLoadedSubscription: Subscription;
+  public matrixState: Observable<any>;
+  public matrixStateSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -180,8 +181,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
-        if (data.quickGuide) {
-          this.checkQuickGuide();
+        if (data.query) {
+          this.query = data.query;
         }
       }
     });

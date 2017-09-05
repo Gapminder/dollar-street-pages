@@ -1,14 +1,9 @@
 import { Action } from '@ngrx/store';
 
-export const SELECT_THING: string = 'SELECT_THING';
+export const SET_ACTIVE_THING: string = 'SET_ACTIVE_THING';
 export const GET_THINGS_FILTER: string = 'GET_THINGS_FILTER';
 export const GET_THINGS_FILTER_SUCCESS: string = 'GET_THINGS_FILTER_SUCCESS';
 
-export class SelectThing implements Action {
-    readonly type = SELECT_THING;
-
-    constructor(public payload: any) {}
-}
 
 export class GetThingsFilter implements Action {
     readonly type = GET_THINGS_FILTER;
@@ -23,6 +18,5 @@ export class GetThingsFilterSuccess implements Action {
 }
 
 export type Actions =
-    | SelectThing
     | GetThingsFilter
     | GetThingsFilterSuccess;

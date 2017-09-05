@@ -20,9 +20,8 @@
       <div *ngIf="isMatrixPage || isMapPage"
           class="filters-container"
           [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
-        <things-filter [query]="query"
-                       (isFilterGotData)="isFilterGotData($event)"
-                       (selectedFilter)="thingSelected($event)">
+        <things-filter
+                       (isFilterGotData)="isFilterGotData($event)">
         </things-filter>
 
         <span *ngIf="isMapPage"
@@ -31,9 +30,8 @@
         <div *ngIf="isMatrixPage"
             class="some-filter-container incomeby">
           <span class="mobile-ver">{{ 'IN' | translate }}</span>
-          <countries-filter [query]="query"
-                            (isFilterGotData)="isFilterGotData($event)"
-                            (selectedFilter)="countrySelected($event)">
+          <countries-filter
+                            (isFilterGotData)="isFilterGotData($event)">
           </countries-filter>
 
           <span #incomeTitleContainer
@@ -47,11 +45,10 @@
       <div *ngIf="isFamilyPage"
           class="family-header">
         <p class="heading pull-left"
-          [routerLink]="['/matrix']"
-          [queryParams]="urlParams"
+          (click)="goToMatrixFromFamilyPage()"
           angulartics2On="click"
           angularticsEvent="From Place page to Matrix page (Thing:{{urlParams?.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
-          <img src="/assets/img/back-icon.svg" alt="Back">{{urlParams?.thing}} {{ 'IN' | translate }} {{urlParams?.countries}}
+          <img src="/assets/img/back-icon.svg" alt="Back">{{thingsFilterData?.thing?.plural}} {{ 'IN' | translate }} {{backToCountries}}
         </p>
       </div>
 

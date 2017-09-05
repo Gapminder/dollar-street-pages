@@ -12,17 +12,19 @@ import {
   ElementRef,
   HostListener,
   NgZone,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 import * as ThingsFilterActions from './ngrx/things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
-  ActiveThingService,
-  UtilsService
+  UtilsService,
+  UrlChangeService
 } from '../../common';
 import { KeyCodes } from '../../enums';
 
@@ -41,10 +43,9 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
 
   @Output()
   public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
-  @Input()
+
+  /*@Input()*/
   public query: string;
-  @Output()
-  public selectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
   public relatedThings: any[];
   public popularThings: any[];
@@ -65,27 +66,29 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   public keyUpSubscribe: Subscription;
   public activatedRoute: ActivatedRoute;
   public element: HTMLElement;
-  public activeThingService: ActiveThingService;
   public thingsFilterState: Observable<any>;
   public isInit: boolean;
   public thingsFilterStateSubscribtion: Subscription;
+  public appState: Observable<any>;
+  public appStateSubscription: Subscription;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
                      zone: NgZone,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     activeThingService: ActiveThingService,
                      utilsService: UtilsService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private urlChangeService: UrlChangeService) {
     this.activatedRoute = activatedRoute;
     this.element = element.nativeElement;
     this.zone = zone;
     this.device = browserDetectionService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.activeThingService = activeThingService;
     this.utilsService = utilsService;
 
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
   }
 
@@ -108,16 +111,26 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
 
     this.isOpenMobileFilterView();
 
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if (data) {
+        if (data.query) {
+          this.query = data.query;
+        }
+      }
+    });
+
     this.thingsFilterStateSubscribtion = this.thingsFilterState.subscribe((data: any) => {
       if(data) {
-        this.relatedThings = data.relatedThings;
-        this.popularThings = data.popularThings;
-        this.otherThings = data.otherThings;
-        this.activeThing = data.thing;
+        if (data.thingsFilter) {
+          this.relatedThings = data.thingsFilter.relatedThings;
+          this.popularThings = data.thingsFilter.popularThings;
+          this.otherThings = data.thingsFilter.otherThings;
+          this.activeThing = data.thingsFilter.thing;
 
-        this.isFilterGotData.emit('isThingFilterReady');
+          this.isFilterGotData.emit('isThingFilterReady');
 
-        this.activeThingService.setActiveThing(this.activeThing);
+          this.changeDetectorRef.detectChanges();
+        }
       }
     });
 
@@ -128,6 +141,24 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
           this.isOpenMobileFilterView();
         });
       });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.keyUpSubscribe) {
+      this.keyUpSubscribe.unsubscribe();
+    }
+
+    if (this.resizeSubscribe.unsubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.thingsFilterStateSubscribtion) {
+      this.thingsFilterStateSubscribtion.unsubscribe();
+    }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
+    }
   }
 
   public openThingsFilter(isOpenThingsFilter: boolean): void {
@@ -200,9 +231,22 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
 
+    this.store.dispatch(new AppActions.SetQuery(newUrl));
     this.store.dispatch(new ThingsFilterActions.GetThingsFilter(newUrl));
 
-    this.selectedFilter.emit({url: newUrl, thing: this.activeThing});
+    let pageName: string = '';
+
+    /*if (this.isMatrixPage) {
+        pageName = '/matrix';
+    }
+
+    if (this.isMapPage) {
+        pageName = '/map';
+    }*/
+
+    pageName = '/matrix';
+
+    this.urlChangeService.replaceState(pageName, newUrl);
 
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
   }
@@ -245,20 +289,6 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
           inputElement.blur();
         }
       });
-  }
-
-  public ngOnDestroy(): void {
-    if (this.keyUpSubscribe) {
-      this.keyUpSubscribe.unsubscribe();
-    }
-
-    if (this.resizeSubscribe.unsubscribe) {
-      this.resizeSubscribe.unsubscribe();
-    }
-
-    if (this.thingsFilterStateSubscribtion) {
-      this.thingsFilterStateSubscribtion.unsubscribe();
-    }
   }
 
   public isOpenMobileFilterView(): void {

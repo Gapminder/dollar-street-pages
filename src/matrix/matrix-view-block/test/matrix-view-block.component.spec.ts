@@ -7,14 +7,16 @@ import {
     MathService,
     BrowserDetectionService,
     LanguageService,
-    UtilsService
+    UtilsService,
+    UrlChangeService
 } from '../../../common';
 import {
     TranslateServiceMock,
     AngularticsMock,
     BrowserDetectionServiceMock,
     LanguageServiceMock,
-    UtilsServiceMock
+    UtilsServiceMock,
+    UrlChangeServiceMock
 } from '../../../test/';
 import {
     SharedModule
@@ -40,6 +42,7 @@ describe('MatrixViewBlockComponent', () => {
             declarations: [MatrixViewBlockComponent],
             providers: [
                 MathService,
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: MatrixViewBlockService, useClass: MatrixViewBlockServiceMock },
                 { provide: TranslateService, useClass: TranslateServiceMock },
                 { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },

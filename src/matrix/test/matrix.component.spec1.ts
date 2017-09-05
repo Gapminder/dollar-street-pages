@@ -13,7 +13,6 @@ import {
     UrlChangeService,
     BrowserDetectionService,
     LanguageService,
-    ActiveThingService,
     UtilsService,
     MathService
 } from '../../common';
@@ -50,7 +49,6 @@ describe('MatrixComponent', () => {
                 MatrixViewBlockComponent
             ],
             providers: [
-                ActiveThingService,
                 MathService,
                 { provide: TranslateService, useClass: TranslateServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
@@ -76,7 +74,6 @@ describe('MatrixComponent', () => {
         // component.ngAfterViewInit();
         // fixture.detectChanges();
         expect(component.getTranslationSubscribe).toBeDefined();
-        expect(component.activeThingServiceSubscription).toBeDefined();
         expect(component.appStateSubscription).toBeDefined();
         expect(component.matrixStateSubscription).toBeDefined();
         expect(component.resizeSubscribe).toBeDefined();
@@ -89,7 +86,6 @@ describe('MatrixComponent', () => {
         expect(component.streetAndTitleContainerElement).toBeDefined();
 
         spyOn(component.getTranslationSubscribe, 'unsubscribe');
-        spyOn(component.activeThingServiceSubscription, 'unsubscribe');
         spyOn(component.appStateSubscription, 'unsubscribe');
         spyOn(component.matrixStateSubscription, 'unsubscribe');
         spyOn(component.resizeSubscribe, 'unsubscribe');
@@ -99,7 +95,6 @@ describe('MatrixComponent', () => {
         component.ngOnDestroy();
 
         expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(component.activeThingServiceSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.matrixStateSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();

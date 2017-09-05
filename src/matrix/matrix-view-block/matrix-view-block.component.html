@@ -51,8 +51,7 @@
           </div>
 
           <a *ngIf="familyData.goToPlaceData"
-             [routerLink]="['/family']"
-             [queryParams]="familyData.goToPlaceData"
+             (click)="visitThisHome()"
              angulartics2On="click"
              angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }} <img
             src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
@@ -178,8 +177,7 @@
         <translate-me></translate-me>
       </div>
       <a *ngIf="familyData.goToPlaceData"
-         [routerLink]="['/family']"
-         [queryParams]="familyData.goToPlaceData"
+         (click)="visitThisHome()"
          angulartics2On="click"
          angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }} <img
         src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>

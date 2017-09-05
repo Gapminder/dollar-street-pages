@@ -1,11 +1,18 @@
 import { Action } from '@ngrx/store';
 
-export const SELECT_COUNTRIES: string = 'SELECE_COUNTRIES';
+export const SET_SELECTED_COUNTRIES: string = 'SET_SELECTED_COUNTRIES';
+export const SET_SELECTED_REGIONS: string = 'SET_SELECTED_REGIONS';
 export const GET_COUNTRIES_FILTER: string = 'GET_COUNTRIES_FILTER';
 export const GET_COUNTRIES_FILTER_SUCCESS: string = 'GET_COUNTRIES_FILTER_SUCCESS';
 
-export class SelectCountries implements Action {
-    readonly type = SELECT_COUNTRIES;
+export class SetSelectedCountries implements Action {
+    readonly type = SET_SELECTED_COUNTRIES;
+
+    constructor(public payload: any) {}
+}
+
+export class SetSelectedRegions implements Action {
+    readonly type = SET_SELECTED_REGIONS;
 
     constructor(public payload: any) {}
 }
@@ -23,6 +30,7 @@ export class GetCountriesFilterSuccess implements Action {
 }
 
 export type Actions =
-    | SelectCountries
+    | SetSelectedCountries
+    | SetSelectedRegions
     | GetCountriesFilter
     | GetCountriesFilterSuccess;

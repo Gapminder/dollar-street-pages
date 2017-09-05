@@ -21,8 +21,7 @@ import {
   MathService,
   LanguageService,
   DrawDividersInterface,
-  UtilsService,
-  ActiveThingService
+  UtilsService
 } from '../../common';
 import { StreetDrawService } from './street.service';
 
@@ -74,7 +73,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public streetSettingsStateSubscription: Subscription;
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
-  public activeThingServiceSubscription: Subscription;
+  public thingsFilterState: Observable<any>;
+  public thingsFilterStateSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
@@ -82,8 +82,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
                      streetDrawService: StreetDrawService,
                      languageService: LanguageService,
                      private store: Store<AppStates>,
-                     private utilsService: UtilsService,
-                     private activeThingService: ActiveThingService) {
+                     private utilsService: UtilsService) {
     this.element = element.nativeElement;
     this.activatedRoute = activatedRoute;
     this.math = math;
@@ -92,6 +91,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
+    this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
   }
 
   public ngAfterViewInit(): any {
@@ -111,8 +111,12 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.activeThingServiceSubscription = this.activeThingService.activeThingEmitter.subscribe((thing: any) => {
-      this.thing = thing.originPlural;
+    this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
+      if (data) {
+        if (data.thingsFilter) {
+          this.thing = data.thingsFilter.thing.originPlural;
+        }
+      }
     });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
@@ -259,10 +263,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.streetSettingsStateSubscription.unsubscribe();
     }
 
-    if (this.activeThingServiceSubscription) {
-      this.activeThingServiceSubscription.unsubscribe();
-    }
-
     if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
@@ -278,6 +278,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     if (this.appStateSubscription) {
       this.appStateSubscription.unsubscribe();
+    }
+
+    if (this.thingsFilterStateSubscription) {
+      this.thingsFilterStateSubscription.unsubscribe();
     }
   }
 
