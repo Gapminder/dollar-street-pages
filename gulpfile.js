@@ -26,6 +26,8 @@ const tslint = require('gulp-tslint');
 
 const paths = gulp.paths;
 
+
+
 gulp.task('tslint', () =>
   gulp.src(paths.tssrc)
     .pipe(tslint({formatter: 'verbose'}))
