@@ -26,13 +26,16 @@ import {
   LanguageService,
   UtilsService,
   DrawDividersInterface,
-  MathService
+  MathService,
+  ImageGeneratorService,
+  SocialShareService
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
 import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter.actions';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
+import { MatrixService } from './matrix.service';
 
 @Component({
   selector: 'matrix',
@@ -95,7 +98,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public zone: NgZone;
   public router: Router;
   public loaderService: LoaderService;
-  public utilsService: UtilsService;
   public activatedRoute: ActivatedRoute;
   public urlChangeService: UrlChangeService;
   public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
@@ -131,7 +133,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public pinItemSize: number;
   public maxPinnedCount: number = 6;
   public pinHeaderTitle: string;
-  public isDoneAndShare: boolean;
+  public isPreviewView: boolean;
+  public isEmbedView: boolean;
+  public embedSetId: string;
+  public isEmbedShared: boolean;
+  public activeThing: any;
+  public imagesProcessed: boolean;
+  public matrixImages: any;
+  public countriesFilterState: Observable<any>;
+  public countriesFilterStateSubscription: Subscription;
+  public isScreenshotProcessing: boolean;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -144,9 +155,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      languageService: LanguageService,
                      private changeDetectorRef: ChangeDetectorRef,
-                     utilsService: UtilsService,
+                     private utilsService: UtilsService,
                      private store: Store<AppStates>,
-                     private math: MathService) {
+                     private math: MathService,
+                     private matrixService: MatrixService,
+                     private imageGeneratorService: ImageGeneratorService,
+                     private socialShareService: SocialShareService) {
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -157,7 +171,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.urlChangeService = urlChangeService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
     this.languageService = languageService;
-    this.utilsService = utilsService;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -168,6 +181,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
     this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
+    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
   public ngAfterViewInit(): void {
@@ -186,9 +200,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       if (data) {
         if (data.query) {
           this.query = data.query;
-
-          //this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-          //this.store.dispatch(new MatrixActions.GetMatrixImages(data.query + `&resolution=${this.imageResolution.image}`));
         }
       }
     });
@@ -197,21 +208,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       if (data) {
         if (data.pinMode) {
           this.isPinMode = true;
+          this.isEmbedView = false;
         } else {
           this.isPinMode = false;
+          this.isEmbedShared = false;
+          this.isPreviewView = false;
 
           if (this.isPinCollapsed) {
             this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
-          }
-
-          if (this.placesArr) {
-            this.placesArr = this.placesArr.map((place) => {
-              if (place && place.pinned) {
-                place.pinned = false;
-              }
-
-              return place;
-            });
           }
         }
 
@@ -238,23 +242,25 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.placesSet) {
           this.placesSet = data.placesSet;
 
+          if (!this.isPinMode && this.placesSet.length) {
+            this.isEmbedView = true;
+          }
+
           this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount;
 
           this.setPinHeaderTitle();
         }
 
+        if (data.matrixImages) {
+          this.matrixImages = data.matrixImages;
+
+          this.processMatrixImages(data.matrixImages);
+        }
+
         if (this.query) {
-          if (data.processImages && data.matrixImages) {
-            this.getMatrixImagesProcess(data.matrixImages);
-
-            this.store.dispatch(new MatrixActions.ProcessMatrixImages(false));
-          }
-
           if (data.updateMatrix) {
-            this.store.dispatch(new MatrixActions.GetMatrixImages(this.query + `&resolution=${this.imageResolution.image}`));
             this.store.dispatch(new MatrixActions.UpdateMatrix(false));
-
-            this.store.dispatch(new MatrixActions.ProcessMatrixImages(true));
+            this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
           }
         }
 
@@ -262,10 +268,27 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       }
     });
 
+    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
+      if(data) {
+        if (data.countriesFilter) {
+          this.processMatrixImages(this.matrixImages);
+        }
+      }
+    });
+
     this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
       if (data) {
         if (data.thingsFilter) {
+          this.activeThing = data.thingsFilter.thing;
           this.thing = data.thingsFilter.thing.originPlural;
+
+          if (this.embedSetId !== 'undefined') {
+            const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+
+            this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
+          }
+
+          this.processMatrixImages(this.matrixImages);
 
           this.changeDetectorRef.detectChanges();
         }
@@ -294,8 +317,19 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.highIncome = parseInt(params.highIncome, 10);
       this.activeHouse = parseInt(params.activeHouse, 10);
       this.row = parseInt(params.row, 10) || 1;
+      this.embedSetId = decodeURI(params.embed);
 
       this.changeDetectorRef.detectChanges();
+
+      if (this.embedSetId !== 'undefined') {
+        const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+        /*this.matrixService.getPinnedPlaces(query).subscribe(resp => {
+          this.store.dispatch(new MatrixActions.SetPinnedPlaces(resp.data.places));
+
+          this.isEmbedView = true;
+        });*/
+        this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
+      }
 
       setTimeout(() => {
         if (this.row > 1 && !this.activeHouse) {
@@ -336,6 +370,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             this.query += `&activeHouse=${this.activeHouse}`;
           }
 
+          if (this.embedSetId !== 'undefined') {
+            this.query += `&embed=${this.embedSetId}`;
+          }
+
           this.urlChanged({isBack: true, url: this.query});
 
           this.store.dispatch(new MatrixActions.UpdateMatrix(true));
@@ -365,14 +403,85 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
   }
 
-  public doneAndShare(): void {
-    this.isDoneAndShare = true;
+  public openPopUp(target: string): void {
+    this.socialShareService.openPopUp(target);
+  }
 
-    this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
+  public clearEmbedMatrix(): void {
+    if (this.placesArr) {
+      this.placesArr = this.placesArr.map((place) => {
+        if (place && place.pinned) {
+          place.pinned = false;
+        }
+
+        return place;
+      });
+
+      // this.store.dispatch(new MatrixActions.SetMatrixImages(this.placesArr));
+
+      this.changeDetectorRef.detectChanges();
+    }
+  }
+
+  public doneAndShare(): void {
+    if (this.placesSet && this.placesSet.length > 1) {
+      this.isPreviewView = true;
+
+      this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
+    }
+  }
+
+  public shareEmbed(): void {
+    this.isScreenshotProcessing = true;
+
+    const query = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=${this.imageResolution.image}`;
+    this.matrixService.savePinnedPlaces(query).then(data => {
+      this.embedSetId = data.data._id;
+
+      let queryParams = this.utilsService.parseUrl(this.query);
+      queryParams.embed = this.embedSetId;
+
+      let queryString = this.utilsService.objToQuery(queryParams);
+
+      let updatedSet = this.placesSet.map((place) => {
+        place.background = data.data.places[place._id];
+
+        return place;
+      });
+
+      this.store.dispatch(new MatrixActions.SetPinnedPlaces(updatedSet));
+
+      this.imageGeneratorService.generateImage().then((screenshot: any) => {
+          let filesToRemove = Object.keys(data.data.places).map(k => data.data.places[k]).map(l => {
+            let arr = l.split('/');
+
+            return arr[arr.length - 1];
+          });
+
+          this.matrixService.removeTempImages(`images=${filesToRemove.join(',')}`).then((a) => {});
+
+          const screenData = {data: screenshot, name: 'new_file.jpg'};
+          this.matrixService.uploadScreenshot(screenData).then((res: any) => {
+            this.isScreenshotProcessing = false;
+
+            this.urlChangeService.replaceState('/matrix', queryString);
+
+            this.store.dispatch(new AppActions.SetQuery(queryString));
+
+            this.isEmbedShared = true;
+
+            this.changeDetectorRef.detectChanges();
+
+            let shareUrl = document.querySelector('.share-link-input') as HTMLInputElement;
+            shareUrl.setAttribute('value', `http://${this.window.location.hostname}/dollar-street/matrix?${queryString}`);
+            shareUrl.select();
+          });
+        });
+    });
   }
 
   public backToEdit(): void {
-    this.isDoneAndShare = false;
+    this.isPreviewView = false;
   }
 
   public setPinHeaderTitle(): void {
@@ -440,13 +549,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetChanged(event: any): void {
     this.urlChanged(event);
 
-    //this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    this.processMatrixImages(this.matrixImages);
   }
 
   public processPinContainer(): void {
     if (this.pinContainerElement) {
-      this.pinContainerElement.style.minHeight = '0px';
-      this.store.dispatch(new MatrixActions.SetPinCollapsed(true));
+      if (!this.isEmbedView) {
+        this.pinContainerElement.style.minHeight = '0px';
+        this.store.dispatch(new MatrixActions.SetPinCollapsed(true));
+      }
     } else {
       this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
     }
@@ -463,7 +574,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public pinModeClose(): void {
-    this.store.dispatch(new MatrixActions.ActivatePinMode(false));
+      this.store.dispatch(new MatrixActions.SetPinMode(false));
+
+      this.isEmbedView = false;
+
+      this.clearEmbedMatrix();
   }
 
   public removePlaceFromSet(e: MouseEvent, place: any): void {
@@ -590,9 +705,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  public getMatrixImagesProcess(data: any): void {
-    if (data.err) {
-      console.error(data.err);
+  public processMatrixImages(data: any): void {
+    if (!data || !data.zoomPlaces || !data.streetPlaces) {
       return;
     }
 
@@ -626,7 +740,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.buildTitle(this.query);
 
-    this.scrollTopZero();
+    // this.scrollTopZero();
 
     this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
   }
@@ -649,6 +763,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     // }
 
     this.store.dispatch(new AppActions.SetQuery(url));
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', url);
   }

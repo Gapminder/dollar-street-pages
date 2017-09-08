@@ -28,7 +28,7 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
             return Object.assign({}, state, {updateMatrix: action.payload});
         }
 
-        case MatrixActions.ACTIVATE_PIN_MODE: {
+        case MatrixActions.SET_PIN_MODE: {
             return Object.assign({}, state, {placesSet: []}, {pinMode: action.payload});
         }
 
@@ -52,12 +52,20 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
             return Object.assign({}, state, {placesSet: <Array<any>> state.placesSet.filter(place => place._id !== action.payload._id)});
         }
 
-        case MatrixActions.GET_MATRIX_IMAGES_SUCCESS: {
+        case MatrixActions.SET_PINNED_PLACES: {
+            return Object.assign({}, state, {placesSet: action.payload});
+        }
+
+        case MatrixActions.GET_PINNED_PLACES_SUCCESS: {
+          return Object.assign({}, state, {placesSet: action.payload});
+        }
+
+        case MatrixActions.SET_MATRIX_IMAGES: {
             return Object.assign({}, state, {matrixImages: action.payload});
         }
 
-        case MatrixActions.PROCESS_MATRIX_IMAGES: {
-            return Object.assign({}, state, {processImages: action.payload});
+        case MatrixActions.GET_MATRIX_IMAGES_SUCCESS: {
+            return Object.assign({}, state, {matrixImages: action.payload});
         }
 
         default:

@@ -237,10 +237,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(new ThingsFilterActions.GetThingsFilter(newUrl));
 
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+
     this.thingsFilterTitle = thing.plural;
     this.changeDetectorRef.detectChanges();
-
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     let pageName: string = '';
 

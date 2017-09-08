@@ -1,19 +1,28 @@
 import { Inject, Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { LanguageService } from '../language/language.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SocialShareService {
+    public url: string;
+    public locationPath: string;
+    public newWindow: any;
+    public location: any = location;
+    public window: Window = window;
     public document: Document = document;
     public elementTagName: string = 'script';
     public facebookElementId: string = 'facebook-jssdk';
     public twitterElementId: string = 'twitter-wjs';
     public documentCreatedSubscribe: Subscription;
-    public languageService: LanguageService;
     public twitterInstance: any;
+    public shareMessageTranslated: string;
+    public getTranslationSubscribe: Subscription;
 
-    public constructor(@Inject(LanguageService) languageService: LanguageService) {
+    public constructor(@Inject(LanguageService) private languageService: LanguageService,
+                       @Inject(Http) private http: Http) {
         this.languageService = languageService;
 
         this.documentCreatedSubscribe = Observable.fromEvent(document, 'DOMContentLoaded')
@@ -21,6 +30,17 @@ export class SocialShareService {
               this.facebookLike();
               this.twitterInstance = this.twitterFollow();
           });
+
+        this.getTranslationSubscribe = this.languageService.getTranslation(['SEE_HOW_PEOPLE', 'REALLY', 'LIVE']).subscribe((trans: any) => {
+            this.shareMessageTranslated = trans.SEE_HOW_PEOPLE+' '+trans.REALLY+' '+trans.LIVE+' ';
+        });
+    }
+
+    private getShortUrl(query: any): Promise<any> {
+      return this.http.post(`${environment.consumerApi}/v1/shorturl`, query).map((res: any) => {
+        let parseRes = JSON.parse(res._body);
+        return {err: parseRes.error, url: parseRes.data};
+      }).toPromise();
     }
 
     public facebookLike(): void {
@@ -67,5 +87,85 @@ export class SocialShareService {
         };
 
         return this.twitterInstance;
+    }
+
+    public openPopUp(target: string): void {
+      const twitterUrl: string = 'https://twitter.com/intent/tweet';
+      const facebookUrl: string = 'http://www.facebook.com/sharer.php';
+      const linkedinUrl: string = 'http://www.linkedin.com/shareArticle';
+      const googleUrl: string = 'https://plus.google.com/share';
+
+      let originalUrl: string = '';
+
+      switch(target) {
+        case 'twitter':
+          originalUrl = twitterUrl;
+        break;
+
+        case 'facebook':
+          originalUrl = facebookUrl;
+        break;
+
+        case 'linkedin':
+          originalUrl = linkedinUrl;
+        break;
+
+        case 'google':
+          originalUrl = googleUrl;
+        break;
+
+        default:
+          originalUrl = '';
+        break;
+      }
+
+      let left: number = (this.window.innerWidth - 490) / 2;
+      this.newWindow = this.window.open('', '_blank', 'width=490, height=368, top=100, left=' + left);
+
+      this.locationPath = this.location.pathname + this.location.search;
+
+      this.getShortUrl({url: this.locationPath}).then((res: any) => {
+          if (res.err) {
+            console.error(res.err);
+            return;
+          }
+
+          let params: URLSearchParams = new URLSearchParams();
+
+          switch(target) {
+            case 'twitter':
+              params.set('url', res.url);
+              params.set('text', this.shareMessageTranslated + '- Dollar Street');
+            break;
+
+            case 'facebook':
+              params.set('u', res.url);
+              params.set('description', this.shareMessageTranslated);
+            break;
+
+            case 'linkedin':
+              params.set('mini', 'true');
+              params.set('url', res.url);
+              params.set('summary', this.shareMessageTranslated);
+            break;
+
+            case 'google':
+              params.set('url', res.url);
+              params.set('text', this.shareMessageTranslated);
+            break;
+
+            default:
+            break;
+          }
+
+          this.url = params.toString();
+
+          this.openWindow(originalUrl, this.url);
+        });
+    }
+
+    public openWindow(originalUrl: string, url: any): void {
+      this.newWindow.location.href = originalUrl + '?' + url;
+      this.newWindow.focus();
     }
 }

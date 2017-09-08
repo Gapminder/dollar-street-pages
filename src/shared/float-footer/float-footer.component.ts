@@ -71,8 +71,8 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public activatePinMode(): void {
-    this.store.dispatch(new MatrixActions.ActivatePinMode(true));
+  public SetPinMode(): void {
+    this.store.dispatch(new MatrixActions.SetPinMode(true));
   }
 
   public scrollTop(e: MouseEvent): void {

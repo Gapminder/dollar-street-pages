@@ -324,8 +324,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       if (data) {
         if (data.thingsFilter) {
           this.thingsFilterData = data.thingsFilter;
-
-          // this.isThingFilterReady = true;
         }
       }
     });
@@ -334,8 +332,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       if (data) {
         if (data.countriesFilter) {
           this.countriesFilterData.countriesFilter = data.countriesFilter;
-
-          // this.isCountryFilterReady = true;
         }
 
         if (data.selectedCountries) {
@@ -510,7 +506,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   public thingSelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
-    //this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     let pageName: string = '';
 
@@ -527,13 +523,21 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   public countrySelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
-    //this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', data.url);
   }
 
   public activeThingTransfer(thing: any): void {
     this.activeThing = thing;
+  }
+
+  public scrollTopZero(): void {
+    if (document.body.scrollTop) {
+      document.body.scrollTop = 0;
+    } else {
+      document.documentElement.scrollTop = 0;
+    }
   }
 
   public goToMatrixPage(): void {
@@ -568,7 +572,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
 
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+
     this.urlChangeService.replaceState('/matrix', queryUrl);
+
+    this.scrollTopZero();
 
     this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }

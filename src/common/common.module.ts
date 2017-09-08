@@ -13,6 +13,7 @@ import { FontDetectorService } from './font/font-detector.service';
 import { GoogleAnalyticsService } from './analytics/google-analytics.service';
 import { CountryDetectorService } from './country-detector/country-detector.service';
 import { UtilsService } from './utils/utils.service';
+import { ImageGeneratorService } from './image-generator/image-generator.service';
 
 @NgModule({
   imports: [],
@@ -29,7 +30,8 @@ import { UtilsService } from './utils/utils.service';
     FontDetectorService,
     GoogleAnalyticsService,
     CountryDetectorService,
-    UtilsService
+    UtilsService,
+    ImageGeneratorService
   ]
 })
 export class CommonAppModule {

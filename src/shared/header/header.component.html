@@ -14,7 +14,7 @@
                 isCountryPage || isTeamPage ||
                 (isFamilyPage && (isDesktop || isTablet)) ||
                 (isMapPage && (isDesktop || isTablet))">
-      <img (click)="goToMatrixPage()" src="/assets/img/dollar-street.svg" alt=""/>
+      <img class="logo" (click)="goToMatrixPage()" src="/assets/img/dollar-street-logo.png" alt=""/>
     </div>
 
     <div *ngIf="(isMatrixPage && isPinMode && !isPinCollapsed) ||

@@ -416,7 +416,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
-    this.familyData = JSON.parse(JSON.stringify(place));
+    // this.familyData = JSON.parse(JSON.stringify(place));
+
+    this.familyData = place;
 
     this.indexViewBoxHouse = index;
 
