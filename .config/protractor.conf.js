@@ -7,21 +7,10 @@ exports.config = {
     '../test-e2e/app/Tests/*.e2e.ts'
   ],
   exclude: [
-    // '../test-e2e/**/MatrixPageTestsForPerformance.e2e.js',
-    // '../test-e2e/app/CMS/**/*.e2e.js',
-    // '../test-e2e/**/BlogPageTests.e2e.js','../test-e2e/**/ClickEachLink.e2e.js'
-    // '../test-e2e/app/Tests/ClickEachLink.e2e.ts',
-    '../test-e2e/app/Tests/CountryPageTests.e2e.ts',
-    '../test-e2e/app/Tests/HomePageTests.e2e.ts',
-    '../test-e2e/app/Tests/MapPageTests.e2e.ts',
-    '../test-e2e/app/Tests/MatrixPageTests.e2e.ts',
     '../test-e2e/app/Tests/MatrixPageTestsForPerformance.e2e.ts',
-    '../test-e2e/app/Tests/PhotographerPageTests.e2e.ts',
-    '../test-e2e/app/Tests/PhotographersPageTests.e2e.ts',
-    '../test-e2e/app/Tests/ShareButtonsTests.e2e.ts',
-    '../test-e2e/app/Tests/StickyFooterTests.e2e.ts',
-    '../test-e2e/app/Tests/TeamPageTests.e2e.ts',
-    '../test-e2e/app/Tests/WelcomeWizardTests.e2e.ts',
+    '../test-e2e/app/CMS/**/*.e2e.ts',
+    '../test-e2e/app/Tests/BlogPageTests.e2e.ts',
+    '../test-e2e/app/Tests/ClickEachLink.e2e.ts'
   ],
 
   framework: 'jasmine',
