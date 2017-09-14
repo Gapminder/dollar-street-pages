@@ -18,7 +18,7 @@ export function appReducer(state: any = initialState, action: AppActions.Actions
             return Object.assign({}, state, {updateMatrix: action.payload});
         }
 
-        case AppActions.ACTIVATE_PIN_MODE: {
+        case AppActions.SET_PIN_MODE: {
             return Object.assign({}, state, {pinMode: action.payload});
         }
 

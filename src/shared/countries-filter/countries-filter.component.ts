@@ -453,7 +453,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(query.regions));
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
 
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 

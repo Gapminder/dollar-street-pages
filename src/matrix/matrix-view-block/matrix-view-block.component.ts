@@ -20,6 +20,9 @@ import {
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import * as ThingsFilterActions from '../../shared/things-filter/ngrx/things-filter.actions';
+import * as CountriesFilterActions from '../../shared/countries-filter/ngrx/countries-filter.actions';
 import { Router } from '@angular/router';
 import { ImageResolutionInterface } from '../../interfaces';
 import {
@@ -149,10 +152,14 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
       });
+
+    this.func();
   }
 
+  public ngOnChanges(changes: SimpleChanges): void {}
+
   // tslint:disable-next-line
-  public ngOnChanges(changes: SimpleChanges): void {
+  public func(): void {
     this.loader = true;
     this.showblock = true;
 
@@ -167,43 +174,41 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
 
-    let url: string = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
+    let query: string = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
+    this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(query).subscribe((res: any) => {
+      if (res.err) {
+        console.error(res.err);
+        return;
+      }
 
-    this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(url)
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
-          return;
-        }
+      this.familyData = res.data;
 
-        this.familyData = res.data;
+      if (!this.familyData.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
+        this.showTranslateMe = true;
+      }
 
-        if (!this.familyData.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
-          this.showTranslateMe = true;
-        }
+      if (this.familyData && this.familyData.familyData && this.familyData.familyData.length) {
+        this.familyData.description = this.getDescription(this.familyData.familyData);
+      }
 
-        if (this.familyData && this.familyData.familyData && this.familyData.familyData.length) {
-          this.familyData.description = this.getDescription(this.familyData.familyData);
-        }
+      this.countryName = this.truncCountryName(this.familyData.country);
 
-        this.countryName = this.truncCountryName(this.familyData.country);
+      let parsedUrl: any = this.utilsService.parseUrl(`place=${this.place._id}`);
 
-        let parsedUrl: any = this.utilsService.parseUrl(`place=${this.place._id}`);
+      this.familyData.goToPlaceData = parsedUrl;
+      this.isShowCountryButton = parsedUrl.countries !== this.familyData.country.originName;
+      this.privateZoom = parsedUrl.zoom;
 
-        this.familyData.goToPlaceData = parsedUrl;
-        this.isShowCountryButton = parsedUrl.countries !== this.familyData.country.originName;
-        this.privateZoom = parsedUrl.zoom;
+      /*let newImage = new Image();
 
-        /*let newImage = new Image();
+      newImage.onload = () => {
+        this.zone.run(() => {
+          this.loader = true;
+        });
+      };
 
-        newImage.onload = () => {
-          this.zone.run(() => {
-            this.loader = true;
-          });
-        };
-
-        newImage.src = this.place.background;*/
-      });
+      newImage.src = this.place.background;*/
+    });
   }
 
   public ngOnDestroy(): void {
@@ -261,16 +266,40 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public goToMatrixByCountry(country: string): void {
-    let query: any = this.utilsService.parseUrl(this.query);
+    let queryParams: any = this.utilsService.parseUrl(this.query);
 
-    query.regions = 'World';
-    query.countries = country;
-    query.lowIncome = this.streetData.poor;
-    query.highIncome = this.streetData.rich;
+    queryParams.regions = 'World';
+    queryParams.countries = country;
+    queryParams.lowIncome = this.streetData.poor;
+    queryParams.highIncome = this.streetData.rich;
 
-    delete query.activeHouse;
+    delete queryParams.activeHouse;
 
-    this.goToMatrixWithCountry.emit({url: this.utilsService.objToQuery(query), isCountriesFilter: true});
+    let queryUrl: string = this.utilsService.objToQuery(queryParams);
+
+    this.store.dispatch(new AppActions.SetQuery(queryUrl));
+
+    this.store.dispatch(new ThingsFilterActions.GetThingsFilter(queryUrl));
+
+    this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
+    this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
+    this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
+
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+
+    this.urlChangeService.replaceState('/matrix', queryUrl);
+
+    this.scrollTopZero();
+
+    // this.goToMatrixWithCountry.emit({url: this.utilsService.objToQuery(query), isCountriesFilter: true});
+  }
+
+  public scrollTopZero(): void {
+    if (document.body.scrollTop) {
+      document.body.scrollTop = 0;
+    } else {
+      document.documentElement.scrollTop = 0;
+    }
   }
 
   public setMarkerPosition(): void {

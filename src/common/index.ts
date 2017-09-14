@@ -18,3 +18,4 @@ export { FontDetectorService } from './font/font-detector.service';
 export { GoogleAnalyticsService } from './analytics/google-analytics.service';
 export { CountryDetectorService } from './country-detector/country-detector.service';
 export { UtilsService } from './utils/utils.service';
+export { ImageGeneratorService } from './image-generator/image-generator.service';

@@ -10,7 +10,7 @@
 
     <div class="house-info-container">
       <div class="house-info-content">
-        <div class="header-container">$ {{math.round(place.income)}}<span>/{{ 'MONTH' | translate }}</span></div>
+        <div class="header-container">$ {{math.round(place?.income)}}<span>/{{ 'MONTH' | translate }}</span></div>
 
         <div class="home-description-container">
           <h3>
@@ -123,7 +123,7 @@
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
 
   <div class="view-image-container">
-    <img (click)="openPopUp()" [src]="place.background">
+    <img (click)="openPopUp()" [src]="place?.background">
     <div class="close-box-container" (click)="closeBlock()">
       <img class="close-box" src="/assets/img/close-button-mobile.svg" alt="x">
     </div>
@@ -145,7 +145,7 @@
       </div>
 
       <div class="download-container">
-        <a target="_blank" [href]="consumerApi + '/v1/download-image/' + place.image">
+        <a target="_blank" [href]="consumerApi + '/v1/download-image/' + place?.image">
           <img src="/assets/img/download-icon-white.svg" alt="">
         </a>
       </div>
@@ -166,7 +166,7 @@
         </h3>
       </div>
 
-      <div class="income-container">$ {{math.round(place.income)}}<span>/{{ 'MONTH' | translate }}</span></div>
+      <div class="income-container">$ {{math.round(place?.income)}}<span>/{{ 'MONTH' | translate }}</span></div>
     </div>
 
     <div class="home-description-container">

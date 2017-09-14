@@ -166,17 +166,17 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         this.placesArr = _.slice(this.currentPlaces, 0, numberSplice);
       });
 
-      setTimeout(() => {
-        this.calcItemSize();
-        this.loaderService.setLoader(true);
-      });
-
-      if (this.activeHouse && this.isInit) {
+      if (this.activeHouse && this.isInit && this.currentPlaces) {
         setTimeout(() => {
           this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1, true);
           this.isInit = false;
         });
       }
+
+      setTimeout(() => {
+        this.calcItemSize();
+        this.loaderService.setLoader(true);
+      });
     });
 
     this.contentLoadedSubscription = fromEvent(document, 'DOMContentLoaded').subscribe(() => {
@@ -416,7 +416,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
-    this.familyData = JSON.parse(JSON.stringify(place));
+    // this.familyData = JSON.parse(JSON.stringify(place));
+
+    this.familyData = place;
 
     this.indexViewBoxHouse = index;
 
@@ -473,6 +475,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public goToMatrixWithCountry(params: any): void {
     this.filter.emit(params);
+
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
   }
 
   public changeUrl(options: {row?: number, activeHouseIndex?: number}): void {
