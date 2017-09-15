@@ -2,26 +2,24 @@ import * as AppActions from './app.actions';
 
 export interface State {
     query: string;
-    thing: null;
-    incomeFilter: boolean;
-    quickGuide: boolean;
 };
 
 export const initialState: State = {
-    query: '',
-    thing: null,
-    incomeFilter: false,
-    quickGuide: false
+    query: ''
 };
 
-export function appReducer(state: any, action: AppActions.Actions): any {
+export function appReducer(state: any = initialState, action: AppActions.Actions): any {
     switch (action.type) {
         case AppActions.SET_QUERY: {
             return Object.assign({}, state, {query: action.payload});
         }
 
-        case AppActions.SET_THING: {
-            return Object.assign({}, state, {thing: action.payload});
+        /*case AppActions.UPDATE_MATRIX: {
+            return Object.assign({}, state, {updateMatrix: action.payload});
+        }
+
+        case AppActions.SET_PIN_MODE: {
+            return Object.assign({}, state, {pinMode: action.payload});
         }
 
         case AppActions.OPEN_INCOME_FILTER: {
@@ -30,7 +28,7 @@ export function appReducer(state: any, action: AppActions.Actions): any {
 
         case AppActions.OPEN_QUICK_GUIDE: {
             return Object.assign({}, state, {quickGuide: action.payload});
-        }
+        }*/
 
         default:
             return state;

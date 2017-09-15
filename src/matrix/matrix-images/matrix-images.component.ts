@@ -26,7 +26,7 @@ import {
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'matrix-images',
@@ -107,8 +107,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public quickGuideElement: HTMLElement;
   public isInit: boolean;
   public contentLoadedSubscription: Subscription;
+  public isPinMode: boolean;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
+  public placesSet: Array<any>;
+  public maxPinnedCount: number = 6;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -128,6 +131,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.element = element.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngOnInit(): any {
@@ -162,17 +166,17 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         this.placesArr = _.slice(this.currentPlaces, 0, numberSplice);
       });
 
-      setTimeout(() => {
-        this.calcItemSize();
-        this.loaderService.setLoader(true);
-      });
-
-      if (this.activeHouse && this.isInit) {
+      if (this.activeHouse && this.isInit && this.currentPlaces) {
         setTimeout(() => {
           this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1, true);
           this.isInit = false;
         });
       }
+
+      setTimeout(() => {
+        this.calcItemSize();
+        this.loaderService.setLoader(true);
+      });
     });
 
     this.contentLoadedSubscription = fromEvent(document, 'DOMContentLoaded').subscribe(() => {
@@ -180,9 +184,23 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
+
+    });
+
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data) {
         if (data.query) {
           this.query = data.query;
+        }
+
+        if (data.pinMode) {
+          this.isPinMode = true;
+        } else {
+          this.isPinMode = false;
+        }
+
+        if (data.placesSet) {
+          this.placesSet = data.placesSet;
         }
       }
     });
@@ -218,6 +236,22 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     setTimeout(() => this.quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement);
   }
 
+  public addPlaceToSet(e: MouseEvent, place: any): void {
+    e.stopPropagation();
+
+    if (!place.pinned) {
+      if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
+        place.pinned = true;
+
+        this.store.dispatch(new MatrixActions.AddPlaceToSet(place));
+      }
+    } else {
+      place.pinned = false;
+
+      this.store.dispatch(new MatrixActions.RemovePlaceFromSet(place));
+    }
+  }
+
   public ngOnDestroy(): void {
     if (this.clearActiveHomeViewBoxSubscribe) {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
@@ -240,6 +274,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
+    }
+
+    if (this.matrixStateSubscription) {
+      this.matrixStateSubscription.unsubscribe();
     }
   }
 
@@ -378,7 +416,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
-    this.familyData = JSON.parse(JSON.stringify(place));
+    // this.familyData = JSON.parse(JSON.stringify(place));
+
+    this.familyData = place;
 
     this.indexViewBoxHouse = index;
 
@@ -435,6 +475,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public goToMatrixWithCountry(params: any): void {
     this.filter.emit(params);
+
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
   }
 
   public changeUrl(options: {row?: number, activeHouseIndex?: number}): void {

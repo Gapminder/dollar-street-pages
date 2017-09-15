@@ -50,7 +50,6 @@ matrix-images {
 
 .street-and-title-container {
   width: 100%;
-  height: 64px;
 }
 
 .street-and-title-container,
@@ -100,6 +99,367 @@ matrix-images {
 
 .short-title span {
   color: #767d86;
+}
+
+.heart-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.heart-container .heart-circle {
+  align-self: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+}
+
+.heart-container svg {
+  margin: 19px 17px 17px 17px;
+  width: 40px;
+  height: 37px;
+}
+
+.pin-container {
+  width: 100%;
+  margin-top: -2px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.embed-bg {
+  background-color: #394450;
+}
+
+.pin-container .pin-info-text {
+  color: #344450;
+  font-size: 20px;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  padding-top: 140px;
+}
+
+.pin-container .pin-info-text-2 {
+  color: #344450;
+  font-size: 20px;
+  text-align: center;
+  height: 100%;
+  padding-top: 140px;
+  padding-left: 60px;
+}
+
+.pin-container .places-container {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  position: relative;
+  padding: 10px 20px 10px 20px;
+}
+
+.places-container .embed-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  background-color: #394450;
+}
+
+.places-container .embed-close-button svg {
+  width: 100%;
+  height: 100%;
+}
+
+.places-container.column-2 .pin-place {
+  width: calc(33.33% - 10px);
+  margin: 0 5px;
+}
+
+.places-container.column-3 .pin-place {
+  width: calc(33.33% - 10px);
+  margin: 0 5px;
+}
+
+.places-container.column-4 .pin-place {
+  width: calc(25% - 10px);
+  margin: 0 5px;
+}
+
+.places-container.column-5 .pin-place {
+  width: calc(20% - 10px);
+  margin: 0 5px;
+}
+
+.places-container.column-6 .pin-place {
+  width: calc(16.66% - 5px);
+  margin: 0 2.5px;
+}
+
+.places-container.height-2 {
+  min-height: 450px;
+}
+
+.places-container.height-3 {
+  min-height: 450px;
+}
+
+.places-container.height-4 {
+  min-height: 336px;
+}
+
+.places-container.height-5 {
+  min-height: 266px;
+}
+
+.places-container.height-6 {
+  min-height: 225px;
+}
+
+.places-container .image-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px 9px 6px;
+  font-size: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+}
+
+.places-container .place-image-box-country,
+.places-container .place-image-box-income {
+  color: white;
+  display: block;
+}
+
+.pin-container .pin-place {
+  position: relative;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0.6px 0.8px 2.9px 0.1px rgba(0, 0, 0, 0.2);
+}
+
+.shared-ready-section .loader-content {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  height: 64px;
+  margin: auto;
+  text-align: center;
+  z-index: 999;
+}
+
+.shared-ready-section .isLoad {
+  width: 64px;
+  height: 64px;
+  display: inline-block;
+}
+
+.pin-footer {
+  width: 100%;
+  align-self: flex-end;
+}
+
+.pin-footer .pin-footer-edit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 4px;
+  height: 60px;
+  background-color: #394450;
+}
+
+.pin-footer-edit .pin-done-share {
+  color: white;
+  font-size: 24px;
+  border: 1px solid white;
+  background-color: #495863;
+  padding: 0px 40px;
+  height: 38px;
+  line-height: 38px;
+}
+
+.pin-footer-edit .pin-mode-close {
+  color: #737B84;
+  font-size: 18px;
+  padding: 0px 40px;
+  text-align: center;
+  height: 38px;
+  line-height: 38px;
+}
+
+.pin-footer .pin-footer-edit span {
+  display: inline-block;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.pin-footer .pin-footer-share {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 800px;
+  padding: 20px 0;
+}
+
+.pin-footer-share .shared-ready-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+  position: relative;
+  min-height: 48px;
+}
+
+.shared-ready-section span {
+  display: inline-block;
+  width: 180px;
+  height: 48px;
+  cursor: pointer;
+  line-height: 48px;
+  text-align: center;
+  border: 1px solid #737B84;
+  justify-content: center;
+}
+
+.pin-footer-share p {
+  width: 818px;
+  height: 54px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 30px;
+  color: #3a4450;
+  margin: 0 auto;
+  align-self: center;
+  text-align: center;
+}
+
+.pin-footer-share .share-buttons-container {
+  height: 21px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.pin-footer-share .share-buttons-container span {
+  width: 40px;
+  height: 21px;
+  color: #767d86;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  vertical-align: center;
+  display: inline-block;
+}
+
+.pin-footer-share .share-buttons-container svg {
+  width: 21px;
+  height: 21px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.pin-footer-share .share-link-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pin-footer-share .back-close-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pin-footer-share .back-close-buttons span {
+  width: 86px;
+  height: 32px;
+  display: inline-block;
+  color: #3a4450;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 30px;
+  cursor: pointer;
+  margin: 0 10px;
+  text-align: center;
+}
+
+.pin-footer-share .back-close-buttons span:last-child {
+  color: #777d86;
+}
+
+.pin-footer-share .share-link-container input {
+  width: 390px;
+  height: 38px;
+  border: 1px solid #9c9fa4;
+  background-color: #ffffff;
+  font-size: 24px;
+}
+
+.pin-header {
+  height: 44px;
+  margin-top: -2px;
+  background-color: #394450;
+}
+
+.pin-header p {
+  display: inline-block;
+  padding-left: 20px;
+  font-size: 18px;
+  line-height: 44px;
+  color: #ffffff;
+}
+
+.pin-header .buttons-container {
+  float: right;
+  height: 100%;
+  padding-right: 20px;
+}
+
+.pin-header .buttons-container span {
+  display: inline-block;
+  width: 48px;
+  height: 100%;
+  border-left: 1px solid #333d48;
+  cursor: pointer;
+  position: relative;
+}
+
+.pin-header span svg {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+}
+
+.pin-header .done-share-button {
+  height: 32px;
+  width: 132px;
+  color: white;
+  float: right;
+  cursor: pointer;
+  border: 1px solid white;
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 18px;
+  text-align: center;
+  line-height: 32px;
+  margin-right: 24px;
 }
 
 @media (max-width: 700px) {

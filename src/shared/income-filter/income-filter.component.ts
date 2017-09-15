@@ -15,7 +15,7 @@ import {
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'income-filter',
@@ -103,7 +103,7 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
     if (isClose) {
       this.sendResponse.emit({close: true});
 
-      this.store.dispatch(new AppActions.OpenIncomeFilter(false));
+      this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
 
       return;
     }
@@ -124,6 +124,6 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
 
     this.sendResponse.emit(this.range);
 
-    this.store.dispatch(new AppActions.OpenIncomeFilter(false));
+    this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
   }
 }

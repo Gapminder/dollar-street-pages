@@ -115,11 +115,11 @@ family-header .header-content {
 }
 
 @media (max-width: 1023px) {
-  .without-filters-header .logo {
+  /*.without-filters-header .logo {
     margin: 7px 14px 7px 0;
     width: 42px;
     height: 42px;
-  }
+  }*/
 
   .without-filters-header .heading {
     margin: 16px 0 0 0;
@@ -128,11 +128,11 @@ family-header .header-content {
 }
 
 @media (max-width: 599px) {
-  .without-filters-header .logo {
+  /*.without-filters-header .logo {
     width: 35px;
     height: 35px;
     margin: 10px 8px 10px 0;
-  }
+  }*/
 
   .without-filters-header .heading {
     margin: 15px 0 0;

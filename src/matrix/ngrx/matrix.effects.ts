@@ -17,4 +17,12 @@ export class MatrixEffects {
         .switchMap((query: string) => this.matrixService.getMatrixImages(query))
         .map(data => data.data)
         .map((data: any) => new MatrixActions.GetMatrixImagesSuccess(data));
+
+    @Effect()
+    getPinnedPlaces = this.actions
+        .ofType(MatrixActions.GET_PINNED_PLACES)
+        .map(toPayload)
+        .switchMap((query: string) => this.matrixService.getPinnedPlaces(query))
+        .map(data => data.data)
+        .map((data: any) => new MatrixActions.GetPinnedPlacesSuccess(data.places))
 }

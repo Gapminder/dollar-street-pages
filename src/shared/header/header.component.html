@@ -7,17 +7,26 @@
                                      isDonatePage || isCountryPage || isArticlePage ||
                                      isPhotographersPage || isPhotographerPage}">
     <div class="icon-container pull-left"
-         *ngIf="(isMatrixPage && !isMobile) ||
+         *ngIf="(isMatrixPage && !isMobile && isPinMode) ||
+                (isMatrixPage && !isMobile) ||
                 isAboutPage || isDonatePage || isArticlePage ||
                 isPhotographersPage || isPhotographerPage ||
                 isCountryPage || isTeamPage ||
                 (isFamilyPage && (isDesktop || isTablet)) ||
                 (isMapPage && (isDesktop || isTablet))">
-      <img (click)="goToMatrixPage()" src="/assets/img/dollar-street.svg" alt=""/>
+      <img class="logo" (click)="goToMatrixPage()" src="/assets/img/dollar-street-logo.png" alt=""/>
+    </div>
+
+    <div *ngIf="(isMatrixPage && isPinMode && !isPinCollapsed) ||
+                isAboutPage || isDonatePage ||
+                isPhotographersPage || isPhotographerPage ||
+                isCountryPage || isTeamPage || isArticlePage"
+          class="without-filters-header">
+          <h2 #headerTitle class="header-title heading pull-left"></h2>
     </div>
 
     <div #filtersContainer>
-      <div *ngIf="isMatrixPage || isMapPage"
+      <div *ngIf="((isMatrixPage && !isPinMode) || (isMatrixPage && isPinMode && isPinCollapsed)) || isMapPage"
           class="filters-container"
           [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
         <things-filter
@@ -50,12 +59,6 @@
           angularticsEvent="From Place page to Matrix page (Thing:{{urlParams?.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
           <img src="/assets/img/back-icon.svg" alt="Back">{{thingsFilterData?.thing?.plural}} {{ 'IN' | translate }} {{backToCountries}}
         </p>
-      </div>
-
-      <div *ngIf="isAboutPage || isDonatePage || isPhotographersPage || isPhotographerPage || isCountryPage || isTeamPage || isArticlePage"
-          class="without-filters-header">
-        <h2 #headerTitle
-            class="heading pull-left"></h2>
       </div>
     </div>
 

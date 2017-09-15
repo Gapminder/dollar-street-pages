@@ -1,3 +1,5 @@
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs/Subscription';
 import {
   Component,
   ElementRef,
@@ -7,12 +9,13 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
 import {
   BrowserDetectionService,
   UtilsService
 } from '../../common';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'float-footer',
@@ -33,7 +36,8 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   public constructor(zone: NgZone,
                      element: ElementRef,
                      browserDetectionService: BrowserDetectionService,
-                     utilsService: UtilsService) {
+                     utilsService: UtilsService,
+                     private store: Store<AppStates>) {
     this.zone = zone;
     this.element = element.nativeElement;
     this.device = browserDetectionService;
@@ -65,6 +69,10 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.scrollSubscribe) {
       this.scrollSubscribe.unsubscribe();
     }
+  }
+
+  public SetPinMode(): void {
+    this.store.dispatch(new MatrixActions.SetPinMode(true));
   }
 
   public scrollTop(e: MouseEvent): void {

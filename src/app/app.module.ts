@@ -9,6 +9,7 @@ import { reducers } from './ngrx/root.reducer';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { MatrixModule } from '../matrix/matrix.module';
+import { MatrixEffects } from '../matrix/ngrx/matrix.effects';
 import {
   SharedModule,
   ThingsFilterEffects,
