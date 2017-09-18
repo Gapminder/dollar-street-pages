@@ -419,9 +419,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public changeTimeUnit(code: string) {
     if (this.placesArr) {
       let res = this.placesArr.map((place) => {
-        place.income = this.calcPlaceIncome(place.unitIncome, code);
+        if (place) {
+          place.income = this.calcPlaceIncome(place.unitIncome, code);
 
-        return place;
+          return place;
+        }
       });
 
       this.store.dispatch(new MatrixActions.SetMatrixImages(res));
