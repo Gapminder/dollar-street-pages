@@ -5,6 +5,7 @@ export interface State {
     updateMatrix: boolean;
     pinMode: boolean;
     pinCollapsed: boolean;
+    timeUnit: string;
     incomeFilter: boolean;
     quickGuide: boolean;
     placesSet: Array<any>;
@@ -16,6 +17,7 @@ export const initialState: State = {
     updateMatrix: false,
     pinMode: false,
     pinCollapsed: false,
+    timeUnit: 'MONTH',
     incomeFilter: false,
     quickGuide: false,
     placesSet: [],
@@ -34,6 +36,10 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
 
         case MatrixActions.SET_PIN_COLLAPSED: {
             return Object.assign({}, state, {pinCollapsed: action.payload});
+        }
+
+        case MatrixActions.SET_TIME_UNIT: {
+            return Object.assign({}, state, {timeUnit: action.payload});
         }
 
         case MatrixActions.OPEN_INCOME_FILTER: {
