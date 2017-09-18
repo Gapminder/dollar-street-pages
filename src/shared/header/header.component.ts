@@ -124,6 +124,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public matrixStateSubscription: Subscription;
   public isPinCollapsed: boolean;
   public familiesByIncomeTrans: string = 'Families by income';
+  public isIncomeDesktopOpened: boolean;
+  public timeUnit: any = {code: 'MONTH', name: 'Month'};
 
   public constructor(private router: Router,
                      private math: MathService,
@@ -377,6 +379,60 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
 
     return false;
+  }
+
+  public openIncomeFilterDesktop(e: MouseEvent): void {
+    e.stopPropagation();
+
+    this.isIncomeDesktopOpened = !this.isIncomeDesktopOpened;
+
+    let incomeDesktopFilterElement = this.element.querySelector('.filter') as HTMLElement;
+
+    if (this.isIncomeDesktopOpened) {
+      incomeDesktopFilterElement.classList.add('opened');
+    } else {
+      incomeDesktopFilterElement.classList.remove('opened');
+    }
+  }
+
+  public incomeContainerClick(e: MouseEvent): void {
+    e.stopPropagation();
+  }
+
+  public setTimeUnit(unit: string): void {
+    switch(unit) {
+      case 'DAY': {
+        this.timeUnit.code = 'DAY';
+        this.timeUnit.name = 'Day';
+        break;
+      }
+
+      case 'WEEK': {
+        this.timeUnit.code = 'WEEK';
+        this.timeUnit.name = 'Week';
+        break;
+      }
+
+      case 'MONTH': {
+        this.timeUnit.code = 'MONTH'
+        this.timeUnit.name = 'Month';
+        break;
+      }
+
+      case 'YEAR': {
+        this.timeUnit.code = 'YEAR'
+        this.timeUnit.name = 'Year';
+        break;
+      }
+    }
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  public applyIncomeFilterDesktop(e): void {
+    this.openIncomeFilterDesktop(e);
+
+    this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit.code));
   }
 
   public ngOnDestroy(): void {

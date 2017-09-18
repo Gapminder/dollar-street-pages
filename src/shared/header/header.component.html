@@ -46,7 +46,71 @@
           <span #incomeTitleContainer
                 class="income-title-container">
             <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
-            <span class="income-title">{{ 'BY_INCOME' | translate }}</span>
+            <span (click)="openIncomeFilterDesktop($event)"
+                  class="income-title filter">{{ 'BY_INCOME' | translate }}
+              <div (click)="incomeContainerClick($event)"
+                   class="income-filter-desktop-container">
+                <div class="income-filter-desktop-header">
+                  <span>Income</span>
+                  <svg [routerLink]="['/about']" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                	 viewBox="0 0 29.535 29.535" style="enable-background:new 0 0 29.535 29.535;" xml:space="preserve">
+                    <g>
+                    	<path d="M14.768,0C6.611,0,0,6.609,0,14.768c0,8.155,6.611,14.767,14.768,14.767c8.154,0,14.766-6.612,14.766-14.767
+                    		C29.534,6.609,22.923,0,14.768,0z M14.768,27.126c-6.83,0-12.361-5.532-12.361-12.359c0-6.828,5.531-12.362,12.361-12.362
+                    		c6.824,0,12.359,5.535,12.359,12.362C27.128,21.594,21.592,27.126,14.768,27.126z"/>
+                    	<polygon points="16.83,11.143 12.679,11.143 12.679,11.15 11.134,11.15 11.134,13.563 12.679,13.563 12.679,22.181 11.039,22.181
+                    		11.039,24.487 12.679,24.487 12.679,24.503 16.83,24.503 16.83,24.487 18.188,24.487 18.188,22.181 16.83,22.181 	"/>
+                    	<path d="M14.726,9.504c1.395,0,2.24-0.928,2.24-2.077c-0.027-1.172-0.846-2.072-2.184-2.072c-1.336,0-2.211,0.899-2.211,2.072
+                    		C12.57,8.576,13.417,9.504,14.726,9.504z"/></g>
+                  </svg>
+                  <img class="close-button"
+                       src="/assets/img/close-button.svg"
+                       (click)="openIncomeFilterDesktop($event)"/>
+                </div>
+
+                <div class="income-filter-desktop-content">
+                  <div class="currency-unit-container">
+                    <div class="control-section">
+                      <span>Currency</span>
+                      <div class="dropdown-button">
+                        <span class="dropdown-selected" value="USD">Dollar</span>
+                        <div class="dropdown-container">
+                          <div class="dropdown-item" value="USD">Dollar</div>
+                          <div class="dropdown-item" value="EUR">Euro</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="control-section">
+                      <span>Time unit</span>
+                      <div class="dropdown-button">
+                        <span class="dropdown-selected">{{timeUnit.name}}</span>
+                        <div class="dropdown-container">
+                          <div class="dropdown-item" (click)="setTimeUnit('DAY')">Day</div>
+                          <div class="dropdown-item" (click)="setTimeUnit('WEEK')">Week</div>
+                          <div class="dropdown-item" (click)="setTimeUnit('MONTH')">Month</div>
+                          <div class="dropdown-item" (click)="setTimeUnit('YEAR')">Year</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="show-levels-container">
+                    <span class="show-levels-label">Show levels</span>
+                    <label class="switch">
+                      <input type="checkbox">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="income-filter-desktop-footer">
+                  <div (click)="openIncomeFilterDesktop($event)" class="close-button">Close</div>
+                  <div class="ok-button">
+                    <img src="/assets/img/apply.svg" alt=""/>
+                    <span (click)="applyIncomeFilterDesktop($event)">Ok</span>
+                  </div>
+                </div>
+              </div>
+            </span>
           </span>
         </div>
       </div>

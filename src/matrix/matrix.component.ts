@@ -144,6 +144,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public countriesFilterStateSubscription: Subscription;
   public isScreenshotProcessing: boolean;
   public isImagesProcessed: boolean;
+  public timeUnit: string;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -226,6 +227,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.isPinCollapsed = false;
         }
 
+        if (data.timeUnit) {
+          if (this.timeUnit !== data.timeUnit) {
+            this.timeUnit = data.timeUnit;
+            this.changeTimeUnit(data.timeUnit);
+          }
+        }
+
         if (data.incomeFilter) {
           this.isOpenIncomeFilter = true;
         } else {
@@ -257,7 +265,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
           if (!this.isImagesProcessed) {
             this.isImagesProcessed = true;
-            this.processMatrixImages(data.matrixImages);
+            this.processMatrixImages(this.matrixImages);
           }
         }
 
@@ -406,6 +414,38 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       });
 
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
+  }
+
+  public changeTimeUnit(code: string) {
+    if (this.placesArr) {
+      let res = this.placesArr.map((place) => {
+        place.income = this.calcPlaceIncome(place.unitIncome, code);
+
+        return place;
+      });
+
+      this.store.dispatch(new MatrixActions.SetMatrixImages(res));
+    }
+  }
+
+  public calcPlaceIncome(income: number, code: string): number {
+    switch(code) {
+      case 'DAY': {
+        return income / 30;
+      }
+
+      case 'WEEK': {
+        return income / 4;
+      }
+
+      case 'MONTH': {
+        return income;
+      }
+
+      case 'YEAR': {
+        return income * 12;
+      }
+    }
   }
 
   public openPopUp(target: string): void {
