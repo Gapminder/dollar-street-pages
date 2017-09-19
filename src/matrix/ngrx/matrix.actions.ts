@@ -88,7 +88,7 @@ export class GetMatrixImagesSuccess implements Action {
     constructor(public payload: any) {}
 }
 
-export class GetCurrencyInits implements Action {
+export class GetCurrencyUnits implements Action {
     readonly type = GET_CURRENCY_UNITS;
     constructor() {}
 }

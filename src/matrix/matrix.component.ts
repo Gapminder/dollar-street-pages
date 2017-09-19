@@ -111,7 +111,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public imageContentElement: HTMLElement;
   public guideContainerElement: HTMLElement;
   public device: BrowserDetectionService;
-  public languageService: LanguageService;
   public theWorldTranslate: string;
   public getTranslationSubscribe: Subscription;
   public byIncomeText: string;
@@ -156,7 +155,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      urlChangeService: UrlChangeService,
                      browserDetectionService: BrowserDetectionService,
                      angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     languageService: LanguageService,
+                     private languageService: LanguageService,
                      private changeDetectorRef: ChangeDetectorRef,
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
@@ -173,7 +172,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.device = browserDetectionService;
     this.urlChangeService = urlChangeService;
     this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.languageService = languageService;
 
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
@@ -194,8 +192,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.matrixHeaderElement = this.matrixHeader.nativeElement;
     this.streetContainerElement = this.streetContainer.nativeElement;
     this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
-
-    this.store.dispatch(new MatrixActions.GetCurrencyInits());
 
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
@@ -246,7 +242,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
-              this.currencyUnits = data.currencyUnits;
+            this.currencyUnits = data.currencyUnits;
+            this.setCurrencyForLang();
           }
         }
 
@@ -432,6 +429,28 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       });
 
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
+    this.store.dispatch(new MatrixActions.GetCurrencyUnits());
+  }
+
+  public setCurrencyForLang(): void {
+    let unit = null;
+
+    switch(this.languageService.currentLanguage) {
+      case 'en': {
+        unit = this.currencyUnits.find(unit => unit.code === 'USD');
+        break;
+      }
+      case 'es-ES': {
+        unit = this.currencyUnits.find(unit => unit.code === 'EUR');
+        break;
+      }
+      case 'sv-SE': {
+        unit = this.currencyUnits.find(unit => unit.code === 'SEK');
+        break;
+      }
+    }
+
+    this.store.dispatch(new MatrixActions.SetCurrencyUnit(unit));
   }
 
   public changeTimeUnit(timeUnit: string): void {
@@ -499,8 +518,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
         return place;
       });
-
-      // this.store.dispatch(new MatrixActions.SetMatrixImages(this.placesArr));
 
       this.changeDetectorRef.detectChanges();
     }

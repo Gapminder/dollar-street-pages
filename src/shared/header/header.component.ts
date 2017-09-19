@@ -314,10 +314,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       if (data) {
         if (data.pinMode) {
           this.isPinMode = true;
-
-          //this.changeDetectorRef.detectChanges();
-
-          //this.titleHeaderService.setTitle(this.familiesByIncomeTrans);
         } else {
           this.isPinMode = false;
         }
@@ -328,10 +324,17 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           this.isPinCollapsed = false;
         }
 
+        if (data.currencyUnit) {
+          if (this.currencyUnit !== data.currencyUnit) {
+            // this.currencyUnit = data.currencyUnit;
+            // console.log(this.currencyUnit);
+          }
+        }
+
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
-              this.currencyUnits = data.currencyUnits;
-              this.setCurrencyUnit('USD');
+            this.currencyUnits = data.currencyUnits;
+            this.setCurrencyUnit('USD');
           }
         }
 
