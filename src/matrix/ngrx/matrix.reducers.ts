@@ -6,6 +6,8 @@ export interface State {
     pinMode: boolean;
     pinCollapsed: boolean;
     timeUnit: string;
+    currencyUnit: any;
+    currencyUnits: any[];
     incomeFilter: boolean;
     quickGuide: boolean;
     placesSet: Array<any>;
@@ -18,6 +20,8 @@ export const initialState: State = {
     pinMode: false,
     pinCollapsed: false,
     timeUnit: 'MONTH',
+    currencyUnit: null,
+    currencyUnits: null,
     incomeFilter: false,
     quickGuide: false,
     placesSet: [],
@@ -72,6 +76,14 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
 
         case MatrixActions.GET_MATRIX_IMAGES_SUCCESS: {
             return Object.assign({}, state, {matrixImages: action.payload});
+        }
+
+        case MatrixActions.GET_CURRENCY_UNITS_SUCCESS: {
+            return Object.assign({}, state, {currencyUnits: action.payload});
+        }
+
+        case MatrixActions.SET_CURRENCY_UNIT: {
+            return Object.assign({}, state, {currencyUnit: action.payload});
         }
 
         default:

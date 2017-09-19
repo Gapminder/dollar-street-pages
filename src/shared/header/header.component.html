@@ -73,17 +73,18 @@
                     <div class="control-section">
                       <span>Currency</span>
                       <div class="dropdown-button">
-                        <span class="dropdown-selected" value="USD">Dollar</span>
+                        <span class="dropdown-selected">{{ currencyUnit?.currency }}</span>
                         <div class="dropdown-container">
-                          <div class="dropdown-item" value="USD">Dollar</div>
-                          <div class="dropdown-item" value="EUR">Euro</div>
+                          <div *ngFor="let currUnit of currencyUnits"
+                               class="dropdown-item"
+                               (click)="setCurrencyUnit(currUnit.code)">{{ currUnit?.currency }}</div>
                         </div>
                       </div>
                     </div>
                     <div class="control-section">
                       <span>Time unit</span>
                       <div class="dropdown-button">
-                        <span class="dropdown-selected">{{timeUnit.name}}</span>
+                        <span class="dropdown-selected">{{ timeUnit?.name }}</span>
                         <div class="dropdown-container">
                           <div class="dropdown-item" (click)="setTimeUnit('DAY')">Day</div>
                           <div class="dropdown-item" (click)="setTimeUnit('WEEK')">Week</div>

@@ -76,13 +76,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public rowEtalon: number = 0;
   public windowInnerWidth: number = window.innerWidth;
   public windowInnerHeight: number = window.innerHeight;
-  public placesVal: any;
+  // public placesVal: any;
   public locations: any;
   public countriesTranslations: any[];
   public streetData: DrawDividersInterface;
   public selectedRegions: any;
   public activeCountries: any;
-  public streetPlacesData: any;
+  // public streetPlacesData: any;
   public selectedCountries: any;
   public placesArr: any[];
   public clonePlaces: any[];
@@ -143,8 +143,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public countriesFilterState: Observable<any>;
   public countriesFilterStateSubscription: Subscription;
   public isScreenshotProcessing: boolean;
-  public isImagesProcessed: boolean;
   public timeUnit: string;
+  public currencyUnit: any;
+  public currencyUnits: any[];
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -194,6 +195,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.streetContainerElement = this.streetContainer.nativeElement;
     this.streetAndTitleContainerElement = this.streetAndTitleContainer.nativeElement;
 
+    this.store.dispatch(new MatrixActions.GetCurrencyInits());
+
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD']).subscribe((trans: any) => {
       this.theWorldTranslate = trans.THE_WORLD;
     });
@@ -234,6 +237,19 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           }
         }
 
+        if (data.currencyUnit) {
+          if (this.currencyUnit !== data.currencyUnit) {
+            this.currencyUnit = data.currencyUnit;
+            this.changeCurrencyUnit(data.currencyUnit);
+          }
+        }
+
+        if (data.currencyUnits) {
+          if (this.currencyUnits !== data.currencyUnits) {
+              this.currencyUnits = data.currencyUnits;
+          }
+        }
+
         if (data.incomeFilter) {
           this.isOpenIncomeFilter = true;
         } else {
@@ -249,23 +265,32 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         }
 
         if (data.placesSet) {
-          this.placesSet = data.placesSet;
+          if (this.placesSet !== data.placesSet) {
+            this.placesSet = data.placesSet;
 
-          if (!this.isPinMode && this.placesSet.length) {
-            this.isEmbedView = true;
+            if (!this.isPinMode && this.placesSet.length) {
+              this.isEmbedView = true;
+            }
+
+            this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount;
+
+            this.setPinHeaderTitle();
           }
-
-          this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount;
-
-          this.setPinHeaderTitle();
         }
 
         if (data.matrixImages) {
-          this.matrixImages = data.matrixImages;
+          if (this.matrixImages !== data.matrixImages) {
+            this.matrixImages = data.matrixImages;
 
-          if (!this.isImagesProcessed) {
-            this.isImagesProcessed = true;
             this.processMatrixImages(this.matrixImages);
+
+            if (this.timeUnit) {
+              this.changeTimeUnit(this.timeUnit);
+            }
+
+            if (this.currencyUnit) {
+              this.changeCurrencyUnit(this.currencyUnit);
+            }
           }
         }
 
@@ -296,7 +321,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
           if (this.embedSetId !== undefined && this.embedSetId !== 'undefined') {
             const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-
             this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
           }
 
@@ -335,12 +359,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       if (this.embedSetId !== 'undefined') {
         const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-        /*this.matrixService.getPinnedPlaces(query).subscribe(resp => {
-          this.store.dispatch(new MatrixActions.SetPinnedPlaces(resp.data.places));
-
-          this.isEmbedView = true;
-        });*/
-
         this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
       }
 
@@ -416,38 +434,56 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
   }
 
-  public changeTimeUnit(code: string) {
-    if (this.placesArr) {
-      let res = this.placesArr.map((place) => {
+  public changeTimeUnit(timeUnit: string): void {
+    if (this.placesArr && this.currencyUnit) {
+      this.placesArr = this.placesArr.map((place) => {
         if (place) {
-          place.income = this.calcPlaceIncome(place.unitIncome, code);
+          place.showIncome = this.calcPlaceIncome(place.income, timeUnit, this.currencyUnit.value);
 
           return place;
         }
       });
-
-      this.store.dispatch(new MatrixActions.SetMatrixImages(res));
     }
   }
 
-  public calcPlaceIncome(income: number, code: string): number {
-    switch(code) {
+  public changeCurrencyUnit(unit: any): void {
+    if (this.placesArr && this.timeUnit) {
+      this.placesArr = this.placesArr.map((place) => {
+        if (place) {
+          place.showIncome = this.calcPlaceIncome(place.income, this.timeUnit, unit.value);
+
+          return place;
+        }
+      });
+    }
+  }
+
+  public calcPlaceIncome(income: number, timeUnit: string, currencyValue): number {
+    let resultIncome: number = 0;
+
+    switch(timeUnit) {
       case 'DAY': {
-        return income / 30;
+        resultIncome = income / 30;
+        break;
       }
 
       case 'WEEK': {
-        return income / 4;
+        resultIncome = income / 4;
+        break;
       }
 
       case 'MONTH': {
-        return income;
+        resultIncome = income;
+        break;
       }
 
       case 'YEAR': {
-        return income * 12;
+        resultIncome = income * 12;
+        break;
       }
     }
+
+    return resultIncome * currencyValue;
   }
 
   public openPopUp(target: string): void {
@@ -597,6 +633,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.urlChanged(event);
 
     this.processMatrixImages(this.matrixImages);
+
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
   }
 
   public processPinContainer(): void {
@@ -757,10 +795,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    this.placesVal = data.zoomPlaces;
-    this.streetPlacesData = data.streetPlaces;
+    // this.placesVal = data.zoomPlaces;
+    let zoomPlacesData = data.zoomPlaces;
+    let streetPlacesData = data.streetPlaces;
 
-    this.filtredPlaces = this.placesVal.filter((place: any): boolean => {
+    this.filtredPlaces = zoomPlacesData.filter((place: any): boolean => {
       return place;
     });
 
@@ -771,23 +810,21 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     let queryParams: any = this.utilsService.parseUrl(this.query);
     this.zoom = queryParams.zoom;
 
-    if (!this.streetPlacesData.length) {
+    if (!streetPlacesData.length) {
       this.streetPlaces.next([]);
       this.chosenPlaces.next([]);
       return;
     }
 
-    let incomesArr = (chain(this.streetPlacesData)
+    let incomesArr = (chain(zoomPlacesData)
       .map('income')
       .sortBy()
       .value()) as number[];
 
-    this.streetPlaces.next(this.streetPlacesData);
+    this.streetPlaces.next(zoomPlacesData);
     this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
     this.buildTitle(this.query);
-
-    // this.scrollTopZero();
 
     this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
   }
@@ -810,7 +847,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     // }
 
     this.store.dispatch(new AppActions.SetQuery(url));
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', url);
   }

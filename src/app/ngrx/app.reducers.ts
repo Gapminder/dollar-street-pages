@@ -14,22 +14,6 @@ export function appReducer(state: any = initialState, action: AppActions.Actions
             return Object.assign({}, state, {query: action.payload});
         }
 
-        /*case AppActions.UPDATE_MATRIX: {
-            return Object.assign({}, state, {updateMatrix: action.payload});
-        }
-
-        case AppActions.SET_PIN_MODE: {
-            return Object.assign({}, state, {pinMode: action.payload});
-        }
-
-        case AppActions.OPEN_INCOME_FILTER: {
-            return Object.assign({}, state, {incomeFilter: action.payload});
-        }
-
-        case AppActions.OPEN_QUICK_GUIDE: {
-            return Object.assign({}, state, {quickGuide: action.payload});
-        }*/
-
         default:
             return state;
     }

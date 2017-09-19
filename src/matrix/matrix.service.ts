@@ -45,4 +45,11 @@ export class MatrixService {
       return {err: parseRes.error, data: parseRes.data};
     });
   }
+
+  public getCurrencyUnits(): Promise<any> {
+    return this.http.get(`${environment.consumerApi}/v1/get-exchange-data`).map((res: any) => {
+      let parseRes = JSON.parse(res._body);
+      return {err: parseRes.error, data: parseRes.data};
+    }).toPromise();
+  }
 }
