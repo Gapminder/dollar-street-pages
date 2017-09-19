@@ -24,5 +24,13 @@ export class MatrixEffects {
         .map(toPayload)
         .switchMap((query: string) => this.matrixService.getPinnedPlaces(query))
         .map(data => data.data)
-        .map((data: any) => new MatrixActions.GetPinnedPlacesSuccess(data.places))
+        .map((data: any) => new MatrixActions.GetPinnedPlacesSuccess(data.places));
+
+    @Effect()
+    getCurrencyUnits = this.actions
+        .ofType(MatrixActions.GET_CURRENCY_UNITS)
+        .map(toPayload)
+        .switchMap(() => this.matrixService.getCurrencyUnits())
+        .map(data => data.data)
+        .map((data: any) => new MatrixActions.GetCurrencyUnitsSuccess(data));
 }

@@ -12,7 +12,8 @@ import {
   OnInit,
   OnDestroy,
   NgZone,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -112,6 +113,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public matrixStateSubscription: Subscription;
   public placesSet: Array<any>;
   public maxPinnedCount: number = 6;
+  public currencyUnit: any;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -121,7 +123,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      browserDetectionService: BrowserDetectionService,
                      languageService: LanguageService,
                      private utilsService: UtilsService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private changeDetectorRef: ChangeDetectorRef) {
     this.languageService = languageService;
     this.zone = zone;
     this.math = math;
@@ -202,6 +205,14 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         if (data.placesSet) {
           this.placesSet = data.placesSet;
         }
+
+        if (data.currencyUnit) {
+          if (this.currencyUnit !== data.currencyUnit) {
+            this.currencyUnit = data.currencyUnit;
+          }
+        }
+
+        this.changeDetectorRef.detectChanges();
       }
     });
 

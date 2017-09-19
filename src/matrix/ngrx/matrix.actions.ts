@@ -14,6 +14,9 @@ export const SET_PINNED_PLACES: string = 'SET_PINNED_PLACES';
 export const GET_MATRIX_IMAGES: string = 'GET_MATRIX_IMAGES';
 export const SET_MATRIX_IMAGES: string = 'SET_MATRIX_IMAGES';
 export const GET_MATRIX_IMAGES_SUCCESS: string = 'GET_MATRIX_IMAGES_SUCCESS';
+export const GET_CURRENCY_UNITS: string = 'GET_CURRENCY_UNITS';
+export const GET_CURRENCY_UNITS_SUCCESS: string = 'GET_CURRENCY_UNITS_SUCCESS';
+export const SET_CURRENCY_UNIT: string = 'SET_CURRENCY_UNIT';
 
 export class UpdateMatrix implements Action {
     readonly type = UPDATE_MATRIX;
@@ -85,6 +88,21 @@ export class GetMatrixImagesSuccess implements Action {
     constructor(public payload: any) {}
 }
 
+export class GetCurrencyInits implements Action {
+    readonly type = GET_CURRENCY_UNITS;
+    constructor() {}
+}
+
+export class GetCurrencyUnitsSuccess implements Action {
+    readonly type = GET_CURRENCY_UNITS_SUCCESS;
+    constructor(public payload: any) {}
+}
+
+export class SetCurrencyUnit implements Action {
+    readonly type = SET_CURRENCY_UNIT;
+    constructor(public payload: any) {}
+}
+
 export type Actions =
     | UpdateMatrix
     | SetPinMode
@@ -99,4 +117,6 @@ export type Actions =
     | SetPinnedPlaces
     | GetMatrixImages
     | SetMatrixImages
-    | GetMatrixImagesSuccess;
+    | GetMatrixImagesSuccess
+    | GetCurrencyUnitsSuccess
+    | SetCurrencyUnit;

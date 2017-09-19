@@ -15,6 +15,7 @@ import {
   ViewChild,
   ChangeDetectorRef,
   Renderer,
+  HostListener
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
@@ -126,6 +127,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public familiesByIncomeTrans: string = 'Families by income';
   public isIncomeDesktopOpened: boolean;
   public timeUnit: any = {code: 'MONTH', name: 'Month'};
+  public currencyUnit: any;
+  public currencyUnits: any[];
 
   public constructor(private router: Router,
                      private math: MathService,
@@ -151,6 +154,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
     this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
     this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
+  }
+
+  @HostListener('document:click', ['$event'])
+  public isOutsideIncomeFilterClick(event: any): void {
+    if (this.isIncomeDesktopOpened) {
+      this.openIncomeFilterDesktop(new MouseEvent('CLICK'));
+    }
   }
 
   public ngAfterViewInit(): void {
@@ -318,6 +328,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           this.isPinCollapsed = false;
         }
 
+        if (data.currencyUnits) {
+          if (this.currencyUnits !== data.currencyUnits) {
+              this.currencyUnits = data.currencyUnits;
+              this.setCurrencyUnit('USD');
+          }
+        }
+
         this.changeDetectorRef.detectChanges();
       }
     });
@@ -429,10 +446,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
+  public setCurrencyUnit(code: string): void {
+    this.currencyUnit = this.currencyUnits.find(currUnit => currUnit.code === code);
+  }
+
   public applyIncomeFilterDesktop(e): void {
     this.openIncomeFilterDesktop(e);
 
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit.code));
+    this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
   }
 
   public ngOnDestroy(): void {
