@@ -67,7 +67,7 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
         }
 
         case MatrixActions.GET_PINNED_PLACES_SUCCESS: {
-          return Object.assign({}, state, {placesSet: action.payload});
+            return Object.assign({}, state, {placesSet: action.payload});
         }
 
         case MatrixActions.SET_MATRIX_IMAGES: {
