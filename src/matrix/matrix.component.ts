@@ -365,48 +365,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         }
       }, 1000);
 
-      this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-        this.streetData = data;
-
-        if (this.streetData) {
-          this.lowIncome = this.lowIncome ? this.lowIncome : this.streetData.poor;
-          this.highIncome = this.highIncome ? this.highIncome : this.streetData.rich;
-
-          this.lowIncome = this.lowIncome && this.lowIncome < this.streetData.poor ? this.streetData.poor : this.lowIncome;
-          this.highIncome = this.highIncome && this.highIncome > this.streetData.rich ? this.streetData.rich : this.highIncome;
-
-          if (this.lowIncome > this.highIncome) {
-            this.lowIncome = this.streetData.poor;
+      this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+        if (data) {
+          if (data.streetSettings) {
+            this.streetData = data.streetSettings;
+            this.processStreetData();
           }
-
-          this.thing = this.thing ? this.thing : 'Families';
-          this.zoom = this.zoom ? this.zoom : 4;
-          this.regions = this.regions ? this.regions : 'World';
-
-          if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-            this.zoom = 4;
-          }
-
-          if (!this.isDesktop) {
-            this.zoom = 3;
-          }
-
-          this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
-          this.query += this.languageService.getLanguageParam();
-
-          if (this.activeHouse) {
-            this.query += `&activeHouse=${this.activeHouse}`;
-          }
-
-          if (this.embedSetId !== 'undefined') {
-            this.query += `&embed=${this.embedSetId}`;
-          }
-
-          this.urlChanged({isBack: true, url: this.query});
-
-          this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-
-          this.changeDetectorRef.detectChanges();
         }
       });
     });
@@ -430,6 +394,49 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
     this.store.dispatch(new MatrixActions.GetCurrencyUnits());
+  }
+
+  public processStreetData(): void {
+    if (this.streetData) {
+      this.lowIncome = this.lowIncome ? this.lowIncome : this.streetData.poor;
+      this.highIncome = this.highIncome ? this.highIncome : this.streetData.rich;
+
+      this.lowIncome = this.lowIncome && this.lowIncome < this.streetData.poor ? this.streetData.poor : this.lowIncome;
+      this.highIncome = this.highIncome && this.highIncome > this.streetData.rich ? this.streetData.rich : this.highIncome;
+
+      if (this.lowIncome > this.highIncome) {
+        this.lowIncome = this.streetData.poor;
+      }
+
+      this.thing = this.thing ? this.thing : 'Families';
+      this.zoom = this.zoom ? this.zoom : 4;
+      this.regions = this.regions ? this.regions : 'World';
+
+      if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
+        this.zoom = 4;
+      }
+
+      if (!this.isDesktop) {
+        this.zoom = 3;
+      }
+
+      this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+      this.query += this.languageService.getLanguageParam();
+
+      if (this.activeHouse) {
+        this.query += `&activeHouse=${this.activeHouse}`;
+      }
+
+      if (this.embedSetId !== 'undefined') {
+        this.query += `&embed=${this.embedSetId}`;
+      }
+
+      this.urlChanged({isBack: true, url: this.query});
+
+      this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   public setCurrencyForLang(): void {

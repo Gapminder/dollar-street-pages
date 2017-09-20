@@ -132,8 +132,12 @@ export class MapComponent implements OnInit, OnDestroy {
       this.familyTranslate = trans;
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.streetData = data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (data) {
+        if (data.streetSettings) {
+          this.streetData = data.streetSettings;
+        }
+      }
     });
 
     this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {

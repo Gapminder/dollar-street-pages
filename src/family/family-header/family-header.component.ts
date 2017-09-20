@@ -107,8 +107,12 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.readLessTranslate = trans.READ_LESS;
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.streetData = data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (data) {
+        if (data.streetSettings) {
+          this.streetData = data.streetSettings;
+        }
+      }
     });
 
     let query: string = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;

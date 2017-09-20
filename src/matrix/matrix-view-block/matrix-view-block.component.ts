@@ -128,8 +128,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.streetData = data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (data) {
+        if (data.streetSettings) {
+          this.streetData = data.streetSettings;
+        }
+      }
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {

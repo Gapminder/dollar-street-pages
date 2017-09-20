@@ -61,8 +61,12 @@ export class FooterComponent implements OnInit, OnDestroy {
   public ngOnInit(): any {
     this.isDesktop = this.device.isDesktop();
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-        this.streetData = data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (data) {
+        if (data.streetSettings) {
+          this.streetData = data.streetSettings;
+        }
+      }
     });
 
     this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
