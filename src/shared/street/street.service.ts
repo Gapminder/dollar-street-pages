@@ -1,7 +1,11 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
-import { MathService, DrawDividersInterface, BrowserDetectionService } from '../../common';
+import {
+  MathService,
+  DrawDividersInterface,
+  BrowserDetectionService
+} from '../../common';
 import { scaleLog } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
@@ -22,6 +26,7 @@ export class StreetDrawService {
   public richest: string;
   public scale: any;
   public axisLabel: number[] = [];
+  public levelLabels: string[] = [];
   public svg: any;
   public incomeArr: any[] = [];
   public mouseMoveSubscriber: any;
@@ -63,6 +68,8 @@ export class StreetDrawService {
   public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public currencyUnit: any;
+
   public colors: {fills: any, fillsOfBorders: any} = {
     fills: {
       Europe: '#FFE800',
@@ -86,11 +93,12 @@ export class StreetDrawService {
     this.isMobile = this.device.isMobile();
   }
 
-  public init(lowIncome: any, highIncome: any, drawDividers: DrawDividersInterface, regions: any, countries: any, thing: string): this {
+  public init(lowIncome: any, highIncome: any, drawDividers: any, regions: any, countries: any, thing: string): this {
     this.thingname = thing;
     this.countries = countries[0];
     this.regions = regions[0];
     this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
+    this.levelLabels = [drawDividers.firstLabelName, drawDividers.secondLabelName, drawDividers.thirdLabelName, drawDividers.fourthLabelName];
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
@@ -118,37 +126,10 @@ export class StreetDrawService {
     return this;
   };
 
-  public isDrawDividers(drawDividers: DrawDividersInterface): this {
+  public isDrawDividers(drawDividers: any): this {
     if (!drawDividers.showDividers) {
       return;
     }
-
-    this.svg
-      .selectAll('text.scale-label')
-      .data(this.axisLabel)
-      .enter()
-      .append('text')
-      .text((d: any) => {
-        return this.math.round(d) + '$';
-      })
-      .attr('x', (d: any) => {
-        let indent = 0;
-
-        if ((d + '').length === 2) {
-          indent = 11;
-        }
-
-        if ((d + '').length === 3) {
-          indent = 15;
-        }
-
-        return this.scale(d) - indent + 25;
-      })
-      .attr('class', (d: any) => {
-        return 'scale-label' + d;
-      })
-      .attr('y', this.height - 2)
-      .attr('fill', '#767d86');
 
     this.svg
       .selectAll('image.scale-label22222')
@@ -176,6 +157,72 @@ export class StreetDrawService {
 
         return this.scale(d) - indent + 15 + center;
       });
+
+    return this;
+  }
+
+  public isDrawCurrency(drawDividers: any): this {
+    if (!drawDividers.showCurrency) {
+      return;
+    }
+
+    this.svg
+      .selectAll('text.scale-label')
+      .data(this.axisLabel)
+      .enter()
+      .append('text')
+      .text((d: any) => {
+        return this.math.round(d * this.currencyUnit.value) + this.currencyUnit.symbol;
+      })
+      .attr('x', (d: any) => {
+        let indent = 0;
+
+        if ((d + '').length === 2) {
+          indent = 11;
+        }
+
+        if ((d + '').length === 3) {
+          indent = 15;
+        }
+
+        return this.scale(d) - indent + 25;
+      })
+      .attr('class', (d: any) => {
+        return 'scale-label' + d;
+      })
+      .attr('y', this.height - 2)
+      .attr('fill', '#767d86');
+
+    return this;
+  }
+
+  public isDrawLabels(drawDividers: any): this {
+    if (!drawDividers.showLabels) {
+      return;
+    }
+
+    let data = this.levelLabels.map((curr, ind) => {
+      let from = ind === 0 ? drawDividers.poor : this.axisLabel[ind - 1];
+      let to = ind === this.levelLabels.length - 1 ? drawDividers.rich : this.axisLabel[ind];
+
+      return {from: from, to: to, name: curr};
+    });
+
+    this.svg
+      .selectAll('text.scale-label')
+      .data(data)
+      .enter()
+      .append('text')
+      .text((d: any) => {
+        return d.name;
+      })
+      .attr('x', (d: any) => {
+        let pos = (this.scale(d.to) - this.scale(d.from)) / 2 + this.scale(d.from);
+
+        return pos;
+      })
+      .attr('y', this.height - 4)
+      .attr('fill', '#767d86');
 
     return this;
   }
@@ -331,6 +378,8 @@ export class StreetDrawService {
     this.incomeArr.length = 0;
 
     this.isDrawDividers(drawDividers);
+    this.isDrawCurrency(drawDividers);
+    this.isDrawLabels(drawDividers);
 
     if (!places || !places.length) {
       return this;
@@ -937,8 +986,8 @@ export class StreetDrawService {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
     }
 
-    incomeL = this.math.round(incomeL);
-    incomeR = this.math.round(incomeR);
+    incomeL = this.math.round(incomeL * this.currencyUnit.value);
+    incomeR = this.math.round(incomeR * this.currencyUnit.value);
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');
@@ -960,7 +1009,7 @@ export class StreetDrawService {
       this.leftScrollText = this.svg
         .append('text')
         .attr('class', 'left-scroll-label')
-        .text(`$${incomeL}`)
+        .text(`${this.currencyUnit.symbol}${incomeL}`)
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
@@ -969,7 +1018,7 @@ export class StreetDrawService {
       this.rightScrollText = this.svg
         .append('text')
         .attr('class', 'right-scroll-label')
-        .text(`$${incomeR}`)
+        .text(`${this.currencyUnit.symbol}${incomeR}`)
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
@@ -981,28 +1030,28 @@ export class StreetDrawService {
     const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);
 
     if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      incomeL = Math.round(this.minIncome);
+      incomeL = Math.round(this.minIncome * this.currencyUnit.value);
       incomeL = this.math.round(incomeL);
 
       this.leftScrollText
-        .text(`$${incomeL}`)
+        .text(`${this.currencyUnit.symbol}${incomeL}`)
         .attr('x', () => this.leftPoint + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
     } else {
       this.leftScrollText
-        .text(`$${incomeL}`)
+        .text(`${this.currencyUnit.symbol}${incomeL}`)
         .attr('x', () => xL + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
     }
 
     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      incomeR = Math.round(this.maxIncome);
+      incomeR = Math.round(this.maxIncome * this.currencyUnit.value);
       incomeR = this.math.round(incomeR);
 
       this.rightScrollText
-        .text(`$${incomeR}`)
+        .text(`${this.currencyUnit.symbol}${incomeR}`)
         .attr('x', () => this.rightPoint + this.streetOffset / 2 + 4.5 - rightScrollTextWidth / 2);
     } else {
       this.rightScrollText
-        .text(`$${incomeR}`)
+        .text(`${this.currencyUnit.symbol}${incomeR}`)
         .attr('x', () => xR + this.streetOffset / 2 + 4.5 - rightScrollTextWidth / 2);
     }
 
