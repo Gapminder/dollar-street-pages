@@ -75,6 +75,9 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public appStateSubscription: Subscription;
   public thingsFilterState: Observable<any>;
   public thingsFilterStateSubscription: Subscription;
+  public matrixState: Observable<any>;
+  public matrixStateSubscription: Subscription;
+  public currencyUnit: any;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
@@ -92,6 +95,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngAfterViewInit(): any {
@@ -121,7 +125,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
-          //if (data.streetSettings) {
+          if (this.streetData !== data) {
             // this.streetData = data.streetSettings;
             this.streetData = data;
 
@@ -130,7 +134,18 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
             }
 
             this.setDividers(this.placesArr, this.streetData);
-        //  }
+        }
+      }
+    });
+
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+      if (data) {
+        if (data.currencyUnit) {
+          if (this.currencyUnit !== data.currencyUnit) {
+            this.currencyUnit = data.currencyUnit;
+            this.street.currencyUnit = this.currencyUnit;
+          }
+        }
       }
     });
 
@@ -148,13 +163,9 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
           this.countries = parseUrl.countries;
           this.regions = parseUrl.regions;
 
-          this.street
-            .clearSvg()
-            .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
-            .set('places', [])
-            .set('fullIncomeArr', [])
-            .drawScale(this.placesArr, this.streetData)
-            .removeSliders();
+          if (this.currencyUnit) {
+            this.redrawStreet();
+          }
         }
       }
     });
@@ -210,13 +221,14 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       }
 
       if (!places.length) {
-        this.street
+        this.redrawStreet();
+        /*this.street
           .clearSvg()
           .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
           .set('places', [])
           .set('fullIncomeArr', [])
           .drawScale(places, this.streetData)
-          .removeSliders();
+          .removeSliders();*/
       }
 
       this.setDividers(this.placesArr, this.streetData);
@@ -258,6 +270,16 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       });
   }
 
+  public redrawStreet(): void {
+    this.street
+      .clearSvg()
+      .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
+      .set('places', [])
+      .set('fullIncomeArr', [])
+      .drawScale(this.placesArr, this.streetData)
+      .removeSliders();
+  }
+
   public ngOnDestroy(): void {
     if (this.resize) {
       this.resize.unsubscribe();
@@ -285,6 +307,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     if (this.streetFilterSubscribe) {
       this.streetFilterSubscribe.unsubscribe();
+    }
+
+    if (this.matrixStateSubscription) {
+      this.matrixStateSubscription.unsubscribe();
     }
 
     if (this.street) {
