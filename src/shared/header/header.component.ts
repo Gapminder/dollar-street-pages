@@ -24,6 +24,7 @@ import {
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import * as ThingsFilterActions from '../things-filter/ngrx/things-filter.actions';
+import * as StreetSettingsActions from '../../common';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import * as CountriesFilterActions from '../countries-filter/ngrx/countries-filter.actions';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
@@ -129,6 +130,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public timeUnit: any = {code: 'MONTH', name: 'Month'};
   public currencyUnit: any;
   public currencyUnits: any[];
+  public showStreetAttrs: boolean;
 
   public constructor(private router: Router,
                      private math: MathService,
@@ -306,7 +308,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
-        this.streetData = data;
+        if (data.streetSettings) {
+          this.streetData = data.streetSettings;
+        }
+
+        if (data.showStreetAttrs) {
+          this.showStreetAttrs = true;
+        } else {
+          this.showStreetAttrs = false;
+        }
       }
     });
 
@@ -389,6 +399,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     });
   }
 
+  public switchStrretAttrsShow(e: any): void {
+    this.showStreetAttrs = !this.showStreetAttrs;
+  }
+
   public isCurrentPage(name: string): boolean {
     let shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
 
@@ -458,6 +472,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit.code));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+    this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
   }
 
   public ngOnDestroy(): void {

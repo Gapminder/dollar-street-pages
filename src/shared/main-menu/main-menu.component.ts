@@ -86,8 +86,12 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isMobile = this.device.isMobile();
     this.isDesktop = this.device.isDesktop();
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.streetData = data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (data) {
+        if (data.streetSettings) {
+          this.streetData = data.streetSettings;
+        }
+      }
     });
 
     this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {

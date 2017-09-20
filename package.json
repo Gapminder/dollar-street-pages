@@ -2,7 +2,7 @@
   "name": "dollarstreet",
   "version": "0.0.1",
   "private": true,
-  "description": "consumer.dollarstreet.org angular2 client application",
+  "description": "dollarstreet pages application",
   "main": "index.js",
   "scripts": {
     "start": "ng serve",

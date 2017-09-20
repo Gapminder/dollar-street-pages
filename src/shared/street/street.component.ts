@@ -78,6 +78,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
+  public showStreetAttrs: boolean;
 
   public constructor(element: ElementRef,
                      activatedRoute: ActivatedRoute,
@@ -125,9 +126,9 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
-          if (this.streetData !== data) {
-            // this.streetData = data.streetSettings;
-            this.streetData = data;
+        if (this.streetData !== data.streetSettings) {
+            this.streetData = data.streetSettings;
+            // this.streetData = data;
 
             if (!this.placesArr) {
               return;
@@ -135,6 +136,15 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
             this.setDividers(this.placesArr, this.streetData);
         }
+
+        if (data.showStreetAttrs) {
+          this.showStreetAttrs = true;
+        } else {
+          this.showStreetAttrs = false;
+        }
+
+        this.street.showStreetAttrs = this.showStreetAttrs;
+        this.redrawStreet();
       }
     });
 

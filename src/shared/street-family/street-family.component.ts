@@ -60,11 +60,11 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      if (!data) {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (!data || !data.streetSettings) {
         this.store.dispatch(new GetStreetSettings());
       } else {
-        this.streetData = data;
+        this.streetData = data.streetSettings;
 
         this.drawStreet(this.streetData, this.place);
       }

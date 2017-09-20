@@ -174,18 +174,20 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if(data) {
-        this.homeIncomeData = data;
+        if (data.streetSettings) {
+          this.homeIncomeData = data.streetSettings;
 
-        this.poor = this.homeIncomeData.poor;
-        this.rich = this.homeIncomeData.rich;
+          this.poor = this.homeIncomeData.poor;
+          this.rich = this.homeIncomeData.rich;
 
-        if (!this.locations) {
-          return;
+          if (!this.locations) {
+            return;
+          }
+
+          this.initData();
         }
-
-        this.initData();
       }
     });
 

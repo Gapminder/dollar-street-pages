@@ -65,10 +65,14 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
 
     this.streetFilterSubscribe = this.street.filter.subscribe(this.filterStreet);
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
-      this.streetData = data;
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      if (data) {
+        if (data.streetSettings) {
+          this.streetData = data;
 
-      this.setDividers(this.places, this.streetData);
+          this.setDividers(this.places, this.streetData);
+        }
+      }
     });
 
     this.resizeSubscription = fromEvent(window, 'resize')
