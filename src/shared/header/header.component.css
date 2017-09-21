@@ -390,6 +390,7 @@ family-header .header-content {
   display: flex;
   justify-content: flex-end;
   flex-direction: row;
+  padding-top: 6px;
 }
 
 .income-filter-desktop-footer .ok-button {
@@ -402,7 +403,7 @@ family-header .header-content {
 }
 
 .income-filter-desktop-footer .ok-button img {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .income-filter-desktop-footer .close-button {
