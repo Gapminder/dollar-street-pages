@@ -138,7 +138,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
-        if (data.query) {
+        if (this.query !== data.query) {
           this.query = data.query;
         }
       }
@@ -156,14 +156,18 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
       });
-
-    this.func();
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {}
+  public ngOnChanges(changes: SimpleChanges): void {
+    this.initViewBlock();
+  }
 
   // tslint:disable-next-line
-  public func(): void {
+  public initViewBlock(): void {
+    if (!this.place.background) {
+      return;
+    }
+
     this.loader = true;
     this.showblock = true;
 

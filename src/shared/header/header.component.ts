@@ -300,7 +300,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if(data) {
-        if (data.query) {
+        if (this.query !== data.query) {
           this.query = data.query;
         }
       }
@@ -596,10 +596,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }
 
-  public goToMatrixFromFamilyPage(): void {
-    this.router.navigate(['/matrix'], {queryParams: this.utilsService.parseUrl(this.query)});
-  }
-
   public thingSelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
     // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
@@ -634,6 +630,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     } else {
       document.documentElement.scrollTop = 0;
     }
+  }
+
+  public goToMatrixFromFamilyPage(): void {
+    this.router.navigate(['/matrix'], {queryParams: this.utilsService.parseUrl(this.query)});
   }
 
   public goToMatrixPage(): void {

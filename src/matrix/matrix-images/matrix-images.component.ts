@@ -187,7 +187,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
-
+      if (data) {
+        if (this.query !== data.query) {
+          this.query = data.query;
+        }
+      }
     });
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
@@ -427,9 +431,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
-    // this.familyData = JSON.parse(JSON.stringify(place));
+    if (!place) {
+      return;
+    }
 
-    this.familyData = place;
+    this.familyData = Object.assign({}, place);
 
     this.indexViewBoxHouse = index;
 
@@ -452,6 +458,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     if (!this.prevPlaceId) {
       this.prevPlaceId = place._id;
+
       this.showBlock = !this.showBlock;
 
       if (isInit) {
