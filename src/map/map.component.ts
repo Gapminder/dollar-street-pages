@@ -125,7 +125,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.isDesktop = this.device.isDesktop();
     this.isMobile = this.device.isMobile();
 
-    let isInit: boolean = true;
+    // let isInit: boolean = false;
+
     this.loaderService.setLoader(false);
 
     this.getTranslationSubscribe = this.languageService.getTranslation('FAMILY').subscribe((trans: any) => {
@@ -153,37 +154,27 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if (data && !isInit) {
-        /*if (this.query !== data.query) {
-          this.urlChanged({url: data.query});
-        }*/
-
-        /*this.query = data.query;
-
-        if (data.thing) {
-          this.thing = data.thing;
-
-          let query: any = {url: `thing=${this.thing.originPlural}${this.languageService.getLanguageParam()}`};
-
-          if (query !== data.query) {
-            this.urlChanged(query);
-          }
-        }*/
+      if (data) {
+        if (this.query !== data.query) {
+          this.query = data.query;
+        }
       }
     });
 
     this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: {thing: string}) => {
-      this.thing = params.thing ? params.thing : 'Families';
+      //this.thing = params.thing ? params.thing : 'Families';
 
-      let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
+      //let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
 
-      if (!params.thing || (params.thing && !isInit)) {
-        query.isNotReplaceState = true;
-      }
+      //if (!params.thing || (params.thing/* && !isInit*/)) {
+      //  query.isNotReplaceState = true;
+      //}
 
-      this.urlChanged(query);
+      /*if (!isInit) {
+        isInit = true;
 
-      isInit = false;
+        this.urlChanged(query);
+      }*/
     });
   }
 

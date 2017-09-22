@@ -292,6 +292,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.query));
         this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
         this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
+
+        this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
       //}
 
       this.interactiveIncomeText();
