@@ -112,7 +112,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
   public languagesListSubscription: Subscription;
-  public isInit: boolean;
+  // public isInit: boolean;
   public iconContainerShow: boolean;
   public thingsFilterData: any;
   public thingsFilterStateSubscription: any;
@@ -311,7 +311,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
         if (data.streetSettings) {
-          this.streetData = data.streetSettings;
+          if (this.streetData !== data.streetSettings) {
+            this.streetData = data.streetSettings;
+          }
         }
 
         if (data.showStreetAttrs) {

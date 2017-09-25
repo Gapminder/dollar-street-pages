@@ -71,6 +71,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
   public thingsFilterTitle: string;
+  public thingsFilterData: any;
 
   public constructor(activatedRoute: ActivatedRoute,
                      element: ElementRef,
@@ -114,7 +115,9 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
         if (data.query) {
-          this.query = data.query;
+          if (this.query != data.query) {
+            this.query = data.query;
+          }
         }
       }
     });
@@ -122,16 +125,20 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     this.thingsFilterStateSubscribtion = this.thingsFilterState.subscribe((data: any) => {
       if(data) {
         if (data.thingsFilter) {
-          this.relatedThings = data.thingsFilter.relatedThings;
-          this.popularThings = data.thingsFilter.popularThings;
-          this.otherThings = data.thingsFilter.otherThings;
-          this.activeThing = data.thingsFilter.thing;
+          if (this.thingsFilterData !== data.thingsFilter) {
+            this.thingsFilterData = data.thingsFilter;
 
-          this.thingsFilterTitle = data.thingsFilter.thing.plural;
+            this.relatedThings = this.thingsFilterData.relatedThings;
+            this.popularThings = this.thingsFilterData.popularThings;
+            this.otherThings = this.thingsFilterData.otherThings;
+            this.activeThing = this.thingsFilterData.thing;
 
-          this.isFilterGotData.emit('isThingFilterReady');
+            this.thingsFilterTitle = this.thingsFilterData.thing.plural;
 
-          this.changeDetectorRef.detectChanges();
+            this.isFilterGotData.emit('isThingFilterReady');
+
+            this.changeDetectorRef.detectChanges();
+          }
         }
       }
     });
@@ -239,8 +246,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
-    this.thingsFilterTitle = thing.plural;
-    this.changeDetectorRef.detectChanges();
+    //this.thingsFilterTitle = thing.plural;
+    //this.changeDetectorRef.detectChanges();
 
     let pageName: string = '';
 

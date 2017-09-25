@@ -76,13 +76,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public rowEtalon: number = 0;
   public windowInnerWidth: number = window.innerWidth;
   public windowInnerHeight: number = window.innerHeight;
-  // public placesVal: any;
   public locations: any;
   public countriesTranslations: any[];
   public streetData: DrawDividersInterface;
   public selectedRegions: any;
   public activeCountries: any;
-  // public streetPlacesData: any;
   public selectedCountries: any;
   public placesArr: any[];
   public clonePlaces: any[];
@@ -200,7 +198,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
         if (data.query) {
-          this.query = data.query;
+          if (this.query !== data.query) {
+            this.query = data.query;
+          }
         }
       }
     });
@@ -368,8 +368,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
         if (data) {
           if (data.streetSettings) {
-            this.streetData = data.streetSettings;
-            this.processStreetData();
+            if (this.streetData !== data.streetSettings) {
+              this.streetData = data.streetSettings;
+              this.processStreetData();
+            }
           }
         }
       });
@@ -658,7 +660,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.processMatrixImages(this.matrixImages);
 
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
   }
 
   public processPinContainer(): void {
@@ -814,25 +816,24 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  public processMatrixImages(data: any): void {
+  /*public processMatrixImages(data: any): void {
     if (!data || !data.zoomPlaces || !data.streetPlaces) {
       return;
     }
 
-    // this.placesVal = data.zoomPlaces;
+    let queryParams: any = this.utilsService.parseUrl(this.query);
+    this.zoom = queryParams.zoom;
+
     let zoomPlacesData = data.zoomPlaces;
     let streetPlacesData = data.streetPlaces;
 
     this.filtredPlaces = zoomPlacesData.filter((place: any): boolean => {
-      return place;
+      return place && place.income >= queryParams.lowIncome && place.income < queryParams.highIncome;
     });
 
     this.matrixPlaces.next(this.filtredPlaces);
     this.placesArr = data.zoomPlaces;
     this.clonePlaces = cloneDeep(this.filtredPlaces);
-
-    let queryParams: any = this.utilsService.parseUrl(this.query);
-    this.zoom = queryParams.zoom;
 
     if (!streetPlacesData.length) {
       this.streetPlaces.next([]);
@@ -846,6 +847,39 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       .value()) as number[];
 
     this.streetPlaces.next(zoomPlacesData);
+    this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+
+    this.buildTitle(this.query);
+
+    this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
+  }*/
+
+  public processMatrixImages(data: any): void {
+    if (!data || !data.streetPlaces) {
+      return;
+    }
+
+    let queryParams: any = this.utilsService.parseUrl(this.query);
+    this.zoom = queryParams.zoom;
+
+    let streetPlacesData = data.streetPlaces;
+
+    if (!streetPlacesData.length) {
+      this.streetPlaces.next([]);
+      this.chosenPlaces.next([]);
+      return;
+    }
+
+    this.placesArr = streetPlacesData;
+
+    this.filtredPlaces = streetPlacesData.filter((place: any): boolean => {
+      return place && place.income >= queryParams.lowIncome && place.income < queryParams.highIncome;
+    });
+
+    this.matrixPlaces.next(this.filtredPlaces);
+    this.clonePlaces = cloneDeep(this.filtredPlaces);
+
+    this.streetPlaces.next(streetPlacesData);
     this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
     this.buildTitle(this.query);

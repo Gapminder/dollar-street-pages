@@ -987,8 +987,8 @@ export class StreetDrawService {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
     }
 
-    incomeL = this.math.round(incomeL * this.currencyUnit.value);
-    incomeR = this.math.round(incomeR * this.currencyUnit.value);
+    incomeL = this.math.round(incomeL);
+    incomeR = this.math.round(incomeR);
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');
