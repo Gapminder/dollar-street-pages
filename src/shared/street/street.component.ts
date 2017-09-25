@@ -119,32 +119,33 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
       if (data) {
         if (data.thingsFilter) {
-          this.thing = data.thingsFilter.thing.originPlural;
+          //this.thing = data.thingsFilter.thing.originPlural;
         }
       }
     });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
-        if (this.streetData !== data.streetSettings) {
-            this.streetData = data.streetSettings;
-            // this.streetData = data;
+       if (data.streetSettings) {
+          if (this.streetData !== data.streetSettings) {
+              this.streetData = data.streetSettings;
 
-            if (!this.placesArr) {
-              return;
-            }
+              if (!this.placesArr) {
+                return;
+              }
 
-            this.setDividers(this.placesArr, this.streetData);
+              this.setDividers(this.placesArr, this.streetData);
+          }
+
+          if (data.showStreetAttrs) {
+            this.showStreetAttrs = true;
+          } else {
+            this.showStreetAttrs = false;
+          }
+
+          this.street.showStreetAttrs = this.showStreetAttrs;
+          this.redrawStreet();
         }
-
-        if (data.showStreetAttrs) {
-          this.showStreetAttrs = true;
-        } else {
-          this.showStreetAttrs = false;
-        }
-
-        this.street.showStreetAttrs = this.showStreetAttrs;
-        this.redrawStreet();
       }
     });
 
@@ -161,7 +162,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
-        if (data.query) {
+        if (this.query !== data.query) {
           this.query = data.query;
 
           let parseUrl = this.utilsService.parseUrl(this.query);
@@ -232,13 +233,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
       if (!places.length) {
         this.redrawStreet();
-        /*this.street
-          .clearSvg()
-          .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
-          .set('places', [])
-          .set('fullIncomeArr', [])
-          .drawScale(places, this.streetData)
-          .removeSliders();*/
       }
 
       this.setDividers(this.placesArr, this.streetData);
@@ -254,16 +248,16 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       query.lowIncome = filter.lowIncome;
       query.highIncome = filter.highIncome;
 
-      /*if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+      if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
         this.isStreetInit = true;
 
         return;
-      }*/
+      }
 
       this.filterStreet.emit({url: this.utilsService.objToQuery(query)});
     });
 
-    //this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
+    this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
     this.resize = fromEvent(window, 'resize')
       .debounceTime(150)
