@@ -20,3 +20,4 @@ export { CountryDetectorService } from './country-detector/country-detector.serv
 export { UtilsService } from './utils/utils.service';
 export { ImageGeneratorService } from './image-generator/image-generator.service';
 export { SortPlacesService } from './sort-places/sort-places.service';
+export { IncomeCalcService } from './income-calc/income-calc.service';

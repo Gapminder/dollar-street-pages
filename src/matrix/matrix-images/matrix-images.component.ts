@@ -23,7 +23,8 @@ import {
   LoaderService,
   LanguageService,
   BrowserDetectionService,
-  UtilsService
+  UtilsService,
+  SortPlacesService
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
@@ -124,7 +125,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      languageService: LanguageService,
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
-                     private changeDetectorRef: ChangeDetectorRef) {
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private sortPlacesService: SortPlacesService) {
     this.languageService = languageService;
     this.zone = zone;
     this.math = math;
@@ -167,6 +169,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         }
 
         this.placesArr = _.slice(this.currentPlaces, 0, numberSplice);
+
+        /*this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: any[]) => {
+          this.placesArr = sortedPlaces;
+        });*/
       });
 
       if (this.activeHouse && this.isInit && this.currentPlaces) {
@@ -299,7 +305,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public onScrollDown(): void {
     if (this.placesArr.length && this.placesArr.length !== this.currentPlaces.length) {
       let places: any = _.slice(this.currentPlaces, this.placesArr.length, this.placesArr.length + this.visibleImages);
+
       this.placesArr = _.concat(this.placesArr, places);
+
+      /*this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: any[]) => {
+        this.placesArr = sortedPlaces;
+      });*/
     }
   }
 
