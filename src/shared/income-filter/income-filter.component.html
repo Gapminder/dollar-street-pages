@@ -19,7 +19,7 @@
   <div #incomeFilterButtonContainer
        class="income-filter-button-container">
     <button #showAll class="show-all" type="button" (click)="showAllRange()">{{ 'SHOW_ALL' | translate }}</button>
-    <button #okButton class="ok-button" type="button" (click)="closeFilter()"><img src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
-    <button #closeButton class="close-button" type="button" (click)="closeFilter(true)">{{ 'CANCEL' | translate }}</button>
+    <button #okButton class="ok-button" type="button" (click)="applyFilter()"><img src="/assets/img/apply.svg">{{ 'OK' | translate }}</button>
+    <button #closeButton class="close-button" type="button" (click)="closeFilter()">{{ 'CANCEL' | translate }}</button>
   </div>
 </div>

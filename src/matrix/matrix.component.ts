@@ -28,7 +28,8 @@ import {
   DrawDividersInterface,
   MathService,
   ImageGeneratorService,
-  SocialShareService
+  SocialShareService,
+  SortPlacesService
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
@@ -84,7 +85,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public selectedCountries: any;
   public placesArr: any[];
   public clonePlaces: any[];
-  public filtredPlaces: any[] = [];
+  // public filtredPlaces: any[] = [];
+  public shownPlaces: any[];
   public windowHistory: any = history;
   public scrollSubscribtion: Subscription;
   public resizeSubscribe: Subscription;
@@ -143,6 +145,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public timeUnit: string;
   public currencyUnit: any;
   public currencyUnits: any[];
+  public streetPlacesData: any;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -160,7 +163,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      private math: MathService,
                      private matrixService: MatrixService,
                      private imageGeneratorService: ImageGeneratorService,
-                     private socialShareService: SocialShareService) {
+                     private socialShareService: SocialShareService,
+                     private sortPlacesService: SortPlacesService) {
     this.zone = zone;
     this.router = router;
     this.locationStrategy = locationStrategy;
@@ -738,7 +742,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.urlChangeService.replaceState('/matrix', query);
     }
 
-    let clonePlaces = cloneDeep(this.filtredPlaces);
+    let clonePlaces = cloneDeep(this.shownPlaces);
 
     if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
       this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
@@ -772,7 +776,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.visiblePlaces = row;
 
-    this.clonePlaces = cloneDeep(this.filtredPlaces);
+    this.clonePlaces = cloneDeep(this.shownPlaces);
   }
 
   public hoverPlaces(place: any): void {
@@ -862,27 +866,38 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     let queryParams: any = this.utilsService.parseUrl(this.query);
     this.zoom = queryParams.zoom;
 
-    let streetPlacesData = data.streetPlaces;
+    this.streetPlacesData = data.streetPlaces;
 
-    if (!streetPlacesData.length) {
+    if (!this.streetPlacesData.length) {
       this.streetPlaces.next([]);
       this.chosenPlaces.next([]);
       return;
     }
 
-    this.placesArr = streetPlacesData;
-
-    this.filtredPlaces = streetPlacesData.filter((place: any): boolean => {
+    let visiblePlaces = this.streetPlacesData.filter((place: any): boolean => {
       return place && place.income >= queryParams.lowIncome && place.income < queryParams.highIncome;
     });
 
-    this.matrixPlaces.next(this.filtredPlaces);
+    this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: any[]) => {
+      this.matrixPlaces.next(sortedPlaces);
+      this.streetPlaces.next(this.streetPlacesData);
+
+      this.clonePlaces = cloneDeep(sortedPlaces);
+      this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
+
+      this.shownPlaces = sortedPlaces;
+      this.placesArr = sortedPlaces;
+
+      this.buildTitle(this.query);
+    });
+
+    /*this.matrixPlaces.next(this.filtredPlaces);
     this.clonePlaces = cloneDeep(this.filtredPlaces);
 
     this.streetPlaces.next(streetPlacesData);
     this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-    this.buildTitle(this.query);
+    this.buildTitle(this.query);*/
 
     this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
   }
@@ -949,6 +964,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.urlChangeService.replaceState('/matrix', this.query);
 
     this.matrixImagesComponent.changeZoom(prevZoom);
+
+    this.processMatrixImages(this.matrixImages);
   }
 
   public getResponseFromIncomeFilter(params: any): void {
@@ -964,6 +981,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
+
+    this.processMatrixImages(this.matrixImages);
   }
 
   public scrollTop(e: MouseEvent, element: HTMLElement): void {

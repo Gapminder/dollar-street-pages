@@ -47,10 +47,10 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
     lowIncome: this.lowIncome,
     highIncome: this.highIncome
   };
-  public streetData: DrawDividersInterface;
+  public streetData: any;
   public element: HTMLElement;
   public store: Store<AppStates>;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<any>;
   public appState: Observable<any>;
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
@@ -68,9 +68,11 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
         if (data.streetSettings) {
-          this.streetData = data.streetSettings;
+          if (this.streetData !== data.streetSettings) {
+            this.streetData = data.streetSettings;
 
-          this.initData();
+            this.initData();
+          }
         }
       }
     });
@@ -103,18 +105,14 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public closeFilter(isClose?: boolean): void {
-    if (isClose) {
-      this.sendResponse.emit({close: true});
-
-      this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
-
-      return;
-    }
-
+  public applyFilter(): void {
     this.range.close = true;
-
     this.sendResponse.emit(this.range);
+  }
+
+  public closeFilter(): void {
+    this.sendResponse.emit({close: true});
+    this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
   }
 
   public getFilter(data: {lowIncome: number; highIncome: number}): void {

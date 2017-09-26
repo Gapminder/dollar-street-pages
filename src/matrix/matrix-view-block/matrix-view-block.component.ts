@@ -95,6 +95,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public consumerApi: string;
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
+  public matrixState: Observable<any>;
+  public matrixStateSubscription: Subscription;
+  public currencyUnit: any;
+  public timeUnit: string;
+  public timeUnitTrans: string;
+  public timeUnitSet: any[];
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -125,9 +131,17 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngOnInit(): void {
+    this.timeUnitSet = [
+      { code: 'DAY', name: 'day' },
+      { code: 'WEEK', name: 'week' },
+      { code: 'MONTH', name: 'month' },
+      { code: 'YEAR', name: 'year' }
+    ];
+
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
         if (data.streetSettings) {
@@ -144,6 +158,23 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+      if (data) {
+        if (data.currencyUnit) {
+          if (this.currencyUnit !== data.currencyUnit) {
+            this.currencyUnit = data.currencyUnit;
+          }
+        }
+
+        if (data.timeUnit) {
+          if (this.timeUnit !== data.timeUnit) {
+            this.timeUnit = data.timeUnit;
+            this.timeUnitTrans = this.changeTimeUnit(this.timeUnit);
+          }
+        }
+      }
+    });
+
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(150)
       .subscribe(() => {
@@ -156,6 +187,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
       });
+  }
+
+  public changeTimeUnit(code: string): string {
+    return this.timeUnitSet.find(unit => unit.code === code).name;
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

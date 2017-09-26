@@ -51,9 +51,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public mapData: any;
   public math: MathService;
   public countryName: any;
-  public isOpenArticle: boolean = false;
-  public isShowAboutData: boolean = false;
-  public isShowAboutDataFullScreen: boolean = false;
+  public isOpenArticle: boolean;
+  public isShowAboutData: boolean;
+  public isShowAboutDataFullScreen: boolean;
   public aboutDataPosition: {left?: number;top?: number;} = {};
   public windowHeight: number = window.innerHeight;
   public maxHeightPopUp: number = this.windowHeight * .95 - 91;
@@ -75,6 +75,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public showTranslateMe: boolean;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
+  public timeUnit: string;
+  public timeUnitSet: any;
+  public timeUnitTrans: any;
 
   public constructor(zone: NgZone,
                      math: MathService,

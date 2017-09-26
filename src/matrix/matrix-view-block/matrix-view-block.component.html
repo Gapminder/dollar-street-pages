@@ -10,7 +10,7 @@
 
     <div class="house-info-container">
       <div class="house-info-content">
-        <div class="header-container">$ {{math.round(place?.income)}}<span>/{{ 'MONTH' | translate }}</span></div>
+        <div class="header-container">{{currencyUnit?.symbol}} {{math.round(place?.showIncome)}}<span>/{{ timeUnitTrans }}</span></div>
 
         <div class="home-description-container">
           <h3>

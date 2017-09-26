@@ -14,6 +14,7 @@ import { GoogleAnalyticsService } from './analytics/google-analytics.service';
 import { CountryDetectorService } from './country-detector/country-detector.service';
 import { UtilsService } from './utils/utils.service';
 import { ImageGeneratorService } from './image-generator/image-generator.service';
+import { SortPlacesService } from './sort-places/sort-places.service';
 
 @NgModule({
   imports: [],
@@ -31,7 +32,8 @@ import { ImageGeneratorService } from './image-generator/image-generator.service
     GoogleAnalyticsService,
     CountryDetectorService,
     UtilsService,
-    ImageGeneratorService
+    ImageGeneratorService,
+    SortPlacesService
   ]
 })
 export class CommonAppModule {
