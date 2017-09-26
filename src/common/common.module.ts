@@ -15,6 +15,7 @@ import { CountryDetectorService } from './country-detector/country-detector.serv
 import { UtilsService } from './utils/utils.service';
 import { ImageGeneratorService } from './image-generator/image-generator.service';
 import { SortPlacesService } from './sort-places/sort-places.service';
+import { IncomeCalcService } from './income-calc/income-calc.service';
 
 @NgModule({
   imports: [],
@@ -33,7 +34,8 @@ import { SortPlacesService } from './sort-places/sort-places.service';
     CountryDetectorService,
     UtilsService,
     ImageGeneratorService,
-    SortPlacesService
+    SortPlacesService,
+    IncomeCalcService
   ]
 })
 export class CommonAppModule {

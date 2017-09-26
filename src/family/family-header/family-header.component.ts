@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import {
   Component,
   OnInit,
@@ -13,14 +14,17 @@ import {
   ElementRef,
   EventEmitter,
   Output,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   BrowserDetectionService,
   DrawDividersInterface,
   MathService,
   LanguageService,
-  UtilsService
+  UtilsService,
+  IncomeCalcService
 } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
 
@@ -29,7 +33,6 @@ import { FamilyHeaderService } from './family-header.service';
   templateUrl: './family-header.component.html',
   styleUrls: ['./family-header.component.css']
 })
-
 export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('homeDescriptionContainer')
   public homeDescriptionContainer: ElementRef;
@@ -57,20 +60,16 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public aboutDataPosition: {left?: number;top?: number;} = {};
   public windowHeight: number = window.innerHeight;
   public maxHeightPopUp: number = this.windowHeight * .95 - 91;
-  public familyHeaderService: FamilyHeaderService;
   public familyHeaderServiceSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public zone: NgZone;
   public element: HTMLElement;
   public streetData: DrawDividersInterface;
   public streetSettingsServiceSubscribe: Subscription;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
   public isTablet: boolean;
   public getTranslationSubscribe: Subscription;
-  public languageService: LanguageService;
-  public utilsService: UtilsService;
   public currentLanguage: string;
   public showTranslateMe: boolean;
   public streetSettingsState: Observable<DrawDividersInterface>;
@@ -78,30 +77,44 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public timeUnit: string;
   public timeUnitSet: any;
   public timeUnitTrans: any;
+  public matrixState: Observable<any>;
+  public matrixStateSubscription: Subscription;
+  public currencyUnit: any;
+  public currencyUnits: any;
+  public familyIncome: number;
+  public queryParams: any;
+  public queryParamsSubscribe: Subscription;
 
   public constructor(zone: NgZone,
                      math: MathService,
                      element: ElementRef,
-                     familyHeaderService: FamilyHeaderService,
-                     browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService,
-                     utilsService: UtilsService,
-                     private store: Store<AppStates>) {
+                     private familyHeaderService: FamilyHeaderService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private languageService: LanguageService,
+                     private utilsService: UtilsService,
+                     private store: Store<AppStates>,
+                     private activatedRoute: ActivatedRoute,
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private incomeCalcService: IncomeCalcService) {
     this.zone = zone;
     this.math = math;
     this.element = element.nativeElement;
-    this.familyHeaderService = familyHeaderService;
-    this.device = browserDetectionService;
-    this.languageService = languageService;
-    this.utilsService = utilsService;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngOnInit(): void {
-    this.isDesktop = this.device.isDesktop();
-    this.isMobile = this.device.isMobile();
-    this.isTablet = this.device.isTablet();
+    this.timeUnitSet = [
+      { code: 'DAY', name: 'Daily income', per: 'day' },
+      { code: 'WEEK', name: 'Weekly income', per: 'week' },
+      { code: 'MONTH', name: 'Monthly income', per: 'month' },
+      { code: 'YEAR', name: 'Yearly income', per: 'year' }
+    ];
+
+    this.isDesktop = this.browserDetectionService.isDesktop();
+    this.isMobile = this.browserDetectionService.isMobile();
+    this.isTablet = this.browserDetectionService.isTablet();
 
     this.currentLanguage = this.languageService.currentLanguage;
 
@@ -110,10 +123,43 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.readLessTranslate = trans.READ_LESS;
     });
 
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
+      this.queryParams = {
+        currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
+        time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH'
+      };
+    });
+
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
         if (data.streetSettings) {
-          this.streetData = data.streetSettings;
+          if (this.streetData !== data.streetSettings) {
+            this.streetData = data.streetSettings;
+          }
+        }
+      }
+    });
+
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+      if (data) {
+        if (data.currencyUnit) {
+          if (this.currencyUnit !== data.currencyUnit) {
+            this.currencyUnit = data.currencyUnit;
+          }
+        }
+
+        if (data.timeUnit) {
+          if (this.timeUnit !== data.timeUnit) {
+            this.timeUnit = data.timeUnit;
+          }
+        }
+
+        if (data.currencyUnits) {
+          if (this.currencyUnits !== data.currencyUnits) {
+            this.currencyUnits = data.currencyUnits;
+          }
+        } else {
+          this.store.dispatch(new MatrixActions.GetCurrencyUnits());
         }
       }
     });
@@ -135,6 +181,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       }
 
       this.truncCountryName(this.home.country);
+
+      // this.setCurrencyForLang();
+      this.setTimeCurrency(this.queryParams);
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -163,6 +212,21 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     if (this.streetSettingsStateSubscription) {
       this.streetSettingsStateSubscription.unsubscribe();
     }
+
+    if (this.queryParamsSubscribe) {
+      this.queryParamsSubscribe.unsubscribe();
+    }
+  }
+
+  public setTimeCurrency(params: any): void {
+    this.timeUnit = params.time;
+    this.currencyUnit = this.incomeCalcService.getTimeUnitByCode(this.currencyUnits, params.currency);
+    this.familyIncome = this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit, this.currencyUnit.value);
+    this.timeUnitTrans = this.incomeCalcService.getTimeUnitByCode(this.timeUnitSet, this.timeUnit);
+
+    this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+
+    this.changeDetectorRef.detectChanges();
   }
 
   public openInfo(isOpenArticle: boolean): void {
