@@ -52,7 +52,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public getTranslationSubscribe: Subscription;
   public street: any;
   public regions: any;
-  public thing: string;
+  // public thing: string;
   public thingName: any;
   public countries: any;
   public math: MathService;
