@@ -97,12 +97,12 @@ export class SortPlacesService {
       resultArr.push(...arr.map((item: any) => item[i]).filter((item: any) => item));
     }
 
-    let residue = resultArr.length % column;
+    /*let residue = resultArr.length % column;
     let emptyArr = residue ? new Array(column - resultArr.length % column) : null;
 
     if (emptyArr) {
       resultArr.push(...emptyArr);
-    }
+    }*/
 
     this.regionsLogic(resultArr, column, cb);
   }
@@ -127,7 +127,9 @@ export class SortPlacesService {
       resultArr[index] = data;
 
       if (index === Number(column) - 1) {
-        return cb(_.flattenDeep(_.zip(...resultArr)));
+        let sortedArr = _.flattenDeep(_.zip(...resultArr)).filter(i => i);
+
+        return cb(sortedArr);
       }
     });
   }
