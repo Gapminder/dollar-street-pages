@@ -952,7 +952,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.urlChanged({url: url});
   }
 
-  public changeZoom(zoom: any): void {
+  public changeZoom(zoom: number): void {
+    if (zoom <= 1) {
+      return;
+    }
+
+    if (!this.isDesktop ? zoom >= 4 : zoom >= 10) {
+      return;
+    }
+
     let prevZoom: number = this.zoom;
 
     this.zoom = zoom;

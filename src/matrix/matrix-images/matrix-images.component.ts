@@ -162,17 +162,18 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
       setTimeout(() => {
         this.getVisibleRows();
-        let numberSplice: number = this.visibleImages * 2;
+
+
+        let sliceCount: number = this.visibleImages * 2;
 
         if (this.row && this.row > 1) {
-          numberSplice = this.row * this.zoom + this.visibleImages;
+          sliceCount = this.row * this.zoom + this.visibleImages;
         }
 
-        this.placesArr = _.slice(this.currentPlaces, 0, numberSplice);
+        //let sliceCount: number = this.placesArr.length + this.visibleImages <= this.currentPlaces.length ? this.placesArr.length + this.visibleImages : (this.currentPlaces.length - this.placesArr.length);
 
-        /*this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: any[]) => {
-          this.placesArr = sortedPlaces;
-        });*/
+        // this.placesArr = _.slice(this.currentPlaces, 0, sliceCount);
+        this.placesArr = this.currentPlaces.slice(0, sliceCount);
       });
 
       if (this.activeHouse && this.isInit && this.currentPlaces) {
@@ -303,20 +304,20 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public onScrollDown(): void {
-    if (this.placesArr.length && this.placesArr.length !== this.currentPlaces.length) {
-      let places: any = _.slice(this.currentPlaces, this.placesArr.length, this.placesArr.length + this.visibleImages);
+    if (this.placesArr.length) {
+      let sliceCount: number = this.placesArr.length + this.visibleImages <= this.currentPlaces.length ? this.visibleImages : (this.currentPlaces.length - this.placesArr.length);
 
-      this.placesArr = _.concat(this.placesArr, places);
+      let places: any = this.currentPlaces.slice(this.placesArr.length, this.placesArr.length + sliceCount);
 
-      /*this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: any[]) => {
-        this.placesArr = sortedPlaces;
-      });*/
+      this.placesArr = this.placesArr.concat(places);
     }
   }
 
   public changeZoom(prevZoom: number): void {
     setTimeout(() => {
       this.calcItemSize();
+      this.getVisibleRows();
+      this.onScrollDown();
     },0);
   }
 
