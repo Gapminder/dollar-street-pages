@@ -112,7 +112,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
   public languagesListSubscription: Subscription;
-  // public isInit: boolean;
   public iconContainerShow: boolean;
   public thingsFilterData: any;
   public thingsFilterStateSubscription: any;
@@ -279,22 +278,20 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         row: parseInt(params.row, 10) || 1,
         lowIncome: parseInt(params.lowIncome, 10),
         highIncome: parseInt(params.highIncome, 10),
-        lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage
+        lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage,
+        currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
+        time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH'
       };
 
-      //if(!this.isInit && params.thing) {
-      //  this.isInit = true;
+      this.query = this.utilsService.objToQuery(this.urlParams);
 
-        this.query = this.utilsService.objToQuery(this.urlParams);
+      this.store.dispatch(new ThingsFilterActions.GetThingsFilter(this.query));
 
-        this.store.dispatch(new ThingsFilterActions.GetThingsFilter(this.query));
+      this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.query));
+      this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
+      this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
 
-        this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.query));
-        this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
-        this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
-
-        this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
-      //}
+      this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
 
       this.interactiveIncomeText();
       this.calcIncomeSize();
@@ -340,15 +337,20 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
         if (data.currencyUnit) {
           if (this.currencyUnit !== data.currencyUnit) {
-            // this.currencyUnit = data.currencyUnit;
-            // console.log(this.currencyUnit);
+            //this.currencyUnit = data.currencyUnit;
+            //console.log(data.currencyUnit);
           }
         }
 
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
-            this.setCurrencyUnit('USD');
+
+            this.setCurrencyUnit(this.urlParams.currency);
+            this.setTimeUnit(this.urlParams.time);
+
+            this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+            this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit.code));
           }
         }
 
@@ -474,6 +476,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public applyIncomeFilterDesktop(e): void {
     this.openIncomeFilterDesktop(e);
 
+    let queryParams = this.utilsService.parseUrl(this.query);
+
+    queryParams.currency = this.currencyUnit.code.toLowerCase();
+    queryParams.time = this.timeUnit.code.toLowerCase();
+
+    this.query = this.utilsService.objToQuery(queryParams);
+
+    this.urlChangeService.replaceState('/matrix', this.query);
+
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit.code));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
     this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
@@ -592,7 +603,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  protected openIncomeFilter(): void {
+  public openIncomeFilter(): void {
     if (!this.isMobile) {
       return;
     }

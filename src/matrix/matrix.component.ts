@@ -146,6 +146,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public currencyUnit: any;
   public currencyUnits: any[];
   public streetPlacesData: any;
+  public timeUnitCode: string;
+  public currencyUnitCode: string;
+  public b: boolean;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -247,7 +250,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
-            this.setCurrencyForLang();
+
+            if (!this.currencyUnitCode) {
+              this.setCurrencyForLang();
+            }
           }
         }
 
@@ -298,6 +304,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (this.query) {
           if (data.updateMatrix) {
             this.store.dispatch(new MatrixActions.UpdateMatrix(false));
+
+            if (this.currencyUnits) {
+              this.setCurrencyForLang();
+            }
+
             this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
           }
         }
@@ -355,6 +366,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.activeHouse = parseInt(params.activeHouse, 10);
       this.row = parseInt(params.row, 10) || 1;
       this.embedSetId = decodeURI(params.embed);
+      this.currencyUnitCode = params.currency ? decodeURI(params.currency.toUpperCase()) : null;
+      this.timeUnitCode = params.time ? decodeURI(params.time.toUpperCase()) : null;
 
       this.changeDetectorRef.detectChanges();
 
@@ -427,6 +440,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       }
 
       this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+
+      if (this.currencyUnitCode && this.timeUnitCode) {
+        this.query += `&currency=${this.currencyUnitCode.toLowerCase()}&time=${this.timeUnitCode.toLowerCase()}`;
+      }
       this.query += this.languageService.getLanguageParam();
 
       if (this.activeHouse) {
@@ -663,8 +680,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.urlChanged(event);
 
     this.processMatrixImages(this.matrixImages);
-
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
   }
 
   public processPinContainer(): void {
@@ -742,7 +757,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.urlChangeService.replaceState('/matrix', query);
     }
 
-    let clonePlaces = cloneDeep(this.shownPlaces);
+    let clonePlaces = cloneDeep(this.placesArr);
 
     if (clonePlaces && clonePlaces.length && this.visiblePlaces) {
       this.chosenPlaces.next(clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * this.visiblePlaces));
@@ -776,7 +791,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.visiblePlaces = row;
 
-    this.clonePlaces = cloneDeep(this.shownPlaces);
+    this.clonePlaces = cloneDeep(this.placesArr);
   }
 
   public hoverPlaces(place: any): void {
@@ -885,8 +900,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.clonePlaces = cloneDeep(sortedPlaces);
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-      this.shownPlaces = sortedPlaces;
+      // this.shownPlaces = sortedPlaces;
       this.placesArr = sortedPlaces;
+
+      if (!this.b) {
+        this.b = true;
+        this.changeCurrencyUnit(this.currencyUnit);
+        this.changeTimeUnit(this.timeUnit);
+      }
 
       this.buildTitle(this.query);
     });
