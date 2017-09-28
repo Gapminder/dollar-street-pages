@@ -111,8 +111,11 @@ export class StreetDrawService {
     this.windowInnerWidth = window.innerWidth;
 
     this.scale = scaleLog()
-      .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
-      .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
+      // .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
+      .domain([drawDividers.poor, drawDividers.rich])
+      // .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
+      .range([0, this.width]);
+
 
     return this;
   }
