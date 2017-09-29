@@ -14,6 +14,7 @@ export const SET_PINNED_PLACES: string = 'SET_PINNED_PLACES';
 export const GET_MATRIX_IMAGES: string = 'GET_MATRIX_IMAGES';
 export const SET_MATRIX_IMAGES: string = 'SET_MATRIX_IMAGES';
 export const GET_MATRIX_IMAGES_SUCCESS: string = 'GET_MATRIX_IMAGES_SUCCESS';
+export const SET_SHOW_LABELS: string = 'SET_SHOW_LABELS';
 export const GET_TIME_UNITS: string = 'GET_TIME_UNITS';
 export const GET_TIME_UNITS_SUCCESS: string = 'GET_TIME_UNITS_SUCCESS';
 export const GET_CURRENCY_UNITS: string = 'GET_CURRENCY_UNITS';
@@ -90,6 +91,11 @@ export class GetMatrixImagesSuccess implements Action {
     constructor(public payload: any) {}
 }
 
+export class SetShowLabels implements Action {
+    readonly type = SET_SHOW_LABELS;
+    constructor(public payload: boolean) {}
+}
+
 export class GetTimeUnits implements Action {
     readonly type = GET_TIME_UNITS;
     constructor() {}
@@ -119,7 +125,6 @@ export type Actions =
     | UpdateMatrix
     | SetPinMode
     | SetPinCollapsed
-    | SetTimeUnit
     | OpenIncomeFilter
     | OpenQuickGuide
     | AddPlaceToSet
@@ -130,6 +135,8 @@ export type Actions =
     | GetMatrixImages
     | SetMatrixImages
     | GetMatrixImagesSuccess
+    | SetShowLabels
+    | SetTimeUnit
     | GetTimeUnitsSuccess
     | GetCurrencyUnitsSuccess
     | SetCurrencyUnit;

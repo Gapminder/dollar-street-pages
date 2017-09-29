@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { HeaderComponent } from './header/header.component';
 
@@ -66,6 +67,15 @@ import { TranslateModule } from 'ng2-translate';
 import { Angulartics2Module } from 'angulartics2';
 
 @NgModule({
+  imports: [
+    HttpModule,
+    RouterModule,
+    CommonModule,
+    DropdownModule,
+    Angulartics2Module,
+    TranslateModule,
+    FormsModule
+  ],
   declarations: [
     LanguageSelectorComponent,
     MainMenuComponent,
@@ -91,14 +101,6 @@ import { Angulartics2Module } from 'angulartics2';
     IsImageLoadedDirective,
     TranslateMeComponent,
     StreetPinnedComponent
-  ],
-  imports: [
-    HttpModule,
-    RouterModule,
-    CommonModule,
-    DropdownModule,
-    Angulartics2Module,
-    TranslateModule
   ],
   providers: [
     SocialShareButtonsService,

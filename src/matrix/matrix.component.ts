@@ -146,8 +146,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetPlacesData: any;
   public timeUnitCode: string;
   public currencyUnitCode: string;
-  public b: boolean;
   public timeUnits: any;
+  public showStreetAttrs: boolean;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -246,8 +246,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             if (this.currencyUnit && !this.isInit) {
               this.changeCurrencyUnit(this.currencyUnit);
             }
-
-            // this.isInit = true;
           }
         }
 
@@ -371,6 +369,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.embedSetId = decodeURI(params.embed);
       this.currencyUnitCode = params.currency ? decodeURI(params.currency.toUpperCase()) : null;
       this.timeUnitCode = params.time ? decodeURI(params.time.toUpperCase()) : null;
+      this.showStreetAttrs = params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false;
 
       this.changeDetectorRef.detectChanges();
 
@@ -447,6 +446,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       if (this.currencyUnitCode && this.timeUnitCode) {
         this.query += `&currency=${this.currencyUnitCode.toLowerCase()}&time=${this.timeUnitCode.toLowerCase()}`;
+      }
+
+      if (this.showStreetAttrs) {
+        this.query += `&labels=${this.showStreetAttrs}`;
       }
 
       this.query += this.languageService.getLanguageParam();
