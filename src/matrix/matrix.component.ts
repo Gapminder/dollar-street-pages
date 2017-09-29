@@ -85,8 +85,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public selectedCountries: any;
   public placesArr: any[];
   public clonePlaces: any[];
-  // public filtredPlaces: any[] = [];
-  public shownPlaces: any[];
   public windowHistory: any = history;
   public scrollSubscribtion: Subscription;
   public resizeSubscribe: Subscription;
@@ -249,7 +247,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
               this.changeCurrencyUnit(this.currencyUnit);
             }
 
-            this.isInit = true;
+            // this.isInit = true;
           }
         }
 
@@ -935,14 +933,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.clonePlaces = cloneDeep(sortedPlaces);
       this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
 
-      // this.shownPlaces = sortedPlaces;
       this.placesArr = sortedPlaces;
 
-      if (!this.b) {
-        this.b = true;
-        this.changeCurrencyUnit(this.currencyUnit);
-        this.changeTimeUnit(this.timeUnit);
-      }
+      this.changeCurrencyUnit(this.currencyUnit);
+      this.changeTimeUnit(this.timeUnit);
 
       this.buildTitle(this.query);
     });
