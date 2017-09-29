@@ -288,6 +288,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
       this.query = this.utilsService.objToQuery(this.urlParams);
 
+      this.store.dispatch(new AppActions.SetQuery(this.query));
+
       this.store.dispatch(new ThingsFilterActions.GetThingsFilter(this.query));
 
       this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.query));
@@ -496,8 +498,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.urlChangeService.replaceState('/matrix', this.query);
 
+    this.store.dispatch(new AppActions.SetQuery(this.query));
+
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+
     this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
 
     this.isIncomeDesktopOpened = false;

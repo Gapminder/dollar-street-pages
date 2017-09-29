@@ -240,6 +240,10 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     if (this.queryParamsSubscribe) {
       this.queryParamsSubscribe.unsubscribe();
     }
+
+    if (this.homeSubjectSubscription) {
+      this.homeSubjectSubscription.unsubscribe();
+    }
   }
 
   public setTimeCurrency(): void {
