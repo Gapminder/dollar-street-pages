@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 import { Effect, Actions, toPayload } from "@ngrx/effects";
 import * as MatrixActions from './matrix.actions';
 import { MatrixService } from '../matrix.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class MatrixEffects {
@@ -25,6 +26,19 @@ export class MatrixEffects {
         .switchMap((query: string) => this.matrixService.getPinnedPlaces(query))
         .map(data => data.data)
         .map((data: any) => new MatrixActions.GetPinnedPlacesSuccess(data.places));
+
+    @Effect()
+    getTimeUnits = this.actions
+        .ofType(MatrixActions.GET_TIME_UNITS)
+        .map(toPayload)
+        .switchMap(() => Observable.of({data: [
+          {code: 'DAY', name: 'Day', name1: 'Daily income', per: 'day'},
+          {code: 'WEEK', name: 'Week', name1: 'Weekly income', per: 'week'},
+          {code: 'MONTH', name: 'Month', name1: 'Monthly income', per: 'month'},
+          {code: 'YEAR', name: 'Year', name1: 'Yearly income', per: 'year'}
+        ]}))
+        .map(data => data.data)
+        .map((data: any) => new MatrixActions.GetTimeUnitsSuccess(data));
 
     @Effect()
     getCurrencyUnits = this.actions

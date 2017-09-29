@@ -98,9 +98,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
-  public timeUnit: string;
-  public timeUnitTrans: string;
-  public timeUnitSet: any[];
+  public timeUnit: any;
+  public timeUnits: any[];
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -135,13 +134,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.timeUnitSet = [
-      { code: 'DAY', name: 'day' },
-      { code: 'WEEK', name: 'week' },
-      { code: 'MONTH', name: 'month' },
-      { code: 'YEAR', name: 'year' }
-    ];
-
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
         if (data.streetSettings) {
@@ -169,7 +161,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         if (data.timeUnit) {
           if (this.timeUnit !== data.timeUnit) {
             this.timeUnit = data.timeUnit;
-            this.timeUnitTrans = this.changeTimeUnit(this.timeUnit);
+          }
+        }
+
+        if (data.timeUnits) {
+          if (data.timeUnits) {
+            if (this.timeUnits !== data.timeUnits) {
+                this.timeUnits = data.timeUnits;
+                this.changeTimeUnit(this.timeUnit.code);
+            }
           }
         }
       }
@@ -189,8 +189,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  public changeTimeUnit(code: string): string {
-    return this.timeUnitSet.find(unit => unit.code === code).name;
+  public changeTimeUnit(code: string): void {
+    this.timeUnit = this.timeUnits.find(unit => unit.code === code);
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

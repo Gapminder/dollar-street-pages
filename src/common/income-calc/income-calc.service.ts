@@ -30,7 +30,7 @@ export class IncomeCalcService {
     return resultIncome * currencyValue;
   }
 
-  public getTimeUnitByCode(units: any[], code: string): string {
+  public getTimeUnitByCode(units: any[], code: string): any {
     return units.find(unit => unit.code === code);
   }
 

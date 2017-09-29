@@ -56,7 +56,7 @@
                        src="/assets/img/info-icon.svg"/>
                   <img class="close-button"
                        src="/assets/img/close-button.svg"
-                       (click)="openIncomeFilterDesktop($event)"/>
+                       (click)="closeIncomeFilterDesktop($event)"/>
                 </div>
 
                 <div class="income-filter-desktop-content">
@@ -64,7 +64,7 @@
                     <div class="control-section">
                       <span>Currency</span>
                       <div class="dropdown-button">
-                        <span class="dropdown-selected">{{ currencyUnit?.currency }}</span>
+                        <span class="dropdown-selected">{{ currencyUnitTemp?.currency }}</span>
                         <div class="dropdown-container">
                           <div *ngFor="let currUnit of currencyUnits"
                                class="dropdown-item"
@@ -75,7 +75,7 @@
                     <div class="control-section">
                       <span>Time unit</span>
                       <div class="dropdown-button">
-                        <span class="dropdown-selected">{{ timeUnit?.name }}</span>
+                        <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
                         <div class="dropdown-container">
                           <div class="dropdown-item" (click)="setTimeUnit('DAY')">Day</div>
                           <div class="dropdown-item" (click)="setTimeUnit('WEEK')">Week</div>
@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="income-filter-desktop-footer">
-                  <div (click)="openIncomeFilterDesktop($event)" class="close-button">Close</div>
+                  <div (click)="closeIncomeFilterDesktop($event)" class="close-button">Close</div>
                   <div (click)="applyIncomeFilterDesktop($event)" class="ok-button">
                     <img src="/assets/img/apply.svg" alt=""/>
                     <span>Ok</span>

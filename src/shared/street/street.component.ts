@@ -174,7 +174,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
           this.countries = parseUrl.countries;
           this.regions = parseUrl.regions;
 
-          if (this.currencyUnit) {
+          if (this.currencyUnit && this.countries) {
             this.redrawStreet();
           }
         }
