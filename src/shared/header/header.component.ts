@@ -126,10 +126,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isPinCollapsed: boolean;
   public familiesByIncomeTrans: string = 'Families by income';
   public isIncomeDesktopOpened: boolean;
-  public timeUnit: any = {code: 'MONTH', name: 'Month'};
+  public timeUnit: any;
+  public timeUnits: any;
   public currencyUnit: any;
   public currencyUnits: any[];
   public showStreetAttrs: boolean;
+  public timeUnitTemp: any;
+  public currencyUnitTemp: any;
 
   public constructor(private router: Router,
                      private math: MathService,
@@ -160,7 +163,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   @HostListener('document:click', ['$event'])
   public isOutsideIncomeFilterClick(event: any): void {
     if (this.isIncomeDesktopOpened) {
-      this.openIncomeFilterDesktop(new MouseEvent('CLICK'));
+      this.closeIncomeFilterDesktop(new MouseEvent('CLICK'));
     }
   }
 
@@ -335,10 +338,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           this.isPinCollapsed = false;
         }
 
-        if (data.currencyUnit) {
-          if (this.currencyUnit !== data.currencyUnit) {
-            //this.currencyUnit = data.currencyUnit;
-            //console.log(data.currencyUnit);
+        if (data.timeUnits) {
+          if (this.timeUnits !== data.timeUnits) {
+            this.timeUnits = data.timeUnits;
+
+            this.setTimeUnit(this.urlParams.time);
+
+            this.timeUnit = this.timeUnitTemp;
+
+            this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
           }
         }
 
@@ -347,10 +355,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
             this.currencyUnits = data.currencyUnits;
 
             this.setCurrencyUnit(this.urlParams.currency);
-            this.setTimeUnit(this.urlParams.time);
+
+            this.currencyUnit = this.currencyUnitTemp;
 
             this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-            this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit.code));
           }
         }
 
@@ -424,70 +432,79 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public openIncomeFilterDesktop(e: MouseEvent): void {
     e.stopPropagation();
 
-    this.isIncomeDesktopOpened = !this.isIncomeDesktopOpened;
+    this.isIncomeDesktopOpened = true;
 
     let incomeDesktopFilterElement = this.element.querySelector('.filter') as HTMLElement;
 
-    if (this.isIncomeDesktopOpened) {
-      incomeDesktopFilterElement.classList.add('opened');
-    } else {
-      incomeDesktopFilterElement.classList.remove('opened');
-    }
+    incomeDesktopFilterElement.classList.add('opened');
+  }
+
+  public closeIncomeFilterDesktop(e: MouseEvent): void {
+    e.stopPropagation();
+
+    this.isIncomeDesktopOpened = false;
+
+    let incomeDesktopFilterElement = this.element.querySelector('.filter') as HTMLElement;
+
+    incomeDesktopFilterElement.classList.remove('opened');
+
+    this.timeUnitTemp = this.timeUnit;
+    this.currencyUnitTemp = this.currencyUnit;
   }
 
   public incomeContainerClick(e: MouseEvent): void {
     e.stopPropagation();
   }
 
-  public setTimeUnit(unit: string): void {
-    switch(unit) {
-      case 'DAY': {
-        this.timeUnit.code = 'DAY';
-        this.timeUnit.name = 'Day';
+  public setTimeUnit(code: string): void {
+    this.timeUnitTemp = this.timeUnits.find(unit => unit.code === code);
+  }
+
+  public setCurrencyUnit(code: string): void {
+    this.currencyUnitTemp = this.currencyUnits.find(unit => unit.code === code);
+  }
+
+  public setCurrencyForLang(lang: string): void {
+    switch(lang) {
+      case 'en': {
+        this.setCurrencyUnit('USD');
         break;
       }
-
-      case 'WEEK': {
-        this.timeUnit.code = 'WEEK';
-        this.timeUnit.name = 'Week';
+      case 'es-ES': {
+        this.setCurrencyUnit('EUR');
         break;
       }
-
-      case 'MONTH': {
-        this.timeUnit.code = 'MONTH'
-        this.timeUnit.name = 'Month';
-        break;
-      }
-
-      case 'YEAR': {
-        this.timeUnit.code = 'YEAR'
-        this.timeUnit.name = 'Year';
+      case 'sv-SE': {
+        this.setCurrencyUnit('SEK');
         break;
       }
     }
 
-    this.changeDetectorRef.detectChanges();
-  }
-
-  public setCurrencyUnit(code: string): void {
-    this.currencyUnit = this.currencyUnits.find(currUnit => currUnit.code === code);
+    this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
   }
 
   public applyIncomeFilterDesktop(e): void {
     this.openIncomeFilterDesktop(e);
 
-    let queryParams = this.utilsService.parseUrl(this.query);
+    this.timeUnit = this.timeUnitTemp;
+    this.currencyUnit = this.currencyUnitTemp;
 
+    let queryParams = this.utilsService.parseUrl(this.query);
     queryParams.currency = this.currencyUnit.code.toLowerCase();
     queryParams.time = this.timeUnit.code.toLowerCase();
-
     this.query = this.utilsService.objToQuery(queryParams);
 
     this.urlChangeService.replaceState('/matrix', this.query);
 
-    this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit.code));
+    this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
     this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
+
+    this.isIncomeDesktopOpened = false;
+
+    let incomeDesktopFilterElement = this.element.querySelector('.filter') as HTMLElement;
+
+    incomeDesktopFilterElement.classList.remove('opened');
   }
 
   public ngOnDestroy(): void {
@@ -682,6 +699,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
+
+    this.setTimeUnit('MONTH');
+    this.setCurrencyForLang(this.languageService.currentLanguage);
+
+    this.timeUnit = this.timeUnitTemp;
+    this.currencyUnit = this.currencyUnitTemp;
+
+    this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
+    this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
 
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 

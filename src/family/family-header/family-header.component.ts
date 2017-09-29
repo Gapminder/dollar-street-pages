@@ -2,6 +2,7 @@ import 'rxjs/operator/debounceTime';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -74,9 +75,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public showTranslateMe: boolean;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
-  public timeUnit: string;
-  public timeUnitSet: any;
-  public timeUnitTrans: any;
+  public timeUnit: any;
+  public timeUnits: any;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
@@ -84,6 +84,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public familyIncome: number;
   public queryParams: any;
   public queryParamsSubscribe: Subscription;
+  public homeSubject: Subject<any> = new Subject<any>();
+  public homeSubjectSubscription: Subscription;
 
   public constructor(zone: NgZone,
                      math: MathService,
@@ -105,13 +107,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.timeUnitSet = [
-      { code: 'DAY', name: 'Daily income', per: 'day' },
-      { code: 'WEEK', name: 'Weekly income', per: 'week' },
-      { code: 'MONTH', name: 'Monthly income', per: 'month' },
-      { code: 'YEAR', name: 'Yearly income', per: 'year' }
-    ];
-
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isMobile = this.browserDetectionService.isMobile();
     this.isTablet = this.browserDetectionService.isTablet();
@@ -154,9 +149,33 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
           }
         }
 
+        if (data.timeUnits) {
+          if (this.timeUnits !== data.timeUnits) {
+            this.timeUnits = data.timeUnits;
+
+            this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
+
+            this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
+
+            /*if (this.timeUnits && this.currencyUnits) {
+              this.setTimeCurrency();
+            }*/
+          }
+        } else {
+          this.store.dispatch(new MatrixActions.GetTimeUnits());
+        }
+
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
+
+            this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
+
+            this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+
+            if (this.timeUnits && this.currencyUnits) {
+              this.setTimeCurrency();
+            }
           }
         } else {
           this.store.dispatch(new MatrixActions.GetCurrencyUnits());
@@ -182,8 +201,9 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
       this.truncCountryName(this.home.country);
 
+      this.homeSubject.next(this.home);
       // this.setCurrencyForLang();
-      this.setTimeCurrency(this.queryParams);
+      // this.setTimeCurrency(this.queryParams.time);
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -194,6 +214,10 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
           this.maxHeightPopUp = this.windowHeight * .95 - 91;
         });
       });
+
+    this.homeSubjectSubscription = this.homeSubject.subscribe((data: any) => {
+      this.setTimeCurrency();
+    });
   }
 
   public ngOnDestroy(): void {
@@ -218,15 +242,23 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  public setTimeCurrency(params: any): void {
-    this.timeUnit = params.time;
-    this.currencyUnit = this.incomeCalcService.getTimeUnitByCode(this.currencyUnits, params.currency);
-    this.familyIncome = this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit, this.currencyUnit.value);
-    this.timeUnitTrans = this.incomeCalcService.getTimeUnitByCode(this.timeUnitSet, this.timeUnit);
+  public setTimeCurrency(): void {
+    //let timeUnit = params.time;
+    //let currencyUnit = params.currency;
 
-    this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+    //this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, currencyUnit);
+    //this.timeUnitTrans = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.timeUnit);
 
-    this.changeDetectorRef.detectChanges();
+
+    this.familyIncome = this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit.code, this.currencyUnit.value);
+
+    //console.log(this.home.income, this.timeUnit.code, this.currencyUnit.value);
+    //console.log(this.familyIncome);
+
+    //console.log(this.home.income, this.timeUnit.code, this.currencyUnit.value);
+    //this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+
+    //this.changeDetectorRef.detectChanges();
   }
 
   public openInfo(isOpenArticle: boolean): void {

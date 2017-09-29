@@ -142,13 +142,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public countriesFilterState: Observable<any>;
   public countriesFilterStateSubscription: Subscription;
   public isScreenshotProcessing: boolean;
-  public timeUnit: string;
+  public timeUnit: any;
   public currencyUnit: any;
   public currencyUnits: any[];
   public streetPlacesData: any;
   public timeUnitCode: string;
   public currencyUnitCode: string;
   public b: boolean;
+  public timeUnits: any;
 
   public constructor(zone: NgZone,
                      router: Router,
@@ -233,6 +234,25 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.isPinCollapsed = false;
         }
 
+        if (data.matrixImages) {
+          if (this.matrixImages !== data.matrixImages) {
+            this.matrixImages = data.matrixImages;
+            this.streetPlacesData = data.matrixImages;
+
+            this.processMatrixImages(this.matrixImages);
+
+            if (this.timeUnit && !this.isInit) {
+              this.changeTimeUnit(this.timeUnit);
+            }
+
+            if (this.currencyUnit && !this.isInit) {
+              this.changeCurrencyUnit(this.currencyUnit);
+            }
+
+            this.isInit = true;
+          }
+        }
+
         if (data.timeUnit) {
           if (this.timeUnit !== data.timeUnit) {
             this.timeUnit = data.timeUnit;
@@ -247,12 +267,18 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           }
         }
 
+        if (data.timeUnits) {
+          if (this.timeUnits !== data.timeUnits) {
+            this.timeUnits = data.timeUnits;
+          }
+        }
+
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
 
             if (!this.currencyUnitCode) {
-              this.setCurrencyForLang();
+              this.setCurrencyForLang(this.languageService.currentLanguage);
             }
           }
         }
@@ -285,30 +311,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           }
         }
 
-        if (data.matrixImages) {
-          if (this.matrixImages !== data.matrixImages) {
-            this.matrixImages = data.matrixImages;
-
-            this.processMatrixImages(this.matrixImages);
-
-            if (this.timeUnit) {
-              this.changeTimeUnit(this.timeUnit);
-            }
-
-            if (this.currencyUnit) {
-              this.changeCurrencyUnit(this.currencyUnit);
-            }
-          }
-        }
-
         if (this.query) {
           if (data.updateMatrix) {
             this.store.dispatch(new MatrixActions.UpdateMatrix(false));
-
-            if (this.currencyUnits) {
-              this.setCurrencyForLang();
-            }
-
             this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
           }
         }
@@ -413,6 +418,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
     this.store.dispatch(new MatrixActions.GetCurrencyUnits());
+    this.store.dispatch(new MatrixActions.GetTimeUnits());
   }
 
   public processStreetData(): void {
@@ -444,6 +450,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       if (this.currencyUnitCode && this.timeUnitCode) {
         this.query += `&currency=${this.currencyUnitCode.toLowerCase()}&time=${this.timeUnitCode.toLowerCase()}`;
       }
+
       this.query += this.languageService.getLanguageParam();
 
       if (this.activeHouse) {
@@ -462,55 +469,83 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  public setCurrencyForLang(): void {
-    let unit = null;
-
-    switch(this.languageService.currentLanguage) {
-      case 'en': {
-        unit = this.currencyUnits.find(unit => unit.code === 'USD');
-        break;
-      }
-      case 'es-ES': {
-        unit = this.currencyUnits.find(unit => unit.code === 'EUR');
-        break;
-      }
-      case 'sv-SE': {
-        unit = this.currencyUnits.find(unit => unit.code === 'SEK');
-        break;
-      }
-    }
+  public setCurrencyUnit(code: string): void {
+    let unit = this.currencyUnits.find(unit => unit.code === code);
 
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(unit));
   }
 
-  public changeTimeUnit(timeUnit: string): void {
+  public setCurrencyForLang(lang: string): void {
+    switch(lang) {
+      case 'en': {
+        this.setCurrencyUnit('USD');
+        break;
+      }
+      case 'es-ES': {
+        this.setCurrencyUnit('EUR');
+        break;
+      }
+      case 'sv-SE': {
+        this.setCurrencyUnit('SEK');
+        break;
+      }
+    }
+
+    //this.store.dispatch(new MatrixActions.SetCurrencyUnit(unit));
+  }
+
+  public changeTimeUnit(timeUnit: any): void {
     if (this.placesArr && this.currencyUnit) {
       this.placesArr = this.placesArr.map((place) => {
         if (place) {
-          place.showIncome = this.calcPlaceIncome(place.income, timeUnit, this.currencyUnit.value);
+          place.showIncome = this.calcPlaceIncome(place.income, timeUnit.code, this.currencyUnit.value);
 
           return place;
         }
       });
     }
+
+    /*if (this.streetPlacesData && this.currencyUnit) {
+      this.streetPlacesData = this.streetPlacesData.map((place) => {
+        if (place) {
+          place.showIncome = this.calcPlaceIncome(place.income, timeUnit.code, this.currencyUnit.value);
+
+          return place;
+        }
+      });
+
+      //this.store.dispatch(new MatrixActions.SetMatrixImages(this.streetPlacesData));
+    }*/
   }
 
-  public changeCurrencyUnit(unit: any): void {
+  public changeCurrencyUnit(currencyUnit: any): void {
     if (this.placesArr && this.timeUnit) {
       this.placesArr = this.placesArr.map((place) => {
         if (place) {
-          place.showIncome = this.calcPlaceIncome(place.income, this.timeUnit, unit.value);
+          place.showIncome = this.calcPlaceIncome(place.income, this.timeUnit.code, currencyUnit.value);
 
           return place;
         }
       });
     }
+
+    /*if (this.streetPlacesData && this.timeUnit) {
+      this.streetPlacesData = this.streetPlacesData.map((place) => {
+        if (place) {
+          place.showIncome = this.calcPlaceIncome(place.income, this.timeUnit.code, currencyUnit.value);
+
+          return place;
+        }
+      });
+
+      this.store.dispatch(new MatrixActions.SetMatrixImages(this.streetPlacesData));
+    }*/
   }
 
-  public calcPlaceIncome(income: number, timeUnit: string, currencyValue): number {
+  public calcPlaceIncome(income: number, timeUnitCode: string, currencyCoeff: number): number {
     let resultIncome: number = 0;
 
-    switch(timeUnit) {
+    switch(timeUnitCode) {
       case 'DAY': {
         resultIncome = income / 30;
         break;
@@ -532,7 +567,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       }
     }
 
-    return resultIncome * currencyValue;
+    return resultIncome * currencyCoeff;
   }
 
   public openPopUp(target: string): void {

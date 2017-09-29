@@ -5,7 +5,8 @@ export interface State {
     updateMatrix: boolean;
     pinMode: boolean;
     pinCollapsed: boolean;
-    timeUnit: string;
+    timeUnit: any;
+    timeUnits: any[];
     currencyUnit: any;
     currencyUnits: any[];
     incomeFilter: boolean;
@@ -19,7 +20,8 @@ export const initialState: State = {
     updateMatrix: false,
     pinMode: false,
     pinCollapsed: false,
-    timeUnit: 'MONTH',
+    timeUnit: null,
+    timeUnits: null,
     currencyUnit: null,
     currencyUnits: null,
     incomeFilter: false,
@@ -28,7 +30,7 @@ export const initialState: State = {
     processImages: false
 };
 
-export function matrixReducer(state: any = initialState, action: MatrixActions.Actions): any {
+export function matrixReducer(state: any = initialState, action: MatrixActions.Actions): State {
     switch (action.type) {
         case MatrixActions.UPDATE_MATRIX: {
             return Object.assign({}, state, {updateMatrix: action.payload});
@@ -40,10 +42,6 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
 
         case MatrixActions.SET_PIN_COLLAPSED: {
             return Object.assign({}, state, {pinCollapsed: action.payload});
-        }
-
-        case MatrixActions.SET_TIME_UNIT: {
-            return Object.assign({}, state, {timeUnit: action.payload});
         }
 
         case MatrixActions.OPEN_INCOME_FILTER: {
@@ -76,6 +74,14 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
 
         case MatrixActions.GET_MATRIX_IMAGES_SUCCESS: {
             return Object.assign({}, state, {matrixImages: action.payload});
+        }
+
+        case MatrixActions.SET_TIME_UNIT: {
+            return Object.assign({}, state, {timeUnit: action.payload});
+        }
+
+        case MatrixActions.GET_TIME_UNITS_SUCCESS: {
+            return Object.assign({}, state, {timeUnits: action.payload});
         }
 
         case MatrixActions.GET_CURRENCY_UNITS_SUCCESS: {
