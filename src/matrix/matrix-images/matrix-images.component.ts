@@ -203,10 +203,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data) {
-        if (data.query) {
-          this.query = data.query;
-        }
-
         if (data.pinMode) {
           this.isPinMode = true;
         } else {
