@@ -156,10 +156,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
             this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
 
             this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
-
-            /*if (this.timeUnits && this.currencyUnits) {
-              this.setTimeCurrency();
-            }*/
           }
         } else {
           this.store.dispatch(new MatrixActions.GetTimeUnits());
