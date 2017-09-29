@@ -5,6 +5,7 @@ export interface State {
     updateMatrix: boolean;
     pinMode: boolean;
     pinCollapsed: boolean;
+    showLabels: boolean;
     timeUnit: any;
     timeUnits: any[];
     currencyUnit: any;
@@ -20,6 +21,7 @@ export const initialState: State = {
     updateMatrix: false,
     pinMode: false,
     pinCollapsed: false,
+    showLabels: false,
     timeUnit: null,
     timeUnits: null,
     currencyUnit: null,
@@ -74,6 +76,10 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
 
         case MatrixActions.GET_MATRIX_IMAGES_SUCCESS: {
             return Object.assign({}, state, {matrixImages: action.payload});
+        }
+
+        case MatrixActions.SET_SHOW_LABELS: {
+            return Object.assign({}, state, {showLabels: action.payload});
         }
 
         case MatrixActions.SET_TIME_UNIT: {

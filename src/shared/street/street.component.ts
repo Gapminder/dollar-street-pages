@@ -130,11 +130,9 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
           if (this.streetData !== data.streetSettings) {
               this.streetData = data.streetSettings;
 
-              if (!this.placesArr) {
-                return;
+              if (this.placesArr) {
+                this.setDividers(this.placesArr, this.streetData);
               }
-
-              this.setDividers(this.placesArr, this.streetData);
           }
 
           if (data.showStreetAttrs) {
@@ -144,7 +142,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
           }
 
           this.street.showStreetAttrs = this.showStreetAttrs;
-          this.redrawStreet();
+
+          if (this.currencyUnit) {
+            this.redrawStreet();
+          }
         }
       }
     });

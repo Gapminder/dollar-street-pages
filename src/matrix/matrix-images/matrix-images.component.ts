@@ -501,8 +501,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public goToMatrixWithCountry(params: any): void {
     this.filter.emit(params);
-
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
   }
 
   public changeUrl(options: {row?: number, activeHouseIndex?: number}): void {

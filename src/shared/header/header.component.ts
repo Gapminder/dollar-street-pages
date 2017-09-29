@@ -131,6 +131,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public currencyUnit: any;
   public currencyUnits: any[];
   public showStreetAttrs: boolean;
+  public showStreetAttrsTemp: boolean;
   public timeUnitTemp: any;
   public currencyUnitTemp: any;
 
@@ -283,7 +284,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         highIncome: parseInt(params.highIncome, 10),
         lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage,
         currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
-        time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH'
+        time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH',
+        labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false
       };
 
       this.query = this.utilsService.objToQuery(this.urlParams);
@@ -296,6 +298,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
       this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
 
+      this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.urlParams.labels));
       this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
 
       this.interactiveIncomeText();
@@ -323,6 +326,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         } else {
           this.showStreetAttrs = false;
         }
+
+        this.showStreetAttrsTemp = this.showStreetAttrs;
       }
     });
 
@@ -415,10 +420,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     });
   }
 
-  public switchStrretAttrsShow(e: any): void {
-    this.showStreetAttrs = !this.showStreetAttrs;
-  }
-
   public isCurrentPage(name: string): boolean {
     let shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
 
@@ -452,6 +453,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.timeUnitTemp = this.timeUnit;
     this.currencyUnitTemp = this.currencyUnit;
+    this.showStreetAttrsTemp = this.showStreetAttrs;
   }
 
   public incomeContainerClick(e: MouseEvent): void {
@@ -490,10 +492,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
+    this.showStreetAttrs = this.showStreetAttrsTemp;
 
     let queryParams = this.utilsService.parseUrl(this.query);
     queryParams.currency = this.currencyUnit.code.toLowerCase();
     queryParams.time = this.timeUnit.code.toLowerCase();
+    queryParams.labels = this.showStreetAttrs;
     this.query = this.utilsService.objToQuery(queryParams);
 
     this.urlChangeService.replaceState('/matrix', this.query);
@@ -707,12 +711,16 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.setTimeUnit('MONTH');
     this.setCurrencyForLang(this.languageService.currentLanguage);
+    this.showStreetAttrsTemp = false;
 
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
+    this.showStreetAttrs = this.showStreetAttrsTemp;
 
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+
+    this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
 
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
