@@ -711,12 +711,16 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.setTimeUnit('MONTH');
     this.setCurrencyForLang(this.languageService.currentLanguage);
+    this.showStreetAttrsTemp = false;
 
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
+    this.showStreetAttrs = this.showStreetAttrsTemp;
 
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+
+    this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
 
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
