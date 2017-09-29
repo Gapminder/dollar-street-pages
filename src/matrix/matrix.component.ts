@@ -444,8 +444,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
 
-      if (this.currencyUnitCode && this.timeUnitCode) {
-        this.query += `&currency=${this.currencyUnitCode.toLowerCase()}&time=${this.timeUnitCode.toLowerCase()}`;
+      if (this.currencyUnitCode) {
+        this.query += `&currency=${this.currencyUnitCode.toLowerCase()}`;
+      }
+
+      if (this.timeUnitCode) {
+        this.query += `&time=${this.timeUnitCode.toLowerCase()}`;
       }
 
       if (this.showStreetAttrs) {
