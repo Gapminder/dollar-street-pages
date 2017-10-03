@@ -22,13 +22,6 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('aboutDialog')
     public aboutDialog: ElementRef;
 
-    public device: BrowserDetectionService;
-    public loaderService: LoaderService;
-    public donateService: DonateService;
-    public utilsService: UtilsService;
-    public titleHeaderService: TitleHeaderService;
-    public languageService: LanguageService;
-    public sanitizer: DomSanitizer;
     public getTranslationSubscribe: Subscription;
     public document: Document = document;
     public window: Window = window;
@@ -42,20 +35,13 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public elementTagName: string = 'script';
     public scriptAdded: boolean = false;
 
-    public constructor(loaderService: LoaderService,
-                       donateService: DonateService,
-                       titleHeaderService: TitleHeaderService,
-                       languageService: LanguageService,
-                       utilsService: UtilsService,
-                       browserDetectionService: BrowserDetectionService,
-                       sanitizer: DomSanitizer) {
-        this.loaderService = loaderService;
-        this.donateService = donateService;
-        this.titleHeaderService = titleHeaderService;
-        this.languageService = languageService;
-        this.device = browserDetectionService;
-        this.utilsService = utilsService;
-        this.sanitizer = sanitizer;
+    public constructor(private loaderService: LoaderService,
+                       private donateService: DonateService,
+                       private titleHeaderService: TitleHeaderService,
+                       private languageService: LanguageService,
+                       private utilsService: UtilsService,
+                       private browserDetectionService: BrowserDetectionService,
+                       private sanitizer: DomSanitizer) {
     }
 
     public ngOnInit(): void {
@@ -86,7 +72,7 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
             this.aboutDataPosition.top = data.top + 28;
 
             this.aboutDataPosition.windowHeight = this.window.innerHeight - 60;
-            this.aboutDataPosition.windowWidth = this.device.isMobile() ? this.window.innerWidth - 20 : 380;
+            this.aboutDataPosition.windowWidth = this.browserDetectionService.isMobile() ? this.window.innerWidth - 20 : 380;
 
             this.isShowAboutData = true;
             this.isShowAboutDataFullScreen = true;

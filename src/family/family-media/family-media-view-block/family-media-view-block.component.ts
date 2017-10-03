@@ -48,20 +48,14 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public countryName: string;
   public article: any;
   public streetData: DrawDividersInterface;
-  public zone: NgZone;
-  public viewBlockService: FamilyMediaViewBlockService;
   public viewBlockServiceSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public imageResolution: ImageResolutionInterface;
   public windowInnerWidth: number = window.innerWidth;
-  public device: BrowserDetectionService;
-  public utilsService: UtilsService;
   public isDesktop: boolean;
   public thing: any = {};
-  public languageService: LanguageService;
   public showTranslateMe: boolean;
   public element: HTMLElement;
-  public store: Store<AppStates>;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public viewImage: string;
   public streetSettingsStateSubscription: Subscription;
@@ -70,23 +64,17 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public showInRegion: any;
   public showInTheWorld: any;
 
-  public constructor(zone: NgZone,
-                     browserDetectionService: BrowserDetectionService,
-                     viewBlockService: FamilyMediaViewBlockService,
-                     languageService: LanguageService,
-                     utilsService: UtilsService,
-                     elementRef: ElementRef,
-                     store: Store<AppStates>) {
-    this.zone = zone;
-    this.viewBlockService = viewBlockService;
-    this.device = browserDetectionService;
-    this.languageService = languageService;
-    this.utilsService = utilsService;
+  public constructor(elementRef: ElementRef,
+                     private zone: NgZone,
+                     private browserDetectionService: BrowserDetectionService,
+                     private viewBlockService: FamilyMediaViewBlockService,
+                     private languageService: LanguageService,
+                     private utilsService: UtilsService,
+                     private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
-    this.store = store;
     this.consumerApi = environment.consumerApi;
 
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 

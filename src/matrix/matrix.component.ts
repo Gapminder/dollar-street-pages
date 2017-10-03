@@ -29,7 +29,8 @@ import {
   MathService,
   ImageGeneratorService,
   SocialShareService,
-  SortPlacesService
+  SortPlacesService,
+  IncomeCalcService
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
@@ -93,18 +94,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public query: string;
   public regions: string;
   public countries: string;
-  public zone: NgZone;
-  public router: Router;
-  public loaderService: LoaderService;
-  public activatedRoute: ActivatedRoute;
-  public urlChangeService: UrlChangeService;
-  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public element: HTMLElement;
   public imageResolution: ImageResolutionInterface;
   public matrixImagesContainer: HTMLElement;
   public imagesContainer: HTMLElement;
   public matrixImagesContainerHeight: number;
-  public locationStrategy: LocationStrategy;
   public guidePositionTop: number = 0;
   public imageContentElement: HTMLElement;
   public guideContainerElement: HTMLElement;
@@ -149,15 +143,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public timeUnits: any;
   public showStreetAttrs: boolean;
 
-  public constructor(zone: NgZone,
-                     router: Router,
-                     activatedRoute: ActivatedRoute,
-                     element: ElementRef,
-                     locationStrategy: LocationStrategy,
-                     loaderService: LoaderService,
-                     urlChangeService: UrlChangeService,
-                     browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+  public constructor(element: ElementRef,
+                     private zone: NgZone,
+                     private router: Router,
+                     private activatedRoute: ActivatedRoute,
+                     private locationStrategy: LocationStrategy,
+                     private loaderService: LoaderService,
+                     private urlChangeService: UrlChangeService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      private languageService: LanguageService,
                      private changeDetectorRef: ChangeDetectorRef,
                      private utilsService: UtilsService,
@@ -166,19 +160,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      private matrixService: MatrixService,
                      private imageGeneratorService: ImageGeneratorService,
                      private socialShareService: SocialShareService,
-                     private sortPlacesService: SortPlacesService) {
-    this.zone = zone;
-    this.router = router;
-    this.locationStrategy = locationStrategy;
-    this.activatedRoute = activatedRoute;
-    this.loaderService = loaderService;
+                     private sortPlacesService: SortPlacesService,
+                     private incomeCalcService: IncomeCalcService) {
     this.element = element.nativeElement;
-    this.device = browserDetectionService;
-    this.urlChangeService = urlChangeService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
 
-    this.isMobile = this.device.isMobile();
-    this.isDesktop = this.device.isDesktop();
+    this.isMobile = this.browserDetectionService.isMobile();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
@@ -239,11 +226,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
             this.processMatrixImages(this.matrixImages);
 
-            if (this.timeUnit && !this.isInit) {
+            if (this.timeUnit) {
               this.changeTimeUnit(this.timeUnit);
             }
 
-            if (this.currencyUnit && !this.isInit) {
+            if (this.currencyUnit) {
               this.changeCurrencyUnit(this.currencyUnit);
             }
           }
@@ -272,10 +259,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
-
-            if (!this.currencyUnitCode) {
-              this.setCurrencyForLang(this.languageService.currentLanguage);
-            }
           }
         }
 
@@ -474,105 +457,28 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  public setCurrencyUnit(code: string): void {
-    let unit = this.currencyUnits.find(unit => unit.code === code);
-
-    this.store.dispatch(new MatrixActions.SetCurrencyUnit(unit));
-  }
-
-  public setCurrencyForLang(lang: string): void {
-    switch(lang) {
-      case 'en': {
-        this.setCurrencyUnit('USD');
-        break;
-      }
-      case 'es-ES': {
-        this.setCurrencyUnit('EUR');
-        break;
-      }
-      case 'sv-SE': {
-        this.setCurrencyUnit('SEK');
-        break;
-      }
-    }
-
-    //this.store.dispatch(new MatrixActions.SetCurrencyUnit(unit));
-  }
-
   public changeTimeUnit(timeUnit: any): void {
     if (this.placesArr && this.currencyUnit) {
       this.placesArr = this.placesArr.map((place) => {
         if (place) {
-          place.showIncome = this.calcPlaceIncome(place.income, timeUnit.code, this.currencyUnit.value);
+          place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, timeUnit.code, this.currencyUnit.value);
 
           return place;
         }
       });
     }
-
-    /*if (this.streetPlacesData && this.currencyUnit) {
-      this.streetPlacesData = this.streetPlacesData.map((place) => {
-        if (place) {
-          place.showIncome = this.calcPlaceIncome(place.income, timeUnit.code, this.currencyUnit.value);
-
-          return place;
-        }
-      });
-
-      //this.store.dispatch(new MatrixActions.SetMatrixImages(this.streetPlacesData));
-    }*/
   }
 
   public changeCurrencyUnit(currencyUnit: any): void {
     if (this.placesArr && this.timeUnit) {
       this.placesArr = this.placesArr.map((place) => {
         if (place) {
-          place.showIncome = this.calcPlaceIncome(place.income, this.timeUnit.code, currencyUnit.value);
+          place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, currencyUnit.value);
 
           return place;
         }
       });
     }
-
-    /*if (this.streetPlacesData && this.timeUnit) {
-      this.streetPlacesData = this.streetPlacesData.map((place) => {
-        if (place) {
-          place.showIncome = this.calcPlaceIncome(place.income, this.timeUnit.code, currencyUnit.value);
-
-          return place;
-        }
-      });
-
-      this.store.dispatch(new MatrixActions.SetMatrixImages(this.streetPlacesData));
-    }*/
-  }
-
-  public calcPlaceIncome(income: number, timeUnitCode: string, currencyCoeff: number): number {
-    let resultIncome: number = 0;
-
-    switch(timeUnitCode) {
-      case 'DAY': {
-        resultIncome = income / 30;
-        break;
-      }
-
-      case 'WEEK': {
-        resultIncome = income / 4;
-        break;
-      }
-
-      case 'MONTH': {
-        resultIncome = income;
-        break;
-      }
-
-      case 'YEAR': {
-        resultIncome = income * 12;
-        break;
-      }
-    }
-
-    return resultIncome * currencyCoeff;
   }
 
   public openPopUp(target: string): void {

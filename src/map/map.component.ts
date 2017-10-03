@@ -53,15 +53,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public resizeSubscribe: Subscription;
   public mapServiceSubscribe: Subscription;
-  public math: MathService;
-  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  public mapService: MapService;
   public countries: any[] = [];
   public element: any;
   public hoverPortraitTop: any;
   public hoverPortraitLeft: any;
   public thing: any;
-  public urlChangeService: UrlChangeService;
   public query: string;
   public leftSideCountries: any;
   public seeAllHomes: boolean = false;
@@ -69,19 +65,13 @@ export class MapComponent implements OnInit, OnDestroy {
   public onThumb: boolean = false;
   public onMarker: boolean = false;
   public isOpenLeftSide: boolean = false;
-  public router: Router;
-  public activatedRoute: ActivatedRoute;
   public isDesktop: boolean;
   public isMobile: boolean;
-  public zone: NgZone;
   public shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
   public queryParamsSubscribe: Subscription;
-  public loaderService: LoaderService;
   public streetData: DrawDividersInterface;
   public streetServiceSubscribe: Subscription;
   public windowInnerWidth: number = window.innerWidth;
-  public device: BrowserDetectionService;
-  public languageService: LanguageService;
   public currentLanguage: string;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public appState: Observable<any>;
@@ -90,29 +80,19 @@ export class MapComponent implements OnInit, OnDestroy {
   public thingsFilterState: Observable<any>;
   public thingsFilterStateSubscription: Subscription;
 
-  public constructor(zone: NgZone,
-                     router: Router,
-                     math: MathService,
-                     element: ElementRef,
-                     mapService: MapService,
-                     loaderService: LoaderService,
-                     activatedRoute: ActivatedRoute,
-                     urlChangeService: UrlChangeService,
-                     browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     languageService: LanguageService,
+  public constructor(element: ElementRef,
+                     private zone: NgZone,
+                     private router: Router,
+                     private math: MathService,
+                     private mapService: MapService,
+                     private loaderService: LoaderService,
+                     private activatedRoute: ActivatedRoute,
+                     private urlChangeService: UrlChangeService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private languageService: LanguageService,
                      private store: Store<AppStates>) {
-    this.zone = zone;
-    this.math = math;
-    this.router = router;
-    this.mapService = mapService;
-    this.loaderService = loaderService;
     this.element = element.nativeElement;
-    this.activatedRoute = activatedRoute;
-    this.device = browserDetectionService;
-    this.urlChangeService = urlChangeService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.languageService = languageService;
 
     this.currentLanguage = this.languageService.currentLanguage;
 
@@ -122,8 +102,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.isDesktop = this.device.isDesktop();
-    this.isMobile = this.device.isMobile();
+    this.isDesktop = this.browserDetectionService.isDesktop();
+    this.isMobile = this.browserDetectionService.isMobile();
 
     // let isInit: boolean = false;
 

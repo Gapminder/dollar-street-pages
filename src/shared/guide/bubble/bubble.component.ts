@@ -36,29 +36,21 @@ export class BubbleComponent implements OnInit, OnDestroy {
   public isCloseBubble: boolean = false;
   public keyUpSubscribe: Subscription;
   public element: HTMLElement;
-  public zone: NgZone;
   public resizeSubscribe: Subscription;
-  public localStorageService: LocalStorageService;
-  public device: BrowserDetectionService;
-  public utilsService: UtilsService;
   public isTablet: boolean;
   public isMobile: boolean;
 
-  public constructor(zone: NgZone,
-                     element: ElementRef,
-                     browserDetectionService: BrowserDetectionService,
-                     localStorageService: LocalStorageService,
-                     utilsService: UtilsService) {
-    this.zone = zone;
-    this.element = element.nativeElement;
-    this.device = browserDetectionService;
-    this.localStorageService = localStorageService;
-    this.utilsService = utilsService;
+  public constructor(elementRef: ElementRef,
+                     private zone: NgZone,
+                     private browserDetectionService: BrowserDetectionService,
+                     private localStorageService: LocalStorageService,
+                     private utilsService: UtilsService) {
+    this.element = elementRef.nativeElement;
   }
 
   public ngOnInit(): void {
-    this.isTablet = this.device.isTablet();
-    this.isMobile = this.device.isMobile();
+    this.isTablet = this.browserDetectionService.isTablet();
+    this.isMobile = this.browserDetectionService.isMobile();
 
     this.getBubble(this.step);
 

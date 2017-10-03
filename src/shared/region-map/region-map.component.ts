@@ -29,13 +29,11 @@ export class RegionMapComponent implements OnChanges, OnDestroy, AfterViewInit {
   public markerPosition: any = {};
   public mapImage: HTMLImageElement;
   public element: HTMLElement;
-  public zone: NgZone;
   public resizeSubscriber: Subscription;
 
-  public constructor(zone: NgZone,
-                     element: ElementRef) {
-    this.zone = zone;
-    this.element = element.nativeElement;
+  public constructor(elementRef: ElementRef,
+                     private zone: NgZone) {
+    this.element = elementRef.nativeElement;
   }
 
   public ngAfterViewInit(): void {

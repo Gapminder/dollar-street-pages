@@ -42,34 +42,24 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public isMatrixPage: boolean;
   public isOpenMenu: boolean = false;
   public streetData: DrawDividersInterface;
-  public router: Router;
   public getTranslationSubscribe: Subscription;
-  public localStorageService: LocalStorageService;
-  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
   public socialShareContentElement: HTMLElement;
-  public languageService: LanguageService;
   public shareTranslation: string;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public languages: any;
   public streetSettingsStateSubscription: Subscription;
   public languagesListSubscription: Subscription;
 
-  public constructor(router: Router,
-                     element: ElementRef,
-                     languageService: LanguageService,
-                     localStorageService: LocalStorageService,
-                     browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+  public constructor(elementRef: ElementRef,
+                     private router: Router,
+                     private languageService: LanguageService,
+                     private localStorageService: LocalStorageService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      private store: Store<AppStates>) {
-    this.element = element.nativeElement;
-    this.router = router;
-    this.device = browserDetectionService;
-    this.localStorageService = localStorageService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.languageService = languageService;
+    this.element = elementRef.nativeElement;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
@@ -83,8 +73,8 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnInit(): void {
-    this.isMobile = this.device.isMobile();
-    this.isDesktop = this.device.isDesktop();
+    this.isMobile = this.browserDetectionService.isMobile();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {

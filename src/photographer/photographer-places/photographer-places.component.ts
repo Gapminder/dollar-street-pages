@@ -12,22 +12,13 @@ import { PhotographerPlacesService } from './photographer-places.service';
 export class PhotographerPlacesComponent implements OnInit, OnDestroy {
   @Input() public photographerId: string;
   public places: any = [];
-  public math: MathService;
-  public loaderService: LoaderService;
   public photographerPlacesServiceSubscribe: Subscription;
-  public photographerPlacesService: PhotographerPlacesService;
-  public languageService: LanguageService;
   public currentLanguage: string;
 
-  public constructor(math: MathService,
-                     loaderService: LoaderService,
-                     photographerPlacesService: PhotographerPlacesService,
-                     languageService: LanguageService) {
-    this.math = math;
-    this.loaderService = loaderService;
-    this.photographerPlacesService = photographerPlacesService;
-    this.languageService = languageService;
-
+  public constructor(private math: MathService,
+                     private loaderService: LoaderService,
+                     private photographerPlacesService: PhotographerPlacesService,
+                     private languageService: LanguageService) {
     this.currentLanguage = this.languageService.currentLanguage;
   }
 

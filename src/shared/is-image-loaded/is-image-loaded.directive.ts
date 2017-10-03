@@ -1,4 +1,12 @@
-import { Directive, OnInit, Input, Output, NgZone, ElementRef, EventEmitter } from '@angular/core';
+import {
+  Directive,
+  OnInit,
+  Input,
+  Output,
+  NgZone,
+  ElementRef,
+  EventEmitter
+} from '@angular/core';
 
 @Directive({selector: '[isImageLoaded]'})
 export class IsImageLoadedDirective implements OnInit {
@@ -8,13 +16,11 @@ export class IsImageLoadedDirective implements OnInit {
   @Output()
   public imageLoadedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  public zone: NgZone;
   public element: HTMLElement;
 
-  public constructor(zone: NgZone,
-                     element: ElementRef) {
-    this.zone = zone;
-    this.element = element.nativeElement;
+  public constructor(elementRef: ElementRef,
+                     private zone: NgZone) {
+    this.element = elementRef.nativeElement;
   }
 
   public ngOnInit(): void {

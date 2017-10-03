@@ -24,7 +24,6 @@ interface Photographer {
   templateUrl: './photographer-profile.component.html',
   styleUrls: ['./photographer-profile.component.css']
 })
-
 export class PhotographerProfileComponent implements OnInit, OnDestroy {
   public photographerTranslate: string;
   public showDetailsTranslate: string;
@@ -40,17 +39,11 @@ export class PhotographerProfileComponent implements OnInit, OnDestroy {
   @Output()
   public getPhotographer: EventEmitter<any> = new EventEmitter<any>();
 
-  public math: MathService;
   public photographer: Photographer;
-  public photographerProfileService: PhotographerProfileService;
-  public languageService: LanguageService;
 
-  public constructor(math: MathService,
-                     photographerProfileService: PhotographerProfileService,
-                     languageService: LanguageService) {
-    this.photographerProfileService = photographerProfileService;
-    this.math = math;
-    this.languageService = languageService;
+  public constructor(private math: MathService,
+                     private photographerProfileService: PhotographerProfileService,
+                     private languageService: LanguageService) {
   }
 
   public ngOnInit(): void {

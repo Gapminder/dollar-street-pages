@@ -36,7 +36,8 @@ import {
   LanguageService,
   UtilsService,
   UrlChangeService,
-  TitleHeaderService
+  TitleHeaderService,
+  IncomeCalcService
 } from '../../common';
 
 @Component({
@@ -79,9 +80,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public streetData: DrawDividersInterface;
   public activeThing: any;
   public window: Window = window;
-  public activatedRoute: ActivatedRoute;
-  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
   public isTablet: boolean;
@@ -135,23 +133,21 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public timeUnitTemp: any;
   public currencyUnitTemp: any;
 
-  public constructor(private router: Router,
+  public constructor(elementRef: ElementRef,
+                     private router: Router,
                      private math: MathService,
                      private languageService: LanguageService,
-                     activatedRoute: ActivatedRoute,
-                     browserDetectionService: BrowserDetectionService,
-                     element: ElementRef,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private activatedRoute: ActivatedRoute,
+                     private browserDetectionService: BrowserDetectionService,
+                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      private changeDetectorRef: ChangeDetectorRef,
                      private utilsService: UtilsService,
                      private urlChangeService: UrlChangeService,
                      private store: Store<AppStates>,
                      private titleHeaderService: TitleHeaderService,
-                     private renderer: Renderer) {
-    this.activatedRoute = activatedRoute;
-    this.device = browserDetectionService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.element = element.nativeElement;
+                     private renderer: Renderer,
+                     private incomeCalcService: IncomeCalcService) {
+    this.element = elementRef.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
@@ -164,7 +160,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   @HostListener('document:click', ['$event'])
   public isOutsideIncomeFilterClick(event: any): void {
     if (this.isIncomeDesktopOpened) {
-      this.closeIncomeFilterDesktop(new MouseEvent('CLICK'));
+      this.closeIncomeFilterDesktop(new MouseEvent(''));
     }
   }
 
@@ -242,9 +238,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public ngOnInit(): void {
-    this.isMobile = this.device.isMobile();
-    this.isDesktop = this.device.isDesktop();
-    this.isTablet = this.device.isTablet();
+    this.isMobile = this.browserDetectionService.isMobile();
+    this.isDesktop = this.browserDetectionService.isDesktop();
+    this.isTablet = this.browserDetectionService.isTablet();
 
     this.getTranslationSubscription = this.languageService.getTranslation(['BY_INCOME', 'THE_WORLD']).subscribe((trans: any) => {
       this.byIncomeText = trans.BY_INCOME;
@@ -349,7 +345,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           if (this.timeUnits !== data.timeUnits) {
             this.timeUnits = data.timeUnits;
 
-            this.setTimeUnit(this.urlParams.time);
+            this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.urlParams.time);
 
             this.timeUnit = this.timeUnitTemp;
 
@@ -360,8 +356,18 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
+console.log(this.urlParams.currency, 'CURRENCYYYY');
+            if (!this.urlParams.currency) {
+              this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
 
-            this.setCurrencyUnit(this.urlParams.currency);
+              /*let queryParams = this.utilsService.parseUrl(this.query);
+              queryParams.currency = this.urlParams.currency.toLowerCase();
+              let query = this.utilsService.objToQuery(queryParams);
+
+              this.urlChangeService.replaceState('/matrix', query);*/
+            } else {
+              this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
+            }
 
             this.currencyUnit = this.currencyUnitTemp;
 
@@ -460,31 +466,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     e.stopPropagation();
   }
 
-  public setTimeUnit(code: string): void {
-    this.timeUnitTemp = this.timeUnits.find(unit => unit.code === code);
+  public timeUnitFilterSelect(code: string): any {
+    this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, code);
   }
 
-  public setCurrencyUnit(code: string): void {
-    this.currencyUnitTemp = this.currencyUnits.find(unit => unit.code === code);
-  }
-
-  public setCurrencyForLang(lang: string): void {
-    switch(lang) {
-      case 'en': {
-        this.setCurrencyUnit('USD');
-        break;
-      }
-      case 'es-ES': {
-        this.setCurrencyUnit('EUR');
-        break;
-      }
-      case 'sv-SE': {
-        this.setCurrencyUnit('SEK');
-        break;
-      }
-    }
-
-    this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+  public currencyUnitFilterSelect(code: string): any {
+    this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, code);
   }
 
   public applyIncomeFilterDesktop(e): void {
@@ -709,8 +696,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
 
-    this.setTimeUnit('MONTH');
-    this.setCurrencyForLang(this.languageService.currentLanguage);
+    this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, 'MONTH');
+    this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
     this.showStreetAttrsTemp = false;
 
     this.timeUnit = this.timeUnitTemp;

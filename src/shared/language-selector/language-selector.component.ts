@@ -20,14 +20,12 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
 
   public disabled: boolean = false;
   public status: {isOpen: boolean} = {isOpen: false};
-  public languageService: LanguageService;
   public element: HTMLElement;
   public window: Window = window;
 
-  public constructor(languageService: LanguageService,
-                     element: ElementRef) {
-    this.element = element.nativeElement;
-    this.languageService = languageService;
+  public constructor(elementRef: ElementRef,
+                     private languageService: LanguageService) {
+    this.element = elementRef.nativeElement;
   }
 
   public ngOnInit(): void {

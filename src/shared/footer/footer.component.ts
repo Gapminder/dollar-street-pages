@@ -29,37 +29,24 @@ export class FooterComponent implements OnInit, OnDestroy {
   public window: Window = window;
   public isMatrixComponent: boolean;
   public streetData: DrawDividersInterface;
-  public router: Router;
-  public footerService: FooterService;
-  public utilsService: UtilsService;
   public footerServiceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
-  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public streetSettingsState: Observable<DrawDividersInterface>;
-  public languageService: LanguageService;
   public streetSettingsStateSubscription: Subscription;
 
-  public constructor(router: Router,
-                     footerService: FooterService,
-                     browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     languageService: LanguageService,
-                     utilsService: UtilsService,
+  public constructor(private router: Router,
+                     private footerService: FooterService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private languageService: LanguageService,
+                     private utilsService: UtilsService,
                      private store: Store<AppStates>) {
-    this.router = router;
-    this.footerService = footerService;
-    this.utilsService = utilsService;
-    this.device = browserDetectionService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.languageService = languageService;
-
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): any {
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {

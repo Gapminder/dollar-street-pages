@@ -11,21 +11,13 @@ import { LoaderService, TitleHeaderService, LanguageService } from '../common';
 
 export class TeamComponent implements OnInit, OnDestroy {
   public teamList: any;
-  public teamService: TeamService;
   public teamSubscribe: Subscription;
-  public titleHeaderService: TitleHeaderService;
-  public loaderService: LoaderService;
-  public languageService: LanguageService;
   public getTranslationSubscribe: Subscription;
 
-  public constructor(teamService: TeamService,
-                     loaderService: LoaderService,
-                     titleHeaderService: TitleHeaderService,
-                     languageService: LanguageService) {
-    this.teamService = teamService;
-    this.loaderService = loaderService;
-    this.titleHeaderService = titleHeaderService;
-    this.languageService = languageService;
+  public constructor(private teamService: TeamService,
+                     private loaderService: LoaderService,
+                     private titleHeaderService: TitleHeaderService,
+                     private languageService: LanguageService) {
   }
 
   public ngOnInit(): void {

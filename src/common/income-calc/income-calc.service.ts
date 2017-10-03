@@ -38,24 +38,24 @@ export class IncomeCalcService {
     return units.find(unit => unit.code === code);
   }
 
-  public getCurrencyUnitByLang(units: any[], lang: string): any {
-    let unit = null;
+  public getCurrencyUnitForLang(units: any[], lang: string): any {
+    let code = 'USD';
 
     switch(lang) {
       case 'en': {
-        unit = units.find(unit => unit.code === 'USD');
+        code = 'USD';
         break;
       }
       case 'es-ES': {
-        unit = units.find(unit => unit.code === 'EUR');
+        code = 'EUR';
         break;
       }
       case 'sv-SE': {
-        unit = units.find(unit => unit.code === 'SEK');
+        code = 'SEK';
         break;
       }
     }
 
-    return unit;
+    return units.find(unit => unit.code === code);
   }
 }

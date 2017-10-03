@@ -21,21 +21,13 @@ import { AboutService } from './about.service';
 export class AboutComponent implements AfterViewInit, OnDestroy {
   public about: any;
   public aboutContent: SafeHtml;
-  public aboutService: AboutService;
   public aboutSubscription: Subscription;
-  public titleHeaderService: TitleHeaderService;
-  public loaderService: LoaderService;
-  public languageService: LanguageService;
   public getTranslationSubscription: Subscription;
 
-  public constructor(aboutService: AboutService,
-                     loaderService: LoaderService,
-                     titleHeaderService: TitleHeaderService,
-                     languageService: LanguageService) {
-    this.aboutService = aboutService;
-    this.loaderService = loaderService;
-    this.titleHeaderService = titleHeaderService;
-    this.languageService = languageService;
+  public constructor(private aboutService: AboutService,
+                     private loaderService: LoaderService,
+                     private titleHeaderService: TitleHeaderService,
+                     private languageService: LanguageService) {
   }
 
   public ngAfterViewInit(): void {

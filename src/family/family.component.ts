@@ -42,7 +42,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public familyContainer: ElementRef;
 
   public theWorldTranslate: string;
-  public languageService: LanguageService;
   public window: Window = window;
   public document: Document = document;
   public streetFamilyData: {income: number, region: string};
@@ -54,16 +53,11 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public rich: any;
   public poor: any;
   public thing: any = {};
-  public router: Router;
-  public activatedRoute: ActivatedRoute;
   public locations: any[];
   public countries: any[];
   public activeImageIndex: number;
-  public urlChangeService: UrlChangeService;
   public windowHistory: any = history;
   public queryParamsSubscribe: Subscription;
-  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
-  public familyService: FamilyService;
   public familyServiceSetThingSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public scrollSubscribe: Subscription;
@@ -85,27 +79,20 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
 
-  public constructor(router: Router,
-                     activatedRoute: ActivatedRoute,
-                     urlChangeService: UrlChangeService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     familyService: FamilyService,
-                     languageService: LanguageService,
-                     browserDetectionService: BrowserDetectionService,
-                     elementRef: ElementRef,
+  public constructor(elementRef: ElementRef,
+                     private router: Router,
+                     private activatedRoute: ActivatedRoute,
+                     private urlChangeService: UrlChangeService,
+                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private familyService: FamilyService,
+                     private languageService: LanguageService,
+                     private browserDetectionService: BrowserDetectionService,
                      private store: Store<AppStates>,
                      private utilsService: UtilsService,
                      private changeDetectorRef: ChangeDetectorRef) {
-    this.router = router;
-    this.activatedRoute = activatedRoute;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.urlChangeService = urlChangeService;
-    this.languageService = languageService;
-    this.familyService = familyService;
-    this.device = browserDetectionService;
     this.element = elementRef.nativeElement;
 
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);

@@ -38,7 +38,6 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   @Output()
   public filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
-  public math: MathService;
   public street: any;
   public streetData: any;
   public element: HTMLElement;
@@ -47,12 +46,11 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
 
-  public constructor(element: ElementRef,
-                     math: MathService,
+  public constructor(elementRef: ElementRef,
                      streetDrawService: StreetFilterDrawService,
+                     private math: MathService,
                      private store: Store<AppStates>) {
-    this.element = element.nativeElement;
-    this.math = math;
+    this.element = elementRef.nativeElement;
     this.street = streetDrawService;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);

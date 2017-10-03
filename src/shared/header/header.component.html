@@ -68,7 +68,7 @@
                         <div class="dropdown-container">
                           <div *ngFor="let currUnit of currencyUnits"
                                class="dropdown-item"
-                               (click)="setCurrencyUnit(currUnit.code)">{{ currUnit?.currency }}</div>
+                               (click)="currencyUnitFilterSelect(currUnit.code)">{{ currUnit?.currency }}</div>
                         </div>
                       </div>
                     </div>
@@ -77,10 +77,10 @@
                       <div class="dropdown-button">
                         <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
                         <div class="dropdown-container">
-                          <div class="dropdown-item" (click)="setTimeUnit('DAY')">Day</div>
-                          <div class="dropdown-item" (click)="setTimeUnit('WEEK')">Week</div>
-                          <div class="dropdown-item" (click)="setTimeUnit('MONTH')">Month</div>
-                          <div class="dropdown-item" (click)="setTimeUnit('YEAR')">Year</div>
+                          <div class="dropdown-item" (click)="timeUnitFilterSelect('DAY')">Day</div>
+                          <div class="dropdown-item" (click)="timeUnitFilterSelect('WEEK')">Week</div>
+                          <div class="dropdown-item" (click)="timeUnitFilterSelect('MONTH')">Month</div>
+                          <div class="dropdown-item" (click)="timeUnitFilterSelect('YEAR')">Year</div>
                         </div>
                       </div>
                     </div>

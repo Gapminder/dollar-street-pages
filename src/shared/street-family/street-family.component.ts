@@ -42,10 +42,10 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
 
-  public constructor(element: ElementRef,
+  public constructor(elementRef: ElementRef,
                      streetDrawService: StreetFamilyDrawService,
                      private store: Store<AppStates>) {
-    this.element = element.nativeElement;
+    this.element = elementRef.nativeElement;
     this.street = streetDrawService;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);

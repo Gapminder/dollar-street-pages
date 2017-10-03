@@ -48,17 +48,14 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public query: string;
   public data: any;
   public window: Window = window;
-  public languageService: LanguageService;
   public getTranslationSubscribe: Subscription;
   public street: any;
   public regions: any;
   // public thing: string;
   public thingName: any;
   public countries: any;
-  public math: MathService;
   public streetData: any;
   public element: HTMLElement;
-  public activatedRoute: ActivatedRoute;
   public resize: any;
   public drawOnMap: boolean = false;
   public isStreetInit: boolean = false;
@@ -80,18 +77,15 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public currencyUnit: any;
   public showStreetAttrs: boolean;
 
-  public constructor(element: ElementRef,
-                     activatedRoute: ActivatedRoute,
-                     math: MathService,
+  public constructor(elementRef: ElementRef,
                      streetDrawService: StreetDrawService,
-                     languageService: LanguageService,
+                     private activatedRoute: ActivatedRoute,
+                     private math: MathService,
+                     private languageService: LanguageService,
                      private store: Store<AppStates>,
                      private utilsService: UtilsService) {
-    this.element = element.nativeElement;
-    this.activatedRoute = activatedRoute;
-    this.math = math;
+    this.element = elementRef.nativeElement;
     this.street = streetDrawService;
-    this.languageService = languageService;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
