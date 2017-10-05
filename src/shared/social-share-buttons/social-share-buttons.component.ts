@@ -17,17 +17,11 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   public window: Window = window;
   public getTranslationSubscribe: Subscription;
   public socialShareButtonsServiceSubscribe: Subscription;
-  public socialShareButtonsService: SocialShareButtonsService;
   public shareMessageTranslated: string;
-  public languageService: LanguageService;
-  public socialShareService: SocialShareService;
 
-  public constructor(socialShareButtonsService: SocialShareButtonsService,
-                     languageService: LanguageService,
-                     socialShareService: SocialShareService) {
-    this.socialShareButtonsService = socialShareButtonsService;
-    this.languageService = languageService;
-    this.socialShareService = socialShareService;
+  public constructor(private socialShareButtonsService: SocialShareButtonsService,
+                     private languageService: LanguageService,
+                     private socialShareService: SocialShareService) {
   }
 
   public ngOnInit(): void {

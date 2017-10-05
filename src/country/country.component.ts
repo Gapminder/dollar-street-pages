@@ -11,17 +11,11 @@ import { MathService, TitleHeaderService } from '../common';
 export class CountryComponent implements OnInit, OnDestroy {
   public title: string;
   public countryId: string;
-  public math: MathService;
-  public activatedRoute: ActivatedRoute;
   public queryParamsSubscribe: Subscription;
-  public titleHeaderService: TitleHeaderService;
 
-  public constructor(activatedRoute: ActivatedRoute,
-                     math: MathService,
-                     titleHeaderService: TitleHeaderService) {
-    this.activatedRoute = activatedRoute;
-    this.titleHeaderService = titleHeaderService;
-    this.math = math;
+  public constructor(private activatedRoute: ActivatedRoute,
+                     private math: MathService,
+                     private titleHeaderService: TitleHeaderService) {
   }
 
   public ngOnInit(): void {

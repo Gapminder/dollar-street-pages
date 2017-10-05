@@ -49,16 +49,14 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
   };
   public streetData: any;
   public element: HTMLElement;
-  public store: Store<AppStates>;
   public streetSettingsState: Observable<any>;
   public appState: Observable<any>;
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
 
-  public constructor(store: Store<AppStates>,
-                     element: ElementRef) {
-    this.element = element.nativeElement;
-    this.store = store;
+  public constructor(elementRef: ElementRef,
+                     private store: Store<AppStates>) {
+    this.element = elementRef.nativeElement;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.appState = this.store.select((appStates: AppStates) => appStates.app);

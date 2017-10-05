@@ -23,40 +23,27 @@ import { PhotographersService } from './photographers.service';
   templateUrl: './photographers.component.html',
   styleUrls: ['./photographers.component.css']
 })
-
 export class PhotographersComponent implements OnDestroy, AfterViewInit {
   @ViewChild('photographersSearch')
   public photographersSearch: ElementRef;
 
   public search: {text: string} = {text: ''};
-  public math: MathService;
   public photographersByCountry: any[] = [];
   public photographersByName: any[] = [];
-  public photographersService: PhotographersService;
   public photographersServiceSubscribe: Subscription;
   public keyUpSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public element: HTMLElement;
-  public titleHeaderService: TitleHeaderService;
-  public loaderService: LoaderService;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public languageService: LanguageService;
 
-  public constructor(element: ElementRef,
-                     math: MathService,
-                     loaderService: LoaderService,
-                     titleHeaderService: TitleHeaderService,
-                     browserDetectionService: BrowserDetectionService,
-                     photographersService: PhotographersService,
-                     languageService: LanguageService) {
-    this.math = math;
-    this.loaderService = loaderService;
-    this.element = element.nativeElement;
-    this.titleHeaderService = titleHeaderService;
-    this.photographersService = photographersService;
-    this.device = browserDetectionService;
-    this.languageService = languageService;
+  public constructor(elementRef: ElementRef,
+                     private math: MathService,
+                     private loaderService: LoaderService,
+                     private titleHeaderService: TitleHeaderService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private photographersService: PhotographersService,
+                     private languageService: LanguageService) {
+    this.element = elementRef.nativeElement;
   }
 
   public ngAfterViewInit(): void {
@@ -69,7 +56,7 @@ export class PhotographersComponent implements OnDestroy, AfterViewInit {
         }
       });
 
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.loaderService.setLoader(false);
 

@@ -42,7 +42,7 @@ describe('StreetComponent', () => {
         fixture = TestBed.createComponent(StreetComponent);
         component = fixture.componentInstance;
 
-        spyOn(component.languageService, 'getTranslation').and.returnValue(Observable.of({'POOREST': 'Poorest', 'RICHEST': 'Richest'}));
+        // spyOn(component.languageService, 'getTranslation').and.returnValue(Observable.of({'POOREST': 'Poorest', 'RICHEST': 'Richest'}));
     }));
 
     it('ngAfterViewInit()', () => {

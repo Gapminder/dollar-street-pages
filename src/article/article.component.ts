@@ -14,30 +14,20 @@ import { ArticleService } from './article.service';
 export class ArticleComponent implements OnInit, OnDestroy {
   public window: Window = window;
   public isDesktop: boolean;
-  public articleService: ArticleService;
   public articleServiceSubscribe: Subscription;
   public article: any;
   public thingId: string;
-  public activatedRoute: ActivatedRoute;
   public queryParamsSubscribe: Subscription;
-  public titleHeaderService: TitleHeaderService;
-  public loaderService: LoaderService;
-  public languageService: LanguageService;
   public element: HTMLElement;
   public showTranslateMe: boolean;
 
-  public constructor(activatedRoute: ActivatedRoute,
-                     loaderService: LoaderService,
-                     articleService: ArticleService,
-                     titleHeaderService: TitleHeaderService,
-                     languageService: LanguageService,
-                     elementRef: ElementRef) {
+  public constructor(elementRef: ElementRef,
+                     private activatedRoute: ActivatedRoute,
+                     private loaderService: LoaderService,
+                     private articleService: ArticleService,
+                     private titleHeaderService: TitleHeaderService,
+                     private languageService: LanguageService) {
     this.element = elementRef.nativeElement;
-    this.articleService = articleService;
-    this.activatedRoute = activatedRoute;
-    this.loaderService = loaderService;
-    this.titleHeaderService = titleHeaderService;
-    this.languageService = languageService;
   }
 
   public ngOnInit(): void {

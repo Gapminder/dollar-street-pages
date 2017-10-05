@@ -26,26 +26,20 @@ export class GuideComponent implements OnInit, OnDestroy {
   @Output()
   public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
-  public localStorageService: LocalStorageService;
   public isShowGuide: boolean;
   public description: string;
   public bubbles: any[];
   public isShowBubble: boolean = false;
-  public guideService: GuideService;
   public guideServiceSubscribe: Subscription;
   public element: HTMLElement;
-  public languageService: LanguageService;
   public localStorageServiceSubscription: Subscription;
 
-  public constructor(guideService: GuideService,
-                     localStorageService: LocalStorageService,
-                     languageService: LanguageService,
-                     element: ElementRef,
+  public constructor(elementRef: ElementRef,
+                     private guideService: GuideService,
+                     private localStorageService: LocalStorageService,
+                     private languageService: LanguageService,
                      private store: Store<AppStates>) {
-    this.guideService = guideService;
-    this.localStorageService = localStorageService;
-    this.languageService = languageService;
-    this.element = element.nativeElement;
+    this.element = elementRef.nativeElement;
   }
 
   public ngOnInit(): void {

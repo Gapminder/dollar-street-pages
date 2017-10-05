@@ -11,14 +11,11 @@ import { LanguageService } from '../../common';
 export class TranslateMeComponent implements OnInit, OnDestroy {
   public url: string = 'https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform';
 
-  public languageService: LanguageService;
-
   public getTranslationSubscribe: Subscription;
 
   public infoText: string;
 
-  public constructor(languageService: LanguageService) {
-    this.languageService = languageService;
+  public constructor(private languageService: LanguageService) {
   }
 
   public ngOnInit(): void {

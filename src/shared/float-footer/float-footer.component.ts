@@ -26,22 +26,16 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('floatFooterContainer')
   public floatFooterContainer: ElementRef;
 
-  public zone: NgZone;
   public element: HTMLElement;
   public scrollSubscribe: Subscription;
-  public device: BrowserDetectionService;
-  public utilsService: UtilsService;
   public isDesktop: boolean;
 
-  public constructor(zone: NgZone,
-                     element: ElementRef,
-                     browserDetectionService: BrowserDetectionService,
-                     utilsService: UtilsService,
+  public constructor(elementRef: ElementRef,
+                     private zone: NgZone,
+                     private browserDetectionService: BrowserDetectionService,
+                     private utilsService: UtilsService,
                      private store: Store<AppStates>) {
-    this.zone = zone;
-    this.element = element.nativeElement;
-    this.device = browserDetectionService;
-    this.utilsService = utilsService;
+    this.element = elementRef.nativeElement;
   }
 
   public ngAfterViewInit(): void {
@@ -62,7 +56,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnInit(): any {
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
   }
 
   public ngOnDestroy(): void {

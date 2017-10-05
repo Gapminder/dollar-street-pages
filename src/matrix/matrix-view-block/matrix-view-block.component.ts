@@ -67,14 +67,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public familyData: any = {};
   public loader: boolean = false;
   public markerPositionLeft: number;
-  public math: MathService;
   public privateZoom: any;
   public resizeSubscribe: Subscription;
   public popIsOpen: boolean;
   public mapData: any;
-  public familyInfoService: MatrixViewBlockService;
-  public zone: NgZone;
-  public router: Router;
   public widthScroll: number;
   public element: HTMLElement;
   public boxContainer: HTMLElement;
@@ -82,11 +78,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public isShowCountryButton: boolean;
   public countryName: string;
   public streetData: DrawDividersInterface;
-  public utilsService: UtilsService;
-  public languageService: LanguageService;
   public showTranslateMe: boolean;
   public imageResolution: ImageResolutionInterface;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public currentLanguage: string;
   public streetSettingsState: Observable<DrawDividersInterface>;
@@ -101,28 +94,21 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public timeUnit: any;
   public timeUnits: any[];
 
-  public constructor(zone: NgZone,
-                     router: Router,
-                     math: MathService,
-                     element: ElementRef,
-                     familyInfoService: MatrixViewBlockService,
-                     browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService,
-                     utilsService: UtilsService,
+  public constructor(elementRef: ElementRef,
+                     private zone: NgZone,
+                     private router: Router,
+                     private math: MathService,
+                     private familyInfoService: MatrixViewBlockService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private languageService: LanguageService,
+                     private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
                      private urlChangeService: UrlChangeService) {
-    this.math = math;
-    this.zone = zone;
-    this.router = router;
-    this.element = element.nativeElement;
-    this.device = browserDetectionService;
-    this.familyInfoService = familyInfoService;
-    this.languageService = languageService;
-    this.utilsService = utilsService;
+    this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.currentLanguage = this.languageService.currentLanguage;
 

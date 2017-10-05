@@ -78,11 +78,6 @@ describe('FamilyMediaComponent', () => {
 
     it('ngAfterViewInit() ngOnDestroy()', (() => {
         componentFixture.whenStable().then(() => {
-            expect(componentInstance.familyMediaService).toBeDefined();
-            expect(componentInstance.languageService).toBeDefined();
-            expect(componentInstance.loaderService).toBeDefined();
-            expect(componentInstance.device).toBeDefined();
-
             expect(componentInstance.images).toBeDefined();
 
             expect(componentInstance.isDesktop).toBeTruthy();

@@ -68,7 +68,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public itemSizeChanged: EventEmitter<any> = new EventEmitter<any>();
 
   public query: string;
-  public languageService: LanguageService;
   public theWorldTranslate: string;
   public sorryWeHaveNoTranslate: string;
   public onThisIncomeYetTranslate: string;
@@ -80,13 +79,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public imageBlockLocation: any;
   public indexViewBoxHouse: number;
   public positionInRow: number;
-  public math: MathService;
   public showErrorMsg: boolean = false;
   public errorMsg: any;
   public placesArr: any = [];
   public viewBlockHeight: number;
   public isDesktop: boolean;
-  public router: Router;
   public currentPlaces: any = [];
   public element: HTMLElement;
   public placesSubscribe: Subscription;
@@ -95,14 +92,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public familyData: any;
   public prevPlaceId: string;
   public resizeSubscribe: Subscription;
-  public zone: NgZone;
   public clearActiveHomeViewBoxSubscribe: Subscription;
   public imageMargin: number;
   public windowInnerWidth: number = window.innerWidth;
   public visibleImages: number;
-  public loaderService: LoaderService;
   public locations: any[];
-  public device: BrowserDetectionService;
   public getTranslationSubscribe: Subscription;
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
@@ -116,24 +110,18 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public maxPinnedCount: number = 6;
   public currencyUnit: any;
 
-  public constructor(zone: NgZone,
-                     router: Router,
-                     element: ElementRef,
-                     math: MathService,
-                     loaderService: LoaderService,
-                     browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService,
+  public constructor(elementRef: ElementRef,
+                     private zone: NgZone,
+                     private router: Router,
+                     private math: MathService,
+                     private loaderService: LoaderService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private languageService: LanguageService,
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
                      private sortPlacesService: SortPlacesService) {
-    this.languageService = languageService;
-    this.zone = zone;
-    this.math = math;
-    this.router = router;
-    this.loaderService = loaderService;
-    this.device = browserDetectionService;
-    this.element = element.nativeElement;
+    this.element = elementRef.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
@@ -142,7 +130,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public ngOnInit(): any {
     this.isInit = true;
 
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.getTranslationSubscribe = this.languageService.getTranslation(['THE_WORLD', 'SORRY_WE_HAVE_NO', 'ON_THIS_INCOME_YET', 'ON_THIS_INCOME_YET', 'IN']).subscribe((trans: any) => {
       this.sorryWeHaveNoTranslate = trans.SORRY_WE_HAVE_NO;

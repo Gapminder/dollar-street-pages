@@ -61,12 +61,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public showImageBlock: boolean = false;
   public activeImage: any;
   public prevImage: Object;
-  public familyMediaService: FamilyMediaService;
   public images: any = [];
   public familyPlaceServiceSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public openFamilyExpandBlockSubscribe: Subscription;
-  public zone: NgZone;
   public footerHeight: number;
   public headerHeight: number;
   public imageOffsetHeight: any;
@@ -76,10 +74,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public visibleImages: number;
   public currentImages: any = [];
   public viewBlockHeight: number;
-  public loaderService: LoaderService;
-  public languageService: LanguageService;
-  public utilsService: UtilsService;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public familyComponent: FamilyComponent;
   public familyImageContainerElement: HTMLElement;
@@ -88,25 +82,19 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public query: string;
   public queryParamsSubscribe: Subscription;
 
-  public constructor(zone: NgZone,
-                     element: ElementRef,
-                     loaderService: LoaderService,
-                     familyMediaService: FamilyMediaService,
-                     browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService,
-                     utilsService: UtilsService,
+  public constructor(element: ElementRef,
                      viewContainerRef: ViewContainerRef,
+                     private zone: NgZone,
+                     private loaderService: LoaderService,
+                     private familyMediaService: FamilyMediaService,
+                     private browserDetectionService: BrowserDetectionService,
+                     private languageService: LanguageService,
+                     private utilsService: UtilsService,
                      private urlChangeService: UrlChangeService) {
-    this.familyMediaService = familyMediaService;
-    this.zone = zone;
-    this.loaderService = loaderService;
     this.element = element.nativeElement;
-    this.device = browserDetectionService;
-    this.languageService = languageService;
-    this.utilsService = utilsService;
     this.familyComponent = (viewContainerRef as any)._data.componentView.parent.component as FamilyComponent;
 
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
   }

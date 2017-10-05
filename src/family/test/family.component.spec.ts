@@ -104,14 +104,6 @@ xdescribe('FamilyComponent', () => {
             expect(component.homeIncomeData.poor).toEqual(26);
             expect(component.homeIncomeData.rich).toEqual(15000);
 
-            expect(component.router).toBeDefined();
-            expect(component.activatedRoute).toBeDefined();
-            expect(component.angulartics2GoogleAnalytics).toBeDefined();
-            // expect(component.countriesFilterService).toBeDefined();
-            expect(component.urlChangeService).toBeDefined();
-            expect(component.languageService).toBeDefined();
-            expect(component.familyService).toBeDefined();
-
             expect(component.theWorldTranslate).toEqual('translated');
 
             spyOn(component.queryParamsSubscribe, 'unsubscribe');

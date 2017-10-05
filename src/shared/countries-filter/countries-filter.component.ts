@@ -49,8 +49,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   public query: string;
   public theWorldTranslate: string;
-  public languageService: LanguageService;
-  public utilsService: UtilsService;
   public window: Window = window;
   public sliceCount: number;
   public activeCountries: string;
@@ -68,12 +66,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public cloneSelectedRegions: string[] = ['World'];
   public cloneSelectedCountries: string[] = ['World'];
   public element: HTMLElement;
-  public zone: NgZone;
   public resizeSubscribe: Subscription;
   public keyUpSubscribe: Subscription;
   public orientationChange: Subscription;
   public openMobileFilterView: boolean = false;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isTablet: boolean;
   public isMobile: boolean;
@@ -83,29 +79,25 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
 
-  public constructor(zone: NgZone,
-                     element: ElementRef,
-                     browserDetectionService: BrowserDetectionService,
-                     languageService: LanguageService,
-                     utilsService: UtilsService,
+  public constructor(elementRef: ElementRef,
+                     private zone: NgZone,
+                     private browserDetectionService: BrowserDetectionService,
+                     private languageService: LanguageService,
+                     private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private urlChangeService: UrlChangeService,
                      private changeDetectorRef: ChangeDetectorRef) {
-    this.languageService = languageService;
-    this.device = browserDetectionService;
-    this.utilsService = utilsService;
 
-    this.element = element.nativeElement;
-    this.zone = zone;
+    this.element = elementRef.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
   public ngOnInit(): void {
-    this.isDesktop = this.device.isDesktop();
-    this.isMobile = this.device.isMobile();
-    this.isTablet = this.device.isTablet();
+    this.isDesktop = this.browserDetectionService.isDesktop();
+    this.isMobile = this.browserDetectionService.isMobile();
+    this.isTablet = this.browserDetectionService.isTablet();
 
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
       this.theWorldTranslate = trans;

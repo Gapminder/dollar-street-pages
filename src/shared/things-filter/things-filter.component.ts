@@ -53,17 +53,12 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   public search: {text: string;} = {text: ''};
   public isOpenThingsFilter: boolean = false;
   public activeColumn: string = '';
-  public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics;
   public things: any = [];
   public filterTopDistance: number = 0;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
-  public zone: NgZone;
   public resizeSubscribe: Subscription;
-  public utilsService: UtilsService;
   public openMobileFilterView: boolean = false;
   public keyUpSubscribe: Subscription;
-  public activatedRoute: ActivatedRoute;
   public element: HTMLElement;
   public thingsFilterState: Observable<any>;
   public isInit: boolean;
@@ -73,21 +68,16 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   public thingsFilterTitle: string;
   public thingsFilterData: any;
 
-  public constructor(activatedRoute: ActivatedRoute,
-                     element: ElementRef,
-                     zone: NgZone,
-                     browserDetectionService: BrowserDetectionService,
-                     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     utilsService: UtilsService,
+  public constructor(elementRef: ElementRef,
+                     private activatedRoute: ActivatedRoute,
+                     private zone: NgZone,
+                     private browserDetectionService: BrowserDetectionService,
+                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
                      private urlChangeService: UrlChangeService) {
-    this.activatedRoute = activatedRoute;
-    this.element = element.nativeElement;
-    this.zone = zone;
-    this.device = browserDetectionService;
-    this.angulartics2GoogleAnalytics = angulartics2GoogleAnalytics;
-    this.utilsService = utilsService;
+    this.element = elementRef.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
@@ -108,7 +98,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.isDesktop = this.device.isDesktop();
+    this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.isOpenMobileFilterView();
 
