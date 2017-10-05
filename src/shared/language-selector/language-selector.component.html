@@ -1,14 +1,14 @@
 <div class="lang-container">
   <div class="active-languages">
     <span class="lang-outside"
-          [ngClass]="{'lang-selected': languageService?.currentLanguage === languages?.primaryLanguage?.code}"
+          [ngClass]="{'lang-selected': currentLanguage === languages?.primaryLanguage?.code}"
           (click)="changeLanguage(languages?.primaryLanguage?.code)">
       {{languages?.primaryLanguage?.name}}
     </span>
 
     <span class="lang-outside"
           [ngClass]="{
-            'lang-selected': languageService?.currentLanguage === languages?.secondaryLanguage?.code,
+            'lang-selected': currentLanguage === languages?.secondaryLanguage?.code,
             'without-border': !languages || !languages.length
           }"
           (click)="changeLanguage(languages?.secondaryLanguage?.code)">

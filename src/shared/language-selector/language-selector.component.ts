@@ -22,6 +22,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public status: {isOpen: boolean} = {isOpen: false};
   public element: HTMLElement;
   public window: Window = window;
+  public currentLanguage: string;
 
   public constructor(elementRef: ElementRef,
                      private languageService: LanguageService) {
@@ -29,6 +30,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.currentLanguage = this.languageService.currentLanguage;
   }
 
   public ngOnDestroy(): void {

@@ -35,8 +35,6 @@ describe('TranslateMeComponent', () => {
     it('ngOnInit() ngOnDestroy()', () => {
         componentInstance.ngOnInit();
 
-        expect(componentInstance.languageService).toBeDefined();
-
         componentInstance.ngOnDestroy();
     });
 });
