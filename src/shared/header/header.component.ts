@@ -25,6 +25,7 @@ import * as ThingsFilterActions from '../things-filter/ngrx/things-filter.action
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import * as CountriesFilterActions from '../countries-filter/ngrx/countries-filter.actions';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
+import * as StreetSettingsActions from '../../common';
 import {
   MathService,
   Angulartics2GoogleAnalytics,
@@ -264,6 +265,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.query));
         this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
         this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
+        this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
       //}
 
       this.interactiveIncomeText();
@@ -491,6 +493,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
+    this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 
