@@ -121,7 +121,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isPinMode: boolean;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
-  public isPinCollapsed: boolean;
+  //public isPinCollapsed: boolean;
   public familiesByIncomeTrans: string = 'Families by income';
   public isIncomeDesktopOpened: boolean;
   public timeUnit: any;
@@ -132,6 +132,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public showStreetAttrsTemp: boolean;
   public timeUnitTemp: any;
   public currencyUnitTemp: any;
+  public isEmbedMode: boolean;
+  public headerContainerElement: HTMLElement;
+  public paddingPlaceElement: HTMLElement;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -165,8 +168,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public ngAfterViewInit(): void {
-    let headerContainerElement = this.element.querySelector('.header-container') as HTMLElement;
-    let paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
+    this.headerContainerElement = this.element.querySelector('.header-container') as HTMLElement;
+    this.paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
 
     this.resizeSubscription = fromEvent(window, 'resize')
       .debounceTime(150)
@@ -186,7 +189,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
         let scrollTopOffset = 0;
-        let paddingHeight = 0;
 
         let quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement;
 
@@ -195,7 +197,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         }
 
         if (scrollTop > scrollTopOffset) {
-          paddingHeight += headerContainerElement.clientHeight;
+          if (this.isPinMode || this.isEmbedMode) {
+            return;
+          }
+
+          /*paddingHeight += this.headerContainerElement.clientHeight;
 
           if (this.isMatrixPage) {
             let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
@@ -203,28 +209,63 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
             paddingHeight += streetContainerElement.clientHeight;
 
             streetContainerElement.style.position = 'fixed';
-            streetContainerElement.style.top = headerContainerElement.clientHeight + 'px';
+            streetContainerElement.style.top = this.headerContainerElement.clientHeight + 'px';
             streetContainerElement.style.zIndex = '998';
           }
 
-          paddingPlaceElement.style.height = paddingHeight + 'px';
+          this.paddingPlaceElement.style.height = paddingHeight + 'px';
 
-          this.toggleStyleClass(headerContainerElement, 'position-fixed', true);
+          this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);*/
+          this.checkHeaderFloat();
         } else {
-          if (this.isMatrixPage) {
+          /*if (this.isMatrixPage) {
             let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
 
             streetContainerElement.style.position = 'static';
             streetContainerElement.style.zIndex = '0';
           }
 
-          paddingPlaceElement.style.height = '0px';
+          this.paddingPlaceElement.style.height = '0px';
 
-          this.toggleStyleClass(headerContainerElement, 'position-fixed', false);
+          this.toggleStyleClass(this.headerContainerElement, 'position-fixed', false);*/
+          this.preventHeaderFloat();
         }
-      });
+    });
 
     this.calcIncomeSize();
+  }
+
+  public checkHeaderFloat(): void {
+    let paddingHeight = 0;
+
+    paddingHeight += this.headerContainerElement.clientHeight;
+
+    if (this.isMatrixPage) {
+      let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+
+      paddingHeight += streetContainerElement.clientHeight;
+
+      streetContainerElement.style.position = 'fixed';
+      streetContainerElement.style.top = this.headerContainerElement.clientHeight + 'px';
+      streetContainerElement.style.zIndex = '998';
+    }
+
+    this.paddingPlaceElement.style.height = paddingHeight + 'px';
+
+    this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);
+  }
+
+  public preventHeaderFloat(): void {
+    if (this.isMatrixPage) {
+      let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+
+      streetContainerElement.style.position = 'static';
+      streetContainerElement.style.zIndex = '0';
+    }
+
+    this.paddingPlaceElement.style.height = '0px';
+
+    this.toggleStyleClass(this.headerContainerElement, 'position-fixed', false);
   }
 
   public toggleStyleClass(el: HTMLElement, cls: string, toggle: boolean): void {
@@ -281,8 +322,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage,
         currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
         time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH',
-        labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false
+        labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false/*,
+        embed: decodeURI(params.embed)*/
       };
+
+      /*if (this.urlParams.embed !== 'undefined') {
+        this.store.dispatch(new MatrixActions.SetEmbedMode(true));
+      }*/
 
       this.query = this.utilsService.objToQuery(this.urlParams);
 
@@ -331,15 +377,23 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       if (data) {
         if (data.pinMode) {
           this.isPinMode = true;
+          this.preventHeaderFloat();
         } else {
           this.isPinMode = false;
         }
 
-        if (data.pinCollapsed) {
+        if (data.embedMode) {
+          this.isEmbedMode = true;
+          this.preventHeaderFloat();
+        } else {
+          this.isEmbedMode = false;
+        }
+
+        /*if (data.pinCollapsed) {
           this.isPinCollapsed = true;
         } else {
           this.isPinCollapsed = false;
-        }
+        }*/
 
         if (data.timeUnits) {
           if (this.timeUnits !== data.timeUnits) {
@@ -356,7 +410,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
-console.log(this.urlParams.currency, 'CURRENCYYYY');
+
             if (!this.urlParams.currency) {
               this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
 

@@ -1,4 +1,5 @@
 import 'rxjs/operator/debounceTime';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
@@ -33,6 +34,8 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
 
   @Input()
   public places: any;
+  @Input()
+  public hoverPlace: Subject<any>;
 
   public window: Window = window;
   public street: any;
@@ -46,6 +49,7 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public getTranslationSubscription: Subscription;
+  public hoverPlaceSubscribe: Subscription;
 
   public constructor(element: ElementRef,
                      streetDrawService: StreetPinnedDrawService,
@@ -101,13 +105,26 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
           return;
         }
 
-        streetBoxContainerMarginLeft = window.getComputedStyle(this.streetBoxContainer)
-          .getPropertyValue('margin-left');
+        streetBoxContainerMarginLeft = window.getComputedStyle(this.streetBoxContainer).getPropertyValue('margin-left');
 
         this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
 
         this.drawStreet(this.streetData, this.places);
       });
+
+    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace: any): void => {
+      if (!hoverPlace) {
+        this.street.removeHouses('hover');
+
+        this.street.drawHouses(this.places);
+
+        return;
+      }
+
+//      console.log(this.places);
+      this.street.drawHouses(this.places);
+      this.street.drawHoverHouse(hoverPlace);
+    });
   }
 
   public ngOnDestroy(): void {
@@ -127,6 +144,10 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
       this.getTranslationSubscription.unsubscribe();
     }
 
+    if (this.hoverPlaceSubscribe) {
+      this.hoverPlaceSubscribe.unsubscribe();
+    }
+
     this.street.clearSvg();
   }
 
@@ -137,7 +158,7 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
       .drawRoad();
 
     if (places) {
-      this.street.drawHouse(places);
+      this.street.drawHouses(places);
     }
   }
 }

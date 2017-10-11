@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { DrawDividersInterface, BrowserDetectionService } from '../../common';
 import { scaleLog } from 'd3-scale';
@@ -14,7 +15,7 @@ export class StreetPinnedDrawService {
   public axisLabel: number[] = [];
   public svg: any;
   public draggingSliders: boolean = false;
-  public hoverPlace: any;
+  //public hoverPlace: any;
   public windowInnerWidth: number = window.innerWidth;
   public device: BrowserDetectionService;
   public isDesktop: boolean;
@@ -50,8 +51,10 @@ export class StreetPinnedDrawService {
     this.windowInnerWidth = window.innerWidth;
 
     this.scale = scaleLog()
-      .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
-      .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
+      .domain([drawDividers.poor, drawDividers.rich])
+      .range([0, this.width]);
+      //.domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
+      //.range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
 
     return this;
   }
@@ -98,7 +101,7 @@ export class StreetPinnedDrawService {
       .attr('stroke-width', 2)
       .attr('stroke', 'white');
 
-    this.svg
+    /*this.svg
       .selectAll('text.poorest')
       .data([this.poorest])
       .enter()
@@ -108,9 +111,9 @@ export class StreetPinnedDrawService {
       .attr('x', 0)
       .attr('y', this.height)
       .attr('fill', '#767d86')
-      .attr('font-size', '20px');
+      .attr('font-size', '20px');*/
 
-    this.svg
+    /*this.svg
       .selectAll('text.richest')
       .data([this.richest])
       .enter()
@@ -119,9 +122,9 @@ export class StreetPinnedDrawService {
       .text(this.richest)
       .attr('y', this.height)
       .attr('fill', '#767d86')
-      .attr('font-size', '20px');
+      .attr('font-size', '20px');*/
 
-    let svgElement: any = document.getElementById('chart');
+    /*let svgElement: any = document.getElementById('chart');
     let svgElementNodes: any = svgElement.childNodes;
     let richestWidth = svgElementNodes[4].getBBox().width;
 
@@ -129,12 +132,13 @@ export class StreetPinnedDrawService {
 
     this.svg
       .selectAll('text.richest')
-      .attr('x', this.width + 60 - richestWidth);
+      .attr('x', this.width + 60 - richestWidth);*/
 
     return this;
   };
 
-  public drawHouse(places: any): this {
+  public drawHouses(places: any): this {
+//console.log(places);
     if (!places) {
       return this;
     }
@@ -146,14 +150,14 @@ export class StreetPinnedDrawService {
     let houseOffset = 4;
 
     this.svg
-      .selectAll('polygon.hover')
+      .selectAll('polygon')
       .data(places)
       .enter()
       .append('polygon')
-      .attr('class', 'hover')
+      .attr('class', 'point')
       .attr('points', (datum: any): any => {
         let scaleDatumIncome: number = this.scale(datum.income);
-
+//console.log(datum);
         let point1: string = `${this.streetOffset / 2 + scaleDatumIncome + roofX - 1},${houseOffset + 27}`;
         let point2: string = `${this.streetOffset / 2 + scaleDatumIncome + roofX - 1},${houseOffset + 12}`;
         let point3: string = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth - 2},${houseOffset + 12}`;
@@ -165,12 +169,83 @@ export class StreetPinnedDrawService {
         return !datum ? void 0 : `${point1} ${point2} ${point3} ${point4} ${point5} ${point6} ${point7}`;
       })
       .attr('stroke-width', 1)
+      /*.attr('stroke', (datum: any): any => {
+        return !datum ? void 0 : fillsOfBorders[datum.region];
+      })*/
+      /*.style('fill', (datum: any): any => {
+        return !datum ? void 0 : fills[datum.region];
+      });*/
+      .style('fill', '#aaacb0');
+
+    return this;
+  };
+
+  public drawHoverHouse(place: any, gray: boolean = false): this {
+    if (!place) {
+      return this;
+    }
+
+    let fills = this.colors.fills;
+    let fillsOfBorders = this.colors.fillsOfBorders;
+    let halfHouseWidth = 12.5;
+    let roofX = 2 - halfHouseWidth;
+    let roofY = this.halfOfHeight - 15 - 1;
+
+    this.svg
+      .selectAll('polygon.hover')
+      .data([place])
+      .enter()
+      .append('polygon')
+      .attr('class', 'hover')
+      .attr('points', (datum: any): any => {
+        let point1: string;
+        let point2: string;
+        let point3: string;
+        let point4: string;
+        let point5: string;
+        let point6: string;
+        let point7: string;
+
+        if (datum) {
+          let scaleDatumIncome = this.scale(datum.income);
+          point1 = `${scaleDatumIncome + this.streetOffset / 2 + roofX },${this.halfOfHeight}`;
+          point2 = `${scaleDatumIncome + this.streetOffset / 2 + roofX},${roofY}`;
+          point3 = `${scaleDatumIncome + this.streetOffset / 2 - halfHouseWidth},${roofY}`;
+          point4 = `${scaleDatumIncome + this.streetOffset / 2 },${this.halfOfHeight - 26 - 1}`;
+          point5 = `${scaleDatumIncome + this.streetOffset / 2 + halfHouseWidth },${roofY}`;
+          point6 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${roofY}`;
+          point7 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${this.halfOfHeight}`;
+        }
+
+        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
+          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+      })
+      .attr('stroke-width', 1)
       .attr('stroke', (datum: any): any => {
+        if (gray) {
+          return '#303e4a';
+        }
+
         return !datum ? void 0 : fillsOfBorders[datum.region];
       })
       .style('fill', (datum: any): any => {
+        if (gray) {
+          return '#374551';
+        }
+
         return !datum ? void 0 : fills[datum.region];
       });
+
+    return this;
+  };
+
+  public removeHouses(selector: any): this {
+    this.svg.selectAll('rect.' + selector).remove();
+    this.svg.selectAll('polygon.' + selector).remove();
+
+    if (selector === 'chosen') {
+      this.svg.selectAll('polygon.chosenLine').remove();
+    }
 
     return this;
   };

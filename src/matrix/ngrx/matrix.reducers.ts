@@ -4,6 +4,7 @@ export interface State {
     matrixImages: any;
     updateMatrix: boolean;
     pinMode: boolean;
+    embedMode: boolean;
     pinCollapsed: boolean;
     showLabels: boolean;
     timeUnit: any;
@@ -20,6 +21,7 @@ export const initialState: State = {
     matrixImages: null,
     updateMatrix: false,
     pinMode: false,
+    embedMode: false,
     pinCollapsed: false,
     showLabels: false,
     timeUnit: null,
@@ -42,8 +44,12 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
             return Object.assign({}, state, {placesSet: []}, {pinMode: action.payload});
         }
 
-        case MatrixActions.SET_PIN_COLLAPSED: {
+        /*case MatrixActions.SET_PIN_COLLAPSED: {
             return Object.assign({}, state, {pinCollapsed: action.payload});
+        }*/
+
+        case MatrixActions.SET_EMBED_MODE: {
+            return Object.assign({}, state, {embedMode: action.payload});
         }
 
         case MatrixActions.OPEN_INCOME_FILTER: {

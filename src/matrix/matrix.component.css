@@ -110,27 +110,87 @@ matrix-images {
 }
 
 .heart-container .heart-circle {
-  align-self: center;
+  /*align-self: center;
   width: 74px;
   height: 74px;
   border-radius: 50%;
   background-color: white;
+  cursor: pointer;*/
+  width: 23px;
+  height: 23px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
   cursor: pointer;
 }
 
-.heart-container svg {
+.heart-circle img {
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+/*.heart-container svg {
   margin: 19px 17px 17px 17px;
   width: 40px;
   height: 37px;
+}*/
+
+.pin-plus-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.pin-container .pin-plus {
+  display: flex;
+  justify-content: center;
+}
+
+.pin-plus .pin-plus-sign {
+  width: 37px;
+  height: 37px;
+  align-self: center;
+}
+
+.pin-plus img {
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+}
+
+.street-pinned-container {
+  position: relative;
+}
+
+.street-pinned-container span {
+  color: #374551;
+  font-size: 14px;
+  position: absolute;
+  z-index: 9999;
+  text-transform: uppercase;
+}
+
+.street-pinned-container .poorest {
+  bottom: -4px;
+  left: 20px;
+}
+
+.street-pinned-container .richest {
+  bottom: -4px;
+  right: 20px;
 }
 
 .pin-container {
   width: 100%;
-  margin-top: -2px;
+  /* margin-top: -2px; */
   background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  position: fixed;
+  z-index: 999;
+  top: 0px;
 }
 
 .embed-bg {
@@ -162,6 +222,31 @@ matrix-images {
   justify-content: flex-start;
   position: relative;
   padding: 10px 20px 10px 20px;
+}
+
+.grey-bg {
+  background-color: #394450;
+}
+
+.embed-footer-text {
+
+}
+
+.embed-footer-text h3 {
+  text-align: center;
+  margin: 0;
+}
+
+.embed-footer-text span {
+  font-size: 24px;
+  color: #394451;
+  padding-left: 20px;
+}
+
+.embed-footer-text img {
+  height: 20px;
+  font-weight: 400;
+  margin-bottom: 6px;
 }
 
 .places-container .embed-close-button {
@@ -248,16 +333,20 @@ matrix-images {
   box-shadow: 0.6px 0.8px 2.9px 0.1px rgba(0, 0, 0, 0.2);
 }
 
+.shared-completed-section {
+  margin-bottom: 20px;
+}
+
+.shared-ready-section {
+  margin-bottom: 20px;
+}
+
 .shared-ready-section .loader-content {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
+  /*position: absolute;*/
   height: 64px;
   margin: auto;
   text-align: center;
-  z-index: 999;
+  /*z-index: 999;*/
 }
 
 .shared-ready-section .isLoad {
@@ -275,33 +364,52 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 4px;
-  height: 60px;
-  background-color: #394450;
+  /* margin-top: -14px; */
+  /* height: 60px; */
+  /* background-color: #394450; */
+  background-color: rgba(255, 255, 255, 0);
 }
 
 .pin-footer-edit .pin-done-share {
   color: white;
-  font-size: 24px;
+  font-size: 18px;
+  line-height: 34px;
+  text-align: center;
   border: 1px solid white;
-  background-color: #495863;
-  padding: 0px 40px;
+  width: 110px;
+  height: 30px;
+  /* background-color: #495863; */
+  background-color: #394450;;
+  /*padding: 0px 40px;*/
   height: 38px;
-  line-height: 38px;
+  margin-bottom: 10px;
+  /* line-height: 38px; */
 }
 
-.pin-footer-edit .pin-mode-close {
-  color: #737B84;
+.pin-mode-close {
+  /*color: #737B84;
   font-size: 18px;
   padding: 0px 40px;
   text-align: center;
   height: 38px;
-  line-height: 38px;
+  line-height: 38px;*/
+
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.pin-mode-close img {
+  width: 100%;
+  height: 100%;
 }
 
 .pin-footer .pin-footer-edit span {
   display: inline-block;
-  margin-top: 8px;
+  /* margin-top: 8px; */
   cursor: pointer;
 }
 
@@ -319,7 +427,7 @@ matrix-images {
   justify-content: center;
   margin-top: 20px;
   position: relative;
-  min-height: 48px;
+  /*min-height: 48px;*/
 }
 
 .shared-ready-section span {
@@ -334,7 +442,7 @@ matrix-images {
 }
 
 .pin-footer-share p {
-  width: 818px;
+  min-width: 818px;
   height: 54px;
   font-size: 18px;
   font-weight: 400;
@@ -343,6 +451,11 @@ matrix-images {
   margin: 0 auto;
   align-self: center;
   text-align: center;
+}
+
+.pin-footer-share h3 {
+  text-align: center;
+  margin: 0;
 }
 
 .pin-footer-share .share-buttons-container {
@@ -378,15 +491,20 @@ matrix-images {
   margin-top: 20px;
 }
 
-.pin-footer-share .back-close-buttons {
+.pin-footer-share .share-close-buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
-.pin-footer-share .back-close-buttons span {
-  width: 86px;
+.pin-footer-share .share-close-buttons span:first-child {
+  border: 1px solid #9c9fa4;
+  padding: 0 4px;
+}
+
+.pin-footer-share .share-close-buttons span {
+  min-width: 86px;
   height: 32px;
   display: inline-block;
   color: #3a4450;
@@ -398,7 +516,7 @@ matrix-images {
   text-align: center;
 }
 
-.pin-footer-share .back-close-buttons span:last-child {
+.pin-footer-share .share-close-buttons span:last-child {
   color: #777d86;
 }
 
@@ -411,17 +529,26 @@ matrix-images {
 }
 
 .pin-header {
-  height: 44px;
+  height: 36px;
   margin-top: -2px;
-  background-color: #394450;
+  /* background-color: #394450; */
+  /* background-color: #4D4D4D; */
+}
+
+.pin-header.white-font p {
+  color: white;
+}
+
+.street-pinned-container.white-font span {
+  color: white;
 }
 
 .pin-header p {
   display: inline-block;
   padding-left: 20px;
-  font-size: 18px;
+  font-size: 28px;
   line-height: 44px;
-  color: #ffffff;
+  color: #374551;
 }
 
 .pin-header .buttons-container {
