@@ -13,7 +13,9 @@ import {
   NgZone,
   AfterViewInit,
   ChangeDetectorRef,
-  ViewChild
+  ViewChild,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
@@ -53,6 +55,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetContainer: ElementRef;
   @ViewChild('matrixHeader')
   public matrixHeader: ElementRef;
+
+  @Output()
+  public hoverPinnedPlace: EventEmitter<any> = new EventEmitter<any>();
 
   public matrixHeaderElement: HTMLElement;
   public streetContainerElement: HTMLElement;
@@ -118,14 +123,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public thingsFilterState: Observable<any>;
   public thingsFilterStateSubscription: Subscription;
   public isPinMode: boolean;
-  public isPinCollapsed: boolean;
+  // public isPinCollapsed: boolean;
   public pinContainerElement: HTMLElement;
   public placesSet: Array<any>;
   public pinItemSize: number;
   public maxPinnedCount: number = 6;
   public pinHeaderTitle: string;
   public isPreviewView: boolean;
-  public isEmbedView: boolean;
+  public isEmbedMode: boolean;
   public embedSetId: string;
   public isEmbedShared: boolean;
   public activeThing: any;
@@ -142,6 +147,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public currencyUnitCode: string;
   public timeUnits: any;
   public showStreetAttrs: boolean;
+  public plusSignWidth: number;
+  public pinPlusArr: number[] = new Array(6);
+  public pinPlusCount: number = 6;
+  public pinPlusOffset: number = 16;
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -179,6 +188,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public ngAfterViewInit(): void {
     this.headerElement = document.querySelector('.header-content') as HTMLElement;
 
+    this.plusSignWidth = this.element.offsetWidth / this.pinPlusCount - this.pinPlusOffset;
+
     this.matrixImagesContainer = this.matrixImagesComponent.element;
     this.matrixHeaderElement = this.matrixHeader.nativeElement;
     this.streetContainerElement = this.streetContainer.nativeElement;
@@ -202,22 +213,32 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       if (data) {
         if (data.pinMode) {
           this.isPinMode = true;
-          this.isEmbedView = false;
+          this.isEmbedMode = false;
+
+          //this.showHideHeader(true);
         } else {
           this.isPinMode = false;
           this.isEmbedShared = false;
           this.isPreviewView = false;
 
-          if (this.isPinCollapsed) {
+          //this.showHideHeader(false);
+
+          /*if (this.isPinCollapsed) {
             this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
-          }
+          }*/
         }
 
-        if (data.pinCollapsed) {
+        if (data.embedMode) {
+          this.isEmbedMode = true;
+        } else {
+          this.isEmbedMode = false;
+        }
+
+        /*if (data.pinCollapsed) {
           this.isPinCollapsed = true;
         } else {
           this.isPinCollapsed = false;
-        }
+        }*/
 
         if (data.matrixImages) {
           if (this.matrixImages !== data.matrixImages) {
@@ -280,8 +301,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           if (this.placesSet !== data.placesSet) {
             this.placesSet = data.placesSet;
 
+            if (this.pinPlusCount - this.placesSet.length > 0) {
+              this.pinPlusArr = new Array(this.pinPlusCount - this.placesSet.length);
+            }
+
             if (!this.isPinMode && this.placesSet.length) {
-              this.isEmbedView = true;
+              this.isEmbedMode = true;
             }
 
             this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount;
@@ -337,6 +362,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
           this.windowInnerHeight = window.innerHeight;
           this.windowInnerWidth = window.innerWidth;
+
+          this.plusSignWidth = this.element.offsetWidth / this.pinPlusCount - this.pinPlusOffset;
         });
       });
 
@@ -359,6 +386,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       if (this.embedSetId !== 'undefined') {
         const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
         this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
+        this.store.dispatch(new MatrixActions.SetEmbedMode(true));
       }
 
       setTimeout(() => {
@@ -390,7 +418,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.calcItemSize();
         }
 
-        this.processPinContainer();
         this.processScroll();
         this.setZoomButtonPosition();
         this.getPaddings();
@@ -399,6 +426,33 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
     this.store.dispatch(new MatrixActions.GetCurrencyUnits());
     this.store.dispatch(new MatrixActions.GetTimeUnits());
+  }
+
+  public onPinnedPlaceHover(place: any): void {
+    if (!this.isDesktop) {
+      return;
+    }
+
+    if (!place) {
+      this.hoverPinnedPlace.emit(undefined);
+
+      return;
+    }
+
+    this.hoverPinnedPlace.emit(place);
+  }
+
+  public showHideHeader(mode: boolean): void {
+    let headerContainerElement = document.querySelector('.header-container') as HTMLElement;
+    let streetContainerElement = document.querySelector('.street-container') as HTMLElement;
+
+    if (mode) {
+      headerContainerElement.style.visibility = 'hidden';
+      streetContainerElement.style.visibility = 'hidden';
+    } else {
+      headerContainerElement.style.visibility = 'visible';
+      streetContainerElement.style.visibility = 'visible';
+    }
   }
 
   public processStreetData(): void {
@@ -503,7 +557,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     if (this.placesSet && this.placesSet.length > 1) {
       this.isPreviewView = true;
 
-      this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
+      //this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
     }
   }
 
@@ -556,18 +610,20 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  public backToEdit(): void {
+  /*public backToEdit(): void {
     this.isPreviewView = false;
-  }
+  }*/
 
   public setPinHeaderTitle(): void {
     if (!this.placesSet || !this.placesSet.length) {
       return;
     }
 
-    let result = this.placesSet.map(place => place.country);
+    let pinnedCountries = this.placesSet.map(place => place.country);
 
-    this.pinHeaderTitle = `${result.length} families in ${result.join(', ')} are pinned to compare`;
+    //this.pinHeaderTitle = `${pinnedCountries.length} families in ${pinnedCountries.join(', ')} are pinned to compare`;
+
+    this.pinHeaderTitle = `Families in ${pinnedCountries.join(', ')}`;
 
     this.changeDetectorRef.detectChanges();
   }
@@ -628,9 +684,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.processMatrixImages(this.matrixImages);
   }
 
-  public processPinContainer(): void {
+  /*public processPinContainer(): void {
     if (this.pinContainerElement) {
-      if (!this.isEmbedView) {
+      if (!this.isEmbedMode) {
         this.pinContainerElement.style.minHeight = '0px';
         this.store.dispatch(new MatrixActions.SetPinCollapsed(true));
       }
@@ -647,12 +703,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     if (this.pinContainerElement) {
       this.pinContainerElement.style.minHeight = 'auto';
     }
-  }
+  }*/
 
   public pinModeClose(): void {
       this.store.dispatch(new MatrixActions.SetPinMode(false));
-
-      this.isEmbedView = false;
+      this.store.dispatch(new MatrixActions.SetEmbedMode(false));
 
       this.clearEmbedMatrix();
   }

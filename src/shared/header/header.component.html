@@ -14,10 +14,10 @@
                 isCountryPage || isTeamPage ||
                 (isFamilyPage && (isDesktop || isTablet)) ||
                 (isMapPage && (isDesktop || isTablet))">
-      <img class="logo" (click)="goToMatrixPage()" src="/assets/img/dollar-street-logo.png" alt=""/>
+      <img class="logo" (click)="goToMatrixPage()" src="assets/img/dollar-street-logo.png" alt=""/>
     </div>
 
-    <div *ngIf="(isMatrixPage && isPinMode && !isPinCollapsed) ||
+    <div *ngIf="(isMatrixPage && isPinMode) ||
                 isAboutPage || isDonatePage ||
                 isPhotographersPage || isPhotographerPage ||
                 isCountryPage || isTeamPage || isArticlePage"
@@ -26,7 +26,7 @@
     </div>
 
     <div #filtersContainer>
-      <div *ngIf="((isMatrixPage && !isPinMode) || (isMatrixPage && isPinMode && isPinCollapsed)) || isMapPage"
+      <div *ngIf="((isMatrixPage && !isPinMode) || (isMatrixPage && isPinMode)) || isMapPage"
           class="filters-container"
           [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
         <things-filter

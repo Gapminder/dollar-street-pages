@@ -36,7 +36,7 @@
 }
 
 .heart-container.place-pinned {
-  background-color: rgba(255, 255, 255, .7);
+  /* background-color: rgba(255, 255, 255, .7); */
 }
 
 .heart-container .heart-circle {

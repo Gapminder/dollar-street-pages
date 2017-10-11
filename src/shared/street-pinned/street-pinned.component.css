@@ -1,8 +1,9 @@
 .street-pinned-box-container {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  margin: 0 22px;
+  padding: 0 22px;
   height: 64px;
+  /* background-color: #4D4d4D; */
 }
 
 .street-pinned-box-container svg {
@@ -13,12 +14,12 @@
 
 @media (max-width: 1023px) {
   .street-pinned-box-container {
-    margin: 0 10px;
+    padding: 0 10px;
   }
 }
 
 @media (max-width: 599px) {
   .street-pinned-box-container {
-    margin: 0 5px;
+    padding: 0 5px;
   }
 }
