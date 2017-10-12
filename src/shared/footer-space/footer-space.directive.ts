@@ -45,6 +45,6 @@ export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy
     }
 
     this.footerHeight = footer.offsetHeight;
-    this.element.style.paddingBottom = this.footerHeight + 'px';
+    //this.element.style.paddingBottom = this.footerHeight + 'px';
   }
 }

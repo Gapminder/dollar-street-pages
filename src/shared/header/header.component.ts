@@ -92,7 +92,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public streetSettingsState: Observable<DrawDividersInterface>;
   public appState: Observable<any>;
   public thingsFilterState: Observable<any>;
-  public languages: any;
+  //public languages: any;
   public byIncomeText: string;
   public urlParams: any;
   public titleHeaderSubscribe: Subscription;
@@ -471,9 +471,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
     });
 
-    this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
-      this.languages = data;
-    });
+    /*this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
+      this.languages = [data.primaryLanguage, data.secondaryLanguage, ...data.filteredLanguages];
+    });*/
 
     this.titleHeaderSubscribe = this.titleHeaderService.getTitleEvent().subscribe((data: {title: string}) => {
       this.rendererTitle(data.title);

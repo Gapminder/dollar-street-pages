@@ -77,6 +77,15 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
       this.socialShareButtonsServiceSubscribe.unsubscribe();
     }
 
+    /*let params: URLSearchParams = new URLSearchParams();
+    // params.set('url', res.url);
+    // params.set('url', 'http://localhost:8015/v1/get-index-mock');
+    params.set('url', 'http://3b8dafaa.ngrok.io/v1/get-index-mock?p=1133ADDF23ggf');
+    params.set('text', this.shareMessageTranslated);
+    this.url = params.toString();
+    console.log(this.url, 'URLLLLL');
+    this.openWindow(originalUrl, this.url);*/
+
     this.socialShareButtonsServiceSubscribe = this.socialShareButtonsService.getUrl({url: this.locationPath})
       .subscribe((res: any) => {
         if (res.err) {
@@ -117,6 +126,8 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
         this.openWindow(originalUrl, this.url);
       });
   }
+
+
 
   public openWindow(originalUrl: string, url: any): void {
     this.newWindow.location.href = originalUrl + '?' + url;
