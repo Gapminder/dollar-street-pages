@@ -48,7 +48,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public socialShareContentElement: HTMLElement;
   public shareTranslation: string;
   public streetSettingsState: Observable<DrawDividersInterface>;
-  public languages: any;
+  //public languages: any;
   public streetSettingsStateSubscription: Subscription;
   public languagesListSubscription: Subscription;
 
@@ -84,9 +84,9 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
+    /*this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
       this.languages = data;
-    });
+    });*/
   }
 
   public processShareTranslation(): void {
