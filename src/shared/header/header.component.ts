@@ -493,7 +493,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
-    this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
+    //this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
 
     this.urlChangeService.replaceState('/matrix', queryUrl);
 
