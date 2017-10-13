@@ -549,6 +549,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public changeZoom(zoom: any): void {
+    if (zoom <= 1) {
+      return;
+    }
+
+    if (!this.isDesktop ? zoom >= 4 : zoom >= 10) {
+      return;
+    }
+
     let prevZoom: number = this.zoom;
 
     this.zoom = zoom;
@@ -560,6 +568,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.urlChangeService.replaceState('/matrix', this.query);
 
     this.matrixImagesComponent.changeZoom(prevZoom);
+
+    this.urlChanged({isBack: true, url: this.query});
   }
 
   public getResponseFromIncomeFilter(params: any): void {
