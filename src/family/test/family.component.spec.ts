@@ -83,7 +83,7 @@ xdescribe('FamilyComponent', () => {
         fixture = TestBed.createComponent(FamilyComponent);
         component = fixture.componentInstance;
 
-        component.homeIncomeData = {
+        component.streetSettings = {
             _id: '57963211cc4aaed63a02504c',
             poor: 26,
             rich: 15000,
@@ -100,9 +100,9 @@ xdescribe('FamilyComponent', () => {
         //fixture.whenStable().then(() => {
             component.ngOnInit();
 
-            expect(component.homeIncomeData._id).toEqual('57963211cc4aaed63a02504c');
-            expect(component.homeIncomeData.poor).toEqual(26);
-            expect(component.homeIncomeData.rich).toEqual(15000);
+            expect(component.streetSettings._id).toEqual('57963211cc4aaed63a02504c');
+            expect(component.streetSettings.poor).toEqual(26);
+            expect(component.streetSettings.rich).toEqual(15000);
 
             expect(component.theWorldTranslate).toEqual('translated');
 

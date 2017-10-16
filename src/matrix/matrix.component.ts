@@ -987,7 +987,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.query = this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`);
 
-    this.urlChangeService.replaceState('/matrix', this.query);
+    //this.urlChanged({isZoom: true, url: this.query});
+
+    this.store.dispatch(new AppActions.SetQuery(this.query));
+    //this.urlChangeService.replaceState('/matrix', this.query);
 
     this.matrixImagesComponent.changeZoom(prevZoom);
 

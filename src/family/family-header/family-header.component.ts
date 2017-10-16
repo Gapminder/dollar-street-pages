@@ -82,8 +82,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public familyIncome: number;
   public queryParams: any;
   public queryParamsSubscribe: Subscription;
-  public homeSubject: Subject<any> = new Subject<any>();
-  public homeSubjectSubscription: Subscription;
+  public incomeSubject: Subject<any> = new Subject<any>();
+  public incomeSubjectSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -134,12 +134,14 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data) {
         if (data.currencyUnit) {
+          this.incomeSubject.next('currency');
           if (this.currencyUnit !== data.currencyUnit) {
             this.currencyUnit = data.currencyUnit;
           }
         }
 
         if (data.timeUnit) {
+          this.incomeSubject.next('time');
           if (this.timeUnit !== data.timeUnit) {
             this.timeUnit = data.timeUnit;
           }
@@ -176,7 +178,44 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     });
 
     let query: string = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
+    this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
+      if (res.err) {
+        console.error(res.err);
+        return;
+      }
 
+      this.home = res.data;
+      this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
+      this.mapData = this.home.country;
+
+      if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
+        this.showTranslateMe = true;
+      }
+
+      this.truncCountryName(this.home.country);
+
+      this.incomeSubject.next('home');
+    });
+
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(300)
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.windowHeight = window.innerHeight;
+          this.maxHeightPopUp = this.windowHeight * .95 - 91;
+        });
+      });
+
+    this.incomeSubjectSubscription = this.incomeSubject.subscribe((data: any) => {
+      if (this.timeUnit && this.currencyUnit && this.home) {
+        this.familyIncome = this.math.round(this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit.code, this.currencyUnit.value)) as number;
+        this.changeDetectorRef.detectChanges();
+      }
+    });
+  }
+
+  /*public c(): void {
+    let query: string = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
     this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
       if (res.err) {
         console.error(res.err);
@@ -195,21 +234,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
       this.homeSubject.next(this.home);
     });
-
-    this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(300)
-      .subscribe(() => {
-        this.zone.run(() => {
-          this.windowHeight = window.innerHeight;
-          this.maxHeightPopUp = this.windowHeight * .95 - 91;
-        });
-      });
-
-    this.homeSubjectSubscription = this.homeSubject.subscribe((data: any) => {
-      this.familyIncome = this.math.round(this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit.code, this.currencyUnit.value)) as number;
-      this.changeDetectorRef.detectChanges();
-    });
-  }
+  }*/
 
   public ngOnDestroy(): void {
     if(this.familyHeaderServiceSubscribe) {
@@ -232,8 +257,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.queryParamsSubscribe.unsubscribe();
     }
 
-    if (this.homeSubjectSubscription) {
-      this.homeSubjectSubscription.unsubscribe();
+    if (this.incomeSubjectSubscription) {
+      this.incomeSubjectSubscription.unsubscribe();
     }
   }
 

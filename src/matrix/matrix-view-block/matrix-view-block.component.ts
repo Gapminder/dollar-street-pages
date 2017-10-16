@@ -287,9 +287,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     queryUrl.place = this.familyData.goToPlaceData.place;
 
-    let query = this.utilsService.objToQuery(queryUrl);
-
-    this.store.dispatch(new AppActions.SetQuery(query));
+    //let query = this.utilsService.objToQuery(queryUrl);
+    //this.store.dispatch(new AppActions.SetQuery(query));
 
     this.router.navigate(['/family'], {queryParams: queryUrl});
   }

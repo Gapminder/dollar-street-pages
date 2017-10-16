@@ -2,6 +2,9 @@ import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../../interfaces';
+import * as AppActions from '../../app/ngrx/app.actions';
 import {
   Component,
   OnDestroy,
@@ -54,6 +57,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   @Output()
   public activeImageOptions: EventEmitter<any> = new EventEmitter<any>();
 
+  public query: string;
   public windowInnerWidth: number = window.innerWidth;
   public itemSize: number;
   public imageData: any = {};
@@ -79,8 +83,8 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public familyImageContainerElement: HTMLElement;
   public familyThingsContainerElement: HTMLElement;
   public familyImagesContainerElement: HTMLElement;
-  public query: string;
-  public queryParamsSubscribe: Subscription;
+  public appState: Observable<any>;
+  public appStateSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      viewContainerRef: ViewContainerRef,
@@ -90,13 +94,16 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
                      private browserDetectionService: BrowserDetectionService,
                      private languageService: LanguageService,
                      private utilsService: UtilsService,
-                     private urlChangeService: UrlChangeService) {
+                     private urlChangeService: UrlChangeService,
+                     private store: Store<AppStates>) {
     this.element = element.nativeElement;
     this.familyComponent = (viewContainerRef as any)._data.componentView.parent.component as FamilyComponent;
 
     this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
+
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
   }
 
   public ngAfterViewInit(): void {
@@ -104,8 +111,17 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.familyThingsContainerElement = this.familyThingsContainer.nativeElement;
     this.familyImagesContainerElement = this.familyImagesContainer.nativeElement;
 
-    const query: string = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
+    this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if (data) {
+        if (data.query) {
+          if (this.query !== data.query) {
+            this.query = data.query;
+          }
+        }
+      }
+    });
 
+    const query: string = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
     this.familyPlaceServiceSubscribe = this.familyMediaService
       .getFamilyMedia(query)
       .subscribe((res: any) => {
@@ -209,8 +225,8 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
       this.openFamilyExpandBlockSubscribe.unsubscribe();
     }
 
-    if(this.queryParamsSubscribe) {
-      this.queryParamsSubscribe.unsubscribe();
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
     }
 
     this.loaderService.setLoader(false);
@@ -315,6 +331,16 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     } else {
       this.activeImageOptions.emit({activeImageIndex: activeImageIndex});
     }
+
+    let queryParams = this.utilsService.parseUrl(this.query);
+
+    queryParams.place = this.imageData.placeId;
+
+    let url = this.utilsService.objToQuery(queryParams);
+
+    this.store.dispatch(new AppActions.SetQuery(url));
+
+    this.urlChangeService.replaceState('/family', url);
   }
 
   public goToRow(row: number): void {
