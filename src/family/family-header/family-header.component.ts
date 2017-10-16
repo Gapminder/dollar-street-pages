@@ -82,8 +82,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public familyIncome: number;
   public queryParams: any;
   public queryParamsSubscribe: Subscription;
-  public incomeSubject: Subject<any> = new Subject<any>();
-  public incomeSubjectSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -134,14 +132,14 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data) {
         if (data.currencyUnit) {
-          this.incomeSubject.next('currency');
+          this.calcIncomeValue();
           if (this.currencyUnit !== data.currencyUnit) {
             this.currencyUnit = data.currencyUnit;
           }
         }
 
         if (data.timeUnit) {
-          this.incomeSubject.next('time');
+          this.calcIncomeValue();
           if (this.timeUnit !== data.timeUnit) {
             this.timeUnit = data.timeUnit;
           }
@@ -151,9 +149,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
           if (this.timeUnits !== data.timeUnits) {
             this.timeUnits = data.timeUnits;
 
-            //if (!data.timeUnit) {
-              this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
-            //}
+            this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
 
             this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
           }
@@ -165,9 +161,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
 
-            //if (!this.currencyUnit) {
-              this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
-            //}
+            this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
 
             this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
           }
@@ -194,7 +188,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
       this.truncCountryName(this.home.country);
 
-      this.incomeSubject.next('home');
+      this.calcIncomeValue();
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -205,36 +199,13 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
           this.maxHeightPopUp = this.windowHeight * .95 - 91;
         });
       });
-
-    this.incomeSubjectSubscription = this.incomeSubject.subscribe((data: any) => {
-      if (this.timeUnit && this.currencyUnit && this.home) {
-        this.familyIncome = this.math.round(this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit.code, this.currencyUnit.value)) as number;
-        this.changeDetectorRef.detectChanges();
-      }
-    });
   }
 
-  /*public c(): void {
-    let query: string = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
-    this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
-      if (res.err) {
-        console.error(res.err);
-        return;
-      }
-
-      this.home = res.data;
-      this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
-      this.mapData = this.home.country;
-
-      if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
-        this.showTranslateMe = true;
-      }
-
-      this.truncCountryName(this.home.country);
-
-      this.homeSubject.next(this.home);
-    });
-  }*/
+  private calcIncomeValue(): void {
+    if (this.timeUnit && this.currencyUnit && this.home) {
+      this.familyIncome = this.math.round(this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit.code, this.currencyUnit.value)) as number;
+    }
+  }
 
   public ngOnDestroy(): void {
     if(this.familyHeaderServiceSubscribe) {
@@ -255,10 +226,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
     if (this.queryParamsSubscribe) {
       this.queryParamsSubscribe.unsubscribe();
-    }
-
-    if (this.incomeSubjectSubscription) {
-      this.incomeSubjectSubscription.unsubscribe();
     }
   }
 

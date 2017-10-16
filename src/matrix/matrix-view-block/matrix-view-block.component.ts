@@ -214,6 +214,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
       if (!this.familyData.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
         this.showTranslateMe = true;
+      } else {
+        this.showTranslateMe = false;
       }
 
       if (this.familyData && this.familyData.familyData && this.familyData.familyData.length) {
