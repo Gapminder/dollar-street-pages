@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../interfaces';
+import * as AppActions from '../app/ngrx/app.actions';
 import {
   Component,
   OnInit,
@@ -49,7 +50,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
   public placeId: string;
   public urlParams: any;
-  public homeIncomeData: any;
+  public streetSettings: any;
   public rich: any;
   public poor: any;
   public thing: any = {};
@@ -127,7 +128,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
         this.activeImageIndex = this.urlParams.activeImage;
       }
 
-      this.urlChangeService.replaceState('/family', this.utilsService.objToQuery(this.urlParams));
+      //this.urlChangeService.replaceState('/family', this.utilsService.objToQuery(this.urlParams));
 
       this.row = this.urlParams.row;
       this.setZoom(this.urlParams.zoom);
@@ -156,7 +157,9 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
         if (data.query) {
-          this.query = data.query;
+          if (this.query !== data.query) {
+            this.query = data.query;
+          }
         }
       }
     });
@@ -164,33 +167,35 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if(data) {
         if (data.streetSettings) {
-          this.homeIncomeData = data.streetSettings;
+          if (this.streetSettings !== data.streetSettings) {
+            this.streetSettings = data.streetSettings;
 
-          this.poor = this.homeIncomeData.poor;
-          this.rich = this.homeIncomeData.rich;
+            this.poor = this.streetSettings.poor;
+            this.rich = this.streetSettings.rich;
 
-          if (!this.locations) {
-            return;
+            if (!this.locations) {
+              return;
+            }
+
+            this.initData();
           }
-
-          this.initData();
         }
       }
     });
 
     this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
-        if (!data) {
-          // this.store.dispatch(this.countriesFilterActions.getCountriesFilter(`thing=${this.urlParams.thing}${this.languageService.getLanguageParam()}`));
-        } else {
-          this.locations = data;
+        if (data) {
+          if (this.locations !== data) {
+            this.locations = data;
 
-          this.countries = chain(data)
-            .map('countries')
-            .flatten()
-            .sortBy('country')
-            .value();
+            this.countries = chain(data)
+              .map('countries')
+              .flatten()
+              .sortBy('country')
+              .value();
 
-          this.initData();
+            this.initData();
+          }
         }
     });
   }
@@ -254,11 +259,35 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.zoom = zoom;
 
-    this.query = this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`);
+    //let url = this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`);
 
-    this.urlChangeService.replaceState('/family', this.query);
+    this.urlChanged({isZoom: true, url: this.query});
+
+    //this.urlChangeService.replaceState('/family', this.query);
 
     this.familyMediaComponent.changeZoom(prevZoom);
+  }
+
+  public urlChanged(options: any): void {
+    let {url, isZoom, isBack} = options;
+
+    if (isZoom) {
+      this.calcItemSize();
+
+      url = url.replace(/row\=\d*/, `row=${this.row}`).replace(/zoom\=\d*/, `zoom=${this.zoom}`);
+    }
+
+    // if (!isBack) {
+      // this.query = this.query.replace(/&activeHouse\=\d*/, '');
+      // this.activeHouse = void 0;
+
+      // this.hoverPlace.next(undefined);
+      // this.clearActiveHomeViewBox.next(true);
+    // }
+
+    this.store.dispatch(new AppActions.SetQuery(url));
+
+    this.urlChangeService.replaceState('/family', url);
   }
 
   public processScroll(): void {
@@ -287,7 +316,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.query = query;
 
-        this.urlChangeService.replaceState('/family', this.query);
+        //this.urlChangeService.replaceState('/family', this.query);
       }
     }
   }
@@ -383,9 +412,11 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       queryParams.lang = this.languageService.currentLanguage;
     }
 
-    this.query = this.utilsService.objToQuery(queryParams);
+    let url = this.utilsService.objToQuery(queryParams);
 
-    this.urlChangeService.replaceState('/family', this.query);
+    this.store.dispatch(new AppActions.SetQuery(url));
+
+    this.urlChangeService.replaceState('/family', url);
   }
 
   public isOpenFamilyExpandBlock(data: any): void {
@@ -393,7 +424,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public initData(): void {
-    if (!this.homeIncomeData) {
+    if (!this.streetSettings) {
       return;
     }
 

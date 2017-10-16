@@ -130,10 +130,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
       }
 
       let query: string = `placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`;
-
-      this.viewBlockServiceSubscribe = this.viewBlockService
-        .getData(query)
-        .subscribe((res: any) => {
+      this.viewBlockServiceSubscribe = this.viewBlockService.getData(query).subscribe((res: any) => {
           if (res.err) {
             console.error(res.err);
             return;
@@ -189,7 +186,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           /*if (isImageLoaded) {
             this.loader = true;
           }*/
-        });
+      });
     }
   }
 
