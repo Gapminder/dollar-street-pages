@@ -1,11 +1,11 @@
-'use strict';
+import { browser } from 'protractor';
+
+import using = require('jasmine-data-provider');
 
 import { DataProvider } from '../Data/DataProvider';
 import { AbstractPage } from '../Pages/AbstractPage';
 import { FooterPage } from '../Pages/FooterPage';
-import { browser } from 'protractor';
 import { PhotographersPage } from '../Pages/PhotographersPage';
-let using = require('jasmine-data-provider');
 
 describe('Photographers Page test', () => {
   beforeAll(() => {
@@ -16,8 +16,9 @@ describe('Photographers Page test', () => {
     FooterPage.checkFooterText();
     FooterPage.checkFooterImages();
   });
-  using(DataProvider.photographersPageSearch, (data:any, description:string) => {
-    it('Check ' + description + ' on Photographers page', () => {
+
+  using(DataProvider.photographersPageSearch, (data: any, description: string) => {
+    it(description, () => {
       PhotographersPage.searchButton.sendKeys(data.countryQuery);
       expect(PhotographersPage.isDisplayedPhotographerName()).toBeTruthy();
       expect(PhotographersPage.isDisplayedPhotographerPortrait()).toBeTruthy();
