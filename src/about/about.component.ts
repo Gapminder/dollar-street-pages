@@ -5,6 +5,7 @@ import {
   AfterViewInit,
   OnDestroy
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import {
   LoaderService,
@@ -23,11 +24,14 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
   public aboutContent: SafeHtml;
   public aboutSubscription: Subscription;
   public getTranslationSubscription: Subscription;
+  public queryParamsSubscription: Subscription;
+  public jumpToSelector: string;
 
   public constructor(private aboutService: AboutService,
                      private loaderService: LoaderService,
                      private titleHeaderService: TitleHeaderService,
-                     private languageService: LanguageService) {
+                     private languageService: LanguageService,
+                     private activatedRoute: ActivatedRoute) {
   }
 
   public ngAfterViewInit(): void {
@@ -48,6 +52,22 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
       this.about = val.data;
 
       this.aboutContent = this.languageService.getSunitizedString(this.about.context);
+
+      setTimeout(() => {
+        let targetEl = document.getElementById(this.jumpToSelector);
+        if (targetEl) {
+          targetEl.scrollIntoView();
+          window.scrollTo(0, window.scrollY - 80);
+        }
+      }, 500);
+    });
+
+    this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe((params: any) => {
+        let jumpSelector = decodeURI(params.jump);
+
+        if(jumpSelector !== 'undefined') {
+          this.jumpToSelector = jumpSelector;
+        }
     });
   }
 

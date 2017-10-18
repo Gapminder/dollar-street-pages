@@ -60,12 +60,10 @@ export class StreetDrawService {
   public thingname: string;
   public countries: string[] | string;
   public placesArray: any[] = [];
-  public math: MathService;
   public currentLowIncome: number;
   public currentHighIncome: number;
   public filter: Subject<any> = new Subject<any>();
   public windowInnerWidth: number = window.innerWidth;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
   public currencyUnit: any;
@@ -86,12 +84,10 @@ export class StreetDrawService {
     }
   };
 
-  public constructor(math: MathService,
+  public constructor(private math: MathService,
                      browserDetectionService: BrowserDetectionService) {
-    this.math = math;
-    this.device = browserDetectionService;
-    this.isDesktop = this.device.isDesktop();
-    this.isMobile = this.device.isMobile();
+    this.isDesktop = browserDetectionService.isDesktop();
+    this.isMobile = browserDetectionService.isMobile();
   }
 
   public init(lowIncome: any, highIncome: any, drawDividers: any, regions: any, countries: any, thing: string): this {
@@ -990,8 +986,8 @@ export class StreetDrawService {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
     }
 
-    incomeL = this.math.round(incomeL);
-    incomeR = this.math.round(incomeR);
+    incomeL = this.math.round(incomeL * this.currencyUnit.value);
+    incomeR = this.math.round(incomeR * this.currencyUnit.value);
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');
@@ -1013,7 +1009,7 @@ export class StreetDrawService {
       this.leftScrollText = this.svg
         .append('text')
         .attr('class', 'left-scroll-label')
-        .text(`${this.currencyUnit.symbol}${incomeL}`)
+        .text(`${this.currencyUnit.symbol}${incomeL * this.currencyUnit.value}`)
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
@@ -1022,7 +1018,7 @@ export class StreetDrawService {
       this.rightScrollText = this.svg
         .append('text')
         .attr('class', 'right-scroll-label')
-        .text(`${this.currencyUnit.symbol}${incomeR}`)
+        .text(`${this.currencyUnit.symbol}${incomeR * this.currencyUnit.value}`)
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }

@@ -45,6 +45,9 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public resizeSubscription: any;
   public streetSettingsState: Observable<DrawDividersInterface>;
   public streetSettingsStateSubscription: Subscription;
+  public currencyUnit: any;
+  public matrixState: Observable<any>;
+  public matrixStateSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      streetDrawService: StreetFilterDrawService,
@@ -54,6 +57,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
     this.street = streetDrawService;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngAfterViewInit(): void {
@@ -69,6 +73,19 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
           if (this.streetData !== data.streetSettings) {
             this.streetData = data.streetSettings;
 
+            //this.setDividers(this.places, this.streetData);
+          }
+        }
+      }
+    });
+
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+      if (data) {
+        if (data.currencyUnit) {
+          if (this.currencyUnit !== data.currencyUnit) {
+            this.currencyUnit = data.currencyUnit;
+            this.street.currencyUnit = this.currencyUnit;
+
             this.setDividers(this.places, this.streetData);
           }
         }
@@ -79,7 +96,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
       .debounceTime(150)
       .subscribe(() => {
         this.setDividers(this.places, this.streetData);
-      });
+    });
   }
 
   public ngOnDestroy(): void {
@@ -89,6 +106,10 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
 
     if (this.streetSettingsStateSubscription) {
       this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.matrixStateSubscription) {
+      this.matrixStateSubscription.unsubscribe();
     }
 
     this.streetFilterSubscribe.unsubscribe();

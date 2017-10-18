@@ -92,7 +92,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public streetSettingsState: Observable<DrawDividersInterface>;
   public appState: Observable<any>;
   public thingsFilterState: Observable<any>;
-  //public languages: any;
   public byIncomeText: string;
   public urlParams: any;
   public titleHeaderSubscribe: Subscription;
@@ -121,7 +120,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isPinMode: boolean;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
-  //public isPinCollapsed: boolean;
   public familiesByIncomeTrans: string = 'Families by income';
   public isIncomeDesktopOpened: boolean;
   public timeUnit: any;
@@ -201,33 +199,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
             return;
           }
 
-          /*paddingHeight += this.headerContainerElement.clientHeight;
-
-          if (this.isMatrixPage) {
-            let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
-
-            paddingHeight += streetContainerElement.clientHeight;
-
-            streetContainerElement.style.position = 'fixed';
-            streetContainerElement.style.top = this.headerContainerElement.clientHeight + 'px';
-            streetContainerElement.style.zIndex = '998';
-          }
-
-          this.paddingPlaceElement.style.height = paddingHeight + 'px';
-
-          this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);*/
           this.checkHeaderFloat();
         } else {
-          /*if (this.isMatrixPage) {
-            let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
-
-            streetContainerElement.style.position = 'static';
-            streetContainerElement.style.zIndex = '0';
-          }
-
-          this.paddingPlaceElement.style.height = '0px';
-
-          this.toggleStyleClass(this.headerContainerElement, 'position-fixed', false);*/
           this.preventHeaderFloat();
         }
     });
@@ -322,13 +295,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage,
         currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
         time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH',
-        labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false/*,
-        embed: decodeURI(params.embed)*/
+        labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false
       };
-
-      /*if (this.urlParams.embed !== 'undefined') {
-        this.store.dispatch(new MatrixActions.SetEmbedMode(true));
-      }*/
 
       this.query = this.utilsService.objToQuery(this.urlParams);
 
@@ -388,12 +356,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         } else {
           this.isEmbedMode = false;
         }
-
-        /*if (data.pinCollapsed) {
-          this.isPinCollapsed = true;
-        } else {
-          this.isPinCollapsed = false;
-        }*/
 
         if (data.timeUnits) {
           if (this.timeUnits !== data.timeUnits) {
@@ -471,10 +433,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
     });
 
-    /*this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
-      this.languages = [data.primaryLanguage, data.secondaryLanguage, ...data.filteredLanguages];
-    });*/
-
     this.titleHeaderSubscribe = this.titleHeaderService.getTitleEvent().subscribe((data: {title: string}) => {
       this.rendererTitle(data.title);
     });
@@ -509,7 +467,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     let incomeDesktopFilterElement = this.element.querySelector('.filter') as HTMLElement;
 
-    incomeDesktopFilterElement.classList.remove('opened');
+    if (incomeDesktopFilterElement) {
+      incomeDesktopFilterElement.classList.remove('opened');
+    }
 
     this.timeUnitTemp = this.timeUnit;
     this.currencyUnitTemp = this.currencyUnit;

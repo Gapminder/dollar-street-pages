@@ -123,7 +123,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public thingsFilterState: Observable<any>;
   public thingsFilterStateSubscription: Subscription;
   public isPinMode: boolean;
-  // public isPinCollapsed: boolean;
   public pinContainerElement: HTMLElement;
   public placesSet: Array<any>;
   public pinItemSize: number;
@@ -222,10 +221,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.isPreviewView = false;
 
           //this.showHideHeader(false);
-
-          /*if (this.isPinCollapsed) {
-            this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
-          }*/
         }
 
         if (data.embedMode) {
@@ -233,12 +228,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         } else {
           this.isEmbedMode = false;
         }
-
-        /*if (data.pinCollapsed) {
-          this.isPinCollapsed = true;
-        } else {
-          this.isPinCollapsed = false;
-        }*/
 
         if (data.matrixImages) {
           if (this.matrixImages !== data.matrixImages) {
@@ -442,7 +431,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.hoverPinnedPlace.emit(place);
   }
 
-  public showHideHeader(mode: boolean): void {
+  /*public showHideHeader(mode: boolean): void {
     let headerContainerElement = document.querySelector('.header-container') as HTMLElement;
     let streetContainerElement = document.querySelector('.street-container') as HTMLElement;
 
@@ -453,7 +442,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       headerContainerElement.style.visibility = 'visible';
       streetContainerElement.style.visibility = 'visible';
     }
-  }
+  }*/
 
   public processStreetData(): void {
     if (this.streetData) {
@@ -556,8 +545,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public doneAndShare(): void {
     if (this.placesSet && this.placesSet.length > 1) {
       this.isPreviewView = true;
-
-      //this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
     }
   }
 

@@ -51,7 +51,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public getTranslationSubscribe: Subscription;
   public street: any;
   public regions: any;
-  // public thing: string;
   public thingName: any;
   public countries: any;
   public streetData: any;
@@ -70,8 +69,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public streetSettingsStateSubscription: Subscription;
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
-  public thingsFilterState: Observable<any>;
-  public thingsFilterStateSubscription: Subscription;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
@@ -89,7 +86,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
     this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
@@ -108,14 +104,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     this.getTranslationSubscribe = this.languageService.getTranslation(['POOREST', 'RICHEST']).subscribe((trans: any) => {
       this.street.poorest = trans.POOREST.toUpperCase();
       this.street.richest = trans.RICHEST.toUpperCase();
-    });
-
-    this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
-      if (data) {
-        if (data.thingsFilter) {
-          //this.thing = data.thingsFilter.thing.originPlural;
-        }
-      }
     });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
@@ -319,10 +307,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     if (this.appStateSubscription) {
       this.appStateSubscription.unsubscribe();
-    }
-
-    if (this.thingsFilterStateSubscription) {
-      this.thingsFilterStateSubscription.unsubscribe();
     }
   }
 

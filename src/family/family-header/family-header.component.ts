@@ -203,7 +203,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
   private calcIncomeValue(): void {
     if (this.timeUnit && this.currencyUnit && this.home) {
-      this.familyIncome = this.math.round(this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit.code, this.currencyUnit.value)) as number;
+      this.familyIncome = this.incomeCalcService.calcPlaceIncome(this.home.income, this.timeUnit.code, this.currencyUnit.value);
     }
   }
 
