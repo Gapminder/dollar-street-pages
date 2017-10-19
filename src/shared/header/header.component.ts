@@ -133,7 +133,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isEmbedMode: boolean;
   public headerContainerElement: HTMLElement;
   public paddingPlaceElement: HTMLElement;
-  //public incomeFilterOpened: boolean;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -376,12 +375,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
             if (!this.urlParams.currency) {
               this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
-
-              /*let queryParams = this.utilsService.parseUrl(this.query);
-              queryParams.currency = this.urlParams.currency.toLowerCase();
-              let query = this.utilsService.objToQuery(queryParams);
-
-              this.urlChangeService.replaceState('/matrix', query);*/
             } else {
               this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
             }

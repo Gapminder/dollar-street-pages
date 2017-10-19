@@ -9,6 +9,7 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import {
@@ -29,12 +30,16 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   public element: HTMLElement;
   public scrollSubscribe: Subscription;
   public isDesktop: boolean;
+  public routerEventsSubscription: Subscription;
+  public isMatrixPage: boolean;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
                      private browserDetectionService: BrowserDetectionService,
                      private utilsService: UtilsService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private router: Router,
+                     private activatedRoute: ActivatedRoute) {
     this.element = elementRef.nativeElement;
   }
 
@@ -57,12 +62,32 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public ngOnInit(): any {
     this.isDesktop = this.browserDetectionService.isDesktop();
+
+    this.routerEventsSubscription = this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.isMatrixPage = this.isCurrentPage('matrix');
+      }
+    });
   }
 
   public ngOnDestroy(): void {
     if (this.scrollSubscribe) {
       this.scrollSubscribe.unsubscribe();
     }
+
+    this.routerEventsSubscription.unsubscribe();
+  }
+
+  public isCurrentPage(name: string): boolean {
+    let shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
+
+    if (shap) {
+      if (shap[0][0] === name) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public SetPinMode(): void {
