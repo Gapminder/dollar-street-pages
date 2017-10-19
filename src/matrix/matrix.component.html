@@ -12,17 +12,12 @@
         <div class="short-title">{{thing}} <span>{{ 'IN' | translate }}</span> {{activeCountries}} <span>{{ 'BY_DOLLAR' | translate }}</span></div>
 
         <div class="street-content">
-            <!--*ngIf="!isPinMode || isPinCollapsed"-->
           <street
                   [places]="streetPlaces"
                   [hoverPlace]="hoverPlace"
                   [chosenPlaces]="chosenPlaces"
                   (filterStreet)="streetChanged($event)">
           </street>
-
-          <!--<street-pinned *ngIf="isPinMode && !isPinCollapsed"
-                         [places]="pinnedSet">
-          </street-pinned>-->
         </div>
       </div>
 
@@ -62,7 +57,7 @@
                (imageLoadedEvent)="imageIsUploaded(i)"
                [ngStyle]="{'background-image': place.isUploaded && toUrl(place?.background)}">
             <div class="image-description">
-              <span class="place-image-box-income">{{currencyUnit?.symbol}}{{math.round(place?.income)}}</span>
+              <span class="place-image-box-income">{{currencyUnit?.symbol}}{{place?.showIncome}}</span>
               <span class="place-image-box-country">{{place?.country}}</span>
             </div>
 
@@ -71,22 +66,9 @@
               <div class="heart-circle"
                    (click)="removePlaceFromSet($event, place)">
                    <img src="assets/img/remove-image-embed.svg" alt="">
-                 <!--<svg xmlns="http://www.w3.org/2000/svg" width="81" height="74" viewBox="0 0 81 74">
-                   <path fill="#d7462d" d="M80.87 22.06C79.7 9.27 70.6 0 59.22 0a21.54 21.54 0 0 0-18.44 10.57C36.91 3.97 30.25 0 22.78 0 11.4 0 2.3 9.27 1.13 22.06c-.09.56-.47 3.54.68 8.38 1.66 7 5.49 13.35 11.08 18.39l27.87 25.16 28.35-25.16a35.96 35.96 0 0 0 11.07-18.39c1.15-4.84.78-7.81.69-8.38z"/>
-                 </svg>-->
               </div>
             </div>
           </div>
-
-          <!--<div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && !placesSet.length)"
-                class="pin-info-text">Add images here by clicking the image below. A click on an image moves it up here.
-          </div>-->
-
-          <!--<div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length > 0 && placesSet.length < 2)"
-                class="pin-info-text-2">
-                <span>Click the images below to add more images.</span><br/>
-                <span>Click the red heard to deselect images.</span>
-          </div>-->
 
           <div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length < pinPlusCount)"
                class="pin-plus-container">
@@ -98,13 +80,6 @@
               </div>
             </div>
           </div>
-
-          <!--<div *ngIf="isEmbedMode"
-               class="embed-close-button"
-               (click)="pinModeClose()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><path fill="#fff" d="M29.7 26.75L15.69 12.47a.94.94 0 0 0-.69-.3.94.94 0 0 0-.69.3L.3 26.75a.98.98 0 0 0-.05 1.36l.05.05 1.51 1.53c.18.2.43.3.69.31.26 0 .51-.11.69-.3L15 17.64l11.81 12.04c.18.2.43.3.7.31a.9.9 0 0 0 .68-.3l1.51-1.54a.98.98 0 0 0 0-1.41z"/><path fill="#fff" d="M.3 3.25l14.01 14.28c.18.2.43.3.69.3.26 0 .51-.1.69-.3L29.7 3.25c.38-.36.4-.97.05-1.36l-.05-.05L28.19.31A.93.93 0 0 0 27.5 0a.96.96 0 0 0-.69.3L15 12.36 3.19.31a.96.96 0 0 0-.7-.31.91.91 0 0 0-.68.3L.3 1.85a.98.98 0 0 0 0 1.41z"/>
-            </svg>
-          </div>-->
         </div>
 
         <div class="pin-footer"

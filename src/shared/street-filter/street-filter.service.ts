@@ -41,6 +41,7 @@ export class StreetFilterDrawService {
   public rightScrollText: any;
   public math: MathService;
   public filter: Subject<any> = new Subject<any>();
+  public currencyUnit: any;
 
   public constructor(math: MathService) {
     this.math = math;
@@ -56,8 +57,8 @@ export class StreetFilterDrawService {
     this.halfOfHeight = 0.5 * this.height;
 
     this.scale = scaleLog()
-      .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
-      .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
+      .domain([drawDividers.poor, drawDividers.rich])
+      .range([0, this.width]);
 
     return this;
   }
@@ -83,7 +84,7 @@ export class StreetFilterDrawService {
       .enter()
       .append('text')
       .text((d: any) => {
-        return this.math.round(d) + '$';
+        return `${this.math.roundIncome(d * this.currencyUnit.value)}${this.currencyUnit.symbol}`;
       })
       .attr('x', (d: any) => {
         let indent = 0;
@@ -547,8 +548,8 @@ export class StreetFilterDrawService {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
     }
 
-    incomeL = this.math.round(incomeL);
-    incomeR = this.math.round(incomeR);
+    incomeL = this.math.roundIncome(incomeL * this.currencyUnit.value);
+    incomeR = this.math.roundIncome(incomeR * this.currencyUnit.value);
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');
@@ -570,7 +571,7 @@ export class StreetFilterDrawService {
       this.leftScrollText = this.svg
         .append('text')
         .attr('class', 'left-scroll-label')
-        .text(`$${incomeL}`)
+        .text(`${this.currencyUnit.symbol}${incomeL}`)
         .attr('y', 12)
         .attr('fill', '#767d86');
     }
@@ -579,7 +580,7 @@ export class StreetFilterDrawService {
       this.rightScrollText = this.svg
         .append('text')
         .attr('class', 'right-scroll-label')
-        .text(`$${incomeR}`)
+        .text(`${this.currencyUnit.symbol}${incomeR}`)
         .attr('y', 12)
         .attr('fill', '#767d86');
     }
@@ -591,11 +592,11 @@ export class StreetFilterDrawService {
     const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);
 
     this.leftScrollText
-      .text(`$${incomeL}`)
+      .text(`${this.currencyUnit.symbol}${incomeL}`)
       .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - leftScrollTextWidth / 2);
 
     this.rightScrollText
-      .text(`$${incomeR}`)
+      .text(`${this.currencyUnit.symbol}${incomeR}`)
       .attr('x', ()=> xR + this.halfOfStreetOffset + 5.5 - rightScrollTextWidth / 2);
     return this;
   };

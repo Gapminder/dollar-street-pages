@@ -46,13 +46,15 @@
           <span #incomeTitleContainer
                 class="income-title-container">
             <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
-            <span (click)="openIncomeFilterDesktop($event)"
+            <span [ngClass]="{opened: isIncomeDesktopOpened}"
+                  (click)="openIncomeFilterDesktop($event)"
                   class="income-title filter">{{ 'BY_INCOME' | translate }}
               <div (click)="incomeContainerClick($event)"
                    class="income-filter-desktop-container">
                 <div class="income-filter-desktop-header">
                   <span>Income</span>
                   <img [routerLink]="['/about']"
+                       [queryParams]="{jump: 'income-calc'}"
                        src="/assets/img/info-icon.svg"/>
                   <img class="close-button"
                        src="/assets/img/close-button.svg"
@@ -61,32 +63,67 @@
 
                 <div class="income-filter-desktop-content">
                   <div class="currency-unit-container">
-                    <div class="control-section">
-                      <span>Currency</span>
-                      <div class="dropdown-button">
+                    <div dropdown class="control-section">
+                      <button type="button"
+                              class="dropdown-button"
+                              dropdownToggle
+                              [disabled]="disabled">
                         <span class="dropdown-selected">{{ currencyUnitTemp?.currency }}</span>
-                        <div class="dropdown-container">
-                          <div *ngFor="let currUnit of currencyUnits"
-                               class="dropdown-item"
-                               (click)="currencyUnitFilterSelect(currUnit.code)">{{ currUnit?.currency }}</div>
-                        </div>
-                      </div>
+                        <img src="assets/img/lang-selector-arrow.svg" alt="">
+                      </button>
+
+                      <ul dropdownMenu
+                          role="menu"
+                          aria-labelledby="single-button"
+                          class="dropdown-container">
+                        <li *ngFor="let currUnit of currencyUnits"
+                            class="dropdown-item"
+                            role="menuitem"
+                            (click)="currencyUnitFilterSelect(currUnit.code)">
+                          <span class="dropdown-item">{{ currUnit?.currency }}</span>
+                        </li>
+                      </ul>
                     </div>
-                    <div class="control-section">
-                      <span>Time unit</span>
-                      <div class="dropdown-button">
+
+                    <div dropdown class="control-section">
+                      <button type="button"
+                              class="dropdown-button"
+                              dropdownToggle
+                              [disabled]="disabled">
                         <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
-                        <div class="dropdown-container">
-                          <div class="dropdown-item" (click)="timeUnitFilterSelect('DAY')">Day</div>
-                          <div class="dropdown-item" (click)="timeUnitFilterSelect('WEEK')">Week</div>
-                          <div class="dropdown-item" (click)="timeUnitFilterSelect('MONTH')">Month</div>
-                          <div class="dropdown-item" (click)="timeUnitFilterSelect('YEAR')">Year</div>
-                        </div>
-                      </div>
+                        <img src="assets/img/lang-selector-arrow.svg" alt="">
+                      </button>
+
+                      <ul dropdownMenu
+                          role="menu"
+                          aria-labelledby="single-button"
+                          class="dropdown-container">
+                        <li class="dropdown-item"
+                            role="menuitem"
+                            (click)="timeUnitFilterSelect('DAY')">
+                          <span class="dropdown-item">Day</span>
+                        </li>
+                        <li class="dropdown-item"
+                            role="menuitem"
+                            (click)="timeUnitFilterSelect('WEEK')">
+                          <span class="dropdown-item">Week</span>
+                        </li>
+                        <li class="dropdown-item"
+                            role="menuitem"
+                            (click)="timeUnitFilterSelect('MONTH')">
+                          <span class="dropdown-item">Month</span>
+                        </li>
+                        <li class="dropdown-item"
+                            role="menuitem"
+                            (click)="timeUnitFilterSelect('YEAR')">
+                          <span class="dropdown-item">Year</span>
+                        </li>
+                      </ul>
                     </div>
+
                   </div>
                   <div class="show-levels-container">
-                    <span class="show-levels-label">Show levels</span>
+                    <span class="show-levels-label">levels</span>
                     <label class="switch">
                       <input type="checkbox" [(ngModel)]="showStreetAttrsTemp">
                       <span class="slider round"></span>

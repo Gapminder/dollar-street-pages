@@ -14,19 +14,19 @@
     <p class="home">
       <img src="/assets/img/house-icon.png" alt="">
       <span class="total-text">{{ 'VISITED_FAMILIES' | translate }}:</span>
-      <span class="total-count">{{math.round(photographer.placesCount)}}</span>
+      <span class="total-count">{{Math.round(photographer.placesCount)}}</span>
     </p>
 
     <p class="photo">
       <img src="/assets/img/camera.svg" alt="">
       <span class="total-text">{{ 'TOTAL_PHOTOS' | translate }}:</span>
-      <span class="total-count">{{math.round(photographer.imagesCount)}}</span>
+      <span class="total-count">{{Math.round(photographer.imagesCount)}}</span>
     </p>
 
     <p class="camera" *ngIf="photographer?.video">
       <img src="/assets/img/video-camera.svg" alt="">
       <span class="total-text">{{ 'TOTAL_VIDEOS' | translate }}:</span>
-      <span class="total-count">{{math.round(photographer.video)}}</span>
+      <span class="total-count">{{Math.round(photographer.video)}}</span>
     </p>
   </div>
 
@@ -99,19 +99,19 @@
       <div class="home">
         <img src="/assets/img/house-icon.png" alt="">
         <span class="total-text">{{ 'VISITED_FAMILIES' | translate }}:</span>
-        <span class="total-count">{{math.round(photographer.placesCount) || 0}}</span>
+        <span class="total-count">{{Math.round(photographer.placesCount) || 0}}</span>
       </div>
 
       <div class="photo">
         <img src="/assets/img/camera.svg" alt="">
         <span class="total-text">{{ 'TOTAL_PHOTOS' | translate }}:</span>
-        <span class="total-count">{{math.round(photographer.imagesCount) || 0}}</span>
+        <span class="total-count">{{Math.round(photographer.imagesCount) || 0}}</span>
       </div>
 
       <div class="camera" *ngIf="photographer?.video">
         <img src="/assets/img/video-camera.svg" alt="">
         <span class="total-text">{{ 'TOTAL_VIDEOS' | translate }}:</span>
-        <span class="total-count">{{math.round(photographer.video) || 0}}</span>
+        <span class="total-count">{{Math.round(photographer.video) || 0}}</span>
       </div>
 
       <div class="more-info" *ngIf="isShowInfoMore(photographer)">

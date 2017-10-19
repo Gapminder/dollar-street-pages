@@ -3,8 +3,10 @@ import { Observable } from 'rxjs/Observable';
 import {
   Component,
   AfterViewInit,
-  OnDestroy
+  OnDestroy,
+  ChangeDetectorRef
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import {
   LoaderService,
@@ -23,11 +25,15 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
   public aboutContent: SafeHtml;
   public aboutSubscription: Subscription;
   public getTranslationSubscription: Subscription;
+  public queryParamsSubscription: Subscription;
+  public jumpToSelector: string;
 
   public constructor(private aboutService: AboutService,
                      private loaderService: LoaderService,
                      private titleHeaderService: TitleHeaderService,
-                     private languageService: LanguageService) {
+                     private languageService: LanguageService,
+                     private activatedRoute: ActivatedRoute,
+                     private changeDetectorRef: ChangeDetectorRef) {
   }
 
   public ngAfterViewInit(): void {
@@ -48,6 +54,23 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
       this.about = val.data;
 
       this.aboutContent = this.languageService.getSunitizedString(this.about.context);
+
+      this.changeDetectorRef.detectChanges();
+
+      let targetEl = document.getElementById(this.jumpToSelector);
+
+      if (targetEl) {
+        targetEl.scrollIntoView();
+        window.scrollTo(0, window.scrollY - 80);
+      }
+    });
+
+    this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe((params: any) => {
+        let jumpSelector = decodeURI(params.jump);
+
+        if(jumpSelector !== 'undefined') {
+          this.jumpToSelector = jumpSelector;
+        }
     });
   }
 

@@ -161,6 +161,7 @@ matrix-images {
 
 .street-pinned-container {
   position: relative;
+  padding-bottom: 6px;
 }
 
 .street-pinned-container span {
@@ -172,12 +173,12 @@ matrix-images {
 }
 
 .street-pinned-container .poorest {
-  bottom: -4px;
+  bottom: 0px;
   left: 20px;
 }
 
 .street-pinned-container .richest {
-  bottom: -4px;
+  bottom: 0px;
   right: 20px;
 }
 
@@ -229,7 +230,7 @@ matrix-images {
 }
 
 .embed-footer-text {
-
+  box-shadow: -8px 17px 24px 1px rgba(0,0,0,0.29);
 }
 
 .embed-footer-text h3 {

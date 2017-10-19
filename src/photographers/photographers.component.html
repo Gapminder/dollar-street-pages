@@ -39,9 +39,9 @@
         <div class="photographer-portrait"
              [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/empty-photographer.jpg)'}">
           <div class="photographer-material">
-            <span><img src="/assets/img/camera-white.svg" alt=""> {{math.round(photographer.images)}}</span>
-            <span *ngIf="photographer.video"><img src="/assets/img/video-camera-white.svg" alt=""> {{math.round(photographer.video) || 0}}</span>
-            <span><img src="/assets/img/house-icon-white.png" alt=""> {{math.round(photographer.places)}}</span>
+            <span><img src="/assets/img/camera-white.svg" alt=""> {{Math.round(photographer.images)}}</span>
+            <span *ngIf="photographer.video"><img src="/assets/img/video-camera-white.svg" alt=""> {{Math.round(photographer.video) || 0}}</span>
+            <span><img src="/assets/img/house-icon-white.png" alt=""> {{Math.round(photographer.places)}}</span>
           </div>
         </div>
         <h3>{{photographer.name}}</h3>

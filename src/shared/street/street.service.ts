@@ -60,12 +60,10 @@ export class StreetDrawService {
   public thingname: string;
   public countries: string[] | string;
   public placesArray: any[] = [];
-  public math: MathService;
   public currentLowIncome: number;
   public currentHighIncome: number;
   public filter: Subject<any> = new Subject<any>();
   public windowInnerWidth: number = window.innerWidth;
-  public device: BrowserDetectionService;
   public isDesktop: boolean;
   public isMobile: boolean;
   public currencyUnit: any;
@@ -86,12 +84,10 @@ export class StreetDrawService {
     }
   };
 
-  public constructor(math: MathService,
+  public constructor(private math: MathService,
                      browserDetectionService: BrowserDetectionService) {
-    this.math = math;
-    this.device = browserDetectionService;
-    this.isDesktop = this.device.isDesktop();
-    this.isMobile = this.device.isMobile();
+    this.isDesktop = browserDetectionService.isDesktop();
+    this.isMobile = browserDetectionService.isMobile();
   }
 
   public init(lowIncome: any, highIncome: any, drawDividers: any, regions: any, countries: any, thing: string): this {
@@ -176,7 +172,7 @@ export class StreetDrawService {
       .enter()
       .append('text')
       .text((d: any) => {
-        return this.math.round(d * this.currencyUnit.value) + this.currencyUnit.symbol;
+        return this.math.roundIncome(d * this.currencyUnit.value) + this.currencyUnit.symbol;
       })
       .attr('x', (d: any) => {
         let indent = 0;
@@ -990,8 +986,8 @@ export class StreetDrawService {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
     }
 
-    incomeL = this.math.round(incomeL);
-    incomeR = this.math.round(incomeR);
+    incomeL = this.math.roundIncome(incomeL * this.currencyUnit.value);
+    incomeR = this.math.roundIncome(incomeR * this.currencyUnit.value);
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');
@@ -1013,7 +1009,7 @@ export class StreetDrawService {
       this.leftScrollText = this.svg
         .append('text')
         .attr('class', 'left-scroll-label')
-        .text(`${this.currencyUnit.symbol}${incomeL}`)
+        .text(`${this.currencyUnit.symbol}${incomeL * this.currencyUnit.value}`)
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
@@ -1022,7 +1018,7 @@ export class StreetDrawService {
       this.rightScrollText = this.svg
         .append('text')
         .attr('class', 'right-scroll-label')
-        .text(`${this.currencyUnit.symbol}${incomeR}`)
+        .text(`${this.currencyUnit.symbol}${incomeR * this.currencyUnit.value}`)
         .attr('y', this.height - 2)
         .attr('fill', '#767d86');
     }
@@ -1035,7 +1031,7 @@ export class StreetDrawService {
 
     if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       incomeL = Math.round(this.minIncome * this.currencyUnit.value);
-      incomeL = this.math.round(incomeL);
+      incomeL = this.math.roundIncome(incomeL);
 
       this.leftScrollText
         .text(`${this.currencyUnit.symbol}${incomeL}`)
@@ -1048,7 +1044,7 @@ export class StreetDrawService {
 
     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       incomeR = Math.round(this.maxIncome * this.currencyUnit.value);
-      incomeR = this.math.round(incomeR);
+      incomeR = this.math.roundIncome(incomeR);
 
       this.rightScrollText
         .text(`${this.currencyUnit.symbol}${incomeR}`)

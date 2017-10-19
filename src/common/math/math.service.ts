@@ -2,13 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MathService {
-  public round(income: number): string | number {
-    if (!income) {
-      return 0;
-    }
-
-    let roundIncome: number = Math.round(income);
-
-    return roundIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+  public roundIncome(income: number = 0, decimal: boolean = false): string | number {
+    return decimal ? income.toFixed(2) : Math.round(income).toString();
   }
 }
