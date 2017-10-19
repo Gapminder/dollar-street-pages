@@ -213,14 +213,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.pinMode) {
           this.isPinMode = true;
           this.isEmbedMode = false;
-
-          //this.showHideHeader(true);
         } else {
           this.isPinMode = false;
           this.isEmbedShared = false;
           this.isPreviewView = false;
-
-          //this.showHideHeader(false);
         }
 
         if (data.embedMode) {
@@ -431,19 +427,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.hoverPinnedPlace.emit(place);
   }
 
-  /*public showHideHeader(mode: boolean): void {
-    let headerContainerElement = document.querySelector('.header-container') as HTMLElement;
-    let streetContainerElement = document.querySelector('.street-container') as HTMLElement;
-
-    if (mode) {
-      headerContainerElement.style.visibility = 'hidden';
-      streetContainerElement.style.visibility = 'hidden';
-    } else {
-      headerContainerElement.style.visibility = 'visible';
-      streetContainerElement.style.visibility = 'visible';
-    }
-  }*/
-
   public processStreetData(): void {
     if (this.streetData) {
       this.lowIncome = this.lowIncome ? this.lowIncome : this.streetData.poor;
@@ -597,18 +580,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  /*public backToEdit(): void {
-    this.isPreviewView = false;
-  }*/
-
   public setPinHeaderTitle(): void {
     if (!this.placesSet || !this.placesSet.length) {
       return;
     }
 
     let pinnedCountries = this.placesSet.map(place => place.country);
-
-    //this.pinHeaderTitle = `${pinnedCountries.length} families in ${pinnedCountries.join(', ')} are pinned to compare`;
 
     this.pinHeaderTitle = `Families in ${pinnedCountries.join(', ')}`;
 
@@ -670,27 +647,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.processMatrixImages(this.matrixImages);
   }
-
-  /*public processPinContainer(): void {
-    if (this.pinContainerElement) {
-      if (!this.isEmbedMode) {
-        this.pinContainerElement.style.minHeight = '0px';
-        this.store.dispatch(new MatrixActions.SetPinCollapsed(true));
-      }
-    } else {
-      this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
-    }
-  }
-
-  public pinModeExpand(): void {
-    this.store.dispatch(new MatrixActions.SetPinCollapsed(false));
-
-    this.pinContainerElement = document.querySelector('.pin-container') as HTMLElement;
-
-    if (this.pinContainerElement) {
-      this.pinContainerElement.style.minHeight = 'auto';
-    }
-  }*/
 
   public pinModeClose(): void {
       this.store.dispatch(new MatrixActions.SetPinMode(false));
@@ -823,44 +779,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  /*public processMatrixImages(data: any): void {
-    if (!data || !data.zoomPlaces || !data.streetPlaces) {
-      return;
-    }
-
-    let queryParams: any = this.utilsService.parseUrl(this.query);
-    this.zoom = queryParams.zoom;
-
-    let zoomPlacesData = data.zoomPlaces;
-    let streetPlacesData = data.streetPlaces;
-
-    this.filtredPlaces = zoomPlacesData.filter((place: any): boolean => {
-      return place && place.income >= queryParams.lowIncome && place.income < queryParams.highIncome;
-    });
-
-    this.matrixPlaces.next(this.filtredPlaces);
-    this.placesArr = data.zoomPlaces;
-    this.clonePlaces = cloneDeep(this.filtredPlaces);
-
-    if (!streetPlacesData.length) {
-      this.streetPlaces.next([]);
-      this.chosenPlaces.next([]);
-      return;
-    }
-
-    let incomesArr = (chain(zoomPlacesData)
-      .map('income')
-      .sortBy()
-      .value()) as number[];
-
-    this.streetPlaces.next(zoomPlacesData);
-    this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-
-    this.buildTitle(this.query);
-
-    this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
-  }*/
-
   public processMatrixImages(data: any): void {
     if (!data || !data.streetPlaces) {
       return;
@@ -896,14 +814,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.buildTitle(this.query);
     });
 
-    /*this.matrixPlaces.next(this.filtredPlaces);
-    this.clonePlaces = cloneDeep(this.filtredPlaces);
-
-    this.streetPlaces.next(streetPlacesData);
-    this.chosenPlaces.next(this.clonePlaces.splice((this.row - 1) * this.zoom, this.zoom * (this.visiblePlaces || 1)));
-
-    this.buildTitle(this.query);*/
-
     this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
   }
 
@@ -925,7 +835,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     // }
 
     this.store.dispatch(new AppActions.SetQuery(url));
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', url);
   }

@@ -84,7 +84,7 @@ export class StreetFilterDrawService {
       .enter()
       .append('text')
       .text((d: any) => {
-        return this.math.round(d * this.currencyUnit.value) + this.currencyUnit.symbol;
+        return `${this.math.roundIncome(d * this.currencyUnit.value)}${this.currencyUnit.symbol}`;
       })
       .attr('x', (d: any) => {
         let indent = 0;
@@ -548,8 +548,8 @@ export class StreetFilterDrawService {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
     }
 
-    incomeL = this.math.round(incomeL * this.currencyUnit.value);
-    incomeR = this.math.round(incomeR * this.currencyUnit.value);
+    incomeL = this.math.roundIncome(incomeL * this.currencyUnit.value);
+    incomeR = this.math.roundIncome(incomeR * this.currencyUnit.value);
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');

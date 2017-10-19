@@ -133,6 +133,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isEmbedMode: boolean;
   public headerContainerElement: HTMLElement;
   public paddingPlaceElement: HTMLElement;
+  //public incomeFilterOpened: boolean;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -454,22 +455,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     e.stopPropagation();
 
     this.isIncomeDesktopOpened = true;
-
-    let incomeDesktopFilterElement = this.element.querySelector('.filter') as HTMLElement;
-
-    incomeDesktopFilterElement.classList.add('opened');
   }
 
   public closeIncomeFilterDesktop(e: MouseEvent): void {
     e.stopPropagation();
 
     this.isIncomeDesktopOpened = false;
-
-    let incomeDesktopFilterElement = this.element.querySelector('.filter') as HTMLElement;
-
-    if (incomeDesktopFilterElement) {
-      incomeDesktopFilterElement.classList.remove('opened');
-    }
 
     this.timeUnitTemp = this.timeUnit;
     this.currencyUnitTemp = this.currencyUnit;
@@ -511,10 +502,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
 
     this.isIncomeDesktopOpened = false;
-
-    let incomeDesktopFilterElement = this.element.querySelector('.filter') as HTMLElement;
-
-    incomeDesktopFilterElement.classList.remove('opened');
   }
 
   public ngOnDestroy(): void {

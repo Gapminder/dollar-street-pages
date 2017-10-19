@@ -370,10 +370,6 @@ family-header .header-content {
   background-color: #e4e6e7;
 }
 
-/*.dropdown-button:hover .dropdown-container {
-    display: block;
-}*/
-
 .income-filter-desktop-content .currency-unit-container {
   height: 100px;
   display: flex;
@@ -438,7 +434,6 @@ family-header .header-content {
   height: 34px;
   font-size: 18px;
   display: inline-block;
-  /*line-height: 34px;*/
   padding: 0 10px 0 20px;
 }
 

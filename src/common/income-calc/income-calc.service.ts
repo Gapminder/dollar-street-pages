@@ -6,10 +6,6 @@ export class IncomeCalcService {
   constructor(@Inject(MathService) private math) {}
 
   public calcPlaceIncome(income: number, timeUnit: string, currencyValue): number {
-    if (!income) {
-      return;
-    }
-
     let resultIncome: number = 0;
 
     switch(timeUnit) {
@@ -36,26 +32,18 @@ export class IncomeCalcService {
 
     let currencyIncome = resultIncome * currencyValue;
 
-    return (currencyIncome >= 10 ? this.math.round(currencyIncome) : this.math.round(currencyIncome, true)).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+    return this.math.roundIncome(currencyIncome, currencyIncome <= 10).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
 
-  public getTimeUnitByCode(units: any[], code: string): any {
-    if (units) {
-      return units.find(unit => unit.code === code);
-    }
+  public getTimeUnitByCode(units: any[] = [], code: string): any {
+    return units.find(unit => unit.code === code);
   }
 
-  public getCurrencyUnitByCode(units: any[], code: string): any {
-    if (units) {
-      return units.find(unit => unit.code === code);
-    }
+  public getCurrencyUnitByCode(units: any[] = [], code: string): any {
+    return units.find(unit => unit.code === code);
   }
 
-  public getCurrencyUnitForLang(units: any[], lang: string): any {
-    if (!units) {
-      return;
-    }
-
+  public getCurrencyUnitForLang(units: any[] = [], lang: string): any {
     let code = 'USD';
 
     switch(lang) {

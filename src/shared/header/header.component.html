@@ -46,7 +46,8 @@
           <span #incomeTitleContainer
                 class="income-title-container">
             <span class="income-title" (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
-            <span (click)="openIncomeFilterDesktop($event)"
+            <span [ngClass]="{opened: isIncomeDesktopOpened}"
+                  (click)="openIncomeFilterDesktop($event)"
                   class="income-title filter">{{ 'BY_INCOME' | translate }}
               <div (click)="incomeContainerClick($event)"
                    class="income-filter-desktop-container">

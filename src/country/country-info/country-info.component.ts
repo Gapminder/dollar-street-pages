@@ -77,9 +77,9 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
         this.country = res.data.country;
         this.mapData = res.data.country;
         this.thing = res.data.thing;
-        this.placesQuantity = this.device.isMobile() !== true ? this.math.round(res.data.places).toString() : this.math.round(res.data.places).toString().replace(/\s+/g, '');
-        this.photosQuantity = this.device.isMobile() !== true ? this.math.round(res.data.images).toString() : this.math.round(res.data.images).toString().replace(/\s+/g, '');
-        this.videosQuantity = Math.round(res.data.video) > 0 ? this.math.round(res.data.video).toString() : '';
+        this.placesQuantity = this.device.isMobile() !== true ? Math.round(res.data.places).toString() : Math.round(res.data.places).toString().replace(/\s+/g, '');
+        this.photosQuantity = this.device.isMobile() !== true ? Math.round(res.data.images).toString() : Math.round(res.data.images).toString().replace(/\s+/g, '');
+        this.videosQuantity = Math.round(res.data.video) > 0 ? Math.round(res.data.video).toString() : '';
         this.getCountry.emit(this.country.alias || this.country.country);
       });
   }

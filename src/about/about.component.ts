@@ -3,7 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import {
   Component,
   AfterViewInit,
-  OnDestroy
+  OnDestroy,
+  ChangeDetectorRef
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
@@ -31,7 +32,8 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
                      private loaderService: LoaderService,
                      private titleHeaderService: TitleHeaderService,
                      private languageService: LanguageService,
-                     private activatedRoute: ActivatedRoute) {
+                     private activatedRoute: ActivatedRoute,
+                     private changeDetectorRef: ChangeDetectorRef) {
   }
 
   public ngAfterViewInit(): void {
@@ -53,13 +55,14 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
 
       this.aboutContent = this.languageService.getSunitizedString(this.about.context);
 
-      setTimeout(() => {
-        let targetEl = document.getElementById(this.jumpToSelector);
-        if (targetEl) {
-          targetEl.scrollIntoView();
-          window.scrollTo(0, window.scrollY - 80);
-        }
-      }, 500);
+      this.changeDetectorRef.detectChanges();
+
+      let targetEl = document.getElementById(this.jumpToSelector);
+
+      if (targetEl) {
+        targetEl.scrollIntoView();
+        window.scrollTo(0, window.scrollY - 80);
+      }
     });
 
     this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe((params: any) => {
