@@ -84,14 +84,6 @@
 
         <div class="pin-footer"
              [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode}">
-          <!--<div *ngIf="!isPreviewView && !isEmbedMode"
-               class="pin-footer-edit">
-            <span class="pin-done-share"
-                  (click)="doneAndShare()">Done, now I want to share it</span>
-            <span class="pin-mode-close"
-                  (click)="pinModeClose()">Cancel</span>
-          </div>-->
-
           <div *ngIf="isPinMode || isEmbedMode"
                class="street-pinned-container"
                [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode, 'white-font': !isPreviewView && !isEmbedMode}">
@@ -165,7 +157,6 @@
                 </div>
 
                 <div class="share-close-buttons">
-                  <!--<span *ngIf="!isEmbedShared" (click)="backToEdit()">Back to edit</span>-->
                   <span *ngIf="!isScreenshotProcessing && !isEmbedShared"
                         (click)="shareEmbed()">Share Now</span>
                   <span (click)="pinModeClose()">Close</span>
@@ -174,25 +165,6 @@
         </div>
       </div>
 
-      <!--<div *ngIf="isPinMode && isPinCollapsed && !isEmbedMode"
-           class="pin-header">
-        <p>{{ pinHeaderTitle }}</p>
-
-        <div class="buttons-container">
-          <span (click)="pinModeExpand()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="18" viewBox="0 0 30 18">
-              <path fill="#fff" d="M.3 3.28l14.01 14.4c.18.2.43.31.69.31.26 0 .51-.11.69-.3L29.7 3.28a1 1 0 0 0 .05-1.38l-.05-.05L28.19.3A.93.93 0 0 0 27.5 0a.95.95 0 0 0-.69.31L15 12.46 3.19.31a.92.92 0 0 0-1.38 0L.3 1.86a1 1 0 0 0 0 1.42z"/>
-            </svg>
-          </span>
-          <span (click)="pinModeClose()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
-              <path fill="#fff" d="M29.7 26.75L15.69 12.47a.94.94 0 0 0-.69-.3.94.94 0 0 0-.69.3L.3 26.75a.98.98 0 0 0-.05 1.36l.05.05 1.51 1.53c.18.2.43.3.69.31.26 0 .51-.11.69-.3L15 17.64l11.81 12.04c.18.2.43.3.7.31a.9.9 0 0 0 .68-.3l1.51-1.54a.98.98 0 0 0 0-1.41z"/><path fill="#fff" d="M.3 3.25l14.01 14.28c.18.2.43.3.69.3.26 0 .51-.1.69-.3L29.7 3.25c.38-.36.4-.97.05-1.36l-.05-.05L28.19.31A.93.93 0 0 0 27.5 0a.96.96 0 0 0-.69.3L15 12.36 3.19.31a.96.96 0 0 0-.7-.31.91.91 0 0 0-.68.3L.3 1.85a.98.98 0 0 0 0 1.41z"/>
-            </svg>
-          </span>
-        </div>
-
-        <span (click)="doneAndShare()" class="done-share-button">Done & Share</span>
-      </div>-->
     </div>
 
     <income-filter *ngIf="!isDesktop && isOpenIncomeFilter"
