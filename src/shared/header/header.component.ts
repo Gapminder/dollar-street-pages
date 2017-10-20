@@ -293,7 +293,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         lowIncome: parseInt(params.lowIncome, 10),
         highIncome: parseInt(params.highIncome, 10),
         lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage,
-        currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
+        //currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
+        //time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH',
+        currency: params.currency ? decodeURI(params.currency.toUpperCase()) : '',
         time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH',
         labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false
       };
