@@ -343,7 +343,6 @@ family-header .header-content {
   border: 1px solid #e4e6e7;
   position: relative;
   cursor: pointer;
-  margin-top: 8px;
   background-color: white;
 }
 
@@ -389,7 +388,7 @@ family-header .header-content {
 }
 
 .income-filter-desktop-content .currency-unit-container {
-  height: 46px;
+  height: 40px;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
