@@ -620,7 +620,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   public thingSelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     let pageName: string = '';
 
@@ -637,7 +636,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   public countrySelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     this.urlChangeService.replaceState('/matrix', data.url);
   }
@@ -674,9 +672,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       queryParams.zoom = 3;
     }
 
-    if (this.isMatrixPage) {
-      // this.filter.emit({url: this.urlChangeService.objToQuery(queryParams)});
-    } else {
+    if (!this.isMatrixPage) {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
 

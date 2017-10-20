@@ -282,6 +282,20 @@ family-header .header-content {
   cursor: auto;
 }
 
+.units-container-labels span {
+  font-size: 14px;
+  color: #767d86;
+  margin-top: 20px;
+}
+
+.units-container-labels span:first-child {
+  padding-left: 20px;
+}
+
+.units-container-labels span:last-child {
+  padding-left: 82px;
+}
+
 .income-title.filter.opened .income-filter-desktop-container {
   display: flex;
   flex-direction: column;
@@ -370,8 +384,12 @@ family-header .header-content {
   background-color: #e4e6e7;
 }
 
+.income-filter-desktop-content {
+  padding-top: 10px;
+}
+
 .income-filter-desktop-content .currency-unit-container {
-  height: 100px;
+  height: 46px;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -380,8 +398,7 @@ family-header .header-content {
 .income-filter-desktop-content .control-section {
   width: 50%;
   font-size: 18px;
-  padding: 20px 0 0 20px;
-  height: 64px;
+  padding: 4px 0 0 20px;
 }
 
 .income-filter-desktop-content .control-section span {
@@ -427,7 +444,7 @@ family-header .header-content {
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
-  padding-bottom: 20px;
+  padding-top: 20px;
 }
 
 .show-levels-container .show-levels-label {
