@@ -54,4 +54,9 @@ export class MatrixPage extends AbstractPage {
   public static waitForSpinner(): promise.Promise<void> {
     return browser.wait(EC.invisibilityOf(this.spinner), 10000);
   }
+
+  public static getFamilyIncome(index: number): promise.Promise<number> {
+    return this.familyIncomeOnImage.get(index).getText()
+      .then(income => Number(income.replace(/$|\W/g, '')));
+  }
 }

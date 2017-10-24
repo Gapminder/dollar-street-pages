@@ -53,27 +53,4 @@ export class Street {
 
     return toddlerValue;
   }
-
-  // getToddlersValues(): { left: promise.Promise<number>; right: promise.Promise<number> } {
-  //   browser.actions()
-  //     .mouseMove(this.leftToddler)
-  //     .mouseDown()
-  //     .mouseMove({x: 0, y: 0}) // cos labels appear only on mouseMove
-  //     .perform();
-  //
-  //   const leftToddlerValue = this.leftScrollLabel.getText()
-  //     .then(value => Number(value.replace('$', '')));
-  //
-  //   const rightToddlerValue = this.rightScrollLabel.getText()
-  //     .then(value => Number(value.replace('$', '')));
-  //
-  //   browser.actions()
-  //     .mouseUp()
-  //     .perform();
-  //
-  //   return {
-  //     left: leftToddlerValue,
-  //     right: rightToddlerValue
-  //   };
-  // }
 }

@@ -153,14 +153,26 @@ describe('Sorting on matrix', () => {
     MatrixPage.zoomDecrease.click();
 
     for (let i = 1; i < IMAGES_IN_ROW + 2; ++i) {
-      const nextImage = MatrixPage.familyIncomeOnImage.get(i).getText()
-        .then(income => Number(income.replace(/$|\W/g, '')));
+      const nextImage = MatrixPage.getFamilyIncome(i);
+      const previousImage = MatrixPage.getFamilyIncome(i - 1);
 
-      MatrixPage.familyIncomeOnImage.get(i - 1).getText()
-        .then(previousImage => Number(previousImage.replace(/$|\W/g, '')))
-        .then(previousImage => expect(nextImage).toBeGreaterThan(previousImage));
+      previousImage.then(previous => {
+        expect(nextImage).toBeGreaterThan(previous);
+      });
     }
   });
 
+  it('Images resorted on zoom in', () => {
+    const IMAGES_IN_ROW = 4;
+    MatrixPage.zoomIncrease.click();
 
+    for (let i = 1; i < IMAGES_IN_ROW - 1; ++i) {
+      const nextImage = MatrixPage.getFamilyIncome(i);
+      const previousImage = MatrixPage.getFamilyIncome(i - 1);
+
+      previousImage.then(previous => {
+        expect(nextImage).toBeGreaterThan(previous);
+      });
+    }
+  });
 });
