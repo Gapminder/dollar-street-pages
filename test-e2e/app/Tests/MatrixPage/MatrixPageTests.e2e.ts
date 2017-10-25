@@ -7,6 +7,7 @@ import { AbstractPage } from '../../Pages/AbstractPage';
 import { FooterPage } from '../../Pages/FooterPage';
 import { MatrixPage } from '../../Pages/MatrixPage';
 import { Street } from '../../Pages/Components/Street.e2e.component';
+import { Header } from '../../Pages/Components/Header.e2e.component';
 import { HomePage } from '../../Pages/HomePage';
 
 describe('Matrix Page test', () => {
@@ -100,7 +101,7 @@ describe('Matrix Page test', () => {
   });
 });
 
-describe('Zoom buttons', () => {
+describe('Matrix Page: Zoom buttons', () => {
   beforeEach(() => {
     browser.get('matrix');
   });
@@ -122,7 +123,7 @@ describe('Zoom buttons', () => {
   });
 });
 
-describe('Sorting on matrix', () => {
+describe('Matrix Page: Sorting on matrix', () => {
   beforeEach(() => {
     browser.get('matrix');
   });
@@ -174,5 +175,146 @@ describe('Sorting on matrix', () => {
         expect(nextImage).toBeGreaterThan(previous);
       });
     }
+  });
+});
+
+describe('Matrix Page: Filters', () => {
+
+  beforeEach(() => {
+    browser.get('matrix');
+    browser.executeScript('window.localStorage.setItem("quick-guide", true)'); // TODO quick guide could broke tests
+  });
+
+  it('Filter by Country', () => {
+    const COUNTRY = 'Sweden';
+    const totalCountriesBefore = MatrixPage.familyLink.count();
+
+    Header.filterByCountry(COUNTRY);
+
+    const totalCountriesAfter = MatrixPage.familyLink.count();
+
+    totalCountriesAfter.then(countriesAfter => {
+      expect(totalCountriesBefore).toBeGreaterThan(countriesAfter);
+    });
+
+    MatrixPage.countryInImageDescription.each(family => {
+      expect(family.getText()).toEqual(COUNTRY);
+    });
+    expect(Header.countryFilter.getText()).toEqual(COUNTRY);
+    expect(browser.getCurrentUrl()).toContain(`countries=${COUNTRY}`);
+  });
+
+  it('Filter by two countries', () => {
+    const COUNTRY1 = 'Sweden';
+    const COUNTRY2 = 'Bangladesh';
+    const totalCountriesBefore = MatrixPage.familyLink.count();
+
+    Header.filterByCountry(COUNTRY1, COUNTRY2);
+
+    const totalCountriesAfter = MatrixPage.familyLink.count();
+
+    totalCountriesAfter.then(countriesAfter => {
+      expect(totalCountriesBefore).toBeGreaterThan(countriesAfter);
+    });
+
+    MatrixPage.countryInImageDescription.each(family => {
+      family.getText().then(familyCountry => {
+        expect(familyCountry.includes(COUNTRY1) || familyCountry.includes(COUNTRY2)).toBeTruthy();
+      });
+    });
+    expect(Header.countryFilter.getText()).toEqual(`${COUNTRY2} & ${COUNTRY1}`);
+    expect(browser.getCurrentUrl()).toContain(`countries=${COUNTRY1},${COUNTRY2}`);
+  });
+
+  it('Show all countries', () => {
+    const COUNTRY = 'Sweden';
+    const totalCountriesBefore = MatrixPage.familyLink.count();
+
+    Header.filterByCountry(COUNTRY);
+    Header.filterByAllCountries();
+
+    const totalCountriesAfter = MatrixPage.familyLink.count();
+
+    expect(Header.countryFilter.getText()).toEqual('the World');
+    expect(totalCountriesBefore).toEqual(totalCountriesAfter);
+    expect(browser.getCurrentUrl()).toContain(`countries=World`);
+  });
+
+  it('Search in country filter', () => {
+    const COUNTRY = 'Pakistan';
+    const totalCountriesBefore = MatrixPage.familyLink.count();
+
+    Header.searchInCountryFilter(COUNTRY);
+
+    const totalCountriesAfter = MatrixPage.familyLink.count();
+
+
+    totalCountriesAfter.then(countriesAfter => {
+      expect(totalCountriesBefore).toBeGreaterThan(countriesAfter);
+    });
+
+    MatrixPage.countryInImageDescription.each(family => {
+      expect(family.getText()).toEqual(COUNTRY);
+    });
+    expect(Header.countryFilter.getText()).toEqual(COUNTRY);
+    expect(browser.getCurrentUrl()).toContain(`countries=${COUNTRY}`);
+  });
+
+  it('Filter by Income: currency updated in images list', () => {
+    const expectedCurrency = {
+      name: 'Euro',
+      symbol: '€',
+      code: 'eur'
+    };
+
+    Header.filterByIncome(expectedCurrency.name);
+
+    MatrixPage.familyIncomeOnImage.each(familyDescription => {
+      familyDescription.getText()
+        .then(familyIncome => familyIncome.replace(/(\d).*/g, '').trim())
+        .then(familyCurrency => {
+          expect(familyCurrency).toEqual(expectedCurrency.symbol);
+        });
+    });
+    expect(browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
+  });
+
+  it('Filter by Income: currency updated in image preview', () => {
+    const random = AbstractPage.getRandom();
+    const expectedCurrency = {
+      name: 'Krona',
+      symbol: 'kr',
+      code: 'sek'
+    };
+
+    Header.filterByIncome(expectedCurrency.name);
+    MatrixPage.familyLink.get(random).click();
+
+    MatrixPage.familyIncomeInPreview.getText()
+      .then(familyIncome => familyIncome.replace(/(\d).*/g, '').trim())
+      .then(familyCurrency => {
+        expect(familyCurrency).toEqual(expectedCurrency.symbol);
+      });
+    expect(browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
+  });
+
+  it('Filter by Income: currency updated on family page', () => {
+    const random = AbstractPage.getRandom();
+    const expectedCurrency = {
+      name: 'Euro',
+      symbol: '€',
+      code: 'eur'
+    };
+
+    Header.filterByIncome(expectedCurrency.name);
+    MatrixPage.familyLink.get(random).click();
+    MatrixPage.visitThisHomeBtn.click();
+    HomePage.familyIncome.getText()
+      .then(familyIncome => familyIncome.replace(/(\d).*/g, '').trim())
+      .then(familyCurrency => {
+        expect(familyCurrency).toEqual(expectedCurrency.symbol);
+      });
+
+    expect(browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
   });
 });

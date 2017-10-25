@@ -20,4 +20,8 @@ export class AbstractPage {
   public static getEC(): ProtractorExpectedConditions {
     return protractor.ExpectedConditions;
   }
+
+  public static getRandom(): number {
+    return Math.floor(Math.random() * 15); // random number between 0 and 15
+  }
 }
