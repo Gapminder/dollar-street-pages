@@ -1,8 +1,8 @@
 'use strict';
 
-import { AbstractPage } from '../Pages/AbstractPage';
+import { AbstractPage } from '../../Pages/AbstractPage';
 import { browser} from 'protractor';
-import { MatrixPage } from '../Pages/MatrixPage';
+import { MatrixPage } from '../../Pages/MatrixPage';
 
 describe('Matrix Page test', () => {
    beforeAll(() => {

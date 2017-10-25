@@ -1,8 +1,6 @@
-'use strict';
+import { element, by, $, ElementFinder, ElementArrayFinder } from 'protractor';
 
 import { AbstractPage } from './AbstractPage';
-import { element, by, $ } from 'protractor';
-import { ElementFinder, ElementArrayFinder } from 'protractor/built/index';
 
 export class HomePage extends AbstractPage {
   public static familyName: ElementFinder = element.all(by.css('p[class="title desktop"]')).get(1);
@@ -17,4 +15,5 @@ export class HomePage extends AbstractPage {
   public static mapWithLinkToCountryPage: ElementFinder = $('.map.map_gray');
   public static littleStreet: ElementFinder = $('#chart');
   public static homeOnLittleStreet: ElementFinder = $('polygon[class="hover"]');
+  public static familyPhoto: ElementFinder = $('.image-container img');
 }

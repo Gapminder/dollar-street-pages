@@ -11,8 +11,8 @@ describe('Matrix Page Social share buttons, hamburger menu:', () => {
   });
 
   afterEach(() => {
-    browser.waitForAngularEnabled(true);
     closeSocialTabAndSwitchToDefault();
+    browser.waitForAngularEnabled(true);
   });
 
   it('Check twitter', () => {
