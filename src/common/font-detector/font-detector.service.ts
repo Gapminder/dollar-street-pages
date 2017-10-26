@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { LanguageService } from '../language/language.service';
 
 @Injectable()
@@ -16,12 +16,9 @@ export class FontDetectorService {
         {name: 'thai-script', codes: []}
     ];
 
-    public languageService: LanguageService;
-
     public document: Document;
 
-    public constructor(@Inject(LanguageService) languageService: LanguageService) {
-        this.languageService = languageService;
+    public constructor(private languageService: LanguageService) {
         this.document = document;
     }
 

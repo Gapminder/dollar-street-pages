@@ -254,6 +254,14 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  public scrollTopZero(): void {
+    if (document.body.scrollTop) {
+      document.body.scrollTop = 0;
+    } else {
+      document.documentElement.scrollTop = 0;
+    }
+  }
+
   public changeZoom(zoom: any): void {
     let prevZoom: number = this.zoom;
 

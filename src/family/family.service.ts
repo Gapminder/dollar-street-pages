@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -8,10 +8,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FamilyService {
-  public http: Http;
-
-  public constructor(@Inject(Http) http: Http) {
-    this.http = http;
+  public constructor(private http: Http) {
   }
 
   public getThing(query: any): Observable<any> {

@@ -12,7 +12,7 @@
 <div class="donate-section">
     <div class="container-2">
       <div class="donate-money flex-row">
-        <div class="flex-col-donate">
+        <!--<div class="flex-col-donate">
           <div class="donate-col-wrap">
             <div class="donate-opt-wrap">
               <div class="donate-opt-img"><img src="assets/img/donate/1home-case1.png" width="185">
@@ -37,7 +37,7 @@
               <div class="cost">$ 17,000</div><a (click)="purchaseClicked(17000)" class="donate-btn w-button">{{ 'DONATE' | translate }}</a>
             </div>
           </div>
-        </div>
+        </div>-->
         <div class="flex-col-donate">
           <div class="donate-col-wrap">
             <div class="donate-opt-wrap">
@@ -52,7 +52,8 @@
                   <div class="input-wrap">
                     <div class="dollar-symbhol">$</div>
                     <div class="w-embed">
-                      <input #donateValue class="custom-input w-input" type="text" maxlength="6" placeholder="Add Amount" data-name="Amount" name="Amount" id="Amount" required="required"
+                      <span class="add-amount">{{ 'ADD_AMOUNT' | translate }}</span>
+                      <input #donateValue class="custom-input w-input" type="text" maxlength="6" data-name="Amount" name="Amount" id="Amount" required="required"
                              onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.keyCode === 46 || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40">
                     </div>
                   </div>

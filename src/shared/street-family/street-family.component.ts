@@ -15,7 +15,7 @@ import {
 import {
   DrawDividersInterface
 } from '../../common';
-import { GetStreetSettings } from '../../common/street/ngrx/street-settings.actions';
+import { GetStreetSettings } from '../../common/street-settings/ngrx/street-settings.actions';
 import { StreetFamilyDrawService } from './street-family.service';
 
 @Component({

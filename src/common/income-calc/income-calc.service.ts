@@ -1,9 +1,9 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MathService } from '../math/math.service';
 
 @Injectable()
 export class IncomeCalcService {
-  constructor(@Inject(MathService) private math) {}
+  constructor(private math: MathService) {}
 
   public calcPlaceIncome(income: number, timeUnit: string, currencyValue): number {
     let resultIncome: number = 0;
@@ -32,7 +32,7 @@ export class IncomeCalcService {
 
     let currencyIncome = resultIncome * currencyValue;
 
-    return this.math.roundIncome(currencyIncome, currencyIncome <= 10).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+    return parseInt((this.math.roundIncome(currencyIncome, currencyIncome <= 10).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 '));
   }
 
   public getTimeUnitByCode(units: any[] = [], code: string): any {

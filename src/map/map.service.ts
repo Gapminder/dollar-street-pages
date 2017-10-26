@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -6,10 +6,7 @@ import { environment } from '../environments/environment';
 
 @Injectable()
 export class MapService {
-  public http: any;
-
-  public constructor(@Inject(Http) http: any) {
-    this.http = http;
+  public constructor(private http: Http) {
   }
 
   public getMainPlaces(query: any): Observable<any> {

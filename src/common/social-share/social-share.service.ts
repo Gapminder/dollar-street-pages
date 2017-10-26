@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -20,11 +20,10 @@ export class SocialShareService {
     public twitterInstance: any;
     public shareMessageTranslated: string;
     public getTranslationSubscribe: Subscription;
+    public getLanguagesListSubscription: Subscription;
 
-    public constructor(@Inject(LanguageService) private languageService: LanguageService,
-                       @Inject(Http) private http: Http) {
-        this.languageService = languageService;
-
+    public constructor(private languageService: LanguageService,
+                       private http: Http) {
         this.documentCreatedSubscribe = Observable.fromEvent(document, 'DOMContentLoaded')
           .subscribe(() => {
               this.facebookLike();
@@ -48,22 +47,28 @@ export class SocialShareService {
             ur_IN: 'ur_PK'
         };
 
-        let currentLanguage: string = this.languageService.getLanguageIso();
-
-        if(currentLanguage in languageReplaceSchema) {
-            currentLanguage = languageReplaceSchema[currentLanguage];
+        if (this.getLanguagesListSubscription) {
+          this.getLanguagesListSubscription.unsubscribe();
         }
 
-        let fjs: HTMLElement = this.document.getElementsByTagName(this.elementTagName)[0] as HTMLElement;
+        this.getLanguagesListSubscription = this.languageService.getLanguagesList().subscribe((data: any) => {
+          let currentLanguage: string = this.languageService.getLanguageIso();
 
-        if (this.document.getElementById(this.facebookElementId)) {
-            return;
-        }
+          if(currentLanguage in languageReplaceSchema) {
+              currentLanguage = languageReplaceSchema[currentLanguage];
+          }
 
-        let js: HTMLElement = this.document.createElement(this.elementTagName) as HTMLElement;
-        js.setAttribute('id', this.facebookElementId);
-        js.setAttribute('src', '//connect.facebook.net/'+currentLanguage+'/sdk.js#xfbml=1&version=v2.8');
-        fjs.parentNode.insertBefore(js, fjs);
+          let fjs: HTMLElement = this.document.getElementsByTagName(this.elementTagName)[0] as HTMLElement;
+
+          if (this.document.getElementById(this.facebookElementId)) {
+              return;
+          }
+
+          let js: HTMLElement = this.document.createElement(this.elementTagName) as HTMLElement;
+          js.setAttribute('id', this.facebookElementId);
+          js.setAttribute('src', '//connect.facebook.net/'+currentLanguage+'/sdk.js#xfbml=1&version=v2.8');
+          fjs.parentNode.insertBefore(js, fjs);
+        });
     }
 
     public twitterFollow(): any {
@@ -89,7 +94,7 @@ export class SocialShareService {
         return this.twitterInstance;
     }
 
-    public openPopUp(target: string): void {
+    public openPopUp(target: string, url: string = null): void {
       const twitterUrl: string = 'https://twitter.com/intent/tweet';
       const facebookUrl: string = 'http://www.facebook.com/sharer.php';
       const linkedinUrl: string = 'http://www.linkedin.com/shareArticle';
@@ -124,44 +129,78 @@ export class SocialShareService {
 
       this.locationPath = this.location.pathname + this.location.search;
 
-      this.getShortUrl({url: this.locationPath}).then((res: any) => {
-          if (res.err) {
-            console.error(res.err);
-            return;
-          }
+      if (!url) {
+        this.getShortUrl({url: this.locationPath}).then((res: any) => {
+            if (res.err) {
+              console.error(res.err);
+              return;
+            }
 
-          let params: URLSearchParams = new URLSearchParams();
+            let params: URLSearchParams = new URLSearchParams();
 
-          switch(target) {
-            case 'twitter':
-              params.set('url', res.url);
-              params.set('text', this.shareMessageTranslated + '- Dollar Street');
-            break;
+            switch(target) {
+              case 'twitter':
+                params.set('url', res.url);
+                params.set('text', this.shareMessageTranslated + '- Dollar Street');
+              break;
 
-            case 'facebook':
-              params.set('u', res.url);
-              params.set('description', this.shareMessageTranslated);
-            break;
+              case 'facebook':
+                params.set('u', res.url);
+                params.set('description', this.shareMessageTranslated);
+              break;
 
-            case 'linkedin':
-              params.set('mini', 'true');
-              params.set('url', res.url);
-              params.set('summary', this.shareMessageTranslated);
-            break;
+              case 'linkedin':
+                params.set('mini', 'true');
+                params.set('url', res.url);
+                params.set('summary', this.shareMessageTranslated);
+              break;
 
-            case 'google':
-              params.set('url', res.url);
-              params.set('text', this.shareMessageTranslated);
-            break;
+              case 'google':
+                params.set('url', res.url);
+                params.set('text', this.shareMessageTranslated);
+              break;
 
-            default:
-            break;
-          }
+              default:
+              break;
+            }
 
-          this.url = params.toString();
+            this.url = params.toString();
 
-          this.openWindow(originalUrl, this.url);
-        });
+            this.openWindow(originalUrl, this.url);
+          });
+      } else {
+        let params: URLSearchParams = new URLSearchParams();
+
+        switch(target) {
+          case 'twitter':
+            params.set('url', url);
+            params.set('text', this.shareMessageTranslated + '- Dollar Street');
+          break;
+
+          case 'facebook':
+            params.set('u', url);
+            params.set('description', this.shareMessageTranslated);
+          break;
+
+          case 'linkedin':
+            params.set('mini', 'true');
+            params.set('url', url);
+            params.set('summary', this.shareMessageTranslated);
+          break;
+
+          case 'google':
+            params.set('url', url);
+            params.set('text', this.shareMessageTranslated);
+          break;
+
+          default:
+          break;
+        }
+
+        this.url = params.toString();
+
+        this.openWindow(originalUrl, this.url);
+      }
     }
 
     public openWindow(originalUrl: string, url: any): void {

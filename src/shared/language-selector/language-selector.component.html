@@ -5,7 +5,7 @@
        [(isOpen)]="status.isOpen">
     <div class="active-languages">
       <span class="lang-outside">
-        {{selectedLanguage.name}}
+        {{selectedLanguage?.name}}
       </span>
     </div>
 
@@ -14,7 +14,6 @@
             class="btn"
             dropdownToggle
             [disabled]="disabled">
-      <!-- <span class="caret"></span> -->
       <img src="assets/img/lang-selector-arrow.svg" alt="">
     </button>
 
