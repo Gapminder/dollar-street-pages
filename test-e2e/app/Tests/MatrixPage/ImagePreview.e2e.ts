@@ -6,6 +6,7 @@ import { MatrixPage } from '../../Pages/MatrixPage';
 import { DataProvider } from '../../Data/DataProvider';
 import { HomePage } from '../../Pages/HomePage';
 import { CountryPage } from '../../Pages/CountryPage';
+import { AbstractPage } from '../../Pages/AbstractPage';
 
 const pattern = /^.*(\/)/; // grab everything to last slash
 let random: number;
@@ -14,7 +15,7 @@ describe('Matrix Page: big section -like in Google', () => {
   const NUMBER_OF_LINKS_TO_TEST = 3;
 
   beforeEach(() => {
-    random = Math.floor(Math.random() * 15); // random number between 0 and 15
+    random = AbstractPage.getRandom();
 
     browser.get('matrix');
   });

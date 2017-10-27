@@ -34,6 +34,7 @@ export class MatrixPage extends AbstractPage {
   public static minimap: ElementFinder = $('#map-content');
   public static photographerName: ElementFinder = $('.photographer-container a:nth-child(2)'); // TODO add test class
   public static familyIncomeOnImage: ElementArrayFinder = element.all(by.css('.place-image-box-income'));
+  public static familyIncomeInPreview: ElementFinder = $('.matrix-view-block .header-container');
 
   public static getThingLinkInSearch(thingNumber: number): ElementFinder {
     return this.thingLinkInSearch.get(thingNumber);
@@ -57,6 +58,11 @@ export class MatrixPage extends AbstractPage {
 
   public static getFamilyIncome(index: number): promise.Promise<number> {
     return this.familyIncomeOnImage.get(index).getText()
-      .then(income => Number(income.replace(/$|\W/g, '')));
+      .then(income => Number(income.replace(/\D/g, '')));
+  }
+
+  public static getFamilyIncomeFromPreviw(index: number): promise.Promise<number> {
+    return this.familyIncomeInPreview.get(index).getText()
+      .then(income => Number(income.replace(/\D/g, '')));
   }
 }
