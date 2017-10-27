@@ -1,13 +1,14 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+import { Subject } from 'rxjs/Subject';
 import { environment } from '../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../url-change/url-change.service';
-import { LocalStorageService } from '../guide/localstorage.service';
+import { LocalStorageService } from '../local-storage/local-storage.service';
 import * as _ from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
@@ -15,41 +16,27 @@ import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class LanguageService {
-  public http: Http;
-  public location: Location;
   public window: Window = window;
   public currentLanguage: string;
   public defaultLanguage: string = 'en';
   public languageName: string;
-  public urlChangeService: UrlChangeService;
-  public translate: TranslateService;
-  public utilsService: UtilsService;
   public translateSubscribe: Subscription;
   public translations: any;
   public onLangChangeSubscribe: Subscription;
-  public localStorageService: LocalStorageService;
   public translationsLoadedSubscribe: Subscription;
   public documentLoadedSubscription: Subscription;
   public translationsLoadedEvent: EventEmitter = new EventEmitter();
   public translationsLoadedString: string = 'TRANSLATIONS_LOADED';
-  public sanitizer: DomSanitizer;
   public languagesList: Observable<any>;
+  public availableLanguage: string[] = ['en', 'es-ES', 'sv-SE'];
 
-  public constructor(@Inject(Http) http: Http,
-                     @Inject(Location) location: Location,
-                     @Inject(UrlChangeService) urlChangeService: UrlChangeService,
-                     @Inject(TranslateService) translate: TranslateService,
-                     @Inject(LocalStorageService) localStorageService: LocalStorageService,
-                     @Inject(DomSanitizer) sanitizer: DomSanitizer,
-                     @Inject(UtilsService) utilsService: UtilsService) {
-    this.http = http;
-    this.location = location;
-    this.urlChangeService = urlChangeService;
-    this.translate = translate;
-    this.localStorageService = localStorageService;
-    this.utilsService = utilsService;
-    this.sanitizer = sanitizer;
-
+  public constructor(private http: Http,
+                     private location: Location,
+                     private urlChangeService: UrlChangeService,
+                     private translate: TranslateService,
+                     private localStorageService: LocalStorageService,
+                     private sanitizer: DomSanitizer,
+                     private utilsService: UtilsService) {
     if (this.documentLoadedSubscription) {
       this.documentLoadedSubscription.unsubscribe();
     }
@@ -72,12 +59,7 @@ export class LanguageService {
     this.translate.setDefaultLang(this.defaultLanguage);
     this.defaultLanguage = this.translate.getDefaultLang();
 
-    const urlLanguage: string = this.getLanguageFromUrl(this.urlChangeService.location.path());
-    const storageLanguage: any = this.localStorageService.getItem('language');
-    const browserLanguage: string = this.translate.getBrowserCultureLang();
-
-    this.currentLanguage = urlLanguage !== this.defaultLanguage ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
-
+    this.setCurrentLanguage(this.availableLanguage);
     this.updateLangInUrl();
 
     this.loadLanguage().subscribe((trans: any) => {
@@ -95,34 +77,7 @@ export class LanguageService {
         return;
       }
 
-      const inputLanguages: any[] = res.data;
-      let resultLanguages: any = {};
-
-      let languages = _.filter(inputLanguages, (language: any): any => {
-        if (!language) {
-          return;
-        }
-
-        if (language.code === 'en') {
-          resultLanguages.primaryLanguage = language;
-        }
-
-        if (language.code === this.currentLanguage) {
-          resultLanguages.secondaryLanguage = language;
-        }
-
-        if (language.code !== 'en' && language.code !== this.currentLanguage) {
-          return language;
-        }
-      });
-
-      if (resultLanguages.secondaryLanguage && resultLanguages.secondaryLanguage.code === 'en') {
-        resultLanguages.secondaryLanguage = languages.length ? _.first(languages.splice(0, 1)) : undefined;
-      }
-
-      resultLanguages.filteredLanguages = languages;
-
-      return resultLanguages;
+      return res.data;
     });
   }
 
@@ -183,7 +138,6 @@ export class LanguageService {
 
   public changeLanguage(lang: string): void {
     this.localStorageService.setItem('language', lang);
-
     this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${lang}`);
   }
 
@@ -192,6 +146,32 @@ export class LanguageService {
       let parseRes = JSON.parse(res._body);
       return {err: parseRes.error, data: parseRes.data};
     });
+  }
+
+  private setCurrentLanguage(languages: string[]): void {
+    const urlLanguage: string = this.getLanguageFromUrl(this.location.path());
+    const storageLanguage: any = this.localStorageService.getItem('language');
+    const browserLanguage: string = this.translate.getBrowserCultureLang();
+
+    let language = urlLanguage !== this.defaultLanguage ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
+
+    const found = languages.indexOf(language) !== -1;
+
+    this.currentLanguage = found ? language : this.defaultLanguage;
+  }
+
+  private updateLangInUrl(): void {
+    const currentUrl: string = this.location.path();
+
+    const pathAndQueryParams: string[] = currentUrl.split('?');
+    const queryParamsString: string = pathAndQueryParams[1];
+
+    const path: string = pathAndQueryParams[0];
+    const queryParams: any = queryParamsString ? this.utilsService.parseUrl(queryParamsString) : {};
+
+    queryParams.lang = this.currentLanguage;
+
+    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams));
   }
 
   public getLanguagesList(): Observable<any> {
@@ -210,20 +190,6 @@ export class LanguageService {
 
   public getLanguageParam(): string {
     return `&lang=${this.currentLanguage}`;
-  }
-
-  public updateLangInUrl(): void {
-    const currentUrl: string = this.location.path();
-
-    const pathAndQueryParams: string[] = currentUrl.split('?');
-    const queryParamsString: string = pathAndQueryParams[1];
-
-    const path: string = pathAndQueryParams[0];
-    const queryParams: any = queryParamsString ? this.utilsService.parseUrl(queryParamsString) : {};
-
-    queryParams.lang = this.currentLanguage;
-
-    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams));
   }
 
   private processTranslation(observer: Observer<any>, translations: any, key: string | string[]): void {

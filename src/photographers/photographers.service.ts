@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -6,10 +6,7 @@ import { environment } from '../environments/environment';
 
 @Injectable()
 export class PhotographersService {
-  public http: Http;
-
-  public constructor(@Inject(Http) http: Http) {
-    this.http = http;
+  public constructor(private http: Http) {
   }
 
   public getPhotographers(query: any): Observable<any> {

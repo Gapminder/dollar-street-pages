@@ -150,6 +150,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public pinPlusArr: number[] = new Array(6);
   public pinPlusCount: number = 6;
   public pinPlusOffset: number = 16;
+  public matrixContainerElement: HTMLElement;
+  public shareUrl: string;
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -186,6 +188,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.headerElement = document.querySelector('.header-content') as HTMLElement;
+    this.matrixContainerElement = document.querySelector('.matrix-container') as HTMLElement;
 
     this.plusSignWidth = this.element.offsetWidth / this.pinPlusCount - this.pinPlusOffset;
 
@@ -213,16 +216,22 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.pinMode) {
           this.isPinMode = true;
           this.isEmbedMode = false;
+          this.setMatrixTopPadding(200);
         } else {
           this.isPinMode = false;
           this.isEmbedShared = false;
           this.isPreviewView = false;
+          this.setMatrixTopPadding(0);
         }
 
         if (data.embedMode) {
           this.isEmbedMode = true;
+          this.setMatrixTopPadding(260);
         } else {
           this.isEmbedMode = false;
+          if (!this.isPinMode) {
+              this.setMatrixTopPadding(0);
+          }
         }
 
         if (data.matrixImages) {
@@ -413,6 +422,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(new MatrixActions.GetTimeUnits());
   }
 
+  public setMatrixTopPadding(value: number): void {
+    this.matrixContainerElement.style.paddingTop = value + 'px';
+  }
+
   public onPinnedPlaceHover(place: any): void {
     if (!this.isDesktop) {
       return;
@@ -508,7 +521,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public openPopUp(target: string): void {
-    this.socialShareService.openPopUp(target);
+    this.socialShareService.openPopUp(target, this.shareUrl);
   }
 
   public clearEmbedMatrix(): void {
@@ -545,7 +558,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       let updatedSet = this.placesSet.map((place) => {
         place.background = data.data.places[place._id];
-
         return place;
       });
 
@@ -554,7 +566,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.imageGeneratorService.generateImage().then((screenshot: any) => {
           let filesToRemove = Object.keys(data.data.places).map(k => data.data.places[k]).map(l => {
             let arr = l.split('/');
-
             return arr[arr.length - 1];
           });
 
@@ -572,8 +583,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
             this.changeDetectorRef.detectChanges();
 
+            this.shareUrl = data.data.url;
+
             let shareUrl = document.querySelector('.share-link-input') as HTMLInputElement;
-            shareUrl.setAttribute('value', `http://${this.window.location.hostname}/dollar-street/matrix?${queryString}`);
+            shareUrl.setAttribute('value', data.data.url);
             shareUrl.select();
           });
         });

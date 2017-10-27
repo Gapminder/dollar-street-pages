@@ -19,7 +19,7 @@ import {
 import { SocialShareService } from '../social-share.service';
 import { LanguageService } from '../../language/language.service';
 import { UrlChangeService } from '../../url-change/url-change.service';
-import { LocalStorageService } from '../../guide/localstorage.service';
+import { LocalStorageService } from '../../local-storage/local-storage.service';
 import { UtilsService } from '../../utils/utils.service';
 import {
     LanguageServiceMock,

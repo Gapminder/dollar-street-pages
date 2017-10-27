@@ -1,16 +1,14 @@
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { environment } from '../environments/environment';
 
 @Injectable()
 export class DonateService {
   public window: Window = window;
-  public http: Http;
 
-  public constructor(@Inject(Http) http: Http) {
-    this.http = http;
+  public constructor(private http: Http) {
   }
 
   public showStripeDialog(config: any, cb: Function): void {

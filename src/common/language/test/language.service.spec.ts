@@ -17,7 +17,7 @@ import { Location, LocationStrategy } from '@angular/common';
 import { TranslateModule, TranslateLoader, TranslateService } from 'ng2-translate';
 import { LanguageService } from '../language.service';
 import { UrlChangeService } from '../../url-change/url-change.service';
-import { LocalStorageService } from '../../guide/localstorage.service';
+import { LocalStorageService } from '../../local-storage/local-storage.service';
 import { UtilsService } from '../../utils/utils.service';
 import { SpyLocation } from '@angular/common/testing';
 import {

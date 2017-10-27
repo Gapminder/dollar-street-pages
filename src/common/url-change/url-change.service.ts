@@ -1,16 +1,14 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UrlChangeService {
-  public location: Location;
   private urlEvents: Subject<any>;
 
-  public constructor(@Inject(Location) location: Location) {
+  public constructor(private location: Location) {
     this.urlEvents = new Subject();
-    this.location = location;
   }
 
   public replaceState(path: string, query: string): void {

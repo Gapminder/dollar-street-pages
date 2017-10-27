@@ -34,6 +34,7 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public aboutDataPosition: any = {};
     public elementTagName: string = 'script';
     public scriptAdded: boolean = false;
+    public addAmountTrans: string;
 
     public constructor(private loaderService: LoaderService,
                        private donateService: DonateService,
@@ -47,10 +48,12 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public ngOnInit(): void {
         this.loaderService.setLoader(true);
 
-        this.getTranslationSubscribe = this.languageService.getTranslation(['DONATE', 'DONATE_DESCRIPTION']).subscribe((trans: any) => {
+        this.getTranslationSubscribe = this.languageService.getTranslation(['DONATE', 'DONATE_DESCRIPTION', 'ADD_AMOUNT']).subscribe((trans: any) => {
             this.titleHeaderService.setTitle(trans.DONATE);
 
             this.donateDescription = this.languageService.getSunitizedString(trans.DONATE_DESCRIPTION);
+
+            this.addAmountTrans = trans.ADD_AMOUNT;
         });
     }
 

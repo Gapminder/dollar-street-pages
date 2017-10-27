@@ -37,7 +37,7 @@
            angulartics2On="click"
            angularticsEvent="From photographers page to profile page of the photographer {{photographer.name}}">
         <div class="photographer-portrait"
-             [ngStyle]="{'background-image': photographer.avatar || 'url(/assets/img/empty-photographer.jpg)'}">
+             [ngStyle]="{'background-image': photographer.avatar}">
           <div class="photographer-material">
             <span><img src="/assets/img/camera-white.svg" alt=""> {{math.round(photographer.images)}}</span>
             <span *ngIf="photographer.video"><img src="/assets/img/video-camera-white.svg" alt=""> {{math.round(photographer.video) || 0}}</span>

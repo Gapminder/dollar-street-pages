@@ -1,5 +1,6 @@
 
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import {
   Component,
   OnInit,
@@ -33,11 +34,8 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.currentLanguage = this.languageService.currentLanguage;
-
     this.languagesListSubscription = this.languageService.languagesList.subscribe((data: any) => {
-      this.languages = [data.primaryLanguage, data.secondaryLanguage, ...data.filteredLanguages];
-
+      this.languages = data;
       this.updateLanguages();
     });
   }
@@ -49,8 +47,14 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public updateLanguages(): void {
-    this.selectedLanguage = this.languages.find(lang => lang.code === this.currentLanguage);
-    this.filteredLanguages = this.languages.filter(lang => lang.code !== this.selectedLanguage.code);
+    this.selectedLanguage = this.languages.find(lang => lang.code === this.languageService.currentLanguage);
+
+    if (this.selectedLanguage) {
+      this.filteredLanguages = this.languages.filter(lang => lang.code !== this.selectedLanguage.code);
+    } else {
+      this.selectedLanguage = this.languages.find(lang => lang.code === 'en');
+      this.filteredLanguages = this.languages.filter(lang => lang.code !== 'en');
+    }
   }
 
   public changeLanguage(lang: string): void {
@@ -59,7 +63,6 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
     }
 
     this.languageService.changeLanguage(lang);
-
     this.updateLanguages();
   }
 }
