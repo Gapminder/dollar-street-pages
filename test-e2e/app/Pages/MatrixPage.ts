@@ -9,7 +9,7 @@ export class MatrixPage extends AbstractPage {
   public static thingLinkInSearch: ElementArrayFinder = element.all(by.css('.thing-name'));
   public static searchInFilterByThing: ElementFinder = $('input[placeholder*="things"]');
   public static thingNameOnFilter: ElementFinder = element.all(by.css('.things-filter-button-content>span')).first();
-  public static familyLink: ElementArrayFinder = element.all(by.css('div[class*="image-content"]'));
+  public static familyLink: ElementArrayFinder = element.all(by.css('matrix-images div[class*="image-content"]'));
   public static placePagelink: ElementFinder = $('div[class*="mini-matrix-link"]');
   public static thingInFilter: ElementFinder = $('.thing-name');
   public static bigImageFromBigSection: ElementFinder = $('.view-image-container>img');
@@ -35,6 +35,22 @@ export class MatrixPage extends AbstractPage {
   public static photographerName: ElementFinder = $('.photographer-container a:nth-child(2)'); // TODO add test class
   public static familyIncomeOnImage: ElementArrayFinder = element.all(by.css('.place-image-box-income'));
   public static familyIncomeInPreview: ElementFinder = $('.matrix-view-block .header-container');
+
+  /**
+   * Embed feature
+   */
+  public static pinContainer: ElementFinder = $('.pin-container');
+  public static heartIconsOnImage: ElementArrayFinder = $$('matrix-images .heart-circle');
+  public static pinnedImages: ElementArrayFinder = $$('.pin-place');
+  public static pinnedImagesCountry: ElementArrayFinder = $$('.pin-place .place-image-box-country');
+  public static housesOnPinnedStreet: ElementArrayFinder = $$('.street-pinned-box-container .point');
+  public static pinHeader: ElementFinder = $('.pin-header');
+  public static shareButton: ElementFinder = $('.pin-done-share');
+  public static deselectImageBtns: ElementArrayFinder = $$('.pin-container .heart-circle');
+  public static pinnedStreet: ElementFinder = $('street-pinned .road');
+  public static shareNowBtn: ElementFinder = $$('.share-close-buttons span').first();
+  public static cancelSharingBtn: ElementFinder = $$('.share-close-buttons span').get(1);
+
 
   public static getThingLinkInSearch(thingNumber: number): ElementFinder {
     return this.thingLinkInSearch.get(thingNumber);
