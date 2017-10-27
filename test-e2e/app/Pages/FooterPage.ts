@@ -1,20 +1,21 @@
-'use strict';
+import { $ } from 'protractor';
+
+import using = require('jasmine-data-provider');
 
 import { DataProvider } from '../Data/DataProvider';
-import { $ } from 'protractor';
-let using = require ('jasmine-data-provider');
-
 
 export class FooterPage {
   public static dollarStrretText = $('.logo-container>p');
-  public static checkFooterText():any {
-    using(DataProvider.footerTextInfo, (data:any) => {
+  public static heartIcon = $('.pin-icon');
+
+  public static checkFooterText(): void {
+    using(DataProvider.footerTextInfo, (data: any) => {
       expect(data.element().getText()).toEqual(data.actualResult);
     });
   };
 
-  public static checkFooterImages():any {
-    using(DataProvider.footerBooleanInfo, (data:any) => {
+  public static checkFooterImages(): void {
+    using(DataProvider.footerBooleanInfo, (data: any) => {
       expect($(data.logoCSS).isPresent()).toBeTruthy();
     });
   };
