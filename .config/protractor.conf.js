@@ -4,10 +4,10 @@ exports.config = {
   baseUrl: 'http://localhost:4200/dollar-street/',
 
   specs: [
-    '../test-e2e/app/Tests/*.e2e.ts'
+    '../test-e2e/app/Tests/**/*.e2e.ts'
   ],
   exclude: [
-    '../test-e2e/app/Tests/MatrixPageTestsForPerformance.e2e.ts',
+    '../test-e2e/app/Tests/**/MatrixPageTestsForPerformance.e2e.ts',
     '../test-e2e/app/CMS/**/*.e2e.ts',
     '../test-e2e/app/Tests/BlogPageTests.e2e.ts',
     '../test-e2e/app/Tests/ClickEachLink.e2e.ts'
@@ -22,7 +22,8 @@ exports.config = {
     showColors: true,
     isVerbose: false,
     includeStackTrace: false,
-    defaultTimeoutInterval: 5000000
+    defaultTimeoutInterval: 5000000,
+    print: function () {}
   },
   directConnect: true,
 
@@ -30,7 +31,7 @@ exports.config = {
     {
       browserName: 'chrome',
       chromeOptions: {
-        args: [ "--headless"]
+        args: ['no-sandbox', 'disable-infobars']
       }
 
       // shardTestFiles: true,
@@ -51,5 +52,12 @@ exports.config = {
     require('ts-node').register({ project: 'test-e2e' }); //according to issue: https://github.com/angular/angular-cli/issues/975
 
     browser.driver.manage().window().maximize();
+    let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+
+    jasmine.getEnv().addReporter(new SpecReporter({
+      spec: {
+        displayStacktrace: true
+      }
+    }));
   }
 };

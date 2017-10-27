@@ -11,6 +11,7 @@
     "target": "es2016",
     "types": [
       "jasmine",
+      "jasminewd2",
       "node"
     ],
     "typeRoots": [
