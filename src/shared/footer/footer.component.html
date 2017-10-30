@@ -1,8 +1,7 @@
 <div class="footer">
   <div class="container">
     <div class="cc-container">
-      <a href="https://creativecommons.org/licenses/by/4.0/"
-         target="_blank"
+      <a
          angulartics2On="click"
          angularticsEvent="Moved from footer to CreativeCommons">
         <img src="/assets/img/creative-commons.svg" alt="cc logo"/>
@@ -31,35 +30,32 @@
            angulartics2On="click"
            angularticsEvent="From footer to DollarStreet team page">{{ 'TEAM' | translate }} </a>
 
-        <a class="dividers-after"
+        <!--<a class="dividers-after"
            [routerLink]="['/donate']"
            [queryParams]="{}"
            angulartics2On="click"
-           angularticsEvent="From footer to Donate page">{{ 'DONATE' | translate }}</a>
+           angularticsEvent="From footer to Donate page">{{ 'DONATE' | translate }}</a>-->
 
         <a [routerLink]="['/photographers']"
            [queryParams]="{}"
            angulartics2On="click"
            angularticsEvent="From footer to Photographers page">{{ 'PHOTOGRAPHERS' | translate }} </a>
-
       </div>
 
       <div class="description-content">
         <div [innerHtml]="footerData?.text"></div>
-        <p>{{ 'ALL_IMAGES_UNDER' | translate }} <a href="https://creativecommons.org/licenses/by/4.0/"
-                               target="_blank"
+        <p>{{ 'ALL_IMAGES_UNDER' | translate }} <a href=""
                                angulartics2On="click"
                                angularticsEvent="Moved from footer to CreativeCommons">Creative Commons</a> {{ 'LICENCE' | translate }}.</p>
       </div>
     </div>
 
     <div class="social-follow-buttons-container">
-      <social-follow-buttons></social-follow-buttons>
+      <!-- <social-follow-buttons></social-follow-buttons> -->
     </div>
 
     <div class="gapminder">
-      <a href="https://www.gapminder.org"
-         target="_blank"
+      <a href=""
          angulartics2On="click"
          angularticsEvent="Moved from footer to  Gapminder">
         <img src="/assets/img/gapminder-logo.png" alt="Gapminder">
@@ -68,7 +64,7 @@
 
     <div class="valor">
       <div class="developed">{{ 'DEVELOPED_BY' | translate }}</div>
-      <a class="valor-name" href="http://valor-software.com" target="_blank"
+      <a class="valor-name"
          angulartics2On="click"
          angularticsEvent="Moved from footer to Valor Software">
         Valor-Software

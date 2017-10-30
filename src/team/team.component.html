@@ -9,9 +9,7 @@
           <img *ngIf="team.originTypeName !== 'Organization' && team.originTypeName !== 'Contributor'"
                [src]="ambassador.avatar || 'assets/img/default-am.jpg'" alt="">
           <span *ngIf="team.originTypeName === 'Organization' || team.originTypeName === 'Contributor'">
-            <a target="_blank"
-               *ngIf="ambassador?.company?.link"
-               [href]="ambassador?.company?.link"
+            <a *ngIf="ambassador?.company?.link"
                angulartics2On="click"
                angularticsEvent=" Moved to {{ambassador?.company?.link}} link">
               <img [src]="ambassador.avatar || 'assets/img/default-am.jpg'" alt="">
@@ -26,7 +24,6 @@
           <span *ngIf="team.originTypeName === 'Organization' || team.originTypeName === 'Contributor'">
             <a target="_blank"
                *ngIf="ambassador?.company?.link"
-               [href]="ambassador?.company?.link"
                angulartics2On="click"
                angularticsEvent=" Moved to {{ambassador?.company?.link}} link ">
               <span *ngIf="team.originTypeName === 'Organization'">{{ambassador.name}}</span>

@@ -12,3 +12,13 @@
 <float-footer></float-footer>
 
 <loader [hidden]="isLoader"></loader>
+
+
+<dialog id="refreshDialog">
+  <h2>{{dialogTrans.head}}</h2>
+  <p>{{dialogTrans.text}} <span>{{refreshTimer}}</span> {{dialogTrans.sec}}</p>
+  <div>
+    <button id="dontReset">{{dialogTrans.resetBtn}}</button>
+    <button id="gotoHome">{{dialogTrans.homeBtn}}</button>
+  </div>
+</dialog>

@@ -1,0 +1,40 @@
+dialog {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    width: 540px;
+}
+
+dialog::backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+dialog button {
+    width: 49%;
+    height: 48px;
+    font-size: 18px;
+    line-height: 14px;
+    float: left;
+}
+
+dialog button:last-child {
+    float: right;
+}
+
+dialog div {
+    height: 48px;
+}
+
+dialog p {
+    font-size: 18px;
+}
+
+dialog span {
+    font-size: 24px;
+    color: brown;
+}

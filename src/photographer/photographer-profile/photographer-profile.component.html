@@ -30,7 +30,7 @@
     </p>
   </div>
 
-  <div class="footer-profile organisation"
+  <!--<div class="footer-profile organisation"
        *ngIf="photographer?.company?.name">
     <h3>{{ 'ORGANIZATION' | translate }}</h3>
 
@@ -42,14 +42,14 @@
     </p>
 
     <p *ngIf="!photographer?.company?.link"> {{photographer.company.name}}</p>
-  </div>
+  </div>-->
 
-  <p class="photographer-link"
+  <!--<p class="photographer-link"
      *ngIf="photographer?.company?.link"><a
     [href]="photographer.company.link"
-    target="_blank">{{photographer.company.link}}</a></p>
+    target="_blank">{{photographer.company.link}}</a></p>-->
 
-  <div class="footer-profile"
+  <!--<div class="footer-profile"
        *ngIf="photographer?.google || photographer?.facebook || photographer?.twitter || photographer?.linkedIn">
     <div class="social-network-container">
       <a *ngIf="photographer?.google"
@@ -81,7 +81,7 @@
         <img src="/assets/img/in-dark.svg" alt="">
       </a>
     </div>
-  </div>
+  </div>-->
 </div>
 
 <div *ngIf="photographer" id="item-profile-mobile" [ngClass]="{'open': isShowInfo}">
@@ -136,7 +136,7 @@
         </p>
       </div>
 
-      <div class="company-container">
+      <!--<div class="company-container">
         <div class="company-name" *ngIf="photographer?.company?.name">
           <h3>Organization</h3>
           <p>{{photographer.company.name}}</p>
@@ -185,7 +185,7 @@
             angularticsEvent=" Moved to {{photographer.firstName}} {{photographer.lastName}} private link by mobile">{{photographer.company.link}}</a>
           </p>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>

@@ -1,5 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
   OnInit,
@@ -10,7 +11,9 @@ import {
   LoaderService,
   LanguageService,
   FontDetectorService,
-  GoogleAnalyticsService
+  GoogleAnalyticsService,
+  UrlChangeService,
+  UtilsService
 } from '../common';
 
 @Component({
@@ -19,18 +22,52 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
+  public query: string;
   public isLoader: boolean = false;
   public isVisibleHeader: boolean;
   public routerEventsSubscribe: Subscription;
   public loaderServiceSubscribe: Subscription;
   public documentCreatedSubscribe: Subscription;
   public currentPage: string;
+  public contentLoadedSubscription: Subscription;
+  public hostClickSubscription: Subscription;
+  public waitTime: number = 5 * 60;
+  public refreshTime: number = 30;
+  public refreshTimer: number;
+  public waitingTimer: number;
+  public refreshDialog: any;
+  public waitingInterval: any;
+  public refreshInterval: any;
+  public dialogTrans: any;
+  public dialogTransEn: any = {
+    head: 'Hey, you seem inactive!',
+    text: 'We will reset Dollar Street to the home page in',
+    sec: 'seconds.',
+    resetBtn: "Don't reset, stay on this page",
+    homeBtn: 'Go to the home page now'
+  };
+  public dialogTransSv: any = {
+    head: 'Hej, du verkar inaktiv!',
+    text: 'Vi kommer att återställa Dollar Street till hemsidan på',
+    sec: 'sekunder.',
+    resetBtn: "Återställ inte, stanna på den här sidan",
+    homeBtn: 'Gå till hemsidan nu'
+  };
+  public queryParams: any = {
+    thing: 'Families',
+    countries: 'World',
+    regions: 'World',
+    zoom: 4,
+    row: 1
+  };
 
   public constructor(private router: Router,
                      private languageService: LanguageService,
                      private loaderService: LoaderService,
                      private fontDetectorService: FontDetectorService,
-                     private googleAnalyticsService: GoogleAnalyticsService) {
+                     private googleAnalyticsService: GoogleAnalyticsService,
+                     private urlChangeService: UrlChangeService,
+                     private utilsService: UtilsService) {
   }
 
   public ngOnInit(): void {
@@ -68,6 +105,90 @@ export class AppComponent implements OnInit, OnDestroy {
         this.languageService.updateLangInUrl();
       }
     });
+
+    /*this.appStateSubscription = this.appState.subscribe((data: any) => {
+      if (data) {
+        if (data.query) {
+          this.query = data.query;
+        }
+      }
+    });*/
+
+    if (this.languageService.currentLanguage === 'en') {
+      this.dialogTrans = this.dialogTransEn;
+    } else {
+      this.dialogTrans = this.dialogTransSv;
+    }
+
+    this.contentLoadedSubscription = fromEvent(document, 'DOMContentLoaded').subscribe(() => {
+      this.refreshDialog = document.getElementById('refreshDialog') as any;
+      this.startWaiting();
+
+      document.getElementById('dontReset').onclick = () => {
+        this.startWaiting();
+      };
+
+      document.getElementById('gotoHome').onclick = () => {
+        this.urlChangeService.replaceState('/matrix', this.utilsService.objToQuery(this.queryParams));
+        this.router.navigate(['/matrix'], {queryParams: this.queryParams});
+        this.languageService.changeLanguage(this.languageService.defaultLanguage);
+      };
+    });
+
+    this.hostClickSubscription = fromEvent(document, 'click').subscribe(() => {
+      this.resetWaiting();
+    });
+  }
+
+  public resetWaiting() {
+    clearInterval(this.waitingInterval);
+    this.waitingTimer = this.waitTime;
+    this.startWaiting();
+  }
+
+  public startWaiting() {
+    if (this.refreshDialog.getAttribute('open') === '') {
+      this.refreshDialog.close();
+    }
+
+    clearInterval(this.waitingInterval);
+
+    this.refreshTimer = parseInt(this.refreshTime.toString());
+    this.waitingTimer = this.waitTime;
+
+    this.waitingInterval = setInterval(() => {
+      this.waitingTimer -= 1;
+
+      if (this.waitingTimer === 0) {
+        this.waitingTimer = this.waitTime;
+        clearInterval(this.waitingInterval);
+
+        this.startTiming();
+      }
+    }, 1000);
+  }
+
+  public startTiming() {
+    if (this.refreshDialog.getAttribute('open') !== '') {
+      this.refreshDialog.showModal();
+    }
+
+    clearInterval(this.refreshInterval);
+
+    this.refreshInterval = setInterval(() => {
+      this.refreshTimer -= 1;
+
+      if (this.refreshTimer === 0) {
+        this.refreshDialog.close();
+        clearInterval(this.refreshInterval);
+
+        this.urlChangeService.replaceState('/matrix', this.utilsService.objToQuery(this.queryParams));
+        this.router.navigate(['/matrix'], {queryParams: this.queryParams});
+        this.languageService.changeLanguage(this.languageService.defaultLanguage);
+
+        this.startWaiting();
+      }
+    }, 1000);
   }
 
   public ngOnDestroy(): void {
@@ -82,5 +203,8 @@ export class AppComponent implements OnInit, OnDestroy {
       if (this.documentCreatedSubscribe) {
           this.documentCreatedSubscribe.unsubscribe();
       }
+
+      this.contentLoadedSubscription.unsubscribe();
+      this.hostClickSubscription.unsubscribe();
   }
 }

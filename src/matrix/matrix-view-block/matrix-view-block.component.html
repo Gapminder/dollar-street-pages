@@ -89,15 +89,14 @@
                   [queryParams]="{}"
                   angulartics2On="click"
                   angularticsEvent="From Matrix page to {{familyData.photographer.name}} Photographer profile">
-          {{familyData.photographer?.name}}</a> {{ 'FOR' | translate }} Dollar Street <a
-          href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
+          {{familyData.photographer?.name}}</a> {{ 'FOR' | translate }} Dollar Street <a>(CC BY 4.0)</a>
       </p>
     </div>
 
     <div class="zoom-download-container">
-      <a class="download" target="_blank" [href]="consumerApi + '/v1/download-image/' + place.image">
+      <!--<a class="download" target="_blank">
         <img src="/assets/img/download-icon.svg" alt=""><span class="button-text">{{ 'DOWNLOAD' | translate }}</span>
-      </a>
+      </a>-->
 
       <span (click)="openPopUp()">
         <img src="/assets/img/fullsize-icon.svg" alt=""><span class="button-text">{{ 'FULLSIZE' | translate }}</span>
@@ -139,8 +138,7 @@
             {{familyData.photographer?.name}}</a> <span class="tablet">
             {{ 'FOR' | translate }} Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
           </span>
-          <span class="mobile"><a href="https://creativecommons.org/licenses/by/4.0/"
-                                  target="_blank">CC BY 4.0</a></span>
+          <span class="mobile"><a>CC BY 4.0</a></span>
         </p>
       </div>
 

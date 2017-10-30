@@ -23,7 +23,7 @@ export class UrlChangeService {
     this.urlEvents.next('my event');
   }
 
-  public goToUrl(path: string, query: string): void {
+  public goToUrl(path: string, query: string = ''): void {
     if (this.isCurrentPathEqualTo(path, query)) {
       return;
     }

@@ -141,6 +141,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.urlChangeService.replaceState('/family', this.utilsService.objToQuery(this.urlParams));
+      this.query = this.utilsService.objToQuery(this.urlParams);
 
       this.row = this.urlParams.row;
       this.setZoom(this.urlParams.zoom);
