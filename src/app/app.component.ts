@@ -167,12 +167,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
         const lang = urlParams.lang;
         const thing = urlParams.thing;
+        const lowIncome = urlParams.lowIncome;
+        const highIncome = urlParams.highIncome;
 
         if (window.scrollY !== 0 ||
           region !== 'World' ||
           country !== 'World' ||
           lang !== 'sv-SE' ||
-          thing !== 'Families'
+          thing !== 'Families' ||
+          lowIncome !== '26' ||
+          highIncome !== '15000'
         ) {
           this.startTiming();
         } else {

@@ -16,12 +16,12 @@
                       angulartics2On="click"
                       angularticsEvent="Photographer profile">
               {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> {{ 'FOR' | translate }} Dollar Street
-            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> (CC BY 4.0)</a>
+            <a> (CC BY 4.0)</a>
           </p>
         </div>
 
         <div class="zoom-download-container">
-          <a class="download" target="_blank" [href]="consumerApi + '/v1/download-image/' + imageData.imageId">
+          <a class="download">
             <img src="/assets/img/download-icon.svg" alt=""><span class="button-text">{{ 'DOWNLOAD' | translate }}</span>
           </a>
 
