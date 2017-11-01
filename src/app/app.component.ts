@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public currentPage: string;
   public contentLoadedSubscription: Subscription;
   public hostClickSubscription: Subscription;
-  public waitTime: number = 5 * 60;
+  public waitTime: number = 5 * 1;
   public refreshTime: number = 30;
   public refreshTimer: number;
   public waitingTimer: number;
@@ -106,14 +106,6 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
-    /*this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if (data) {
-        if (data.query) {
-          this.query = data.query;
-        }
-      }
-    });*/
-
     if (this.languageService.currentLanguage === 'en') {
       this.dialogTrans = this.dialogTransEn;
     } else {
@@ -125,7 +117,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.startWaiting();
 
       document.getElementById('dontReset').onclick = () => {
-        this.startWaiting();
+        this.resetWaiting();
       };
 
       document.getElementById('gotoHome').onclick = () => {
@@ -142,7 +134,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public resetWaiting() {
     clearInterval(this.waitingInterval);
-    this.waitingTimer = this.waitTime;
+    clearInterval(this.refreshInterval);
     this.startWaiting();
   }
 
@@ -163,7 +155,29 @@ export class AppComponent implements OnInit, OnDestroy {
         this.waitingTimer = this.waitTime;
         clearInterval(this.waitingInterval);
 
-        this.startTiming();
+        let urlParams = this.utilsService.parseUrl(location.href);
+
+        let region;
+        let country;
+
+        if (urlParams.regions && urlParams.countries) {
+          region = urlParams.regions[0];
+          country = urlParams.countries[0];
+        }
+
+        const lang = urlParams.lang;
+        const thing = urlParams.thing;
+
+        if (window.scrollY !== 0 ||
+          region !== 'World' ||
+          country !== 'World' ||
+          lang !== 'sv-SE' ||
+          thing !== 'Families'
+        ) {
+          this.startTiming();
+        } else {
+          this.startWaiting();
+        }
       }
     }, 1000);
   }
