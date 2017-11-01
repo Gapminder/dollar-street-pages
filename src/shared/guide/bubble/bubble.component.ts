@@ -146,12 +146,14 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }
 
     if (step === 6) {
-      baloonDirector = 'main-menu';
+      baloonDirector = 'language-selector';
     }
 
     setTimeout(() => {
       this.utilsService.getCoordinates(baloonDirector, (data: any) => {
-        let baloonElementRect: ClientRect = this.bubblesContainer.nativeElement.getBoundingClientRect();
+        let bubbleContainer = this.bubblesContainer.nativeElement;
+
+        let baloonElementRect: ClientRect = bubbleContainer.getBoundingClientRect();
 
         let baloonWidth: number = baloonElementRect.width;
         let baloonHeight: number = baloonElementRect.height;

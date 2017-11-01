@@ -58,10 +58,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
         this.article = val.data;
         this.titleHeaderService.setTitle(this.article.thing);
-
+// |http:\/\/|https:\/\/
         this.article.description = this.article.description
           .replace(/gapminder\.org/g, location.host)
-          .replace(/href="(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?"/g, '');
+          .replace(/href="(http:\/\/www\.|https:\/\/www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?"/g, '');
 
         if (!this.article.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
           this.showTranslateMe = true;

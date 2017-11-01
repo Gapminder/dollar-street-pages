@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="footer-container" *ngIf="step === 5">
+  <!--<div class="footer-container" *ngIf="step === 5">
     <p>{{ 'SHARE' | translate }}</p>
 
     <social-share-buttons></social-share-buttons>
@@ -31,7 +31,7 @@
     <a target="_blank"
        *ngIf="step === bubbles.length"
        [href]="bubble?.link?.href">{{bubble?.link?.text}}</a>
-  </div>
+  </div>-->
 
   <img class="close-bubble" src="/assets/img/close-button-bubbles.svg" alt="" (click)="getBubble(6)">
 </div>
