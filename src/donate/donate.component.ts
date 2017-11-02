@@ -75,8 +75,6 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public ngAfterViewInit(): void {
         this.addStripeScript();
-
-        let addAmount = this.element.querySelector('.add-amount');
     }
 
     public onAddAmountClick(): void {

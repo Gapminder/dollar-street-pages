@@ -322,10 +322,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (this.query) {
         let query = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`;
-
         this.query = query;
-
-        //this.urlChangeService.replaceState('/family', this.query);
       }
     }
   }
@@ -436,9 +433,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.streetSettings) {
       return;
     }
-
-    //this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
-    //this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
 
     const queryParams = {
       thing: 'Families',
