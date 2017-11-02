@@ -277,7 +277,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     newImage.src = imgUrl;
-  };
+  }
 
   public fancyBoxClose(): void {
     this.popIsOpen = false;
@@ -285,14 +285,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public visitThisHome(): void {
-    let queryUrl: any = this.utilsService.parseUrl(this.query);
+    let queryParams: any = this.utilsService.parseUrl(this.query);
 
-    queryUrl.place = this.familyData.goToPlaceData.place;
+    queryParams.place = this.familyData.goToPlaceData.place;
 
-    //let query = this.utilsService.objToQuery(queryUrl);
-    //this.store.dispatch(new AppActions.SetQuery(query));
-
-    this.router.navigate(['/family'], {queryParams: queryUrl});
+    this.router.navigate(['/family'], {queryParams: queryParams});
   }
 
   public goToMatrixByCountry(country: string): void {

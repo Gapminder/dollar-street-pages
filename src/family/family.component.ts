@@ -108,8 +108,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
-      this.placeId = params.place;
-
       this.urlParams = {
         thing: params.thing ? decodeURI(params.thing) : 'Families',
         countries: params.countries ? decodeURI(params.countries) : 'World',
@@ -118,18 +116,21 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
         row: parseInt(params.row, 10) || 1,
         lowIncome: parseInt(params.lowIncome, 10),
         highIncome: parseInt(params.highIncome, 10),
-        place: this.placeId,
+        place: params.place,
+        activeImage: params.activeImage,
         lang: this.languageService.currentLanguage
       };
 
       if (this.urlParams.activeImage) {
-        this.urlParams.activeImage = this.urlParams.activeImage;
-
         this.activeImageIndex = this.urlParams.activeImage;
+      } else {
+        delete this.urlParams.activeImage;
       }
 
-      //this.urlChangeService.replaceState('/family', this.utilsService.objToQuery(this.urlParams));
+      this.store.dispatch(new AppActions.SetQuery(this.utilsService.objToQuery(this.urlParams)));
+      this.urlChangeService.replaceState('/family', this.utilsService.objToQuery(this.urlParams));
 
+      this.placeId = this.urlParams.place;
       this.row = this.urlParams.row;
       this.setZoom(this.urlParams.zoom);
 
@@ -436,19 +437,21 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
-    this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
+    //this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
+    //this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
 
-    if (!this.placeId) {
-      this.router.navigate(['/matrix', {
-        thing: 'Families',
-        countries: 'World',
-        regions: 'World',
-        zoom: 4,
-        row: 1,
-        lowIncome: this.poor,
-        highIncome: this.rich
-      }]);
+    const queryParams = {
+      thing: 'Families',
+      countries: 'World',
+      regions: 'World',
+      zoom: 4,
+      row: 1,
+      lowIncome: this.poor,
+      highIncome: this.rich
+    }
+
+    if (!this.urlParams.place) {
+      this.router.navigate(['/matrix', {queryParams: queryParams}]);
 
       this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
 

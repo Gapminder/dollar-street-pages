@@ -295,16 +295,17 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage,
         currency: params.currency ? decodeURI(params.currency.toUpperCase()) : '',
         time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH',
-        labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false
+        labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false,
+        activeHouse: parseInt(params.activeHouse, 10)
       };
 
-      this.query = this.utilsService.objToQuery(this.urlParams);
+      let query = this.utilsService.objToQuery(this.urlParams);
 
-      this.store.dispatch(new AppActions.SetQuery(this.query));
+      this.store.dispatch(new AppActions.SetQuery(query));
 
-      this.store.dispatch(new ThingsFilterActions.GetThingsFilter(this.query));
+      this.store.dispatch(new ThingsFilterActions.GetThingsFilter(query));
 
-      this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.query));
+      this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(query));
       this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
       this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
 

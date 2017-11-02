@@ -79,7 +79,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
   public currencyUnits: any;
-  public familyIncome: number;
+  public familyIncome: string;
   public queryParams: any;
   public queryParamsSubscribe: Subscription;
 

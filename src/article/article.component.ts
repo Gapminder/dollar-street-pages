@@ -49,6 +49,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
         this.article = val.data;
         this.titleHeaderService.setTitle(this.article.thing);
 
+        this.article.description = this.article.description
+          .replace(/gapminder\.org/g, location.host);
+
         if (!this.article.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
           this.showTranslateMe = true;
         }

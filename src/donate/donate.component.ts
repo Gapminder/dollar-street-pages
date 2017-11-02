@@ -1,13 +1,20 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
-
-import { LoaderService,
-         TitleHeaderService,
-         LanguageService,
-         BrowserDetectionService,
-         UtilsService } from '../common';
-
+import {
+  LoaderService,
+  TitleHeaderService,
+  LanguageService,
+  BrowserDetectionService,
+  UtilsService
+} from '../common';
 import { DonateService } from './donate.service';
 
 @Component({
@@ -18,9 +25,10 @@ import { DonateService } from './donate.service';
 export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('donateValue')
     public donateValue: ElementRef;
-
     @ViewChild('aboutDialog')
     public aboutDialog: ElementRef;
+    @ViewChild('addAmount')
+    public addAmount: ElementRef;
 
     public getTranslationSubscribe: Subscription;
     public document: Document = document;
@@ -35,6 +43,7 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public elementTagName: string = 'script';
     public scriptAdded: boolean = false;
     public addAmountTrans: string;
+    public element: HTMLElement;
 
     public constructor(private loaderService: LoaderService,
                        private donateService: DonateService,
@@ -42,7 +51,9 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
                        private languageService: LanguageService,
                        private utilsService: UtilsService,
                        private browserDetectionService: BrowserDetectionService,
-                       private sanitizer: DomSanitizer) {
+                       private sanitizer: DomSanitizer,
+                       private elementRef: ElementRef) {
+        this.element = this.elementRef.nativeElement;
     }
 
     public ngOnInit(): void {
@@ -64,6 +75,20 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public ngAfterViewInit(): void {
         this.addStripeScript();
+
+        let addAmount = this.element.querySelector('.add-amount');
+    }
+
+    public onAddAmountClick(): void {
+        let addAmount = this.addAmount.nativeElement;
+        addAmount.style.visibility = 'hidden';
+
+        this.donateValue.nativeElement.focus();
+    }
+
+    public onAmountBlur(): void {
+      let addAmount = this.addAmount.nativeElement;
+      addAmount.style.visibility = 'visible';
     }
 
     public showAboutPopUp(): void {

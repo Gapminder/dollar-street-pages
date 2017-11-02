@@ -5,7 +5,7 @@ import { MathService } from '../math/math.service';
 export class IncomeCalcService {
   constructor(private math: MathService) {}
 
-  public calcPlaceIncome(income: number, timeUnit: string, currencyValue): number {
+  public calcPlaceIncome(income: number, timeUnit: string, currencyValue): string {
     let resultIncome: number = 0;
 
     switch(timeUnit) {
@@ -32,7 +32,7 @@ export class IncomeCalcService {
 
     let currencyIncome = resultIncome * currencyValue;
 
-    return parseInt((this.math.roundIncome(currencyIncome, currencyIncome <= 10).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 '));
+    return this.math.roundIncome(currencyIncome, currencyIncome <= 10).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
 
   public getTimeUnitByCode(units: any[] = [], code: string): any {
