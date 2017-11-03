@@ -1,16 +1,19 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { By }              from '@angular/platform-browser';
-import { DebugElement }    from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpModule } from '@angular/http';
+
 import {
-  LoaderService,
-  TitleHeaderService,
-  LanguageService
+LoaderService,
+TitleHeaderService,
+LanguageService
 } from '../../common';
 import {
-  LoaderServiceMock,
-  LanguageServiceMock,
-  TitleHeaderServiceMock
+LoaderServiceMock,
+LanguageServiceMock,
+TitleHeaderServiceMock
 } from '../../test/';
 import { AboutComponent } from '../about.component';
 import { AboutService } from '../about.service';
@@ -21,17 +24,20 @@ describe('AboutComponent', () => {
   let debugElement: DebugElement;
   let nativeElement: HTMLElement;
 
-  class AboutServiceMock {};
+  class ActivatedRouteMock {
+    params = new BehaviorSubject({jump: '123'});
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpModule ],
-      declarations: [ AboutComponent ],
+      declarations: [AboutComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: AboutService, useClass: AboutServiceMock },
-        { provide: LoaderService, useClass: LoaderServiceMock },
-        { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },
-        { provide: LanguageService, useClass: LanguageServiceMock }
+        {provide: AboutService, useValue: {}},
+        {provide: LoaderService, useClass: LoaderServiceMock},
+        {provide: TitleHeaderService, useClass: TitleHeaderServiceMock},
+        {provide: LanguageService, useClass: LanguageServiceMock},
+        {provide: ActivatedRoute, useClass: ActivatedRouteMock}
       ]
     });
 

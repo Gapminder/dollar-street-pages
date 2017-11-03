@@ -28,6 +28,7 @@ import { FamilyMediaComponent } from '../family-media.component';
 import { FamilyMediaService } from '../family-media.service';
 
 import { mockFamilyMediaData } from './mock.component.data';
+import { Store } from '@ngrx/store';
 
 describe('FamilyMediaComponent', () => {
     let componentInstance: FamilyMediaComponent;
@@ -47,6 +48,14 @@ describe('FamilyMediaComponent', () => {
         /* tslint:enable */
     }
 
+    class StoreMock {
+      select() {
+        return Observable.of({
+          query: true
+        });
+      }
+    }
+
     beforeEach((() => {
         TestBed.configureTestingModule({
             imports: [
@@ -61,8 +70,10 @@ describe('FamilyMediaComponent', () => {
                             { provide: LoaderService, useClass: LoaderServiceMock },
                             { provide: FamilyMediaService, useClass: FamilyMediaServiceMock },
                             { provide: LanguageService, useClass: LanguageServiceMock },
-                            { provide: Location, useClass: SpyLocation }
-                        ]
+                            { provide: Location, useClass: SpyLocation },
+                            { provide: Store, useClass: StoreMock}
+
+            ]
         }).compileComponents();
 
         componentFixture = TestBed.createComponent(FamilyMediaComponent);

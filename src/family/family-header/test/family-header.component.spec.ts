@@ -6,6 +6,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { Angulartics2Module, Angulartics2 } from "angulartics2";
+
 import {
     MathService,
     BrowserDetectionService,
@@ -15,27 +16,27 @@ import {
     StreetSettingsService,
     StreetSettingsEffects,
 } from '../../../common';
-import {
-    LanguageServiceMock,
-    StreetSettingsServiceMock,
-    AngularticsMock,
-    AppTestModule,
-    BlankComponent,
-    BrowserDetectionServiceMock,
-    UtilsServiceMock
-} from '../../../test/';
 import { TranslateMeComponent } from "../../../shared/translate-me/translate-me.component";
 import { RegionMapComponent } from "../../../shared/region-map/region-map.component";
 import { FamilyHeaderComponent } from '../family-header.component';
 import { FamilyHeaderService } from '../family-header.service';
+import { IncomeCalcService } from '../../../common/income-calc/income-calc.service';
 
-/* tslint:disable */
+import {
+  LanguageServiceMock,
+  StreetSettingsServiceMock,
+  AngularticsMock,
+  AppTestModule,
+  BlankComponent,
+  BrowserDetectionServiceMock,
+  UtilsServiceMock
+} from '../../../test/';
+
 class CustomLoader implements TranslateLoader {
   public getTranslation(lang: string): Observable<any> {
     return Observable.of({KEY: 'value'});
   }
 }
-/* tslint:enable */
 
 describe('FamilyHeaderComponent', () => {
     let fixture: ComponentFixture<FamilyHeaderComponent>;
@@ -67,7 +68,8 @@ describe('FamilyHeaderComponent', () => {
                 { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
-                { provide: Angulartics2, useClass: AngularticsMock }
+                { provide: Angulartics2, useClass: AngularticsMock },
+                { provide: IncomeCalcService, useValue: {} }
             ]
         });
 
@@ -78,8 +80,6 @@ describe('FamilyHeaderComponent', () => {
     });
 
     it('ngOnInit() ngOnDestroy()', () => {
-        component.ngOnInit();
-
         expect(component.getTranslationSubscribe).toBeDefined();
         expect(component.familyHeaderServiceSubscribe).toBeDefined();
 
@@ -93,8 +93,6 @@ describe('FamilyHeaderComponent', () => {
     });
 
     it('truncCountryName()', () => {
-        component.ngOnInit();
-
         const mockCountryName: any = {
             alias: 'United States'
         };
