@@ -64,8 +64,6 @@ export class AppComponent implements OnInit, OnDestroy {
         if (activePage === '/matrix') {
           this.currentPage = 'matrix';
         }
-
-        //this.languageService.updateLangInUrl();
       }
     });
   }
