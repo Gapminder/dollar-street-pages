@@ -3,7 +3,7 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es6", "dom"],
+    "lib": ["es2017", "dom"],
     "mapRoot": "./",
     "module": "es6",
     "moduleResolution": "node",
@@ -13,10 +13,10 @@
     "skipLibCheck": true,
     "typeRoots": [
       "../node_modules/@types"
-    ],
-    "exclude": [
-      "test.ts",
-      "**/*.spec.ts"
     ]
-  }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
 }
