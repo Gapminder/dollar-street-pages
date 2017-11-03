@@ -13,10 +13,10 @@
     "skipLibCheck": true,
     "typeRoots": [
       "../node_modules/@types"
-    ],
-    "exclude": [
-      "test.ts",
-      "**/*.spec.ts"
     ]
-  }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
 }
