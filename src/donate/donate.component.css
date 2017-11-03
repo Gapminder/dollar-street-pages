@@ -325,6 +325,20 @@
   line-height: 30px;
 }
 
+.w-embed {
+  position: relative;
+}
+
+.add-amount {
+  position: absolute;
+  width: 138px;
+  left: 0;
+  height: 44px;
+  font-size: 18px;
+  padding-top: 8px;
+  color: #767d86;
+}
+
 @media (max-width: 991px) {
   .main-nav {
     max-height: 56px;

@@ -464,31 +464,31 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         this.zoom = 3;
       }
 
-      this.query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
+      let query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
 
       if (this.currencyUnitCode) {
-        this.query += `&currency=${this.currencyUnitCode.toLowerCase()}`;
+        query += `&currency=${this.currencyUnitCode.toLowerCase()}`;
       }
 
       if (this.timeUnitCode) {
-        this.query += `&time=${this.timeUnitCode.toLowerCase()}`;
+        query += `&time=${this.timeUnitCode.toLowerCase()}`;
       }
 
       if (this.showStreetAttrs) {
-        this.query += `&labels=${this.showStreetAttrs}`;
+        query += `&labels=${this.showStreetAttrs}`;
       }
 
-      this.query += this.languageService.getLanguageParam();
+      query += this.languageService.getLanguageParam();
 
       if (this.activeHouse) {
-        this.query += `&activeHouse=${this.activeHouse}`;
+        query += `&activeHouse=${this.activeHouse}`;
       }
 
       if (this.embedSetId !== 'undefined') {
-        this.query += `&embed=${this.embedSetId}`;
+        query += `&embed=${this.embedSetId}`;
       }
 
-      this.urlChanged({isBack: true, url: this.query});
+      this.urlChanged({isBack: true, url: query});
 
       this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 

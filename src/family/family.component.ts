@@ -14,7 +14,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef
 } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { forEach, difference, map, find, chain } from 'lodash';
 import {
   UrlChangeService,
@@ -28,6 +28,19 @@ import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
 import { UrlParamsInterface } from '../interfaces';
+
+interface UrlParams extends Params {
+  thing: string;
+  countries: string;
+  regions: string;
+  zoom: number;
+  row: number;
+  lowIncome: number;
+  highIncome: number;
+  place?: string;
+  activeImage?: number;
+  lang: string;
+}
 
 @Component({
   selector: 'family',
@@ -49,7 +62,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public zoom: number;
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
   public placeId: string;
-  public urlParams: any;
+  public urlParams: UrlParams;
   public streetSettings: any;
   public rich: any;
   public poor: any;
@@ -108,8 +121,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
-      this.placeId = params.place;
-
       this.urlParams = {
         thing: params.thing ? decodeURI(params.thing) : 'Families',
         countries: params.countries ? decodeURI(params.countries) : 'World',
@@ -118,18 +129,21 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
         row: parseInt(params.row, 10) || 1,
         lowIncome: parseInt(params.lowIncome, 10),
         highIncome: parseInt(params.highIncome, 10),
-        place: this.placeId,
+        place: params.place,
         lang: this.languageService.currentLanguage
       };
 
-      if (this.urlParams.activeImage) {
-        this.urlParams.activeImage = this.urlParams.activeImage;
-
+      if (params.activeImage) {
+        this.urlParams.activeImage = params.activeImage;
         this.activeImageIndex = this.urlParams.activeImage;
       }
 
-      //this.urlChangeService.replaceState('/family', this.utilsService.objToQuery(this.urlParams));
+      const queryUrl: string = this.utilsService.objToQuery(this.urlParams);
 
+      this.store.dispatch(new AppActions.SetQuery(queryUrl));
+      this.urlChangeService.replaceState('/family', queryUrl);
+
+      this.placeId = this.urlParams.place;
       this.row = this.urlParams.row;
       this.setZoom(this.urlParams.zoom);
 
@@ -321,10 +335,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (this.query) {
         let query = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`;
-
         this.query = query;
-
-        //this.urlChangeService.replaceState('/family', this.query);
       }
     }
   }
@@ -436,19 +447,19 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this.urlParams.lowIncome = this.urlParams.lowIncome || this.poor;
-    this.urlParams.highIncome = this.urlParams.highIncome || this.rich;
+    const queryParams: UrlParams = {
+      thing: 'Families',
+      countries: 'World',
+      regions: 'World',
+      zoom: 4,
+      row: 1,
+      lowIncome: this.poor,
+      highIncome: this.rich,
+      lang: this.languageService.currentLanguage
+    }
 
-    if (!this.placeId) {
-      this.router.navigate(['/matrix', {
-        thing: 'Families',
-        countries: 'World',
-        regions: 'World',
-        zoom: 4,
-        row: 1,
-        lowIncome: this.poor,
-        highIncome: this.rich
-      }]);
+    if (!this.urlParams.place) {
+      this.router.navigate(['/matrix', {queryParams}]);
 
       this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
 
