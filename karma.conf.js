@@ -1,5 +1,5 @@
 module.exports = function (config) {
-  let browser = ['Chrome'];
+  let browser = ['ChromeHeadless'];
   if (process.env.TRAVIS) {
     browser = ['Chrome_travis_ci'];
   }
@@ -37,6 +37,8 @@ module.exports = function (config) {
     reporters: config.angularCli && config.angularCli.codeCoverage
      ? ['spec', 'coverage-istanbul']
      : ['spec'],
+    browserDisconnectTolerance: 2,
+    browserNoActivityTimeout: 50000,
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
