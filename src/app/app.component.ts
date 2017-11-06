@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public currentPage: string;
   public contentLoadedSubscription: Subscription;
   public hostClickSubscription: Subscription;
-  public waitTime: number = 5 * 1;
+  public waitTime: number = 5 * 60;
   public refreshTime: number = 30;
   public refreshTimer: number;
   public waitingTimer: number;
