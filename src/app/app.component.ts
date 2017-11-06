@@ -48,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
   };
   public dialogTransSv: any = {
     head: 'Hej, du verkar inaktiv!',
-    text: 'Vi kommer att återställa Dollar Street till hemsidan på',
+    text: 'Vi kommer att återställa Dollar Street till hemsidan om',
     sec: 'sekunder.',
     resetBtn: "Återställ inte, stanna på den här sidan",
     homeBtn: 'Gå till hemsidan nu'
