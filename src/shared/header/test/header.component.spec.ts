@@ -1,27 +1,20 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from 'ng2-translate';
 import { Angulartics2Module, Angulartics2, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { DropdownModule } from 'ng2-bootstrap';
 import { StoreModule } from '@ngrx/store';
+
 import {
-    MathService,
-    LanguageService,
-    BrowserDetectionService,
-    UtilsService,
-    UrlChangeService,
-    TitleHeaderService,
-    LocalStorageService
+MathService,
+LanguageService,
+BrowserDetectionService,
+UtilsService,
+UrlChangeService,
+TitleHeaderService,
+LocalStorageService
 } from '../../../common';
-import {
-    AngularticsMock,
-    Angulartics2GoogleAnalyticsMock,
-    LanguageServiceMock,
-    BrowserDetectionServiceMock,
-    UtilsServiceMock,
-    UrlChangeServiceMock,
-    TitleHeaderServiceMock
-} from '../../../test/';
 import { MainMenuComponent } from '../../main-menu/main-menu.component';
 import { LanguageSelectorComponent } from '../../language-selector/language-selector.component';
 import { CountriesFilterComponent } from '../../countries-filter/countries-filter.component';
@@ -30,6 +23,17 @@ import { ThingsFilterComponent } from '../../things-filter/things-filter.compone
 import { ThingsFilterPipe } from '../../things-filter/things-filter.pipe';
 import { SocialShareButtonsComponent } from '../../social-share-buttons/social-share-buttons.component';
 import { HeaderComponent } from '../header.component';
+import { IncomeCalcService } from '../../../common/income-calc/income-calc.service';
+
+import {
+  AngularticsMock,
+  Angulartics2GoogleAnalyticsMock,
+  LanguageServiceMock,
+  BrowserDetectionServiceMock,
+  UtilsServiceMock,
+  UrlChangeServiceMock,
+  TitleHeaderServiceMock
+} from '../../../test/';
 
 describe('HeaderComponent', () => {
     let component: HeaderComponent;
@@ -44,6 +48,7 @@ describe('HeaderComponent', () => {
                 DropdownModule,
                 StoreModule.forRoot({})
             ],
+            schemas: [NO_ERRORS_SCHEMA],
             declarations: [
                 HeaderComponent,
                 ThingsFilterComponent,
@@ -63,7 +68,8 @@ describe('HeaderComponent', () => {
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
-                { provide: UrlChangeService, useClass: UrlChangeServiceMock }
+                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
+                { provide: IncomeCalcService, useValue: {} }
             ]
         });
 
@@ -83,7 +89,6 @@ describe('HeaderComponent', () => {
         expect(component.queryParamsSubscription).toBeDefined();
         expect(component.streetSettingsStateSubscription).toBeDefined();
         expect(component.appStateSubscription).toBeDefined();
-        expect(component.languagesListSubscription).toBeDefined();
         expect(component.titleHeaderSubscribe).toBeDefined();
 
         spyOn(component.resizeSubscription, 'unsubscribe');
@@ -94,7 +99,6 @@ describe('HeaderComponent', () => {
         spyOn(component.queryParamsSubscription, 'unsubscribe');
         spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
         spyOn(component.appStateSubscription, 'unsubscribe');
-        spyOn(component.languagesListSubscription, 'unsubscribe');
         spyOn(component.titleHeaderSubscribe, 'unsubscribe');
 
         component.ngOnDestroy();
@@ -107,7 +111,6 @@ describe('HeaderComponent', () => {
         expect(component.queryParamsSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.languagesListSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.titleHeaderSubscribe.unsubscribe).toHaveBeenCalled();
     });
 });

@@ -35,6 +35,7 @@ import {
     SharedModule
 } from '../../shared';
 import { AppComponent } from '../app.component';
+import { IncomeCalcService } from '../../common/income-calc/income-calc.service';
 
 describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;
@@ -69,7 +70,8 @@ describe('AppComponent', () => {
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },
-                { provide: Angulartics2, useClass: AngularticsMock }
+                { provide: Angulartics2, useClass: AngularticsMock },
+                { provide: IncomeCalcService, useValue: {} }
             ]
         });
 

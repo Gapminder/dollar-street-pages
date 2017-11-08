@@ -18,6 +18,8 @@ import {
 import { FloatFooterComponent } from '../float-footer.component';
 import { SocialShareButtonsComponent } from '../../social-share-buttons/social-share-buttons.component';
 import { SocialShareButtonsService } from '../../social-share-buttons/social-share-buttons.service';
+import { Store } from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('FloatFooterComponent', () => {
     let fixture: ComponentFixture<FloatFooterComponent>;
@@ -34,7 +36,8 @@ describe('FloatFooterComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                TranslateModule
+                TranslateModule,
+                RouterTestingModule
             ],
             declarations: [
                 FloatFooterComponent,
@@ -48,7 +51,8 @@ describe('FloatFooterComponent', () => {
                 { provide: SocialShareService, useClass: SocialShareServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
-                { provide: LanguageService, useClass: LanguageServiceMock }
+                { provide: LanguageService, useClass: LanguageServiceMock },
+                { provide: Store, useValue: {} }
             ]
         });
 

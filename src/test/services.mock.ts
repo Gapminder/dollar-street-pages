@@ -35,6 +35,10 @@ export class LanguageServiceMock {
         return '&lang=en';
     }
 
+    public  getLanguagesList (): string {
+      return 'string';
+    }
+
     public getLanguageIso(): string {
         return 'en_EN';
     }
