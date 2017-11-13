@@ -416,10 +416,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public openLeftSideBar(): void {
     this.isOpenLeftSide = true;
-
-    if (this.windowInnerWidth < 600) {
-      //document.body.classList.add('hideScroll');
-    }
   }
 
   public closeLeftSideBar(e: MouseEvent): void {
