@@ -105,8 +105,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isMobile = this.browserDetectionService.isMobile();
 
-    // let isInit: boolean = false;
-
     this.loaderService.setLoader(false);
 
     this.getTranslationSubscribe = this.languageService.getTranslation('FAMILY').subscribe((trans: any) => {
@@ -149,12 +147,6 @@ export class MapComponent implements OnInit, OnDestroy {
       //if (!params.thing || (params.thing/* && !isInit*/)) {
       //  query.isNotReplaceState = true;
       //}
-
-      /*if (!isInit) {
-        isInit = true;
-
-        this.urlChanged(query);
-      }*/
     });
   }
 
@@ -426,7 +418,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.isOpenLeftSide = true;
 
     if (this.windowInnerWidth < 600) {
-      document.body.classList.add('hideScroll');
+      //document.body.classList.add('hideScroll');
     }
   }
 
