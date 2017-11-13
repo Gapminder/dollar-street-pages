@@ -1,5 +1,4 @@
 .family-things-container {
-  min-height: 450px;
   padding: 15px 17px;
 }
 
@@ -8,7 +7,6 @@
   flex-wrap: wrap;
   vertical-align: top;
   width: 100%;
-  min-height: 250px;
   position: relative;
 }
 
