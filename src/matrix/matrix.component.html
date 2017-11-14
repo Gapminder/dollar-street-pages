@@ -1,4 +1,3 @@
-<img id="rhyno" src="" alt="">
 <div class="matrix-container">
   <div #matrixHeader
        class="matrix-header main-header"
@@ -53,8 +52,9 @@
                (mouseenter)="onPinnedPlaceHover(place)"
                (mouseleave)="onPinnedPlaceHover()"
                isImageLoaded [imageLoadedUrl]="place?.background"
-               (imageLoadedEvent)="imageIsUploaded(i)"
-               [ngStyle]="{'background-image': place.isUploaded && toUrl(place?.background)}">
+               (imageLoadedEvent)="imageIsUploaded(i)">
+            <img src="{{place.isUploaded ? place?.background : ''}}" alt="">
+
             <div class="image-description">
               <span class="place-image-box-income">{{currencyUnit?.symbol}}{{place?.showIncome}}</span>
               <span class="place-image-box-country">{{place?.country}}</span>
