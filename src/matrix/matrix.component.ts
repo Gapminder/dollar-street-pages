@@ -125,7 +125,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public isPinMode: boolean;
   public pinContainerElement: HTMLElement;
   public placesSet: Array<any>;
-  // public pinItemSize: number;
   public maxPinnedCount: number = 6;
   public pinHeaderTitle: string;
   public isPreviewView: boolean;
@@ -310,8 +309,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             if (!this.isPinMode && this.placesSet.length) {
               this.isEmbedMode = true;
             }
-
-            //this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount;
 
             this.setPinHeaderTitle();
           }
@@ -597,9 +594,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
             this.shareUrl = shareUrl;
 
-            let shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
+            /*let shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
             shareUrlElement.setAttribute('value', shareUrl);
-            shareUrlElement.select();
+            shareUrlElement.select();*/
           });
         });
     });

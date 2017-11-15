@@ -232,10 +232,6 @@ matrix-images {
   background-color: #394450;
 }
 
-.embed-footer-text {
-  box-shadow: -8px 17px 24px 1px rgba(0,0,0,0.29);
-}
-
 .embed-footer-text h3 {
   text-align: center;
   margin: 0;
@@ -347,7 +343,7 @@ matrix-images {
 }
 
 .shared-ready-section {
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
 }
 
 .shared-ready-section .loader-content {
@@ -430,11 +426,22 @@ matrix-images {
   padding: 20px 0;
 }
 
+.pin-footer-paragraph div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pin-footer-share img {
+  width: 64px;
+  height: 64px;
+}
+
 .pin-footer-share .shared-ready-section {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 20px;
+  /*margin-top: 20px;*/
   position: relative;
   /*min-height: 48px;*/
 }
@@ -472,7 +479,7 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 20px 0;
+  /*padding: 20px 0;*/
 }
 
 .pin-footer-share .share-buttons-container span {
