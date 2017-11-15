@@ -125,7 +125,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public isPinMode: boolean;
   public pinContainerElement: HTMLElement;
   public placesSet: Array<any>;
-  public pinItemSize: number;
   public maxPinnedCount: number = 6;
   public pinHeaderTitle: string;
   public isPreviewView: boolean;
@@ -295,6 +294,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           if (this.placesSet !== data.placesSet) {
             this.placesSet = data.placesSet;
 
+            this.placesSet = this.placesSet.map((place) => {
+              if (place) {
+                place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+
+                return place;
+              }
+            });
+
             if (this.pinPlusCount - this.placesSet.length > 0) {
               this.pinPlusArr = new Array(this.pinPlusCount - this.placesSet.length);
             }
@@ -302,8 +309,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             if (!this.isPinMode && this.placesSet.length) {
               this.isEmbedMode = true;
             }
-
-            this.pinItemSize = this.matrixImagesContainer.offsetWidth / this.maxPinnedCount;
 
             this.setPinHeaderTitle();
           }
@@ -549,7 +554,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     const query = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=${this.imageResolution.image}`;
     this.matrixService.savePinnedPlaces(query).then(data => {
-      this.embedSetId = data.data._id;
+      const embedId = data.data._id;
+      const placesList = data.data.places;
+      const shareUrl = data.data.url;
+
+      this.embedSetId = embedId;
 
       let queryParams = this.utilsService.parseUrl(this.query);
       queryParams.embed = this.embedSetId;
@@ -557,21 +566,21 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       let queryString = this.utilsService.objToQuery(queryParams);
 
       let updatedSet = this.placesSet.map((place) => {
-        place.background = data.data.places[place._id];
+        place.background = placesList[place._id];
         return place;
       });
 
       this.store.dispatch(new MatrixActions.SetPinnedPlaces(updatedSet));
 
       this.imageGeneratorService.generateImage().then((screenshot: any) => {
-          let filesToRemove = Object.keys(data.data.places).map(k => data.data.places[k]).map(l => {
+          let filesToRemove = Object.keys(placesList).map(k => placesList[k]).map(l => {
             let arr = l.split('/');
             return arr[arr.length - 1];
           });
 
           this.matrixService.removeTempImages(`images=${filesToRemove.join(',')}`).then((a) => {});
 
-          const screenData = {data: screenshot, name: 'new_file.jpg'};
+          const screenData = {imageData: screenshot, imageName: Date.now()+'.jpg', embedId: this.embedSetId};
           this.matrixService.uploadScreenshot(screenData).then((res: any) => {
             this.isScreenshotProcessing = false;
 
@@ -583,11 +592,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
             this.changeDetectorRef.detectChanges();
 
-            this.shareUrl = data.data.url;
+            this.shareUrl = shareUrl;
 
-            let shareUrl = document.querySelector('.share-link-input') as HTMLInputElement;
-            shareUrl.setAttribute('value', data.data.url);
-            shareUrl.select();
+            /*let shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
+            shareUrlElement.setAttribute('value', shareUrl);
+            shareUrlElement.select();*/
           });
         });
     });

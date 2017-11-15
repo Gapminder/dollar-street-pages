@@ -102,6 +102,9 @@ matrix-images {
 }
 
 .heart-container {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -229,10 +232,6 @@ matrix-images {
   background-color: #394450;
 }
 
-.embed-footer-text {
-  box-shadow: -8px 17px 24px 1px rgba(0,0,0,0.29);
-}
-
 .embed-footer-text h3 {
   text-align: center;
   margin: 0;
@@ -334,12 +333,17 @@ matrix-images {
   box-shadow: 0.6px 0.8px 2.9px 0.1px rgba(0, 0, 0, 0.2);
 }
 
+.pin-container .pin-place img {
+  width: 100%;
+  height: 100%;
+}
+
 .shared-completed-section {
   margin-bottom: 20px;
 }
 
 .shared-ready-section {
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
 }
 
 .shared-ready-section .loader-content {
@@ -422,11 +426,22 @@ matrix-images {
   padding: 20px 0;
 }
 
+.pin-footer-paragraph div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pin-footer-share img {
+  width: 64px;
+  height: 64px;
+}
+
 .pin-footer-share .shared-ready-section {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 20px;
+  /*margin-top: 20px;*/
   position: relative;
   /*min-height: 48px;*/
 }
@@ -464,7 +479,7 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 20px 0;
+  /*padding: 20px 0;*/
 }
 
 .pin-footer-share .share-buttons-container span {

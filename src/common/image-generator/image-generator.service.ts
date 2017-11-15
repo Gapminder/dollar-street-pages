@@ -104,6 +104,7 @@ export class ImageGeneratorService {
       let ctx = document.createElement('canvas');
       ctx.width = width;
       ctx.height = height;
+      ctx.style.backgroundColor = '#fff';
 
       let img = document.createElement("img");
 
