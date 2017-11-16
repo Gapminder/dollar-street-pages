@@ -226,6 +226,7 @@ matrix-images {
   justify-content: flex-start;
   position: relative;
   padding: 10px 20px 10px 20px;
+  min-height: 64px;
 }
 
 .grey-bg {
@@ -289,7 +290,7 @@ matrix-images {
   margin: 0 2.5px;
 }
 
-.places-container.height-2 {
+/*.places-container.height-2 {
   min-height: 450px;
 }
 
@@ -307,7 +308,7 @@ matrix-images {
 
 .places-container.height-6 {
   min-height: 225px;
-}
+}*/
 
 .places-container .image-description {
   position: absolute;
