@@ -137,9 +137,8 @@ export class StreetPinnedDrawService {
     return this;
   };
 
-  public drawHouses(places: any): this {
-//console.log(places);
-    if (!places) {
+  public drawHouses(places: any[]): this {
+    if (!places || !places.length) {
       return this;
     }
 
@@ -150,31 +149,31 @@ export class StreetPinnedDrawService {
     let houseOffset = 4;
 
     this.svg
-      .selectAll('polygon')
+      .selectAll()
       .data(places)
       .enter()
       .append('polygon')
       .attr('class', 'point')
       .attr('points', (datum: any): any => {
         let scaleDatumIncome: number = this.scale(datum.income);
-//console.log(datum);
-        let point1: string = `${this.streetOffset / 2 + scaleDatumIncome + roofX - 1},${houseOffset + 27}`;
-        let point2: string = `${this.streetOffset / 2 + scaleDatumIncome + roofX - 1},${houseOffset + 12}`;
-        let point3: string = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth - 2},${houseOffset + 12}`;
+
+        let point1: string = `${this.streetOffset / 2 + scaleDatumIncome + roofX - 1},${houseOffset + 28}`;
+        let point2: string = `${this.streetOffset / 2 + scaleDatumIncome + roofX - 1},${houseOffset + 13}`;
+        let point3: string = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth - 2},${houseOffset + 13}`;
         let point4: string = `${this.streetOffset / 2 + scaleDatumIncome},${houseOffset + 2}`;
-        let point5: string = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth + 2},${houseOffset + 12}`;
-        let point6: string = `${this.streetOffset / 2 + scaleDatumIncome - roofX + 1},${houseOffset + 12}`;
-        let point7: string = `${this.streetOffset / 2 + scaleDatumIncome - roofX + 1},${houseOffset + 27}`;
+        let point5: string = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth + 2},${houseOffset + 13}`;
+        let point6: string = `${this.streetOffset / 2 + scaleDatumIncome - roofX + 1},${houseOffset + 13}`;
+        let point7: string = `${this.streetOffset / 2 + scaleDatumIncome - roofX + 1},${houseOffset + 28}`;
 
         return !datum ? void 0 : `${point1} ${point2} ${point3} ${point4} ${point5} ${point6} ${point7}`;
       })
       .attr('stroke-width', 1)
       /*.attr('stroke', (datum: any): any => {
         return !datum ? void 0 : fillsOfBorders[datum.region];
-      })*/
-      /*.style('fill', (datum: any): any => {
+      })
+      .style('fill', (datum: any): any => {
         return !datum ? void 0 : fills[datum.region];
-      });*/
+      })*/
       .style('fill', '#aaacb0');
 
     return this;

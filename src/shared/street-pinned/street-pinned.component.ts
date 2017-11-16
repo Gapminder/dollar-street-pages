@@ -80,9 +80,9 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
       if (!data || !data.streetSettings) {
         this.store.dispatch(new GetStreetSettings());
       } else {
-        if (!this.places) {
-          //return;
-        }
+        /*if (!this.places) {
+          return;
+        }*/
 
         this.streetData = data.streetSettings;
 
@@ -121,7 +121,6 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
         return;
       }
 
-//      console.log(this.places);
       this.street.drawHouses(this.places);
       this.street.drawHoverHouse(hoverPlace);
     });
