@@ -53,7 +53,7 @@
                (mouseleave)="onPinnedPlaceHover()"
                isImageLoaded [imageLoadedUrl]="place?.background"
                (imageLoadedEvent)="imageIsUploaded(i)">
-            <img src="{{place.isUploaded ? place?.background : ''}}" alt="">
+            <img src="{{place?.isUploaded ? place?.showBackground : ''}}" alt="">
 
             <div class="image-description">
               <span class="place-image-box-income">{{currencyUnit?.symbol}}{{place?.showIncome}}</span>
@@ -159,7 +159,7 @@
                 <div class="share-close-buttons">
                   <span *ngIf="!isScreenshotProcessing && !isEmbedShared"
                         (click)="shareEmbed()">Share Now</span>
-                  <span (click)="pinModeClose()">Close</span>
+                  <span (click)="pinModeClose()">Cancel</span>
                 </div>
           </div>
         </div>

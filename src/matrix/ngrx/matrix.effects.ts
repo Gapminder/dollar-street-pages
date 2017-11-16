@@ -25,7 +25,7 @@ export class MatrixEffects {
         .map(toPayload)
         .switchMap((query: string) => this.matrixService.getPinnedPlaces(query))
         .map(data => data.data)
-        .map((data: any) => new MatrixActions.GetPinnedPlacesSuccess(data.places));
+        .map((data: any) => new MatrixActions.GetPinnedPlacesSuccess(data));
 
     @Effect()
     getTimeUnits = this.actions

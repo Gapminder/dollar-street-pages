@@ -248,6 +248,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     if (!place.pinned) {
       if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
         place.pinned = true;
+        place.showBackground = place.background;
 
         this.store.dispatch(new MatrixActions.AddPlaceToSet(place));
       }

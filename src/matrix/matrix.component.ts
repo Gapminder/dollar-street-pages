@@ -151,6 +151,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public pinPlusOffset: number = 16;
   public matrixContainerElement: HTMLElement;
   public shareUrl: string;
+  public pinnedSetQuery: string;
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -261,6 +262,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           if (this.currencyUnit !== data.currencyUnit) {
             this.currencyUnit = data.currencyUnit;
             this.changeCurrencyUnit(data.currencyUnit);
+
+            if (this.placesSet) {
+              //this.initPlacesSet();
+            }
           }
         }
 
@@ -294,23 +299,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           if (this.placesSet !== data.placesSet) {
             this.placesSet = data.placesSet;
 
-            this.placesSet = this.placesSet.map((place) => {
-              if (place) {
-                place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
-
-                return place;
-              }
-            });
-
-            if (this.pinPlusCount - this.placesSet.length > 0) {
-              this.pinPlusArr = new Array(this.pinPlusCount - this.placesSet.length);
+            if (this.currencyUnit) {
+              this.initPlacesSet();
             }
-
-            if (!this.isPinMode && this.placesSet.length) {
-              this.isEmbedMode = true;
-            }
-
-            this.setPinHeaderTitle();
           }
         }
 
@@ -425,6 +416,28 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
     this.store.dispatch(new MatrixActions.GetCurrencyUnits());
     this.store.dispatch(new MatrixActions.GetTimeUnits());
+  }
+
+  public initPlacesSet(): void {
+    this.placesSet = this.placesSet.map((place) => {
+      if (place) {
+        place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+
+        return place;
+      }
+    });
+
+    if (this.pinPlusCount - this.placesSet.length > 0) {
+      this.pinPlusArr = new Array(this.pinPlusCount - this.placesSet.length);
+    }
+
+    if (!this.isPinMode && this.placesSet.length) {
+      this.isEmbedMode = true;
+    }
+
+    // this.store.dispatch(new MatrixActions.SetPinnedPlaces(this.placesSet));
+
+    this.setPinHeaderTitle();
   }
 
   public setMatrixTopPadding(value: number): void {
@@ -566,7 +579,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       let queryString = this.utilsService.objToQuery(queryParams);
 
       let updatedSet = this.placesSet.map((place) => {
-        place.background = placesList[place._id];
+        // place.background = placesList[place._id];
+        place.showBackground = placesList[place._id];
         return place;
       });
 
