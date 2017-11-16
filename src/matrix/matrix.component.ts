@@ -216,7 +216,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.pinMode) {
           this.isPinMode = true;
           this.isEmbedMode = false;
-          this.setMatrixTopPadding(200);
         } else {
           this.isPinMode = false;
           this.isEmbedShared = false;
@@ -226,7 +225,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
         if (data.embedMode) {
           this.isEmbedMode = true;
-          this.setMatrixTopPadding(260);
         } else {
           this.isEmbedMode = false;
           if (!this.isPinMode) {
@@ -262,10 +260,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           if (this.currencyUnit !== data.currencyUnit) {
             this.currencyUnit = data.currencyUnit;
             this.changeCurrencyUnit(data.currencyUnit);
-
-            if (this.placesSet) {
-              //this.initPlacesSet();
-            }
           }
         }
 
@@ -302,6 +296,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             if (this.currencyUnit) {
               this.initPlacesSet();
             }
+
+            setTimeout(() => {
+              let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
+
+              if (pinContainerElement) {
+                const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
+
+                this.setMatrixTopPadding(pinContainerHeight - 134);
+              }
+            }, 100);
           }
         }
 
@@ -434,8 +438,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     if (!this.isPinMode && this.placesSet.length) {
       this.isEmbedMode = true;
     }
-
-    // this.store.dispatch(new MatrixActions.SetPinnedPlaces(this.placesSet));
 
     this.setPinHeaderTitle();
   }
@@ -618,6 +620,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public setPinHeaderTitle(): void {
     if (!this.placesSet || !this.placesSet.length) {
+      this.pinHeaderTitle = '';
+
+      this.changeDetectorRef.detectChanges();
+
       return;
     }
 

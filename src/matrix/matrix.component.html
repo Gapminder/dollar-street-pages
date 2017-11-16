@@ -39,12 +39,7 @@
                          'column-3': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 3),
                          'column-4': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 4),
                          'column-5': placesSet && (placesSet.length === 5),
-                         'column-6': placesSet && ((!isPreviewView && !isEmbedMode) || placesSet.length === 6),
-                         'height-2': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 2),
-                         'height-3': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 3),
-                         'height-4': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 4),
-                         'height-5': placesSet && (placesSet.length === 5),
-                         'height-6': placesSet && ((!isPreviewView && !isEmbedMode) || placesSet.length === 6),
+                         'column-6': placesSet && ((!isPreviewView && !isEmbedMode) || placesSet.length === 6),                         
                          'embed-bg': (!isEmbedMode && !isPreviewView)}"
              [ngStyle]="{'justify-content': !isPreviewView && !isEmbedMode ? 'flex-start' : 'center'}">
           <div *ngFor="let place of placesSet; let i = index"
