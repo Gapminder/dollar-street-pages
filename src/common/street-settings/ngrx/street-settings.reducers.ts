@@ -2,12 +2,12 @@ import * as StreetSettingsActions from './street-settings.actions';
 
 export interface State {
   streetSettings: any;
-  showStreetAttrs: boolean;
+  //showStreetAttrs: boolean;
 };
 
 export const initialState: State = {
-  streetSettings: null,
-  showStreetAttrs: false
+  streetSettings: null
+  //showStreetAttrs: false
 };
 
 export function streetSettingsReducer(state: any = initialState, action: StreetSettingsActions.Actions): State {
@@ -16,9 +16,9 @@ export function streetSettingsReducer(state: any = initialState, action: StreetS
             return Object.assign({}, state, {streetSettings: action.payload});
         }
 
-        case StreetSettingsActions.SHOW_STREET_ATTRS: {
+        /*case StreetSettingsActions.SHOW_STREET_ATTRS: {
             return Object.assign({}, state, {showStreetAttrs: action.payload});
-        }
+        }*/
 
         default:
             return state;

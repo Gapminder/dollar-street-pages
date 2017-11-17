@@ -67,7 +67,7 @@ export class StreetDrawService {
   public isDesktop: boolean;
   public isMobile: boolean;
   public currencyUnit: any;
-  public showStreetAttrs: boolean;
+  //public showStreetAttrs: boolean;
 
   public colors: {fills: any, fillsOfBorders: any} = {
     fills: {
@@ -127,7 +127,7 @@ export class StreetDrawService {
   };
 
   public isDrawDividers(drawDividers: any): this {
-    if (!drawDividers.showDividers || !this.showStreetAttrs) {
+    if (!drawDividers.showDividers /*|| !this.showStreetAttrs*/) {
       return;
     }
 
@@ -162,7 +162,7 @@ export class StreetDrawService {
   }
 
   public isDrawCurrency(drawDividers: any): this {
-    if (!drawDividers.showCurrency || !this.showStreetAttrs) {
+    if (!drawDividers.showCurrency /*|| !this.showStreetAttrs*/) {
       return;
     }
 
@@ -197,7 +197,7 @@ export class StreetDrawService {
   }
 
   public isDrawLabels(drawDividers: any): this {
-    if (!drawDividers.showLabels || !this.showStreetAttrs) {
+    if (!drawDividers.showLabels /*|| !this.showStreetAttrs*/) {
       return;
     }
 
