@@ -40,6 +40,7 @@ import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'matrix',
@@ -144,7 +145,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public timeUnitCode: string;
   public currencyUnitCode: string;
   public timeUnits: any;
-  public showStreetAttrs: boolean;
+  //public showStreetAttrs: boolean;
   public plusSignWidth: number;
   public pinPlusArr: number[] = new Array(6);
   public pinPlusCount: number = 6;
@@ -373,7 +374,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.embedSetId = decodeURI(params.embed);
       this.currencyUnitCode = params.currency ? decodeURI(params.currency.toUpperCase()) : null;
       this.timeUnitCode = params.time ? decodeURI(params.time.toUpperCase()) : null;
-      this.showStreetAttrs = params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false;
+      //this.showStreetAttrs = params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false;
 
       this.changeDetectorRef.detectChanges();
 
@@ -394,6 +395,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           if (data.streetSettings) {
             if (this.streetData !== data.streetSettings) {
               this.streetData = data.streetSettings;
+
               this.processStreetData();
             }
           }
@@ -461,7 +463,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public processStreetData(): void {
-    if (this.streetData) {
+    if (this.streetData && !this.isInit) {
+      this.isInit = true;
+
       this.lowIncome = this.lowIncome ? this.lowIncome : this.streetData.poor;
       this.highIncome = this.highIncome ? this.highIncome : this.streetData.rich;
 
@@ -494,9 +498,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         query += `&time=${this.timeUnitCode.toLowerCase()}`;
       }
 
-      if (this.showStreetAttrs) {
+      /*if (this.showStreetAttrs) {
         query += `&labels=${this.showStreetAttrs}`;
-      }
+      }*/
 
       query += this.languageService.getLanguageParam();
 

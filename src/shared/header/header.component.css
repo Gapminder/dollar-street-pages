@@ -19,7 +19,6 @@
   top: 0;
 }
 
-
 .small-container {
   display: block;
   max-width: 1400px;
@@ -27,6 +26,9 @@
   margin-left: auto;
 }
 
+.income-title-container {
+  position: relative;
+}
 
 /*  FAMILY page */
 family-header .header-content {
@@ -232,7 +234,7 @@ family-header .header-content {
   background-color: white;
   border: 1px solid #e4e6e7;
   border-radius: 6px;
-  min-width: 150px;
+  /*min-width: 150px;*/
   text-align: left;
   cursor: pointer;
   color: #374551;
@@ -241,6 +243,33 @@ family-header .header-content {
   text-overflow: ellipsis;
   position: relative;
 }
+
+/*.income-title.filter.opened {
+  box-shadow: 0 0 10px rgba(55, 69, 81, 0.1);
+}
+
+.income-title.filter::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid #374551;
+  position: absolute;
+  top: calc(50% - 3.5px);
+  right: 11px;
+}
+
+.income-title.filter.opened::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-bottom: 7px solid #374551;
+  border-top: 0 solid transparent;
+  position: absolute;
+  top: calc(50% - 3.5px);
+  right: 11px;
+}*/
 
 .income-title.filter.opened {
   box-shadow: 0 0 10px rgba(55, 69, 81, 0.1);
@@ -269,12 +298,12 @@ family-header .header-content {
   right: 11px;
 }
 
-.income-title.filter .income-filter-desktop-container {
+/*.income-title.filter*/ .income-filter-desktop-container {
   position: absolute;
   z-index: 999;
   width: 280px;
   top: 44px;
-  left: 0px;
+  left: 0;
   background-color: white;
   border: 1px solid #e4e6e7;
   box-shadow: 0 0 10px rgba(55, 69, 81, 0.1);
@@ -296,11 +325,11 @@ family-header .header-content {
   padding-left: 82px;
 }
 
-.income-title.filter.opened .income-filter-desktop-container {
+/*.income-title.filter.opened .income-filter-desktop-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
+}*/
 
 .income-filter-desktop-header {
   border-bottom: 1px solid #e4e6e7;
@@ -309,6 +338,7 @@ family-header .header-content {
   flex-direction: row;
   justify-content: flex-start;
   position: relative;
+  color: #374551;
 }
 
 .income-filter-desktop-header span {
@@ -372,6 +402,7 @@ family-header .header-content {
   display: block;
   line-height: 34px;
   overflow-x: hidden;
+  color: #374551;
 }
 
 .dropdown-item {
@@ -423,6 +454,7 @@ family-header .header-content {
   height: 30px;
   font-size: 24px;
   margin-right: 10px;
+  color: #374551;
 }
 
 .income-filter-desktop-footer .ok-button img {
@@ -526,7 +558,7 @@ input:checked + .slider:before {
 
 /*  INCOME FILTER DESKTOP ---- END */
 
-.filters-container .income-title-container .income-title {
+/*.filters-container .income-title-container .income-title {
   display: none;
 }
 
@@ -536,7 +568,7 @@ input:checked + .slider:before {
 
 .filters-container .income-title-container.long .income-title:nth-child(2) {
   display: inline-block
-}
+}*/
 
 .menu-container {
   display: block;
@@ -593,6 +625,14 @@ input:checked + .slider:before {
     right: 0;
   }
 
+  .income-title.filter::after {
+    display: none;
+  }
+
+  .income-title.filter.opened::after {
+    display: none;
+  }
+
   .header-content .icon-container {
     display: block;
   }
@@ -634,6 +674,7 @@ input:checked + .slider:before {
     margin-left: 6px!important;
     margin-top: 6px!important;
     float: right;
+    position: relative;
   }
 
   .filters-container .income-title {

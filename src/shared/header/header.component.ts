@@ -126,13 +126,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public timeUnits: any;
   public currencyUnit: any;
   public currencyUnits: any[];
-  public showStreetAttrs: boolean;
-  public showStreetAttrsTemp: boolean;
+  //public showStreetAttrs: boolean;
+  //public showStreetAttrsTemp: boolean;
   public timeUnitTemp: any;
   public currencyUnitTemp: any;
   public isEmbedMode: boolean;
   public headerContainerElement: HTMLElement;
   public paddingPlaceElement: HTMLElement;
+  public byDollarText: string;
+  public incomeTitleText: string;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -173,6 +175,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       .debounceTime(150)
       .subscribe(() => {
         this.calcIncomeSize();
+        this.checkByIncomeText();
       });
 
     this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
@@ -251,14 +254,27 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
+  public checkByIncomeText(): void {
+    if (this.isDesktop) {
+      this.incomeTitleText = this.byIncomeText;
+    }
+
+    if (this.isTablet || this.isMobile) {
+      this.incomeTitleText = this.byDollarText;
+    }
+  }
+
   public ngOnInit(): void {
     this.isMobile = this.browserDetectionService.isMobile();
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
 
-    this.getTranslationSubscription = this.languageService.getTranslation(['BY_INCOME', 'THE_WORLD']).subscribe((trans: any) => {
+    this.getTranslationSubscription = this.languageService.getTranslation(['BY_INCOME', 'BY_DOLLAR', 'THE_WORLD']).subscribe((trans: any) => {
       this.byIncomeText = trans.BY_INCOME;
+      this.byDollarText = trans.BY_DOLLAR;
       this.theWorldText = trans.THE_WORLD;
+
+      this.checkByIncomeText();
     });
 
     this.routerEventsSubscription = this.router.events.subscribe((event: any) => {
@@ -309,7 +325,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
       this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
 
-      this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.urlParams.labels));
+      //this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.urlParams.labels));
       this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
 
       this.interactiveIncomeText();
@@ -332,13 +348,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           }
         }
 
-        if (data.showStreetAttrs) {
+        /*if (data.showStreetAttrs) {
           this.showStreetAttrs = true;
         } else {
           this.showStreetAttrs = false;
         }
 
-        this.showStreetAttrsTemp = this.showStreetAttrs;
+        this.showStreetAttrsTemp = this.showStreetAttrs;*/
       }
     });
 
@@ -458,7 +474,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.timeUnitTemp = this.timeUnit;
     this.currencyUnitTemp = this.currencyUnit;
-    this.showStreetAttrsTemp = this.showStreetAttrs;
+    //this.showStreetAttrsTemp = this.showStreetAttrs;
   }
 
   public incomeContainerClick(e: MouseEvent): void {
@@ -478,12 +494,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
-    this.showStreetAttrs = this.showStreetAttrsTemp;
+    //this.showStreetAttrs = this.showStreetAttrsTemp;
 
     let queryParams = this.utilsService.parseUrl(this.query);
     queryParams.currency = this.currencyUnit.code.toLowerCase();
     queryParams.time = this.timeUnit.code.toLowerCase();
-    queryParams.labels = this.showStreetAttrs;
+    //queryParams.labels = this.showStreetAttrs;
     this.query = this.utilsService.objToQuery(queryParams);
 
     this.urlChangeService.replaceState('/matrix', this.query);
@@ -493,7 +509,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
 
-    this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
+    //this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
 
     this.isIncomeDesktopOpened = false;
   }
@@ -611,9 +627,14 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public openIncomeFilter(): void {
-    if (!this.isMobile) {
+  public openIncomeFilter(e: any): void {
+    if (this.isIncomeDesktopOpened) {
+      this.closeIncomeFilterDesktop(new MouseEvent(''));
       return;
+    }
+
+    if (!this.isMobile) {
+      this.openIncomeFilterDesktop(e);
     }
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
@@ -689,16 +710,16 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, 'MONTH');
     this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
-    this.showStreetAttrsTemp = false;
+    //this.showStreetAttrsTemp = false;
 
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
-    this.showStreetAttrs = this.showStreetAttrsTemp;
+    //this.showStreetAttrs = this.showStreetAttrsTemp;
 
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
 
-    this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
+    //this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
 
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 

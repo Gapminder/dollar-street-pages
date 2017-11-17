@@ -72,7 +72,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
-  public showStreetAttrs: boolean;
+  //public showStreetAttrs: boolean;
 
   public constructor(elementRef: ElementRef,
                      streetDrawService: StreetDrawService,
@@ -117,13 +117,13 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
               }
           }
 
-          if (data.showStreetAttrs) {
+          /*if (data.showStreetAttrs) {
             this.showStreetAttrs = true;
           } else {
             this.showStreetAttrs = false;
           }
 
-          this.street.showStreetAttrs = this.showStreetAttrs;
+          this.street.showStreetAttrs = this.showStreetAttrs;*/
 
           if (this.currencyUnit) {
             this.redrawStreet();
