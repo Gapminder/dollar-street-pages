@@ -35,10 +35,8 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   public currentLanguage: string;
   public matrixStateSubscription: Subscription;
   public matrixState: Observable<any>;
-  public timeUnits: any;
   public timeUnit: any;
   public currencyUnit: any;
-  public currencyUnits: any[];
 
   public constructor(countryPlacesService: CountryPlacesService,
                      loaderService: LoaderService,
@@ -106,7 +104,13 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   public calcPlacesIncome(): void {
     this.places = this.places.map((place) => {
       if (place) {
-        place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+        if (!this.timeUnit || !this.currencyUnit) {
+          place.showIncome = this.math.round(place.income);
+          this.currencyUnit = {};
+          this.currencyUnit.symbol = '$';
+        } else {
+          place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+        }
 
         return place;
       }

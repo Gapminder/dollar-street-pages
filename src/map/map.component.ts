@@ -10,7 +10,8 @@ import {
   NgZone,
   ViewChild,
   ViewChildren,
-  QueryList
+  QueryList,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -22,7 +23,8 @@ import {
   Angulartics2GoogleAnalytics,
   DrawDividersInterface,
   BrowserDetectionService,
-  LanguageService
+  LanguageService,
+  IncomeCalcService
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import { MapService } from './map.service';
@@ -68,7 +70,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public isMobile: boolean;
   public shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
-  public queryParamsSubscribe: Subscription;
   public streetData: DrawDividersInterface;
   public streetServiceSubscribe: Subscription;
   public windowInnerWidth: number = window.innerWidth;
@@ -79,6 +80,10 @@ export class MapComponent implements OnInit, OnDestroy {
   public appStateSubscription: Subscription;
   public thingsFilterState: Observable<any>;
   public thingsFilterStateSubscription: Subscription;
+  public matrixStateSubscription: Subscription;
+  public matrixState: Observable<any>;
+  public timeUnit: any;
+  public currencyUnit: any;
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -91,7 +96,9 @@ export class MapComponent implements OnInit, OnDestroy {
                      private browserDetectionService: BrowserDetectionService,
                      private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      private languageService: LanguageService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private incomeCalcService: IncomeCalcService,
+                     private changeDetectorRef: ChangeDetectorRef) {
     this.element = element.nativeElement;
 
     this.currentLanguage = this.languageService.currentLanguage;
@@ -99,6 +106,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.thingsFilterState = this.store.select((appState: AppStates) => appState.thingsFilter);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngOnInit(): void {
@@ -139,14 +147,20 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: {thing: string}) => {
-      //this.thing = params.thing ? params.thing : 'Families';
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+      if (data) {
+        if (data.timeUnit) {
+          if (this.timeUnit !== data.timeUnit) {
+            this.timeUnit = data.timeUnit;
+          }
+        }
 
-      //let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
-
-      //if (!params.thing || (params.thing/* && !isInit*/)) {
-      //  query.isNotReplaceState = true;
-      //}
+        if (data.currencyUnit) {
+          if (this.currencyUnit !== data.currencyUnit) {
+            this.currencyUnit = data.currencyUnit;
+          }
+        }
+      }
     });
   }
 
@@ -199,10 +213,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapServiceSubscribe.unsubscribe();
     }
 
-    if(this.queryParamsSubscribe) {
-      this.queryParamsSubscribe.unsubscribe();
-    }
-
     if(this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
@@ -222,6 +232,34 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.thingsFilterStateSubscription) {
       this.thingsFilterStateSubscription.unsubscribe();
     }
+  }
+
+  public calcHoverPlaceIncome(): void {
+    if (!this.timeUnit || !this.currencyUnit) {
+      this.hoverPlace.showIncome = this.math.round(this.hoverPlace.income);
+      this.currencyUnit = {};
+      this.currencyUnit.symbol = '$';
+    } else {
+      this.hoverPlace.showIncome = this.incomeCalcService.calcPlaceIncome(this.hoverPlace.income, this.timeUnit.code, this.currencyUnit.value);
+    }
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  public calcLeftSideIncome(): void {
+    this.leftSideCountries = this.leftSideCountries.map((place) => {
+      if (place) {
+        if (!this.timeUnit || !this.currencyUnit) {
+          place.showIncome = this.math.round(place.income);
+          this.currencyUnit = {};
+          this.currencyUnit.symbol = '$';
+        } else {
+          place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+        }
+
+        return place;
+      }
+    });
   }
 
   public setMarkersCoord(places: any): void {
@@ -266,6 +304,8 @@ export class MapComponent implements OnInit, OnDestroy {
       return place.country === this.currentCountry;
     });
 
+    this.calcLeftSideIncome();
+
     this.seeAllHomes = this.leftSideCountries.length > 1;
 
     this.places.forEach((place: any, i: number) => {
@@ -274,6 +314,8 @@ export class MapComponent implements OnInit, OnDestroy {
       }
 
       this.hoverPlace = place;
+
+      this.calcHoverPlaceIncome();
     });
 
     if (!this.hoverPlace) {
