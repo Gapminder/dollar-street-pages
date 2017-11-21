@@ -15,6 +15,7 @@ import { CountryPlacesService } from './country-places.service';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'country-places',
@@ -77,17 +78,8 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data) {
-        if (data.timeUnit) {
-          if (this.timeUnit !== data.timeUnit) {
-            this.timeUnit = data.timeUnit;
-          }
-        }
-
-        if (data.currencyUnit) {
-          if (this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-          }
-        }
+        this.timeUnit = _.get(data, 'timeUnit', this.timeUnit);
+        this.currencyUnit = _.get(data, 'currencyUnit', this.currencyUnit);
       }
     });
   }
@@ -95,25 +87,20 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.loaderService.setLoader(false);
     this.countryPlacesServiceSubscribe.unsubscribe();
-
-    if (this.matrixStateSubscription) {
-      this.matrixStateSubscription.unsubscribe();
-    }
+    this.matrixStateSubscription.unsubscribe();
   }
 
   public calcPlacesIncome(): void {
     this.places = this.places.map((place) => {
-      if (place) {
-        if (!this.timeUnit || !this.currencyUnit) {
-          place.showIncome = this.math.round(place.income);
-          this.currencyUnit = {};
-          this.currencyUnit.symbol = '$';
-        } else {
-          place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
-        }
-
-        return place;
+      if (this.timeUnit && this.currencyUnit) {
+        place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+      } else {
+        place.showIncome = this.math.round(place.income);
+        this.currencyUnit = {};
+        this.currencyUnit.symbol = '$';
       }
+
+      return place;
     });
   }
 }

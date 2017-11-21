@@ -28,6 +28,7 @@ import {
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import { MapService } from './map.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'map-component',
@@ -141,25 +142,14 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
-        if (this.query !== data.query) {
-          this.query = data.query;
-        }
+        this.query = _.get(data, 'query', this.query);
       }
     });
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data) {
-        if (data.timeUnit) {
-          if (this.timeUnit !== data.timeUnit) {
-            this.timeUnit = data.timeUnit;
-          }
-        }
-
-        if (data.currencyUnit) {
-          if (this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-          }
-        }
+        this.timeUnit = _.get(data, 'timeUnit', this.timeUnit);
+        this.currencyUnit = _.get(data, 'currencyUnit', this.currencyUnit);
       }
     });
   }
@@ -235,31 +225,25 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public calcHoverPlaceIncome(): void {
-    if (!this.timeUnit || !this.currencyUnit) {
-      this.hoverPlace.showIncome = this.math.round(this.hoverPlace.income);
-      this.currencyUnit = {};
-      this.currencyUnit.symbol = '$';
-    } else {
-      this.hoverPlace.showIncome = this.incomeCalcService.calcPlaceIncome(this.hoverPlace.income, this.timeUnit.code, this.currencyUnit.value);
-    }
-
-    this.changeDetectorRef.detectChanges();
+    this.calcIncomeValue(this.hoverPlace);
   }
 
   public calcLeftSideIncome(): void {
     this.leftSideCountries = this.leftSideCountries.map((place) => {
-      if (place) {
-        if (!this.timeUnit || !this.currencyUnit) {
-          place.showIncome = this.math.round(place.income);
-          this.currencyUnit = {};
-          this.currencyUnit.symbol = '$';
-        } else {
-          place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
-        }
-
-        return place;
-      }
+      return this.calcIncomeValue(place);
     });
+  }
+
+  private calcIncomeValue(place: any): any {
+    if (this.timeUnit && this.currencyUnit) {
+      place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+    } else {
+      place.showIncome = this.math.round(place.income);
+      this.currencyUnit = {};
+      this.currencyUnit.symbol = '$';
+    }
+
+    return place;
   }
 
   public setMarkersCoord(places: any): void {

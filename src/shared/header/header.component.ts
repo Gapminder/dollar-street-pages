@@ -264,11 +264,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     if (this.isTablet || this.isMobile) {
       this.incomeTitleText = this.byDollarText;
 
-      if (this.isTablet) {
-        this.isIncomeFilter = false;
-      } else {
-        this.isIncomeFilter = true;
-      }
+      this.isIncomeFilter = !this.isTablet;
     }
   }
 
