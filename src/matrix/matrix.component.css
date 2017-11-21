@@ -545,8 +545,7 @@ matrix-images {
 }
 
 .pin-header {
-  height: 36px;
-  margin-top: 10px;
+  padding-top: 10px;
   /* background-color: #394450; */
   /* background-color: #4D4D4D; */
 }
@@ -565,6 +564,7 @@ matrix-images {
   font-size: 28px;
   line-height: 44px;
   color: #374551;
+  margin: 0;
 }
 
 .pin-header .buttons-container {

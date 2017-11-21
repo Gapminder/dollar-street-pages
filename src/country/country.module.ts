@@ -5,6 +5,10 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../shared';
 
+import { EffectsModule } from '@ngrx/effects';
+
+import { MatrixEffects } from '../matrix/ngrx/matrix.effects';
+
 import { CountryRouting } from './country.routing';
 
 import { CountryComponent } from './country.component';
@@ -26,7 +30,8 @@ import { CountryPlacesComponent,
     HttpModule,
     RouterModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    EffectsModule.forFeature([MatrixEffects])
   ],
   providers: [
     CountryInfoService,

@@ -633,7 +633,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     let pinnedCountries = this.placesSet.map(place => place.country);
 
-    this.pinHeaderTitle = `Families in ${pinnedCountries.join(', ')}`;
+    this.pinHeaderTitle = '';
+
+    if (pinnedCountries.length > 1) {
+      this.pinHeaderTitle = `Families in ${pinnedCountries.splice(0, pinnedCountries.length - 1).join(', ')} and ${pinnedCountries[pinnedCountries.length-1]}`;
+    } else {
+      this.pinHeaderTitle = `Families in ${pinnedCountries.join(', ')}`;
+    }
 
     this.changeDetectorRef.detectChanges();
   }
