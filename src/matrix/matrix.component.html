@@ -28,7 +28,7 @@
 
           <div *ngIf="!isPreviewView"
                class="pin-mode-close"
-              (click)="pinModeClose()">
+               (click)="pinModeClose()">
             <img *ngIf="isPinMode" src="assets/img/close-button-embed-white.svg" alt="">
             <img *ngIf="isEmbedMode" src="assets/img/close-button-embed-black.svg" alt="">
           </div>
@@ -39,7 +39,7 @@
                          'column-3': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 3),
                          'column-4': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 4),
                          'column-5': placesSet && (placesSet.length === 5),
-                         'column-6': placesSet && ((!isPreviewView && !isEmbedMode) || placesSet.length === 6),                         
+                         'column-6': placesSet && ((!isPreviewView && !isEmbedMode) || placesSet.length === 6),
                          'embed-bg': (!isEmbedMode && !isPreviewView)}"
              [ngStyle]="{'justify-content': !isPreviewView && !isEmbedMode ? 'flex-start' : 'center'}">
           <div *ngFor="let place of placesSet; let i = index"

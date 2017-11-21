@@ -135,6 +135,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public paddingPlaceElement: HTMLElement;
   public byDollarText: string;
   public incomeTitleText: string;
+  public isIncomeFilter: boolean;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -175,7 +176,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       .debounceTime(150)
       .subscribe(() => {
         this.calcIncomeSize();
-        this.checkByIncomeText();
+        this.checkByIncomeFilter();
       });
 
     this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
@@ -254,13 +255,16 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public checkByIncomeText(): void {
+  public checkByIncomeFilter(): void {
     if (this.isDesktop) {
       this.incomeTitleText = this.byIncomeText;
+      this.isIncomeFilter = true;
     }
 
     if (this.isTablet || this.isMobile) {
       this.incomeTitleText = this.byDollarText;
+
+      this.isIncomeFilter = !this.isTablet;
     }
   }
 
@@ -274,7 +278,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.byDollarText = trans.BY_DOLLAR;
       this.theWorldText = trans.THE_WORLD;
 
-      this.checkByIncomeText();
+      this.checkByIncomeFilter();
     });
 
     this.routerEventsSubscription = this.router.events.subscribe((event: any) => {
@@ -628,6 +632,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public openIncomeFilter(e: any): void {
+    if (!this.isIncomeFilter) {
+      return;
+    }
+
     if (this.isIncomeDesktopOpened) {
       this.closeIncomeFilterDesktop(new MouseEvent(''));
       return;

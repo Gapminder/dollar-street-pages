@@ -1,4 +1,4 @@
-<div id="main-menu" *ngIf="!isMobile">
+<div id="main-menu" *ngIf="isDesktop">
   <div class="btn-group" [ngClass]="{open: isOpenMenu}">
     <span class="menu-icon" (click)="openMenu(isOpenMenu)">
       <img class="unactive" src="/assets/img/gamburger-menu-icon.svg" alt=""/>
@@ -46,7 +46,7 @@
   </div>
 </div>
 
-<div id="main-mobile-menu" *ngIf="isMobile">
+<div id="main-mobile-menu" *ngIf="isMobile || isTablet">
   <div class="btn-group" [ngClass]="{open: isOpenMenu}">
     <span class="menu-icon" (click)="openMenu(isOpenMenu)">
       <img class="unactive" src="/assets/img/gamburger-menu-icon.svg" alt=""/>

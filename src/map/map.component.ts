@@ -10,7 +10,8 @@ import {
   NgZone,
   ViewChild,
   ViewChildren,
-  QueryList
+  QueryList,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -22,10 +23,12 @@ import {
   Angulartics2GoogleAnalytics,
   DrawDividersInterface,
   BrowserDetectionService,
-  LanguageService
+  LanguageService,
+  IncomeCalcService
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import { MapService } from './map.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'map-component',
@@ -68,7 +71,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public isDesktop: boolean;
   public isMobile: boolean;
   public shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
-  public queryParamsSubscribe: Subscription;
   public streetData: DrawDividersInterface;
   public streetServiceSubscribe: Subscription;
   public windowInnerWidth: number = window.innerWidth;
@@ -79,6 +81,10 @@ export class MapComponent implements OnInit, OnDestroy {
   public appStateSubscription: Subscription;
   public thingsFilterState: Observable<any>;
   public thingsFilterStateSubscription: Subscription;
+  public matrixStateSubscription: Subscription;
+  public matrixState: Observable<any>;
+  public timeUnit: any;
+  public currencyUnit: any;
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -91,7 +97,9 @@ export class MapComponent implements OnInit, OnDestroy {
                      private browserDetectionService: BrowserDetectionService,
                      private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                      private languageService: LanguageService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private incomeCalcService: IncomeCalcService,
+                     private changeDetectorRef: ChangeDetectorRef) {
     this.element = element.nativeElement;
 
     this.currentLanguage = this.languageService.currentLanguage;
@@ -99,6 +107,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
     this.thingsFilterState = this.store.select((appState: AppStates) => appState.thingsFilter);
+    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngOnInit(): void {
@@ -133,20 +142,15 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
-        if (this.query !== data.query) {
-          this.query = data.query;
-        }
+        this.query = _.get(data, 'query', this.query);
       }
     });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: {thing: string}) => {
-      //this.thing = params.thing ? params.thing : 'Families';
-
-      //let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
-
-      //if (!params.thing || (params.thing/* && !isInit*/)) {
-      //  query.isNotReplaceState = true;
-      //}
+    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+      if (data) {
+        this.timeUnit = _.get(data, 'timeUnit', this.timeUnit);
+        this.currencyUnit = _.get(data, 'currencyUnit', this.currencyUnit);
+      }
     });
   }
 
@@ -199,10 +203,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapServiceSubscribe.unsubscribe();
     }
 
-    if(this.queryParamsSubscribe) {
-      this.queryParamsSubscribe.unsubscribe();
-    }
-
     if(this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
@@ -222,6 +222,28 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.thingsFilterStateSubscription) {
       this.thingsFilterStateSubscription.unsubscribe();
     }
+  }
+
+  public calcHoverPlaceIncome(): void {
+    this.calcIncomeValue(this.hoverPlace);
+  }
+
+  public calcLeftSideIncome(): void {
+    this.leftSideCountries = this.leftSideCountries.map((place) => {
+      return this.calcIncomeValue(place);
+    });
+  }
+
+  private calcIncomeValue(place: any): any {
+    if (this.timeUnit && this.currencyUnit) {
+      place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+    } else {
+      place.showIncome = this.math.round(place.income);
+      this.currencyUnit = {};
+      this.currencyUnit.symbol = '$';
+    }
+
+    return place;
   }
 
   public setMarkersCoord(places: any): void {
@@ -266,6 +288,8 @@ export class MapComponent implements OnInit, OnDestroy {
       return place.country === this.currentCountry;
     });
 
+    this.calcLeftSideIncome();
+
     this.seeAllHomes = this.leftSideCountries.length > 1;
 
     this.places.forEach((place: any, i: number) => {
@@ -274,6 +298,8 @@ export class MapComponent implements OnInit, OnDestroy {
       }
 
       this.hoverPlace = place;
+
+      this.calcHoverPlaceIncome();
     });
 
     if (!this.hoverPlace) {

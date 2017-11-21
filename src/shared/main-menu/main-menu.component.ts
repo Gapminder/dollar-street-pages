@@ -45,6 +45,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public getTranslationSubscribe: Subscription;
   public isDesktop: boolean;
   public isMobile: boolean;
+  public isTablet: boolean;
   public socialShareContentElement: HTMLElement;
   public shareTranslation: string;
   public streetSettingsState: Observable<DrawDividersInterface>;
@@ -74,6 +75,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnInit(): void {
     this.isMobile = this.browserDetectionService.isMobile();
     this.isDesktop = this.browserDetectionService.isDesktop();
+    this.isTablet = this.browserDetectionService.isTablet();
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
       if (data) {
@@ -121,11 +123,11 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public openMenu(isOpenMenu: boolean): void {
     this.isOpenMenu = !isOpenMenu;
 
-    if (this.isOpenMenu && this.isMobile) {
+    if (this.isOpenMenu && this.isMobile || this.isTablet) {
       document.body.classList.add('hideScroll');
     }
 
-    if (!this.isOpenMenu && this.isMobile) {
+    if (!this.isOpenMenu && this.isMobile || this.isTablet) {
       document.body.classList.remove('hideScroll');
     }
   }
