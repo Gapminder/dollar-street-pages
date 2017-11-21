@@ -15,7 +15,6 @@ import { CountryPlacesService } from './country-places.service';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
-import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'country-places',
