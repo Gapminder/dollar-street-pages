@@ -31,9 +31,8 @@ exports.config = {
     {
       browserName: 'chrome',
       chromeOptions: {
-        args: ['no-sandbox', 'disable-infobars']
-      }
-
+        args: ['no-sandbox', 'disable-infobars', 'headless']
+      },
       // shardTestFiles: true,
       // maxInstances: 2,
       // count: 2
@@ -51,7 +50,7 @@ exports.config = {
   onPrepare: function() {
     require('ts-node').register({ project: 'test-e2e' }); //according to issue: https://github.com/angular/angular-cli/issues/975
 
-    browser.driver.manage().window().maximize();
+    browser.driver.manage().window().setSize(1920, 1080);
     let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
     jasmine.getEnv().addReporter(new SpecReporter({
