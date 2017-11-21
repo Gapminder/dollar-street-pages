@@ -12,7 +12,7 @@ describe('Embed feature', () => {
     random = AbstractPage.getRandom();
     browser.get('matrix');
 
-    browser.actions().mouseMove(MatrixPage.familyLink.get(5)).perform();
+    browser.actions().mouseMove(MatrixPage.familyLink.get(10)).perform();
     AbstractPage.waitForCssAnimation();
     FooterPage.heartIcon.click();
   });
@@ -21,10 +21,11 @@ describe('Embed feature', () => {
     selectImageToShare(random);
 
     const selectedImage = MatrixPage.familyLink.get(random).getCssValue('background-image');
-    const pinnedImage = MatrixPage.pinnedImages.first().getCssValue('background-image');
-
-    expect(MatrixPage.pinnedImages.count()).toEqual(1);
-    expect(selectedImage).toEqual(pinnedImage);
+    MatrixPage.pinnedImages.first().getAttribute('src')
+      .then(pinnedImage => {
+        expect(MatrixPage.pinnedImages.count()).toEqual(1);
+        expect(selectedImage).toEqual(`url("${pinnedImage}")`);
+      });
   });
 
   it(`Houses on pinned street`, () => {
@@ -51,10 +52,11 @@ describe('Embed feature', () => {
     selectImageToShare(random);
 
     const selectedImage = MatrixPage.familyLink.get(random).getCssValue('background-image');
-    const pinnedImage = MatrixPage.pinnedImages.first().getCssValue('background-image');
-
-    expect(MatrixPage.housesOnPinnedStreet.count()).toEqual(1);
-    expect(selectedImage).toEqual(pinnedImage);
+    MatrixPage.pinnedImages.first().getAttribute('src')
+      .then(pinnedImage => {
+        expect(MatrixPage.pinnedImages.count()).toEqual(1);
+        expect(selectedImage).toEqual(`url("${pinnedImage}")`);
+      });
   });
 
   describe('Share view', () => {
@@ -70,8 +72,8 @@ describe('Embed feature', () => {
     it(`Deselect image from pinned area`, () => {
       MatrixPage.deselectImageBtns.first().click();
 
-      expect(MatrixPage.pinnedImages.count()).toEqual(1);
-      expect(MatrixPage.housesOnPinnedStreet.count()).toEqual(1);
+      expect(MatrixPage.pinnedImages.count()).toBe(1);
+      expect(MatrixPage.housesOnPinnedStreet.count()).toBe(1, 'houses on street');
     });
 
     it(`Only pin container is displayed in Shared view`, () => {
@@ -106,7 +108,7 @@ describe('Embed feature', () => {
       const imagesBefore = getImagesSrc();
 
       MatrixPage.shareNowBtn.click();
-      browser.wait(EC.visibilityOf($('.share-link-container')), 5000);
+      browser.wait(EC.visibilityOf($('.share-buttons-container')), 20000);
 
       const imagesAfter = getImagesSrc();
 

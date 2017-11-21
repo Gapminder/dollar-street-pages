@@ -41,7 +41,7 @@ export class MatrixPage extends AbstractPage {
    */
   public static pinContainer: ElementFinder = $('.pin-container');
   public static heartIconsOnImage: ElementArrayFinder = $$('matrix-images .heart-circle');
-  public static pinnedImages: ElementArrayFinder = $$('.pin-place');
+  public static pinnedImages: ElementArrayFinder = $$('.pin-place > img');
   public static pinnedImagesCountry: ElementArrayFinder = $$('.pin-place .place-image-box-country');
   public static housesOnPinnedStreet: ElementArrayFinder = $$('.street-pinned-box-container .point');
   public static pinHeader: ElementFinder = $('.pin-header');

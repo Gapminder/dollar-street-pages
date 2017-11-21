@@ -6,6 +6,7 @@ import { DataProvider } from '../Data/DataProvider';
 import { FooterPage } from '../Pages/FooterPage';
 import { MapPage } from '../Pages/MapPage';
 import { CountryPage } from '../Pages/CountryPage';
+import { AbstractPage } from '../Pages/AbstractPage';
 
 describe('Country Page test', () => {
   afterAll(() => {
@@ -16,6 +17,8 @@ describe('Country Page test', () => {
   for (let i = 0; i < 3; i++) {
     it(`Check country ${i} on Country Page: name, numbers, map, markers, texts`, () => {
       browser.get('map');
+      browser.wait(AbstractPage.getEC().not(AbstractPage.getEC().visibilityOf(AbstractPage.loader)), 40000);
+
       const country = MapPage.getCountry(i);
       const countryName = MapPage.getCountry(i).getText();
       country.click();

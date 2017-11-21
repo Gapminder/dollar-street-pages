@@ -22,8 +22,7 @@ export class AbstractPage {
   }
 
   public static getRandom(): number {
-    // return Math.floor(Math.random() * 15) + 4; // random number between 0 and 15
-    return Math.floor(Math.random() * 10) + 5; // because of https://github.com/Gapminder/dollar-street-pages/issues/1043
+    return Math.floor(Math.random() * 15); // random number between 0 and 15
   }
 
   public static waitForCssAnimation(): void {
