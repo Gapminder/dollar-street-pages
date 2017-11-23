@@ -394,11 +394,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
 
-            if (!this.urlParams.currency) {
+            /*if (!this.urlParams.currency) {
               this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
             } else {
               this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
-            }
+            }*/
+
+            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, 'USD');
 
             this.currencyUnit = this.currencyUnitTemp;
 
