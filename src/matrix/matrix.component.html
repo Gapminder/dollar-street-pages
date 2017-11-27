@@ -24,7 +24,11 @@
         <div *ngIf="isPinMode || isEmbedMode"
             class="pin-header"
             [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode, 'white-font': !isPreviewView && !isEmbedMode}">
+          <img *ngIf="isEmbedMode" class="logo" src="assets/img/dollar-street-logo.png" alt=""/>
+
           <p>{{ pinHeaderTitle }}</p>
+
+          <!-- <span *ngIf="isEmbedMode" class="quick-guide-btn" (click)="openQuickGuide()">Quick guide</span> -->
 
           <div *ngIf="!isPreviewView"
                class="pin-mode-close"
@@ -146,14 +150,18 @@
                     </svg>
                   </div>
 
-                  <!--<div class="share-link-container">
+                  <div class="download-link-container">
+                    <a (click)="downloadImage()"><span>Download image</span></a>
+                  </div>
+
+                  <div class="share-link-container">
                     <input class="share-link-input" type="text" name="" value="">
-                  </div>-->
+                  </div>
                 </div>
 
-                <div class="share-close-buttons">
-                  <span *ngIf="!isScreenshotProcessing && !isEmbedShared"
-                        (click)="shareEmbed()">Share Now</span>
+                <div *ngIf="isEmbedShared"
+                     class="share-close-buttons">
+                  <!-- <span (click)="shareEmbed()">Share Now</span> -->
                   <span (click)="pinModeClose()">Cancel</span>
                 </div>
           </div>

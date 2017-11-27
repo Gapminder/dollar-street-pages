@@ -432,6 +432,11 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.isPinMode) {
+      this.addPlaceToSet(new MouseEvent('click'), place);
+      return;
+    }
+
     this.familyData = Object.assign({}, place);
 
     this.indexViewBoxHouse = index;

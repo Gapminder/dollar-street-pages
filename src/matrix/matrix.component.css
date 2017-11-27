@@ -112,6 +112,20 @@ matrix-images {
   justify-content: center;
 }
 
+.logo {
+  width: 46px;
+  height: 46px;
+  margin: 0px 0px 8px 20px;
+}
+
+.quick-guide-btn {
+  display: inline-block;
+  cursor: pointer;
+  float: right;
+  margin-right: 25px;
+  margin-top: 15px;
+}
+
 .heart-container .heart-circle {
   /*align-self: center;
   width: 74px;
@@ -501,6 +515,13 @@ matrix-images {
 }
 
 .pin-footer-share .share-link-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pin-footer-share .download-link-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
