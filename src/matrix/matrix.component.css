@@ -334,10 +334,27 @@ matrix-images {
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
 }
 
+.places-container .image-description.one-row {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+}
+
 .places-container .place-image-box-country,
 .places-container .place-image-box-income {
   color: white;
   display: block;
+}
+
+.places-container .one-row .place-image-box-country,
+.places-container .one-row .place-image-box-income {
+  flex: 1 1 50%;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.places-container .one-row .place-image-box-income {
+  text-align: right;
 }
 
 .pin-container .pin-place {
