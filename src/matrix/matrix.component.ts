@@ -288,7 +288,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.quickGuide) {
           this.isQuickGuideOpened = true;
 
-          this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+          if (data.embedMode) {
+           this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+          }
+
         } else {
           this.isQuickGuideOpened = false;
         }
@@ -737,7 +740,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.processMatrixImages(this.matrixImages);
   }
 
-  public pinModeClose(): void {
+  public pinModeClose(openQuickGuide = false): void {
       this.store.dispatch(new MatrixActions.SetPinMode(false));
       this.store.dispatch(new MatrixActions.SetEmbedMode(false));
 
@@ -751,6 +754,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.urlChangeService.replaceState('/matrix', query);
 
       this.clearEmbedMatrix();
+
+      if (openQuickGuide) {
+        this.localStorageService.removeItem('quick-guide');
+        window.scrollTo(0, 0)
+        this.store.dispatch(new MatrixActions.OpenQuickGuide(true));
+      }
   }
 
   public removePlaceFromSet(e: MouseEvent, place: any): void {

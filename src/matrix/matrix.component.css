@@ -417,14 +417,31 @@ matrix-images {
   width: 20px;
   height: 20px;
   position: absolute;
-  top: 6px;
-  right: 10px;
+  top: 12px;
+  right: 14px;
   cursor: pointer;
 }
 
 .pin-mode-close img {
   width: 100%;
   height: 100%;
+}
+
+.pin-mode-guide-btn {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  position: absolute;
+  font-size: 14px;
+  top: 52px;
+  right: 15px;
+}
+
+.pin-mode-guide-btn,
+.pin-mode-guide-btn:active,
+.pin-mode-guide-btn:focus {
+  outline: none;
 }
 
 .pin-footer .pin-footer-edit span {
@@ -569,6 +586,15 @@ matrix-images {
   padding-top: 10px;
   /* background-color: #394450; */
   /* background-color: #4D4D4D; */
+}
+
+.pin-header.text-center {
+  text-align: center;
+}
+
+.pin-container-inner.inner-border {
+  margin: 5px;
+  border: 2px solid #374551;
 }
 
 .pin-header.white-font p {
