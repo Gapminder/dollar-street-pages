@@ -33,6 +33,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   public guideServiceSubscribe: Subscription;
   public element: HTMLElement;
   public localStorageServiceSubscription: Subscription;
+  public storeMatrixSubsdcription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private guideService: GuideService,
@@ -73,6 +74,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.guideServiceSubscribe.unsubscribe();
     this.localStorageServiceSubscription.unsubscribe();
+    this.storeMatrixSubsdcription.unsubscribe();
   }
 
   public openQuickTour(): void {
@@ -86,7 +88,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   }
 
   subscribeStatusQuickGuide(): void {
-    this.store.select('matrix').subscribe(matrix => {
+    this.storeMatrixSubsdcription = this.store.select('matrix').subscribe(matrix => {
       if (!matrix.quickGuide) {
         this.isShowGuide = false;
         this.isShowBubble = false;
