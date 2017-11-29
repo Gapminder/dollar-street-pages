@@ -44,6 +44,7 @@ export class GuideComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.isShowGuide = !(this.localStorageService.getItem('quick-guide'));
+    this.store.dispatch(new MatrixActions.OpenQuickGuide(this.isShowGuide));
 
     this.localStorageServiceSubscription = this.localStorageService
       .getItemEvent()
@@ -66,6 +67,7 @@ export class GuideComponent implements OnInit, OnDestroy {
         this.description = welcomeHeader.description;
         this.bubbles = difference(res.data, [welcomeHeader]);
       });
+    this.subscribeStatusQuickGuide();
   }
 
   public ngOnDestroy(): void {
@@ -80,10 +82,17 @@ export class GuideComponent implements OnInit, OnDestroy {
   }
 
   public closeQuickGuide(): void {
-    this.isShowGuide = false;
-    this.isShowBubble = false;
-    this.startQuickGuide.emit({});
-    this.localStorageService.setItem('quick-guide', true);
     this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+  }
+
+  subscribeStatusQuickGuide(): void {
+    this.store.select('matrix').subscribe(matrix => {
+      if (!matrix.quickGuide) {
+        this.isShowGuide = false;
+        this.isShowBubble = false;
+        this.startQuickGuide.emit({});
+        this.localStorageService.setItem('quick-guide', true);
+      }
+    });
   }
 }
