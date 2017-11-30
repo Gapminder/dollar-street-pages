@@ -49,51 +49,29 @@ export class ImageGeneratorService {
         this.getStreetCanvas(headerCanvas.width, 64).then((streetCanvas) => {
           let streetImage = streetCanvas.getContext('2d').getImageData(0, 0, streetCanvas.width, streetCanvas.height);
 
-          /*var data = streetImage.data;
-          // convert image to grayscale
-          var rgbColor = this.hexToRgb('#ffffff');
-          for(var p = 0, len = data.length; p < len; p+=4) {
-              if(data[p+3] == 0)
-                 continue;
-              data[p + 0] = rgbColor.r;
-              data[p + 1] = rgbColor.g;
-              data[p + 2] = rgbColor.b;
-              data[p + 3] = 255;
-          }*/
+          let streetBackgroundCanvas = document.createElement('canvas');
+          streetBackgroundCanvas.width = streetCanvas.width;
+          streetBackgroundCanvas.height =  streetCanvas.height;
 
+          let streetBackgroundContext = streetBackgroundCanvas.getContext('2d');
+          streetBackgroundContext.fillStyle = 'white';
+          streetBackgroundContext.fillRect(0, 0, streetCanvas.width, streetCanvas.height);
+
+          let streetBackground = streetBackgroundContext.getImageData(0, 0, streetCanvas.width, streetCanvas.height);
 
           sourceCanvas.getContext('2d').putImageData(headerImage, 0, 0);
           // sourceCanvas.getContext('2d').putImageData(iconImage, 10, 10);
           // sourceCanvas.getContext('2d').putImageData(streetImage, 0, headerCanvas.height);
           sourceCanvas.getContext('2d').putImageData(placesImage, 0, headerCanvas.height);
+          sourceCanvas.getContext('2d').putImageData(streetBackground, 0, headerCanvas.height + placesCanvas.height);
           sourceCanvas.getContext('2d').putImageData(streetImage, 30, headerCanvas.height + placesCanvas.height);
           sourceCanvas.getContext('2d').putImageData(paragraphImage, 0, headerCanvas.height + streetCanvas.height + placesCanvas.height);
-
-          // document.getElementsByClassName('icon-container')[0].appendChild(sourceCanvas);
 
           resolve(sourceCanvas.toDataURL('image/jpeg'));
         });
       });
     });
   }
-
-  /*private hexToRgb(color) {
-      var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-      color = color.replace(shorthandRegex, function(m, r, g, b) {
-          return r + r + g + g + b + b;
-      });
-
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
-      return result ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16)
-      } : {
-          r: 0,
-          g: 0,
-          b: 0
-      };
-  }*/
 
   private getStreetCanvas(width, height): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -105,6 +83,10 @@ export class ImageGeneratorService {
       ctx.width = width;
       ctx.height = height;
       ctx.style.backgroundColor = '#fff';
+
+      let cont = ctx.getContext('2d');
+      cont.fillStyle = 'white';
+      cont.fillRect(0, 0, width, height);
 
       let img = document.createElement("img");
 
