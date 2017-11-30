@@ -677,7 +677,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.pinHeaderTitle = `${this.thing} in ${pinnedCountries.join(', ')}`;
     }
 
-    if (this.isEmbedMode) {
+    if (this.isEmbedMode || this.isPreviewView) {
       this.pinHeaderTitle = `${this.thing} by income`;
     }
 
