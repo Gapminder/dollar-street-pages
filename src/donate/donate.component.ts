@@ -59,8 +59,8 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public ngOnInit(): void {
         this.loaderService.setLoader(true);
 
-        this.getTranslationSubscribe = this.languageService.getTranslation(['DONATE', 'DONATE_DESCRIPTION', 'ADD_AMOUNT']).subscribe((trans: any) => {
-            this.titleHeaderService.setTitle(trans.DONATE);
+        this.getTranslationSubscribe = this.languageService.getTranslation(['DONATE', 'HOW_CAN_HELP', 'DONATE_DESCRIPTION', 'ADD_AMOUNT']).subscribe((trans: any) => {
+            this.titleHeaderService.setTitle(trans.HOW_CAN_HELP);
 
             this.donateDescription = this.languageService.getSunitizedString(trans.DONATE_DESCRIPTION);
 
@@ -86,7 +86,10 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public onAmountBlur(): void {
       let addAmount = this.addAmount.nativeElement;
-      addAmount.style.visibility = 'visible';
+
+      if (this.donateValue.nativeElement.value === '') {
+        addAmount.style.visibility = 'visible';
+      }
     }
 
     public showAboutPopUp(): void {

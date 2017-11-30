@@ -163,7 +163,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   @HostListener('document:click', ['$event'])
   public isOutsideIncomeFilterClick(event: any): void {
-    if (this.isIncomeDesktopOpened) {
+    if (!this.element.querySelector('.income-title-container').contains(event.target) && this.isIncomeDesktopOpened) {
       this.closeIncomeFilterDesktop(new MouseEvent(''));
     }
   }
@@ -466,13 +466,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public openIncomeFilterDesktop(e: MouseEvent): void {
-    e.stopPropagation();
-
+    // e.stopPropagation();
     this.isIncomeDesktopOpened = true;
   }
 
   public closeIncomeFilterDesktop(e: MouseEvent): void {
-    e.stopPropagation();
+    // e.stopPropagation();
 
     this.isIncomeDesktopOpened = false;
 

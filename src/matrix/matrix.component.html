@@ -21,14 +21,28 @@
 
       <div *ngIf="(isPinMode || isEmbedMode)"
            class="pin-container">
+        <div class="pin-container-inner" [ngClass]="{'inner-border': isEmbedMode}">
         <div *ngIf="isPinMode || isEmbedMode"
             class="pin-header"
-            [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode, 'white-font': !isPreviewView && !isEmbedMode}">
-          <p>{{ pinHeaderTitle }}</p>
+            [ngClass]="{'grey-bg white-font': !isPreviewView && !isEmbedMode, 'text-center': isPreviewView || isEmbedMode}">
+
+
+          <p>
+            <span class="title-icon" *ngIf="isPreviewView || isEmbedMode">
+              <img class="logo" src="assets/img/dollar-street-logo.png" alt=""/>
+            </span>
+            {{ pinHeaderTitle }}
+          </p>
+
+          <!-- <span *ngIf="isEmbedMode" class="quick-guide-btn" (click)="openQuickGuide()">Quick guide</span> -->
+
+          <button type="button" *ngIf="!isPreviewView" (click)="pinModeClose(true)" class="pin-mode-guide-btn">
+            Quick guide to Dollar Street
+          </button>
 
           <div *ngIf="!isPreviewView"
                class="pin-mode-close"
-               (click)="pinModeClose()">
+               (click)="pinModeClose(false)">
             <img *ngIf="isPinMode" src="assets/img/close-button-embed-white.svg" alt="">
             <img *ngIf="isEmbedMode" src="assets/img/close-button-embed-black.svg" alt="">
           </div>
@@ -50,7 +64,7 @@
                (imageLoadedEvent)="imageIsUploaded(i)">
             <img src="{{place?.isUploaded ? place?.showBackground : ''}}" alt="">
 
-            <div class="image-description">
+            <div class="image-description" [ngClass]="{'one-row': isPreviewView || isEmbedMode}">
               <span class="place-image-box-income">{{currencyUnit?.symbol}}{{place?.showIncome}}</span>
               <span class="place-image-box-country">{{place?.country}}</span>
             </div>
@@ -90,11 +104,7 @@
             <span class="richest">RICHEST</span>
           </div>
 
-          <div *ngIf="isEmbedMode"
-               class="embed-footer-text">
-            <span>More families from all over the World</span>
-            <img src="assets/img/arrow-down-embed.svg" alt="">
-          </div>
+
 
           <div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length > 1)"
                 class="pin-footer-edit">
@@ -105,9 +115,6 @@
           <div *ngIf="isPreviewView"
                class="pin-footer-share">
                 <div class="pin-footer-paragraph">
-                  <div>
-                    <img src="assets/img/dollar-street-logo.png"/>
-                  </div>
                   <p>
                     Visit hundreds of families from all over the World to see their beds, stoves, toothbrushes and more. www.dollarstreet.org
                   </p>
@@ -146,18 +153,29 @@
                     </svg>
                   </div>
 
-                  <!--<div class="share-link-container">
+                  <div class="download-link-container">
+                    <a (click)="downloadImage()"><span>Download image</span></a>
+                  </div>
+
+                  <div class="share-link-container">
                     <input class="share-link-input" type="text" name="" value="">
-                  </div>-->
+                  </div>
                 </div>
 
-                <div class="share-close-buttons">
-                  <span *ngIf="!isScreenshotProcessing && !isEmbedShared"
-                        (click)="shareEmbed()">Share Now</span>
+                <div *ngIf="isEmbedShared"
+                     class="share-close-buttons">
+                  <!-- <span (click)="shareEmbed()">Share Now</span> -->
                   <span (click)="pinModeClose()">Cancel</span>
                 </div>
           </div>
         </div>
+        </div>
+          <div *ngIf="isEmbedMode"
+               class="embed-footer-text">
+            <span>More families from all over the World</span>
+            <img src="assets/img/arrow-down-embed.svg" alt="">
+          </div>
+
       </div>
 
     </div>

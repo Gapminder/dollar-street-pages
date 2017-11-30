@@ -32,7 +32,8 @@ import {
   ImageGeneratorService,
   SocialShareService,
   SortPlacesService,
-  IncomeCalcService
+  IncomeCalcService,
+  LocalStorageService
 } from '../common';
 import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
@@ -153,6 +154,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public matrixContainerElement: HTMLElement;
   public shareUrl: string;
   public pinnedSetQuery: string;
+  public sharedImageUrl: string;
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -172,7 +174,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      private imageGeneratorService: ImageGeneratorService,
                      private socialShareService: SocialShareService,
                      private sortPlacesService: SortPlacesService,
-                     private incomeCalcService: IncomeCalcService) {
+                     private incomeCalcService: IncomeCalcService,
+                     private localStorageService: LocalStorageService) {
     this.element = element.nativeElement;
 
     this.isMobile = this.browserDetectionService.isMobile();
@@ -285,7 +288,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (data.quickGuide) {
           this.isQuickGuideOpened = true;
 
-          this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+          if (data.embedMode) {
+           this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+          }
+
         } else {
           this.isQuickGuideOpened = false;
         }
@@ -378,7 +384,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       this.changeDetectorRef.detectChanges();
 
-      if (this.embedSetId !== 'undefined') {
+      if (this.embedSetId !== 'undefined' && this.embedSetId !== undefined) {
         const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
         this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
         this.store.dispatch(new MatrixActions.SetEmbedMode(true));
@@ -423,6 +429,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(new MatrixActions.GetCurrencyUnits());
     this.store.dispatch(new MatrixActions.GetTimeUnits());
   }
+
+  /*public openQuickGuide(): void {
+    this.localStorageService.removeItem('quick-guide');
+
+    document.body.scrollTop = 0;
+
+    this.store.dispatch(new MatrixActions.OpenQuickGuide(true));
+  }*/
 
   public initPlacesSet(): void {
     this.placesSet = this.placesSet.map((place) => {
@@ -508,7 +522,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         query += `&activeHouse=${this.activeHouse}`;
       }
 
-      if (this.embedSetId !== 'undefined') {
+      if (this.embedSetId !== 'undefined' && this.embedSetId !== undefined) {
         query += `&embed=${this.embedSetId}`;
       }
 
@@ -565,6 +579,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public doneAndShare(): void {
     if (this.placesSet && this.placesSet.length > 1) {
       this.isPreviewView = true;
+
+      this.shareEmbed();
     }
   }
 
@@ -602,6 +618,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
           const screenData = {imageData: screenshot, imageName: Date.now()+'.jpg', embedId: this.embedSetId};
           this.matrixService.uploadScreenshot(screenData).then((res: any) => {
+            this.sharedImageUrl = res.data.imageUrl;
+
             this.isScreenshotProcessing = false;
 
             this.urlChangeService.replaceState('/matrix', queryString);
@@ -614,12 +632,30 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
             this.shareUrl = shareUrl;
 
-            /*let shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
-            shareUrlElement.setAttribute('value', shareUrl);
-            shareUrlElement.select();*/
+            let shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
+            shareUrlElement.setAttribute('value', window.location.href);
+            shareUrlElement.select();
           });
         });
     });
+  }
+
+  public downloadImage(): void {
+    const url = this.sharedImageUrl;
+    const countries = this.placesSet.map(place => place.country);
+    const filename = `DollarStreet_${this.thing}_in_${countries}`;
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = () => {
+      let a = document.createElement('a');
+      a.href = window.URL.createObjectURL(xhr.response);
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+    };
+    xhr.open('GET', url);
+    xhr.send();
   }
 
   public setPinHeaderTitle(): void {
@@ -636,9 +672,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.pinHeaderTitle = '';
 
     if (pinnedCountries.length > 1) {
-      this.pinHeaderTitle = `Families in ${pinnedCountries.splice(0, pinnedCountries.length - 1).join(', ')} and ${pinnedCountries[pinnedCountries.length-1]}`;
+      this.pinHeaderTitle = `${this.thing} in ${pinnedCountries.splice(0, pinnedCountries.length - 1).join(', ')} and ${pinnedCountries[pinnedCountries.length-1]}`;
     } else {
-      this.pinHeaderTitle = `Families in ${pinnedCountries.join(', ')}`;
+      this.pinHeaderTitle = `${this.thing} in ${pinnedCountries.join(', ')}`;
+    }
+
+    if (this.isEmbedMode || this.isPreviewView) {
+      this.pinHeaderTitle = `${this.thing} by income`;
     }
 
     this.changeDetectorRef.detectChanges();
@@ -700,11 +740,26 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.processMatrixImages(this.matrixImages);
   }
 
-  public pinModeClose(): void {
+  public pinModeClose(openQuickGuide = false): void {
       this.store.dispatch(new MatrixActions.SetPinMode(false));
       this.store.dispatch(new MatrixActions.SetEmbedMode(false));
 
+      this.embedSetId = undefined;
+
+      let queryParams = this.utilsService.parseUrl(this.query);
+      delete queryParams.embed;
+      let query = this.utilsService.objToQuery(queryParams);
+
+      this.store.dispatch(new AppActions.SetQuery(query));
+      this.urlChangeService.replaceState('/matrix', query);
+
       this.clearEmbedMatrix();
+
+      if (openQuickGuide) {
+        this.localStorageService.removeItem('quick-guide');
+        window.scrollTo(0, 0)
+        this.store.dispatch(new MatrixActions.OpenQuickGuide(true));
+      }
   }
 
   public removePlaceFromSet(e: MouseEvent, place: any): void {

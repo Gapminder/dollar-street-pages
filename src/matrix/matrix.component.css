@@ -112,6 +112,20 @@ matrix-images {
   justify-content: center;
 }
 
+.logo {
+  width: 46px;
+  height: 46px;
+  margin: 0px 0px 8px 20px;
+}
+
+.quick-guide-btn {
+  display: inline-block;
+  cursor: pointer;
+  float: right;
+  margin-right: 25px;
+  margin-top: 15px;
+}
+
 .heart-container .heart-circle {
   /*align-self: center;
   width: 74px;
@@ -320,10 +334,27 @@ matrix-images {
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
 }
 
+.places-container .image-description.one-row {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+}
+
 .places-container .place-image-box-country,
 .places-container .place-image-box-income {
   color: white;
   display: block;
+}
+
+.places-container .one-row .place-image-box-country,
+.places-container .one-row .place-image-box-income {
+  flex: 1 1 50%;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.places-container .one-row .place-image-box-income {
+  text-align: right;
 }
 
 .pin-container .pin-place {
@@ -403,14 +434,31 @@ matrix-images {
   width: 20px;
   height: 20px;
   position: absolute;
-  top: 6px;
-  right: 10px;
+  top: 12px;
+  right: 14px;
   cursor: pointer;
 }
 
 .pin-mode-close img {
   width: 100%;
   height: 100%;
+}
+
+.pin-mode-guide-btn {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  position: absolute;
+  font-size: 14px;
+  top: 52px;
+  right: 15px;
+}
+
+.pin-mode-guide-btn,
+.pin-mode-guide-btn:active,
+.pin-mode-guide-btn:focus {
+  outline: none;
 }
 
 .pin-footer .pin-footer-edit span {
@@ -507,6 +555,13 @@ matrix-images {
   margin-top: 20px;
 }
 
+.pin-footer-share .download-link-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .pin-footer-share .share-close-buttons {
   display: flex;
   flex-direction: row;
@@ -548,6 +603,15 @@ matrix-images {
   padding-top: 10px;
   /* background-color: #394450; */
   /* background-color: #4D4D4D; */
+}
+
+.pin-header.text-center {
+  text-align: center;
+}
+
+.pin-container-inner.inner-border {
+  margin: 5px;
+  border: 2px solid #374551;
 }
 
 .pin-header.white-font p {
