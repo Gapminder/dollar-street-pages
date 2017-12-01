@@ -579,14 +579,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public doneAndShare(): void {
     if (this.placesSet && this.placesSet.length > 1) {
       this.isPreviewView = true;
-
       this.shareEmbed();
     }
   }
 
   public shareEmbed(): void {
     this.isScreenshotProcessing = true;
-
+    this.store.dispatch(new MatrixActions.SetIsEmbededShared(true));
     const query = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=${this.imageResolution.image}`;
     this.matrixService.savePinnedPlaces(query).then(data => {
       const embedId = data.data._id;
@@ -743,6 +742,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public pinModeClose(openQuickGuide = false): void {
       this.store.dispatch(new MatrixActions.SetPinMode(false));
       this.store.dispatch(new MatrixActions.SetEmbedMode(false));
+      this.store.dispatch(new MatrixActions.SetIsEmbededShared(false));
 
       this.embedSetId = undefined;
 

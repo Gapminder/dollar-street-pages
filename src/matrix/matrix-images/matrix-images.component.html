@@ -40,7 +40,7 @@
         <span class="place-image-box-country">{{place?.country}}</span>
       </div>
 
-      <div *ngIf="isPinMode"
+      <div *ngIf="isPinMode && !isEmbederShared"
             class="heart-container"
             [ngClass]="{'place-pinned': place?.pinned}">
         <div class="heart-circle"

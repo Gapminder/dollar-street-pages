@@ -5,6 +5,7 @@ export interface State {
     updateMatrix: boolean;
     pinMode: boolean;
     embedMode: boolean;
+    isEmbederShared: boolean;
     pinCollapsed: boolean;
     showLabels: boolean;
     timeUnit: any;
@@ -22,6 +23,7 @@ export const initialState: State = {
     updateMatrix: false,
     pinMode: false,
     embedMode: false,
+    isEmbederShared: false,
     pinCollapsed: false,
     showLabels: false,
     timeUnit: null,
@@ -50,6 +52,10 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
 
         case MatrixActions.SET_EMBED_MODE: {
             return Object.assign({}, state, {embedMode: action.payload});
+        }
+
+        case MatrixActions.SET_IS_EMBEDED_SHARED: {
+          return Object.assign({}, state, {isEmbederShared: action.payload});
         }
 
         case MatrixActions.OPEN_INCOME_FILTER: {

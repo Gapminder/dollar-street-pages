@@ -104,6 +104,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public isInit: boolean;
   public contentLoadedSubscription: Subscription;
   public isPinMode: boolean;
+  public isEmbederShared: boolean;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
   public placesSet: Array<any>;
@@ -196,6 +197,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         } else {
           this.isPinMode = false;
         }
+
+        this.isEmbederShared = data.isEmbederShared;
 
         if (data.placesSet) {
           this.placesSet = data.placesSet;

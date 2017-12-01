@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 export const UPDATE_MATRIX: string = 'UPDATE_MATRIX';
 export const SET_PIN_MODE: string = 'SET_PIN_MODE';
 export const SET_EMBED_MODE: string = 'SET_EMBED_MODE';
+export const SET_IS_EMBEDED_SHARED: string = 'SET_IS_EMBEDED_SHARED';
 //export const SET_PIN_COLLAPSED: string = 'SET_PIN_COLLAPSED';
 export const SET_TIME_UNIT: string = 'SET_TIME_UNIT';
 export const OPEN_INCOME_FILTER: string = 'OPEN_INCOME_FILTER';
@@ -30,6 +31,11 @@ export class UpdateMatrix implements Action {
 export class SetPinMode implements Action {
     readonly type = SET_PIN_MODE;
     constructor(public payload: boolean) {}
+}
+
+export class SetIsEmbededShared implements Action {
+  readonly type = SET_IS_EMBEDED_SHARED;
+  constructor(public payload: boolean) {}
 }
 
 /*export class SetPinCollapsed implements Action {
