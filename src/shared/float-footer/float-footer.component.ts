@@ -31,7 +31,10 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   public scrollSubscribe: Subscription;
   public isDesktop: boolean;
   public routerEventsSubscription: Subscription;
+  public storeSubscription: Subscription
   public isMatrixPage: boolean;
+  public pinMode: boolean;
+  public embedMode: boolean;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -68,6 +71,11 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isMatrixPage = this.isCurrentPage('matrix');
       }
     });
+
+    this.storeSubscription = this.store.select('matrix').subscribe(matrix => {
+      this.pinMode = matrix.pinMode;
+      this.embedMode = matrix.embedMode;
+    });
   }
 
   public ngOnDestroy(): void {
@@ -76,6 +84,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.routerEventsSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
   public isCurrentPage(name: string): boolean {
@@ -91,7 +100,9 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public SetPinMode(): void {
-    this.store.dispatch(new MatrixActions.SetPinMode(true));
+    if (!this.pinMode && !this.embedMode) {
+      this.store.dispatch(new MatrixActions.SetPinMode(true));
+    }
   }
 
   public scrollTop(e: MouseEvent): void {

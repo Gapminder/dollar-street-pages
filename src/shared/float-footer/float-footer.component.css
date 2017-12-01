@@ -93,25 +93,37 @@
   width: 24px;
   height: 24px;
   float: left;
-  margin-left: 14px;
-  margin-top: 2px;
+  margin: 0 0 0 14px;
   cursor: pointer;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  outline: none;
 }
 
+.float-footer-container .pin-icon .icon-active,
+.float-footer-container .pin-icon .icon-inactive {
+  display: block;
+}
+
+.float-footer-container .pin-icon .icon-active,
+.float-footer-container .pin-icon .icon-inactive,
 .float-footer-container .pin-icon svg {
   width: 24px;
   height: 24px;
 }
 
-.float-footer-container .pin-icon svg:last-child {
+.float-footer-container .pin-icon .icon-active{
   display: none;
 }
 
-.float-footer-container .pin-icon:hover svg:last-child {
+.float-footer-container .pin-icon:hover .icon-active,
+.float-footer-container .pin-icon.active .icon-active{
   display: block;
 }
 
-.float-footer-container .pin-icon:hover svg:first-child {
+.float-footer-container .pin-icon:hover .icon-inactive,
+.float-footer-container .pin-icon.active .icon-inactive{
   display: none;
 }
 
