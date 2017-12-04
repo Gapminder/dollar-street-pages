@@ -209,6 +209,7 @@ matrix-images {
   position: fixed;
   z-index: 999;
   top: 0px;
+  box-shadow: 0 0 3px 1px rgba(0,0,0,0.3);
 }
 
 .embed-bg {
@@ -371,7 +372,9 @@ matrix-images {
 }
 
 .shared-completed-section {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .shared-ready-section {
@@ -380,9 +383,10 @@ matrix-images {
 
 .shared-ready-section .loader-content {
   /*position: absolute;*/
-  height: 70px;
+  height: 90px;
   margin: auto;
   text-align: center;
+  padding: 10px 0;
   /*z-index: 999;*/
 }
 
@@ -396,6 +400,24 @@ matrix-images {
   width: 100%;
   align-self: flex-end;
 }
+
+.pin-footer-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.pin-footer-row .shared-completed-section {
+  flex: 1 1 100%;
+}
+
+.pin-footer-row .share-close-buttons {
+  flex: 0 0 38px;
+  text-align: right;
+
+}
+
 
 .pin-footer .pin-footer-edit {
   display: flex;
@@ -463,7 +485,6 @@ matrix-images {
 
 .pin-footer .pin-footer-edit span {
   display: inline-block;
-  /* margin-top: 8px; */
   cursor: pointer;
 }
 
@@ -471,7 +492,6 @@ matrix-images {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-height: 800px;
 }
 
 .pin-footer-paragraph div {
@@ -507,7 +527,6 @@ matrix-images {
 
 .pin-footer-share p {
   min-width: 818px;
-  height: 54px;
   font-size: 18px;
   font-weight: 400;
   line-height: 30px;
@@ -523,27 +542,27 @@ matrix-images {
 }
 
 .pin-footer-share .share-buttons-container {
-  height: 21px;
+  height: 38px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /*padding: 20px 0;*/
+  flex: 1 1 100%;
+  padding: 5px;
+  align-items: center;
 }
 
 .pin-footer-share .share-buttons-container span {
-  width: 40px;
-  height: 21px;
+  width: 46px;
   color: #767d86;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
-  line-height: 21px;
-  vertical-align: center;
+  vertical-align: baseline;
   display: inline-block;
 }
 
 .pin-footer-share .share-buttons-container svg {
-  width: 21px;
-  height: 21px;
+  width: 26px;
+  height: 26px;
   margin-left: 10px;
   cursor: pointer;
 }
@@ -552,43 +571,53 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 20px;
+  flex: 2 1 100%;
+  padding: 5px;
 }
 
 .pin-footer-share .download-link-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .pin-footer-share .share-close-buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /*margin-top: 20px;*/
+  flex: 1 1 100%;
+  padding: 5px 10px;
+
 }
 
-.pin-footer-share .share-close-buttons span:first-child {
-  border: 1px solid #9c9fa4;
-  padding: 0 4px;
+.pin-footer-share .share-close-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex: 1 1 100%;
+  padding: 5px 10px;
 }
 
-.pin-footer-share .share-close-buttons span {
+.pin-footer-share .download-link-container button,
+.pin-footer-share .share-close-buttons button {
+  background: transparent;
+  padding: 0 16px;
   min-width: 86px;
-  height: 32px;
+  height: 38px;
   display: inline-block;
-  color: #3a4450;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 30px;
+  color: #374551;
+  font-size: 20px;
+  line-height: 36px;
   cursor: pointer;
   margin: 0 10px;
   text-align: center;
+  border: 0;
 }
 
-.pin-footer-share .share-close-buttons span:last-child {
-  color: #777d86;
+.pin-footer-share .download-link-container .download-icon,
+.pin-footer-share .share-close-buttons .download-icon {
+  width: 20px;
+  height: auto;
 }
 
 .pin-footer-share .share-link-container input {
@@ -596,7 +625,10 @@ matrix-images {
   height: 38px;
   border: 1px solid #9c9fa4;
   background-color: #ffffff;
-  font-size: 24px;
+  font-size: 18px;
+  border-radius: 2px;
+  box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.15);
+  padding: 0 5px;
 }
 
 .pin-header {
@@ -678,5 +710,43 @@ matrix-images {
 
   .street-container.fixed .short-title {
     display: block;
+  }
+}
+
+@media (min-width: 750px) {
+  .pin-footer-row .shared-completed-section {
+    flex-direction: row;
+    flex: 0 1 auto;
+    justify-content: center;
+  }
+
+  .pin-footer-share .download-link-container {
+    flex: 0 0 230px;
+    padding: 0 10px;
+
+  }
+
+  .pin-footer-share .share-buttons-container {
+    flex: 0 0 230px;
+    padding: 0 10px;
+
+  }
+
+  .pin-footer-share .share-link-container {
+    flex: 0 1 410px;
+    padding: 0 10px;
+    min-width: 170px;
+  }
+}
+
+@media (min-width: 850px) {
+
+  .pin-footer-row {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .pin-footer-row .share-close-buttons {
+    flex: 0 0 110px;
   }
 }
