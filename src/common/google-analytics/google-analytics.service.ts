@@ -29,11 +29,10 @@ export class GoogleAnalyticsService {
         let elem: HTMLElement = this.document.getElementsByTagName(this.elementTagName)[0] as HTMLElement;
         elem.parentNode.insertBefore(js,elem);
 
-        wnd.ga('create', 'UA-82755634-1', 'auto');
+        wnd.ga('create', 'UA-82755634-1', 'DollarStreet');
 
         this.googleAnalyticsInstance = this.googleAnalyticsInstance || [];
 
-        this.googleAnalyticsInstance.push(['create', 'UA-82755634-1', 'auto']);
-        this.googleAnalyticsInstance.push(['_trackPageview']);
+        this.googleAnalyticsInstance.push(['DollarStreet.create', 'UA-82755634-1']);
     }
 }
