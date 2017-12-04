@@ -162,12 +162,14 @@
                     </svg>
                   </div>
 
+
                   <div class="share-link-container">
                     <input class="share-link-input" type="text" name="" value="">
                   </div>
                 </div>
 
-                <div class="share-close-buttons">
+                <div *ngIf="isEmbedShared"
+                     class="share-close-buttons">
                   <!-- <span (click)="shareEmbed()">Share Now</span> -->
                   <button type="button" (click)="pinModeClose()">Cancel</button>
                 </div>

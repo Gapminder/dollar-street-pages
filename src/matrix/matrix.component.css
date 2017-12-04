@@ -579,6 +579,12 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.pin-footer-share .share-close-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   flex: 1 1 100%;
   padding: 5px 10px;
 
@@ -588,6 +594,8 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex: 1 1 100%;
+  padding: 5px 10px;
 }
 
 .pin-footer-share .download-link-container button,
@@ -739,6 +747,6 @@ matrix-images {
   }
 
   .pin-footer-row .share-close-buttons {
-    flex-basis: 110px;
+    flex: 0 0 110px;
   }
 }
