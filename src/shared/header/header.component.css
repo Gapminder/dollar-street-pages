@@ -398,9 +398,14 @@ family-header .header-content {
   cursor: auto;
 }
 
+.currency-container {
+  height: 120px;
+  overflow-y: scroll;
+}
+
 .dropdown-selected {
   display: block;
-  line-height: 34px;
+  /* line-height: 18px; */
   overflow-x: hidden;
   color: #374551;
 }
