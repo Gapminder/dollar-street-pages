@@ -311,20 +311,6 @@ family-header .header-content {
   cursor: auto;
 }
 
-.units-container-labels span {
-  font-size: 14px;
-  color: #767d86;
-  margin-top: 20px;
-}
-
-.units-container-labels span:first-child {
-  padding-left: 20px;
-}
-
-.units-container-labels span:last-child {
-  padding-left: 82px;
-}
-
 /*.income-title.filter.opened .income-filter-desktop-container {
   display: flex;
   flex-direction: column;
@@ -368,17 +354,14 @@ family-header .header-content {
 }
 
 .dropdown-button {
-  width: 100px;
+  width: 100%;
   height: 34px;
   border: 1px solid #e4e6e7;
   position: relative;
   cursor: pointer;
   background-color: white;
-}
-
-.dropdown-button span {
-  position: relative;
-  left: -20px;
+  border-radius: 4px;
+  padding: 0 4px;
 }
 
 .dropdown-button img {
@@ -399,15 +382,48 @@ family-header .header-content {
 }
 
 .currency-container {
-  height: 120px;
+  height: 152px;
+  width: 100%;
   overflow-y: scroll;
 }
 
-.dropdown-selected {
+.dropdown-selected,
+.income-filter-desktop-content .control-section .dropdown-selected{
   display: block;
   /* line-height: 18px; */
-  overflow-x: hidden;
+  overflow: hidden;
   color: #374551;
+  width: 100%;
+  position: static;
+  left: auto;
+  text-align: left;
+  padding-right: 23px;
+}
+
+.income-filter-desktop-content .control-section .button-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  left: auto;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.income-filter-desktop-content .control-section .button-icon img{
+  display: inline-block;
+  position: static;
+  width: 16px;
+  height: auto;
+}
+
+.control-section .control-label {
+  font-size: 14px;
+  color: #767d86;
+  display: block;
+  margin-bottom: 4px;
+  white-space: nowrap;
 }
 
 .dropdown-item {
@@ -424,16 +440,19 @@ family-header .header-content {
 }
 
 .income-filter-desktop-content .currency-unit-container {
-  height: 40px;
   display: flex;
   justify-content: space-between;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+.currency-unit-cell {
+  flex: 1 1 50%;
+  padding: 0 10px;
 }
 
 .income-filter-desktop-content .control-section {
-  width: 50%;
+  width: 100%;
   font-size: 18px;
-  padding: 4px 0 0 20px;
 }
 
 .income-filter-desktop-content .control-section span {
