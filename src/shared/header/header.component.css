@@ -158,6 +158,7 @@ family-header .header-content {
   vertical-align: top;
   width: 100%;
   background-color: white;
+  transform: translateZ(0);
 }
 
 .header-content .icon-container {

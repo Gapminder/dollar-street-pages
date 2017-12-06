@@ -19,6 +19,7 @@ matrix-images {
   right: 32px;
   bottom: 52px;
   z-index: 10;
+  transform: translateZ(0);
 }
 
 .zoom-column.stop {
@@ -67,6 +68,7 @@ matrix-images {
   transition: top .2s ease-out;
   background-color: #fff;
   width: 100%;
+  transform: translateZ(0);
 }
 
 .street-container .street-content > * {
