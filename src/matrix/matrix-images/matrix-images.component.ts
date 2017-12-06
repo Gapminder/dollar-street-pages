@@ -245,8 +245,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     setTimeout(() => this.quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement);
   }
 
-  public addPlaceToSet(e: MouseEvent, place: any): void {
-    e.stopPropagation();
+  public addPlaceToSet(place: any, e?: MouseEvent): void {
+    if (e) {
+      e.stopPropagation();
+    }
 
     if (!place.pinned) {
       if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
@@ -431,12 +433,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
+    console.log('new click');
     if (!place) {
       return;
     }
 
     if (this.isPinMode) {
-      this.addPlaceToSet(new MouseEvent('click'), place);
+      this.addPlaceToSet(place);
       return;
     }
 

@@ -201,6 +201,7 @@ matrix-images {
 
 .pin-container {
   width: 100%;
+  height: auto;
   /* margin-top: -2px; */
   background-color: white;
   display: flex;
@@ -639,6 +640,10 @@ matrix-images {
 
 .pin-header.text-center {
   text-align: center;
+}
+
+.pin-container-inner {
+  flex: 0 0 auto;
 }
 
 .pin-container-inner.inner-border {
