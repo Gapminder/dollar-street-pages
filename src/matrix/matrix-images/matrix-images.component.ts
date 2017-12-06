@@ -433,7 +433,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public goToImageBlock(place: any, index: number, isInit?: boolean): void {
-    console.log('new click');
     if (!place) {
       return;
     }
