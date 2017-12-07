@@ -65,67 +65,77 @@
               </div>
 
               <div class="income-filter-desktop-content">
-                <div class="units-container-labels">
-                  <span>Currency</span>
-                  <span>Time unit</span>
-                </div>
                 <div class="currency-unit-container">
-                  <div dropdown class="control-section">
-                    <button type="button"
-                            class="dropdown-button"
-                            dropdownToggle
-                            [disabled]="disabled">
-                      <span class="dropdown-selected">{{ currencyUnitTemp?.currency }}</span>
-                      <img src="assets/img/lang-selector-arrow.svg" alt="">
-                    </button>
+                  <div class="currency-unit-cell">
 
-                    <ul dropdownMenu
-                        role="menu"
-                        aria-labelledby="single-button"
-                        class="dropdown-container currency-container">
-                      <li *ngFor="let currUnit of currencyUnits"
-                          class="dropdown-item"
-                          role="menuitem"
-                          (click)="currencyUnitFilterSelect(currUnit.code)">
-                        <span class="dropdown-item">{{ currUnit?.currency }}</span>
-                      </li>
-                    </ul>
+                    <div dropdown class="control-section">
+                      <span class="control-label">Currency</span>
+                      <button type="button"
+                              class="dropdown-button"
+                              dropdownToggle
+                              [disabled]="disabled"
+                              [title]="currencyUnitTemp?.currency">
+                        <span class="dropdown-selected">{{ currencyUnitTemp?.currency }}</span>
+                        <span class="button-icon">
+                          <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
+                        </span>
+                      </button>
+
+                      <ul dropdownMenu
+                          role="menu"
+                          aria-labelledby="single-button"
+                          class="dropdown-container currency-container">
+                        <li *ngFor="let currUnit of currencyUnits"
+                            class="dropdown-item"
+                            role="menuitem"
+                            (click)="currencyUnitFilterSelect(currUnit.code)">
+                          <span class="dropdown-item">{{ currUnit?.currency }}</span>
+                        </li>
+                      </ul>
+                    </div>
+
                   </div>
+                  <div class="currency-unit-cell">
 
-                  <div dropdown class="control-section">
-                    <button type="button"
-                            class="dropdown-button"
-                            dropdownToggle
-                            [disabled]="disabled">
-                      <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
-                      <img src="assets/img/lang-selector-arrow.svg" alt="">
-                    </button>
+                    <div dropdown class="control-section">
+                      <span class="control-label">Time unit</span>
+                      <button type="button"
+                              class="dropdown-button"
+                              dropdownToggle
+                              [disabled]="disabled">
+                        <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
+                        <span class="button-icon">
+                          <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
+                        </span>
+                      </button>
 
-                    <ul dropdownMenu
-                        role="menu"
-                        aria-labelledby="single-button"
-                        class="dropdown-container">
-                      <li class="dropdown-item"
-                          role="menuitem"
-                          (click)="timeUnitFilterSelect('DAY')">
-                        <span class="dropdown-item">Day</span>
-                      </li>
-                      <li class="dropdown-item"
-                          role="menuitem"
-                          (click)="timeUnitFilterSelect('WEEK')">
-                        <span class="dropdown-item">Week</span>
-                      </li>
-                      <li class="dropdown-item"
-                          role="menuitem"
-                          (click)="timeUnitFilterSelect('MONTH')">
-                        <span class="dropdown-item">Month</span>
-                      </li>
-                      <li class="dropdown-item"
-                          role="menuitem"
-                          (click)="timeUnitFilterSelect('YEAR')">
-                        <span class="dropdown-item">Year</span>
-                      </li>
-                    </ul>
+                      <ul dropdownMenu
+                          role="menu"
+                          aria-labelledby="single-button"
+                          class="dropdown-container">
+                        <li class="dropdown-item"
+                            role="menuitem"
+                            (click)="timeUnitFilterSelect('DAY')">
+                          <span class="dropdown-item">Day</span>
+                        </li>
+                        <li class="dropdown-item"
+                            role="menuitem"
+                            (click)="timeUnitFilterSelect('WEEK')">
+                          <span class="dropdown-item">Week</span>
+                        </li>
+                        <li class="dropdown-item"
+                            role="menuitem"
+                            (click)="timeUnitFilterSelect('MONTH')">
+                          <span class="dropdown-item">Month</span>
+                        </li>
+                        <li class="dropdown-item"
+                            role="menuitem"
+                            (click)="timeUnitFilterSelect('YEAR')">
+                          <span class="dropdown-item">Year</span>
+                        </li>
+                      </ul>
+                    </div>
+
                   </div>
 
                 </div>
