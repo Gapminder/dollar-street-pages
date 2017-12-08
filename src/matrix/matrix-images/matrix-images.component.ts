@@ -29,6 +29,7 @@ import {
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import {Place} from '../ngrx/matrix.reducers';
 
 @Component({
   selector: 'matrix-images',
@@ -245,11 +246,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     setTimeout(() => this.quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement);
   }
 
-  public addPlaceToSet(place: any, e?: MouseEvent): void {
-    if (e) {
-      e.stopPropagation();
-    }
-
+  public togglePlaceToSet(place: Place): void {
     if (!place.pinned) {
       if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
         place.pinned = true;
@@ -432,13 +429,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  public goToImageBlock(place: any, index: number, isInit?: boolean): void {
+  public goToImageBlock(place: Place, index: number, isInit?: boolean): void {
     if (!place) {
-      return;
-    }
-
-    if (this.isPinMode) {
-      this.addPlaceToSet(place);
       return;
     }
 
@@ -469,10 +461,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.showBlock = !this.showBlock;
 
       if (isInit) {
-        this.changeUrl({activeHouseIndex: activeHouseIndex});
+        this.changeUrl({activeHouseIndex});
         this.goToRow(row);
       } else {
-        this.changeUrl({row: row, activeHouseIndex: activeHouseIndex});
+        this.changeUrl({row, activeHouseIndex});
       }
 
       return;
