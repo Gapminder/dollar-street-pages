@@ -1,74 +1,74 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from 'ng2-translate';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Angulartics2GoogleAnalytics, Angulartics2, Angulartics2Module } from 'angulartics2';
-import {
-    MathService,
-    LoaderService,
-    TitleHeaderService,
-    BrowserDetectionService,
-    LanguageService
-} from '../../common';
-import {
-    TranslateServiceMock,
-    Angulartics2GoogleAnalyticsMock,
-    AngularticsMock,
-    LoaderServiceMock,
-    TitleHeaderServiceMock,
-    BrowserDetectionServiceMock,
-    LanguageServiceMock
-} from '../../test/';
+import { Observable } from 'rxjs/Observable';
+import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
+import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+
+import { MathService } from '../../common';
 import { PhotographersComponent } from '../photographers.component';
 import { PhotographersService } from '../photographers.service';
 import { PhotographersFilterPipe } from '../photographers-filter.pipe';
 
-describe('PhotographersComponent', () => {
-    let component: PhotographersComponent;
-    let fixture: ComponentFixture<PhotographersComponent>;
+import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
+import { TranslateTestingModule } from '../../test/translateTesting.module';
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                TranslateModule,
-                RouterTestingModule,
-                Angulartics2Module
-            ],
-            declarations: [
-                PhotographersComponent,
-                PhotographersFilterPipe
-            ],
-            providers: [
-                MathService,
-                PhotographersService,
-                { provide: TranslateService, useClass: TranslateServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
-                { provide: Angulartics2, useClass: AngularticsMock },
-                { provide: LoaderService, useClass: LoaderServiceMock },
-                { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },
-                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-                { provide: LanguageService, useClass: LanguageServiceMock }
-            ]
-        });
+fdescribe('Component: PhotographersComponent', () => {
+  let component: PhotographersComponent;
+  let fixture: ComponentFixture<PhotographersComponent>;
 
-        fixture = TestBed.createComponent(PhotographersComponent);
-        component = fixture.componentInstance;
-    }));
-
-    it('ngAfterViewInit()', () => {
-        component.ngAfterViewInit();
-
-        expect(component.keyUpSubscribe).toBeDefined();
-        expect(component.getTranslationSubscribe).toBeDefined();
-        expect(component.photographersServiceSubscribe).toBeDefined();
-
-        spyOn(component.keyUpSubscribe, 'unsubscribe');
-        spyOn(component.getTranslationSubscribe, 'unsubscribe');
-        spyOn(component.photographersServiceSubscribe, 'unsubscribe');
-
-        component.ngOnDestroy();
-
-        expect(component.keyUpSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(component.photographersServiceSubscribe.unsubscribe).toHaveBeenCalled();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        CommonServicesTestingModule,
+        Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+        TranslateTestingModule
+      ],
+      declarations: [
+        PhotographersComponent,
+        PhotographersFilterPipe
+      ],
+      providers: [
+        MathService,
+        {provide: PhotographersService, useClass: PhotographersServiceMock}
+      ]
     });
+
+    fixture = TestBed.createComponent(PhotographersComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('define subscriptions on ngAfterViewInit()', () => {
+    component.ngAfterViewInit();
+
+    expect(component.keyUpSubscribe).toBeDefined();
+    expect(component.getTranslationSubscribe).toBeDefined();
+    expect(component.photographersServiceSubscribe).toBeDefined();
+  });
+
+  it('unsubscribe on destroy', () => {
+    component.ngAfterViewInit();
+
+    spyOn(component.keyUpSubscribe, 'unsubscribe');
+    spyOn(component.getTranslationSubscribe, 'unsubscribe');
+    spyOn(component.photographersServiceSubscribe, 'unsubscribe');
+
+    component.ngOnDestroy();
+
+    expect(component.keyUpSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(component.photographersServiceSubscribe.unsubscribe).toHaveBeenCalled();
+  });
 });
+
+class PhotographersServiceMock {
+  getPhotographers() {
+    return Observable.of({
+      data: {
+        countryList: [],
+        photographersList: []
+      }
+    });
+  }
+}
