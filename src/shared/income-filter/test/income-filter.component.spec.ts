@@ -1,15 +1,16 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {Http} from '@angular/http';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Observable';
+import { By } from '@angular/platform-browser';
+import { Http } from '@angular/http';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
-import {TranslateLoader, TranslateModule, TranslateStaticLoader} from 'ng2-translate';
+import { TranslateStaticLoader } from 'ng2-translate';
 
-import {MathService} from '../../../common';
-import {StreetFilterDrawService} from '../../street-filter/street-filter.service';
-import {IncomeFilterComponent} from '../income-filter.component';
+import { MathService } from '../../../common';
+import { StreetFilterDrawService } from '../../street-filter/street-filter.service';
+import { IncomeFilterComponent } from '../income-filter.component';
+import { TranslateTestingModule } from '../../../test/translateTesting.module';
 
 describe('Component. IncomeFilterComponent', () => {
   let fixture: ComponentFixture<IncomeFilterComponent>;
@@ -20,11 +21,7 @@ describe('Component. IncomeFilterComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        TranslateModule.forRoot({
-          provide: TranslateLoader,
-          useFactory: (createTranslateLoader),
-          deps: [Http]
-        })
+        TranslateTestingModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [

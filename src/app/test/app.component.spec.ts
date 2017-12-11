@@ -1,103 +1,69 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule, TranslateService, TranslateLoader, TranslateParser } from 'ng2-translate';
-import { StoreModule, Store } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import {
-    LanguageService,
-    LoaderService,
-    FontDetectorService,
-    GoogleAnalyticsService,
-    MathService,
-    BrowserDetectionService,
-    UtilsService,
-    UrlChangeService,
-    TitleHeaderService,
-    LocalStorageService,
-    SocialShareService
+  FontDetectorService,
+  GoogleAnalyticsService,
+  LocalStorageService,
+  MathService,
+  SocialShareService
 } from '../../common';
-import {
-    LanguageServiceMock,
-    LoaderServiceMock,
-    BrowserDetectionServiceMock,
-    Angulartics2GoogleAnalyticsMock,
-    UtilsServiceMock,
-    UrlChangeServiceMock,
-    TitleHeaderServiceMock,
-    AngularticsMock,
-    SocialShareServiceMock,
-    TranslateServiceMock,
-    TranslateLoaderMock,
-    TranslateParserMock
-} from '../../test/';
-import { Angulartics2Module, Angulartics2GoogleAnalytics, Angulartics2 } from 'angulartics2';
-import {
-    SharedModule
-} from '../../shared';
+import { SocialShareServiceMock } from '../../test/';
 import { AppComponent } from '../app.component';
-import { IncomeCalcService } from '../../common/income-calc/income-calc.service';
+import { TranslateTestingModule } from '../../test/translateTesting.module';
+import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AppComponent', () => {
-    let fixture: ComponentFixture<AppComponent>;
-    let component: AppComponent;
-    let store: Store<AppStates>;
+  let fixture: ComponentFixture<AppComponent>;
+  let component: AppComponent;
+  let store: Store<AppStates>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                SharedModule,
-                Angulartics2Module,
-                StoreModule.forRoot({}),
-                TranslateModule
-            ],
-            declarations: [
-                AppComponent
-            ],
-            providers: [
-                FontDetectorService,
-                GoogleAnalyticsService,
-                MathService,
-                LocalStorageService,
-                { provide: TranslateService, useClass: TranslateServiceMock },
-                { provide: TranslateLoader, useClass: TranslateLoaderMock },
-                { provide: TranslateParser, useClass: TranslateParserMock },
-                { provide: SocialShareService, useClass: SocialShareServiceMock },
-                { provide: LanguageService, useClass: LanguageServiceMock },
-                { provide: LoaderService, useClass: LoaderServiceMock },
-                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
-                { provide: UtilsService, useClass: UtilsServiceMock },
-                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-                { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },
-                { provide: Angulartics2, useClass: AngularticsMock },
-                { provide: IncomeCalcService, useValue: {} }
-            ]
-        });
-
-        fixture = TestBed.createComponent(AppComponent);
-        // fixture.detectChanges();
-        component = fixture.componentInstance;
-        // store = TestBed.get(Store);
-
-        // spyOn(store, 'dispatch').and.callThrough();
-    }));
-
-    it('ngOnInit(), ngOnDestroy()', () => {
-        component.ngOnInit();
-
-        expect(component.loaderServiceSubscribe).toBeDefined();
-        expect(component.documentCreatedSubscribe).toBeDefined();
-        expect(component.routerEventsSubscribe).toBeDefined();
-
-        spyOn(component.loaderServiceSubscribe, 'unsubscribe');
-        spyOn(component.routerEventsSubscribe, 'unsubscribe');
-        spyOn(component.documentCreatedSubscribe, 'unsubscribe');
-
-        component.ngOnDestroy();
-
-        expect(component.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(component.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(component.loaderServiceSubscribe.unsubscribe).toHaveBeenCalled();
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        StoreModule.forRoot({}),
+        TranslateTestingModule,
+        CommonServicesTestingModule
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        AppComponent
+      ],
+      providers: [
+        {provide: FontDetectorService, useValue: {}},
+        {provide: GoogleAnalyticsService, useValue: {}},
+        {provide: MathService, useValue: {}},
+        {provide: LocalStorageService, useValue: {}},
+        {provide: SocialShareService, useClass: SocialShareServiceMock}
+      ]
     });
+
+    fixture = TestBed.createComponent(AppComponent);
+    // fixture.detectChanges();
+    component = fixture.componentInstance;
+    // store = TestBed.get(Store);
+
+    // spyOn(store, 'dispatch').and.callThrough();
+  }));
+
+  it('ngOnInit(), ngOnDestroy()', () => {
+    component.ngOnInit();
+
+    expect(component.loaderServiceSubscribe).toBeDefined();
+    expect(component.documentCreatedSubscribe).toBeDefined();
+    expect(component.routerEventsSubscribe).toBeDefined();
+
+    spyOn(component.loaderServiceSubscribe, 'unsubscribe');
+    spyOn(component.routerEventsSubscribe, 'unsubscribe');
+    spyOn(component.documentCreatedSubscribe, 'unsubscribe');
+
+    component.ngOnDestroy();
+
+    expect(component.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(component.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(component.loaderServiceSubscribe.unsubscribe).toHaveBeenCalled();
+  });
 });
