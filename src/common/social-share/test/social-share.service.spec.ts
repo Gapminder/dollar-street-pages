@@ -23,9 +23,9 @@ class CustomLoader implements TranslateLoader {
 describe('Service.SocialShareService', () => {
   let socialShareService: SocialShareService;
   let mockedDocumentObject: Document;
-  let languageService: LanguageService;
+  let languageService: LanguageServiceMock;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpModule,
@@ -75,7 +75,7 @@ describe('Service.SocialShareService', () => {
     languageService = TestBed.get(LanguageService);
     socialShareService = TestBed.get(SocialShareService);
     mockedDocumentObject = TestBed.get(Document);
-  }));
+  });
 
   it('SocialShareService: facebookLike()', fakeAsync(() => {
     spyOn(languageService, 'getLanguagesList').and.returnValue(Observable.of({}));

@@ -13,7 +13,7 @@ import { PhotographersFilterPipe } from '../photographers-filter.pipe';
 import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
 import { TranslateTestingModule } from '../../test/translateTesting.module';
 
-fdescribe('Component: PhotographersComponent', () => {
+describe('Component: PhotographersComponent', () => {
   let component: PhotographersComponent;
   let fixture: ComponentFixture<PhotographersComponent>;
 

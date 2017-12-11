@@ -9,6 +9,10 @@ export class LanguageServiceMock {
     return '&lang=en';
   }
 
+  public getLanguagesList(): Observable<any> {
+    return this.languagesList;
+  }
+
   public getLanguageIso(): string {
     return 'en_EN';
   }
