@@ -29,7 +29,7 @@ import {
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
-import {Place} from '../ngrx/matrix.reducers';
+import {Place} from "../../interfaces";
 
 @Component({
   selector: 'matrix-images',

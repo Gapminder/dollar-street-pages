@@ -33,3 +33,20 @@ export interface DrawDividersInterface {
   mediumDividerCoord: number;
   highDividerCoord: number;
 }
+
+
+export interface Place {
+  background: string;
+  country: string;
+  image: string;
+  income: number;
+  incomeQuality: number;
+  isUploaded: boolean;
+  lat: number;
+  lng: number;
+  region: string;
+  showIncome: string;
+  _id: string;
+  pinned?: boolean;
+  showBackground?: string;
+}

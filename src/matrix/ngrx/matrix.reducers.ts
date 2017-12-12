@@ -1,21 +1,5 @@
 import * as MatrixActions from './matrix.actions';
 
-export interface Place {
-  background: string;
-  country: string;
-  image: string;
-  income: number;
-  incomeQuality: number;
-  isUploaded: boolean;
-  lat: number;
-  lng: number;
-  region: string;
-  showIncome: string;
-  _id: string;
-  pinned?: boolean;
-  showBackground?: string;
-}
-
 export interface State {
     matrixImages: any;
     updateMatrix: boolean;

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../interfaces';
+import {AppStates, Place} from '../interfaces';
 import * as StreetSettingsActions from '../common';
 import {
   Component,
@@ -42,7 +42,7 @@ import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
 import * as _ from 'lodash';
-import {Place} from "./ngrx/matrix.reducers";
+
 
 @Component({
   selector: 'matrix',
