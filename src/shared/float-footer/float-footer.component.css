@@ -14,6 +14,8 @@
   -moz-transition: bottom .5s ease;
   -o-transition: bottom .5s ease;
   transition: bottom .5s ease;
+
+  transform: translateZ(0);
 }
 
 .float-footer-container.show-float-footer {

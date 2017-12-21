@@ -19,6 +19,7 @@ matrix-images {
   right: 32px;
   bottom: 52px;
   z-index: 10;
+  transform: translateZ(0);
 }
 
 .zoom-column.stop {
@@ -67,6 +68,7 @@ matrix-images {
   transition: top .2s ease-out;
   background-color: #fff;
   width: 100%;
+  transform: translateZ(0);
 }
 
 .street-container .street-content > * {
@@ -201,6 +203,7 @@ matrix-images {
 
 .pin-container {
   width: 100%;
+  height: auto;
   /* margin-top: -2px; */
   background-color: white;
   display: flex;
@@ -464,6 +467,7 @@ matrix-images {
 .pin-mode-close img {
   width: 100%;
   height: 100%;
+  display: block;
 }
 
 .pin-mode-guide-btn {
@@ -639,6 +643,10 @@ matrix-images {
 
 .pin-header.text-center {
   text-align: center;
+}
+
+.pin-container-inner {
+  flex: 0 0 auto;
 }
 
 .pin-container-inner.inner-border {

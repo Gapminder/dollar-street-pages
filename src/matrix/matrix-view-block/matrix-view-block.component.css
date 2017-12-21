@@ -10,6 +10,7 @@
   position: relative;
   padding: 13px 5px 0;
   background-color: #fff;
+  transform: translateZ(0);
 }
 
 .view-image-block-container .view-image-block-content {

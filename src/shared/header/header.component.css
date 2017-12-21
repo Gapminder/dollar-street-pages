@@ -149,15 +149,13 @@ family-header .header-content {
   }
 }
 /* WITHOUT-FILTERS-HEADER */
-
-
-
-
-
 .header-content {
   vertical-align: top;
   width: 100%;
   background-color: white;
+  transform: translateZ(0);
+  position: relative;
+  z-index: 1;
 }
 
 .header-content .icon-container {
@@ -184,13 +182,15 @@ family-header .header-content {
 
 .filters-container things-filter,
 .filters-container > span,
-.filters-container .some-filter-container > * {
+.filters-container .some-filter-container > *,
+.filters-container .some-filter-container .income-title-container {
   display: inline-block;
   vertical-align: middle;
 }
 
 .filters-container > span,
-.filters-container .some-filter-container > span {
+.filters-container .some-filter-container > span,
+.filters-container .some-filter-container .income-title-container {
   margin: 0 9px 0 10px;
   font-size: 28px;
   color: #767d86;

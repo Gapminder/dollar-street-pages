@@ -6,12 +6,29 @@
 .image-content {
   position: relative;
   float: left;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
+  transition: all 0.3s;
+  /*transform: translateZ(0);*/
   margin: 5px;
   cursor: pointer;
   box-shadow: 0.6px 0.8px 2.9px 0.1px rgba(0, 0, 0, 0.2);
+}
+
+.image-content .cell {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  box-sizing: content-box;
+}
+
+.image-content .cell-inner {
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .image-content.pin-mode {
@@ -159,6 +176,7 @@
   height: 64px;
   margin: auto;
   text-align: center;
+  transform: translateZ(0);
 }
 
 .image-content .isLoad {

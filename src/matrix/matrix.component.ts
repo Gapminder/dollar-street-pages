@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../interfaces';
+import {AppStates, Place} from '../interfaces';
 import * as StreetSettingsActions from '../common';
 import {
   Component,
@@ -42,6 +42,7 @@ import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
 import * as _ from 'lodash';
+
 
 @Component({
   selector: 'matrix',
@@ -142,7 +143,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public timeUnit: any;
   public currencyUnit: any;
   public currencyUnits: any[];
-  public streetPlacesData: any;
+  public streetPlacesData: Place[];
   public timeUnitCode: string;
   public currencyUnitCode: string;
   public timeUnits: any;
@@ -902,7 +903,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    let visiblePlaces = this.streetPlacesData.filter((place: any): boolean => {
+    let visiblePlaces = this.streetPlacesData.filter((place: Place): boolean => {
       return place && place.income >= queryParams.lowIncome && place.income < queryParams.highIncome;
     });
 
