@@ -87,6 +87,7 @@ export interface DrawDividersInterface {
   lowDividerCoord: number;
   mediumDividerCoord: number;
   highDividerCoord: number;
+  _id?: string;
 }
 
 

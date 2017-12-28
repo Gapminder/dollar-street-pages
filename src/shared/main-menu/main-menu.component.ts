@@ -81,7 +81,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (data) {
         if (data.streetSettings) {
           this.streetData = data.streetSettings;
@@ -90,7 +90,9 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-      this.additionUrlParams = data.query;
+      if (data && data.query) {
+        this.additionUrlParams = data.query;
+      }
     });
   }
 
@@ -121,6 +123,10 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.streetSettingsStateSubscription) {
       this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.appStateSubscription) {
+      this.appStateSubscription.unsubscribe();
     }
 
     if (this.isMobile) {

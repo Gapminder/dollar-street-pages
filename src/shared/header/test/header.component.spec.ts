@@ -32,6 +32,7 @@ import {
   BrowserDetectionServiceMock,
   UtilsServiceMock,
   UrlChangeServiceMock,
+  IncomeCalcServiceMock,
   TitleHeaderServiceMock
 } from '../../../test/';
 
@@ -69,7 +70,7 @@ describe('HeaderComponent', () => {
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-                { provide: IncomeCalcService, useValue: {} }
+                { provide: IncomeCalcService, useClass: IncomeCalcServiceMock }
             ]
         });
 

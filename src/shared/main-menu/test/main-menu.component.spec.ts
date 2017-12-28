@@ -54,10 +54,12 @@ describe('MainMenuComponent', () => {
 
         expect(component.getTranslationSubscribe).toBeDefined();
         expect(component.streetSettingsStateSubscription).toBeDefined();
+        expect(component.appStateSubscription).toBeDefined();
         // expect(component.languagesListSubscription).toBeDefined();
 
         spyOn(component.getTranslationSubscribe, 'unsubscribe');
         spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
+        spyOn(component.appStateSubscription, 'unsubscribe');
         // spyOn(component.languagesListSubscription, 'unsubscribe');
 
         component.ngOnDestroy();
@@ -65,5 +67,6 @@ describe('MainMenuComponent', () => {
         expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
         // expect(component.languagesListSubscription.unsubscribe).toHaveBeenCalled();
         expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
+        expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
     });
 });
