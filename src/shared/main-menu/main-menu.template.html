@@ -8,19 +8,19 @@
     <div class="dropdown-menu">
       <ul class="header-menu-list">
         <li>
-          <a (click)="goToPage('/matrix')">{{ 'HOME' | translate }}</a>
+          <a (click)="goToPage('/matrix')" routerLink="/matrix">{{ 'HOME' | translate }}</a>
         </li>
         <li>
           <a (click)="openQuickGuide()">{{ 'QUICK_GUIDE' | translate }}</a>
         </li>
         <li>
-          <a (click)="goToPage('/about')">{{ 'ABOUT' | translate }}</a>
+          <a (click)="goToPage('/about', true)" routerLink="/about">{{ 'ABOUT' | translate }}</a>
         </li>
         <li>
-          <a (click)="goToPage('/donate')">{{ 'HOW_CAN_HELP' | translate }}</a>
+          <a (click)="goToPage('/donate')" routerLink="/donate">{{ 'HOW_CAN_HELP' | translate }}</a>
         </li>
         <li>
-          <a (click)="goToPage('/map')">{{ 'MAP' | translate }}</a>
+          <a (click)="goToPage('/map', true)" routerLink="/map">{{ 'MAP' | translate }}</a>
         </li>
         <li class="social-share-container">
           <div #socialShareContent

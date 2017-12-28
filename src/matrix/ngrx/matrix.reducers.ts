@@ -1,24 +1,7 @@
 import * as MatrixActions from './matrix.actions';
+import { MatrixState } from '../../interfaces';
 
-export interface State {
-    matrixImages: any;
-    updateMatrix: boolean;
-    pinMode: boolean;
-    embedMode: boolean;
-    isEmbederShared: boolean;
-    pinCollapsed: boolean;
-    showLabels: boolean;
-    timeUnit: any;
-    timeUnits: any[];
-    currencyUnit: any;
-    currencyUnits: any[];
-    incomeFilter: boolean;
-    quickGuide: boolean;
-    placesSet: Array<any>;
-    processImages: boolean;
-};
-
-export const initialState: State = {
+export const initialState: MatrixState = {
     matrixImages: null,
     updateMatrix: false,
     pinMode: false,
@@ -36,7 +19,7 @@ export const initialState: State = {
     processImages: false
 };
 
-export function matrixReducer(state: any = initialState, action: MatrixActions.Actions): State {
+export function matrixReducer(state: any = initialState, action: MatrixActions.Actions): MatrixState {
     switch (action.type) {
         case MatrixActions.UPDATE_MATRIX: {
             return Object.assign({}, state, {updateMatrix: action.payload});

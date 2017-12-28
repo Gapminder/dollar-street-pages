@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import {AppStates, Place} from '../interfaces';
+import {AppStates, Currency, Place, TimeUnit} from '../interfaces';
 import * as StreetSettingsActions from '../common';
 import {
   Component,
@@ -140,13 +140,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public countriesFilterState: Observable<any>;
   public countriesFilterStateSubscription: Subscription;
   public isScreenshotProcessing: boolean;
-  public timeUnit: any;
-  public currencyUnit: any;
-  public currencyUnits: any[];
+  public timeUnit: TimeUnit;
+  public currencyUnit: Currency;
+  public currencyUnits: Currency[];
   public streetPlacesData: Place[];
   public timeUnitCode: string;
   public currencyUnitCode: string;
-  public timeUnits: any;
+  public timeUnits: TimeUnit[];
   //public showStreetAttrs: boolean;
   public plusSignWidth: number;
   public pinPlusArr: number[] = new Array(6);
@@ -254,6 +254,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           }
         }
 
+        if (data.timeUnits) {
+          if (this.timeUnits !== data.timeUnits) {
+            this.timeUnits = data.timeUnits;
+          }
+        }
+
         if (data.timeUnit) {
           if (this.timeUnit !== data.timeUnit) {
             this.timeUnit = data.timeUnit;
@@ -261,22 +267,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           }
         }
 
+        if (data.currencyUnits) {
+          if (this.currencyUnits !== data.currencyUnits) {
+            this.currencyUnits = data.currencyUnits;
+          }
+        }
+
         if (data.currencyUnit) {
           if (this.currencyUnit !== data.currencyUnit) {
             this.currencyUnit = data.currencyUnit;
             this.changeCurrencyUnit(data.currencyUnit);
-          }
-        }
-
-        if (data.timeUnits) {
-          if (this.timeUnits !== data.timeUnits) {
-            this.timeUnits = data.timeUnits;
-          }
-        }
-
-        if (data.currencyUnits) {
-          if (this.currencyUnits !== data.currencyUnits) {
-            this.currencyUnits = data.currencyUnits;
           }
         }
 
@@ -535,7 +535,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  public changeTimeUnit(timeUnit: any): void {
+  public changeTimeUnit(timeUnit: TimeUnit): void {
     if (this.placesArr && this.currencyUnit) {
       this.placesArr = this.placesArr.map((place) => {
         if (place) {

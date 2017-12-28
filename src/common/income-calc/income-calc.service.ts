@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MathService } from '../math/math.service';
+import { Currency, TimeUnit } from '../../interfaces';
+
+const DEFAULT_CURRENCY = 'USD';
 
 @Injectable()
 export class IncomeCalcService {
@@ -35,15 +38,16 @@ export class IncomeCalcService {
     return this.math.roundIncome(currencyIncome, currencyIncome <= 10).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
 
-  public getTimeUnitByCode(units: any[] = [], code: string): any {
+  public getTimeUnitByCode(units = [], code: string): TimeUnit {
     return units.find(unit => unit.code === code);
   }
 
-  public getCurrencyUnitByCode(units: any[] = [], code: string): any {
-    return units.find(unit => unit.code === code);
+  public getCurrencyUnitByCode(units = [], code: string): Currency {
+    const currency = code.length ? code : DEFAULT_CURRENCY;
+    return units.find(unit => unit.code === currency);
   }
 
-  public getCurrencyUnitForLang(units: any[] = [], lang: string): any {
+  public getCurrencyUnitForLang(units = [], lang: string): Currency {
     let code = 'USD';
 
     switch(lang) {

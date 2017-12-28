@@ -19,7 +19,10 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
-  AppStates
+  AppStates,
+  TimeUnit,
+  Currency,
+  AppState
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -90,7 +93,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public queryParamsSubscription: Subscription;
   public incomeTitleContainerElement: HTMLElement;
   public streetSettingsState: Observable<DrawDividersInterface>;
-  public appState: Observable<any>;
+  public appState: Observable<AppState>;
   public thingsFilterState: Observable<any>;
   public byIncomeText: string;
   public urlParams: any;
@@ -122,14 +125,14 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public matrixStateSubscription: Subscription;
   public familiesByIncomeTrans: string = 'Families by income';
   public isIncomeDesktopOpened: boolean;
-  public timeUnit: any;
-  public timeUnits: any;
-  public currencyUnit: any;
-  public currencyUnits: any[];
+  public timeUnit: TimeUnit;
+  public timeUnits: TimeUnit[];
+  public currencyUnit: Currency;
+  public currencyUnits: Currency[];
   //public showStreetAttrs: boolean;
   //public showStreetAttrsTemp: boolean;
-  public timeUnitTemp: any;
-  public currencyUnitTemp: any;
+  public timeUnitTemp: TimeUnit;
+  public currencyUnitTemp: Currency;
   public isEmbedMode: boolean;
   public headerContainerElement: HTMLElement;
   public paddingPlaceElement: HTMLElement;
@@ -163,7 +166,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   @HostListener('document:click', ['$event'])
   public isOutsideIncomeFilterClick(event: any): void {
-    if (!this.element.querySelector('.income-title-container').contains(event.target) && this.isIncomeDesktopOpened) {
+    if (this.element.querySelector('.income-title-container') && !this.element.querySelector('.income-title-container').contains(event.target) && this.isIncomeDesktopOpened) {
       this.closeIncomeFilterDesktop(new MouseEvent(''));
     }
   }
@@ -273,6 +276,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
 
+    this.store.dispatch(new MatrixActions.GetCurrencyUnits());
+    this.store.dispatch(new MatrixActions.GetTimeUnits());
+
     this.getTranslationSubscription = this.languageService.getTranslation(['BY_INCOME', 'BY_DOLLAR', 'THE_WORLD']).subscribe((trans: any) => {
       this.byIncomeText = trans.BY_INCOME;
       this.byDollarText = trans.BY_DOLLAR;
@@ -319,7 +325,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         activeHouse: parseInt(params.activeHouse, 10)
       };
 
-      let query = this.utilsService.objToQuery(this.urlParams);
+      const query = this.utilsService.objToQuery(this.urlParams);
 
       this.store.dispatch(new AppActions.SetQuery(query));
 
@@ -329,8 +335,16 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
       this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
 
-      //this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.urlParams.labels));
       this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
+
+      this.timeUnitFilterSelect(this.urlParams.time);
+      this.currencyUnitFilterSelect(this.urlParams.currency);
+
+      this.timeUnit = this.timeUnitTemp;
+      this.currencyUnit = this.currencyUnitTemp;
+
+      this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
+      this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
 
       this.interactiveIncomeText();
       this.calcIncomeSize();
@@ -389,23 +403,23 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
             this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
           }
         }
-
         if (data.currencyUnits) {
           if (this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
 
-            if (!this.urlParams.currency) {
-              this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
-            } else {
-              this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
+            if (!this.currencyUnit) {
+              if (!this.urlParams.currency) {
+                this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
+              } else {
+                this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
+              }
+
+              this.currencyUnit = this.currencyUnitTemp;
+
+              this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
             }
-
-            this.currencyUnit = this.currencyUnitTemp;
-
-            this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
           }
         }
-
         this.changeDetectorRef.detectChanges();
       }
     });
@@ -484,35 +498,29 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     e.stopPropagation();
   }
 
-  public timeUnitFilterSelect(code: string): any {
+  public timeUnitFilterSelect(code: string): void {
     this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, code);
   }
 
-  public currencyUnitFilterSelect(code: string): any {
+  public currencyUnitFilterSelect(code: string): void {
     this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, code);
   }
 
   public applyIncomeFilterDesktop(e): void {
     this.openIncomeFilterDesktop(e);
-
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
-    //this.showStreetAttrs = this.showStreetAttrsTemp;
 
-    let queryParams = this.utilsService.parseUrl(this.query);
+    const queryParams = this.utilsService.parseUrl(this.query);
     queryParams.currency = this.currencyUnit.code.toLowerCase();
     queryParams.time = this.timeUnit.code.toLowerCase();
-    //queryParams.labels = this.showStreetAttrs;
     this.query = this.utilsService.objToQuery(queryParams);
 
     this.urlChangeService.replaceState('/matrix', this.query);
 
     this.store.dispatch(new AppActions.SetQuery(this.query));
-
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-
-    //this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
 
     this.isIncomeDesktopOpened = false;
   }

@@ -1,14 +1,11 @@
 import * as ThingsFilterActions from './things-filter.actions';
+import { ThingsState } from '../../../interfaces';
 
-export interface State {
-    thingsFilter: any;
-};
-
-export const initialState: State = {
+export const initialState: ThingsState = {
     thingsFilter: null
 };
 
-export function thingsFilterReducer(state: any = initialState, action: ThingsFilterActions.Actions): any {
+export function thingsFilterReducer(state: ThingsState = initialState, action: ThingsFilterActions.Actions): ThingsState {
     switch (action.type) {
         case ThingsFilterActions.GET_THINGS_FILTER_SUCCESS:
             return Object.assign({}, state, {thingsFilter: action.payload});

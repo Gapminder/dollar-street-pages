@@ -25,7 +25,7 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {AppState, AppStates, StreetSettingsState} from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
@@ -48,9 +48,12 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public isTablet: boolean;
   public socialShareContentElement: HTMLElement;
   public shareTranslation: string;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
+  public appState: Observable<AppState>;
+  public appStateSubscription: Subscription;
   public languagesListSubscription: Subscription;
+  public additionUrlParams: string;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -62,6 +65,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.element = elementRef.nativeElement;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    this.appState = this.store.select((appStates: AppStates) => appStates.app);
   }
 
   public ngAfterViewInit(): void {
@@ -83,6 +87,10 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
           this.streetData = data.streetSettings;
         }
       }
+    });
+
+    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
+      this.additionUrlParams = data.query;
     });
   }
 
@@ -132,11 +140,11 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public goToPage(url: string): void {
+  public goToPage(url: string, saveUrlData = false): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
-
+    const urlWithData = `${url}${saveUrlData ? this.additionUrlParams : ''}`;
     switch (url) {
       case '/matrix':
         this.goToMatrixPage();
@@ -144,7 +152,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
       case '/about':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
-        this.router.navigate([url], {queryParams: {}});
+        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
         break;
 
       case 'https://www.gapminder.org/category/dollarstreet/':
@@ -154,12 +162,12 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
       case '/donate':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Donate page', {});
-        this.router.navigate([url], { queryParams: {} });
+        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
         break;
 
       case '/map':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
-        this.router.navigate([url], {queryParams: {thing: 'Families'}});
+        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
         break;
 
       case 'https://www.gapminder.org':

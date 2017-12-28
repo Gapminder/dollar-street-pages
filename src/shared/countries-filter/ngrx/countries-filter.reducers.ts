@@ -1,16 +1,13 @@
 import * as CountriesFilterActions from './countries-filter.actions';
+import { CountriesFilterState } from '../../../interfaces';
 
-export interface State {
-    countriesFilter: any;
-    selectedCountries: any;
+export const initialState: CountriesFilterState = {
+  countriesFilter: null,
+  selectedCountries: null,
+  selectedRegions: null,
 };
 
-export const initialState: State = {
-    countriesFilter: null,
-    selectedCountries: null
-};
-
-export function countriesFilterReducer(state: any = initialState, action: CountriesFilterActions.Actions): any {
+export function countriesFilterReducer(state: CountriesFilterState = initialState, action: CountriesFilterActions.Actions): CountriesFilterState {
     switch (action.type) {
         case CountriesFilterActions.SET_SELECTED_COUNTRIES:
             return Object.assign({}, state, {selectedCountries: action.payload});
