@@ -10,10 +10,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  DrawDividersInterface
-} from '../../common';
-import { AppStates } from '../../interfaces';
+import { AppStates, StreetSettingsState, DrawDividersInterface } from '../../interfaces';
 import { sortBy, chain } from 'lodash';
 import { StreetMobileDrawService } from './street-mobile.service';
 
@@ -30,13 +27,13 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
   public places: Observable<any>;
 
   public street: any;
-  public streetData: any;
+  public streetData: StreetSettingsState;
   public element: HTMLElement;
   public resizeSubscribe: Subscription;
   public windowInnerWidth: number = window.innerWidth;
   public placesSubscribe: Subscription;
   public placesArr: any;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
   public orientationChangeSubscription: Subscription;
 
@@ -54,7 +51,7 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
 
     this.street.set('isInit', true);
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: DrawDividersInterface) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       this.streetData = data;
 
       if (!this.placesArr) {

@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import {Currency, TimeUnit} from "../../interfaces";
 
 export const UPDATE_MATRIX: string = 'UPDATE_MATRIX';
 export const SET_PIN_MODE: string = 'SET_PIN_MODE';
@@ -50,7 +51,7 @@ export class SetEmbedMode implements Action {
 
 export class SetTimeUnit implements Action {
     readonly type = SET_TIME_UNIT;
-    constructor(public payload: string) {}
+    constructor(public payload: TimeUnit) {}
 }
 
 export class OpenIncomeFilter implements Action {
@@ -125,12 +126,12 @@ export class GetCurrencyUnits implements Action {
 
 export class GetCurrencyUnitsSuccess implements Action {
     readonly type = GET_CURRENCY_UNITS_SUCCESS;
-    constructor(public payload: any) {}
+    constructor(public payload: Currency[]) {}
 }
 
 export class SetCurrencyUnit implements Action {
     readonly type = SET_CURRENCY_UNIT;
-    constructor(public payload: any) {}
+    constructor(public payload: Currency) {}
 }
 
 export type Actions =

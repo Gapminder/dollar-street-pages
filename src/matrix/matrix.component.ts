@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import {AppStates, Currency, Place, TimeUnit} from '../interfaces';
+import {AppStates, Currency, Place, StreetSettingsState, TimeUnit} from '../interfaces';
 import * as StreetSettingsActions from '../common';
 import {
   Component,
@@ -114,7 +114,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public theWorldTranslate: string;
   public getTranslationSubscribe: Subscription;
   public byIncomeText: string;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public appState: Observable<any>;
   public matrixState: Observable<any>;
   public headerElement: HTMLElement;
@@ -397,7 +397,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         }
       }, 1000);
 
-      this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+      this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
         if (data) {
           if (data.streetSettings) {
             if (this.streetData !== data.streetSettings) {

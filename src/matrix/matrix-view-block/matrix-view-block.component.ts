@@ -18,7 +18,11 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {
+  AppStates,
+  StreetSettingsState,
+  DrawDividersInterface
+} from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import * as ThingsFilterActions from '../../shared/things-filter/ngrx/things-filter.actions';
@@ -27,7 +31,6 @@ import { Router } from '@angular/router';
 import { ImageResolutionInterface } from '../../interfaces';
 import {
   MathService,
-  DrawDividersInterface,
   BrowserDetectionService,
   LanguageService,
   UtilsService,
@@ -82,7 +85,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public imageResolution: ImageResolutionInterface;
   public isDesktop: boolean;
   public currentLanguage: string;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public viewImage: string;
   public streetSettingsStateSubscription: Subscription;
   public consumerApi: string;

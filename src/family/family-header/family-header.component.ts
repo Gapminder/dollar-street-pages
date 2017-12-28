@@ -2,9 +2,16 @@ import 'rxjs/operator/debounceTime';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {
+  AppStates,
+  Currency,
+  MatrixState,
+  StreetSettingsState,
+  DrawDividersInterface,
+  TimeUnit,
+  UrlParameters
+} from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import {
   Component,
@@ -16,12 +23,11 @@ import {
   EventEmitter,
   Output,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   BrowserDetectionService,
-  DrawDividersInterface,
   MathService,
   LanguageService,
   UtilsService,
@@ -71,16 +77,16 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public getTranslationSubscribe: Subscription;
   public currentLanguage: string;
   public showTranslateMe: boolean;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
-  public timeUnit: any;
-  public timeUnits: any;
-  public matrixState: Observable<any>;
+  public timeUnit: TimeUnit;
+  public timeUnits: TimeUnit[];
+  public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
-  public currencyUnit: any;
-  public currencyUnits: any;
+  public currencyUnit: Currency;
+  public currencyUnits: Currency[];
   public familyIncome: string;
-  public queryParams: any;
+  public queryParams: UrlParameters;
   public queryParamsSubscribe: Subscription;
 
   public constructor(elementRef: ElementRef,
@@ -112,14 +118,14 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.readLessTranslate = trans.READ_LESS;
     });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
       this.queryParams = {
         currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
         time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH'
       };
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (data) {
         if (data.streetSettings) {
           if (this.streetData !== data.streetSettings) {
@@ -129,7 +135,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
       if (data) {
         if (data.currencyUnit) {
           this.calcIncomeValue();
@@ -171,7 +177,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       }
     });
 
-    let query: string = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
+    const query = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
     this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
       if (res.err) {
         console.error(res.err);

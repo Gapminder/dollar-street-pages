@@ -16,9 +16,12 @@ import {
   ViewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../../interfaces';
 import {
-  DrawDividersInterface,
+  AppStates,
+  StreetSettingsState,
+  DrawDividersInterface
+} from '../../../interfaces';
+import {
   BrowserDetectionService,
   LanguageService,
   UtilsService
@@ -56,7 +59,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public thing: any = {};
   public showTranslateMe: boolean;
   public element: HTMLElement;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public viewImage: string;
   public streetSettingsStateSubscription: Subscription;
   public consumerApi: string;
@@ -82,7 +85,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnInit(): void {
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (data) {
         if (data.streetSettings) {
           this.streetData = data.streetSettings;

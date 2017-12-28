@@ -21,11 +21,30 @@ export interface MatrixState {
 }
 
 export interface StreetSettingsState {
-  streetSettings: DrawDividersInterface[];
+  streetSettings: DrawDividersInterface;
 }
 
 export interface ThingsState {
-  thingsFilter: {};
+  thingsFilter: {
+    otherFilter?: {}[];
+    popularThings?: {}[];
+    relatedThings?: {}[];
+    thing?: Thing;
+  };
+}
+
+export interface Thing {
+  isShowReadMore: boolean;
+  relatedThings: string[];
+  syninymous: {}[];
+  icon: string;
+  iconDark: string;
+  iconLight: string;
+  originPlural: string;
+  plural: string;
+  shortDescription: string;
+  thingName: string;
+  _id?: string;
 }
 
 export interface CountriesFilterState {
@@ -81,17 +100,17 @@ export interface Place {
   lat: number;
   lng: number;
   region: string;
-  showIncome: string;
+  showIncome: string | number;
   _id: string;
   pinned?: boolean;
   showBackground?: string;
 }
 
 export interface TimeUnit {
-  code: string,
-  name: string,
-  name1?: string,
-  per: string,
+  code: string;
+  name: string;
+  name1?: string;
+  per: string;
 }
 
 export interface Currency {
@@ -116,4 +135,8 @@ export interface Country {
   originName: string;
   originRegionName: string;
   region: string;
+}
+
+export interface UrlParameters {
+  [key: string]: string;
 }

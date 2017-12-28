@@ -14,7 +14,13 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {AppStates, Country, Currency, TimeUnit} from '../interfaces';
+import {
+  AppStates,
+  Country,
+  Currency,
+  Place,
+  TimeUnit
+} from '../interfaces';
 import {
   MathService,
   LoaderService,
@@ -62,15 +68,15 @@ export class MapComponent implements OnInit, OnDestroy {
   public thing: any;
   public query: string;
   public leftSideCountries: any;
-  public seeAllHomes: boolean = false;
+  public seeAllHomes = false;
   public leftArrowTop: any;
-  public onThumb: boolean = false;
-  public onMarker: boolean = false;
-  public isOpenLeftSide: boolean = false;
+  public onThumb = false;
+  public onMarker = false;
+  public isOpenLeftSide = false;
   public isDesktop: boolean;
   public isMobile: boolean;
-  public shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
-  public streetData: DrawDividersInterface[];
+  public shadowClass: {'shadow_to_left': boolean; 'shadow_to_right': boolean};
+  public streetData: DrawDividersInterface;
   public windowInnerWidth: number = window.innerWidth;
   public currentLanguage: string;
   public appStatesSubscribe: Subscription;
@@ -118,7 +124,7 @@ export class MapComponent implements OnInit, OnDestroy {
       // thingsFilter
       if (data.thingsFilter.thingsFilter) {
         this.thing = data.thingsFilter.thingsFilter.thing.originPlural;
-        let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
+        const query = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
         this.urlChanged(query);
       }
 
@@ -139,6 +145,7 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.timeUnit && this.currencyUnit) {
       currency = `&time=${this.timeUnit.code.toLowerCase()}&currency=${this.currencyUnit.code.toLowerCase()}`;
     }
+
     return `thing=${this.thing}${this.languageService.getLanguageParam()}${currency}`;
   }
 
@@ -147,9 +154,10 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.mapServiceSubscribe = this.mapService
       .getMainPlaces(url)
-      .subscribe((res: any): any => {
+      .subscribe((res) => {
         if (res.err) {
           console.error(res.err);
+
           return;
         }
 
@@ -184,19 +192,19 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
 
-    if(this.resizeSubscribe) {
+    if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
 
-    if(this.mapServiceSubscribe) {
+    if (this.mapServiceSubscribe) {
       this.mapServiceSubscribe.unsubscribe();
     }
 
-    if(this.getTranslationSubscribe) {
+    if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
 
-    if(this.loaderService) {
+    if (this.loaderService) {
       this.loaderService.setLoader(false);
     }
 
@@ -212,12 +220,13 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  private calcIncomeValue(place: any): any {
+  private calcIncomeValue(place: Place): Place {
     if (this.timeUnit && this.currencyUnit) {
-      place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+      place.showIncome = this.incomeCalcService
+        .calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
     } else {
       place.showIncome = this.math.round(place.income);
-      this.currencyUnit = {};
+      this.currencyUnit = {} as Currency;
       this.currencyUnit.symbol = '$';
     }
 

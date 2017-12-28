@@ -22,7 +22,8 @@ import {
   AppStates,
   TimeUnit,
   Currency,
-  AppState
+  AppState,
+  StreetSettingsState
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -34,7 +35,6 @@ import { CountriesFilterComponent } from '../countries-filter/countries-filter.c
 import {
   MathService,
   Angulartics2GoogleAnalytics,
-  DrawDividersInterface,
   BrowserDetectionService,
   LanguageService,
   UtilsService,
@@ -42,6 +42,7 @@ import {
   TitleHeaderService,
   IncomeCalcService
 } from '../../common';
+import { DrawDividersInterface } from '../../interfaces';
 
 @Component({
   selector: 'header',
@@ -92,7 +93,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public scrollSubscription: Subscription;
   public queryParamsSubscription: Subscription;
   public incomeTitleContainerElement: HTMLElement;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public appState: Observable<AppState>;
   public thingsFilterState: Observable<any>;
   public byIncomeText: string;
@@ -358,7 +359,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (data) {
         if (data.streetSettings) {
           if (this.streetData !== data.streetSettings) {
