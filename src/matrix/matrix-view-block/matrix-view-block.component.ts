@@ -34,6 +34,7 @@ import {
   UrlChangeService
 } from '../../common';
 import { MatrixViewBlockService } from './matrix-view-block.service';
+import {StreetDrawService} from "../../shared/street/street.service";
 
 @Component({
   selector: 'matrix-view-block',
@@ -104,7 +105,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
-                     private urlChangeService: UrlChangeService) {
+                     private urlChangeService: UrlChangeService,
+                     public streetService: StreetDrawService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -289,7 +291,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     queryParams.place = this.familyData.goToPlaceData.place;
     queryParams.row = 1;
-
+    this.streetService.clearAndRedraw();
     this.router.navigate(['/family'], {queryParams: queryParams});
   }
 
@@ -314,7 +316,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
 
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-
+    this.streetService.clearAndRedraw();
     this.urlChangeService.replaceState('/matrix', queryUrl);
 
     this.scrollTopZero();
