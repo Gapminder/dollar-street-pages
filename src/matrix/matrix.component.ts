@@ -460,7 +460,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public setMatrixTopPadding(value: number): void {
-    this.matrixContainerElement.style.paddingTop = value + 'px';
+    const currentPaddingTop = +this.matrixContainerElement.style.paddingTop.replace('px', '');
+    const diff = value - currentPaddingTop;
+    this.matrixContainerElement.style.paddingTop = value.toString() + 'px';
+    window.scrollTo(0, window.pageYOffset + diff);
   }
 
   public onPinnedPlaceHover(place: any): void {
