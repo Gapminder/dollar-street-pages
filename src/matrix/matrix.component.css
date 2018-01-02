@@ -245,6 +245,7 @@ matrix-images {
   position: relative;
   padding: 10px 20px 10px 20px;
   min-height: 64px;
+  max-height: 50vh;
 }
 
 .grey-bg {
@@ -283,24 +284,25 @@ matrix-images {
   height: 100%;
 }
 
+.places-container .pin-place {
+  margin: 0 5px;
+  max-width: 50vh;
+}
+
 .places-container.column-2 .pin-place {
   width: calc(33.33% - 10px);
-  margin: 0 5px;
 }
 
 .places-container.column-3 .pin-place {
   width: calc(33.33% - 10px);
-  margin: 0 5px;
 }
 
 .places-container.column-4 .pin-place {
   width: calc(25% - 10px);
-  margin: 0 5px;
 }
 
 .places-container.column-5 .pin-place {
   width: calc(20% - 10px);
-  margin: 0 5px;
 }
 
 .places-container.column-6 .pin-place {
