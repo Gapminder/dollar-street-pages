@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { forEach, difference, map, find, chain } from 'lodash';
+import { forEach, difference, map, find, chain, get } from 'lodash';
 import {
   Component,
   Input,
@@ -167,7 +167,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   @HostListener('document:click', ['$event'])
   public isOutsideIncomeFilterClick(event: any): void {
-    if (this.element.querySelector('.income-title-container') && !this.element.querySelector('.income-title-container').contains(event.target) && this.isIncomeDesktopOpened) {
+    const container = this.element.querySelector('.income-title-container');
+    if (container && !container.contains(event.target) && this.isIncomeDesktopOpened) {
       this.closeIncomeFilterDesktop(new MouseEvent(''));
     }
   }
@@ -378,51 +379,46 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     });
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (data) {
-        if (data.pinMode) {
-          this.isPinMode = true;
-          this.preventHeaderFloat();
-        } else {
-          this.isPinMode = false;
-        }
-
-        if (data.embedMode) {
-          this.isEmbedMode = true;
-          this.preventHeaderFloat();
-        } else {
-          this.isEmbedMode = false;
-        }
-
-        if (data.timeUnits) {
-          if (this.timeUnits !== data.timeUnits) {
-            this.timeUnits = data.timeUnits;
-
-            this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.urlParams.time);
-
-            this.timeUnit = this.timeUnitTemp;
-
-            this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
-          }
-        }
-        if (data.currencyUnits) {
-          if (this.currencyUnits !== data.currencyUnits) {
-            this.currencyUnits = data.currencyUnits;
-
-            if (!this.currencyUnit) {
-              if (!this.urlParams.currency) {
-                this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
-              } else {
-                this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
-              }
-
-              this.currencyUnit = this.currencyUnitTemp;
-
-              this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-            }
-          }
-        }
-        this.changeDetectorRef.detectChanges();
+      if (get(data, 'pinMode', false)) {
+        this.isPinMode = true;
+        this.preventHeaderFloat();
+      } else {
+        this.isPinMode = false;
       }
+
+      if (get(data, 'embedMode', false)) {
+        this.isEmbedMode = true;
+        this.preventHeaderFloat();
+      } else {
+        this.isEmbedMode = false;
+      }
+
+      if (get(data, 'timeUnits', false) && this.timeUnits !== data.timeUnits) {
+        this.timeUnits = data.timeUnits;
+
+        this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.urlParams.time);
+
+        this.timeUnit = this.timeUnitTemp;
+
+        this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
+      }
+
+      if (get(data, 'currencyUnits', false) && this.currencyUnits !== data.currencyUnits) {
+        this.currencyUnits = data.currencyUnits;
+
+        if (!this.currencyUnit) {
+          if (!this.urlParams.currency) {
+            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
+          } else {
+            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
+          }
+
+          this.currencyUnit = this.currencyUnitTemp;
+
+          this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+        }
+      }
+      this.changeDetectorRef.detectChanges();
     });
 
     this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {

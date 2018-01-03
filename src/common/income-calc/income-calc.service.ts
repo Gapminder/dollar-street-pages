@@ -39,7 +39,6 @@ export class IncomeCalcService {
   }
 
   public getTimeUnitByCode(units = [], code: string): TimeUnit {
-    console.log( units.find(unit => unit.code === code));
     return units.find(unit => unit.code === code);
   }
 

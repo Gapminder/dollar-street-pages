@@ -41,7 +41,7 @@ import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
-import * as _ from 'lodash';
+import { get } from 'lodash';
 
 
 @Component({
@@ -218,7 +218,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
       if (data) {
-        if (data.pinMode) {
+        if (get(data, 'pinMode', false)) {
           this.isPinMode = true;
           this.isEmbedMode = false;
         } else {
@@ -228,7 +228,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.setMatrixTopPadding(0);
         }
 
-        if (data.embedMode) {
+        if (get(data, 'embedMode', false)) {
           this.isEmbedMode = true;
         } else {
           this.isEmbedMode = false;
@@ -237,7 +237,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           }
         }
 
-        if (data.matrixImages) {
+        if (get(data, 'matrixImages', false)) {
           if (this.matrixImages !== data.matrixImages) {
             this.matrixImages = data.matrixImages;
             this.streetPlacesData = data.matrixImages;
@@ -254,42 +254,34 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           }
         }
 
-        if (data.timeUnits) {
-          if (this.timeUnits !== data.timeUnits) {
-            this.timeUnits = data.timeUnits;
-          }
+        if (get(data, 'timeUnits', false) && this.timeUnits !== data.timeUnits) {
+          this.timeUnits = data.timeUnits;
         }
 
-        if (data.timeUnit) {
-          if (this.timeUnit !== data.timeUnit) {
+        if (get(data, 'timeUnit', false) && this.timeUnit !== data.timeUnit) {
             this.timeUnit = data.timeUnit;
             this.changeTimeUnit(data.timeUnit);
-          }
         }
 
-        if (data.currencyUnits) {
-          if (this.currencyUnits !== data.currencyUnits) {
+        if (get(data, 'currencyUnits', false) && this.currencyUnits !== data.currencyUnits) {
             this.currencyUnits = data.currencyUnits;
-          }
         }
 
-        if (data.currencyUnit) {
-          if (this.currencyUnit !== data.currencyUnit) {
+        if (get(data, 'currencyUnit', false) && this.currencyUnit !== data.currencyUnit) {
             this.currencyUnit = data.currencyUnit;
             this.changeCurrencyUnit(data.currencyUnit);
-          }
         }
 
-        if (data.incomeFilter) {
+        if (get(data, 'incomeFilter', false)) {
           this.isOpenIncomeFilter = true;
         } else {
           this.isOpenIncomeFilter = false;
         }
 
-        if (data.quickGuide) {
+        if (get(data, 'quickGuide', false)) {
           this.isQuickGuideOpened = true;
 
-          if (data.embedMode) {
+          if (get(data,'embedMode', false)) {
            this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
           }
 
@@ -297,31 +289,27 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.isQuickGuideOpened = false;
         }
 
-        if (data.placesSet) {
-          if (this.placesSet !== data.placesSet) {
-            this.placesSet = data.placesSet;
+        if (get(data, 'placesSet' , false) && this.placesSet !== data.placesSet) {
+          this.placesSet = data.placesSet;
 
-            if (this.currencyUnit) {
-              this.initPlacesSet();
-            }
-
-            setTimeout(() => {
-              let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
-
-              if (pinContainerElement) {
-                const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
-
-                this.setMatrixTopPadding(pinContainerHeight - 134);
-              }
-            }, 100);
+          if (this.currencyUnit) {
+            this.initPlacesSet();
           }
+
+          setTimeout(() => {
+            let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
+
+            if (pinContainerElement) {
+              const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
+
+              this.setMatrixTopPadding(pinContainerHeight - 134);
+            }
+          }, 100);
         }
 
-        if (this.query) {
-          if (data.updateMatrix) {
-            this.store.dispatch(new MatrixActions.UpdateMatrix(false));
-            this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
-          }
+        if (this.query && get(data, 'updateMatrix', false)) {
+          this.store.dispatch(new MatrixActions.UpdateMatrix(false));
+          this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
         }
 
         this.changeDetectorRef.detectChanges();
@@ -329,28 +317,24 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     });
 
     this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
-      if(data) {
-        if (data.countriesFilter) {
+      if(get(data, 'countriesFilter', false)) {
           this.processMatrixImages(this.matrixImages);
-        }
       }
     });
 
     this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
-      if (data) {
-        if (data.thingsFilter) {
-          this.activeThing = data.thingsFilter.thing;
-          this.thing = data.thingsFilter.thing.originPlural;
+      if (get(data, 'thingsFilter', false)) {
+        this.activeThing = get(data.thingsFilter, 'thing', this.activeThing);
+        this.thing = get(data.thingsFilter, 'thing.originPlural', this.thing);
 
-          if (this.embedSetId !== undefined && this.embedSetId !== 'undefined') {
-            const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-            this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
-          }
-
-          this.processMatrixImages(this.matrixImages);
-
-          this.changeDetectorRef.detectChanges();
+        if (this.embedSetId !== undefined && this.embedSetId !== 'undefined') {
+          const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+          this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
         }
+
+        this.processMatrixImages(this.matrixImages);
+
+        this.changeDetectorRef.detectChanges();
       }
     });
 

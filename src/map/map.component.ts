@@ -32,7 +32,7 @@ import {
   IncomeCalcService
 } from '../common';
 import { MapService } from './map.service';
-import * as _ from 'lodash';
+import { get } from 'lodash';
 
 
 @Component({
@@ -112,26 +112,22 @@ export class MapComponent implements OnInit, OnDestroy {
     this.appStatesSubscribe = this.store.subscribe((data: AppStates) => {
 
       // streetSettings
-      if (data.streetSettings.streetSettings) {
-        this.streetData = data.streetSettings.streetSettings;
-      }
+      this.streetData = get(data, 'streetSettings.streetSettings', this.streetData);
 
       // matrix
-      this.timeUnit = _.get(data.matrix, 'timeUnit', this.timeUnit);
-      this.currencyUnit = _.get(data.matrix, 'currencyUnit', this.currencyUnit);
+      this.timeUnit = get(data.matrix, 'timeUnit', this.timeUnit);
+      this.currencyUnit = get(data.matrix, 'currencyUnit', this.currencyUnit);
 
 
       // thingsFilter
-      if (data.thingsFilter.thingsFilter) {
-        this.thing = data.thingsFilter.thingsFilter.thing.originPlural;
+      if (get(data, 'thingsFilter.thingsFilter', false)) {
+        this.thing = get(data.thingsFilter.thingsFilter, 'thing.originPlural');
         const query = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
         this.urlChanged(query);
       }
 
       // app
-      if (data.app.query) {
-        this.query = _.get(data.app, 'query', this.query);
-      }
+        this.query = get(data, 'app.query', this.query);
 
     });
 
@@ -156,8 +152,6 @@ export class MapComponent implements OnInit, OnDestroy {
       .getMainPlaces(url)
       .subscribe((res) => {
         if (res.err) {
-          console.error(res.err);
-
           return;
         }
 

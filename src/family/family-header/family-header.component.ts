@@ -34,6 +34,7 @@ import {
   IncomeCalcService
 } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
+import { get } from 'lodash';
 
 @Component({
   selector: 'family-header',
@@ -126,61 +127,50 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (data) {
-        if (data.streetSettings) {
-          if (this.streetData !== data.streetSettings) {
-            this.streetData = data.streetSettings;
-          }
-        }
+      if (get(data, 'streetSettings', false)) {
+        this.streetData = data.streetSettings;
       }
     });
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
-      if (data) {
-        if (data.currencyUnit) {
-          this.calcIncomeValue();
-          if (this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-          }
-        }
-
-        if (data.timeUnit) {
-          this.calcIncomeValue();
-          if (this.timeUnit !== data.timeUnit) {
-            this.timeUnit = data.timeUnit;
-          }
-        }
-
-        if (data.timeUnits) {
-          if (this.timeUnits !== data.timeUnits) {
-            this.timeUnits = data.timeUnits;
-
-            this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
-
-            this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
-          }
-        } else {
-          this.store.dispatch(new MatrixActions.GetTimeUnits());
-        }
-
-        if (data.currencyUnits) {
-          if (this.currencyUnits !== data.currencyUnits) {
-            this.currencyUnits = data.currencyUnits;
-
-            this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
-
-            this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-          }
-        } else {
-          this.store.dispatch(new MatrixActions.GetCurrencyUnits());
-        }
+      if (get(data, 'currencyUnit', false)
+          && this.currencyUnit !== data.currencyUnit) {
+        this.currencyUnit = data.currencyUnit;
       }
+
+      if (get(data, 'timeUnit', false)
+          && this.timeUnit !== data.timeUnit) {
+        this.timeUnit = data.timeUnit;
+      }
+
+      if (get(data, 'timeUnits', false)
+          && this.timeUnits !== data.timeUnits) {
+          this.timeUnits = data.timeUnits;
+
+          this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
+
+          this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
+      } else {
+        this.store.dispatch(new MatrixActions.GetTimeUnits());
+      }
+
+      if (get(data, 'currencyUnits', false)
+       && this.currencyUnits !== data.currencyUnits) {
+        this.currencyUnits = data.currencyUnits;
+
+        this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
+
+        this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+      } else {
+        this.store.dispatch(new MatrixActions.GetCurrencyUnits());
+      }
+
+      this.calcIncomeValue();
     });
 
     const query = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
     this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
-      if (res.err) {
-        console.error(res.err);
+      if (get(res, 'err', false)) {
         return;
       }
 
@@ -266,8 +256,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let aboutDataContainer: HTMLElement = this.aboutDataContainer.nativeElement;
-    let targetElement: HTMLElement = event.target as HTMLElement;
+    const aboutDataContainer: HTMLElement = this.aboutDataContainer.nativeElement;
+    const targetElement: HTMLElement = event.target as HTMLElement;
 
     this.utilsService.getCoordinates(`.${targetElement.className}`, (data: any) => {
       this.aboutDataPosition.left = data.left - aboutDataContainer.clientWidth + 28;
@@ -278,8 +268,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public scrollToStart(event: MouseEvent): void {
-    let targetElement = event.target as HTMLElement;
-    let elementClassName: string = targetElement.className;
+    const targetElement = event.target as HTMLElement;
+    const elementClassName: string = targetElement.className;
 
     if (elementClassName === 'short-about-info-image' || elementClassName === 'portrait') {
       return;

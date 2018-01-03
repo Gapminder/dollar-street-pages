@@ -285,16 +285,9 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public changeZoom(zoom: number): void {
-    let prevZoom: number = this.zoom;
-
+    const prevZoom: number = this.zoom;
     this.zoom = zoom;
-
-    //let url = this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`);
-
     this.urlChanged({isZoom: true, url: this.query});
-
-    //this.urlChangeService.replaceState('/family', this.query);
-
     this.familyMediaComponent.changeZoom(prevZoom);
   }
 
@@ -304,17 +297,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (isZoom) {
       this.calcItemSize();
-
       url = url.replace(/row\=\d*/, `row=${this.row}`).replace(/zoom\=\d*/, `zoom=${this.zoom}`);
     }
-
-    // if (!isBack) {
-      // this.query = this.query.replace(/&activeHouse\=\d*/, '');
-      // this.activeHouse = void 0;
-
-      // this.hoverPlace.next(undefined);
-      // this.clearActiveHomeViewBox.next(true);
-    // }
 
     this.store.dispatch(new AppActions.SetQuery(url));
 
