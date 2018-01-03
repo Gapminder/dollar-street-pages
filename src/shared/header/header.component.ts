@@ -124,14 +124,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public isPinMode: boolean;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
-  public familiesByIncomeTrans: string = 'Families by income';
+  public familiesByIncomeTrans = 'Families by income';
   public isIncomeDesktopOpened: boolean;
   public timeUnit: TimeUnit;
   public timeUnits: TimeUnit[];
   public currencyUnit: Currency;
   public currencyUnits: Currency[];
-  //public showStreetAttrs: boolean;
-  //public showStreetAttrsTemp: boolean;
   public timeUnitTemp: TimeUnit;
   public currencyUnitTemp: Currency;
   public isEmbedMode: boolean;
@@ -223,7 +221,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     paddingHeight += this.headerContainerElement.clientHeight;
 
     if (this.isMatrixPage) {
-      let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+      const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
 
       paddingHeight += streetContainerElement.clientHeight;
 
@@ -232,14 +230,14 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       streetContainerElement.style.zIndex = '998';
     }
 
-    this.paddingPlaceElement.style.height = paddingHeight + 'px';
+    this.paddingPlaceElement.style.height = `${paddingHeight}px`;
 
     this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);
   }
 
   public preventHeaderFloat(): void {
     if (this.isMatrixPage) {
-      let streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+      const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
 
       streetContainerElement.style.position = 'static';
       streetContainerElement.style.zIndex = '0';
@@ -352,29 +350,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.calcIncomeSize();
     });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if(data) {
-        if (this.query !== data.query) {
-          this.query = data.query;
-        }
+    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
+      if (get(data, 'query', false) && this.query !== data.query) {
+        this.query = data.query;
       }
     });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (data) {
-        if (data.streetSettings) {
-          if (this.streetData !== data.streetSettings) {
+      if (get(data, 'streetSettings', false) && this.streetData !== data.streetSettings) {
             this.streetData = data.streetSettings;
-          }
-        }
-
-        /*if (data.showStreetAttrs) {
-          this.showStreetAttrs = true;
-        } else {
-          this.showStreetAttrs = false;
-        }
-
-        this.showStreetAttrsTemp = this.showStreetAttrs;*/
       }
     });
 
@@ -407,10 +391,10 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         this.currencyUnits = data.currencyUnits;
 
         if (!this.currencyUnit) {
-          if (!this.urlParams.currency) {
-            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
-          } else {
+          if (this.urlParams.currency) {
             this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
+          } else {
+            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
           }
 
           this.currencyUnit = this.currencyUnitTemp;
@@ -443,8 +427,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           this.countriesFilterData.selectedRegions = data.selectedRegions;
         }
 
-        let selCountries = this.countriesFilterData.selectedCountries;
-        let selRegions = this.countriesFilterData.selectedRegions;
+        const selCountries = this.countriesFilterData.selectedCountries;
+        const selRegions = this.countriesFilterData.selectedRegions;
         const allLocations = this.countriesFilterData.countriesFilter;
 
         if (allLocations && selRegions && selCountries) {
@@ -465,7 +449,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public isCurrentPage(name: string): boolean {
-    let shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
+    const shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
 
     if (shap) {
       if (shap[0][0] === name) {
@@ -482,13 +466,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public closeIncomeFilterDesktop(e: MouseEvent): void {
-    // e.stopPropagation();
 
     this.isIncomeDesktopOpened = false;
 
     this.timeUnitTemp = this.timeUnit;
     this.currencyUnitTemp = this.currencyUnit;
-    //this.showStreetAttrsTemp = this.showStreetAttrs;
   }
 
   public incomeContainerClick(e: MouseEvent): void {
@@ -583,7 +565,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public interactiveIncomeText(): void {
-    let incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
+    const incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
 
     if (!incomeContainer || !this.byIncomeText) {
       return;
@@ -596,12 +578,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     if (this.byIncomeText.length > 20 && this.window.innerWidth < 920) {
       setTimeout(() => {
         incomeContainer.classList.add('incomeby');
-      },0);
+      }, 0);
     }
   }
 
   public calcIncomeSize(): void {
-    if(!this.incomeTitleContainer) {
+    if (!this.incomeTitleContainer) {
       return;
     }
 
@@ -655,7 +637,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public thingSelected(data: any): void {
     this.store.dispatch(new AppActions.SetQuery(data.url));
 
-    let pageName: string = '';
+    let pageName = '';
 
     if (this.isMatrixPage) {
       pageName = '/matrix';
@@ -691,7 +673,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public goToMatrixPage(): void {
-    let queryParams = {
+    const queryParams = {
       thing: 'Families',
       countries: 'World',
       regions: 'World',
@@ -710,7 +692,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.router.navigate(['/matrix'], {queryParams: queryParams});
     }
 
-    let queryUrl: string = this.utilsService.objToQuery(queryParams);
+    const queryUrl: string = this.utilsService.objToQuery(queryParams);
 
     this.store.dispatch(new AppActions.SetQuery(queryUrl));
 
@@ -721,17 +703,14 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
 
     this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, 'MONTH');
-    this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
-    //this.showStreetAttrsTemp = false;
+    this.currencyUnitTemp = this.incomeCalcService
+      .getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
 
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
-    //this.showStreetAttrs = this.showStreetAttrsTemp;
 
     this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
     this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-
-    //this.store.dispatch(new StreetSettingsActions.ShowStreetAttrs(this.showStreetAttrs));
 
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
@@ -756,13 +735,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return this.theWorldText;
     }
 
-    let countriesArr = selCountries.split(',');
+    const countriesArr = selCountries.split(',');
 
-    let result = countriesArr.reduce((prev, curr) => {
+    const result = countriesArr.reduce((prev, curr) => {
       let transCountry = '';
 
       allCountries.forEach((region) => {
-        let resultCountry = region.countries.find((country) => country.originName === curr);
+        const resultCountry = region.countries.find((country) => country.originName === curr);
 
         if (resultCountry) {
           transCountry = resultCountry.country;
@@ -776,8 +755,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public getCountriesTitle(inputLocations: any, regions: string[], countries: string[]): string {
-    let getTranslatedCountries: any;
-    let getTranslatedRegions: any;
+    let getTranslatedCountries;
+    let getTranslatedRegions;
 
     let title: string;
 
@@ -819,7 +798,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       if (regions.length > 2) {
         title = getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
       } else {
-        let sumCountries: number = 0;
+        let sumCountries = 0;
         let getDifference: string[] = [];
         let regionCountries: string[] = [];
 
@@ -836,7 +815,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
         if (getDifference.length) {
           title = getDifference.length === 1 && regions.length === 1 ? getTranslatedRegions[0] + ' & '
-          + getDifference[0] : getTranslatedCountries.slice(0, 2).join(', ') + ' (+' + (getTranslatedCountries.length - 2) + ')';
+          + getDifference[0] : getTranslatedCountries.slice(0, 2).join(', ')
+          + ' (+' + (getTranslatedCountries.length - 2) + ')';
         } else {
           title = getTranslatedRegions.join(' & ');
         }
@@ -845,7 +825,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return title;
     }
 
-    let concatLocations: string[] = regions.concat(getTranslatedCountries);
+    const concatLocations: string[] = regions.concat(getTranslatedCountries);
 
     if (concatLocations.length > 2) {
       title = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';

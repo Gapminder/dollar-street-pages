@@ -193,13 +193,13 @@ export class LanguageService {
   }
 
   private processTranslation(observer: Observer<any>, translations: any, key: string | string[]): void {
-    if(typeof key === 'string') {
+    if (typeof key === 'string') {
       observer.next(translations[key as string]);
 
     } else if (typeof key === 'object') {
-      let obj: any = {};
+      const obj = {};
 
-      key.forEach((el: any) => {
+      key.forEach((el) => {
         obj[el] = translations[el];
       });
 
