@@ -43,6 +43,7 @@ import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
 import * as _ from 'lodash';
 
+const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
 @Component({
   selector: 'matrix',
@@ -670,11 +671,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    let pinnedCountries = this.placesSet.map(place => place.country);
-
+    const pinnedCountries = this.placesSet.map(place => place.country);
     this.pinHeaderTitle = '';
-
-    if (pinnedCountries.length > 1) {
+    if (pinnedCountries.length > TITLE_MAX_VISIBLE_COUNTRIES) {
+      this.pinHeaderTitle = `${this.thing}`;
+    } else if (pinnedCountries.length > 1 && pinnedCountries.length <= TITLE_MAX_VISIBLE_COUNTRIES) {
       this.pinHeaderTitle = `${this.thing} in ${pinnedCountries.splice(0, pinnedCountries.length - 1).join(', ')} and ${pinnedCountries[pinnedCountries.length-1]}`;
     } else {
       this.pinHeaderTitle = `${this.thing} in ${pinnedCountries.join(', ')}`;
