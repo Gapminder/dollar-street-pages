@@ -23,6 +23,8 @@ import {
 } from '../../../shared';
 import { MatrixViewBlockComponent } from '../matrix-view-block.component';
 import { MatrixViewBlockService } from '../matrix-view-block.service';
+import {StreetDrawService} from "../../../shared/street/street.service";
+import {StreetDrawServiceMock} from "../../../test/mocks/streetDrawService.mock";
 
 describe('MatrixViewBlockComponent', () => {
     let component: MatrixViewBlockComponent;
@@ -49,7 +51,8 @@ describe('MatrixViewBlockComponent', () => {
                 { provide: TranslateService, useClass: TranslateServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
-                { provide: UtilsService, useClass: UtilsServiceMock }
+                { provide: UtilsService, useClass: UtilsServiceMock },
+                { provide: StreetDrawService, useClass: StreetDrawServiceMock}
             ]
         });
 

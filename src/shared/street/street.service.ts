@@ -898,7 +898,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public clearAndRedraw(places: any): this {
+  public clearAndRedraw(places?: any): this {
     if (!places || !places.length) {
       this.removeHouses('hover');
       this.removeHouses('chosen');
