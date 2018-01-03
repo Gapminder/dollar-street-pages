@@ -4,7 +4,11 @@ import { Subscription } from 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {
+  AppStates,
+  StreetSettingsState,
+  DrawDividersInterface
+} from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import {
   Component,
@@ -15,7 +19,6 @@ import {
   AfterViewInit
 } from '@angular/core';
 import {
-  DrawDividersInterface,
   LanguageService
 } from '../../common';
 import { GetStreetSettings } from '../../common/street-settings/ngrx/street-settings.actions';
@@ -44,7 +47,7 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
   public resizeSubscribe: Subscription;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
   public matrixState: Observable<any>;
   public matrixStateSubscription: Subscription;
@@ -76,7 +79,7 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (!data || !data.streetSettings) {
         this.store.dispatch(new GetStreetSettings());
       } else {

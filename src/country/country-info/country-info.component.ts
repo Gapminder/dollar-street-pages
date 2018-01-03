@@ -8,14 +8,19 @@ import { Component,
   Output
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {
+  AppStates,
+  StreetSettingsState,
+  DrawDividersInterface,
+  Thing
+} from '../../interfaces';
 import {
   MathService,
-  DrawDividersInterface,
   LanguageService,
   BrowserDetectionService
 } from '../../common';
 import { CountryInfoService } from './country-info.service';
+import { get } from 'lodash';
 
 @Component({
   selector: 'country-info',
@@ -28,10 +33,10 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   @Output()
   public getCountry: EventEmitter<any> = new EventEmitter<any>();
 
-  public mapData: any;
+  public mapData;
   public isShowInfo: boolean;
-  public country: any;
-  public thing: any;
+  public country;
+  public thing: Thing;
   public placesQuantity: string;
   public photosQuantity: string;
   public videosQuantity: string;
@@ -41,7 +46,7 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   public streetData: DrawDividersInterface;
   public languageService: LanguageService;
   public device: BrowserDetectionService;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
 
   public constructor(countryInfoService: CountryInfoService,
@@ -59,21 +64,18 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
-      if (data) {
-        if (data.streetSettings) {
-          this.streetData = data;
-        }
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+      if (get(data, 'streetSettings', false)) {
+        this.streetData = data.streetSettings;
       }
     });
 
-    this.countryInfoServiceSubscribe = this.countryInfoService.getCountryInfo(`id=${this.countryId}${this.languageService.getLanguageParam()}`)
-      .subscribe((res: any) => {
-        if (res.err) {
-          console.error(res.err);
+    this.countryInfoServiceSubscribe = this.countryInfoService
+      .getCountryInfo(`id=${this.countryId}${this.languageService.getLanguageParam()}`)
+      .subscribe((res) => {
+        if (get(res, 'err', false)) {
           return;
         }
-
         this.country = res.data.country;
         this.mapData = res.data.country;
         this.thing = res.data.thing;

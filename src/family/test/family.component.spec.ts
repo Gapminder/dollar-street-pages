@@ -65,13 +65,6 @@ xdescribe('FamilyComponent', () => {
     fixture = TestBed.createComponent(FamilyComponent);
     component = fixture.componentInstance;
 
-    component.streetSettings = {
-      _id: '57963211cc4aaed63a02504c',
-      poor: 26,
-      rich: 15000,
-      lowIncome: 26
-    };
-
     component.urlParams = {
       thing: '',
       countries: '',
@@ -87,10 +80,6 @@ xdescribe('FamilyComponent', () => {
 
   it('ngOnInit() ngOnDestroy()', () => {
     component.ngOnInit();
-
-    expect(component.streetSettings._id).toEqual('57963211cc4aaed63a02504c');
-    expect(component.streetSettings.poor).toEqual(26);
-    expect(component.streetSettings.rich).toEqual(15000);
 
     expect(component.theWorldTranslate).toEqual('translated');
 

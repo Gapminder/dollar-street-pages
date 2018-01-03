@@ -68,6 +68,7 @@
 
         <div class="map-container">
           <region-map [routerLink]="['/country', familyData?.country?._id]"
+                      [queryParamsHandling]="merge"
                       [queryParams]="{}"
                       [mapData]="mapData"
                       angulartics2On="click"

@@ -14,16 +14,21 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {
+  AppStates,
+  StreetSettingsState,
+  DrawDividersInterface,
+  AppState,
+  MatrixState
+} from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
 import {
   MathService,
   LanguageService,
-  DrawDividersInterface,
   UtilsService
 } from '../../common';
-import { StreetDrawService } from './street.service';
+import { StreetDrawService} from './street.service';
 
 @Component({
   selector: 'street',
@@ -53,7 +58,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public regions: any;
   public thingName: any;
   public countries: any;
-  public streetData: any;
+  public streetData: DrawDividersInterface;
   public element: HTMLElement;
   public resize: any;
   public drawOnMap: boolean = false;
@@ -65,11 +70,11 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public placesArr: any;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
-  public appState: Observable<any>;
+  public appState: Observable<AppState>;
   public appStateSubscription: Subscription;
-  public matrixState: Observable<any>;
+  public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
   //public showStreetAttrs: boolean;
@@ -106,7 +111,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (data) {
        if (data.streetSettings) {
           if (this.streetData !== data.streetSettings) {
@@ -132,7 +137,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       }
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
       if (data) {
         if (data.currencyUnit) {
           if (this.currencyUnit !== data.currencyUnit) {
@@ -143,7 +148,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       }
     });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
+    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
       if (data) {
         if (this.query !== data.query) {
           this.query = data.query;

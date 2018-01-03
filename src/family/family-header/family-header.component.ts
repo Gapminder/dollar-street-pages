@@ -2,9 +2,16 @@ import 'rxjs/operator/debounceTime';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {
+  AppStates,
+  Currency,
+  MatrixState,
+  StreetSettingsState,
+  DrawDividersInterface,
+  TimeUnit,
+  UrlParameters
+} from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import {
   Component,
@@ -16,18 +23,18 @@ import {
   EventEmitter,
   Output,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   BrowserDetectionService,
-  DrawDividersInterface,
   MathService,
   LanguageService,
   UtilsService,
   IncomeCalcService
 } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
+import { get } from 'lodash';
 
 @Component({
   selector: 'family-header',
@@ -71,16 +78,16 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public getTranslationSubscribe: Subscription;
   public currentLanguage: string;
   public showTranslateMe: boolean;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
-  public timeUnit: any;
-  public timeUnits: any;
-  public matrixState: Observable<any>;
+  public timeUnit: TimeUnit;
+  public timeUnits: TimeUnit[];
+  public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
-  public currencyUnit: any;
-  public currencyUnits: any;
+  public currencyUnit: Currency;
+  public currencyUnits: Currency[];
   public familyIncome: string;
-  public queryParams: any;
+  public queryParams: UrlParameters;
   public queryParamsSubscribe: Subscription;
 
   public constructor(elementRef: ElementRef,
@@ -112,69 +119,58 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.readLessTranslate = trans.READ_LESS;
     });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
       this.queryParams = {
         currency: params.currency ? decodeURI(params.currency.toUpperCase()) : 'USD',
         time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH'
       };
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
-      if (data) {
-        if (data.streetSettings) {
-          if (this.streetData !== data.streetSettings) {
-            this.streetData = data.streetSettings;
-          }
-        }
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+      if (get(data, 'streetSettings', false)) {
+        this.streetData = data.streetSettings;
       }
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (data) {
-        if (data.currencyUnit) {
-          this.calcIncomeValue();
-          if (this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-          }
-        }
-
-        if (data.timeUnit) {
-          this.calcIncomeValue();
-          if (this.timeUnit !== data.timeUnit) {
-            this.timeUnit = data.timeUnit;
-          }
-        }
-
-        if (data.timeUnits) {
-          if (this.timeUnits !== data.timeUnits) {
-            this.timeUnits = data.timeUnits;
-
-            this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
-
-            this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
-          }
-        } else {
-          this.store.dispatch(new MatrixActions.GetTimeUnits());
-        }
-
-        if (data.currencyUnits) {
-          if (this.currencyUnits !== data.currencyUnits) {
-            this.currencyUnits = data.currencyUnits;
-
-            this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
-
-            this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-          }
-        } else {
-          this.store.dispatch(new MatrixActions.GetCurrencyUnits());
-        }
+    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
+      if (get(data, 'currencyUnit', false)
+          && this.currencyUnit !== data.currencyUnit) {
+        this.currencyUnit = data.currencyUnit;
       }
+
+      if (get(data, 'timeUnit', false)
+          && this.timeUnit !== data.timeUnit) {
+        this.timeUnit = data.timeUnit;
+      }
+
+      if (get(data, 'timeUnits', false)
+          && this.timeUnits !== data.timeUnits) {
+          this.timeUnits = data.timeUnits;
+
+          this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
+
+          this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
+      } else {
+        this.store.dispatch(new MatrixActions.GetTimeUnits());
+      }
+
+      if (get(data, 'currencyUnits', false)
+       && this.currencyUnits !== data.currencyUnits) {
+        this.currencyUnits = data.currencyUnits;
+
+        this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
+
+        this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+      } else {
+        this.store.dispatch(new MatrixActions.GetCurrencyUnits());
+      }
+
+      this.calcIncomeValue();
     });
 
-    let query: string = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
+    const query = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
     this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
-      if (res.err) {
-        console.error(res.err);
+      if (get(res, 'err', false)) {
         return;
       }
 
@@ -260,8 +256,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let aboutDataContainer: HTMLElement = this.aboutDataContainer.nativeElement;
-    let targetElement: HTMLElement = event.target as HTMLElement;
+    const aboutDataContainer: HTMLElement = this.aboutDataContainer.nativeElement;
+    const targetElement: HTMLElement = event.target as HTMLElement;
 
     this.utilsService.getCoordinates(`.${targetElement.className}`, (data: any) => {
       this.aboutDataPosition.left = data.left - aboutDataContainer.clientWidth + 28;
@@ -272,8 +268,8 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public scrollToStart(event: MouseEvent): void {
-    let targetElement = event.target as HTMLElement;
-    let elementClassName: string = targetElement.className;
+    const targetElement = event.target as HTMLElement;
+    const elementClassName: string = targetElement.className;
 
     if (elementClassName === 'short-about-info-image' || elementClassName === 'portrait') {
       return;

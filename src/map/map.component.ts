@@ -1,6 +1,5 @@
 import 'rxjs/add/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
@@ -15,7 +14,13 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../interfaces';
+import {
+  AppStates,
+  Country,
+  Currency,
+  Place,
+  TimeUnit
+} from '../interfaces';
 import {
   MathService,
   LoaderService,
@@ -26,9 +31,9 @@ import {
   LanguageService,
   IncomeCalcService
 } from '../common';
-import * as AppActions from '../app/ngrx/app.actions';
 import { MapService } from './map.service';
-import * as _ from 'lodash';
+import { get } from 'lodash';
+
 
 @Component({
   selector: 'map-component',
@@ -56,35 +61,27 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public resizeSubscribe: Subscription;
   public mapServiceSubscribe: Subscription;
-  public countries: any[] = [];
+  public countries: Country[] = [];
   public element: any;
   public hoverPortraitTop: any;
   public hoverPortraitLeft: any;
   public thing: any;
   public query: string;
   public leftSideCountries: any;
-  public seeAllHomes: boolean = false;
+  public seeAllHomes = false;
   public leftArrowTop: any;
-  public onThumb: boolean = false;
-  public onMarker: boolean = false;
-  public isOpenLeftSide: boolean = false;
+  public onThumb = false;
+  public onMarker = false;
+  public isOpenLeftSide = false;
   public isDesktop: boolean;
   public isMobile: boolean;
-  public shadowClass: {'shadow_to_left': boolean, 'shadow_to_right': boolean};
+  public shadowClass: {'shadow_to_left': boolean; 'shadow_to_right': boolean};
   public streetData: DrawDividersInterface;
-  public streetServiceSubscribe: Subscription;
   public windowInnerWidth: number = window.innerWidth;
   public currentLanguage: string;
-  public streetSettingsState: Observable<DrawDividersInterface>;
-  public appState: Observable<any>;
-  public streetSettingsStateSubscription: Subscription;
-  public appStateSubscription: Subscription;
-  public thingsFilterState: Observable<any>;
-  public thingsFilterStateSubscription: Subscription;
-  public matrixStateSubscription: Subscription;
-  public matrixState: Observable<any>;
-  public timeUnit: any;
-  public currencyUnit: any;
+  public appStatesSubscribe: Subscription;
+  public timeUnit: TimeUnit;
+  public currencyUnit: Currency;
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -104,10 +101,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.currentLanguage = this.languageService.currentLanguage;
 
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    this.thingsFilterState = this.store.select((appState: AppStates) => appState.thingsFilter);
-    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngOnInit(): void {
@@ -116,52 +109,49 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.loaderService.setLoader(false);
 
+    this.appStatesSubscribe = this.store.subscribe((data: AppStates) => {
+
+      // streetSettings
+      this.streetData = get(data, 'streetSettings.streetSettings', this.streetData);
+
+      // matrix
+      this.timeUnit = get(data.matrix, 'timeUnit', this.timeUnit);
+      this.currencyUnit = get(data.matrix, 'currencyUnit', this.currencyUnit);
+
+
+      // thingsFilter
+      if (get(data, 'thingsFilter.thingsFilter', false)) {
+        this.thing = get(data.thingsFilter.thingsFilter, 'thing.originPlural');
+        const query = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
+        this.urlChanged(query);
+      }
+
+      // app
+        this.query = get(data, 'app.query', this.query);
+
+    });
+
     this.getTranslationSubscribe = this.languageService.getTranslation('FAMILY').subscribe((trans: any) => {
       this.familyTranslate = trans;
     });
-
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
-      if (data) {
-        if (data.streetSettings) {
-          this.streetData = data.streetSettings;
-        }
-      }
-    });
-
-    this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
-      if (data) {
-        if (data.thingsFilter) {
-          this.thing = data.thingsFilter.thing.originPlural;
-
-          let query: any = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
-
-          this.urlChanged(query);
-        }
-      }
-    });
-
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if (data) {
-        this.query = _.get(data, 'query', this.query);
-      }
-    });
-
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (data) {
-        this.timeUnit = _.get(data, 'timeUnit', this.timeUnit);
-        this.currencyUnit = _.get(data, 'currencyUnit', this.currencyUnit);
-      }
-    });
   }
 
-  public urlChanged(options: {url: string, isNotReplaceState?: any}): void {
-    let {url, isNotReplaceState} = options;
+  public createUrl(): string {
+    let currency = '';
+    if (this.timeUnit && this.currencyUnit) {
+      currency = `&time=${this.timeUnit.code.toLowerCase()}&currency=${this.currencyUnit.code.toLowerCase()}`;
+    }
+
+    return `thing=${this.thing}${this.languageService.getLanguageParam()}${currency}`;
+  }
+
+  public urlChanged(options: {url: string, isNotReplaceState?: boolean}): void {
+    const {url, isNotReplaceState} = options;
 
     this.mapServiceSubscribe = this.mapService
       .getMainPlaces(url)
-      .subscribe((res: any): any => {
+      .subscribe((res) => {
         if (res.err) {
-          console.error(res.err);
           return;
         }
 
@@ -172,7 +162,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
         if (!isNotReplaceState) {
           this.query = url;
-          this.urlChangeService.replaceState('/map', url);
+          this.urlChangeService.replaceState('/map', this.createUrl());
         }
 
         this.setMarkersCoord(this.places);
@@ -195,33 +185,23 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if(this.resizeSubscribe) {
+
+    if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
 
-    if(this.mapServiceSubscribe) {
+    if (this.mapServiceSubscribe) {
       this.mapServiceSubscribe.unsubscribe();
     }
 
-    if(this.getTranslationSubscribe) {
+    if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
 
-    if(this.loaderService) {
+    if (this.loaderService) {
       this.loaderService.setLoader(false);
     }
 
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
-    }
-
-    if (this.thingsFilterStateSubscription) {
-      this.thingsFilterStateSubscription.unsubscribe();
-    }
   }
 
   public calcHoverPlaceIncome(): void {
@@ -234,12 +214,13 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  private calcIncomeValue(place: any): any {
+  private calcIncomeValue(place: Place): Place {
     if (this.timeUnit && this.currencyUnit) {
-      place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+      place.showIncome = this.incomeCalcService
+        .calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
     } else {
       place.showIncome = this.math.round(place.income);
-      this.currencyUnit = {};
+      this.currencyUnit = {} as Currency;
       this.currencyUnit.symbol = '$';
     }
 

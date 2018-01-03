@@ -3,7 +3,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../interfaces';
+import {
+  AppState,
+  AppStates,
+  CountriesFilterState,
+  Country,
+  StreetSettingsState,
+  UrlParameters
+} from '../interfaces';
 import * as AppActions from '../app/ngrx/app.actions';
 import {
   Component,
@@ -15,7 +22,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { forEach, difference, map, find, chain } from 'lodash';
+import { chain } from 'lodash';
 import {
   UrlChangeService,
   Angulartics2GoogleAnalytics,
@@ -58,19 +65,19 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public theWorldTranslate: string;
   public window: Window = window;
   public document: Document = document;
-  public streetFamilyData: {income: number, region: string};
+  public streetFamilyData: {income: number; region: string};
   public zoom: number;
   public openFamilyExpandBlock: Subject<any> = new Subject<any>();
   public placeId: string;
-  public urlParams: UrlParams;
-  public streetSettings: any;
-  public rich: any;
-  public poor: any;
-  public thing: any = {};
-  public locations: any[];
-  public countries: any[];
+  public urlParams;
+  public streetSettings: DrawDividersInterface;
+  public rich;
+  public poor;
+  public thing = {};
+  public locations: CountriesFilterState;
+  public countries: {}[];
   public activeImageIndex: number;
-  public windowHistory: any = history;
+  public windowHistory = history;
   public queryParamsSubscribe: Subscription;
   public familyServiceSetThingSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
@@ -80,8 +87,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
   public query: string;
-  public streetSettingsState: Observable<DrawDividersInterface>;
-  public countriesFilterState: Observable<any>;
+  public streetSettingsState: Observable<StreetSettingsState>;
+  public countriesFilterState: Observable<CountriesFilterState>;
   public headerElement: HTMLElement;
   public streetFamilyContainerElement: HTMLElement;
   public shortFamilyInfoContainerElement: HTMLElement;
@@ -90,7 +97,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public itemSize: number;
   public row: number;
   public rowEtalon: number;
-  public appState: Observable<any>;
+  public appState: Observable<AppState>;
   public appStateSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
@@ -114,13 +121,14 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnInit(): void {
-    this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
+    this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe(trans => {
       this.theWorldTranslate = trans.toLowerCase();
 
       this.initData();
     });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
+      console.log(params);
       this.urlParams = {
         thing: params.thing ? decodeURI(params.thing) : 'Families',
         countries: params.countries ? decodeURI(params.countries) : 'World',
@@ -135,7 +143,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (params.activeImage) {
         this.urlParams.activeImage = params.activeImage;
-        this.activeImageIndex = this.urlParams.activeImage;
+        this.activeImageIndex = +this.urlParams.activeImage;
       }
 
       const queryUrl: string = this.utilsService.objToQuery(this.urlParams);
@@ -144,8 +152,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.urlChangeService.replaceState('/family', queryUrl);
 
       this.placeId = this.urlParams.place;
-      this.row = this.urlParams.row;
-      this.setZoom(this.urlParams.zoom);
+      this.row = +this.urlParams.row;
+      this.setZoom(+this.urlParams.zoom);
 
       setTimeout(() => {
         if (this.row > 1 && !this.activeImageIndex) {
@@ -153,12 +161,13 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }, 1000);
 
-      let query: string = `thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`;
+      const query = `thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`;
       this.familyServiceSetThingSubscribe = this.familyService
         .getThing(query)
-        .subscribe((res: any) => {
+        .subscribe(res => {
           if (res.err) {
             console.error(res.err);
+
             return;
           }
 
@@ -168,7 +177,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
+    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
       if (data) {
         if (data.query) {
           if (this.query !== data.query) {
@@ -178,8 +187,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
-      if(data) {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+      if (data) {
         if (data.streetSettings) {
           if (this.streetSettings !== data.streetSettings) {
             this.streetSettings = data.streetSettings;
@@ -197,7 +206,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
+    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: CountriesFilterState) => {
         if (data) {
           if (this.locations !== data) {
             this.locations = data;
@@ -207,7 +216,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
               .flatten()
               .sortBy('country')
               .value();
-
             this.initData();
           }
         }
@@ -235,19 +243,19 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnDestroy(): void {
-    if(this.queryParamsSubscribe) {
+    if (this.queryParamsSubscribe) {
       this.queryParamsSubscribe.unsubscribe();
     }
 
-    if(this.familyServiceSetThingSubscribe) {
+    if (this.familyServiceSetThingSubscribe) {
       this.familyServiceSetThingSubscribe.unsubscribe();
     }
 
-    if(this.getTranslationSubscribe) {
+    if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
 
-    if(this.scrollSubscribe) {
+    if (this.scrollSubscribe) {
       this.scrollSubscribe.unsubscribe();
     }
 
@@ -276,36 +284,21 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public changeZoom(zoom: any): void {
-    let prevZoom: number = this.zoom;
-
+  public changeZoom(zoom: number): void {
+    const prevZoom: number = this.zoom;
     this.zoom = zoom;
-
-    //let url = this.query.replace(/zoom\=\d*/, `zoom=${this.zoom}`).replace(/row\=\d*/, `row=${this.row}`);
-
     this.urlChanged({isZoom: true, url: this.query});
-
-    //this.urlChangeService.replaceState('/family', this.query);
-
     this.familyMediaComponent.changeZoom(prevZoom);
   }
 
-  public urlChanged(options: any): void {
-    let {url, isZoom, isBack} = options;
+  public urlChanged(options): void {
+    let { url } = options;
+    const { isZoom, isBack } = options;
 
     if (isZoom) {
       this.calcItemSize();
-
       url = url.replace(/row\=\d*/, `row=${this.row}`).replace(/zoom\=\d*/, `zoom=${this.zoom}`);
     }
-
-    // if (!isBack) {
-      // this.query = this.query.replace(/&activeHouse\=\d*/, '');
-      // this.activeHouse = void 0;
-
-      // this.hoverPlace.next(undefined);
-      // this.clearActiveHomeViewBox.next(true);
-    // }
 
     this.store.dispatch(new AppActions.SetQuery(url));
 
@@ -313,15 +306,15 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public processScroll(): void {
-    let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop); //- this.guidePositionTop;
+    const scrollTop = (document.body.scrollTop || document.documentElement.scrollTop); //- this.guidePositionTop;
 
-    let distance = scrollTop / this.itemSize;
+    const distance = scrollTop / this.itemSize;
 
     if (isNaN(distance)) {
       return;
     }
 
-    let rest = distance % 1;
+    const rest = distance % 1;
     let row = distance - rest;
 
     if (rest >= 0.85) {
@@ -334,14 +327,14 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.rowEtalon = this.row;
 
       if (this.query) {
-        let query = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`;
+        const query = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`;
         this.query = query;
       }
     }
   }
 
   public applyStyles(): void {
-    let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
     if (scrollTop > 0) {
       this.streetFamilyContainerElement.style.position = 'fixed';
@@ -358,7 +351,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (scrollTop > 140) {
-      let offsetHeight: number = this.headerElement.clientHeight + this.streetFamilyContainerElement.clientHeight;
+      const offsetHeight: number = this.headerElement.clientHeight + this.streetFamilyContainerElement.clientHeight;
 
       this.shortFamilyInfoContainerElement.style.top = offsetHeight + 'px';
       this.shortFamilyInfoContainerElement.style.maxHeight = 100 + 'px';
@@ -381,38 +374,42 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public calcItemSize(): void {
-    let familyThingsContainerElement: HTMLElement = this.element.querySelector('.family-things-container') as HTMLElement;
-    let familyImageContainerElement: HTMLElement = this.element.querySelector('.family-image-container') as HTMLElement;
+    const familyThingsContainerElement: HTMLElement = this.element
+      .querySelector('.family-things-container') as HTMLElement;
+    const familyImageContainerElement: HTMLElement = this.element
+      .querySelector('.family-image-container') as HTMLElement;
 
     if (!familyThingsContainerElement || !familyImageContainerElement) {
       return;
     }
 
-    let widthScroll: number = window.innerWidth - document.body.offsetWidth;
+    const widthScroll: number = window.innerWidth - document.body.offsetWidth;
 
-    let imageMarginLeft: string = window.getComputedStyle(familyImageContainerElement).getPropertyValue('margin-left');
-    let boxPaddingLeft: string = window.getComputedStyle(familyThingsContainerElement).getPropertyValue('padding-left');
+    const imageMarginLeft: string = window.getComputedStyle(familyImageContainerElement)
+      .getPropertyValue('margin-left');
+    const boxPaddingLeft: string = window.getComputedStyle(familyThingsContainerElement)
+      .getPropertyValue('padding-left');
 
-    let imageMargin = parseFloat(imageMarginLeft) * 2;
-    let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
+    const imageMargin = parseFloat(imageMarginLeft) * 2;
+    const boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
 
-    let imageHeight = (familyThingsContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - imageMargin;
+    const imageHeight = (familyThingsContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - imageMargin;
 
     this.itemSize = imageHeight + imageMargin;
   }
 
   public setZoomButtonPosition(): void {
-    let scrollTop: number = (this.document.body.scrollTop || this.document.documentElement.scrollTop) + this.window.innerHeight;
+    const scrollTop: number = (this.document.body.scrollTop || this.document.documentElement.scrollTop) + this.window.innerHeight;
 
-    let containerHeight: number = this.familyContainer.nativeElement.offsetHeight + 30;
+    const containerHeight: number = this.familyContainer.nativeElement.offsetHeight + 30;
 
     this.zoomPositionFixed = scrollTop > containerHeight;
   }
 
   public activeImageOptions(options: any): void {
-    let {row, activeImageIndex} = options;
+    const {row, activeImageIndex} = options;
 
-    let queryParams = this.utilsService.parseUrl(this.query);
+    const queryParams = this.utilsService.parseUrl(this.query);
 
     delete queryParams.activeImage;
 
@@ -431,7 +428,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       queryParams.lang = this.languageService.currentLanguage;
     }
 
-    let url = this.utilsService.objToQuery(queryParams);
+    const url = this.utilsService.objToQuery(queryParams);
 
     this.store.dispatch(new AppActions.SetQuery(url));
 
@@ -447,16 +444,16 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const queryParams: UrlParams = {
+    const queryParams: UrlParameters = {
       thing: 'Families',
       countries: 'World',
       regions: 'World',
-      zoom: 4,
-      row: 1,
+      zoom: '4',
+      row: '1',
       lowIncome: this.poor,
       highIncome: this.rich,
       lang: this.languageService.currentLanguage
-    }
+    };
 
     if (!this.urlParams.place) {
       this.router.navigate(['/matrix', {queryParams}]);
@@ -466,4 +463,4 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
   }
-}
+};

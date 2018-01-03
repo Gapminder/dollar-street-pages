@@ -7,16 +7,16 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {AppStates, StreetSettingsState} from '../../interfaces';
 import { compact } from 'lodash';
 import { FooterService } from './footer.service';
 import {
-  DrawDividersInterface,
   BrowserDetectionService,
   Angulartics2GoogleAnalytics,
   LanguageService,
   UtilsService
 } from '../../common';
+import { DrawDividersInterface } from '../../interfaces';
 
 @Component({
   selector: 'footer',
@@ -32,7 +32,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public footerServiceSubscribe: Subscription;
   public routerEventsSubscribe: Subscription;
   public isDesktop: boolean;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
 
   public constructor(private router: Router,
@@ -45,10 +45,10 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
-  public ngOnInit(): any {
+  public ngOnInit(): void {
     this.isDesktop = this.browserDetectionService.isDesktop();
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (data) {
         if (data.streetSettings) {
           this.streetData = data.streetSettings;

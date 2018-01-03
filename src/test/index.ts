@@ -13,3 +13,4 @@ export { SocialShareServiceMock } from './mocks/socialShare.service.mock';
 export { TranslateServiceMock } from './mocks/translate.service.mock';
 export { TranslateLoaderMock } from './mocks/translateLoader.mock';
 export { TranslateParserMock } from './mocks/translateParser.mock';
+export { IncomeCalcServiceMock } from './mocks/incomeCalc.service.mock';

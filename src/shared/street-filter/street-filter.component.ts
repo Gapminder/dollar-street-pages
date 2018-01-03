@@ -12,11 +12,17 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {
+  AppStates,
+  StreetSettingsState,
+  DrawDividersInterface,
+  Currency,
+  MatrixState,
+  Place
+} from '../../interfaces';
 import { sortBy, chain } from 'lodash';
 import {
-  MathService,
-  DrawDividersInterface
+  MathService
 } from '../../common';
 import { StreetFilterDrawService } from './street-filter.service';
 
@@ -30,7 +36,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public svg: ElementRef;
 
   @Input()
-  public places: any[];
+  public places: Place[];
   @Input()
   public lowIncome: number;
   @Input()
@@ -39,14 +45,14 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   public filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
   public street: any;
-  public streetData: any;
+  public streetData: DrawDividersInterface;
   public element: HTMLElement;
   public streetFilterSubscribe: Subscription;
-  public resizeSubscription: any;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public resizeSubscription: Subscription;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
-  public currencyUnit: any;
-  public matrixState: Observable<any>;
+  public currencyUnit: Currency;
+  public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
@@ -72,8 +78,6 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
         if (data.streetSettings) {
           if (this.streetData !== data.streetSettings) {
             this.streetData = data.streetSettings;
-
-            //this.setDividers(this.places, this.streetData);
           }
         }
       }
@@ -122,7 +126,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
       .set('places', sortBy(places, 'income'))
       .set('fullIncomeArr', chain(this.street.places)
         .sortBy('income')
-        .map((place: any) => {
+        .map((place: Place) => {
           if (!place) {
             return void 0;
           }

@@ -3,7 +3,11 @@ import { Subscription } from 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {
+  AppStates,
+  DrawDividersInterface,
+  StreetSettingsState
+} from '../../interfaces';
 import {
   Component,
   Input,
@@ -12,9 +16,6 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-import {
-  DrawDividersInterface
-} from '../../common';
 import { GetStreetSettings } from '../../common/street-settings/ngrx/street-settings.actions';
 import { StreetFamilyDrawService } from './street-family.service';
 
@@ -39,7 +40,7 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public resizeSubscribe: Subscription;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public streetSettingsState: Observable<DrawDividersInterface>;
+  public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
@@ -60,7 +61,7 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
     this.streetBoxContainerMargin = parseFloat(streetBoxContainerMarginLeft) * 2;
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (!data || !data.streetSettings) {
         this.store.dispatch(new GetStreetSettings());
       } else {

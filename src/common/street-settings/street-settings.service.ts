@@ -6,18 +6,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 import { environment } from '../../environments/environment';
-
-export interface DrawDividersInterface {
-  showDividers: boolean;
-  low: number;
-  medium: number;
-  high: number;
-  poor: number;
-  rich: number;
-  lowDividerCoord: number;
-  mediumDividerCoord: number;
-  highDividerCoord: number;
-}
+import { DrawDividersInterface } from '../../interfaces';
 
 let _cache: Observable<any>;
 
