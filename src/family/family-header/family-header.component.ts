@@ -143,13 +143,14 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.timeUnit = data.timeUnit;
       }
 
-      if (get(data, 'timeUnits', false)
-          && this.timeUnits !== data.timeUnits) {
-          this.timeUnits = data.timeUnits;
+      if (get(data, 'timeUnits', false)) {
+          if (this.timeUnits !== data.timeUnits) {
+            this.timeUnits = data.timeUnits;
 
-          this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
+            this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
 
-          this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
+            this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
+          }
       } else {
         this.store.dispatch(new MatrixActions.GetTimeUnits());
       }
