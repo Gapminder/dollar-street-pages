@@ -15,10 +15,11 @@
          [style.-ms-flex-order]="i"
          [style.-webkit-order]="i"
          [style.order]="i"
-         [style.height.px]="itemSize"
          isImageLoaded
          [imageLoadedUrl]="convertImageUrlWithoutWrapper(image?.background)"
          (imageLoadedEvent)="imageIsUploaded(i)">
+      <div class="family-image-position">
+        <div class="family-image-inner">
       <div class="family-image"
            [ngStyle]="{'background-image': image.isUploaded && image.background}">
         <div class="image-description">
@@ -40,6 +41,8 @@
             <div></div>
           </div>
         </div>
+      </div>
+      </div>
       </div>
     </div>
 

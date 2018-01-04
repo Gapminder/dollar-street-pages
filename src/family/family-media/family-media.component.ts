@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import {AppState, AppStates} from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import {
   Component,
@@ -15,9 +15,9 @@ import {
   AfterViewInit,
   ElementRef,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef, OnChanges, SimpleChanges
 } from '@angular/core';
-import { find, isEqual, slice, concat } from 'lodash';
+import { find, isEqual, slice, concat, get } from 'lodash';
 import {
   LoaderService,
   BrowserDetectionService,
@@ -69,9 +69,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public familyPlaceServiceSubscribe: Subscription;
   public resizeSubscribe: Subscription;
   public openFamilyExpandBlockSubscribe: Subscription;
-  public footerHeight: number;
-  public headerHeight: number;
-  public imageOffsetHeight: any;
   public indexViewBoxImage: number;
   public element: HTMLElement;
   public imageResolution: ImageResolutionInterface;
@@ -111,22 +108,17 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.familyThingsContainerElement = this.familyThingsContainer.nativeElement;
     this.familyImagesContainerElement = this.familyImagesContainer.nativeElement;
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if (data) {
-        if (data.query) {
-          if (this.query !== data.query) {
+    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
+      if (get(data, 'query', false) && this.query !== data.query) {
             this.query = data.query;
-          }
-        }
       }
     });
 
-    const query: string = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
+    const query = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
     this.familyPlaceServiceSubscribe = this.familyMediaService
       .getFamilyMedia(query)
       .subscribe((res: any) => {
         if (res.err) {
-          console.error(res.err);
           return;
         }
 
@@ -139,8 +131,8 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
           let numberSplice: number = this.visibleImages * 2;
 
           if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
-            let positionInRow: number = this.activeImageIndex % this.zoom;
-            let offset: number = this.zoom - positionInRow;
+            const positionInRow: number = this.activeImageIndex % this.zoom;
+            const offset: number = this.zoom - positionInRow;
 
             numberSplice = this.activeImageIndex + offset + this.visibleImages;
           }
@@ -152,7 +144,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
         if (this.activeImageIndex) {
           setTimeout(() => {
-            this.calcItemSize();
+            this.loaderService.setLoader(true);
 
             this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1);
           });
@@ -169,11 +161,11 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
           this.windowInnerWidth = window.innerWidth;
 
-          this.calcItemSize();
+          this.loaderService.setLoader(true);
 
           if (this.indexViewBoxImage) {
-            let countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
-            let offset: number = this.zoom - countByIndex;
+            const countByIndex = (this.indexViewBoxImage + 1) % this.zoom;
+            const offset = this.zoom - countByIndex;
 
             this.imageData.index = !countByIndex ? this.zoom : countByIndex;
             this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
@@ -187,9 +179,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
       /*tslint:disable-next-line*/
     this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this.openFamilyExpandBlock
       .subscribe((data: any): void => {
-        let familyImageIndex: number = 0;
+        let familyImageIndex = 0;
 
-        let familyImage: any = find(this.images, (image: any, index: number) => {
+        const familyImage: any = find(this.images, (image, index: number) => {
           if (image.thing === data.thingId) {
             familyImageIndex = index;
 
@@ -198,11 +190,11 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
         });
 
         if (familyImage) {
-          let numberSplice: number = this.visibleImages * 2;
+          let numberSplice = this.visibleImages * 2;
 
           if (familyImageIndex && familyImageIndex > this.visibleImages) {
-            let positionInRow: number = familyImageIndex % this.zoom;
-            let offset: number = this.zoom - positionInRow;
+            const positionInRow: number = familyImageIndex % this.zoom;
+            const offset: number = this.zoom - positionInRow;
 
             numberSplice = familyImageIndex + offset + this.visibleImages;
           }
@@ -238,12 +230,14 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
       this.familyImageContainerElement.classList.add('column-' + this.zoom);
 
       this.calcItemSize();
+      this.loaderService.setLoader(true);
+      this.showImageBlock = false;
     });
   }
 
   public onScrollDown(): void {
     if (this.currentImages.length && this.currentImages.length !== this.images.length) {
-      let images: any = slice(this.images, this.currentImages.length, this.currentImages.length + this.visibleImages);
+      const images: any = slice(this.images, this.currentImages.length, this.currentImages.length + this.visibleImages);
 
       this.currentImages = concat(this.currentImages, images);
     }
@@ -253,10 +247,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.activeImage = image;
     this.indexViewBoxImage = index;
 
-    let countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
-    let offset: number = this.zoom - countByIndex;
+    const countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
+    const offset: number = this.zoom - countByIndex;
 
-    let row: number = Math.ceil((this.indexViewBoxImage + 1) / this.zoom);
+    const row: number = Math.ceil((this.indexViewBoxImage + 1) / this.zoom);
 
     this.imageBlockLocation = countByIndex ? offset + this.indexViewBoxImage : this.indexViewBoxImage;
 
@@ -279,7 +273,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
     setTimeout(() => {
       if (this.familyMediaViewBlock) {
-        let viewBlockBox: HTMLElement = this.familyMediaViewBlock.element;
+        const viewBlockBox: HTMLElement = this.familyMediaViewBlock.element;
 
         this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
       }
@@ -290,7 +284,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
       this.showImageBlock = !this.showImageBlock;
 
-      this.changeUrl({row: row, activeImageIndex: this.indexViewBoxImage + 1});
+      this.changeUrl({row, activeImageIndex: this.indexViewBoxImage + 1});
 
       return;
     }
@@ -302,12 +296,12 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
         this.prevImage = void 0;
       }
 
-      this.changeUrl({row: row});
+      this.changeUrl({row});
     } else {
       this.prevImage = image;
       this.showImageBlock = true;
 
-      this.changeUrl({row: row, activeImageIndex: this.indexViewBoxImage + 1});
+      this.changeUrl({row, activeImageIndex: this.indexViewBoxImage + 1});
     }
   }
 
@@ -322,21 +316,21 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  public changeUrl(options: {row?: number, activeImageIndex?: number}): void {
-    let {row, activeImageIndex} = options;
+  public changeUrl(options: {row?: number; activeImageIndex?: number}): void {
+    const {row, activeImageIndex} = options;
 
     if (row) {
       this.goToRow(row);
-      this.activeImageOptions.emit({row: row, activeImageIndex: activeImageIndex});
+      this.activeImageOptions.emit({row, activeImageIndex});
     } else {
-      this.activeImageOptions.emit({activeImageIndex: activeImageIndex});
+      this.activeImageOptions.emit({activeImageIndex});
     }
 
-    let queryParams = this.utilsService.parseUrl(this.query);
+    const queryParams = this.utilsService.parseUrl(this.query);
 
     queryParams.place = this.imageData.placeId;
 
-    let url = this.utilsService.objToQuery(queryParams);
+    const url = this.utilsService.objToQuery(queryParams);
 
     this.store.dispatch(new AppActions.SetQuery(url));
 
@@ -344,18 +338,15 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   }
 
   public goToRow(row: number): void {
-    if (!this.itemSize) {
-      this.calcItemSize();
-    }
 
-    let header: HTMLElement = document.querySelector('.header-container') as HTMLElement;
+    const header: HTMLElement = document.querySelector('.header-container') as HTMLElement;
 
-    let homeDescription: HTMLElement = this.familyComponent.familyHeaderComponent.homeDescriptionContainer.nativeElement;
-    let shortFamilyInfo: HTMLElement = this.familyComponent.familyHeaderComponent.shortFamilyInfoContainer.nativeElement;
+    const homeDescription = this.familyComponent.familyHeaderComponent.homeDescriptionContainer.nativeElement;
+    const shortFamilyInfo = this.familyComponent.familyHeaderComponent.shortFamilyInfoContainer.nativeElement;
 
-    let headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
+    const headerHeight: number = homeDescription.offsetHeight - header.offsetHeight - shortFamilyInfo.offsetHeight;
 
-    let scrollTop: number = row * this.itemSize + headerHeight;
+    const scrollTop: number = row * this.itemSize + headerHeight;
 
     setTimeout(() => {
       document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
@@ -367,23 +358,13 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    let widthScroll: number = window.innerWidth - document.body.offsetWidth;
-
-    let imageMarginLeft: string = window.getComputedStyle(this.familyImageContainerElement).getPropertyValue('margin-left');
-    let boxPaddingLeft: string = window.getComputedStyle(this.familyThingsContainerElement).getPropertyValue('padding-left');
-
-    let imageMargin = parseFloat(imageMarginLeft) * 2;
-    let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
-
-    let imageHeight = (this.familyThingsContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - imageMargin;
-    this.itemSize = imageHeight + imageMargin;
-
-    this.loaderService.setLoader(true);
+    const imageContainer: HTMLElement = this.familyImageContainerElement.querySelector('.family-image-container');
+    this.itemSize = imageContainer.offsetHeight;
   }
 
   public getVisibleRows(): void {
-    let imageHeight: number = this.familyThingsContainerElement.offsetWidth / this.zoom;
-    let visibleRows: number = Math.round(window.innerHeight / imageHeight);
+    const imageHeight = this.familyThingsContainerElement.offsetWidth / this.zoom;
+    const visibleRows = Math.round(window.innerHeight / imageHeight);
 
     this.visibleImages = this.zoom * visibleRows;
   }

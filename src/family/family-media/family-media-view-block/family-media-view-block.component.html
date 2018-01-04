@@ -1,5 +1,5 @@
 <div class="view-image-block-container" *ngIf="isDesktop">
-  <div class="active-house house-{{imageData.index}}"></div>
+  <div class="active-house" [style.left]=" imageViewBlockPosition.point.left+'px'"></div>
 
   <div class="view-image-block-content">
     <div class="view-image-container">
@@ -100,7 +100,7 @@
 </div>
 
 <div class="mobile-view-image-block-container" *ngIf="!isDesktop">
-  <div class="active-house house-{{imageData.index}}"></div>
+  <div class="active-house" [style.left]=" imageViewBlockPosition.point.left+'px'"></div>
 
   <div class="view-image-container">
     <img (click)="openPopUp()" [src]="imageData.image">

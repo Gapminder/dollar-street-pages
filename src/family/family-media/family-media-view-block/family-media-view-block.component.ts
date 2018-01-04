@@ -13,7 +13,8 @@ import {
   EventEmitter,
   OnInit,
   ElementRef,
-  ViewChild
+  ViewChild,
+  SimpleChanges
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
@@ -28,6 +29,11 @@ import {
 } from '../../../common';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { ImageResolutionInterface } from '../../../interfaces';
+import { get } from 'lodash';
+
+interface ImageViewBlockPosition {
+  point: { left: number };
+}
 
 @Component({
   selector: 'family-media-view-block',
@@ -66,6 +72,11 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public showInCountry: any;
   public showInRegion: any;
   public showInTheWorld: any;
+  private imageViewBlockPosition: ImageViewBlockPosition = {
+    point: {
+      left: 0
+    }
+  };
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -86,10 +97,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
   public ngOnInit(): void {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (data) {
-        if (data.streetSettings) {
-          this.streetData = data.streetSettings;
-        }
+      if (get(data, 'streetSettings', false)) {
+        this.streetData = data.streetSettings;
       }
     });
 
@@ -102,29 +111,21 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           if (this.article && this.article.shortDescription.length) {
             this.article.description = this.getDescription(this.article.shortDescription);
           }
+
+          this.setPointPositionMediaBlock();
         });
       });
+
+    process.nextTick(() => {
+      this.setPointPositionMediaBlock();
+    })
   }
 
-  public ngOnChanges(changes: any): void {
-    if (changes.imageData) {
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (get(changes, 'imageData', false)) {
+      this.setPointPositionMediaBlock();
       this.country = void 0;
       this.loader = true;
-
-      /*let isImageLoaded: boolean = false;
-      let image: any = new Image();
-
-      image.onload = () => {
-        this.zone.run(() => {
-          isImageLoaded = true;
-
-          if (this.country) {
-            this.loader = true;
-          }
-        });
-      };
-
-      image.src = this.imageData.image;*/
 
       this.viewImage = this.imageData.image;
 
@@ -132,10 +133,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
         this.viewBlockServiceSubscribe.unsubscribe();
       }
 
-      let query: string = `placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`;
+      const query: string = `placeId=${this.imageData.placeId}&thingId=${this.imageData.thing._id}${this.languageService.getLanguageParam()}`;
       this.viewBlockServiceSubscribe = this.viewBlockService.getData(query).subscribe((res: any) => {
           if (res.err) {
-            console.error(res.err);
             return;
           }
 
@@ -193,12 +193,22 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
+  private setPointPositionMediaBlock() {
+    const POINT_WIDTH = 32;
+    if (document.querySelector('.family-things-container')) {
+      const gridElement: HTMLElement = (document.querySelector('.family-things-container')
+        .querySelector('.family-image-container') as HTMLElement);
+      const elemWidth = gridElement.offsetWidth;
+      this.imageViewBlockPosition.point.left = (elemWidth * (this.imageData.index - 1)) + elemWidth / 2 - POINT_WIDTH / 2;
+    }
+  }
+
   public ngOnDestroy(): void {
-    if(this.resizeSubscribe) {
+    if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
 
-    if(this.viewBlockServiceSubscribe) {
+    if (this.viewBlockServiceSubscribe) {
       this.viewBlockServiceSubscribe.unsubscribe();
     }
 
@@ -210,17 +220,18 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public openPopUp(): void {
     this.popIsOpen = true;
 
-    let imgUrl = this.imageData.image.replace(this.imageResolution.expand, this.imageResolution.full);
-    let newImage = new Image();
+    const imgUrl = this.imageData.image.replace(this.imageResolution.expand, this.imageResolution.full);
+    const newImage = new Image();
 
     newImage.onload = () => {
       this.zone.run(() => {
-        this.fancyBoxImage = 'url("' + imgUrl + '")';
+        this.fancyBoxImage = `url("${imgUrl}")`;
       });
     };
 
     newImage.src = imgUrl;
-  };
+
+  }
 
   public fancyBoxClose(): void {
     this.popIsOpen = false;
@@ -265,5 +276,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     } else {
       return shortDescription;
     }
+
   }
 }
