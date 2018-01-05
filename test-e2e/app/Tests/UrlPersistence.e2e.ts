@@ -7,9 +7,9 @@ describe('Storing state in URL', () => {
     browser.get('matrix');
   });
 
-  it(`Image selected after the page reload`, () => {
+  fit(`Image selected after the page reload`, () => {
     MatrixPage.familyLink.get(1).click();
-
+browser.sleep(1000)
     const urlBefore = browser.getCurrentUrl();
     const selectedImageBefore = MatrixPage.bigImageFromBigSection.getAttribute('src');
 

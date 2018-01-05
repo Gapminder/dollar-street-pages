@@ -47,7 +47,7 @@ describe('Matrix Page: big section -like in Google', () => {
       /**
        * click on image in matrix page should open preview for that image
        */
-      const familyImageSrc = MatrixPage.familyLink.get(random).getCssValue('background-image')
+      const familyImageSrc = MatrixPage.familyImage.get(random).getCssValue('background-image')
         .then(attr => attr.replace('url("', ''))
         .then(url => url.match(pattern)[0]);
 
@@ -92,7 +92,7 @@ describe('Matrix Page: big section -like in Google', () => {
   });
 
   it('open "fancy" preview by click on image', () => {
-    const familyImageSrc = MatrixPage.familyLink.get(random).getCssValue('background-image')
+    const familyImageSrc = MatrixPage.familyImage.get(random).getCssValue('background-image')
       .then(attr => attr.replace('url("', ''))
       .then(url => url.match(pattern)[0]);
     MatrixPage.familyLink.get(random).click();
