@@ -1,38 +1,22 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Angulartics2, Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
-import { TranslateLoader, TranslateModule, TranslateParser, TranslateService } from 'ng2-translate';
 import { StoreModule } from '@ngrx/store';
-import { BrowserDetectionService, LanguageService, LoaderService, MathService, TitleHeaderService } from '../../common';
-import {
-  Angulartics2GoogleAnalyticsMock,
-  AngularticsMock,
-  BrowserDetectionServiceMock,
-  LanguageServiceMock,
-  LoaderServiceMock,
-  TitleHeaderServiceMock,
-  TranslateLoaderMock,
-  TranslateParserMock,
-  TranslateServiceMock
-} from '../../test/';
+import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
+
+import { MathService, TitleHeaderService } from '../../common';
 import { CountryComponent } from '../country.component';
-import { CountryInfoComponent } from '../country-info/country-info.component';
-import { CountryInfoService } from '../country-info/country-info.service';
-import { CountryPlacesComponent } from '../country-places/country-places.component';
-import { CountryPlacesService } from '../country-places/country-places.service';
-import { RegionMapComponent } from '../../shared/region-map/region-map.component';
-import { TranslateTestingModule } from '../../test/translateTesting.module';
+
 import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
+import { TitleHeaderServiceMock } from '../../test/';
+import { TranslateTestingModule } from '../../test/translateTesting.module';
 
 describe('CountryComponent', () => {
   let fixture: ComponentFixture<CountryComponent>;
   let component: CountryComponent;
-
-  class CountryPlacesServiceMock {
-  }
-
-  class CountryInfoServiceMock {
-  }
+  let titleHeaderService: TitleHeaderServiceMock;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -43,38 +27,62 @@ describe('CountryComponent', () => {
         StoreModule.forRoot({}),
         CommonServicesTestingModule
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [
-        CountryComponent,
-        CountryInfoComponent,
-        CountryPlacesComponent,
-        RegionMapComponent
+        CountryComponent
       ],
       providers: [
-        MathService,
-        {provide: CountryInfoService, useClass: CountryInfoServiceMock},
-        {provide: CountryPlacesService, useClass: CountryPlacesService},
+        {provide: MathService, useValue: {}},
         {provide: TitleHeaderService, useClass: TitleHeaderServiceMock},
-        {provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock},
-        {provide: LanguageService, useClass: LanguageServiceMock},
-        {provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock},
-        {provide: LoaderService, useClass: LoaderServiceMock},
-        {provide: Angulartics2, useClass: AngularticsMock}
+        {provide: ActivatedRoute, useClass: ActivatedRouteMock}
       ]
     });
 
     fixture = TestBed.createComponent(CountryComponent);
+    titleHeaderService = TestBed.get(TitleHeaderService);
     component = fixture.componentInstance;
   });
 
-  it('ngOnInit(), ngOnDestroy()', () => {
+  it('create subscriptions on ngOnInit', () => {
     component.ngOnInit();
 
     expect(component.queryParamsSubscribe).toBeDefined();
+  });
 
+  it('unsibscribe on ngOnDestroy', () => {
+    fixture.detectChanges();
     spyOn(component.queryParamsSubscribe, 'unsubscribe');
 
     component.ngOnDestroy();
 
     expect(component.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();
   });
+
+  it('set default title on init', () => {
+    spyOn(titleHeaderService, 'setTitle');
+    fixture.detectChanges();
+
+    expect(titleHeaderService.setTitle).toHaveBeenCalledWith('');
+  });
+
+  it('get countryID on init', () => {
+    fixture.detectChanges();
+
+    expect(component.countryId).toEqual(expectedCountryID);
+  });
+
+  it('setTitle is calling titleHeaderService', () => {
+    spyOn(titleHeaderService, 'setTitle');
+    fixture.detectChanges();
+
+    component.setTitle('expected title');
+
+    expect(titleHeaderService.setTitle).toHaveBeenCalledWith('expected title');
+  });
 });
+
+const expectedCountryID = '1';
+
+class ActivatedRouteMock {
+  params = Observable.of({id: expectedCountryID});
+}

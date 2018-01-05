@@ -4,112 +4,112 @@ import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
 import { TranslateModule, TranslateService } from 'ng2-translate';
 import { StoreModule } from '@ngrx/store';
 import {
-    MathService,
-    BrowserDetectionService,
-    LanguageService,
-    UtilsService,
-    UrlChangeService
+  MathService,
+  BrowserDetectionService,
+  LanguageService,
+  UtilsService,
+  UrlChangeService
 } from '../../../common';
 import {
-    TranslateServiceMock,
-    AngularticsMock,
-    BrowserDetectionServiceMock,
-    LanguageServiceMock,
-    UtilsServiceMock,
-    UrlChangeServiceMock
+  TranslateServiceMock,
+  AngularticsMock,
+  BrowserDetectionServiceMock,
+  LanguageServiceMock,
+  UtilsServiceMock,
+  UrlChangeServiceMock
 } from '../../../test/';
 import {
-    SharedModule
+  SharedModule
 } from '../../../shared';
 import { MatrixViewBlockComponent } from '../matrix-view-block.component';
 import { MatrixViewBlockService } from '../matrix-view-block.service';
-import {StreetDrawService} from "../../../shared/street/street.service";
-import {StreetDrawServiceMock} from "../../../test/mocks/streetDrawService.mock";
+import {StreetDrawService} from '../../../shared/street/street.service';
+import {StreetDrawServiceMock} from '../../../test/mocks/streetDrawService.mock';
 
 describe('MatrixViewBlockComponent', () => {
-    let component: MatrixViewBlockComponent;
-    let fixture: ComponentFixture<MatrixViewBlockComponent>;
+  let component: MatrixViewBlockComponent;
+  let fixture: ComponentFixture<MatrixViewBlockComponent>;
 
-    class MatrixViewBlockServiceMock {}
+  class MatrixViewBlockServiceMock {}
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                TranslateModule,
-                RouterTestingModule,
-                Angulartics2Module,
-                SharedModule,
-                StoreModule.forRoot({})
-            ],
-            declarations: [MatrixViewBlockComponent],
-            providers: [
-                MathService,
-                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-                { provide: MatrixViewBlockService, useClass: MatrixViewBlockServiceMock },
-                { provide: TranslateService, useClass: TranslateServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
-                { provide: TranslateService, useClass: TranslateServiceMock },
-                { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-                { provide: LanguageService, useClass: LanguageServiceMock },
-                { provide: UtilsService, useClass: UtilsServiceMock },
-                { provide: StreetDrawService, useClass: StreetDrawServiceMock}
-            ]
-        });
-
-        fixture = TestBed.createComponent(MatrixViewBlockComponent);
-        component = fixture.componentInstance;
-
-        component.query = '?thing=Families&countries=World&region=World';
-        component.streetData = {
-            showDividers: true,
-            low: 27,
-            medium: 140,
-            high: 500,
-            poor: 30,
-            rich: 60,
-            lowDividerCoord: 0,
-            mediumDividerCoord: 100,
-            highDividerCoord: 200
-        };
-    }));
-
-    it('ngOnInit()', () => {
-        component.ngOnInit();
-
-        expect(component.streetSettingsStateSubscription).toBeDefined();
-        expect(component.resizeSubscribe).toBeDefined();
-
-        spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
-        spyOn(component.resizeSubscribe, 'unsubscribe');
-
-        component.ngOnDestroy();
-
-        expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        TranslateModule,
+        RouterTestingModule,
+        Angulartics2Module,
+        SharedModule,
+        StoreModule.forRoot({})
+      ],
+      declarations: [MatrixViewBlockComponent],
+      providers: [
+        MathService,
+        { provide: UrlChangeService, useClass: UrlChangeServiceMock },
+        { provide: MatrixViewBlockService, useClass: MatrixViewBlockServiceMock },
+        { provide: TranslateService, useClass: TranslateServiceMock },
+        { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+        { provide: TranslateService, useClass: TranslateServiceMock },
+        { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+        { provide: LanguageService, useClass: LanguageServiceMock },
+        { provide: UtilsService, useClass: UtilsServiceMock },
+        { provide: StreetDrawService, useClass: StreetDrawServiceMock}
+      ]
     });
 
-    it('fancyBoxClose()', () => {
-        component.fancyBoxClose();
+    fixture = TestBed.createComponent(MatrixViewBlockComponent);
+    component = fixture.componentInstance;
 
-        expect(component.popIsOpen).toBeFalsy();
-        expect(component.fancyBoxImage).toBeFalsy();
-    });
+    component.query = '?thing=Families&countries=World&region=World';
+    component.streetData = {
+      showDividers: true,
+      low: 27,
+      medium: 140,
+      high: 500,
+      poor: 30,
+      rich: 60,
+      lowDividerCoord: 0,
+      mediumDividerCoord: 100,
+      highDividerCoord: 200
+    };
+  }));
 
-    it('goToMatrixByCountry()', () => {
-        component.goToMatrixByCountry('Nigeria');
-    });
+  it('ngOnInit()', () => {
+    component.ngOnInit();
 
-    it('getDescription()', () => {
-        const description = 'This is a long description';
+    expect(component.streetSettingsStateSubscription).toBeDefined();
+    expect(component.resizeSubscribe).toBeDefined();
 
-        let resp = component.getDescription(description);
+    spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
+    spyOn(component.resizeSubscribe, 'unsubscribe');
 
-        expect(resp).toEqual(description);
-    });
+    component.ngOnDestroy();
 
-    it('truncCountryName()', () => {
-        let resp = component.truncCountryName({alias: 'South Africa'});
+    expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();
+  });
 
-        expect(resp).toEqual('SA');
-    });
+  it('fancyBoxClose()', () => {
+    component.fancyBoxClose();
+
+    expect(component.popIsOpen).toBeFalsy();
+    expect(component.fancyBoxImage).toBeFalsy();
+  });
+
+  it('goToMatrixByCountry()', () => {
+    component.goToMatrixByCountry('Nigeria');
+  });
+
+  it('getDescription()', () => {
+    const description = 'This is a long description';
+
+    let resp = component.getDescription(description);
+
+    expect(resp).toEqual(description);
+  });
+
+  it('truncCountryName()', () => {
+    let resp = component.truncCountryName({alias: 'South Africa'});
+
+    expect(resp).toEqual('SA');
+  });
 });

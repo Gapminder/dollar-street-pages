@@ -1,39 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ElementRef, QueryList } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule, TranslateParser, TranslateService } from 'ng2-translate';
-import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
-import {
-  BrowserDetectionService,
-  LanguageService,
-  LoaderService,
-  MathService,
-  StreetSettingsEffects,
-  StreetSettingsService,
-  UrlChangeService
-} from '../../common';
-import {
-  Angulartics2GoogleAnalyticsMock,
-  AngularticsMock,
-  BlankComponent,
-  BrowserDetectionServiceMock,
-  LanguageServiceMock,
-  LoaderServiceMock,
-  StreetSettingsServiceMock,
-  TranslateLoaderMock,
-  TranslateParserMock,
-  TranslateServiceMock,
-  UrlChangeServiceMock
-} from '../../test/';
+import { Angulartics2Module } from 'angulartics2';
+import { LanguageService, MathService, UrlChangeService } from '../../common';
+import { BlankComponent, LanguageServiceMock, UrlChangeServiceMock } from '../../test/';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 import { MapComponent } from '../map.component';
 import { MapService } from '../map.service';
 import { mockMapData } from './mock.data';
 import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
+import { TranslateTestingModule } from '../../test/translateTesting.module';
 
+// TODO http call somwhere here
 describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
   let component: MapComponent;
@@ -75,27 +54,17 @@ describe('MapComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpModule,
-        TranslateModule,
+        TranslateTestingModule,
         Angulartics2Module,
         StoreModule.forRoot({}),
-        EffectsModule.forRoot([StreetSettingsEffects]),
         RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
         CommonServicesTestingModule
       ],
       providers: [
         MathService,
-        {provide: TranslateService, useClass: TranslateServiceMock},
-        {provide: TranslateParser, useClass: TranslateParserMock},
-        {provide: TranslateLoader, useClass: TranslateLoaderMock},
         {provide: UrlChangeService, useClass: UrlChangeServiceMock},
-        {provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock},
-        {provide: StreetSettingsService, useClass: StreetSettingsServiceMock},
-        {provide: LoaderService, useClass: LoaderServiceMock},
         {provide: MapService, useClass: MapServiceMock},
-        {provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock},
         {provide: LanguageService, useClass: LanguageServiceMock},
-        {provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock}
       ],
       declarations: [MapComponent, BlankComponent]
     });

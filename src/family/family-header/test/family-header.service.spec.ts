@@ -6,8 +6,7 @@ import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions, XHRBac
 
 import { FamilyHeaderService } from '../family-header.service';
 
-// TODO needs fix
-xdescribe('FamilyHeaderService', () => {
+describe('FamilyHeaderService', () => {
   let mockBackend: MockBackend;
   let familyHeaderService: FamilyHeaderService;
 
