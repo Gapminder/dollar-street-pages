@@ -8,6 +8,7 @@ describe('Matrix Page Social share buttons, hamburger menu:', () => {
   beforeAll(() => {
     browser.get('matrix');
     browser.wait(AbstractPage.getEC().not(AbstractPage.getEC().visibilityOf(AbstractPage.loader)), 40000);
+    MatrixPage.hamburgerMenu.click();
   });
 
   afterEach(() => {
@@ -16,7 +17,6 @@ describe('Matrix Page Social share buttons, hamburger menu:', () => {
   });
 
   it('Check twitter', () => {
-    MatrixPage.hamburgerMenu.click();
     MatrixPage.getShareButtonInHamburgerMenu('twitter').click().then(() => {
       browser.waitForAngularEnabled(false);
       browser.sleep(1000);
@@ -67,22 +67,30 @@ describe('Matrix Page Social share buttons, hamburger menu:', () => {
   });
 
   it('Check Google+', () => {
-    MatrixPage.getShareButtonInHamburgerMenu('google').click().then(() => {
-      browser.waitForAngularEnabled(false);
-      browser.sleep(1000);
+    browser.executeScript('return navigator.userAgent.includes("HeadlessChrome")').then(userAgent => {
+      if (userAgent) {
+        // Google+ doesn't support HeadlessChrome so ignore this test when the suit run in headless
+        return expect(true).toBe(false, 'skipped in headless chrome');
+      }
 
-      browser.getAllWindowHandles().then((handles: any) => {
-        browser.switchTo().window(handles[1]).then(() => {
-          browser.wait(EC.visibilityOf(SharePages.logoGoogle), 5000);
+      MatrixPage.getShareButtonInHamburgerMenu('google').click().then(() => {
+        browser.waitForAngularEnabled(false);
+        browser.sleep(1000);
 
-          expect(browser.getCurrentUrl()).toContain('https://accounts.google.com/signin/v2/identifier?service=oz&passive=1209600&continue=https%3A%2F%2Fplus.google.com%2Fup%2F%3Fcontinue%3Dhttps%3A%2F%2Fplus.google.com%2Fshare%3Furl%253Dhttps%3A%2F%');
-          expect(browser.getCurrentUrl()).toContain('text%253DSee%252Bhow%252Bpeople%252Breally%252Blive%26gpsrc%3Dgplp0&flowName=GlifWebSignIn&flowEntry=ServiceLogin');
-          expect(SharePages.inputEmailGoogle.isDisplayed).toBeTruthy();
-          expect(SharePages.logoGoogle.isDisplayed()).toBeTruthy();
-          expect(SharePages.buttonNextGoogle.isDisplayed()).toBeTruthy();
+        browser.getAllWindowHandles().then((handles: any) => {
+          browser.switchTo().window(handles[1]).then(() => {
+            browser.wait(EC.visibilityOf(SharePages.logoGoogle), 5000);
+
+            expect(browser.getCurrentUrl()).toContain('https://accounts.google.com/signin/v2/identifier?service=oz&passive=1209600&continue=https%3A%2F%2Fplus.google.com%2Fup%2F%3Fcontinue%3Dhttps%3A%2F%2Fplus.google.com%2Fshare%3Furl%253Dhttps%3A%2F%');
+            expect(browser.getCurrentUrl()).toContain('text%253DSee%252Bhow%252Bpeople%252Breally%252Blive%26gpsrc%3Dgplp0&flowName=GlifWebSignIn&flowEntry=ServiceLogin');
+            expect(SharePages.inputEmailGoogle.isDisplayed).toBeTruthy();
+            expect(SharePages.logoGoogle.isDisplayed()).toBeTruthy();
+            expect(SharePages.buttonNextGoogle.isDisplayed()).toBeTruthy();
+          });
         });
       });
     });
+
   });
 });
 

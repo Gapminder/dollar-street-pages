@@ -15,14 +15,14 @@ exports.config = {
 
   framework: 'jasmine',
 
-  allScriptsTimeout: 1100000,
+  allScriptsTimeout: 60000,
 
   jasmineNodeOpts: {
     showTiming: true,
     showColors: true,
     isVerbose: false,
     includeStackTrace: false,
-    defaultTimeoutInterval: 5000000,
+    defaultTimeoutInterval: 60000,
     print: function () {}
   },
   directConnect: true,
@@ -31,9 +31,8 @@ exports.config = {
     {
       browserName: 'chrome',
       chromeOptions: {
-        args: ['no-sandbox', 'disable-infobars']
-      }
-
+        args: ['no-sandbox', 'disable-infobars', 'headless']
+      },
       // shardTestFiles: true,
       // maxInstances: 2,
       // count: 2
@@ -51,7 +50,7 @@ exports.config = {
   onPrepare: function() {
     require('ts-node').register({ project: 'test-e2e' }); //according to issue: https://github.com/angular/angular-cli/issues/975
 
-    browser.driver.manage().window().maximize();
+    browser.driver.manage().window().setSize(1920, 1080);
     let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
     jasmine.getEnv().addReporter(new SpecReporter({

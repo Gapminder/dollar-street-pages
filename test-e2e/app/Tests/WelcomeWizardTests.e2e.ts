@@ -8,12 +8,9 @@ import { AbstractPage } from '../Pages/AbstractPage';
 
 describe('Welcome wizard', () => {
   beforeAll(() => {
+    browser.get('./');
     browser.executeScript('window.localStorage.clear()'); // clear localStorage to reveal WelcomeWizard
-
-    /**
-     * why not just home page?
-     */
-    browser.get('matrix?thing=Homes&countries=World&regions=World&zoom=4&row=1&lowIncome=1&highIncome=15000');
+    browser.get('./');
     browser.wait(AbstractPage.getEC().not(AbstractPage.getEC().visibilityOf(AbstractPage.loader)), 40000);
   });
   afterAll(() => {

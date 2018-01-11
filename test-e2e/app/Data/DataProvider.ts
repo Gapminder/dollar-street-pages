@@ -162,7 +162,6 @@ export class DataProvider {
 
   public static matrixPageQueries:any = {
     'ThingPets': {query: 'Pets'},
-    'ThingToilets': {query: 'Toilets'},
     'ThingFamilySnapshots': {query: 'Family snapshots'},
     'ThingWalls': {query: 'Wall decorations'},
     'ThingFrontDoor': {query: 'Front doors'},
