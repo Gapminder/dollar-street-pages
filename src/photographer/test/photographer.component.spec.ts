@@ -1,46 +1,35 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PhotographerComponent } from '../photographer.component';
 import { TranslateModule } from 'ng2-translate';
-import { Angulartics2Module, Angulartics2, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Angulartics2, Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
+import { LanguageService, LoaderService, MathService, TitleHeaderService } from '../../common';
 import {
-  TitleHeaderService,
-  MathService,
-  LanguageService,
-  LoaderService
-} from '../../common';
-import {
-  TitleHeaderServiceMock,
-  AngularticsMock,
   Angulartics2GoogleAnalyticsMock,
+  AngularticsMock,
   LanguageServiceMock,
-  LoaderServiceMock
+  LoaderServiceMock,
+  TitleHeaderServiceMock
 } from '../../test/';
-import { PhotographerProfileComponent } from '../photographer-profile/photographer-profile.component';
-import { PhotographerProfileService } from '../photographer-profile/photographer-profile.service';
-import { PhotographerPlacesComponent } from '../photographer-places/photographer-places.component';
-import { PhotographerPlacesService } from '../photographer-places/photographer-places.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('PhotographerComponent', () => {
   let fixture: ComponentFixture<PhotographerComponent>;
   let component: PhotographerComponent;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
         TranslateModule,
         Angulartics2Module
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [
-        PhotographerComponent,
-        PhotographerProfileComponent,
-        PhotographerPlacesComponent
+        PhotographerComponent
       ],
       providers: [
         MathService,
-        PhotographerProfileService,
-        PhotographerPlacesService,
         { provide: TitleHeaderService, useValue: TitleHeaderServiceMock },
         { provide: Angulartics2, useClass: AngularticsMock },
         { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
@@ -51,7 +40,7 @@ describe('PhotographerComponent', () => {
 
     fixture = TestBed.createComponent(PhotographerComponent);
     component = fixture.componentInstance;
-  }));
+  });
 
   it('ngOnCreate() ngOnDestroy()', () => {
     component.ngOnInit();
