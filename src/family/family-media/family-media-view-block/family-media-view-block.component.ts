@@ -185,19 +185,15 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           if (this.article && this.article.shortDescription.length) {
             this.article.description = this.getDescription(this.article.shortDescription);
           }
-
-          /*if (isImageLoaded) {
-            this.loader = true;
-          }*/
       });
     }
   }
 
   private setPointPositionMediaBlock() {
     const POINT_WIDTH = 32;
-    if (document.querySelector('.family-things-container')) {
-      const gridElement: HTMLElement = (document.querySelector('.family-things-container')
-        .querySelector('.family-image-container') as HTMLElement);
+    const thingContainer = document.querySelector('.family-things-container');
+    if (thingContainer) {
+      const gridElement: HTMLElement = (thingContainer.querySelector('.family-image-container') as HTMLElement);
       const elemWidth = gridElement.offsetWidth;
       this.imageViewBlockPosition.point.left = (elemWidth * (this.imageData.index - 1)) + elemWidth / 2 - POINT_WIDTH / 2;
     }
@@ -228,9 +224,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
         this.fancyBoxImage = `url("${imgUrl}")`;
       });
     };
-
     newImage.src = imgUrl;
-
   }
 
   public fancyBoxClose(): void {
@@ -276,6 +270,5 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     } else {
       return shortDescription;
     }
-
   }
 }
