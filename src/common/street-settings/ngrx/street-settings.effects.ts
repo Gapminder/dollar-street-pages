@@ -1,7 +1,8 @@
-import { Injectable } from "@angular/core";
-import { Effect, Actions, toPayload } from "@ngrx/effects";
+import { Injectable } from '@angular/core';
+import { Effect, Actions, toPayload } from '@ngrx/effects';
 import * as StreetSettingsActions from './street-settings.actions';
 import { StreetSettingsService } from '../street-settings.service';
+import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class StreetSettingsEffects {
