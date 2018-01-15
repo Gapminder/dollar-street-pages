@@ -21,7 +21,7 @@ import { Store } from '@ngrx/store';
 import {
   AppStates,
   StreetSettingsState,
-  DrawDividersInterface
+  DrawDividersInterface, UrlParameters
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -208,10 +208,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       this.familyInfoServiceSubscribe.unsubscribe();
     }
 
-    let query: string = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
+    const query = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
     this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(query).subscribe((res: any) => {
       if (res.err) {
-        console.error(res.err);
         return;
       }
 
@@ -229,9 +228,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
       this.countryName = this.truncCountryName(this.familyData.country);
 
-      let parsedUrl: any = this.utilsService.parseUrl(`place=${this.place._id}`);
+      const parsedUrl: UrlParameters = this.utilsService.parseUrl(this.query);
 
       this.familyData.goToPlaceData = parsedUrl;
+      this.familyData.goToPlaceData.place = this.place._id;
+      this.familyData.goToPlaceData.row = 1;
       this.isShowCountryButton = parsedUrl.countries !== this.familyData.country.originName;
       this.privateZoom = parsedUrl.zoom;
 
