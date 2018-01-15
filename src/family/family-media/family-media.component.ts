@@ -3,7 +3,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
-import {AppState, AppStates} from '../../interfaces';
+import {
+  AppState,
+  AppStates
+} from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import {
   Component,
@@ -15,7 +18,9 @@ import {
   AfterViewInit,
   ElementRef,
   ViewChild,
-  ViewContainerRef, OnChanges, SimpleChanges
+  ViewContainerRef,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { find, isEqual, slice, concat, get } from 'lodash';
 import {
