@@ -155,13 +155,14 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         this.store.dispatch(new MatrixActions.GetTimeUnits());
       }
 
-      if (get(data, 'currencyUnits', false)
-       && this.currencyUnits !== data.currencyUnits) {
-        this.currencyUnits = data.currencyUnits;
+      if (get(data, 'currencyUnits', false)) {
+       if( this.currencyUnits !== data.currencyUnits) {
+         this.currencyUnits = data.currencyUnits;
 
-        this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
+         this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
 
-        this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+         this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
+       }
       } else {
         this.store.dispatch(new MatrixActions.GetCurrencyUnits());
       }
