@@ -106,7 +106,7 @@ describe('Matrix Page: Zoom buttons', () => {
     browser.get('matrix');
   });
 
-  it('Decrease zoom', () => {
+  it('Decrease zoom (https://github.com/Gapminder/dollar-street-pages/issues/1189)', () => {
     const IMAGES_IN_ROW = 4;
     MatrixPage.zoomDecrease.click();
 
@@ -114,7 +114,7 @@ describe('Matrix Page: Zoom buttons', () => {
     expect(browser.getCurrentUrl()).toContain(`&zoom=${IMAGES_IN_ROW + 1}&`);
   });
 
-  it('Increase zoom', () => {
+  it('Increase zoom (https://github.com/Gapminder/dollar-street-pages/issues/1189)', () => {
     const IMAGES_IN_ROW = 4;
     MatrixPage.zoomIncrease.click();
 
@@ -298,7 +298,7 @@ describe('Matrix Page: Filters', () => {
     expect(browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
   });
 
-  it('Filter by Income: currency updated on family page', () => {
+  it('Filter by Income: currency updated on family page (https://github.com/Gapminder/dollar-street-pages/issues/1189)', () => {
     const random = AbstractPage.getRandom();
     const expectedCurrency = {
       name: 'Euro',
