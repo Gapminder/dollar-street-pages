@@ -2,47 +2,57 @@ sudo: required
 dist: trusty
 language: node_js
 # test with node 6.*
-node_js:
-  - "6"
+node_js: "6"
 
 # cache node_modules (read more: https://docs.travis-ci.com/user/caching/)
 cache:
+  apt: true
+  npm: true
   directories:
     - node_modules
 
 env:
   CXX=g++-4.8
 
-before_install:
-- npm install -g npm@latest
+stages:
+  - &stage
+    name: lint
+  - <<: *stage
+    if: type = push
+    name: test
+  - <<: *stage
+    if: type = pull_request
+    name: e2e-tests
 
-before_script:
-- npm install tsd -g
-- tsd install
-# set up UI for travis-ci (read more https://docs.travis-ci.com/user/gui-and-headless-browsers/)
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
-#- echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-# update webdrived for karma tests
-- npm run update-webdriver
-# build client project
-- npm run build
-# start file server in background
-- npm run start &
-- sleep 3
-# run unit tests
-- npm run test
-# up browserstack tunnel
-- npm run e2e:bstack:tunnel &
+install:
+- npm install
 
-script:
+jobs:
+  fast_finish: true
+  include:
+#   lint code
+    - stage: lint
+      install: true
+      script: npm run lint
+#   test
+    - &test
+      stage: test
+      script: npm run test
+#   test e2e
+    - stage: e2e-tests
+      script: npm run e2e
+
+
+#script:
 # run local karma tests
-- npm run lint
+#- npm run lint
 #- npm run pre-commit-test
 # submit coverage report to codecov
-- npm run codecov
+#- npm run codecov
+
+# run unit tests
+#- npm run test
+
 # run protractor tests
-- if [ "${TRAVIS_BRANCH}" == "development" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
-  npm run e2e:bstack;
-  .config/tools/bsurls.js;
-  fi
+#- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run e2e; fi
+

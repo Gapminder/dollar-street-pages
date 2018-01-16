@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "ng serve",
+    "e2e": "ng e2e --environment=qa --aot --named-chunks --base-href /dollar-street/", 
     "build": "ng build --aot --prod --named-chunks --base-href /dollar-street/",
+    "build:qa": "ng build --aot --named-chunks --base-href /dollar-street/ --environment=qa",
     "test": "ng test -sr -cc",
     "test:w": "ng test",
     "test:c": "ng test --code-coverage",
