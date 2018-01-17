@@ -33,9 +33,8 @@ exports.config = {
       chromeOptions: {
         args: ['no-sandbox', 'disable-infobars', 'headless']
       },
-      // shardTestFiles: true,
-      // maxInstances: 2,
-      // count: 2
+      shardTestFiles: true,
+      maxInstances: 2
     }
     /*{
       browserName: 'firefox',
