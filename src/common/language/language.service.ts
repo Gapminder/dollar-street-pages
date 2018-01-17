@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../url-change/url-change.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
-import * as _ from 'lodash';
+import { find, get } from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
 import { UtilsService } from '../utils/utils.service';
@@ -26,7 +26,7 @@ export class LanguageService {
   public translationsLoadedSubscribe: Subscription;
   public documentLoadedSubscription: Subscription;
   public translationsLoadedEvent: EventEmitter = new EventEmitter();
-  public translationsLoadedString: string = 'TRANSLATIONS_LOADED';
+  public translationsLoadedString = 'TRANSLATIONS_LOADED';
   public languagesList: Observable<any>;
   public availableLanguage: string[] = ['en', 'es-ES', 'sv-SE'];
 
@@ -76,9 +76,23 @@ export class LanguageService {
         console.error(res.err);
         return;
       }
-
       return res.data;
     });
+
+    this.languagesList.subscribe(data => {
+      this.availableLanguage = this.setAvailableLanguages(data);
+      this.setCurrentLanguage(this.availableLanguage);
+    });
+  }
+
+  public setAvailableLanguages(data): string[] {
+    return data.reduce((arr, current) => {
+      if (get(current, 'code', false)) {
+        arr.push(current.code);
+      }
+
+      return arr;
+    }, []);
   }
 
   public getLanguageIso(): string {
@@ -153,7 +167,7 @@ export class LanguageService {
     const storageLanguage: any = this.localStorageService.getItem('language');
     const browserLanguage: string = this.translate.getBrowserCultureLang();
 
-    let language = urlLanguage !== this.defaultLanguage ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
+    const language = urlLanguage !== this.defaultLanguage ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
 
     const found = languages.indexOf(language) !== -1;
 
@@ -176,9 +190,9 @@ export class LanguageService {
 
   public getLanguagesList(): Observable<any> {
     return this.http.get(`${environment.consumerApi}/v1/languagesList`).map((res: any) => {
-      let parseRes = JSON.parse(res._body);
+      const parseRes = JSON.parse(res._body);
 
-      let currentLanguageObject: any = _.find(parseRes.data, {code: this.currentLanguage});
+      const currentLanguageObject: any = find(parseRes.data, {code: this.currentLanguage});
 
       if (currentLanguageObject) {
         this.languageName = currentLanguageObject.name;
