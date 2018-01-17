@@ -1,9 +1,6 @@
 module.exports = function (config) {
-  let browser = ['ChromeHeadless'];
-  if (process.env.TRAVIS) {
-    browser = ['Chrome_travis_ci'];
-  }
   config.set({
+    browsers: ['ChromeHeadless'],
     basePath: '',
     frameworks: ['jasmine', '@angular/cli'],
     plugins: [
@@ -13,14 +10,8 @@ module.exports = function (config) {
       require('karma-spec-reporter'),
       require('@angular/cli/plugins/karma')
     ],
-    customLaunchers: {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    },
     files: [
-     {pattern: './src/test.ts', watched: false}
+      {pattern: './src/test.ts', watched: false}
     ],
     preprocessors: {'./src/test.ts': ['@angular/cli']},
     mime: {'text/x-typescript': ['ts', 'tsx']},
@@ -35,8 +26,8 @@ module.exports = function (config) {
       environment: 'dev'
     },
     reporters: config.angularCli && config.angularCli.codeCoverage
-     ? ['spec', 'coverage-istanbul']
-     : ['spec'],
+      ? ['spec', 'coverage-istanbul']
+      : ['spec'],
     specReporter: {
       // maxLogLines: 5,             // limit number of lines logged per test
       suppressErrorSummary: false, // do not print error summary
@@ -50,7 +41,6 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: browser,
     singleRun: false
   });
 };
