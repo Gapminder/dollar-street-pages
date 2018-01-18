@@ -1,14 +1,14 @@
 .lang-container {
-  display: inline-block;
-  float: right;
   line-height: 14px;
   font-size: 14px;
-  margin: 17px 4px;
+}
+
+.lang-button {
+  padding: 17px 4px;
 }
 
 .lang-container .active-languages {
   display: inline-block;
-  padding-top: 2px;
 }
 
 .lang-outside {
@@ -42,16 +42,10 @@
   padding: 0;
   background-color: white;
   box-shadow: none;
-  float: right;
-}
-
-.btn {
-  height: 8px;
 }
 
 .btn img {
-  height: 100%;
-  margin-bottom: 6px;
+  height: 6px;
 }
 
 /*.caret {

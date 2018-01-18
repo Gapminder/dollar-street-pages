@@ -6,7 +6,7 @@
 
 #main-mobile-menu .open .container-menu {
   top: 0;
-  bottom: 0;
+  /*bottom: 0;*/
   left: 0;
   right: 0;
   position: fixed;
@@ -14,7 +14,8 @@
   background-color: white;
   display: block;
   z-index: 666;
-  height: 100%;
+  height: auto;
+  max-height: 100vh;
   overflow-y: auto;
 }
 
@@ -60,10 +61,6 @@
 
 #main-mobile-menu .menu-icon img.unactive {
   display: block;
-}
-
-#main-mobile-menu > div {
-  float: right;
 }
 
 #main-mobile-menu .open .menu-icon {

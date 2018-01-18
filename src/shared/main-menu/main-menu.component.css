@@ -167,8 +167,8 @@
 }
 
 .container-menu >>> .lang-container {
-  display: inline-block;
   margin: 5px 0;
+  text-align: right;
 }
 
 .container-menu .language-selector {

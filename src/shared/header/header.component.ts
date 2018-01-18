@@ -176,20 +176,20 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
 
     this.resizeSubscription = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(350)
       .subscribe(() => {
         this.calcIncomeSize();
         this.checkByIncomeFilter();
       });
 
     this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
-      .debounceTime(150)
+      .debounceTime(350)
       .subscribe(() => {
         this.calcIncomeSize();
       });
 
     this.scrollSubscription = fromEvent(document, 'scroll')
-      .debounceTime(10)
+      .debounceTime(50)
       .subscribe(() => {
         let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 

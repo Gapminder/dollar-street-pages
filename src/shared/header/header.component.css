@@ -54,6 +54,32 @@ family-header .header-content {
   vertical-align: baseline;
 }
 
+.header-position-row {
+  display: flex;
+  width: 100%;
+}
+
+.header-position-cell {
+  flex: 1 1 100%;
+  padding: 11px 5px 0;
+}
+
+.header-position-cell.logo-cell {
+  flex: 0 0 45px;
+  display: none;
+}
+
+.header-position-cell.main-menu-cell {
+  flex: 0 0 57px;
+  padding-top: 0;
+}
+
+@media (min-width: 768px) {
+  .header-position-cell.logo-cell {
+    display: block;
+  }
+}
+
 @media (max-width: 1023px) {
   .family-header .heading {
     margin: 11px 0 0;
@@ -155,7 +181,8 @@ family-header .header-content {
   background-color: white;
   transform: translateZ(0);
   position: relative;
-  z-index: 1;
+  z-index: 20;
+  padding: 0 5px;
 }
 
 .header-content .icon-container {
@@ -163,9 +190,8 @@ family-header .header-content {
 }
 
 .header-content .icon-container img {
-  width: 46px;
-  height: 46px;
-  margin: 9px 27px 9px 0;
+  width: 35px;
+  height: 35px;
   cursor: pointer;
 }
 
@@ -175,31 +201,64 @@ family-header .header-content {
   vertical-align: middle;
 }
 
-.filters-container {
-  float: left;
-  margin-top: 11px;
-}
-
-.filters-container things-filter,
-.filters-container > span,
-.filters-container .some-filter-container > *,
-.filters-container .some-filter-container .income-title-container {
-  display: inline-block;
-  vertical-align: middle;
-}
-
 .filters-container > span,
 .filters-container .some-filter-container > span,
 .filters-container .some-filter-container .income-title-container {
-  margin: 0 9px 0 10px;
-  font-size: 28px;
   color: #767d86;
-  line-height: 20px;
+}
+
+.filters-container .line {
+  display: flex;
+  width: calc(100% + 10px);
+  margin: 0 -5px;
+  justify-content: space-between;
+}
+
+.filters-container .line .cell {
+  flex: 1 1 100%;
+  padding: 5px 0;
+  margin: 0 5px;
+}
+
+.filters-container .line .cell.desktop-words {
+  display: none;
+  flex: 0 0 0;
+}
+
+.filters-container .line .cell.income-cell {
+  flex: 0 0 80px;
+}
+
+.filters-container countries-filter {
+  width: 100%;
+}
+
+.filters-container .income-title-container {
+  position: relative;
+  width: 100%;
+}
+
+.filter-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-cell {
+  flex: 1 1 auto;
+}
+
+.income-title .long-text {
+  display: none;
+}
+
+.income-title .short-text {
+  display: block;
 }
 
 .some-filter-container {
-  display: inline-block;
+  display: block;
   vertical-align: top;
+  padding: 5px 0;
 }
 
 .place-title {
@@ -227,10 +286,11 @@ family-header .header-content {
 }
 
 
-/* INCOME FILTER DESKTOP ---- BEGIN */
+
 .income-title.filter {
   display: inline-block;
-  padding: 9px 35px 10px 14px;
+  padding: 0 35px 0 14px;
+  height: 35px;
   background-color: white;
   border: 1px solid #e4e6e7;
   border-radius: 6px;
@@ -238,38 +298,11 @@ family-header .header-content {
   text-align: left;
   cursor: pointer;
   color: #374551;
-  font-size: 28px;
+  font-size: 24px;
   white-space: nowrap;
   text-overflow: ellipsis;
   position: relative;
 }
-
-/*.income-title.filter.opened {
-  box-shadow: 0 0 10px rgba(55, 69, 81, 0.1);
-}
-
-.income-title.filter::after {
-  content: '';
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 7px solid #374551;
-  position: absolute;
-  top: calc(50% - 3.5px);
-  right: 11px;
-}
-
-.income-title.filter.opened::after {
-  content: '';
-  width: 0;
-  height: 0;
-  border-bottom: 7px solid #374551;
-  border-top: 0 solid transparent;
-  position: absolute;
-  top: calc(50% - 3.5px);
-  right: 11px;
-}*/
 
 .income-title.filter.opened {
   box-shadow: 0 0 10px rgba(55, 69, 81, 0.1);
@@ -298,12 +331,13 @@ family-header .header-content {
   right: 11px;
 }
 
-/*.income-title.filter*/ .income-filter-desktop-container {
+.income-filter-desktop-container {
   position: absolute;
   z-index: 999;
   width: 280px;
   top: 44px;
-  left: 0;
+  left: auto;
+  right: 0;
   background-color: white;
   border: 1px solid #e4e6e7;
   box-shadow: 0 0 10px rgba(55, 69, 81, 0.1);
@@ -579,21 +613,6 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-
-/*  INCOME FILTER DESKTOP ---- END */
-
-/*.filters-container .income-title-container .income-title {
-  display: none;
-}
-
-.filters-container .income-title-container.short .income-title:nth-child(1) {
-  display: inline-block
-}
-
-.filters-container .income-title-container.long .income-title:nth-child(2) {
-  display: inline-block
-}*/
-
 .menu-container {
   display: block;
   position: relative;
@@ -603,20 +622,6 @@ input:checked + .slider:before {
 }
 
 @media (max-width: 1023px) {
-  .filters-container things-filter {
-    margin-bottom: 5px;
-  }
-
-  .header-content .icon-container img {
-    width: 42px;
-    height: 42px;
-    margin: 7px 14px 7px 0;
-  }
-
-  .filters-container {
-    margin-top: 11px;
-  }
-
   .filters-container .some-filter-container > span,
   .filters-container > span {
     margin: 0 11px;
@@ -633,22 +638,9 @@ input:checked + .slider:before {
     vertical-align: sub;
   }
 
-  .header-content .icon-container img {
-    width: 35px;
-    height: 35px;
-    margin: 10px 10px 7px 0;
-  }
 }
 
 @media (max-width: 700px) {
-  countries-filter {
-    width: calc(100% - 80px);
-    vertical-align: top;
-    display: inline-block;
-    left: 0;
-    right: 0;
-  }
-
   .income-title.filter::after {
     display: none;
   }
@@ -663,12 +655,6 @@ input:checked + .slider:before {
 
   .header-content >>> .lang-container {
     display: none;
-  }
-
-  .filters-container {
-    float: left;
-    margin-top: 11px;
-    width: calc(100% - 47px);
   }
 
   .filters-container .map-things-text {
@@ -694,60 +680,119 @@ input:checked + .slider:before {
     display: none;
   }
 
-  .income-title-container {
-    margin-left: 6px!important;
-    margin-top: 6px!important;
-    float: right;
-    position: relative;
-  }
-
   .filters-container .income-title {
     width: 100%;
     display: block;
     height: 35px;
     border: 1px solid #e4e6e7;
     border-radius: 6px;
-    padding: 7px;
     color: #394451;
     font-size: 24px;
     vertical-align: top;
   }
 }
 
-/* Nexus 7 */
-@media (max-width: 600px) {
-  .header-content .icon-container {
+@media (min-width: 768px) {
+  .some-filter-container {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 24px;
+  }
+
+  .filters-container .some-filter-container .mobile-ver {
+    display: block;
+  }
+
+  .filters-container things-filter,
+  .filters-container .some-filter-container .income-title-container {
+    display: block;
+    vertical-align: middle;
+  }
+
+  .header-position-cell.logo-cell {
+    flex-basis: 52px;
+    padding-top: 0;
+  }
+
+  .header-content .icon-container img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .header-position-row {
+    align-items: center;
+  }
+
+  .header-position-row .header-position-cell.filter-cell {
+    display: flex;
+  }
+
+  .filters-container .line {
+    align-items: center;
+  }
+
+  .filters-container .line .cell.desktop-words {
+    display: block;
+    width: 30px;
+  }
+
+
+  .filter-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 -5px;
+  }
+
+  .filter-cell {
+    flex: 1 1 auto;
+    padding: 0 5px;
+  }
+
+  .menu-row {
+    display: flex;
+    align-items: center;
+    margin: 0 -5px;
+  }
+
+  .menu-cell {
+    flex: 1 1 auto;
+    padding: 0 5px;
+  }
+
+  .menu-cell.button-cell {
+    flex: 0 0 43px;
+  }
+
+  .income-filter-desktop-container {
+    right: auto;
+    left: 0;
+  }
+
+}
+
+@media (min-width: 1024px) {
+  .income-title.filter {
+    height: 43px;
+    font-size: 28px;
+  }
+
+  .income-title .long-text {
+    display: block;
+  }
+
+  .income-title .short-text {
     display: none;
   }
-
-  .filters-container .income-title {
-    border: none;
-    width: 100%;
-    display: block;
-    height: 35px;
-    border-radius: 0px;
-    padding: 7px;
-    color: #767d86;
-    font-size: 24px;
-    vertical-align: top;
-  }
 }
 
-/* iPhone 5 */
-@media (max-width: 599px) {
-  .header-content .icon-container {
-    display: block;
+@media (min-width: 768px) and (max-width: 1023px) {
+  .income-title-container {
+    max-width: 190px;
   }
 
-  .filters-container .income-title {
-    width: 100%;
-    display: block;
-    height: 35px;
-    border: 1px solid #e4e6e7;
-    border-radius: 6px;
-    padding: 7px;
-    color: #394451;
-    font-size: 24px;
-    vertical-align: top;
+  .income-title-container .income-title {
+    max-width: 100%;
+    overflow: hidden;
   }
 }

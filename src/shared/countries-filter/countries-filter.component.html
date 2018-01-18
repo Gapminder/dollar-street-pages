@@ -78,11 +78,11 @@
 <div id="countries-filter-mobile"
      *ngIf="activeCountries && openMobileFilterView"
      [ngClass]="{'open-countries-filter': isOpenCountriesFilter}">
-  <div class="countries-filter-button"
+  <button class="countries-filter-button"
        (click)="openCloseCountriesFilter(isOpenCountriesFilter)">
     <span>{{activeCountries}}</span>
     <span class="arrow"></span>
-  </div>
+  </button>
   <div class="countries-filter-container"
        *ngIf="isOpenCountriesFilter">
     <div class="title-container">

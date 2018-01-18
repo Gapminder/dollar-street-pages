@@ -1,8 +1,7 @@
 #countries-filter-mobile {
-  display: inline-block;
+  display: block;
   position: relative;
   vertical-align: bottom;
-  margin-bottom: 5px;
 }
 
 #countries-filter-mobile .countries-filter-button {
@@ -18,6 +17,8 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-align: left;
+  width: 100%;
 }
 
 #countries-filter-mobile.open-countries-filter .countries-filter-button {
@@ -31,7 +32,7 @@
   border-right: 5px solid transparent;
   border-top: 7px solid #374551;
   position: absolute;
-  top: 18px;
+  top: 14px;
   right: 11px;
 }
 
@@ -39,7 +40,7 @@
   border-bottom: 7px solid #374551;
   border-top: 0 solid transparent;
   position: absolute;
-  top: 18px;
+  top: 16px;
   right: 11px;
 }
 
@@ -51,7 +52,6 @@
 #countries-filter-mobile.open-countries-filter .countries-filter-container {
   overflow: hidden;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
   position: fixed;
@@ -59,7 +59,7 @@
   background-color: white;
   display: block;
   z-index: 667;
-  height: 100%;
+  height: 100vh;
 }
 
 #countries-filter-mobile .regions-container {
@@ -407,12 +407,6 @@
   }
 }
 
-@media (max-width: 800px) {
-  #countries-filter-mobile .countries-filter-button {
-    max-width: 210px;
-  }
-}
-
 @media (max-width: 680px) {
   .countries-filter-button {
     max-width: 140px;
@@ -422,7 +416,6 @@
 @media (max-width: 700px) {
   #countries-filter-mobile {
     width: 100%;
-    margin: 6px 0;
   }
 
   .countries-filter-button {
@@ -516,5 +509,12 @@
 
   #countries-filter-mobile .button-container button {
     padding: 5px 40px 0 40px;
+  }
+}
+
+
+@media (min-width: 1024px) {
+  #countries-filter-mobile .countries-filter-button {
+    height: 43px;
   }
 }

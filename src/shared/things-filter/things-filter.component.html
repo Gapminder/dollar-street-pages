@@ -102,14 +102,14 @@
      *ngIf="(activeThing?.plural || activeThing?.thingName) && openMobileFilterView"
      [ngClass]="{'open-things-filter': isOpenThingsFilter}">
   <div class="things-filter-button">
-    <div class="things-filter-button-content"
+    <button class="things-filter-button-content"
          (click)="openThingsFilter(isOpenThingsFilter)">
       <img *ngIf="activeThing?.iconDark"
            [src]="activeThing?.iconDark"
            alt="Icon">
       <span>{{activeThing?.plural || activeThing?.thingName}}</span>
       <span class="arrow"></span>
-    </div>
+    </button>
 
     <div class="thing-pop-up"
          *ngIf="isDesktop && activeThing.shortDescription && !isOpenThingsFilter">

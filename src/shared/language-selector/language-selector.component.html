@@ -3,17 +3,18 @@
        dropdown
        class="btn-group"
        [(isOpen)]="status.isOpen">
-    <div class="active-languages">
-      <span class="lang-outside">
-        {{selectedLanguage?.name}}
-      </span>
-    </div>
+
 
     <button id="single-button"
             type="button"
             class="btn"
             dropdownToggle
             [disabled]="disabled">
+      <span class="active-languages">
+      <span class="lang-outside">
+        {{selectedLanguage?.name}}
+      </span>
+      </span>
       <img src="assets/img/lang-selector-arrow.svg" alt="">
     </button>
 

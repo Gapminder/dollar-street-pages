@@ -6,177 +6,205 @@
       [ngClass]="{'small-container': isMapPage || isAboutPage || isTeamPage ||
                                      isDonatePage || isCountryPage || isArticlePage ||
                                      isPhotographersPage || isPhotographerPage}">
-    <div class="icon-container pull-left"
-         *ngIf="(isMatrixPage && !isMobile && isPinMode) ||
-                (isMatrixPage && !isMobile) ||
-                isAboutPage || isDonatePage || isArticlePage ||
-                isPhotographersPage || isPhotographerPage ||
+    <div class="header-position-row">
+      <div class="header-position-cell logo-cell">
+        <div class="icon-container pull-left"
+             *ngIf="isMatrixPage ||
+                isAboutPage ||
+                isDonatePage ||
+                isArticlePage ||
+                isPhotographersPage ||
+                isPhotographerPage ||
                 isCountryPage || isTeamPage ||
                 (isFamilyPage && (isDesktop || isTablet)) ||
                 (isMapPage && (isDesktop || isTablet))">
-      <img class="logo" (click)="goToMatrixPage()" src="assets/img/dollar-street-logo.png" alt=""/>
-    </div>
-
-    <div *ngIf="(isMatrixPage && isPinMode) ||
-                isAboutPage || isDonatePage ||
-                isPhotographersPage || isPhotographerPage ||
-                isCountryPage || isTeamPage || isArticlePage"
-          class="without-filters-header">
-          <h2 #headerTitle class="header-title heading pull-left"></h2>
-    </div>
-
-    <div #filtersContainer>
-      <div *ngIf="((isMatrixPage && !isPinMode) || (isMatrixPage && isPinMode)) || isMapPage"
-          class="filters-container"
-          [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
-
-        <things-filter (isFilterGotData)="isFilterGotData($event)"></things-filter>
-
-        <span *ngIf="isMapPage"
-              class="map-things-text">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
-
-        <div *ngIf="isMatrixPage"
-            class="some-filter-container incomeby">
-          <span class="mobile-ver">{{ 'IN' | translate }}</span>
-
-          <countries-filter (isFilterGotData)="isFilterGotData($event)"></countries-filter>
-
-          <span #incomeTitleContainer
-                class="income-title-container">
-            <!--<span class="income-title filter"
-                  (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
-            <span class="income-title filter"
-                  (click)="openIncomeFilterDesktop($event)">{{ 'BY_INCOME' | translate }}</span>-->
-            <span class="income-title"
-                  [ngClass]="{opened: isIncomeDesktopOpened, filter: isIncomeFilter}"
-                  (click)="openIncomeFilter($event)">{{ incomeTitleText }}</span>
-
-            <div (click)="incomeContainerClick($event)"
-                 [ngStyle]="{display: isIncomeDesktopOpened ? 'block' : 'none'}"
-                 class="income-filter-desktop-container">
-              <div class="income-filter-desktop-header">
-                <span>Income</span>
-                <img [routerLink]="['/about']"
-                     [queryParams]="{jump: 'income-calc'}"
-                     src="/assets/img/info-icon.svg"/>
-                <img class="close-button"
-                     src="/assets/img/close-button.svg"
-                     (click)="closeIncomeFilterDesktop($event)"/>
-              </div>
-
-              <div class="income-filter-desktop-content">
-                <div class="currency-unit-container">
-                  <div class="currency-unit-cell">
-
-                    <div dropdown class="control-section">
-                      <span class="control-label">{{ 'CURRENCY' | translate }}</span>
-                      <button type="button"
-                              class="dropdown-button"
-                              dropdownToggle
-                              [disabled]="disabled"
-                              [title]="currencyUnitTemp?.currency">
-                        <span class="dropdown-selected">{{ currencyUnitTemp?.currency }}</span>
-                        <span class="button-icon">
-                          <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
-                        </span>
-                      </button>
-
-                      <ul dropdownMenu
-                          role="menu"
-                          aria-labelledby="single-button"
-                          class="dropdown-container currency-container">
-                        <li *ngFor="let currUnit of currencyUnits"
-                            class="dropdown-item"
-                            role="menuitem"
-                            (click)="currencyUnitFilterSelect(currUnit.code)">
-                          <span class="dropdown-item">{{ currUnit?.currency }}</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                  </div>
-                  <div class="currency-unit-cell">
-
-                    <div dropdown class="control-section">
-                      <span class="control-label">{{ 'TIME_UNIT' | translate }}</span>
-                      <button type="button"
-                              class="dropdown-button"
-                              dropdownToggle
-                              [disabled]="disabled">
-                        <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
-                        <span class="button-icon">
-                          <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
-                        </span>
-                      </button>
-
-                      <ul dropdownMenu
-                          role="menu"
-                          aria-labelledby="single-button"
-                          class="dropdown-container">
-                        <li class="dropdown-item"
-                            role="menuitem"
-                            (click)="timeUnitFilterSelect('DAY')">
-                          <span class="dropdown-item">Day</span>
-                        </li>
-                        <li class="dropdown-item"
-                            role="menuitem"
-                            (click)="timeUnitFilterSelect('WEEK')">
-                          <span class="dropdown-item">Week</span>
-                        </li>
-                        <li class="dropdown-item"
-                            role="menuitem"
-                            (click)="timeUnitFilterSelect('MONTH')">
-                          <span class="dropdown-item">Month</span>
-                        </li>
-                        <li class="dropdown-item"
-                            role="menuitem"
-                            (click)="timeUnitFilterSelect('YEAR')">
-                          <span class="dropdown-item">Year</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                  </div>
-
-                </div>
-                <div class="show-levels-container">
-                  <!--<span class="show-levels-label">levels</span>
-                  <label class="switch">
-                    <input type="checkbox" [(ngModel)]="showStreetAttrsTemp">
-                    <span class="slider round"></span>
-                  </label>-->
-                </div>
-              </div>
-
-              <div class="income-filter-desktop-footer">
-                <div (click)="closeIncomeFilterDesktop($event)" class="close-button">Close</div>
-                <div (click)="applyIncomeFilterDesktop($event)" class="ok-button">
-                  <img src="/assets/img/apply.svg" alt=""/>
-                  <span>Ok</span>
-                </div>
-              </div>
-            </div>
-          </span>
+          <img class="logo" (click)="goToMatrixPage()" src="assets/img/dollar-street-logo.png" alt=""/>
         </div>
       </div>
 
-      <div *ngIf="isFamilyPage"
-          class="family-header">
-        <p class="heading pull-left"
-          (click)="goToMatrixFromFamilyPage()"
-          angulartics2On="click"
-          angularticsEvent="From Place page to Matrix page (Thing:{{urlParams?.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
-          <img src="/assets/img/back-icon.svg" alt="Back">{{thingsFilterData?.thing?.plural}} {{ 'IN' | translate }} {{backToCountries}}
-        </p>
+      <div class="header-position-cell filter-cell">
+          <div class="without-filters-header"*ngIf="(isMatrixPage && isPinMode) ||
+                  isAboutPage || isDonatePage ||
+                  isPhotographersPage || isPhotographerPage ||
+                  isCountryPage || isTeamPage || isArticlePage">
+            <h2 #headerTitle class="header-title heading pull-left"></h2>
+          </div>
+
+          <div #filtersContainer>
+            <div *ngIf="((isMatrixPage && !isPinMode) || (isMatrixPage && isPinMode)) || isMapPage"
+                 class="filters-container"
+                 [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
+
+              <div class="filter-row">
+                <div class="filter-cell">
+                  <things-filter (isFilterGotData)="isFilterGotData($event)"></things-filter>
+                </div>
+
+                <div class="filter-cell" *ngIf="isMapPage">
+                  <span class="map-things-text">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
+                </div>
+
+                <div class="filter-cell" *ngIf="isMatrixPage">
+                  <div class="some-filter-container incomeby">
+                    <div class="line">
+                      <div class="cell desktop-words">
+                        <span class="mobile-ver">{{ 'IN' | translate }}</span>
+                      </div>
+                      <div class="cell country-filter-cell">
+                        <countries-filter (isFilterGotData)="isFilterGotData($event)"></countries-filter>
+                      </div>
+                      <div class="cell income-cell">
+                        <div #incomeTitleContainer
+                             class="income-title-container">
+                          <!--<span class="income-title filter"
+                                (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
+                          <span class="income-title filter"
+                                (click)="openIncomeFilterDesktop($event)">{{ 'BY_INCOME' | translate }}</span>-->
+                          <button class="income-title"
+                                [ngClass]="{opened: isIncomeDesktopOpened, filter: isIncomeFilter}"
+                                (click)="openIncomeFilter($event)">
+                            <span class="long-text">{{ byIncomeText }}</span>
+                            <span class="short-text">{{ byDollarText }}</span>
+                          </button>
+
+                          <div (click)="incomeContainerClick($event)"
+                               [ngStyle]="{display: isIncomeDesktopOpened ? 'block' : 'none'}"
+                               class="income-filter-desktop-container">
+                            <div class="income-filter-desktop-header">
+                              <span>Income</span>
+                              <img [routerLink]="['/about']"
+                                   [queryParams]="{jump: 'income-calc'}"
+                                   src="/assets/img/info-icon.svg"/>
+                              <img class="close-button"
+                                   src="/assets/img/close-button.svg"
+                                   (click)="closeIncomeFilterDesktop($event)"/>
+                            </div>
+
+                            <div class="income-filter-desktop-content">
+                              <div class="currency-unit-container">
+                                <div class="currency-unit-cell">
+
+                                  <div dropdown class="control-section">
+                                    <span class="control-label">{{ 'CURRENCY' | translate }}</span>
+                                    <button type="button"
+                                            class="dropdown-button"
+                                            dropdownToggle
+                                            [disabled]="disabled"
+                                            [title]="currencyUnitTemp?.currency">
+                                      <span class="dropdown-selected">{{ currencyUnitTemp?.currency }}</span>
+                                      <span class="button-icon">
+                                    <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
+                                  </span>
+                                    </button>
+
+                                    <ul dropdownMenu
+                                        role="menu"
+                                        aria-labelledby="single-button"
+                                        class="dropdown-container currency-container">
+                                      <li *ngFor="let currUnit of currencyUnits"
+                                          class="dropdown-item"
+                                          role="menuitem"
+                                          (click)="currencyUnitFilterSelect(currUnit.code)">
+                                        <span class="dropdown-item">{{ currUnit?.currency }}</span>
+                                      </li>
+                                    </ul>
+                                  </div>
+
+                                </div>
+                                <div class="currency-unit-cell">
+
+                                  <div dropdown class="control-section">
+                                    <span class="control-label">{{ 'TIME_UNIT' | translate }}</span>
+                                    <button type="button"
+                                            class="dropdown-button"
+                                            dropdownToggle
+                                            [disabled]="disabled">
+                                      <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
+                                      <span class="button-icon">
+                                    <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
+                                  </span>
+                                    </button>
+
+                                    <ul dropdownMenu
+                                        role="menu"
+                                        aria-labelledby="single-button"
+                                        class="dropdown-container">
+                                      <li class="dropdown-item"
+                                          role="menuitem"
+                                          (click)="timeUnitFilterSelect('DAY')">
+                                        <span class="dropdown-item">Day</span>
+                                      </li>
+                                      <li class="dropdown-item"
+                                          role="menuitem"
+                                          (click)="timeUnitFilterSelect('WEEK')">
+                                        <span class="dropdown-item">Week</span>
+                                      </li>
+                                      <li class="dropdown-item"
+                                          role="menuitem"
+                                          (click)="timeUnitFilterSelect('MONTH')">
+                                        <span class="dropdown-item">Month</span>
+                                      </li>
+                                      <li class="dropdown-item"
+                                          role="menuitem"
+                                          (click)="timeUnitFilterSelect('YEAR')">
+                                        <span class="dropdown-item">Year</span>
+                                      </li>
+                                    </ul>
+                                  </div>
+
+                                </div>
+
+                              </div>
+                              <div class="show-levels-container">
+                                <!--<span class="show-levels-label">levels</span>
+                                <label class="switch">
+                                  <input type="checkbox" [(ngModel)]="showStreetAttrsTemp">
+                                  <span class="slider round"></span>
+                                </label>-->
+                              </div>
+                            </div>
+
+                            <div class="income-filter-desktop-footer">
+                              <div (click)="closeIncomeFilterDesktop($event)" class="close-button">Close</div>
+                              <div (click)="applyIncomeFilterDesktop($event)" class="ok-button">
+                                <img src="/assets/img/apply.svg" alt=""/>
+                                <span>Ok</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="isFamilyPage"
+                 class="family-header">
+              <p class="heading pull-left"
+                 (click)="goToMatrixFromFamilyPage()"
+                 angulartics2On="click"
+                 angularticsEvent="From Place page to Matrix page (Thing:{{urlParams?.thing}} Countries:{{urlParams.countries}} Zoom:{{urlParams.zoom}} Row:{{urlParams.row}} Incomes :{{urlParams.lowIncome}} - {{urlParams.highIncome}} ">
+                <img src="/assets/img/back-icon.svg" alt="Back">{{thingsFilterData?.thing?.plural}} {{ 'IN' | translate }} {{backToCountries}}
+              </p>
+            </div>
+        </div>
       </div>
-    </div>
 
-    <div class="menu-container pull-right">
-      <main-menu class="pull-right"></main-menu>
+      <div class="header-position-cell main-menu-cell">
 
-      <span class="language-selector-header">
-        <language-selector></language-selector>
-      </span>
+        <div class="menu-container ">
+          <div class="menu-row">
+            <div class="menu-cell">
+              <language-selector></language-selector>
+            </div>
+            <div class="menu-cell">
+              <main-menu></main-menu>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
