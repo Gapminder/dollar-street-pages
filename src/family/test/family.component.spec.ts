@@ -11,7 +11,7 @@ import { FamilyComponent } from '../family.component';
 import { FamilyService } from '../family.service';
 import { LocalStorageService } from '../../common/local-storage/local-storage.service';
 
-import { BlankComponent } from '../../test/';
+import { BlankComponentStub } from '../../test/';
 import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateTestingModule } from '../../test/translateTesting.module';
@@ -69,11 +69,11 @@ describe('Component: FamilyComponent', () => {
         EffectsModule.forRoot([StreetSettingsEffects]),
         RouterTestingModule.withRoutes([{
           path: 'matrix',
-          component: BlankComponent
+          component: BlankComponentStub
         }])
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [BlankComponent, FamilyComponent],
+      declarations: [BlankComponentStub, FamilyComponent],
       providers: [
         LocalStorageService,
         MathService,

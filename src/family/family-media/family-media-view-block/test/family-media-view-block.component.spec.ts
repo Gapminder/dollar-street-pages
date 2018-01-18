@@ -4,13 +4,10 @@ import { FamilyMediaViewBlockService } from '../family-media-view-block.service'
 import { StoreModule } from '@ngrx/store';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockFamilyMediaText } from './mock.data';
-import { BlankComponent } from '../../../../test/';
+import { BlankComponentStub } from '../../../../test/';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonServicesTestingModule } from '../../../../test/commonServicesTesting.module';
 import { TranslateTestingModule } from '../../../../test/translateTesting.module';
-
-// TODO need fix: causes 'script error'
-// I guess because of calling FamilyMediaViewBlockService.getData
 
 describe('FamilyMediaViewBlockComponent', () => {
   let componentInstance: FamilyMediaViewBlockComponent;
@@ -21,11 +18,11 @@ describe('FamilyMediaViewBlockComponent', () => {
       imports: [
         CommonServicesTestingModule,
         StoreModule.forRoot({}),
-        RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
+        RouterTestingModule.withRoutes([{path: '', component: BlankComponentStub}]),
         TranslateTestingModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [FamilyMediaViewBlockComponent, BlankComponent],
+      declarations: [FamilyMediaViewBlockComponent, BlankComponentStub],
       providers: [
         {provide: FamilyMediaViewBlockService, useValue: {}}
       ]

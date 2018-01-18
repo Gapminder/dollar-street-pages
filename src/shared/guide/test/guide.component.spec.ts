@@ -36,10 +36,10 @@ describe('GuideComponent', () => {
         SocialShareButtonsComponent
       ],
       providers: [
-        GuideService,
+        { provide: GuideService, useClass: GuideServiceMock },
         LocalStorageService,
-        {provide: LanguageService, useClass: LanguageServiceMock},
-        {provide: Store, useClass: StoreMock}
+        { provide: LanguageService, useClass: LanguageServiceMock },
+        { provide: Store, useClass: StoreMock }
       ]
     });
 
@@ -80,3 +80,10 @@ describe('GuideComponent', () => {
     component.isShowGuide = false;
   });
 });
+
+class GuideServiceMock {
+  getGuide(): Observable<any> {
+
+    return Observable.of({ err: null, data: [{ name: 'welcomeHeader', description: 'string' }] });
+  }
+}

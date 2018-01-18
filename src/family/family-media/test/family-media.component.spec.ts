@@ -15,7 +15,7 @@ import {
 } from '../../../common';
 import {
     LoaderServiceMock,
-    BlankComponent,
+    BlankComponentStub,
     LanguageServiceMock,
     BrowserDetectionServiceMock,
     UtilsServiceMock,
@@ -61,7 +61,7 @@ describe('FamilyMediaComponent', () => {
             imports: [
                         FamilyModule
                      ],
-            declarations: [ BlankComponent ],
+            declarations: [ BlankComponentStub ],
             providers: [
                             SpyLocation,
                             { provide: UrlChangeService, useClass: UrlChangeServiceMock },

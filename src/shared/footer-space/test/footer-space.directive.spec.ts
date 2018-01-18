@@ -1,27 +1,27 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BlankComponent } from '../../../test/';
+import { BlankComponentStub } from '../../../test/';
 import { FooterSpaceDirective } from '../footer-space.directive';
 
 describe('FooterSpaceDirective', () => {
-    let fixture: ComponentFixture<BlankComponent>;
-    let component: BlankComponent;
+    let fixture: ComponentFixture<BlankComponentStub>;
+    let component: BlankComponentStub;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [],
             declarations: [
-                BlankComponent,
+                BlankComponentStub,
                 FooterSpaceDirective
             ],
             providers: []
         });
 
-        fixture = TestBed.overrideComponent(BlankComponent, {
+        fixture = TestBed.overrideComponent(BlankComponentStub, {
             set: {
                 template: '<div footerSpace></div>'
             }
-        }).createComponent(BlankComponent);
+        }).createComponent(BlankComponentStub);
         component = fixture.componentInstance;
     }));
 
