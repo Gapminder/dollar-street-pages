@@ -141,3 +141,9 @@ export interface Country {
 export interface UrlParameters {
   [key: string]: string;
 }
+
+export interface Language {
+  code: string;
+  name: string;
+  _id: string;
+}

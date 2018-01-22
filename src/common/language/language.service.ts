@@ -13,6 +13,7 @@ import { find, get } from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
 import { UtilsService } from '../utils/utils.service';
+import { Language } from '../../interfaces';
 
 @Injectable()
 export class LanguageService {
@@ -79,13 +80,13 @@ export class LanguageService {
       return res.data;
     });
 
-    this.languagesList.subscribe(data => {
+    this.languagesList.subscribe((data: Language[]) => {
       this.availableLanguage = this.setAvailableLanguages(data);
       this.setCurrentLanguage(this.availableLanguage);
     });
   }
 
-  public setAvailableLanguages(data): string[] {
+  public setAvailableLanguages(data: Language[]): string[] {
     return data.reduce((arr, current) => {
       if (get(current, 'code', false)) {
         arr.push(current.code);
