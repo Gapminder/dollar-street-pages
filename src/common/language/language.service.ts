@@ -191,7 +191,12 @@ export class LanguageService {
 
   public getLanguagesList(): Observable<any> {
     return this.http.get(`${environment.consumerApi}/v1/languagesList`).map((res: any) => {
-      const parseRes = JSON.parse(res._body);
+      let parseRes;
+      try {
+        parseRes = JSON.parse(res._body);
+      } catch (err) {
+        console.log(err);
+      }
 
       const currentLanguageObject: any = find(parseRes.data, {code: this.currentLanguage});
 
