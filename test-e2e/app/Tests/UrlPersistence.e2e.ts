@@ -7,7 +7,7 @@ describe('Storing state in URL', () => {
     browser.get('matrix');
   });
 
-  it(`Image selected after the page reload`, () => {
+  it(`Image selected after the page reload: https://github.com/Gapminder/dollar-street-pages/issues/1185`, () => {
     MatrixPage.familyLink.get(1).click();
 
     const urlBefore = browser.getCurrentUrl();
