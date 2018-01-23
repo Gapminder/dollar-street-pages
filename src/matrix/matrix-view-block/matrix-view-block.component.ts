@@ -21,7 +21,7 @@ import { Store } from '@ngrx/store';
 import {
   AppStates,
   StreetSettingsState,
-  DrawDividersInterface, UrlParameters
+  DrawDividersInterface, UrlParameters, Place
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -53,7 +53,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   public positionInRow: any;
   @Input()
-  public place: any;
+  public place: Place;
   @Input()
   public thing: string;
   @Input()
@@ -126,12 +126,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   public ngOnInit(): void {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
-      if (data) {
-        if (data.streetSettings) {
-          this.streetData = data.streetSettings;
-        }
-      }
-    });
+        this.streetData = data.streetSettings;
+  });
 
     this.appStateSubscription = this.appState.subscribe((data: any) => {
       if (data) {
@@ -291,12 +287,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public visitThisHome(): void {
-    let queryParams: any = this.utilsService.parseUrl(this.query);
-
-    queryParams.place = this.familyData.goToPlaceData.place;
-    queryParams.row = 1;
     this.streetService.clearAndRedraw();
-    this.router.navigate(['/family'], {queryParams: queryParams});
+    this.router.navigate(['/family']);
   }
 
   public goToMatrixByCountry(country: string): void {

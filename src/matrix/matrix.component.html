@@ -14,7 +14,8 @@
                   [places]="streetPlaces"
                   [hoverPlace]="hoverPlace"
                   [chosenPlaces]="chosenPlaces"
-                  (filterStreet)="streetChanged($event)">
+                  (filterStreet)="streetChanged($event)"
+          >
           </street>
         </div>
       </div>
@@ -197,7 +198,6 @@
   </div>
 
   <matrix-images [row]="row"
-                [zoom]="zoom"
                 [thing]="thing"
                 [places]="matrixPlaces"
                 [activeHouse]="activeHouse"

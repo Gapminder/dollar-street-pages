@@ -16,8 +16,10 @@ export interface MatrixState {
   currencyUnits: Currency[];
   incomeFilter: boolean;
   quickGuide: boolean;
-  placesSet: {}[];
+  placesSet: Place[];
   processImages: boolean;
+  zoom: number;
+  place: string;
 }
 
 export interface StreetSettingsState {
@@ -67,16 +69,6 @@ export interface ImageResolutionInterface {
     full: string;
 }
 
-export interface UrlParamsInterface {
-  thing: string;
-  countries: string;
-  regions: string;
-  zoom: number;
-  row: number;
-  lowIncome?: number;
-  highIncome?: number;
-}
-
 export interface DrawDividersInterface {
   showDividers: boolean;
   low: number;
@@ -88,6 +80,10 @@ export interface DrawDividersInterface {
   mediumDividerCoord: number;
   highDividerCoord: number;
   _id?: string;
+  filters?: {
+    lowIncome: number;
+    highIncome: number;
+  };
 }
 
 
@@ -139,5 +135,16 @@ export interface Country {
 }
 
 export interface UrlParameters {
-  [key: string]: string;
+  lang?: string;
+  thing?: string;
+  countries?: string[];
+  regions?: string[];
+  zoom?: string;
+  row?: string;
+  lowIncome?: string;
+  highIncome?: string;
+  activeHouse?: string;
+  place?: string;
+  currency?: string;
+  time?: string;
 }

@@ -12,6 +12,7 @@ import {
   FontDetectorService,
   GoogleAnalyticsService
 } from '../common';
+import { UrlParametersComponent } from "../url-parameters/url-parameters.component";
 
 @Component({
   selector: 'consumer-app',

@@ -1,5 +1,6 @@
 import * as MatrixActions from './matrix.actions';
 import { MatrixState } from '../../interfaces';
+import { DefaultUrlParameters } from '../../url-parameters/defaultState';
 
 export const initialState: MatrixState = {
     matrixImages: null,
@@ -16,10 +17,12 @@ export const initialState: MatrixState = {
     incomeFilter: false,
     quickGuide: false,
     placesSet: [],
-    processImages: false
+    processImages: false,
+    zoom: Number(DefaultUrlParameters.zoom),
+    place: undefined
 };
 
-export function matrixReducer(state: any = initialState, action: MatrixActions.Actions): MatrixState {
+export function matrixReducer(state: MatrixState = initialState, action: MatrixActions.Actions): MatrixState {
     switch (action.type) {
         case MatrixActions.UPDATE_MATRIX: {
             return Object.assign({}, state, {updateMatrix: action.payload});
@@ -91,6 +94,20 @@ export function matrixReducer(state: any = initialState, action: MatrixActions.A
 
         case MatrixActions.SET_CURRENCY_UNIT: {
             return Object.assign({}, state, {currencyUnit: action.payload});
+        }
+
+        case MatrixActions.CHANGE_ZOOM: {
+          return Object.assign({}, state, {zoom: action.payload});
+        }
+
+        case MatrixActions.SET_PLACE: {
+          console.log('action.payload', action.payload);
+          return Object.assign({}, state, {place: action.payload});
+        }
+
+        case MatrixActions.REMOVE_PLACE: {
+          console.log('action.payload');
+          return Object.assign({}, state, {place: undefined});
         }
 
         default:

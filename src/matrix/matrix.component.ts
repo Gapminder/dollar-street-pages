@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import {AppStates, Currency, Place, StreetSettingsState, TimeUnit} from '../interfaces';
+import {AppStates, Currency, Place, StreetSettingsState, TimeUnit, UrlParameters} from '../interfaces';
 import * as StreetSettingsActions from '../common';
 import {
   Component,
@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { chain, cloneDeep, find, map, difference, forEach } from 'lodash';
+import { chain, cloneDeep, find, map, difference, forEach, get } from 'lodash';
 import {
   LoaderService,
   UrlChangeService,
@@ -41,7 +41,8 @@ import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
-import { get } from 'lodash';
+import { logger } from "codelyzer/util/logger";
+import { DefaultUrlParameters } from "../url-parameters/defaultState";
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -218,103 +219,103 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     });
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (data) {
-        if (get(data, 'pinMode', false)) {
-          this.isPinMode = true;
-          this.isEmbedMode = false;
-        } else {
-          this.isPinMode = false;
-          this.isEmbedShared = false;
-          this.isPreviewView = false;
-          this.setMatrixTopPadding(0);
-        }
+      if (get(data, 'pinMode', false)) {
+        this.isPinMode = true;
+        this.isEmbedMode = false;
+      } else {
+        this.isPinMode = false;
+        this.isEmbedShared = false;
+        this.isPreviewView = false;
+        this.setMatrixTopPadding(0);
+      }
 
-        if (get(data, 'embedMode', false)) {
-          this.isEmbedMode = true;
-        } else {
-          this.isEmbedMode = false;
-          if (!this.isPinMode) {
-              this.setMatrixTopPadding(0);
+      if (get(data, 'embedMode', false)) {
+        this.isEmbedMode = true;
+      } else {
+        this.isEmbedMode = false;
+        if (!this.isPinMode) {
+            this.setMatrixTopPadding(0);
+        }
+      }
+
+      if (get(data, 'matrixImages', false)) {
+        if (this.matrixImages !== data.matrixImages) {
+          this.matrixImages = data.matrixImages;
+          this.streetPlacesData = data.matrixImages;
+
+          this.processMatrixImages(this.matrixImages);
+
+          if (this.timeUnit) {
+            this.changeTimeUnit(this.timeUnit);
           }
-        }
-
-        if (get(data, 'matrixImages', false)) {
-          if (this.matrixImages !== data.matrixImages) {
-            this.matrixImages = data.matrixImages;
-            this.streetPlacesData = data.matrixImages;
-
-            this.processMatrixImages(this.matrixImages);
-
-            if (this.timeUnit) {
-              this.changeTimeUnit(this.timeUnit);
-            }
-
-            if (this.currencyUnit) {
-              this.changeCurrencyUnit(this.currencyUnit);
-            }
-          }
-        }
-
-        if (get(data, 'timeUnits', false) && this.timeUnits !== data.timeUnits) {
-          this.timeUnits = data.timeUnits;
-        }
-
-        if (get(data, 'timeUnit', false) && this.timeUnit !== data.timeUnit) {
-            this.timeUnit = data.timeUnit;
-            this.changeTimeUnit(data.timeUnit);
-        }
-
-        if (get(data, 'currencyUnits', false) && this.currencyUnits !== data.currencyUnits) {
-            this.currencyUnits = data.currencyUnits;
-        }
-
-        if (get(data, 'currencyUnit', false) && this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-            this.changeCurrencyUnit(data.currencyUnit);
-        }
-
-        if (get(data, 'incomeFilter', false)) {
-          this.isOpenIncomeFilter = true;
-        } else {
-          this.isOpenIncomeFilter = false;
-        }
-
-        if (get(data, 'quickGuide', false)) {
-          this.isQuickGuideOpened = true;
-
-          if (get(data,'embedMode', false)) {
-           this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
-          }
-
-        } else {
-          this.isQuickGuideOpened = false;
-        }
-
-        if (get(data, 'placesSet' , false) && this.placesSet !== data.placesSet) {
-          this.placesSet = data.placesSet;
 
           if (this.currencyUnit) {
-            this.initPlacesSet();
+            this.changeCurrencyUnit(this.currencyUnit);
           }
-
-          setTimeout(() => {
-            let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
-
-            if (pinContainerElement) {
-              const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
-
-              this.setMatrixTopPadding(pinContainerHeight - 134);
-            }
-          }, 100);
         }
-
-        if (this.query && get(data, 'updateMatrix', false)) {
-          this.store.dispatch(new MatrixActions.UpdateMatrix(false));
-          this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
-        }
-
-        this.changeDetectorRef.detectChanges();
       }
+
+      this.zoom = Number(get(data, 'zoom', DefaultUrlParameters.zoom));
+
+      if (get(data, 'timeUnits', false) && this.timeUnits !== data.timeUnits) {
+        this.timeUnits = data.timeUnits;
+      }
+
+      if (get(data, 'timeUnit', false) && this.timeUnit !== data.timeUnit) {
+          this.timeUnit = data.timeUnit;
+          this.changeTimeUnit(data.timeUnit);
+      }
+
+      if (get(data, 'currencyUnits', false) && this.currencyUnits !== data.currencyUnits) {
+          this.currencyUnits = data.currencyUnits;
+      }
+
+      if (get(data, 'currencyUnit', false) && this.currencyUnit !== data.currencyUnit) {
+          this.currencyUnit = data.currencyUnit;
+          this.changeCurrencyUnit(data.currencyUnit);
+      }
+
+      if (get(data, 'incomeFilter', false)) {
+        this.isOpenIncomeFilter = true;
+      } else {
+        this.isOpenIncomeFilter = false;
+      }
+
+      if (get(data, 'quickGuide', false)) {
+        this.isQuickGuideOpened = true;
+
+        if (get(data,'embedMode', false)) {
+         this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+        }
+
+      } else {
+        this.isQuickGuideOpened = false;
+      }
+
+      if (get(data, 'placesSet' , false) && this.placesSet !== data.placesSet) {
+        this.placesSet = data.placesSet;
+
+        if (this.currencyUnit) {
+          this.initPlacesSet();
+        }
+
+        setTimeout(() => {
+          let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
+
+          if (pinContainerElement) {
+            const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
+
+            this.setMatrixTopPadding(pinContainerHeight - 134);
+          }
+        }, 100);
+      }
+
+      if (this.query && get(data, 'updateMatrix', false)) {
+        this.store.dispatch(new MatrixActions.UpdateMatrix(false));
+        this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
+      }
+
+      this.changeDetectorRef.detectChanges();
     });
 
     this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
@@ -329,8 +330,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         this.thing = get(data.thingsFilter, 'thing.originPlural', this.thing);
 
         if (this.embedSetId !== undefined && this.embedSetId !== 'undefined') {
-          const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-          this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
+          // const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+          // this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
         }
 
         this.processMatrixImages(this.matrixImages);
@@ -354,27 +355,27 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         });
       });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
-      this.thing = decodeURI(params.thing || 'Families');
-      this.countries = params.countries ? decodeURI(params.countries) : 'World';
-      this.regions = params.regions ? decodeURI(params.regions) : 'World';
-      this.zoom = parseInt(params.zoom, 10);
-      this.lowIncome = parseInt(params.lowIncome, 10);
-      this.highIncome = parseInt(params.highIncome, 10);
-      this.activeHouse = parseInt(params.activeHouse, 10);
-      this.row = parseInt(params.row, 10) || 1;
-      this.embedSetId = decodeURI(params.embed);
-      this.currencyUnitCode = params.currency ? decodeURI(params.currency.toUpperCase()) : null;
-      this.timeUnitCode = params.time ? decodeURI(params.time.toUpperCase()) : null;
+    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
+      // this.thing = decodeURI(params.thing || 'Families');
+      // this.countries = params.countries ? decodeURI(params.countries) : 'World';
+      // this.regions = params.regions ? decodeURI(params.regions) : 'World';
+      // this.zoom = parseInt(params.zoom, 10);
+      // this.lowIncome = parseInt(params.lowIncome, 10);
+      // this.highIncome = parseInt(params.highIncome, 10);
+      // this.activeHouse = parseInt(params.activeHouse, 10);
+      // this.row = parseInt(params.row, 10) || 1;
+      // this.embedSetId = decodeURI(params.embed);
+      // this.currencyUnitCode = params.currency ? decodeURI(params.currency.toUpperCase()) : null;
+      // this.timeUnitCode = params.time ? decodeURI(params.time.toUpperCase()) : null;
       //this.showStreetAttrs = params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false;
 
-      this.changeDetectorRef.detectChanges();
+      // this.changeDetectorRef.detectChanges();
 
-      if (this.embedSetId !== 'undefined' && this.embedSetId !== undefined) {
-        const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-        this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
-        this.store.dispatch(new MatrixActions.SetEmbedMode(true));
-      }
+      // if (this.embedSetId !== 'undefined' && this.embedSetId !== undefined) {
+      //   const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+      //   this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
+      //   this.store.dispatch(new MatrixActions.SetEmbedMode(true));
+      // }
 
       setTimeout(() => {
         if (this.row > 1 && !this.activeHouse) {
@@ -382,17 +383,24 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         }
       }, 1000);
 
-      this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-        if (data) {
-          if (data.streetSettings) {
-            if (this.streetData !== data.streetSettings) {
-              this.streetData = data.streetSettings;
 
-              this.processStreetData();
-            }
-          }
+    });
+
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+      if (get(data, 'streetSettings', false)) {
+        if (this.streetData !== data.streetSettings) {
+          this.streetData = data.streetSettings;
+
+          this.processStreetData();
         }
-      });
+
+        const poor = get(this.streetData, 'poor', DefaultUrlParameters.lowIncome);
+        const rich = get(this.streetData, 'rich', DefaultUrlParameters.highIncome);
+        this.lowIncome = +get(this.streetData, 'filters.lowIncome', poor);
+        this.highIncome = +get(this.streetData, 'filters.highIncome', rich);
+
+        this.processMatrixImages(this.matrixImages);
+      }
     });
 
     if ('scrollRestoration' in history) {
@@ -411,9 +419,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         this.getPaddings();
       });
 
-    this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
-    this.store.dispatch(new MatrixActions.GetCurrencyUnits());
-    this.store.dispatch(new MatrixActions.GetTimeUnits());
+    // this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
+    // this.store.dispatch(new MatrixActions.GetCurrencyUnits());
+    // this.store.dispatch(new MatrixActions.GetTimeUnits());
   }
 
   /*public openQuickGuide(): void {
@@ -515,7 +523,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         query += `&embed=${this.embedSetId}`;
       }
 
-      this.urlChanged({isBack: true, url: query});
+      // this.urlChanged({isBack: true, url: query});
 
       this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
@@ -610,9 +618,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
             this.isScreenshotProcessing = false;
 
-            this.urlChangeService.replaceState('/matrix', queryString);
+            // this.urlChangeService.replaceState('/matrix', queryString);
 
-            this.store.dispatch(new AppActions.SetQuery(queryString));
+            // this.store.dispatch(new AppActions.SetQuery(queryString));
 
             this.isEmbedShared = true;
 
@@ -723,9 +731,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public streetChanged(event: any): void {
-    this.urlChanged(event);
-
-    this.processMatrixImages(this.matrixImages);
+    // this.urlChanged(event);
+    console.log(event);
+    // this.processMatrixImages(this.matrixImages);
   }
 
   public pinModeClose(openQuickGuide = false): void {
@@ -739,8 +747,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       delete queryParams.embed;
       let query = this.utilsService.objToQuery(queryParams);
 
-      this.store.dispatch(new AppActions.SetQuery(query));
-      this.urlChangeService.replaceState('/matrix', query);
+      // this.store.dispatch(new AppActions.SetQuery(query));
+      // this.urlChangeService.replaceState('/matrix', query);
 
       this.clearEmbedMatrix();
 
@@ -794,7 +802,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       this.query = query;
 
-      this.urlChangeService.replaceState('/matrix', query);
+      // this.urlChangeService.replaceState('/matrix', query);
     }
 
     let clonePlaces = cloneDeep(this.placesArr);
@@ -854,15 +862,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
+    const widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
 
-    let imageMarginLeft: string = window.getComputedStyle(imageContentElement).getPropertyValue('margin-left');
-    let boxPaddingLeft: string = window.getComputedStyle(imagesContainerElement).getPropertyValue('padding-left');
+    const imageMarginLeft: string = window.getComputedStyle(imageContentElement).getPropertyValue('margin-left');
+    const boxPaddingLeft: string = window.getComputedStyle(imagesContainerElement).getPropertyValue('padding-left');
 
-    let imageMargin = parseFloat(imageMarginLeft) * 2;
-    let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
+    const imageMargin = parseFloat(imageMarginLeft) * 2;
+    const boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
 
-    let imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - imageMargin;
+    const imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - imageMargin;
 
     this.itemSize = imageHeight + imageMargin;
   }
@@ -880,9 +888,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    let queryParams: any = this.utilsService.parseUrl(this.query);
-    this.zoom = queryParams.zoom;
-
     this.streetPlacesData = data.streetPlaces;
 
     if (!this.streetPlacesData.length) {
@@ -892,7 +897,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
 
     let visiblePlaces = this.streetPlacesData.filter((place: Place): boolean => {
-      return place && place.income >= queryParams.lowIncome && place.income < queryParams.highIncome;
+      return place && place.income >= this.lowIncome && place.income < this.highIncome;
     });
 
     this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: any[]) => {
@@ -904,7 +909,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       this.placesArr = sortedPlaces;
 
-      this.changeCurrencyUnit(this.currencyUnit);
+      if (this.currencyUnit) {
+        this.changeCurrencyUnit(this.currencyUnit);
+      }
       this.changeTimeUnit(this.timeUnit);
 
       this.buildTitle(this.query);
@@ -930,9 +937,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       // this.clearActiveHomeViewBox.next(true);
     // }
 
-    this.store.dispatch(new AppActions.SetQuery(url));
+    // this.store.dispatch(new AppActions.SetQuery(url));
 
-    this.urlChangeService.replaceState('/matrix', url);
+    // this.urlChangeService.replaceState('/matrix', url);
   }
 
   public activeHouseOptions(options: any): void {
@@ -970,23 +977,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     if (!this.isDesktop ? zoom >= 4 : zoom >= 10) {
       return;
     }
-
-    let prevZoom: number = this.zoom;
-
-    this.zoom = zoom;
+    const prevZoom: number = this.zoom;
+    this.store.dispatch(new MatrixActions.ChangeZoom(zoom));
 
     this.calcItemSize();
-
-    this.query = this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`);
-
-    //this.urlChanged({isZoom: true, url: this.query});
-
-    this.store.dispatch(new AppActions.SetQuery(this.query));
-    //this.urlChangeService.replaceState('/matrix', this.query);
 
     this.matrixImagesComponent.changeZoom(prevZoom);
 
     this.processMatrixImages(this.matrixImages);
+
+    this.changeDetectorRef.detectChanges();
   }
 
   public getResponseFromIncomeFilter(params: any): void {

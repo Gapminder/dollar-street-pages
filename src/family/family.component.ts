@@ -7,7 +7,7 @@ import {
   AppState,
   AppStates,
   CountriesFilterState,
-  Country,
+  Country, MatrixState,
   StreetSettingsState,
   UrlParameters
 } from '../interfaces';
@@ -22,7 +22,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { chain } from 'lodash';
+import { chain, get } from 'lodash';
 import {
   UrlChangeService,
   Angulartics2GoogleAnalytics,
@@ -34,7 +34,7 @@ import {
 import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
-import { UrlParamsInterface } from '../interfaces';
+import { DefaultUrlParameters } from "../url-parameters/defaultState";
 
 interface UrlParams extends Params {
   thing: string;
@@ -94,6 +94,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public shortFamilyInfoContainerElement: HTMLElement;
   public streetSettingsStateSubscription: Subscription;
   public countriesFilterStateSubscription: Subscription;
+  public subscriptions: Subscription[];
   public itemSize: number;
   public row: number;
   public rowEtalon: number;
@@ -128,98 +129,131 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
-      console.log(params);
-      this.urlParams = {
-        thing: params.thing ? decodeURI(params.thing) : 'Families',
-        countries: params.countries ? decodeURI(params.countries) : 'World',
-        regions: params.regions ? decodeURI(params.regions) : 'World',
-        zoom: parseInt(params.zoom, 10) || 4,
-        row: parseInt(params.row, 10) || 1,
-        lowIncome: parseInt(params.lowIncome, 10),
-        highIncome: parseInt(params.highIncome, 10),
-        place: params.place,
-        lang: this.languageService.currentLanguage
-      };
-
-      if (params.activeImage) {
-        this.urlParams.activeImage = params.activeImage;
-        this.activeImageIndex = +this.urlParams.activeImage;
-      }
-
-      const queryUrl: string = this.utilsService.objToQuery(this.urlParams);
-
-      this.store.dispatch(new AppActions.SetQuery(queryUrl));
-      this.urlChangeService.replaceState('/family', queryUrl);
-
-      this.placeId = this.urlParams.place;
-      this.row = +this.urlParams.row;
-      this.setZoom(+this.urlParams.zoom);
-
-      setTimeout(() => {
-        if (this.row > 1 && !this.activeImageIndex) {
-          this.familyMediaComponent.goToRow(this.row);
-        }
-      }, 1000);
-
-      const query = `thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`;
-      this.familyServiceSetThingSubscribe = this.familyService
-        .getThing(query)
-        .subscribe(res => {
-          if (res.err) {
-            console.error(res.err);
-
-            return;
-          }
-
-          this.thing = res.data;
-
-          this.initData();
-        });
+      // this.urlParams = {
+      //   thing: params.thing ? decodeURI(params.thing) : 'Families',
+      //   countries: params.countries ? decodeURI(params.countries) : 'World',
+      //   regions: params.regions ? decodeURI(params.regions) : 'World',
+      //   zoom: parseInt(params.zoom, 10) || 4,
+      //   row: parseInt(params.row, 10) || 1,
+      //   lowIncome: parseInt(params.lowIncome, 10),
+      //   highIncome: parseInt(params.highIncome, 10),
+      //   place: params.place,
+      //   lang: this.languageService.currentLanguage
+      // };
+      //
+      // if (params.activeImage) {
+      //   this.urlParams.activeImage = params.activeImage;
+      //   this.activeImageIndex = +this.urlParams.activeImage;
+      // }
+      //
+      // const queryUrl: string = this.utilsService.objToQuery(this.urlParams);
+      //
+      // this.store.dispatch(new AppActions.SetQuery(queryUrl));
+      // this.urlChangeService.replaceState('/family', queryUrl);
+      //
+      // this.placeId = this.urlParams.place;
+      // this.row = +this.urlParams.row;
+      // this.setZoom(+this.urlParams.zoom);
+      //
+      // setTimeout(() => {
+      //   if (this.row > 1 && !this.activeImageIndex) {
+      //     this.familyMediaComponent.goToRow(this.row);
+      //   }
+      // }, 1000);
+      //
+      // const query = `thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`;
+      // this.familyServiceSetThingSubscribe = this.familyService
+      //   .getThing(query)
+      //   .subscribe(res => {
+      //     if (res.err) {
+      //       console.error(res.err);
+      //
+      //       return;
+      //     }
+      //
+      //     this.thing = res.data;
+      //
+      //     this.initData();
+      //   });
       });
 
-    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-      if (data) {
-        if (data.query) {
-          if (this.query !== data.query) {
-            this.query = data.query;
-          }
-        }
+    // this.appStateSubscription = this.appState.subscribe((data: AppState) => {
+    //   if (data) {
+    //     if (data.query) {
+    //       if (this.query !== data.query) {
+    //         this.query = data.query;
+    //       }
+    //     }
+    //   }
+    // });
+
+    const storeSubscription = this.store.debounceTime(100)
+      .subscribe((data: AppStates) => {
+      const matrix = data.matrix;
+      const streetSetting = data.streetSettings;
+      const countriesFilter = data.countriesFilter;
+
+      this.zoom = Number(get(matrix, 'zoom', DefaultUrlParameters.zoom));
+
+      if (get(matrix, 'place', false)) {
+        this.placeId = matrix.place;
+      } else {
+        this.router.navigate(['/matrix']);
+        this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
       }
-    });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (data) {
-        if (data.streetSettings) {
-          if (this.streetSettings !== data.streetSettings) {
-            this.streetSettings = data.streetSettings;
-
-            this.poor = this.streetSettings.poor;
-            this.rich = this.streetSettings.rich;
-
-            if (!this.locations) {
-              return;
-            }
-
-            this.initData();
-          }
-        }
+      if (this.streetSettings !== streetSetting.streetSettings) {
+        this.streetSettings = streetSetting.streetSettings;
+        console.log(streetSetting)
+        this.poor = this.streetSettings.poor;
+        this.rich = this.streetSettings.rich;
       }
+        console.log(countriesFilter)
+      if (this.locations !== countriesFilter) {
+        this.locations = countriesFilter;
+
+        this.countries = chain(countriesFilter)
+          .map('countries')
+          .flatten()
+          .sortBy('country')
+          .value();
+
+        console.log(this.countries)
+      }
+
     });
 
-    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: CountriesFilterState) => {
-        if (data) {
-          if (this.locations !== data) {
-            this.locations = data;
 
-            this.countries = chain(data)
-              .map('countries')
-              .flatten()
-              .sortBy('country')
-              .value();
-            this.initData();
-          }
-        }
-    });
+
+    // this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+    //   if (this.streetSettings !== data.streetSettings) {
+    //     this.streetSettings = data.streetSettings;
+    //
+    //     this.poor = this.streetSettings.poor;
+    //     this.rich = this.streetSettings.rich;
+    //
+    //     if (!this.locations) {
+    //       return;
+    //     }
+    //   }
+    // });
+    //
+    // this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: CountriesFilterState) => {
+    //     if (data) {
+    //       console.log(data);
+    //       if (this.locations !== data) {
+    //         this.locations = data;
+    //
+    //         this.countries = chain(data)
+    //           .map('countries')
+    //           .flatten()
+    //           .sortBy('country')
+    //           .value();
+    //         console.log(this.countries)
+    //         this.initData();
+    //       }
+    //     }
+    // });
   }
 
   public ngAfterViewInit(): void {
@@ -365,7 +399,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public setZoom(zoom: number): void {
     if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-      this.zoom = zoom ? zoom : 4;
+      this.zoom = zoom ? zoom : DefaultUrlParameters.zoom;
     }
 
     if (!this.isDesktop) {
@@ -444,19 +478,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const queryParams: UrlParameters = {
-      thing: 'Families',
-      countries: 'World',
-      regions: 'World',
-      zoom: '4',
-      row: '1',
-      lowIncome: this.poor,
-      highIncome: this.rich,
-      lang: this.languageService.currentLanguage
-    };
-
-    if (!this.urlParams.place) {
-      this.router.navigate(['/matrix', {queryParams}]);
+    if (!this.placeId) {
+      this.router.navigate(['/matrix']);
 
       this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
 

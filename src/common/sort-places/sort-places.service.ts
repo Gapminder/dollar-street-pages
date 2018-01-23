@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { Place } from "../../interfaces";
 
 @Injectable()
 export class SortPlacesService {
@@ -8,11 +9,11 @@ export class SortPlacesService {
 
   }
 
-  public sortPlaces(places: any[], column: number): Promise<any> {
+  public sortPlaces(places: Place[], column: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      let groupColumn = this.houseInColumnGroup(places, column);
+      const groupColumn = this.houseInColumnGroup(places, column);
 
-      let totalPlaces = groupColumn.map((group: any, i: number) => {
+      const totalPlaces = groupColumn.map((group: any, i: number) => {
         if (i === groupColumn.length - 1) {
           return places.splice(0, group).reverse();
         }
@@ -38,7 +39,7 @@ export class SortPlacesService {
     });
   }*/
 
-  private houseInColumnGroup(places: any[], column: number): any {
+  private houseInColumnGroup(places: Place[], column: number): any {
     let houseInColumnArr = [];
     let placesLength = places.length;
     let maxNumber = Math.ceil(placesLength / column);

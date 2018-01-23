@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ImageResolutionInterface } from '../../interfaces';
+import { ImageResolutionInterface, UrlParameters } from '../../interfaces';
+import { NumericDictionary, reduce } from 'lodash';
 
 @Injectable()
 export class UtilsService {
@@ -90,10 +91,9 @@ export class UtilsService {
     if (!url) {
       return {};
     }
-
     url = url.slice(url.indexOf('?') + 1);
 
-    let params = JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+    const params = JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
 
     if (params.regions) {
       params.regions = params.regions.split(',');
@@ -106,9 +106,14 @@ export class UtilsService {
     return params;
   }
 
-  public objToQuery(data: any): string {
-    return Object.keys(data).map((k: string) => {
-      return encodeURIComponent(k) + '=' + data[k];
-    }).join('&');
+  public objToQuery(data: UrlParameters): string {
+
+    return reduce(data as NumericDictionary<{}>, (result, value, key) => {
+      if (value) {
+        result += result.length ? '&' : '';
+        result += `${key}=${value.toString()}`;
+      }
+      return result;
+    }, '');
   }
 }

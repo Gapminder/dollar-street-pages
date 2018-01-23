@@ -23,6 +23,10 @@ export const GET_TIME_UNITS_SUCCESS: string = 'GET_TIME_UNITS_SUCCESS';
 export const GET_CURRENCY_UNITS: string = 'GET_CURRENCY_UNITS';
 export const GET_CURRENCY_UNITS_SUCCESS: string = 'GET_CURRENCY_UNITS_SUCCESS';
 export const SET_CURRENCY_UNIT: string = 'SET_CURRENCY_UNIT';
+export const CHANGE_ZOOM: string = 'CHANGE_ZOOM';
+export const SET_PLACE: string = 'SET_PLACE';
+export const REMOVE_PLACE: string = 'REMOVE_PLACE';
+
 
 export class UpdateMatrix implements Action {
     readonly type = UPDATE_MATRIX;
@@ -134,6 +138,21 @@ export class SetCurrencyUnit implements Action {
     constructor(public payload: Currency) {}
 }
 
+export class ChangeZoom implements Action {
+    readonly type = CHANGE_ZOOM;
+    constructor(public payload: number) {}
+}
+
+export class SetPlace implements Action {
+  readonly type = SET_PLACE;
+  constructor(public payload: string) {}
+}
+
+export class RemovePlace implements Action {
+  readonly type = REMOVE_PLACE;
+  constructor(public payload: any) {}
+}
+
 export type Actions =
     | UpdateMatrix
     | SetPinMode
@@ -152,4 +171,7 @@ export type Actions =
     | SetTimeUnit
     | GetTimeUnitsSuccess
     | GetCurrencyUnitsSuccess
-    | SetCurrencyUnit;
+    | SetCurrencyUnit
+    | ChangeZoom
+    | SetPlace
+    | RemovePlace;

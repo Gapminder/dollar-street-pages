@@ -171,7 +171,7 @@ export class LanguageService {
 
     queryParams.lang = this.currentLanguage;
 
-    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams));
+    // this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams));
   }
 
   public getLanguagesList(): Observable<any> {

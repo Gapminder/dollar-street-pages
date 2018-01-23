@@ -11,6 +11,12 @@ export function streetSettingsReducer(state: StreetSettingsState = initialState,
             return Object.assign({}, state, {streetSettings: action.payload});
         }
 
+        case StreetSettingsActions.UPDATE_STREET_FILTERS: {
+          state.streetSettings.filters = action.payload;
+
+          return Object.assign({}, state);
+        }
+
         default:
             return state;
     }

@@ -30,6 +30,7 @@ import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import {Place} from "../../interfaces";
+import { DefaultUrlParameters } from "../../url-parameters/defaultState";
 
 @Component({
   selector: 'matrix-images',
@@ -50,7 +51,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public places: Observable<any>;
   @Input()
   public activeHouse: number;
-  @Input()
   public zoom: number;
   @Input()
   public showBlock: boolean;
@@ -129,7 +129,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
-  public ngOnInit(): any {
+  public ngOnInit() {
     this.isInit = true;
 
     this.isDesktop = this.browserDetectionService.isDesktop();
@@ -141,7 +141,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.inTranslate = trans.IN;
     });
 
-    this.placesSubscribe = this.places.subscribe((places: any) => {
+    this.placesSubscribe = this.places.subscribe((places: Place[]) => {
       this.showErrorMsg = false;
       this.showBlock = false;
       this.currentPlaces = places;
@@ -160,9 +160,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
           sliceCount = this.row * this.zoom + this.visibleImages;
         }
 
-        //let sliceCount: number = this.placesArr.length + this.visibleImages <= this.currentPlaces.length ? this.placesArr.length + this.visibleImages : (this.currentPlaces.length - this.placesArr.length);
-
-        // this.placesArr = _.slice(this.currentPlaces, 0, sliceCount);
         this.placesArr = this.currentPlaces.slice(0, sliceCount);
       });
 
@@ -210,6 +207,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
             this.currencyUnit = data.currencyUnit;
           }
         }
+
+        this.zoom = _.get(data, 'zoom', Number(DefaultUrlParameters.zoom));
 
         this.changeDetectorRef.detectChanges();
       }
@@ -433,14 +432,15 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     if (!place) {
       return;
     }
-
+    console.log(place);
     this.familyData = Object.assign({}, place);
+    this.store.dispatch(new MatrixActions.SetPlace(place._id));
 
     this.indexViewBoxHouse = index;
 
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
 
-    let offset: number = this.zoom - this.positionInRow;
+    const offset: number = this.zoom - this.positionInRow;
 
     this.imageBlockLocation = this.positionInRow ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;
 
@@ -452,20 +452,21 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.viewBlockHeight = this.matrixViewBlockComponent ? this.matrixViewBlockComponent.element.offsetHeight : 0;
     }, 0);
 
-    let row: number = Math.ceil((this.indexViewBoxHouse + 1) / this.zoom);
-    let activeHouseIndex: number = this.indexViewBoxHouse + 1;
+    const row: number = Math.ceil((this.indexViewBoxHouse + 1) / this.zoom);
+    const activeHouseIndex: number = this.indexViewBoxHouse + 1;
 
     if (!this.prevPlaceId) {
       this.prevPlaceId = place._id;
 
       this.showBlock = !this.showBlock;
 
-      if (isInit) {
-        this.changeUrl({activeHouseIndex});
-        this.goToRow(row);
-      } else {
-        this.changeUrl({row, activeHouseIndex});
-      }
+      // if (isInit) {
+      //   this.changeUrl({activeHouseIndex});
+      //   this.goToRow(row);
+      // } else {
+      //   this.changeUrl({row, activeHouseIndex});
+      // }
+
 
       return;
     }
@@ -548,7 +549,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     let imageHeight: number = imagesContainerElement.offsetWidth / this.zoom;
 
     let visibleRows: number = Math.round(window.innerHeight / imageHeight);
-
     this.visibleImages = this.zoom * visibleRows;
   }
 }
