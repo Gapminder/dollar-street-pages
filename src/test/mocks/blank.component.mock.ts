@@ -3,5 +3,5 @@ import { Component } from '@angular/core';
 @Component({
   template: ''
 })
-export class BlankComponent {
+export class BlankComponentStub {
 }

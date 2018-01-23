@@ -5,7 +5,7 @@ export { LanguageServiceMock } from './mocks/language.service.mock';
 export { TitleHeaderServiceMock } from './mocks/titleHeader.service.mock';
 export { StreetSettingsServiceMock } from './mocks/streetSettings.service.mock';
 export { AngularticsMock } from './mocks/angulartics.mock';
-export { BlankComponent } from './mocks/blank.component.mock';
+export { BlankComponentStub } from './mocks/blank.component.mock';
 export { Angulartics2GoogleAnalyticsMock } from './mocks/angulartics2GoogleAnalytics.mock';
 export { UrlChangeServiceMock } from './mocks/urlChange.service.mock';
 export { AppTestModule } from './mocks/appTestModule.mock';

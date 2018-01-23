@@ -1,39 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import { TitleHeaderService } from '../../common';
-import { TitleHeaderServiceMock } from '../../test/';
+
+import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
+import { TranslateTestingModule } from '../../test/translateTesting.module';
 import { DonateComponent } from '../donate.component';
 import { DonateService } from '../donate.service';
-import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
-import { TranslateLoader, TranslateModule, TranslateStaticLoader } from 'ng2-translate';
 
 describe('DonateComponent', () => {
   let fixture: ComponentFixture<DonateComponent>;
   let component: DonateComponent;
   let donateSeervice: DonateServiceMock;
 
-  class DonateServiceMock {
-    public makeDonate(query: any): Observable<any> {
-      return Observable.of({'success': true, 'error': null});
-    }
-
-    public showStripeDialog(config: any, cb: Function): void {
-    }
-  }
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        TranslateModule.forRoot({
-          provide: TranslateLoader,
-          useFactory: () => new TranslateStaticLoader(null, './assets/i18n', '.json')
-        }),
-        CommonServicesTestingModule
+        CommonServicesTestingModule,
+        TranslateTestingModule
       ],
       declarations: [DonateComponent],
       providers: [
-        {provide: DonateService, useClass: DonateServiceMock},
-        {provide: TitleHeaderService, useClass: TitleHeaderServiceMock}
+        { provide: DonateService, useClass: DonateServiceMock }
       ]
     });
 
@@ -70,4 +56,48 @@ describe('DonateComponent', () => {
     expect(donateServiceSpy).toHaveBeenCalled();
     expect(donateServiceSpy.calls.mostRecent().args[0].amount).toEqual(expectedAmount);
   });
+
+  it('donate input: hide placeholder on click', () => {
+    const addAmountEl = component.addAmount.nativeElement;
+    addAmountEl.click();
+
+    fixture.detectChanges();
+
+    expect(addAmountEl.getAttribute('style')).toEqual('visibility: hidden;');
+  });
+
+  it('donate input: show placeholder on blur when value is empty', () => {
+    const addAmountEl = component.addAmount.nativeElement;
+    const donateValue = component.donateValue.nativeElement;
+
+    addAmountEl.click();
+
+    donateValue.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+
+    expect(addAmountEl.getAttribute('style')).toEqual('visibility: visible;');
+  });
+
+  it('donate input: show value on blur', () => {
+    const addAmountEl = component.addAmount.nativeElement;
+    const donateValue = component.donateValue.nativeElement;
+
+    addAmountEl.click();
+    donateValue.value = 123;
+
+    donateValue.dispatchEvent(new Event('input'));
+    donateValue.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+
+    expect(addAmountEl.getAttribute('style')).toEqual('visibility: hidden;');
+  });
 });
+
+class DonateServiceMock {
+  public makeDonate(query: any): Observable<any> {
+    return Observable.of({ 'success': true, 'error': null });
+  }
+
+  public showStripeDialog(config: any, cb: Function): void {
+  }
+}

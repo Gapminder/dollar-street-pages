@@ -225,6 +225,10 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     if (this.queryParamsSubscribe) {
       this.queryParamsSubscribe.unsubscribe();
     }
+
+    if (this.matrixStateSubscription) {
+      this.matrixStateSubscription.unsubscribe();
+    }
   }
 
   public openInfo(isOpenArticle: boolean): void {

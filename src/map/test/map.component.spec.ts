@@ -3,7 +3,7 @@ import { ElementRef, QueryList } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Angulartics2Module } from 'angulartics2';
 import { LanguageService, MathService, UrlChangeService } from '../../common';
-import { BlankComponent, LanguageServiceMock, UrlChangeServiceMock } from '../../test/';
+import { BlankComponentStub, LanguageServiceMock, UrlChangeServiceMock } from '../../test/';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
 import { MapComponent } from '../map.component';
@@ -57,7 +57,7 @@ describe('MapComponent', () => {
         TranslateTestingModule,
         Angulartics2Module,
         StoreModule.forRoot({}),
-        RouterTestingModule.withRoutes([{path: '', component: BlankComponent}]),
+        RouterTestingModule.withRoutes([{path: '', component: BlankComponentStub}]),
         CommonServicesTestingModule
       ],
       providers: [
@@ -66,7 +66,7 @@ describe('MapComponent', () => {
         {provide: MapService, useClass: MapServiceMock},
         {provide: LanguageService, useClass: LanguageServiceMock},
       ],
-      declarations: [MapComponent, BlankComponent]
+      declarations: [MapComponent, BlankComponentStub]
     });
 
     fixture = TestBed.createComponent(MapComponent);

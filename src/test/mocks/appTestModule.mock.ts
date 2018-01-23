@@ -1,9 +1,9 @@
-import { BlankComponent } from './blank.component.mock';
+import { BlankComponentStub } from './blank.component.mock';
 import { NgModule } from '@angular/core';
 
 @NgModule({
-  declarations: [BlankComponent],
-  exports: [BlankComponent]
+  declarations: [BlankComponentStub],
+  exports: [BlankComponentStub]
 })
 export class AppTestModule {
 }
