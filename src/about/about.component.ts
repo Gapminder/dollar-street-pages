@@ -45,6 +45,7 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
 
     this.aboutSubscription = this.aboutService.getInfo(this.languageService.getLanguageParam()).subscribe((val: any) => {
       if (val.err) {
+        // TODO handle the error
         console.error(val.err);
         return;
       }
@@ -81,6 +82,10 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
 
     if (this.getTranslationSubscription) {
       this.getTranslationSubscription.unsubscribe();
+    }
+
+    if (this.queryParamsSubscription) {
+      this.queryParamsSubscription.unsubscribe();
     }
 
     this.loaderService.setLoader(false);

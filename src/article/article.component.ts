@@ -42,6 +42,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       .getArticle(`id=${this.thingId}${this.languageService.getLanguageParam()}`)
       .subscribe((val: any) => {
         if (val.err) {
+          // TODO handle the error
           console.error(val.err);
           return;
         }

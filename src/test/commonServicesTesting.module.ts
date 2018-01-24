@@ -22,6 +22,8 @@ import { AngularticsMock } from './mocks/angulartics.mock';
 import { MathService } from '../common/math/math.service';
 import { MathServiceMock } from './mocks/math.service.mock';
 import { IncomeCalcServiceMock } from './mocks/incomeCalc.service.mock';
+import { LocalStorageServiceMock } from './mocks/localStorage.service.mock';
+import { LocalStorageService } from '../common/index';
 
 @NgModule({
   imports: [
@@ -44,7 +46,8 @@ import { IncomeCalcServiceMock } from './mocks/incomeCalc.service.mock';
     { provide: LanguageService, useClass: LanguageServiceMock },
     { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },
     { provide: IncomeCalcService, useClass: IncomeCalcServiceMock },
-    { provide: MathService, useClass: MathServiceMock }
+    { provide: MathService, useClass: MathServiceMock },
+    { provide: LocalStorageService, useClass: LocalStorageServiceMock },
   ]
 })
 export class CommonServicesTestingModule {
