@@ -20,6 +20,7 @@ describe('AboutComponent', () => {
   let aboutService: AboutServiceMock;
   let languageService: LanguageServiceMock;
   let loaderService: LoaderServiceMock;
+  let activatedRoute: ActivatedRouteMock;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -37,6 +38,7 @@ describe('AboutComponent', () => {
     languageService = TestBed.get(LanguageService);
     aboutService = TestBed.get(AboutService);
     loaderService = TestBed.get(LoaderService);
+    activatedRoute = TestBed.get(ActivatedRoute);
 
     component = fixture.componentInstance;
   });
@@ -83,12 +85,20 @@ describe('AboutComponent', () => {
   });
 
   it('should scroll to element from queryParams', () => {
+    const jumpToId = 'info-context';
+    spyOn(activatedRoute, 'queryParams').and.returnValue(new BehaviorSubject({ jump: jumpToId }));
     spyOn(window, 'scrollTo');
+    (window.scrollY as any) = 0;
 
     fixture.detectChanges();
+
+    const jumpToElement = fixture.debugElement.query(By.css(`#${jumpToId}`)).nativeElement;
+    spyOn(jumpToElement, 'scrollIntoView');
+    
     component.ngAfterViewInit();
 
-    expect(window.scrollTo).toHaveBeenCalled();
+    expect(jumpToElement.scrollIntoView).toHaveBeenCalled();
+    expect(window.scrollTo).toHaveBeenCalledWith(0, -80);
   });
 });
 
