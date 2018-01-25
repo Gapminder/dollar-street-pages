@@ -19,7 +19,12 @@ export const initialState: MatrixState = {
     placesSet: [],
     processImages: false,
     zoom: Number(DefaultUrlParameters.zoom),
-    place: undefined
+    place: undefined,
+    embedSetId: undefined,
+    activeHouseOptions: {
+      row: 1,
+      index: undefined
+    }
 };
 
 export function matrixReducer(state: MatrixState = initialState, action: MatrixActions.Actions): MatrixState {
@@ -101,14 +106,24 @@ export function matrixReducer(state: MatrixState = initialState, action: MatrixA
         }
 
         case MatrixActions.SET_PLACE: {
-          console.log('action.payload', action.payload);
           return Object.assign({}, state, {place: action.payload});
         }
 
         case MatrixActions.REMOVE_PLACE: {
-          console.log('action.payload');
           return Object.assign({}, state, {place: undefined});
         }
+
+      case MatrixActions.SET_EMBED_ID: {
+        return Object.assign({}, state, {embedSetId: action.payload});
+      }
+
+      case MatrixActions.REMOVE_EMBED_ID: {
+        return Object.assign({}, state, {embedSetId: undefined});
+      }
+
+      case MatrixActions.UPDATE_ACTIVE_HOUSE: {
+        return Object.assign({}, state, {activeHouseOptions: action.payload});
+      }
 
         default:
             return state;

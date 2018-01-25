@@ -27,10 +27,10 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
       .subscribe((event: NavigationEndInterface) => {
         console.log('enter by url')
         const params = urlParametersService.parseString(event.url);
-
+        console.log(params)
         urlParametersService.dispachToStore(params);
 
-        urlParametersService.combineUrlPerPage(params);
+        urlParametersService.combineUrlPerPage();
       });
     this.subscribtions.push(routerSubscribe);
 

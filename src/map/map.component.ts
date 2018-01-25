@@ -19,7 +19,7 @@ import {
   Country,
   Currency,
   Place,
-  TimeUnit
+  TimeUnit, UrlParameters
 } from '../interfaces';
 import {
   MathService,
@@ -33,6 +33,7 @@ import {
 } from '../common';
 import { MapService } from './map.service';
 import { get } from 'lodash';
+import { UrlParametersService } from "../url-parameters/url-parameters.service";
 
 
 @Component({
@@ -96,7 +97,8 @@ export class MapComponent implements OnInit, OnDestroy {
                      private languageService: LanguageService,
                      private store: Store<AppStates>,
                      private incomeCalcService: IncomeCalcService,
-                     private changeDetectorRef: ChangeDetectorRef) {
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private urlParametersService: UrlParametersService) {
     this.element = element.nativeElement;
 
     this.currentLanguage = this.languageService.currentLanguage;
@@ -109,7 +111,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.loaderService.setLoader(false);
 
-    this.appStatesSubscribe = this.store.subscribe((data: AppStates) => {
+    this.appStatesSubscribe = this.store
+      .debounceTime(100)
+      .subscribe((data: AppStates) => {
 
       // streetSettings
       this.streetData = get(data, 'streetSettings.streetSettings', this.streetData);
@@ -122,13 +126,45 @@ export class MapComponent implements OnInit, OnDestroy {
       // thingsFilter
       if (get(data, 'thingsFilter.thingsFilter', false)) {
         this.thing = get(data.thingsFilter.thingsFilter, 'thing.originPlural');
-        const query = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
-        this.urlChanged(query);
+        const query = `thing=${this.thing}${this.languageService.getLanguageParam()}`;
+        console.log(query);
+        // this.urlChanged(query);
+
+        this.mapServiceSubscribe = this.mapService
+          .getMainPlaces(query)
+          .subscribe((res) => {
+            if (res.err) {
+              return;
+            }
+
+            this.places = res.data.places;
+            this.countries = res.data.countries;
+
+            this.setMarkersCoord(this.places);
+            this.loaderService.setLoader(true);
+
+            this.resizeSubscribe = fromEvent(window, 'resize')
+              .debounceTime(150)
+              .subscribe(() => {
+                this.zone.run(() => {
+                  this.windowInnerWidth = window.innerWidth;
+
+                  if (this.windowInnerWidth >= 600) {
+                    document.body.classList.remove('hideScroll');
+                  }
+
+                  this.setMarkersCoord(this.places);
+                });
+              });
+          });
       }
 
       // app
         this.query = get(data, 'app.query', this.query);
 
+
+
+      this.loaderService.setLoader(true);
     });
 
     this.getTranslationSubscribe = this.languageService.getTranslation('FAMILY').subscribe((trans: any) => {
@@ -495,5 +531,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public toUrl(image: string): string {
     return `url("${image}")`;
+  }
+
+  public goToPage(params: UrlParameters): void {
+    this.urlParametersService.dispachToStore(params);
   }
 }

@@ -28,6 +28,7 @@ import {
   UrlChangeService
 } from '../../common';
 import { KeyCodes } from '../../enums';
+import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 
 @Component({
   selector: 'things-filter',
@@ -76,7 +77,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
-                     private urlChangeService: UrlChangeService) {
+                     private urlChangeService: UrlChangeService,
+                     private urlParametersService: UrlParametersService) {
     this.element = elementRef.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
@@ -217,26 +219,27 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  public goToThing(thing: any): void {
-    if (thing.empty) {
+  public goToThing(thingObj: any): void {
+    if (thingObj.empty) {
       return;
     }
 
-    let query: any = this.utilsService.parseUrl(this.query);
-    query.thing = thing.originPlural;
+    // let query: any = this.utilsService.parseUrl(this.query);
+    const thing = thingObj.originPlural;
 
-    const newUrl: string = this.utilsService.objToQuery(query);
+    // const newUrl: string = this.utilsService.objToQuery(query);
 
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
 
-    this.store.dispatch(new AppActions.SetQuery(newUrl));
+    // this.store.dispatch(new AppActions.SetQuery(newUrl));
 
-    this.store.dispatch(new ThingsFilterActions.GetThingsFilter(newUrl));
+    // this.store.dispatch(new ThingsFilterActions.GetThingsFilter(newUrl));
 
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
 
     //this.thingsFilterTitle = thing.plural;
+
     //this.changeDetectorRef.detectChanges();
 
     let pageName: string = '';
@@ -249,11 +252,13 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
         pageName = '/map';
     }*/
 
-    pageName = '/matrix';
+    // pageName = '/matrix';
 
-    this.urlChangeService.replaceState(pageName, newUrl);
+    // this.urlChangeService.replaceState(pageName, newUrl);
 
-    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
+    this.urlParametersService.dispachToStore({thing});
+
+    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thingObj.plural}`, {});
   }
 
   public setActiveThingsColumn(column: string): void {

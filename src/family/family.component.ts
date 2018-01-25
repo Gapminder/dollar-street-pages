@@ -124,8 +124,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnInit(): void {
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe(trans => {
       this.theWorldTranslate = trans.toLowerCase();
-
-      this.initData();
     });
 
     this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
@@ -399,7 +397,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public setZoom(zoom: number): void {
     if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-      this.zoom = zoom ? zoom : DefaultUrlParameters.zoom;
+      this.zoom = zoom ? zoom : Number(DefaultUrlParameters.zoom);
     }
 
     if (!this.isDesktop) {

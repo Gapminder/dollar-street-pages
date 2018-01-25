@@ -3,7 +3,7 @@ export interface AppState {
 }
 
 export interface MatrixState {
-  matrixImages: {};
+  matrixImages: Place[];
   updateMatrix: boolean;
   pinMode: boolean;
   embedMode: boolean;
@@ -20,6 +20,11 @@ export interface MatrixState {
   processImages: boolean;
   zoom: number;
   place: string;
+  embedSetId: string;
+  activeHouseOptions: {
+    row: number;
+    index: number;
+  };
 }
 
 export interface StreetSettingsState {
@@ -61,6 +66,7 @@ export interface AppStates {
     streetSettings: StreetSettingsState;
     thingsFilter: ThingsState;
     countriesFilter: CountriesFilterState;
+    language: LanguageState;
 }
 
 export interface ImageResolutionInterface {
@@ -147,4 +153,9 @@ export interface UrlParameters {
   place?: string;
   currency?: string;
   time?: string;
+  embed?: string;
+}
+
+export interface LanguageState {
+  lang: string;
 }

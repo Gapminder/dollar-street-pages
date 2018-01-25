@@ -20,7 +20,7 @@ import { Store } from '@ngrx/store';
 import {
   AppStates,
   StreetSettingsState,
-  DrawDividersInterface
+  DrawDividersInterface, UrlParameters
 } from '../../../interfaces';
 import {
   BrowserDetectionService,
@@ -30,6 +30,7 @@ import {
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { ImageResolutionInterface } from '../../../interfaces';
 import { get } from 'lodash';
+import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
 
 interface ImageViewBlockPosition {
   point: { left: number };
@@ -84,7 +85,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      private viewBlockService: FamilyMediaViewBlockService,
                      private languageService: LanguageService,
                      private utilsService: UtilsService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private urlParametersService: UrlParametersService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -270,5 +272,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     } else {
       return shortDescription;
     }
+  }
+
+  public goToPage(url: string, params: UrlParameters): void {
+    this.urlParametersService.dispachToStore(params);
   }
 }

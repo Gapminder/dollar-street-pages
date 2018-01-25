@@ -13,9 +13,7 @@
           <street
                   [places]="streetPlaces"
                   [hoverPlace]="hoverPlace"
-                  [chosenPlaces]="chosenPlaces"
-                  (filterStreet)="streetChanged($event)"
-          >
+                  [chosenPlaces]="chosenPlaces">
           </street>
         </div>
       </div>
@@ -34,8 +32,6 @@
             </span>
             {{ pinHeaderTitle }}
           </p>
-
-          <!-- <span *ngIf="isEmbedMode" class="quick-guide-btn" (click)="openQuickGuide()">Quick guide</span> -->
 
           <button type="button" *ngIf="!isPreviewView" (click)="pinModeClose(true)" class="pin-mode-guide-btn">
             Quick guide to Dollar Street
@@ -197,10 +193,8 @@
     </income-filter>
   </div>
 
-  <matrix-images [row]="row"
-                [thing]="thing"
+  <matrix-images [thing]="thing"
                 [places]="matrixPlaces"
-                [activeHouse]="activeHouse"
                 [clearActiveHomeViewBox]="clearActiveHomeViewBox"
                 (filter)="urlChanged($event)"
                 (hoverPlace)="hoverPlaces($event)"

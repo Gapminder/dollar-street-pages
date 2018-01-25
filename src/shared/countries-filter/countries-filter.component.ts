@@ -23,11 +23,12 @@ import {
   UrlChangeService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import { AppStates, UrlParameters } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as CountriesFilterActions from './ngrx/countries-filter.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { KeyCodes } from '../../enums';
+import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 
 @Component({
   selector: 'countries-filter',
@@ -86,7 +87,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private urlChangeService: UrlChangeService,
-                     private changeDetectorRef: ChangeDetectorRef) {
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private urlParametersService: UrlParametersService) {
 
     this.element = elementRef.nativeElement;
 
@@ -426,33 +428,38 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToLocation(): void {
-    let query = this.utilsService.parseUrl(this.query);
-
+    // let query = this.utilsService.parseUrl(this.query);
     this.search = '';
     this.regionsVisibility = true;
+    console.log(this.selectedRegions.length ? this.selectedRegions : ['World']);
 
-    query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
-    query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
+    const regions = this.selectedRegions.length ? this.selectedRegions : ['World']
+    console.log(regions);
+    const countries = this.selectedCountries.length ? this.selectedCountries : ['World'];
 
-    const queryUrl: string = this.utilsService.objToQuery(query);
+    const queryUrl: string = this.utilsService.objToQuery({regions, countries});
 
     this.setTitle(queryUrl);
     this.changeDetectorRef.detectChanges();
 
-    this.store.dispatch(new AppActions.SetQuery(queryUrl));
+    // this.store.dispatch(new AppActions.SetQuery(queryUrl));
+    //
+    // this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(query.countries));
+    // this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(query.regions));
+    // this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
+    //
 
-    this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(query.countries));
-    this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(query.regions));
-    this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
 
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    this.urlParametersService.dispachToStore({regions, countries});
 
-    this.urlChangeService.replaceState('/matrix', queryUrl);
+    // this.urlChangeService.replaceState('/matrix', queryUrl);
+    // this.urlChangeService.assingState('/matrix')
 
     this.isOpenCountriesFilter = false;
     this.cloneSelectedCountries = ['World'];
     this.cloneSelectedRegions = ['World'];
     this.openMobileFilterView = window.innerWidth < 1024 || !this.isDesktop;
+
   }
 
   public findCountryTranslatedName(countries: any[]): any {

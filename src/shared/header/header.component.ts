@@ -44,6 +44,7 @@ import {
 } from '../../common';
 import { DrawDividersInterface } from '../../interfaces';
 import { DefaultUrlParameters, VisibleParametersPerPage } from "../../url-parameters/defaultState";
+import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 
 @Component({
   selector: 'header',
@@ -153,7 +154,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
                      private store: Store<AppStates>,
                      private titleHeaderService: TitleHeaderService,
                      private renderer: Renderer,
-                     private incomeCalcService: IncomeCalcService) {
+                     private incomeCalcService: IncomeCalcService,
+                     private urlParametersService: UrlParametersService) {
     this.element = elementRef.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
@@ -827,5 +829,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
 
     return title;
+  }
+
+  resetStage(): void {
+    this.urlParametersService.dispachToStore(DefaultUrlParameters)
   }
 }

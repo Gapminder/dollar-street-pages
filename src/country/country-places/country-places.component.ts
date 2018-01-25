@@ -16,6 +16,7 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as _ from 'lodash';
+import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 
 @Component({
   selector: 'country-places',
@@ -44,7 +45,8 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
                      math: MathService,
                      languageService: LanguageService,
                      private store: Store<AppStates>,
-                     private incomeCalcService: IncomeCalcService) {
+                     private incomeCalcService: IncomeCalcService,
+                     private urlParametersService: UrlParametersService) {
     this.countryPlacesService = countryPlacesService;
     this.math = math;
     this.loaderService = loaderService;
@@ -102,5 +104,9 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
 
       return place;
     });
+  }
+
+  public goToPage(params) {
+    this.urlParametersService.dispachToStore(params);
   }
 }

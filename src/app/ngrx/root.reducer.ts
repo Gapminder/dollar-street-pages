@@ -7,11 +7,13 @@ import {
 } from '../../shared';
 import { appReducer } from './app.reducers';
 import { matrixReducer } from '../../matrix/ngrx/matrix.reducers';
+import { languageReducer } from "../../common/language/ngrx/language.reducers";
 
 export const reducers: ActionReducerMap<AppStates> = {
     app: appReducer,
     matrix: matrixReducer,
     streetSettings: streetSettingsReducer,
     thingsFilter: thingsFilterReducer,
-    countriesFilter: countriesFilterReducer
+    countriesFilter: countriesFilterReducer,
+    language: languageReducer,
 }

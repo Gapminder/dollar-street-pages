@@ -107,8 +107,10 @@ export class StreetDrawService {
     this.highIncome = highIncome || _.get(drawDividers, 'rich', 0);
     // this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     // this.width = (this.widthParsed !== this.width) ? this.widthParsed  : this.widthParsed;
-    this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
-    this.height = parseInt(this.svg.style('height'), 10);
+    const svgHeight = this.svg.style('height').length ? this.svg.style('height') : 0;
+    const svgWidth = this.svg.style('width').length ? this.svg.style('width') : 0;
+    this.width = parseInt(svgWidth, 10) - this.streetOffset;
+    this.height = parseInt(svgHeight, 10);
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
     const lowScale = _.get(drawDividers, 'filter.lowIncome', this.lowIncome);

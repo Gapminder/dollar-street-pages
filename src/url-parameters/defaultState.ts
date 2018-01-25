@@ -13,11 +13,12 @@ export const DefaultUrlParameters: UrlParameters = {
   place: undefined,
   currency: 'usd',
   time: 'month',
+  embed: undefined
 };
 
 export const VisibleParametersPerPage = {
   other:  ['lang'],
-  matrix: [
+  '/matrix': [
     'lang',
     'thing',
     'countries',
@@ -27,9 +28,18 @@ export const VisibleParametersPerPage = {
     'lowIncome',
     'highIncome',
     'activeHouse',
-    'currency'
+    'currency',
+    'time'
   ],
-  family: ['lang', 'place'],
-  about:  ['lang'],
-  map:  ['lang']
+  embed: [
+    'lang',
+    'thing',
+    'countries',
+    'regions',
+    'currency',
+    'embed'
+  ],
+  '/family': ['lang', 'place'],
+  '/about':  ['lang'],
+  '/map':  ['lang']
 };

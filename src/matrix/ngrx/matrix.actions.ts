@@ -1,10 +1,12 @@
 import { Action } from '@ngrx/store';
-import {Currency, TimeUnit} from "../../interfaces";
+import { Currency, TimeUnit, UrlParameters } from "../../interfaces";
 
 export const UPDATE_MATRIX: string = 'UPDATE_MATRIX';
 export const SET_PIN_MODE: string = 'SET_PIN_MODE';
 export const SET_EMBED_MODE: string = 'SET_EMBED_MODE';
 export const SET_IS_EMBEDED_SHARED: string = 'SET_IS_EMBEDED_SHARED';
+export const SET_EMBED_ID: string = 'SET_EMBED_ID';
+export const REMOVE_EMBED_ID: string = 'REMOVE_EMBED_ID';
 //export const SET_PIN_COLLAPSED: string = 'SET_PIN_COLLAPSED';
 export const SET_TIME_UNIT: string = 'SET_TIME_UNIT';
 export const OPEN_INCOME_FILTER: string = 'OPEN_INCOME_FILTER';
@@ -26,6 +28,7 @@ export const SET_CURRENCY_UNIT: string = 'SET_CURRENCY_UNIT';
 export const CHANGE_ZOOM: string = 'CHANGE_ZOOM';
 export const SET_PLACE: string = 'SET_PLACE';
 export const REMOVE_PLACE: string = 'REMOVE_PLACE';
+export const UPDATE_ACTIVE_HOUSE: string = 'UPDATE_ACTIVE_HOUSE';
 
 
 export class UpdateMatrix implements Action {
@@ -93,6 +96,16 @@ export class SetPinnedPlaces implements Action {
     constructor(public payload: any) {}
 }
 
+export class SetEmbededId implements Action {
+  readonly type = SET_EMBED_ID;
+  constructor(public payload: string) {}
+}
+
+export class RemoveEmbededId implements Action {
+  readonly type = REMOVE_EMBED_ID;
+  constructor(public payload: string) {}
+}
+
 export class GetMatrixImages implements Action {
     readonly type = GET_MATRIX_IMAGES;
     constructor(public payload: string) {}
@@ -152,6 +165,10 @@ export class RemovePlace implements Action {
   readonly type = REMOVE_PLACE;
   constructor(public payload: any) {}
 }
+export class UpdateActiveHouse implements Action {
+  readonly type = UPDATE_ACTIVE_HOUSE;
+  constructor(public payload: {row: number; index: number}) {}
+}
 
 export type Actions =
     | UpdateMatrix
@@ -174,4 +191,5 @@ export type Actions =
     | SetCurrencyUnit
     | ChangeZoom
     | SetPlace
-    | RemovePlace;
+    | RemovePlace
+    | UpdateActiveHouse;

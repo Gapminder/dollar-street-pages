@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { Subject } from 'rxjs/Subject';
 import { environment } from '../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../url-change/url-change.service';
@@ -13,6 +12,9 @@ import * as _ from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
 import { UtilsService } from '../utils/utils.service';
+import * as LanguageActions from './ngrx/language.actions';
+import { Store } from "@ngrx/store";
+import { AppStates } from '../../interfaces';
 
 @Injectable()
 export class LanguageService {
@@ -20,7 +22,6 @@ export class LanguageService {
   public currentLanguage: string;
   public defaultLanguage: string = 'en';
   public languageName: string;
-  public translateSubscribe: Subscription;
   public translations: any;
   public onLangChangeSubscribe: Subscription;
   public translationsLoadedSubscribe: Subscription;
@@ -36,7 +37,9 @@ export class LanguageService {
                      private translate: TranslateService,
                      private localStorageService: LocalStorageService,
                      private sanitizer: DomSanitizer,
-                     private utilsService: UtilsService) {
+                     private utilsService: UtilsService,
+                     private store: Store<AppStates>) {
+
     if (this.documentLoadedSubscription) {
       this.documentLoadedSubscription.unsubscribe();
     }
@@ -138,7 +141,13 @@ export class LanguageService {
 
   public changeLanguage(lang: string): void {
     this.localStorageService.setItem('language', lang);
-    this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${lang}`);
+    if (this.currentLanguage !== lang) {
+      this.store.dispatch(new LanguageActions.UpdateLanguage(lang));
+
+      process.nextTick(() => {
+        this.window.location.reload();
+      });
+    }
   }
 
   public getLanguage(query: string): Observable<any> {
@@ -149,15 +158,15 @@ export class LanguageService {
   }
 
   private setCurrentLanguage(languages: string[]): void {
-    const urlLanguage: string = this.getLanguageFromUrl(this.location.path());
     const storageLanguage: any = this.localStorageService.getItem('language');
     const browserLanguage: string = this.translate.getBrowserCultureLang();
 
-    let language = urlLanguage !== this.defaultLanguage ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
+    const language = storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
 
     const found = languages.indexOf(language) !== -1;
 
     this.currentLanguage = found ? language : this.defaultLanguage;
+    this.store.dispatch(new LanguageActions.UpdateLanguage(this.currentLanguage));
   }
 
   private updateLangInUrl(): void {

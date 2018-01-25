@@ -31,6 +31,7 @@
       <a class="custom-button"
          [routerLink]="['/family']"
          [queryParams]="{place: place.placeId}"
+         (click)="goToPage({place: place.placeId})"
          angulartics2On="click"
          angularticsEvent="Place page">{{ 'VISIT_FAMILY' | translate }} >></a>
     </div>

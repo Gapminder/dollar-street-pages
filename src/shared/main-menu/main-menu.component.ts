@@ -158,7 +158,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
       case '/about':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
-        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
+        this.router.navigate([url]);
         break;
 
       case 'https://www.gapminder.org/category/dollarstreet/':
@@ -168,12 +168,12 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
       case '/donate':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Donate page', {});
-        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
+        this.router.navigate([url]);
         break;
 
       case '/map':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
-        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
+        this.router.navigate([url]);
         break;
 
       case 'https://www.gapminder.org':

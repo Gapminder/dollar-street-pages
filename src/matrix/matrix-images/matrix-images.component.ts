@@ -27,10 +27,11 @@ import {
   SortPlacesService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import { AppStates, LanguageState, MatrixState } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
-import {Place} from "../../interfaces";
-import { DefaultUrlParameters } from "../../url-parameters/defaultState";
+import { Place } from '../../interfaces';
+import { DefaultUrlParameters } from '../../url-parameters/defaultState';
+import { get } from "lodash";
 
 @Component({
   selector: 'matrix-images',
@@ -49,25 +50,23 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public thing: string;
   @Input()
   public places: Observable<any>;
-  @Input()
-  public activeHouse: number;
+
   public zoom: number;
   @Input()
   public showBlock: boolean;
-  @Input()
-  public row: number;
+
   @Input()
   public clearActiveHomeViewBox: Subject<any>;
 
   @Output()
   public hoverPlace: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  public activeHouseOptions: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
   public filter: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   public itemSizeChanged: EventEmitter<any> = new EventEmitter<any>();
 
+  public row: number;
+  public activeHouse: number;
   public query: string;
   public theWorldTranslate: string;
   public sorryWeHaveNoTranslate: string;
@@ -106,7 +105,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public contentLoadedSubscription: Subscription;
   public isPinMode: boolean;
   public isEmbederShared: boolean;
-  public matrixState: Observable<any>;
+  public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
   public placesSet: Array<any>;
   public maxPinnedCount: number = 6;
@@ -143,7 +142,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
     this.placesSubscribe = this.places.subscribe((places: Place[]) => {
       this.showErrorMsg = false;
-      this.showBlock = false;
       this.currentPlaces = places;
 
       if (this.currentPlaces && this.query && !this.currentPlaces.length) {
@@ -152,8 +150,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
       setTimeout(() => {
         this.getVisibleRows();
-
-
         let sliceCount: number = this.visibleImages * 2;
 
         if (this.row && this.row > 1) {
@@ -162,13 +158,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
         this.placesArr = this.currentPlaces.slice(0, sliceCount);
       });
-
-      if (this.activeHouse && this.isInit && this.currentPlaces) {
-        setTimeout(() => {
-          this.goToImageBlock(this.currentPlaces[this.activeHouse - 1], this.activeHouse - 1, true);
-          this.isInit = false;
-        });
-      }
 
       setTimeout(() => {
         this.calcItemSize();
@@ -180,38 +169,32 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.checkQuickGuide();
     });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if (data) {
-        if (this.query !== data.query) {
-          this.query = data.query;
+    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
+      this.isPinMode = data.pinMode;
+
+      this.isEmbederShared = data.isEmbederShared;
+
+      if (_.get(data, 'placesSet', false)
+      && data.placesSet !== this.placesSet) {
+        this.placesSet = data.placesSet;
+      }
+
+      if (data.currencyUnit) {
+        if (this.currencyUnit !== data.currencyUnit) {
+          this.currencyUnit = data.currencyUnit;
         }
       }
-    });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (data) {
-        if (data.pinMode) {
-          this.isPinMode = true;
-        } else {
-          this.isPinMode = false;
-        }
+      this.zoom = _.get(data, 'zoom', Number(DefaultUrlParameters.zoom));
 
-        this.isEmbederShared = data.isEmbederShared;
-
-        if (data.placesSet) {
-          this.placesSet = data.placesSet;
-        }
-
-        if (data.currencyUnit) {
-          if (this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-          }
-        }
-
-        this.zoom = _.get(data, 'zoom', Number(DefaultUrlParameters.zoom));
-
-        this.changeDetectorRef.detectChanges();
+      if (get(data, 'activeHouseOptions.row'), false) {
+        this.row = data.activeHouseOptions.row;
       }
+
+      this.activeHouse = data.activeHouseOptions.index;
+      this.showBlock = !!this.activeHouse;
+
+      this.changeDetectorRef.detectChanges();
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -428,18 +411,14 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  public goToImageBlock(place: Place, index: number, isInit?: boolean): void {
+  public toggleImageBlock(place: Place, index: number) {
     if (!place) {
       return;
     }
-    console.log(place);
     this.familyData = Object.assign({}, place);
-    this.store.dispatch(new MatrixActions.SetPlace(place._id));
 
     this.indexViewBoxHouse = index;
-
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
-
     const offset: number = this.zoom - this.positionInRow;
 
     this.imageBlockLocation = this.positionInRow ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;
@@ -455,36 +434,19 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     const row: number = Math.ceil((this.indexViewBoxHouse + 1) / this.zoom);
     const activeHouseIndex: number = this.indexViewBoxHouse + 1;
 
-    if (!this.prevPlaceId) {
-      this.prevPlaceId = place._id;
-
-      this.showBlock = !this.showBlock;
-
-      // if (isInit) {
-      //   this.changeUrl({activeHouseIndex});
-      //   this.goToRow(row);
-      // } else {
-      //   this.changeUrl({row, activeHouseIndex});
-      // }
-
-
-      return;
-    }
-
-    if (this.prevPlaceId === place._id) {
-      this.showBlock = !this.showBlock;
-
-      if (!this.showBlock) {
-        this.prevPlaceId = '';
-      }
-
-      this.changeUrl({row: row});
+    if (this.activeHouse === activeHouseIndex) {
+      this.store.dispatch(new MatrixActions.UpdateActiveHouse({row, index: undefined}));
+      this.store.dispatch(new MatrixActions.RemovePlace(''));
     } else {
-      this.prevPlaceId = place._id;
-      this.showBlock = true;
-
-      this.changeUrl({row: row, activeHouseIndex: activeHouseIndex});
+      this.goToRow(row);
+      this.store.dispatch(new MatrixActions.UpdateActiveHouse({row, index: activeHouseIndex}));
+      this.store.dispatch(new MatrixActions.SetPlace(place._id));
     }
+  }
+
+  public closeToImageBlock() {
+    this.store.dispatch(new MatrixActions.UpdateActiveHouse({row: this.row, index: null}));
+    this.store.dispatch(new MatrixActions.RemovePlace(''));
   }
 
   public toUrl(image: any): string {
@@ -493,20 +455,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public goToMatrixWithCountry(params: any): void {
     this.filter.emit(params);
-  }
-
-  public changeUrl(options: {row?: number, activeHouseIndex?: number}): void {
-    let {row, activeHouseIndex} = options;
-
-    this.hoverPlace.emit(undefined);
-    this.hoverPlace.emit(this.familyData);
-
-    if (row) {
-      this.goToRow(row);
-      this.activeHouseOptions.emit({row: row, activeHouseIndex: activeHouseIndex});
-    } else {
-      this.activeHouseOptions.emit({activeHouseIndex: activeHouseIndex});
-    }
   }
 
   public goToRow(row: number): void {

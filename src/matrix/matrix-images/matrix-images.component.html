@@ -17,7 +17,7 @@
          (imageLoadedEvent)="imageIsUploaded(i)"
          (mouseenter)="hoverImage(place)"
          (mouseleave)="hoverImage()"
-         (click)="isPinMode ? togglePlaceToSet(place) : goToImageBlock(place, i)">
+         (click)="isPinMode ? togglePlaceToSet(place) : toggleImageBlock(place, i)">
       <div class="cell">
         <div class="cell-inner" [ngStyle]="{'background-image': place?.isUploaded && toUrl(place?.background)}">
 
@@ -72,7 +72,7 @@
                        [style.-webkit-order]="imageBlockLocation"
                        [style.order]="imageBlockLocation"
                        (goToMatrixWithCountry)="goToMatrixWithCountry($event)"
-                       (closeBigImageBlock)="goToImageBlock(familyData, indexViewBoxHouse)">
+                       (closeBigImageBlock)="closeToImageBlock(familyData, indexViewBoxHouse)">
     </matrix-view-block>
   </div>
 </div>

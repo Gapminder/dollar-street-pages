@@ -4,7 +4,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import {AppStates, Currency, Place, StreetSettingsState, TimeUnit, UrlParameters} from '../interfaces';
+import {
+  AppStates, Currency, MatrixState, Place, StreetSettingsState, ThingsState, TimeUnit,
+  UrlParameters
+} from '../interfaces';
 import * as StreetSettingsActions from '../common';
 import {
   Component,
@@ -43,6 +46,8 @@ import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
 import { logger } from "codelyzer/util/logger";
 import { DefaultUrlParameters } from "../url-parameters/defaultState";
+import { UrlParametersService } from "../url-parameters/url-parameters.service";
+import { combineLatest } from "rxjs/observable/combineLatest";
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -178,7 +183,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      private socialShareService: SocialShareService,
                      private sortPlacesService: SortPlacesService,
                      private incomeCalcService: IncomeCalcService,
-                     private localStorageService: LocalStorageService) {
+                     private localStorageService: LocalStorageService,
+                     private urlParametersService: UrlParametersService) {
     this.element = element.nativeElement;
 
     this.isMobile = this.browserDetectionService.isMobile();
@@ -218,130 +224,160 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       }
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (get(data, 'pinMode', false)) {
-        this.isPinMode = true;
-        this.isEmbedMode = false;
-      } else {
-        this.isPinMode = false;
-        this.isEmbedShared = false;
-        this.isPreviewView = false;
-        this.setMatrixTopPadding(0);
-      }
+    this.store
+      .debounceTime(50)
+      .subscribe( (state: AppStates) => {
+        const matrix = state.matrix;
+        const countriesFilter = state.countriesFilter;
+        const thingFilter = state.thingsFilter;
+        const streetSettings = state.streetSettings;
 
-      if (get(data, 'embedMode', false)) {
-        this.isEmbedMode = true;
-      } else {
-        this.isEmbedMode = false;
-        if (!this.isPinMode) {
-            this.setMatrixTopPadding(0);
+        if (get(matrix, 'pinMode', false)) {
+          this.isPinMode = true;
+          this.isEmbedMode = false;
+        } else {
+          this.isPinMode = false;
+          this.isEmbedShared = false;
+          this.isPreviewView = false;
+          this.setMatrixTopPadding(0);
         }
-      }
 
-      if (get(data, 'matrixImages', false)) {
-        if (this.matrixImages !== data.matrixImages) {
-          this.matrixImages = data.matrixImages;
-          this.streetPlacesData = data.matrixImages;
-
-          this.processMatrixImages(this.matrixImages);
-
-          if (this.timeUnit) {
-            this.changeTimeUnit(this.timeUnit);
+        if (get(matrix, 'embedMode', false)) {
+          this.isEmbedMode = true;
+        } else {
+          this.isEmbedMode = false;
+          if (!this.isPinMode) {
+            this.setMatrixTopPadding(0);
           }
+        }
+
+        if (get(matrix, 'matrixImages', false)
+          &&  this.matrixImages !== matrix.matrixImages) {
+            this.matrixImages = matrix.matrixImages;
+            this.streetPlacesData = matrix.matrixImages;
+
+            this.processMatrixImages(this.matrixImages);
+
+            if (this.timeUnit) {
+              this.changeTimeUnit(this.timeUnit);
+            }
+
+            if (this.currencyUnit) {
+              this.changeCurrencyUnit(this.currencyUnit);
+            }
+        }
+
+        this.zoom = Number(get(matrix, 'zoom', DefaultUrlParameters.zoom));
+
+        if (get(matrix, 'timeUnits', false) && this.timeUnits !== matrix.timeUnits) {
+          this.timeUnits = matrix.timeUnits;
+        }
+
+        if (get(matrix, 'timeUnit', false) && this.timeUnit !== matrix.timeUnit) {
+          this.timeUnit = matrix.timeUnit;
+          this.changeTimeUnit(matrix.timeUnit);
+        }
+
+        if (get(matrix, 'currencyUnits', false) && this.currencyUnits !== matrix.currencyUnits) {
+          this.currencyUnits = matrix.currencyUnits;
+        }
+
+        if (get(matrix, 'currencyUnit', false) && this.currencyUnit !== matrix.currencyUnit) {
+          this.currencyUnit = matrix.currencyUnit;
+          this.changeCurrencyUnit(matrix.currencyUnit);
+        }
+
+        if (get(matrix, 'incomeFilter', false)) {
+          this.isOpenIncomeFilter = true;
+        } else {
+          this.isOpenIncomeFilter = false;
+        }
+
+        if (get(matrix, 'quickGuide', false)) {
+          this.isQuickGuideOpened = true;
+
+          if (get(matrix,'embedMode', false)) {
+            this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+          }
+
+        } else {
+          this.isQuickGuideOpened = false;
+        }
+
+        if (get(matrix, 'placesSet' , false) && this.placesSet !== matrix.placesSet) {
+          this.placesSet = matrix.placesSet;
 
           if (this.currencyUnit) {
-            this.changeCurrencyUnit(this.currencyUnit);
+            this.initPlacesSet();
           }
-        }
-      }
 
-      this.zoom = Number(get(data, 'zoom', DefaultUrlParameters.zoom));
+          setTimeout(() => {
+            let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
 
-      if (get(data, 'timeUnits', false) && this.timeUnits !== data.timeUnits) {
-        this.timeUnits = data.timeUnits;
-      }
+            if (pinContainerElement) {
+              const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
 
-      if (get(data, 'timeUnit', false) && this.timeUnit !== data.timeUnit) {
-          this.timeUnit = data.timeUnit;
-          this.changeTimeUnit(data.timeUnit);
-      }
-
-      if (get(data, 'currencyUnits', false) && this.currencyUnits !== data.currencyUnits) {
-          this.currencyUnits = data.currencyUnits;
-      }
-
-      if (get(data, 'currencyUnit', false) && this.currencyUnit !== data.currencyUnit) {
-          this.currencyUnit = data.currencyUnit;
-          this.changeCurrencyUnit(data.currencyUnit);
-      }
-
-      if (get(data, 'incomeFilter', false)) {
-        this.isOpenIncomeFilter = true;
-      } else {
-        this.isOpenIncomeFilter = false;
-      }
-
-      if (get(data, 'quickGuide', false)) {
-        this.isQuickGuideOpened = true;
-
-        if (get(data,'embedMode', false)) {
-         this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+              this.setMatrixTopPadding(pinContainerHeight - 134);
+            }
+          }, 100);
         }
 
-      } else {
-        this.isQuickGuideOpened = false;
-      }
+        if (this.query && get(matrix, 'updateMatrix', false)) {
+          this.store.dispatch(new MatrixActions.UpdateMatrix(false));
+          this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
+        }
 
-      if (get(data, 'placesSet' , false) && this.placesSet !== data.placesSet) {
-        this.placesSet = data.placesSet;
+        if(get(countriesFilter, 'countriesFilter', false)) {
+          this.processMatrixImages(this.matrixImages);
+        }
 
-        if (this.currencyUnit) {
-          this.initPlacesSet();
+
+        if (get(thingFilter, 'thingsFilter', false)) {
+          this.activeThing = get(thingFilter.thingsFilter, 'thing', this.activeThing);
+          this.thing = get(thingFilter.thingsFilter, 'thing.originPlural', this.thing);
+        }
+
+        if (get(streetSettings, 'streetSettings', false)) {
+          if (this.streetData !== streetSettings.streetSettings) {
+            this.streetData = streetSettings.streetSettings;
+            this.processStreetData();
+          }
+
+          const poor = get(this.streetData, 'poor', DefaultUrlParameters.lowIncome);
+          const rich = get(this.streetData, 'rich', DefaultUrlParameters.highIncome);
+          this.lowIncome = +get(this.streetData, 'filters.lowIncome', poor);
+          this.highIncome = +get(this.streetData, 'filters.highIncome', rich);
+
+          // this.processMatrixImages(this.matrixImages);
+        }
+
+        if (get(streetSettings, 'streetSettings', false)
+          && get(thingFilter, 'thingsFilter', false)) {
+          // this.processMatrixImages(this.matrixImages);
         }
 
         setTimeout(() => {
-          let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
-
-          if (pinContainerElement) {
-            const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
-
-            this.setMatrixTopPadding(pinContainerHeight - 134);
+          if (this.row > 1 && !this.activeHouse) {
+            this.matrixImagesComponent.goToRow(this.row);
           }
-        }, 100);
-      }
+        }, 1000);
 
-      if (this.query && get(data, 'updateMatrix', false)) {
-        this.store.dispatch(new MatrixActions.UpdateMatrix(false));
-        this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
-      }
+        if (get(matrix, 'embedSetId', false)
+          && this.embedSetId !== matrix.embedSetId) {
+          this.embedSetId = matrix.embedSetId;
+          console.log(this.embedSetId );
+          const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+          this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
+          this.store.dispatch(new MatrixActions.SetEmbedMode(true));
 
-      this.changeDetectorRef.detectChanges();
-    });
-
-    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
-      if(get(data, 'countriesFilter', false)) {
-          this.processMatrixImages(this.matrixImages);
-      }
-    });
-
-    this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
-      if (get(data, 'thingsFilter', false)) {
-        this.activeThing = get(data.thingsFilter, 'thing', this.activeThing);
-        this.thing = get(data.thingsFilter, 'thing.originPlural', this.thing);
-
-        if (this.embedSetId !== undefined && this.embedSetId !== 'undefined') {
-          // const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-          // this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
+          console.log(query);
         }
 
-        this.processMatrixImages(this.matrixImages);
-
         this.changeDetectorRef.detectChanges();
-      }
-    });
+
+      });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
           if (window.innerWidth === this.windowInnerWidth) {
@@ -354,37 +390,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.plusSignWidth = this.element.offsetWidth / this.pinPlusCount - this.pinPlusOffset;
         });
       });
-
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
-      // this.thing = decodeURI(params.thing || 'Families');
-      // this.countries = params.countries ? decodeURI(params.countries) : 'World';
-      // this.regions = params.regions ? decodeURI(params.regions) : 'World';
-      // this.zoom = parseInt(params.zoom, 10);
-      // this.lowIncome = parseInt(params.lowIncome, 10);
-      // this.highIncome = parseInt(params.highIncome, 10);
-      // this.activeHouse = parseInt(params.activeHouse, 10);
-      // this.row = parseInt(params.row, 10) || 1;
-      // this.embedSetId = decodeURI(params.embed);
-      // this.currencyUnitCode = params.currency ? decodeURI(params.currency.toUpperCase()) : null;
-      // this.timeUnitCode = params.time ? decodeURI(params.time.toUpperCase()) : null;
-      //this.showStreetAttrs = params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false;
-
-      // this.changeDetectorRef.detectChanges();
-
-      // if (this.embedSetId !== 'undefined' && this.embedSetId !== undefined) {
-      //   const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-      //   this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
-      //   this.store.dispatch(new MatrixActions.SetEmbedMode(true));
-      // }
-
-      setTimeout(() => {
-        if (this.row > 1 && !this.activeHouse) {
-          this.matrixImagesComponent.goToRow(this.row);
-        }
-      }, 1000);
-
-
-    });
 
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (get(data, 'streetSettings', false)) {
@@ -419,23 +424,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         this.getPaddings();
       });
 
-    // this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
-    // this.store.dispatch(new MatrixActions.GetCurrencyUnits());
-    // this.store.dispatch(new MatrixActions.GetTimeUnits());
   }
 
-  /*public openQuickGuide(): void {
-    this.localStorageService.removeItem('quick-guide');
-
-    document.body.scrollTop = 0;
-
-    this.store.dispatch(new MatrixActions.OpenQuickGuide(true));
-  }*/
-
   public initPlacesSet(): void {
-    this.placesSet = this.placesSet.map((place) => {
+    this.placesSet = this.placesSet.map((place: Place) => {
       if (place) {
-        place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+        place.showIncome = this.incomeCalcService
+          .calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
 
         return place;
       }
@@ -498,35 +493,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       if (!this.isDesktop) {
         this.zoom = 3;
       }
-
-      let query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
-
-      if (this.currencyUnitCode) {
-        query += `&currency=${this.currencyUnitCode.toLowerCase()}`;
-      }
-
-      if (this.timeUnitCode) {
-        query += `&time=${this.timeUnitCode.toLowerCase()}`;
-      }
-
-      /*if (this.showStreetAttrs) {
-        query += `&labels=${this.showStreetAttrs}`;
-      }*/
-
-      query += this.languageService.getLanguageParam();
-
-      if (this.activeHouse) {
-        query += `&activeHouse=${this.activeHouse}`;
-      }
-
-      if (this.embedSetId !== 'undefined' && this.embedSetId !== undefined) {
-        query += `&embed=${this.embedSetId}`;
-      }
-
-      // this.urlChanged({isBack: true, url: query});
-
-      this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-
       this.changeDetectorRef.detectChanges();
     }
   }
@@ -593,6 +559,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       let queryParams = this.utilsService.parseUrl(this.query);
       queryParams.embed = this.embedSetId;
+      const embed = this.embedSetId;
+
+
 
       let queryString = this.utilsService.objToQuery(queryParams);
 
@@ -618,19 +587,18 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
             this.isScreenshotProcessing = false;
 
-            // this.urlChangeService.replaceState('/matrix', queryString);
-
-            // this.store.dispatch(new AppActions.SetQuery(queryString));
-
             this.isEmbedShared = true;
 
             this.changeDetectorRef.detectChanges();
 
             this.shareUrl = shareUrl;
+            this.urlParametersService.dispachToStore(this.embedSetId);
 
-            let shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
-            shareUrlElement.setAttribute('value', window.location.href);
-            shareUrlElement.select();
+            process.nextTick(() => {
+              const shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
+              shareUrlElement.setAttribute('value', this.urlParametersService.getUrlForPage('shareEmbed'));
+              shareUrlElement.select();
+            });
           });
         });
     });
@@ -730,26 +698,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.loaderService.setLoader(false);
   }
 
-  public streetChanged(event: any): void {
-    // this.urlChanged(event);
-    console.log(event);
-    // this.processMatrixImages(this.matrixImages);
-  }
-
   public pinModeClose(openQuickGuide = false): void {
       this.store.dispatch(new MatrixActions.SetPinMode(false));
       this.store.dispatch(new MatrixActions.SetEmbedMode(false));
       this.store.dispatch(new MatrixActions.SetIsEmbededShared(false));
+      this.store.dispatch(new MatrixActions.RemoveEmbededId(''));
 
       this.embedSetId = undefined;
-
-      let queryParams = this.utilsService.parseUrl(this.query);
-      delete queryParams.embed;
-      let query = this.utilsService.objToQuery(queryParams);
-
-      // this.store.dispatch(new AppActions.SetQuery(query));
-      // this.urlChangeService.replaceState('/matrix', query);
-
       this.clearEmbedMatrix();
 
       if (openQuickGuide) {
@@ -965,8 +920,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
 
     let url = this.utilsService.objToQuery(queryParams);
-
-    this.urlChanged({url: url});
   }
 
   public changeZoom(zoom: number): void {
@@ -997,8 +950,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       this.lowIncome = params.lowIncome;
       this.highIncome = params.highIncome;
-
-      this.urlChanged({url: this.query});
     }
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
