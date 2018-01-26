@@ -217,22 +217,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       document.body.classList.remove('hideScroll');
     }
 
-    let queryParams = {
-      thing: 'Families',
-      countries: 'World',
-      regions: 'World',
-      zoom: 4,
-      row: 1,
-      lowIncome: this.streetData.poor,
-      highIncome: this.streetData.rich,
-      lang: this.languageService.currentLanguage
-    };
-
-    if (!this.isDesktop) {
-      queryParams.zoom = 3;
-    }
-
-    this.router.navigate(['/matrix'], {queryParams: queryParams});
+    this.router.navigate(['/matrix']);
 
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
   }

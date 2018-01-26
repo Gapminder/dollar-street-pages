@@ -56,8 +56,8 @@ export interface Thing {
 
 export interface CountriesFilterState {
   countriesFilter: Continent;
-  selectedCountries: string;
-  selectedRegions?: string;
+  selectedCountries: string[];
+  selectedRegions?: string[];
 }
 
 export interface AppStates {

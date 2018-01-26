@@ -25,11 +25,8 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
       .filter(event => event instanceof NavigationEnd)
       .take(1)
       .subscribe((event: NavigationEndInterface) => {
-        console.log('enter by url')
         const params = urlParametersService.parseString(event.url);
-        console.log(params)
         urlParametersService.dispachToStore(params);
-
         urlParametersService.combineUrlPerPage();
       });
     this.subscribtions.push(routerSubscribe);
@@ -37,7 +34,6 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
     const storeSubscribe = store.debounceTime(50).subscribe((state: AppStates) => {
     });
     this.subscribtions.push(storeSubscribe);
-
   }
 
   ngOnInit() {

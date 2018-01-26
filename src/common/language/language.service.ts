@@ -143,10 +143,6 @@ export class LanguageService {
     this.localStorageService.setItem('language', lang);
     if (this.currentLanguage !== lang) {
       this.store.dispatch(new LanguageActions.UpdateLanguage(lang));
-
-      process.nextTick(() => {
-        this.window.location.reload();
-      });
     }
   }
 

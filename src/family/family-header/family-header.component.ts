@@ -71,7 +71,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   public resizeSubscribe: Subscription;
   public element: HTMLElement;
   public streetData: DrawDividersInterface;
-  public streetSettingsServiceSubscribe: Subscription;
   public isDesktop: boolean;
   public isMobile: boolean;
   public isTablet: boolean;
@@ -200,69 +199,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       };
     });
 
-    // this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-    //   if (get(data, 'streetSettings', false)) {
-    //     this.streetData = data.streetSettings;
-    //   }
-    // });
-
-    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
-      // if (get(data, 'currencyUnit', false)
-      //     && this.currencyUnit !== data.currencyUnit) {
-      //   this.currencyUnit = data.currencyUnit;
-      // }
-      //
-      // if (get(data, 'timeUnit', false)
-      //     && this.timeUnit !== data.timeUnit) {
-      //   this.timeUnit = data.timeUnit;
-      // }
-      //
-      // if (get(data, 'timeUnits', false)) {
-      //     if (this.timeUnits !== data.timeUnits) {
-      //       this.timeUnits = data.timeUnits;
-      //
-      //       this.timeUnit = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.queryParams.time);
-      //
-      //       this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
-      //     }
-      // } else {
-      //   this.store.dispatch(new MatrixActions.GetTimeUnits());
-      // }
-      //
-      // if (get(data, 'currencyUnits', false)) {
-      //  if( this.currencyUnits !== data.currencyUnits) {
-      //    this.currencyUnits = data.currencyUnits;
-      //
-      //    this.currencyUnit = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.queryParams.currency);
-      //
-      //    this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-      //  }
-      // } else {
-      //   this.store.dispatch(new MatrixActions.GetCurrencyUnits());
-      // }
-      //
-      // this.calcIncomeValue();
-    });
-
-    // const query = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
-    // this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
-    //   if (get(res, 'err', false)) {
-    //     return;
-    //   }
-    //
-    //   this.home = res.data;
-    //   this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
-    //   this.mapData = this.home.country;
-    //
-    //   if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
-    //     this.showTranslateMe = true;
-    //   }
-    //
-    //   this.truncCountryName(this.home.country);
-    //
-    //   this.calcIncomeValue();
-    // });
-
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
       .subscribe(() => {
@@ -385,6 +321,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
   }
 
   public goToPage(url: string, params: UrlParameters): void {
+    console.log(params.countries);
     this.urlParametersService.dispachToStore(params);
   }
 }

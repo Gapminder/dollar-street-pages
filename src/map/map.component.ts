@@ -126,9 +126,9 @@ export class MapComponent implements OnInit, OnDestroy {
       // thingsFilter
       if (get(data, 'thingsFilter.thingsFilter', false)) {
         this.thing = get(data.thingsFilter.thingsFilter, 'thing.originPlural');
-        const query = `thing=${this.thing}${this.languageService.getLanguageParam()}`;
+        const query = `thing=${encodeURI(this.thing)}${this.languageService.getLanguageParam()}`;
         console.log(query);
-        // this.urlChanged(query);
+
 
         this.mapServiceSubscribe = this.mapService
           .getMainPlaces(query)

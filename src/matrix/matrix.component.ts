@@ -38,16 +38,12 @@ import {
   IncomeCalcService,
   LocalStorageService
 } from '../common';
-import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
-import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter.actions';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
-import { logger } from "codelyzer/util/logger";
 import { DefaultUrlParameters } from "../url-parameters/defaultState";
 import { UrlParametersService } from "../url-parameters/url-parameters.service";
-import { combineLatest } from "rxjs/observable/combineLatest";
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -88,7 +84,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public highIncome: number;
   public activeHouse: number;
   public itemSize: number;
-  public footerHeight: number;
   public visiblePlaces: number;
   public rowEtalon: number = 0;
   public windowInnerWidth: number = window.innerWidth;
@@ -112,15 +107,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public element: HTMLElement;
   public imageResolution: ImageResolutionInterface;
   public matrixImagesContainer: HTMLElement;
-  public imagesContainer: HTMLElement;
-  public matrixImagesContainerHeight: number;
   public guidePositionTop: number = 0;
-  public imageContentElement: HTMLElement;
   public guideContainerElement: HTMLElement;
   public device: BrowserDetectionService;
   public theWorldTranslate: string;
   public getTranslationSubscribe: Subscription;
-  public byIncomeText: string;
   public streetSettingsState: Observable<StreetSettingsState>;
   public appState: Observable<any>;
   public matrixState: Observable<any>;
@@ -130,31 +121,21 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public appStateSubscription: Subscription;
   public matrixStateSubscription: Subscription;
   public isQuickGuideOpened: boolean;
-  public thingsFilterState: Observable<any>;
-  public thingsFilterStateSubscription: Subscription;
   public isPinMode: boolean;
-  public pinContainerElement: HTMLElement;
   public placesSet: Array<any>;
-  public maxPinnedCount: number = 6;
   public pinHeaderTitle: string;
   public isPreviewView: boolean;
   public isEmbedMode: boolean;
   public embedSetId: string;
   public isEmbedShared: boolean;
   public activeThing: any;
-  public imagesProcessed: boolean;
   public matrixImages: any;
-  public countriesFilterState: Observable<any>;
-  public countriesFilterStateSubscription: Subscription;
   public isScreenshotProcessing: boolean;
   public timeUnit: TimeUnit;
   public currencyUnit: Currency;
   public currencyUnits: Currency[];
   public streetPlacesData: Place[];
-  public timeUnitCode: string;
-  public currencyUnitCode: string;
   public timeUnits: TimeUnit[];
-  //public showStreetAttrs: boolean;
   public plusSignWidth: number;
   public pinPlusArr: number[] = new Array(6);
   public pinPlusCount: number = 6;
@@ -163,6 +144,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public shareUrl: string;
   public pinnedSetQuery: string;
   public sharedImageUrl: string;
+  public storeSubscription: Subscription
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -191,12 +173,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
-
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
-    this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
-    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
   public ngAfterViewInit(): void {
@@ -214,23 +190,20 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.theWorldTranslate = trans.THE_WORLD;
     });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if (data) {
-        if (data.query) {
-          if (this.query !== data.query) {
-            this.query = data.query;
-          }
-        }
-      }
-    });
 
-    this.store
+    this.storeSubscription = this.store
       .debounceTime(50)
       .subscribe( (state: AppStates) => {
+        const appState = state.app;
         const matrix = state.matrix;
         const countriesFilter = state.countriesFilter;
         const thingFilter = state.thingsFilter;
         const streetSettings = state.streetSettings;
+
+        if (get(appState, 'query', false)
+        && this.query !== appState.query) {
+            this.query = appState.query;
+        }
 
         if (get(matrix, 'pinMode', false)) {
           this.isPinMode = true;
@@ -348,12 +321,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.lowIncome = +get(this.streetData, 'filters.lowIncome', poor);
           this.highIncome = +get(this.streetData, 'filters.highIncome', rich);
 
-          // this.processMatrixImages(this.matrixImages);
+          this.processMatrixImages(this.matrixImages);
         }
 
         if (get(streetSettings, 'streetSettings', false)
           && get(thingFilter, 'thingsFilter', false)) {
-          // this.processMatrixImages(this.matrixImages);
+          this.processMatrixImages(this.matrixImages);
         }
 
         setTimeout(() => {
@@ -365,12 +338,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (get(matrix, 'embedSetId', false)
           && this.embedSetId !== matrix.embedSetId) {
           this.embedSetId = matrix.embedSetId;
-          console.log(this.embedSetId );
           const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
           this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
           this.store.dispatch(new MatrixActions.SetEmbedMode(true));
-
-          console.log(query);
         }
 
         this.changeDetectorRef.detectChanges();
@@ -391,29 +361,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         });
       });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (get(data, 'streetSettings', false)) {
-        if (this.streetData !== data.streetSettings) {
-          this.streetData = data.streetSettings;
 
-          this.processStreetData();
-        }
-
-        const poor = get(this.streetData, 'poor', DefaultUrlParameters.lowIncome);
-        const rich = get(this.streetData, 'rich', DefaultUrlParameters.highIncome);
-        this.lowIncome = +get(this.streetData, 'filters.lowIncome', poor);
-        this.highIncome = +get(this.streetData, 'filters.highIncome', rich);
-
-        this.processMatrixImages(this.matrixImages);
-      }
-    });
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
     this.scrollSubscribtion = fromEvent(document, 'scroll')
-      .debounceTime(50)
       .subscribe(() => {
         if (!this.itemSize) {
           this.calcItemSize();
@@ -554,20 +508,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       const embedId = data.data._id;
       const placesList = data.data.places;
       const shareUrl = data.data.url;
-
       this.embedSetId = embedId;
 
-      let queryParams = this.utilsService.parseUrl(this.query);
+      const queryParams = this.utilsService.parseUrl(this.query);
       queryParams.embed = this.embedSetId;
-      const embed = this.embedSetId;
 
-
-
-      let queryString = this.utilsService.objToQuery(queryParams);
-
-      let updatedSet = this.placesSet.map((place) => {
-        // place.background = placesList[place._id];
+      const updatedSet = this.placesSet.map((place) => {
         place.showBackground = placesList[place._id];
+
         return place;
       });
 
@@ -592,11 +540,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             this.changeDetectorRef.detectChanges();
 
             this.shareUrl = shareUrl;
-            this.urlParametersService.dispachToStore(this.embedSetId);
+            this.urlParametersService.dispachToStore({embed: this.embedSetId});
 
             process.nextTick(() => {
               const shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
-              shareUrlElement.setAttribute('value', this.urlParametersService.getUrlForPage('shareEmbed'));
+              const shareParams = this.urlParametersService.getParamsStingForPage('embed');
+              const link = window.location.href.split('?')[0];
+              shareUrlElement.setAttribute('value', `${link}?${shareParams}`);
               shareUrlElement.select();
             });
           });
@@ -663,20 +613,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.windowHistory.scrollRestoration = 'auto';
     }
 
+    if (this.storeSubscription) {
+      this.storeSubscription.unsubscribe();
+    }
+
     if (this.scrollSubscribtion) {
       this.scrollSubscribtion.unsubscribe();
-    }
-
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
-    }
-
-    if (this.matrixStateSubscription) {
-      this.matrixStateSubscription.unsubscribe();
     }
 
     if (this.getTranslationSubscribe) {
@@ -686,15 +628,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
-
-    if (this.queryParamsSubscribe) {
-      this.queryParamsSubscribe.unsubscribe();
-    }
-
-    if (this.thingsFilterStateSubscription) {
-      this.thingsFilterStateSubscription.unsubscribe();
-    }
-
     this.loaderService.setLoader(false);
   }
 

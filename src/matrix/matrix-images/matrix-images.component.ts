@@ -27,7 +27,7 @@ import {
   SortPlacesService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates, LanguageState, MatrixState } from '../../interfaces';
+import { AppStates, Currency, LanguageState, MatrixState } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { Place } from '../../interfaces';
 import { DefaultUrlParameters } from '../../url-parameters/defaultState';
@@ -88,12 +88,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public element: HTMLElement;
   public placesSubscribe: Subscription;
   public itemSize: number;
-  public imageHeight: number;
   public familyData: any;
   public prevPlaceId: string;
   public resizeSubscribe: Subscription;
   public clearActiveHomeViewBoxSubscribe: Subscription;
-  public imageMargin: number;
   public windowInnerWidth: number = window.innerWidth;
   public visibleImages: number;
   public locations: any[];
@@ -107,9 +105,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public isEmbederShared: boolean;
   public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
-  public placesSet: Array<any>;
-  public maxPinnedCount: number = 6;
-  public currencyUnit: any;
+  public placesSet: Place[];
+  public maxPinnedCount = 6;
+  public currencyUnit: Currency;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -191,8 +189,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         this.row = data.activeHouseOptions.row;
       }
 
-      this.activeHouse = data.activeHouseOptions.index;
-      this.showBlock = !!this.activeHouse;
+      if (get(data, 'place', false)) {
+        this.activeHouse = data.activeHouseOptions.index;
+        this.showBlock = !!this.activeHouse;
+      } else {
+        this.activeHouse = undefined;
+        this.showBlock = false;
+      }
 
       this.changeDetectorRef.detectChanges();
     });
@@ -274,9 +277,9 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
   public onScrollDown(): void {
     if (this.placesArr.length) {
-      let sliceCount: number = this.placesArr.length + this.visibleImages <= this.currentPlaces.length ? this.visibleImages : (this.currentPlaces.length - this.placesArr.length);
+      const sliceCount = this.placesArr.length + this.visibleImages <= this.currentPlaces.length ? this.visibleImages : (this.currentPlaces.length - this.placesArr.length);
 
-      let places: any = this.currentPlaces.slice(this.placesArr.length, this.placesArr.length + sliceCount);
+      const places = this.currentPlaces.slice(this.placesArr.length, this.placesArr.length + sliceCount);
 
       this.placesArr = this.placesArr.concat(places);
     }
@@ -323,8 +326,8 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   }
 
   public buildTitle(query: any): void {
-    let regions = query.regions;
-    let countries = query.countries;
+    const regions = query.regions;
+    const countries = query.countries;
 
     this.selectedThing = query.thing.split(',');
 
@@ -340,7 +343,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       } else {
         this.activeCountries = countries.join(' & ');
       }
-
       this.selectedCountries = countries;
 
       return;
@@ -368,7 +370,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
 
         if (difference.length) {
 
-          this.activeCountries = regions + ',' + difference;
+          this.activeCountries = regions.join(',') + ',' + difference;
         } else {
           this.activeCountries = regions.join(' & ');
         }
@@ -444,7 +446,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  public closeToImageBlock() {
+  public closeImageBlock() {
     this.store.dispatch(new MatrixActions.UpdateActiveHouse({row: this.row, index: null}));
     this.store.dispatch(new MatrixActions.RemovePlace(''));
   }

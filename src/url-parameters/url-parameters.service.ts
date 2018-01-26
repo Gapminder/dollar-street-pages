@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AppStates, UrlParameters } from '../interfaces';
 import { DefaultUrlParameters, VisibleParametersPerPage } from './defaultState';
-import { forEach, get, reduce } from 'lodash';
-import { IncomeCalcService, LanguageService, UtilsService } from '../common';
+import { forEach, get, reduce, difference } from 'lodash';
+import { BrowserDetectionService, IncomeCalcService, LanguageService, UtilsService } from '../common';
 
 import { Store } from '@ngrx/store';
 import * as AppActions from '../app/ngrx/app.actions';
@@ -16,6 +16,8 @@ import { Location } from "@angular/common";
 @Injectable()
 export class UrlParametersService {
   parameters: UrlParameters = DefaultUrlParameters;
+  window: Window = window;
+  isMobile:boolean;
 
   public constructor(
     private utilsService: UtilsService,
@@ -23,12 +25,16 @@ export class UrlParametersService {
     private incomeCalcService: IncomeCalcService,
     private router: Router,
     private location: Location,
+    private browserDetectionService: BrowserDetectionService,
     private languageService: LanguageService
   ) {
-    this.store.debounceTime(50).subscribe((state: AppStates) => {
-      console.log(state)
 
+    this.isMobile = this.browserDetectionService.isMobile() || this.browserDetectionService.isTablet();
+
+    this.store.debounceTime(50).subscribe((state: AppStates) => {
       const matrix = state.matrix;
+      const languageState = state.language;
+      const countriesFilter = state.countriesFilter;
 
       if (!get(matrix, 'currencyUnit', false)
       && get(matrix, 'currencyUnits', false)) {
@@ -45,100 +51,83 @@ export class UrlParametersService {
       if (!get(matrix, 'timeUnit', false)
         && get(matrix, 'timeUnits', false)) {
         const timeUnit = this.incomeCalcService.getTimeUnitByCode(matrix.timeUnits, this.parameters.time);
-        console.log(timeUnit)
         this.store.dispatch(new MatrixActions.SetTimeUnit(timeUnit));
       }
 
       if (get(matrix, 'timeUnit', false)) {
-        this.parameters.time = matrix.timeUnit.per
+        this.parameters.time = matrix.timeUnit.per;
       }
-      console.log(this.parameters.currency)
+
+      this.parameters.place = get(matrix, 'place', undefined);
+
+      if (get(languageState, 'lang', false)
+      && this.parameters.lang !== languageState.lang) {
+        this.parameters.lang = get(languageState, 'lang', DefaultUrlParameters.lang);
+        this.window.location.reload();
+      }
+
+      this.parameters.embed = get(matrix, 'embedSetId', undefined);
+
+
+      if (get(matrix, 'zoom', '') !== this.parameters.zoom) {
+        this.store.dispatch(new MatrixActions.ChangeZoom(matrix.zoom));
+        this.parameters.zoom = matrix.zoom.toString();
+      }
+
+      this.parameters.countries = countriesFilter.selectedCountries;
+      this.parameters.regions = countriesFilter.selectedRegions;
+
       this.combineUrlPerPage();
     });
   }
 
   parseString(urlString: string): UrlParameters {
-    console.log(this.parameters);
     if (urlString.indexOf('?') === -1) {
       return DefaultUrlParameters;
     }
     urlString = urlString.slice(urlString.indexOf('?') + 1);
-    const params = Object.assign( {}, DefaultUrlParameters, this.utilsService.parseUrl(urlString));
-
-    return params;
+     return Object.assign( {}, DefaultUrlParameters, this.utilsService.parseUrl(urlString));
   }
 
   combineUrlPerPage(): void {
     const path = this.router.url.split('?')[0];
 
-    const visibleParameters = get(VisibleParametersPerPage, path, VisibleParametersPerPage['other']);
-    let string = reduce(visibleParameters, (result: string[], value: string) => {
+    const params =this.getParamsStingForPage(path);
+    const string = params.length ? `?${params}` : params;
+    this.location.replaceState(path, string);
+  }
+
+  getStringFromParams(param: string): string {
+    let string = '';
+
+    switch (param) {
+      case 'countries':
+        string = difference(this.parameters[param].sort(), DefaultUrlParameters[param].sort()).length ? `${param}=${this.parameters[param].join(',')}` : '';
+        break;
+      case 'regions':
+        string = difference(this.parameters[param].sort(),  DefaultUrlParameters[param].sort()).length ? `${param}=${this.parameters[param].join(',')}` : '';
+        break;
+      default:
+          string = this.parameters[param] !== DefaultUrlParameters[param] ? `${param}=${this.parameters[param]}` : '';
+    }
+    return encodeURI(string);
+  }
+
+  getParamsStingForPage(page: string): string {
+    const visibleParameters = get(VisibleParametersPerPage, page, VisibleParametersPerPage['other']);
+    const line = reduce(visibleParameters, (result: string[], value: string) => {
       const cell = this.getStringFromParams(value);
       if (cell.length) {
         result.push(cell);
       }
       return result;
-    },[]).join('&');
-    console.log(string);
-    string = string.length ? `?${string}`: string;
-    this.location.replaceState(path, string);
-  }
+    }, []).join('&');
 
-  getStringFromParams(param: string): string {
-    const string = this.parameters[param] !== DefaultUrlParameters[param] ? `${param}=${this.parameters[param]}` : '';
-    console.log(this.parameters[param])
-    // switch (param) {
-    //   case 'lang':
-    //     string += this.parameters.lang !== DefaultUrlParameters.lang ? `lang=${this.parameters.lang}` : '';
-    //     break;
-    //   case 'thing':
-    //     string += this.parameters.thing !== DefaultUrlParameters.thing ? `thing=${this.parameters.thing}` : '';
-    //     break;
-    //   case 'countries':
-    //     string += this.parameters.countries !== DefaultUrlParameters.countries ? `countries=${this.parameters.countries.join(',')}` : '';
-    //     break;
-    //   case 'regions':
-    //     string += this.parameters.regions !== DefaultUrlParameters.regions ? `regions=${this.parameters.regions.join(',')}` : '';
-    //     break;
-    //   case 'zoom':
-    //     string += this.parameters.zoom !== DefaultUrlParameters.zoom ? `zoom=${this.parameters.zoom}` : '';
-    //     break;
-    //   case 'row':
-    //     string += this.parameters.row !== DefaultUrlParameters.row ? `row=${this.parameters.row}` : '';
-    //     break;
-    //   case 'lowIncome':
-    //     string += this.parameters.lowIncome !== DefaultUrlParameters.lowIncome ? `lowIncome=${this.parameters.lowIncome}` : '';
-    //     break;
-    //   case 'row':
-    //     string += this.parameters.highIncome !== DefaultUrlParameters.highIncome ? `row=${this.parameters.highIncome}` : '';
-    //     break;
-    //   case 'activeHouse':
-    //     string += this.parameters.activeHouse !== DefaultUrlParameters.activeHouse ? `activeHouse=${this.parameters.activeHouse}` : '';
-    //     break;
-    //   case 'place':
-    //     string += this.parameters.place !== DefaultUrlParameters.place ? `place=${this.parameters.place}` : '';
-    //     break;
-    //   case 'currency':
-    //     string += this.parameters.currency !== DefaultUrlParameters.currency ? `place=${this.parameters.currency}` : '';
-    //     break;
-    //   case 'time':
-    //     string += this.parameters.time !== DefaultUrlParameters.time ? `place=${this.parameters.time}` : '';
-    //     break;
-    //   default:
-    //     string;
-    // };
-
-    return encodeURI(string);
-  }
-
-  getUrlForPage(page: string): string {
-    return '';
+    return line;
   }
 
   dispachToStore(params): void {
-
     this.parameters = Object.assign({}, DefaultUrlParameters, this.parameters, params);
-    console.log(params);
 
     const queryUrl: string = this.utilsService.objToQuery(this.parameters);
     this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
@@ -158,6 +147,8 @@ export class UrlParametersService {
 
     if (get(params, 'place', false)) {
       this.store.dispatch(new MatrixActions.SetPlace(params.place));
+    } else {
+      this.store.dispatch(new MatrixActions.RemovePlace({}));
     }
 
     if (get(params, 'countries', false)
@@ -174,9 +165,13 @@ export class UrlParametersService {
       this.languageService.changeLanguage(params.lang);
     }
 
+    if (get(params, 'zoom', false)) {
+      this.store.dispatch(new MatrixActions.ChangeZoom(params.zoom));
+    }
+
   }
 
-  setParameter(key, value) {
-
+  getAllParameters(): UrlParameters {
+    return this.parameters;
   }
 }

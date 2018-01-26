@@ -78,7 +78,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public countries: {}[];
   public activeImageIndex: number;
   public windowHistory = history;
-  public queryParamsSubscribe: Subscription;
   public familyServiceSetThingSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public scrollSubscribe: Subscription;
@@ -87,19 +86,14 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
   public query: string;
-  public streetSettingsState: Observable<StreetSettingsState>;
-  public countriesFilterState: Observable<CountriesFilterState>;
   public headerElement: HTMLElement;
   public streetFamilyContainerElement: HTMLElement;
   public shortFamilyInfoContainerElement: HTMLElement;
   public streetSettingsStateSubscription: Subscription;
-  public countriesFilterStateSubscription: Subscription;
-  public subscriptions: Subscription[];
   public itemSize: number;
   public row: number;
   public rowEtalon: number;
-  public appState: Observable<AppState>;
-  public appStateSubscription: Subscription;
+  public appStatesSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -115,10 +109,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.element = elementRef.nativeElement;
 
     this.isDesktop = this.browserDetectionService.isDesktop();
-
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
   public ngOnInit(): void {
@@ -126,66 +116,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.theWorldTranslate = trans.toLowerCase();
     });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
-      // this.urlParams = {
-      //   thing: params.thing ? decodeURI(params.thing) : 'Families',
-      //   countries: params.countries ? decodeURI(params.countries) : 'World',
-      //   regions: params.regions ? decodeURI(params.regions) : 'World',
-      //   zoom: parseInt(params.zoom, 10) || 4,
-      //   row: parseInt(params.row, 10) || 1,
-      //   lowIncome: parseInt(params.lowIncome, 10),
-      //   highIncome: parseInt(params.highIncome, 10),
-      //   place: params.place,
-      //   lang: this.languageService.currentLanguage
-      // };
-      //
-      // if (params.activeImage) {
-      //   this.urlParams.activeImage = params.activeImage;
-      //   this.activeImageIndex = +this.urlParams.activeImage;
-      // }
-      //
-      // const queryUrl: string = this.utilsService.objToQuery(this.urlParams);
-      //
-      // this.store.dispatch(new AppActions.SetQuery(queryUrl));
-      // this.urlChangeService.replaceState('/family', queryUrl);
-      //
-      // this.placeId = this.urlParams.place;
-      // this.row = +this.urlParams.row;
-      // this.setZoom(+this.urlParams.zoom);
-      //
-      // setTimeout(() => {
-      //   if (this.row > 1 && !this.activeImageIndex) {
-      //     this.familyMediaComponent.goToRow(this.row);
-      //   }
-      // }, 1000);
-      //
-      // const query = `thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`;
-      // this.familyServiceSetThingSubscribe = this.familyService
-      //   .getThing(query)
-      //   .subscribe(res => {
-      //     if (res.err) {
-      //       console.error(res.err);
-      //
-      //       return;
-      //     }
-      //
-      //     this.thing = res.data;
-      //
-      //     this.initData();
-      //   });
-      });
-
-    // this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-    //   if (data) {
-    //     if (data.query) {
-    //       if (this.query !== data.query) {
-    //         this.query = data.query;
-    //       }
-    //     }
-    //   }
-    // });
-
-    const storeSubscription = this.store.debounceTime(100)
+    this.appStatesSubscription = this.store.debounceTime(100)
       .subscribe((data: AppStates) => {
       const matrix = data.matrix;
       const streetSetting = data.streetSettings;
@@ -202,11 +133,9 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (this.streetSettings !== streetSetting.streetSettings) {
         this.streetSettings = streetSetting.streetSettings;
-        console.log(streetSetting)
         this.poor = this.streetSettings.poor;
         this.rich = this.streetSettings.rich;
       }
-        console.log(countriesFilter)
       if (this.locations !== countriesFilter) {
         this.locations = countriesFilter;
 
@@ -215,43 +144,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
           .flatten()
           .sortBy('country')
           .value();
-
-        console.log(this.countries)
       }
-
     });
-
-
-
-    // this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-    //   if (this.streetSettings !== data.streetSettings) {
-    //     this.streetSettings = data.streetSettings;
-    //
-    //     this.poor = this.streetSettings.poor;
-    //     this.rich = this.streetSettings.rich;
-    //
-    //     if (!this.locations) {
-    //       return;
-    //     }
-    //   }
-    // });
-    //
-    // this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: CountriesFilterState) => {
-    //     if (data) {
-    //       console.log(data);
-    //       if (this.locations !== data) {
-    //         this.locations = data;
-    //
-    //         this.countries = chain(data)
-    //           .map('countries')
-    //           .flatten()
-    //           .sortBy('country')
-    //           .value();
-    //         console.log(this.countries)
-    //         this.initData();
-    //       }
-    //     }
-    // });
   }
 
   public ngAfterViewInit(): void {
@@ -275,8 +169,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnDestroy(): void {
-    if (this.queryParamsSubscribe) {
-      this.queryParamsSubscribe.unsubscribe();
+    if (this.appStatesSubscription) {
+      this.appStatesSubscription.unsubscribe();
     }
 
     if (this.familyServiceSetThingSubscribe) {
@@ -293,18 +187,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
-    }
-
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
-    if (this.countriesFilterStateSubscription) {
-      this.countriesFilterStateSubscription.unsubscribe();
-    }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
     }
   }
 
@@ -338,7 +220,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public processScroll(): void {
-    const scrollTop = (document.body.scrollTop || document.documentElement.scrollTop); //- this.guidePositionTop;
+    const scrollTop = (document.body.scrollTop || document.documentElement.scrollTop);
 
     const distance = scrollTop / this.itemSize;
 

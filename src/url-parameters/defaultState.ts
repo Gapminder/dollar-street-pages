@@ -13,7 +13,7 @@ export const DefaultUrlParameters: UrlParameters = {
   place: undefined,
   currency: 'usd',
   time: 'month',
-  embed: undefined
+  embed: undefined,
 };
 
 export const VisibleParametersPerPage = {
@@ -29,7 +29,8 @@ export const VisibleParametersPerPage = {
     'highIncome',
     'activeHouse',
     'currency',
-    'time'
+    'time',
+    'embed'
   ],
   embed: [
     'lang',
@@ -41,5 +42,5 @@ export const VisibleParametersPerPage = {
   ],
   '/family': ['lang', 'place'],
   '/about':  ['lang'],
-  '/map':  ['lang']
+  '/map':  ['lang', 'thing']
 };

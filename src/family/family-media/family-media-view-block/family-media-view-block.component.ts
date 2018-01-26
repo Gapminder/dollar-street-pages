@@ -144,37 +144,36 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.country = res.data.country;
           this.article = res.data.article;
           this.thing = res.data.thing;
-
           this.showInCountry = {
-            thing: this.thing.originPlural,
-            countries: this.country.originName,
-            regions: 'World',
+            thing: this.thing.originPlural.split(','),
+            countries: this.country.originName.split(','),
+            regions: ['World'],
             zoom: '4',
             row: '1',
-            lowIncome: this.streetData.poor,
-            highIncome: this.streetData.rich,
+            lowIncome: this.streetData.poor.toString(),
+            highIncome: this.streetData.rich.toString(),
             lang: this.languageService.currentLanguage
           };
 
           this.showInRegion = {
             thing: this.thing.originPlural,
-            countries: this.country.countriesName.join(','),
-            regions: this.country.originRegionName,
+            countries: this.country.countriesName,
+            regions: this.country.originRegionName.split(','),
             zoom: '4',
             row: '1',
-            lowIncome: this.streetData.poor,
-            highIncome: this.streetData.rich,
+            lowIncome: this.streetData.poor.toString(),
+            highIncome: this.streetData.rich.toString(),
             lang: this.languageService.currentLanguage
           };
 
           this.showInTheWorld = {
             thing: this.thing.originPlural,
-            countries: 'World',
-            regions: 'World',
+            countries: ['World'],
+            regions: ['World'],
             zoom: '4',
             row: '1',
-            lowIncome: this.streetData.poor,
-            highIncome: this.streetData.rich,
+            lowIncome: this.streetData.poor.toString(),
+            highIncome: this.streetData.rich.toString(),
             lang: this.languageService.currentLanguage
           };
 

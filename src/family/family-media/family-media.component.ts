@@ -87,7 +87,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
   public matrixSubscription: Subscription;
-  public subscriptions: Subscription[];
 
   public constructor(element: ElementRef,
                      viewContainerRef: ViewContainerRef,
@@ -114,17 +113,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.familyThingsContainerElement = this.familyThingsContainer.nativeElement;
     this.familyImagesContainerElement = this.familyImagesContainer.nativeElement;
 
-    // this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-      // if (get(data, 'query', false) && this.query !== data.query) {
-      //       this.query = data.query;
-      // }
-    // });
-
-    const matrixState = this.store.select((state: AppStates) => state.matrix)
+    const matrixState = this.store.select((state: AppStates) => state.matrix);
 
     this.matrixSubscription = matrixState
       .subscribe((matrix: MatrixState) => {
-        console.log('enter')
         if (!get(this, 'placeId', false)
           && get(matrix, 'place', false)) {
           this.placeId = matrix.place;
@@ -144,7 +136,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
               setTimeout(() => {
                 this.getVisibleRows();
                 this.calcItemSize()
-                console.log(this.visibleImages);
+
                 let numberSplice: number = this.visibleImages * 2;
 
                 if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
@@ -153,9 +145,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
                   numberSplice = this.activeImageIndex + offset + this.visibleImages;
                 }
-                console.log('this.images', this.images)
                 this.currentImages = slice(this.images, 0, numberSplice);
-                console.log('this.currentImages', this.currentImages)
                 this.changeZoom(0);
               });
 
@@ -170,43 +160,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
         }
 
       });
-
-    // const query = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
-    // this.familyPlaceServiceSubscribe = this.familyMediaService
-    //   .getFamilyMedia(query)
-    //   .subscribe((res: any) => {
-    //     if (res.err) {
-    //       return;
-    //     }
-    //
-    //     this.images = res.data.images;
-    //     this.imageData.photographer = res.data.photographer;
-    //
-    //     setTimeout(() => {
-    //       this.getVisibleRows();
-    //
-    //       let numberSplice: number = this.visibleImages * 2;
-    //
-    //       if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
-    //         const positionInRow: number = this.activeImageIndex % this.zoom;
-    //         const offset: number = this.zoom - positionInRow;
-    //
-    //         numberSplice = this.activeImageIndex + offset + this.visibleImages;
-    //       }
-    //
-    //       this.currentImages = slice(this.images, 0, numberSplice);
-    //
-    //       this.changeZoom(0);
-    //     });
-    //
-    //     if (this.activeImageIndex) {
-    //       setTimeout(() => {
-    //         this.loaderService.setLoader(true);
-    //
-    //         this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1);
-    //       });
-    //     }
-    //   });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(300)
@@ -288,7 +241,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
       this.familyImageContainerElement.classList.remove('column-' + prevZoom);
       this.familyImageContainerElement.classList.add('column-' + this.zoom);
 
-      // this.calcItemSize();
       this.loaderService.setLoader(true);
       this.showImageBlock = false;
     });
@@ -340,11 +292,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
     if (!this.prevImage) {
       this.prevImage = image;
-
       this.showImageBlock = !this.showImageBlock;
-
-      // this.changeUrl({row, activeImageIndex: this.indexViewBoxImage + 1});
-      console.log(row)
       this.goToRow(row);
 
       return;
@@ -357,15 +305,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
         this.prevImage = void 0;
       }
 
-      // this.changeUrl({row});
     } else {
       this.prevImage = image;
       this.showImageBlock = true;
-
-      // this.changeUrl({row, activeImageIndex: this.indexViewBoxImage + 1});
     }
-
-
   }
 
   public convertImageUrlWithoutWrapper(urlToConvert: string): string {
@@ -377,27 +320,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.zone.run(() => {
       this.currentImages[index].isUploaded = true;
     });
-  }
-
-  public changeUrl(options: {row?: number; activeImageIndex?: number}): void {
-    const {row, activeImageIndex} = options;
-
-    if (row) {
-      this.goToRow(row);
-      this.activeImageOptions.emit({row, activeImageIndex});
-    } else {
-      this.activeImageOptions.emit({activeImageIndex});
-    }
-
-    const queryParams = this.utilsService.parseUrl(this.query);
-
-    queryParams.place = this.imageData.placeId;
-
-    const url = this.utilsService.objToQuery(queryParams);
-
-    this.store.dispatch(new AppActions.SetQuery(url));
-
-    this.urlChangeService.replaceState('/family', url);
   }
 
   public goToRow(row: number): void {
