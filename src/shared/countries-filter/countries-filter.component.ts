@@ -5,7 +5,6 @@ import {
   Component,
   OnDestroy,
   OnChanges,
-  Input,
   Output,
   EventEmitter,
   HostListener,
@@ -24,9 +23,7 @@ import {
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates, UrlParameters } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
 import * as CountriesFilterActions from './ngrx/countries-filter.actions';
-import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { KeyCodes } from '../../enums';
 import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 
@@ -428,33 +425,14 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToLocation(): void {
-    // let query = this.utilsService.parseUrl(this.query);
     this.search = '';
     this.regionsVisibility = true;
-    console.log(this.selectedRegions.length ? this.selectedRegions : ['World']);
-
     const regions = this.selectedRegions.length ? this.selectedRegions : ['World']
-    console.log(regions);
     const countries = this.selectedCountries.length ? this.selectedCountries : ['World'];
-
     const queryUrl: string = this.utilsService.objToQuery({regions, countries});
-
     this.setTitle(queryUrl);
     this.changeDetectorRef.detectChanges();
-
-    // this.store.dispatch(new AppActions.SetQuery(queryUrl));
-    //
-    // this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(query.countries));
-    // this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(query.regions));
-    // this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
-    //
-
-
     this.urlParametersService.dispachToStore({regions, countries});
-
-    // this.urlChangeService.replaceState('/matrix', queryUrl);
-    // this.urlChangeService.assingState('/matrix')
-
     this.isOpenCountriesFilter = false;
     this.cloneSelectedCountries = ['World'];
     this.cloneSelectedRegions = ['World'];
@@ -477,25 +455,25 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public setTitle(url: string): void {
-    let query: any = this.utilsService.parseUrl(url);
+    let query: UrlParameters = this.urlParametersService.getAllParameters();
 
-    let regions: string[] = query.regions;
-    let countries: string[] = query.countries;
+    const regions: string[] = query.regions;
+    const countries: string[] = query.countries;
 
-    let resultCountriesNames: string[] = [];
-    let resultRegionsCountries: any = {};
+    const resultCountriesNames: string[] = [];
+    const resultRegionsCountries: any = {};
 
     forEach(this.locations, (location: any) => {
-      let currentRegionName: string = location.originRegionName;
+      const currentRegionName: string = location.originRegionName;
 
-      let filteredCountries: any[] = [];
+      let filteredCountries = [];
 
       filteredCountries = filter(location.countries, (country: any) => {
         return country.empty !== true && countries.indexOf(country.originName) !== -1 ? true : false;
       });
 
       forEach(filteredCountries, (country: any) => {
-        let originCountryName: string = country.originName;
+        const originCountryName = country.originName;
 
         if (regions.indexOf(currentRegionName) !== -1) {
           if (resultRegionsCountries[currentRegionName] === undefined) {

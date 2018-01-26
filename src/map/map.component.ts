@@ -19,7 +19,8 @@ import {
   Country,
   Currency,
   Place,
-  TimeUnit, UrlParameters
+  TimeUnit,
+  UrlParameters
 } from '../interfaces';
 import {
   MathService,
@@ -33,7 +34,7 @@ import {
 } from '../common';
 import { MapService } from './map.service';
 import { get } from 'lodash';
-import { UrlParametersService } from "../url-parameters/url-parameters.service";
+import { UrlParametersService } from '../url-parameters/url-parameters.service';
 
 
 @Component({

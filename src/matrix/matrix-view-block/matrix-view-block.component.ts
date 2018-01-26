@@ -21,7 +21,12 @@ import { Store } from '@ngrx/store';
 import {
   AppStates,
   StreetSettingsState,
-  DrawDividersInterface, UrlParameters, Place, TimeUnit, MatrixState, AppState
+  DrawDividersInterface,
+  UrlParameters,
+  Place,
+  TimeUnit,
+  MatrixState,
+  AppState
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -282,11 +287,10 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   public visitThisHome(): void {
     this.streetService.clearAndRedraw();
-    this.router.navigate(['/family']);
   }
 
   public goToMatrixByCountry(country: string): void {
-    let queryParams: UrlParameters = this.urlParametersService.getAllParameters();
+    const queryParams: UrlParameters = this.urlParametersService.getAllParameters();
 
     queryParams.regions = ['World'];
     queryParams.countries = [country];

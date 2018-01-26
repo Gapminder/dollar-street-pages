@@ -54,6 +54,7 @@
 
           <a
             [routerLink]="['/matrix']"
+            [queryParams]="showInCountry"
             (click)="goToPage('/matrix',showInCountry)"
             angulartics2On="click"
             angularticsEvent="Matrix page">
@@ -62,6 +63,7 @@
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
           <a
             [routerLink]="['/matrix']"
+            [queryParams]="showInRegion"
             (click)="goToPage('/matrix',showInRegion)"
             angulartics2On="click"
             angularticsEvent="Matrix page">
@@ -70,6 +72,7 @@
             src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
           <a
             [routerLink]="['/matrix']"
+            [queryParams]="showInTheWorld"
             (click)="goToPage('/matrix',showInTheWorld)"
             angulartics2On="click"
             angularticsEvent="Matrix page">

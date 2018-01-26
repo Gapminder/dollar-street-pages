@@ -5,10 +5,12 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import {
-  AppStates, Currency, MatrixState, Place, StreetSettingsState, ThingsState, TimeUnit,
-  UrlParameters
+  AppStates,
+  Currency,
+  Place,
+  StreetSettingsState,
+  TimeUnit
 } from '../interfaces';
-import * as StreetSettingsActions from '../common';
 import {
   Component,
   ElementRef,
@@ -22,7 +24,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { chain, cloneDeep, find, map, difference, forEach, get } from 'lodash';
+import { cloneDeep, find, map, difference, forEach, get } from 'lodash';
 import {
   LoaderService,
   UrlChangeService,
@@ -42,8 +44,8 @@ import * as MatrixActions from './ngrx/matrix.actions';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
-import { DefaultUrlParameters } from "../url-parameters/defaultState";
-import { UrlParametersService } from "../url-parameters/url-parameters.service";
+import { DefaultUrlParameters } from '../url-parameters/defaultState';
+import { UrlParametersService } from '../url-parameters/url-parameters.service';
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -142,7 +144,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public pinPlusOffset: number = 16;
   public matrixContainerElement: HTMLElement;
   public shareUrl: string;
-  public pinnedSetQuery: string;
   public sharedImageUrl: string;
   public storeSubscription: Subscription
 

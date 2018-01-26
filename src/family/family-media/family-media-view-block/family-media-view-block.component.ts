@@ -20,7 +20,8 @@ import { Store } from '@ngrx/store';
 import {
   AppStates,
   StreetSettingsState,
-  DrawDividersInterface, UrlParameters
+  DrawDividersInterface,
+  UrlParameters
 } from '../../../interfaces';
 import {
   BrowserDetectionService,
@@ -30,7 +31,7 @@ import {
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { ImageResolutionInterface } from '../../../interfaces';
 import { get } from 'lodash';
-import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
 
 interface ImageViewBlockPosition {
   point: { left: number };
@@ -145,8 +146,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.article = res.data.article;
           this.thing = res.data.thing;
           this.showInCountry = {
-            thing: this.thing.originPlural.split(','),
-            countries: this.country.originName.split(','),
+            thing: this.thing.originPlural,
+            countries: [this.country.originName],
             regions: ['World'],
             zoom: '4',
             row: '1',
@@ -158,7 +159,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.showInRegion = {
             thing: this.thing.originPlural,
             countries: this.country.countriesName,
-            regions: this.country.originRegionName.split(','),
+            regions: [this.country.originRegionName],
             zoom: '4',
             row: '1',
             lowIncome: this.streetData.poor.toString(),

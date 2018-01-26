@@ -1,15 +1,10 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import {
-  AppState,
   AppStates,
   CountriesFilterState,
-  Country, MatrixState,
-  StreetSettingsState,
-  UrlParameters
 } from '../interfaces';
 import * as AppActions from '../app/ngrx/app.actions';
 import {
@@ -21,7 +16,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef
 } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { chain, get } from 'lodash';
 import {
   UrlChangeService,
@@ -35,19 +30,6 @@ import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
 import { DefaultUrlParameters } from "../url-parameters/defaultState";
-
-interface UrlParams extends Params {
-  thing: string;
-  countries: string;
-  regions: string;
-  zoom: number;
-  row: number;
-  lowIncome: number;
-  highIncome: number;
-  place?: string;
-  activeImage?: number;
-  lang: string;
-}
 
 @Component({
   selector: 'family',

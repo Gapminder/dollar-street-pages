@@ -3,7 +3,6 @@ import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import {
   MathService,
-  DrawDividersInterface,
   BrowserDetectionService
 } from '../../common';
 import { scaleLog } from 'd3-scale';
@@ -1188,9 +1187,6 @@ export class StreetDrawService {
         });
       }
     } else {
-      console.log(this.lowIncome);
-      console.log(this.highIncome);
-
       this.filter.next({
         lowIncome: Math.round(this.lowIncome),
         highIncome: Math.round(this.highIncome)

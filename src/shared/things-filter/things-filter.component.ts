@@ -6,7 +6,6 @@ import {
   OnInit,
   Component,
   OnDestroy,
-  Input,
   Output,
   EventEmitter,
   ElementRef,
@@ -18,9 +17,6 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
-import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
-import * as ThingsFilterActions from './ngrx/things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
@@ -28,7 +24,7 @@ import {
   UrlChangeService
 } from '../../common';
 import { KeyCodes } from '../../enums';
-import { UrlParametersService } from "../../url-parameters/url-parameters.service";
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 
 @Component({
   selector: 'things-filter',
@@ -224,40 +220,10 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // let query: any = this.utilsService.parseUrl(this.query);
     const thing = thingObj.originPlural;
-
-    // const newUrl: string = this.utilsService.objToQuery(query);
-
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
-
-    // this.store.dispatch(new AppActions.SetQuery(newUrl));
-
-    // this.store.dispatch(new ThingsFilterActions.GetThingsFilter(newUrl));
-
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-
-    //this.thingsFilterTitle = thing.plural;
-
-    //this.changeDetectorRef.detectChanges();
-
-    let pageName: string = '';
-
-    /*if (this.isMatrixPage) {
-        pageName = '/matrix';
-    }
-
-    if (this.isMapPage) {
-        pageName = '/map';
-    }*/
-
-    // pageName = '/matrix';
-
-    // this.urlChangeService.replaceState(pageName, newUrl);
-
     this.urlParametersService.dispachToStore({thing});
-
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thingObj.plural}`, {});
   }
 

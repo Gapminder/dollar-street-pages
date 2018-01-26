@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { forEach, difference, map, find, chain, get } from 'lodash';
+import { forEach, difference, map, find, get } from 'lodash';
 import {
   Component,
   Input,
@@ -27,10 +27,7 @@ import {
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
-import * as ThingsFilterActions from '../things-filter/ngrx/things-filter.actions';
-import * as StreetSettingsActions from '../../common';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
-import * as CountriesFilterActions from '../countries-filter/ngrx/countries-filter.actions';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 import {
   MathService,
@@ -43,8 +40,8 @@ import {
   IncomeCalcService
 } from '../../common';
 import { DrawDividersInterface } from '../../interfaces';
-import { DefaultUrlParameters, VisibleParametersPerPage } from "../../url-parameters/defaultState";
-import { UrlParametersService } from "../../url-parameters/url-parameters.service";
+import { DefaultUrlParameters } from '../../url-parameters/defaultState';
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 
 @Component({
   selector: 'header',
@@ -115,7 +112,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public streetSettingsStateSubscription: Subscription;
   public appStateSubscription: Subscription;
   public languagesListSubscription: Subscription;
-  public iconContainerShow: boolean;
   public thingsFilterData: any;
   public thingsFilterStateSubscription: any;
   public countriesFilterData: any = {};
@@ -192,7 +188,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       });
 
     this.scrollSubscription = fromEvent(document, 'scroll')
-      .debounceTime(5)
       .subscribe(() => {
         let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
@@ -328,27 +323,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         activeHouse: parseInt(params.activeHouse, 10)
       };
 
-      const query = this.utilsService.objToQuery(this.urlParams);
-
-      // this.store.dispatch(new AppActions.SetQuery(query));
-
-      // this.store.dispatch(new ThingsFilterActions.GetThingsFilter(query));
-
-      // this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(query));
-      // this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(this.urlParams.countries));
-      // this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(this.urlParams.regions));
-
-      // this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
-
-      // this.timeUnitFilterSelect(this.urlParams.time);
-      // this.currencyUnitFilterSelect(this.urlParams.currency);
-
-      // this.timeUnit = this.timeUnitTemp;
-      // this.currencyUnit = this.currencyUnitTemp;
-
-      // this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
-      // this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-
       this.interactiveIncomeText();
       this.calcIncomeSize();
     });
@@ -399,10 +373,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
           } else {
             this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
           }
-
           this.currencyUnit = this.currencyUnitTemp;
-
-          // this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
         }
       }
       this.changeDetectorRef.detectChanges();
@@ -439,10 +410,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
           this.changeDetectorRef.detectChanges();
         }
-
-        if (data.query) {
-          this.query = data.query;
-        }
       }
     });
 
@@ -464,7 +431,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public openIncomeFilterDesktop(e: MouseEvent): void {
-    // e.stopPropagation();
     this.isIncomeDesktopOpened = true;
   }
 
@@ -485,7 +451,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public currencyUnitFilterSelect(code: string): void {
-    console.log(code)
     this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, code);
   }
 
@@ -630,28 +595,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }
 
-  public thingSelected(data: any): void {
-    this.store.dispatch(new AppActions.SetQuery(data.url));
-
-    let pageName = '';
-
-    if (this.isMatrixPage) {
-      pageName = '/matrix';
-    }
-
-    if (this.isMapPage) {
-      pageName = '/map';
-    }
-
-    // this.urlChangeService.replaceState(pageName, data.url);
-  }
-
-  public countrySelected(data: any): void {
-    this.store.dispatch(new AppActions.SetQuery(data.url));
-
-    // this.urlChangeService.replaceState('/matrix', data.url);
-  }
-
   public activeThingTransfer(thing: any): void {
     this.activeThing = thing;
   }
@@ -669,50 +612,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   public goToMatrixPage(): void {
-    // const queryParams = {
-    //   thing: 'Families',
-    //   countries: 'World',
-    //   regions: 'World',
-    //   zoom: "4",
-    //   row: "1",
-    //   lowIncome: this.streetData.poor,
-    //   highIncome: this.streetData.rich,
-    //   lang: this.languageService.currentLanguage
-    // };
-
-    // if (!this.isDesktop) {
-    //   queryParams.zoom = "3";
-    // }
-
-    // if (!this.isMatrixPage) {
-    //   this.router.navigate(['/matrix'], {queryParams: queryParams});
-    // }
-    // const queryUrl: string = this.utilsService.objToQuery(queryParams);
-
-    // this.store.dispatch(new AppActions.SetQuery(queryUrl));
-
-    // this.store.dispatch(new ThingsFilterActions.GetThingsFilter(queryUrl));
-
-    // this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
-    // this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
-    // this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
-
-    // this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, 'MONTH');
-    // this.currencyUnitTemp = this.incomeCalcService
-    //   .getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
-
-    // this.timeUnit = this.timeUnitTemp;
-    // this.currencyUnit = this.currencyUnitTemp;
-
-    // this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
-    // this.store.dispatch(new MatrixActions.SetCurrencyUnit(this.currencyUnit));
-
-    // this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-
-    // this.urlChangeService.replaceState('/matrix', queryUrl);
-
     this.scrollTopZero();
-
     this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }
 
@@ -720,33 +620,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this[event] = true;
 
     this.changeDetectorRef.detectChanges();
-  }
-
-  public getSelectedCountriesNames(): string {
-    const selCountries = this.countriesFilterData.selectedCountries;
-    const allCountries = this.countriesFilterData.countriesFilter;
-
-    if (!selCountries || !selCountries.length) {
-      return this.theWorldText;
-    }
-
-    const countriesArr = selCountries.split(',');
-
-    const result = countriesArr.reduce((prev, curr) => {
-      let transCountry = '';
-
-      allCountries.forEach((region) => {
-        const resultCountry = region.countries.find((country) => country.originName === curr);
-
-        if (resultCountry) {
-          transCountry = resultCountry.country;
-        }
-      });
-
-      return [...prev, '', transCountry];
-    });
-
-    return result.split(',').join(', ');
   }
 
   public getCountriesTitle(inputLocations: any, regions: string[], countries: string[]): string {

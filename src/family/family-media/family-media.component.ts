@@ -4,10 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
 import {
-  AppState,
-  AppStates, MatrixState
+  AppStates,
+  MatrixState
 } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
 import {
   Component,
   OnDestroy,
@@ -19,8 +18,6 @@ import {
   ElementRef,
   ViewChild,
   ViewContainerRef,
-  OnChanges,
-  SimpleChanges
 } from '@angular/core';
 import { find, isEqual, slice, concat, get, forEach } from 'lodash';
 import {
@@ -185,7 +182,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
           }
         });
       });
-
 
       /*tslint:disable-next-line*/
     this.openFamilyExpandBlockSubscribe = this.openFamilyExpandBlock && this.openFamilyExpandBlock
