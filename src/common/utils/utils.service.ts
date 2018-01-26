@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ImageResolutionInterface, UrlParameters } from '../../interfaces';
 import { NumericDictionary, reduce } from 'lodash';
-import { reduce } from 'lodash';
 
 @Injectable()
 export class UtilsService {
@@ -94,7 +93,7 @@ export class UtilsService {
     }
     url = url.slice(url.indexOf('?') + 1);
 
-    const params = JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
+    let params = JSON.parse(`{"${url.replace(/&/g, '\",\"').replace(/=/g, '\":\"')}"}`);
     params = reduce(params, (result: UrlParameters, value: string, key: string) => {
       result[key] = decodeURI(value);
       return result;

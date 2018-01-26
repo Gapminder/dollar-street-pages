@@ -461,7 +461,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     const countries: string[] = query.countries;
 
     const resultCountriesNames: string[] = [];
-    const resultRegionsCountries: any = {};
+    let resultRegionsCountries: any = {};
 
     forEach(this.locations, (location: any) => {
       const currentRegionName: string = location.originRegionName;
