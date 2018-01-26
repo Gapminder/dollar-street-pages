@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 export class LanguageServiceMock {
   public currentLanguage: string;
   public defaultLanguage: string = 'en';
+  public translations: any;
+
   public languagesList: Observable<any> = Observable.of(['English', 'Brasilian']);
 
   public getLanguageParam(): string {
