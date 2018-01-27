@@ -1,17 +1,12 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions, XHRBackend } from '@angular/http';
 import { Location } from '@angular/common';
 import { SpyLocation } from '@angular/common/testing';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 
 import { environment } from '../../../environments/environment';
 import { LanguageService } from '../language.service';
-import { UrlChangeService } from '../../url-change/url-change.service';
 import { LocalStorageService } from '../../local-storage/local-storage.service';
-import { UtilsService } from '../../utils/utils.service';
-import { UrlChangeServiceMock, UtilsServiceMock } from '../../../test/';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
 import { LocalStorageServiceMock } from '../../../test/mocks/localStorage.service.mock';
 
@@ -54,8 +49,8 @@ describe('LanguageService Test', () => {
   });
 
   it('loadLanguage recieved translations for current language', () => {
-    const translations: any = { ABOUT: 'About', WORLD: 'World' };
-    const bodyContext: any = `{"success":true,"error":false,"msg":[],"data":${JSON.stringify(translations)}}`;
+    const translations = { ABOUT: 'About', WORLD: 'World' };
+    const bodyContext = `{"success":true,"error":false,"msg":[],"data":${JSON.stringify(translations)}}`;
     const expectedLang = 'en';
 
     service.currentLanguage = expectedLang;
@@ -63,7 +58,7 @@ describe('LanguageService Test', () => {
     mockBackend.connections.subscribe((connection: MockConnection) => {
       expect(connection.request.url).toEqual(`${environment.consumerApi}/v1/language?lang=${expectedLang}`);
 
-      let response = new ResponseOptions({
+      const response = new ResponseOptions({
         body: bodyContext
       });
 
@@ -77,15 +72,15 @@ describe('LanguageService Test', () => {
 
   it('getLanguagesList fetch and return languages list, don`t set currentLanguage if no so', () => {
     const languageList = [
-      {_id: "58f5e173410ed2018368c67b", name: "English", code: "en"},
-      {_id: "58f9e301d94606ffe8391eb9", code: "es-ES", name: "Español"}
+      { _id: '58f5e173410ed2018368c67b', name: 'English', code: 'en' },
+      { _id: '58f9e301d94606ffe8391eb9', code: 'es-ES', name: 'Español' }
     ];
     const bodyContext = `{"error": null,"data":${JSON.stringify(languageList)}}`;
 
     mockBackend.connections.subscribe((connection: MockConnection) => {
       expect(connection.request.url).toEqual(`${environment.consumerApi}/v1/languagesList`);
 
-      let response = new ResponseOptions({
+      const response = new ResponseOptions({
         body: bodyContext
       });
 
@@ -93,14 +88,14 @@ describe('LanguageService Test', () => {
     });
 
     service.getLanguagesList().subscribe(returnedValue => {
-      expect(returnedValue).toEqual({err: null, data: languageList});
+      expect(returnedValue).toEqual({ err: null, data: languageList });
     });
   });
 
   it('getLanguagesList set languageName from currentLanguage', () => {
     const languageList = [
-      {_id: "58f5e173410ed2018368c67b", name: "English", code: "en"},
-      {_id: "58f9e301d94606ffe8391eb9", code: "es-ES", name: "Español"}
+      { _id: '58f5e173410ed2018368c67b', name: 'English', code: 'en' },
+      { _id: '58f9e301d94606ffe8391eb9', code: 'es-ES', name: 'Español' }
     ];
     const bodyContext = `{"error": null,"data":${JSON.stringify(languageList)}}`;
     const currentLang = 'en';
@@ -110,7 +105,7 @@ describe('LanguageService Test', () => {
     mockBackend.connections.subscribe((connection: MockConnection) => {
       expect(connection.request.url).toEqual(`${environment.consumerApi}/v1/languagesList`);
 
-      let response = new ResponseOptions({
+      const response = new ResponseOptions({
         body: bodyContext
       });
 
@@ -139,10 +134,10 @@ describe('LanguageService Test', () => {
 
     service.translations = { ABOUT: 'About', WORLD: 'World' };
 
-    service.getTranslation('ABOUT').subscribe((_data: any) => {
+    service.getTranslation('ABOUT').subscribe(_data => {
       aboutTranslation = _data;
     });
-    service.getTranslation('WORLD').subscribe((_data: any) => {
+    service.getTranslation('WORLD').subscribe(_data => {
       worldTranslation = _data;
     });
 
@@ -167,7 +162,7 @@ describe('LanguageService Test', () => {
     let sub;
     const translations = {
       ABOUT: 'about'
-    }
+    };
     service.translations = undefined;
 
     service.getTranslation('ABOUT').subscribe(value => {
@@ -179,7 +174,7 @@ describe('LanguageService Test', () => {
   });
 
   it('changeLanuage set item to localStorage and update in url', () => {
-    (service.window as any) = new windowMock();    
+    (service.window as any) = new windowMock();
     spyOn(localStorageService, 'setItem').and.callThrough();
 
     service.window.location.href = '//fake/path&lang=en'
@@ -194,5 +189,5 @@ describe('LanguageService Test', () => {
 class windowMock {
   location = {
     href: '//fake/path'
-  }
+  };
 }
