@@ -33,6 +33,7 @@ import {
 import { StreetDrawService} from './street.service';
 import * as StreetSettingsActions from '../../common';
 import * as _ from "lodash";
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'street',
@@ -88,9 +89,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     this.street = streetDrawService;
   }
 
-  public ngAfterViewInit(): any {
-    const DEBOUNCE_TIME = 100;
-
+  public ngAfterViewInit(): void {
     this.street.setSvg = this.svg.nativeElement;
     this.streetBoxContainer = this.streetBox.nativeElement;
 
@@ -107,7 +106,9 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.appStatesSubscription = this.store.debounceTime(DEBOUNCE_TIME).subscribe((state: AppStates) => {
+    this.appStatesSubscription = this.store
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((state: AppStates) => {
       const matrix = state.matrix;
       const streetSetting = state.streetSettings;
       const thingsFilter = state.thingsFilter;

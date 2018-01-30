@@ -10,7 +10,7 @@ import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
 
 import * as _ from 'lodash';
-import { DefaultUrlParameters } from "../../url-parameters/defaultState";
+import { DefaultUrlParameters, MOBILE_SIZE } from "../../defaultState";
 
 @Injectable()
 export class StreetDrawService {
@@ -459,7 +459,7 @@ export class StreetDrawService {
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
       .subscribe((e: TouchEvent) => {
-          if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+          if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
             return;
           }
 
@@ -515,7 +515,7 @@ export class StreetDrawService {
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
       .subscribe(() => {
 
-        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+        if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
 
@@ -524,7 +524,7 @@ export class StreetDrawService {
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
       .subscribe(() => {
-        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+        if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
 
@@ -686,7 +686,7 @@ export class StreetDrawService {
           }
         }
 
-        if (this.windowInnerWidth < 600) {
+        if (this.windowInnerWidth < MOBILE_SIZE) {
           point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 1}`;
           point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5 - 1 - 1}`;
           point3 = `${x + 2 + this.streetOffset / 2 + 1},${ this.halfOfHeight + 14 - 5 - 1 - 1 }`;
@@ -836,7 +836,7 @@ export class StreetDrawService {
         }
       }
 
-      if (this.windowInnerWidth < 600) {
+      if (this.windowInnerWidth < MOBILE_SIZE) {
         point1 = `${x - 2 + this.streetOffset / 2 - 1 },${this.halfOfHeight + 14 - 1}`;
         point2 = `${x - 2 + this.streetOffset / 2 - 1 },${this.halfOfHeight + 14 - 5 - 1 - 1}`;
         point3 = `${x - 2 + this.streetOffset / 2 + 9 },${this.halfOfHeight + 14 - 5 - 1 - 1}`;

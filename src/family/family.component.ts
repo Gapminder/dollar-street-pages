@@ -29,7 +29,7 @@ import {
 import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
-import { DefaultUrlParameters } from "../url-parameters/defaultState";
+import { DefaultUrlParameters } from "../defaultState";
 
 @Component({
   selector: 'family',

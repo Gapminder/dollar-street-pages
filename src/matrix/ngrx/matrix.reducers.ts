@@ -1,6 +1,6 @@
 import * as MatrixActions from './matrix.actions';
 import { MatrixState } from '../../interfaces';
-import { DefaultUrlParameters } from '../../url-parameters/defaultState';
+import { DefaultUrlParameters } from '../../defaultState';
 
 export const initialState: MatrixState = {
     matrixImages: null,

@@ -7,7 +7,7 @@ import {
 } from '../../shared';
 import { appReducer } from './app.reducers';
 import { matrixReducer } from '../../matrix/ngrx/matrix.reducers';
-import { languageReducer } from "../../common/language/ngrx/language.reducers";
+import { languageReducer } from '../../common/language/ngrx/language.reducers';
 
 export const reducers: ActionReducerMap<AppStates> = {
     app: appReducer,

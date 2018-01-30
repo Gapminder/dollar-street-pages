@@ -31,11 +31,12 @@ import {
   MathService,
   LanguageService,
   UtilsService,
-  IncomeCalcService, LoaderService
+  IncomeCalcService,
+  LoaderService
 } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
 import { get } from 'lodash';
-import { UrlParametersService } from "../../url-parameters/url-parameters.service";
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 
 @Component({
   selector: 'family-header',

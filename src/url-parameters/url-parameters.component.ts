@@ -5,6 +5,7 @@ import { AppStates } from '../interfaces';
 import { UrlParametersService } from './url-parameters.service';
 import { Subscription } from 'rxjs/Subscription';
 import { forEach } from 'lodash';
+import { DEBOUNCE_TIME } from '../defaultState';
 
 interface NavigationEndInterface {
   id: number;
@@ -31,7 +32,6 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
       });
     this.subscribtions.push(routerSubscribe);
 
-    const DEBOUNCE_TIME = 50;
     const storeSubscribe = store.debounceTime(DEBOUNCE_TIME).subscribe((state: AppStates) => {
     });
     this.subscribtions.push(storeSubscribe);

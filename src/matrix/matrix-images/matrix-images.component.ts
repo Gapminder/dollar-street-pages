@@ -30,7 +30,7 @@ import { Store } from '@ngrx/store';
 import { AppStates, Currency, LanguageState, MatrixState } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { Place } from '../../interfaces';
-import { DefaultUrlParameters } from '../../url-parameters/defaultState';
+import { DefaultUrlParameters } from '../../defaultState';
 import { get } from "lodash";
 
 @Component({

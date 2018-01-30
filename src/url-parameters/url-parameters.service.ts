@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppStates, UrlParameters } from '../interfaces';
-import { DefaultUrlParameters, VisibleParametersPerPage } from './defaultState';
+import { DefaultUrlParameters, VisibleParametersPerPage } from '../defaultState';
 import { forEach, get, reduce, difference } from 'lodash';
 import { BrowserDetectionService, IncomeCalcService, LanguageService, UtilsService } from '../common';
 

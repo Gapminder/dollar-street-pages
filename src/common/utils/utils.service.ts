@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ImageResolutionInterface, UrlParameters } from '../../interfaces';
-import { NumericDictionary, reduce, forEach } from 'lodash';
+import { NumericDictionary, reduce, forEach, Dictionary } from 'lodash';
 
 @Injectable()
 export class UtilsService {
@@ -109,13 +109,14 @@ export class UtilsService {
   }
 
   public objToQuery(data: UrlParameters): string {
-    const arr = [];
-    forEach(data, (value, key) => {
-      if (value) {
-        arr.push(`${key}=${encodeURI(value.toString())}`);
-      }
-    });
 
-    return arr.join('&');
+    return reduce(data as Dictionary<string>, (result, value, key) => {
+      if (value) {
+        result += result.length ? '&' : '';
+        result += `${key}=${encodeURI(value.toString())}`;
+      }
+
+      return result;
+    }, '');
   }
 }

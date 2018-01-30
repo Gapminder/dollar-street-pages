@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { Place } from "../../interfaces";
+import { Place } from '../../interfaces';
 
 @Injectable()
 export class SortPlacesService {

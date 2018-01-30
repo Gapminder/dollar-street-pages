@@ -1,4 +1,7 @@
-import {UrlParameters} from "../interfaces";
+import {UrlParameters} from './interfaces';
+
+export const DEBOUNCE_TIME = 100;
+export const MOBILE_SIZE = 600;
 
 export const DefaultUrlParameters: UrlParameters = {
   lang: 'en',

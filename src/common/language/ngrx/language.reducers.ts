@@ -1,4 +1,4 @@
-import { DefaultUrlParameters } from '../../../url-parameters/defaultState';
+import { DefaultUrlParameters } from '../../../defaultState';
 import * as LanguageActions from './language.actions';
 import { LanguageState } from '../../../interfaces';
 

@@ -44,7 +44,7 @@ import * as MatrixActions from './ngrx/matrix.actions';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
-import { DefaultUrlParameters } from '../url-parameters/defaultState';
+import { DefaultUrlParameters } from '../defaultState';
 import { UrlParametersService } from '../url-parameters/url-parameters.service';
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;

@@ -13,7 +13,7 @@ import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
 import { UtilsService } from '../utils/utils.service';
 import * as LanguageActions from './ngrx/language.actions';
-import { Store } from "@ngrx/store";
+import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 
 @Injectable()

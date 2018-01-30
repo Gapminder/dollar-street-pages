@@ -40,7 +40,7 @@ import {
   IncomeCalcService
 } from '../../common';
 import { DrawDividersInterface } from '../../interfaces';
-import { DefaultUrlParameters } from '../../url-parameters/defaultState';
+import { DefaultUrlParameters } from '../../defaultState';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 
 @Component({

@@ -12,7 +12,6 @@ import {
   FontDetectorService,
   GoogleAnalyticsService
 } from '../common';
-import { UrlParametersComponent } from "../url-parameters/url-parameters.component";
 
 @Component({
   selector: 'consumer-app',
@@ -20,7 +19,7 @@ import { UrlParametersComponent } from "../url-parameters/url-parameters.compone
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public isLoader: boolean = false;
+  public isLoader = false;
   public isVisibleHeader: boolean;
   public routerEventsSubscribe: Subscription;
   public loaderServiceSubscribe: Subscription;
