@@ -220,7 +220,6 @@ export class MapComponent implements OnInit, OnDestroy {
               this.setMarkersCoord(this.places);
             });
           });
-        subcriptions.push(resizeSubscribe);
       });
   }
 
