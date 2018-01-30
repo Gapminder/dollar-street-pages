@@ -42,7 +42,7 @@ import {
   UrlChangeService
 } from '../../common';
 import { MatrixViewBlockService } from './matrix-view-block.service';
-import {StreetDrawService} from '../../shared/street/street.service';
+import { StreetDrawService } from '../../shared/street/street.service';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 import { get } from 'lodash';
 
@@ -371,6 +371,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   public goToPage(url: string, params: UrlParameters): void {
     console.log(params);
-    this.urlParametersService.dispachToStore(params);
+    this.urlParametersService.dispatchToStore(params);
   }
 }

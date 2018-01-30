@@ -223,7 +223,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     const thing = thingObj.originPlural;
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
-    this.urlParametersService.dispachToStore({thing});
+    this.urlParametersService.dispatchToStore({thing});
     this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thingObj.plural}`, {});
   }
 

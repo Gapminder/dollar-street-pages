@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from "@angular/router";
-import { Store } from "@ngrx/store";
-import { AppStates } from "../interfaces";
-import { UrlParametersService } from "./url-parameters.service";
-import { Subscription } from "rxjs/Subscription";
+import { NavigationEnd, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppStates } from '../interfaces';
+import { UrlParametersService } from './url-parameters.service';
+import { Subscription } from 'rxjs/Subscription';
 import { forEach } from 'lodash';
 
 interface NavigationEndInterface {
@@ -26,12 +26,13 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
       .take(1)
       .subscribe((event: NavigationEndInterface) => {
         const params = urlParametersService.parseString(event.url);
-        urlParametersService.dispachToStore(params);
+        urlParametersService.dispatchToStore(params);
         urlParametersService.combineUrlPerPage();
       });
     this.subscribtions.push(routerSubscribe);
 
-    const storeSubscribe = store.debounceTime(50).subscribe((state: AppStates) => {
+    const DEBOUNCE_TIME = 50;
+    const storeSubscribe = store.debounceTime(DEBOUNCE_TIME).subscribe((state: AppStates) => {
     });
     this.subscribtions.push(storeSubscribe);
   }

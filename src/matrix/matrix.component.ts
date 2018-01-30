@@ -330,6 +330,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.processMatrixImages(this.matrixImages);
         }
 
+        // TODO: remove setTimeout on refactoring this component
         setTimeout(() => {
           if (this.row > 1 && !this.activeHouse) {
             this.matrixImagesComponent.goToRow(this.row);
@@ -541,15 +542,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             this.changeDetectorRef.detectChanges();
 
             this.shareUrl = shareUrl;
-            this.urlParametersService.dispachToStore({embed: this.embedSetId});
+            this.urlParametersService.dispatchToStore({embed: this.embedSetId});
 
-            process.nextTick(() => {
-              const shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
-              const shareParams = this.urlParametersService.getParamsStingForPage('embed');
-              const link = window.location.href.split('?')[0];
-              shareUrlElement.setAttribute('value', `${link}?${shareParams}`);
-              shareUrlElement.select();
-            });
+            const shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
+            const shareParams = this.urlParametersService.getParamsStingForPage('embed');
+            const link = window.location.href.split('?')[0];
+            shareUrlElement.setAttribute('value', `${link}?${shareParams}`);
+            shareUrlElement.select();
           });
         });
     });

@@ -146,6 +146,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         this.buildErrorMsg(this.currentPlaces);
       }
 
+      // TODO: remove setTimeout on refactoring this component
       setTimeout(() => {
         this.getVisibleRows();
         let sliceCount: number = this.visibleImages * 2;

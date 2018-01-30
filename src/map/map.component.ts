@@ -36,7 +36,6 @@ import { MapService } from './map.service';
 import { get } from 'lodash';
 import { UrlParametersService } from '../url-parameters/url-parameters.service';
 
-
 @Component({
   selector: 'map-component',
   templateUrl: './map.component.html',
@@ -79,7 +78,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public isMobile: boolean;
   public shadowClass: {'shadow_to_left': boolean; 'shadow_to_right': boolean};
   public streetData: DrawDividersInterface;
-  public windowInnerWidth: number = window.innerWidth;
   public currentLanguage: string;
   public appStatesSubscribe: Subscription;
   public timeUnit: TimeUnit;
@@ -107,13 +105,15 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    const DEBOUNCE_TIME = 100;
+
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isMobile = this.browserDetectionService.isMobile();
 
     this.loaderService.setLoader(false);
 
     this.appStatesSubscribe = this.store
-      .debounceTime(100)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe((data: AppStates) => {
 
       // streetSettings
@@ -128,8 +128,6 @@ export class MapComponent implements OnInit, OnDestroy {
       if (get(data, 'thingsFilter.thingsFilter', false)) {
         this.thing = get(data.thingsFilter.thingsFilter, 'thing.originPlural');
         const query = `thing=${encodeURI(this.thing)}${this.languageService.getLanguageParam()}`;
-        console.log(query);
-
 
         this.mapServiceSubscribe = this.mapService
           .getMainPlaces(query)
@@ -145,18 +143,21 @@ export class MapComponent implements OnInit, OnDestroy {
             this.loaderService.setLoader(true);
 
             this.resizeSubscribe = fromEvent(window, 'resize')
-              .debounceTime(150)
+              .debounceTime(DEBOUNCE_TIME)
               .subscribe(() => {
                 this.zone.run(() => {
-                  this.windowInnerWidth = window.innerWidth;
-
-                  if (this.windowInnerWidth >= 600) {
+                  const windowInnerWidth = window.innerWidth;
+                  const MOBILE_SIZE = 600;
+                  if (windowInnerWidth >= MOBILE_SIZE) {
                     document.body.classList.remove('hideScroll');
                   }
 
                   this.setMarkersCoord(this.places);
+
+                  console.log(this.resizeSubscribe);
                 });
               });
+
           });
       }
 
@@ -183,6 +184,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public urlChanged(options: {url: string, isNotReplaceState?: boolean}): void {
+    const DEBOUNCE_TIME = 100;
     const {url, isNotReplaceState} = options;
 
     this.mapServiceSubscribe = this.mapService
@@ -205,19 +207,20 @@ export class MapComponent implements OnInit, OnDestroy {
         this.setMarkersCoord(this.places);
         this.loaderService.setLoader(true);
 
-        this.resizeSubscribe = fromEvent(window, 'resize')
-          .debounceTime(150)
+        const resizeSubscribe = fromEvent(window, 'resize')
+          .debounceTime(DEBOUNCE_TIME)
           .subscribe(() => {
             this.zone.run(() => {
-              this.windowInnerWidth = window.innerWidth;
+              const windowInnerWidth = window.innerWidth;
 
-              if (this.windowInnerWidth >= 600) {
+              if (windowInnerWidth >= 600) {
                 document.body.classList.remove('hideScroll');
               }
 
               this.setMarkersCoord(this.places);
             });
           });
+        subcriptions.push(resizeSubscribe);
       });
   }
 
@@ -486,8 +489,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.isOpenLeftSide = false;
     this.onMarker = false;
     this.onThumb = false;
+    const windowInnerWidth = window.innerWidth;
 
-    if (this.windowInnerWidth < 600) {
+    if (windowInnerWidth < 600) {
       document.body.classList.remove('hideScroll');
     }
 
@@ -535,6 +539,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public goToPage(params: UrlParameters): void {
-    this.urlParametersService.dispachToStore(params);
+    this.urlParametersService.dispatchToStore(params);
   }
 }

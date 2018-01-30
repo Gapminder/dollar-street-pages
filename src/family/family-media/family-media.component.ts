@@ -129,7 +129,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
               this.images = res.data.images;
               this.imageData.photographer = res.data.photographer;
-
+              // TODO: remove setTimeout on refactoring this component
               setTimeout(() => {
                 this.getVisibleRows();
                 this.calcItemSize()
@@ -147,6 +147,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
               });
 
               if (this.activeImageIndex) {
+                // TODO: remove setTimeout on refactoring this component
                 setTimeout(() => {
                   this.loaderService.setLoader(true);
 

@@ -19,10 +19,12 @@ import {
   StreetSettingsState,
   DrawDividersInterface,
   AppState,
-  MatrixState
+  MatrixState,
+  IncomeFilter,
+  Place
 } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
-import { sortBy, chain, differenceBy } from 'lodash';
+import { sortBy, chain, differenceBy, forEach } from 'lodash';
 import {
   MathService,
   LanguageService,
@@ -87,6 +89,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   }
 
   public ngAfterViewInit(): any {
+    const DEBOUNCE_TIME = 100;
+
     this.street.setSvg = this.svg.nativeElement;
     this.streetBoxContainer = this.streetBox.nativeElement;
 
@@ -103,7 +107,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.appStatesSubscription = this.store.debounceTime(100).subscribe((state: AppStates) => {
+    this.appStatesSubscription = this.store.debounceTime(DEBOUNCE_TIME).subscribe((state: AppStates) => {
       const matrix = state.matrix;
       const streetSetting = state.streetSettings;
       const thingsFilter = state.thingsFilter;
@@ -137,11 +141,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     });
 
-    this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
+    this.streetFilterSubscribe = this.street.filter.subscribe((filter: IncomeFilter): void => {
 
       this.street.set('lowIncome', filter.lowIncome);
       this.street.set('highIncome', filter.highIncome);
-
 
       if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
         this.isStreetInit = true;
@@ -155,7 +158,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     });
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
-      let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+      const difference = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
 
       if (this.placesArr && this.streetData) {
         this.setDividers(this.placesArr, this.streetData);
@@ -197,7 +200,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.drawHoverHouse(hoverPlace);
     });
 
-    this.placesSubscribe = this.places && this.places.subscribe((places: any): void => {
+    this.placesSubscribe = this.places && this.places.subscribe((places: Place[]): void => {
       this.placesArr = places;
 
       if (!this.streetData) {
@@ -211,12 +214,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.setDividers(this.placesArr, this.streetData);
     });
 
-
-
     this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
     this.resize = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         if (!this.street.places) {
           return;

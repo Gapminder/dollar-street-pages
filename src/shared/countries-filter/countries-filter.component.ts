@@ -432,7 +432,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     const queryUrl: string = this.utilsService.objToQuery({regions, countries});
     this.setTitle(queryUrl);
     this.changeDetectorRef.detectChanges();
-    this.urlParametersService.dispachToStore({regions, countries});
+    this.urlParametersService.dispatchToStore({regions, countries});
     this.isOpenCountriesFilter = false;
     this.cloneSelectedCountries = ['World'];
     this.cloneSelectedRegions = ['World'];

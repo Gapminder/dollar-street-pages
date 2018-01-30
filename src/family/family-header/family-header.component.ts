@@ -322,6 +322,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
 
   public goToPage(url: string, params: UrlParameters): void {
     console.log(params.countries);
-    this.urlParametersService.dispachToStore(params);
+    this.urlParametersService.dispatchToStore(params);
   }
 }

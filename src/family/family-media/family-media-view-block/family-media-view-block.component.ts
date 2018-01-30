@@ -275,6 +275,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   }
 
   public goToPage(url: string, params: UrlParameters): void {
-    this.urlParametersService.dispachToStore(params);
+    this.urlParametersService.dispatchToStore(params);
   }
 }

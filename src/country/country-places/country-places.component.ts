@@ -107,6 +107,6 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   }
 
   public goToPage(params) {
-    this.urlParametersService.dispachToStore(params);
+    this.urlParametersService.dispatchToStore(params);
   }
 }

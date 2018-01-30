@@ -15,7 +15,7 @@ import { Location } from "@angular/common";
 
 @Injectable()
 export class UrlParametersService {
-  parameters: UrlParameters = DefaultUrlParameters;
+  parameters: UrlParameters;
   window: Window = window;
   isMobile:boolean;
 
@@ -28,10 +28,11 @@ export class UrlParametersService {
     private browserDetectionService: BrowserDetectionService,
     private languageService: LanguageService
   ) {
-
+    const DEBOUCE_TIME = 50;
+    this.parameters = Object.assign({}, DefaultUrlParameters);
     this.isMobile = this.browserDetectionService.isMobile() || this.browserDetectionService.isTablet();
 
-    this.store.debounceTime(50).subscribe((state: AppStates) => {
+    this.store.debounceTime(DEBOUCE_TIME).subscribe((state: AppStates) => {
       const matrix = state.matrix;
       const languageState = state.language;
       const countriesFilter = state.countriesFilter;
@@ -126,7 +127,7 @@ export class UrlParametersService {
     return line;
   }
 
-  dispachToStore(params): void {
+  dispatchToStore(params): void {
     this.parameters = Object.assign({}, DefaultUrlParameters, this.parameters, params);
 
     const queryUrl: string = this.utilsService.objToQuery(this.parameters);

@@ -705,6 +705,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   resetStage(): void {
-    this.urlParametersService.dispachToStore(DefaultUrlParameters)
+    this.urlParametersService.dispatchToStore(DefaultUrlParameters)
   }
 }

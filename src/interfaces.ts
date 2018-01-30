@@ -159,3 +159,8 @@ export interface UrlParameters {
 export interface LanguageState {
   lang: string;
 }
+
+export interface IncomeFilter {
+  lowIncome: number;
+  highIncome: number;
+}
