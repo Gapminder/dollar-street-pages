@@ -42,7 +42,7 @@ export class LanguageServiceMock {
 
       return Observable.of(value);
     } else if (typeof key === 'object') {
-      return Observable.of({ABOUT: 'About', WORLD: 'World'});
+      return Observable.of({ABOUT: 'About', WORLD: 'World', SEE_HOW_PEOPLE: 'see_how_people', REALLY: 'really', LIVE: 'live'});
     }
   }
 
