@@ -8,13 +8,14 @@ import { environment } from '../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../url-change/url-change.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
-import * as _ from 'lodash';
+import { find, get } from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
 import { UtilsService } from '../utils/utils.service';
 import * as LanguageActions from './ngrx/language.actions';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import { AppStates, LanguageState } from '../../interfaces';
+import { Language } from '../../interfaces';
 
 @Injectable()
 export class LanguageService {
@@ -27,9 +28,11 @@ export class LanguageService {
   public translationsLoadedSubscribe: Subscription;
   public documentLoadedSubscription: Subscription;
   public translationsLoadedEvent: EventEmitter = new EventEmitter();
-  public translationsLoadedString: string = 'TRANSLATIONS_LOADED';
+  public translationsLoadedString = 'TRANSLATIONS_LOADED';
   public languagesList: Observable<any>;
   public availableLanguage: string[] = ['en', 'es-ES', 'sv-SE'];
+  public languageSubscription: Subscription;
+  public storeLanguage: string;
 
   public constructor(private http: Http,
                      private location: Location,
@@ -39,6 +42,14 @@ export class LanguageService {
                      private sanitizer: DomSanitizer,
                      private utilsService: UtilsService,
                      private store: Store<AppStates>) {
+
+    const languageState = this.store.select((state: AppStates) => state.language);
+
+    this.languageSubscription = languageState.subscribe( (language: LanguageState) => {
+      if (get(language, 'lang', false)) {
+        this.storeLanguage = language.lang;
+      }
+    });
 
     if (this.documentLoadedSubscription) {
       this.documentLoadedSubscription.unsubscribe();
@@ -79,9 +90,23 @@ export class LanguageService {
         console.error(res.err);
         return;
       }
-
       return res.data;
     });
+
+    this.languagesList.subscribe((data: Language[]) => {
+      this.availableLanguage = this.setAvailableLanguages(data);
+      this.setCurrentLanguage(this.availableLanguage);
+    });
+  }
+
+  public setAvailableLanguages(data: Language[]): string[] {
+    return data.reduce((arr, current) => {
+      if (get(current, 'code', false)) {
+        arr.push(current.code);
+      }
+
+      return arr;
+    }, []);
   }
 
   public getLanguageIso(): string {
@@ -154,10 +179,11 @@ export class LanguageService {
   }
 
   private setCurrentLanguage(languages: string[]): void {
-    const storageLanguage: any = this.localStorageService.getItem('language');
-    const browserLanguage: string = this.translate.getBrowserCultureLang();
+    const storeLanguage = this.storeLanguage;
+    const storageLanguage = this.localStorageService.getItem('language');
+    const browserLanguage = this.translate.getBrowserCultureLang();
 
-    const language = storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
+    const language = storeLanguage !== this.defaultLanguage ? storeLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
 
     const found = languages.indexOf(language) !== -1;
 
@@ -179,9 +205,14 @@ export class LanguageService {
 
   public getLanguagesList(): Observable<any> {
     return this.http.get(`${environment.consumerApi}/v1/languagesList`).map((res: any) => {
-      let parseRes = JSON.parse(res._body);
+      let parseRes;
+      try {
+        parseRes = JSON.parse(res._body);
+      } catch (err) {
+        console.log(err);
+      }
 
-      let currentLanguageObject: any = _.find(parseRes.data, {code: this.currentLanguage});
+      const currentLanguageObject: any = find(parseRes.data, {code: this.currentLanguage});
 
       if (currentLanguageObject) {
         this.languageName = currentLanguageObject.name;

@@ -164,3 +164,9 @@ export interface IncomeFilter {
   lowIncome: number;
   highIncome: number;
 }
+
+export interface Language {
+  code: string;
+  name: string;
+  _id: string;
+}

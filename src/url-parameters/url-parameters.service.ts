@@ -172,7 +172,7 @@ export class UrlParametersService {
 
   }
 
-  getAllParameters(): UrlParameters {
+  public getAllParameters(): UrlParameters {
     return this.parameters;
   }
 }

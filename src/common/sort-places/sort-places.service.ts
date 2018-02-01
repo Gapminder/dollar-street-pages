@@ -90,26 +90,22 @@ export class SortPlacesService {
     return newArr;
   }
 
-  private columnToRow(arr: any[], column: number, cb: any): any {
+  private columnToRow(arr: Place[], column: number, cb: Function): void {
+    /*
     let resultArr = [];
     let maxLength = Math.max(...arr.map((items: any) => items.length));
 
     for (let i = 0; i < maxLength; i++) {
       resultArr.push(...arr.map((item: any) => item[i]).filter((item: any) => item));
     }
+    */
 
-    /*let residue = resultArr.length % column;
-    let emptyArr = residue ? new Array(column - resultArr.length % column) : null;
-
-    if (emptyArr) {
-      resultArr.push(...emptyArr);
-    }*/
-
-    this.regionsLogic(resultArr, column, cb);
+    this.regionsLogic(arr, column, cb);
   }
 
-  private regionsLogic(arr: any[], column: number, cb: any): any {
+  private regionsLogic(arr: Place[], column: number, cb: Function): void {
     let resultArr = [];
+    /*
     let newArrow: any = [];
 
     for (let i = 0; i < column; i++) {
@@ -123,12 +119,13 @@ export class SortPlacesService {
         }
       });
     }
+    */
 
-    this.sortByRegionAndCountry(newArrow, 0, 'region', Number(column) - 1, (data: any, index: any) => {
+    this.sortByRegionAndCountry(arr, 0, 'region', Number(column) - 1, (data: any, index: any) => {
       resultArr[index] = data;
 
       if (index === Number(column) - 1) {
-        let sortedArr = _.flattenDeep(_.zip(...resultArr)).filter(i => i);
+        const sortedArr = _.flattenDeep(_.zip(...resultArr)).filter(i => i);
 
         return cb(sortedArr);
       }
