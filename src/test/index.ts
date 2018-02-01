@@ -16,3 +16,5 @@ export { TranslateParserMock } from './mocks/translateParser.mock';
 export { IncomeCalcServiceMock } from './mocks/incomeCalc.service.mock';
 export { MathServiceMock } from './mocks/math.service.mock';
 export { LocalStorageServiceMock } from './mocks/localStorage.service.mock';
+
+export { CommonServicesTestingModule } from './commonServicesTesting.module';
