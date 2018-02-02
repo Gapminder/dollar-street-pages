@@ -15,7 +15,7 @@ import {
   ViewChild,
   ChangeDetectorRef
 } from '@angular/core';
-import { chain, clone, difference, union, filter, find, map, forEach, omit } from 'lodash';
+import { chain, clone, difference, union, filter, find, map, forEach, omit, get } from 'lodash';
 import {
   BrowserDetectionService,
   LanguageService,
@@ -28,6 +28,7 @@ import * as AppActions from '../../app/ngrx/app.actions';
 import * as CountriesFilterActions from './ngrx/countries-filter.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { KeyCodes } from '../../enums';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 @Component({
   selector: 'countries-filter',
@@ -78,6 +79,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public countriesFilterStateSubscription: Subscription;
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
+  public combileLatestSubscriptions: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -133,6 +135,17 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
 
+    this.combileLatestSubscriptions = combineLatest(this.appState, this.countriesFilterState)
+      .subscribe((arr) => {
+        const appState = arr[0];
+        const countriesFilter = arr[1];
+
+        if(get(this, 'locations', false)
+          && get(this, 'query', false)) {
+          this.setTitle(this.query);
+        }
+      });
+
     this.isOpenMobileFilterView();
 
     this.calcSliceCount();
@@ -182,6 +195,10 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.appStateSubscription) {
       this.appStateSubscription.unsubscribe();
+    }
+
+    if (this.combileLatestSubscriptions) {
+      this.combileLatestSubscriptions.unsubscribe();
     }
   }
 
