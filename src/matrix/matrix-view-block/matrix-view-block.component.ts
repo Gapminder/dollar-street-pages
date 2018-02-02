@@ -288,7 +288,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.fancyBoxImage = void 0;
   }
 
-  public visitThisHome(): void {
+  public visitThisHome(placeId: string): void {
+    this.store.dispatch(new MatrixActions.AddPlaceToSet(placeId));
     this.streetService.clearAndRedraw();
   }
 

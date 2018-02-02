@@ -213,16 +213,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.isPinMode = false;
           this.isEmbedShared = false;
           this.isPreviewView = false;
-          this.setMatrixTopPadding(0);
         }
 
         if (get(matrix, 'embedMode', false)) {
           this.isEmbedMode = true;
         } else {
           this.isEmbedMode = false;
-          if (!this.isPinMode) {
-            this.setMatrixTopPadding(0);
-          }
         }
 
         if (get(matrix, 'matrixImages', false)
@@ -278,22 +274,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.isQuickGuideOpened = false;
         }
 
-        if (get(matrix, 'placesSet' , false) && this.placesSet !== matrix.placesSet) {
+        if (get(matrix, 'placesSet' , false)
+          && this.placesSet !== matrix.placesSet) {
           this.placesSet = matrix.placesSet;
 
           if (this.currencyUnit) {
             this.initPlacesSet();
           }
 
-          setTimeout(() => {
-            let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
-
-            if (pinContainerElement) {
-              const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
-
-              this.setMatrixTopPadding(pinContainerHeight - 134);
-            }
-          }, 100);
         }
 
         if (this.query && get(matrix, 'updateMatrix', false)) {
@@ -323,6 +311,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.highIncome = +get(this.streetData, 'filters.highIncome', rich);
 
           this.processMatrixImages(this.matrixImages);
+
         }
 
         if (get(streetSettings, 'streetSettings', false)
@@ -344,7 +333,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
           this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
           this.store.dispatch(new MatrixActions.SetEmbedMode(true));
         }
-
+        this.setPinModeContainerSize();
         this.changeDetectorRef.detectChanges();
 
       });
@@ -384,6 +373,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public initPlacesSet(): void {
     this.placesSet = this.placesSet.map((place: Place) => {
+      console.log(this.placesSet);
       if (place) {
         place.showIncome = this.incomeCalcService
           .calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
@@ -403,14 +393,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.setPinHeaderTitle();
   }
 
-  public setMatrixTopPadding(value: number): void {
-    const currentPaddingTop = +this.matrixContainerElement.style.paddingTop.replace('px', '');
-    const diff = value - currentPaddingTop;
-    this.matrixContainerElement.style.paddingTop = value.toString() + 'px';
-    window.scrollTo(0, window.pageYOffset + diff);
-  }
-
-  public onPinnedPlaceHover(place: any): void {
+  public onPinnedPlaceHover(place: Place): void {
     if (!this.isDesktop) {
       return;
     }
@@ -999,5 +982,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.selectedRegions = regions;
     this.selectedCountries = countries;
+  }
+
+  setPinModeContainerSize():void {
+    const container = document.querySelector('.pin-wrap') as HTMLElement;
+    const pinContainer = container.querySelector('.pin-container') as HTMLElement;
+    const height = pinContainer ? pinContainer.offsetHeight : 0;
+    container.style.height = `${height.toString()}px`;
   }
 }

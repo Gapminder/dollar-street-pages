@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
+import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../interfaces';
 import { UrlParametersService } from './url-parameters.service';
@@ -21,16 +22,27 @@ interface NavigationEndInterface {
 export class UrlParametersComponent implements OnInit, OnDestroy {
   private subscribtions: Subscription[] = [];
 
-  constructor(router: Router, store: Store<AppStates>, urlParametersService: UrlParametersService) {
+  constructor(
+    router: Router,
+    store: Store<AppStates>,
+    urlParametersService: UrlParametersService,
+    location: Location) {
     const routerSubscribe = router.events
       .filter(event => event instanceof NavigationEnd)
       .take(1)
       .subscribe((event: NavigationEndInterface) => {
+        console.log(event);
         const params = urlParametersService.parseString(event.url);
         urlParametersService.dispatchToStore(params);
         urlParametersService.combineUrlPerPage();
       });
     this.subscribtions.push(routerSubscribe);
+
+    location.subscribe((event) => {
+      const params = urlParametersService.parseString(event.url);
+      urlParametersService.dispatchToStore(params);
+      urlParametersService.combineUrlPerPage();
+    });
   }
 
   ngOnInit() {

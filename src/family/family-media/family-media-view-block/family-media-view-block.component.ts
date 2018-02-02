@@ -120,9 +120,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
         });
       });
 
-    process.nextTick(() => {
-      this.setPointPositionMediaBlock();
-    })
+    this.setPointPositionMediaBlock();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

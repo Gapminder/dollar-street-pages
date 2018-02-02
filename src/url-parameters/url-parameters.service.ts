@@ -32,6 +32,7 @@ export class UrlParametersService {
     this.isMobile = this.browserDetectionService.isMobile() || this.browserDetectionService.isTablet();
 
     this.store.debounceTime(DEBOUNCE_TIME).subscribe((state: AppStates) => {
+      console.log(state);
       const matrix = state.matrix;
       const languageState = state.language;
       const countriesFilter = state.countriesFilter;
@@ -157,7 +158,8 @@ export class UrlParametersService {
       this.store.dispatch(new MatrixActions.UpdateMatrix(true));
     }
 
-    if (get(params, 'embed', false)) {
+    if (get(params, 'embed', false)
+      && get(params, 'embed') !== 'undefined') {
       this.store.dispatch(new MatrixActions.SetEmbededId(params.embed));
     }
 

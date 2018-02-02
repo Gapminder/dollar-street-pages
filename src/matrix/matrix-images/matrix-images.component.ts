@@ -167,14 +167,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.checkQuickGuide();
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
-      if (get(data, 'pinMode'), false) {
-        this.isPinMode = data.pinMode;
-      }
+    this.matrixStateSubscription = this.matrixState
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((data: MatrixState) => {
 
-      if (get(data, 'isEmbederShared', false)) {
-        this.isEmbederShared = data.isEmbederShared;
-      }
+      this.isPinMode = get(data, 'pinMode', false);
+      this.isEmbederShared = get(data, 'isEmbederShared', false);
 
       if (_.get(data, 'placesSet', false)
       && data.placesSet !== this.placesSet) {
@@ -200,7 +198,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         this.activeHouse = undefined;
         this.showBlock = false;
       }
-
       this.changeDetectorRef.detectChanges();
     });
 

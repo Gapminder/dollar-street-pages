@@ -177,23 +177,23 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public changeZoom(zoom: number): void {
     const prevZoom: number = this.zoom;
     this.zoom = zoom;
-    this.urlChanged({isZoom: true, url: this.query});
+    // this.urlChanged({isZoom: true, url: this.query});
     this.familyMediaComponent.changeZoom(prevZoom);
   }
 
-  public urlChanged(options): void {
-    let { url } = options;
-    const { isZoom, isBack } = options;
-
-    if (isZoom) {
-      this.calcItemSize();
-      url = url.replace(/row\=\d*/, `row=${this.row}`).replace(/zoom\=\d*/, `zoom=${this.zoom}`);
-    }
-
-    this.store.dispatch(new AppActions.SetQuery(url));
-
-    this.urlChangeService.replaceState('/family', url);
-  }
+  // public urlChanged(options): void {
+  //   let { url } = options;
+  //   const { isZoom, isBack } = options;
+  //
+  //   if (isZoom) {
+  //     this.calcItemSize();
+  //     url = url.replace(/row\=\d*/, `row=${this.row}`).replace(/zoom\=\d*/, `zoom=${this.zoom}`);
+  //   }
+  //
+  //   this.store.dispatch(new AppActions.SetQuery(url));
+  //
+  //   this.urlChangeService.replaceState('/family', url);
+  // }
 
   public processScroll(): void {
     const scrollTop = (document.body.scrollTop || document.documentElement.scrollTop);
@@ -321,8 +321,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     const url = this.utilsService.objToQuery(queryParams);
 
     this.store.dispatch(new AppActions.SetQuery(url));
-
-    this.urlChangeService.replaceState('/family', url);
   }
 
   public isOpenFamilyExpandBlock(data: any): void {
