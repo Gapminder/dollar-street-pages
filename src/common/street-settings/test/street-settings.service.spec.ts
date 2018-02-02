@@ -25,7 +25,7 @@ describe('StreetSettingsService', () => {
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
-                { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
+                StreetSettingsService,
                 MockBackend,
                 BaseRequestOptions,
                 {

@@ -158,14 +158,14 @@ describe('BubbleComponent Test', () => {
   });
 
   it('last step should close the bubble on desktop', () => {
-    let data = { top: 0, left: 0 };
+    let data = { top: 1, left: 1 };
     component.setBubblePositionDesktop(6, data, 2, 3);
 
     expect(component.isCloseBubble).toBe(true);
   });
 
   it('last step should close the bubble on desktop', fakeAsync(() => {
-    let data = { top: 0, left: 0 };
+    let data = { top: 1, left: 1 };
     component.setBubblePositionMobile(6, data, 2, 3);
 
     tick(100);
