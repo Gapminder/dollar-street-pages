@@ -27,6 +27,7 @@ import * as CountriesFilterActions from './ngrx/countries-filter.actions';
 import { KeyCodes } from '../../enums';
 import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 import { DEBOUNCE_TIME } from "../../defaultState";
+import { get} from 'lodash';
 
 @Component({
   selector: 'countries-filter',
@@ -108,7 +109,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
-      if (_.get(data, 'countriesFilter', false)) {
+      if (get(data, 'countriesFilter', false)) {
 
         this.locations = data.countriesFilter;
 
@@ -136,7 +137,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.isOpenMobileFilterView();
 
           this.calcSliceCount();
-          this.setTitle(this.query);
+          this.setTitle();
         });
       });
 
@@ -145,7 +146,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe(() => {
         this.zone.run(() => {
           this.calcSliceCount();
-          this.setTitle(this.query);
+          this.setTitle();
         });
       });
   }
@@ -186,7 +187,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(changes.url.currentValue));
       }
 
-      this.setTitle(changes.url.currentValue);
+      this.setTitle();
     }
   }
 
@@ -430,7 +431,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   }
 
-  public findCountryTranslatedName(countries: Country[]): any {
+  public findCountryTranslatedName(countries: string[]): any {
     return map(countries, (item: string) => {
       const findTransName: any = find(this.countries, {originName: item});
       return findTransName ? findTransName.country : item;
