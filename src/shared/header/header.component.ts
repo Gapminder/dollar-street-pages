@@ -40,7 +40,7 @@ import {
   IncomeCalcService
 } from '../../common';
 import { DrawDividersInterface } from '../../interfaces';
-import { DefaultUrlParameters } from '../../defaultState';
+import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 
 @Component({
@@ -175,14 +175,14 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
 
     this.resizeSubscription = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.calcIncomeSize();
         this.checkByIncomeFilter();
       });
 
     this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.calcIncomeSize();
       });

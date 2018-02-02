@@ -20,7 +20,6 @@ export class DonateService {
       token: (token: any) => {
         const query: any = { amount: config.amount, token: token };
         this.makeDonate(query).subscribe((res: any) => {
-          console.log(res);
           if(!res.err) {
              cb();
           }

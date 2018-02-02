@@ -29,7 +29,7 @@ import {
 import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
-import { DefaultUrlParameters } from "../defaultState";
+import { DEBOUNCE_TIME, DefaultUrlParameters } from "../defaultState";
 
 @Component({
   selector: 'family',
@@ -60,7 +60,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public countries: {}[];
   public activeImageIndex: number;
   public windowHistory = history;
-  public familyServiceSetThingSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public scrollSubscribe: Subscription;
   public device: BrowserDetectionService;
@@ -98,7 +97,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.theWorldTranslate = trans.toLowerCase();
     });
 
-    this.appStatesSubscription = this.store.debounceTime(100)
+    this.appStatesSubscription = this.store.debounceTime(DEBOUNCE_TIME)
       .subscribe((data: AppStates) => {
       const matrix = data.matrix;
       const streetSetting = data.streetSettings;
@@ -136,7 +135,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.shortFamilyInfoContainerElement = this.element.querySelector('.short-family-info-container') as HTMLElement;
 
     this.scrollSubscribe = fromEvent(this.window, 'scroll')
-        .debounceTime(10)
         .subscribe(() => {
           setTimeout(() => {
             if (!this.itemSize) {
@@ -153,10 +151,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnDestroy(): void {
     if (this.appStatesSubscription) {
       this.appStatesSubscription.unsubscribe();
-    }
-
-    if (this.familyServiceSetThingSubscribe) {
-      this.familyServiceSetThingSubscribe.unsubscribe();
     }
 
     if (this.getTranslationSubscribe) {

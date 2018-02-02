@@ -26,6 +26,8 @@ import {
   LanguageServiceMock,
   UtilsServiceMock
 } from '../../../test/';
+import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
+import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
 
 describe('MatrixImagesComponent', () => {
   let component: MatrixImagesComponent;
@@ -58,12 +60,13 @@ describe('MatrixImagesComponent', () => {
       providers: [
         {provide: MathService, useValue: {}},
         // AppActions,
-        {provide: LoaderService, useClass: LoaderServiceMock},
-        {provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock},
-        {provide: LanguageService, useClass: LanguageServiceMock},
-        {provide: UtilsService, useClass: UtilsServiceMock},
-        {provide: SortPlacesService, useValue: {}},
-        {provide: MatrixViewBlockComponent, useClass: MatrixViewBlockComponentMock}
+        { provide: LoaderService, useClass: LoaderServiceMock },
+        { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+        { provide: LanguageService, useClass: LanguageServiceMock },
+        { provide: UtilsService, useClass: UtilsServiceMock },
+        { provide: SortPlacesService, useValue: {} },
+        { provide: MatrixViewBlockComponent, useClass: MatrixViewBlockComponentMock },
+        { provide: UrlParametersService, useClass: UrlParametersServiceMock }
       ]
     });
 
@@ -79,13 +82,11 @@ describe('MatrixImagesComponent', () => {
     expect(component.getTranslationSubscribe).toBeDefined();
     expect(component.placesSubscribe).toBeDefined();
     expect(component.contentLoadedSubscription).toBeDefined();
-    expect(component.appStateSubscription).toBeDefined();
     expect(component.resizeSubscribe).toBeDefined();
 
     spyOn(component.getTranslationSubscribe, 'unsubscribe');
     spyOn(component.placesSubscribe, 'unsubscribe');
     spyOn(component.contentLoadedSubscription, 'unsubscribe');
-    spyOn(component.appStateSubscription, 'unsubscribe');
     spyOn(component.resizeSubscribe, 'unsubscribe');
 
     component.ngOnDestroy();
@@ -93,7 +94,6 @@ describe('MatrixImagesComponent', () => {
     expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
     expect(component.placesSubscribe.unsubscribe).toHaveBeenCalled();
     expect(component.contentLoadedSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
     expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();
   });
 

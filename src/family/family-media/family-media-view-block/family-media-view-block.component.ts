@@ -32,6 +32,7 @@ import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { ImageResolutionInterface } from '../../../interfaces';
 import { get } from 'lodash';
 import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
+import { DEBOUNCE_TIME } from "../../../defaultState";
 
 interface ImageViewBlockPosition {
   point: { left: number };
@@ -106,7 +107,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.windowInnerWidth = window.innerWidth;

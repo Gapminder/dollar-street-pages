@@ -31,10 +31,6 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
         urlParametersService.combineUrlPerPage();
       });
     this.subscribtions.push(routerSubscribe);
-
-    const storeSubscribe = store.debounceTime(DEBOUNCE_TIME).subscribe((state: AppStates) => {
-    });
-    this.subscribtions.push(storeSubscribe);
   }
 
   ngOnInit() {

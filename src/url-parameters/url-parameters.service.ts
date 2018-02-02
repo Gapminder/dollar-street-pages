@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppStates, UrlParameters } from '../interfaces';
-import { DefaultUrlParameters, VisibleParametersPerPage } from '../defaultState';
+import { DEBOUNCE_TIME, DefaultUrlParameters, VisibleParametersPerPage } from '../defaultState';
 import { forEach, get, reduce, difference } from 'lodash';
 import { BrowserDetectionService, IncomeCalcService, LanguageService, UtilsService } from '../common';
 
@@ -28,11 +28,10 @@ export class UrlParametersService {
     private browserDetectionService: BrowserDetectionService,
     private languageService: LanguageService
   ) {
-    const DEBOUCE_TIME = 50;
     this.parameters = Object.assign({}, DefaultUrlParameters);
     this.isMobile = this.browserDetectionService.isMobile() || this.browserDetectionService.isTablet();
 
-    this.store.debounceTime(DEBOUCE_TIME).subscribe((state: AppStates) => {
+    this.store.debounceTime(DEBOUNCE_TIME).subscribe((state: AppStates) => {
       const matrix = state.matrix;
       const languageState = state.language;
       const countriesFilter = state.countriesFilter;

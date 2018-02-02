@@ -31,6 +31,7 @@ import { FamilyMediaService } from './family-media.service';
 import { FamilyComponent } from '../family.component';
 import { FamilyMediaViewBlockComponent } from './family-media-view-block';
 import { ImageResolutionInterface } from '../../interfaces';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'family-media',
@@ -160,7 +161,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
       });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(300)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           if (this.windowInnerWidth === window.innerWidth) {

@@ -30,7 +30,7 @@ import { Store } from '@ngrx/store';
 import { AppStates, Currency, LanguageState, MatrixState } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { Place } from '../../interfaces';
-import { DefaultUrlParameters } from '../../defaultState';
+import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
 import { get } from "lodash";
 
 @Component({
@@ -97,11 +97,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   public locations: any[];
   public getTranslationSubscribe: Subscription;
   public appState: Observable<any>;
-  public appStateSubscription: Subscription;
   public quickGuideElement: HTMLElement;
   public isInit: boolean;
   public contentLoadedSubscription: Subscription;
-  public isPinMode: boolean;
+  public isPinMode = false;
   public isEmbederShared: boolean;
   public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
@@ -169,16 +168,20 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
 
     this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
-      this.isPinMode = data.pinMode;
+      if (get(data, 'pinMode'), false) {
+        this.isPinMode = data.pinMode;
+      }
 
-      this.isEmbederShared = data.isEmbederShared;
+      if (get(data, 'isEmbederShared', false)) {
+        this.isEmbederShared = data.isEmbederShared;
+      }
 
       if (_.get(data, 'placesSet', false)
       && data.placesSet !== this.placesSet) {
         this.placesSet = data.placesSet;
       }
 
-      if (data.currencyUnit) {
+      if (_.get(data, 'currencyUnit', false)) {
         if (this.currencyUnit !== data.currencyUnit) {
           this.currencyUnit = data.currencyUnit;
         }
@@ -202,7 +205,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(300)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           if (this.windowInnerWidth === window.innerWidth) {
@@ -252,9 +255,6 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.clearActiveHomeViewBoxSubscribe.unsubscribe();
     }
 
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
-    }
     if (this.contentLoadedSubscription) {
       this.contentLoadedSubscription.unsubscribe();
     }

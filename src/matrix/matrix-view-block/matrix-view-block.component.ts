@@ -45,6 +45,7 @@ import { MatrixViewBlockService } from './matrix-view-block.service';
 import { StreetDrawService } from '../../shared/street/street.service';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 import { get } from 'lodash';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'matrix-view-block',
@@ -131,11 +132,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+      if (get(data, 'streetSettings', false)) {
         this.streetData = data.streetSettings;
+      }
   });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
+    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
       if (data) {
         if (this.query !== data.query) {
           this.query = data.query;
@@ -143,7 +146,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
       if (get(data, 'currencyUnit', false)
         && this.currencyUnit !== data.currencyUnit) {
           this.currencyUnit = data.currencyUnit;
@@ -162,7 +165,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.windowInnerWidth = window.innerWidth;
@@ -314,7 +317,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
     this.streetService.clearAndRedraw();
 
-    this.urlChangeService.assingState('/matrix');
+    this.urlChangeService.assignState('/matrix');
 
     this.scrollTopZero();
   }
@@ -370,7 +373,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public goToPage(url: string, params: UrlParameters): void {
-    console.log(params);
     this.urlParametersService.dispatchToStore(params);
   }
 }

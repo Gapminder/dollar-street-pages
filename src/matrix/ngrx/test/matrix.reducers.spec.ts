@@ -266,7 +266,7 @@ describe('Matrix Reducers', () => {
   });
 
   it('SetMatrixImages return matrixImages', () => {
-    const payload = 'any';
+    const payload = [];
     const {initialState} = fromMatrixReducers;
     const action = new fromMatrixActions.SetMatrixImages(payload);
     const state = fromMatrixReducers.matrixReducer(initialState, action);
@@ -291,7 +291,7 @@ describe('Matrix Reducers', () => {
   });
 
   it('GetMatrixImagesSuccess return matrixImages', () => {
-    const payload = 'any';
+    const payload = [];
     const {initialState} = fromMatrixReducers;
     const action = new fromMatrixActions.GetMatrixImagesSuccess(payload);
     const state = fromMatrixReducers.matrixReducer(initialState, action);

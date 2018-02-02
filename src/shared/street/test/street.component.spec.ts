@@ -48,22 +48,19 @@ describe('StreetComponent', () => {
     component.ngAfterViewInit();
 
     expect(component.getTranslationSubscribe).toBeDefined();
-    expect(component.streetSettingsStateSubscription).toBeDefined();
-    expect(component.appStateSubscription).toBeDefined();
+    expect(component.appStatesSubscription).toBeDefined();
     expect(component.streetFilterSubscribe).toBeDefined();
     expect(component.resize).toBeDefined();
 
     spyOn(component.getTranslationSubscribe, 'unsubscribe');
-    spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
-    spyOn(component.appStateSubscription, 'unsubscribe');
+    spyOn(component.appStatesSubscription, 'unsubscribe');
     spyOn(component.streetFilterSubscribe, 'unsubscribe');
     spyOn(component.resize, 'unsubscribe');
 
     component.ngOnDestroy();
 
     expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.appStatesSubscription.unsubscribe).toHaveBeenCalled();
     expect(component.streetFilterSubscribe.unsubscribe).toHaveBeenCalled();
     expect(component.resize.unsubscribe).toHaveBeenCalled();
   });

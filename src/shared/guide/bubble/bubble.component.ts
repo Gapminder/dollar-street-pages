@@ -16,6 +16,7 @@ import {
   UtilsService
 } from '../../../common';
 import { KeyCodes } from '../../../enums';
+import { DEBOUNCE_TIME } from "../../../defaultState";
 
 @Component({
   selector: 'bubble',
@@ -55,7 +56,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
     this.getBubble(this.step);
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           if (this.isCloseBubble || this.windowInnerWidth === window.innerWidth) {

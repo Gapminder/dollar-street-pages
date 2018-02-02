@@ -22,7 +22,7 @@ export class UrlChangeService {
     this.urlEvents.next('my event');
   }
 
-  public assingState(path: string): void {
+  public assignState(path: string): void {
     this.location.go(path);
   }
 

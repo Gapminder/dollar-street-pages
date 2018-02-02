@@ -25,6 +25,7 @@ import {
 } from '../../common';
 import { KeyCodes } from '../../enums';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'things-filter',
@@ -132,7 +133,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.isOpenMobileFilterView();
@@ -159,6 +160,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   }
 
   public openThingsFilter(isOpenThingsFilter: boolean): void {
+
     this.isOpenThingsFilter = !isOpenThingsFilter;
 
     let thingsContentElement: HTMLElement = this.element.querySelector('.other-things-content') as HTMLElement;
