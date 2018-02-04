@@ -1,0 +1,95 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="rectangles_copy_5" data-name="rectangles copy 5"
+     xmlns="http://www.w3.org/2000/svg" width="162" height="162" viewBox="0 0 162 162">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: #d9e1e8;
+      stroke: #c4cdd5;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+      stroke-linejoin: round;
+      stroke-width: 2px;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+      fill: #ecf0f6;
+      }
+
+      .cls-2 {
+      stroke: #119ab7;
+      filter: url(#filter);
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5 {
+      fill-rule: evenodd;
+      }
+
+      .cls-3 {
+      stroke: #96c61d;
+      filter: url(#filter-2);
+      }
+
+      .cls-4 {
+      stroke: #dbc700;
+      filter: url(#filter-3);
+      }
+
+      .cls-5 {
+      fill: #f23373;
+      stroke: #bc1950;
+      }
+    </style>
+    <filter id="filter" x="15" y="15" width="46" height="46" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#15b0d1"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+    <filter id="filter-2" x="102" y="15" width="46" height="46" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#b1e826"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+    <filter id="filter-3" x="102" y="102" width="46" height="46" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#ffe400"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="_1" data-name="1">
+    <rect id="Rounded_Rectangle_1_copy" data-name="Rounded Rectangle 1 copy" class="cls-1" width="75.281"
+          height="75.281" rx="6" ry="6"/>
+    <g style="fill: #ecf0f6; filter: url(#filter)">
+      <path id="_1111_copy_3" data-name="1111 copy 3" class="cls-2"
+            d="M55,37.127L55.021,61H20.979L21,37.127H15.013L38.011,15l23,22.128H55Z"
+            style="stroke: inherit; filter: none; fill: inherit"/>
+    </g>
+    <use xlink:href="#_1111_copy_3" style="stroke: #119ab7; filter: none; fill: none"/>
+  </g>
+  <g id="_1_copy_4" data-name="1 copy 4">
+    <rect id="Rounded_Rectangle_1_copy-2" data-name="Rounded Rectangle 1 copy" class="cls-1" x="86.719" width="75.281"
+          height="75.281" rx="6" ry="6"/>
+    <g style="fill: #ecf0f6; filter: url(#filter-2)">
+      <path id="_1111" data-name="1111" class="cls-3"
+            d="M142,37.127L142.021,61H107.979L108,37.127h-5.988l23-22.128,23,22.128H142Z"
+            style="stroke: inherit; filter: none; fill: inherit"/>
+    </g>
+    <use xlink:href="#_1111" style="stroke: #96c61d; filter: none; fill: none"/>
+  </g>
+  <g id="_1_copy_5" data-name="1 copy 5">
+    <rect id="Rounded_Rectangle_1_copy-3" data-name="Rounded Rectangle 1 copy" class="cls-1" x="86.719" y="86.719"
+          width="75.281" height="75.281" rx="6" ry="6"/>
+    <g style="fill: #ecf0f6; filter: url(#filter-3)">
+      <path id="_1111_copy" data-name="1111 copy" class="cls-4"
+            d="M142,124.127L142.021,148H107.979L108,124.127h-5.988l23-22.127,23,22.127H142Z"
+            style="stroke: inherit; filter: none; fill: inherit"/>
+    </g>
+    <use xlink:href="#_1111_copy" style="stroke: #dbc700; filter: none; fill: none"/>
+  </g>
+  <g id="_1_copy_6" data-name="1 copy 6">
+    <rect id="Rounded_Rectangle_1_copy-4" data-name="Rounded Rectangle 1 copy" class="cls-1" y="86.719" width="75.281"
+          height="75.281" rx="6" ry="6"/>
+    <path id="_1111_copy_2" data-name="1111 copy 2" class="cls-5"
+          d="M55,124.127L55.021,148H20.979L21,124.127H15.013l23-22.127,23,22.127H55Z"/>
+  </g>
+</svg>

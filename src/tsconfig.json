@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es6", "dom"],
+    "mapRoot": "./",
+    "module": "es6",
+    "moduleResolution": "node",
+    "outDir": "../dist/out-tsc/app",
+    "sourceMap": true,
+    "target": "es5",
+    "skipLibCheck": true,
+    "typeRoots": [
+      "../node_modules/@types"
+    ]
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

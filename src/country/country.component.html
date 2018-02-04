@@ -1,0 +1,9 @@
+<div class="country-container row">
+  <div class="col-md-2">
+    <country-info [countryId]="countryId" (getCountry)="setTitle($event)"></country-info>
+  </div>
+
+  <div class="col-md-10">
+    <country-places [countryId]="countryId"></country-places>
+  </div>
+</div>

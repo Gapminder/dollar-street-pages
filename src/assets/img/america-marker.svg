@@ -1,0 +1,24 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="11" height="11"
+     viewBox="0 0 22 22">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: #fff;
+      stroke: #96c61d;
+      stroke-linejoin: round;
+      stroke-width: 2px;
+      filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="0" y="0" width="22" height="22" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#b1e826"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g style="fill: #fff; filter: url(#filter)">
+    <circle id="america-marker" class="cls-1" cx="11" cy="11" r="11"
+            style="stroke: inherit; filter: none; fill: inherit"/>
+  </g>
+  <use xlink:href="#america-marker" style="stroke: #96c61d; filter: none; fill: none"/>
+</svg>

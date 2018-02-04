@@ -1,0 +1,47 @@
+#loader-container {
+  position: fixed;
+  overflow: hidden;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+#loader-container .loader-content,
+#loader-container {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#loader-container .loader-content {
+  position: absolute;
+  height: 64px;
+  margin: auto;
+  text-align: center;
+}
+
+#loader-container .loader-content h1 {
+  text-transform: uppercase;
+  font-family: 'Font Light', sans-serif;
+}
+
+#loader-container .loader {
+  width: 64px;
+  height: 64px;
+  display: inline-block;
+}
+
+@media (max-width: 600px) {
+  #loader-container .loader-content {
+    height: 110px;
+  }
+
+  #loader-container .loader {
+    width: 60px;
+    height: 60px;
+  }
+
+  #loader-container .loader-content h1 {
+    font-size: 18px;
+  }
+}

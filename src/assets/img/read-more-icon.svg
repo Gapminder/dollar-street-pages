@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15.985" viewBox="0 0 30 31.969">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: #384550;
+      fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="read_more_icon" data-name="read more icon" class="cls-1"
+        d="M623.4,732.539a2.005,2.005,0,0,0,0-2.861,2.039,2.039,0,0,0-2.882,0l-9.477,9.409V716.029a2.037,2.037,0,0,0-4.074,0v23.058l-9.477-9.409A2.045,2.045,0,0,0,594,731.1a1.964,1.964,0,0,0,.6,1.423l12.947,12.855a2.047,2.047,0,0,0,2.9.015Z"
+        transform="translate(-594 -714)"/>
+</svg>

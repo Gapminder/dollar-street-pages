@@ -1,0 +1,59 @@
+<div #familyThingsContainer
+     class="family-things-container family-things-container-scroll">
+  <div class="family-images-container"
+       infinite-scroll
+       [infiniteScrollDistance]="2"
+       [infiniteScrollThrottle]="0"
+       #familyImagesContainer
+       (scrolled)="onScrollDown()">
+    <div #familyImageContainer
+         class="family-image-container"
+         *ngFor="let image of currentImages; let i = index"
+         (click)="openMedia(image, i)"
+         [style.-webkit-box-ordinal-group]="i"
+         [style.-moz-box-ordinal-group]="i"
+         [style.-ms-flex-order]="i"
+         [style.-webkit-order]="i"
+         [style.order]="i"
+         isImageLoaded
+         [imageLoadedUrl]="convertImageUrlWithoutWrapper(image?.background)"
+         (imageLoadedEvent)="imageIsUploaded(i)">
+      <div class="family-image-position">
+        <div class="family-image-inner">
+      <div class="family-image"
+           [ngStyle]="{'background-image': image.isUploaded && image.background}">
+        <div class="image-description">
+          <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
+          <span>{{image.thingName}}</span>
+        </div>
+      </div>
+
+      <div class="loader-content" *ngIf="!image.isUploaded">
+        <div class="isLoad">
+          <div class="la-ball-spin la-dark la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+    </div>
+
+    <family-media-view-block *ngIf="showImageBlock"
+                             [imageData]="imageData"
+                             [style.-webkit-box-ordinal-group]="imageBlockLocation"
+                             [style.-moz-box-ordinal-group]="imageBlockLocation"
+                             [style.-ms-flex-order]="imageBlockLocation"
+                             [style.-webkit-order]="imageBlockLocation"
+                             [style.order]="imageBlockLocation"
+                             (closeBigImageBlock)="openMedia(activeImage, indexViewBoxImage)">
+    </family-media-view-block>
+  </div>
+</div>

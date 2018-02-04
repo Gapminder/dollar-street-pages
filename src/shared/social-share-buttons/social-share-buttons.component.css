@@ -1,0 +1,22 @@
+.share-button-container {
+  overflow: hidden;
+}
+
+.share-button-container > div {
+  float: left;
+  margin-left: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+@media (max-width: 599px) {
+  .share-button-container > div:first-child {
+    margin-left: 5px;
+    text-align: center;
+  }
+
+  .share-button-container > div {
+    margin-left: 7px;
+    text-align: center;
+  }
+}

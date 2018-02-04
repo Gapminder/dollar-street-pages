@@ -1,0 +1,114 @@
+.translate-me-section {
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+#article-content {
+  padding-top: 40px;
+  margin: 0 auto;
+}
+
+#article-content >>> h1:first-child,
+#article-content >>> h2:first-child,
+#article-content >>> h3:first-child,
+#article-content >>> h4:first-child,
+#article-content >>> h5:first-child,
+#article-content >>> h6:first-child {
+  margin: 0 0 5px;
+}
+
+#article-content >>> h1 {
+  font-size: 38px;
+  margin: 0 0 5px;
+}
+
+#article-content >>> > h1:first-child + h1,
+#article-content >>> > h1:first-child + h2,
+#article-content >>> > h1:first-child + h3,
+#article-content >>> > h1:first-child + h4 {
+  margin: 0;
+  font-size: 22px;
+  font-family: 'Font Light Italic', sans-serif;
+  color: #767d86;
+  line-height: 30px;
+}
+
+#info-context >>> h2,
+#info-context >>> h3,
+#info-context >>> h4,
+#info-context >>> h5,
+#info-context >>> h6 {
+  color: #374551;
+  font-family: 'Font Regular', sans-serif;
+  font-size: 24px;
+  line-height: 30px;
+  margin: 0;
+}
+
+#article-content >>> p {
+  font-size: 20px;
+  line-height: 30px;
+  margin: 15px 0;
+  display: inline-block;
+  width: 100%;
+}
+
+#article-content >>> img {
+  width: 100%;
+  height: inherit;
+}
+
+#article-content >>> iframe {
+  border: 0;
+  width: 100%;
+}
+
+#article-content >>> a {
+  color: #b04514;
+  text-decoration: underline;
+}
+
+#article-content >>> iframe {
+  border: 0;
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  #article-content {
+
+  }
+}
+
+@media (min-width: 1024px) {
+  #article-content {
+    width: 730px;
+  }
+}
+
+@media (max-width: 599px) {
+  #article-content >>> h1 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  #article-content >>> > h1:first-child + h1,
+  #article-content >>> > h1:first-child + h2,
+  #article-content >>> > h1:first-child + h3,
+  #article-content >>> > h1:first-child + h4 {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  #article-content >>> h2,
+  #article-content >>> h3,
+  #article-content >>> h4,
+  #article-content >>> h5 {
+    font-size: 18px;
+  }
+
+  #article-content >>> a,
+  #article-content >>> p {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
