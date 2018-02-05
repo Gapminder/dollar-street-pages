@@ -289,7 +289,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public visitThisHome(placeId: string): void {
-    this.store.dispatch(new MatrixActions.AddPlaceToSet(placeId));
+    this.store.dispatch(new MatrixActions.SetPlace(placeId));
     this.streetService.clearAndRedraw();
   }
 

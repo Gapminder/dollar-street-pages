@@ -266,7 +266,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         if (get(matrix, 'quickGuide', false)) {
           this.isQuickGuideOpened = true;
 
-          if (get(matrix,'embedMode', false)) {
+          if (get(matrix, 'embedMode', false)) {
             this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
           }
 
