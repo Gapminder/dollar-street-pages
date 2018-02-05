@@ -1,66 +1,26 @@
-import { TestBed, async, getTestBed, fakeAsync, tick } from '@angular/core/testing';
-import {
-    MockBackend,
-    MockConnection
-} from '@angular/http/testing';
-import {
-    BaseRequestOptions,
-    Http,
-    Response,
-    ResponseOptions,
-    XHRBackend,
-    HttpModule
-} from '@angular/http';
 import { DonateService } from '../donate.service';
+import { Observable } from 'rxjs/Observable';
+import { environment } from '../../environments/environment';
 
-describe('DonateService', () => {
-    let mockBackend: MockBackend;
-    let donateService: DonateService;
+describe('Donate Service', () => {
+  const httpSpy = jasmine.createSpyObj('http', ['post']);
+  let service: DonateService;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [HttpModule],
-            providers: [
-                DonateService,
-                MockBackend,
-                BaseRequestOptions,
-                {
-                    deps: [
-                        MockBackend,
-                        BaseRequestOptions
-                    ],
-                    provide: Http,
-                    useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-                        return new Http(backend, defaultOptions);
-                    }
-                }
-            ]
-        });
+  beforeEach(() => {
+    service = new DonateService(httpSpy);
+    httpSpy.post.and.returnValue(Observable.of({ _body: `{"success":true,"error":null}` }));
+  });
 
-        mockBackend = TestBed.get(MockBackend);
-        donateService = TestBed.get(DonateService);
+  it('check url for donation', done => {
+    service.makeDonate('query');
+    expect(httpSpy.post).toHaveBeenCalledWith(`${environment.consumerApi}/v1/donate`, 'query');
+    done();
+  });
+
+  it('makeDonate should return body', done => {
+    service.makeDonate('query').subscribe(value => {
+      expect(value).toEqual({ error: null, success: true });
+      done();
     });
-
-    it('ngOnInit()', fakeAsync(() => {
-        const query: string = 'lang=en';
-        let response: any = void 0;
-
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-            expect(connection.request.url.indexOf(`/v1/donate`)).toBeGreaterThan(-1);
-
-            let mockResponse = new ResponseOptions({
-                body: `{"success":true,"msg":[],"error":null}`
-            });
-
-            connection.mockRespond(new Response(mockResponse));
-        });
-
-        donateService.makeDonate(query).subscribe((_data: any) => {
-            response = _data;
-        });
-
-        tick();
-
-        expect(!response.error).toBe(true);
-    }));
+  });
 });

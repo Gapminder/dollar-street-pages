@@ -1,127 +1,193 @@
-import { Observable } from 'rxjs/Rx';
-import { TestBed, async, getTestBed, fakeAsync, tick } from '@angular/core/testing';
-import {
-    MockBackend,
-    MockConnection
-} from '@angular/http/testing';
-import {
-    BaseRequestOptions,
-    Http,
-    Response,
-    ResponseOptions,
-    XHRBackend,
-    HttpModule
-} from '@angular/http';
-import * as _ from 'lodash';
-import { Location, LocationStrategy } from '@angular/common';
-import { TranslateModule, TranslateLoader, TranslateService } from 'ng2-translate';
-import { LanguageService } from '../language.service';
-import { UrlChangeService } from '../../url-change/url-change.service';
-import { LocalStorageService } from '../../local-storage/local-storage.service';
-import { UtilsService } from '../../utils/utils.service';
+import { async, TestBed } from '@angular/core/testing';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions, XHRBackend } from '@angular/http';
+import { Location } from '@angular/common';
 import { SpyLocation } from '@angular/common/testing';
-import {
-    UtilsServiceMock,
-    LanguageServiceMock,
-    UrlChangeServiceMock
-} from '../../../test/';
 
-/* tslint:disable */
-class CustomLoader implements TranslateLoader {
-  public getTranslation(lang: string): Observable<any> {
-    return Observable.of({KEY: 'value'});
-  }
-}
-/* tslint:enable */
+import { environment } from '../../../environments/environment';
+import { LanguageService } from '../language.service';
+import { LocalStorageService } from '../../local-storage/local-storage.service';
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { LocalStorageServiceMock } from '../../../test/mocks/localStorage.service.mock';
 
-describe('LanguageService', () => {
-    let mockBackend: MockBackend;
-    let languageService: LanguageService;
+describe('LanguageService Test', () => {
+  let mockBackend: MockBackend;
+  let service: LanguageService;
+  let localStorageService: LocalStorageServiceMock;
 
-    const query: string = 'lang=en-EN';
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        CommonServicesTestingModule,
+        HttpModule
+      ],
+      providers: [
+        LanguageService,
+        BaseRequestOptions,
+        MockBackend,
+        {
+          deps: [
+            MockBackend,
+            BaseRequestOptions
+          ],
+          provide: Http,
+          useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
+            return new Http(backend, defaultOptions);
+          }
+        },
+        { provide: Location, useClass: SpyLocation }
+      ]
+    });
 
-    let context: any = {
-        ABOUT: 'About',
-        WORLD: 'World'
+    mockBackend = TestBed.get(MockBackend);
+    localStorageService = TestBed.get(LocalStorageService);
+    service = TestBed.get(LanguageService);
+  }));
+
+  it('check default language', () => {
+    expect(service.defaultLanguage).toBe('en');
+  });
+
+  it('loadLanguage recieved translations for current language', () => {
+    const translations = { ABOUT: 'About', WORLD: 'World' };
+    const bodyContext = `{"success":true,"error":false,"msg":[],"data":${JSON.stringify(translations)}}`;
+    const expectedLang = 'en';
+
+    service.currentLanguage = expectedLang;
+
+    mockBackend.connections.subscribe((connection: MockConnection) => {
+      expect(connection.request.url).toEqual(`${environment.consumerApi}/v1/language?lang=${expectedLang}`);
+
+      const response = new ResponseOptions({
+        body: bodyContext
+      });
+
+      connection.mockRespond(new Response(response));
+    });
+
+    service.loadLanguage().subscribe(value => {
+      expect(service.translations).toEqual(translations);
+    });
+  });
+
+  it('getLanguagesList fetch and return languages list, don`t set currentLanguage if no so', () => {
+    const languageList = [
+      { _id: '58f5e173410ed2018368c67b', name: 'English', code: 'en' },
+      { _id: '58f9e301d94606ffe8391eb9', code: 'es-ES', name: 'Español' }
+    ];
+    const bodyContext = `{"error": null,"data":${JSON.stringify(languageList)}}`;
+
+    mockBackend.connections.subscribe((connection: MockConnection) => {
+      expect(connection.request.url).toEqual(`${environment.consumerApi}/v1/languagesList`);
+
+      const response = new ResponseOptions({
+        body: bodyContext
+      });
+
+      connection.mockRespond(new Response(response));
+    });
+
+    service.getLanguagesList().subscribe(returnedValue => {
+      expect(returnedValue).toEqual({ err: null, data: languageList });
+    });
+  });
+
+  it('getLanguagesList set languageName from currentLanguage', () => {
+    const languageList = [
+      { _id: '58f5e173410ed2018368c67b', name: 'English', code: 'en' },
+      { _id: '58f9e301d94606ffe8391eb9', code: 'es-ES', name: 'Español' }
+    ];
+    const bodyContext = `{"error": null,"data":${JSON.stringify(languageList)}}`;
+    const currentLang = 'en';
+
+    service.currentLanguage = currentLang;
+
+    mockBackend.connections.subscribe((connection: MockConnection) => {
+      expect(connection.request.url).toEqual(`${environment.consumerApi}/v1/languagesList`);
+
+      const response = new ResponseOptions({
+        body: bodyContext
+      });
+
+      connection.mockRespond(new Response(response));
+    });
+
+    service.getLanguagesList().subscribe(returnedValue => {
+      expect(service.languageName).toEqual('English');
+    });
+  });
+
+  it('getLanguageISO converted current language to iso format', () => {
+    service.currentLanguage = 'en';
+    expect(service.getLanguageIso()).toEqual('en_EN');
+
+    service.currentLanguage = 'es-ES';
+    expect(service.getLanguageIso()).toEqual('es_ES');
+
+    service.currentLanguage = 'sv-SE';
+    expect(service.getLanguageIso()).toEqual('sv_SE');
+  });
+
+  it('when string passed to getTranslation() it should return translated string', () => {
+    let aboutTranslation;
+    let worldTranslation;
+
+    service.translations = { ABOUT: 'About', WORLD: 'World' };
+
+    service.getTranslation('ABOUT').subscribe(_data => {
+      aboutTranslation = _data;
+    });
+    service.getTranslation('WORLD').subscribe(_data => {
+      worldTranslation = _data;
+    });
+
+    expect(aboutTranslation).toBe('About');
+    expect(worldTranslation).toBe('World');
+  });
+
+  it('when array passed in getTraslation it should return object with translations', () => {
+    const translations = { ABOUT: 'About', WORLD: 'World' };
+    let allTranslated;
+
+    service.translations = translations;
+
+    service.getTranslation(['ABOUT']).subscribe((_data: any) => {
+      allTranslated = _data;
+    });
+
+    expect(allTranslated).toEqual({ ABOUT: 'About' });
+  });
+
+  it('getTranslation should send translation to sibscribers', () => {
+    let sub;
+    const translations = {
+      ABOUT: 'about'
     };
+    service.translations = undefined;
 
-    let bodyContext: any = `{"success":true,"error":false,"msg":[],"data":{"_id": "584a97f743ec2c1bd11673ec", "interface": ${JSON.stringify(context)}}}`;
+    service.getTranslation('ABOUT').subscribe(value => {
+      sub = value;
+    });
+    service.translationsLoadedEvent.emit(service.translationsLoadedString, translations);
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                HttpModule,
-                TranslateModule.forRoot({
-                    provide: TranslateLoader,
-                    useClass: CustomLoader
-                })
-            ],
-            providers: [
-                { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-                TranslateService,
-                LocationStrategy,
-                LocalStorageService,
-                MockBackend,
-                BaseRequestOptions,
-                { provide: UtilsService, useClass: UtilsServiceMock },
-                { provide: LanguageService, useClass: LanguageServiceMock },
-                {
-                    deps: [
-                        MockBackend,
-                        BaseRequestOptions
-                    ],
-                    provide: Http,
-                    useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-                        return new Http(backend, defaultOptions);
-                    }
-                },
-                { provide: Location, useClass: SpyLocation }
-            ]
-        });
+    expect(sub).toEqual(translations.ABOUT);
+  });
 
-        const testBed = getTestBed();
-        mockBackend = testBed.get(MockBackend);
-        languageService = testBed.get(LanguageService);
-    }));
+  it('changeLanuage set item to localStorage and update in url', () => {
+    (service.window as any) = new windowMock();
+    spyOn(localStorageService, 'setItem').and.callThrough();
 
-    it('getTranslation()', fakeAsync(() => {
-        let allTranslated: any = void 0;
+    service.window.location.href = '//fake/path&lang=en'
+    service.changeLanguage('ru');
 
-        let aboutTranslation: string = void 0;
-        let worldTranslation: string = void 0;
+    expect(localStorageService.setItem).toHaveBeenCalledWith('language', 'ru');
+    expect(service.window.location.href.includes('lang=ru')).toBe(true);
+  });
 
-        languageService.translations = { ABOUT: 'About', WORLD: 'World'};
-
-        expect(languageService.getLanguageIso()).toBe('en_EN');
-
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-            expect(connection.request.url.indexOf(`/v1/language?${query}`)).toBeGreaterThan(-1);
-
-            let response = new ResponseOptions({
-                body: bodyContext
-            });
-
-            connection.mockRespond(new Response(response));
-        });
-
-        languageService.getTranslation(['ABOUT', 'WORLD']).subscribe((_data: any) => {
-            allTranslated = _data;
-        });
-
-        languageService.getTranslation('ABOUT').subscribe((_data: any) => {
-            aboutTranslation = _data;
-        });
-
-        languageService.getTranslation('WORLD').subscribe((_data: any) => {
-            worldTranslation = _data;
-        });
-
-        tick();
-
-        const equal: boolean = _.isEqual(allTranslated, context);
-        expect(equal).toBeTruthy();
-
-        expect(aboutTranslation).toBe('About');
-        expect(worldTranslation).toBe('World');
-    }));
 });
+
+class windowMock {
+  location = {
+    href: '//fake/path'
+  };
+}

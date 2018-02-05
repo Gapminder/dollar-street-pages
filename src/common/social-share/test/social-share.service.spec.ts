@@ -1,98 +1,77 @@
-import { async, fakeAsync, TestBed } from '@angular/core/testing';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http, HttpModule, XHRBackend } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
-import { SpyLocation } from '@angular/common/testing';
-import { Location } from '@angular/common';
-import { TranslateLoader, TranslateModule, TranslateService } from 'ng2-translate';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
 
 import { SocialShareService } from '../social-share.service';
-import { LanguageService } from '../../language/language.service';
-import { UrlChangeService } from '../../url-change/url-change.service';
-import { LocalStorageService } from '../../local-storage/local-storage.service';
-import { UtilsService } from '../../utils/utils.service';
+import { LanguageServiceMock } from '../../../test/';
 
-import { LanguageServiceMock, UrlChangeServiceMock, UtilsServiceMock } from '../../../test/';
-
-class CustomLoader implements TranslateLoader {
-  public getTranslation(lang: string): Observable<any> {
-    return Observable.of({KEY: 'value'});
-  }
-}
-
-describe('Service.SocialShareService', () => {
-  let socialShareService: SocialShareService;
-  let mockedDocumentObject: Document;
-  let languageService: LanguageServiceMock;
+describe('SocialShareService Test', () => {
+  let service: SocialShareService;
+  const httpSpy = jasmine.createSpyObj('http', ['post']);
+  const defaultResponse = {
+    error: null,
+    data: '/fake/url'
+  };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpModule,
-        TranslateModule.forRoot({
-          provide: TranslateLoader,
-          useClass: CustomLoader
-        })
-      ],
-      providers: [
-        SocialShareService,
-        TranslateService,
-        LocalStorageService,
-        MockBackend,
-        BaseRequestOptions,
-        {provide: UrlChangeService, useClass: UrlChangeServiceMock},
-        {provide: UtilsService, useClass: UtilsServiceMock},
-        {provide: LanguageService, useClass: LanguageServiceMock},
-        {provide: Location, useClass: SpyLocation},
-        {
-          deps: [
-            MockBackend,
-            BaseRequestOptions
-          ],
-          provide: Http,
-          useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          }
-        },
-        {
-          provide: Document, useFactory: () => {
-          let newDocument: Document = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', undefined);
-          let body = document.createElementNS('http://www.w3.org/1999/xhtml', 'body');
-          let head = document.createElementNS('http://www.w3.org/1999/xhtml', 'head');
-          let script = document.createElementNS('http://www.w3.org/1999/xhtml', 'script');
-
-          head.appendChild(script);
-          body.appendChild(head);
-
-          newDocument.documentElement.appendChild(body);
-
-          return newDocument;
-        }
-        }
-      ]
-    });
-
-    languageService = TestBed.get(LanguageService);
-    socialShareService = TestBed.get(SocialShareService);
-    mockedDocumentObject = TestBed.get(Document);
+    service = new SocialShareService(new LanguageServiceMock() as any, httpSpy);
+    httpSpy.post.and.returnValue(Observable.of({ _body: JSON.stringify(defaultResponse) }));
   });
 
-  it('SocialShareService: facebookLike()', fakeAsync(() => {
-    spyOn(languageService, 'getLanguagesList').and.returnValue(Observable.of({}));
-    socialShareService.document = mockedDocumentObject;
-    socialShareService.facebookLike();
+  it('openPopup calls shorturl through http', () => {
+    const pathname = service.window.location.pathname;
+    const search = service.window.location.search;
 
-    let fbScript: HTMLElement = mockedDocumentObject.getElementById(socialShareService.facebookElementId);
+    service.openPopUp('twitter');
 
-    expect(fbScript).toBeDefined();
+    expect(httpSpy.post).toHaveBeenCalledWith(`${environment.consumerApi}/v1/shorturl`, { url: pathname + search });
+  });
+
+  it('openPopup(): check default url', fakeAsync(() => {
+    spyOn(service, 'openWindow');
+    service.openPopUp('');
+    tick();
+
+    expect(service.openWindow).toHaveBeenCalledWith('', '');
   }));
 
-  it('SocialShareService: twitterFollow()', fakeAsync(() => {
-    socialShareService.document = mockedDocumentObject;
-    socialShareService.twitterFollow();
+  it('openPopup(): check twitter url', fakeAsync(() => {
+    spyOn(service, 'openWindow');
+    service.openPopUp('twitter');
+    tick();
 
-    let twScript: HTMLElement = mockedDocumentObject.getElementById(socialShareService.twitterElementId);
-
-    expect(twScript).toBeDefined();
+    expect(service.openWindow).toHaveBeenCalledWith('https://twitter.com/intent/tweet', 'url=%2Ffake%2Furl&text=see_how_people+really+live+-+Dollar+Street');
   }));
+
+  it('openPopup(): check facebook url', fakeAsync(() => {
+    spyOn(service, 'openWindow');
+    service.openPopUp('facebook');
+    tick();
+
+    expect(service.openWindow).toHaveBeenCalledWith('http://www.facebook.com/sharer.php', 'u=%2Ffake%2Furl&description=see_how_people+really+live+');
+  }));
+
+  it('openPopup(): check linkedIn url', fakeAsync(() => {
+    spyOn(service, 'openWindow');
+    service.openPopUp('linkedin');
+    tick();
+
+    expect(service.openWindow).toHaveBeenCalledWith('http://www.linkedin.com/shareArticle', 'mini=true&url=%2Ffake%2Furl&summary=see_how_people+really+live+');
+  }));
+
+  it('openPopup(): check googlePlus url', fakeAsync(() => {
+    spyOn(service, 'openWindow');
+    service.openPopUp('google');
+    tick();
+
+    expect(service.openWindow).toHaveBeenCalledWith('https://plus.google.com/share', 'url=%2Ffake%2Furl&text=see_how_people+really+live+');
+  }));
+
+  it('call openPopup() with url as parameter', fakeAsync(() => {
+    spyOn(service, 'openWindow');
+    service.openPopUp('google', '/test');
+    tick();
+
+    expect(service.openWindow).toHaveBeenCalledWith('https://plus.google.com/share', 'url=%2Ftest&text=see_how_people+really+live+');
+  }));  
 });
