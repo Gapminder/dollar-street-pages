@@ -1,0 +1,83 @@
+.income-filter-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 3.9px 0.1px rgba(0, 0, 0, 0.14);
+  z-index: 999;
+}
+
+.income-filter-header-container {
+  background-color: #f6f7f8;
+  padding: 10px 10px;
+  border-bottom: 1px solid #c6c7c9;
+  position: relative;
+}
+
+.income-filter-header-container span {
+  font-size: 24px;
+}
+
+.income-filter-header-container img {
+  width: 19px;
+  position: absolute;
+  top: calc(50% - 9.5px);
+  right: 10px;
+}
+
+/*************************************/
+
+.streets-container {
+  position: relative;
+  margin: 25px 5px 12px;
+}
+
+/*************************************/
+
+.income-filter-button-container {
+  height: 56px;
+  background-color: #f6f7f8;
+  overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+}
+
+.income-filter-button-container button {
+  height: 56px;
+  border: 0;
+  outline: 0;
+  padding: 0;
+  font-size: 24px;
+  box-shadow: none;
+  background: transparent;
+  float: right;
+}
+
+.decreaseFontSize {
+  font-size: 18px !important;
+}
+
+.decreaseFontSizeCapture span {
+  font-size: 22px !important;
+}
+
+.income-filter-button-container button:first-child {
+  float: left;
+  margin-left: 10px;
+}
+
+.income-filter-button-container button img {
+  width: 24px;
+  margin-right: 9px;
+  margin-top: -5px;
+}
+
+.income-filter-button-container button.ok-button {
+  margin-right: 10px;
+}
+
+.income-filter-button-container button.close-button {
+  color: #767d86;
+  margin-right: 10px;
+}

@@ -1,0 +1,10 @@
+<div class="photographer-container row">
+  <div class="col-md-2">
+    <photographer-profile [photographerId]="photographerId"
+                          (getPhotographer)="setTitle($event)"></photographer-profile>
+  </div>
+
+  <div class="col-md-10">
+    <photographer-places [photographerId]="photographerId"></photographer-places>
+  </div>
+</div>

@@ -3,9 +3,12 @@
 #node.js
 node_modules
 npm-debug.log
+.firebaserc
 
 # builded files
-dist
+dist/*
+!dist/404.html
+!dist/CNAME
 
 #coverage
 coverage
@@ -15,6 +18,33 @@ app/**/*.js
 app/**/*.js.map
 app/**/*.d.ts
 
+src/**/*.js
+src/**/*.js.map
+src/**/*.d.ts
+
+!src/assets/js/*.js
+
 #ts typings
 typings
+!typings/require.d.ts
 
+.DS_Store
+app/.DS_Store
+
+# ts generated for e2e
+test-e2e/app/**/*.js
+test-e2e/app/**/*.js.map
+test-e2e/app/**/*.d.ts
+
+#js Contentfull constants
+!app/constants.js
+
+# new relic log
+newrelic_agent.log
+
+# AoT
+**/*.ngfactory.ts
+**/*.ngsummary.json
+**/*.ngstyle.ts
+**/*.css.ts
+**/*.shim.ts

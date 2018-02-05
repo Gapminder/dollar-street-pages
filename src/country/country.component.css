@@ -1,0 +1,20 @@
+.country-container {
+  padding-top: 40px;
+  padding-bottom: 70px;
+}
+
+@media (max-width: 1023px) {
+  .country-container {
+    padding-bottom: 35px;
+  }
+
+  .country-container.row {
+    margin: 0;
+  }
+
+  .country-container.row > div {
+    float: none;
+    width: 100%;
+    padding: 0;
+  }
+}

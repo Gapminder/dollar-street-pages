@@ -1,43 +1,56 @@
-'use strict';
 const path = require('path');
 const cwd = process.cwd();
 
 module.exports = {
   resolve: {
     root: [path.resolve(cwd)],
-    modulesDirectories: ['node_modules'],
-    extensions: ['', '.ts', '.js', '.css']
+    modulesDirectories: ['node_modules', 'test', 'app'],
+    extensions: ['', '.ts', '.js', '.html', '.css'],
+    alias: {
+      'test': 'test'
+    }
   },
   module: {
     loaders: [
-      {test: /\.ts$/, loader: 'ts-loader', exclude: [/node_modules/]}
-    ],
-    postLoaders: [
-      // instrument only testing sources with Istanbul
+      // support markdown
+      {test: /\.md$/, loader: 'html?minimize=false!markdown'},
+      // Support for *.json files.
+      {test: /\.json$/, loader: 'json'},
+      // Support for CSS as raw text
+      {test: /\.css$/, loader: 'raw'},
+      // support for .html as raw text
+      {test: /\.html$/, loader: 'raw'},
+      // Support for .ts files.
       {
-        test: /\.(js|ts)$/,
-        include: root('../app'),
-        loader: 'istanbul-instrumenter-loader',
-        exclude: [
-          /\.e2e\.ts$/,
-          /node_modules/
-        ]
+        test: /\.ts$/,
+        loader: 'ts',
+        query: {
+          compilerOptions: {
+            removeComments: true,
+            noEmitHelpers: false
+          }
+        }
       }
     ],
+    postLoaders: [{
+      test: /\.(ts)$/, loader: 'istanbul-instrumenter-loader',
+      include: path.resolve(cwd) + '/app',
+      exclude: [
+        /\.(e2e|spec)\.ts$/,
+        /node_modules/,
+        path.resolve(cwd) + '/app/first',
+        path.resolve(cwd) + '/app/assets'
+      ]
+    }],
     noParse: [
       /rtts_assert\/src\/rtts_assert/,
-      /reflect-metadata/,
-      /zone\.js\/dist/
+      /reflect-metadata/
     ]
   },
   stats: {
     colors: true,
     reasons: true
   },
-  watch: false,
-  debug: false
+  watch: true,
+  debug: true
 };
-
-function root(p) {
-  return path.join(__dirname, p);
-}

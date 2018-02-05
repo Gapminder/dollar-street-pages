@@ -1,0 +1,469 @@
+#countries-filter {
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+}
+
+#countries-filter .countries-filter-button {
+  background-color: white;
+  border: 1px solid #e4e6e7;
+  border-radius: 6px;
+  min-width: 150px;
+  overflow: hidden;
+  text-align: center;
+  padding: 9px 35px 10px 14px;
+  position: relative;
+  cursor: pointer;
+  color: #374551;
+  font-size: 28px;
+  line-height: 20px;
+}
+
+#countries-filter.open-countries-filter .countries-filter-button {
+  box-shadow: 0 0 10px rgba(46, 67, 80, 0.1);
+}
+
+#countries-filter .countries-filter-button span.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid #374551;
+  position: absolute;
+  top: calc(50% - 3.5px);
+  right: 11px;
+}
+
+#countries-filter.open-countries-filter .countries-filter-button span.arrow {
+  border-bottom: 7px solid #374551;
+  border-top: 0 solid transparent;
+  position: absolute;
+  top: calc(50% - 3.5px) !important;
+  right: 11px;
+}
+
+#countries-filter .countries-filter-container {
+  background-color: white;
+  border: 1px solid #e4e6e7;
+  box-shadow: 0 0 10px rgba(46, 67, 80, 0.1);
+  position: absolute;
+  top: 100%;
+  margin-top: 5px;
+  width: 787px;
+  height: 548px;
+  z-index: 99;
+  display: none;
+}
+
+#countries-filter.open-countries-filter .countries-filter-container.full-screen-filter {
+  overflow: hidden;
+  top: 0 !important;
+  bottom: 0;
+  left: 0 !important;
+  right: 0;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  display: block;
+  z-index: 500;
+  height: 100%;
+}
+
+#countries-filter.open-countries-filter .countries-filter-container {
+  display: block;
+}
+
+#countries-filter .regions-container {
+  border: 1px solid #e4e6e7;
+  width: 25%;
+  padding: 7px 5px 5px 0;
+  float: left;
+  height: calc(100% - 130px);
+}
+
+#countries-filter .regions-container .title {
+  color: #384651;
+  font-size: 24px;
+  line-height: 20px;
+  margin: 0;
+  padding: 9px 11px 13px 11px;
+  cursor: pointer;
+}
+
+#countries-filter .title {
+  color: #767d86;
+  font-size: 24px;
+  line-height: 20px;
+  margin: 20px 11px 15px;
+}
+
+#countries-filter .all-filter {
+  color: #374551;
+  font-size: 24px;
+  line-height: 20px;
+  margin: 0 20px 0 40px;
+  cursor: pointer;
+}
+
+#countries-filter .countries-search {
+  width: 300px;
+  position: relative;
+  margin-bottom: 19px;
+  display: inline-block;
+}
+
+#countries-filter .countries-search input {
+  font-size: 18px;
+  /* line-height: 10px; */
+  color: #374551;
+  padding: 0 30px 0 20px;
+  background-color: white;
+  border: 1px solid #9c9fa4;
+  border-radius: 16px;
+  text-align: left;
+}
+
+#countries-filter .countries-search input:focus {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
+}
+
+#countries-filter .countries-search img {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  bottom: 7px;
+  font-size: 18px;
+  color: #767d86;
+  width: 18px;
+}
+
+#countries-filter .pointer-search-container {
+  padding: 0 11px;
+  width: 100%;
+}
+
+
+#countries-filter .pointer-container {
+  display: inline-block;
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+#countries-filter .pointer-container div {
+  width: 20px;
+  position: relative;
+  display: inline-block;
+  vertical-align: super;
+  margin-right: 8px;
+}
+
+#countries-filter .pointer-container img {
+  width: 100%;
+}
+
+#countries-filter .pointer-container .check {
+  width: 22px;
+  position: absolute;
+  top: 0;
+  left: 2px;
+  opacity: 0;
+}
+
+#countries-filter .pointer-container .active {
+  opacity: 1;
+}
+
+#countries-filter .pointer-container span {
+  color: #384651;
+  font-size: 24px;
+  line-height: 10px;
+}
+
+#countries-filter .regions-container .country-content {
+  overflow: hidden;
+  position: relative;
+  padding: 6px 0 12px 11px;
+  margin-right: 7px;
+  cursor: pointer;
+}
+
+#countries-filter .regions-container .countries-container {
+  height: calc(100% - 50px);
+  overflow-y: auto;
+  margin-top: 5px;
+}
+
+#countries-filter .regions-container .countries-container :hover {
+  background-color: #f4f5f5;
+}
+
+#countries-filter .regions-container span.name {
+  color: #384651;
+  font-size: 20px;
+  line-height: 17px;
+  margin-top: 5px;
+  display: block;
+  width: calc(100% - 20px);
+  float: right;
+}
+
+#countries-filter .regions-container .country-content.empty {
+  cursor: default;
+}
+
+#countries-filter .regions-container .country-content.empty span {
+  color: #d5dbdf;
+}
+
+#countries-filter .regions-container .empty  {
+  cursor: default;
+  color: #d5dbdf;
+}
+
+#countries-filter .button-container {
+  width: 100%;
+  float: none;
+  clear: both;
+  text-align: right;
+  padding-top: 2px;
+}
+
+#countries-filter .button-container button {
+  color: #2e4350;
+  font-size: 24px;
+  line-height: 20px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  padding-right: 27px;
+  display: inline-block;
+}
+
+#countries-filter .button-container button:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+#countries-filter .button-container img {
+  margin: 15px 9px 15px 0;
+}
+
+#countries-filter .button-container .ok-img {
+  width: 24px;
+  padding-bottom: 7px;
+}
+
+#countries-filter .title .selected,
+#countries-filter .country-content .selected {
+  width: 15px;
+  height: 11px;
+  float: left;
+  margin: 8px 1px;
+  display: block;
+  position: absolute;
+}
+
+#countries-filter .title .regions-names {
+  margin-left: 6px;
+}
+
+#countries-filter .regions-container h3:hover {
+  background-color: #f4f5f5;
+}
+
+#countries-filter .title .selected img,
+#countries-filter .country-content .selected img {
+  width: 100%;
+  display: none;
+}
+
+#countries-filter .title.active .selected img,
+#countries-filter .country-content.active .selected img {
+  display: block;
+}
+
+#countries-filter .title .not-selected,
+#countries-filter .country-content .not-selected {
+  width: 13px;
+  float: left;
+}
+
+#countries-filter .title .not-selected img {
+  width: 100%;
+  margin-top: 0;
+}
+
+#countries-filter .country-content .not-selected img {
+  width: 100%;
+  margin-top: 5px;
+}
+
+#countries-filter .title.active .not-selected img,
+#countries-filter .country-content.active .not-selected img {
+  display: block;
+  margin-top: 8px;
+}
+
+.cancel {
+  color: #767d86 !important;
+}
+
+.close-button {
+  width: 15px;
+  margin: -6px 3px 0 0;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/*::-webkit-scrollbar-track {*/
+/*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+/*border-radius: 10px;*/
+/*}*/
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #ced1d5;;
+}
+
+::-webkit-input-placeholder {
+  color: #767d86;
+  font-family: 'Font Regular', sans-serif;
+}
+
+::-moz-placeholder {
+  color: #767d86;
+  font-family: 'Font Regular', sans-serif;
+}
+
+/* Firefox 19+ */
+:-moz-placeholder {
+  color: #767d86;
+  font-family: 'Font Regular', sans-serif;
+}
+
+/* Firefox 18- */
+:-ms-input-placeholder {
+  color: #767d86;
+  font-family: 'Font Regular', sans-serif;
+}
+
+/* IE */
+
+@media (max-width: 1023px) {
+  #countries-filter .countries-filter-button {
+    font-size: 24px;
+    padding: 6px 30px 6px 11px;
+  }
+}
+
+@media (max-width: 1400px), (max-height: 600px) {
+  .close-button {
+    margin-right: 3px;
+    margin-top: 0;
+  }
+
+  .form-control {
+    height: 30px;
+  }
+
+  #countries-filter .countries-filter-container {
+    margin-top: 2px;
+    width: 700px;
+    height: 425px;
+  }
+
+  #countries-filter .regions-container {
+    height: calc(100% - 90px);
+    padding: 5px 5px 5px 0;
+  }
+
+  #countries-filter .regions-container .countries-container {
+    height: calc(100% - 30px);
+  }
+
+  #countries-filter .regions-container .title {
+    font-size: 20px;
+    line-height: 16px;
+    margin: 0;
+    padding: 0 0 10px 11px;
+    cursor: pointer;
+  }
+
+  #countries-filter .title {
+    font-size: 20px;
+    line-height: 16px;
+    margin: 10px 10px 5px 10px;
+  }
+
+  #countries-filter .all-filter {
+    color: #374551;
+    font-size: 20px;
+    line-height: 16px;
+    margin: 0 20px 0 40px;
+  }
+
+  #countries-filter .pointer-container span {
+    font-size: 20px;
+    line-height: 6px;
+  }
+
+  #countries-filter .pointer-container {
+    margin-top: 4px;
+  }
+
+  #countries-filter .pointer-container div {
+    width: 16px;
+    margin-right: 8px;
+  }
+
+  #countries-filter .pointer-container .check {
+    width: 18px;
+    top: 3px;
+  }
+
+  #countries-filter .countries-search {
+    margin-bottom: 5px;
+  }
+
+  #countries-filter .countries-search img {
+    top: 7px;
+    right: 14px;
+    bottom: 7px;
+    font-size: 18px;
+    width: 18px;
+  }
+
+  #countries-filter .regions-container span.name {
+    font-size: 16px;
+    line-height: 14px;
+    margin-top: 8px;
+    width: calc(100% - 20px);
+  }
+
+  #countries-filter .regions-container .country-content {
+    padding: 5px 0 5px 11px;
+    margin-right: 7px;
+  }
+
+  #countries-filter .button-container {
+    padding-top: 5px;
+  }
+
+  #countries-filter .button-container button {
+    font-size: 20px;
+    line-height: 16px;
+    padding-right: 20px;
+  }
+
+  #countries-filter .button-container img {
+     margin: 0 9px 0 0;
+     padding-top: 2px;
+  }
+
+  #countries-filter .button-container .ok-img {
+    padding-bottom: 7px;
+  }
+}

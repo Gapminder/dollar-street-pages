@@ -1,0 +1,38 @@
+<div id="country-place">
+  <div class="place" *ngFor="let place of places">
+    <div class="image">
+      <img *ngIf="place.image"
+           [src]="place.image"
+           [routerLink]="['/family']"
+           [queryParams]="{place: place.placeId}"
+           alt=""
+           angulartics2On="click"
+           angularticsEvent="Moved from {{place._id}} country page to {{place.family}} family place page">
+    </div>
+
+    <div class="place-description">
+      <div class="family">
+        <span *ngIf="place.family && currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span>
+        <h3 [ngClass]="{paddingTop: currentLanguage != 'en'}" *ngIf="place.family">{{place.family}} <span *ngIf="currentLanguage == 'en'">{{ 'FAMILY' | translate }}</span></h3>
+      </div>
+
+      <div class="country-income">
+        <div class="income">
+          <span>{{currencyUnit?.symbol}}{{place?.showIncome}}</span>
+        </div>
+
+        <div class="place-country">
+          <p><img src="/assets/img/camera.svg" alt=""><span>{{place.imagesCount || 0}}</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="link">
+      <a class="custom-button"
+         [routerLink]="['/family']"
+         [queryParams]="{place: place.placeId}"
+         angulartics2On="click"
+         angularticsEvent="Place page">{{ 'VISIT_FAMILY' | translate }} >></a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+.street-box {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  padding-bottom: 4px;
+  width: 100%;
+}
+
+.street-box svg {
+  width: 100%;
+  height: 65px;
+  vertical-align: top;
+}

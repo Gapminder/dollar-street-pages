@@ -1,0 +1,94 @@
+#info-context {
+  padding-top: 40px;
+}
+
+#info-context >>> h1:first-child,
+#info-context >>> h2:first-child,
+#info-context >>> h3:first-child,
+#info-context >>> h4:first-child,
+#info-context >>> h5:first-child,
+#info-context >>> h6:first-child {
+  margin: 0 0 5px;
+}
+
+#info-context >>> h1 {
+  font-size: 38px;
+  margin: 0 0 5px;
+}
+
+#info-context >>> > h1:first-child + h1,
+#info-context >>> > h1:first-child + h2,
+#info-context >>> > h1:first-child + h3,
+#info-context >>> > h1:first-child + h4 {
+  margin: 0;
+  font-size: 22px;
+  font-family: 'Font Light Italic', sans-serif;
+  color: #767d86;
+  line-height: 30px;
+}
+
+#info-context >>> h2,
+#info-context >>> h3,
+#info-context >>> h4,
+#info-context >>> h5 {
+  color: #374551;
+  font-family: 'Font Regular', sans-serif;
+  font-size: 24px;
+  line-height: 30px;
+  margin: 0;
+}
+
+#info-context >>> p {
+  font-size: 20px;
+  line-height: 30px;
+  margin: 15px 0;
+  display: inline-block;
+  width: 100%;
+}
+
+#info-context >>> img {
+  width: 100%;
+  height: inherit;
+}
+
+#info-context >>> a {
+  color: #b04514;
+  text-decoration: underline;
+}
+
+#info-context >>> iframe {
+  border: 0;
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  #info-context {
+  }
+}
+
+@media (max-width: 599px) {
+  #info-context >>> h1 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  #info-context >>> > h1:first-child + h1,
+  #info-context >>> > h1:first-child + h2,
+  #info-context >>> > h1:first-child + h3,
+  #info-context >>> > h1:first-child + h4 {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  #info-context >>> h2,
+  #info-context >>> h3,
+  #info-context >>> h4,
+  #info-context >>> h5 {
+    font-size: 18px;
+  }
+
+  #info-context >>> p {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}

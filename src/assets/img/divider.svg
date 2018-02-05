@@ -1,0 +1,27 @@
+<svg id="divider1" xmlns="http://www.w3.org/2000/svg" width="37" height="59"
+     viewBox="0 0 37 59">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: #515c65;
+      fill-rule: evenodd;
+      filter: url(#filter);
+      }
+
+      .cls-2 {
+      fill: #cbd2d9;
+      }
+    </style>
+    <filter id="filter" x="462" y="176" width="37" height="59" filterUnits="userSpaceOnUse">
+      <feOffset result="offset" in="SourceAlpha"/>
+      <feGaussianBlur result="blur" stdDeviation="2.828"/>
+      <feFlood result="flood" flood-opacity="0.26"/>
+      <feComposite result="composite" operator="in" in2="blur"/>
+      <feBlend result="blend" in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <path id="braket" class="cls-1"
+        d="M471,225v-2h4v2h-4Zm0-38v-2h4v2h-4Zm4-2h3v40h-3V185Zm10,2v-2h4v2h-4Zm0,38v-2h4v2h-4Zm-3-40h3v40h-3V185Z"
+        transform="translate(-462 -176)"/>
+  <rect id="body" class="cls-2" x="16" y="9" width="4" height="40"/>
+</svg>

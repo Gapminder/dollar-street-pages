@@ -1,0 +1,36 @@
+.street-family-container {
+  width: 100%;
+  background-color: white;
+}
+
+.zoom-column {
+  position: fixed;
+  right: 32px;
+  bottom: 52px;
+}
+
+.zoom-column.stop {
+  position: absolute;
+  bottom: 36px;
+}
+
+.zoom-column button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  outline: 0;
+  box-shadow: 0 0 3.9px 0.1px rgba(0, 0, 0, 0.32);
+  background: rgba(255, 255, 255, 0.8) center center no-repeat;
+  background-size: 16px auto !important;
+  margin: 4px;
+}
+
+.zoom-column button[disabled] {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.sign {
+  margin-bottom: 4px;
+}
