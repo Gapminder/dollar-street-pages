@@ -182,18 +182,18 @@ family-media-view-block {
 
   .family-images-container .family-image-container {
     width: 33.33%;
-    margin: 5px;
+    padding: 5px;
   }
 }
 
 @media (max-width: 599px) {
   .family-things-container {
-    padding: 2.5px;
+    padding: 2px;
   }
 
   .family-images-container .family-image-container {
     width: 33.33%;
-    margin: 2.5px;
+    padding: 2px;
   }
 
   .family-things-container .image-description {

@@ -42,6 +42,9 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
         if (get(params, 'activeHouse', false)) {
           urlParametersService.activeHouseByRoute = params.activeHouse;
         }
+        if (get(params, 'activeImage', false)) {
+          urlParametersService.activeImageByRoute = params.activeImage;
+        }
       });
     this.subscribtions.push(navigationEndSubscribe);
 

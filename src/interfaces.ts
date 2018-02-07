@@ -150,6 +150,7 @@ export interface UrlParameters {
   lowIncome?: string;
   highIncome?: string;
   activeHouse?: string;
+  activeImage?: string;
   place?: string;
   currency?: string;
   time?: string;

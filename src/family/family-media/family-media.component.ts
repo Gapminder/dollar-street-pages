@@ -17,7 +17,7 @@ import {
   AfterViewInit,
   ElementRef,
   ViewChild,
-  ViewContainerRef,
+  ViewContainerRef, ViewChildren, QueryList,
 } from '@angular/core';
 import { find, isEqual, slice, concat, get, forEach } from 'lodash';
 import {
@@ -32,6 +32,8 @@ import { FamilyComponent } from '../family.component';
 import { FamilyMediaViewBlockComponent } from './family-media-view-block';
 import { ImageResolutionInterface } from '../../interfaces';
 import { DEBOUNCE_TIME } from "../../defaultState";
+import { PagePositionService } from "../../shared/page-position/page-position.service";
+import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 
 @Component({
   selector: 'family-media',
@@ -47,6 +49,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public familyImagesContainer: ElementRef;
   @ViewChild('familyThingsContainer')
   public familyThingsContainer: ElementRef;
+
+  @ViewChildren(FamilyMediaComponent)
+  viewChildren: QueryList<FamilyMediaComponent>;
 
   public placeId: string;
   @Input()
@@ -95,7 +100,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
                      private languageService: LanguageService,
                      private utilsService: UtilsService,
                      private urlChangeService: UrlChangeService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private pagePositionService: PagePositionService,
+                     private urlParametersService: UrlParametersService) {
     this.element = element.nativeElement;
     this.familyComponent = (viewContainerRef as any)._data.componentView.parent.component as FamilyComponent;
 
@@ -130,22 +137,30 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
               this.images = res.data.images;
               this.imageData.photographer = res.data.photographer;
-              // TODO: remove setTimeout on refactoring this component
-              setTimeout(() => {
-                this.getVisibleRows();
-                this.calcItemSize()
 
-                let numberSplice: number = this.visibleImages * 2;
+              this.getVisibleRows();
 
-                if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
-                  const positionInRow: number = this.activeImageIndex % this.zoom;
-                  const offset: number = this.zoom - positionInRow;
+              this.calcItemSize();
 
-                  numberSplice = this.activeImageIndex + offset + this.visibleImages;
-                }
-                this.currentImages = slice(this.images, 0, numberSplice);
-                this.changeZoom(0);
-              });
+              let numberSplice: number = this.visibleImages * 2;
+
+              if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
+                const positionInRow: number = this.activeImageIndex % this.zoom;
+                const offset: number = this.zoom - positionInRow;
+
+                numberSplice = this.activeImageIndex + offset + this.visibleImages;
+              }
+              this.currentImages = slice(this.images, 0, numberSplice);
+
+              this.changeZoom(0);
+
+              this.loaderService.setLoader(true);
+              if (get(this.urlParametersService, 'activeImageByRoute', null)) {
+                const activeImage = Number(this.urlParametersService.activeImageByRoute);
+                this.activeImage = activeImage;
+                this.openMedia(this.currentImages[activeImage], activeImage);
+                this.urlParametersService.activeImageByRoute = null;
+              }
 
               if (this.activeImageIndex) {
                 // TODO: remove setTimeout on refactoring this component
@@ -215,6 +230,13 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
           });
         }
       });
+
+    this.viewChildren
+      .changes
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe(() => {
+        this.calcItemSize();
+      })
   }
 
   public ngOnDestroy(): void {
@@ -235,13 +257,11 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   }
 
   public changeZoom(prevZoom: number): void {
-    setTimeout(() => {
-      this.familyImageContainerElement.classList.remove('column-' + prevZoom);
-      this.familyImageContainerElement.classList.add('column-' + this.zoom);
+    this.familyImageContainerElement.classList.remove('column-' + prevZoom);
+    this.familyImageContainerElement.classList.add('column-' + this.zoom);
 
-      this.loaderService.setLoader(true);
-      this.showImageBlock = false;
-    });
+
+    this.showImageBlock = false;
   }
 
   public onScrollDown(): void {
@@ -255,7 +275,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public openMedia(image: any, index: number): void {
     this.activeImage = image;
     this.indexViewBoxImage = index;
-
+    console.log(image)
     const countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
     const offset: number = this.zoom - countByIndex;
 
@@ -280,17 +300,11 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
     this.imageData = Object.assign({}, this.imageData);
 
-    setTimeout(() => {
-      if (this.familyMediaViewBlock) {
-        const viewBlockBox: HTMLElement = this.familyMediaViewBlock.element;
-
-        this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
-      }
-    }, 0);
-
     if (!this.prevImage) {
       this.prevImage = image;
-      this.showImageBlock = !this.showImageBlock;
+      this.showImageBlock = true;
+      console.log(this.showImageBlock);
+      this.urlParametersService.setActiveImage(index);
       this.goToRow(row);
 
       return;
@@ -298,14 +312,17 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
     if (isEqual(this.prevImage, image)) {
       this.showImageBlock = !this.showImageBlock;
-
+      console.log('wrong 1');
       if (!this.showImageBlock) {
         this.prevImage = void 0;
+        this.urlParametersService.removeActiveImage();
       }
 
     } else {
+      console.log('wrong 2');
       this.prevImage = image;
       this.showImageBlock = true;
+      this.urlParametersService.setActiveImage(index);
     }
   }
 
@@ -344,6 +361,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     const imageContainer: HTMLElement = this.familyImageContainerElement.querySelector('.family-image-container');
     if (imageContainer) {
     this.itemSize = imageContainer.offsetHeight;
+    this.pagePositionService.itemSize = this.itemSize;
     }
   }
 

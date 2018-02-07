@@ -20,6 +20,7 @@ export class UrlParametersService {
   isMobile:boolean;
   public needPositionByRoute = null;
   public activeHouseByRoute = null;
+  public activeImageByRoute = null;
 
   public constructor(
     private utilsService: UtilsService,
@@ -194,5 +195,16 @@ export class UrlParametersService {
 
   public removeActiveHouse(): void {
       this.parameters.activeHouse = undefined;
+  }
+
+  public setActiveImage(activeImage: string | number): void {
+    if (activeImage.toString() !== this.parameters.activeHouse) {
+      this.parameters.activeImage = activeImage.toString();
+      this.combineUrlPerPage();
+    }
+  }
+
+  public removeActiveImage(): void {
+    this.parameters.activeImage = undefined;
   }
 }

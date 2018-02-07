@@ -31,6 +31,7 @@ import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from "../defaultState";
+import { combineLatest } from "rxjs/observable/combineLatest";
 
 @Component({
   selector: 'family',

@@ -49,6 +49,9 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   @ViewChild('imageContent')
   public imageContent: ElementRef;
 
+  @ViewChildren(MatrixImagesComponent)
+  viewChildren: QueryList<MatrixImagesComponent>;
+
   @Input()
   public thing: string;
   @Input()
@@ -172,7 +175,12 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       })
     });
 
-
+    this.viewChildren
+      .changes
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((event: QueryList<MatrixImagesComponent>) => {
+        this.calcItemSize();
+      });
 
     this.contentLoadedSubscription = fromEvent(document, 'DOMContentLoaded').subscribe(() => {
       this.checkQuickGuide();

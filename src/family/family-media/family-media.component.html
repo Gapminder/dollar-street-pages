@@ -7,7 +7,7 @@
        #familyImagesContainer
        (scrolled)="onScrollDown()">
     <div #familyImageContainer
-         class="family-image-container"
+         class="family-image-container images-container"
          *ngFor="let image of currentImages; let i = index"
          (click)="openMedia(image, i)"
          [style.-webkit-box-ordinal-group]="i"
