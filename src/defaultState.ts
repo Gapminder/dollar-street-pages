@@ -2,6 +2,7 @@ import {UrlParameters} from './interfaces';
 
 export const DEBOUNCE_TIME = 100;
 export const MOBILE_SIZE = 600;
+export const MATRIX_GRID_CONTAINER_CLASS = 'images-container';
 
 export const DefaultUrlParameters: UrlParameters = {
   lang: 'en',
@@ -43,7 +44,7 @@ export const VisibleParametersPerPage = {
     'currency',
     'embed'
   ],
-  '/family': ['lang', 'place'],
+  '/family': ['lang', 'place', 'row'],
   '/about':  ['lang'],
   '/map':  ['lang', 'thing']
 };

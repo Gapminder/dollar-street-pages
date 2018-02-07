@@ -18,6 +18,8 @@ export class UrlParametersService {
   parameters: UrlParameters;
   window: Window = window;
   isMobile:boolean;
+  public needPositionByRoute = null;
+  public activeHouseByRoute = null;
 
   public constructor(
     private utilsService: UtilsService,
@@ -26,13 +28,12 @@ export class UrlParametersService {
     private router: Router,
     private location: Location,
     private browserDetectionService: BrowserDetectionService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
   ) {
     this.parameters = Object.assign({}, DefaultUrlParameters);
     this.isMobile = this.browserDetectionService.isMobile() || this.browserDetectionService.isTablet();
 
     this.store.debounceTime(DEBOUNCE_TIME).subscribe((state: AppStates) => {
-      console.log(state);
       const matrix = state.matrix;
       const languageState = state.language;
       const countriesFilter = state.countriesFilter;
@@ -175,5 +176,23 @@ export class UrlParametersService {
 
   public getAllParameters(): UrlParameters {
     return this.parameters;
+  }
+
+  public setGridPosition(row: string | number): void {
+    if (row.toString() !== this.parameters.row) {
+      this.parameters.row = row.toString();
+      this.combineUrlPerPage();
+    }
+  }
+
+  public setActiveHouse(activeHouse: string | number): void {
+    if (activeHouse.toString() !== this.parameters.activeHouse) {
+      this.parameters.activeHouse = activeHouse.toString();
+      this.combineUrlPerPage();
+    }
+  }
+
+  public removeActiveHouse(): void {
+      this.parameters.activeHouse = undefined;
   }
 }

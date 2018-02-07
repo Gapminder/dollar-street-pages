@@ -20,7 +20,9 @@ import {
   ChangeDetectorRef,
   ViewChild,
   EventEmitter,
-  Output
+  Output,
+  Input,
+  OnChanges,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
@@ -46,6 +48,7 @@ import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../defaultState';
 import { UrlParametersService } from '../url-parameters/url-parameters.service';
+import { PagePositionService } from "../shared/page-position/page-position.service";
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -54,7 +57,7 @@ const TITLE_MAX_VISIBLE_COUNTRIES = 3;
   templateUrl: './matrix.component.html',
   styleUrls: ['./matrix.component.css']
 })
-export class MatrixComponent implements OnDestroy, AfterViewInit {
+export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   @ViewChild(MatrixImagesComponent)
   public matrixImagesComponent: MatrixImagesComponent;
   @ViewChild('streetAndTitleContainer')
@@ -71,7 +74,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetContainerElement: HTMLElement;
   public streetAndTitleContainerElement: HTMLElement;
   public zoomPositionFixed: boolean;
-  public isOpenIncomeFilter: boolean = false;
+  public isOpenIncomeFilter = false;
   public isMobile: boolean;
   public isDesktop: boolean;
   public window: Window = window;
@@ -80,12 +83,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public matrixPlaces: Subject<any> = new Subject<any>();
   public chosenPlaces: Subject<any> = new Subject<any>();
   public clearActiveHomeViewBox: Subject<any> = new Subject<any>();
-  public row: number;
+  @Input()
+  row: number;
   public zoom: number;
   public lowIncome: number;
   public highIncome: number;
   public activeHouse: number;
-  public itemSize: number;
+
+  @Output()
+  public itemSize = 0;
   public visiblePlaces: number;
   public rowEtalon: number = 0;
   public windowInnerWidth: number = window.innerWidth;
@@ -167,7 +173,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      private sortPlacesService: SortPlacesService,
                      private incomeCalcService: IncomeCalcService,
                      private localStorageService: LocalStorageService,
-                     private urlParametersService: UrlParametersService) {
+                     private urlParametersService: UrlParametersService,
+                     private pagePositionService: PagePositionService) {
     this.element = element.nativeElement;
 
     this.isMobile = this.browserDetectionService.isMobile();
@@ -371,6 +378,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   }
 
+  public ngOnChanges(): void {
+    this.calcItemSize();
+  }
+
   public initPlacesSet(): void {
     this.placesSet = this.placesSet.map((place: Place) => {
       console.log(this.placesSet);
@@ -422,11 +433,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       }
 
       this.thing = this.thing ? this.thing : 'Families';
-      this.zoom = this.zoom ? this.zoom : 4;
+      this.zoom = this.zoom ? this.zoom : Number(DefaultUrlParameters.zoom);
       this.regions = this.regions ? this.regions : 'World';
 
       if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-        this.zoom = 4;
+        this.zoom = Number(DefaultUrlParameters.zoom);
       }
 
       if (!this.isDesktop) {
@@ -438,7 +449,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public changeTimeUnit(timeUnit: TimeUnit): void {
     if (this.placesArr && this.currencyUnit) {
-      this.placesArr = this.placesArr.map((place) => {
+      this.placesArr = this.placesArr.map((place: Place) => {
         if (place) {
           place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, timeUnit.code, this.currencyUnit.value);
 
@@ -450,7 +461,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public changeCurrencyUnit(currencyUnit: any): void {
     if (this.placesArr && this.timeUnit) {
-      this.placesArr = this.placesArr.map((place) => {
+      this.placesArr = this.placesArr.map((place: Place) => {
         if (place) {
           place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, currencyUnit.value);
 
@@ -466,7 +477,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public clearEmbedMatrix(): void {
     if (this.placesArr) {
-      this.placesArr = this.placesArr.map((place) => {
+      this.placesArr = this.placesArr.map((place: Place) => {
         if (place && place.pinned) {
           place.pinned = false;
         }
@@ -498,7 +509,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       const queryParams = this.utilsService.parseUrl(this.query);
       queryParams.embed = this.embedSetId;
 
-      const updatedSet = this.placesSet.map((place) => {
+      const updatedSet = this.placesSet.map((place: Place) => {
         place.showBackground = placesList[place._id];
 
         return place;
@@ -630,7 +641,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       }
   }
 
-  public removePlaceFromSet(e: MouseEvent, place: any): void {
+  public removePlaceFromSet(e: MouseEvent, place: Place): void {
     e.stopPropagation();
 
     if (this.placesSet && this.placesSet.length > 0) {
@@ -643,38 +654,28 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public processScroll(): void {
-    if (!this.guideContainerElement) {
-      this.guideContainerElement = document.querySelector('.quick-guide-container') as HTMLElement;
-    }
-
-    let guideOffset: number = (this.guideContainerElement ? this.guideContainerElement.offsetHeight : 0);
-
-    let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - guideOffset;
-
-    let distance = scrollTop / this.itemSize;
-
-    if (isNaN(distance)) {
-      return;
-    }
-
-    let rest = distance % 1;
-    let row = distance - rest;
-
-    if (rest >= 0.85) {
-      row++;
-    }
-
-    this.row = row + 1;
-
-    if (this.rowEtalon !== this.row) {
-      this.rowEtalon = this.row;
-
-      let query: string = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`;
-
-      this.query = query;
-
-      // this.urlChangeService.replaceState('/matrix', query);
-    }
+    // if (!this.guideContainerElement) {
+    //   this.guideContainerElement = document.querySelector('.quick-guide-container') as HTMLElement;
+    // }
+    //
+    // let guideOffset: number = (this.guideContainerElement ? this.guideContainerElement.offsetHeight : 0);
+    //
+    // let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - guideOffset;
+    //
+    // let distance = scrollTop / this.itemSize;
+    //
+    // if (isNaN(distance)) {
+    //   return;
+    // }
+    //
+    // let rest = distance % 1;
+    // let row = distance - rest;
+    //
+    // if (rest >= 0.85) {
+    //   row++;
+    // }
+    //
+    // this.row = row + 1;
 
     let clonePlaces = cloneDeep(this.placesArr);
 
@@ -726,8 +727,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public calcItemSize(): void {
-    let imageContentElement = this.element.querySelector('.image-content') as HTMLElement;
-    let imagesContainerElement = this.element.querySelector('.images-container') as HTMLElement;
+    const imageContentElement = this.element.querySelector('.image-content') as HTMLElement;
+    const imagesContainerElement = this.element.querySelector('.images-container') as HTMLElement;
 
     if (!imagesContainerElement || !imageContentElement) {
       return;
@@ -735,15 +736,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     const widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
 
-    const imageMarginLeft: string = window.getComputedStyle(imageContentElement).getPropertyValue('margin-left');
+
     const boxPaddingLeft: string = window.getComputedStyle(imagesContainerElement).getPropertyValue('padding-left');
 
-    const imageMargin = parseFloat(imageMarginLeft) * 2;
+
     const boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
 
-    const imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - imageMargin;
+    const imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom;
 
-    this.itemSize = imageHeight + imageMargin;
+    this.itemSize = imageHeight;
   }
 
   public scrollTopZero(): void {
@@ -771,7 +772,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       return place && place.income >= this.lowIncome && place.income < this.highIncome;
     });
 
-    this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: any[]) => {
+    this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: Place[]) => {
       this.matrixPlaces.next(sortedPlaces);
       this.streetPlaces.next(this.streetPlacesData);
 
@@ -786,6 +787,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.changeTimeUnit(this.timeUnit);
 
       this.buildTitle(this.query);
+
+      this.calcItemSize();
     });
 
     this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});

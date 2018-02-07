@@ -14,7 +14,8 @@ import {
   ElementRef,
   ViewChild,
   AfterViewInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Output
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { chain, get } from 'lodash';
@@ -71,6 +72,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public streetFamilyContainerElement: HTMLElement;
   public shortFamilyInfoContainerElement: HTMLElement;
   public streetSettingsStateSubscription: Subscription;
+  @Output()
   public itemSize: number;
   public row: number;
   public rowEtalon: number;

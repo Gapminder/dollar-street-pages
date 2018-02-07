@@ -170,3 +170,8 @@ export interface Language {
   name: string;
   _id: string;
 }
+
+export interface PagePosition {
+  row: number;
+  activeHouse: number
+}

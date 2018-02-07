@@ -10,10 +10,11 @@ import {
   ElementRef,
   Output,
   OnInit,
+  AfterViewInit,
   OnDestroy,
   NgZone,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef, ViewChildren, QueryList
 } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -32,13 +33,15 @@ import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { Place } from '../../interfaces';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
 import { get } from "lodash";
+import { PagePositionService } from '../../shared/page-position/page-position.service';
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 
 @Component({
   selector: 'matrix-images',
   templateUrl: './matrix-images.component.html',
   styleUrls: ['./matrix-images.component.css']
 })
-export class MatrixImagesComponent implements OnInit, OnDestroy {
+export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatrixViewBlockComponent)
   public matrixViewBlockComponent: MatrixViewBlockComponent;
   @ViewChild('imagesContainer')
@@ -49,7 +52,7 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
   @Input()
   public thing: string;
   @Input()
-  public places: Observable<any>;
+  public places: Observable<Place[]>;
 
   public zoom: number;
   @Input()
@@ -118,14 +121,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
-                     private sortPlacesService: SortPlacesService) {
+                     private sortPlacesService: SortPlacesService,
+                     private pagePositionService: PagePositionService,
+                     private urlParametersService: UrlParametersService) {
     this.element = elementRef.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
-  public ngOnInit() {
+  public ngAfterViewInit() {
     this.isInit = true;
 
     this.isDesktop = this.browserDetectionService.isDesktop();
@@ -137,16 +142,25 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       this.inTranslate = trans.IN;
     });
 
-    this.placesSubscribe = this.places.subscribe((places: Place[]) => {
+    this.placesSubscribe = this.places
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((places: Place[]) => {
       this.showErrorMsg = false;
       this.currentPlaces = places;
 
-      if (this.currentPlaces && this.query && !this.currentPlaces.length) {
+      if (this.currentPlaces && !this.currentPlaces.length) {
         this.buildErrorMsg(this.currentPlaces);
       }
+        this.getVisibleRows();
+      this.loaderService.setLoader(true);
 
-      // TODO: remove setTimeout on refactoring this component
-      setTimeout(() => {
+      if (this.urlParametersService.activeHouseByRoute !== null) {
+        const activeHouse = Number(this.urlParametersService.activeHouseByRoute);
+        this.toggleImageBlock(this.currentPlaces[activeHouse], activeHouse);
+        this.urlParametersService.activeHouseByRoute = null;
+      }
+      process.nextTick(() => {
+        this.calcItemSize();
         this.getVisibleRows();
         let sliceCount: number = this.visibleImages * 2;
 
@@ -155,13 +169,10 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
         }
 
         this.placesArr = this.currentPlaces.slice(0, sliceCount);
-      });
-
-      setTimeout(() => {
-        this.calcItemSize();
-        this.loaderService.setLoader(true);
-      });
+      })
     });
+
+
 
     this.contentLoadedSubscription = fromEvent(document, 'DOMContentLoaded').subscribe(() => {
       this.checkQuickGuide();
@@ -437,10 +448,13 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
     if (this.activeHouse === activeHouseIndex) {
       this.store.dispatch(new MatrixActions.UpdateActiveHouse({row, index: undefined}));
       this.store.dispatch(new MatrixActions.RemovePlace(''));
+      this.urlParametersService.removeActiveHouse();
     } else {
       this.goToRow(row);
       this.store.dispatch(new MatrixActions.UpdateActiveHouse({row, index: activeHouseIndex}));
       this.store.dispatch(new MatrixActions.SetPlace(place._id));
+      // this.pagePositionService
+      this.urlParametersService.setActiveHouse(index);
     }
   }
 
@@ -480,11 +494,12 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let imageContentElement: HTMLElement = this.imageContent.nativeElement;
+    const imageContentElement: HTMLElement = this.imageContent.nativeElement;
 
     this.itemSize = imageContentElement.offsetWidth;
-
+    this.pagePositionService.itemSize = this.itemSize;
     this.itemSizeChanged.emit(this.itemSize);
+    this.checkCurrentRow();
   }
 
   public getVisibleRows(): void {
@@ -492,11 +507,16 @@ export class MatrixImagesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let imagesContainerElement: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
+    const imagesContainerElement: HTMLElement = this.imagesContainer.nativeElement as HTMLElement;
 
-    let imageHeight: number = imagesContainerElement.offsetWidth / this.zoom;
+    const imageHeight: number = imagesContainerElement.offsetWidth / this.zoom;
 
-    let visibleRows: number = Math.round(window.innerHeight / imageHeight);
+    const visibleRows: number = Math.round(window.innerHeight / imageHeight);
     this.visibleImages = this.zoom * visibleRows;
+  }
+
+  checkCurrentRow() {
+      this.row = this.pagePositionService.currentRow;
+      this.pagePositionService.setCurrentRow();
   }
 }

@@ -265,6 +265,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public closeBlock(): void {
+    this.urlParametersService.removeActiveHouse();
     this.closeBigImageBlock.emit({});
   }
 
