@@ -11,6 +11,8 @@ import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
 
 import * as _ from 'lodash';
+import { SVG_DEFAULTS } from './svg-parameters';
+import { Place } from "../../interfaces";
 
 @Injectable()
 export class StreetDrawService {
@@ -59,7 +61,7 @@ export class StreetDrawService {
   public regions: string[] | string;
   public thingname: string;
   public countries: string[] | string;
-  public placesArray: any[] = [];
+  public placesArray: Place[] = [];
   public currentLowIncome: number;
   public currentHighIncome: number;
   public filter: Subject<any> = new Subject<any>();
@@ -99,17 +101,13 @@ export class StreetDrawService {
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
     this.highIncome = highIncome || drawDividers.rich;
-    // this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
-    // this.width = (this.widthParsed !== this.width) ? this.widthParsed  : this.widthParsed;
     this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     this.height = parseInt(this.svg.style('height'), 10);
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
 
     this.scale = scaleLog()
-      // .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
       .domain([drawDividers.poor, drawDividers.rich])
-      // .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
       .range([0, this.width]);
 
 
@@ -227,7 +225,7 @@ export class StreetDrawService {
     return this;
   }
 
-  public drawScale(places: any, drawDividers: any): this {
+  public drawScale(places: Place[], drawDividers: any): this {
     let halfHouseWidth = 7;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 10;
@@ -270,189 +268,119 @@ export class StreetDrawService {
       .attr('x', this.width + this.streetOffset - richestWidth);
 
     if (places && places.length) {
+
+      const sortedPlaces = _
+        .chain(places)
+        .uniqBy('_id')
+        .sortBy('income')
+        .value();
+      this.placesArray = sortedPlaces;
+
       this.svg
-        .selectAll('polygon')
+        .selectAll('use.icon-background-home')
         .data(places)
         .enter()
-        .append('polygon')
-        .attr('class', 'point')
-        .attr('points', (datum: any): any => {
-          let point1: string;
-          let point2: string;
-          let point3: string;
-          let point4: string;
-          let point5: string;
-          let point6: string;
-          let point7: string;
-
-          if (datum) {
-            let scaleDatumIncome = this.scale(datum.income);
-            this.placesArray.push(datum);
-
-            this.placesArray = _
-              .chain(this.placesArray)
-              .uniqBy('_id')
-              .sortBy('income')
-              .value();
-
-            this.minIncome = _.head(this.placesArray).income;
-            this.maxIncome = _.last(this.placesArray).income;
-            this.leftPoint = this.scale(this.minIncome);
-            this.rightPoint = this.scale(this.maxIncome);
-
-            point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
-            point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY}`;
-            point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth},${roofY}`;
-            point4 = `${this.streetOffset / 2 + scaleDatumIncome},${this.halfOfHeight - 17}`;
-            point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY}`;
-            point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${roofY}`;
-            point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
-          }
-
-          return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-            point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+        .append('use')
+        .attr('class', 'icon-background-home')
+        .attr('y', SVG_DEFAULTS.backgroungHomes.positionY)
+        .attr('width', SVG_DEFAULTS.backgroungHomes.width)
+        .attr('height', SVG_DEFAULTS.backgroungHomes.height)
+        .attr('fill', SVG_DEFAULTS.backgroungHomes.fill)
+        .attr('xlink:href', SVG_DEFAULTS.backgroungHomes.name)
+        .attr('income', (datum: Place) => {
+          return datum.income
         })
-        .attr('stroke-width', 1)
-        .style('fill', '#aaacb0')
-        .style('opacity', '0.7');
-    }
+        .attr('home-id', (datum: Place) => {
+          return datum._id
+        })
+        .attr('x', (datum: Place) => {
+          const scaleDatumIncome = this.scale(datum.income);
+          const position = this.streetOffset / 2 - SVG_DEFAULTS.backgroungHomes.width / 2 + scaleDatumIncome;
 
-    this.svg
-      .append('polygon')
-      .attr('class', 'road')
-      .attr('height', '14px')
-      .attr('points', () => {
-        let point1: string = `0,${ this.halfOfHeight + 11}`;
-        let point2: string = `30,${ this.halfOfHeight - 4}`;
-        let point3: string = `${ this.width + this.streetOffset - this.streetOffset / 2},${ this.halfOfHeight - 4}`;
-        let point4: string = `${ this.width + this.streetOffset},${ this.halfOfHeight + 11}`;
-        return `${point1} ${point2} ${point3} ${point4}`;
-      })
-      .style('fill', '#727a82')
-      .style('cursor', '-webkit-grab')
-      .style('cursor', '-moz-grab')
-      .style('cursor', 'grab')
-      .on('mousedown', (): void => {
-        this.draggingSliders = true;
-      })
-      .on('touchstart', (): any => this.draggingSliders = true);
+          return position;
+        });
+    };
 
-    this.svg
-      .append('line')
-      .attr('class', 'axis')
-      .attr('height', '3px')
-      .attr('x1', 1)
-      .attr('y1', this.halfOfHeight + 11.5)
-      .attr('x2', this.width + this.streetOffset - 1)
-      .attr('y2', this.halfOfHeight + 11.5)
+      this.svg
+        .append('polygon')
+        .attr('class', 'road')
+        .attr('height', '14px')
+        .attr('points', () => {
+          const point1 = `0,${ this.halfOfHeight + 11}`;
+          const point2 = `30,${ this.halfOfHeight - 4}`;
+          const point3 = `${ this.width + this.streetOffset - this.streetOffset / 2},${ this.halfOfHeight - 4}`;
+          const point4 = `${ this.width + this.streetOffset},${ this.halfOfHeight + 11}`;
 
-      .attr('stroke-width', 3)
-      .attr('stroke', '#525c64')
-      .style('cursor', '-webkit-grab')
-      .style('cursor', '-moz-grab')
-      .style('cursor', 'grab')
-      .on('mousedown', (): void => {
-        this.draggingSliders = true;
-      })
-      .on('touchstart', (): any => this.draggingSliders = true);
+          return `${point1} ${point2} ${point3} ${point4}`;
+        })
+        .style('fill', '#727a82')
+        .style('cursor', '-webkit-grab')
+        .style('cursor', '-moz-grab')
+        .style('cursor', 'grab')
+        .on('mousedown', (): void => {
+          this.draggingSliders = true;
+        })
+        .on('touchstart', () => this.draggingSliders = true);
 
-    this.svg
-      .append('line')
-      .attr('class', 'dash')
-      .attr('x1', 24)
-      .attr('y1', this.halfOfHeight + 4)
-      .attr('x2', this.width + this.streetOffset - 9)
-      .attr('y2', this.halfOfHeight + 3)
-      .attr('stroke-dasharray', '17')
-      .attr('stroke-width', 2)
-      .attr('stroke', 'white')
-      .style('cursor', '-webkit-grab')
-      .style('cursor', '-moz-grab')
-      .style('cursor', 'grab')
+      this.svg
+        .append('line')
+        .attr('class', 'axis')
+        .attr('height', '3px')
+        .attr('x1', 1)
+        .attr('y1', this.halfOfHeight + 11.5)
+        .attr('x2', this.width + this.streetOffset - 1)
+        .attr('y2', this.halfOfHeight + 11.5)
 
-      .on('mousedown', (): void => {
-        this.draggingSliders = true;
-      })
-      .on('touchstart', (): any => this.draggingSliders = true);
+        .attr('stroke-width', 3)
+        .attr('stroke', '#525c64')
+        .style('cursor', '-webkit-grab')
+        .style('cursor', '-moz-grab')
+        .style('cursor', 'grab')
+        .on('mousedown', (): void => {
+          this.draggingSliders = true;
+        })
+        .on('touchstart', () => this.draggingSliders = true);
 
-    this.incomeArr.length = 0;
+      this.svg
+        .append('line')
+        .attr('class', 'dash')
+        .attr('x1', 24)
+        .attr('y1', this.halfOfHeight + 4)
+        .attr('x2', this.width + this.streetOffset - 9)
+        .attr('y2', this.halfOfHeight + 3)
+        .attr('stroke-dasharray', '17')
+        .attr('stroke-width', 2)
+        .attr('stroke', 'white')
+        .style('cursor', '-webkit-grab')
+        .style('cursor', '-moz-grab')
+        .style('cursor', 'grab')
 
-    this.isDrawDividers(drawDividers);
-    this.isDrawCurrency(drawDividers);
-    this.isDrawLabels(drawDividers);
+        .on('mousedown', (): void => {
+          this.draggingSliders = true;
+        })
+        .on('touchstart', (): any => this.draggingSliders = true);
 
-    if (!places || !places.length) {
-      return this;
-    }
+      this.incomeArr.length = 0;
 
-    this.drawLeftSlider(this.scale(this.lowIncome), true);
-    this.drawRightSlider(this.scale(this.highIncome), true);
+      this.isDrawDividers(drawDividers);
+      this.isDrawCurrency(drawDividers);
+      this.isDrawLabels(drawDividers);
 
-    if (this.mouseMoveSubscriber) {
-      this.mouseMoveSubscriber.unsubscribe();
-    }
 
-    this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
-      .subscribe((e: MouseEvent) => {
-        if (this.windowInnerWidth < 700 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
-          return;
-        }
+      if (!places || !places.length) {
+        return this;
+      }
 
-        e.preventDefault();
+      this.drawLeftSlider(this.scale(this.lowIncome), true);
+      this.drawRightSlider(this.scale(this.highIncome), true);
 
-        if (!this.currentHighIncome || !this.currentLowIncome) {
-          this.currentLowIncome = this.lowIncome;
-          this.currentHighIncome = this.highIncome;
-        }
+      if (this.mouseMoveSubscriber) {
+        this.mouseMoveSubscriber.unsubscribe();
+      }
 
-        if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
-          document.body.classList.add('draggingSliders');
-
-          if (!this.distanceDraggingLeftSlider) {
-            this.distanceDraggingLeftSlider = e.pageX - 45 - this.sliderLeftBorder;
-          }
-
-          if (!this.distanceDraggingRightSlider) {
-            this.distanceDraggingRightSlider = this.sliderRightBorder - (e.pageX - 56);
-          }
-
-          if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-            if (e.pageX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && e.pageX + this.distanceDraggingRightSlider <= this.rightPoint + 76) {
-              this.chosenPlaces = [];
-              this.removeHouses('chosen');
-              this.drawLeftSlider(e.pageX - 57 - this.distanceDraggingLeftSlider);
-              this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
-            }
-          } else {
-            if (
-              e.pageX - this.distanceDraggingLeftSlider >= 50 &&
-              e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
-              this.chosenPlaces = [];
-              this.removeHouses('chosen');
-              this.drawLeftSlider(e.pageX - 47 - this.distanceDraggingLeftSlider);
-              this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
-            }
-          }
-
-          return;
-        }
-
-        if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 17 && e.pageX >= 52) {
-          return this.drawLeftSlider(e.pageX - 47);
-        }
-
-        if (this.sliderRightMove && this.sliderLeftBorder + 87 <= e.pageX && e.pageX <= this.width + 57) {
-          return this.drawRightSlider(e.pageX - 57);
-        }
-      });
-
-    if (this.touchMoveSubscriber) {
-      this.touchMoveSubscriber.unsubscribe();
-    }
-
-    this.touchMoveSubscriber = fromEvent(window, 'touchmove')
-      .subscribe((e: TouchEvent) => {
-          if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+      this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
+        .subscribe((e: MouseEvent) => {
+          if (this.windowInnerWidth < 700 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
             return;
           }
 
@@ -462,128 +390,156 @@ export class StreetDrawService {
             this.currentLowIncome = this.lowIncome;
             this.currentHighIncome = this.highIncome;
           }
-          let positionX = e.touches[0].pageX;
 
           if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
             document.body.classList.add('draggingSliders');
-
             if (!this.distanceDraggingLeftSlider) {
-              this.distanceDraggingLeftSlider = positionX - 35 - this.sliderLeftBorder;
+              this.distanceDraggingLeftSlider = e.pageX - 45 - this.sliderLeftBorder;
             }
 
             if (!this.distanceDraggingRightSlider) {
-              this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 45);
+              this.distanceDraggingRightSlider = this.sliderRightBorder - (e.pageX - 56);
             }
 
             if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-              if (positionX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && positionX + this.distanceDraggingRightSlider <= this.rightPoint + 75) {
+              if (e.pageX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && e.pageX + this.distanceDraggingRightSlider <= this.rightPoint + 76) {
                 this.chosenPlaces = [];
                 this.removeHouses('chosen');
-                this.drawLeftSlider(positionX - 57 - this.distanceDraggingLeftSlider);
-                this.drawRightSlider(positionX - 57 + this.distanceDraggingRightSlider);
+                this.drawLeftSlider(e.pageX - 57 - this.distanceDraggingLeftSlider);
+                this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
               }
             } else {
-              if (
-                positionX - this.distanceDraggingLeftSlider >= 35 &&
-                positionX + this.distanceDraggingRightSlider <= this.width + 50) {
+              if (e.pageX - this.distanceDraggingLeftSlider >= 50 &&
+                e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
                 this.chosenPlaces = [];
                 this.removeHouses('chosen');
-                this.drawLeftSlider(positionX - 30 - this.distanceDraggingLeftSlider);
-                this.drawRightSlider(positionX - 40 + this.distanceDraggingRightSlider);
+                this.drawLeftSlider(e.pageX - 47 - this.distanceDraggingLeftSlider);
+                this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
               }
             }
+
             return;
           }
 
-          if (this.sliderLeftMove && positionX <= this.sliderRightBorder - 25 && positionX >= 35) {
-            return this.drawLeftSlider(positionX - 30);
+          if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 17 && e.pageX >= 52) {
+            return this.drawLeftSlider(e.pageX - 47);
           }
 
-          if (this.sliderRightMove && this.sliderLeftBorder + 102 <= positionX && positionX <= this.width + 50) {
-            return this.drawRightSlider(positionX - 40);
+          if (this.sliderRightMove && this.sliderLeftBorder + 87 <= e.pageX && e.pageX <= this.width + 57) {
+            return this.drawRightSlider(e.pageX - 57);
           }
-        }
-      );
+        });
 
-    this.mouseUpSubscriber = fromEvent(window, 'mouseup')
-      .subscribe(() => {
+      if (this.touchMoveSubscriber) {
+        this.touchMoveSubscriber.unsubscribe();
+      }
 
-        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
-          return;
-        }
+      this.touchMoveSubscriber = fromEvent(window, 'touchmove')
+        .subscribe((e: TouchEvent) => {
+            if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+              return;
+            }
 
-        this.pressedSlider();
-      });
+            e.preventDefault();
 
-    this.touchUpSubscriber = fromEvent(window, 'touchend')
-      .subscribe(() => {
-        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
-          return;
-        }
+            if (!this.currentHighIncome || !this.currentLowIncome) {
+              this.currentLowIncome = this.lowIncome;
+              this.currentHighIncome = this.highIncome;
+            }
+            let positionX = e.touches[0].pageX;
 
-        this.pressedSlider();
-      });
+            if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
+              document.body.classList.add('draggingSliders');
+
+              if (!this.distanceDraggingLeftSlider) {
+                this.distanceDraggingLeftSlider = positionX - 35 - this.sliderLeftBorder;
+              }
+
+              if (!this.distanceDraggingRightSlider) {
+                this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 45);
+              }
+
+              if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+                if (positionX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && positionX + this.distanceDraggingRightSlider <= this.rightPoint + 75) {
+                  this.chosenPlaces = [];
+                  this.removeHouses('chosen');
+                  this.drawLeftSlider(positionX - 57 - this.distanceDraggingLeftSlider);
+                  this.drawRightSlider(positionX - 57 + this.distanceDraggingRightSlider);
+                }
+              } else {
+                if (
+                  positionX - this.distanceDraggingLeftSlider >= 35 &&
+                  positionX + this.distanceDraggingRightSlider <= this.width + 50) {
+                  this.chosenPlaces = [];
+                  this.removeHouses('chosen');
+                  this.drawLeftSlider(positionX - 30 - this.distanceDraggingLeftSlider);
+                  this.drawRightSlider(positionX - 40 + this.distanceDraggingRightSlider);
+                }
+              }
+              return;
+            }
+
+            if (this.sliderLeftMove && positionX <= this.sliderRightBorder - 25 && positionX >= 35) {
+              return this.drawLeftSlider(positionX - 30);
+            }
+
+            if (this.sliderRightMove && this.sliderLeftBorder + 102 <= positionX && positionX <= this.width + 50) {
+              return this.drawRightSlider(positionX - 40);
+            }
+          }
+        );
+
+      this.mouseUpSubscriber = fromEvent(window, 'mouseup')
+        .subscribe(() => {
+
+          if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+            return;
+          }
+
+          this.pressedSlider();
+        });
+
+      this.touchUpSubscriber = fromEvent(window, 'touchend')
+        .subscribe(() => {
+          if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+            return;
+          }
+
+          this.pressedSlider();
+        });
 
     return this;
-  };
+  }
 
-  public drawHoverHouse(place: any, gray: boolean = false): this {
+  public drawHoverHouse( place, gray = false) {
     if (!place) {
       return this;
     }
 
     this.removeSliders();
 
-    let fills = this.colors.fills;
-    let fillsOfBorders = this.colors.fillsOfBorders;
-    let halfHouseWidth = 12.5;
-    let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 15 - 1;
-
     this.svg
-      .selectAll('polygon.hover')
+      .selectAll('use.icon-hover-home')
       .data([place])
       .enter()
-      .append('polygon')
+      .append('use')
+      .attr('class', 'icon-hover-home')
       .attr('class', 'hover')
-      .attr('points', (datum: any): any => {
-        let point1: string;
-        let point2: string;
-        let point3: string;
-        let point4: string;
-        let point5: string;
-        let point6: string;
-        let point7: string;
+      .attr('y', SVG_DEFAULTS.hoverHomes.positionY)
+      .attr('width', SVG_DEFAULTS.hoverHomes.width)
+      .attr('height', SVG_DEFAULTS.hoverHomes.height)
+      .attr('fill', SVG_DEFAULTS.hoverHomes.fill)
+      .attr('xlink:href', SVG_DEFAULTS.hoverHomes.name)
+      .attr('income', (datum: Place) => { return datum.income; })
+      .attr('home-id', (datum: Place) => { return datum._id; })
+      .attr('x', (datum: Place) => {
+        const scaleDatumIncome = this.scale(datum.income);
+        const position = this.streetOffset / 2 - SVG_DEFAULTS.hoverHomes.width / 2 + scaleDatumIncome;
 
-        if (datum) {
-          let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${scaleDatumIncome + this.streetOffset / 2 + roofX },${this.halfOfHeight - 4}`;
-          point2 = `${scaleDatumIncome + this.streetOffset / 2 + roofX},${roofY - 2}`;
-          point3 = `${scaleDatumIncome + this.streetOffset / 2 - halfHouseWidth},${roofY - 2 }`;
-          point4 = `${scaleDatumIncome + this.streetOffset / 2 },${this.halfOfHeight - 26 - 1 - 2}`;
-          point5 = `${scaleDatumIncome + this.streetOffset / 2 + halfHouseWidth },${roofY - 2}`;
-          point6 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${roofY - 2}`;
-          point7 = `${scaleDatumIncome + this.streetOffset / 2 - roofX },${this.halfOfHeight - 4 }`;
-        }
-
-        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-      })
-      .attr('stroke-width', 1)
-      .attr('stroke', (datum: any): any => {
-        if (gray) {
-          return '#303e4a';
-        }
-
-        return !datum ? void 0 : fillsOfBorders[datum.region];
-      })
-      .style('fill', (datum: any): any => {
-        if (gray) {
-          return '#374551';
-        }
-
-        return !datum ? void 0 : fills[datum.region];
+        return position;
       });
+
+    console.log(this.svg.selectAll('use')._groups)
 
     this.drawLeftSlider(this.scale(this.lowIncome), true);
     this.drawRightSlider(this.scale(this.highIncome), true);
@@ -898,7 +854,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public clearAndRedraw(places?: any): this {
+  public clearAndRedraw(places?): this {
     if (!places || !places.length) {
       this.removeHouses('hover');
       this.removeHouses('chosen');
@@ -924,9 +880,11 @@ export class StreetDrawService {
   public removeHouses(selector: any): this {
     this.svg.selectAll('rect.' + selector).remove();
     this.svg.selectAll('polygon.' + selector).remove();
+    this.svg.selectAll('use.' + selector).remove();
 
     if (selector === 'chosen') {
       this.svg.selectAll('polygon.chosenLine').remove();
+      this.svg.selectAll('use.icon-active-homes').remove();
     }
 
     return this;
@@ -1058,49 +1016,35 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawHouses(places: any): this {
+  public drawHouses(places: Place[]): this {
     this.placesArray = [];
 
     if (!places || !places.length) {
       return this;
     }
 
-    let halfHouseWidth = 10;
-    let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 12 - 1;
-
-    this.svg.selectAll('polygon.chosen')
+    const drawnPlaces = this.svg
+      .selectAll('use.icon-active-homes')
       .data(places)
       .enter()
-      .append('polygon')
+      .append('use')
+      .attr('class', 'icon-active-homes')
       .attr('class', 'chosen')
-      .attr('id', 'houses')
-      .attr('points', (datum: any): any => {
-        let point1: string;
-        let point2: string;
-        let point3: string;
-        let point4: string;
-        let point5: string;
-        let point6: string;
-        let point7: string;
+      .attr('y', SVG_DEFAULTS.activeHomes.positionY)
+      .attr('width', SVG_DEFAULTS.activeHomes.width)
+      .attr('height', SVG_DEFAULTS.activeHomes.height)
+      .attr('fill', SVG_DEFAULTS.activeHomes.fill)
+      .attr('xlink:href', SVG_DEFAULTS.activeHomes.name)
+      .attr('income', (datum: Place) => { return datum.income})
+      .attr('home-id', (datum: Place) => { return datum._id})
+      .attr('x', (datum: Place) => {
+        // console.log(datum);
 
-        if (datum) {
-          let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${this.halfOfHeight - 1 - 1 - 2}`;
-          point2 = `${this.streetOffset / 2 + scaleDatumIncome + roofX},${roofY - 2}`;
-          point3 = `${this.streetOffset / 2 + scaleDatumIncome - halfHouseWidth },${roofY - 2}`;
-          point4 = `${this.streetOffset / 2 + scaleDatumIncome },${ this.halfOfHeight - 21 - 1 - 2}`;
-          point5 = `${this.streetOffset / 2 + scaleDatumIncome + halfHouseWidth },${roofY - 2}`;
-          point6 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${ roofY - 2}`;
-          point7 = `${this.streetOffset / 2 + scaleDatumIncome - roofX },${ this.halfOfHeight - 1 - 1 - 2}`;
-        }
+        const scaleDatumIncome = this.scale(datum.income);
+        const position = this.streetOffset / 2 - SVG_DEFAULTS.activeHomes.width / 2 + scaleDatumIncome;
 
-        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-          point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-      })
-      .attr('stroke', '#303e4a')
-      .attr('stroke-width', 1)
-      .style('fill', '#374551');
+        return position;
+      });
 
     return this;
   };

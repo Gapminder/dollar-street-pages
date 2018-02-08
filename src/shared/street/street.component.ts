@@ -19,7 +19,7 @@ import {
   StreetSettingsState,
   DrawDividersInterface,
   AppState,
-  MatrixState
+  MatrixState, Place, UrlParameters
 } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
@@ -212,7 +212,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.drawHoverHouse(hoverPlace);
     });
 
-    this.placesSubscribe = this.places && this.places.subscribe((places: any): void => {
+    this.placesSubscribe = this.places && this.places.subscribe((places: Place[]): void => {
       this.placesArr = places;
 
       if (!this.streetData) {
@@ -226,8 +226,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.setDividers(this.placesArr, this.streetData);
     });
 
-    this.streetFilterSubscribe = this.street.filter.subscribe((filter: any): void => {
-      let query: any = {};
+    this.streetFilterSubscribe = this.street.filter.subscribe((filter): void => {
+      let query: UrlParameters = {};
 
       if (this.query) {
         query = this.utilsService.parseUrl(this.query);
