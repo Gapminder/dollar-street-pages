@@ -69,8 +69,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output()
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
 
   public query: any;
   public familyInfoServiceSubscribe: Subscription;

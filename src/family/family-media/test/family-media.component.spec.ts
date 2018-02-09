@@ -29,6 +29,10 @@ import { FamilyMediaService } from '../family-media.service';
 
 import { mockFamilyMediaData } from './mock.component.data';
 import { Store } from '@ngrx/store';
+import { PagePositionServiceMock } from "../../../shared/page-position/test/page-position.service.mock";
+import { PagePositionService } from "../../../shared/page-position/page-position.service";
+import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
 
 describe('FamilyMediaComponent', () => {
     let componentInstance: FamilyMediaComponent;
@@ -71,7 +75,10 @@ describe('FamilyMediaComponent', () => {
                             { provide: FamilyMediaService, useClass: FamilyMediaServiceMock },
                             { provide: LanguageService, useClass: LanguageServiceMock },
                             { provide: Location, useClass: SpyLocation },
-                            { provide: Store, useClass: StoreMock}
+                            { provide: Store, useClass: StoreMock},
+                            { provide: UrlParametersService, useClass: UrlParametersServiceMock },
+                            { provide: PagePositionService, useClass: PagePositionServiceMock },
+
 
             ]
         }).compileComponents();

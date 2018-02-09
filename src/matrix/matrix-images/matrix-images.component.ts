@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { MatrixViewBlockComponent } from '../matrix-view-block/matrix-view-block.component';
+
 import {
   MathService,
   LoaderService,
@@ -28,7 +28,7 @@ import {
   SortPlacesService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates, Currency, LanguageState, MatrixState } from '../../interfaces';
+import { AppStates, Currency, LanguageState, MatrixState, UrlParameters } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { Place } from '../../interfaces';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
@@ -42,8 +42,7 @@ import { UrlParametersService } from '../../url-parameters/url-parameters.servic
   styleUrls: ['./matrix-images.component.css']
 })
 export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
-  @ViewChild(MatrixViewBlockComponent)
-  public matrixViewBlockComponent: MatrixViewBlockComponent;
+
   @ViewChild('imagesContainer')
   public imagesContainer: ElementRef;
   @ViewChild('imageContent')
@@ -58,16 +57,12 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   public places: Observable<Place[]>;
 
   public zoom: number;
-  @Input()
-  public showBlock: boolean;
 
-  @Input()
-  public clearActiveHomeViewBox: Subject<any>;
+  public showBlock: boolean;
 
   @Output()
   public hoverPlace: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  public filter: EventEmitter<any> = new EventEmitter<any>();
+
   @Output()
   public itemSizeChanged: EventEmitter<any> = new EventEmitter<any>();
 
@@ -97,7 +92,6 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   public familyData: any;
   public prevPlaceId: string;
   public resizeSubscribe: Subscription;
-  public clearActiveHomeViewBoxSubscribe: Subscription;
   public windowInnerWidth: number = window.innerWidth;
   public visibleImages: number;
   public locations: any[];
@@ -113,6 +107,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   public placesSet: Place[];
   public maxPinnedCount = 6;
   public currencyUnit: Currency;
+  public viewChildrenSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -172,10 +167,11 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
         }
 
         this.placesArr = this.currentPlaces.slice(0, sliceCount);
+        this.changeDetectorRef.detectChanges();
       })
     });
 
-    this.viewChildren
+    this.viewChildrenSubscription = this.viewChildren
       .changes
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((event: QueryList<MatrixImagesComponent>) => {
@@ -217,7 +213,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
         this.activeHouse = undefined;
         this.showBlock = false;
       }
-      this.changeDetectorRef.detectChanges();
+
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -234,17 +230,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
         });
       });
 
-    this.clearActiveHomeViewBoxSubscribe = this.clearActiveHomeViewBox &&
-      this.clearActiveHomeViewBox.subscribe((isClean: any): void => {
-        if (this.prevPlaceId && isClean) {
-          this.prevPlaceId = void 0;
-          this.familyData = void 0;
-          this.imageBlockLocation = void 0;
-          this.indexViewBoxHouse = void 0;
-          this.showBlock = void 0;
-          this.showErrorMsg = void 0;
-        }
-      });
+    this.changeDetectorRef.detectChanges();
   }
 
   public checkQuickGuide(): void {
@@ -267,10 +253,6 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.clearActiveHomeViewBoxSubscribe) {
-      this.clearActiveHomeViewBoxSubscribe.unsubscribe();
-    }
-
     if (this.contentLoadedSubscription) {
       this.contentLoadedSubscription.unsubscribe();
     }
@@ -289,6 +271,10 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
 
     if (this.matrixStateSubscription) {
       this.matrixStateSubscription.unsubscribe();
+    }
+
+    if (this.viewChildrenSubscription) {
+      this.viewChildrenSubscription.unsubscribe();
     }
   }
 
@@ -342,7 +328,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  public buildTitle(query: any): void {
+  public buildTitle(query: UrlParameters): void {
     const regions = query.regions;
     const countries = query.countries;
 
@@ -370,7 +356,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       if (regions.length > 3) {
         this.activeCountries = this.theWorldTranslate;
       } else {
-        let sumCountries: number = 0;
+        let sumCountries = 0;
         let difference: string[] = [];
         let regionCountries: string[] = [];
 
@@ -446,10 +432,6 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       this.positionInRow = this.zoom;
     }
 
-    setTimeout(() => {
-      this.viewBlockHeight = this.matrixViewBlockComponent ? this.matrixViewBlockComponent.element.offsetHeight : 0;
-    }, 0);
-
     const row: number = Math.ceil((this.indexViewBoxHouse + 1) / this.zoom);
     const activeHouseIndex: number = this.indexViewBoxHouse + 1;
 
@@ -473,10 +455,6 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
 
   public toUrl(image: any): string {
     return `url("${image}")`;
-  }
-
-  public goToMatrixWithCountry(params: any): void {
-    this.filter.emit(params);
   }
 
   public goToRow(row: number): void {

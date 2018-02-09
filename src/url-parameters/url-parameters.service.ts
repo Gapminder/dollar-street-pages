@@ -24,7 +24,7 @@ export class UrlParametersService {
 
   public constructor(
     private utilsService: UtilsService,
-    private store: Store<AppStates>,
+    public store: Store<AppStates>,
     private incomeCalcService: IncomeCalcService,
     private router: Router,
     private location: Location,
@@ -72,13 +72,14 @@ export class UrlParametersService {
       this.parameters.embed = get(matrix, 'embedSetId', undefined);
 
 
-      if (get(matrix, 'zoom', '') !== this.parameters.zoom) {
+      if (get(matrix, 'zoom', undefined) &&
+        get(matrix, 'zoom', undefined) !== get(this.parameters, 'zoom', DefaultUrlParameters.zoom)) {
         this.store.dispatch(new MatrixActions.ChangeZoom(matrix.zoom));
         this.parameters.zoom = matrix.zoom.toString();
       }
 
-      this.parameters.countries = countriesFilter.selectedCountries;
-      this.parameters.regions = countriesFilter.selectedRegions;
+      this.parameters.countries = get(countriesFilter, 'selectedCountries', DefaultUrlParameters.countries);
+      this.parameters.regions = get(countriesFilter, 'selectedRegions', DefaultUrlParameters.regions);
 
       this.combineUrlPerPage();
     });
@@ -195,6 +196,7 @@ export class UrlParametersService {
 
   public removeActiveHouse(): void {
       this.parameters.activeHouse = undefined;
+    this.combineUrlPerPage();
   }
 
   public setActiveImage(activeImage: string | number): void {
@@ -206,5 +208,6 @@ export class UrlParametersService {
 
   public removeActiveImage(): void {
     this.parameters.activeImage = undefined;
+    this.combineUrlPerPage();
   }
 }

@@ -1,10 +1,9 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-// import { AppActions } from '../../../app/app.actions';
 
 import {
 SharedModule
@@ -26,14 +25,19 @@ import {
   LanguageServiceMock,
   UtilsServiceMock
 } from '../../../test/';
-import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
-import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { UrlParametersServiceMock } from '../../../test/mocks/url-parameters.service.mock';
+import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
+import { Place } from '../../../interfaces';
+import { PagePositionServiceMock } from "../../../shared/page-position/test/page-position.service.mock";
+import { PagePositionService } from "../../../shared/page-position/page-position.service";
+import { DEBOUNCE_TIME } from "../../../defaultState";
 
 describe('MatrixImagesComponent', () => {
   let component: MatrixImagesComponent;
   let fixture: ComponentFixture<MatrixImagesComponent>;
-  const places: Object[] = [
+  const places: Place[] = [
     {
+      background: '',
       country: 'Burundi',
       image: '54afea8f993307fb769cc6f4',
       income: 26.99458113,
@@ -65,8 +69,8 @@ describe('MatrixImagesComponent', () => {
         { provide: LanguageService, useClass: LanguageServiceMock },
         { provide: UtilsService, useClass: UtilsServiceMock },
         { provide: SortPlacesService, useValue: {} },
-        { provide: MatrixViewBlockComponent, useClass: MatrixViewBlockComponentMock },
-        { provide: UrlParametersService, useClass: UrlParametersServiceMock }
+        { provide: UrlParametersService, useClass: UrlParametersServiceMock },
+        { provide: PagePositionService, useClass: PagePositionServiceMock }
       ]
     });
 
@@ -79,30 +83,43 @@ describe('MatrixImagesComponent', () => {
   it('ngOnInit()', () => {
     fixture.detectChanges();
 
+
     expect(component.getTranslationSubscribe).toBeDefined();
     expect(component.placesSubscribe).toBeDefined();
+    expect(component.viewChildrenSubscription).toBeDefined();
     expect(component.contentLoadedSubscription).toBeDefined();
+    expect(component.matrixStateSubscription).toBeDefined();
     expect(component.resizeSubscribe).toBeDefined();
 
     spyOn(component.getTranslationSubscribe, 'unsubscribe');
     spyOn(component.placesSubscribe, 'unsubscribe');
+    spyOn(component.viewChildrenSubscription, 'unsubscribe');
     spyOn(component.contentLoadedSubscription, 'unsubscribe');
+    spyOn(component.matrixStateSubscription, 'unsubscribe');
     spyOn(component.resizeSubscribe, 'unsubscribe');
+
 
     component.ngOnDestroy();
 
     expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
     expect(component.placesSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(component.viewChildrenSubscription.unsubscribe).toHaveBeenCalled();
     expect(component.contentLoadedSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.matrixStateSubscription.unsubscribe).toHaveBeenCalled();
     expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();
+
   });
 
   it('buildTitle()', () => {
-    const countries = ['Bangladesh', 'Cambodja', 'Singapour'];
+    const query = {
+      regions: ['World'],
+      countries: ['Bangladesh', 'Cambodja', 'Singapour'],
+      thing: 'Families'
+    };
 
-    component.buildTitle({regions: ['World'], countries: countries, thing: 'Families'});
+    component.buildTitle(query);
 
-    expect(component.activeCountries).toEqual(countries);
+    expect(component.activeCountries).toEqual(query.countries);
   });
 });
 

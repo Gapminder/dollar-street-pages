@@ -23,4 +23,6 @@ export class UrlParametersServiceMock {
   getAllParameters(): UrlParameters {
     return DefaultUrlParameters;
   }
+
+  removeActiveHouse(): void {}
 }

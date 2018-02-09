@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Location, PopStateEvent } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -6,8 +6,8 @@ import { AppStates } from '../interfaces';
 import { UrlParametersService } from './url-parameters.service';
 import { Subscription } from 'rxjs/Subscription';
 import { forEach, get } from 'lodash';
-import { PagePositionService } from "../shared/page-position/page-position.service";
-import { DefaultUrlParameters } from "../defaultState";
+import { PagePositionService } from '../shared/page-position/page-position.service';
+import { DefaultUrlParameters } from '../defaultState';
 
 interface NavigationEndInterface {
   id: number;
@@ -19,7 +19,7 @@ interface NavigationEndInterface {
   selector: 'url-parameters',
   template: '',
 })
-export class UrlParametersComponent implements OnInit, OnDestroy {
+export class UrlParametersComponent implements  OnDestroy {
   private subscribtions: Subscription[] = [];
 
   constructor(
@@ -28,13 +28,16 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
     urlParametersService: UrlParametersService,
     pagePositionService: PagePositionService,
     location: Location) {
+
     const navigationEndSubscribe = router.events
       .filter(event => event instanceof NavigationEnd)
       .take(1)
       .subscribe((event: NavigationEndInterface) => {
         const params = urlParametersService.parseString(event.url);
+
         urlParametersService.dispatchToStore(params);
         urlParametersService.combineUrlPerPage();
+
         if (get(params, 'row', false)
           && params.row !== DefaultUrlParameters.row) {
           urlParametersService.needPositionByRoute = params.row;
@@ -63,9 +66,6 @@ export class UrlParametersComponent implements OnInit, OnDestroy {
       urlParametersService.dispatchToStore(params);
       urlParametersService.combineUrlPerPage();
     });
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {

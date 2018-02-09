@@ -82,7 +82,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   public streetPlaces: Subject<any> = new Subject<any>();
   public matrixPlaces: Subject<any> = new Subject<any>();
   public chosenPlaces: Subject<any> = new Subject<any>();
-  public clearActiveHomeViewBox: Subject<any> = new Subject<any>();
+
   @Input()
   row: number;
   public zoom: number;
@@ -802,18 +802,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
       url = url.replace(/row\=\d*/, 'row=1');
     }
-
-    // if (!isBack) {
-      // this.query = this.query.replace(/&activeHouse\=\d*/, '');
-      // this.activeHouse = void 0;
-
-      // this.hoverPlace.next(undefined);
-      // this.clearActiveHomeViewBox.next(true);
-    // }
-
-    // this.store.dispatch(new AppActions.SetQuery(url));
-
-    // this.urlChangeService.replaceState('/matrix', url);
   }
 
   public activeHouseOptions(options: any): void {

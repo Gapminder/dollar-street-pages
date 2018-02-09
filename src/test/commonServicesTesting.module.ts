@@ -24,8 +24,10 @@ import { MathServiceMock } from './mocks/math.service.mock';
 import { IncomeCalcServiceMock } from './mocks/incomeCalc.service.mock';
 import { LocalStorageServiceMock } from './mocks/localStorage.service.mock';
 import { LocalStorageService } from '../common/index';
-import { UrlParametersServiceMock } from "./mocks/url-parameters.service.mock";
-import { UrlParametersService } from "../url-parameters/url-parameters.service";
+import { UrlParametersServiceMock } from './mocks/url-parameters.service.mock';
+import { UrlParametersService } from '../url-parameters/url-parameters.service';
+import { PagePositionService } from '../shared/page-position/page-position.service';
+import { PagePositionServiceMock } from '../shared/page-position/test/page-position.service.mock';
 
 @NgModule({
   imports: [
@@ -50,7 +52,8 @@ import { UrlParametersService } from "../url-parameters/url-parameters.service";
     { provide: IncomeCalcService, useClass: IncomeCalcServiceMock },
     { provide: MathService, useClass: MathServiceMock },
     { provide: LocalStorageService, useClass: LocalStorageServiceMock },
-    { provide: UrlParametersService, useClass: UrlParametersServiceMock }
+    { provide: UrlParametersService, useClass: UrlParametersServiceMock },
+    { provide: PagePositionService, useClass: PagePositionServiceMock }
   ]
 })
 export class CommonServicesTestingModule {

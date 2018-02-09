@@ -6,7 +6,6 @@ import { TranslateModule, TranslateService } from 'ng2-translate';
 import { MatrixImagesComponent } from '../matrix-images';
 import { MatrixViewBlockComponent } from '../matrix-view-block';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-import { MatrixViewBlockService } from '../matrix-view-block/matrix-view-block.service';
 import { SharedModule } from '../../shared';
 import {
     LoaderService,
