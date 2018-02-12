@@ -275,7 +275,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public openMedia(image: any, index: number): void {
     this.activeImage = image;
     this.indexViewBoxImage = index;
-    console.log(image)
     const countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
     const offset: number = this.zoom - countByIndex;
 
@@ -303,7 +302,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     if (!this.prevImage) {
       this.prevImage = image;
       this.showImageBlock = true;
-      console.log(this.showImageBlock);
       this.urlParametersService.setActiveImage(index);
       this.goToRow(row);
 
@@ -312,14 +310,12 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
     if (isEqual(this.prevImage, image)) {
       this.showImageBlock = !this.showImageBlock;
-      console.log('wrong 1');
       if (!this.showImageBlock) {
         this.prevImage = void 0;
         this.urlParametersService.removeActiveImage();
       }
 
     } else {
-      console.log('wrong 2');
       this.prevImage = image;
       this.showImageBlock = true;
       this.urlParametersService.setActiveImage(index);

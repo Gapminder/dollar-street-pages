@@ -1,36 +1,13 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-
-import {
-SharedModule
-} from '../../../shared';
-import {
-MathService,
-LoaderService,
-BrowserDetectionService,
-LanguageService,
-UtilsService
-} from '../../../common';
 import { MatrixImagesComponent } from '../matrix-images.component';
-import { MatrixViewBlockComponent } from '../../matrix-view-block';
 import { SortPlacesService } from '../../../common/sort-places/sort-places.service';
-
-import {
-  LoaderServiceMock,
-  BrowserDetectionServiceMock,
-  LanguageServiceMock,
-  UtilsServiceMock
-} from '../../../test/';
-import { UrlParametersServiceMock } from '../../../test/mocks/url-parameters.service.mock';
-import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
 import { Place } from '../../../interfaces';
-import { PagePositionServiceMock } from "../../../shared/page-position/test/page-position.service.mock";
-import { PagePositionService } from "../../../shared/page-position/page-position.service";
-import { DEBOUNCE_TIME } from "../../../defaultState";
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
 
 describe('MatrixImagesComponent', () => {
   let component: MatrixImagesComponent;
@@ -55,22 +32,14 @@ describe('MatrixImagesComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         InfiniteScrollModule,
-        SharedModule,
         RouterTestingModule,
-        StoreModule.forRoot({})
+        StoreModule.forRoot({}),
+        CommonServicesTestingModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [MatrixImagesComponent],
       providers: [
-        {provide: MathService, useValue: {}},
-        // AppActions,
-        { provide: LoaderService, useClass: LoaderServiceMock },
-        { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-        { provide: LanguageService, useClass: LanguageServiceMock },
-        { provide: UtilsService, useClass: UtilsServiceMock },
         { provide: SortPlacesService, useValue: {} },
-        { provide: UrlParametersService, useClass: UrlParametersServiceMock },
-        { provide: PagePositionService, useClass: PagePositionServiceMock }
       ]
     });
 

@@ -48,8 +48,7 @@ describe('FamilyHeaderComponent', () => {
         RegionMapComponentMock
       ],
       providers: [
-        { provide: FamilyHeaderService, useClass: FamilyHeaderServiceMock },
-        { provide: UrlParametersService, useClass: UrlParametersServiceMock }
+        { provide: FamilyHeaderService, useClass: FamilyHeaderServiceMock }
       ]
     });
 

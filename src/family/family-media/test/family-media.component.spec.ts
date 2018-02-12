@@ -29,7 +29,7 @@ import { FamilyMediaService } from '../family-media.service';
 
 import { mockFamilyMediaData } from './mock.component.data';
 import { Store } from '@ngrx/store';
-import { PagePositionServiceMock } from "../../../shared/page-position/test/page-position.service.mock";
+import { PagePositionServiceMock } from "../../../test/mocks/page-position.service.mock";
 import { PagePositionService } from "../../../shared/page-position/page-position.service";
 import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
 import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";

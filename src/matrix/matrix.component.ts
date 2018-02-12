@@ -384,7 +384,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
   public initPlacesSet(): void {
     this.placesSet = this.placesSet.map((place: Place) => {
-      console.log(this.placesSet);
       if (place) {
         place.showIncome = this.incomeCalcService
           .calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);

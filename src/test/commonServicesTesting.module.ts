@@ -27,7 +27,7 @@ import { LocalStorageService } from '../common/index';
 import { UrlParametersServiceMock } from './mocks/url-parameters.service.mock';
 import { UrlParametersService } from '../url-parameters/url-parameters.service';
 import { PagePositionService } from '../shared/page-position/page-position.service';
-import { PagePositionServiceMock } from '../shared/page-position/test/page-position.service.mock';
+import { PagePositionServiceMock } from './mocks/page-position.service.mock';
 
 @NgModule({
   imports: [

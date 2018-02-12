@@ -1,38 +1,22 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
-import { TranslateModule, TranslateService } from 'ng2-translate';
+import { TranslateModule } from 'ng2-translate';
 import { StoreModule } from '@ngrx/store';
-import {
-  MathService,
-  BrowserDetectionService,
-  LanguageService,
-  UtilsService,
-  UrlChangeService
-} from '../../../common';
-import {
-  TranslateServiceMock,
-  AngularticsMock,
-  BrowserDetectionServiceMock,
-  LanguageServiceMock,
-  UtilsServiceMock,
-  UrlChangeServiceMock
-} from '../../../test/';
-import {
-  SharedModule
-} from '../../../shared';
+import { AngularticsMock } from '../../../test/';
 import { MatrixViewBlockComponent } from '../matrix-view-block.component';
 import { MatrixViewBlockService } from '../matrix-view-block.service';
-import {StreetDrawService} from '../../../shared/street/street.service';
-import {StreetDrawServiceMock} from '../../../test/mocks/streetDrawService.mock';
-import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
-import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { StreetDrawService } from '../../../shared/street/street.service';
+import { StreetDrawServiceMock } from '../../../test/mocks/streetDrawService.mock';
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { MockComponent } from 'ng2-mock-component';
 
 describe('MatrixViewBlockComponent', () => {
   let component: MatrixViewBlockComponent;
   let fixture: ComponentFixture<MatrixViewBlockComponent>;
 
-  class MatrixViewBlockServiceMock {}
+  class MatrixViewBlockServiceMock {
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -40,23 +24,18 @@ describe('MatrixViewBlockComponent', () => {
         TranslateModule,
         RouterTestingModule,
         Angulartics2Module,
-        SharedModule,
-        StoreModule.forRoot({})
+        StoreModule.forRoot({}),
+        CommonServicesTestingModule
       ],
-      declarations: [MatrixViewBlockComponent],
+      declarations: [
+        MatrixViewBlockComponent,
+        MockComponent({ selector: 'translate-me' }),
+        MockComponent({ selector: 'region-map', inputs: ['mapData'] })
+      ],
       providers: [
-        MathService,
-        { provide: UrlChangeService, useClass: UrlChangeServiceMock },
         { provide: MatrixViewBlockService, useClass: MatrixViewBlockServiceMock },
-        { provide: TranslateService, useClass: TranslateServiceMock },
         { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
-        { provide: TranslateService, useClass: TranslateServiceMock },
-        { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-        { provide: LanguageService, useClass: LanguageServiceMock },
-        { provide: UtilsService, useClass: UtilsServiceMock },
-        { provide: StreetDrawService, useClass: StreetDrawServiceMock},
-        { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-        { provide: UrlParametersService, useClass: UrlParametersServiceMock }
+        { provide: StreetDrawService, useClass: StreetDrawServiceMock },
       ]
     });
 
@@ -112,7 +91,7 @@ describe('MatrixViewBlockComponent', () => {
   });
 
   it('truncCountryName()', () => {
-    let resp = component.truncCountryName({alias: 'South Africa'});
+    let resp = component.truncCountryName({ alias: 'South Africa' });
 
     expect(resp).toEqual('SA');
   });

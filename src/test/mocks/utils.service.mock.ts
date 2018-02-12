@@ -16,8 +16,8 @@ export class UtilsServiceMock {
   public parseUrl(url: string): any {
     return {
       thing: 'Families',
-      countries: 'World',
-      regions: 'World'
+      countries: ['World'],
+      regions: ['World']
     };
   }
 

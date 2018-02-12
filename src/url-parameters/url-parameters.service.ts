@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AppStates, UrlParameters } from '../interfaces';
 import { DEBOUNCE_TIME, DefaultUrlParameters, VisibleParametersPerPage } from '../defaultState';
-import { forEach, get, reduce, difference } from 'lodash';
+import { difference, get, reduce } from 'lodash';
+import * as StreetSettingsActions from '../common';
 import { BrowserDetectionService, IncomeCalcService, LanguageService, UtilsService } from '../common';
 
 import { Store } from '@ngrx/store';
 import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from '../matrix/ngrx/matrix.actions';
 import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter.actions';
-import * as StreetSettingsActions from '../common';
 import * as CountriesFilterActions from '../shared/countries-filter/ngrx/countries-filter.actions';
-import { Router } from "@angular/router";
-import { Location } from "@angular/common";
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class UrlParametersService {
@@ -90,15 +90,16 @@ export class UrlParametersService {
       return DefaultUrlParameters;
     }
     urlString = urlString.slice(urlString.indexOf('?') + 1);
-     return Object.assign( {}, DefaultUrlParameters, this.utilsService.parseUrl(urlString));
+
+    return Object.assign( {}, DefaultUrlParameters, this.utilsService.parseUrl(urlString));
   }
 
   combineUrlPerPage(): void {
     const path = this.router.url.split('?')[0];
 
     const params =this.getParamsStingForPage(path);
-    const string = params.length ? `?${params}` : params;
-    this.location.replaceState(path, string);
+    const line = params.length ? `?${params}` : params;
+    this.location.replaceState(path, line);
   }
 
   getStringFromParams(param: string): string {

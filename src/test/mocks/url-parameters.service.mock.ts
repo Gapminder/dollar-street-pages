@@ -4,6 +4,8 @@ import { DefaultUrlParameters } from "../../defaultState";
 
 @Injectable()
 export class UrlParametersServiceMock {
+  public needPositionByRoute = null;
+
   public parseString(urlString: string): UrlParameters {
     return DefaultUrlParameters;
   }
@@ -14,7 +16,7 @@ export class UrlParametersServiceMock {
     return '';
   }
 
-  getParamsStingForPage(page: string): string {
+  public getParamsStingForPage(page: string): string {
     return '';
   }
 
@@ -25,4 +27,6 @@ export class UrlParametersServiceMock {
   }
 
   removeActiveHouse(): void {}
+
+  setGridPosition(): void {}
 }

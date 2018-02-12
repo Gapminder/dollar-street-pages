@@ -5,16 +5,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { UrlChangeService } from '../../common/url-change/url-change.service';
 import { UrlChangeServiceMock } from '../../test/mocks/urlChange.service.mock';
-import { UrlParametersServiceMock } from '../../test/mocks/url-parameters.service.mock';
 import { UrlParametersService } from '../url-parameters.service';
-import { CommonServicesTestingModule } from "../../test/commonServicesTesting.module";
-import { NavigationEnd, Router } from "@angular/router";
-import { DEBOUNCE_TIME } from "../../defaultState";
-import { PlatformLocation } from "@angular/common";
-
+import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
+import { Router } from '@angular/router';
+import { DEBOUNCE_TIME } from '../../defaultState';
 
 describe('UrlParametersComponent', () => {
   let component: UrlParametersComponent;
+  let urlParametersService: UrlParametersService;
   let fixture: ComponentFixture<UrlParametersComponent>;
   let router: Router;
 
@@ -36,7 +34,7 @@ describe('UrlParametersComponent', () => {
       .compileComponents();
 
     router = TestBed.get(Router);
-
+    urlParametersService = TestBed.get(UrlParametersService);
     router.initialNavigation();
   }));
 
@@ -51,8 +49,7 @@ describe('UrlParametersComponent', () => {
   });
 
   it('take first subscribe frome route',
-    fakeAsync(inject([UrlParametersService],
-      (urlParametersService: UrlParametersService) => {
+    fakeAsync(() => {
         spyOn(urlParametersService, 'dispatchToStore');
         spyOn(urlParametersService, 'combineUrlPerPage');
         spyOn(urlParametersService, 'removeActiveHouse');
@@ -64,7 +61,6 @@ describe('UrlParametersComponent', () => {
         expect(urlParametersService.dispatchToStore).toHaveBeenCalled();
         expect(urlParametersService.combineUrlPerPage).toHaveBeenCalled();
         expect(urlParametersService.removeActiveHouse).toHaveBeenCalled();
-      }))
-  );
+      }));
 
 });

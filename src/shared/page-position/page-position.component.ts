@@ -1,18 +1,12 @@
-import { Component, HostListener, Input, OnInit, AfterViewInit, Output } from '@angular/core';
+import { Component, HostListener, Output } from '@angular/core';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import { PagePositionService } from './page-position.service';
-import { DEBOUNCE_TIME, DefaultUrlParameters, MATRIX_GRID_CONTAINER_CLASS } from '../../defaultState';
-import { get } from "lodash";
-import { UrlParameters } from "../../interfaces";
-import { NavigationEnd, Router, RouterEvent } from "@angular/router";
 
 @Component({
   selector: 'page-position',
   template: ``
 })
-export class PagePositionComponent implements AfterViewInit {
+export class PagePositionComponent {
 
   size: number;
 
@@ -29,8 +23,7 @@ export class PagePositionComponent implements AfterViewInit {
 
   constructor(
     private urlParametersService: UrlParametersService,
-    private pagePositionService: PagePositionService,
-    private router: Router
+    private pagePositionService: PagePositionService
   ){}
 
   @HostListener('window:scroll', ['$event'])
@@ -39,6 +32,4 @@ export class PagePositionComponent implements AfterViewInit {
     this.row = this.pagePositionService.getCurrentRow( rect);
     this.urlParametersService.setGridPosition(this.row);
   }
-
-  ngAfterViewInit() {}
 }

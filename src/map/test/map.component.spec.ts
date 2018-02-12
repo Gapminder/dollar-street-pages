@@ -56,18 +56,13 @@ describe('MapComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        TranslateTestingModule,
         Angulartics2Module,
         StoreModule.forRoot({}),
         RouterTestingModule.withRoutes([{path: '', component: BlankComponentStub}]),
         CommonServicesTestingModule
       ],
       providers: [
-        MathService,
-        { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-        { provide: MapService, useClass: MapServiceMock },
-        { provide: LanguageService, useClass: LanguageServiceMock },
-        { provide: UrlParametersService, useClass: UrlParametersServiceMock }
+        { provide: MapService, useClass: MapServiceMock }
       ],
       declarations: [MapComponent, BlankComponentStub]
     });

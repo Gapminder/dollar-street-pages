@@ -61,13 +61,12 @@ export class UrlParametersComponent implements  OnDestroy {
     this.subscribtions.push(routerSubscribe);
 
     location.subscribe((event: PopStateEvent) => {
-      console.log(event)
       const params = urlParametersService.parseString(event.url);
       urlParametersService.dispatchToStore(params);
       urlParametersService.combineUrlPerPage();
     });
   }
-
+private
   ngOnDestroy() {
     forEach(this.subscribtions, (subscription: Subscription) => {
       subscription.unsubscribe();
