@@ -16,8 +16,8 @@
         <img *ngIf="home.aboutData"
              class="short-about-info-image"
              src="/assets/img/info-button.svg"
-             (click)="showAboutData($event, true)"
-             (mouseenter)="showAboutData($event, true)"
+             (click)="showAboutData($event, isFromDomElement = true)"
+             (mouseenter)="showAboutData($event, isFromDomElement = true)"
              (mouseleave)="showAboutData()">
       </p>
     </div>

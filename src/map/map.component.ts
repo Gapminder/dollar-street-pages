@@ -183,7 +183,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public urlChanged(options: {url: string, isNotReplaceState?: boolean}): void {
-    const DEBOUNCE_TIME = 100;
     const {url, isNotReplaceState} = options;
 
     this.mapServiceSubscribe = this.mapService

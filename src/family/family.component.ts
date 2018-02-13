@@ -184,20 +184,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.familyMediaComponent.changeZoom(prevZoom);
   }
 
-  // public urlChanged(options): void {
-  //   let { url } = options;
-  //   const { isZoom, isBack } = options;
-  //
-  //   if (isZoom) {
-  //     this.calcItemSize();
-  //     url = url.replace(/row\=\d*/, `row=${this.row}`).replace(/zoom\=\d*/, `zoom=${this.zoom}`);
-  //   }
-  //
-  //   this.store.dispatch(new AppActions.SetQuery(url));
-  //
-  //   this.urlChangeService.replaceState('/family', url);
-  // }
-
   public processScroll(): void {
     const scrollTop = (document.body.scrollTop || document.documentElement.scrollTop);
 
