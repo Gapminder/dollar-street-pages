@@ -77,7 +77,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
-  //public showStreetAttrs: boolean;
 
   public constructor(elementRef: ElementRef,
                      streetDrawService: StreetDrawService,
@@ -114,21 +113,14 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (data) {
        if (data.streetSettings) {
+         console.log(data.streetSettings)
           if (this.streetData !== data.streetSettings) {
               this.streetData = data.streetSettings;
-
+            console.log(this.streetData)
               if (this.placesArr) {
                 this.setDividers(this.placesArr, this.streetData);
               }
           }
-
-          /*if (data.showStreetAttrs) {
-            this.showStreetAttrs = true;
-          } else {
-            this.showStreetAttrs = false;
-          }
-
-          this.street.showStreetAttrs = this.showStreetAttrs;*/
 
           if (this.currencyUnit) {
             this.redrawStreet();
@@ -143,6 +135,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
           if (this.currencyUnit !== data.currencyUnit) {
             this.currencyUnit = data.currencyUnit;
             this.street.currencyUnit = this.currencyUnit;
+            this.redrawStreet()
           }
         }
       }
@@ -263,6 +256,14 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   }
 
   public redrawStreet(): void {
+    if (
+      this.street.lowIncome
+      && this.street.highIncome
+      && this.streetData
+      && this.regions
+      && this.countries
+      && this.thingName
+    ) {
     this.street
       .clearSvg()
       .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
@@ -270,6 +271,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       .set('fullIncomeArr', [])
       .drawScale(this.placesArr, this.streetData)
       .removeSliders();
+    }
   }
 
   public ngOnDestroy(): void {

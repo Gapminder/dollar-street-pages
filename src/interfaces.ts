@@ -79,6 +79,8 @@ export interface UrlParamsInterface {
 
 export interface DrawDividersInterface {
   showDividers: boolean;
+  showCurrency?: boolean;
+  showLabels?: boolean;
   low: number;
   medium: number;
   high: number;
@@ -88,8 +90,12 @@ export interface DrawDividersInterface {
   mediumDividerCoord: number;
   highDividerCoord: number;
   _id?: string;
-}
+  firstLabelName?: string;
+  secondLabelName?: string;
+  thirdLabelName?: string;
+  fourthLabelName?: string;
 
+}
 
 export interface Place {
   background: string;
