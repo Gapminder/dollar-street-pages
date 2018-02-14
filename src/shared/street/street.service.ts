@@ -12,14 +12,11 @@ import { select } from 'd3-selection';
 
 import * as _ from 'lodash';
 import { SVG_DEFAULTS } from './svg-parameters';
-import {AppStates, MatrixState, Place} from "../../interfaces";
-import {Store} from "@ngrx/store";
-import {Subscription} from "rxjs/Subscription";
+import { Place} from "../../interfaces";
 
 @Injectable()
 export class StreetDrawService {
   public width: number;
-  public widthParsed: number;
   public height: number;
   public halfOfHeight: number;
   public lowIncome: number;
@@ -71,7 +68,6 @@ export class StreetDrawService {
   public isDesktop: boolean;
   public isMobile: boolean;
   public currencyUnit: any;
-  //public showStreetAttrs: boolean;
 
   public colors: {fills: any, fillsOfBorders: any} = {
     fills: {
@@ -89,8 +85,7 @@ export class StreetDrawService {
   };
 
   public constructor(private math: MathService,
-                     browserDetectionService: BrowserDetectionService,
-  ) {
+                     browserDetectionService: BrowserDetectionService) {
     this.isDesktop = browserDetectionService.isDesktop();
     this.isMobile = browserDetectionService.isMobile();
   }
@@ -133,33 +128,6 @@ export class StreetDrawService {
     if (!drawDividers.showDividers /*|| !this.showStreetAttrs*/) {
       return;
     }
-    console.log(this.axisLabel)
-    // this.svg
-    //   .selectAll('image.scale-label22222')
-    //   .data(this.axisLabel)
-    //   .enter()
-    //   .append('svg:image')
-    //   .attr('class', 'scale-label22222')
-    //   .attr('xlink:href', '/assets/img/divider1.svg')
-    //   .attr('y', 25)
-    //   .attr('width', 15 + 19)
-    //   .attr('height', 24)
-    //   .attr('x', (d: any) => {
-    //     let indent = 0;
-    //     let center = 11;
-    //
-    //     if ((d + '').length === 2) {
-    //       indent = 11;
-    //       center = 2;
-    //     }
-    //
-    //     if ((d + '').length === 3) {
-    //       indent = 15;
-    //       center = 7;
-    //     }
-    //
-    //     return this.scale(d) - indent + 15 + center;
-    //   });
 
     this.svg.selectAll('use.square-point')
       .data(this.axisLabel)
@@ -173,7 +141,6 @@ export class StreetDrawService {
       .attr('y', SVG_DEFAULTS.squarePoints.positionY)
       .attr('x', (d: number) => {
         const x = this.scale(d)
-        console.log(x)
 
         return x;
       });
@@ -256,14 +223,12 @@ export class StreetDrawService {
 
   public drawScale(places: Place[], drawDividers: any): this {
     let halfHouseWidth = 7;
-    let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 10;
 
     axisBottom(this.scale)
       .tickFormat(() => {
         return void 0;
       });
-    // .tickSize(6, 0);
+
 
     this.svg
       .selectAll('text.poorest')
@@ -684,75 +649,11 @@ export class StreetDrawService {
           this.sliderLeftMove = true;
         })
         .on('touchstart', (): any => this.sliderLeftMove = true);
-
-      // this.leftScroll = this.svg
-      //   .append('polygon')
-      //   .attr('class', 'left-scroll')
-      //   .style('fill', '#515c65')
-      //   .style('cursor', 'pointer')
-      //   .attr('id', 'left-scroll')
-      //   .attr('stroke-width', 0.5)
-      //   .attr('stroke', '#ffffff')
-      //   .on('mousedown', (): void => {
-      //     this.sliderLeftMove = true;
-      //   })
-      //   .on('touchstart', (): any => this.sliderLeftMove = true);
     }
 
 
     this.leftScroll
       .attr('x',  x);
-
-    // this.leftScroll
-    //   .attr('points', () => {
-    //     let point1: string = `${x + this.streetOffset / 2 - 9 },${ this.halfOfHeight + 12 - 1 - 1}`;
-    //     let point2: string = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
-    //     let point3: string = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
-    //     let point4: string = `${x + this.streetOffset / 2 + 9},${ this.halfOfHeight + 12 - 1 - 1}`;
-    //     let point5: string = `${x + this.streetOffset / 2 },${ this.halfOfHeight + 12 + 5 - 1 + 2 }`;
-    //
-    //     if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-    //       if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4)) {
-    //         point1 = `${this.leftPoint + this.streetOffset / 2 - 9 - 12 },${ this.halfOfHeight + 12 - 1 - 1}`;
-    //         point2 = `${this.leftPoint + this.streetOffset / 2 - 9 - 12},${ this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
-    //         point3 = `${this.leftPoint + this.streetOffset / 2 + 9 - 12},${ this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
-    //         point4 = `${this.leftPoint + this.streetOffset / 2 + 9 - 12},${ this.halfOfHeight + 12 - 1 - 1}`;
-    //         point5 = `${this.leftPoint + this.streetOffset / 2 - 12},${ this.halfOfHeight + 12 + 5 - 1 + 2 }`;
-    //       }
-    //     }
-    //
-    //     if (this.windowInnerWidth < 600) {
-    //       point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 1}`;
-    //       point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5 - 1 - 1}`;
-    //       point3 = `${x + 2 + this.streetOffset / 2 + 1},${ this.halfOfHeight + 14 - 5 - 1 - 1 }`;
-    //       point4 = `${x + 2 + this.streetOffset / 2 + 1},${ this.halfOfHeight + 14 - 1}`;
-    //       point5 = `${x + 2 + this.streetOffset / 2 - 4},${ this.halfOfHeight + 14 + 5 - 1}`;
-    //     }
-    //
-    //     return `${point1} ${point2} ${point3} ${point4} ${point5}`;
-    //   });
-
-    if (this.isDesktop) {
-      // this.leftScroll
-      //   .attr('points', () => {
-      //     let point1: string = `${x + this.streetOffset / 2 - 9 },${ this.halfOfHeight + 12 - 1}`;
-      //     let point2: string = `${x + this.streetOffset / 2 - 9},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      //     let point3: string = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      //     let point4: string = `${x + this.streetOffset / 2 + 1},${ this.halfOfHeight + 12 - 1}`;
-      //     let point5: string = `${x + this.streetOffset / 2 - 4},${ this.halfOfHeight + 12 + 5 - 1}`;
-      //
-      //     if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      //       if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4)) {
-      //         point1 = `${this.leftPoint + this.streetOffset / 2 - 9 - 12 },${ this.halfOfHeight + 12 - 1}`;
-      //         point2 = `${this.leftPoint + this.streetOffset / 2 - 9 - 12},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      //         point3 = `${this.leftPoint + this.streetOffset / 2 + 1 - 12},${ this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      //         point4 = `${this.leftPoint + this.streetOffset / 2 + 1 - 12},${ this.halfOfHeight + 12 - 1}`;
-      //         point5 = `${this.leftPoint + this.streetOffset / 2 - 4 - 12},${ this.halfOfHeight + 12 + 5 - 1}`;
-      //       }
-      //     }
-      //     return `${point1} ${point2} ${point3} ${point4} ${point5}`;
-      //   });
-    }
 
     if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4) && !this.isMobile) {
@@ -841,18 +742,6 @@ export class StreetDrawService {
     }
 
     if (!this.rightScroll) {
-      // this.rightScroll = this.svg
-      //   .append('polygon')
-      //   .attr('class', 'right-scroll')
-      //   .style('fill', '#515c65')
-      //   .style('cursor', 'pointer')
-      //   .attr('stroke-width', 0.5)
-      //   .attr('stroke', 'white')
-      //   .on('mousedown', (): void => {
-      //     this.sliderRightMove = true;
-      //   })
-      //   .on('touchstart', (): any => this.sliderRightMove = true);
-
       this.rightScroll = this.svg
         .append('use')
         .attr('class', 'right-scroll')
@@ -870,56 +759,6 @@ export class StreetDrawService {
 
     this.rightScroll
       .attr('x',  x);
-
-    // this.rightScroll.attr('points', () => {
-    //   let point1 = `${x + this.streetOffset / 2 - 9},${this.halfOfHeight + 12 - 1 - 1 }`;
-    //   let point2 = `${x + this.streetOffset / 2 - 9},${this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
-    //   let point3 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
-    //   let point4 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight + 12 - 1 - 1}`;
-    //   let point5 = `${x + this.streetOffset / 2},${this.halfOfHeight + 12 + 5 - 1 + 2}`;
-    //
-    //   if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-    //     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(x + this.streetOffset / 2 - 1)) {
-    //       point1 = `${this.rightPoint + this.streetOffset / 2 - 9 + 12},${this.halfOfHeight + 12 - 1 - 1 }`;
-    //       point2 = `${this.rightPoint + this.streetOffset / 2 - 9 + 12},${this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
-    //       point3 = `${this.rightPoint + this.streetOffset / 2 + 9 + 12},${this.halfOfHeight - 5 - 1 - 1 - 1 - 4 + 2}`;
-    //       point4 = `${this.rightPoint + this.streetOffset / 2 + 9 + 12},${this.halfOfHeight + 12 - 1 - 1}`;
-    //       point5 = `${this.rightPoint + this.streetOffset / 2 + 12},${this.halfOfHeight + 12 + 5 - 1 + 2}`;
-    //     }
-    //   }
-    //
-    //   if (this.windowInnerWidth < 600) {
-    //     point1 = `${x - 2 + this.streetOffset / 2 - 1 },${this.halfOfHeight + 14 - 1}`;
-    //     point2 = `${x - 2 + this.streetOffset / 2 - 1 },${this.halfOfHeight + 14 - 5 - 1 - 1}`;
-    //     point3 = `${x - 2 + this.streetOffset / 2 + 9 },${this.halfOfHeight + 14 - 5 - 1 - 1}`;
-    //     point4 = `${x - 2 + this.streetOffset / 2 + 9 },${this.halfOfHeight + 14 - 1}`;
-    //     point5 = `${x - 2 + this.streetOffset / 2 + 4 },${this.halfOfHeight + 14 + 5 - 1}`;
-    //   }
-    //
-    //   return `${point1} ${point2} ${point3} ${point4} ${point5}`;
-    // });
-
-    if (this.isDesktop) {
-      // this.rightScroll.attr('points', () => {
-      //   let point1 = `${x + this.streetOffset / 2 - 1},${this.halfOfHeight + 12 - 1 }`;
-      //   let point2 = `${x + this.streetOffset / 2 - 1},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      //   let point3 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      //   let point4 = `${x + this.streetOffset / 2 + 9},${this.halfOfHeight + 12 - 1}`;
-      //   let point5 = `${x + this.streetOffset / 2 + 4},${this.halfOfHeight + 12 + 5 - 1}`;
-      //
-      //   if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      //     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(x + this.streetOffset / 2 - 1)) {
-      //       point1 = `${this.rightPoint + this.streetOffset / 2 - 1 + 12},${this.halfOfHeight + 12 - 1 }`;
-      //       point2 = `${this.rightPoint + this.streetOffset / 2 - 1 + 12},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      //       point3 = `${this.rightPoint + this.streetOffset / 2 + 9 + 12},${this.halfOfHeight - 5 - 1 - 1 - 1}`;
-      //       point4 = `${this.rightPoint + this.streetOffset / 2 + 9 + 12},${this.halfOfHeight + 12 - 1}`;
-      //       point5 = `${this.rightPoint + this.streetOffset / 2 + 4 + 12},${this.halfOfHeight + 12 + 5 - 1}`;
-      //     }
-      //   }
-      //
-      //   return `${point1} ${point2} ${point3} ${point4} ${point5}`;
-      // });
-    }
 
     if (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World' && !this.isMobile) {
       if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(x + this.streetOffset / 2 - 1) && !this.isMobile) {
@@ -1147,7 +986,6 @@ export class StreetDrawService {
       .attr('income', (datum: Place) => { return datum.income})
       .attr('home-id', (datum: Place) => { return datum._id})
       .attr('x', (datum: Place) => {
-        // console.log(datum);
 
         const scaleDatumIncome = this.scale(datum.income);
         const position = this.streetOffset / 2 - SVG_DEFAULTS.activeHomes.width / 2 + scaleDatumIncome;
@@ -1160,7 +998,6 @@ export class StreetDrawService {
 
   public pressedSlider(): void {
     document.body.classList.remove('draggingSliders');
-    console.log("preset")
     if (this.draggingSliders && !this.distanceDraggingLeftSlider && !this.distanceDraggingRightSlider) {
       this.draggingSliders = false;
       this.distanceDraggingLeftSlider = void 0;
@@ -1211,13 +1048,7 @@ export class StreetDrawService {
     }
 
     if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      console.log(123)
-      console.log("this.minIncome", this.minIncome)
-      console.log("this.lowIncome", this.lowIncome)
-      console.log("this.maxIncome", this.maxIncome)
-      console.log("this.highIncome", this.highIncome)
       if (this.lowIncome < this.minIncome) {
-        console.log(333)
         this.filter.next({
           lowIncome: Math.round(this.minIncome - 3),
           highIncome: Math.round(this.highIncome)
@@ -1225,7 +1056,6 @@ export class StreetDrawService {
       }
 
       if (this.highIncome > this.maxIncome) {
-        console.log(444)
         this.filter.next({
           lowIncome: Math.round(this.lowIncome),
           highIncome: Math.round(this.maxIncome + 5)
@@ -1233,7 +1063,6 @@ export class StreetDrawService {
       }
 
       if (this.highIncome <= this.maxIncome && this.lowIncome >= this.minIncome) {
-        console.log(555)
         this.filter.next({
           lowIncome: Math.round(this.lowIncome),
           highIncome: Math.round(this.highIncome)

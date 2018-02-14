@@ -94,7 +94,6 @@ export interface DrawDividersInterface {
   secondLabelName?: string;
   thirdLabelName?: string;
   fourthLabelName?: string;
-
 }
 
 export interface Place {

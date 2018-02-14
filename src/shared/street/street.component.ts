@@ -113,10 +113,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (data) {
        if (data.streetSettings) {
-         console.log(data.streetSettings)
           if (this.streetData !== data.streetSettings) {
               this.streetData = data.streetSettings;
-            console.log(this.streetData)
               if (this.placesArr) {
                 this.setDividers(this.placesArr, this.streetData);
               }
