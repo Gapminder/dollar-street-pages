@@ -33,8 +33,8 @@ export class DonateComponent implements OnInit, OnDestroy, AfterViewInit {
     public getTranslationSubscribe: Subscription;
     public document: Document = document;
     public window: Window = window;
-    public siteName: string = 'Dollar Street';
-    public siteDescription: string = 'See how people really live';
+    public siteName: string = 'Dollar Street - photos as data to kill country stereotypes';
+    public siteDescription: string = 'Imagine the world as a street. Everyone lives on Dollar Street. The richest to the left and the poorest to the right. Every else live somewhere in between. Where would you live? Visit Dollar Street and see homes from hundreds of homes from all over the World.';
     public donateDescription: SafeHtml;
     public isShowAboutData: boolean;
     public isShowAboutDataFullScreen: boolean;
