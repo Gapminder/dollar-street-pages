@@ -16,6 +16,9 @@
   background-color: #f6f7f8;
   border-top: 1px solid #c6c7c9;
   border-bottom: 1px solid #c6c7c9;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
 }
 
 .description-container > div,
@@ -25,6 +28,7 @@
 
 .home-description-container .image-container {
   width: 252px;
+  flex: 0 0 252px;
   margin-right: 20px;
   cursor: pointer;
 }
@@ -38,7 +42,7 @@
 }
 
 .home-description-container .description-container {
-  width: calc(100% - 272px);
+  flex: 1 1 100%;
 }
 
 .description-container {
