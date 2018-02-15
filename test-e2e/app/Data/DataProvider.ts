@@ -268,7 +268,7 @@ export class DataProvider {
     },
     'quickTour': {element: ():ElementFinder => $('.bg-orange'), actualResult: 'Quick tour'},
     'maybeLater': {element: ():ElementFinder => element.all(by.css('.button-container>button')).get(1), actualResult: 'Maybe later'},
-    'seeHowPeopleLive': {element: ():ElementFinder => $('.quick-guide-description-container>h2'), actualResult: 'See how people really live'},
+    'seeHowPeopleLive': {element: ():ElementFinder => $('.quick-guide-description-container>h2'), actualResult: 'Imagine the world as a street. Everyone lives on Dollar Street. The richest to the left and the poorest to the right. Every else live somewhere in between. Where would you live? Visit Dollar Street and see homes from hundreds of homes from all over the World.'},
     'closeButton': {element: ():ElementFinder => $('.quick-guide-container>img'), actualResult: ''},
     'logo': {element: ():ElementFinder => $('div[class*="logo-container"] img[alt="Logo"]'), actualResult: ''}
   };
