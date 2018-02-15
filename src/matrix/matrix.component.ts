@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { chain, cloneDeep, find, map, difference, forEach } from 'lodash';
+import { chain, cloneDeep, find, map, difference, forEach, uniq } from 'lodash';
 import {
   LoaderService,
   UrlChangeService,
@@ -656,13 +656,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
 
     const pinnedCountries = this.placesSet.map(place => place.country);
+    const countriesList = uniq(pinnedCountries);
+
     this.pinHeaderTitle = '';
-    if (pinnedCountries.length > TITLE_MAX_VISIBLE_COUNTRIES) {
+
+    if (countriesList.length > TITLE_MAX_VISIBLE_COUNTRIES) {
       this.pinHeaderTitle = `${this.thing}`;
-    } else if (pinnedCountries.length > 1 && pinnedCountries.length <= TITLE_MAX_VISIBLE_COUNTRIES) {
-      this.pinHeaderTitle = `${this.thing} in ${pinnedCountries.splice(0, pinnedCountries.length - 1).join(', ')} and ${pinnedCountries[pinnedCountries.length-1]}`;
+    } else if (countriesList.length > 1 && countriesList.length <= TITLE_MAX_VISIBLE_COUNTRIES) {
+      this.pinHeaderTitle = `${this.thing} in ${countriesList.splice(0, countriesList.length - 1).join(', ')} and ${countriesList[countriesList.length-1]}`;
     } else {
-      this.pinHeaderTitle = `${this.thing} in ${pinnedCountries.join(', ')}`;
+      this.pinHeaderTitle = `${this.thing} in ${countriesList.join(', ')}`;
     }
 
     if (this.isEmbedMode || this.isPreviewView) {
