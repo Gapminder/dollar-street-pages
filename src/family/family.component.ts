@@ -128,7 +128,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
-      console.log(params);
       this.urlParams = {
         thing: params.thing ? decodeURI(params.thing) : 'Families',
         countries: params.countries ? decodeURI(params.countries) : 'World',
