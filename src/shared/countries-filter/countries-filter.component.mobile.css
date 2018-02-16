@@ -51,7 +51,6 @@
 #countries-filter-mobile.open-countries-filter .countries-filter-container {
   overflow: hidden;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
   position: fixed;
@@ -59,7 +58,7 @@
   background-color: white;
   display: block;
   z-index: 667;
-  height: 100%;
+  height: 100vh;
 }
 
 #countries-filter-mobile .regions-container {
