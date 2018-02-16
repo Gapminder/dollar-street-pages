@@ -18,6 +18,7 @@ export class SocialShareService {
     public twitterElementId: string = 'twitter-wjs';
     public documentCreatedSubscribe: Subscription;
     public twitterInstance: any;
+    public sharesTitleTranslated: string;
     public shareMessageTranslated: string;
     public getTranslationSubscribe: Subscription;
     public getLanguagesListSubscription: Subscription;
@@ -30,8 +31,9 @@ export class SocialShareService {
               this.twitterInstance = this.twitterFollow();
           });
 
-        this.getTranslationSubscribe = this.languageService.getTranslation(['SEE_HOW_PEOPLE', 'REALLY', 'LIVE']).subscribe((trans: any) => {
-            this.shareMessageTranslated = trans.SEE_HOW_PEOPLE+' '+trans.REALLY+' '+trans.LIVE+' ';
+        this.getTranslationSubscribe = this.languageService.getTranslation(['PHOTOS_AS_DATA','LIVES_ON_DOLLAR_STREET']).subscribe((trans: any) => {
+            this.sharesTitleTranslated = trans.PHOTOS_AS_DATA;
+            this.shareMessageTranslated = trans.LIVES_ON_DOLLAR_STREET;
         });
     }
 
@@ -179,6 +181,7 @@ export class SocialShareService {
 
           case 'facebook':
             params.set('u', url);
+            params.set('title', this.sharesTitleTranslated);
             params.set('description', this.shareMessageTranslated);
           break;
 
