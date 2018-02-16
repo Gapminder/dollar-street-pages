@@ -27,7 +27,7 @@ xdescribe('Matrix Page Social share buttons, hamburger menu:', () => {
           browser.wait(EC.visibilityOf(SharePages.inputFieldTwitter), 5000);
           expect(browser.getCurrentUrl()).toContain('https://twitter.com/intent/tweet?url=https');
           expect(browser.getCurrentUrl()).toContain('text=See%20how%20people%20really%20live-%20Dollar%20Street');
-          expect(SharePages.inputFieldTwitter.getText()).toContain('See how people really live- Dollar Street');
+          expect(SharePages.inputFieldTwitter.getText()).toContain('Imagine the world as a street. Everyone lives on Dollar Street. The richest to the left and the poorest to the right. Every else live somewhere in between. Where would you live? Visit Dollar Street and see homes from hundreds of homes from all over the World.');
           expect(SharePages.buttonPostOnTwitter.isDisplayed()).toBeTruthy();
         });
       });

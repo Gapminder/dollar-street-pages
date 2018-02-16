@@ -3,7 +3,7 @@ export interface AppState {
 }
 
 export interface MatrixState {
-  matrixImages: {};
+  matrixImages: Place[];
   updateMatrix: boolean;
   pinMode: boolean;
   embedMode: boolean;
@@ -16,8 +16,15 @@ export interface MatrixState {
   currencyUnits: Currency[];
   incomeFilter: boolean;
   quickGuide: boolean;
-  placesSet: {}[];
+  placesSet: Place[];
   processImages: boolean;
+  zoom: number;
+  place: string;
+  embedSetId: string;
+  activeHouseOptions: {
+    row: number;
+    index: number;
+  };
 }
 
 export interface StreetSettingsState {
@@ -49,8 +56,8 @@ export interface Thing {
 
 export interface CountriesFilterState {
   countriesFilter: Continent;
-  selectedCountries: string;
-  selectedRegions?: string;
+  selectedCountries: string[];
+  selectedRegions?: string[];
 }
 
 export interface AppStates {
@@ -59,22 +66,13 @@ export interface AppStates {
     streetSettings: StreetSettingsState;
     thingsFilter: ThingsState;
     countriesFilter: CountriesFilterState;
+    language: LanguageState;
 }
 
 export interface ImageResolutionInterface {
     image: string;
     expand: string;
     full: string;
-}
-
-export interface UrlParamsInterface {
-  thing: string;
-  countries: string;
-  regions: string;
-  zoom: number;
-  row: number;
-  lowIncome?: number;
-  highIncome?: number;
 }
 
 export interface DrawDividersInterface {
@@ -94,6 +92,10 @@ export interface DrawDividersInterface {
   secondLabelName?: string;
   thirdLabelName?: string;
   fourthLabelName?: string;
+  filters?: {
+    lowIncome: number;
+    highIncome: number;
+  };
 }
 
 export interface Place {
@@ -144,11 +146,38 @@ export interface Country {
 }
 
 export interface UrlParameters {
-  [key: string]: string;
+  lang?: string;
+  thing?: string;
+  countries?: string[];
+  regions?: string[];
+  zoom?: string;
+  row?: string;
+  lowIncome?: string;
+  highIncome?: string;
+  activeHouse?: string;
+  activeImage?: string;
+  place?: string;
+  currency?: string;
+  time?: string;
+  embed?: string;
+}
+
+export interface LanguageState {
+  lang: string;
+}
+
+export interface IncomeFilter {
+  lowIncome: number;
+  highIncome: number;
 }
 
 export interface Language {
   code: string;
   name: string;
   _id: string;
+}
+
+export interface PagePosition {
+  row: number;
+  activeHouse: number;
 }

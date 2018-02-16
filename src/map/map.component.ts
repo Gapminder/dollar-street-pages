@@ -19,7 +19,8 @@ import {
   Country,
   Currency,
   Place,
-  TimeUnit
+  TimeUnit,
+  UrlParameters
 } from '../interfaces';
 import {
   MathService,
@@ -33,7 +34,11 @@ import {
 } from '../common';
 import { MapService } from './map.service';
 import { get } from 'lodash';
-
+import { UrlParametersService } from '../url-parameters/url-parameters.service';
+import {
+  DEBOUNCE_TIME,
+  MOBILE_SIZE
+} from '../defaultState';
 
 @Component({
   selector: 'map-component',
@@ -77,7 +82,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public isMobile: boolean;
   public shadowClass: {'shadow_to_left': boolean; 'shadow_to_right': boolean};
   public streetData: DrawDividersInterface;
-  public windowInnerWidth: number = window.innerWidth;
   public currentLanguage: string;
   public appStatesSubscribe: Subscription;
   public timeUnit: TimeUnit;
@@ -96,7 +100,8 @@ export class MapComponent implements OnInit, OnDestroy {
                      private languageService: LanguageService,
                      private store: Store<AppStates>,
                      private incomeCalcService: IncomeCalcService,
-                     private changeDetectorRef: ChangeDetectorRef) {
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private urlParametersService: UrlParametersService) {
     this.element = element.nativeElement;
 
     this.currentLanguage = this.languageService.currentLanguage;
@@ -109,7 +114,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.loaderService.setLoader(false);
 
-    this.appStatesSubscribe = this.store.subscribe((data: AppStates) => {
+    this.appStatesSubscribe = this.store
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((data: AppStates) => {
 
       // streetSettings
       this.streetData = get(data, 'streetSettings.streetSettings', this.streetData);
@@ -122,13 +129,43 @@ export class MapComponent implements OnInit, OnDestroy {
       // thingsFilter
       if (get(data, 'thingsFilter.thingsFilter', false)) {
         this.thing = get(data.thingsFilter.thingsFilter, 'thing.originPlural');
-        const query = {url: `thing=${this.thing}${this.languageService.getLanguageParam()}`};
-        this.urlChanged(query);
+        const query = `thing=${encodeURI(this.thing)}${this.languageService.getLanguageParam()}`;
+
+        this.mapServiceSubscribe = this.mapService
+          .getMainPlaces(query)
+          .subscribe((res) => {
+            if (res.err) {
+              return;
+            }
+
+            this.places = res.data.places;
+            this.countries = res.data.countries;
+
+            this.setMarkersCoord(this.places);
+            this.loaderService.setLoader(true);
+
+            this.resizeSubscribe = fromEvent(window, 'resize')
+              .debounceTime(DEBOUNCE_TIME)
+              .subscribe(() => {
+                this.zone.run(() => {
+                  const windowInnerWidth = window.innerWidth;
+
+                  if (windowInnerWidth >= MOBILE_SIZE) {
+                    document.body.classList.remove('hideScroll');
+                  }
+                  this.setMarkersCoord(this.places);
+                });
+              });
+
+          });
       }
 
       // app
         this.query = get(data, 'app.query', this.query);
 
+
+
+      this.loaderService.setLoader(true);
     });
 
     this.getTranslationSubscribe = this.languageService.getTranslation('FAMILY').subscribe((trans: any) => {
@@ -168,16 +205,14 @@ export class MapComponent implements OnInit, OnDestroy {
         this.setMarkersCoord(this.places);
         this.loaderService.setLoader(true);
 
-        this.resizeSubscribe = fromEvent(window, 'resize')
-          .debounceTime(150)
+        const resizeSubscribe = fromEvent(window, 'resize')
+          .debounceTime(DEBOUNCE_TIME)
           .subscribe(() => {
             this.zone.run(() => {
-              this.windowInnerWidth = window.innerWidth;
-
-              if (this.windowInnerWidth >= 600) {
+              const windowInnerWidth = window.innerWidth;
+              if (windowInnerWidth >= MOBILE_SIZE) {
                 document.body.classList.remove('hideScroll');
               }
-
               this.setMarkersCoord(this.places);
             });
           });
@@ -185,7 +220,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
@@ -201,7 +235,6 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.loaderService) {
       this.loaderService.setLoader(false);
     }
-
   }
 
   public calcHoverPlaceIncome(): void {
@@ -209,7 +242,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public calcLeftSideIncome(): void {
-    this.leftSideCountries = this.leftSideCountries.map((place) => {
+    this.leftSideCountries = this.leftSideCountries.map((place: Place) => {
       return this.calcIncomeValue(place);
     });
   }
@@ -273,13 +306,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.seeAllHomes = this.leftSideCountries.length > 1;
 
-    this.places.forEach((place: any, i: number) => {
+    this.places.forEach((place: Place, i: number) => {
       if (i !== index) {
         return;
       }
-
       this.hoverPlace = place;
-
       this.calcHoverPlaceIncome();
     });
 
@@ -288,19 +319,16 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     Array.prototype.forEach.call(this.markers, (markerRef: ElementRef, i: number): void => {
-
-      let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
-
+      const marker: HTMLElement = markerRef.nativeElement as HTMLElement;
       if (i === index) {
         return;
       }
-
       marker.style.opacity = '0.3';
     });
 
-    let img = new Image();
+    const img = new Image();
 
-    let portraitBox = this.hoverPortrait.nativeElement as HTMLElement;
+    const portraitBox = this.hoverPortrait.nativeElement as HTMLElement;
     portraitBox.style.opacity = '0';
 
     img.onload = () => {
@@ -334,7 +362,6 @@ export class MapComponent implements OnInit, OnDestroy {
         portraitBox.style.opacity = '1';
       });
     };
-
     img.src = this.hoverPlace.familyImg.background;
   };
 
@@ -342,7 +369,6 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.isMobile || this.isDesktop) {
       return;
     }
-
     if (this.isOpenLeftSide) {
       return;
     }
@@ -370,7 +396,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     Array.prototype.forEach.call(this.markers, (markerRef: ElementRef, i: number): void => {
-      let marker: HTMLElement = markerRef.nativeElement as HTMLElement;
+      const marker: HTMLElement = markerRef.nativeElement as HTMLElement;
 
       if (i === index) {
         return;
@@ -426,10 +452,10 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   public closeLeftSideBar(e: MouseEvent): void {
-    let infoBoxContainer = this.infoBoxContainer.nativeElement as HTMLElement;
+    const infoBoxContainer = this.infoBoxContainer.nativeElement as HTMLElement;
     infoBoxContainer.scrollTop = 0;
 
-    let el = e.target as HTMLElement;
+    const el = e.target as HTMLElement;
 
     if (el.classList.contains('see-all') ||
       el.classList.contains('see-all-span') ||
@@ -449,8 +475,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.isOpenLeftSide = false;
     this.onMarker = false;
     this.onThumb = false;
+    const windowInnerWidth = window.innerWidth;
 
-    if (this.windowInnerWidth < 600) {
+    if (windowInnerWidth < MOBILE_SIZE) {
       document.body.classList.remove('hideScroll');
     }
 
@@ -495,5 +522,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public toUrl(image: string): string {
     return `url("${image}")`;
+  }
+
+  public goToPage(params: UrlParameters): void {
+    this.urlParametersService.dispatchToStore(params);
   }
 }

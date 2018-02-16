@@ -55,6 +55,7 @@
           <a
             [routerLink]="['/matrix']"
             [queryParams]="showInCountry"
+            (click)="goToPage('/matrix',showInCountry)"
             angulartics2On="click"
             angularticsEvent="Matrix page">
             <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{countryName}}</span> <img
@@ -63,6 +64,7 @@
           <a
             [routerLink]="['/matrix']"
             [queryParams]="showInRegion"
+            (click)="goToPage('/matrix',showInRegion)"
             angulartics2On="click"
             angularticsEvent="Matrix page">
             <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{country?.region}}</span> <img
@@ -71,6 +73,7 @@
           <a
             [routerLink]="['/matrix']"
             [queryParams]="showInTheWorld"
+            (click)="goToPage('/matrix',showInTheWorld)"
             angulartics2On="click"
             angularticsEvent="Matrix page">
             <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{ 'THE_WORLD' | translate }}</span> <img

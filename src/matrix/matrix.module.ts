@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { SharedModule } from '../shared';
@@ -23,7 +22,7 @@ import { MatrixViewBlockComponent,
   declarations: [
     MatrixComponent,
     MatrixImagesComponent,
-    MatrixViewBlockComponent
+    MatrixViewBlockComponent,
   ],
   imports: [
     HttpModule,
@@ -34,7 +33,7 @@ import { MatrixViewBlockComponent,
   ],
   providers: [
     MatrixService,
-    MatrixViewBlockService
+    MatrixViewBlockService,
   ],
   exports: []
 })

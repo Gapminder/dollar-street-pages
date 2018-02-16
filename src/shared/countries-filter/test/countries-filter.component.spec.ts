@@ -4,7 +4,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import * as CountriesFilterActions from '../ngrx/countries-filter.actions';
 import { countriesFilterReducer } from '../ngrx/countries-filter.reducers';
 
-import { AppStates } from '../../../interfaces';
+import { AppStates, UrlParameters } from '../../../interfaces';
 import { BrowserDetectionService, LanguageService, UrlChangeService, UtilsService } from '../../../common';
 import { CountriesFilterComponent } from '../countries-filter.component';
 import { CountriesFilterPipe } from '../countries-filter.pipe';
@@ -15,29 +15,28 @@ import {
   UrlChangeServiceMock,
   UtilsServiceMock
 } from '../../../test/';
+import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
+import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { CommonServicesTestingModule } from "../../../test/commonServicesTesting.module";
 
 describe('CountriesFilterComponent', () => {
   let fixture: ComponentFixture<CountriesFilterComponent>;
   let component: CountriesFilterComponent;
   let store: Store<AppStates>;
+  let urlParametersService: UrlParametersService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        TranslateModule,
-        StoreModule.forRoot({'feature': countriesFilterReducer})
+        CommonServicesTestingModule,
+        StoreModule.forRoot({countriesFilterReducer})
       ],
-      declarations: [CountriesFilterComponent, CountriesFilterPipe],
-      providers: [
-        {provide: UrlChangeService, useClass: UrlChangeServiceMock},
-        {provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock},
-        {provide: LanguageService, useClass: LanguageServiceMock},
-        {provide: UtilsService, useClass: UtilsServiceMock}
-      ]
+      declarations: [CountriesFilterComponent, CountriesFilterPipe]
     });
 
     fixture = TestBed.createComponent(CountriesFilterComponent);
     component = fixture.componentInstance;
+    urlParametersService = TestBed.get(UrlParametersService);
     store = TestBed.get(Store);
 
     spyOn(store, 'dispatch').and.callThrough();
@@ -87,13 +86,11 @@ describe('CountriesFilterComponent', () => {
     expect(component.search).toBeFalsy(true);
   });
 
-  it('goToLocation() -> NGRX', () => {
+  it('goToLocation(): should change url parameters', () => {
     component.ngOnInit();
-
+    spyOn(urlParametersService, 'dispatchToStore');
     component.goToLocation();
 
-    const action = new CountriesFilterActions.GetCountriesFilter('thing=Families&countries=World&regions=World');
-
-    expect(store.dispatch).toHaveBeenCalledWith(action);
+    expect(urlParametersService.dispatchToStore).toHaveBeenCalledWith({regions: ['World'], countries: ['World']});
   });
 });

@@ -21,6 +21,10 @@ import {
 } from '../common';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
+import { UrlParametersComponent } from '../url-parameters/url-parameters.component';
+import { UrlParametersService } from '../url-parameters/url-parameters.service';
+import { PagePositionComponent } from '../shared/page-position/page-position.component';
+import { PagePositionService } from '../shared/page-position/page-position.service';
 
 /* tslint:disable:no-unused-variable */  // Turn off TSLint for unused variable. Needed for custom loader.
 export class CustomLoader implements TranslateLoader {
@@ -31,8 +35,8 @@ export class CustomLoader implements TranslateLoader {
 /* tslint:enable:no-unused-variable */
 
 @NgModule({
-  declarations: [AppComponent],
-  providers: [],
+  declarations: [AppComponent, UrlParametersComponent, PagePositionComponent],
+  providers: [ UrlParametersService, PagePositionService ],
   imports: [
     BrowserModule,
     HttpModule,

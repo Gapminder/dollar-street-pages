@@ -1,9 +1,9 @@
-import { NgModule }     from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { MatrixComponent } from '../matrix/matrix.component';
 
-const appRoutes: Routes = [
+export const appRoutes: Routes = [
   {path: 'matrix', component: MatrixComponent},
   {path: 'family', loadChildren: '../family/family.module#FamilyModule'},
   {path: 'map', loadChildren: '../map/map.module#MapModule'},

@@ -26,7 +26,7 @@ import { FamilyMediaViewBlockComponent,
     FamilyComponent,
     FamilyHeaderComponent,
     FamilyMediaComponent,
-    FamilyMediaViewBlockComponent
+    FamilyMediaViewBlockComponent,
   ],
   imports: [
     FamilyRouting,
@@ -40,7 +40,7 @@ import { FamilyMediaViewBlockComponent,
     FamilyService,
     FamilyHeaderService,
     FamilyMediaService,
-    FamilyMediaViewBlockService
+    FamilyMediaViewBlockService,
   ],
   exports: []
 })

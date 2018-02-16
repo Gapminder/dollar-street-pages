@@ -20,7 +20,8 @@ import { Store } from '@ngrx/store';
 import {
   AppStates,
   StreetSettingsState,
-  DrawDividersInterface
+  DrawDividersInterface,
+  UrlParameters
 } from '../../../interfaces';
 import {
   BrowserDetectionService,
@@ -30,6 +31,8 @@ import {
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { ImageResolutionInterface } from '../../../interfaces';
 import { get } from 'lodash';
+import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
+import { DEBOUNCE_TIME } from "../../../defaultState";
 
 interface ImageViewBlockPosition {
   point: { left: number };
@@ -84,7 +87,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      private viewBlockService: FamilyMediaViewBlockService,
                      private languageService: LanguageService,
                      private utilsService: UtilsService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private urlParametersService: UrlParametersService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -103,7 +107,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.windowInnerWidth = window.innerWidth;
@@ -116,9 +120,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
         });
       });
 
-    process.nextTick(() => {
-      this.setPointPositionMediaBlock();
-    })
+    this.setPointPositionMediaBlock();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -142,37 +144,36 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.country = res.data.country;
           this.article = res.data.article;
           this.thing = res.data.thing;
-
           this.showInCountry = {
             thing: this.thing.originPlural,
-            countries: this.country.originName,
-            regions: 'World',
+            countries: [this.country.originName],
+            regions: ['World'],
             zoom: '4',
             row: '1',
-            lowIncome: this.streetData.poor,
-            highIncome: this.streetData.rich,
+            lowIncome: this.streetData.poor.toString(),
+            highIncome: this.streetData.rich.toString(),
             lang: this.languageService.currentLanguage
           };
 
           this.showInRegion = {
             thing: this.thing.originPlural,
-            countries: this.country.countriesName.join(','),
-            regions: this.country.originRegionName,
+            countries: this.country.countriesName,
+            regions: [this.country.originRegionName],
             zoom: '4',
             row: '1',
-            lowIncome: this.streetData.poor,
-            highIncome: this.streetData.rich,
+            lowIncome: this.streetData.poor.toString(),
+            highIncome: this.streetData.rich.toString(),
             lang: this.languageService.currentLanguage
           };
 
           this.showInTheWorld = {
             thing: this.thing.originPlural,
-            countries: 'World',
-            regions: 'World',
+            countries: ['World'],
+            regions: ['World'],
             zoom: '4',
             row: '1',
-            lowIncome: this.streetData.poor,
-            highIncome: this.streetData.rich,
+            lowIncome: this.streetData.poor.toString(),
+            highIncome: this.streetData.rich.toString(),
             lang: this.languageService.currentLanguage
           };
 
@@ -270,5 +271,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     } else {
       return shortDescription;
     }
+  }
+
+  public goToPage(url: string, params: UrlParameters): void {
+    this.urlParametersService.dispatchToStore(params);
   }
 }

@@ -28,7 +28,7 @@
             <div class="image-content"
                  *ngIf="familyData?.familyImage"
                  [routerLink]="['/family']"
-                 [queryParams]="familyData.goToPlaceData"
+                 (click)="goToPage(familyData.goToPlaceData)"
                  angulartics2On="click"
                  angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
               <img [src]="familyData.familyImage.url" alt="Family portrait">
@@ -38,6 +38,7 @@
                  *ngIf="familyData?.houseImage"
                  [routerLink]="['/family']"
                  [queryParams]="familyData.goToPlaceData"
+                 (click)="goToPage(familyData.goToPlaceData)"
                  angulartics2On="click"
                  angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
               <img [src]="familyData.houseImage.url" alt="House photo">
@@ -51,7 +52,8 @@
           </div>
 
           <a *ngIf="familyData.goToPlaceData"
-             (click)="visitThisHome()"
+             [routerLink]="['/family']"
+             (click)="visitThisHome(place._id)"
              angulartics2On="click"
              angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }} <img
             src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
@@ -178,6 +180,8 @@
         <translate-me></translate-me>
       </div>
       <a *ngIf="familyData.goToPlaceData"
+         [routerLink]="['/family']"
+         [queryParams]="urlParametersService.getAllParameters()"
          (click)="visitThisHome()"
          angulartics2On="click"
          angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }} <img

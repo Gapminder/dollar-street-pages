@@ -21,7 +21,12 @@ import { Store } from '@ngrx/store';
 import {
   AppStates,
   StreetSettingsState,
-  DrawDividersInterface, UrlParameters
+  DrawDividersInterface,
+  UrlParameters,
+  Place,
+  TimeUnit,
+  MatrixState,
+  AppState
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -37,7 +42,10 @@ import {
   UrlChangeService
 } from '../../common';
 import { MatrixViewBlockService } from './matrix-view-block.service';
-import {StreetDrawService} from "../../shared/street/street.service";
+import { StreetDrawService } from '../../shared/street/street.service';
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
+import { get } from 'lodash';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'matrix-view-block',
@@ -53,7 +61,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   public positionInRow: any;
   @Input()
-  public place: any;
+  public place: Place;
   @Input()
   public thing: string;
   @Input()
@@ -61,8 +69,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output()
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  public goToMatrixWithCountry: EventEmitter<any> = new EventEmitter<any>();
 
   public query: any;
   public familyInfoServiceSubscribe: Subscription;
@@ -75,9 +81,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public resizeSubscribe: Subscription;
   public popIsOpen: boolean;
   public mapData: any;
-  public widthScroll: number;
   public element: HTMLElement;
-  public boxContainer: HTMLElement;
   public windowInnerWidth: number = window.innerWidth;
   public isShowCountryButton: boolean;
   public countryName: string;
@@ -90,13 +94,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public viewImage: string;
   public streetSettingsStateSubscription: Subscription;
   public consumerApi: string;
-  public appState: Observable<any>;
+  public appState: Observable<AppState>;
   public appStateSubscription: Subscription;
-  public matrixState: Observable<any>;
+  public matrixState: Observable<MatrixState>;
   public matrixStateSubscription: Subscription;
   public currencyUnit: any;
-  public timeUnit: any;
-  public timeUnits: any[];
+  public timeUnit: TimeUnit;
+  public timeUnits: TimeUnit[];
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -109,7 +113,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
                      private urlChangeService: UrlChangeService,
-                     public streetService: StreetDrawService) {
+                     public streetService: StreetDrawService,
+                     private urlParametersService : UrlParametersService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -125,15 +130,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: any) => {
-      if (data) {
-        if (data.streetSettings) {
-          this.streetData = data.streetSettings;
-        }
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+      if (get(data, 'streetSettings', false)) {
+        this.streetData = data.streetSettings;
       }
-    });
+  });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
+    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
       if (data) {
         if (this.query !== data.query) {
           this.query = data.query;
@@ -141,33 +144,26 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (data) {
-        if (data.currencyUnit) {
-          if (this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-          }
-        }
+    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
+      if (get(data, 'currencyUnit', false)
+        && this.currencyUnit !== data.currencyUnit) {
+          this.currencyUnit = data.currencyUnit;
+      }
 
-        if (data.timeUnit) {
-          if (this.timeUnit !== data.timeUnit) {
-            this.timeUnit = data.timeUnit;
-          }
-        }
+      if (get(data, 'timeUnit', false)
+      && this.timeUnit !== data.timeUnit ) {
+          this.timeUnit = data.timeUnit;
+      }
 
-        if (data.timeUnits) {
-          if (data.timeUnits) {
-            if (this.timeUnits !== data.timeUnits) {
-                this.timeUnits = data.timeUnits;
-                this.changeTimeUnit(this.timeUnit.code);
-            }
-          }
-        }
+      if (get(data, 'timeUnits', false)
+      && this.timeUnits !== data.timeUnits ) {
+        this.timeUnits = data.timeUnits;
+        this.changeTimeUnit(this.timeUnit.code);
       }
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.windowInnerWidth = window.innerWidth;
@@ -190,7 +186,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   // tslint:disable-next-line
   public initViewBlock(): void {
-    if (!this.place.background) {
+    if (!get(this.place, 'background', false)){
       return;
     }
 
@@ -267,6 +263,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public closeBlock(): void {
+    this.urlParametersService.removeActiveHouse();
     this.closeBigImageBlock.emit({});
   }
 
@@ -290,22 +287,18 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.fancyBoxImage = void 0;
   }
 
-  public visitThisHome(): void {
-    let queryParams: any = this.utilsService.parseUrl(this.query);
-
-    queryParams.place = this.familyData.goToPlaceData.place;
-    queryParams.row = 1;
+  public visitThisHome(placeId: string): void {
+    this.store.dispatch(new MatrixActions.SetPlace(placeId));
     this.streetService.clearAndRedraw();
-    this.router.navigate(['/family'], {queryParams: queryParams});
   }
 
   public goToMatrixByCountry(country: string): void {
-    let queryParams: any = this.utilsService.parseUrl(this.query);
+    const queryParams: UrlParameters = this.urlParametersService.getAllParameters();
 
-    queryParams.regions = 'World';
-    queryParams.countries = country;
-    queryParams.lowIncome = this.streetData.poor;
-    queryParams.highIncome = this.streetData.rich;
+    queryParams.regions = ['World'];
+    queryParams.countries = [country];
+    queryParams.lowIncome = this.streetData.poor.toString();
+    queryParams.highIncome = this.streetData.rich.toString();
 
     delete queryParams.activeHouse;
 
@@ -319,13 +312,14 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
     this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
 
+    this.store.dispatch(new MatrixActions.RemovePlace({}));
+
     this.store.dispatch(new MatrixActions.UpdateMatrix(true));
     this.streetService.clearAndRedraw();
-    this.urlChangeService.replaceState('/matrix', queryUrl);
+
+    this.urlChangeService.assignState('/matrix');
 
     this.scrollTopZero();
-
-    // this.goToMatrixWithCountry.emit({url: this.utilsService.objToQuery(query), isCountriesFilter: true});
   }
 
   public scrollTopZero(): void {
@@ -376,5 +370,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     return countryName;
+  }
+
+  public goToPage(url: string, params: UrlParameters): void {
+    this.urlParametersService.dispatchToStore(params);
   }
 }

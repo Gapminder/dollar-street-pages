@@ -18,19 +18,22 @@ import {
   AppStates,
   StreetSettingsState,
   DrawDividersInterface,
-  AppState,
   MatrixState,
   Place,
-  UrlParameters
+  UrlParameters,
+  IncomeFilter,
 } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
-import { sortBy, chain, differenceBy } from 'lodash';
+import { sortBy, chain, differenceBy, forEach } from 'lodash';
 import {
   MathService,
   LanguageService,
   UtilsService
 } from '../../common';
 import { StreetDrawService} from './street.service';
+import * as StreetSettingsActions from '../../common';
+import * as _ from "lodash";
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'street',
@@ -63,8 +66,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public streetData: DrawDividersInterface;
   public element: HTMLElement;
   public resize: any;
-  public drawOnMap: boolean = false;
-  public isStreetInit: boolean = false;
+  public drawOnMap = false;
+  public isStreetInit = false;
   public placesSubscribe: Subscription;
   public hoverPlaceSubscribe: Subscription;
   public chosenPlacesSubscribe: Subscription;
@@ -72,13 +75,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public placesArr: any;
   public streetBoxContainer: HTMLElement;
   public streetBoxContainerMargin: number;
-  public streetSettingsState: Observable<StreetSettingsState>;
-  public streetSettingsStateSubscription: Subscription;
-  public appState: Observable<AppState>;
-  public appStateSubscription: Subscription;
-  public matrixState: Observable<MatrixState>;
-  public matrixStateSubscription: Subscription;
   public currencyUnit: any;
+  public appStatesSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      streetDrawService: StreetDrawService,
@@ -89,13 +87,9 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
                      private utilsService: UtilsService) {
     this.element = elementRef.nativeElement;
     this.street = streetDrawService;
-
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
-  public ngAfterViewInit(): any {
+  public ngAfterViewInit(): void {
     this.street.setSvg = this.svg.nativeElement;
     this.streetBoxContainer = this.streetBox.nativeElement;
 
@@ -112,58 +106,63 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (data) {
-       if (data.streetSettings) {
-          if (this.streetData !== data.streetSettings) {
-              this.streetData = data.streetSettings;
-              if (this.placesArr) {
-                this.setDividers(this.placesArr, this.streetData);
-              }
-          }
+    this.appStatesSubscription = this.store
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((state: AppStates) => {
+      const matrix = state.matrix;
+      const streetSetting = state.streetSettings;
+      const thingsFilter = state.thingsFilter;
+      const countryFilter = state.countriesFilter;
 
-          if (this.currencyUnit) {
-            this.redrawStreet();
-          }
+      if (this.currencyUnit !== matrix.currencyUnit) {
+        this.currencyUnit = matrix.currencyUnit;
+        this.street.currencyUnit = this.currencyUnit;
+      }
+
+      if (this.streetData !== streetSetting.streetSettings) {
+        this.streetData = streetSetting.streetSettings;
+
+        if (this.placesArr) {
+          this.setDividers(this.placesArr, this.streetData);
+
         }
       }
+
+      const lowIncome = _.get(streetSetting.streetSettings, 'filters.lowIncome', streetSetting.streetSettings.poor);
+      const highIncome = _.get(streetSetting.streetSettings, 'filters.highIncome', streetSetting.streetSettings.rich)
+      this.street.set('lowIncome', lowIncome);
+      this.street.set('highIncome', highIncome);
+
+      if (_.get(thingsFilter.thingsFilter, 'thing', false)) {
+        this.thingName = thingsFilter.thingsFilter.thing.plural;
+      }
+      this.countries = countryFilter.selectedCountries;
+      this.regions = countryFilter.selectedRegions;
+
+      if (this.currencyUnit && this.countries) {
+        this.redrawStreet();
+      }
+
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
-      if (data) {
-        if (data.currencyUnit) {
-          if (this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-            this.street.currencyUnit = this.currencyUnit;
-            this.redrawStreet()
-          }
-        }
+    this.streetFilterSubscribe = this.street.filter.subscribe((filter: IncomeFilter): void => {
+
+      this.street.set('lowIncome', filter.lowIncome);
+      this.street.set('highIncome', filter.highIncome);
+
+      if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
+        this.isStreetInit = true;
+
+        return;
       }
-    });
-
-    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-      if (data) {
-        if (this.query !== data.query) {
-          this.query = data.query;
-
-          let parseUrl = this.utilsService.parseUrl(this.query);
-
-          this.street.set('lowIncome', parseUrl.lowIncome);
-          this.street.set('highIncome', parseUrl.highIncome);
-
-          this.thingName = parseUrl.thing;
-          this.countries = parseUrl.countries;
-          this.regions = parseUrl.regions;
-
-          if (this.currencyUnit && this.countries) {
-            this.redrawStreet();
-          }
-        }
-      }
+      this.store.dispatch(new StreetSettingsActions.UpdateStreetFilters({
+        lowIncome: filter.lowIncome,
+        highIncome: filter.highIncome
+      }))
     });
 
     this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
-      let difference: any[] = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+      const difference = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
 
       if (this.placesArr && this.streetData) {
         this.setDividers(this.placesArr, this.streetData);
@@ -219,29 +218,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.setDividers(this.placesArr, this.streetData);
     });
 
-    this.streetFilterSubscribe = this.street.filter.subscribe((filter): void => {
-      let query: UrlParameters = {};
-
-      if (this.query) {
-        query = this.utilsService.parseUrl(this.query);
-      }
-
-      query.lowIncome = filter.lowIncome;
-      query.highIncome = filter.highIncome;
-
-      if (!this.isStreetInit && filter.lowIncome === this.street.lowIncome && filter.highIncome === this.street.highIncome) {
-        this.isStreetInit = true;
-
-        return;
-      }
-
-      this.filterStreet.emit({url: this.utilsService.objToQuery(query)});
-    });
-
     this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
     this.resize = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         if (!this.street.places) {
           return;
@@ -279,6 +259,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.resize.unsubscribe();
     }
 
+    if (this.appStatesSubscription) {
+      this.appStatesSubscription.unsubscribe();
+    }
+
     if (this.placesSubscribe) {
       this.placesSubscribe.unsubscribe();
     }
@@ -291,10 +275,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.chosenPlacesSubscribe.unsubscribe();
     }
 
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
     if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
@@ -303,21 +283,14 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.streetFilterSubscribe.unsubscribe();
     }
 
-    if (this.matrixStateSubscription) {
-      this.matrixStateSubscription.unsubscribe();
-    }
-
     if (this.street) {
       this.street.clearAndRedraw();
       this.street.clearSvg();
     }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
-    }
   }
 
   private setDividers(places: any, drawDividers: any): void {
+    if (this.street.lowIncome && this.street.highIncome && this.streetData && this.regions && this.countries && this.thingName) {
     this.street
       .clearSvg()
       .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
@@ -337,6 +310,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
       this.street.clearAndRedraw(this.street.chosenPlaces);
+    }
     }
   }
 }

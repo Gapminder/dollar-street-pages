@@ -6,7 +6,6 @@ import {
   OnInit,
   Component,
   OnDestroy,
-  Input,
   Output,
   EventEmitter,
   ElementRef,
@@ -18,9 +17,6 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
-import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
-import * as ThingsFilterActions from './ngrx/things-filter.actions';
 import {
   Angulartics2GoogleAnalytics,
   BrowserDetectionService,
@@ -28,6 +24,8 @@ import {
   UrlChangeService
 } from '../../common';
 import { KeyCodes } from '../../enums';
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'things-filter',
@@ -76,7 +74,8 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
-                     private urlChangeService: UrlChangeService) {
+                     private urlChangeService: UrlChangeService,
+                     private urlParametersService: UrlParametersService) {
     this.element = elementRef.nativeElement;
 
     this.appState = this.store.select((appStates: AppStates) => appStates.app);
@@ -134,7 +133,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.isOpenMobileFilterView();
@@ -161,6 +160,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
   }
 
   public openThingsFilter(isOpenThingsFilter: boolean): void {
+
     this.isOpenThingsFilter = !isOpenThingsFilter;
 
     let thingsContentElement: HTMLElement = this.element.querySelector('.other-things-content') as HTMLElement;
@@ -217,43 +217,16 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  public goToThing(thing: any): void {
-    if (thing.empty) {
+  public goToThing(thingObj: any): void {
+    if (thingObj.empty) {
       return;
     }
 
-    let query: any = this.utilsService.parseUrl(this.query);
-    query.thing = thing.originPlural;
-
-    const newUrl: string = this.utilsService.objToQuery(query);
-
+    const thing = thingObj.originPlural;
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
-
-    this.store.dispatch(new AppActions.SetQuery(newUrl));
-
-    this.store.dispatch(new ThingsFilterActions.GetThingsFilter(newUrl));
-
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-
-    //this.thingsFilterTitle = thing.plural;
-    //this.changeDetectorRef.detectChanges();
-
-    let pageName: string = '';
-
-    /*if (this.isMatrixPage) {
-        pageName = '/matrix';
-    }
-
-    if (this.isMapPage) {
-        pageName = '/map';
-    }*/
-
-    pageName = '/matrix';
-
-    this.urlChangeService.replaceState(pageName, newUrl);
-
-    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thing.plural}`, {});
+    this.urlParametersService.dispatchToStore({thing});
+    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thingObj.plural}`, {});
   }
 
   public setActiveThingsColumn(column: string): void {

@@ -14,7 +14,9 @@
                 isCountryPage || isTeamPage ||
                 (isFamilyPage && (isDesktop || isTablet)) ||
                 (isMapPage && (isDesktop || isTablet))">
-      <img class="logo" (click)="goToMatrixPage()" src="assets/img/dollar-street-logo.png" alt=""/>
+      <a [routerLink]="['/matrix']" (click)="resetStage()">
+        <img class="logo" src="assets/img/dollar-street-logo.png" alt=""/>
+      </a>
     </div>
 
     <div *ngIf="(isMatrixPage && isPinMode) ||
@@ -89,7 +91,7 @@
                             class="dropdown-item"
                             role="menuitem"
                             (click)="currencyUnitFilterSelect(currUnit.code)">
-                          <span class="dropdown-item">{{ currUnit?.currency }}</span>
+                          <span class="dropdown-item">{{ currUnit?.code }} - {{ currUnit?.currency }}</span>
                         </li>
                       </ul>
                     </div>
