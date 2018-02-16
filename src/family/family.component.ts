@@ -106,6 +106,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       const streetSetting = data.streetSettings;
       const countriesFilter = data.countriesFilter;
 
+
       this.zoom = Number(get(matrix, 'zoom', DefaultUrlParameters.zoom));
 
       if (get(matrix, 'place', false)) {
