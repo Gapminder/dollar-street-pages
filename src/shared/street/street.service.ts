@@ -11,7 +11,10 @@ import { select } from 'd3-selection';
 
 import * as _ from 'lodash';
 import { SVG_DEFAULTS } from './svg-parameters';
-import { Place} from '../../interfaces';
+import {
+  DrawDividersInterface,
+  Place
+} from '../../interfaces';
 import {
   DefaultUrlParameters,
   MOBILE_SIZE } from "../../defaultState";
