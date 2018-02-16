@@ -8,6 +8,8 @@ import { CountryPlacesService } from '../country-places.service';
 import { StoreModule } from '@ngrx/store';
 import { TranslateTestingModule } from '../../../test/translateTesting.module';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
+import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
 
 describe('CountryPlacesComponent', () => {
   let fixture: ComponentFixture<CountryPlacesComponent>;
@@ -49,14 +51,7 @@ describe('CountryPlacesComponent', () => {
       ],
       declarations: [CountryPlacesComponent],
       providers: [
-        MathService,
-        // {provide: TranslateService, useClass: TranslateServiceMock},
-        // {provide: TranslateLoader, useClass: TranslateLoaderMock},
-        // {provide: TranslateParser, useClass: TranslateParserMock},
-        // {provide: LoaderService, useClass: LoaderServiceMock},
-        // {provide: LanguageService, useClass: LanguageServiceMock},
         {provide: CountryPlacesService, useClass: MockCountryPlacesService},
-        // {provide: Angulartics2, useClass: AngularticsMock}
       ]
     });
 

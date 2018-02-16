@@ -16,8 +16,8 @@
         <img *ngIf="home.aboutData"
              class="short-about-info-image"
              src="/assets/img/info-button.svg"
-             (click)="showAboutData($event, true)"
-             (mouseenter)="showAboutData($event)"
+             (click)="showAboutData($event, isFromDomElement = true)"
+             (mouseenter)="showAboutData($event, isFromDomElement = true)"
              (mouseleave)="showAboutData()">
       </p>
     </div>
@@ -100,6 +100,7 @@
       <div class="go-to-matrix">
         <a [routerLink]="['/matrix']"
            [queryParams]="{thing: home.thing?.originPlural, countries: home.country?.originName, regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+           (click)="goToPage('/matrix',{thing: home.thing?.originPlural.toString(), countries: home.country?.originName.split(','), regions: ['World'], zoom: '4', row: '1', lowIncome: streetData?.poor.toString(), highIncome: streetData?.rich.toString()})"
            angulartics2On="click"
            angularticsEvent="From Home page to Matrix page">
           {{ 'ALL_FAMILIES_IN' | translate }} {{countryName}} <img src="/assets/img/arrow-right-icon.svg" alt=""><img

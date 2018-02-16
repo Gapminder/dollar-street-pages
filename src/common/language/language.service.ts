@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { Subject } from 'rxjs/Subject';
 import { environment } from '../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { UrlChangeService } from '../url-change/url-change.service';
@@ -13,6 +12,9 @@ import { find, get } from 'lodash';
 import { TranslateService } from 'ng2-translate';
 import { EventEmitter } from 'events';
 import { UtilsService } from '../utils/utils.service';
+import * as LanguageActions from './ngrx/language.actions';
+import { Store } from '@ngrx/store';
+import { AppStates, LanguageState } from '../../interfaces';
 import { Language } from '../../interfaces';
 
 @Injectable()
@@ -21,7 +23,6 @@ export class LanguageService {
   public currentLanguage: string;
   public defaultLanguage: string = 'en';
   public languageName: string;
-  public translateSubscribe: Subscription;
   public translations: any;
   public onLangChangeSubscribe: Subscription;
   public translationsLoadedSubscribe: Subscription;
@@ -30,6 +31,8 @@ export class LanguageService {
   public translationsLoadedString = 'TRANSLATIONS_LOADED';
   public languagesList: Observable<any>;
   public availableLanguage: string[] = ['en', 'es-ES', 'sv-SE'];
+  public languageSubscription: Subscription;
+  public storeLanguage: string;
 
   public constructor(private http: Http,
                      private location: Location,
@@ -37,7 +40,17 @@ export class LanguageService {
                      private translate: TranslateService,
                      private localStorageService: LocalStorageService,
                      private sanitizer: DomSanitizer,
-                     private utilsService: UtilsService) {
+                     private utilsService: UtilsService,
+                     private store: Store<AppStates>) {
+
+    const languageState = this.store.select((state: AppStates) => state.language);
+
+    this.languageSubscription = languageState.subscribe( (language: LanguageState) => {
+      if (get(language, 'lang', false)) {
+        this.storeLanguage = language.lang;
+      }
+    });
+
     if (this.documentLoadedSubscription) {
       this.documentLoadedSubscription.unsubscribe();
     }
@@ -153,7 +166,9 @@ export class LanguageService {
 
   public changeLanguage(lang: string): void {
     this.localStorageService.setItem('language', lang);
-    this.window.location.href = this.window.location.href.replace(`lang=${this.currentLanguage}`, `lang=${lang}`);
+    if (this.currentLanguage !== lang) {
+      this.store.dispatch(new LanguageActions.UpdateLanguage(lang));
+    }
   }
 
   public getLanguage(query: string): Observable<any> {
@@ -164,15 +179,16 @@ export class LanguageService {
   }
 
   private setCurrentLanguage(languages: string[]): void {
-    const urlLanguage: string = this.getLanguageFromUrl(this.location.path());
-    const storageLanguage: any = this.localStorageService.getItem('language');
-    const browserLanguage: string = this.translate.getBrowserCultureLang();
+    const storeLanguage = this.storeLanguage;
+    const storageLanguage = this.localStorageService.getItem('language');
+    const browserLanguage = this.translate.getBrowserCultureLang();
 
-    const language = urlLanguage !== this.defaultLanguage ? urlLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
+    const language = storeLanguage !== this.defaultLanguage ? storeLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
 
     const found = languages.indexOf(language) !== -1;
 
     this.currentLanguage = found ? language : this.defaultLanguage;
+    this.store.dispatch(new LanguageActions.UpdateLanguage(this.currentLanguage));
   }
 
   private updateLangInUrl(): void {
@@ -185,8 +201,6 @@ export class LanguageService {
     const queryParams: any = queryParamsString ? this.utilsService.parseUrl(queryParamsString) : {};
 
     queryParams.lang = this.currentLanguage;
-
-    this.urlChangeService.replaceState(path, this.utilsService.objToQuery(queryParams));
   }
 
   public getLanguagesList(): Observable<any> {

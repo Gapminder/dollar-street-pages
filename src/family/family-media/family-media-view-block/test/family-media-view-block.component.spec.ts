@@ -8,6 +8,8 @@ import { BlankComponentStub } from '../../../../test/';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonServicesTestingModule } from '../../../../test/commonServicesTesting.module';
 import { TranslateTestingModule } from '../../../../test/translateTesting.module';
+import { UrlParametersServiceMock } from "../../../../test/mocks/url-parameters.service.mock";
+import { UrlParametersService } from "../../../../url-parameters/url-parameters.service";
 
 describe('FamilyMediaViewBlockComponent', () => {
   let componentInstance: FamilyMediaViewBlockComponent;
@@ -19,12 +21,11 @@ describe('FamilyMediaViewBlockComponent', () => {
         CommonServicesTestingModule,
         StoreModule.forRoot({}),
         RouterTestingModule.withRoutes([{path: '', component: BlankComponentStub}]),
-        TranslateTestingModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [FamilyMediaViewBlockComponent, BlankComponentStub],
       providers: [
-        {provide: FamilyMediaViewBlockService, useValue: {}}
+        { provide: FamilyMediaViewBlockService, useValue: {} },
       ]
     });
 

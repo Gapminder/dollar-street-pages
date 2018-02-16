@@ -25,6 +25,7 @@ import {
   MathService
 } from '../../common';
 import { StreetFilterDrawService } from './street-filter.service';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'street-filter',
@@ -97,7 +98,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
     });
 
     this.resizeSubscription = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.setDividers(this.places, this.streetData);
     });

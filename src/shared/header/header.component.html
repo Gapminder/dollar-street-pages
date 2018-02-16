@@ -14,7 +14,9 @@
                 isCountryPage || isTeamPage ||
                 (isFamilyPage && (isDesktop || isTablet)) ||
                 (isMapPage && (isDesktop || isTablet))">
-      <img class="logo" (click)="goToMatrixPage()" src="assets/img/dollar-street-logo.png" alt=""/>
+      <a [routerLink]="['/matrix']" (click)="resetStage()">
+        <img class="logo" src="assets/img/dollar-street-logo.png" alt=""/>
+      </a>
     </div>
 
     <div *ngIf="(isMatrixPage && isPinMode) ||

@@ -12,6 +12,8 @@ import * as ThingsFilterActions from '../ngrx/things-filter.actions';
 import { ThingsFilterPipe } from '../things-filter.pipe';
 import { ThingsFilterComponent } from '../things-filter.component';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
 
 describe('Component: ThingsFilterComponent', () => {
   let fixture: ComponentFixture<ThingsFilterComponent>;
@@ -80,7 +82,8 @@ describe('Component: ThingsFilterComponent', () => {
         ThingsFilterPipe
       ],
       providers: [
-        { provide: Store, useClass: StoreMock }
+        { provide: Store, useClass: StoreMock },
+        { provide: UrlParametersService, useClass: UrlParametersServiceMock }
       ]
     });
 
@@ -98,29 +101,4 @@ describe('Component: ThingsFilterComponent', () => {
     expect(component.resizeSubscribe).toBeDefined();
   });
 
-  it('goToThing() -> NGRX', () => {
-    fixture.detectChanges();
-
-    component.goToThing({ empty: false });
-
-    const action = new ThingsFilterActions.GetThingsFilter('thing=undefined&countries=World&regions=World');
-
-    expect(store.dispatch).toHaveBeenCalledWith(action);
-  });
-
-  it('Integration: go to specific thing will dispatch store', () => {
-    const action = new ThingsFilterActions.GetThingsFilter(`thing=${relatedThing.originPlural}&countries=World&regions=World`);
-    (window as any).innerWidth = 2000;
-    fixture.detectChanges();
-
-    const button = fixture.debugElement.query(By.css('.things-filter-button-content'));
-    button.triggerEventHandler('click', null);
-
-    fixture.detectChanges();
-
-    const thingButton = fixture.debugElement.query(By.css('.thing-content'));
-    thingButton.triggerEventHandler('click', null);
-
-    expect(store.dispatch).toHaveBeenCalledWith(action);
-  });
 });

@@ -1,15 +1,10 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import {
-  AppState,
   AppStates,
   CountriesFilterState,
-  Country,
-  StreetSettingsState,
-  UrlParameters
 } from '../interfaces';
 import * as AppActions from '../app/ngrx/app.actions';
 import {
@@ -19,10 +14,11 @@ import {
   ElementRef,
   ViewChild,
   AfterViewInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Output
 } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { chain } from 'lodash';
+import { Router, ActivatedRoute } from '@angular/router';
+import { chain, get } from 'lodash';
 import {
   UrlChangeService,
   Angulartics2GoogleAnalytics,
@@ -34,20 +30,8 @@ import {
 import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
-import { UrlParamsInterface } from '../interfaces';
-
-interface UrlParams extends Params {
-  thing: string;
-  countries: string;
-  regions: string;
-  zoom: number;
-  row: number;
-  lowIncome: number;
-  highIncome: number;
-  place?: string;
-  activeImage?: number;
-  lang: string;
-}
+import { DEBOUNCE_TIME, DefaultUrlParameters } from "../defaultState";
+import { combineLatest } from "rxjs/observable/combineLatest";
 
 @Component({
   selector: 'family',
@@ -78,8 +62,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public countries: {}[];
   public activeImageIndex: number;
   public windowHistory = history;
-  public queryParamsSubscribe: Subscription;
-  public familyServiceSetThingSubscribe: Subscription;
   public getTranslationSubscribe: Subscription;
   public scrollSubscribe: Subscription;
   public device: BrowserDetectionService;
@@ -87,18 +69,15 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public zoomPositionFixed: boolean;
   public element: HTMLElement;
   public query: string;
-  public streetSettingsState: Observable<StreetSettingsState>;
-  public countriesFilterState: Observable<CountriesFilterState>;
   public headerElement: HTMLElement;
   public streetFamilyContainerElement: HTMLElement;
   public shortFamilyInfoContainerElement: HTMLElement;
   public streetSettingsStateSubscription: Subscription;
-  public countriesFilterStateSubscription: Subscription;
+  @Output()
   public itemSize: number;
   public row: number;
   public rowEtalon: number;
-  public appState: Observable<AppState>;
-  public appStateSubscription: Subscription;
+  public appStatesSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -114,110 +93,43 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.element = elementRef.nativeElement;
 
     this.isDesktop = this.browserDetectionService.isDesktop();
-
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
   public ngOnInit(): void {
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe(trans => {
       this.theWorldTranslate = trans.toLowerCase();
-
-      this.initData();
     });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: UrlParameters) => {
-      this.urlParams = {
-        thing: params.thing ? decodeURI(params.thing) : 'Families',
-        countries: params.countries ? decodeURI(params.countries) : 'World',
-        regions: params.regions ? decodeURI(params.regions) : 'World',
-        zoom: parseInt(params.zoom, 10) || 4,
-        row: parseInt(params.row, 10) || 1,
-        lowIncome: parseInt(params.lowIncome, 10),
-        highIncome: parseInt(params.highIncome, 10),
-        place: params.place,
-        lang: this.languageService.currentLanguage
-      };
+    this.appStatesSubscription = this.store.debounceTime(DEBOUNCE_TIME)
+      .subscribe((data: AppStates) => {
+      const matrix = data.matrix;
+      const streetSetting = data.streetSettings;
+      const countriesFilter = data.countriesFilter;
 
-      if (params.activeImage) {
-        this.urlParams.activeImage = params.activeImage;
-        this.activeImageIndex = +this.urlParams.activeImage;
+
+      this.zoom = Number(get(matrix, 'zoom', DefaultUrlParameters.zoom));
+
+      if (get(matrix, 'place', false)) {
+        this.placeId = matrix.place;
+      } else {
+        this.router.navigate(['/matrix']);
+        this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
       }
 
-      const queryUrl: string = this.utilsService.objToQuery(this.urlParams);
-
-      this.store.dispatch(new AppActions.SetQuery(queryUrl));
-      this.urlChangeService.replaceState('/family', queryUrl);
-
-      this.placeId = this.urlParams.place;
-      this.row = +this.urlParams.row;
-      this.setZoom(+this.urlParams.zoom);
-
-      setTimeout(() => {
-        if (this.row > 1 && !this.activeImageIndex) {
-          this.familyMediaComponent.goToRow(this.row);
-        }
-      }, 1000);
-
-      const query = `thingName=${this.urlParams.thing}${this.languageService.getLanguageParam()}`;
-      this.familyServiceSetThingSubscribe = this.familyService
-        .getThing(query)
-        .subscribe(res => {
-          if (res.err) {
-            console.error(res.err);
-
-            return;
-          }
-
-          this.thing = res.data;
-
-          this.initData();
-        });
-      });
-
-    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-      if (data) {
-        if (data.query) {
-          if (this.query !== data.query) {
-            this.query = data.query;
-          }
-        }
+      if (this.streetSettings !== streetSetting.streetSettings) {
+        this.streetSettings = streetSetting.streetSettings;
+        this.poor = this.streetSettings.poor;
+        this.rich = this.streetSettings.rich;
       }
-    });
+      if (this.locations !== countriesFilter) {
+        this.locations = countriesFilter;
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (data) {
-        if (data.streetSettings) {
-          if (this.streetSettings !== data.streetSettings) {
-            this.streetSettings = data.streetSettings;
-
-            this.poor = this.streetSettings.poor;
-            this.rich = this.streetSettings.rich;
-
-            if (!this.locations) {
-              return;
-            }
-
-            this.initData();
-          }
-        }
+        this.countries = chain(countriesFilter)
+          .map('countries')
+          .flatten()
+          .sortBy('country')
+          .value();
       }
-    });
-
-    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: CountriesFilterState) => {
-        if (data) {
-          if (this.locations !== data) {
-            this.locations = data;
-
-            this.countries = chain(data)
-              .map('countries')
-              .flatten()
-              .sortBy('country')
-              .value();
-            this.initData();
-          }
-        }
     });
   }
 
@@ -227,7 +139,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.shortFamilyInfoContainerElement = this.element.querySelector('.short-family-info-container') as HTMLElement;
 
     this.scrollSubscribe = fromEvent(this.window, 'scroll')
-        .debounceTime(10)
         .subscribe(() => {
           setTimeout(() => {
             if (!this.itemSize) {
@@ -242,12 +153,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnDestroy(): void {
-    if (this.queryParamsSubscribe) {
-      this.queryParamsSubscribe.unsubscribe();
-    }
-
-    if (this.familyServiceSetThingSubscribe) {
-      this.familyServiceSetThingSubscribe.unsubscribe();
+    if (this.appStatesSubscription) {
+      this.appStatesSubscription.unsubscribe();
     }
 
     if (this.getTranslationSubscribe) {
@@ -260,18 +167,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'auto';
-    }
-
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
-    if (this.countriesFilterStateSubscription) {
-      this.countriesFilterStateSubscription.unsubscribe();
-    }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
     }
   }
 
@@ -286,26 +181,12 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   public changeZoom(zoom: number): void {
     const prevZoom: number = this.zoom;
     this.zoom = zoom;
-    this.urlChanged({isZoom: true, url: this.query});
+    // this.urlChanged({isZoom: true, url: this.query});
     this.familyMediaComponent.changeZoom(prevZoom);
   }
 
-  public urlChanged(options): void {
-    let { url } = options;
-    const { isZoom, isBack } = options;
-
-    if (isZoom) {
-      this.calcItemSize();
-      url = url.replace(/row\=\d*/, `row=${this.row}`).replace(/zoom\=\d*/, `zoom=${this.zoom}`);
-    }
-
-    this.store.dispatch(new AppActions.SetQuery(url));
-
-    this.urlChangeService.replaceState('/family', url);
-  }
-
   public processScroll(): void {
-    const scrollTop = (document.body.scrollTop || document.documentElement.scrollTop); //- this.guidePositionTop;
+    const scrollTop = (document.body.scrollTop || document.documentElement.scrollTop);
 
     const distance = scrollTop / this.itemSize;
 
@@ -364,7 +245,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public setZoom(zoom: number): void {
     if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-      this.zoom = zoom ? zoom : 4;
+      this.zoom = zoom ? zoom : Number(DefaultUrlParameters.zoom);
     }
 
     if (!this.isDesktop) {
@@ -430,8 +311,6 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     const url = this.utilsService.objToQuery(queryParams);
 
     this.store.dispatch(new AppActions.SetQuery(url));
-
-    this.urlChangeService.replaceState('/family', url);
   }
 
   public isOpenFamilyExpandBlock(data: any): void {
@@ -443,19 +322,8 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const queryParams: UrlParameters = {
-      thing: 'Families',
-      countries: 'World',
-      regions: 'World',
-      zoom: '4',
-      row: '1',
-      lowIncome: this.poor,
-      highIncome: this.rich,
-      lang: this.languageService.currentLanguage
-    };
-
-    if (!this.urlParams.place) {
-      this.router.navigate(['/matrix', {queryParams}]);
+    if (!this.placeId) {
+      this.router.navigate(['/matrix']);
 
       this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
 

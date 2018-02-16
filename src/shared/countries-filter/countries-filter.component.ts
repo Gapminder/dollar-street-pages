@@ -5,7 +5,6 @@ import {
   Component,
   OnDestroy,
   OnChanges,
-  Input,
   Output,
   EventEmitter,
   HostListener,
@@ -23,11 +22,12 @@ import {
   UrlChangeService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
+import { AppStates, Country, UrlParameters } from '../../interfaces';
 import * as CountriesFilterActions from './ngrx/countries-filter.actions';
-import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { KeyCodes } from '../../enums';
+import { UrlParametersService } from "../../url-parameters/url-parameters.service";
+import { DEBOUNCE_TIME } from "../../defaultState";
+import { get} from 'lodash';
 
 @Component({
   selector: 'countries-filter',
@@ -86,7 +86,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private urlChangeService: UrlChangeService,
-                     private changeDetectorRef: ChangeDetectorRef) {
+                     private changeDetectorRef: ChangeDetectorRef,
+                     private urlParametersService: UrlParametersService) {
 
     this.element = elementRef.nativeElement;
 
@@ -107,30 +108,21 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if (data) {
-        if (data.query) {
-          this.query = data.query;
-
-          this.setTitle(this.query);
-        }
-      }
-    });
-
     this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
-      if (data) {
-        if (data.countriesFilter) {
-          this.locations = data.countriesFilter;
+      if (get(data, 'countriesFilter', false)) {
 
-          this.countries = chain(this.locations)
-            .map('countries')
-            .flatten()
-            .sortBy('country')
-            .value();
+        this.locations = data.countriesFilter;
 
-          this.isFilterGotData.emit('isCountryFilterReady');
-        }
+        this.countries = chain(this.locations)
+          .map('countries')
+          .flatten()
+          .sortBy('country')
+          .value();
+
+        this.isFilterGotData.emit('isCountryFilterReady');
+        this.setTitle();
       }
+
     });
 
     this.isOpenMobileFilterView();
@@ -138,23 +130,23 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.calcSliceCount();
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.setPosition();
           this.isOpenMobileFilterView();
 
           this.calcSliceCount();
-          this.setTitle(this.query);
+          this.setTitle();
         });
       });
 
     this.orientationChange = fromEvent(window, 'orientationchange')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.calcSliceCount();
-          this.setTitle(this.query);
+          this.setTitle();
         });
       });
   }
@@ -195,7 +187,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(changes.url.currentValue));
       }
 
-      this.setTitle(changes.url.currentValue);
+      this.setTitle();
     }
   }
 
@@ -412,13 +404,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.selectedCountries.push(country.originName);
 
-    let regionObject = find(this.locations, {region});
+    const regionObject = find(this.locations, {region});
 
-    let filtetredRegionCountries = filter(regionObject.countries, (currentCountry: any) => {
+    const filtetredRegionCountries = filter(regionObject.countries, (currentCountry: any) => {
       return currentCountry.empty !== true;
     });
 
-    let regionCountries = map(filtetredRegionCountries, 'originName');
+    const regionCountries = map(filtetredRegionCountries, 'originName');
 
     if (!difference(regionCountries, this.selectedCountries).length) {
       this.selectedRegions.push(originRegionName);
@@ -426,37 +418,21 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public goToLocation(): void {
-    let query = this.utilsService.parseUrl(this.query);
-
     this.search = '';
     this.regionsVisibility = true;
-
-    query.regions = this.selectedRegions.length ? this.selectedRegions.join(',') : 'World';
-    query.countries = this.selectedCountries.length ? this.selectedCountries.join(',') : 'World';
-
-    const queryUrl: string = this.utilsService.objToQuery(query);
-
-    this.setTitle(queryUrl);
+    const regions = this.selectedRegions.length ? this.selectedRegions : ['World'];
+    const countries = this.selectedCountries.length ? this.selectedCountries : ['World'];
     this.changeDetectorRef.detectChanges();
-
-    this.store.dispatch(new AppActions.SetQuery(queryUrl));
-
-    this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(query.countries));
-    this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(query.regions));
-    this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
-
-    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-
-    this.urlChangeService.replaceState('/matrix', queryUrl);
-
+    this.urlParametersService.dispatchToStore({regions, countries});
     this.isOpenCountriesFilter = false;
     this.cloneSelectedCountries = ['World'];
     this.cloneSelectedRegions = ['World'];
     this.openMobileFilterView = window.innerWidth < 1024 || !this.isDesktop;
+
   }
 
-  public findCountryTranslatedName(countries: any[]): any {
-    return map(countries, (item: string): any => {
+  public findCountryTranslatedName(countries: string[]): any {
+    return map(countries, (item: string) => {
       const findTransName: any = find(this.countries, {originName: item});
       return findTransName ? findTransName.country : item;
     });
@@ -469,26 +445,26 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  public setTitle(url: string): void {
-    let query: any = this.utilsService.parseUrl(url);
+  public setTitle(): void {
+    const query: UrlParameters = this.urlParametersService.getAllParameters();
 
-    let regions: string[] = query.regions;
-    let countries: string[] = query.countries;
+    const regions: string[] = query.regions;
+    const countries: string[] = query.countries;
 
-    let resultCountriesNames: string[] = [];
+    const resultCountriesNames: string[] = [];
     let resultRegionsCountries: any = {};
 
     forEach(this.locations, (location: any) => {
-      let currentRegionName: string = location.originRegionName;
+      const currentRegionName: string = location.originRegionName;
 
-      let filteredCountries: any[] = [];
+      let filteredCountries = [];
 
       filteredCountries = filter(location.countries, (country: any) => {
         return country.empty !== true && countries.indexOf(country.originName) !== -1 ? true : false;
       });
 
       forEach(filteredCountries, (country: any) => {
-        let originCountryName: string = country.originName;
+        const originCountryName = country.originName;
 
         if (regions.indexOf(currentRegionName) !== -1) {
           if (resultRegionsCountries[currentRegionName] === undefined) {

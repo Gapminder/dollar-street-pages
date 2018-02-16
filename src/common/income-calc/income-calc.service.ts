@@ -44,7 +44,7 @@ export class IncomeCalcService {
 
   public getCurrencyUnitByCode(units = [], code: string): Currency {
     const currency = code.length ? code : DEFAULT_CURRENCY;
-    return units.find(unit => unit.code === currency);
+    return units.find(unit => unit.code.toUpperCase() === currency.toUpperCase());
   }
 
   public getCurrencyUnitForLang(units = [], lang: string): Currency {

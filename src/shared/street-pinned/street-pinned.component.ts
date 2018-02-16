@@ -23,6 +23,7 @@ import {
 } from '../../common';
 import { GetStreetSettings } from '../../common/street-settings/ngrx/street-settings.actions';
 import { StreetPinnedDrawService } from './street-pinned.service';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'street-pinned',
@@ -102,7 +103,7 @@ export class StreetPinnedComponent implements OnDestroy, AfterViewInit {
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         if (!this.places) {
           return;

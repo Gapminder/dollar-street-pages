@@ -18,6 +18,7 @@ import {
 } from '@angular/core';
 import { GetStreetSettings } from '../../common/street-settings/ngrx/street-settings.actions';
 import { StreetFamilyDrawService } from './street-family.service';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'street-family',
@@ -72,7 +73,7 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         if (!this.place) {
           return;

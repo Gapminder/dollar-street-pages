@@ -36,6 +36,8 @@ import {
   TitleHeaderServiceMock
 } from '../../../test/';
 import {SocialShareButtonsService} from '../../social-share-buttons/social-share-buttons.service';
+import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
+import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
 
 describe('HeaderComponent', () => {
     let component: HeaderComponent;
@@ -81,7 +83,8 @@ describe('HeaderComponent', () => {
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-                { provide: IncomeCalcService, useClass: IncomeCalcServiceMock }
+                { provide: IncomeCalcService, useClass: IncomeCalcServiceMock },
+                { provide: UrlParametersService, useClass: UrlParametersServiceMock }
             ]
         });
 

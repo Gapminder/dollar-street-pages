@@ -1,29 +1,28 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Angulartics2GoogleAnalytics } from 'angulartics2';
-import { StoreModule, Store } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from 'ng2-translate';
 import { MatrixImagesComponent } from '../matrix-images';
 import { MatrixViewBlockComponent } from '../matrix-view-block';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-import { MatrixViewBlockService } from '../matrix-view-block/matrix-view-block.service';
 import { SharedModule } from '../../shared';
 import {
-    LoaderService,
-    UrlChangeService,
-    BrowserDetectionService,
-    LanguageService,
-    UtilsService,
-    MathService
+  BrowserDetectionService,
+  LanguageService,
+  LoaderService,
+  MathService,
+  UrlChangeService,
+  UtilsService
 } from '../../common';
 import {
-    LoaderServiceMock,
-    BrowserDetectionServiceMock,
-    Angulartics2GoogleAnalyticsMock,
-    LanguageServiceMock,
-    UtilsServiceMock,
-    UrlChangeServiceMock,
-    TranslateServiceMock
+  Angulartics2GoogleAnalyticsMock,
+  BrowserDetectionServiceMock,
+  LanguageServiceMock,
+  LoaderServiceMock,
+  TranslateServiceMock,
+  UrlChangeServiceMock,
+  UtilsServiceMock
 } from '../../test/';
 import { MatrixComponent } from '../matrix.component';
 
@@ -71,8 +70,6 @@ describe('MatrixComponent', () => {
     }));
 
     it('ngAfterViewInit(), ngOnDestroy()', () => {
-        // component.ngAfterViewInit();
-        // fixture.detectChanges();
         expect(component.getTranslationSubscribe).toBeDefined();
         expect(component.appStateSubscription).toBeDefined();
         expect(component.matrixStateSubscription).toBeDefined();
@@ -101,51 +98,4 @@ describe('MatrixComponent', () => {
         expect(component.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();
         expect(component.scrollSubscribtion.unsubscribe).toHaveBeenCalled();
     });
-
-    /*it('processScroll()', (() => {
-        component.ngAfterViewInit();
-
-        component.processScroll();
-    }));
-
-    it('getPaddings()', (() => {
-        component.ngAfterViewInit();
-
-        // component.getPaddings();
-    }));
-
-    it('getVisibleRows()', (() => {
-        component.ngAfterViewInit();
-
-        component.getVisibleRows(100);
-    }));
-
-    it('imageHeightChanged()', (() => {
-        component.ngAfterViewInit();
-
-        component.imageHeightChanged(100);
-    }));
-
-    it('calcItemSize()', (() => {
-        component.ngAfterViewInit();
-
-        component.calcItemSize();
-    }));
-
-    it('scrollTopZero()', (() => {
-        component.ngAfterViewInit();
-
-        component.scrollTopZero();
-    }));
-
-    it('getMatrixImagesProcess()', (() => {
-        component.ngAfterViewInit();
-
-        const data = {
-            zoomPlaces: [],
-            streetPlaces: []
-        };
-
-        component.getMatrixImagesProcess(data);
-    }));*/
 });

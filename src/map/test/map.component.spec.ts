@@ -11,6 +11,8 @@ import { MapService } from '../map.service';
 import { mockMapData } from './mock.data';
 import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
 import { TranslateTestingModule } from '../../test/translateTesting.module';
+import { UrlParametersServiceMock } from "../../test/mocks/url-parameters.service.mock";
+import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 
 // TODO http call somwhere here
 describe('MapComponent', () => {
@@ -54,17 +56,13 @@ describe('MapComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        TranslateTestingModule,
         Angulartics2Module,
         StoreModule.forRoot({}),
         RouterTestingModule.withRoutes([{path: '', component: BlankComponentStub}]),
         CommonServicesTestingModule
       ],
       providers: [
-        MathService,
-        {provide: UrlChangeService, useClass: UrlChangeServiceMock},
-        {provide: MapService, useClass: MapServiceMock},
-        {provide: LanguageService, useClass: LanguageServiceMock},
+        { provide: MapService, useClass: MapServiceMock }
       ],
       declarations: [MapComponent, BlankComponentStub]
     });

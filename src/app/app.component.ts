@@ -19,7 +19,7 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public isLoader: boolean = false;
+  public isLoader = false;
   public isVisibleHeader: boolean;
   public routerEventsSubscribe: Subscription;
   public loaderServiceSubscribe: Subscription;

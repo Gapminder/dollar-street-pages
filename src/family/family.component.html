@@ -4,10 +4,9 @@
      <street-family *ngIf="streetFamilyData" [place]="streetFamilyData"></street-family>
   </div>
 
-  <family-header [placeId]="placeId" (familyExpandBlock)="isOpenFamilyExpandBlock($event)" (streetFamilyData)="streetFamilyData = $event"></family-header>
+  <family-header (familyExpandBlock)="isOpenFamilyExpandBlock($event)" (streetFamilyData)="streetFamilyData = $event"></family-header>
 
   <family-media [zoom]="zoom"
-                [placeId]="placeId"
                 [activeImageIndex]="activeImageIndex"
                 [openFamilyExpandBlock]="openFamilyExpandBlock"
                 (activeImageOptions)="activeImageOptions($event)">

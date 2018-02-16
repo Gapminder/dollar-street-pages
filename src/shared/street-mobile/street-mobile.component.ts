@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import { AppStates, StreetSettingsState, DrawDividersInterface } from '../../interfaces';
 import { sortBy, chain } from 'lodash';
 import { StreetMobileDrawService } from './street-mobile.service';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Component({
   selector: 'street-mobile',
@@ -62,7 +63,7 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
     });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         if (!this.street.places || this.windowInnerWidth === window.innerWidth) {
           return;
@@ -72,7 +73,7 @@ export class StreetMobileComponent implements OnDestroy, AfterViewInit {
       });
 
     this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
-      .debounceTime(150)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.street.clearSvg();
       });

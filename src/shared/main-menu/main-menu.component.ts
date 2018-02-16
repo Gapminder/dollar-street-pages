@@ -158,7 +158,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
       case '/about':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
-        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
+        this.router.navigate([url]);
         break;
 
       case 'https://www.gapminder.org/category/dollarstreet/':
@@ -168,12 +168,12 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
       case '/donate':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Donate page', {});
-        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
+        this.router.navigate([url]);
         break;
 
       case '/map':
         this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
-        this.router.navigate([url], { queryParamsHandling: saveUrlData ? 'merge' : null });
+        this.router.navigate([url]);
         break;
 
       case 'https://www.gapminder.org':
@@ -217,22 +217,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       document.body.classList.remove('hideScroll');
     }
 
-    let queryParams = {
-      thing: 'Families',
-      countries: 'World',
-      regions: 'World',
-      zoom: 4,
-      row: 1,
-      lowIncome: this.streetData.poor,
-      highIncome: this.streetData.rich,
-      lang: this.languageService.currentLanguage
-    };
-
-    if (!this.isDesktop) {
-      queryParams.zoom = 3;
-    }
-
-    this.router.navigate(['/matrix'], {queryParams: queryParams});
+    this.router.navigate(['/matrix']);
 
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
   }

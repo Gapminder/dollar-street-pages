@@ -1,37 +1,20 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { Observable } from 'rxjs/Observable';
 import { StoreModule } from '@ngrx/store';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-// import { AppActions } from '../../../app/app.actions';
-
-import {
-SharedModule
-} from '../../../shared';
-import {
-MathService,
-LoaderService,
-BrowserDetectionService,
-LanguageService,
-UtilsService
-} from '../../../common';
 import { MatrixImagesComponent } from '../matrix-images.component';
-import { MatrixViewBlockComponent } from '../../matrix-view-block';
 import { SortPlacesService } from '../../../common/sort-places/sort-places.service';
-
-import {
-  LoaderServiceMock,
-  BrowserDetectionServiceMock,
-  LanguageServiceMock,
-  UtilsServiceMock
-} from '../../../test/';
+import { Place } from '../../../interfaces';
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
 
 describe('MatrixImagesComponent', () => {
   let component: MatrixImagesComponent;
   let fixture: ComponentFixture<MatrixImagesComponent>;
-  const places: Object[] = [
+  const places: Place[] = [
     {
+      background: '',
       country: 'Burundi',
       image: '54afea8f993307fb769cc6f4',
       income: 26.99458113,
@@ -49,21 +32,14 @@ describe('MatrixImagesComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         InfiniteScrollModule,
-        SharedModule,
         RouterTestingModule,
-        StoreModule.forRoot({})
+        StoreModule.forRoot({}),
+        CommonServicesTestingModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [MatrixImagesComponent],
       providers: [
-        {provide: MathService, useValue: {}},
-        // AppActions,
-        {provide: LoaderService, useClass: LoaderServiceMock},
-        {provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock},
-        {provide: LanguageService, useClass: LanguageServiceMock},
-        {provide: UtilsService, useClass: UtilsServiceMock},
-        {provide: SortPlacesService, useValue: {}},
-        {provide: MatrixViewBlockComponent, useClass: MatrixViewBlockComponentMock}
+        { provide: SortPlacesService, useValue: {} },
       ]
     });
 
@@ -76,33 +52,43 @@ describe('MatrixImagesComponent', () => {
   it('ngOnInit()', () => {
     fixture.detectChanges();
 
+
     expect(component.getTranslationSubscribe).toBeDefined();
     expect(component.placesSubscribe).toBeDefined();
+    expect(component.viewChildrenSubscription).toBeDefined();
     expect(component.contentLoadedSubscription).toBeDefined();
-    expect(component.appStateSubscription).toBeDefined();
+    expect(component.matrixStateSubscription).toBeDefined();
     expect(component.resizeSubscribe).toBeDefined();
 
     spyOn(component.getTranslationSubscribe, 'unsubscribe');
     spyOn(component.placesSubscribe, 'unsubscribe');
+    spyOn(component.viewChildrenSubscription, 'unsubscribe');
     spyOn(component.contentLoadedSubscription, 'unsubscribe');
-    spyOn(component.appStateSubscription, 'unsubscribe');
+    spyOn(component.matrixStateSubscription, 'unsubscribe');
     spyOn(component.resizeSubscribe, 'unsubscribe');
+
 
     component.ngOnDestroy();
 
     expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
     expect(component.placesSubscribe.unsubscribe).toHaveBeenCalled();
+    expect(component.viewChildrenSubscription.unsubscribe).toHaveBeenCalled();
     expect(component.contentLoadedSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.matrixStateSubscription.unsubscribe).toHaveBeenCalled();
     expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();
+
   });
 
   it('buildTitle()', () => {
-    const countries = ['Bangladesh', 'Cambodja', 'Singapour'];
+    const query = {
+      regions: ['World'],
+      countries: ['Bangladesh', 'Cambodja', 'Singapour'],
+      thing: 'Families'
+    };
 
-    component.buildTitle({regions: ['World'], countries: countries, thing: 'Families'});
+    component.buildTitle(query);
 
-    expect(component.activeCountries).toEqual(countries);
+    expect(component.activeCountries).toEqual(query.countries);
   });
 });
 

@@ -4,10 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
 import {
-  AppState,
-  AppStates
+  AppStates,
+  MatrixState
 } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
 import {
   Component,
   OnDestroy,
@@ -18,11 +17,9 @@ import {
   AfterViewInit,
   ElementRef,
   ViewChild,
-  ViewContainerRef,
-  OnChanges,
-  SimpleChanges
+  ViewContainerRef, ViewChildren, QueryList,
 } from '@angular/core';
-import { find, isEqual, slice, concat, get } from 'lodash';
+import { find, isEqual, slice, concat, get, forEach } from 'lodash';
 import {
   LoaderService,
   BrowserDetectionService,
@@ -34,6 +31,9 @@ import { FamilyMediaService } from './family-media.service';
 import { FamilyComponent } from '../family.component';
 import { FamilyMediaViewBlockComponent } from './family-media-view-block';
 import { ImageResolutionInterface } from '../../interfaces';
+import { DEBOUNCE_TIME } from "../../defaultState";
+import { PagePositionService } from "../../shared/page-position/page-position.service";
+import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 
 @Component({
   selector: 'family-media',
@@ -50,7 +50,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   @ViewChild('familyThingsContainer')
   public familyThingsContainer: ElementRef;
 
-  @Input()
+  @ViewChildren(FamilyMediaComponent)
+  viewChildren: QueryList<FamilyMediaComponent>;
+
   public placeId: string;
   @Input()
   public activeImageIndex: number;
@@ -87,6 +89,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public familyImagesContainerElement: HTMLElement;
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
+  public matrixSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      viewContainerRef: ViewContainerRef,
@@ -97,7 +100,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
                      private languageService: LanguageService,
                      private utilsService: UtilsService,
                      private urlChangeService: UrlChangeService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private pagePositionService: PagePositionService,
+                     private urlParametersService: UrlParametersService) {
     this.element = element.nativeElement;
     this.familyComponent = (viewContainerRef as any)._data.componentView.parent.component as FamilyComponent;
 
@@ -113,51 +118,65 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.familyThingsContainerElement = this.familyThingsContainer.nativeElement;
     this.familyImagesContainerElement = this.familyImagesContainer.nativeElement;
 
-    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-      if (get(data, 'query', false) && this.query !== data.query) {
-            this.query = data.query;
-      }
-    });
+    const matrixState = this.store.select((state: AppStates) => state.matrix);
 
-    const query = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
-    this.familyPlaceServiceSubscribe = this.familyMediaService
-      .getFamilyMedia(query)
-      .subscribe((res: any) => {
-        if (res.err) {
-          return;
+    this.matrixSubscription = matrixState
+      .subscribe((matrix: MatrixState) => {
+        if (!get(this, 'placeId', false)
+          && get(matrix, 'place', false)) {
+          this.placeId = matrix.place;
+          this.zoom = matrix.zoom;
+
+          const query = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
+          this.familyPlaceServiceSubscribe = this.familyMediaService
+            .getFamilyMedia(query)
+            .subscribe((res: any) => {
+              if (res.err) {
+                return;
+              }
+
+              this.images = res.data.images;
+              this.imageData.photographer = res.data.photographer;
+
+              this.getVisibleRows();
+
+              this.calcItemSize();
+
+              let numberSplice: number = this.visibleImages * 2;
+
+              if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
+                const positionInRow: number = this.activeImageIndex % this.zoom;
+                const offset: number = this.zoom - positionInRow;
+
+                numberSplice = this.activeImageIndex + offset + this.visibleImages;
+              }
+              this.currentImages = slice(this.images, 0, numberSplice);
+
+              this.changeZoom(0);
+
+              this.loaderService.setLoader(true);
+              if (get(this.urlParametersService, 'activeImageByRoute', null)) {
+                const activeImage = Number(this.urlParametersService.activeImageByRoute);
+                this.activeImage = activeImage;
+                this.openMedia(this.currentImages[activeImage], activeImage);
+                this.urlParametersService.activeImageByRoute = null;
+              }
+
+              if (this.activeImageIndex) {
+                // TODO: remove setTimeout on refactoring this component
+                setTimeout(() => {
+                  this.loaderService.setLoader(true);
+
+                  this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1);
+                });
+              }
+            });
         }
 
-        this.images = res.data.images;
-        this.imageData.photographer = res.data.photographer;
-
-        setTimeout(() => {
-          this.getVisibleRows();
-
-          let numberSplice: number = this.visibleImages * 2;
-
-          if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
-            const positionInRow: number = this.activeImageIndex % this.zoom;
-            const offset: number = this.zoom - positionInRow;
-
-            numberSplice = this.activeImageIndex + offset + this.visibleImages;
-          }
-
-          this.currentImages = slice(this.images, 0, numberSplice);
-
-          this.changeZoom(0);
-        });
-
-        if (this.activeImageIndex) {
-          setTimeout(() => {
-            this.loaderService.setLoader(true);
-
-            this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1);
-          });
-        }
       });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(300)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           if (this.windowInnerWidth === window.innerWidth) {
@@ -212,10 +231,18 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
         }
       });
 
+    this.viewChildren
+      .changes
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe(() => {
+        this.calcItemSize();
+      })
   }
 
   public ngOnDestroy(): void {
-    this.familyPlaceServiceSubscribe.unsubscribe();
+    if (this.familyPlaceServiceSubscribe) {
+      this.familyPlaceServiceSubscribe.unsubscribe();
+    }
     this.resizeSubscribe.unsubscribe();
 
     if (this.openFamilyExpandBlockSubscribe) {
@@ -230,14 +257,11 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   }
 
   public changeZoom(prevZoom: number): void {
-    setTimeout(() => {
-      this.familyImageContainerElement.classList.remove('column-' + prevZoom);
-      this.familyImageContainerElement.classList.add('column-' + this.zoom);
+    this.familyImageContainerElement.classList.remove('column-' + prevZoom);
+    this.familyImageContainerElement.classList.add('column-' + this.zoom);
 
-      this.calcItemSize();
-      this.loaderService.setLoader(true);
-      this.showImageBlock = false;
-    });
+
+    this.showImageBlock = false;
   }
 
   public onScrollDown(): void {
@@ -251,7 +275,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public openMedia(image: any, index: number): void {
     this.activeImage = image;
     this.indexViewBoxImage = index;
-
     const countByIndex: number = (this.indexViewBoxImage + 1) % this.zoom;
     const offset: number = this.zoom - countByIndex;
 
@@ -276,37 +299,26 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
     this.imageData = Object.assign({}, this.imageData);
 
-    setTimeout(() => {
-      if (this.familyMediaViewBlock) {
-        const viewBlockBox: HTMLElement = this.familyMediaViewBlock.element;
-
-        this.viewBlockHeight = viewBlockBox ? viewBlockBox.offsetHeight : 0;
-      }
-    }, 0);
-
     if (!this.prevImage) {
       this.prevImage = image;
-
-      this.showImageBlock = !this.showImageBlock;
-
-      this.changeUrl({row, activeImageIndex: this.indexViewBoxImage + 1});
+      this.showImageBlock = true;
+      this.urlParametersService.setActiveImage(index);
+      this.goToRow(row);
 
       return;
     }
 
     if (isEqual(this.prevImage, image)) {
       this.showImageBlock = !this.showImageBlock;
-
       if (!this.showImageBlock) {
         this.prevImage = void 0;
+        this.urlParametersService.removeActiveImage();
       }
 
-      this.changeUrl({row});
     } else {
       this.prevImage = image;
       this.showImageBlock = true;
-
-      this.changeUrl({row, activeImageIndex: this.indexViewBoxImage + 1});
+      this.urlParametersService.setActiveImage(index);
     }
   }
 
@@ -321,29 +333,8 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  public changeUrl(options: {row?: number; activeImageIndex?: number}): void {
-    const {row, activeImageIndex} = options;
-
-    if (row) {
-      this.goToRow(row);
-      this.activeImageOptions.emit({row, activeImageIndex});
-    } else {
-      this.activeImageOptions.emit({activeImageIndex});
-    }
-
-    const queryParams = this.utilsService.parseUrl(this.query);
-
-    queryParams.place = this.imageData.placeId;
-
-    const url = this.utilsService.objToQuery(queryParams);
-
-    this.store.dispatch(new AppActions.SetQuery(url));
-
-    this.urlChangeService.replaceState('/family', url);
-  }
-
   public goToRow(row: number): void {
-
+    this.calcItemSize();
     const header: HTMLElement = document.querySelector('.header-container') as HTMLElement;
 
     const homeDescription = this.familyComponent.familyHeaderComponent.homeDescriptionContainer.nativeElement;
@@ -364,7 +355,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     }
 
     const imageContainer: HTMLElement = this.familyImageContainerElement.querySelector('.family-image-container');
+    if (imageContainer) {
     this.itemSize = imageContainer.offsetHeight;
+    this.pagePositionService.itemSize = this.itemSize;
+    }
   }
 
   public getVisibleRows(): void {

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { Store, StoreModule } from '@ngrx/store';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,6 +20,10 @@ import { UtilsService } from '../../../common/utils/utils.service';
 import { UtilsServiceMock } from '../../../test/mocks/utils.service.mock';
 import { LanguageService } from '../../../common/language/language.service';
 import { LanguageServiceMock } from '../../../test/mocks/language.service.mock';
+import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
+import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { DEBOUNCE_TIME } from "../../../defaultState";
+import { SetCurrencyUnit } from "../../../matrix/ngrx/matrix.actions";
 
 describe('FamilyHeaderComponent', () => {
   let fixture: ComponentFixture<FamilyHeaderComponent>;
@@ -54,8 +58,7 @@ describe('FamilyHeaderComponent', () => {
     languageService = TestBed.get(LanguageService);
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
-    spyOn(incomeCalcService, 'getCurrencyUnitByCode').and.returnValue(currencyUnit);
-    spyOn(incomeCalcService, 'calcPlaceIncome').and.returnValue(currencyUnit);
+
 
     fixture = TestBed.createComponent(FamilyHeaderComponent);
 
@@ -65,10 +68,7 @@ describe('FamilyHeaderComponent', () => {
   it('subscriptions on init', () => {
     fixture.detectChanges();
     expect(component.getTranslationSubscribe).toBeDefined();
-    expect(component.familyHeaderServiceSubscribe).toBeDefined();
-    expect(component.queryParamsSubscribe).toBeDefined();
-    expect(component.streetSettingsStateSubscription).toBeDefined();
-    expect(component.matrixStateSubscription).toBeDefined();
+    expect(component.appStatesSubscription).toBeDefined();
     expect(component.resizeSubscribe).toBeDefined();
   });
 
@@ -76,28 +76,14 @@ describe('FamilyHeaderComponent', () => {
     fixture.detectChanges();
 
     spyOn(component.getTranslationSubscribe, 'unsubscribe');
-    spyOn(component.familyHeaderServiceSubscribe, 'unsubscribe');
-    spyOn(component.queryParamsSubscribe, 'unsubscribe');
-    spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
-    spyOn(component.matrixStateSubscription, 'unsubscribe');
+    spyOn(component.appStatesSubscription, 'unsubscribe');
     spyOn(component.resizeSubscribe, 'unsubscribe');
 
     component.ngOnDestroy();
 
     expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.familyHeaderServiceSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.queryParamsSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.matrixStateSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.appStatesSubscription.unsubscribe).toHaveBeenCalled();
     expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();
-  });
-
-  it('get currencyUnit from store on init', () => {
-    store.dispatch(new MatrixActions.SetCurrencyUnit(currencyUnit));
-
-    fixture.detectChanges();
-
-    expect(component.currencyUnit).toEqual(currencyUnit);
   });
 
   it('home and mapData not defined when FamilyHeaderService responds with error', () => {
@@ -109,105 +95,46 @@ describe('FamilyHeaderComponent', () => {
     expect(component.mapData).not.toBeDefined();
   });
 
-  it('show translateMe label when no translation to user`s language', () => {
+  it('show translateMe label when no translation to user`s language', fakeAsync(() => {
     component.home.translated = false;
-    languageService.currentLanguage = 'ru'
-    languageService.defaultLanguage = 'en'
+    store.dispatch(new MatrixActions.SetPlace('1'));
+    languageService.currentLanguage = 'ru';
+    languageService.defaultLanguage = 'en';
     expect(component.showTranslateMe).not.toBeDefined();
-
     fixture.detectChanges();
-
+    tick(DEBOUNCE_TIME);
     expect(component.showTranslateMe).toBe(true);
-  });
+  }));
 
-  it('do not show translateMe label when home is translated', () => {
+  it('do not show translateMe label when home is translated', fakeAsync(() => {
     expect(component.showTranslateMe).not.toBeDefined();
 
     const data = {
       income: 1,
       country: {
-        region: 'World',
+        region: ['World'],
         alias: 'United States'
       },
       aboutData: expectedAboutData,
       translated: true
     };
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
-
+    tick(DEBOUNCE_TIME);
     fixture.detectChanges();
-
+    tick(DEBOUNCE_TIME);
     expect(component.showTranslateMe).not.toBeDefined();
-  });
+  }));
 
-  it('get timeUnits from store on init', () => {
-    const expectedTimeUnits = [{
-      code: 'DAY',
-      name: 'Day',
-      name1: 'Daily income',
-      per: 'day'
-    }];
-    const action = new MatrixActions.GetTimeUnitsSuccess(expectedTimeUnits);
-
-    expect(component.timeUnits).not.toBeDefined();
-
-    store.dispatch(action);
-
-    fixture.detectChanges();
-
-    expect(store.dispatch).toHaveBeenCalledWith(action);
-    expect(component.timeUnits).toEqual(expectedTimeUnits);
-  });
-
-  it('call timeUnits when there is no in store', () => {
-    const action = new MatrixActions.GetTimeUnits();
-
-    fixture.detectChanges();
-
-    expect(store.dispatch).toHaveBeenCalledWith(action);
-  });
-
-  it('call currencyUnits from store on init', () => {
-    const action = new MatrixActions.GetCurrencyUnits();
-
-    fixture.detectChanges();
-
-    expect(store.dispatch).toHaveBeenCalledWith(action);
-  });
-
-  it('when currencyUnits in store - get currency unit', () => {
-    const action = new MatrixActions.GetCurrencyUnitsSuccess([currencyUnit]);
-
-    store.dispatch(action);
-
-    fixture.detectChanges();
-
-    expect(component.currencyUnits).toEqual([currencyUnit]);
-    expect(component.currencyUnit).toEqual(currencyUnit);
-    expect(store.dispatch).toHaveBeenCalledWith(action);
-    expect(incomeCalcService.getCurrencyUnitByCode).toHaveBeenCalled();
-  });
-
-  it('get street settings from store', () => {
+  it('get street settings from store', fakeAsync(() => {
     store.dispatch(new StreetSettingsActions.GetStreetSettingsSuccess(defaultStreetSettings));
-
+    tick(DEBOUNCE_TIME);
     fixture.detectChanges();
-
+    tick(DEBOUNCE_TIME);
     expect(component.streetData).toEqual(defaultStreetSettings);
-  });
-
-  it('calcIncomeValue when timeUnit, currencyUnit and home are defined', () => {
-    fixture.detectChanges();
-    const currencyUnitAction = new MatrixActions.GetCurrencyUnitsSuccess([currencyUnit]);
-    store.dispatch(currencyUnitAction);
-
-    const timeUnitAction = new MatrixActions.SetTimeUnit(defaultTimeUnit);
-    store.dispatch(timeUnitAction);
-
-    expect(incomeCalcService.calcPlaceIncome).toHaveBeenCalled();
-    expect(component.familyIncome).toBeDefined();
-  });
+  }));
 
   it('show about popup on click on icon', () => {
+    component.home.aboutData = true;
     fixture.detectChanges();
     const de = fixture.debugElement;
     const aboutIcon = de.query(By.css('.short-about-info-image')).nativeElement;
@@ -219,10 +146,12 @@ describe('FamilyHeaderComponent', () => {
     expect(aboutDataPopup.getAttribute('class')).toContain('open');
   });
 
-  it('show about popup on hover on icon', () => {
-    spyOn(utilsService, 'getCoordinates').and.stub();
-
+  it('show about popup on hover on icon', fakeAsync(() => {
+    component.placeId = '1';
+    component.getFamilyHeaderData();
     fixture.detectChanges();
+    tick(DEBOUNCE_TIME);
+
     const de = fixture.debugElement;
     const aboutIcon = de.query(By.css('.short-about-info-image')).nativeElement;
     aboutIcon.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true, cancelable: true }));
@@ -231,10 +160,10 @@ describe('FamilyHeaderComponent', () => {
     const aboutDataPopupContent = de.query(By.css('.about-data-content')).nativeElement;
 
     expect(aboutDataPopupContent.textContent).toContain(expectedAboutData);
-    expect(utilsService.getCoordinates).toHaveBeenCalled();
-  });
+  }));
 
   it('close about popup on click', () => {
+    component.home.aboutData = true;
     fixture.detectChanges();
     const de = fixture.debugElement;
     const aboutIcon = de.query(By.css('.short-about-info-image')).nativeElement;
@@ -254,18 +183,22 @@ describe('FamilyHeaderComponent', () => {
     const data = {
       income: 1,
       country: {
-        region: 'World',
+        region: ['World'],
         alias: 'United Kingdom'
       },
       aboutData: expectedAboutData
     };
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
+    component.placeId = '1';
+
 
     expect(component.countryName).not.toBeDefined();
 
+    component.getFamilyHeaderData();
     fixture.detectChanges();
 
     expect(familyHeaderService.getFamilyHeaderData).toHaveBeenCalled();
+    fixture.detectChanges();
     expect(component.countryName).toEqual('UK');
   });
 
@@ -273,15 +206,16 @@ describe('FamilyHeaderComponent', () => {
     const data = {
       income: 1,
       country: {
-        region: 'World',
+        region: ['World'],
         alias: 'United States'
       },
       aboutData: expectedAboutData
     };
+    component.placeId = '1';
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
 
     expect(component.countryName).not.toBeDefined();
-
+    component.getFamilyHeaderData();
     fixture.detectChanges();
 
     expect(familyHeaderService.getFamilyHeaderData).toHaveBeenCalled();
@@ -292,15 +226,16 @@ describe('FamilyHeaderComponent', () => {
     const data = {
       income: 1,
       country: {
-        region: 'World',
+        region: ['World'],
         alias: 'South Africa'
       },
       aboutData: expectedAboutData
     };
+    component.placeId = '1';
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
 
     expect(component.countryName).not.toBeDefined();
-
+    component.getFamilyHeaderData();
     fixture.detectChanges();
 
     expect(familyHeaderService.getFamilyHeaderData).toHaveBeenCalled();
@@ -311,15 +246,16 @@ describe('FamilyHeaderComponent', () => {
     const data = {
       income: 1,
       country: {
-        region: 'World',
+        region: ['World'],
         alias: 'Papua New Guinea'
       },
       aboutData: expectedAboutData
     };
+    component.placeId = '1';
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
 
     expect(component.countryName).not.toBeDefined();
-
+    component.getFamilyHeaderData()
     fixture.detectChanges();
 
     expect(familyHeaderService.getFamilyHeaderData).toHaveBeenCalled();
@@ -330,15 +266,16 @@ describe('FamilyHeaderComponent', () => {
     const data = {
       income: 1,
       country: {
-        region: 'World',
+        region: ['World'],
         alias: 'Ukraine'
       },
       aboutData: expectedAboutData
     };
+    component.placeId = '1';
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
 
     expect(component.countryName).not.toBeDefined();
-
+    component.getFamilyHeaderData();
     fixture.detectChanges();
 
     expect(familyHeaderService.getFamilyHeaderData).toHaveBeenCalled();
@@ -357,7 +294,8 @@ describe('FamilyHeaderComponent', () => {
       image: '//fakepath'
     };
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
-    
+    component.placeId = '1';
+    component.getFamilyHeaderData();
     fixture.detectChanges();
     const shortFamilyInfoBtn = fixture.debugElement.query(By.css('.home-description-container .image-container > img'));
     let expectedEvent;
@@ -383,34 +321,36 @@ describe('FamilyHeaderComponent', () => {
     const data = {
       income: 1,
       country: {
-        region: 'World',
+        region: ['World'],
         alias: 'Ukraine'
       },
       aboutData: expectedAboutData
     };
+    component.placeId = '1';
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
 
     let expectedEvent;
     component.streetFamilyData.subscribe(event => expectedEvent = event);
-    
+    component.getFamilyHeaderData();
     fixture.detectChanges();
 
-    expect(expectedEvent).toEqual({income: 1, region: 'World'});
+    expect(expectedEvent).toEqual({income: 1, region: ['World']});
   });
 
   it('open expand block for short-family-info', () => {
     const data = {
       income: 1,
       country: {
-        region: 'World',
+        region: ['World'],
         alias: 'United States'
       },
       aboutData: expectedAboutData,
       familyThingId: '1',
       image: '//fakepath'
     };
+    component.placeId = '1';
     spyOn(familyHeaderService, 'getFamilyHeaderData').and.returnValue(Observable.of({ err: null, data }));
-    
+    component.getFamilyHeaderData();
     fixture.detectChanges();
     const shortFamilyInfoBtn = fixture.debugElement.query(By.css('.short-family-info-container .image-container > img'));
     let expectedEvent;

@@ -3,6 +3,7 @@ import 'rxjs/add/operator/debounceTime';
 import { Directive, ElementRef, OnInit, AfterViewChecked, OnDestroy, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { DEBOUNCE_TIME } from "../../defaultState";
 
 @Directive({selector: '[footerSpace]'})
 export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy {
@@ -17,7 +18,7 @@ export class FooterSpaceDirective implements OnInit, AfterViewChecked, OnDestroy
 
   public ngOnInit(): void {
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(300)
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
           this.setFooterSpace();

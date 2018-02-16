@@ -3,7 +3,6 @@ import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import {
   MathService,
-  DrawDividersInterface,
   BrowserDetectionService
 } from '../../common';
 import { scaleLog } from 'd3-scale';
@@ -11,6 +10,7 @@ import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
 
 import * as _ from 'lodash';
+import { DefaultUrlParameters, MOBILE_SIZE } from "../../defaultState";
 
 @Injectable()
 export class StreetDrawService {
@@ -94,25 +94,32 @@ export class StreetDrawService {
     this.thingname = thing;
     this.countries = countries[0];
     this.regions = regions[0];
-    this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
-    this.levelLabels = [drawDividers.firstLabelName, drawDividers.secondLabelName, drawDividers.thirdLabelName, drawDividers.fourthLabelName];
+    this.axisLabel = [ _.get(drawDividers, 'low', 0), _.get(drawDividers, 'medium', 0), _.get(drawDividers, 'high', 0)];
+    this.levelLabels = [
+      _.get(drawDividers, 'firstLabelName', ''),
+      _.get(drawDividers, 'secondLabelName', ''),
+      _.get(drawDividers, 'thirdLabelName', ''),
+      _.get(drawDividers, 'fourthLabelName', '')
+    ]
     this.dividersData = drawDividers;
-    this.lowIncome = lowIncome || drawDividers.poor;
-    this.highIncome = highIncome || drawDividers.rich;
+    this.lowIncome = lowIncome || _.get(drawDividers, 'poor', 0);
+    this.highIncome = highIncome || _.get(drawDividers, 'rich', 0);
     // this.widthParsed = parseInt(this.svg.style('width'), 10) - this.streetOffset;
     // this.width = (this.widthParsed !== this.width) ? this.widthParsed  : this.widthParsed;
-    this.width = parseInt(this.svg.style('width'), 10) - this.streetOffset;
-    this.height = parseInt(this.svg.style('height'), 10);
+    const svgHeight = this.svg.style('height').length ? this.svg.style('height') : 0;
+    const svgWidth = this.svg.style('width').length ? this.svg.style('width') : 0;
+    this.width = parseInt(svgWidth, 10) - this.streetOffset;
+    this.height = parseInt(svgHeight, 10);
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
-
+    const lowScale = _.get(drawDividers, 'filter.lowIncome', this.lowIncome);
+    const highScale = _.get(drawDividers, 'filter.highIncome', this.highIncome)
     this.scale = scaleLog()
-      // .domain([drawDividers.poor, drawDividers.low, drawDividers.medium, drawDividers.high, drawDividers.rich])
-      .domain([drawDividers.poor, drawDividers.rich])
-      // .range([0, drawDividers.lowDividerCoord / 1000 * this.width, drawDividers.mediumDividerCoord / 1000 * this.width, drawDividers.highDividerCoord / 1000 * this.width, this.width]);
+      .domain([
+        _.get(drawDividers, 'poor', Number(DefaultUrlParameters.lowIncome)),
+        _.get(drawDividers, 'rich', Number(DefaultUrlParameters.highIncome))
+      ])
       .range([0, this.width]);
-
-
     return this;
   }
 
@@ -127,7 +134,7 @@ export class StreetDrawService {
   };
 
   public isDrawDividers(drawDividers: any): this {
-    if (!drawDividers.showDividers /*|| !this.showStreetAttrs*/) {
+    if (!_.get(drawDividers, 'showDividers', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
 
@@ -162,7 +169,7 @@ export class StreetDrawService {
   }
 
   public isDrawCurrency(drawDividers: any): this {
-    if (!drawDividers.showCurrency /*|| !this.showStreetAttrs*/) {
+    if (!_.get(drawDividers,'showCurrency', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
 
@@ -197,7 +204,7 @@ export class StreetDrawService {
   }
 
   public isDrawLabels(drawDividers: any): this {
-    if (!drawDividers.showLabels /*|| !this.showStreetAttrs*/) {
+    if (!_.get(drawDividers, 'showLabels', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
 
@@ -228,9 +235,9 @@ export class StreetDrawService {
   }
 
   public drawScale(places: any, drawDividers: any): this {
-    let halfHouseWidth = 7;
-    let roofX = 2 - halfHouseWidth;
-    let roofY = this.halfOfHeight - 10;
+    const halfHouseWidth = 7;
+    const roofX = 2 - halfHouseWidth;
+    const roofY = this.halfOfHeight - 10;
 
     axisBottom(this.scale)
       .tickFormat(() => {
@@ -286,7 +293,7 @@ export class StreetDrawService {
           let point7: string;
 
           if (datum) {
-            let scaleDatumIncome = this.scale(datum.income);
+            const scaleDatumIncome = this.scale(datum.income);
             this.placesArray.push(datum);
 
             this.placesArray = _
@@ -452,7 +459,7 @@ export class StreetDrawService {
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove')
       .subscribe((e: TouchEvent) => {
-          if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+          if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
             return;
           }
 
@@ -508,7 +515,7 @@ export class StreetDrawService {
     this.mouseUpSubscriber = fromEvent(window, 'mouseup')
       .subscribe(() => {
 
-        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+        if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
 
@@ -517,7 +524,7 @@ export class StreetDrawService {
 
     this.touchUpSubscriber = fromEvent(window, 'touchend')
       .subscribe(() => {
-        if (this.windowInnerWidth < 600 || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+        if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
         }
 
@@ -679,7 +686,7 @@ export class StreetDrawService {
           }
         }
 
-        if (this.windowInnerWidth < 600) {
+        if (this.windowInnerWidth < MOBILE_SIZE) {
           point1 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 1}`;
           point2 = `${x + 2 + this.streetOffset / 2 - 9},${ this.halfOfHeight + 14 - 5 - 1 - 1}`;
           point3 = `${x + 2 + this.streetOffset / 2 + 1},${ this.halfOfHeight + 14 - 5 - 1 - 1 }`;
@@ -829,7 +836,7 @@ export class StreetDrawService {
         }
       }
 
-      if (this.windowInnerWidth < 600) {
+      if (this.windowInnerWidth < MOBILE_SIZE) {
         point1 = `${x - 2 + this.streetOffset / 2 - 1 },${this.halfOfHeight + 14 - 1}`;
         point2 = `${x - 2 + this.streetOffset / 2 - 1 },${this.halfOfHeight + 14 - 5 - 1 - 1}`;
         point3 = `${x - 2 + this.streetOffset / 2 + 9 },${this.halfOfHeight + 14 - 5 - 1 - 1}`;
@@ -958,11 +965,11 @@ export class StreetDrawService {
   };
 
   public drawScrollLabel(): this {
-    let incomeL: any = Math.round(this.lowIncome ? this.lowIncome : 0);
-    let incomeR: any = Math.round(this.highIncome ? this.highIncome : this.dividersData.rich);
 
-    if (incomeR > this.dividersData.rich) {
-      incomeR = this.dividersData.rich;
+    let incomeL = Math.round(+this.lowIncome ? +this.lowIncome : 0);
+    let incomeR = Math.round(+this.highIncome ? +this.highIncome : +this.dividersData.rich);
+    if (incomeR > +this.dividersData.rich) {
+      incomeR = +this.dividersData.rich;
     }
 
     let xL = this.scale(incomeL);
@@ -986,8 +993,9 @@ export class StreetDrawService {
       this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
     }
 
-    incomeL = this.math.roundIncome(incomeL * this.currencyUnit.value);
-    incomeR = this.math.roundIncome(incomeR * this.currencyUnit.value);
+    incomeL = +this.math.roundIncome(incomeL * Number(this.currencyUnit.value));
+    incomeR = +this.math.roundIncome(incomeR * Number(this.currencyUnit.value));
+
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');
@@ -1031,7 +1039,7 @@ export class StreetDrawService {
 
     if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       incomeL = Math.round(this.minIncome * this.currencyUnit.value);
-      incomeL = this.math.roundIncome(incomeL);
+      incomeL = +this.math.roundIncome(incomeL);
 
       this.leftScrollText
         .text(`${this.currencyUnit.symbol}${incomeL}`)
@@ -1044,7 +1052,7 @@ export class StreetDrawService {
 
     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       incomeR = Math.round(this.maxIncome * this.currencyUnit.value);
-      incomeR = this.math.roundIncome(incomeR);
+      incomeR = +this.math.roundIncome(incomeR);
 
       this.rightScrollText
         .text(`${this.currencyUnit.symbol}${incomeR}`)

@@ -4,8 +4,13 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import {AppStates, Currency, Place, StreetSettingsState, TimeUnit} from '../interfaces';
-import * as StreetSettingsActions from '../common';
+import {
+  AppStates,
+  Currency,
+  Place,
+  StreetSettingsState,
+  TimeUnit
+} from '../interfaces';
 import {
   Component,
   ElementRef,
@@ -15,11 +20,13 @@ import {
   ChangeDetectorRef,
   ViewChild,
   EventEmitter,
-  Output
+  Output,
+  Input,
+  OnChanges,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { chain, cloneDeep, find, map, difference, forEach, uniq } from 'lodash';
+import { chain, cloneDeep, find, map, difference, forEach, get, uniq } from 'lodash';
 import {
   LoaderService,
   UrlChangeService,
@@ -35,13 +42,13 @@ import {
   IncomeCalcService,
   LocalStorageService
 } from '../common';
-import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from './ngrx/matrix.actions';
-import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter.actions';
 import { MatrixImagesComponent } from './matrix-images/matrix-images.component';
 import { ImageResolutionInterface } from '../interfaces';
 import { MatrixService } from './matrix.service';
-import { get } from 'lodash';
+import { DEBOUNCE_TIME, DefaultUrlParameters } from '../defaultState';
+import { UrlParametersService } from '../url-parameters/url-parameters.service';
+import { PagePositionService } from "../shared/page-position/page-position.service";
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -50,7 +57,7 @@ const TITLE_MAX_VISIBLE_COUNTRIES = 3;
   templateUrl: './matrix.component.html',
   styleUrls: ['./matrix.component.css']
 })
-export class MatrixComponent implements OnDestroy, AfterViewInit {
+export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   @ViewChild(MatrixImagesComponent)
   public matrixImagesComponent: MatrixImagesComponent;
   @ViewChild('streetAndTitleContainer')
@@ -67,7 +74,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetContainerElement: HTMLElement;
   public streetAndTitleContainerElement: HTMLElement;
   public zoomPositionFixed: boolean;
-  public isOpenIncomeFilter: boolean = false;
+  public isOpenIncomeFilter = false;
   public isMobile: boolean;
   public isDesktop: boolean;
   public window: Window = window;
@@ -75,14 +82,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public streetPlaces: Subject<any> = new Subject<any>();
   public matrixPlaces: Subject<any> = new Subject<any>();
   public chosenPlaces: Subject<any> = new Subject<any>();
-  public clearActiveHomeViewBox: Subject<any> = new Subject<any>();
-  public row: number;
+
+  @Input()
+  row: number;
   public zoom: number;
   public lowIncome: number;
   public highIncome: number;
   public activeHouse: number;
-  public itemSize: number;
-  public footerHeight: number;
+
+  @Output()
+  public itemSize = 0;
   public visiblePlaces: number;
   public rowEtalon: number = 0;
   public windowInnerWidth: number = window.innerWidth;
@@ -106,15 +115,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public element: HTMLElement;
   public imageResolution: ImageResolutionInterface;
   public matrixImagesContainer: HTMLElement;
-  public imagesContainer: HTMLElement;
-  public matrixImagesContainerHeight: number;
   public guidePositionTop: number = 0;
-  public imageContentElement: HTMLElement;
   public guideContainerElement: HTMLElement;
   public device: BrowserDetectionService;
   public theWorldTranslate: string;
   public getTranslationSubscribe: Subscription;
-  public byIncomeText: string;
   public streetSettingsState: Observable<StreetSettingsState>;
   public appState: Observable<any>;
   public matrixState: Observable<any>;
@@ -124,39 +129,29 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   public appStateSubscription: Subscription;
   public matrixStateSubscription: Subscription;
   public isQuickGuideOpened: boolean;
-  public thingsFilterState: Observable<any>;
-  public thingsFilterStateSubscription: Subscription;
   public isPinMode: boolean;
-  public pinContainerElement: HTMLElement;
   public placesSet: Array<any>;
-  public maxPinnedCount: number = 6;
   public pinHeaderTitle: string;
   public isPreviewView: boolean;
   public isEmbedMode: boolean;
   public embedSetId: string;
   public isEmbedShared: boolean;
   public activeThing: any;
-  public imagesProcessed: boolean;
   public matrixImages: any;
-  public countriesFilterState: Observable<any>;
-  public countriesFilterStateSubscription: Subscription;
   public isScreenshotProcessing: boolean;
   public timeUnit: TimeUnit;
   public currencyUnit: Currency;
   public currencyUnits: Currency[];
   public streetPlacesData: Place[];
-  public timeUnitCode: string;
-  public currencyUnitCode: string;
   public timeUnits: TimeUnit[];
-  //public showStreetAttrs: boolean;
   public plusSignWidth: number;
   public pinPlusArr: number[] = new Array(6);
   public pinPlusCount: number = 6;
   public pinPlusOffset: number = 16;
   public matrixContainerElement: HTMLElement;
   public shareUrl: string;
-  public pinnedSetQuery: string;
   public sharedImageUrl: string;
+  public storeSubscription: Subscription
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -177,19 +172,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
                      private socialShareService: SocialShareService,
                      private sortPlacesService: SortPlacesService,
                      private incomeCalcService: IncomeCalcService,
-                     private localStorageService: LocalStorageService) {
+                     private localStorageService: LocalStorageService,
+                     private urlParametersService: UrlParametersService,
+                     private pagePositionService: PagePositionService) {
     this.element = element.nativeElement;
 
     this.isMobile = this.browserDetectionService.isMobile();
     this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
-
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
-    this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
-    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
   public ngAfterViewInit(): void {
@@ -207,41 +198,40 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.theWorldTranslate = trans.THE_WORLD;
     });
 
-    this.appStateSubscription = this.appState.subscribe((data: any) => {
-      if (data) {
-        if (data.query) {
-          if (this.query !== data.query) {
-            this.query = data.query;
-          }
-        }
-      }
-    });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (data) {
-        if (get(data, 'pinMode', false)) {
+    this.storeSubscription = this.store
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe( (state: AppStates) => {
+        const appState = state.app;
+        const matrix = state.matrix;
+        const countriesFilter = state.countriesFilter;
+        const thingFilter = state.thingsFilter;
+        const streetSettings = state.streetSettings;
+
+        if (get(appState, 'query', false)
+        && this.query !== appState.query) {
+            this.query = appState.query;
+        }
+
+        if (get(matrix, 'pinMode', false)) {
           this.isPinMode = true;
           this.isEmbedMode = false;
         } else {
           this.isPinMode = false;
           this.isEmbedShared = false;
           this.isPreviewView = false;
-          this.setMatrixTopPadding(0);
         }
 
-        if (get(data, 'embedMode', false)) {
+        if (get(matrix, 'embedMode', false)) {
           this.isEmbedMode = true;
         } else {
           this.isEmbedMode = false;
-          if (!this.isPinMode) {
-              this.setMatrixTopPadding(0);
-          }
         }
 
-        if (get(data, 'matrixImages', false)) {
-          if (this.matrixImages !== data.matrixImages) {
-            this.matrixImages = data.matrixImages;
-            this.streetPlacesData = data.matrixImages;
+        if (get(matrix, 'matrixImages', false)
+          &&  this.matrixImages !== matrix.matrixImages) {
+            this.matrixImages = matrix.matrixImages;
+            this.streetPlacesData = matrix.matrixImages;
 
             this.processMatrixImages(this.matrixImages);
 
@@ -252,95 +242,110 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
             if (this.currencyUnit) {
               this.changeCurrencyUnit(this.currencyUnit);
             }
-          }
         }
 
-        if (get(data, 'timeUnits', false) && this.timeUnits !== data.timeUnits) {
-          this.timeUnits = data.timeUnits;
+        this.zoom = Number(get(matrix, 'zoom', DefaultUrlParameters.zoom));
+
+        if (get(matrix, 'timeUnits', false) && this.timeUnits !== matrix.timeUnits) {
+          this.timeUnits = matrix.timeUnits;
         }
 
-        if (get(data, 'timeUnit', false) && this.timeUnit !== data.timeUnit) {
-            this.timeUnit = data.timeUnit;
-            this.changeTimeUnit(data.timeUnit);
+        if (get(matrix, 'timeUnit', false) && this.timeUnit !== matrix.timeUnit) {
+          this.timeUnit = matrix.timeUnit;
+          this.changeTimeUnit(matrix.timeUnit);
         }
 
-        if (get(data, 'currencyUnits', false) && this.currencyUnits !== data.currencyUnits) {
-            this.currencyUnits = data.currencyUnits;
+        if (get(matrix, 'currencyUnits', false) && this.currencyUnits !== matrix.currencyUnits) {
+          this.currencyUnits = matrix.currencyUnits;
         }
 
-        if (get(data, 'currencyUnit', false) && this.currencyUnit !== data.currencyUnit) {
-            this.currencyUnit = data.currencyUnit;
-            this.changeCurrencyUnit(data.currencyUnit);
+        if (get(matrix, 'currencyUnit', false) && this.currencyUnit !== matrix.currencyUnit) {
+          this.currencyUnit = matrix.currencyUnit;
+          this.changeCurrencyUnit(matrix.currencyUnit);
         }
 
-        if (get(data, 'incomeFilter', false)) {
+        if (get(matrix, 'incomeFilter', false)) {
           this.isOpenIncomeFilter = true;
         } else {
           this.isOpenIncomeFilter = false;
         }
 
-        if (get(data, 'quickGuide', false)) {
+        if (get(matrix, 'quickGuide', false)) {
           this.isQuickGuideOpened = true;
 
-          if (get(data,'embedMode', false)) {
-           this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+          if (get(matrix, 'embedMode', false)) {
+            this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
           }
 
         } else {
           this.isQuickGuideOpened = false;
         }
 
-        if (get(data, 'placesSet' , false) && this.placesSet !== data.placesSet) {
-          this.placesSet = data.placesSet;
+        if (get(matrix, 'placesSet' , false)
+          && this.placesSet !== matrix.placesSet) {
+          this.placesSet = matrix.placesSet;
 
           if (this.currencyUnit) {
             this.initPlacesSet();
           }
 
-          setTimeout(() => {
-            let pinContainerElement = this.element.querySelector('.pin-container') as HTMLElement;
-
-            if (pinContainerElement) {
-              const pinContainerHeight = pinContainerElement.getClientRects()[0].height;
-
-              this.setMatrixTopPadding(pinContainerHeight - 134);
-            }
-          }, 100);
         }
 
-        if (this.query && get(data, 'updateMatrix', false)) {
+        if (this.query && get(matrix, 'updateMatrix', false)) {
           this.store.dispatch(new MatrixActions.UpdateMatrix(false));
           this.store.dispatch(new MatrixActions.GetMatrixImages(`${this.query}&resolution=${this.imageResolution.image}`));
         }
 
-        this.changeDetectorRef.detectChanges();
-      }
-    });
-
-    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
-      if(get(data, 'countriesFilter', false)) {
+        if(get(countriesFilter, 'countriesFilter', false)) {
           this.processMatrixImages(this.matrixImages);
-      }
-    });
-
-    this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
-      if (get(data, 'thingsFilter', false)) {
-        this.activeThing = get(data.thingsFilter, 'thing', this.activeThing);
-        this.thing = get(data.thingsFilter, 'thing.originPlural', this.thing);
-
-        if (this.embedSetId !== undefined && this.embedSetId !== 'undefined') {
-          const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-          this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
         }
 
-        this.processMatrixImages(this.matrixImages);
 
+        if (get(thingFilter, 'thingsFilter', false)) {
+          this.activeThing = get(thingFilter.thingsFilter, 'thing', this.activeThing);
+          this.thing = get(thingFilter.thingsFilter, 'thing.originPlural', this.thing);
+        }
+
+        if (get(streetSettings, 'streetSettings', false)) {
+          if (this.streetData !== streetSettings.streetSettings) {
+            this.streetData = streetSettings.streetSettings;
+            this.processStreetData();
+          }
+
+          const poor = get(this.streetData, 'poor', DefaultUrlParameters.lowIncome);
+          const rich = get(this.streetData, 'rich', DefaultUrlParameters.highIncome);
+          this.lowIncome = +get(this.streetData, 'filters.lowIncome', poor);
+          this.highIncome = +get(this.streetData, 'filters.highIncome', rich);
+
+          this.processMatrixImages(this.matrixImages);
+
+        }
+
+        if (get(streetSettings, 'streetSettings', false)
+          && get(thingFilter, 'thingsFilter', false)) {
+          this.processMatrixImages(this.matrixImages);
+        }
+
+        // TODO: remove setTimeout on refactoring this component
+        setTimeout(() => {
+          if (this.row > 1 && !this.activeHouse) {
+            this.matrixImagesComponent.goToRow(this.row);
+          }
+        }, 1000);
+
+        if (get(matrix, 'embedSetId', false)
+          && this.embedSetId !== matrix.embedSetId) {
+          this.embedSetId = matrix.embedSetId;
+          const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+          this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
+          this.store.dispatch(new MatrixActions.SetEmbedMode(true));
+        }
+        this.setPinModeContainerSize();
         this.changeDetectorRef.detectChanges();
-      }
-    });
+
+      });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
-      .debounceTime(150)
       .subscribe(() => {
         this.zone.run(() => {
           if (window.innerWidth === this.windowInnerWidth) {
@@ -354,53 +359,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         });
       });
 
-    this.queryParamsSubscribe = this.activatedRoute.queryParams.subscribe((params: any) => {
-      this.thing = decodeURI(params.thing || 'Families');
-      this.countries = params.countries ? decodeURI(params.countries) : 'World';
-      this.regions = params.regions ? decodeURI(params.regions) : 'World';
-      this.zoom = parseInt(params.zoom, 10);
-      this.lowIncome = parseInt(params.lowIncome, 10);
-      this.highIncome = parseInt(params.highIncome, 10);
-      this.activeHouse = parseInt(params.activeHouse, 10);
-      this.row = parseInt(params.row, 10) || 1;
-      this.embedSetId = decodeURI(params.embed);
-      this.currencyUnitCode = params.currency ? decodeURI(params.currency.toUpperCase()) : null;
-      this.timeUnitCode = params.time ? decodeURI(params.time.toUpperCase()) : null;
-      //this.showStreetAttrs = params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false;
 
-      this.changeDetectorRef.detectChanges();
-
-      if (this.embedSetId !== 'undefined' && this.embedSetId !== undefined) {
-        const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
-        this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
-        this.store.dispatch(new MatrixActions.SetEmbedMode(true));
-      }
-
-      setTimeout(() => {
-        if (this.row > 1 && !this.activeHouse) {
-          this.matrixImagesComponent.goToRow(this.row);
-        }
-      }, 1000);
-
-      this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-        if (data) {
-          if (data.streetSettings) {
-            if (this.streetData !== data.streetSettings) {
-              this.streetData = data.streetSettings;
-
-              this.processStreetData();
-            }
-          }
-        }
-      });
-    });
 
     if ('scrollRestoration' in history) {
       this.windowHistory.scrollRestoration = 'manual';
     }
 
     this.scrollSubscribtion = fromEvent(document, 'scroll')
-      .debounceTime(50)
       .subscribe(() => {
         if (!this.itemSize) {
           this.calcItemSize();
@@ -411,23 +376,17 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
         this.getPaddings();
       });
 
-    this.store.dispatch(new StreetSettingsActions.GetStreetSettings());
-    this.store.dispatch(new MatrixActions.GetCurrencyUnits());
-    this.store.dispatch(new MatrixActions.GetTimeUnits());
   }
 
-  /*public openQuickGuide(): void {
-    this.localStorageService.removeItem('quick-guide');
-
-    document.body.scrollTop = 0;
-
-    this.store.dispatch(new MatrixActions.OpenQuickGuide(true));
-  }*/
+  public ngOnChanges(): void {
+    this.calcItemSize();
+  }
 
   public initPlacesSet(): void {
-    this.placesSet = this.placesSet.map((place) => {
+    this.placesSet = this.placesSet.map((place: Place) => {
       if (place) {
-        place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
+        place.showIncome = this.incomeCalcService
+          .calcPlaceIncome(place.income, this.timeUnit.code, this.currencyUnit.value);
 
         return place;
       }
@@ -444,14 +403,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     this.setPinHeaderTitle();
   }
 
-  public setMatrixTopPadding(value: number): void {
-    const currentPaddingTop = +this.matrixContainerElement.style.paddingTop.replace('px', '');
-    const diff = value - currentPaddingTop;
-    this.matrixContainerElement.style.paddingTop = value.toString() + 'px';
-    window.scrollTo(0, window.pageYOffset + diff);
-  }
-
-  public onPinnedPlaceHover(place: any): void {
+  public onPinnedPlaceHover(place: Place): void {
     if (!this.isDesktop) {
       return;
     }
@@ -480,52 +432,23 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       }
 
       this.thing = this.thing ? this.thing : 'Families';
-      this.zoom = this.zoom ? this.zoom : 4;
+      this.zoom = this.zoom ? this.zoom : Number(DefaultUrlParameters.zoom);
       this.regions = this.regions ? this.regions : 'World';
 
       if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
-        this.zoom = 4;
+        this.zoom = Number(DefaultUrlParameters.zoom);
       }
 
       if (!this.isDesktop) {
         this.zoom = 3;
       }
-
-      let query = `thing=${this.thing}&countries=${this.countries}&regions=${this.regions}&zoom=${this.zoom}&row=${this.row}&lowIncome=${this.lowIncome}&highIncome=${this.highIncome}`;
-
-      if (this.currencyUnitCode) {
-        query += `&currency=${this.currencyUnitCode.toLowerCase()}`;
-      }
-
-      if (this.timeUnitCode) {
-        query += `&time=${this.timeUnitCode.toLowerCase()}`;
-      }
-
-      /*if (this.showStreetAttrs) {
-        query += `&labels=${this.showStreetAttrs}`;
-      }*/
-
-      query += this.languageService.getLanguageParam();
-
-      if (this.activeHouse) {
-        query += `&activeHouse=${this.activeHouse}`;
-      }
-
-      if (this.embedSetId !== 'undefined' && this.embedSetId !== undefined) {
-        query += `&embed=${this.embedSetId}`;
-      }
-
-      this.urlChanged({isBack: true, url: query});
-
-      this.store.dispatch(new MatrixActions.UpdateMatrix(true));
-
       this.changeDetectorRef.detectChanges();
     }
   }
 
   public changeTimeUnit(timeUnit: TimeUnit): void {
     if (this.placesArr && this.currencyUnit) {
-      this.placesArr = this.placesArr.map((place) => {
+      this.placesArr = this.placesArr.map((place: Place) => {
         if (place) {
           place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, timeUnit.code, this.currencyUnit.value);
 
@@ -537,7 +460,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public changeCurrencyUnit(currencyUnit: any): void {
     if (this.placesArr && this.timeUnit) {
-      this.placesArr = this.placesArr.map((place) => {
+      this.placesArr = this.placesArr.map((place: Place) => {
         if (place) {
           place.showIncome = this.incomeCalcService.calcPlaceIncome(place.income, this.timeUnit.code, currencyUnit.value);
 
@@ -553,7 +476,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
   public clearEmbedMatrix(): void {
     if (this.placesArr) {
-      this.placesArr = this.placesArr.map((place) => {
+      this.placesArr = this.placesArr.map((place: Place) => {
         if (place && place.pinned) {
           place.pinned = false;
         }
@@ -580,17 +503,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       const embedId = data.data._id;
       const placesList = data.data.places;
       const shareUrl = data.data.url;
-
       this.embedSetId = embedId;
 
-      let queryParams = this.utilsService.parseUrl(this.query);
+      const queryParams = this.utilsService.parseUrl(this.query);
       queryParams.embed = this.embedSetId;
 
-      let queryString = this.utilsService.objToQuery(queryParams);
-
-      let updatedSet = this.placesSet.map((place) => {
-        // place.background = placesList[place._id];
+      const updatedSet = this.placesSet.map((place: Place) => {
         place.showBackground = placesList[place._id];
+
         return place;
       });
 
@@ -610,18 +530,17 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
             this.isScreenshotProcessing = false;
 
-            this.urlChangeService.replaceState('/matrix', queryString);
-
-            this.store.dispatch(new AppActions.SetQuery(queryString));
-
             this.isEmbedShared = true;
 
             this.changeDetectorRef.detectChanges();
 
             this.shareUrl = shareUrl;
+            this.urlParametersService.dispatchToStore({embed: this.embedSetId});
 
-            let shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
-            shareUrlElement.setAttribute('value', window.location.href);
+            const shareUrlElement = document.querySelector('.share-link-input') as HTMLInputElement;
+            const shareParams = this.urlParametersService.getParamsStingForPage('embed');
+            const link = window.location.href.split('?')[0];
+            shareUrlElement.setAttribute('value', `${link}?${shareParams}`);
             shareUrlElement.select();
           });
         });
@@ -690,20 +609,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       this.windowHistory.scrollRestoration = 'auto';
     }
 
+    if (this.storeSubscription) {
+      this.storeSubscription.unsubscribe();
+    }
+
     if (this.scrollSubscribtion) {
       this.scrollSubscribtion.unsubscribe();
-    }
-
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
-    }
-
-    if (this.matrixStateSubscription) {
-      this.matrixStateSubscription.unsubscribe();
     }
 
     if (this.getTranslationSubscribe) {
@@ -713,38 +624,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
-
-    if (this.queryParamsSubscribe) {
-      this.queryParamsSubscribe.unsubscribe();
-    }
-
-    if (this.thingsFilterStateSubscription) {
-      this.thingsFilterStateSubscription.unsubscribe();
-    }
-
     this.loaderService.setLoader(false);
-  }
-
-  public streetChanged(event: any): void {
-    this.urlChanged(event);
-
-    this.processMatrixImages(this.matrixImages);
   }
 
   public pinModeClose(openQuickGuide = false): void {
       this.store.dispatch(new MatrixActions.SetPinMode(false));
       this.store.dispatch(new MatrixActions.SetEmbedMode(false));
       this.store.dispatch(new MatrixActions.SetIsEmbededShared(false));
+      this.store.dispatch(new MatrixActions.RemoveEmbededId(''));
 
       this.embedSetId = undefined;
-
-      let queryParams = this.utilsService.parseUrl(this.query);
-      delete queryParams.embed;
-      let query = this.utilsService.objToQuery(queryParams);
-
-      this.store.dispatch(new AppActions.SetQuery(query));
-      this.urlChangeService.replaceState('/matrix', query);
-
       this.clearEmbedMatrix();
 
       if (openQuickGuide) {
@@ -754,7 +643,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       }
   }
 
-  public removePlaceFromSet(e: MouseEvent, place: any): void {
+  public removePlaceFromSet(e: MouseEvent, place: Place): void {
     e.stopPropagation();
 
     if (this.placesSet && this.placesSet.length > 0) {
@@ -767,38 +656,28 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public processScroll(): void {
-    if (!this.guideContainerElement) {
-      this.guideContainerElement = document.querySelector('.quick-guide-container') as HTMLElement;
-    }
-
-    let guideOffset: number = (this.guideContainerElement ? this.guideContainerElement.offsetHeight : 0);
-
-    let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - guideOffset;
-
-    let distance = scrollTop / this.itemSize;
-
-    if (isNaN(distance)) {
-      return;
-    }
-
-    let rest = distance % 1;
-    let row = distance - rest;
-
-    if (rest >= 0.85) {
-      row++;
-    }
-
-    this.row = row + 1;
-
-    if (this.rowEtalon !== this.row) {
-      this.rowEtalon = this.row;
-
-      let query: string = `${this.query.replace(/row\=\d*/, `row=${this.row}`)}`;
-
-      this.query = query;
-
-      this.urlChangeService.replaceState('/matrix', query);
-    }
+    // if (!this.guideContainerElement) {
+    //   this.guideContainerElement = document.querySelector('.quick-guide-container') as HTMLElement;
+    // }
+    //
+    // let guideOffset: number = (this.guideContainerElement ? this.guideContainerElement.offsetHeight : 0);
+    //
+    // let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - guideOffset;
+    //
+    // let distance = scrollTop / this.itemSize;
+    //
+    // if (isNaN(distance)) {
+    //   return;
+    // }
+    //
+    // let rest = distance % 1;
+    // let row = distance - rest;
+    //
+    // if (rest >= 0.85) {
+    //   row++;
+    // }
+    //
+    // this.row = row + 1;
 
     let clonePlaces = cloneDeep(this.placesArr);
 
@@ -850,24 +729,24 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
   }
 
   public calcItemSize(): void {
-    let imageContentElement = this.element.querySelector('.image-content') as HTMLElement;
-    let imagesContainerElement = this.element.querySelector('.images-container') as HTMLElement;
+    const imageContentElement = this.element.querySelector('.image-content') as HTMLElement;
+    const imagesContainerElement = this.element.querySelector('.images-container') as HTMLElement;
 
     if (!imagesContainerElement || !imageContentElement) {
       return;
     }
 
-    let widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
+    const widthScroll: number = this.windowInnerWidth - document.body.offsetWidth;
 
-    let imageMarginLeft: string = window.getComputedStyle(imageContentElement).getPropertyValue('margin-left');
-    let boxPaddingLeft: string = window.getComputedStyle(imagesContainerElement).getPropertyValue('padding-left');
 
-    let imageMargin = parseFloat(imageMarginLeft) * 2;
-    let boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
+    const boxPaddingLeft: string = window.getComputedStyle(imagesContainerElement).getPropertyValue('padding-left');
 
-    let imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom - imageMargin;
 
-    this.itemSize = imageHeight + imageMargin;
+    const boxContainerPadding: number = parseFloat(boxPaddingLeft) * 2;
+
+    const imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom;
+
+    this.itemSize = imageHeight;
   }
 
   public scrollTopZero(): void {
@@ -883,9 +762,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    let queryParams: any = this.utilsService.parseUrl(this.query);
-    this.zoom = queryParams.zoom;
-
     this.streetPlacesData = data.streetPlaces;
 
     if (!this.streetPlacesData.length) {
@@ -895,10 +771,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
 
     let visiblePlaces = this.streetPlacesData.filter((place: Place): boolean => {
-      return place && place.income >= queryParams.lowIncome && place.income < queryParams.highIncome;
+      return place && place.income >= this.lowIncome && place.income < this.highIncome;
     });
 
-    this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: any[]) => {
+    this.sortPlacesService.sortPlaces(visiblePlaces, this.zoom).then((sortedPlaces: Place[]) => {
       this.matrixPlaces.next(sortedPlaces);
       this.streetPlaces.next(this.streetPlacesData);
 
@@ -907,10 +783,14 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       this.placesArr = sortedPlaces;
 
-      this.changeCurrencyUnit(this.currencyUnit);
+      if (this.currencyUnit) {
+        this.changeCurrencyUnit(this.currencyUnit);
+      }
       this.changeTimeUnit(this.timeUnit);
 
       this.buildTitle(this.query);
+
+      this.calcItemSize();
     });
 
     this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
@@ -924,18 +804,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       url = url.replace(/row\=\d*/, 'row=1');
     }
-
-    // if (!isBack) {
-      // this.query = this.query.replace(/&activeHouse\=\d*/, '');
-      // this.activeHouse = void 0;
-
-      // this.hoverPlace.next(undefined);
-      // this.clearActiveHomeViewBox.next(true);
-    // }
-
-    this.store.dispatch(new AppActions.SetQuery(url));
-
-    this.urlChangeService.replaceState('/matrix', url);
   }
 
   public activeHouseOptions(options: any): void {
@@ -961,8 +829,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     }
 
     let url = this.utilsService.objToQuery(queryParams);
-
-    this.urlChanged({url: url});
   }
 
   public changeZoom(zoom: number): void {
@@ -973,23 +839,16 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
     if (!this.isDesktop ? zoom >= 4 : zoom >= 10) {
       return;
     }
-
-    let prevZoom: number = this.zoom;
-
-    this.zoom = zoom;
+    const prevZoom: number = this.zoom;
+    this.store.dispatch(new MatrixActions.ChangeZoom(zoom));
 
     this.calcItemSize();
-
-    this.query = this.query.replace(/zoom\=\d*/, `zoom=${zoom}`).replace(/row\=\d*/, `row=${this.row}`);
-
-    //this.urlChanged({isZoom: true, url: this.query});
-
-    this.store.dispatch(new AppActions.SetQuery(this.query));
-    //this.urlChangeService.replaceState('/matrix', this.query);
 
     this.matrixImagesComponent.changeZoom(prevZoom);
 
     this.processMatrixImages(this.matrixImages);
+
+    this.changeDetectorRef.detectChanges();
   }
 
   public getResponseFromIncomeFilter(params: any): void {
@@ -1000,8 +859,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
       this.lowIncome = params.lowIncome;
       this.highIncome = params.highIncome;
-
-      this.urlChanged({url: this.query});
     }
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
@@ -1118,5 +975,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit {
 
     this.selectedRegions = regions;
     this.selectedCountries = countries;
+  }
+
+  setPinModeContainerSize():void {
+    const container = document.querySelector('.pin-wrap') as HTMLElement;
+    const pinContainer = container.querySelector('.pin-container') as HTMLElement;
+    const height = pinContainer ? pinContainer.offsetHeight : 0;
+    container.style.height = `${height.toString()}px`;
   }
 }
