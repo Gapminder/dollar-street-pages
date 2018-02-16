@@ -47,6 +47,10 @@ export const SVG_DEFAULTS = {
     color: '#ffffff',
     opacity: '0.8'
   },
+  levels: {
+    color: '#767d86',
+    positionY: 61
+  },
   sliders: {
     color: '#525C64',
     name: '#slider',
@@ -60,5 +64,6 @@ export const SVG_DEFAULTS = {
     height: 12,
     positionY: 38,
     color: '#232B31',
-  }
+  },
+  mobileWidth: 700,
 };

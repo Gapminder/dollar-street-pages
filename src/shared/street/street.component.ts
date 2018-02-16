@@ -19,7 +19,9 @@ import {
   StreetSettingsState,
   DrawDividersInterface,
   AppState,
-  MatrixState, Place, UrlParameters
+  MatrixState,
+  Place,
+  UrlParameters
 } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
