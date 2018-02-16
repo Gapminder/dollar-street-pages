@@ -324,8 +324,9 @@ body.about #app-container.container {
 
   svg .poorest,
   svg .richest,
-  svg .scale-label {
-    font-size: 12px;
+  svg .scale-label,
+  svg .level-label{
+    font-size: 10px;
   }
 
   .block-entry h2 {
@@ -335,5 +336,17 @@ body.about #app-container.container {
 
   .block-entry h3 {
     font-size: 20px !important;
+  }
+}
+
+@media (max-width: 468px) {
+  svg .level-label{
+    font-size: 9px;
+  }
+
+  svg .poorest,
+  svg .richest,
+  svg .scale-label {
+    font-size: 8px;
   }
 }

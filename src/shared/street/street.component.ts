@@ -18,10 +18,10 @@ import {
   AppStates,
   StreetSettingsState,
   DrawDividersInterface,
-  AppState,
   MatrixState,
+  Place,
+  UrlParameters,
   IncomeFilter,
-  Place
 } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { sortBy, chain, differenceBy, forEach } from 'lodash';
@@ -66,8 +66,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   public streetData: DrawDividersInterface;
   public element: HTMLElement;
   public resize: any;
-  public drawOnMap: boolean = false;
-  public isStreetInit: boolean = false;
+  public drawOnMap = false;
+  public isStreetInit = false;
   public placesSubscribe: Subscription;
   public hoverPlaceSubscribe: Subscription;
   public chosenPlacesSubscribe: Subscription;
@@ -124,6 +124,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
         if (this.placesArr) {
           this.setDividers(this.placesArr, this.streetData);
+
         }
       }
 
@@ -132,7 +133,9 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.set('lowIncome', lowIncome);
       this.street.set('highIncome', highIncome);
 
-      this.thingName = thingsFilter.thingsFilter.thing.plural;
+      if (_.get(thingsFilter.thingsFilter, 'thing', false)) {
+        this.thingName = thingsFilter.thingsFilter.thing.plural;
+      }
       this.countries = countryFilter.selectedCountries;
       this.regions = countryFilter.selectedRegions;
 
@@ -233,6 +236,14 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   }
 
   public redrawStreet(): void {
+    if (
+      this.street.lowIncome
+      && this.street.highIncome
+      && this.streetData
+      && this.regions
+      && this.countries
+      && this.thingName
+    ) {
     this.street
       .clearSvg()
       .init(this.street.lowIncome, this.street.highIncome, this.streetData, this.regions, this.countries, this.thingName)
@@ -240,6 +251,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       .set('fullIncomeArr', [])
       .drawScale(this.placesArr, this.streetData)
       .removeSliders();
+    }
   }
 
   public ngOnDestroy(): void {

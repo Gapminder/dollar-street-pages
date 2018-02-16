@@ -5,8 +5,30 @@
   width: 100%;
 }
 
-.street-box svg {
+.street-box svg.chart {
   width: 100%;
   height: 65px;
   vertical-align: top;
+  text-align: left;
+  child-align: left;
+  alignment: left;
+  position: relative;
+}
+
+.test {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  transform-origin: 0 0;
+  transform-origin: 0px 0px 0 !important
+}
+
+.icon-group {
+  width: 16px;
+  height: 15px;
+}
+
+svg.icon-backgroung-house {
+  width: 28px;
+  height: 25px;
 }

@@ -77,6 +77,8 @@ export interface ImageResolutionInterface {
 
 export interface DrawDividersInterface {
   showDividers: boolean;
+  showCurrency?: boolean;
+  showLabels?: boolean;
   low: number;
   medium: number;
   high: number;
@@ -86,12 +88,15 @@ export interface DrawDividersInterface {
   mediumDividerCoord: number;
   highDividerCoord: number;
   _id?: string;
+  firstLabelName?: string;
+  secondLabelName?: string;
+  thirdLabelName?: string;
+  fourthLabelName?: string;
   filters?: {
     lowIncome: number;
     highIncome: number;
   };
 }
-
 
 export interface Place {
   background: string;
@@ -174,5 +179,5 @@ export interface Language {
 
 export interface PagePosition {
   row: number;
-  activeHouse: number
+  activeHouse: number;
 }
