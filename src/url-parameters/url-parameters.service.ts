@@ -38,6 +38,7 @@ export class UrlParametersService {
       const matrix = state.matrix;
       const languageState = state.language;
       const countriesFilter = state.countriesFilter;
+      const streetSettings = get(state.streetSettings, 'streetSettings', undefined);
 
       if (!get(matrix, 'currencyUnit', false)
       && get(matrix, 'currencyUnits', false)) {
@@ -80,6 +81,9 @@ export class UrlParametersService {
 
       this.parameters.countries = get(countriesFilter, 'selectedCountries', DefaultUrlParameters.countries);
       this.parameters.regions = get(countriesFilter, 'selectedRegions', DefaultUrlParameters.regions);
+
+      this.parameters.highIncome = get(streetSettings, 'filters.highIncome', DefaultUrlParameters.highIncome).toString();
+      this.parameters.lowIncome = get(streetSettings, 'filters.lowIncome', DefaultUrlParameters.lowIncome).toString();
 
       this.combineUrlPerPage();
     });
@@ -173,6 +177,14 @@ export class UrlParametersService {
 
     if (get(params, 'zoom', false)) {
       this.store.dispatch(new MatrixActions.ChangeZoom(params.zoom));
+    }
+
+    if (get(params, 'lowIncome', false)
+      || get(params, 'highIncome', false)) {
+      this.store.dispatch(new StreetSettingsActions.UpdateStreetFilters({
+        lowIncome: Number(get(params, 'lowIncome', DefaultUrlParameters.lowIncome )),
+        highIncome: Number(get(params, 'highIncome', DefaultUrlParameters.highIncome))
+      }));
     }
 
   }
