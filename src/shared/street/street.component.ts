@@ -33,7 +33,7 @@ import {
 import { StreetDrawService} from './street.service';
 import * as StreetSettingsActions from '../../common';
 import * as _ from "lodash";
-import { DEBOUNCE_TIME } from "../../defaultState";
+import { DEBOUNCE_TIME, DefaultUrlParameters } from "../../defaultState";
 
 @Component({
   selector: 'street',
@@ -128,8 +128,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
         }
       }
 
-      const lowIncome = _.get(streetSetting.streetSettings, 'filters.lowIncome', streetSetting.streetSettings.poor);
-      const highIncome = _.get(streetSetting.streetSettings, 'filters.highIncome', streetSetting.streetSettings.rich)
+      const lowIncome = _.get(streetSetting.streetSettings, 'filters.lowIncome', DefaultUrlParameters.lowIncome);
+      const highIncome = _.get(streetSetting.streetSettings, 'filters.highIncome', DefaultUrlParameters.highIncome)
       this.street.set('lowIncome', lowIncome);
       this.street.set('highIncome', highIncome);
 

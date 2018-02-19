@@ -17,7 +17,7 @@ interface NavigationEndInterface {
 
 @Component({
   selector: 'url-parameters',
-  template: '',
+  template: ''
 })
 export class UrlParametersComponent implements  OnDestroy {
   private subscribtions: Subscription[] = [];
@@ -66,7 +66,7 @@ export class UrlParametersComponent implements  OnDestroy {
       urlParametersService.combineUrlPerPage();
     });
   }
-private
+
   ngOnDestroy() {
     forEach(this.subscribtions, (subscription: Subscription) => {
       subscription.unsubscribe();
