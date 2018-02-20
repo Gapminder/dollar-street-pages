@@ -330,7 +330,7 @@ export class StreetDrawService {
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', () => this.draggingSliders = true);
+      .on('touchstart', () => this.draggingSliders = true, {passive: true});
 
     this.svg
       .append('line')
@@ -348,7 +348,7 @@ export class StreetDrawService {
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', () => this.draggingSliders = true);
+      .on('touchstart', () => this.draggingSliders = true, { passive: true });
 
     this.svg
       .append('line')
@@ -367,7 +367,7 @@ export class StreetDrawService {
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', (): any => this.draggingSliders = true);
+      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
 
     this.incomeArr.length = 0;
 
@@ -387,9 +387,8 @@ export class StreetDrawService {
       this.mouseMoveSubscriber.unsubscribe();
     }
 
-    this.mouseMoveSubscriber = fromEvent(window, 'mousemove')
+    this.mouseMoveSubscriber = fromEvent(window, 'mousemove', { passive: true })
       .subscribe((e: MouseEvent) => {
-        e.preventDefault();
 
         if (this.windowInnerWidth < SVG_DEFAULTS.mobileWidth
           || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
@@ -444,7 +443,7 @@ export class StreetDrawService {
       this.touchMoveSubscriber.unsubscribe();
     }
 
-    this.touchMoveSubscriber = fromEvent(window, 'touchmove')
+    this.touchMoveSubscriber = fromEvent(window, 'touchmove', { passive: true })
       .subscribe((e: TouchEvent) => {
           if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
             return;
@@ -499,7 +498,7 @@ export class StreetDrawService {
         }
       );
 
-    this.mouseUpSubscriber = fromEvent(window, 'mouseup')
+    this.mouseUpSubscriber = fromEvent(window, 'mouseup' , { passive: true })
       .subscribe(() => {
 
         if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
@@ -509,7 +508,7 @@ export class StreetDrawService {
         this.pressedSlider();
       });
 
-    this.touchUpSubscriber = fromEvent(window, 'touchend')
+    this.touchUpSubscriber = fromEvent(window, 'touchend', { passive: true })
       .subscribe(() => {
         if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
           return;
