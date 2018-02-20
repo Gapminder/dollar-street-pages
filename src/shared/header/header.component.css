@@ -751,3 +751,14 @@ input:checked + .slider:before {
     vertical-align: top;
   }
 }
+
+.income-title-text {
+  font-size: 22px !important;
+  line-height: 20px;
+}
+
+@media (max-width: 700px) {
+  .income-title-text {
+    display: none;
+  }
+}

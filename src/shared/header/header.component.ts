@@ -583,6 +583,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return;
     }
 
+    /*
+    TODO: hided desktop income filter for prod 20.02.18
+
     if (this.isIncomeDesktopOpened) {
       this.closeIncomeFilterDesktop(new MouseEvent(''));
       return;
@@ -591,6 +594,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     if (!this.isMobile) {
       this.openIncomeFilterDesktop(e);
     }
+    */
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }

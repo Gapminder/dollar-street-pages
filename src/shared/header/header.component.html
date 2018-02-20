@@ -49,7 +49,12 @@
                   (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
             <span class="income-title filter"
                   (click)="openIncomeFilterDesktop($event)">{{ 'BY_INCOME' | translate }}</span>-->
+            <span class="income-title-text"
+              *ngIf="!isMobile">
+              by income
+            </span>
             <span class="income-title"
+                  *ngIf="isMobile"
                   [ngClass]="{opened: isIncomeDesktopOpened, filter: isIncomeFilter}"
                   (click)="openIncomeFilter($event)">{{ incomeTitleText }}</span>
 
