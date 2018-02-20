@@ -5,6 +5,8 @@ import { MathService, DrawDividersInterface } from '../../common';
 import { scaleLog } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
+import { Place } from '../../interfaces';
+import { SVG_DEFAULTS } from '../street/svg-parameters';
 
 @Injectable()
 export class StreetFilterDrawService {
@@ -105,36 +107,25 @@ export class StreetFilterDrawService {
       .attr('y', this.height)
       .attr('fill', '#767d86');
 
-    this.svg
-      .selectAll('image.scale-label')
+    this.svg.selectAll('use.square-point')
       .data(this.axisLabel)
       .enter()
-      .append('svg:image')
-      .attr('class', 'scale-label')
-      .attr('xlink:href', '/assets/img/divider1.svg')
-      .attr('y', 25)
-      .attr('width', 15 + 19)
-      .attr('height', 24)
-      .attr('x', (d: any) => {
-        let indent = 0;
-        let center = 11;
+      .append('use')
+      .attr('xlink:href', SVG_DEFAULTS.squarePoints.name)
+      .attr("fill", SVG_DEFAULTS.squarePoints.color)
+      .attr('class', 'square-point')
+      .attr('width', SVG_DEFAULTS.squarePoints.width)
+      .attr('height', SVG_DEFAULTS.squarePoints.height)
+      .attr('y', SVG_DEFAULTS.squarePoints.positionY)
+      .attr('x', (d: number) => {
+        const x = this.scale(d)
 
-        if ((d + '').length === 2) {
-          indent = 11;
-          center = 2;
-        }
-
-        if ((d + '').length === 3) {
-          indent = 15;
-          center = 7;
-        }
-
-        return this.scale(d) - indent + 15 + center;
+        return x;
       })
       .on('mousedown', (): void => {
-        this.draggingSliders = true;
-      })
-      .on('touchstart', (): any => this.draggingSliders = true);
+      this.draggingSliders = true;
+    }, {passive: true})
+      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
 
     return this;
   }
@@ -154,38 +145,62 @@ export class StreetFilterDrawService {
       });
     // .tickSize(6, 0);
 
+    // this.svg
+    //   .selectAll('polygon')
+    //   .data(places)
+    //   .enter()
+    //   .append('polygon')
+    //   .attr('class', 'point')
+    //   .attr('points', (datum: any): any => {
+    //     let point1: string;
+    //     let point2: string;
+    //     let point3: string;
+    //     let point4: string;
+    //     let point5: string;
+    //     let point6: string;
+    //     let point7: string;
+    //
+    //     if (datum) {
+    //       let scaleDatumIncome = this.scale(datum.income);
+    //       point1 = `${this.halfOfStreetOffset + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
+    //       point2 = `${this.halfOfStreetOffset + scaleDatumIncome + roofX},${roofY}`;
+    //       point3 = `${this.halfOfStreetOffset + scaleDatumIncome - halfHouseWidth},${roofY}`;
+    //       point4 = `${this.halfOfStreetOffset + scaleDatumIncome},${this.halfOfHeight - 17}`;
+    //       point5 = `${this.halfOfStreetOffset + scaleDatumIncome + halfHouseWidth },${roofY}`;
+    //       point6 = `${this.halfOfStreetOffset + scaleDatumIncome - roofX },${roofY}`;
+    //       point7 = `${this.halfOfStreetOffset + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
+    //     }
+    //
+    //     return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
+    //     point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+    //   })
+    //   .attr('stroke-width', 1)
+    //   .style('fill', '#cfd2d6')
+    //   .style('opacity', '0.6');
+
     this.svg
-      .selectAll('polygon')
+      .selectAll('use.icon-background-home')
       .data(places)
       .enter()
-      .append('polygon')
-      .attr('class', 'point')
-      .attr('points', (datum: any): any => {
-        let point1: string;
-        let point2: string;
-        let point3: string;
-        let point4: string;
-        let point5: string;
-        let point6: string;
-        let point7: string;
-
-        if (datum) {
-          let scaleDatumIncome = this.scale(datum.income);
-          point1 = `${this.halfOfStreetOffset + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
-          point2 = `${this.halfOfStreetOffset + scaleDatumIncome + roofX},${roofY}`;
-          point3 = `${this.halfOfStreetOffset + scaleDatumIncome - halfHouseWidth},${roofY}`;
-          point4 = `${this.halfOfStreetOffset + scaleDatumIncome},${this.halfOfHeight - 17}`;
-          point5 = `${this.halfOfStreetOffset + scaleDatumIncome + halfHouseWidth },${roofY}`;
-          point6 = `${this.halfOfStreetOffset + scaleDatumIncome - roofX },${roofY}`;
-          point7 = `${this.halfOfStreetOffset + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
-        }
-
-        return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-        point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
+      .append('use')
+      .attr('class', 'icon-background-home')
+      .attr('y', SVG_DEFAULTS.backgroungHomes.positionY)
+      .attr('width', SVG_DEFAULTS.backgroungHomes.width)
+      .attr('height', SVG_DEFAULTS.backgroungHomes.height)
+      .attr('fill', SVG_DEFAULTS.backgroungHomes.fill)
+      .attr('xlink:href', SVG_DEFAULTS.backgroungHomes.name)
+      .attr('income', (datum: Place) => {
+        return datum.income;
       })
-      .attr('stroke-width', 1)
-      .style('fill', '#cfd2d6')
-      .style('opacity', '0.6');
+      .attr('home-id', (datum: Place) => {
+        return datum._id;
+      })
+      .attr('x', (datum: Place) => {
+        const scaleDatumIncome = this.scale(datum.income);
+        const position = this.streetOffset / 2 - SVG_DEFAULTS.backgroungHomes.width / 2 + scaleDatumIncome;
+
+        return position;
+      });
 
     this.svg
       .append('polygon')
@@ -205,7 +220,7 @@ export class StreetFilterDrawService {
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', (): any => this.draggingSliders = true);
+      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
 
     this.svg
       .append('line')
@@ -215,15 +230,15 @@ export class StreetFilterDrawService {
       .attr('y1', this.halfOfHeight + 12)
       .attr('x2', this.width + this.streetOffset - 1)
       .attr('y2', this.halfOfHeight + 12)
-      .attr('stroke-width', 3)
-      .attr('stroke', '#525c64')
+      .attr('stroke-width', SVG_DEFAULTS.road.line.height)
+      .attr('stroke', SVG_DEFAULTS.road.line.color)
       .style('cursor', '-webkit-grab')
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', (): any => this.draggingSliders = true);
+      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
 
     this.svg
       .append('line')
@@ -241,7 +256,7 @@ export class StreetFilterDrawService {
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', (): any => this.draggingSliders = true);
+      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
 
     this.incomeArr.length = 0;
 
@@ -254,13 +269,11 @@ export class StreetFilterDrawService {
       this.touchMoveSubscriber.unsubscribe();
     }
 
-    this.touchMoveSubscriber = fromEvent(window, 'touchmove')
+    this.touchMoveSubscriber = fromEvent(window, 'touchmove', { passive: true })
       .subscribe((e: TouchEvent)=> {
         if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
           return;
         }
-
-        e.preventDefault();
 
         let positionX = e.touches[0].pageX;
 
@@ -299,7 +312,7 @@ export class StreetFilterDrawService {
       this.touchUpSubscriber.unsubscribe();
     }
 
-    this.touchUpSubscriber = fromEvent(window, 'touchend')
+    this.touchUpSubscriber = fromEvent(window, 'touchend', { passive: true })
       .subscribe(()=> {
         if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
           return;
@@ -377,33 +390,27 @@ export class StreetFilterDrawService {
 
     if (!this.leftScroll) {
       this.leftScroll = this.svg
-        .append('polygon')
+        .append('use')
         .attr('class', 'left-scroll')
-        .style('fill', '#515c65')
-        .style('cursor', 'pointer')
-        .attr('stroke-width', 0.5)
-        .attr('stroke', '#ffffff')
+        .style('fill', SVG_DEFAULTS.sliders.color)
+        .attr('id', 'left-scroll')
+        .attr('xlink:href', SVG_DEFAULTS.sliders.name)
+        .attr('width', SVG_DEFAULTS.sliders.width)
+        .attr('height', SVG_DEFAULTS.sliders.height)
+        .attr('y', SVG_DEFAULTS.sliders.positionY)
         .on('mousedown', (): void => {
           this.sliderLeftMove = true;
         })
-        .on('touchstart', (): any => this.sliderLeftMove = true);
+        .on('touchstart', (): any => this.sliderLeftMove = true, { passive: true });
     }
 
     this.leftScroll
-      .attr('points', () => {
-        let point1: string = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight + 12 - 1}`;
-        let point2: string = `${x + this.halfOfStreetOffset - 11},${ this.halfOfHeight - 7.5 - 1}`;
-        let point3: string = `${x + this.halfOfStreetOffset },${ this.halfOfHeight - 7.5 - 1}`;
-        let point4: string = `${x + this.halfOfStreetOffset },${ this.halfOfHeight + 12 - 1}`;
-        let point5: string = `${x + this.halfOfStreetOffset - 5.5},${ this.halfOfHeight + 12 + 7.5 - 1}`;
-
-        return `${point1} ${point2} ${point3} ${point4} ${point5}`;
-      });
+      .attr('x',  x);
 
     this.leftScrollOpacityStreet
-      .attr('width', x + this.halfOfStreetOffset);
+      .attr('width', x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2);
     this.leftScrollOpacityHomes
-      .attr('width', x + this.halfOfStreetOffset);
+      .attr('width', x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2);
 
     this.lowIncome = this.scale.invert(x);
 
@@ -469,32 +476,27 @@ export class StreetFilterDrawService {
 
     if (!this.rightScroll) {
       this.rightScroll = this.svg
-        .append('polygon')
+        .append('use')
         .attr('class', 'right-scroll')
-        .style('fill', '#515c65')
-        .style('cursor', 'pointer')
-        .attr('stroke-width', 0.5)
-        .attr('stroke', '#ffffff')
+        .style('fill', SVG_DEFAULTS.sliders.color)
+        .attr('id', 'right-scroll')
+        .attr('xlink:href', SVG_DEFAULTS.sliders.name)
+        .attr('width', SVG_DEFAULTS.sliders.width)
+        .attr('height', SVG_DEFAULTS.sliders.height)
+        .attr('y', SVG_DEFAULTS.sliders.positionY)
         .on('mousedown', (): void => {
           this.sliderRightMove = true;
         })
-        .on('touchstart', (): any => this.sliderRightMove = true);
+        .on('touchstart', (): any => this.sliderRightMove = true, { passive: true });
     }
 
-    this.rightScroll.attr('points', () => {
-      let point1: string = `${x + this.halfOfStreetOffset},${ this.halfOfHeight + 12 - 1}`;
-      let point2: string = `${x + this.halfOfStreetOffset},${ this.halfOfHeight - 7.5 - 1}`;
-      let point3: string = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight - 7.5 - 1}`;
-      let point4: string = `${x + this.halfOfStreetOffset + 11},${ this.halfOfHeight + 12 - 1}`;
-      let point5: string = `${x + this.halfOfStreetOffset + 5.5},${ this.halfOfHeight + 12 + 7.5 - 1}`;
+    this.rightScroll
+      .attr('x',  x);
 
-      return `${point1} ${point2} ${point3} ${point4} ${point5}`;
-    });
-
-    this.rightScrollOpacityStreet.attr('x', x + this.halfOfStreetOffset + 1.5)
-      .attr('width', this.width + this.halfOfStreetOffset - x);
-    this.rightScrollOpacityHomes.attr('x', x + this.halfOfStreetOffset + 1.5)
-      .attr('width', this.width + this.halfOfStreetOffset - x);
+    this.rightScrollOpacityStreet.attr('x', x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2)
+      .attr('width', this.width + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2);
+    this.rightScrollOpacityHomes.attr('x', x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2)
+      .attr('width', this.width + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2);
     this.highIncome = this.scale.invert(x);
 
     this.drawScrollLabel();

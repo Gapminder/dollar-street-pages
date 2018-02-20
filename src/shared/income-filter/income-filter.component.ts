@@ -11,11 +11,12 @@ import {
   OnDestroy
 } from '@angular/core';
 import {
-  DrawDividersInterface
+  DrawDividersInterface, StreetSettingsEffects
 } from '../../common';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import * as StreetSettingsActions from '../../common';
 
 @Component({
   selector: 'income-filter',
@@ -106,6 +107,7 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
   public applyFilter(): void {
     this.range.close = true;
     this.sendResponse.emit(this.range);
+    this.store.dispatch( new StreetSettingsActions.UpdateStreetFilters(this.range) )
   }
 
   public closeFilter(): void {
