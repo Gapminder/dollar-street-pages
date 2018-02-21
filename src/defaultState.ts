@@ -11,6 +11,7 @@ export const DefaultUrlParameters: UrlParameters = {
   countries: ['World'],
   regions: ['World'],
   zoom: '4',
+  mobileZoom: '3',
   row: '1',
   lowIncome: '26',
   highIncome: '15000',

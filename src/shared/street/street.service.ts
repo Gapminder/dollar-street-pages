@@ -658,6 +658,7 @@ export class StreetDrawService {
         .attr('width', SVG_DEFAULTS.sliders.width)
         .attr('height', SVG_DEFAULTS.sliders.height)
         .attr('y', SVG_DEFAULTS.sliders.positionY)
+        .attr('style', 'cursor: pointer ')
         .on('mousedown', (): void => {
           this.sliderLeftMove = true;
         })
@@ -763,6 +764,7 @@ export class StreetDrawService {
         .attr('width', SVG_DEFAULTS.sliders.width)
         .attr('height', SVG_DEFAULTS.sliders.height)
         .attr('y', SVG_DEFAULTS.sliders.positionY)
+        .attr('style', 'cursor: pointer')
         .on('mousedown', (): void => {
           this.sliderRightMove = true;
         })

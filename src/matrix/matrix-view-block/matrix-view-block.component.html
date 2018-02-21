@@ -28,7 +28,7 @@
             <div class="image-content"
                  *ngIf="familyData?.familyImage"
                  [routerLink]="['/family']"
-                 (click)="goToPage(familyData.goToPlaceData)"
+                 (click)="visitThisHome(place._id)"
                  angulartics2On="click"
                  angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
               <img [src]="familyData.familyImage.url" alt="Family portrait">
@@ -38,7 +38,7 @@
                  *ngIf="familyData?.houseImage"
                  [routerLink]="['/family']"
                  [queryParams]="familyData.goToPlaceData"
-                 (click)="goToPage(familyData.goToPlaceData)"
+                 (click)="visitThisHome(place._id)"
                  angulartics2On="click"
                  angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
               <img [src]="familyData.houseImage.url" alt="House photo">

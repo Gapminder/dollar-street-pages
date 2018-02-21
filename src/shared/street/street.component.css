@@ -32,3 +32,9 @@ svg.icon-backgroung-house {
   width: 28px;
   height: 25px;
 }
+
+.left-scroll,
+.right-scroll {
+  cursor: pointer;
+}
+

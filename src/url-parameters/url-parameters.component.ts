@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { forEach, get } from 'lodash';
 import { PagePositionService } from '../shared/page-position/page-position.service';
 import { DefaultUrlParameters } from '../defaultState';
+import { BrowserDetectionService } from '../common';
 
 interface NavigationEndInterface {
   id: number;

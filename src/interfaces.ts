@@ -151,6 +151,7 @@ export interface UrlParameters {
   countries?: string[];
   regions?: string[];
   zoom?: string;
+  mobileZoom?: string;
   row?: string;
   lowIncome?: string;
   highIncome?: string;

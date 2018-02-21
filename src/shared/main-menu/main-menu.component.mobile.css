@@ -15,7 +15,7 @@
   display: block;
   z-index: 666;
   height: 100vh;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 #main-mobile-menu .menu-header-content {

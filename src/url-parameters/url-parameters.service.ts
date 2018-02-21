@@ -91,11 +91,21 @@ export class UrlParametersService {
 
   parseString(urlString: string): UrlParameters {
     if (urlString.indexOf('?') === -1) {
-      return DefaultUrlParameters;
+      const additionParams: UrlParameters = {};
+      if (this.isMobile) {
+        additionParams.zoom = DefaultUrlParameters.mobileZoom;
+      }
+
+      return Object.assign({}, DefaultUrlParameters, additionParams);
     }
     urlString = urlString.slice(urlString.indexOf('?') + 1);
+    const params = this.utilsService.parseUrl(urlString);
+    if (!get(params, 'zoom', false)
+    && this.isMobile) {
+      params.zoom = DefaultUrlParameters.mobileZoom;
+    }
 
-    return Object.assign( {}, DefaultUrlParameters, this.utilsService.parseUrl(urlString));
+    return Object.assign( {}, DefaultUrlParameters, params);
   }
 
   combineUrlPerPage(): void {
@@ -116,9 +126,17 @@ export class UrlParametersService {
       case 'regions':
         string = difference(this.parameters[param].sort(),  DefaultUrlParameters[param].sort()).length ? `${param}=${this.parameters[param].join(',')}` : '';
         break;
+      case 'zoom':
+        if (this.isMobile) {
+          string = '';
+        } else {
+          string = this.parameters[param] !== DefaultUrlParameters[param] ? `${param}=${this.parameters[param]}` : '';
+        }
+        break;
       default:
           string = this.parameters[param] !== DefaultUrlParameters[param] ? `${param}=${this.parameters[param]}` : '';
     }
+
     return encodeURI(string);
   }
 
@@ -174,7 +192,6 @@ export class UrlParametersService {
     if (get(params, 'lang', false)) {
       this.languageService.changeLanguage(params.lang);
     }
-
     if (get(params, 'zoom', false)) {
       this.store.dispatch(new MatrixActions.ChangeZoom(params.zoom));
     }
