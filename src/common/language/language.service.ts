@@ -16,6 +16,7 @@ import * as LanguageActions from './ngrx/language.actions';
 import { Store } from '@ngrx/store';
 import { AppStates, LanguageState } from '../../interfaces';
 import { Language } from '../../interfaces';
+import { DEBOUNCE_TIME } from '../../defaultState';
 
 @Injectable()
 export class LanguageService {
@@ -45,9 +46,12 @@ export class LanguageService {
 
     const languageState = this.store.select((state: AppStates) => state.language);
 
-    this.languageSubscription = languageState.subscribe( (language: LanguageState) => {
+    this.languageSubscription = languageState
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe( (language: LanguageState) => {
       if (get(language, 'lang', false)) {
         this.storeLanguage = language.lang;
+        this.setCurrentLanguage(this.availableLanguage);
       }
     });
 

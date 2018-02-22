@@ -49,5 +49,21 @@ export const VisibleParametersPerPage = {
   ],
   '/family': ['lang', 'place', 'row', 'activeImage', 'zoom'],
   '/about':  ['lang'],
-  '/map':  ['lang', 'thing']
+  '/map':  ['lang', 'thing'],
+  '/': [
+    'lang',
+    'thing',
+    'countries',
+    'regions',
+    'zoom',
+    'row',
+    'lowIncome',
+    'highIncome',
+    'activeHouse',
+    'currency',
+    'time',
+    'embed',
+    'place',
+    'activeImage'
+  ]
 };

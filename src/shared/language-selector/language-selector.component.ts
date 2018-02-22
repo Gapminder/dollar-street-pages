@@ -1,4 +1,3 @@
-
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import {
@@ -11,6 +10,10 @@ import {
 import {
   LanguageService
 } from '../../common';
+import { AppStates, LanguageState } from '../../interfaces';
+import { Store } from '@ngrx/store';
+import { DEBOUNCE_TIME } from '../../defaultState';
+import { get } from 'lodash';
 
 @Component({
   selector: 'language-selector',
@@ -29,7 +32,8 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public filteredLanguages: any[];
 
   public constructor(elementRef: ElementRef,
-                     private languageService: LanguageService) {
+                     private languageService: LanguageService,
+                     private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
   }
 
@@ -38,6 +42,16 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
       this.languages = data;
       this.updateLanguages();
     });
+
+    this.store.select((store: AppStates) => store.language)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe( (state: LanguageState) => {
+        if (this.currentLanguage !== get(state, 'lang', this.currentLanguage)) {
+          this.currentLanguage = state.lang;
+          this.languageService.changeLanguage(this.currentLanguage);
+          this.updateLanguages();
+        }
+      })
   }
 
   public ngOnDestroy(): void {
