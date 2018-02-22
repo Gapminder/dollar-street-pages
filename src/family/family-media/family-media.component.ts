@@ -122,10 +122,19 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
     this.matrixSubscription = matrixState
       .subscribe((matrix: MatrixState) => {
+        if (this.zoom !== matrix.zoom) {
+          this.zoom = matrix.zoom;
+          this.changeZoom();
+          this.getVisibleRows();
+
+          this.calcItemSize();
+        }
+
         if (!get(this, 'placeId', false)
           && get(matrix, 'place', false)) {
           this.placeId = matrix.place;
-          this.zoom = matrix.zoom;
+
+
 
           const query = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
           this.familyPlaceServiceSubscribe = this.familyMediaService
@@ -152,7 +161,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
               }
               this.currentImages = slice(this.images, 0, numberSplice);
 
-              this.changeZoom(0);
+              this.changeZoom();
 
               this.loaderService.setLoader(true);
               if (get(this.urlParametersService, 'activeImageByRoute', null)) {
@@ -172,7 +181,6 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
               }
             });
         }
-
       });
 
     this.resizeSubscribe = fromEvent(window, 'resize')
@@ -256,10 +264,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.loaderService.setLoader(false);
   }
 
-  public changeZoom(prevZoom: number): void {
-    this.familyImageContainerElement.classList.remove('column-' + prevZoom);
+  public changeZoom(): void {
+    this.familyImageContainerElement.classList.remove('column-2', 'column-3', 'column-4', 'column-5', 'column-6', 'column-7', 'column-8', 'column-9', 'column-10');
     this.familyImageContainerElement.classList.add('column-' + this.zoom);
-
 
     this.showImageBlock = false;
   }

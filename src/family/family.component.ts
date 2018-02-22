@@ -32,6 +32,7 @@ import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from "../defaultState";
 import { combineLatest } from "rxjs/observable/combineLatest";
+import * as MatrixActions from '../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'family',
@@ -130,6 +131,10 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
           .sortBy('country')
           .value();
       }
+
+      if (this.zoom !== matrix.zoom) {
+
+      }
     });
   }
 
@@ -180,9 +185,9 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public changeZoom(zoom: number): void {
     const prevZoom: number = this.zoom;
-    this.zoom = zoom;
+
     // this.urlChanged({isZoom: true, url: this.query});
-    this.familyMediaComponent.changeZoom(prevZoom);
+    this.store.dispatch(new MatrixActions.ChangeZoom(zoom));
   }
 
   public processScroll(): void {
