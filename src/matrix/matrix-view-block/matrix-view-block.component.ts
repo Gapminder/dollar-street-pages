@@ -46,6 +46,7 @@ import { StreetDrawService } from '../../shared/street/street.service';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 import { get } from 'lodash';
 import { DEBOUNCE_TIME } from "../../defaultState";
+import { PagePositionService } from '../../shared/page-position/page-position.service';
 
 @Component({
   selector: 'matrix-view-block',
@@ -114,7 +115,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      private changeDetectorRef: ChangeDetectorRef,
                      private urlChangeService: UrlChangeService,
                      public streetService: StreetDrawService,
-                     private urlParametersService : UrlParametersService) {
+                     private urlParametersService : UrlParametersService,
+                     private pagePositionService: PagePositionService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -319,16 +321,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     this.urlChangeService.assignState('/matrix');
 
-    this.scrollTopZero();
+    this.pagePositionService.scrollTopZero();
   }
 
-  public scrollTopZero(): void {
-    if (document.body.scrollTop) {
-      document.body.scrollTop = 0;
-    } else {
-      document.documentElement.scrollTop = 0;
-    }
-  }
 
   public setMarkerPosition(): void {
     this.markerPositionLeft = (this.itemSize * this.positionInRow) - this.itemSize / 2;

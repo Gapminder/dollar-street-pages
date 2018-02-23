@@ -65,4 +65,12 @@ export class PagePositionService {
       this.urlParametersService.needPositionByRoute = null;
     }
   }
+
+  public scrollTopZero(): void {
+    if (document.body.scrollTop) {
+      document.body.scrollTop = 0;
+    } else {
+      document.documentElement.scrollTop = 0;
+    }
+  }
 }
