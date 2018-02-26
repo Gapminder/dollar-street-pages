@@ -32,7 +32,7 @@ import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { ImageResolutionInterface } from '../../../interfaces';
 import { get } from 'lodash';
 import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
-import { DEBOUNCE_TIME } from "../../../defaultState";
+import { DEBOUNCE_TIME } from '../../../defaultState';
 import { StreetDrawService } from '../../../shared/street/street.service';
 import { PagePositionService } from '../../../shared/page-position/page-position.service';
 

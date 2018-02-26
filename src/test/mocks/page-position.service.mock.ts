@@ -11,4 +11,6 @@ export class PagePositionServiceMock {
   }
 
   public setCurrentRow(): void {}
+
+  public scrollTopZero(): void {}
 }

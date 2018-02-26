@@ -22,6 +22,9 @@ import {
 import { RegionMapComponent } from "../../../shared/region-map/region-map.component";
 import { CountryInfoComponent } from '../country-info.component';
 import { CountryInfoService } from '../country-info.service';
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { StreetDrawService } from '../../../shared/street/street.service';
+import { StreetDrawServiceMock } from '../../../test/mocks/streetDrawService.mock';
 
 describe('CountryInfoComponent', () => {
     let fixture: ComponentFixture<CountryInfoComponent>;
@@ -44,7 +47,8 @@ describe('CountryInfoComponent', () => {
                 StoreModule.forRoot({}),
                 RouterTestingModule,
                 Angulartics2Module,
-                TranslateModule
+                TranslateModule,
+              CommonServicesTestingModule
             ],
             declarations: [
                 CountryInfoComponent,
@@ -59,7 +63,8 @@ describe('CountryInfoComponent', () => {
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: CountryInfoService, useClass: CountryInfoServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock }
+                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+                { provide: StreetDrawService, useValue: StreetDrawServiceMock}
             ]
         });
 
