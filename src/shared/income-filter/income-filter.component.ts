@@ -125,6 +125,7 @@ export class IncomeFilterComponent implements AfterViewInit, OnDestroy {
     this.range.close = true;
 
     this.sendResponse.emit(this.range);
+    this.store.dispatch( new StreetSettingsActions.UpdateStreetFilters(this.range) )
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(false));
   }

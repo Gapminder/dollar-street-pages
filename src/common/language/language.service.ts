@@ -14,7 +14,7 @@ import { EventEmitter } from 'events';
 import { UtilsService } from '../utils/utils.service';
 import * as LanguageActions from './ngrx/language.actions';
 import { Store } from '@ngrx/store';
-import { AppStates, LanguageState } from '../../interfaces';
+import { AppStates, LanguageState, TranslationsInterface } from '../../interfaces';
 import { Language } from '../../interfaces';
 import { DEBOUNCE_TIME } from '../../defaultState';
 
@@ -52,6 +52,10 @@ export class LanguageService {
       if (get(language, 'lang', false)) {
         this.storeLanguage = language.lang;
         this.setCurrentLanguage(this.availableLanguage);
+        this.loadLanguage().subscribe((trans: any) => {
+          this.translations = trans;
+          this.translationsLoadedEvent.emit(this.translationsLoadedString, trans);
+        });;
       }
     });
 
@@ -122,7 +126,7 @@ export class LanguageService {
       if (this.translations) {
         this.processTranslation(observer, this.translations, key);
       } else {
-        Observable.fromEvent(this.translationsLoadedEvent, this.translationsLoadedString).subscribe((trans: any) => {
+        Observable.fromEvent(this.translationsLoadedEvent, this.translationsLoadedString).subscribe((trans: TranslationsInterface) => {
           this.processTranslation(observer, trans, key);
         });
       }
@@ -138,7 +142,6 @@ export class LanguageService {
           console.error(res.err);
           return;
         }
-
         this.translations = res.data;
 
         this.translate.setTranslation(this.currentLanguage, this.translations);
@@ -170,9 +173,6 @@ export class LanguageService {
 
   public changeLanguage(lang: string): void {
     this.localStorageService.setItem('language', lang);
-    if (this.currentLanguage !== lang) {
-      this.store.dispatch(new LanguageActions.UpdateLanguage(lang));
-    }
   }
 
   public getLanguage(query: string): Observable<any> {
@@ -183,16 +183,9 @@ export class LanguageService {
   }
 
   private setCurrentLanguage(languages: string[]): void {
-    const storeLanguage = this.storeLanguage;
-    const storageLanguage = this.localStorageService.getItem('language');
-    const browserLanguage = this.translate.getBrowserCultureLang();
+    const found = languages.indexOf(this.storeLanguage) !== -1;
 
-    const language = storeLanguage !== this.defaultLanguage ? storeLanguage : storageLanguage || browserLanguage.slice(0, 2) || this.defaultLanguage;
-
-    const found = languages.indexOf(language) !== -1;
-
-    this.currentLanguage = found ? language : this.defaultLanguage;
-    this.store.dispatch(new LanguageActions.UpdateLanguage(this.currentLanguage));
+    this.currentLanguage = found ? this.storeLanguage : this.defaultLanguage;
   }
 
   private updateLangInUrl(): void {

@@ -14,6 +14,7 @@ import { AppStates, LanguageState } from '../../interfaces';
 import { Store } from '@ngrx/store';
 import { DEBOUNCE_TIME } from '../../defaultState';
 import { get } from 'lodash';
+import * as LanguageActions from '../../common/language/ngrx/language.actions';
 
 @Component({
   selector: 'language-selector',
@@ -76,7 +77,8 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.languageService.changeLanguage(lang);
+    this.store.dispatch(new LanguageActions.UpdateLanguage(lang));
+    // this.languageService.changeLanguage(lang);
     this.updateLanguages();
   }
 }

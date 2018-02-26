@@ -28,6 +28,7 @@
             <div class="image-content"
                  *ngIf="familyData?.familyImage"
                  [routerLink]="['/family']"
+                 [queryParams]="{place: place._id}"
                  (click)="visitThisHome(place._id)"
                  angulartics2On="click"
                  angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
@@ -182,7 +183,7 @@
       <a *ngIf="familyData.goToPlaceData"
          [routerLink]="['/family']"
          [queryParams]="urlParametersService.getAllParameters()"
-         (click)="visitThisHome()"
+         (click)="visitThisHome(place._id)"
          angulartics2On="click"
          angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }} <img
         src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>

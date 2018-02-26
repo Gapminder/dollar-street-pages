@@ -135,4 +135,6 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
 
     this.pagePositionService.scrollTopZero();
   }
+
+
 }

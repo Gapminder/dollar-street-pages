@@ -420,6 +420,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
     if (!place) {
       return;
     }
+
     this.familyData = Object.assign({}, place);
 
     this.indexViewBoxHouse = index;

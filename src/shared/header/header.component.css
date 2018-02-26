@@ -190,7 +190,7 @@ family-header .header-content {
 .filters-container > span,
 .filters-container .some-filter-container > span,
 .filters-container .some-filter-container .income-title-container {
-  margin: 0 9px 0 10px;
+  margin: 0;
   font-size: 28px;
   color: #767d86;
   line-height: 20px;
@@ -694,7 +694,6 @@ input:checked + .slider:before {
   }
 
   .income-title-container {
-    margin-left: 6px!important;
     margin-top: 6px!important;
     float: right;
     position: relative;

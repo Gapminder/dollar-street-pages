@@ -12,6 +12,9 @@ import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter
 import * as CountriesFilterActions from '../shared/countries-filter/ngrx/countries-filter.actions';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import * as LanguageActions from '../common/language/ngrx/language.actions';
+import { LocalStorageService } from '../common/local-storage/local-storage.service';
+import { TranslateService } from 'ng2-translate';
 
 @Injectable()
 export class UrlParametersService {
@@ -118,7 +121,6 @@ export class UrlParametersService {
 
   getStringFromParams(param: string): string {
     let string = '';
-
     switch (param) {
       case 'countries':
         string = difference(this.parameters[param].sort(), DefaultUrlParameters[param].sort()).length ? `${param}=${this.parameters[param].join(',')}` : '';
@@ -133,6 +135,12 @@ export class UrlParametersService {
           string = this.parameters[param] !== DefaultUrlParameters[param] ? `${param}=${this.parameters[param]}` : '';
         }
         break;
+      case 'activeHouse':
+        string = this.parameters[param] !== DefaultUrlParameters[param] ? `${param}=${Number(this.parameters[param]) + 1}` : '';
+        break;
+      case 'activeImage':
+        string = this.parameters[param] !== DefaultUrlParameters[param] ? `${param}=${Number(this.parameters[param]) + 1}` : '';
+        break;
       default:
           string = this.parameters[param] !== DefaultUrlParameters[param] ? `${param}=${this.parameters[param]}` : '';
     }
@@ -143,9 +151,11 @@ export class UrlParametersService {
   getParamsStingForPage(page: string): string {
     const visibleParameters = get(VisibleParametersPerPage, page, VisibleParametersPerPage['other']);
     const line = reduce(visibleParameters, (result: string[], value: string) => {
-      const cell = this.getStringFromParams(value);
-      if (cell.length) {
-        result.push(cell);
+      if (get(this.parameters, value, false) {
+        const cell = this.getStringFromParams(value);
+        if (cell.length) {
+          result.push(cell);
+        }
       }
       return result;
     }, []).join('&');
@@ -190,8 +200,10 @@ export class UrlParametersService {
     }
 
     if (get(params, 'lang', false)) {
+      this.store.dispatch(new LanguageActions.UpdateLanguage(params.lang));
       this.languageService.changeLanguage(params.lang);
     }
+
     if (get(params, 'zoom', false)) {
       this.store.dispatch(new MatrixActions.ChangeZoom(params.zoom));
     }

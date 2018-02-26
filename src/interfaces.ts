@@ -182,3 +182,7 @@ export interface PagePosition {
   row: number;
   activeHouse: number;
 }
+
+export interface TranslationsInterface {
+  [key: string]: string;
+}

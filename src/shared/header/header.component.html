@@ -51,7 +51,7 @@
                   (click)="openIncomeFilterDesktop($event)">{{ 'BY_INCOME' | translate }}</span>-->
             <span class="income-title-text"
               *ngIf="!isMobile">
-              by income
+              {{ byIncomeText }}
             </span>
             <span class="income-title"
                   *ngIf="isMobile"
