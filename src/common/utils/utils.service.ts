@@ -47,22 +47,11 @@ export class UtilsService {
   }
 
   public animateScroll(id: string, inc: number, duration: number, isDesktop: boolean): any {
-    if (!isDesktop) {
-      if (this.document.body.scrollTop) {
-        this.document.body.scrollTop = 0;
-      } else {
-        this.document.documentElement.scrollTop = 0;
-      }
-
-      return;
+    if (this.document.body.scrollTop) {
+      this.document.body.scrollTop = 0;
+    } else {
+      this.document.documentElement.scrollTop = 0;
     }
-
-    const elem = this.document.getElementById(id);
-    const startScroll = this.document.body.scrollTop || this.document.documentElement.scrollTop;
-    const endScroll = elem.offsetTop;
-    const step = (endScroll - startScroll) / duration * inc;
-
-    this.window.requestAnimationFrame(this.goToScroll(step, duration, inc));
   }
 
   public goToScroll(step: number, duration: number, inc: number): any {

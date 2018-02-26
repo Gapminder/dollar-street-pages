@@ -16,15 +16,12 @@ import {
 import { Store } from '@ngrx/store';
 import {
   AppStates,
-  StreetSettingsState,
   DrawDividersInterface,
-  MatrixState,
   Place,
-  UrlParameters,
   IncomeFilter,
 } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
-import { sortBy, chain, differenceBy, forEach } from 'lodash';
+import { sortBy, chain, differenceBy } from 'lodash';
 import {
   MathService,
   LanguageService,

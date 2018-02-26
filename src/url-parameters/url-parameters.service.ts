@@ -151,12 +151,13 @@ export class UrlParametersService {
   getParamsStingForPage(page: string): string {
     const visibleParameters = get(VisibleParametersPerPage, page, VisibleParametersPerPage['other']);
     const line = reduce(visibleParameters, (result: string[], value: string) => {
-      if (get(this.parameters, value, false) {
+      if (get(this.parameters, value, false)) {
         const cell = this.getStringFromParams(value);
         if (cell.length) {
           result.push(cell);
         }
       }
+
       return result;
     }, []).join('&');
 

@@ -58,7 +58,7 @@
   background-color: white;
   display: block;
   z-index: 667;
-  height: 100vh;
+  height: 100%;
 }
 
 #countries-filter-mobile .regions-container {

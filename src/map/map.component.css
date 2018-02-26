@@ -225,15 +225,18 @@
   width: 100%;
 }
 
-#places .mapBox .marker {
+#places .mapBox .marker-link {
   position: absolute;
   cursor: pointer;
   -webkit-transition: opacity 0.3s ease-out;
   -moz-transition: opacity 0.3s ease-out;
   -o-transition: opacity 0.3s ease-out;
   transition: opacity 0.3s ease-out;
-  width: 15px;
   pointer-events: all;
+}
+
+#places .mapBox .marker {
+  width: 15px;
 }
 
 #places .familyPortraits .portrait {

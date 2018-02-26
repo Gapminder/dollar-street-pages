@@ -107,8 +107,6 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public scrollTop(e: MouseEvent): void {
-    e.preventDefault();
-
-    this.utilsService.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
+    this.utilsService.animateScroll('scrollBackToTop', 100, 1000, this.isDesktop);
   };
 }

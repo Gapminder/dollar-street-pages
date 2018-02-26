@@ -368,7 +368,6 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public goToPage(url: string, params: UrlParameters): void {
-    console.log(url)
-    // this.urlParametersService.dispatchToStore(params);
+    this.urlParametersService.dispatchToStore(params);
   }
 }

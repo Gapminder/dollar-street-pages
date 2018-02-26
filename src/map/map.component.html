@@ -4,17 +4,20 @@
       <div #mapBox class="col-md-12 col-sm-12 mapBox">
         <div class="mapBoxContainer" (click)="closeLeftSideBar($event)">
           <img #mapColor class="map-color" src="/assets/img/original-map.svg" alt="">
-          <img #marker
-               *ngFor="let place of places; let i = index"
-               class="marker"
-               src="/assets/img/dark-marker.svg"
-               alt="marker"
-               [style.left.px]="place.left"
-               [style.top.px]="place.top"
-               (mouseenter)="isDesktop ? hoverOnMarker(i, place.country, place.countryOriginName) : hoverOnMarkerTablet(i, place.country, place.countryOriginName)"
-               (mouseleave)="unHoverOnMarker($event)"
-               (touchstart)="isDesktop ? hoverOnMarker(i, place.country, place.countryOriginName) : hoverOnMarkerTablet(i, place.country, place.countryOriginName)"
-               (click)="isDesktop ? clickOnMarker($event, i, place.country, place.countryOriginName) : mobileClickOnMarker(place.country, place.countryOriginName)">
+          <a
+            class="marker-link"
+            [style.left.px]="place.left"
+            [style.top.px]="place.top"
+            *ngFor="let place of places; let i = index"
+            (mouseenter)="isDesktop ? hoverOnMarker(i, place.country, place.countryOriginName) : hoverOnMarkerTablet(i, place.country, place.countryOriginName)"
+            (mouseleave)="unHoverOnMarker($event)"
+            (touchstart)="isDesktop ? hoverOnMarker(i, place.country, place.countryOriginName) : hoverOnMarkerTablet(i, place.country, place.countryOriginName)"
+            (click)="isDesktop ? clickOnMarker($event, i, place) : mobileClickOnMarker(place.country, place.countryOriginName)">
+            <img #marker
+                 class="marker"
+                 src="/assets/img/dark-marker.svg"
+                 alt="marker">
+          </a>
           <div #hoverPortrait
                *ngIf="isDesktop"
                class="hover_portrait"

@@ -12,12 +12,16 @@ import { select } from 'd3-selection';
 import * as _ from 'lodash';
 import { SVG_DEFAULTS } from './svg-parameters';
 import {
+  AppStates,
   DrawDividersInterface,
   Place
 } from '../../interfaces';
 import {
   DefaultUrlParameters,
   MOBILE_SIZE } from "../../defaultState";
+import { Store } from '@ngrx/store';
+import { MatrixEffects } from '../../matrix/ngrx/matrix.effects';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Injectable()
 export class StreetDrawService {
@@ -90,7 +94,8 @@ export class StreetDrawService {
   };
 
   public constructor(private math: MathService,
-                     browserDetectionService: BrowserDetectionService) {
+                     browserDetectionService: BrowserDetectionService,
+                     private store: Store<AppStates>) {
     this.isDesktop = browserDetectionService.isDesktop();
     this.isMobile = browserDetectionService.isMobile();
   }
@@ -120,8 +125,6 @@ export class StreetDrawService {
 
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
-    const lowScale = _.get(drawDividers, 'filter.lowIncome', this.lowIncome);
-    const highScale = _.get(drawDividers, 'filter.highIncome', this.highIncome)
     this.scale = scaleLog()
       .domain([
         _.get(drawDividers, 'poor', Number(DefaultUrlParameters.lowIncome)),
@@ -1013,6 +1016,7 @@ export class StreetDrawService {
 
   public pressedSlider(): void {
     document.body.classList.remove('draggingSliders');
+    this.store.dispatch(new MatrixActions.RemovePlace({}));
     if (this.draggingSliders && !this.distanceDraggingLeftSlider && !this.distanceDraggingRightSlider) {
       this.draggingSliders = false;
       this.distanceDraggingLeftSlider = void 0;

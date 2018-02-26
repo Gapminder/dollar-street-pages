@@ -638,4 +638,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.openMobileFilterView = false;
     }
   }
+
+  getAllCountries(): Country[] {
+    return this.countries;
+  }
 }
