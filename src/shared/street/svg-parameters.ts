@@ -10,14 +10,14 @@ export const SVG_DEFAULTS = {
     name: '#icon-homes',
     width: 21,
     height: 19,
-    fill: '#4B5762',
+    fill: '#232d33',
     positionY: 11
   },
   hoverHomes: {
     name: '#icon-homes',
     width: 28,
     height: 25,
-    fill: '#364550',
+    fill: '#12171a',
     positionY: 5,
     text: {
       width: 60,
@@ -39,11 +39,12 @@ export const SVG_DEFAULTS = {
   },
   road: {
     line: {
-      color: '#374551',
+      color: '#12171a',
       height: 2,
     },
     height: 21,
     positionY: 28,
+    background: '#767d86',
     color: '#ffffff',
     opacity: '0.8'
   },

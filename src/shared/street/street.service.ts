@@ -326,7 +326,7 @@ export class StreetDrawService {
 
         return `${point1} ${point2} ${point3} ${point4}`;
       })
-      .style('fill', '#727a82')
+      .style('fill', SVG_DEFAULTS.road.background)
       .style('cursor', '-webkit-grab')
       .style('cursor', '-moz-grab')
       .style('cursor', 'grab')
