@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import {
   AppStates,
   DrawDividersInterface,
+  Place,
   StreetSettingsState
 } from '../../interfaces';
 import {
@@ -18,7 +19,7 @@ import {
 } from '@angular/core';
 import { GetStreetSettings } from '../../common/street-settings/ngrx/street-settings.actions';
 import { StreetFamilyDrawService } from './street-family.service';
-import { DEBOUNCE_TIME } from "../../defaultState";
+import { DEBOUNCE_TIME } from '../../defaultState';
 
 @Component({
   selector: 'street-family',
@@ -32,10 +33,10 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public streetFamilyBoxContainer: ElementRef;
 
   @Input()
-  public place: any;
+  public place: Place;
 
   public window: Window = window;
-  public street: any;
+  public street: StreetFamilyDrawService;
   public streetData: DrawDividersInterface;
   public element: HTMLElement;
   public resizeSubscribe: Subscription;
@@ -104,7 +105,7 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
     this.street
       .clearSvg()
       .init(drawDividers)
-      .drawRoad()
+      .drawRoad(drawDividers)
       .drawHouse(place);
   }
 }

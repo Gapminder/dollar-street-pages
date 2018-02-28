@@ -42,11 +42,14 @@ export const SVG_DEFAULTS = {
       color: '#12171a',
       height: 2,
     },
-    height: 21,
+    height: 14,
     positionY: 28,
     background: '#767d86',
     color: '#ffffff',
-    opacity: '0.8'
+    opacity: '0.8',
+    overlay: {
+      height: 21
+    }
   },
   levels: {
     color: '#767d86',

@@ -30,8 +30,8 @@ export class StreetDrawService {
   public halfOfHeight: number;
   public lowIncome: number;
   public highIncome: number;
-  public streetOffset: number = 60;
-  public chosenPlaces: any;
+  public streetOffset = 60;
+  public chosenPlaces: Place[];
   public poorest: string;
   public richest: string;
   public scale: any;
@@ -131,6 +131,7 @@ export class StreetDrawService {
         _.get(drawDividers, 'rich', Number(DefaultUrlParameters.highIncome))
       ])
       .range([0, this.width]);
+
     return this;
   }
 
@@ -144,7 +145,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public isDrawDividers(drawDividers: any): this {
+  public isDrawDividers(drawDividers: DrawDividersInterface): this {
     if (!_.get(drawDividers, 'showDividers', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
@@ -168,7 +169,7 @@ export class StreetDrawService {
     return this;
   }
 
-  public isDrawCurrency(drawDividers: any): this {
+  public isDrawCurrency(drawDividers: DrawDividersInterface): this {
     if (!_.get(drawDividers,'showCurrency', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
@@ -203,7 +204,7 @@ export class StreetDrawService {
     return this;
   }
 
-  public isDrawLabels(drawDividers: any): this {
+  public isDrawLabels(drawDividers: DrawDividersInterface): this {
     if (!_.get(drawDividers, 'showLabels', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
@@ -317,7 +318,7 @@ export class StreetDrawService {
     this.svg
       .append('polygon')
       .attr('class', 'road')
-      .attr('height', '14px')
+      .attr('height', SVG_DEFAULTS.road.height)
       .attr('points', () => {
         const point1 = `0,${ this.halfOfHeight + 11}`;
         const point2 = `30,${ this.halfOfHeight - 4}`;
@@ -546,7 +547,7 @@ export class StreetDrawService {
       .attr('home-id', (datum: Place) => { return datum._id; })
       .attr('x', (datum: Place) => {
         const scaleDatumIncome = this.scale(datum.income);
-        const position = this.streetOffset / 2 - SVG_DEFAULTS.hoverHomes.width / 2 + scaleDatumIncome;
+        const position = this.scale(this.streetOffset / 2) - SVG_DEFAULTS.hoverHomes.width / 2 + scaleDatumIncome;
 
         return position;
       });
@@ -568,7 +569,7 @@ export class StreetDrawService {
       .attr('stroke', SVG_DEFAULTS.hoverHomes.textBg.stroke)
       .attr('stroke-width', SVG_DEFAULTS.hoverHomes.textBg.strokeWidth)
       .attr('x', ( home: Place ) => {
-        const x = this.scale(home.income) - (SVG_DEFAULTS.hoverHomes.textBg.width / 2) + this.streetOffset / 2;
+        const x = this.scale(home.income) - (SVG_DEFAULTS.hoverHomes.textBg.width / 2) + this.scale(this.streetOffset / 2);
 
         return x;
       })
@@ -585,7 +586,7 @@ export class StreetDrawService {
       .attr('style', SVG_DEFAULTS.hoverHomes.text.styles)
       .attr('text-anchor', 'middle')
       .attr('x', (home: Place) => {
-        const x = this.scale(home.income) + this.streetOffset / 2;
+        const x = this.scale(home.income) + this.scale(this.streetOffset / 2);
 
         return x;
       })
@@ -620,7 +621,7 @@ export class StreetDrawService {
         .attr('class', 'left-scroll-opacity-part-street')
         .attr('x', -2)
         .attr('y', SVG_DEFAULTS.road.positionY)
-        .attr('height', SVG_DEFAULTS.road.height)
+        .attr('height', SVG_DEFAULTS.road.overlay.height)
         .style('fill', 'white')
         .style('opacity', '0.8');
     }
