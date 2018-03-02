@@ -62,13 +62,15 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public updateLanguages(): void {
-    this.selectedLanguage = this.languages.find(lang => lang.code === this.languageService.currentLanguage);
+    if (this.languages) {
+      this.selectedLanguage = this.languages.find(lang => lang.code === this.languageService.currentLanguage);
 
-    if (this.selectedLanguage) {
-      this.filteredLanguages = this.languages.filter(lang => lang.code !== this.selectedLanguage.code);
-    } else {
-      this.selectedLanguage = this.languages.find(lang => lang.code === 'en');
-      this.filteredLanguages = this.languages.filter(lang => lang.code !== 'en');
+      if (this.selectedLanguage) {
+        this.filteredLanguages = this.languages.filter(lang => lang.code !== this.selectedLanguage.code);
+      } else {
+        this.selectedLanguage = this.languages.find(lang => lang.code === 'en');
+        this.filteredLanguages = this.languages.filter(lang => lang.code !== 'en');
+      }
     }
   }
 

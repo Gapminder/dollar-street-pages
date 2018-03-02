@@ -67,12 +67,6 @@ export class UrlParametersService {
 
       this.parameters.place = get(matrix, 'place', undefined);
 
-      if (get(languageState, 'lang', false)
-      && this.parameters.lang !== languageState.lang) {
-        this.parameters.lang = get(languageState, 'lang', DefaultUrlParameters.lang);
-        this.window.location.reload();
-      }
-
       this.parameters.embed = get(matrix, 'embedSetId', undefined);
 
 
@@ -87,6 +81,13 @@ export class UrlParametersService {
 
       this.parameters.highIncome = get(streetSettings, 'filters.highIncome', DefaultUrlParameters.highIncome).toString();
       this.parameters.lowIncome = get(streetSettings, 'filters.lowIncome', DefaultUrlParameters.lowIncome).toString();
+
+      if (get(languageState, 'lang', false)
+        && this.parameters.lang !== languageState.lang) {
+        this.parameters.lang = get(languageState, 'lang', DefaultUrlParameters.lang);
+        this.combineUrlPerPage();
+        this.window.location.reload();
+      }
 
       this.combineUrlPerPage();
     });
@@ -103,8 +104,8 @@ export class UrlParametersService {
     }
     urlString = urlString.slice(urlString.indexOf('?') + 1);
     const params = this.utilsService.parseUrl(urlString);
-    if (!get(params, 'zoom', false)
-    && this.isMobile) {
+
+    if (this.isMobile) {
       params.zoom = DefaultUrlParameters.mobileZoom;
     }
 

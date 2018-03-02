@@ -727,7 +727,7 @@ export class StreetDrawService {
         .attr('class', 'right-scroll-opacity-part-street')
         .attr('x', -2)
         .attr('y', SVG_DEFAULTS.road.positionY)
-        .attr('height', SVG_DEFAULTS.road.height)
+        .attr('height', SVG_DEFAULTS.road.overlay.height)
         .style('fill', SVG_DEFAULTS.road.color)
         .style('opacity', SVG_DEFAULTS.road.opacity);
     }
@@ -1007,7 +1007,7 @@ export class StreetDrawService {
       .attr('x', (datum: Place) => {
 
         const scaleDatumIncome = this.scale(datum.income);
-        const position = this.streetOffset / 2 - SVG_DEFAULTS.activeHomes.width / 2 + scaleDatumIncome;
+        const position = this.scale(this.streetOffset / 2) - SVG_DEFAULTS.activeHomes.width / 2 + scaleDatumIncome;
 
         return position;
       });

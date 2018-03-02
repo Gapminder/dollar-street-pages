@@ -1,5 +1,5 @@
 import 'rxjs/operator/debounceTime';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';

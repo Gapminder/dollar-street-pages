@@ -33,7 +33,7 @@ export class UrlParametersComponent implements  OnDestroy {
     pagePositionService: PagePositionService,
     location: Location,
     private translate: TranslateService,
-    private localStorageService: LocalStorageService,) {
+    private localStorageService: LocalStorageService) {
 
     const navigationEndSubscribe = router.events
       .filter(event => event instanceof NavigationEnd)

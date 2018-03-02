@@ -81,7 +81,7 @@
 
     <a *ngIf="leftSideCountries && leftSideCountries.length > 1" [routerLink]="['/matrix']"
        [queryParams]="{thing: 'Families', countries: originCurrentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich}"
-       (click)="goToPage({thing: 'Families', countries: originCurrentCountry , regions: 'World', zoom: 4, row: 1, lowIncome: streetData?.poor, highIncome: streetData?.rich})"
+       (click)="goToPage({thing: 'Families', countries: [originCurrentCountry ], row: 1 })"
        angulartics2On="click"
        angularticsEvent="From map page to Matrix page with all families in {{currentCountry}}">{{ 'ALL' | translate }}
       {{leftSideCountries.length}} {{ 'FAMILIES_IN' | translate }} {{currentCountry}} >></a>

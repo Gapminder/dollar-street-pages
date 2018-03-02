@@ -49,6 +49,7 @@ export class LanguageService {
     this.languageSubscription = languageState
       .debounceTime(DEBOUNCE_TIME)
       .subscribe( (language: LanguageState) => {
+
       if (get(language, 'lang', false)) {
         this.storeLanguage = language.lang;
         this.setCurrentLanguage(this.availableLanguage);
