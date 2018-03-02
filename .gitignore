@@ -32,6 +32,7 @@ typings
 app/.DS_Store
 
 # ts generated for e2e
+results/
 test-e2e/app/**/*.js
 test-e2e/app/**/*.js.map
 test-e2e/app/**/*.d.ts

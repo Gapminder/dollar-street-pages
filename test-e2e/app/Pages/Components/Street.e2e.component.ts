@@ -6,8 +6,8 @@ export class Street {
   rightToddler: ElementFinder = $('.right-scroll');
   road: ElementFinder = $('.road');
   chart: ElementFinder = $('#chart');
-  leftOpacityArea: ElementFinder = $$('.left-scroll-opacity-part-street').get(0);
-  rightOpacityArea: ElementFinder = $$('.left-scroll-opacity-part-street').get(1);
+  leftOpacityArea: ElementFinder = $('.left-scroll-opacity-part-street');
+  rightOpacityArea: ElementFinder = $('.right-scroll-opacity-part-street');
   leftScrollLabel: ElementFinder = $('.left-scroll-label');
   rightScrollLabel: ElementFinder = $('.right-scroll-label');
   housesOnStreet: ElementArrayFinder = $$('#houses');
@@ -15,39 +15,46 @@ export class Street {
   toddlerFootStep: number;
 
   getRoadLength() {
-    return browser.executeScript(`return document.getElementById('chart').clientWidth`)
-      .then(entireBlockWidth => {
-        return this.leftOpacityArea.getAttribute('width').then(leftWidth => {
-          return this.rightOpacityArea.getAttribute('width').then(rightWidth => {
-            return Math.round(Number(entireBlockWidth) - Number(leftWidth) - Number(rightWidth));
-          });
+    return browser.executeScript(`return document.getElementById('chart').clientWidth`).then(entireBlockWidth => {
+      return this.leftOpacityArea.getAttribute('width').then(leftWidth => {
+        return this.rightOpacityArea.getAttribute('width').then(rightWidth => {
+          return Math.round(Number(entireBlockWidth) - Number(leftWidth) - Number(rightWidth));
         });
       });
+    });
   }
 
-  moveLeftToddler() {
+  async moveLeftToddler(): Promise<number> {
     return this.moveToddler();
   }
 
-  moveRightToddler() {
+  async moveRightToddler(): Promise<number> {
     return this.moveToddler(this.rightToddler, -200);
   }
 
-  moveToddler(element: ElementFinder = this.leftToddler, x = 200, y = 0) {
+  async moveToddler(element: ElementFinder = this.leftToddler, x = 200, y = 0): Promise<number> {
     this.toddlerFootStep = Math.abs(x);
     let label: ElementFinder;
-    element === this.leftToddler ? label = this.leftScrollLabel : label = this.rightScrollLabel;
+    element === this.leftToddler ? (label = this.leftScrollLabel) : (label = this.rightScrollLabel);
 
-    browser.actions()
+    await browser
+      .actions()
       .mouseMove(element)
+      .perform();
+    await browser
+      .actions()
       .mouseDown()
-      .mouseMove({x: x, y: y})
+      .perform();
+    await browser
+      .actions()
+      .mouseMove({ x: x, y: y })
       .perform();
 
-    const toddlerValue = label.getText()
-      .then(value => Number(value.replace('$', ''))); // get toddler value after move
+    // get toddler value after move
+    const toddlerValue = await label.getText().then(value => Number(value.replace('$', '')));
 
-    browser.actions()
+    browser
+      .actions()
       .mouseUp()
       .perform();
 

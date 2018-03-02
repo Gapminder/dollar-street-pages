@@ -7,7 +7,6 @@
   "scripts": {
     "start": "ng serve -env=dev",
     "start:dev-consumer": "ng serve -env=consumer-dev",
-    "e2e": "ng e2e --environment=qa --aot --prod",
     "build": "ng build -env=prod --aot --prod --named-chunks --base-href /dollar-street/",
     "build:qa": "ng build --aot --named-chunks --base-href /dollar-street/ --environment=qa",
     "test": "ng test -sr -cc",
@@ -25,12 +24,17 @@
     "lint": "npm run tslint",
     "lint:all": "npm run tslint && npm run eslint",
     "tslint": "gulp tslint",
+    "e2e:CI": "ng e2e --no-webdriver-update --environment=qa --base-href /dollar-street --aot --prod",
     "e2e:local": "protractor ./.config/protractor.conf.js",
+    "e2e:local:consumer-dev": "API_URL=http://52.211.52.39:8015/v1 protractor ./.config/protractor.conf.js",
+    "e2e:dev": "protractor --baseUrl='http://ds-dev.dollarstreet.org' ./.config/protractor.conf.js",
     "e2e:bstack:tunnel": ".config/tools/bstack-local.js",
     "e2e:bstack": ".config/tools/wait4tunnel.js && protractor ./.config/protractor-browserstack.conf.js"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "test",
+    "e2e:local:consumer-dev"
   ],
   "dependencies": {
     "@angular/cli": "1.6.5",
@@ -109,6 +113,7 @@
     "karma-sourcemap-loader": "0.3.7",
     "karma-spec-reporter": "0.0.31",
     "ng2-mock-component": "0.1.1",
+    "node-fetch": "2.1.1",
     "phantomjs-polyfill": "0.0.2",
     "phantomjs-prebuilt": "2.1.14",
     "pre-commit": "1.2.2",
