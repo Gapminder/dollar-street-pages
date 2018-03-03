@@ -19,6 +19,7 @@ export const SVG_DEFAULTS = {
     height: 25,
     fill: '#12171a',
     positionY: 5,
+    differenceSizeHover: 14,
     text: {
       width: 60,
       height: 15,
@@ -48,7 +49,7 @@ export const SVG_DEFAULTS = {
     color: '#ffffff',
     opacity: '0.8',
     overlay: {
-      height: 21
+      height: 23
     }
   },
   levels: {
@@ -60,7 +61,9 @@ export const SVG_DEFAULTS = {
     name: '#slider',
     width: 30,
     height: 50,
-    positionY: 15
+    positionY: 15,
+    differentSize: 5,
+    moreThenNeed: 2
   },
   squarePoints: {
     name: '#square',
@@ -70,4 +73,5 @@ export const SVG_DEFAULTS = {
     color: '#232B31',
   },
   mobileWidth: 700,
+
 };

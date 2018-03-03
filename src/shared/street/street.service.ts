@@ -125,6 +125,7 @@ export class StreetDrawService {
 
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
+
     this.scale = scaleLog()
       .domain([
         _.get(drawDividers, 'poor', Number(DefaultUrlParameters.lowIncome)),
@@ -249,7 +250,6 @@ export class StreetDrawService {
         return void 0;
       });
 
-
     this.svg
       .selectAll('text.poorest')
       .data([this.poorest])
@@ -290,6 +290,17 @@ export class StreetDrawService {
         .value();
       this.placesArray = sortedPlaces;
 
+      if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+        this.minIncome = _.head(this.placesArray).income;
+        this.maxIncome = _.last(this.placesArray).income;
+      } else {
+        this.minIncome = drawDividers.poor;
+        this.maxIncome = drawDividers.rich;
+      }
+
+      this.leftPoint = this.scale(this.minIncome) - SVG_DEFAULTS.sliders.moreThenNeed;
+      this.rightPoint = this.scale(this.maxIncome) + SVG_DEFAULTS.sliders.moreThenNeed;
+
       this.svg
         .selectAll('use.icon-background-home')
         .data(places)
@@ -309,7 +320,7 @@ export class StreetDrawService {
         })
         .attr('x', (datum: Place) => {
           const scaleDatumIncome = this.scale(datum.income);
-          const position = this.streetOffset / 2 - SVG_DEFAULTS.backgroungHomes.width / 2 + scaleDatumIncome;
+          const position = scaleDatumIncome + this.streetOffset / 2 - SVG_DEFAULTS.backgroungHomes.width / 2 ;
 
           return position;
         });
@@ -414,6 +425,7 @@ export class StreetDrawService {
             this.distanceDraggingRightSlider = this.sliderRightBorder - (e.pageX - 56);
           }
 
+
           if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
             if (e.pageX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && e.pageX + this.distanceDraggingRightSlider <= this.rightPoint + 76) {
               this.chosenPlaces = [];
@@ -435,11 +447,11 @@ export class StreetDrawService {
         }
 
         if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 17 && e.pageX >= 52) {
-          return this.drawLeftSlider(e.pageX - 47);
+          return this.drawLeftSlider(e.pageX - (this.windowInnerWidth - this.width) / 2);
         }
 
         if (this.sliderRightMove && this.sliderLeftBorder + 87 <= e.pageX && e.pageX <= this.width + 57) {
-          return this.drawRightSlider(e.pageX - 57);
+          return this.drawRightSlider(e.pageX - (this.windowInnerWidth - this.width) / 2);
         }
       });
 
@@ -547,7 +559,7 @@ export class StreetDrawService {
       .attr('home-id', (datum: Place) => { return datum._id; })
       .attr('x', (datum: Place) => {
         const scaleDatumIncome = this.scale(datum.income);
-        const position = this.scale(this.streetOffset / 2) - SVG_DEFAULTS.hoverHomes.width / 2 + scaleDatumIncome;
+        const position = (this.streetOffset / 2) + scaleDatumIncome - SVG_DEFAULTS.hoverHomes.differenceSizeHover;
 
         return position;
       });
@@ -569,7 +581,7 @@ export class StreetDrawService {
       .attr('stroke', SVG_DEFAULTS.hoverHomes.textBg.stroke)
       .attr('stroke-width', SVG_DEFAULTS.hoverHomes.textBg.strokeWidth)
       .attr('x', ( home: Place ) => {
-        const x = this.scale(home.income) - (SVG_DEFAULTS.hoverHomes.textBg.width / 2) + this.scale(this.streetOffset / 2);
+        const x = this.scale(home.income) - this.scale(SVG_DEFAULTS.hoverHomes.textBg.width / 2) + (this.streetOffset / 2);
 
         return x;
       })
@@ -580,13 +592,13 @@ export class StreetDrawService {
       .data([place])
       .enter()
       .append('text')
-      .attr('class', "hover-house-text")
+      .attr('class', 'hover-house-text')
       .attr('y', SVG_DEFAULTS.hoverHomes.text.positionY)
       .attr('fill', SVG_DEFAULTS.hoverHomes.text.fill)
       .attr('style', SVG_DEFAULTS.hoverHomes.text.styles)
       .attr('text-anchor', 'middle')
       .attr('x', (home: Place) => {
-        const x = this.scale(home.income) + this.scale(this.streetOffset / 2);
+        const x = this.scale(home.income) + (this.streetOffset / 2);
 
         return x;
       })
@@ -619,7 +631,7 @@ export class StreetDrawService {
       this.leftScrollOpacityStreet = this.svg
         .append('rect')
         .attr('class', 'left-scroll-opacity-part-street')
-        .attr('x', -2)
+        .attr('x', 0)
         .attr('y', SVG_DEFAULTS.road.positionY)
         .attr('height', SVG_DEFAULTS.road.overlay.height)
         .style('fill', 'white')
@@ -670,15 +682,23 @@ export class StreetDrawService {
     }
 
     this.leftScroll
-      .attr('x',  x);
+      .attr('x',  () => {
+        if (this.leftPoint >= x) {
+          return this.leftPoint + SVG_DEFAULTS.sliders.differentSize;
+        } else {
+          const position = x + SVG_DEFAULTS.sliders.differentSize;
+
+          return position;
+        }
+      });
 
     if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4) && !this.isMobile) {
-        this.sliderLeftBorder = this.leftPoint - 12;
+        this.sliderLeftBorder = this.leftPoint ;
         this.leftScrollOpacityStreet
-          .attr('width', this.leftPoint - 12 + this.streetOffset / 2);
+          .attr('width', this.leftPoint + this.streetOffset / 2);
         this.leftScrollOpacityHomes
-          .attr('width', this.leftPoint - 12 + this.streetOffset / 2);
+          .attr('width', this.leftPoint + this.streetOffset / 2);
       } else {
         this.leftScrollOpacityStreet
           .attr('width', x + this.streetOffset / 2);
@@ -687,9 +707,9 @@ export class StreetDrawService {
       }
     } else {
       this.leftScrollOpacityStreet
-        .attr('width', x + this.streetOffset / 2);
+        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
       this.leftScrollOpacityHomes
-        .attr('width', x + this.streetOffset / 2);
+        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
     }
 
     this.lowIncome = this.scale.invert(x);
@@ -735,11 +755,11 @@ export class StreetDrawService {
     if (!this.rightScrollOpacityLabels) {
       this.rightScrollOpacityLabels = this.svg;
 
-      if (x + 75 > this.width + this.streetOffset) {
+      if (x > this.width + this.streetOffset) {
         this.rightScrollOpacityLabels
           .append('rect')
           .attr('class', 'right-scroll-opacity-labels')
-          .attr('x', x + 9)
+          .attr('x', x)
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
@@ -749,7 +769,7 @@ export class StreetDrawService {
         this.rightScrollOpacityLabels
           .append('rect')
           .attr('class', 'right-scroll-opacity-labels')
-          .attr('x', x + 20)
+          .attr('x', x )
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
@@ -776,17 +796,25 @@ export class StreetDrawService {
     }
 
     this.rightScroll
-      .attr('x',  x);
+      .attr('x',  () => {
+        if (this.rightPoint <= x ) {
+          return this.rightPoint + SVG_DEFAULTS.sliders.differentSize;
+        } else {
+          const position = x + SVG_DEFAULTS.sliders.differentSize;
+
+          return position;
+        }
+      });
 
     if (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World' && !this.isMobile) {
       if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(x + this.streetOffset / 2 - 1) && !this.isMobile) {
         this.sliderRightBorder = this.rightPoint + 12;
 
         this.rightScrollOpacityStreet
-          .attr('x', this.rightPoint + this.streetOffset / 2 + 12)
+          .attr('x', this.rightPoint + this.streetOffset / 2 )
           .attr('width', this.width + this.streetOffset / 2);
         this.rightScrollOpacityHomes
-          .attr('x', this.rightPoint + this.streetOffset / 2 + 12)
+          .attr('x', this.rightPoint + this.streetOffset / 2 )
           .attr('width', this.width + this.streetOffset / 2);
       } else {
         this.rightScrollOpacityStreet
@@ -1007,7 +1035,7 @@ export class StreetDrawService {
       .attr('x', (datum: Place) => {
 
         const scaleDatumIncome = this.scale(datum.income);
-        const position = this.scale(this.streetOffset / 2) - SVG_DEFAULTS.activeHomes.width / 2 + scaleDatumIncome;
+        const position = scaleDatumIncome + this.streetOffset / 2 - SVG_DEFAULTS.activeHomes.width / 2 ;
 
         return position;
       });
@@ -1064,35 +1092,23 @@ export class StreetDrawService {
     this.currentHighIncome = void 0;
 
     if (this.highIncome > this.dividersData.rich) {
-      this.highIncome = this.dividersData.rich + 0.00002;
+      this.highIncome = this.dividersData.rich + 1;
     }
+    let lowFilter = Math.round(this.lowIncome);
+    let highFilter = Math.round(this.highIncome);
 
-    if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      if (this.lowIncome < this.minIncome) {
-        this.filter.next({
-          lowIncome: Math.round(this.minIncome - 3),
-          highIncome: Math.round(this.highIncome)
-        });
+      if ((this.lowIncome - 1) <= this.minIncome) {
+        lowFilter = Math.round(this.minIncome - SVG_DEFAULTS.sliders.moreThenNeed);
       }
 
-      if (this.highIncome > this.maxIncome) {
-        this.filter.next({
-          lowIncome: Math.round(this.lowIncome),
-          highIncome: Math.round(this.maxIncome + 5)
-        });
+      if (this.highIncome + 1 >= this.maxIncome) {
+        highFilter = Math.round(this.maxIncome + SVG_DEFAULTS.sliders.moreThenNeed);
       }
 
-      if (this.highIncome <= this.maxIncome && this.lowIncome >= this.minIncome) {
-        this.filter.next({
-          lowIncome: Math.round(this.lowIncome),
-          highIncome: Math.round(this.highIncome)
-        });
-      }
-    } else {
-      this.filter.next({
-        lowIncome: Math.round(this.lowIncome),
-        highIncome: Math.round(this.highIncome)
-      });
-    }
+    this.filter.next({
+      lowIncome: lowFilter,
+      highIncome: highFilter
+    });
+
   }
 }
