@@ -580,10 +580,11 @@ export class StreetDrawService {
       .attr('fill', SVG_DEFAULTS.hoverHomes.textBg.fill)
       .attr('stroke', SVG_DEFAULTS.hoverHomes.textBg.stroke)
       .attr('stroke-width', SVG_DEFAULTS.hoverHomes.textBg.strokeWidth)
-      .attr('x', ( home: Place ) => {
-        const x = this.scale(home.income) - this.scale(SVG_DEFAULTS.hoverHomes.textBg.width / 2) + (this.streetOffset / 2);
+      .attr('x', ( datum: Place ) => {
+        const scaleDatumIncome = this.scale(datum.income);
+        const position = (this.streetOffset / 2) + scaleDatumIncome - SVG_DEFAULTS.hoverHomes.textBg.width / 2 ;
 
-        return x;
+        return position;
       })
 
 
