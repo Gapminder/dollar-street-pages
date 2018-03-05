@@ -1,5 +1,4 @@
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import {
   Component,
   OnInit,
@@ -13,7 +12,7 @@ import {
 import { AppStates, LanguageState } from '../../interfaces';
 import { Store } from '@ngrx/store';
 import { DEBOUNCE_TIME } from '../../defaultState';
-import { get } from 'lodash';
+import { get, find, filter } from 'lodash';
 import * as LanguageActions from '../../common/language/ngrx/language.actions';
 
 @Component({
@@ -62,14 +61,14 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public updateLanguages(): void {
-    if (this.languages) {
-      this.selectedLanguage = this.languages.find(lang => lang.code === this.languageService.currentLanguage);
+    if (get(this, 'languages', false)) {
+      this.selectedLanguage = find(this.languages, lang => lang.code === this.languageService.currentLanguage);
 
       if (this.selectedLanguage) {
-        this.filteredLanguages = this.languages.filter(lang => lang.code !== this.selectedLanguage.code);
+        this.filteredLanguages = filter(this.languages, lang => lang.code !== this.selectedLanguage.code);
       } else {
-        this.selectedLanguage = this.languages.find(lang => lang.code === 'en');
-        this.filteredLanguages = this.languages.filter(lang => lang.code !== 'en');
+        this.selectedLanguage = find(this.languages, lang => lang.code === 'en');
+        this.filteredLanguages = filter(this.languages, lang => lang.code !== 'en');
       }
     }
   }

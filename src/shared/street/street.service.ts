@@ -18,9 +18,9 @@ import {
 } from '../../interfaces';
 import {
   DefaultUrlParameters,
-  MOBILE_SIZE } from "../../defaultState";
+  MOBILE_SIZE
+} from '../../defaultState';
 import { Store } from '@ngrx/store';
-import { MatrixEffects } from '../../matrix/ngrx/matrix.effects';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Injectable()
