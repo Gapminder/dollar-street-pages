@@ -22,7 +22,7 @@ import {
   UrlChangeService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates, Country, UrlParameters } from '../../interfaces';
+import {AppStates, Country, LanguageState, UrlParameters} from '../../interfaces';
 import * as CountriesFilterActions from './ngrx/countries-filter.actions';
 import { KeyCodes } from '../../enums';
 import { UrlParametersService } from "../../url-parameters/url-parameters.service";
@@ -76,8 +76,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   public countriesFilterState: Observable<any>;
   public isInit: boolean;
   public countriesFilterStateSubscription: Subscription;
-  public appState: Observable<any>;
-  public appStateSubscription: Subscription;
+  languageStoreSubscription: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -91,7 +90,6 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.element = elementRef.nativeElement;
 
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
     this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
@@ -124,6 +122,16 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
 
     });
+
+    this.languageStoreSubscription = this.store.select((appState: AppStates) => appState.language)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((language: LanguageState) => {
+        this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
+          this.theWorldTranslate = trans;
+
+          this.setTitle();
+        });
+      });
 
     this.isOpenMobileFilterView();
 
@@ -172,8 +180,8 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.countriesFilterStateSubscription.unsubscribe();
     }
 
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
+    if (this.languageStoreSubscription) {
+      this.languageStoreSubscription.unsubscribe();
     }
   }
 

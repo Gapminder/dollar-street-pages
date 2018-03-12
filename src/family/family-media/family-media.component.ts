@@ -34,6 +34,8 @@ import { ImageResolutionInterface } from '../../interfaces';
 import { DEBOUNCE_TIME } from "../../defaultState";
 import { PagePositionService } from "../../shared/page-position/page-position.service";
 import { UrlParametersService } from "../../url-parameters/url-parameters.service";
+import {combineLatest} from "rxjs/observable/combineLatest";
+
 
 @Component({
   selector: 'family-media',
@@ -89,7 +91,8 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public familyImagesContainerElement: HTMLElement;
   public appState: Observable<any>;
   public appStateSubscription: Subscription;
-  public matrixSubscription: Subscription;
+  combineSubscription: Subscription;
+  currentLanguage: string;
 
   public constructor(element: ElementRef,
                      viewContainerRef: ViewContainerRef,
@@ -119,69 +122,38 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.familyImagesContainerElement = this.familyImagesContainer.nativeElement;
 
     const matrixState = this.store.select((state: AppStates) => state.matrix);
+    const languageState = this.store.select((state: AppStates) => state.language);
 
-    this.matrixSubscription = matrixState
-      .subscribe((matrix: MatrixState) => {
-        if (this.zoom !== matrix.zoom) {
-          this.zoom = matrix.zoom;
-          this.changeZoom();
-          this.getVisibleRows();
+    this.combineSubscription = combineLatest(matrixState, languageState).subscribe(arr => {
+      const matrix = arr[0];
+      const language = arr[1];
 
-          this.calcItemSize();
-        }
+      if (this.zoom !== matrix.zoom) {
+        this.zoom = matrix.zoom;
+        this.changeZoom();
+        this.getVisibleRows();
 
-        if (!get(this, 'placeId', false)
-          && get(matrix, 'place', false)) {
-          this.placeId = matrix.place;
+        this.calcItemSize();
+      }
 
+      let setNewPlaceId = false;
+      let setNewLanguage = false;
+      if (!get(this, 'placeId', false)
+        && get(matrix, 'place', false)) {
+        this.placeId = matrix.place;
+        setNewPlaceId = true;
+      }
 
+      if (get(this, 'currentLanguage', '') !== language.lang) {
+        this.currentLanguage = language.lang;
+        setNewLanguage = true;
+      }
 
-          const query = `placeId=${this.placeId}&resolution=${this.imageResolution.image}${this.languageService.getLanguageParam()}`;
-          this.familyPlaceServiceSubscribe = this.familyMediaService
-            .getFamilyMedia(query)
-            .subscribe((res: any) => {
-              if (res.err) {
-                return;
-              }
+      if (setNewPlaceId || setNewLanguage) {
+        this.getImages();
+      }
 
-              this.images = res.data.images;
-              this.imageData.photographer = res.data.photographer;
-
-              this.getVisibleRows();
-
-              this.calcItemSize();
-
-              let numberSplice: number = this.visibleImages * 2;
-
-              if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
-                const positionInRow: number = this.activeImageIndex % this.zoom;
-                const offset: number = this.zoom - positionInRow;
-
-                numberSplice = this.activeImageIndex + offset + this.visibleImages;
-              }
-              this.currentImages = slice(this.images, 0, numberSplice);
-
-              this.changeZoom();
-
-              this.loaderService.setLoader(true);
-              if (get(this.urlParametersService, 'activeImageByRoute', null)) {
-                const activeImage = Number(this.urlParametersService.activeImageByRoute);
-                this.activeImage = activeImage;
-                this.openMedia(this.currentImages[activeImage], activeImage);
-                this.urlParametersService.activeImageByRoute = null;
-              }
-
-              if (this.activeImageIndex) {
-                // TODO: remove setTimeout on refactoring this component
-                setTimeout(() => {
-                  this.loaderService.setLoader(true);
-
-                  this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1);
-                });
-              }
-            });
-        }
-      });
+    })
 
     this.resizeSubscribe = fromEvent(window, 'resize')
       .debounceTime(DEBOUNCE_TIME)
@@ -259,6 +231,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
 
     if (this.appStateSubscription) {
       this.appStateSubscription.unsubscribe();
+    }
+
+    if (this.combineSubscription) {
+      this.combineSubscription.unsubscribe();
     }
 
     this.loaderService.setLoader(false);
@@ -373,5 +349,52 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     const visibleRows = Math.round(window.innerHeight / imageHeight);
 
     this.visibleImages = this.zoom * visibleRows;
+  }
+
+  getImages(): void {
+    const query = `placeId=${this.placeId}&resolution=${this.imageResolution.image}&lang=${this.currentLanguage}`;
+    this.familyPlaceServiceSubscribe = this.familyMediaService
+      .getFamilyMedia(query)
+      .subscribe((res: any) => {
+        if (res.err) {
+          return;
+        }
+
+        this.images = res.data.images;
+        this.imageData.photographer = res.data.photographer;
+
+        this.getVisibleRows();
+
+        this.calcItemSize();
+
+        let numberSplice: number = this.visibleImages * 2;
+
+        if (this.activeImageIndex && this.activeImageIndex > this.visibleImages) {
+          const positionInRow: number = this.activeImageIndex % this.zoom;
+          const offset: number = this.zoom - positionInRow;
+
+          numberSplice = this.activeImageIndex + offset + this.visibleImages;
+        }
+        this.currentImages = slice(this.images, 0, numberSplice);
+
+        this.changeZoom();
+
+        this.loaderService.setLoader(true);
+        if (get(this.urlParametersService, 'activeImageByRoute', null)) {
+          const activeImage = Number(this.urlParametersService.activeImageByRoute);
+          this.activeImage = activeImage;
+          this.openMedia(this.currentImages[activeImage], activeImage);
+          this.urlParametersService.activeImageByRoute = null;
+        }
+
+        if (this.activeImageIndex) {
+          // TODO: remove setTimeout on refactoring this component
+          setTimeout(() => {
+            this.loaderService.setLoader(true);
+
+            this.openMedia(this.images[this.activeImageIndex - 1], this.activeImageIndex - 1);
+          });
+        }
+      });
   }
 }
