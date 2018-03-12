@@ -355,7 +355,7 @@ export class StreetDrawService {
       .attr('y1', this.halfOfHeight + 11.5)
       .attr('x2', this.width + this.streetOffset - 1)
       .attr('y2', this.halfOfHeight + 11.5)
-      .attr('stroke-width', 3)
+      .attr('stroke-width', SVG_DEFAULTS.road.line.height)
       .attr('stroke', SVG_DEFAULTS.road.line.color)
       .style('cursor', '-webkit-grab')
       .style('cursor', '-moz-grab')
@@ -642,7 +642,7 @@ export class StreetDrawService {
     if (!this.leftScrollOpacityLabels) {
       this.leftScrollOpacityLabels = this.svg;
 
-      if (x < 16) {
+      if (x < this.streetOffset + SVG_DEFAULTS.sliders.moreThenNeed) {
         this.leftScrollOpacityLabels
           .append('rect')
           .attr('class', 'left-scroll-opacity-labels')
@@ -756,7 +756,7 @@ export class StreetDrawService {
     if (!this.rightScrollOpacityLabels) {
       this.rightScrollOpacityLabels = this.svg;
 
-      if (x > this.width + this.streetOffset) {
+      if (x > this.width - SVG_DEFAULTS.sliders.moreThenNeed) {
         this.rightScrollOpacityLabels
           .append('rect')
           .attr('class', 'right-scroll-opacity-labels')

@@ -50,13 +50,17 @@ export class LanguageService {
       .debounceTime(DEBOUNCE_TIME)
       .subscribe( (language: LanguageState) => {
 
-      if (get(language, 'lang', false)) {
+      if (get(language, 'lang', false)
+      && this.storeLanguage !== language.lang) {
         this.storeLanguage = language.lang;
         this.setCurrentLanguage(this.availableLanguage);
         this.loadLanguage().subscribe((trans: any) => {
           this.translations = trans;
           this.translationsLoadedEvent.emit(this.translationsLoadedString, trans);
-        });;
+          if (language.translations !== trans) {
+            this.store.dispatch(new LanguageActions.UpdateTranslations(trans));
+          }
+        });
       }
     });
 
@@ -88,6 +92,7 @@ export class LanguageService {
     this.loadLanguage().subscribe((trans: any) => {
       this.translations = trans;
       this.translationsLoadedEvent.emit(this.translationsLoadedString, trans);
+      this.store.dispatch(new LanguageActions.UpdateTranslations(trans));
     });
 
     this.onLangChangeSubscribe = this.translate.onLangChange.subscribe((data: any) => {
@@ -124,6 +129,7 @@ export class LanguageService {
 
   public getTranslation(key: string | string[]): Observable<any> {
     return Observable.create((observer: Observer<any>) => {
+
       if (this.translations) {
         this.processTranslation(observer, this.translations, key);
       } else {
@@ -186,7 +192,14 @@ export class LanguageService {
   private setCurrentLanguage(languages: string[]): void {
     const found = languages.indexOf(this.storeLanguage) !== -1;
 
-    this.currentLanguage = found ? this.storeLanguage : this.defaultLanguage;
+    if (found && this.currentLanguage !== this.storeLanguage) {
+      this.currentLanguage = found ? this.storeLanguage : this.defaultLanguage;
+      this.loadLanguage().subscribe((trans: any) => {
+
+        this.translations = trans;
+        this.translationsLoadedEvent.emit(this.translationsLoadedString, trans);
+      });;
+    }
   }
 
   private updateLangInUrl(): void {

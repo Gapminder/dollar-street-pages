@@ -1,7 +1,6 @@
 import 'rxjs/operator/debounceTime';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import {
   AppStates,
@@ -10,7 +9,6 @@ import {
   TimeUnit,
   UrlParameters
 } from '../../interfaces';
-import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import {
   Component,
   OnInit,
@@ -117,6 +115,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       .subscribe((state: AppStates) => {
         const matrix = state.matrix;
         const streetSetting = state.streetSettings;
+        const language = state.language;
 
         if (get(streetSetting, 'streetSettings', false)) {
           this.streetData = streetSetting.streetSettings;
@@ -159,6 +158,14 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         if (!get(this, 'placeId', false)) {
           this.placeId = matrix.place;
           this.getFamilyHeaderData();
+        }
+
+        if (get(language.translations, 'READ_MORE', false)) {
+          this.readMoreTranslate = language.translations.READ_MORE;
+        }
+
+        if (get(language.translations, 'READ_MORE', false)) {
+          this.readLessTranslate = language.translations.READ_LESS;
         }
 
         this.calcIncomeValue();

@@ -165,6 +165,7 @@ export interface UrlParameters {
 
 export interface LanguageState {
   lang: string;
+  translations: TranslationsInterface;
 }
 
 export interface IncomeFilter {
