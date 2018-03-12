@@ -73,7 +73,7 @@ export class StreetFamilyDrawService {
       .attr('y1', this.halfOfHeight + 11.5)
       .attr('x2', this.width + this.streetOffset - 1)
       .attr('y2', this.halfOfHeight + 11.5)
-      .attr('stroke-width', 3)
+      .attr('stroke-width', SVG_DEFAULTS.road.line.height)
       .attr('stroke', SVG_DEFAULTS.road.line.color);
 
     this.svg
