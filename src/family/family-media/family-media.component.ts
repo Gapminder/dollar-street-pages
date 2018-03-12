@@ -341,6 +341,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     if (imageContainer) {
     this.itemSize = imageContainer.offsetHeight;
     this.pagePositionService.itemSize = this.itemSize;
+    this.checkCurrentRow();
     }
   }
 
@@ -396,5 +397,9 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
           });
         }
       });
+  }
+
+  checkCurrentRow() {
+    this.pagePositionService.setCurrentRow();
   }
 }
