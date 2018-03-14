@@ -202,6 +202,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     this.storeSubscription = this.store
       .debounceTime(DEBOUNCE_TIME)
       .subscribe( (state: AppStates) => {
+        console.log(state)
         const appState = state.app;
         const matrix = state.matrix;
         const countriesFilter = state.countriesFilter;
@@ -656,28 +657,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   public processScroll(): void {
-    // if (!this.guideContainerElement) {
-    //   this.guideContainerElement = document.querySelector('.quick-guide-container') as HTMLElement;
-    // }
-    //
-    // let guideOffset: number = (this.guideContainerElement ? this.guideContainerElement.offsetHeight : 0);
-    //
-    // let scrollTop = (document.body.scrollTop || document.documentElement.scrollTop) - guideOffset;
-    //
-    // let distance = scrollTop / this.itemSize;
-    //
-    // if (isNaN(distance)) {
-    //   return;
-    // }
-    //
-    // let rest = distance % 1;
-    // let row = distance - rest;
-    //
-    // if (rest >= 0.85) {
-    //   row++;
-    // }
-    //
-    // this.row = row + 1;
+    this.row = this.pagePositionService.row;
 
     let clonePlaces = cloneDeep(this.placesArr);
 

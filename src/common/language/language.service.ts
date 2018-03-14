@@ -124,7 +124,7 @@ export class LanguageService {
   }
 
   public getLanguageIso(): string {
-    return this.currentLanguage.length === 2 ? this.currentLanguage + '_' + this.currentLanguage.toUpperCase() : this.currentLanguage.replace(/-/g, '_');
+    return get(this.currentLanguage, 'length', undefined) === 2 ? this.currentLanguage + '_' + this.currentLanguage.toUpperCase() : this.currentLanguage.replace(/-/g, '_');
   }
 
   public getTranslation(key: string | string[]): Observable<any> {
