@@ -61,7 +61,7 @@ describe('PagePositionService', () => {
 
     urlParametersService.needPositionByRoute = NEED_POSITION;
 
-    const scrollTo = ITEM_SIZE * (NEED_POSITION - 1) + Math.abs(RECT.top);
+    const scrollTo = ITEM_SIZE * NEED_POSITION + Math.abs(RECT.top);
 
     pagePositionService.setCurrentRow();
 
