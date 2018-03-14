@@ -337,7 +337,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    const imageContainer: HTMLElement = this.familyImageContainerElement.querySelector('.family-image-container');
+    const imageContainer: HTMLElement = this.familyImageContainerElement.querySelector('.family-image-container') as HTMLElement;
     if (imageContainer) {
     this.itemSize = imageContainer.offsetHeight;
     this.pagePositionService.itemSize = this.itemSize;
