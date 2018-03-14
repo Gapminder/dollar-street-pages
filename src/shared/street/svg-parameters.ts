@@ -3,21 +3,21 @@ export const SVG_DEFAULTS = {
     name: '#icon-homes',
     width: 16,
     height: 15,
-    fill: '#CFD2D6',
+    fill: 'rgba(207,210,214,0.5)',
     positionY: 14
   },
   activeHomes: {
     name: '#icon-homes',
     width: 21,
     height: 19,
-    fill: '#232d33',
-    positionY: 11
+    fill: '#1E2326',
+    positionY: 10
   },
   hoverHomes: {
     name: '#icon-homes',
     width: 28,
     height: 25,
-    fill: '#12171a',
+    fill: '#1E2326',
     positionY: 5,
     differenceSizeHover: 14,
     text: {
@@ -40,12 +40,12 @@ export const SVG_DEFAULTS = {
   },
   road: {
     line: {
-      color: '#12171a',
+      color: '#1E2326',
       height: 2,
     },
     height: 14,
     positionY: 28,
-    background: '#767d86',
+    background: '#B2B6BB',
     color: '#ffffff',
     opacity: '0.8',
     overlay: {
@@ -59,11 +59,13 @@ export const SVG_DEFAULTS = {
   sliders: {
     color: '#525C64',
     name: '#slider',
-    width: 30,
-    height: 50,
-    positionY: 15,
-    differentSize: 5,
-    moreThenNeed: 2
+    width: 37,
+    height: 60,
+    positionY: 9,
+    differentSize: 0,
+    moreThenNeed: 2,
+    strokeWidth: 2,
+    strokeColor: '#ffffff'
   },
   squarePoints: {
     name: '#square',

@@ -675,6 +675,8 @@ export class StreetDrawService {
         .attr('width', SVG_DEFAULTS.sliders.width)
         .attr('height', SVG_DEFAULTS.sliders.height)
         .attr('y', SVG_DEFAULTS.sliders.positionY)
+        .attr('stroke-width', SVG_DEFAULTS.sliders.strokeWidth)
+        .attr('stroke', SVG_DEFAULTS.sliders.strokeColor)
         .attr('style', 'cursor: pointer ')
         .on('mousedown', (): void => {
           this.sliderLeftMove = true;
