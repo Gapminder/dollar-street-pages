@@ -1,13 +1,16 @@
 <div id="country-place">
   <div class="place" *ngFor="let place of places">
     <div class="image">
+      <a href="" *ngIf="place.image"
+         [routerLink]="['/family']"
+         [queryParams]="{place: place.placeId}"
+      (click)="visitThisHome(place.placeId)">
       <img *ngIf="place.image"
            [src]="place.image"
-           [routerLink]="['/family']"
-           [queryParams]="{place: place.placeId}"
            alt=""
            angulartics2On="click"
            angularticsEvent="Moved from {{place._id}} country page to {{place.family}} family place page">
+      </a>
     </div>
 
     <div class="place-description">

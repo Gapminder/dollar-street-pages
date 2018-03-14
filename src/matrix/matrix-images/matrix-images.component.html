@@ -7,10 +7,7 @@
     <div #imageContent
          class="image-content"
          *ngFor="let place of placesArr; let i = index"
-         [style.-webkit-box-ordinal-group]="i+1"
-         [style.-moz-box-ordinal-group]="i+1"
          [style.-ms-flex-order]="i+1"
-         [style.-webkit-order]="i+1"
          [style.order]="i+1"
          [ngClass]="{'no-row': zoom > 5 || !isDesktop, active: prevPlaceId === place?._id, 'pin-mode': isPinMode}"
          isImageLoaded [imageLoadedUrl]="place?.background"
@@ -66,11 +63,8 @@
                        [place]="familyData"
                        [thing]="thing"
                        [positionInRow]="positionInRow"
-                       [style.-webkit-box-ordinal-group]="imageBlockLocation+1"
-                       [style.-moz-box-ordinal-group]="imageBlockLocation+1"
-                       [style.-ms-flex-order]="imageBlockLocation+1"
-                       [style.-webkit-order]="imageBlockLocation+1"
-                       [style.order]="imageBlockLocation+1"
+                       [style.-ms-flex-order]="imageBlockLocation + 1"
+                       [style.order]="imageBlockLocation + 1"
                        (closeBigImageBlock)="closeImageBlock(familyData, indexViewBoxHouse)">
     </matrix-view-block>
   </div>

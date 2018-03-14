@@ -11,9 +11,10 @@ export const DefaultUrlParameters: UrlParameters = {
   countries: ['World'],
   regions: ['World'],
   zoom: '4',
+  mobileZoom: '3',
   row: '1',
-  lowIncome: '26',
-  highIncome: '15000',
+  lowIncome: '24',
+  highIncome: '15002',
   activeHouse: undefined,
   activeImage: undefined,
   place: undefined,
@@ -46,7 +47,23 @@ export const VisibleParametersPerPage = {
     'currency',
     'embed'
   ],
-  '/family': ['lang', 'place', 'row', 'activeImage'],
+  '/family': ['lang', 'place', 'row', 'activeImage', 'zoom'],
   '/about':  ['lang'],
-  '/map':  ['lang', 'thing']
+  '/map':  ['lang', 'thing'],
+  '/': [
+    'lang',
+    'thing',
+    'countries',
+    'regions',
+    'zoom',
+    'row',
+    'lowIncome',
+    'highIncome',
+    'activeHouse',
+    'currency',
+    'time',
+    'embed',
+    'place',
+    'activeImage'
+  ]
 };

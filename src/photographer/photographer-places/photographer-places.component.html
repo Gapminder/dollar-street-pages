@@ -1,12 +1,15 @@
 <div id="photographer-places">
   <div class="place" *ngFor="let place of places">
     <div class="image">
-      <img *ngIf="place.image" [src]="place.image"
-           [routerLink]="['/family']"
-           [queryParams]="{place: place.placeId}"
-           alt=""
-           angulartics2On="click"
-           angularticsEvent="Moved from photographer's profile page to {{place.family}} family page">
+      <a *ngIf="place.image"
+        [routerLink]="['/family']"
+         [queryParams]="{place: place.placeId}"
+         angulartics2On="click"
+         angularticsEvent="Moved from photographer's profile page to {{place.family}} family page">
+      <img
+            [src]="place.image"
+           alt="">
+      </a>
     </div>
 
     <div class="place-description">

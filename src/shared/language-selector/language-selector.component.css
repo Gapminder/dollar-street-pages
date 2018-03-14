@@ -45,22 +45,14 @@
   float: right;
 }
 
-.btn {
-  height: 8px;
+.icon-btn {
+  display: inline-block;
 }
 
-.btn img {
-  height: 100%;
-  margin-bottom: 6px;
+.icon-btn img {
+  /*height: 100%;*/
+  height: 6px;
 }
-
-/*.caret {
-  color: #767d86;
-  border-top: 9px dashed;
-  border-right: 7px solid transparent;
-  border-left: 7px solid transparent;
-  margin-bottom: 5px;
-}*/
 
 .btn-group .dropdown-menu {
   left: auto;

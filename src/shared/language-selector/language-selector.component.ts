@@ -1,6 +1,4 @@
-
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import {
   Component,
   OnInit,
@@ -11,6 +9,11 @@ import {
 import {
   LanguageService
 } from '../../common';
+import { AppStates, LanguageState } from '../../interfaces';
+import { Store } from '@ngrx/store';
+import { DEBOUNCE_TIME } from '../../defaultState';
+import { get, find, filter } from 'lodash';
+import * as LanguageActions from '../../common/language/ngrx/language.actions';
 
 @Component({
   selector: 'language-selector',
@@ -29,7 +32,8 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   public filteredLanguages: any[];
 
   public constructor(elementRef: ElementRef,
-                     private languageService: LanguageService) {
+                     private languageService: LanguageService,
+                     private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
   }
 
@@ -38,6 +42,16 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
       this.languages = data;
       this.updateLanguages();
     });
+
+    this.store.select((store: AppStates) => store.language)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe( (state: LanguageState) => {
+        if (this.currentLanguage !== get(state, 'lang', this.currentLanguage)) {
+          this.currentLanguage = state.lang;
+          this.languageService.changeLanguage(this.currentLanguage);
+          this.updateLanguages();
+        }
+      })
   }
 
   public ngOnDestroy(): void {
@@ -47,13 +61,15 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
   }
 
   public updateLanguages(): void {
-    this.selectedLanguage = this.languages.find(lang => lang.code === this.languageService.currentLanguage);
+    if (get(this, 'languages', false)) {
+      this.selectedLanguage = find(this.languages, lang => lang.code === this.languageService.currentLanguage);
 
-    if (this.selectedLanguage) {
-      this.filteredLanguages = this.languages.filter(lang => lang.code !== this.selectedLanguage.code);
-    } else {
-      this.selectedLanguage = this.languages.find(lang => lang.code === 'en');
-      this.filteredLanguages = this.languages.filter(lang => lang.code !== 'en');
+      if (this.selectedLanguage) {
+        this.filteredLanguages = filter(this.languages, lang => lang.code !== this.selectedLanguage.code);
+      } else {
+        this.selectedLanguage = find(this.languages, lang => lang.code === 'en');
+        this.filteredLanguages = filter(this.languages, lang => lang.code !== 'en');
+      }
     }
   }
 
@@ -62,7 +78,8 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.languageService.changeLanguage(lang);
+    this.store.dispatch(new LanguageActions.UpdateLanguage(lang));
+    // this.languageService.changeLanguage(lang);
     this.updateLanguages();
   }
 }

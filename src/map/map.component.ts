@@ -39,6 +39,7 @@ import {
   DEBOUNCE_TIME,
   MOBILE_SIZE
 } from '../defaultState';
+import * as MatrixActions from '../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'map-component',
@@ -499,6 +500,8 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.leftSideCountries && this.leftSideCountries.length === 1) {
       this.angulartics2GoogleAnalytics
         .eventTrack(`Look at ${this.hoverPlace.family} place from ${this.hoverPlace.country} with map page`, {});
+      console.log('enter')
+      this.store.dispatch(new MatrixActions.SetPlace(this.hoverPlace._id));
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});
     }
   }

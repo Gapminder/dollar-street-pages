@@ -153,7 +153,6 @@ family-header .header-content {
   vertical-align: top;
   width: 100%;
   background-color: white;
-  transform: translateZ(0);
   position: relative;
   z-index: 1;
 }
@@ -191,7 +190,7 @@ family-header .header-content {
 .filters-container > span,
 .filters-container .some-filter-container > span,
 .filters-container .some-filter-container .income-title-container {
-  margin: 0 9px 0 10px;
+  margin: 0;
   font-size: 28px;
   color: #767d86;
   line-height: 20px;
@@ -695,7 +694,6 @@ input:checked + .slider:before {
   }
 
   .income-title-container {
-    margin-left: 6px!important;
     margin-top: 6px!important;
     float: right;
     position: relative;
@@ -749,5 +747,16 @@ input:checked + .slider:before {
     color: #394451;
     font-size: 24px;
     vertical-align: top;
+  }
+}
+
+.income-title-text {
+  font-size: 22px !important;
+  line-height: 20px;
+}
+
+@media (max-width: 700px) {
+  .income-title-text {
+    display: none;
   }
 }

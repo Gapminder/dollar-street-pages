@@ -60,9 +60,17 @@ export class PagePositionService {
     const row = this.urlParametersService.needPositionByRoute;
     if (row !== null) {
       const containerRect = this.getGridContainerRect();
-      const scroll = (row - 1) * this.itemSize + Math.abs(containerRect.top);
+      const scroll = row * this.itemSize + Math.abs(containerRect.top);
       window.scrollTo(0, scroll);
       this.urlParametersService.needPositionByRoute = null;
+    }
+  }
+
+  public scrollTopZero(): void {
+    if (document.body.scrollTop) {
+      document.body.scrollTop = 0;
+    } else {
+      document.documentElement.scrollTop = 0;
     }
   }
 }

@@ -35,6 +35,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   public isMatrixPage: boolean;
   public pinMode: boolean;
   public embedMode: boolean;
+  showEmbeded = false; //TODO: hided embed features for prod 20.02.18
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -106,8 +107,6 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public scrollTop(e: MouseEvent): void {
-    e.preventDefault();
-
-    this.utilsService.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
+    this.utilsService.animateScroll('scrollBackToTop', 100, 1000, this.isDesktop);
   };
 }

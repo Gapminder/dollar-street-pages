@@ -146,6 +146,8 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       this.showErrorMsg = false;
       this.currentPlaces = places;
 
+      this.buildTitle(this.urlParametersService.getAllParameters());
+
       if (this.currentPlaces && !this.currentPlaces.length) {
         this.buildErrorMsg(this.currentPlaces);
       }
@@ -331,7 +333,6 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   public buildTitle(query: UrlParameters): void {
     const regions = query.regions;
     const countries = query.countries;
-
     this.selectedThing = query.thing.split(',');
 
     if (regions[0] === 'World' && countries[0] === 'World') {
@@ -395,11 +396,10 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
     this.selectedCountries = countries;
   }
 
-  public buildErrorMsg(places: any): void {
+  public buildErrorMsg(places: Place[]): void {
     if (!places.length) {
-      this.buildTitle(this.utilsService.parseUrl(this.query));
 
-      let activeCountries = this.activeCountries.toString().replace(/,/g, ', ');
+      const activeCountries = this.activeCountries.toString().replace(/,/g, ', ');
 
       if (this.activeCountries === this.theWorldTranslate) {
         this.showErrorMsg = true;
@@ -420,6 +420,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
     if (!place) {
       return;
     }
+
     this.familyData = Object.assign({}, place);
 
     this.indexViewBoxHouse = index;

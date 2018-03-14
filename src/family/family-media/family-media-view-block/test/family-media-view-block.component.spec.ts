@@ -7,9 +7,8 @@ import { mockFamilyMediaText } from './mock.data';
 import { BlankComponentStub } from '../../../../test/';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonServicesTestingModule } from '../../../../test/commonServicesTesting.module';
-import { TranslateTestingModule } from '../../../../test/translateTesting.module';
-import { UrlParametersServiceMock } from "../../../../test/mocks/url-parameters.service.mock";
-import { UrlParametersService } from "../../../../url-parameters/url-parameters.service";
+import { StreetDrawService } from '../../../../shared/street/street.service';
+import { StreetDrawServiceMock } from '../../../../test/mocks/streetDrawService.mock';
 
 describe('FamilyMediaViewBlockComponent', () => {
   let componentInstance: FamilyMediaViewBlockComponent;
@@ -26,6 +25,7 @@ describe('FamilyMediaViewBlockComponent', () => {
       declarations: [FamilyMediaViewBlockComponent, BlankComponentStub],
       providers: [
         { provide: FamilyMediaViewBlockService, useValue: {} },
+        { provide: StreetDrawService, useValue: StreetDrawServiceMock}
       ]
     });
 

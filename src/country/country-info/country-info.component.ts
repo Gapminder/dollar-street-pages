@@ -12,15 +12,22 @@ import {
   AppStates,
   StreetSettingsState,
   DrawDividersInterface,
-  Thing
+  Thing, UrlParameters
 } from '../../interfaces';
 import {
   MathService,
   LanguageService,
-  BrowserDetectionService
+  BrowserDetectionService, UrlChangeService, UtilsService
 } from '../../common';
 import { CountryInfoService } from './country-info.service';
 import { get } from 'lodash';
+import * as AppActions from '../../app/ngrx/app.actions';
+import * as ThingsFilterActions from '../../shared/things-filter/ngrx/things-filter.actions';
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import * as CountriesFilterActions from '../../shared/countries-filter/ngrx/countries-filter.actions';
+import { StreetDrawService } from '../../shared/street/street.service';
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
+import { PagePositionService } from '../../shared/page-position/page-position.service';
 
 @Component({
   selector: 'country-info',
@@ -53,7 +60,12 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
                      math: MathService,
                      languageService: LanguageService,
                      browserDetectionService: BrowserDetectionService,
-                     private store: Store<AppStates>) {
+                     private store: Store<AppStates>,
+                     private streetService: StreetDrawService,
+                     private urlChangeService: UrlChangeService,
+                     private urlParametersService: UrlParametersService,
+                     private utilsService: UtilsService,
+                     private pagePositionService: PagePositionService) {
     this.device = browserDetectionService;
     this.countryInfoService = countryInfoService;
     this.math = math;
@@ -93,4 +105,36 @@ export class CountryInfoComponent implements OnInit, OnDestroy {
       this.streetSettingsStateSubscription.unsubscribe();
     }
   }
+
+  public goToMatrixByCountry(country: string): void {
+    const queryParams: UrlParameters = this.urlParametersService.getAllParameters();
+
+    queryParams.regions = ['World'];
+    queryParams.countries = [country];
+    queryParams.lowIncome = this.streetData.poor.toString();
+    queryParams.highIncome = this.streetData.rich.toString();
+
+    delete queryParams.activeHouse;
+
+    let queryUrl: string = this.utilsService.objToQuery(queryParams);
+
+    this.store.dispatch(new AppActions.SetQuery(queryUrl));
+
+    this.store.dispatch(new ThingsFilterActions.GetThingsFilter(queryUrl));
+
+    this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(queryUrl));
+    this.store.dispatch(new CountriesFilterActions.SetSelectedCountries(queryParams.countries));
+    this.store.dispatch(new CountriesFilterActions.SetSelectedRegions(queryParams.regions));
+
+    this.store.dispatch(new MatrixActions.RemovePlace({}));
+
+    this.store.dispatch(new MatrixActions.UpdateMatrix(true));
+    this.streetService.clearAndRedraw();
+
+    this.urlChangeService.assignState('/matrix');
+
+    this.pagePositionService.scrollTopZero();
+  }
+
+
 }

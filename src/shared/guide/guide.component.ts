@@ -16,6 +16,7 @@ import {
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import { DEBOUNCE_TIME } from '../../defaultState';
 
 @Component({
   selector: 'quick-guide',
@@ -44,7 +45,8 @@ export class GuideComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.isShowGuide = !(this.localStorageService.getItem('quick-guide'));
+    const guideLocalStore = this.localStorageService.getItem('quick-guide');
+    this.isShowGuide = guideLocalStore === null ? true : !guideLocalStore;
     this.store.dispatch(new MatrixActions.OpenQuickGuide(this.isShowGuide));
 
     this.localStorageServiceSubscription = this.localStorageService
@@ -88,8 +90,12 @@ export class GuideComponent implements OnInit, OnDestroy {
   }
 
   subscribeStatusQuickGuide(): void {
-    this.storeMatrixSubsdcription = this.store.select('matrix').subscribe(matrix => {
-      if (!matrix.quickGuide) {
+    this.storeMatrixSubsdcription = this.store.select('matrix')
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe(matrix => {
+      if (matrix.quickGuide) {
+        this.isShowGuide = true;
+      } else {
         this.isShowGuide = false;
         this.isShowBubble = false;
         this.startQuickGuide.emit({});

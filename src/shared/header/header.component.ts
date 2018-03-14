@@ -23,7 +23,7 @@ import {
   TimeUnit,
   Currency,
   AppState,
-  StreetSettingsState
+  StreetSettingsState, TranslationsInterface
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -136,6 +136,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   public byDollarText: string;
   public incomeTitleText: string;
   public isIncomeFilter: boolean;
+  public translationSubscribe: Subscription;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -283,6 +284,18 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.theWorldText = trans.THE_WORLD;
 
       this.checkByIncomeFilter();
+    });
+
+    Observable.fromEvent(this.languageService.translationsLoadedEvent, this.languageService.translationsLoadedString).subscribe(( trans: TranslationsInterface ) => {
+      if (get(trans, 'BY_INCOME', false)) {
+        this.byIncomeText = trans.BY_INCOME;
+      }
+      if (get(trans, 'BY_DOLLAR', false)) {
+        this.byDollarText = trans.BY_DOLLAR;
+      }
+      if (get(trans, 'THE_WORLD', false)) {
+        this.theWorldText = trans.THE_WORLD;
+      }
     });
 
     this.routerEventsSubscription = this.router.events.subscribe((event: any) => {
@@ -583,6 +596,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return;
     }
 
+    /*
+    TODO: hided desktop income filter for prod 20.02.18
+
     if (this.isIncomeDesktopOpened) {
       this.closeIncomeFilterDesktop(new MouseEvent(''));
       return;
@@ -591,6 +607,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     if (!this.isMobile) {
       this.openIncomeFilterDesktop(e);
     }
+    */
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }

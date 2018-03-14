@@ -8,6 +8,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { forEach, get } from 'lodash';
 import { PagePositionService } from '../shared/page-position/page-position.service';
 import { DefaultUrlParameters } from '../defaultState';
+import { BrowserDetectionService } from '../common';
+import * as LanguageActions from '../common/language/ngrx/language.actions';
+import { LocalStorageService } from '../common/local-storage/local-storage.service';
+import { TranslateService } from 'ng2-translate';
 
 interface NavigationEndInterface {
   id: number;
@@ -27,13 +31,25 @@ export class UrlParametersComponent implements  OnDestroy {
     store: Store<AppStates>,
     urlParametersService: UrlParametersService,
     pagePositionService: PagePositionService,
-    location: Location) {
+    location: Location,
+    private translate: TranslateService,
+    private localStorageService: LocalStorageService) {
 
     const navigationEndSubscribe = router.events
       .filter(event => event instanceof NavigationEnd)
       .take(1)
       .subscribe((event: NavigationEndInterface) => {
         const params = urlParametersService.parseString(event.url);
+
+        if (!get(params, 'lang', false)) {
+          const storageLanguage = this.localStorageService.getItem('language');
+          if (storageLanguage) {
+            params.lang = storageLanguage;
+          } else {
+            const browserLanguage = this.translate.getBrowserCultureLang();
+            params.lang = browserLanguage;
+          }
+        }
 
         urlParametersService.dispatchToStore(params);
         urlParametersService.combineUrlPerPage();
@@ -43,9 +59,11 @@ export class UrlParametersComponent implements  OnDestroy {
           urlParametersService.needPositionByRoute = params.row;
         }
         if (get(params, 'activeHouse', false)) {
+          params.activeHouse = (Number(params.activeHouse) - 1).toString();
           urlParametersService.activeHouseByRoute = params.activeHouse;
         }
         if (get(params, 'activeImage', false)) {
+          params.activeImage = (Number(params.activeImage) - 1).toString();
           urlParametersService.activeImageByRoute = params.activeImage;
         }
       });

@@ -10,15 +10,16 @@ export const SVG_DEFAULTS = {
     name: '#icon-homes',
     width: 21,
     height: 19,
-    fill: '#4B5762',
+    fill: '#232d33',
     positionY: 11
   },
   hoverHomes: {
     name: '#icon-homes',
     width: 28,
     height: 25,
-    fill: '#364550',
+    fill: '#12171a',
     positionY: 5,
+    differenceSizeHover: 14,
     text: {
       width: 60,
       height: 15,
@@ -39,13 +40,17 @@ export const SVG_DEFAULTS = {
   },
   road: {
     line: {
-      color: '#374551',
+      color: '#12171a',
       height: 2,
     },
-    height: 21,
+    height: 14,
     positionY: 28,
+    background: '#767d86',
     color: '#ffffff',
-    opacity: '0.8'
+    opacity: '0.8',
+    overlay: {
+      height: 23
+    }
   },
   levels: {
     color: '#767d86',
@@ -56,7 +61,9 @@ export const SVG_DEFAULTS = {
     name: '#slider',
     width: 30,
     height: 50,
-    positionY: 15
+    positionY: 15,
+    differentSize: 5,
+    moreThenNeed: 2
   },
   squarePoints: {
     name: '#square',
@@ -66,4 +73,5 @@ export const SVG_DEFAULTS = {
     color: '#232B31',
   },
   mobileWidth: 700,
+
 };

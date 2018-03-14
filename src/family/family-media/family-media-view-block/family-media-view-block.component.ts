@@ -25,14 +25,16 @@ import {
 } from '../../../interfaces';
 import {
   BrowserDetectionService,
-  LanguageService,
+  LanguageService, UrlChangeService,
   UtilsService
 } from '../../../common';
 import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { ImageResolutionInterface } from '../../../interfaces';
 import { get } from 'lodash';
 import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
-import { DEBOUNCE_TIME } from "../../../defaultState";
+import { DEBOUNCE_TIME } from '../../../defaultState';
+import { StreetDrawService } from '../../../shared/street/street.service';
+import { PagePositionService } from '../../../shared/page-position/page-position.service';
 
 interface ImageViewBlockPosition {
   point: { left: number };
@@ -88,7 +90,10 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      private languageService: LanguageService,
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
-                     private urlParametersService: UrlParametersService) {
+                     private urlParametersService: UrlParametersService,
+                     private urlChangeService: UrlChangeService,
+                     public streetService: StreetDrawService,
+                     private pagePositionService: PagePositionService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -148,33 +153,24 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
             thing: this.thing.originPlural,
             countries: [this.country.originName],
             regions: ['World'],
-            zoom: '4',
-            row: '1',
             lowIncome: this.streetData.poor.toString(),
             highIncome: this.streetData.rich.toString(),
-            lang: this.languageService.currentLanguage
           };
 
           this.showInRegion = {
             thing: this.thing.originPlural,
             countries: this.country.countriesName,
             regions: [this.country.originRegionName],
-            zoom: '4',
-            row: '1',
             lowIncome: this.streetData.poor.toString(),
             highIncome: this.streetData.rich.toString(),
-            lang: this.languageService.currentLanguage
           };
 
           this.showInTheWorld = {
             thing: this.thing.originPlural,
             countries: ['World'],
             regions: ['World'],
-            zoom: '4',
-            row: '1',
             lowIncome: this.streetData.poor.toString(),
             highIncome: this.streetData.rich.toString(),
-            lang: this.languageService.currentLanguage
           };
 
           this.truncCountryName(this.country);
@@ -275,5 +271,10 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
   public goToPage(url: string, params: UrlParameters): void {
     this.urlParametersService.dispatchToStore(params);
+  }
+
+  public goToMatrixWithParams(params: UrlParameters) {
+    this.urlParametersService.dispatchToStore(params);
+    this.pagePositionService.scrollTopZero();
   }
 }

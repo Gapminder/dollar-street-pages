@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import * as _ from 'lodash';
 import { UrlParametersService } from "../../url-parameters/url-parameters.service";
+import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 
 @Component({
   selector: 'country-places',
@@ -108,5 +109,9 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
 
   public goToPage(params) {
     this.urlParametersService.dispatchToStore(params);
+  }
+
+  public visitThisHome(placeId: string): void {
+    this.store.dispatch(new MatrixActions.SetPlace(placeId));
   }
 }

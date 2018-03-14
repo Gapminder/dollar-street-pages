@@ -151,6 +151,7 @@ export interface UrlParameters {
   countries?: string[];
   regions?: string[];
   zoom?: string;
+  mobileZoom?: string;
   row?: string;
   lowIncome?: string;
   highIncome?: string;
@@ -164,6 +165,7 @@ export interface UrlParameters {
 
 export interface LanguageState {
   lang: string;
+  translations: TranslationsInterface;
 }
 
 export interface IncomeFilter {
@@ -180,4 +182,8 @@ export interface Language {
 export interface PagePosition {
   row: number;
   activeHouse: number;
+}
+
+export interface TranslationsInterface {
+  [key: string]: string;
 }

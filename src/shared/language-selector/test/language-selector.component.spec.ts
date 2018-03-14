@@ -9,6 +9,8 @@ import {
     LanguageServiceMock
 } from '../../../test/';
 import { LanguageSelectorComponent } from '../language-selector.component';
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { StoreModule } from '@ngrx/store';
 
 describe('LanguageSelectorComponent', () => {
     let fixture: ComponentFixture<LanguageSelectorComponent>;
@@ -19,7 +21,9 @@ describe('LanguageSelectorComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                DropdownModule
+              DropdownModule,
+              CommonServicesTestingModule,
+              StoreModule.forRoot({}),
             ],
             declarations: [LanguageSelectorComponent],
             providers: [

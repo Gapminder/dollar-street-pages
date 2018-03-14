@@ -157,7 +157,8 @@
 
       <a class="link"
          [routerLink]="['/matrix']"
-         [queryParams]="{thing: thing.originPlural, countries: country?.originName, regions: 'World', zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+         [queryParams]="showInCountry"
+         (click)="goToMatrixWithParams(showInCountry)"
          angulartics2On="click"
          angularticsEvent="Matrix page">
         <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{countryName}}</span> <img
@@ -165,7 +166,8 @@
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
          [routerLink]="['/matrix']"
-         [queryParams]="{thing: thing.originPlural, countries: country?.countriesName, regions: country?.region, zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+         [queryParams]="showInRegion"
+         (click)="goToMatrixWithParams(showInRegion)"
          angulartics2On="click"
          angularticsEvent="Matrix page">
         <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{country?.region}}</span> <img
@@ -173,7 +175,8 @@
         src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
       <a class="link"
          [routerLink]="['/matrix']"
-         [queryParams]="{thing: thing.originPlural, countries: 'World', regions: 'World', zoom: '4', row: '1', lowIncome: streetData?.poor, highIncome: streetData?.rich}"
+         [queryParams]="showInTheWorld"
+         (click)="goToMatrixWithParams(showInTheWorld)"
          angulartics2On="click"
          angularticsEvent="Matrix page">
         <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{ 'THE_WORLD' | translate }}</span> <img
