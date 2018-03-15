@@ -202,7 +202,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     this.storeSubscription = this.store
       .debounceTime(DEBOUNCE_TIME)
       .subscribe( (state: AppStates) => {
-        console.log(state)
         const appState = state.app;
         const matrix = state.matrix;
         const countriesFilter = state.countriesFilter;
