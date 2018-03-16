@@ -62,11 +62,13 @@ export const SVG_DEFAULTS = {
     width: 32,
     height: 50,
     positionY: 15,
-    differentSize: 0,
-    moreThenNeed: 2,
+    differentSize: 5,
+    moreThenNeed: 9,
     strokeWidth: 2,
     strokeColor: '#ffffff',
-    filter: '#dropshadow'
+    filter: '#dropshadow',
+    leftSliderMargin: -15,
+    rightSliderMargin: 15
   },
   squarePoints: {
     name: '#square',

@@ -1,7 +1,7 @@
 import 'rxjs/operator/debounceTime';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
   Component,
@@ -20,7 +20,7 @@ import {
   Place,
   IncomeFilter,
 } from '../../interfaces';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
 import {
   MathService,
@@ -29,8 +29,8 @@ import {
 } from '../../common';
 import { StreetDrawService} from './street.service';
 import * as StreetSettingsActions from '../../common';
-import * as _ from "lodash";
-import { DEBOUNCE_TIME, DefaultUrlParameters } from "../../defaultState";
+import * as _ from 'lodash';
+import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
 
 @Component({
   selector: 'street',
@@ -247,6 +247,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       .set('places', [])
       .set('fullIncomeArr', [])
       .drawScale(this.placesArr, this.streetData)
+      .removeHouses('chosen')
+      .removeHouses('hover')
       .removeSliders();
     }
   }
