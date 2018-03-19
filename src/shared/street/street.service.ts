@@ -245,7 +245,7 @@ export class StreetDrawService {
     return this;
   }
 
-  onMouseEvent(e: MouseEvent) {
+  onMouseEvent(e: MouseEvent | Touch) {
     if (this.windowInnerWidth < SVG_DEFAULTS.mobileWidth
       || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
       return;
@@ -491,7 +491,7 @@ export class StreetDrawService {
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove', { passive: true })
       .subscribe((e: TouchEvent) => {
-        this.onMouseEvent(e);
+        this.onMouseEvent(e.touches[0]);
         }
       );
 
