@@ -131,7 +131,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.set('highIncome', highIncome);
 
       if (_.get(thingsFilter.thingsFilter, 'thing', false)) {
-        this.thingName = thingsFilter.thingsFilter.thing.plural;
+        this.thingName = thingsFilter.thingsFilter.thing.originPlural;
       }
       this.countries = countryFilter.selectedCountries;
       this.regions = countryFilter.selectedRegions;

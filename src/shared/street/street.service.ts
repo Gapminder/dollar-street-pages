@@ -245,7 +245,7 @@ export class StreetDrawService {
     return this;
   }
 
-  onMouseEvent(e: MouseEvent) {
+  onMouseEvent(e: MouseEvent | Touch) {
     if (this.windowInnerWidth < SVG_DEFAULTS.mobileWidth
       || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
       return;
@@ -287,19 +287,20 @@ export class StreetDrawService {
       return;
     }
 
-    if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 17) {
+    if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder - SVG_DEFAULTS.minSliderSpace) {
       let position;
       if (e.pageX > 0) {
         position = e.pageX - (this.windowInnerWidth - this.width) / 2;
       } else {
         position = 0;
       }
+
       return this.drawLeftSlider(position);
     }
 
-    if (this.sliderRightMove && this.sliderLeftBorder + 87 <= e.pageX) {
+    if (this.sliderRightMove && e.pageX >= this.sliderLeftBorder + SVG_DEFAULTS.minSliderSpace) {
       let position;
-      if (e.pageX <= this.width + 57) {
+      if (e.pageX <= this.width + (this.windowInnerWidth - this.width) / 2  ) {
         position = e.pageX - (this.windowInnerWidth - this.width) / 2
       } else {
         position = this.width;
@@ -367,6 +368,7 @@ export class StreetDrawService {
 
       this.leftPoint = this.scale(this.minIncome) - SVG_DEFAULTS.sliders.moreThenNeed;
       this.rightPoint = this.scale(this.maxIncome) + SVG_DEFAULTS.sliders.moreThenNeed;
+
 
       this.svg
         .selectAll('use.icon-background-home')
@@ -489,56 +491,7 @@ export class StreetDrawService {
 
     this.touchMoveSubscriber = fromEvent(window, 'touchmove', { passive: true })
       .subscribe((e: TouchEvent) => {
-          if (this.windowInnerWidth < MOBILE_SIZE || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
-            return;
-          }
-
-          e.preventDefault();
-
-          if (!this.currentHighIncome || !this.currentLowIncome) {
-            this.currentLowIncome = this.lowIncome;
-            this.currentHighIncome = this.highIncome;
-          }
-          let positionX = e.touches[0].pageX;
-
-          if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
-            document.body.classList.add('draggingSliders');
-
-            if (!this.distanceDraggingLeftSlider) {
-              this.distanceDraggingLeftSlider = positionX - 35 - this.sliderLeftBorder;
-            }
-
-            if (!this.distanceDraggingRightSlider) {
-              this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 45);
-            }
-
-            if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-              if (positionX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && positionX + this.distanceDraggingRightSlider <= this.rightPoint + 75) {
-                this.chosenPlaces = [];
-                this.removeHouses('chosen');
-                this.drawLeftSlider(positionX - 57 - this.distanceDraggingLeftSlider);
-                this.drawRightSlider(positionX - 57 + this.distanceDraggingRightSlider);
-              }
-            } else {
-              if (
-                positionX - this.distanceDraggingLeftSlider >= 35 &&
-                positionX + this.distanceDraggingRightSlider <= this.width + 50) {
-                this.chosenPlaces = [];
-                this.removeHouses('chosen');
-                this.drawLeftSlider(positionX - 30 - this.distanceDraggingLeftSlider);
-                this.drawRightSlider(positionX - 40 + this.distanceDraggingRightSlider);
-              }
-            }
-            return;
-          }
-
-          if (this.sliderLeftMove && positionX <= this.sliderRightBorder - 25 && positionX >= 35) {
-            return this.drawLeftSlider(positionX - 30);
-          }
-
-          if (this.sliderRightMove && this.sliderLeftBorder + 102 <= positionX && positionX <= this.width + 50) {
-            return this.drawRightSlider(positionX - 40);
-          }
+        this.onMouseEvent(e.touches[0]);
         }
       );
 
@@ -634,18 +587,20 @@ export class StreetDrawService {
         return x;
       })
       .text(( home: Place ) => {
-        return `${this.currencyUnit.symbol}${home.showIncome}`;
+        const text = `${this.currencyUnit.symbol ? this.currencyUnit.symbol: ''}${home.showIncome ? home.showIncome : ''}`;
+
+        return text;
       });
 
     return this;
   };
 
   public drawLeftSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 568 && Math.round(this.lowIncome) === this.dividersData.poor) {
+    if (this.windowInnerWidth <= SVG_DEFAULTS.mobileWidth && Math.round(this.lowIncome) === this.dividersData.poor) {
       return;
     }
 
-    this.sliderLeftBorder = x;
+    this.sliderLeftBorder = x + (this.windowInnerWidth - this.width) / 2;
 
     if (!this.leftScrollOpacityHomes) {
       this.leftScrollOpacityHomes = this.svg
@@ -758,11 +713,11 @@ export class StreetDrawService {
   };
 
   public drawRightSlider(x: number, init: boolean = false): this {
-    if (this.windowInnerWidth <= 566 && Math.round(this.highIncome) === this.dividersData.rich) {
+    if (this.windowInnerWidth <= SVG_DEFAULTS.mobileWidth && Math.round(this.highIncome) === this.dividersData.rich) {
       return;
     }
 
-    this.sliderRightBorder = x;
+    this.sliderRightBorder = x + (this.windowInnerWidth - this.width) / 2;
 
     if (!this.rightScrollOpacityHomes) {
       this.rightScrollOpacityHomes = this.svg
@@ -1126,7 +1081,7 @@ export class StreetDrawService {
     this.currentHighIncome = void 0;
 
     if (this.highIncome > this.dividersData.rich) {
-      this.highIncome = this.dividersData.rich + 1;
+      this.highIncome = this.dividersData.rich;
     }
     let lowFilter = Math.round(this.lowIncome);
     let highFilter = Math.round(this.highIncome);
@@ -1138,7 +1093,6 @@ export class StreetDrawService {
       if (this.highIncome + 1 >= this.maxIncome) {
         highFilter = Math.round(this.maxIncome + SVG_DEFAULTS.sliders.moreThenNeed);
       }
-
     this.filter.next({
       lowIncome: lowFilter,
       highIncome: highFilter

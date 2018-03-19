@@ -63,7 +63,7 @@ export const SVG_DEFAULTS = {
     height: 50,
     positionY: 15,
     differentSize: 5,
-    moreThenNeed: 9,
+    moreThenNeed: 13,
     strokeWidth: 2,
     strokeColor: '#ffffff',
     filter: '#dropshadow',
@@ -78,5 +78,5 @@ export const SVG_DEFAULTS = {
     color: '#232B31',
   },
   mobileWidth: 700,
-
+  minSliderSpace: 40
 };
