@@ -124,7 +124,7 @@ export class StreetFamilyDrawService {
       .attr('home-id', (datum: Place) => { return datum._id; })
       .attr('x', (datum: Place) => {
         const scaleDatumIncome = this.scale(datum.income);
-        const positionX = this.scale(this.streetOffset / 2) - SVG_DEFAULTS.hoverHomes.width / 2 + scaleDatumIncome;
+        const positionX = (this.streetOffset / 2) + scaleDatumIncome - SVG_DEFAULTS.hoverHomes.differenceSizeHover;
 
         return positionX;
       });
