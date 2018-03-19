@@ -22,6 +22,7 @@ import {
 } from '../../defaultState';
 import { Store } from '@ngrx/store';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class StreetDrawService {
@@ -39,7 +40,8 @@ export class StreetDrawService {
   public levelLabels: string[] = [];
   public svg: any;
   public incomeArr: any[] = [];
-  public mouseMoveSubscriber: any;
+  public mouseMoveSubscriber: Subscription;
+  mouseLeaveSubscriptrion: Subscription;
   public dividersData: any;
   public mouseUpSubscriber: any;
   public touchMoveSubscriber: any;
@@ -243,6 +245,71 @@ export class StreetDrawService {
     return this;
   }
 
+  onMouseEvent(e: MouseEvent) {
+    if (this.windowInnerWidth < SVG_DEFAULTS.mobileWidth
+      || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
+      return;
+    }
+
+    if (!this.currentHighIncome || !this.currentLowIncome) {
+      this.currentLowIncome = this.lowIncome;
+      this.currentHighIncome = this.highIncome;
+    }
+
+    if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
+      document.body.classList.add('draggingSliders');
+      if (!this.distanceDraggingLeftSlider) {
+        this.distanceDraggingLeftSlider = e.pageX - 45 - this.sliderLeftBorder;
+      }
+
+      if (!this.distanceDraggingRightSlider) {
+        this.distanceDraggingRightSlider = this.sliderRightBorder - (e.pageX - 56);
+      }
+
+
+      if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+        if (e.pageX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && e.pageX + this.distanceDraggingRightSlider <= this.rightPoint + 76) {
+          this.chosenPlaces = [];
+          this.removeHouses('chosen');
+          this.drawLeftSlider(e.pageX - 57 - this.distanceDraggingLeftSlider);
+          this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
+        }
+      } else {
+        if (e.pageX - this.distanceDraggingLeftSlider >= 50 &&
+          e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
+          this.chosenPlaces = [];
+          this.removeHouses('chosen');
+          this.drawLeftSlider(e.pageX - 47 - this.distanceDraggingLeftSlider);
+          this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
+        }
+      }
+
+      return;
+    }
+
+    if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 17) {
+      let position;
+      if (e.pageX > 0) {
+        position = e.pageX - (this.windowInnerWidth - this.width) / 2;
+      } else {
+        position = 0;
+      }
+      return this.drawLeftSlider(position);
+    }
+
+    if (this.sliderRightMove && this.sliderLeftBorder + 87 <= e.pageX) {
+      let position;
+      if (e.pageX <= this.width + 57) {
+        position = e.pageX - (this.windowInnerWidth - this.width) / 2
+      } else {
+        position = this.width;
+      }
+
+      return this.drawRightSlider(position);
+    }
+
+  }
+
   public drawScale(places: Place[], drawDividers: DrawDividersInterface): this {
 
     axisBottom(this.scale)
@@ -398,61 +465,22 @@ export class StreetDrawService {
     this.drawLeftSlider(this.scale(this.lowIncome), true);
     this.drawRightSlider(this.scale(this.highIncome), true);
 
+    if (this.mouseLeaveSubscriptrion) {
+      this.mouseLeaveSubscriptrion.unsubscribe();
+    }
+
     if (this.mouseMoveSubscriber) {
       this.mouseMoveSubscriber.unsubscribe();
     }
 
+    this.mouseLeaveSubscriptrion = fromEvent(document, 'mouseleave', {passive: true})
+      .subscribe((e: MouseEvent) => {
+        this.onMouseEvent(e);
+      });
+
     this.mouseMoveSubscriber = fromEvent(window, 'mousemove', { passive: true })
       .subscribe((e: MouseEvent) => {
-
-        if (this.windowInnerWidth < SVG_DEFAULTS.mobileWidth
-          || (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders)) {
-          return;
-        }
-
-        if (!this.currentHighIncome || !this.currentLowIncome) {
-          this.currentLowIncome = this.lowIncome;
-          this.currentHighIncome = this.highIncome;
-        }
-
-        if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
-          document.body.classList.add('draggingSliders');
-          if (!this.distanceDraggingLeftSlider) {
-            this.distanceDraggingLeftSlider = e.pageX - 45 - this.sliderLeftBorder;
-          }
-
-          if (!this.distanceDraggingRightSlider) {
-            this.distanceDraggingRightSlider = this.sliderRightBorder - (e.pageX - 56);
-          }
-
-
-          if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-            if (e.pageX - this.distanceDraggingLeftSlider >= this.leftPoint + 40 && e.pageX + this.distanceDraggingRightSlider <= this.rightPoint + 76) {
-              this.chosenPlaces = [];
-              this.removeHouses('chosen');
-              this.drawLeftSlider(e.pageX - 57 - this.distanceDraggingLeftSlider);
-              this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
-            }
-          } else {
-            if (e.pageX - this.distanceDraggingLeftSlider >= 50 &&
-              e.pageX + this.distanceDraggingRightSlider <= this.width + 60) {
-              this.chosenPlaces = [];
-              this.removeHouses('chosen');
-              this.drawLeftSlider(e.pageX - 47 - this.distanceDraggingLeftSlider);
-              this.drawRightSlider(e.pageX - 57 + this.distanceDraggingRightSlider);
-            }
-          }
-
-          return;
-        }
-
-        if (this.sliderLeftMove && e.pageX <= this.sliderRightBorder + 17 && e.pageX >= 52) {
-          return this.drawLeftSlider(e.pageX - (this.windowInnerWidth - this.width) / 2);
-        }
-
-        if (this.sliderRightMove && this.sliderLeftBorder + 87 <= e.pageX && e.pageX <= this.width + 57) {
-          return this.drawRightSlider(e.pageX - (this.windowInnerWidth - this.width) / 2);
-        }
+        this.onMouseEvent(e);
       });
 
     if (this.touchMoveSubscriber) {
@@ -538,6 +566,8 @@ export class StreetDrawService {
 
   public drawHoverHouse( place, gray = false) {
     if (!place) {
+      this.removeHouses('hover')
+
       return this;
     }
 
@@ -642,7 +672,10 @@ export class StreetDrawService {
     if (!this.leftScrollOpacityLabels) {
       this.leftScrollOpacityLabels = this.svg;
 
+      const width = (x + this.streetOffset ) > 0 ? x + this.streetOffset : 0;
+
       if (x < this.streetOffset + SVG_DEFAULTS.sliders.moreThenNeed) {
+
         this.leftScrollOpacityLabels
           .append('rect')
           .attr('class', 'left-scroll-opacity-labels')
@@ -650,7 +683,7 @@ export class StreetDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', x + this.streetOffset / 2)
+          .attr('width', width)
           .style('opacity', '0.1');
       } else {
         this.leftScrollOpacityLabels
@@ -660,7 +693,7 @@ export class StreetDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', x + this.streetOffset / 2)
+          .attr('width', width)
           .style('opacity', '0.6');
       }
     }
@@ -708,9 +741,9 @@ export class StreetDrawService {
       }
     } else {
       this.leftScrollOpacityStreet
-        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
+        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2 - SVG_DEFAULTS.sliders.moreThenNeed / 2);
       this.leftScrollOpacityHomes
-        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
+        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2 - SVG_DEFAULTS.sliders.moreThenNeed / 2);
     }
 
     this.lowIncome = this.scale.invert(x);
@@ -757,6 +790,7 @@ export class StreetDrawService {
       this.rightScrollOpacityLabels = this.svg;
 
       if (x > this.width - SVG_DEFAULTS.sliders.moreThenNeed) {
+        const width = (this.width - x + this.streetOffset) > 0 ? this.width - x + this.streetOffset : 0;
         this.rightScrollOpacityLabels
           .append('rect')
           .attr('class', 'right-scroll-opacity-labels')
@@ -764,7 +798,7 @@ export class StreetDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', this.width - x + this.streetOffset)
+          .attr('width', width)
           .style('opacity', '0.1');
       } else {
         this.rightScrollOpacityLabels
@@ -826,10 +860,11 @@ export class StreetDrawService {
           .attr('width', this.width + this.streetOffset / 2 - x);
       }
     } else {
+      const width = (this.width + this.streetOffset / 2 - x) > 0 ? this.width + this.streetOffset / 2 - x : 0;
       this.rightScrollOpacityStreet.attr('x', x + this.streetOffset / 2 )
-        .attr('width', this.width + this.streetOffset / 2 - x);
+        .attr('width', width);
       this.rightScrollOpacityHomes.attr('x', x + this.streetOffset / 2)
-        .attr('width', this.width + this.streetOffset / 2 - x);
+        .attr('width', width);
     }
 
     this.highIncome = this.scale.invert(x);
@@ -844,15 +879,13 @@ export class StreetDrawService {
   };
 
   public clearAndRedraw(places?): this {
+    this.removeHouses('hover');
+    this.removeHouses('chosen');
+
     if (!places || !places.length) {
-      this.removeHouses('hover');
-      this.removeHouses('chosen');
 
       return this;
     }
-
-    this.removeHouses('hover');
-    this.removeHouses('chosen');
 
     this.removeSliders();
 
