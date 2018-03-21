@@ -35,6 +35,7 @@ import { UrlParametersService } from '../../../url-parameters/url-parameters.ser
 import { DEBOUNCE_TIME } from '../../../defaultState';
 import { StreetDrawService } from '../../../shared/street/street.service';
 import { PagePositionService } from '../../../shared/page-position/page-position.service';
+import { ImageLoadedService } from '../../../shared/image-loaded/image-loaded.service';
 
 interface ImageViewBlockPosition {
   point: { left: number };
@@ -56,6 +57,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
   public loader: boolean = false;
+  imageLoader = false;
   public popIsOpen: boolean = false;
   public fancyBoxImage: string;
   public country: any;
@@ -71,7 +73,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public showTranslateMe: boolean;
   public element: HTMLElement;
   public streetSettingsState: Observable<StreetSettingsState>;
-  public viewImage: string;
+  public viewImage: string = '';
   public streetSettingsStateSubscription: Subscription;
   public consumerApi: string;
   public showInCountry: any;
@@ -93,7 +95,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      private urlParametersService: UrlParametersService,
                      private urlChangeService: UrlChangeService,
                      public streetService: StreetDrawService,
-                     private pagePositionService: PagePositionService) {
+                     private pagePositionService: PagePositionService,
+                     private imagesService: ImageLoadedService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -102,6 +105,14 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+  }
+
+  uploadImages(url: string): void {
+    this.imagesService.imageLoaded(url).then(() => {
+      this.zone.run(() => {
+        this.imageLoader = true;
+      })
+    });
   }
 
   public ngOnInit(): void {
@@ -132,9 +143,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     if (get(changes, 'imageData', false)) {
       this.setPointPositionMediaBlock();
       this.country = void 0;
-      this.loader = true;
+      this.loader = false;
+      this.imageLoader = false;
 
-      this.viewImage = this.imageData.image;
 
       if (this.viewBlockServiceSubscribe && this.viewBlockServiceSubscribe.unsubscribe) {
         this.viewBlockServiceSubscribe.unsubscribe();
@@ -182,6 +193,14 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           if (this.article && this.article.shortDescription.length) {
             this.article.description = this.getDescription(this.article.shortDescription);
           }
+
+          this.loader = true;
+
+          this.uploadImages(this.imageData.image);
+        console.log(this.imageData.image);
+          this.viewImage = this.imageData.image;
+
+          console.log(this.imageLoader)
       });
     }
   }
@@ -277,4 +296,6 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     this.urlParametersService.dispatchToStore(params);
     this.pagePositionService.scrollTopZero();
   }
+
+
 }

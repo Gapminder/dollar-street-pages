@@ -6,6 +6,20 @@
     <div class="view-image-container">
       <img (click)="openPopUp()"
            [src]="viewImage">
+      <div class="loader-content" [hidden]="imagesIsLoaded.main">
+        <div class="isLoad">
+          <div class="la-ball-spin la-dark la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="house-info-container">
@@ -33,16 +47,43 @@
                  angulartics2On="click"
                  angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
               <img [src]="familyData.familyImage.url" alt="Family portrait">
+              <div class="loader-content" [hidden]="imagesIsLoaded.familyImage">
+                <div class="isLoad">
+                  <div class="la-ball-spin la-dark la-2x">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="image-content"
-                 *ngIf="familyData?.houseImage"
                  [routerLink]="['/family']"
                  [queryParams]="{place: place._id}"
                  (click)="visitThisHome(place._id)"
                  angulartics2On="click"
                  angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">
               <img [src]="familyData.houseImage.url" alt="House photo">
+              <div class="loader-content" [hidden]="imagesIsLoaded.houseImage">
+                <div class="isLoad">
+                  <div class="la-ball-spin la-dark la-2x">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -130,9 +171,25 @@
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
 
   <div class="view-image-container">
+    <div class="mobile-image-wrap">
     <img (click)="openPopUp()" [src]="place?.background">
+    <div class="loader-content" [hidden]="imagesIsLoaded.main">
+      <div class="isLoad">
+        <div class="la-ball-spin la-dark la-2x">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
     <div class="close-box-container" (click)="closeBlock()">
       <img class="close-box" src="/assets/img/close-button-mobile.svg" alt="x">
+    </div>
     </div>
 
     <div class="view-image-block-footer-container">

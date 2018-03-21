@@ -10,6 +10,8 @@ import { StreetDrawService } from '../../../shared/street/street.service';
 import { StreetDrawServiceMock } from '../../../test/mocks/streetDrawService.mock';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
 import { MockComponent } from 'ng2-mock-component';
+import { ImageLoadedService } from '../../../shared/image-loaded/image-loaded.service';
+import { ImageLoadedServiceMock } from '../../../test/mocks/image-loader.service.mock';
 
 describe('MatrixViewBlockComponent', () => {
   let component: MatrixViewBlockComponent;
@@ -36,6 +38,7 @@ describe('MatrixViewBlockComponent', () => {
         { provide: MatrixViewBlockService, useClass: MatrixViewBlockServiceMock },
         { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
         { provide: StreetDrawService, useClass: StreetDrawServiceMock },
+        { provide: ImageLoadedService, useClass: ImageLoadedServiceMock },
       ]
     });
 

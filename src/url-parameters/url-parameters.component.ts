@@ -8,8 +8,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { forEach, get } from 'lodash';
 import { PagePositionService } from '../shared/page-position/page-position.service';
 import { DefaultUrlParameters } from '../defaultState';
-import { BrowserDetectionService } from '../common';
-import * as LanguageActions from '../common/language/ngrx/language.actions';
 import { LocalStorageService } from '../common/local-storage/local-storage.service';
 import { TranslateService } from 'ng2-translate';
 

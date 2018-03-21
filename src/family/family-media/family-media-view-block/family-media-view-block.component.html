@@ -4,10 +4,24 @@
   <div class="view-image-block-content">
     <div class="view-image-container">
       <div class="view-image-content">
+
         <img (click)="openPopUp()"
              [src]="viewImage">
+        <div class="loader-content" [hidden]="imageLoader">
+          <div class="isLoad">
+            <div class="la-ball-spin la-dark la-2x">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
       </div>
-
       <div class="image-footer-container">
         <div class="photographer-container">
           <p><img src="/assets/img/cc-icon-small.svg">
@@ -106,9 +120,23 @@
   <div class="active-house" [style.left]=" imageViewBlockPosition.point.left+'px'"></div>
 
   <div class="view-image-container">
-    <img (click)="openPopUp()" [src]="imageData.image">
+    <div class="mobile-image-container">
+    <img (click)="openPopUp()" [src]="viewImage">
+      <div class="isLoad" [hidden]="imageLoader">
+      <div class="la-ball-spin la-dark la-2x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
     <div class="close-box-container" (click)="closeImageBlock()">
       <img class="close-box" src="/assets/img/close-button-mobile.svg" alt="x">
+    </div>
     </div>
 
     <div class="view-image-block-footer-container">
