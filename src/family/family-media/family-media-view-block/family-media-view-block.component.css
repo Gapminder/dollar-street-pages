@@ -260,6 +260,12 @@
   background-size: contain;
 }
 
+.mobile-image-container {
+  width: 100%;
+  min-height: 100vw;
+  position: relative;
+}
+
 @media (max-width: 1440px) {
   .view-image-block-container .view-image-block-content .view-image-container .view-image-content {
     height: 485px;

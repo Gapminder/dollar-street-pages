@@ -65,6 +65,7 @@ import { DropdownModule } from 'ng2-bootstrap/components/dropdown';
 import { TranslateModule } from 'ng2-translate';
 
 import { Angulartics2Module } from 'angulartics2';
+import { ImageLoadedService } from './image-loaded/image-loaded.service';
 
 @NgModule({
   imports: [
@@ -112,7 +113,8 @@ import { Angulartics2Module } from 'angulartics2';
     StreetMobileDrawService,
     StreetFilterDrawService,
     StreetFamilyDrawService,
-    StreetPinnedDrawService
+    StreetPinnedDrawService,
+    ImageLoadedService,
   ],
   exports: [
     RouterModule,

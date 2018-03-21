@@ -319,6 +319,15 @@
   background-size: contain;
 }
 
+.home-description-container .image-content {
+  position: relative;
+}
+
+.mobile-image-wrap {
+  width: 100%;
+  position: relative;
+}
+
 @media (max-width: 1440px) {
   .view-image-block-container .view-image-block-content .view-image-container {
     height: 485px;

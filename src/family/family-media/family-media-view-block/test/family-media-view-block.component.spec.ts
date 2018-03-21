@@ -9,6 +9,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonServicesTestingModule } from '../../../../test/commonServicesTesting.module';
 import { StreetDrawService } from '../../../../shared/street/street.service';
 import { StreetDrawServiceMock } from '../../../../test/mocks/streetDrawService.mock';
+import { ImageLoadedServiceMock } from '../../../../test/mocks/image-loader.service.mock';
+import { ImageLoadedService } from '../../../../shared/image-loaded/image-loaded.service';
 
 describe('FamilyMediaViewBlockComponent', () => {
   let componentInstance: FamilyMediaViewBlockComponent;
@@ -25,7 +27,8 @@ describe('FamilyMediaViewBlockComponent', () => {
       declarations: [FamilyMediaViewBlockComponent, BlankComponentStub],
       providers: [
         { provide: FamilyMediaViewBlockService, useValue: {} },
-        { provide: StreetDrawService, useValue: StreetDrawServiceMock}
+        { provide: StreetDrawService, useValue: StreetDrawServiceMock},
+        { provide: ImageLoadedService, useClass: ImageLoadedServiceMock },
       ]
     });
 

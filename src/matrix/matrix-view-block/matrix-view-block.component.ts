@@ -44,9 +44,16 @@ import {
 import { MatrixViewBlockService } from './matrix-view-block.service';
 import { StreetDrawService } from '../../shared/street/street.service';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
-import { get } from 'lodash';
+import { get, forEach } from 'lodash';
 import { DEBOUNCE_TIME } from "../../defaultState";
 import { PagePositionService } from '../../shared/page-position/page-position.service';
+import { ImageLoadedService } from '../../shared/image-loaded/image-loaded.service';
+
+const INIT_STATE_IMAGES = {
+  main: false,
+  familyImage: false,
+  houseImage: false
+}
 
 @Component({
   selector: 'matrix-view-block',
@@ -102,6 +109,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public currencyUnit: any;
   public timeUnit: TimeUnit;
   public timeUnits: TimeUnit[];
+  imagesIsLoaded: {[key: string]: boolean} = INIT_STATE_IMAGES;
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -116,7 +124,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      private urlChangeService: UrlChangeService,
                      public streetService: StreetDrawService,
                      private urlParametersService : UrlParametersService,
-                     private pagePositionService: PagePositionService) {
+                     private pagePositionService: PagePositionService,
+                     private imageService: ImageLoadedService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -192,8 +201,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    this.loader = true;
+    this.resetLoadedImage();
+
+
     this.showblock = true;
+    this.loader = false;
 
     this.place.background = this.place.background.replace(this.imageResolution.image, this.imageResolution.expand);
     this.mapData = {region: this.place.region, lat: this.place.lat, lng: this.place.lng};
@@ -234,15 +246,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       this.isShowCountryButton = parsedUrl.countries !== this.familyData.country.originName;
       this.privateZoom = parsedUrl.zoom;
 
-      /*let newImage = new Image();
+      this.loader = true;
 
-      newImage.onload = () => {
-        this.zone.run(() => {
-          this.loader = true;
-        });
-      };
-
-      newImage.src = this.place.background;*/
+      this.uploadImages(this.viewImage, 'main');
+      if (get(this.familyData, 'familyImage', false)) {
+        this.uploadImages(this.familyData.familyImage.url, 'familyImage');
+      }
+      if (get(this.familyData, 'houseImage', false)) {
+        this.uploadImages(this.familyData.houseImage.url, 'houseImage');
+      }
     });
   }
 
@@ -369,5 +381,17 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
   public goToPage(url: string, params: UrlParameters): void {
     this.urlParametersService.dispatchToStore(params);
+  }
+
+  resetLoadedImage(): void {
+    this.zone.run(() => {
+      forEach(this.imagesIsLoaded, (value, key) => {
+        this.imagesIsLoaded[key] = false;
+      });
+    })
+  }
+
+  uploadImages(url: string, prop: string): void {
+    this.imageService.imageLoaded(url).then(() => this.imagesIsLoaded[prop] = true);
   }
 }
