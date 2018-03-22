@@ -281,12 +281,12 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
       .replace('")', '');
 
     this.imageData = Object.assign({}, this.imageData);
-
+    this.goToRow(row);
     if (!this.prevImage) {
       this.prevImage = image;
       this.showImageBlock = true;
       this.urlParametersService.setActiveImage(index);
-      this.goToRow(row);
+
 
       return;
     }
