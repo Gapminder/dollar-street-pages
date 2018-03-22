@@ -197,10 +197,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.loader = true;
 
           this.uploadImages(this.imageData.image);
-        console.log(this.imageData.image);
-          this.viewImage = this.imageData.image;
 
-          console.log(this.imageLoader)
+          this.viewImage = this.imageData.image;
       });
     }
   }
