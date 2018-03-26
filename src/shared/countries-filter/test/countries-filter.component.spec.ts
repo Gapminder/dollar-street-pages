@@ -1,23 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from 'ng2-translate';
 import { Store, StoreModule } from '@ngrx/store';
-import * as CountriesFilterActions from '../ngrx/countries-filter.actions';
 import { countriesFilterReducer } from '../ngrx/countries-filter.reducers';
 
-import { AppStates, UrlParameters } from '../../../interfaces';
-import { BrowserDetectionService, LanguageService, UrlChangeService, UtilsService } from '../../../common';
+import { AppStates } from '../../../interfaces';
 import { CountriesFilterComponent } from '../countries-filter.component';
 import { CountriesFilterPipe } from '../countries-filter.pipe';
 
-import {
-  BrowserDetectionServiceMock,
-  LanguageServiceMock,
-  UrlChangeServiceMock,
-  UtilsServiceMock
-} from '../../../test/';
-import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
 import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
 import { CommonServicesTestingModule } from "../../../test/commonServicesTesting.module";
+import { forEach } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
 
 describe('CountriesFilterComponent', () => {
   let fixture: ComponentFixture<CountriesFilterComponent>;
@@ -45,22 +37,16 @@ describe('CountriesFilterComponent', () => {
   it('ngOnInit(), ngOnDestroy()', () => {
     component.ngOnInit();
 
-    expect(component.getTranslationSubscribe).toBeDefined();
-    expect(component.countriesFilterStateSubscription).toBeDefined();
-    expect(component.resizeSubscribe).toBeDefined();
-    expect(component.orientationChange).toBeDefined();
-
-    spyOn(component.getTranslationSubscribe, 'unsubscribe');
-    spyOn(component.countriesFilterStateSubscription, 'unsubscribe');
-    spyOn(component.resizeSubscribe, 'unsubscribe');
-    spyOn(component.orientationChange, 'unsubscribe');
+    forEach(component.ngSubscriptions, (value, key) => {
+      spyOn(value, 'unsubscribe');
+    });
 
     component.ngOnDestroy();
 
-    expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.countriesFilterStateSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.orientationChange.unsubscribe).toHaveBeenCalled();
+    forEach(component.ngSubscriptions, (value, key) => {
+      expect(value.unsubscribe).toHaveBeenCalled();
+    });
+
   });
 
   it('calcSliceCount()', () => {

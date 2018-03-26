@@ -22,7 +22,14 @@ import {
   UrlChangeService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import {AppStates, Country, LanguageState, UrlParameters} from '../../interfaces';
+import {
+  AppStates, Continent,
+  CountriesFilterState,
+  Country,
+  DrawDividersInterface,
+  LanguageState,
+  UrlParameters
+} from '../../interfaces';
 import * as CountriesFilterActions from './ngrx/countries-filter.actions';
 import { KeyCodes } from '../../enums';
 import { UrlParametersService } from "../../url-parameters/url-parameters.service";
@@ -36,69 +43,63 @@ import { get} from 'lodash';
 })
 export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('underlineK')
-  public underlineK: ElementRef;
+  underlineK: ElementRef;
   @ViewChild('countriesSearch')
-  public countriesSearch: ElementRef;
+  countriesSearch: ElementRef;
   @ViewChild('countriesMobileSearch')
-  public countriesMobileSearch: ElementRef;
+  countriesMobileSearch: ElementRef;
   @ViewChild('countriesMobileContainer')
-  public countriesMobileContainer: ElementRef;
+  countriesMobileContainer: ElementRef;
 
   @Output()
-  public isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
+  isFilterGotData: EventEmitter<any> = new EventEmitter<any>();
 
-  public query: string;
-  public theWorldTranslate: string;
-  public window: Window = window;
-  public sliceCount: number;
-  public activeCountries: string;
-  public showSelected: boolean;
-  public locations: any[];
-  public countries: any[];
-  public search: string = '';
-  public isOpenCountriesFilter: boolean = false;
-  public regionsVisibility: boolean = true;
-  public selectedRegions: string[] = [];
-  public selectedCountries: string[] = [];
-  public positionLeft: number = 0;
-  public filterTopDistance: number = 0;
-  public getTranslationSubscribe: Subscription;
-  public cloneSelectedRegions: string[] = ['World'];
-  public cloneSelectedCountries: string[] = ['World'];
-  public element: HTMLElement;
-  public resizeSubscribe: Subscription;
-  public keyUpSubscribe: Subscription;
-  public orientationChange: Subscription;
-  public openMobileFilterView: boolean = false;
-  public isDesktop: boolean;
-  public isTablet: boolean;
-  public isMobile: boolean;
-  public countriesFilterState: Observable<any>;
-  public isInit: boolean;
-  public countriesFilterStateSubscription: Subscription;
-  languageStoreSubscription: Subscription;
+  query: string;
+  theWorldTranslate: string;
+  window: Window = window;
+  sliceCount: number;
+  activeCountries: string;
+  showSelected: boolean;
+  locations: Continent[];
+  countries;
+  search = '';
+  isOpenCountriesFilter = false;
+  regionsVisibility = true;
+  selectedRegions: string[] = [];
+  selectedCountries: string[] = [];
+  positionLeft = 0;
+  filterTopDistance = 0;
+  cloneSelectedRegions: string[] = ['World'];
+  cloneSelectedCountries: string[] = ['World'];
+  element: HTMLElement;
+  openMobileFilterView = false;
+  isDesktop: boolean;
+  isTablet: boolean;
+  isMobile: boolean;
+  isInit: boolean;
+  ngSubscriptions: {[key: string]: Subscription} = {};
 
-  public constructor(elementRef: ElementRef,
-                     private zone: NgZone,
-                     private browserDetectionService: BrowserDetectionService,
-                     private languageService: LanguageService,
-                     private utilsService: UtilsService,
-                     private store: Store<AppStates>,
-                     private urlChangeService: UrlChangeService,
-                     private changeDetectorRef: ChangeDetectorRef,
-                     private urlParametersService: UrlParametersService) {
+  constructor(elementRef: ElementRef,
+              private zone: NgZone,
+              private browserDetectionService: BrowserDetectionService,
+              private languageService: LanguageService,
+              private utilsService: UtilsService,
+              private store: Store<AppStates>,
+              private urlChangeService: UrlChangeService,
+              private changeDetectorRef: ChangeDetectorRef,
+              private urlParametersService: UrlParametersService) {
 
     this.element = elementRef.nativeElement;
-
-    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isMobile = this.browserDetectionService.isMobile();
     this.isTablet = this.browserDetectionService.isTablet();
 
-    this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
+    this.ngSubscriptions.translation = this.languageService
+      .getTranslation('THE_WORLD')
+      .subscribe(trans => {
       this.theWorldTranslate = trans;
 
       if(!this.activeCountries) {
@@ -106,10 +107,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
 
-    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
-      if (get(data, 'countriesFilter', false)) {
+    this.ngSubscriptions.countriesFilter = this.store
+      .select((appStates: AppStates) => appStates.countriesFilter)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((countriesFilter: CountriesFilterState) => {
+      if (get(countriesFilter, 'countriesFilter', false)) {
 
-        this.locations = data.countriesFilter;
+        this.locations = countriesFilter.countriesFilter;
 
         this.countries = chain(this.locations)
           .map('countries')
@@ -123,21 +127,29 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     });
 
-    this.languageStoreSubscription = this.store.select((appState: AppStates) => appState.language)
+    let currentLanguage = '';
+    this.ngSubscriptions.languageStore = this.store
+      .select((appState: AppStates) => appState.language)
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((language: LanguageState) => {
-        this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
-          this.theWorldTranslate = trans;
+        if (currentLanguage !== language.lang) {
+          currentLanguage = language.lang;
+          const params = this.urlParametersService.getAllParameters();
+          this.store.dispatch(new CountriesFilterActions.GetCountriesFilter(this.utilsService.objToQuery(params)));
+          this.languageService.getTranslation('THE_WORLD').subscribe((trans: any) => {
 
-          this.setTitle();
-        });
+            this.theWorldTranslate = trans;
+
+            this.setTitle();
+          });
+        }
       });
 
     this.isOpenMobileFilterView();
 
     this.calcSliceCount();
 
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.ngSubscriptions.resize = fromEvent(window, 'resize')
       .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
@@ -149,7 +161,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         });
       });
 
-    this.orientationChange = fromEvent(window, 'orientationchange')
+    this.ngSubscriptions.orientation = fromEvent(window, 'orientationchange')
       .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
@@ -160,29 +172,9 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnDestroy(): void {
-    if (this.getTranslationSubscribe) {
-      this.getTranslationSubscribe.unsubscribe();
-    }
-
-    if (this.keyUpSubscribe) {
-      this.keyUpSubscribe.unsubscribe();
-    }
-
-    if (this.resizeSubscribe.unsubscribe) {
-      this.resizeSubscribe.unsubscribe();
-    }
-
-    if (this.orientationChange) {
-      this.orientationChange.unsubscribe();
-    }
-
-    if (this.countriesFilterStateSubscription) {
-      this.countriesFilterStateSubscription.unsubscribe();
-    }
-
-    if (this.languageStoreSubscription) {
-      this.languageStoreSubscription.unsubscribe();
-    }
+    forEach(this.ngSubscriptions, (value, key) => {
+      value.unsubscribe();
+    });
   }
 
   public ngOnChanges(changes: any): void {
@@ -238,13 +230,13 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (isShown && tabContent) {
       this.regionsVisibility = false;
       setTimeout(() => {
-        if (this.keyUpSubscribe) {
-          this.keyUpSubscribe.unsubscribe();
+        if (this.ngSubscriptions.keyUp) {
+          this.ngSubscriptions.keyUp.unsubscribe();
         }
 
         let inputElement: HTMLInputElement = this.countriesMobileSearch.nativeElement;
 
-        this.keyUpSubscribe = fromEvent(inputElement, 'keyup')
+        this.ngSubscriptions.keyUp = fromEvent(inputElement, 'keyup')
           .subscribe((e: KeyboardEvent) => {
             if (e.keyCode === KeyCodes.enter) {
               this.regionsVisibility = true;
@@ -302,7 +294,11 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         let tabContent: HTMLElement = this.countriesMobileContainer.nativeElement;
         let inputElement: HTMLElement = this.countriesMobileSearch.nativeElement;
 
-        this.keyUpSubscribe = fromEvent(inputElement, 'keyup').subscribe((e: KeyboardEvent) => {
+        if (this.ngSubscriptions.keyUp) {
+          this.ngSubscriptions.keyUp.unsubscribe();
+        }
+
+        this.ngSubscriptions.keyUp = fromEvent(inputElement, 'keyup').subscribe((e: KeyboardEvent) => {
           if (e.keyCode === KeyCodes.enter) {
             inputElement.blur();
           }
@@ -412,7 +408,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
 
     this.selectedCountries.push(country.originName);
 
-    const regionObject = find(this.locations, {region});
+    const regionObject = find(this.locations, {region: region});
 
     const filtetredRegionCountries = filter(regionObject.countries, (currentCountry: any) => {
       return currentCountry.empty !== true;

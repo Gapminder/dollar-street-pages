@@ -23,7 +23,13 @@ import {
   TimeUnit,
   Currency,
   AppState,
-  StreetSettingsState, TranslationsInterface
+  StreetSettingsState,
+  TranslationsInterface,
+  SubscriptionsList,
+  MatrixState,
+  ThingsState,
+  CountriesFilterState,
+  LanguageState, UrlParameters
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -50,15 +56,15 @@ import { UrlParametersService } from '../../url-parameters/url-parameters.servic
 })
 export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   @ViewChild(ThingsFilterComponent)
-  public thingsFilterComponent: ThingsFilterComponent;
+  thingsFilterComponent: ThingsFilterComponent;
   @ViewChild(CountriesFilterComponent)
-  public countriesFilterComponent: CountriesFilterComponent;
+  countriesFilterComponent: CountriesFilterComponent;
   @ViewChild('filtersContainer')
-  public filtersContainer: ElementRef;
+  filtersContainer: ElementRef;
   @ViewChild('incomeTitleContainer')
-  public incomeTitleContainer: ElementRef;
+  incomeTitleContainer: ElementRef;
 
-  private headerTitle: ElementRef;
+
   @ViewChild('headerTitle') set controlElRef(elementRef: ElementRef) {
     this.headerTitle = elementRef;
 
@@ -66,135 +72,111 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   @Input()
-  public currentPage: string;
+  currentPage: string;
 
   @Output()
-  public filter: EventEmitter<any> = new EventEmitter<any>();
+  filter: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  public isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
+  isOpenIncomeFilter: EventEmitter<any> = new EventEmitter<any>();
 
-  public query: string;
-  public thing: string;
-  public header: any = {};
-  public location: Location = window.location;
-  public isCountryFilterReady: boolean = false;
-  public isThingFilterReady: boolean = false;
-  public element: HTMLElement;
-  public streetData: DrawDividersInterface;
-  public activeThing: any;
-  public window: Window = window;
-  public isDesktop: boolean;
-  public isMobile: boolean;
-  public isTablet: boolean;
-  public getTranslationSubscription: Subscription;
-  public resizeSubscription: Subscription;
-  public orientationChangeSubscription: Subscription;
-  public scrollSubscription: Subscription;
-  public queryParamsSubscription: Subscription;
-  public incomeTitleContainerElement: HTMLElement;
-  public streetSettingsState: Observable<StreetSettingsState>;
-  public appState: Observable<AppState>;
-  public thingsFilterState: Observable<any>;
-  public byIncomeText: string;
-  public urlParams: any;
-  public titleHeaderSubscribe: Subscription;
-  public isMatrixPage: boolean;
-  public isMapPage: boolean;
-  public isFamilyPage: boolean;
-  public isAboutPage: boolean;
-  public isDonatePage: boolean;
-  public isPhotographersPage: boolean;
-  public isPhotographerPage: boolean;
-  public isCountryPage: boolean;
-  public isTeamPage: boolean;
-  public isArticlePage: boolean;
-  public routerEventsSubscription: Subscription;
-  public streetSettingsStateSubscription: Subscription;
-  public appStateSubscription: Subscription;
-  public languagesListSubscription: Subscription;
-  public thingsFilterData: any;
-  public thingsFilterStateSubscription: any;
-  public countriesFilterData: any = {};
-  public countriesFilterState: Observable<any>;
-  public countriesFilterStateSubscription: Subscription;
-  public theWorldText: string;
-  public backToCountries: string;
-  public isPinMode: boolean;
-  public matrixState: Observable<any>;
-  public matrixStateSubscription: Subscription;
-  public familiesByIncomeTrans = 'Families by income';
-  public isIncomeDesktopOpened: boolean;
-  public timeUnit: TimeUnit;
-  public timeUnits: TimeUnit[];
-  public currencyUnit: Currency;
-  public currencyUnits: Currency[];
-  public timeUnitTemp: TimeUnit;
-  public currencyUnitTemp: Currency;
-  public isEmbedMode: boolean;
-  public headerContainerElement: HTMLElement;
-  public paddingPlaceElement: HTMLElement;
-  public byDollarText: string;
-  public incomeTitleText: string;
-  public isIncomeFilter: boolean;
-  public translationSubscribe: Subscription;
+  query: string;
+  thing: string;
+  header: any = {};
+  location: Location = window.location;
+  isCountryFilterReady = false;
+  isThingFilterReady = false;
+  element: HTMLElement;
+  streetData: DrawDividersInterface;
+  activeThing: any;
+  window: Window = window;
+  isDesktop: boolean;
+  isMobile: boolean;
+  isTablet: boolean;
+  incomeTitleContainerElement: HTMLElement;
+  byIncomeText: string;
+  urlParams;
+  isMatrixPage: boolean;
+  isMapPage: boolean;
+  isFamilyPage: boolean;
+  isAboutPage: boolean;
+  isDonatePage: boolean;
+  isPhotographersPage: boolean;
+  isPhotographerPage: boolean;
+  isCountryPage: boolean;
+  isTeamPage: boolean;
+  isArticlePage: boolean;
+  thingsFilterData: any;
+  countriesFilterData: any = {};
+  theWorldText: string;
+  backToCountries: string;
+  isPinMode: boolean;
+  familiesByIncomeTrans = 'Families by income';
+  isIncomeDesktopOpened: boolean;
+  timeUnit: TimeUnit;
+  timeUnits: TimeUnit[];
+  currencyUnit: Currency;
+  currencyUnits: Currency[];
+  timeUnitTemp: TimeUnit;
+  currencyUnitTemp: Currency;
+  isEmbedMode: boolean;
+  headerContainerElement: HTMLElement;
+  paddingPlaceElement: HTMLElement;
+  byDollarText: string;
+  incomeTitleText: string;
+  isIncomeFilter: boolean;
+  ngSubscriptions: SubscriptionsList = {};
+  private headerTitle: ElementRef;
 
-  public constructor(elementRef: ElementRef,
-                     private router: Router,
-                     private math: MathService,
-                     private languageService: LanguageService,
-                     private activatedRoute: ActivatedRoute,
-                     private browserDetectionService: BrowserDetectionService,
-                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-                     private changeDetectorRef: ChangeDetectorRef,
-                     private utilsService: UtilsService,
-                     private urlChangeService: UrlChangeService,
-                     private store: Store<AppStates>,
-                     private titleHeaderService: TitleHeaderService,
-                     private renderer: Renderer,
-                     private incomeCalcService: IncomeCalcService,
-                     private urlParametersService: UrlParametersService) {
+  constructor(elementRef: ElementRef,
+              private router: Router,
+              private math: MathService,
+              private languageService: LanguageService,
+              private activatedRoute: ActivatedRoute,
+              private browserDetectionService: BrowserDetectionService,
+              private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+              private changeDetectorRef: ChangeDetectorRef,
+              private utilsService: UtilsService,
+              private urlChangeService: UrlChangeService,
+              private store: Store<AppStates>,
+              private titleHeaderService: TitleHeaderService,
+              private renderer: Renderer,
+              private incomeCalcService: IncomeCalcService,
+              private urlParametersService: UrlParametersService) {
     this.element = elementRef.nativeElement;
-
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-
-    this.thingsFilterState = this.store.select((appStates: AppStates) => appStates.thingsFilter);
-    this.countriesFilterState = this.store.select((appStates: AppStates) => appStates.countriesFilter);
-    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   @HostListener('document:click', ['$event'])
-  public isOutsideIncomeFilterClick(event: any): void {
+  isOutsideIncomeFilterClick(event: any): void {
     const container = this.element.querySelector('.income-title-container');
     if (container && !container.contains(event.target) && this.isIncomeDesktopOpened) {
       this.closeIncomeFilterDesktop(new MouseEvent(''));
     }
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.headerContainerElement = this.element.querySelector('.header-container') as HTMLElement;
     this.paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
 
-    this.resizeSubscription = fromEvent(window, 'resize')
+    this.ngSubscriptions.resize = fromEvent(window, 'resize')
       .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.calcIncomeSize();
         this.checkByIncomeFilter();
       });
 
-    this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
+    this.ngSubscriptions.orientationChange = fromEvent(window, 'orientationchange')
       .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.calcIncomeSize();
       });
 
-    this.scrollSubscription = fromEvent(document, 'scroll')
+    this.ngSubscriptions.scroll = fromEvent(document, 'scroll')
       .subscribe(() => {
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+        const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
         let scrollTopOffset = 0;
 
-        let quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement;
+        const quickGuideElement = document.querySelector('.quick-guide-container') as HTMLElement;
 
         if (quickGuideElement) {
           scrollTopOffset += quickGuideElement.clientHeight;
@@ -214,7 +196,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.calcIncomeSize();
   }
 
-  public checkHeaderFloat(): void {
+  checkHeaderFloat(): void {
     let paddingHeight = 0;
 
     paddingHeight += this.headerContainerElement.clientHeight;
@@ -234,7 +216,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);
   }
 
-  public preventHeaderFloat(): void {
+  preventHeaderFloat(): void {
     if (this.isMatrixPage) {
       const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
 
@@ -247,7 +229,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.toggleStyleClass(this.headerContainerElement, 'position-fixed', false);
   }
 
-  public toggleStyleClass(el: HTMLElement, cls: string, toggle: boolean): void {
+  toggleStyleClass(el: HTMLElement, cls: string, toggle: boolean): void {
     if (toggle) {
       if (!el.classList.contains(cls)) {
         el.classList.add(cls);
@@ -257,7 +239,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public checkByIncomeFilter(): void {
+  checkByIncomeFilter(): void {
     if (this.isDesktop) {
       this.incomeTitleText = this.byIncomeText;
       this.isIncomeFilter = true;
@@ -270,7 +252,19 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public ngOnInit(): void {
+  getTranslations(trans: TranslationsInterface): void {
+    if (get(trans, 'BY_INCOME', false)) {
+      this.byIncomeText = trans.BY_INCOME;
+    }
+    if (get(trans, 'BY_DOLLAR', false)) {
+      this.byDollarText = trans.BY_DOLLAR;
+    }
+    if (get(trans, 'THE_WORLD', false)) {
+      this.theWorldText = trans.THE_WORLD;
+    }
+  }
+
+  ngOnInit(): void {
     this.isMobile = this.browserDetectionService.isMobile();
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
@@ -278,27 +272,19 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new MatrixActions.GetCurrencyUnits());
     this.store.dispatch(new MatrixActions.GetTimeUnits());
 
-    this.getTranslationSubscription = this.languageService.getTranslation(['BY_INCOME', 'BY_DOLLAR', 'THE_WORLD']).subscribe((trans: any) => {
-      this.byIncomeText = trans.BY_INCOME;
-      this.byDollarText = trans.BY_DOLLAR;
-      this.theWorldText = trans.THE_WORLD;
+    this.ngSubscriptions.getTranslation = this.languageService.getTranslation(['BY_INCOME', 'BY_DOLLAR', 'THE_WORLD']).subscribe((trans: TranslationsInterface) => {
+      this.getTranslations(trans);
 
       this.checkByIncomeFilter();
     });
 
-    Observable.fromEvent(this.languageService.translationsLoadedEvent, this.languageService.translationsLoadedString).subscribe(( trans: TranslationsInterface ) => {
-      if (get(trans, 'BY_INCOME', false)) {
-        this.byIncomeText = trans.BY_INCOME;
-      }
-      if (get(trans, 'BY_DOLLAR', false)) {
-        this.byDollarText = trans.BY_DOLLAR;
-      }
-      if (get(trans, 'THE_WORLD', false)) {
-        this.theWorldText = trans.THE_WORLD;
-      }
+    this.ngSubscriptions.combileTranslations = Observable
+      .fromEvent(this.languageService.translationsLoadedEvent, this.languageService.translationsLoadedString)
+      .subscribe(( trans: TranslationsInterface ) => {
+      this.getTranslations(trans)
     });
 
-    this.routerEventsSubscription = this.router.events.subscribe((event: any) => {
+    this.ngSubscriptions.routerEvents = this.router.events.subscribe( event => {
       if (event instanceof NavigationEnd) {
         this.isMatrixPage = this.isCurrentPage('matrix');
         this.isMapPage = this.isCurrentPage('map');
@@ -320,55 +306,74 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
     });
 
-    this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe((params: any) => {
+    this.ngSubscriptions.queryParams = this.activatedRoute.queryParams.subscribe((params: any) => {
       this.urlParams = {
         thing: params.thing ? decodeURI(params.thing) : 'Families',
-        countries: params.countries ? decodeURI(params.countries) : 'World',
-        regions: params.regions ? decodeURI(params.regions) : 'World',
-        zoom: parseInt(params.zoom, 10) || 4,
-        row: parseInt(params.row, 10) || 1,
-        lowIncome: parseInt(params.lowIncome, 10),
-        highIncome: parseInt(params.highIncome, 10),
+        countries: params.countries ? decodeURI(params.countries) : ['World'],
+        regions: params.regions ? decodeURI(params.regions) : ['World'],
+        zoom: parseInt(params.zoom, 10).toString() || '4',
+        row: parseInt(params.row, 10).toString() || '1',
+        lowIncome: parseInt(params.lowIncome, 10).toString(),
+        highIncome: parseInt(params.highIncome, 10).toString(),
         lang: params.lang ? decodeURI(params.lang) : this.languageService.currentLanguage,
         currency: params.currency ? decodeURI(params.currency.toUpperCase()) : '',
         time: params.time ? decodeURI(params.time.toUpperCase()) : 'MONTH',
-        labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false,
-        activeHouse: parseInt(params.activeHouse, 10)
+        activeHouse: parseInt(params.activeHouse, 10).toString()
       };
+
+      // TODO: has in url, unknow for what
+      // labels: params.labels ? (decodeURI(params.labels) === 'true' ? true : false) : false,
 
       this.interactiveIncomeText();
       this.calcIncomeSize();
     });
 
-    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-      if (get(data, 'query', false) && this.query !== data.query) {
-        this.query = data.query;
+    this.ngSubscriptions.appState = this.store
+      .select((appStates: AppStates) => appStates.language)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((language: LanguageState) => {
+        // const trans = language.translations;
+        // this.getTranslations(trans);
+      });
+
+    this.ngSubscriptions.appState = this.store
+      .select((appStates: AppStates) => appStates.app)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((app: AppState) => {
+      if (get(app, 'query', false) && this.query !== app.query) {
+        this.query = app.query;
       }
     });
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (get(data, 'streetSettings', false) && this.streetData !== data.streetSettings) {
-            this.streetData = data.streetSettings;
+    this.ngSubscriptions.streetSettingsState = this.store
+      .select((appStates: AppStates) => appStates.streetSettings)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((streetSettings: StreetSettingsState) => {
+      if (get(streetSettings, 'streetSettings', false) && this.streetData !== streetSettings.streetSettings) {
+            this.streetData = streetSettings.streetSettings;
       }
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
-      if (get(data, 'pinMode', false)) {
+    this.ngSubscriptions.matrixState = this.store
+      .select((appStates: AppStates) => appStates.matrix)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((matrix: MatrixState) => {
+      if (get(matrix, 'pinMode', false)) {
         this.isPinMode = true;
         this.preventHeaderFloat();
       } else {
         this.isPinMode = false;
       }
 
-      if (get(data, 'embedMode', false)) {
+      if (get(matrix, 'embedMode', false)) {
         this.isEmbedMode = true;
         this.preventHeaderFloat();
       } else {
         this.isEmbedMode = false;
       }
 
-      if (get(data, 'timeUnits', false) && this.timeUnits !== data.timeUnits) {
-        this.timeUnits = data.timeUnits;
+      if (get(matrix, 'timeUnits', false) && this.timeUnits !== matrix.timeUnits) {
+        this.timeUnits = matrix.timeUnits;
 
         this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.urlParams.time);
 
@@ -377,8 +382,8 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
       }
 
-      if (get(data, 'currencyUnits', false) && this.currencyUnits !== data.currencyUnits) {
-        this.currencyUnits = data.currencyUnits;
+      if (get(matrix, 'currencyUnits', false) && this.currencyUnits !== matrix.currencyUnits) {
+        this.currencyUnits = matrix.currencyUnits;
 
         if (!this.currencyUnit) {
           if (this.urlParams.currency) {
@@ -392,26 +397,32 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.changeDetectorRef.detectChanges();
     });
 
-    this.thingsFilterStateSubscription = this.thingsFilterState.subscribe((data: any) => {
-      if (data) {
-        if (data.thingsFilter) {
-          this.thingsFilterData = data.thingsFilter;
+    this.ngSubscriptions.thingsFilterState = this.store
+      .select((appStates: AppStates) => appStates.thingsFilter)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((thingsFilter: ThingsState) => {
+      if (thingsFilter) {
+        if (thingsFilter.thingsFilter) {
+          this.thingsFilterData = thingsFilter.thingsFilter;
         }
       }
     });
 
-    this.countriesFilterStateSubscription = this.countriesFilterState.subscribe((data: any) => {
-      if (data) {
-        if (data.countriesFilter) {
-          this.countriesFilterData.countriesFilter = data.countriesFilter;
+    this.ngSubscriptions.countriesFilterState = this.store
+      .select((appStates: AppStates) => appStates.countriesFilter)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((CountriesFilter: CountriesFilterState) => {
+      if (CountriesFilter) {
+        if (CountriesFilter.countriesFilter) {
+          this.countriesFilterData.countriesFilter = CountriesFilter.countriesFilter;
         }
 
-        if (data.selectedCountries) {
-          this.countriesFilterData.selectedCountries = data.selectedCountries;
+        if (CountriesFilter.selectedCountries) {
+          this.countriesFilterData.selectedCountries = CountriesFilter.selectedCountries;
         }
 
-        if (data.selectedRegions) {
-          this.countriesFilterData.selectedRegions = data.selectedRegions;
+        if (CountriesFilter.selectedRegions) {
+          this.countriesFilterData.selectedRegions = CountriesFilter.selectedRegions;
         }
 
         const selCountries = this.countriesFilterData.selectedCountries;
@@ -426,12 +437,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
     });
 
-    this.titleHeaderSubscribe = this.titleHeaderService.getTitleEvent().subscribe((data: {title: string}) => {
+    this.ngSubscriptions.titleHeader = this.titleHeaderService.getTitleEvent().subscribe((data: {title: string}) => {
       this.rendererTitle(data.title);
     });
   }
 
-  public isCurrentPage(name: string): boolean {
+  isCurrentPage(name: string): boolean {
     const shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
 
     if (shap) {
@@ -443,11 +454,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     return false;
   }
 
-  public openIncomeFilterDesktop(e: MouseEvent): void {
+  openIncomeFilterDesktop(e: MouseEvent): void {
     this.isIncomeDesktopOpened = true;
   }
 
-  public closeIncomeFilterDesktop(e: MouseEvent): void {
+  closeIncomeFilterDesktop(e: MouseEvent): void {
 
     this.isIncomeDesktopOpened = false;
 
@@ -455,19 +466,19 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.currencyUnitTemp = this.currencyUnit;
   }
 
-  public incomeContainerClick(e: MouseEvent): void {
+  incomeContainerClick(e: MouseEvent): void {
     e.stopPropagation();
   }
 
-  public timeUnitFilterSelect(code: string): void {
+  timeUnitFilterSelect(code: string): void {
     this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, code);
   }
 
-  public currencyUnitFilterSelect(code: string): void {
+  currencyUnitFilterSelect(code: string): void {
     this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, code);
   }
 
-  public applyIncomeFilterDesktop(e): void {
+  applyIncomeFilterDesktop(e): void {
     this.openIncomeFilterDesktop(e);
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
@@ -478,57 +489,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.isIncomeDesktopOpened = false;
   }
 
-  public ngOnDestroy(): void {
-    if (this.getTranslationSubscription) {
-      this.getTranslationSubscription.unsubscribe();
-    }
-
-    if (this.orientationChangeSubscription) {
-      this.orientationChangeSubscription.unsubscribe();
-    }
-
-    if (this.resizeSubscription) {
-      this.resizeSubscription.unsubscribe();
-    }
-
-    if (this.queryParamsSubscription) {
-      this.queryParamsSubscription.unsubscribe();
-    }
-
-    if (this.titleHeaderSubscribe) {
-      this.titleHeaderSubscribe.unsubscribe();
-    }
-
-    if (this.scrollSubscription) {
-      this.scrollSubscription.unsubscribe();
-    }
-
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
-    }
-
-    if (this.languagesListSubscription) {
-      this.languagesListSubscription.unsubscribe();
-    }
-
-    if (this.routerEventsSubscription) {
-      this.routerEventsSubscription.unsubscribe();
-    }
-
-    if (this.thingsFilterStateSubscription) {
-      this.thingsFilterStateSubscription.unsubscribe();
-    }
-
-    if (this.matrixStateSubscription) {
-      this.matrixStateSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    forEach(this.ngSubscriptions, (value, key) => {
+      value.unsubscribe();
+    });
   }
 
-  public rendererTitle(title: string): void {
+  rendererTitle(title: string): void {
     if (this.isPhotographerPage && !this.isDesktop) {
       title = Array.from(title).splice(title.indexOf('</span>') + 7).join('');
     }
@@ -538,7 +505,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public interactiveIncomeText(): void {
+  interactiveIncomeText(): void {
     const incomeContainer: HTMLElement = this.element.querySelector('.income-title-container') as HTMLElement;
 
     if (!incomeContainer || !this.byIncomeText) {
@@ -556,7 +523,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public calcIncomeSize(): void {
+  calcIncomeSize(): void {
     if (!this.incomeTitleContainer) {
       return;
     }
@@ -591,7 +558,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public openIncomeFilter(e: any): void {
+  openIncomeFilter(e: any): void {
     if (!this.isIncomeFilter) {
       return;
     }
@@ -612,11 +579,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }
 
-  public activeThingTransfer(thing: any): void {
+  activeThingTransfer(thing: any): void {
     this.activeThing = thing;
   }
 
-  public scrollTopZero(): void {
+  scrollTopZero(): void {
     if (document.body.scrollTop) {
       document.body.scrollTop = 0;
     } else {
@@ -624,22 +591,22 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
-  public goToMatrixFromFamilyPage(): void {
+  goToMatrixFromFamilyPage(): void {
     this.router.navigate(['/matrix'], {queryParams: this.utilsService.parseUrl(this.query)});
   }
 
-  public goToMatrixPage(): void {
+  goToMatrixPage(): void {
     this.scrollTopZero();
     this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
   }
 
-  public isFilterGotData(event: any): any {
+  isFilterGotData(event: any): any {
     this[event] = true;
 
     this.changeDetectorRef.detectChanges();
   }
 
-  public getCountriesTitle(inputLocations: any, regions: string[], countries: string[]): string {
+  getCountriesTitle(inputLocations: any, regions: string[], countries: string[]): string {
     let getTranslatedCountries;
     let getTranslatedRegions;
 
@@ -647,7 +614,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     if (countries[0] !== 'World') {
       let allCountries = [];
-
       forEach(inputLocations, (loc) => {
         allCountries = [...allCountries, ...loc.countries];
       });

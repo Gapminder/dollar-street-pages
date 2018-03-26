@@ -1,6 +1,5 @@
 import 'rxjs/operator/debounceTime';
 import { Subscription } from 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { environment } from '../../environments/environment';
 import {
@@ -26,7 +25,7 @@ import {
   Place,
   TimeUnit,
   MatrixState,
-  AppState
+  AppState, Currency, LanguageState
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -79,14 +78,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
   public query: any;
-  public familyInfoServiceSubscribe: Subscription;
   public fancyBoxImage: any;
   public showblock: boolean;
   public familyData: any = {};
   public loader: boolean = false;
   public markerPositionLeft: number;
   public privateZoom: any;
-  public resizeSubscribe: Subscription;
   public popIsOpen: boolean;
   public mapData: any;
   public element: HTMLElement;
@@ -98,18 +95,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public imageResolution: ImageResolutionInterface;
   public isDesktop: boolean;
   public currentLanguage: string;
-  public streetSettingsState: Observable<StreetSettingsState>;
   public viewImage: string;
-  public streetSettingsStateSubscription: Subscription;
   public consumerApi: string;
-  public appState: Observable<AppState>;
-  public appStateSubscription: Subscription;
-  public matrixState: Observable<MatrixState>;
-  public matrixStateSubscription: Subscription;
-  public currencyUnit: any;
+  public currencyUnit: Currency;
   public timeUnit: TimeUnit;
   public timeUnits: TimeUnit[];
   imagesIsLoaded: {[key: string]: boolean} = INIT_STATE_IMAGES;
+  ngSubscriptions: {[key: string]: Subscription} = {};
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,
@@ -131,49 +123,57 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     this.isDesktop = this.browserDetectionService.isDesktop();
 
-    this.currentLanguage = this.languageService.currentLanguage;
-
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
 
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
-    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
+
   }
 
   public ngOnInit(): void {
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
-      if (get(data, 'streetSettings', false)) {
-        this.streetData = data.streetSettings;
-      }
-  });
+    const streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+    const appState = this.store.select((appStates: AppStates) => appStates.app);
+    const matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
+    const language = this.store.select((appStates: AppStates) => appStates.language);
 
-    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
-      if (data) {
-        if (this.query !== data.query) {
-          this.query = data.query;
+    this.ngSubscriptions.streetSettings = this.store
+      .select((appStates: AppStates) => appStates.streetSettings)
+      .subscribe((data: StreetSettingsState) => {
+        if (get(data, 'streetSettings', false)) {
+          this.streetData = data.streetSettings;
         }
-      }
     });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: MatrixState) => {
-      if (get(data, 'currencyUnit', false)
-        && this.currencyUnit !== data.currencyUnit) {
-          this.currencyUnit = data.currencyUnit;
-      }
 
-      if (get(data, 'timeUnit', false)
-      && this.timeUnit !== data.timeUnit ) {
-          this.timeUnit = data.timeUnit;
-      }
-
-      if (get(data, 'timeUnits', false)
-      && this.timeUnits !== data.timeUnits ) {
-        this.timeUnits = data.timeUnits;
-        this.changeTimeUnit(this.timeUnit.code);
-      }
+    this.ngSubscriptions.appState = this.store
+      .select((appStates: AppStates) => appStates.app)
+      .subscribe((data: AppState) => {
+        if (data) {
+          if (this.query !== data.query) {
+            this.query = data.query;
+          }
+        }
     });
 
-    this.resizeSubscribe = fromEvent(window, 'resize')
+    this.ngSubscriptions.matrixState =  this.store
+      .select((appStates: AppStates) => appStates.matrix)
+      .subscribe((data: MatrixState) => {
+        if (get(data, 'currencyUnit', false)
+          && this.currencyUnit !== data.currencyUnit) {
+            this.currencyUnit = data.currencyUnit;
+        }
+
+        if (get(data, 'timeUnit', false)
+        && this.timeUnit !== data.timeUnit ) {
+            this.timeUnit = data.timeUnit;
+        }
+
+        if (get(data, 'timeUnits', false)
+        && this.timeUnits !== data.timeUnits ) {
+          this.timeUnits = data.timeUnits;
+          this.changeTimeUnit(this.timeUnit.code);
+        }
+    });
+
+    this.ngSubscriptions.resize = fromEvent(window, 'resize')
       .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         this.zone.run(() => {
@@ -185,6 +185,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
       });
+
+    this.ngSubscriptions.language = this.store
+      .select((appStates: AppStates) => appStates.language)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((languageState: LanguageState) => {
+      if (this.currentLanguage !== languageState.lang) {
+        this.currentLanguage = languageState.lang;
+      }
+    });
   }
 
   public changeTimeUnit(code: string): void {
@@ -214,12 +223,13 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
 
     setTimeout(() => this.setMarkerPosition(), 0);
 
-    if (this.familyInfoServiceSubscribe) {
-      this.familyInfoServiceSubscribe.unsubscribe();
+    const query = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
+
+    if (get(this.ngSubscriptions, 'familyInfoService', false)) {
+      this.ngSubscriptions.familyInfoService.unsubscribe();
     }
 
-    const query = `placeId=${this.place._id}&thingId=${this.thing}${this.languageService.getLanguageParam()}`;
-    this.familyInfoServiceSubscribe = this.familyInfoService.getFamilyInfo(query).subscribe((res: any) => {
+    this.ngSubscriptions.familyInfoService = this.familyInfoService.getFamilyInfo(query).subscribe((res: any) => {
       if (res.err) {
         return;
       }
@@ -259,21 +269,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.resizeSubscribe) {
-      this.resizeSubscribe.unsubscribe();
-    }
-
-    if (this.familyInfoServiceSubscribe) {
-      this.familyInfoServiceSubscribe.unsubscribe();
-    }
-
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
-    }
+    forEach(this.ngSubscriptions, (value, key) => {
+      value.unsubscribe();
+    });
   }
 
   public closeBlock(): void {
@@ -388,7 +386,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       forEach(this.imagesIsLoaded, (value, key) => {
         this.imagesIsLoaded[key] = false;
       });
-    })
+    });
   }
 
   uploadImages(url: string, prop: string): void {

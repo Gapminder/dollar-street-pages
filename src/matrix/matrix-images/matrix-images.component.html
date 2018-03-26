@@ -65,7 +65,9 @@
                        [positionInRow]="positionInRow"
                        [style.-ms-flex-order]="imageBlockLocation + 1"
                        [style.order]="imageBlockLocation + 1"
-                       (closeBigImageBlock)="closeImageBlock(familyData, indexViewBoxHouse)">
+                       (closeBigImageBlock)="closeImageBlock(familyData, indexViewBoxHouse)"
+                       (mouseenter)="hoverImage(familyData)"
+                       (mouseleave)="hoverImage()">
     </matrix-view-block>
   </div>
 </div>
