@@ -1,17 +1,33 @@
 'use strict';
+const fs = require('fs');
+
+const testResultsDir = 'results';
+const testResultsFile = `${testResultsDir}/testResults.txt`;
 
 exports.config = {
-  baseUrl: 'http://localhost:4200/dollar-street/',
+  baseUrl: 'http://localhost:4200',
 
-  specs: [
-    '../test-e2e/app/Tests/**/*.e2e.ts'
-  ],
-  exclude: [
-    '../test-e2e/app/Tests/**/MatrixPageTestsForPerformance.e2e.ts',
-    '../test-e2e/app/CMS/**/*.e2e.ts',
-    '../test-e2e/app/Tests/BlogPageTests.e2e.ts',
-    '../test-e2e/app/Tests/ClickEachLink.e2e.ts'
-  ],
+  capabilities: {
+    browserName: 'chrome',
+    screenResolution: '1920x1080',
+    shardTestFiles: true,
+    maxInstances: 4,
+    chromeOptions: {
+      args: ['no-sandbox', 'headless']
+    }
+  },
+
+  params: {
+    // set this explicitly because it lost with ng e2e
+    baseHref: '/dollar-street',
+    // default apiUrls are the same as described in /src/environments files
+    // might be changed via NODE_ENV: API_URL
+    // ex: API_URL=http://127.0.0.1:8015/v1 protractor protractor.conf.js
+    apiUrl: process.env.API_URL || process.env.CI ? 'http://52.211.52.39:8015/v1' : 'http://localhost:8015/v1'
+  },
+
+  specs: ['../test-e2e/app/Tests/**/*.e2e-spec.ts'],
+  exclude: ['../test-e2e/app/CMS/**/*.e2e-spec.ts', '../test-e2e/app/Tests/ClickEachLink.e2e-spec.ts'],
 
   framework: 'jasmine',
 
@@ -23,39 +39,96 @@ exports.config = {
     isVerbose: false,
     includeStackTrace: false,
     defaultTimeoutInterval: 60000,
-    print: function () {}
+    print: function() {}
   },
   directConnect: true,
 
-  multiCapabilities: [
-    {
-      browserName: 'chrome',
-      chromeOptions: {
-        args: ['no-sandbox', 'disable-infobars', 'headless']
-      },
-      // shardTestFiles: true,
-      // maxInstances: 2
-    }
-    /*{
-      browserName: 'firefox',
-     'marionette': 'true' //TODO need to test it
-      shardTestFiles: true,
-      maxInstances: 1
-    }*/
-  ],
+  // temporary disabled
+  // typescript copmiles 'async await' to generators so it won't affect controlFlow
+  // SELENIUM_PROMISE_MANAGER: false,
 
   useAllAngular2AppRoots: true,
 
-  onPrepare: function() {
-    require('ts-node').register({ project: 'test-e2e' }); //according to issue: https://github.com/angular/angular-cli/issues/975
+  // this will be run after all the tests will be finished
+  afterLaunch: function() {
+    const fileParse = fs.readFileSync(testResultsFile, 'utf-8');
+    const testResults = JSON.parse(fileParse);
 
-    browser.driver.manage().window().setSize(1920, 1080);
+    // print consolidated report to the console
+    for (const testResult of testResults) {
+      console.log(`\n${testResults.indexOf(testResult) + 1}) ${testResult.fullName}`);
+      testResult.failedExpectations.forEach(exp => {
+        console.log('  - [31m' + exp.message + '[39m');
+      });
+    }
+  },
+
+  // will be run before any test starts
+  beforeLaunch: function() {
+    // create directory for testResults if not exist
+    if (!fs.existsSync(testResultsDir)) {
+      fs.mkdirSync(testResultsDir);
+    }
+
+    // clear older tests results
+    const files = fs.readdirSync(testResultsDir);
+    for (const file of files) {
+      fs.unlinkSync(`${testResultsDir}/${file}`);
+    }
+    // fill the testResults file with default values
+    fs.writeFileSync(testResultsFile, JSON.stringify([]), 'utf-8');
+  },
+
+  onPrepare: function() {
+    require('ts-node').register({ project: 'test-e2e' });
+
+    browser.driver
+      .manage()
+      .window()
+      .setSize(1920, 1080);
     let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
-    jasmine.getEnv().addReporter(new SpecReporter({
-      spec: {
-        displayStacktrace: true
+    jasmine.getEnv().addReporter(
+      new SpecReporter({
+        spec: {
+          displayStacktrace: true
+        }
+      })
+    );
+
+    jasmine.getEnv().addReporter({
+      specDone: function(result) {
+        if (result.status === 'failed') {
+          // take screenshot on fail
+          browser.takeScreenshot().then(function(screenShot) {
+            // Save screenshot
+            fs.writeFile(`${testResultsDir}/${result.fullName}`, screenShot, 'base64', function(err) {
+              if (err) throw err;
+              console.log('File saved.');
+            });
+          });
+
+          const existingResults = fs.readFileSync(testResultsFile, 'utf-8');
+          const appendedRes = JSON.parse(existingResults);
+          appendedRes.push(result);
+
+          // write consolidated result to file
+          fs.writeFileSync(testResultsFile, JSON.stringify(appendedRes), 'utf-8');
+        }
+
+        browser
+            .manage()
+            .logs()
+            .get('browser')
+            .then(function(browserLogs) {
+              browserLogs.forEach(function(log) {
+                if (log.level.value > 900) {
+                  // it's an error log
+                  fs.writeFileSync(`${testResultsDir}/${result.fullName}.txt`, require('util').inspect(log), 'utf-8');
+                }
+              });
+            });
       }
-    }));
+    });
   }
 };
