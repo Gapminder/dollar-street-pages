@@ -20,10 +20,10 @@ import { UtilsService } from '../../../common/utils/utils.service';
 import { UtilsServiceMock } from '../../../test/mocks/utils.service.mock';
 import { LanguageService } from '../../../common/language/language.service';
 import { LanguageServiceMock } from '../../../test/mocks/language.service.mock';
-import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
-import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
-import { DEBOUNCE_TIME } from "../../../defaultState";
-import { SetCurrencyUnit } from "../../../matrix/ngrx/matrix.actions";
+import { UrlParametersServiceMock } from '../../../test/mocks/url-parameters.service.mock';
+import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
+import { DEBOUNCE_TIME } from '../../../defaultState';
+import { SetCurrencyUnit } from '../../../matrix/ngrx/matrix.actions';
 
 describe('FamilyHeaderComponent', () => {
   let fixture: ComponentFixture<FamilyHeaderComponent>;
@@ -48,7 +48,8 @@ describe('FamilyHeaderComponent', () => {
         RegionMapComponentMock
       ],
       providers: [
-        { provide: FamilyHeaderService, useClass: FamilyHeaderServiceMock }
+        { provide: FamilyHeaderService, useClass: FamilyHeaderServiceMock },
+        UtilsService // Ahtung! Real service is called!!!
       ]
     });
 
@@ -58,7 +59,6 @@ describe('FamilyHeaderComponent', () => {
     languageService = TestBed.get(LanguageService);
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
-
 
     fixture = TestBed.createComponent(FamilyHeaderComponent);
 
@@ -133,7 +133,7 @@ describe('FamilyHeaderComponent', () => {
     expect(component.streetData).toEqual(defaultStreetSettings);
   }));
 
-  it('show about popup on click on icon', () => {
+  it('show about modal on click on icon', () => {
     component.home.aboutData = true;
     fixture.detectChanges();
     const de = fixture.debugElement;
@@ -147,6 +147,7 @@ describe('FamilyHeaderComponent', () => {
   });
 
   it('show about popup on hover on icon', fakeAsync(() => {
+    component.home.aboutData = true;
     component.placeId = '1';
     component.getFamilyHeaderData();
     fixture.detectChanges();
@@ -157,10 +158,14 @@ describe('FamilyHeaderComponent', () => {
     aboutIcon.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true, cancelable: true }));
     fixture.detectChanges();
 
-    const aboutDataPopupContent = de.query(By.css('.about-data-content')).nativeElement;
+    const aboutDataPopupContent = de.query(By.css('.about-data-container'));
+    const popupStyles = aboutDataPopupContent.styles;
 
-    expect(aboutDataPopupContent.textContent).toContain(expectedAboutData);
-  }));
+    Object.keys(popupStyles).forEach(style => {
+      expect(Number(popupStyles[style].replace('px', ''))).toBeGreaterThanOrEqual(0, 'Tooltip should be opened');
+    });
+  })
+);
 
   it('close about popup on click', () => {
     component.home.aboutData = true;
