@@ -12,6 +12,7 @@ import { CommonServicesTestingModule } from '../../../test/commonServicesTesting
 import { MockComponent } from 'ng2-mock-component';
 import { ImageLoadedService } from '../../../shared/image-loaded/image-loaded.service';
 import { ImageLoadedServiceMock } from '../../../test/mocks/image-loader.service.mock';
+import { forEach } from 'lodash';
 
 describe('MatrixViewBlockComponent', () => {
   let component: MatrixViewBlockComponent;
@@ -62,16 +63,15 @@ describe('MatrixViewBlockComponent', () => {
   it('ngOnInit()', () => {
     component.ngOnInit();
 
-    expect(component.streetSettingsStateSubscription).toBeDefined();
-    expect(component.resizeSubscribe).toBeDefined();
-
-    spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
-    spyOn(component.resizeSubscribe, 'unsubscribe');
+    forEach(component.ngSubscriptions, (value, key) => {
+      spyOn(value, 'unsubscribe');
+    });
 
     component.ngOnDestroy();
 
-    expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.resizeSubscribe.unsubscribe).toHaveBeenCalled();
+    forEach(component.ngSubscriptions, (value, key) => {
+      expect(value.unsubscribe).toHaveBeenCalled();
+    });
   });
 
   it('fancyBoxClose()', () => {

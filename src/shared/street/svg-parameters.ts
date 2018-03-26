@@ -72,9 +72,9 @@ export const SVG_DEFAULTS = {
   },
   squarePoints: {
     name: '#square',
-    width: 18,
-    height: 18,
-    positionY: 35,
+    width: 16,
+    height: 16,
+    positionY: 36,
     color: '#232B31',
   },
   mobileWidth: 700,

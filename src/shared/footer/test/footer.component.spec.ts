@@ -21,6 +21,7 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2';
 import { FooterComponent } from '../footer.component';
 import { FooterService } from '../footer.service';
 import { SocialFollowButtonsComponent } from '../../social-follow-buttons/social-follow-buttons.component';
+import { forEach } from 'lodash';
 
 describe('FooterComponent', () => {
     let fixture: ComponentFixture<FooterComponent>;
@@ -67,18 +68,14 @@ describe('FooterComponent', () => {
     it('ngOnInit()', () => {
         component.ngOnInit();
 
-        expect(component.streetSettingsStateSubscription).toBeDefined();
-        expect(component.routerEventsSubscribe).toBeDefined();
-        expect(component.footerServiceSubscribe).toBeDefined();
-
-        spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
-        spyOn(component.routerEventsSubscribe, 'unsubscribe');
-        spyOn(component.footerServiceSubscribe, 'unsubscribe');
+        forEach(component.ngSubscriptions, (value, key) => {
+          spyOn(value, 'unsubscribe');
+        });
 
         component.ngOnDestroy();
 
-        expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
-        expect(component.footerServiceSubscribe.unsubscribe).toHaveBeenCalled();
+        forEach(component.ngSubscriptions, (value, key) => {
+          expect(value.unsubscribe).toHaveBeenCalled();
+        });
     });
 });

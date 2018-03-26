@@ -124,7 +124,16 @@ export class LanguageService {
   }
 
   public getLanguageIso(): string {
-    return get(this.currentLanguage, 'length', undefined) === 2 ? this.currentLanguage + '_' + this.currentLanguage.toUpperCase() : this.currentLanguage.replace(/-/g, '_');
+    let language = '';
+    if (this.currentLanguage) {
+      if (this.currentLanguage.length === 2) {
+       language = this.currentLanguage + '_' + this.currentLanguage.toUpperCase();
+      } else {
+        language = this.currentLanguage.replace(/-/g, '_');
+      }
+    }
+
+    return language;
   }
 
   public getTranslation(key: string | string[]): Observable<any> {
@@ -165,17 +174,6 @@ export class LanguageService {
                                                         .replace(/\<\/p\>$/, '')
                                                         .replace(/&lt;/g, '<')
                                                         .replace(/&gt;/g, '>'));
-  }
-
-  public getLanguageFromUrl(url: string): string {
-    let regex = new RegExp('[?&]' + 'lang' + '(=([^&#]*)|&|#|$)');
-    let results = regex.exec(url);
-
-    if (!results || !results[2]) {
-      return this.defaultLanguage;
-    }
-
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
   public changeLanguage(lang: string): void {

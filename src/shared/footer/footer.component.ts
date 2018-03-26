@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {AppStates, StreetSettingsState} from '../../interfaces';
+import { AppStates, LanguageState, StreetSettingsState } from '../../interfaces';
 import { compact } from 'lodash';
 import { FooterService } from './footer.service';
 import {
@@ -17,6 +17,8 @@ import {
   UtilsService
 } from '../../common';
 import { DrawDividersInterface } from '../../interfaces';
+import { get, forEach } from 'lodash';
+import { DEBOUNCE_TIME } from '../../defaultState';
 
 @Component({
   selector: 'footer',
@@ -29,11 +31,9 @@ export class FooterComponent implements OnInit, OnDestroy {
   public window: Window = window;
   public isMatrixComponent: boolean;
   public streetData: DrawDividersInterface;
-  public footerServiceSubscribe: Subscription;
-  public routerEventsSubscribe: Subscription;
   public isDesktop: boolean;
-  public streetSettingsState: Observable<StreetSettingsState>;
-  public streetSettingsStateSubscription: Subscription;
+  ngSubscriptions: { [key: string]: Subscription} = {};
+  language: string;
 
   public constructor(private router: Router,
                      private footerService: FooterService,
@@ -42,13 +42,15 @@ export class FooterComponent implements OnInit, OnDestroy {
                      private languageService: LanguageService,
                      private utilsService: UtilsService,
                      private store: Store<AppStates>) {
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
   }
 
   public ngOnInit(): void {
     this.isDesktop = this.browserDetectionService.isDesktop();
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+    this.ngSubscriptions.streetSettings = this.store
+      .select((appStates: AppStates) => appStates.streetSettings)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((data: StreetSettingsState) => {
       if (data) {
         if (data.streetSettings) {
           this.streetData = data.streetSettings;
@@ -56,7 +58,7 @@ export class FooterComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
+    this.ngSubscriptions.routerEvents = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         let activePage: string = event
           .urlAfterRedirects
@@ -76,7 +78,30 @@ export class FooterComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerServiceSubscribe = this.footerService.getFooter(this.languageService.getLanguageParam())
+    this.updateTranslation();
+
+    this.ngSubscriptions.languageStore = this.store
+      .select((state: AppStates) => state.language)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe( (state: LanguageState) => {
+
+        this.updateTranslation();
+      });
+
+  }
+
+  updateTranslation(): void {
+    const language = this.languageService.getLanguageParam();
+    if ( this.language === language) {
+      return;
+    }
+    this.language = language;
+
+    if (get(this.ngSubscriptions, 'footerTranslation', false)) {
+      this.ngSubscriptions.footerTranslation.unsubscribe();
+    }
+
+    this.ngSubscriptions.footerTranslation = this.footerService.getFooter(this.languageService.getLanguageParam())
       .subscribe((val: any) => {
         if (val.err) {
           console.error(val.err);
@@ -88,12 +113,9 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.routerEventsSubscribe.unsubscribe();
-    this.footerServiceSubscribe.unsubscribe();
-
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
+    forEach(this.ngSubscriptions, (value, key) => {
+      value.unsubscribe();
+    });
   }
 
   public goToMatrixPage(): void {

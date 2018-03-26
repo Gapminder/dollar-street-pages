@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs/Subscription';
+
 export interface AppState {
   query: string;
 }
@@ -55,7 +57,7 @@ export interface Thing {
 }
 
 export interface CountriesFilterState {
-  countriesFilter: Continent;
+  countriesFilter: Continent[];
   selectedCountries: string[];
   selectedRegions?: string[];
 }
@@ -186,4 +188,9 @@ export interface PagePosition {
 
 export interface TranslationsInterface {
   [key: string]: string;
+}
+
+
+export interface SubscriptionsList {
+  [key: string]: Subscription;
 }

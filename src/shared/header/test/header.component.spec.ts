@@ -38,6 +38,7 @@ import {
 import {SocialShareButtonsService} from '../../social-share-buttons/social-share-buttons.service';
 import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
 import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { forEach } from 'lodash';
 
 describe('HeaderComponent', () => {
     let component: HeaderComponent;
@@ -92,40 +93,19 @@ describe('HeaderComponent', () => {
         component = fixture.componentInstance;
     }));
 
-    xit('ngOnInit(), ngAfterViewInit(), ngOnDestroy()', () => {
+    it('ngOnInit(), ngAfterViewInit(), ngOnDestroy()', () => {
+
         component.ngOnInit();
-        component.ngAfterViewInit();
 
-        expect(component.resizeSubscription).toBeDefined();
-        expect(component.orientationChangeSubscription).toBeDefined();
-        expect(component.scrollSubscription).toBeDefined();
-        expect(component.getTranslationSubscription).toBeDefined();
-        expect(component.routerEventsSubscription).toBeDefined();
-        expect(component.queryParamsSubscription).toBeDefined();
-        expect(component.streetSettingsStateSubscription).toBeDefined();
-        expect(component.appStateSubscription).toBeDefined();
-        expect(component.titleHeaderSubscribe).toBeDefined();
 
-        spyOn(component.resizeSubscription, 'unsubscribe');
-        spyOn(component.orientationChangeSubscription, 'unsubscribe');
-        spyOn(component.scrollSubscription, 'unsubscribe');
-        spyOn(component.getTranslationSubscription, 'unsubscribe');
-        spyOn(component.routerEventsSubscription, 'unsubscribe');
-        spyOn(component.queryParamsSubscription, 'unsubscribe');
-        spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
-        spyOn(component.appStateSubscription, 'unsubscribe');
-        spyOn(component.titleHeaderSubscribe, 'unsubscribe');
+        forEach(component.ngSubscriptions, subscription => {
+          spyOn(subscription, 'unsubscribe');
+        });
 
         component.ngOnDestroy();
 
-        expect(component.resizeSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.orientationChangeSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.scrollSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.getTranslationSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.routerEventsSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.queryParamsSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.titleHeaderSubscribe.unsubscribe).toHaveBeenCalled();
+        forEach(component.ngSubscriptions, subscription => {
+          expect(subscription.unsubscribe).toHaveBeenCalled();
+        });
     });
 });

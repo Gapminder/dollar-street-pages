@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { EventEmitter } from "events";
 
 @Injectable()
 export class LanguageServiceMock {
   public currentLanguage: string;
   public defaultLanguage: string = 'en';
   public languagesList: Observable<any> = Observable.of(['English', 'Brasilian']);
+  public translationsLoadedEvent: EventEmitter = new EventEmitter();
+  public translationsLoadedString = 'TRANSLATIONS_LOADED_TEST';
 
   public getLanguageParam(): string {
     return '&lang=en';

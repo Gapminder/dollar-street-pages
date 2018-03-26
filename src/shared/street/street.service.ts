@@ -128,6 +128,7 @@ export class StreetDrawService {
     this.halfOfHeight = 0.5 * this.height;
     this.windowInnerWidth = window.innerWidth;
 
+
     this.scale = scaleLog()
       .domain([
         _.get(drawDividers, 'poor', Number(DefaultUrlParameters.lowIncome)),

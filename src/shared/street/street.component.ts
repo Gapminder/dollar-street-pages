@@ -11,7 +11,7 @@ import {
   OnDestroy,
   EventEmitter,
   ViewChild,
-  AfterViewInit
+  AfterViewInit, AfterViewChecked
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
