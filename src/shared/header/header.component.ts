@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
+
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { forEach, difference, map, find, get } from 'lodash';
 import {
@@ -48,6 +48,7 @@ import {
 import { DrawDividersInterface } from '../../interfaces';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 @Component({
   selector: 'header',
@@ -278,8 +279,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.checkByIncomeFilter();
     });
 
-    this.ngSubscriptions.combileTranslations = Observable
-      .fromEvent(this.languageService.translationsLoadedEvent, this.languageService.translationsLoadedString)
+    this.ngSubscriptions.combileTranslations = fromEvent(this.languageService.translationsLoadedEvent, this.languageService.translationsLoadedString)
       .subscribe(( trans: TranslationsInterface ) => {
       this.getTranslations(trans)
     });

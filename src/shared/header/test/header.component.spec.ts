@@ -94,17 +94,18 @@ describe('HeaderComponent', () => {
     }));
 
     it('ngOnInit(), ngAfterViewInit(), ngOnDestroy()', () => {
-        component.ngOnInit();
-        component.ngAfterViewInit();
 
-        forEach(component.ngSubscriptions, (value, key) => {
-          spyOn(value, 'unsubscribe');
+        component.ngOnInit();
+
+
+        forEach(component.ngSubscriptions, subscription => {
+          spyOn(subscription, 'unsubscribe');
         });
 
         component.ngOnDestroy();
 
-        forEach(component.ngSubscriptions, (value, key) => {
-          expect(value.unsubscribe).toHaveBeenCalled();
+        forEach(component.ngSubscriptions, subscription => {
+          expect(subscription.unsubscribe).toHaveBeenCalled();
         });
     });
 });
