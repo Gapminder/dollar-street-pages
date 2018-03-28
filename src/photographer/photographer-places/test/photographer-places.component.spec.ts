@@ -16,6 +16,8 @@ import {
 } from '../../../test/';
 import { PhotographerPlacesComponent } from '../photographer-places.component';
 import { PhotographerPlacesService } from '../photographer-places.service';
+import { StoreModule } from '@ngrx/store';
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
 
 describe('PhotographerPlacesComponent', () => {
     let fixture: ComponentFixture<PhotographerPlacesComponent>;
@@ -30,10 +32,10 @@ describe('PhotographerPlacesComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                HttpModule,
                 RouterTestingModule,
                 Angulartics2Module,
-                TranslateModule
+                TranslateModule,
+                StoreModule.forRoot({}),
             ],
             declarations: [PhotographerPlacesComponent],
             providers: [

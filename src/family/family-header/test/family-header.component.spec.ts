@@ -20,10 +20,7 @@ import { UtilsService } from '../../../common/utils/utils.service';
 import { UtilsServiceMock } from '../../../test/mocks/utils.service.mock';
 import { LanguageService } from '../../../common/language/language.service';
 import { LanguageServiceMock } from '../../../test/mocks/language.service.mock';
-import { UrlParametersServiceMock } from '../../../test/mocks/url-parameters.service.mock';
-import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
 import { DEBOUNCE_TIME } from '../../../defaultState';
-import { SetCurrencyUnit } from '../../../matrix/ngrx/matrix.actions';
 
 describe('FamilyHeaderComponent', () => {
   let fixture: ComponentFixture<FamilyHeaderComponent>;

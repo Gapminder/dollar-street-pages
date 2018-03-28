@@ -14,6 +14,8 @@ import {
 } from '@angular/http';
 
 import { PhotographerPlacesService } from '../photographer-places.service';
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { StoreModule } from '@ngrx/store';
 
 describe('PhotographerPlacesService', () => {
     let mockBackend: MockBackend;
