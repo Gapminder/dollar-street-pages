@@ -26,61 +26,61 @@ import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class StreetDrawService {
-  public width: number;
-  public height: number;
-  public halfOfHeight: number;
-  public lowIncome: number;
-  public highIncome: number;
-  public streetOffset = 60;
-  public chosenPlaces: Place[];
-  public poorest: string;
-  public richest: string;
-  public scale: any;
-  public axisLabel: number[] = [];
-  public levelLabels: string[] = [];
-  public svg: any;
-  public incomeArr: any[] = [];
-  public mouseMoveSubscriber: Subscription;
+  width: number;
+  height: number;
+  halfOfHeight: number;
+  lowIncome: number;
+  highIncome: number;
+  streetOffset = 60;
+  chosenPlaces: Place[];
+  poorest: string;
+  richest: string;
+  scale;
+  axisLabel: number[] = [];
+  levelLabels: string[] = [];
+  svg;
+  incomeArr: any[] = [];
+  mouseMoveSubscriber: Subscription;
   mouseLeaveSubscriptrion: Subscription;
-  public dividersData: any;
-  public mouseUpSubscriber: any;
-  public touchMoveSubscriber: any;
-  public touchUpSubscriber: any;
-  public sliderRightBorder: number;
-  public sliderLeftBorder: number;
-  public sliderRightMove: boolean = false;
-  public sliderLeftMove: boolean = false;
-  public draggingSliders: boolean = false;
-  public distanceDraggingLeftSlider: number = 0;
-  public distanceDraggingRightSlider: number = 0;
-  public leftScroll: any;
-  public rightScroll: any;
-  public leftPoint: any;
-  public rightPoint: any;
-  public leftScrollOpacityStreet: any;
-  public leftScrollOpacityLabels: any;
-  public leftScrollOpacityHomes: any;
-  public rightScrollOpacityStreet: any;
-  public rightScrollOpacityLabels: any;
-  public rightScrollOpacityHomes: any;
-  public leftScrollText: any;
-  public rightScrollText: any;
-  public hoverPlace: any;
-  public minIncome: any;
-  public maxIncome: any;
-  public regions: string[] | string;
-  public thingname: string;
-  public countries: string[] | string;
-  public placesArray: Place[] = [];
-  public currentLowIncome: number;
-  public currentHighIncome: number;
-  public filter: Subject<any> = new Subject<any>();
-  public windowInnerWidth: number = window.innerWidth;
-  public isDesktop: boolean;
-  public isMobile: boolean;
-  public currencyUnit: any;
+  dividersData: DrawDividersInterface;
+  mouseUpSubscriber;
+  touchMoveSubscriber;
+  touchUpSubscriber;
+  sliderRightBorder: number;
+  sliderLeftBorder: number;
+  sliderRightMove = false;
+  sliderLeftMove = false;
+  draggingSliders = false;
+  distanceDraggingLeftSlider = 0;
+  distanceDraggingRightSlider = 0;
+  leftScroll;
+  rightScroll;
+  leftPoint;
+  rightPoint;
+  leftScrollOpacityStreet;
+  leftScrollOpacityLabels;
+  leftScrollOpacityHomes;
+  rightScrollOpacityStreet;
+  rightScrollOpacityLabels;
+  rightScrollOpacityHomes;
+  leftScrollText;
+  rightScrollText;
+  hoverPlace;
+  minIncome;
+  maxIncome;
+  regions: string[] | string;
+  thingname: string;
+  countries: string[] | string;
+  placesArray: Place[] = [];
+  currentLowIncome: number;
+  currentHighIncome: number;
+  filter: Subject<any> = new Subject<any>();
+  windowInnerWidth: number = window.innerWidth;
+  isDesktop: boolean;
+  isMobile: boolean;
+  currencyUnit;
 
-  public colors: {fills: any, fillsOfBorders: any} = {
+  colors = {
     fills: {
       Europe: '#FFE800',
       Africa: '#15B0D1',
@@ -95,14 +95,14 @@ export class StreetDrawService {
     }
   };
 
-  public constructor(private math: MathService,
+  constructor(private math: MathService,
                      browserDetectionService: BrowserDetectionService,
                      private store: Store<AppStates>) {
     this.isDesktop = browserDetectionService.isDesktop();
     this.isMobile = browserDetectionService.isMobile();
   }
 
-  public init(lowIncome: number, highIncome: number, drawDividers: DrawDividersInterface, regions: string[], countries: string[], thing: string): this {
+  init(lowIncome: number, highIncome: number, drawDividers: DrawDividersInterface, regions: string[], countries: string[], thing: string): this {
     this.thingname = thing;
     this.countries = countries[0];
     this.regions = regions[0];
@@ -139,17 +139,17 @@ export class StreetDrawService {
     return this;
   }
 
-  public set setSvg(element: HTMLElement) {
+  set setSvg(element: HTMLElement) {
     this.svg = select(element);
   }
 
-  public set(key: any, val: any): this {
+  set(key: any, val: any): this {
     this[key] = val;
 
     return this;
   };
 
-  public isDrawDividers(drawDividers: DrawDividersInterface): this {
+  isDrawDividers(drawDividers: DrawDividersInterface): this {
     if (!_.get(drawDividers, 'showDividers', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
@@ -173,8 +173,8 @@ export class StreetDrawService {
     return this;
   }
 
-  public isDrawCurrency(drawDividers: DrawDividersInterface): this {
-    if (!_.get(drawDividers,'showCurrency', false) /*|| !this.showStreetAttrs*/) {
+  isDrawCurrency(drawDividers: DrawDividersInterface): this {
+    if (!_.get(drawDividers, 'showCurrency', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
 
@@ -183,6 +183,7 @@ export class StreetDrawService {
       .data(this.axisLabel)
       .enter()
       .append('text')
+      .attr('class', 'currency-text')
       .text((d: any) => {
         return this.math.roundIncome(d * this.currencyUnit.value) + this.currencyUnit.symbol;
       })
@@ -200,24 +201,24 @@ export class StreetDrawService {
         return this.scale(d) - indent + 25;
       })
       .attr('class', (d: any) => {
-        return 'scale-label' + d;
+        return `currency-text scale-label${d}`;
       })
-      .attr('y', this.height - 2)
-      .attr('fill', '#767d86');
+      .attr('y', SVG_DEFAULTS.levels.positionY)
+      .attr('fill', SVG_DEFAULTS.levels.color);
 
     return this;
   }
 
-  public isDrawLabels(drawDividers: DrawDividersInterface): this {
+  isDrawLabels(drawDividers: DrawDividersInterface): this {
     if (!_.get(drawDividers, 'showLabels', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
 
-    let data = this.levelLabels.map((curr, ind) => {
-      let from = ind === 0 ? drawDividers.poor : this.axisLabel[ind - 1];
-      let to = ind === this.levelLabels.length - 1 ? drawDividers.rich : this.axisLabel[ind];
+    const data = this.levelLabels.map((curr, ind) => {
+      const from = ind === 0 ? drawDividers.poor : this.axisLabel[ind - 1];
+      const to = ind === this.levelLabels.length - 1 ? drawDividers.rich : this.axisLabel[ind];
 
-      return {from: from, to: to, name: curr};
+      return {from, to, name: curr};
     });
     this.svg
       .selectAll('text.scale-label')
@@ -229,7 +230,7 @@ export class StreetDrawService {
         if (this.isDesktop) {
           text = d.name;
         } else {
-          text = `L${index + 1}`;
+          text = `Ls${index + 1}`;
         }
 
         return text;
@@ -312,7 +313,7 @@ export class StreetDrawService {
 
   }
 
-  public drawScale(places: Place[], drawDividers: DrawDividersInterface): this {
+  drawScale(places: Place[], drawDividers: DrawDividersInterface): this {
 
     axisBottom(this.scale)
       .tickFormat(() => {
@@ -518,7 +519,7 @@ export class StreetDrawService {
     return this;
   }
 
-  public drawHoverHouse( place, gray = false) {
+  drawHoverHouse( place, gray = false) {
     if (!place) {
       this.removeHouses('hover')
 
@@ -596,7 +597,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawLeftSlider(x: number, init: boolean = false): this {
+  drawLeftSlider(x: number, init: boolean = false): this {
     if (this.windowInnerWidth <= SVG_DEFAULTS.mobileWidth && Math.round(this.lowIncome) === this.dividersData.poor) {
       return;
     }
@@ -713,7 +714,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawRightSlider(x: number, init: boolean = false): this {
+  drawRightSlider(x: number, init: boolean = false): this {
     if (this.windowInnerWidth <= SVG_DEFAULTS.mobileWidth && Math.round(this.highIncome) === this.dividersData.rich) {
       return;
     }
@@ -834,7 +835,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public clearAndRedraw(places?): this {
+  clearAndRedraw(places?): this {
     this.removeHouses('hover');
     this.removeHouses('chosen');
 
@@ -855,7 +856,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public removeHouses(selector: any): this {
+  removeHouses(selector: any): this {
     this.svg.selectAll('rect.' + selector).remove();
     this.svg.selectAll('polygon.' + selector).remove();
     this.svg.selectAll('use.' + selector).remove();
@@ -874,7 +875,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public removeSliders(): this {
+  removeSliders(): this {
     this.svg.selectAll('use#right-scroll').remove();
     this.svg.selectAll('use#left-scroll').remove();
     this.leftScroll = false;
@@ -882,7 +883,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public clearSvg(): this {
+  clearSvg(): this {
     this.leftScroll = void 0;
     this.rightScroll = void 0;
     this.leftScrollOpacityStreet = void 0;
@@ -899,7 +900,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawScrollLabel(): this {
+  drawScrollLabel(): this {
 
     let incomeL = Math.round(+this.lowIncome ? +this.lowIncome : 0);
     let incomeR = Math.round(+this.highIncome ? +this.highIncome : +this.dividersData.rich);
@@ -1001,7 +1002,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public drawHouses(places: Place[]): this {
+  drawHouses(places: Place[]): this {
     this.placesArray = [];
 
     if (!places || !places.length) {
@@ -1033,7 +1034,7 @@ export class StreetDrawService {
     return this;
   };
 
-  public pressedSlider(): void {
+  pressedSlider(): void {
     document.body.classList.remove('draggingSliders');
     this.store.dispatch(new MatrixActions.RemovePlace({}));
     if (this.draggingSliders && !this.distanceDraggingLeftSlider && !this.distanceDraggingRightSlider) {
@@ -1101,3 +1102,4 @@ export class StreetDrawService {
 
   }
 }
+

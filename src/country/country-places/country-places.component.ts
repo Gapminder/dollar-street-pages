@@ -14,10 +14,12 @@ import {
 import { CountryPlacesService } from './country-places.service';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import { AppStates, LanguageState, SubscriptionsList } from '../../interfaces';
 import * as _ from 'lodash';
 import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import { DEBOUNCE_TIME } from '../../defaultState';
+import { get, forEach } from 'lodash';
 
 @Component({
   selector: 'country-places',
@@ -40,6 +42,7 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
   public matrixState: Observable<any>;
   public timeUnit: any;
   public currencyUnit: any;
+  ngSubscriptions: SubscriptionsList = {};
 
   public constructor(countryPlacesService: CountryPlacesService,
                      loaderService: LoaderService,
@@ -54,8 +57,6 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
     this.languageService = languageService;
 
     this.currentLanguage = this.languageService.currentLanguage;
-
-    this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
   public ngOnInit(): void {
@@ -63,7 +64,7 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
 
     const query: string = `id=${this.countryId}${this.languageService.getLanguageParam()}`;
 
-    this.countryPlacesServiceSubscribe = this.countryPlacesService
+    this.ngSubscriptions.countryPlacesService = this.countryPlacesService
       .getCountryPlaces(query)
       .subscribe((res: any) => {
         if (res.err) {
@@ -79,18 +80,32 @@ export class CountryPlacesComponent implements OnInit, OnDestroy {
         this.loaderService.setLoader(true);
       });
 
-    this.matrixStateSubscription = this.matrixState.subscribe((data: any) => {
+    this.ngSubscriptions.matrixState = this.store
+      .select((appStates: AppStates) => appStates.matrix)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((data: any) => {
       if (data) {
         this.timeUnit = _.get(data, 'timeUnit', this.timeUnit);
         this.currencyUnit = _.get(data, 'currencyUnit', this.currencyUnit);
       }
     });
+
+    this.ngSubscriptions.languageState = this.store
+      .select((appState: AppStates) => appState.language)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((language: LanguageState) => {
+        if (language.lang !== this.currentLanguage) {
+          this.currentLanguage = language.lang;
+        }
+      });
   }
 
   public ngOnDestroy(): void {
     this.loaderService.setLoader(false);
-    this.countryPlacesServiceSubscribe.unsubscribe();
-    this.matrixStateSubscription.unsubscribe();
+
+    forEach(this.ngSubscriptions, (subscription: Subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   public calcPlacesIncome(): void {

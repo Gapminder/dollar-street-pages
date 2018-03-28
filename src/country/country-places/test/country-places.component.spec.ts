@@ -1,15 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Angulartics2Module } from 'angulartics2';
-import { MathService } from '../../../common';
 import { Observable } from 'rxjs/Observable';
 import { CountryPlacesComponent } from '../country-places.component';
 import { CountryPlacesService } from '../country-places.service';
 import { StoreModule } from '@ngrx/store';
 import { TranslateTestingModule } from '../../../test/translateTesting.module';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
-import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
-import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
+import { forEach } from 'lodash';
 
 describe('CountryPlacesComponent', () => {
   let fixture: ComponentFixture<CountryPlacesComponent>;
@@ -62,12 +60,15 @@ describe('CountryPlacesComponent', () => {
   it('ngOnInit(), ngOnDestroy()', (() => {
     component.ngOnInit();
 
-    expect(component.countryPlacesServiceSubscribe).toBeDefined();
 
-    spyOn(component.countryPlacesServiceSubscribe, 'unsubscribe');
+    forEach(component.ngSubscriptions, subscription => {
+      spyOn(subscription, 'unsubscribe');
+    });
 
     component.ngOnDestroy();
 
-    expect(component.countryPlacesServiceSubscribe.unsubscribe).toHaveBeenCalled();
+    forEach(component.ngSubscriptions, subscription => {
+      expect(subscription.unsubscribe).toHaveBeenCalled();
+    });
   }));
 });

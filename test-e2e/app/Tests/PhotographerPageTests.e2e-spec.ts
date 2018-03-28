@@ -14,7 +14,8 @@ describe('Photographer Page test', () => {
     await PhotographerPage.familyImage.click();
 
     expect(await browser.getCurrentUrl()).toContain('family');
-    expect(await FamilyPage.familyName.getText()).toEqual(familyName);
+    expect(await FamilyPage.familyName.getText()).toContain(familyName);
+    expect(await FamilyPage.familyName.getText()).toEqual(`${familyName} family`);
   });
 
   it('click on visitHome btn leads to FamilyPage', async () => {
@@ -25,7 +26,8 @@ describe('Photographer Page test', () => {
     await PhotographerPage.visitHomeBtn.first().click();
 
     expect(await browser.getCurrentUrl()).toContain('family');
-    expect(await FamilyPage.familyName.getText()).toEqual(familyName);
+    expect(await FamilyPage.familyName.getText()).toContain(familyName);
+    expect(await FamilyPage.familyName.getText()).toEqual(`${familyName} family`);
   });
 });
 
