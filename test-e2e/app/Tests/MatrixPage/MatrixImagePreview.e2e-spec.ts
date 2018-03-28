@@ -1,6 +1,6 @@
 import { browser } from 'protractor';
 
-import { getRandomNumber } from '../../Helpers';
+import { getRandomNumber, isInViewport } from '../../Helpers';
 import { MatrixPage, CountryPage, AbstractPage, FamilyPage } from '../../Pages';
 import { MatrixImagePreview, FamilyImage, WelcomeWizard, FamilyImagePreview } from '../../Pages/Components';
 
@@ -9,7 +9,7 @@ let random: number;
 let family: FamilyImage;
 
 describe('Matrix Page: Image Preview', () => {
-  const NUMBER_OF_LINKS_TO_TEST = 2;
+  const NUMBER_OF_LINKS_TO_TEST = 4;
 
   beforeEach(async () => {
     random = getRandomNumber();
@@ -19,11 +19,20 @@ describe('Matrix Page: Image Preview', () => {
     family = MatrixPage.getFamily(random);
   });
 
-  for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
-    it(`Image preview section is displayed for ${i} image`, async () => {
-      const familyImagePreview = await family.openPreview();
+  it(`Image preview section is displayed for image`, async () => {
+    for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
+      family = MatrixPage.getFamily(getRandomNumber());
 
-      expect(await familyImagePreview.isDisplayed()).toBeTruthy();
+      const familyImagePreview: MatrixImagePreview = await family.openPreview();
+
+      try {
+        expect(await familyImagePreview.isDisplayed()).toBeTruthy();
+      } catch (err) {
+        if (err.name === 'NoSuchElementError') {
+          throw new Error('FamilyImagePreview is not present on the page!');
+        }
+      }
+      expect(await isInViewport(familyImagePreview.rootSelector)).toBeTruthy('imagePreview not in the viewport');
 
       /**
        * check that country name match in preview and description
@@ -32,8 +41,8 @@ describe('Matrix Page: Image Preview', () => {
       const countryInDescription = await familyImagePreview.familyName.getText();
 
       expect(countryInDescription).toContain(familyCountry);
-    });
-  }
+    }
+  });
 
   for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
     it(`Open image preview and check image src for ${i} image`, async () => {
