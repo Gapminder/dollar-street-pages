@@ -27,9 +27,7 @@
     "e2e:CI": "ng e2e --no-webdriver-update --environment=qa --base-href /dollar-street --aot --prod",
     "e2e:local": "protractor ./.config/protractor.conf.js",
     "e2e:local:consumer-dev": "API_URL=http://52.211.52.39:8015/v1 protractor ./.config/protractor.conf.js",
-    "e2e:dev": "protractor --baseUrl='http://ds-dev.dollarstreet.org' ./.config/protractor.conf.js",
-    "e2e:bstack:tunnel": ".config/tools/bstack-local.js",
-    "e2e:bstack": ".config/tools/wait4tunnel.js && protractor ./.config/protractor-browserstack.conf.js"
+    "e2e:dev": "API_URL=http://52.211.52.39:8015/v1 protractor --baseUrl='http://ds-dev.dollarstreet.org' ./.config/protractor.conf.js"
   },
   "pre-commit": [
     "lint",
