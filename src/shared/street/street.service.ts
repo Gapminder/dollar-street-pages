@@ -165,7 +165,7 @@ export class StreetDrawService {
       .attr('height', SVG_DEFAULTS.squarePoints.height)
       .attr('y', SVG_DEFAULTS.squarePoints.positionY)
       .attr('x', (d: number) => {
-        const x = this.scale(d)
+        const x = this.scale(d) - SVG_DEFAULTS.squarePoints.width/2
 
         return x;
       });
@@ -184,21 +184,13 @@ export class StreetDrawService {
       .enter()
       .append('text')
       .attr('class', 'currency-text')
+      .attr('text-anchor', 'middle')
       .text((d: any) => {
-        return this.math.roundIncome(d * this.currencyUnit.value) + this.currencyUnit.symbol;
+        return `${this.currencyUnit.symbol}${this.math.roundIncome(d * this.currencyUnit.value)}`;
       })
       .attr('x', (d: any) => {
-        let indent = 0;
 
-        if ((d + '').length === 2) {
-          indent = 11;
-        }
-
-        if ((d + '').length === 3) {
-          indent = 15;
-        }
-
-        return this.scale(d) - indent + 25;
+        return this.scale(d);
       })
       .attr('class', (d: any) => {
         return `currency-text scale-label${d}`;
@@ -328,7 +320,7 @@ export class StreetDrawService {
       .attr('class', 'poorest')
       .text(this.poorest)
       .attr('x', 0)
-      .attr('y', this.height - 4)
+      .attr('y', SVG_DEFAULTS.levels.positionY)
       .attr('fill', SVG_DEFAULTS.levels.color);
 
     this.svg
@@ -765,7 +757,11 @@ export class StreetDrawService {
           .attr('y', 50)
           .attr('height', 15)
           .style('fill', 'white')
-          .attr('width', this.width - x + this.streetOffset)
+          .attr('width', () => {
+            const width = this.width - x + this.streetOffset;
+
+            return width > 0 ? width : 0;
+          })
           .style('opacity', '0.65');
       }
     }

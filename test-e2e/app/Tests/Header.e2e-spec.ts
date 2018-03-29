@@ -3,13 +3,15 @@ import { browser, $ } from 'protractor';
 import { AbstractPage, MapPage, DonatePage, AboutPage, FamilyPage, MatrixPage } from '../Pages';
 import { Header, HamburgerMenu, WelcomeWizard, FamilyImage } from '../Pages/Components';
 import { getRandomNumber } from '../Helpers';
+import { waitForLoader } from '../Helpers/commonHelper';
 
 describe('Header tests', () => {
   beforeEach(async () => {
     await browser.get(AbstractPage.url);
+    await waitForLoader();
   });
 
-  it('Change language', async () => {
+  xit('Change language', async () => {
     const language = Header.languages.spanish;
 
     await Header.changeLanguage(language.name);
