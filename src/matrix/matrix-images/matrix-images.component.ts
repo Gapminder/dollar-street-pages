@@ -31,7 +31,7 @@ import { Store } from '@ngrx/store';
 import { AppStates, Currency, LanguageState, MatrixState, UrlParameters } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { Place } from '../../interfaces';
-import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
+import { DEBOUNCE_TIME, DefaultUrlParameters, MOBILE_SIZE } from '../../defaultState';
 import { get } from "lodash";
 import { PagePositionService } from '../../shared/page-position/page-position.service';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
@@ -209,7 +209,15 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       }
 
       if (get(data, 'place', false)) {
-        this.activeHouse = data.activeHouseOptions.index;
+
+        if (this.activeHouse !== data.activeHouseOptions.index) {
+          this.calcItemSize();
+          this.activeHouse = data.activeHouseOptions.index;
+          this.row = data.activeHouseOptions.row;
+
+          this.goToRow(data.activeHouseOptions.row)
+        }
+
         this.showBlock = !!this.activeHouse;
       } else {
         this.activeHouse = undefined;
@@ -441,7 +449,6 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       this.store.dispatch(new MatrixActions.RemovePlace(''));
       this.urlParametersService.removeActiveHouse();
     } else {
-      this.goToRow(row);
       this.store.dispatch(new MatrixActions.UpdateActiveHouse({row, index: activeHouseIndex}));
       this.store.dispatch(new MatrixActions.SetPlace(place._id));
       // this.pagePositionService
@@ -461,7 +468,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   public goToRow(row: number): void {
     let showPartPrevImage: number = 60;
 
-    if (this.windowInnerWidth < 600) {
+    if (this.windowInnerWidth < MOBILE_SIZE) {
       showPartPrevImage = -20;
     }
 
@@ -471,9 +478,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
        scrollTop += this.quickGuideElement.offsetHeight;
     }
 
-    setTimeout(() => {
-      document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
-    }, 0);
+    document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
   }
 
   public calcItemSize(): void {
@@ -504,6 +509,5 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
 
   checkCurrentRow() {
       this.row = this.pagePositionService.currentRow;
-      this.pagePositionService.setCurrentRow();
   }
 }

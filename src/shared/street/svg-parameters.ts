@@ -54,7 +54,7 @@ export const SVG_DEFAULTS = {
   },
   levels: {
     color: '#767d86',
-    positionY: 61
+    positionY: 63
   },
   sliders: {
     color: '#232B31',

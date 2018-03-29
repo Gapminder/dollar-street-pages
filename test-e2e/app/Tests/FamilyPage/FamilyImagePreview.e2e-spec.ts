@@ -25,6 +25,7 @@ describe('Family Page: Image Preview', () => {
     random = getRandomNumber();
 
     await goToFamilyFromMatrix(random);
+    await waitForLoader();
   });
 
   for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
@@ -37,7 +38,7 @@ describe('Family Page: Image Preview', () => {
   }
 
   for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
-    it(`Open image preview and check image src for ${i} image`, async () => {
+    fit(`Open image preview and check image src for ${i} image`, async () => {
       /**
        * click on image in matrix page should open preview for that image
        * loop is needed to check specific issue when image doesn't update
@@ -126,7 +127,7 @@ describe('Family Page: Image Preview', () => {
 
     // fixme issue with angular sync. investigation is needed
     await browser.refresh();
-    
+
     const url = await browser.getCurrentUrl();
 
     expect(url).toContain('matrix?');
@@ -139,7 +140,7 @@ describe('Family Page: Image Preview', () => {
 
   it('"Thing in Region" button leads to matrix page with active filters', async () => {
     familyImage = FamilyPage.getFamilyImage(random);
-    
+
     const familyImagePreview: FamilyImagePreview = await familyImage.openPreview();
     const thingNamePlural = await familyImagePreview.getThingNamePlural();
     const familyCountry = await FamilyPage.familyCountry.getText();

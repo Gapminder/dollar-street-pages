@@ -326,13 +326,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
           this.processMatrixImages(this.matrixImages);
         }
 
-        // TODO: remove setTimeout on refactoring this component
-        setTimeout(() => {
-          if (this.row > 1 && !this.activeHouse) {
-            this.matrixImagesComponent.goToRow(this.row);
-          }
-        }, 1000);
-
         if (get(matrix, 'embedSetId', false)
           && this.embedSetId !== matrix.embedSetId) {
           this.embedSetId = matrix.embedSetId;

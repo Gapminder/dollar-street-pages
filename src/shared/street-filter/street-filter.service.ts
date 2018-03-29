@@ -89,17 +89,8 @@ export class StreetFilterDrawService {
         return `${this.math.roundIncome(d * this.currencyUnit.value)}${this.currencyUnit.symbol}`;
       })
       .attr('x', (d: any) => {
-        let indent = 0;
 
-        if ((d + '').length === 2) {
-          indent = 11;
-        }
-
-        if ((d + '').length === 3) {
-          indent = 15;
-        }
-
-        return this.scale(d) - indent + 25;
+        return this.scale(d);
       })
       .attr('class', (d: any) => {
         return 'scale-label' + d;
@@ -313,7 +304,7 @@ export class StreetFilterDrawService {
     }
 
     this.touchUpSubscriber = fromEvent(window, 'touchend', { passive: true })
-      .subscribe(()=> {
+      .subscribe(() => {
         if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
           return;
         }
@@ -365,27 +356,20 @@ export class StreetFilterDrawService {
     if (!this.leftScrollOpacityLabels) {
       this.leftScrollOpacityLabels = this.svg;
 
-      if (x < 16) {
-        this.leftScrollOpacityLabels
-          .append('rect')
-          .attr('class', 'left-scroll-opacity-part2')
-          .attr('x', 0)
-          .attr('y', 50)
-          .attr('height', 15)
-          .style('fill', 'white')
-          .attr('width', x + this.halfOfStreetOffset)
-          .style('opacity', '0.1');
-      } else {
-        this.leftScrollOpacityLabels
-          .append('rect')
-          .attr('class', 'left-scroll-opacity-part2')
-          .attr('x', 0)
-          .attr('y', 50)
-          .attr('height', 15)
-          .style('fill', 'white')
-          .attr('width', x + this.halfOfStreetOffset)
-          .style('opacity', '0.8');
-      }
+
+      this.leftScrollOpacityLabels
+        .append('rect')
+        .attr('class', 'left-scroll-opacity-part2')
+        .attr('x', 0)
+        .attr('y', 50)
+        .attr('height', 15)
+        .style('fill', 'white')
+        .attr('width', () => {
+          const width = x + this.halfOfStreetOffset;
+
+          return width > 0 ? width : 0;
+        })
+        .style('opacity', '0.8');
     }
 
     if (!this.leftScroll) {
@@ -405,12 +389,20 @@ export class StreetFilterDrawService {
     }
 
     this.leftScroll
-      .attr('x',  x);
+      .attr('x',  x > 0 ? x : 0);
 
     this.leftScrollOpacityStreet
-      .attr('width', x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2);
+      .attr('width', () => {
+        const width = x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2;
+
+        return  width > 0 ? width : 0;
+      });
     this.leftScrollOpacityHomes
-      .attr('width', x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2);
+      .attr('width', () => {
+        const width = x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2;
+
+        return  width > 0 ? width : 0;
+      });
 
     this.lowIncome = this.scale.invert(x);
 

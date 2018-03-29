@@ -9,6 +9,7 @@ describe('Matrix Page: Filters', () => {
 
     // TODO quick guide could broke tests
     await WelcomeWizard.disableWizard();
+
   });
 
   it('Filter by Country', async () => {
