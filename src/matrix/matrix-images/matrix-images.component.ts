@@ -478,7 +478,9 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
        scrollTop += this.quickGuideElement.offsetHeight;
     }
 
-    document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
+    setTimeout(() => {
+      document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
+    }, 0);
   }
 
   public calcItemSize(): void {

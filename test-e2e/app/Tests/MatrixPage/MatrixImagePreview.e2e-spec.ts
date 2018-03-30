@@ -8,7 +8,7 @@ const pattern = /^.*(\/)/; // grab everything to last slash
 let random: number;
 let family: FamilyImage;
 
-describe('Matrix Page: Image Preview', () => {
+describe('Matrix Page: Image Preview:', () => {
   const NUMBER_OF_LINKS_TO_TEST = 4;
 
   beforeEach(async () => {
@@ -29,7 +29,7 @@ describe('Matrix Page: Image Preview', () => {
         expect(await familyImagePreview.isDisplayed()).toBeTruthy();
       } catch (err) {
         if (err.name === 'NoSuchElementError') {
-          throw new Error('FamilyImagePreview is not present on the page!');
+          throw new Error(`FamilyImagePreview is not present on the page!\n${err}`);
         }
       }
       expect(await isInViewport(familyImagePreview.rootSelector)).toBeTruthy('imagePreview not in the viewport');

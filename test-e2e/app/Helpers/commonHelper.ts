@@ -3,8 +3,21 @@ import { promise } from 'selenium-webdriver';
 
 import { AbstractPage } from '../Pages';
 
+const _numbers = [];
 export function getRandomNumber(): number {
-  return Math.floor(Math.random() * 15); // random number between 0 and 15
+  if (_numbers.length >= 10) {
+    return _numbers.shift();
+  }
+
+  const randomNumber = Math.floor(Math.random() * 15); // random number between 0 and 15
+
+  if (!_numbers.includes(randomNumber)) {
+    _numbers.push(randomNumber);
+
+    return randomNumber;
+  } else {
+    return getRandomNumber();
+  }
 }
 
 export async function disableAnimations(): Promise<{}> {
