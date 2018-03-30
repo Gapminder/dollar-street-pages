@@ -28,51 +28,52 @@ describe('Family Page: Image Preview', () => {
     await waitForLoader();
   });
 
-  for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
-    it(`Image preview section is displayed for ${i} image`, async () => {
-      const image = FamilyPage.getFamilyImage(random);
+  it(`Image preview section is displayed for image`, async () => {
+    for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
+      const image = FamilyPage.getFamilyImage(getRandomNumber());
       const imagePreview: FamilyImagePreview = await image.openPreview();
 
-      expect(await imagePreview.isDisplayed()).toBeTruthy();
-    });
-  }
+      expect(await imagePreview.isDisplayed()).toBeTruthy(`${i} imagePreview is not visible`);
+    }
+  });
 
-  for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
-    fit(`Open image preview and check image src for ${i} image`, async () => {
+  it(`Open image preview and check image src for image`, async () => {
+    for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
       /**
        * click on image in matrix page should open preview for that image
        * loop is needed to check specific issue when image doesn't update
        * second time
        */
-      const image = FamilyPage.getFamilyImage(random);
+      const image = FamilyPage.getFamilyImage(getRandomNumber());
       const imagePreview: FamilyImagePreview = await image.openPreview();
 
       const imageSrc = await image.getImageSrc();
       const previewSrc = await imagePreview.getImageSrc();
 
       await expect(imageSrc).toEqual(previewSrc);
-    });
-  }
+    }
+  });
 
-  for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
-    it(`Store state in URL for ${i} image`, async () => {
+  it(`Store state in URL for image`, async () => {
+    for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
+      const _random = await getRandomNumber();
       /**
        * click on image and switching between images should store activeHouse in url
        */
       const urlBefore = await browser.getCurrentUrl();
 
-      await FamilyPage.getFamilyImage(random).openPreview();
+      await FamilyPage.getFamilyImage(_random).openPreview();
 
       const urlAfter = await browser.getCurrentUrl();
 
       await expect(urlBefore).not.toEqual(urlAfter);
-      await expect(urlAfter).toContain(`activeImage=${random + 1}`);
-    });
-  }
+      await expect(urlAfter).toContain(`activeImage=${_random + 1}`, `${i} image is not stored in URL`);
+    }
+  });
 
   it('imagePreview scrolled into view when opens', async () => {
-    const FIRST_FAMILY = 2;
-    const SECOND_FAMILY = 9;
+    const FIRST_FAMILY = 9;
+    const SECOND_FAMILY = 2;
     let imagePreview: FamilyImagePreview;
 
     const firstImage = FamilyPage.getFamilyImage(FIRST_FAMILY);
