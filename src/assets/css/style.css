@@ -340,17 +340,25 @@ body.about #app-container.container {
   }
 }
 
-@media (max-width: 460px) {
+@media (max-width: 900px) {
   svg .poorest,
   svg .richest,
   svg .scale-label,
   svg .currency-text{
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 600px) {
+  svg .poorest,
+  svg .richest,
+  svg .scale-label,
+  svg .currency-text{
+    /*font-size: 10px;*/
+  }
+
   svg .poorest {
     opacity: 0;
   }
 }
+

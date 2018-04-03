@@ -765,6 +765,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
       this.calcItemSize();
     });
 
+    this.hoverPlaces(undefined);
+
     this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
   }
 

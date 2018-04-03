@@ -14,9 +14,10 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import { AppStates, LanguageState, SubscriptionsList } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { DEBOUNCE_TIME } from '../../defaultState';
+import { get } from 'lodash';
 
 @Component({
   selector: 'quick-guide',
@@ -27,14 +28,17 @@ export class GuideComponent implements OnInit, OnDestroy {
   @Output()
   public startQuickGuide: EventEmitter<any> = new EventEmitter<any>();
 
-  public isShowGuide: boolean;
-  public description: string;
-  public bubbles: any[];
-  public isShowBubble: boolean = false;
-  public guideServiceSubscribe: Subscription;
-  public element: HTMLElement;
-  public localStorageServiceSubscription: Subscription;
-  public storeMatrixSubsdcription: Subscription;
+  isShowGuide: boolean;
+  description: string;
+  bubbles: any[];
+  isShowBubble: boolean = false;
+  guideServiceSubscribe: Subscription;
+  element: HTMLElement;
+  localStorageServiceSubscription: Subscription;
+  storeMatrixSubsdcription: Subscription;
+  ngSubscriptions: SubscriptionsList = {};
+  language = '';
+
 
   public constructor(elementRef: ElementRef,
                      private guideService: GuideService,
@@ -58,8 +62,26 @@ export class GuideComponent implements OnInit, OnDestroy {
         this.startQuickGuide.emit({});
       });
 
-    this.guideServiceSubscribe = this.guideService.getGuide(this.languageService.getLanguageParam())
+    this.subscribeStatusQuickGuide();
+
+    this.store
+      .select((appStates: AppStates) => appStates.language)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe( (language: LanguageState) => {
+        if (this.language !== language.lang) {
+          this.language = language.lang;
+          this.getQuideContent(this.language);
+        }
+      });
+  }
+
+  getQuideContent(lang: string): void {
+    if (get(this.guideServiceSubscribe, 'unsubscribe', false)) {
+      this.guideServiceSubscribe.unsubscribe()
+    }
+    this.guideServiceSubscribe = this.guideService.getGuide(`lang=${lang}`)
       .subscribe((res: any) => {
+        console.log(res);
         if (res.err) {
           console.error(res.err);
           return;
@@ -70,7 +92,6 @@ export class GuideComponent implements OnInit, OnDestroy {
         this.description = welcomeHeader.description;
         this.bubbles = difference(res.data, [welcomeHeader]);
       });
-    this.subscribeStatusQuickGuide();
   }
 
   public ngOnDestroy(): void {

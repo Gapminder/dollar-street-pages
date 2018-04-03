@@ -587,7 +587,10 @@ export class StreetFilterDrawService {
 
     this.leftScrollText
       .text(`${this.currencyUnit.symbol}${incomeL}`)
-      .attr('x', ()=> xL + this.halfOfStreetOffset - 5.5 - leftScrollTextWidth / 2);
+      .attr('x', ()=> {
+        const positionX = xL + this.halfOfStreetOffset - 5.5 - leftScrollTextWidth / 2;
+        return positionX > 0 ? positionX : 0;
+      });
 
     this.rightScrollText
       .text(`${this.currencyUnit.symbol}${incomeR}`)
