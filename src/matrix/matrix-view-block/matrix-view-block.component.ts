@@ -305,6 +305,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public goToMatrixByCountry(country: string): void {
+
     const queryParams: UrlParameters = this.urlParametersService.getAllParameters();
 
     queryParams.regions = ['World'];
@@ -332,6 +333,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.urlChangeService.assignState('/matrix');
 
     this.pagePositionService.scrollTopZero();
+
   }
 
 

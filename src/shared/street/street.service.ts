@@ -119,14 +119,7 @@ export class StreetDrawService {
     this.lowIncome = lowIncome || _.get(drawDividers, 'poor', 0);
     this.highIncome = highIncome || _.get(drawDividers, 'rich', 0);
 
-    const svgHeight = this.svg.style('height').length ? this.svg.style('height') : 0;
-    const svgWidth = this.svg.style('width').length ? this.svg.style('width') : 0;
-
-    this.width = parseInt(svgWidth, 10) - this.streetOffset;
-    this.height = parseInt(svgHeight, 10);
-
-    this.halfOfHeight = 0.5 * this.height;
-    this.windowInnerWidth = window.innerWidth;
+    this.calculateSvgSize();
 
 
     this.scale = scaleLog()
@@ -137,6 +130,17 @@ export class StreetDrawService {
       .range([0, this.width]);
 
     return this;
+  }
+
+  calculateSvgSize(): void {
+    const svgHeight = this.svg.style('height').length ? this.svg.style('height') : 0;
+    const svgWidth = this.svg.style('width').length ? this.svg.style('width') : 0;
+
+    this.width = parseInt(svgWidth, 10) - this.streetOffset;
+    this.height = parseInt(svgHeight, 10);
+
+    this.halfOfHeight = 0.5 * this.height;
+    this.windowInnerWidth = window.innerWidth;
   }
 
   set setSvg(element: HTMLElement) {

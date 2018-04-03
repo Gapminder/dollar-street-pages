@@ -51,13 +51,6 @@ describe('GuideComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('init subscriptions', () => {
-    fixture.detectChanges();
-
-    expect(component.guideServiceSubscribe).toBeDefined();
-    expect(component.localStorageServiceSubscription).toBeDefined();
-  });
-
   it('dispath store with isShowGuide value on init', () => {
     const action = new MatrixActions.OpenQuickGuide(false);
     spyOn(localStorageService, 'getItem').and.returnValue('true');
@@ -65,18 +58,6 @@ describe('GuideComponent', () => {
     fixture.detectChanges();
 
     expect(store.dispatch).toHaveBeenCalledWith(action);
-  });
-
-  it('unsubscribe on destroy', () => {
-    fixture.detectChanges();
-
-    spyOn(component.guideServiceSubscribe, 'unsubscribe');
-    spyOn(component.localStorageServiceSubscription, 'unsubscribe');
-
-    component.ngOnDestroy();
-
-    expect(component.guideServiceSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.localStorageServiceSubscription.unsubscribe).toHaveBeenCalled();
   });
 
   it('openQuickTour by click', () => {
