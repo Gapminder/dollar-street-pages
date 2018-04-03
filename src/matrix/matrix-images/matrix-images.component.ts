@@ -1,6 +1,5 @@
 import 'rxjs/operator/debounceTime';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
@@ -9,7 +8,6 @@ import {
   EventEmitter,
   ElementRef,
   Output,
-  OnInit,
   AfterViewInit,
   OnDestroy,
   NgZone,

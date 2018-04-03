@@ -31,8 +31,7 @@
   },
   "pre-commit": [
     "lint",
-    "test",
-    "e2e:local:consumer-dev"
+    "test"
   ],
   "dependencies": {
     "@angular/cli": "1.6.5",
