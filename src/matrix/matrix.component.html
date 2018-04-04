@@ -1,7 +1,6 @@
 <div class="matrix-container">
   <div #matrixHeader
-       class="matrix-header main-header"
-       [style.top.px]="-guidePositionTop">
+       class="matrix-header">
 
     <div #streetAndTitleContainer
          class="street-and-title-container">
@@ -186,20 +185,21 @@
 
     </div>
 
-    <income-filter *ngIf="!isDesktop && isOpenIncomeFilter"
+    <income-filter *ngIf="isOpenIncomeFilter"
                   [places]="streetPlacesData"
                   [lowIncome]="lowIncome"
                   [highIncome]="highIncome"
                   (sendResponse)="getResponseFromIncomeFilter($event)">
     </income-filter>
   </div>
-
+  <div class="grid-container">
   <matrix-images [thing]="thing"
                 [places]="matrixPlaces"
                 (hoverPlace)="hoverPlaces($event)"
                 (activeHouseOptions)="activeHouseOptions($event)"
                 (imageHeightChanged)="imageHeightChanged($event)">
   </matrix-images>
+  </div>
 
   <div class="zoom-column pull-right"
        *ngIf="isDesktop"

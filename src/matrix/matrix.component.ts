@@ -115,7 +115,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   public element: HTMLElement;
   public imageResolution: ImageResolutionInterface;
   public matrixImagesContainer: HTMLElement;
-  public guidePositionTop: number = 0;
   public guideContainerElement: HTMLElement;
   public device: BrowserDetectionService;
   public theWorldTranslate: string;
@@ -151,7 +150,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   public matrixContainerElement: HTMLElement;
   public shareUrl: string;
   public sharedImageUrl: string;
-  public storeSubscription: Subscription
+  public storeSubscription: Subscription;
 
   public constructor(element: ElementRef,
                      private zone: NgZone,
@@ -183,7 +182,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     this.imageResolution = this.utilsService.getImageResolution(this.isDesktop);
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.headerElement = document.querySelector('.header-content') as HTMLElement;
     this.matrixContainerElement = document.querySelector('.matrix-container') as HTMLElement;
 
@@ -351,7 +350,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
           this.plusSignWidth = this.element.offsetWidth / this.pinPlusCount - this.pinPlusOffset;
         });
       });
-
 
 
     if ('scrollRestoration' in history) {
@@ -762,6 +760,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
       this.buildTitle(this.query);
 
+      window.dispatchEvent(new Event('resize'));
       this.calcItemSize();
     });
 

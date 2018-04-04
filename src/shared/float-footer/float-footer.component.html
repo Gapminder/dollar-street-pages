@@ -9,7 +9,7 @@
 
   <social-share-buttons></social-share-buttons>
 
-  <button *ngIf="isDesktop && isMatrixPage && showEmbeded"
+  <button *ngIf="isDesktop && isMatrixPage"
        class="pin-icon"
        (click)="SetPinMode()"
         [ngClass]="{'active': pinMode || embedMode}">

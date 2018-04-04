@@ -2,20 +2,15 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import {
   Component,
-  Input,
   OnInit,
   OnDestroy,
   HostListener,
   ElementRef,
-  Output,
-  EventEmitter,
   AfterViewInit,
   ViewChild
 } from '@angular/core';
 import {
   Router,
-  NavigationEnd,
-  ActivatedRoute
 } from '@angular/router';
 import {
   DrawDividersInterface,
@@ -39,7 +34,6 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public element: HTMLElement;
   public window: Window = window;
-  public isMatrixPage: boolean;
   public isOpenMenu: boolean = false;
   public streetData: DrawDividersInterface;
   public getTranslationSubscribe: Subscription;
