@@ -6,14 +6,6 @@ matrix-images {
   position: relative;
 }
 
-.matrix-header {
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 8;
-  background-color: #fff;
-}
-
 .zoom-column {
   position: fixed;
   right: 32px;
@@ -246,6 +238,7 @@ matrix-images {
   padding: 10px 20px 10px 20px;
   min-height: 64px;
   max-height: 50vh;
+  transform: translateZ(0);
 }
 
 .grey-bg {
@@ -357,6 +350,7 @@ matrix-images {
   flex: 1 1 50%;
   font-weight: bold;
   font-size: 24px;
+  line-height: 24px;
 }
 
 .places-container .one-row .place-image-box-income {
@@ -711,6 +705,35 @@ matrix-images {
   margin-right: 24px;
 }
 
+.street-and-title-container {
+
+}
+
+.street-container {
+  top: 93px;
+  left: 0;
+  right: 0;
+  z-index: 8;
+  background-color: #fff;
+  position: fixed;
+  height: 69px;
+  width: 100%;
+}
+
+.grid-container {
+  padding-top: 106px;
+}
+
+.desktop-view .grid-container {
+  padding-top: 69px;
+}
+
+.pin-wrap {
+  margin-top: -162px;
+  box-sizing: border-box;
+  min-height: 162px;
+}
+
 @media (max-width: 700px) {
   .street-container.fixed {
     position: fixed;
@@ -720,6 +743,10 @@ matrix-images {
 
   .street-container.fixed .short-title {
     display: block;
+  }
+
+  .desktop-view .street-and-title-container {
+    top: 106px;
   }
 }
 
@@ -759,4 +786,20 @@ matrix-images {
   .pin-footer-row .share-close-buttons {
     flex: 0 0 110px;
   }
+}
+
+@media (min-width: 1025px) {
+  .street-container {
+    top: 64px;
+  }
+
+  .grid-container {
+    padding-top: 72px;
+  }
+
+  .pin-wrap {
+    margin-top: -128px;
+    min-height: 128px;
+  }
+
 }

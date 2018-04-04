@@ -32,6 +32,8 @@ import * as StreetSettingsActions from '../../common';
 import * as _ from 'lodash';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
 
+const FREQUENCY_UPDATE_STREET = 10;
+
 @Component({
   selector: 'street',
   templateUrl: './street.component.html',
@@ -158,8 +160,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       }))
     });
 
-    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces.subscribe((chosenPlaces: any): void => {
-      const difference = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces
+      .debounceTime(FREQUENCY_UPDATE_STREET)
+      .subscribe((chosenPlaces: any): void => {
+        const difference = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
 
       if (this.placesArr && this.streetData) {
         this.setDividers(this.placesArr, this.streetData);
@@ -307,9 +311,9 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
         .value())
       .drawScale(places, drawDividers);
 
-    if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
-      this.street.clearAndRedraw(this.street.chosenPlaces);
-    }
+      if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
+        this.street.clearAndRedraw(this.street.chosenPlaces);
+      }
     }
   }
 }

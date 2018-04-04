@@ -35,7 +35,6 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   public isMatrixPage: boolean;
   public pinMode: boolean;
   public embedMode: boolean;
-  showEmbeded = false; //TODO: hided embed features for prod 20.02.18
 
   public constructor(elementRef: ElementRef,
                      private zone: NgZone,

@@ -121,7 +121,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   currencyUnitTemp: Currency;
   isEmbedMode: boolean;
   headerContainerElement: HTMLElement;
-  paddingPlaceElement: HTMLElement;
+  // paddingPlaceElement: HTMLElement;
   byDollarText: string;
   incomeTitleText: string;
   isIncomeFilter: boolean;
@@ -150,13 +150,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   isOutsideIncomeFilterClick(event: any): void {
     const container = this.element.querySelector('.income-title-container');
     if (container && !container.contains(event.target) && this.isIncomeDesktopOpened) {
-      this.closeIncomeFilterDesktop(new MouseEvent(''));
+      this.closeIncomeFilterDesktop();
     }
   }
 
   ngAfterViewInit(): void {
     this.headerContainerElement = this.element.querySelector('.header-container') as HTMLElement;
-    this.paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
+    // this.paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
 
     this.ngSubscriptions.resize = fromEvent(window, 'resize')
       .debounceTime(DEBOUNCE_TIME)
@@ -198,36 +198,36 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   checkHeaderFloat(): void {
-    let paddingHeight = 0;
+    // let paddingHeight = 0;
+    //
+    // paddingHeight += this.headerContainerElement.clientHeight;
+    //
+    // if (this.isMatrixPage) {
+    //   // const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+    //
+    //   paddingHeight += streetContainerElement.clientHeight;
+    //
+    //   streetContainerElement.style.position = 'fixed';
+    //   streetContainerElement.style.top = this.headerContainerElement.clientHeight + 'px';
+    //   streetContainerElement.style.zIndex = '998';
+    // }
 
-    paddingHeight += this.headerContainerElement.clientHeight;
+    // this.paddingPlaceElement.style.height = `${paddingHeight}px`;
 
-    if (this.isMatrixPage) {
-      const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
-
-      paddingHeight += streetContainerElement.clientHeight;
-
-      streetContainerElement.style.position = 'fixed';
-      streetContainerElement.style.top = this.headerContainerElement.clientHeight + 'px';
-      streetContainerElement.style.zIndex = '998';
-    }
-
-    this.paddingPlaceElement.style.height = `${paddingHeight}px`;
-
-    this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);
+    // this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);
   }
 
   preventHeaderFloat(): void {
-    if (this.isMatrixPage) {
-      const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+    // if (this.isMatrixPage) {
+    //   const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+    //
+    //   streetContainerElement.style.position = 'static';
+    //   streetContainerElement.style.zIndex = '0';
+    // }
 
-      streetContainerElement.style.position = 'static';
-      streetContainerElement.style.zIndex = '0';
-    }
+    // this.paddingPlaceElement.style.height = '0px';
 
-    this.paddingPlaceElement.style.height = '0px';
-
-    this.toggleStyleClass(this.headerContainerElement, 'position-fixed', false);
+    // this.toggleStyleClass(this.headerContainerElement, 'position-fixed', false);
   }
 
   toggleStyleClass(el: HTMLElement, cls: string, toggle: boolean): void {
@@ -247,8 +247,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
 
     if (this.isTablet || this.isMobile) {
-      this.incomeTitleText = this.byDollarText;
-
       this.isIncomeFilter = !this.isTablet;
     }
   }
@@ -454,11 +452,19 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     return false;
   }
 
-  openIncomeFilterDesktop(e: MouseEvent): void {
+  toggleIncomeFilterDesktop(): void {
+    if (this.isIncomeDesktopOpened) {
+      this.closeIncomeFilterDesktop();
+    } else {
+      this.openIncomeFilterDesktop();
+    }
+  }
+
+  openIncomeFilterDesktop(): void {
     this.isIncomeDesktopOpened = true;
   }
 
-  closeIncomeFilterDesktop(e: MouseEvent): void {
+  closeIncomeFilterDesktop(): void {
 
     this.isIncomeDesktopOpened = false;
 
@@ -479,7 +485,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   applyIncomeFilterDesktop(e): void {
-    this.openIncomeFilterDesktop(e);
+    this.openIncomeFilterDesktop();
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
 
@@ -563,18 +569,16 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return;
     }
 
-    /*
-    TODO: hided desktop income filter for prod 20.02.18
 
     if (this.isIncomeDesktopOpened) {
-      this.closeIncomeFilterDesktop(new MouseEvent(''));
+      this.closeIncomeFilterDesktop();
+
       return;
     }
 
-    if (!this.isMobile) {
-      this.openIncomeFilterDesktop(e);
-    }
-    */
+    // if (!this.isMobile) {
+    //   this.openIncomeFilterDesktop(e);
+    // }
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }

@@ -81,7 +81,7 @@ export class GuideComponent implements OnInit, OnDestroy {
     }
     this.guideServiceSubscribe = this.guideService.getGuide(`lang=${lang}`)
       .subscribe((res: any) => {
-        console.log(res);
+
         if (res.err) {
           console.error(res.err);
           return;

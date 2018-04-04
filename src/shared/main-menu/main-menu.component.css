@@ -1,3 +1,21 @@
+.main-menu {
+  display: none;
+}
+
+.main-mobile-menu {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .main-menu {
+    display: block;
+  }
+
+  .main-mobile-menu {
+    display: none;
+  }
+}
+
 #main-menu .menu-icon {
   display: block;
   width: 62px;

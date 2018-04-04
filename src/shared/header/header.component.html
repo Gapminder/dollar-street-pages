@@ -1,4 +1,4 @@
-<div class="header-container"
+<div class="header-container position-fixed"
      [ngClass]="{'bottom-yellow-border': isAboutPage || isDonatePage ||
                                          isMapPage || isArticlePage || isCountryPage||
                                          isPhotographersPage || isPhotographerPage || isTeamPage}">
@@ -6,7 +6,7 @@
       [ngClass]="{'small-container': isMapPage || isAboutPage || isTeamPage ||
                                      isDonatePage || isCountryPage || isArticlePage ||
                                      isPhotographersPage || isPhotographerPage}">
-    <div class="icon-container pull-left"
+    <div class="icon-container"
          *ngIf="(isMatrixPage && !isMobile && isPinMode) ||
                 (isMatrixPage && !isMobile) ||
                 isAboutPage || isDonatePage || isArticlePage ||
@@ -27,7 +27,7 @@
           <h2 #headerTitle class="header-title heading pull-left"></h2>
     </div>
 
-    <div #filtersContainer>
+    <div #filtersContainer class="filters-position">
       <div *ngIf="((isMatrixPage && !isPinMode) || (isMatrixPage && isPinMode)) || isMapPage"
           class="filters-container"
           [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
@@ -41,22 +41,25 @@
             class="some-filter-container incomeby">
           <span class="mobile-ver">{{ 'IN' | translate }}</span>
 
-          <countries-filter (isFilterGotData)="isFilterGotData($event)"></countries-filter>
+          <div class="countries-filter-container">
+            <countries-filter (isFilterGotData)="isFilterGotData($event)"></countries-filter>
+          </div>
 
           <span #incomeTitleContainer
                 class="income-title-container">
             <!--<span class="income-title filter"
-                  (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
-            <span class="income-title filter"
-                  (click)="openIncomeFilterDesktop($event)">{{ 'BY_INCOME' | translate }}</span>-->
-            <span class="income-title-text"
-              *ngIf="!isMobile">
-              {{ byIncomeText }}
-            </span>
-            <span class="income-title"
-                  *ngIf="isMobile"
+                  (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>-->
+            <span class="income-title filter currency-filter"
+                  (click)="toggleIncomeFilterDesktop()">{{ 'BY_INCOME' | translate }}</span>
+            <!--<span class="income-title-text"-->
+              <!--*ngIf="!isMobile">-->
+              <!--{{ byIncomeText }}-->
+            <!--</span>-->
+            <span class="income-title short-filter"
                   [ngClass]="{opened: isIncomeDesktopOpened, filter: isIncomeFilter}"
-                  (click)="openIncomeFilter($event)">{{ incomeTitleText }}</span>
+                  (click)="openIncomeFilter($event)">
+              <span class="short">{{ byDollarText }}</span>
+            </span>
 
             <div (click)="incomeContainerClick($event)"
                  [ngStyle]="{display: isIncomeDesktopOpened ? 'block' : 'none'}"
@@ -68,7 +71,7 @@
                      src="/assets/img/info-icon.svg"/>
                 <img class="close-button"
                      src="/assets/img/close-button.svg"
-                     (click)="closeIncomeFilterDesktop($event)"/>
+                     (click)="closeIncomeFilterDesktop()"/>
               </div>
 
               <div class="income-filter-desktop-content">
@@ -178,7 +181,7 @@
       </div>
     </div>
 
-    <div class="menu-container pull-right">
+    <div class="menu-container">
       <main-menu class="pull-right"></main-menu>
 
       <span class="language-selector-header">
