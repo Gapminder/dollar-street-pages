@@ -761,7 +761,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
       this.changeTimeUnit(this.timeUnit);
 
       this.buildTitle(this.query);
-
+      window.dispatchEvent(new Event('resize'));
       this.calcItemSize();
     });
 
