@@ -14,6 +14,8 @@ import { AppComponent } from '../app.component';
 import { TranslateTestingModule } from '../../test/translateTesting.module';
 import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { forEach } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -52,18 +54,11 @@ describe('AppComponent', () => {
   it('ngOnInit(), ngOnDestroy()', () => {
     component.ngOnInit();
 
-    expect(component.loaderServiceSubscribe).toBeDefined();
-    expect(component.documentCreatedSubscribe).toBeDefined();
-    expect(component.routerEventsSubscribe).toBeDefined();
-
-    spyOn(component.loaderServiceSubscribe, 'unsubscribe');
-    spyOn(component.routerEventsSubscribe, 'unsubscribe');
-    spyOn(component.documentCreatedSubscribe, 'unsubscribe');
+    forEach(component.ngSubscriptions, (subscription: Subscription) => {
+      spyOn(subscription, 'unsubscribe');
+    });
 
     component.ngOnDestroy();
 
-    expect(component.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.routerEventsSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.loaderServiceSubscribe.unsubscribe).toHaveBeenCalled();
   });
 });

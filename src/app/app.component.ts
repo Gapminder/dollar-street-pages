@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import {
   Component,
   OnInit,
-  OnDestroy
+  OnDestroy, ViewChild, ElementRef, Renderer, Renderer2
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import {
@@ -12,6 +12,9 @@ import {
   FontDetectorService,
   GoogleAnalyticsService
 } from '../common';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { SubscriptionsList } from '../interfaces';
+import { forEach, has } from 'lodash';
 
 @Component({
   selector: 'consumer-app',
@@ -19,34 +22,38 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public isLoader = false;
-  public isVisibleHeader: boolean;
-  public routerEventsSubscribe: Subscription;
-  public loaderServiceSubscribe: Subscription;
-  public documentCreatedSubscribe: Subscription;
-  public currentPage: string;
+  isLoader = false;
+  isVisibleHeader: boolean;
+  currentPage: string;
+  ngSubscriptions: SubscriptionsList = {};
 
-  public constructor(private router: Router,
+  @ViewChild('container')
+  container: ElementRef;
+
+  @ViewChild('headerPosition')
+  headerPosition: ElementRef;
+
+  constructor(private router: Router,
                      private languageService: LanguageService,
                      private loaderService: LoaderService,
                      private fontDetectorService: FontDetectorService,
                      private googleAnalyticsService: GoogleAnalyticsService) {
   }
 
-  public ngOnInit(): void {
-    this.loaderServiceSubscribe = this.loaderService
+  ngOnInit(): void {
+    this.ngSubscriptions.loaderService = this.loaderService
       .getLoaderEvent()
       .subscribe((data: {isLoaded: boolean}) => {
         this.isLoader = data.isLoaded;
       });
 
-    this.documentCreatedSubscribe = Observable.fromEvent(document, 'DOMContentLoaded')
+    this.ngSubscriptions.documentCreated = Observable.fromEvent(document, 'DOMContentLoaded')
       .subscribe(() => {
           this.fontDetectorService.detectFont();
           this.googleAnalyticsService.googleAnalyticsContent();
       });
 
-    this.routerEventsSubscribe = this.router.events.subscribe((event: any) => {
+    this.ngSubscriptions.routerEvents = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.currentPage = '';
 
@@ -66,19 +73,31 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this.ngSubscriptions.scrollEvent = fromEvent(document, 'scroll')
+      .subscribe(() => {
+        this.setPositionHeader();
+      });
   }
 
-  public ngOnDestroy(): void {
-      if (this.routerEventsSubscribe) {
-          this.routerEventsSubscribe.unsubscribe();
-      }
+  ngOnDestroy(): void {
+      forEach(this.ngSubscriptions, value => value.unsubscribe());
+  }
 
-      if (this.loaderServiceSubscribe) {
-          this.loaderServiceSubscribe.unsubscribe();
-      }
+  setPositionHeader(): void {
+    const STACK_CLASS = 'stuck-header-position';
+    const container = this.container.nativeElement
 
-      if (this.documentCreatedSubscribe) {
-          this.documentCreatedSubscribe.unsubscribe();
-      }
+    if ( (window.scrollY < container.offsetTop) &&
+      !container.classList.contains(STACK_CLASS)) {
+
+      container.classList.add(STACK_CLASS)
+
+    } else if ((window.scrollY >= container.offsetTop) &&
+      (container.classList.contains(STACK_CLASS))) {
+
+      container.classList.remove(STACK_CLASS)
+
+    }
   }
 }

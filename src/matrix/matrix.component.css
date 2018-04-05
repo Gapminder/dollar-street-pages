@@ -728,11 +728,6 @@ matrix-images {
   padding-top: 69px;
 }
 
-.pin-wrap {
-  margin-top: -162px;
-  box-sizing: border-box;
-  min-height: 162px;
-}
 
 @media (max-width: 700px) {
   .street-container.fixed {
@@ -796,10 +791,4 @@ matrix-images {
   .grid-container {
     padding-top: 72px;
   }
-
-  .pin-wrap {
-    margin-top: -128px;
-    min-height: 128px;
-  }
-
 }

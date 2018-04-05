@@ -116,6 +116,7 @@ export class GuideComponent implements OnInit, OnDestroy {
       .subscribe(matrix => {
       if (matrix.quickGuide) {
         this.isShowGuide = true;
+        document.dispatchEvent(new Event('scroll'));
       } else {
         this.isShowGuide = false;
         this.isShowBubble = false;
