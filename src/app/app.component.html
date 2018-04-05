@@ -1,8 +1,14 @@
-<quick-guide *ngIf="currentPage === 'matrix'"></quick-guide>
+<div class="app-container">
+<div class="guide-position">
+  <quick-guide *ngIf="currentPage === 'matrix'"></quick-guide>
+</div>
 
-<header [currentPage]="currentPage"></header>
+<div id="app-container" class="container stuck-header-position" footerSpace #container>
+  <div class="header-position" #headerPosition>
+    <header [currentPage]="currentPage"></header>
+  </div>
 
-<div id="app-container" class="container" footerSpace>
+
   <router-outlet></router-outlet>
 </div>
 
@@ -10,7 +16,7 @@
 <float-footer></float-footer>
 <url-parameters></url-parameters>
 <page-position></page-position>
-
+</div>
 <loader [hidden]="isLoader"></loader>
 
 <div style="display: none;">

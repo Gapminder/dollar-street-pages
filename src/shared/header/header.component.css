@@ -12,13 +12,6 @@
   width: 100%;
 }
 
-.position-fixed {
-  position: fixed;
-  z-index: 999;
-  width: 100%;
-  top: 0;
-}
-
 .small-container {
   display: block;
   max-width: 1400px;
