@@ -85,13 +85,13 @@ describe('MatrixViewBlockComponent', () => {
     component.goToMatrixByCountry('Nigeria');
   });
 
-  it('getDescription()', () => {
-    const description = 'This is a long description';
-
-    let resp = component.getDescription(description);
-
-    expect(resp).toEqual(description);
-  });
+  // it('getDescription()', () => {
+  //   const description = 'This is a long description';
+  //
+  //   let resp = component.getDescription(description);
+  //
+  //   expect(resp).toEqual(description);
+  // });
 
   it('truncCountryName()', () => {
     let resp = component.truncCountryName({ alias: 'South Africa' });

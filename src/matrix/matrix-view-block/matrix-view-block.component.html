@@ -1,6 +1,6 @@
 <div #viewImageBlockContainer
      class="view-image-block-container zoom-{{privateZoom}}"
-     *ngIf="showblock && isDesktop">
+     *ngIf="showblock">
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
   <div class="view-image-block-content">
     <div class="view-image-container">
@@ -27,7 +27,7 @@
         <div class="header-container">{{currencyUnit?.symbol}} {{place?.showIncome}}<span>/{{timeUnit?.name}}</span></div>
 
         <div class="home-description-container">
-          <h3>
+          <h3 class="description-title">
             <span *ngIf="familyData?.familyName">{{familyData?.familyName}}<span *ngIf="currentLanguage == 'en'"> {{ 'FAMILY' | translate }}</span>,</span>
 
             <span style="cursor:pointer"
@@ -87,30 +87,42 @@
             </div>
           </div>
 
-          <p *ngIf="familyData?.description">{{familyData.description}}</p>
+          <div class="description-text">
+            <div class="inner-text">
+              <p *ngIf="familyData?.description">{{familyData.description}}</p>
+            </div>
+          </div>
 
           <div *ngIf="showTranslateMe" class="translate-me-desktop">
             <translate-me></translate-me>
           </div>
 
-          <a *ngIf="familyData.goToPlaceData"
-             [routerLink]="['/family']"
-             [queryParams]="{place: place._id}"
-             (click)="visitThisHome(place._id)"
-             angulartics2On="click"
-             angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }} <img
-            src="/assets/img/arrow-right-icon.svg" alt=""><img src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+          <div class="description-actions">
+            <a *ngIf="familyData.goToPlaceData"
+              [routerLink]="['/family']"
+              [queryParams]="{place: place._id}"
+              (click)="visitThisHome(place._id)"
+              class="description-button"
+              angulartics2On="click"
+              angularticsEvent="From Matrix page to {{familyData.familyName}} family place page">{{ 'VISIT_THIS_HOME' | translate }}
+              <svg >
+                <use xlink:href="#arrow-right-icon"></use>
+              </svg>
+            </a>
 
-          <a *ngIf="isShowCountryButton"
-             [routerLink]="['/matrix']"
-             [queryParams]="{countries: familyData.country.originName}"
-             (click)="goToMatrixByCountry(familyData.country.originName)">
-            <span>{{ 'ALL' | translate }} {{familyData?.activeThing?.plural.toLowerCase()}}</span>
-            <span>{{ 'IN' | translate }}</span>
-            <span>{{countryName}}</span>
-            <img src="/assets/img/arrow-right-icon.svg" alt="">
-            <img src="/assets/img/arrow-right-icon-white.svg" alt="">
-          </a>
+            <a *ngIf="isShowCountryButton"
+              [routerLink]="['/matrix']"
+              [queryParams]="{countries: familyData.country.originName}"
+              (click)="goToMatrixByCountry(familyData.country.originName)"
+              class="description-button">
+              <span>{{ 'ALL' | translate }} {{familyData?.activeThing?.plural.toLowerCase()}}</span>
+              <span>{{ 'IN' | translate }}</span>
+              <span>{{countryName}}</span>
+              <svg >
+                <use xlink:href="#arrow-right-icon"></use>
+              </svg>
+            </a>
+          </div>
         </div>
 
         <div class="map-container">
@@ -167,7 +179,7 @@
   </div>
 </div>
 
-<div #mobileViewImageBlockContainer class="mobile-view-image-block-container zoom-{{privateZoom}}" *ngIf="showblock && !isDesktop">
+<div #mobileViewImageBlockContainer class="mobile-view-image-block-container zoom-{{privateZoom}}" *ngIf="showblock">
   <div class="active-house" [style.left.px]="markerPositionLeft"></div>
 
   <div class="view-image-container">
