@@ -180,9 +180,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           this.windowInnerWidth = window.innerWidth;
           this.setMarkerPosition();
 
-          // if (this.familyData && this.familyData.familyData.length) {
-          //   this.familyData.description = this.getDescription(this.familyData.familyData);
-          // }
+          if (this.familyData && this.familyData.familyData.length) {
+            this.familyData.description = this.getDescription(this.familyData.familyData);
+          }
         });
       });
 
@@ -242,9 +242,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         this.showTranslateMe = false;
       }
 
-      // if (this.familyData && this.familyData.familyData && this.familyData.familyData.length) {
-      //   this.familyData.description = this.getDescription(this.familyData.familyData);
-      // }
+      if (this.familyData && this.familyData.familyData && this.familyData.familyData.length) {
+        this.familyData.description = this.getDescription(this.familyData.familyData);
+      }
 
       this.countryName = this.truncCountryName(this.familyData.country);
 
@@ -341,9 +341,9 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.markerPositionLeft = (this.itemSize * this.positionInRow) - this.itemSize / 2;
   }
 
-  // public getDescription(shortDescription: string): string {
+  public getDescription(shortDescription: string): string {
     // let numbers: number = 300;
-
+    //
     // if (this.isDesktop) {
     //   if (this.windowInnerWidth > 1440 && shortDescription.length > 300) {
     //     numbers = 300;
@@ -351,14 +351,14 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
     //     numbers = 113;
     //   }
     // }
-
+    //
     // if (shortDescription.length > numbers) {
     //   return shortDescription.slice(0, numbers) + '...';
     // } else {
     //   return shortDescription;
     // }
-    // return shortDescription + shortDescription;
-  // }
+    return shortDescription + shortDescription;
+  }
 
   public truncCountryName(countryData: any): string {
     let countryName: string;

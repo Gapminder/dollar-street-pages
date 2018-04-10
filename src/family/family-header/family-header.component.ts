@@ -31,7 +31,7 @@ import {
   LoaderService
 } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
-import { get } from 'lodash';
+import { get, map } from 'lodash';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 import { DEBOUNCE_TIME } from "../../defaultState";
 
@@ -196,12 +196,23 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {
           this.showTranslateMe = true;
         }
+        this.home.htmlFamilyInfo = this.toHtmlFullDescription(get(this.home, 'familyInfo', ''));
 
         this.truncCountryName(this.home.country);
 
         this.calcIncomeValue();
       });
     }
+  }
+
+  toHtmlFullDescription(oneString: string): string {
+    const array = oneString.split(/\r\n|\r|\n/);
+
+    const html = map(array, (pharagraph: string) => {
+      return `<p>${pharagraph}</p>`;
+    }).join('');
+
+    return html;
   }
 
   private calcIncomeValue(): void {
