@@ -357,8 +357,8 @@ body.about #app-container.container {
     /*font-size: 10px;*/
   }
 
-  svg .poorest {
-    opacity: 0;
-  }
+  /*svg .poorest {*/
+    /*opacity: 0;*/
+  /*}*/
 }
 
