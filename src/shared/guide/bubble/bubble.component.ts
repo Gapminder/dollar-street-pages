@@ -17,6 +17,9 @@ import {
 } from '../../../common';
 import { KeyCodes } from '../../../enums';
 import { DEBOUNCE_TIME } from "../../../defaultState";
+import * as MatrixActions from "../../../matrix/ngrx/matrix.actions";
+import {Store} from "@ngrx/store";
+import {AppStates} from "../../../interfaces";
 
 @Component({
   selector: 'bubble',
@@ -45,7 +48,8 @@ export class BubbleComponent implements OnInit, OnDestroy {
                      private zone: NgZone,
                      private browserDetectionService: BrowserDetectionService,
                      private localStorageService: LocalStorageService,
-                     private utilsService: UtilsService) {
+                     private utilsService: UtilsService,
+                     private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
   }
 
@@ -160,6 +164,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
         if (step === 6) {
           this.localStorageService.setItem('quick-guide', true);
+          this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
         }
 
         if (step !== 6) {
