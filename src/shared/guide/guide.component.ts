@@ -49,9 +49,7 @@ export class GuideComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    const guideLocalStore = this.localStorageService.getItem('quick-guide');
-    this.isShowGuide = guideLocalStore === null ? true : !guideLocalStore;
-    this.store.dispatch(new MatrixActions.OpenQuickGuide(this.isShowGuide));
+    this.checkGuideStatus();
 
     this.localStorageServiceSubscription = this.localStorageService
       .getItemEvent()
@@ -72,7 +70,18 @@ export class GuideComponent implements OnInit, OnDestroy {
           this.language = language.lang;
           this.getQuideContent(this.language);
         }
+
+        this.checkGuideStatus();
       });
+  }
+
+  checkGuideStatus(): void {
+    const guideLocalStore = this.localStorageService.getItem('quick-guide');
+    const isShowGuide = guideLocalStore === null ? true : !guideLocalStore;
+    if (!this.isShowGuide && isShowGuide !== this.isShowGuide) {
+      this.isShowGuide = isShowGuide;
+      this.store.dispatch(new MatrixActions.OpenQuickGuide(this.isShowGuide));
+    }
   }
 
   getQuideContent(lang: string): void {
