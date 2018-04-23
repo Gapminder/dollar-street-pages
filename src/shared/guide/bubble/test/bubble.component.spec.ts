@@ -16,6 +16,9 @@ import {
 } from '../../../../test/';
 import { BubbleComponent } from '../bubble.component';
 import { SocialShareButtonsComponent } from '../../../social-share-buttons/social-share-buttons.component';
+import {CommonServicesTestingModule} from '../../../../test/commonServicesTesting.module';
+import {StoreModule} from "@ngrx/store";
+import * as fromRoot from "../../../../app/ngrx/root.reducer";
 
 describe('BubbleComponent', () => {
     let component: BubbleComponent;
@@ -24,7 +27,9 @@ describe('BubbleComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                TranslateModule
+                TranslateModule,
+                StoreModule.forRoot({ ...fromRoot.reducers }),
+                CommonServicesTestingModule
             ],
             declarations: [
                 BubbleComponent,
