@@ -1,9 +1,28 @@
-import {UrlParameters} from './interfaces';
+import {TimeUnitCode, UrlParameters} from './interfaces';
 
 export const DEBOUNCE_TIME = 100;
 export const MOBILE_SIZE = 600;
 export const MATRIX_GRID_CONTAINER_CLASS = 'images-container';
 export const FAMILY_GRID_CONTAINER_CLASS = 'family-image-container';
+
+export const TIME_UNIT_CODES: {[key: string]: TimeUnitCode} = {
+  day: {
+    code: 'DAY',
+    income: 'DAYLY_INCOME'
+  },
+  week: {
+    code: 'WEEK',
+    income: 'WEEKLY_INCOME'
+  },
+  month: {
+    code: 'MONTH',
+    income: 'MONTHLY_INCOME'
+  },
+  year: {
+    code: 'YEAR',
+    income: 'YEARLY_INCOME'
+  }
+};
 
 export const DefaultUrlParameters: UrlParameters = {
   lang: 'en',

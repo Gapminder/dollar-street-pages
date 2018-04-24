@@ -121,6 +121,13 @@ export interface TimeUnit {
   name: string;
   name1?: string;
   per: string;
+  translationCode?: string;
+  translationIncome?: string;
+}
+
+export interface TimeUnitCode {
+  code: string;
+  income: string;
 }
 
 export interface Currency {

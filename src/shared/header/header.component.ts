@@ -326,7 +326,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       .select((appStates: AppStates) => appStates.language)
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((language: LanguageState) => {
-        this.urlParams.lang = language.lang;
+        this.urlParams.lang = get(language, 'lang', DefaultUrlParameters.lang);
       });
 
     this.ngSubscriptions.appState = this.store
