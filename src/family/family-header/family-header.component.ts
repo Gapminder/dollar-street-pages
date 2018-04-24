@@ -7,6 +7,8 @@ import {
   Currency,
   DrawDividersInterface,
   TimeUnit,
+  TimeUnitCode,
+  TranslationsInterface,
   UrlParameters
 } from '../../interfaces';
 import {
@@ -31,9 +33,12 @@ import {
   LoaderService
 } from '../../common';
 import { FamilyHeaderService } from './family-header.service';
-import { get, map } from 'lodash';
+import { get, map, find } from 'lodash';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
-import { DEBOUNCE_TIME } from "../../defaultState";
+import {
+  DEBOUNCE_TIME,
+  TIME_UNIT_CODES
+} from '../../defaultState';
 
 @Component({
   selector: 'family-header',
@@ -129,6 +134,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         if (get(matrix, 'timeUnit', false)
           && this.timeUnit !== matrix.timeUnit) {
           this.timeUnit = matrix.timeUnit;
+          this.getTimeUnitTranslations(matrix.timeUnit, language.translations);
         }
 
         if (get(matrix, 'timeUnits', false)) {
@@ -205,6 +211,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+
   toHtmlFullDescription(oneString: string): string {
     const array = oneString.split(/\r\n|\r|\n/);
 
@@ -213,6 +220,21 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }).join('');
 
     return html;
+  }
+
+  getTimeUnitTranslations(timeUnit: TimeUnit, translations: TranslationsInterface): void {
+    if (this.timeUnit !== timeUnit) {
+      this.timeUnit = timeUnit;
+    }
+
+    console.log(this.timeUnit);
+    const timeUnitCode: TimeUnitCode = find(TIME_UNIT_CODES, {code: timeUnit.code});
+
+    const translationCode = get(translations, timeUnit.code, timeUnit.name);
+    this.timeUnit.translationCode = translationCode;
+
+    const translationIncome = get(translations, timeUnitCode.income, timeUnit.name1);
+    this.timeUnit.translationIncome = translationIncome;
   }
 
   private calcIncomeValue(): void {

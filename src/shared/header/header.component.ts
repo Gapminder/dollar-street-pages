@@ -1,8 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { forEach, difference, map, find, get } from 'lodash';
+import { forEach, difference, map, find, get, assign } from 'lodash';
 import {
   Component,
   Input,
@@ -29,9 +26,8 @@ import {
   MatrixState,
   ThingsState,
   CountriesFilterState,
-  LanguageState, UrlParameters
+  LanguageState
 } from '../../interfaces';
-import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { ThingsFilterComponent } from '../things-filter/things-filter.component';
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
@@ -326,12 +322,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.calcIncomeSize();
     });
 
-    this.ngSubscriptions.appState = this.store
+    this.ngSubscriptions.languageState = this.store
       .select((appStates: AppStates) => appStates.language)
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((language: LanguageState) => {
-        // const trans = language.translations;
-        // this.getTranslations(trans);
+        this.urlParams.lang = get(language, 'lang', DefaultUrlParameters.lang);
       });
 
     this.ngSubscriptions.appState = this.store
@@ -683,7 +678,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     const concatLocations: string[] = regions.concat(getTranslatedCountries);
 
     if (concatLocations.length > 2) {
-      title = concatLocations.slice(0, 2).join(', ') + ' (+' + (concatLocations.length - 2) + ')';
+      title = `${concatLocations.slice(0, 2).join(', ')} (+ ${concatLocations.length - 2})`;
     } else {
       title = concatLocations.join(' & ');
     }
@@ -692,6 +687,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   resetStage(): void {
-    this.urlParametersService.dispatchToStore(DefaultUrlParameters)
+    const resetParams = assign({},  DefaultUrlParameters, { lang: this.urlParams.lang });
+    this.urlParametersService.dispatchToStore(resetParams);
   }
 }

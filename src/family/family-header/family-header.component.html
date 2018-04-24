@@ -12,7 +12,7 @@
     </div>
 
     <div class="right-title">
-      <p class="title">{{ currencyUnit?.symbol }}{{familyIncome}}<span>/{{ timeUnit?.per }}</span>
+      <p class="title">{{ currencyUnit?.symbol }}{{familyIncome}}<span>/{{ timeUnit?.translationCode }}</span>
         <img *ngIf="home.aboutData"
              class="short-about-info-image"
              src="/assets/img/info-button.svg"
@@ -46,7 +46,7 @@
         </div>
 
         <div class="right-title">
-          <p class="sub-title">{{ timeUnit?.name1 }}</p>
+          <p class="sub-title">{{ timeUnit?.translationIncome}}</p>
           <p class="title">{{ currencyUnit?.symbol }}{{familyIncome}} <img class="about-info-image"
                                                              src="/assets/img/info-button.svg"
                                                              alt=""

@@ -25,7 +25,10 @@ import {
   Place,
   TimeUnit,
   MatrixState,
-  AppState, Currency, LanguageState
+  AppState,
+  Currency,
+  LanguageState,
+  TranslationsInterface
 } from '../../interfaces';
 import * as AppActions from '../../app/ngrx/app.actions';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
@@ -43,10 +46,13 @@ import {
 import { MatrixViewBlockService } from './matrix-view-block.service';
 import { StreetDrawService } from '../../shared/street/street.service';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
-import { get, forEach } from 'lodash';
-import { DEBOUNCE_TIME } from "../../defaultState";
+import { get, forEach, filter } from 'lodash';
+import {
+  DEBOUNCE_TIME
+} from '../../defaultState';
 import { PagePositionService } from '../../shared/page-position/page-position.service';
 import { ImageLoadedService } from '../../shared/image-loaded/image-loaded.service';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 const INIT_STATE_IMAGES = {
   main: false,
@@ -129,10 +135,11 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnInit(): void {
-    const streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    const appState = this.store.select((appStates: AppStates) => appStates.app);
-    const matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
-    const language = this.store.select((appStates: AppStates) => appStates.language);
+    const languageState = this.store
+      .select((appStates: AppStates) => appStates.language);
+
+    const matrixState = this.store
+      .select((appStates: AppStates) => appStates.matrix);
 
     this.ngSubscriptions.streetSettings = this.store
       .select((appStates: AppStates) => appStates.streetSettings)
@@ -153,8 +160,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         }
     });
 
-    this.ngSubscriptions.matrixState =  this.store
-      .select((appStates: AppStates) => appStates.matrix)
+    this.ngSubscriptions.matrixState =  matrixState
       .subscribe((data: MatrixState) => {
         if (get(data, 'currencyUnit', false)
           && this.currencyUnit !== data.currencyUnit) {
@@ -172,6 +178,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           this.changeTimeUnit(this.timeUnit.code);
         }
     });
+
+    this.ngSubscriptions.timeUnitTranslation = combineLatest(matrixState, languageState)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe( (arr: [MatrixState, LanguageState]) => {
+        const matrix = arr[0];
+        const language = arr[1];
+
+        this.getTimeUnitTranslations(matrix.timeUnit, language.translations)
+      })
 
     this.ngSubscriptions.resize = fromEvent(window, 'resize')
       .debounceTime(DEBOUNCE_TIME)
@@ -194,6 +209,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         this.currentLanguage = languageState.lang;
       }
     });
+  }
+
+  getTimeUnitTranslations(timeUnit: TimeUnit, translations: TranslationsInterface): void {
+    if (this.timeUnit !== timeUnit) {
+      this.timeUnit = timeUnit;
+    }
+
+    const translation = get(translations, timeUnit.code, timeUnit.name);
+    this.timeUnit.translationCode = translation;
   }
 
   public changeTimeUnit(code: string): void {
