@@ -38,7 +38,6 @@ export class PhotographerPlacesComponent implements OnInit, OnDestroy {
         }
 
         this.places = res.data.places;
-        console.log(this.places);
         this.loaderService.setLoader(true);
       });
   }
