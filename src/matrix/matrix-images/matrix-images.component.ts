@@ -207,16 +207,17 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       }
 
       if (get(data, 'place', false)) {
-
         if (this.activeHouse !== data.activeHouseOptions.index) {
           this.calcItemSize();
           this.activeHouse = data.activeHouseOptions.index;
           this.row = data.activeHouseOptions.row;
+          this.showBlock = !!this.activeHouse;
 
-          this.goToRow(data.activeHouseOptions.row)
+          process.nextTick(() => {
+// wait render view block, without nextTick page does't have scroll for bottom grid elements doesn't appear view block
+            this.goToRow(data.activeHouseOptions.row);
+          });
         }
-
-        this.showBlock = !!this.activeHouse;
       } else {
         this.activeHouse = undefined;
         this.showBlock = false;
@@ -447,10 +448,11 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       this.store.dispatch(new MatrixActions.RemovePlace(''));
       this.urlParametersService.removeActiveHouse();
     } else {
-      this.store.dispatch(new MatrixActions.UpdateActiveHouse({row, index: activeHouseIndex}));
+
       this.store.dispatch(new MatrixActions.SetPlace(place._id));
       // this.pagePositionService
       this.urlParametersService.setActiveHouse(index);
+      this.store.dispatch(new MatrixActions.UpdateActiveHouse({row, index: activeHouseIndex}));
     }
   }
 
