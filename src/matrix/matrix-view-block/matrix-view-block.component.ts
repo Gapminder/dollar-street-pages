@@ -194,8 +194,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
         this.zone.run(() => {
           this.windowInnerWidth = window.innerWidth;
           this.setMarkerPosition();
-
-          if (this.familyData && this.familyData.familyData.length) {
+          if (this.familyData && get( this.familyData, 'familyData', false)) {
             this.familyData.description = this.getDescription(this.familyData.familyData);
           }
         });
