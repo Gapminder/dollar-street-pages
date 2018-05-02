@@ -227,7 +227,6 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       this.timeUnit = timeUnit;
     }
 
-    console.log(this.timeUnit);
     const timeUnitCode: TimeUnitCode = find(TIME_UNIT_CODES, {code: timeUnit.code});
 
     const translationCode = get(translations, timeUnit.code, timeUnit.name);
