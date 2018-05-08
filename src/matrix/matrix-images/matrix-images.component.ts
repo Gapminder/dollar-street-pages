@@ -168,6 +168,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
 
         this.placesArr = this.currentPlaces.slice(0, sliceCount);
         this.changeDetectorRef.detectChanges();
+        window.dispatchEvent(new Event('resize'));
       })
     });
 

@@ -11,12 +11,18 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import { AppStates, SubscriptionsList } from '../../interfaces';
 import {
   BrowserDetectionService,
   UtilsService
 } from '../../common';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import { DEBOUNCE_TIME } from '../../defaultState';
+import { debounce } from 'rxjs/operator/debounce';
+import { debounceTime } from 'rxjs/operator/debounceTime';
+import { forEach } from 'lodash';
+
+const CLASS_TO_SHOW_FOOTER = 'show-float-footer';
 
 @Component({
   selector: 'float-footer',
@@ -25,18 +31,19 @@ import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 })
 export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('floatFooterContainer')
-  public floatFooterContainer: ElementRef;
+  floatFooterContainer: ElementRef;
 
-  public element: HTMLElement;
-  public scrollSubscribe: Subscription;
-  public isDesktop: boolean;
-  public routerEventsSubscription: Subscription;
-  public storeSubscription: Subscription
-  public isMatrixPage: boolean;
-  public pinMode: boolean;
-  public embedMode: boolean;
+  element: HTMLElement;
+  scrollSubscribe: Subscription;
+  isDesktop: boolean;
+  routerEventsSubscription: Subscription;
+  storeSubscription: Subscription
+  ngSubscriptions: SubscriptionsList = {};
+  isMatrixPage: boolean;
+  pinMode: boolean;
+  embedMode: boolean;
 
-  public constructor(elementRef: ElementRef,
+  constructor(elementRef: ElementRef,
                      private zone: NgZone,
                      private browserDetectionService: BrowserDetectionService,
                      private utilsService: UtilsService,
@@ -46,48 +53,62 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     this.element = elementRef.nativeElement;
   }
 
-  public ngAfterViewInit(): void {
-    this.scrollSubscribe = fromEvent(document, 'scroll')
+  ngAfterViewInit(): void {
+    this.setPositionByScroll();
+    this.ngSubscriptions.scroll = fromEvent(document, 'scroll')
       .subscribe(() => {
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+        this.setPositionByScroll();
+      });
 
-        let floatFooterContainerElement: HTMLElement = this.floatFooterContainer.nativeElement;
-
-        this.zone.run(() => {
-          floatFooterContainerElement.classList.add('show-float-footer');
-
-          if (!scrollTop) {
-            floatFooterContainerElement.classList.remove('show-float-footer');
-          }
-        });
+    this.ngSubscriptions.resize = fromEvent(window, 'resize')
+      .subscribe(() => {
+          this.setPositionByScroll();
       });
   }
 
-  public ngOnInit(): any {
+  ngOnInit(): void {
     this.isDesktop = this.browserDetectionService.isDesktop();
 
-    this.routerEventsSubscription = this.router.events.subscribe((event: any) => {
+    this.ngSubscriptions.routerEvents = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.isMatrixPage = this.isCurrentPage('matrix');
       }
     });
 
-    this.storeSubscription = this.store.select('matrix').subscribe(matrix => {
+    this.ngSubscriptions.store = this.store.select('matrix').subscribe(matrix => {
       this.pinMode = matrix.pinMode;
       this.embedMode = matrix.embedMode;
     });
   }
 
-  public ngOnDestroy(): void {
-    if (this.scrollSubscribe) {
-      this.scrollSubscribe.unsubscribe();
-    }
-
-    this.routerEventsSubscription.unsubscribe();
-    this.storeSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    forEach(this.ngSubscriptions, (subscription: Subscription) => {
+      subscription.unsubscribe();
+    })
   }
 
-  public isCurrentPage(name: string): boolean {
+  setPositionByScroll(): void {
+    const floatFooterContainerElement: HTMLElement = this.floatFooterContainer.nativeElement;
+    const isPageWithScroll = document.body.clientHeight > window.innerHeight;
+    const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    const isScrolled = !!scrollTop;
+
+    if (!isPageWithScroll && 
+      !floatFooterContainerElement.classList.contains(CLASS_TO_SHOW_FOOTER)) {
+
+        floatFooterContainerElement.classList.add('show-float-footer');
+    };
+
+    if (isPageWithScroll && isScrolled){
+        floatFooterContainerElement.classList.add('show-float-footer');
+    }
+
+    if (isPageWithScroll && !isScrolled) {
+      floatFooterContainerElement.classList.remove('show-float-footer');
+    }
+  }
+
+  isCurrentPage(name: string): boolean {
     let shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
 
     if (shap) {
@@ -99,13 +120,13 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     return false;
   }
 
-  public SetPinMode(): void {
+  SetPinMode(): void {
     if (!this.pinMode && !this.embedMode) {
       this.store.dispatch(new MatrixActions.SetPinMode(true));
     }
   }
 
-  public scrollTop(e: MouseEvent): void {
+  scrollTop(e: MouseEvent): void {
     this.utilsService.animateScroll('scrollBackToTop', 100, 1000, this.isDesktop);
   };
 }

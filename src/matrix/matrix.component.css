@@ -107,9 +107,9 @@ matrix-images {
 }
 
 .logo {
-  width: 46px;
-  height: 46px;
-  margin: 0px 0px 8px 20px;
+  width: 55px;
+  height: 55px;
+  margin: 0px 0px 8px 0;
 }
 
 .quick-guide-btn {
@@ -262,6 +262,15 @@ matrix-images {
   margin-bottom: 6px;
 }
 
+.pin-body-wrap {
+  text-align: center;
+}
+
+.pin-body {
+  display: inline-block;
+  text-align: left;
+}
+
 .places-container .embed-close-button {
   position: absolute;
   top: 10px;
@@ -283,7 +292,7 @@ matrix-images {
 }
 
 .places-container.column-2 .pin-place {
-  width: calc(33.33% - 10px);
+  width: calc(50% - 10px);
 }
 
 .places-container.column-3 .pin-place {
@@ -567,6 +576,47 @@ matrix-images {
   cursor: pointer;
 }
 
+.share-link-button {
+  flex: 0 0 100px;
+  position: relative;
+}
+
+.share-link-button .clipboardNotice {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 80px;
+  margin: 0 0 0 -40px;
+  color: #fff;
+  font-size: 14px;
+  padding: 2px 5px;
+  background-color: rgba(0,0,0,0.6);
+  text-align: center;
+  border-radius: 5px;
+  transition: 0.5s opacity;
+  opacity: 0;
+}
+
+.share-link-button .clipboardNotice.show {
+  opacity: 1;
+}
+
+.share-link-button button {
+  background: transparent;
+  padding: 0 10px;
+  min-width: 86px;
+  height: 38px;
+  display: inline-block;
+  color: #374551;
+  font-size: 20px;
+  line-height: 36px;
+  cursor: pointer;
+  margin: 0 10px;
+  text-align: center;
+  border: 0;
+  white-space: nowrap;
+}
+
 .pin-footer-share .share-link-container {
   display: flex;
   flex-direction: row;
@@ -639,6 +689,39 @@ matrix-images {
 
 .pin-header.text-center {
   text-align: center;
+}
+
+.pin-title {
+  text-align: center;
+}
+
+.pin-title .title-body {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 28px;
+}
+
+.pin-title .title-icon {
+  display: inline-block;
+}
+
+.pin-title .title-text {
+  display: inline-block;
+  padding-left: 15px;
+}
+
+.pin-title .title-text .title-project,
+.pin-title .title-text .title-name {
+  display: block;
+}
+
+.pin-title .title-text .title-project {
+  font-size: 30px;
+  line-height: 30px;
+}
+
+.pin-title .title-text .title-name {
+  font-size: 22px;
 }
 
 .pin-container-inner {
