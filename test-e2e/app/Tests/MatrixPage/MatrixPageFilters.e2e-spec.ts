@@ -1,7 +1,7 @@
 import { browser } from 'protractor';
 import { MatrixPage, FamilyPage } from '../../Pages';
 import { Header, FamilyImage, MatrixImagePreview, WelcomeWizard } from '../../Pages/Components';
-import { getRandomNumber } from '../../Helpers';
+import { getRandomNumber, waitForVisible } from '../../Helpers';
 
 describe('Matrix Page: Filters', () => {
   beforeEach(async () => {
@@ -14,6 +14,7 @@ describe('Matrix Page: Filters', () => {
 
   it('Filter by Country', async () => {
     const COUNTRY = 'Sweden';
+    waitForVisible(MatrixPage.familyLink.get(0));
     const totalCountriesBefore = await MatrixPage.familyLink.count();
 
     await Header.filterByCountry(COUNTRY);
@@ -36,6 +37,7 @@ describe('Matrix Page: Filters', () => {
   it('Filter by two countries', async () => {
     const COUNTRY1 = 'Sweden';
     const COUNTRY2 = 'Bangladesh';
+    waitForVisible(MatrixPage.familyLink.get(0));
     const totalCountriesBefore = await MatrixPage.familyLink.count();
 
     await Header.filterByCountry(COUNTRY1, COUNTRY2);
@@ -60,7 +62,8 @@ describe('Matrix Page: Filters', () => {
   });
 
   it('Show all countries', async () => {
-    const COUNTRY = 'Sweden';
+    const COUNTRY = 'Sweden'; //TODO: Remowe hardcode
+    waitForVisible(MatrixPage.familyLink.get(0));
     const totalCountriesBefore = await MatrixPage.familyLink.count();
 
     await Header.filterByCountry(COUNTRY);
@@ -74,7 +77,8 @@ describe('Matrix Page: Filters', () => {
   });
 
   it('Search in country filter', async () => {
-    const COUNTRY = 'Pakistan';
+    const COUNTRY = 'Pakistan'; //TODO: Remowe hardcode
+    waitForVisible(MatrixPage.familyLink.get(0));
     const totalCountriesBefore = await MatrixPage.familyLink.count();
 
     await Header.searchInCountryFilter(COUNTRY);
