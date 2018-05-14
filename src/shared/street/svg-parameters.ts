@@ -54,6 +54,7 @@ export const SVG_DEFAULTS = {
   },
   levels: {
     color: '#767d86',
+    colorToHide: '#ffffff',
     positionY: 63
   },
   sliders: {
@@ -68,7 +69,8 @@ export const SVG_DEFAULTS = {
     strokeColor: '#ffffff',
     filter: '#dropshadow',
     leftSliderMargin: -15,
-    rightSliderMargin: 15
+    rightSliderMargin: 15,
+    gaps: 40,
   },
   squarePoints: {
     name: '#square',

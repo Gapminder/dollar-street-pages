@@ -100,6 +100,11 @@ export interface DrawDividersInterface {
   };
 }
 
+export interface DividersGaps {
+  from: number;
+  to: number;
+}
+
 export interface Place {
   background: string;
   country: string;
