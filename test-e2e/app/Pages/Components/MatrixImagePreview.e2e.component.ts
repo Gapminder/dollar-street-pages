@@ -8,12 +8,12 @@ export class MatrixImagePreview {
   rootSelector: ElementFinder = $('matrix-view-block');
 
   familyName: ElementFinder = this.rootSelector.$('.home-description-container > h3');
-  familyDescription: ElementFinder = this.rootSelector.$('.home-description-container > p');
+  familyDescription: ElementFinder = this.rootSelector.$('.home-description-container .description-text  p');
   familyPhotos: ElementArrayFinder = this.rootSelector.$$('.image-content>img');
-  familyIncome: ElementFinder = this.rootSelector.$('.header-container');
+  familyIncome: ElementFinder = this.rootSelector.$('.house-info-content .header-container');
   image: ElementFinder = this.rootSelector.$('.view-image-container > img');
-  visitThisHomeBtn: ElementFinder = this.rootSelector.$$('.home-description-container > a').first(); // TODO add test attribute
-  allFamiliesBtn: ElementFinder = this.rootSelector.$$('.home-description-container > a').last(); // TODO add test attribute
+  visitThisHomeBtn: ElementFinder = this.rootSelector.$$('.view-image-block-container .description-actions > a').first(); // TODO add test attribute
+  allFamiliesBtn: ElementFinder = this.rootSelector.$$('.view-image-block-container .description-actions > a.description-button').last(); // TODO add test attribute
   miniMap: ElementFinder = this.rootSelector.$('region-map');
   photographerName: ElementFinder = this.rootSelector.$$('.photographer-container a').first(); // TODO add test attribute
   fullSizeBtn: ElementFinder = this.rootSelector.$('.zoom-download-container a'); // TODO add test attribute

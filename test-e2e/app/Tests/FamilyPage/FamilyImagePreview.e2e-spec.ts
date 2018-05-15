@@ -82,6 +82,7 @@ describe('Family Page: Image Preview', () => {
 
     const secondImage = FamilyPage.getFamilyImage(SECOND_FAMILY);
     imagePreview = await secondImage.openPreview();
+    await imagePreview.isInViewport();
     expect(await imagePreview.isInViewport()).toBeTruthy('Second ImagePreview should be visible');
   });
 

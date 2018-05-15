@@ -83,12 +83,13 @@ exports.config = {
   },
 
   onPrepare: function() {
-    require('ts-node').register({ project: 'test-e2e' });
+    require('ts-node').register({ project: `${__dirname}/../test-e2e`});
 
     browser.driver
       .manage()
       .window()
-      .setSize(1920, 1080);
+      .maximize()
+      //.setSize(screen.width, screen.height); //1920, 1080
     let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
     jasmine.getEnv().addReporter(

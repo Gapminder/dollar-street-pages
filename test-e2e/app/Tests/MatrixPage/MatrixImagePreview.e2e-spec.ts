@@ -3,6 +3,7 @@ import { browser } from 'protractor';
 import { getRandomNumber, isInViewport } from '../../Helpers';
 import { MatrixPage, CountryPage, AbstractPage, FamilyPage } from '../../Pages';
 import { MatrixImagePreview, FamilyImage, WelcomeWizard, FamilyImagePreview } from '../../Pages/Components';
+import {scrollIntoView} from '../../Helpers/commonHelper';
 
 const pattern = /^.*(\/)/; // grab everything to last slash
 let random: number;
@@ -154,11 +155,14 @@ describe('Matrix Page: Image Preview:', () => {
   });
 
   it('Photographer name leads to photographer page', async () => {
-    const familyImagePreview = await family.openPreview();
-    const photographerName = await familyImagePreview.photographerName.getText();
-    await familyImagePreview.photographerName.click();
+      const familyImagePreview = await family.openPreview();
+      const photographerName = await familyImagePreview.photographerName.getText();
+      await MatrixPage.getAngleUp.click();
 
-    expect(await browser.getCurrentUrl()).toContain('photographer');
-    expect(await CountryPage.countryName.getText()).toContain(photographerName); // refactor: move this into header
-  });
+      await scrollIntoView(familyImagePreview.photographerName);
+      await familyImagePreview.photographerName.click();
+
+      expect(await browser.getCurrentUrl()).toContain('photographer');
+      expect(await CountryPage.countryName.getText()).toContain(photographerName); // refactor: move this into header
+    });
 });
