@@ -14,7 +14,7 @@ exports.config = {
     shardTestFiles: true,
     maxInstances: 4,
     chromeOptions: {
-      args: ['no-sandbox', 'headless']
+      args: ['headless']
     }
   },
 
