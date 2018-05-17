@@ -1,4 +1,5 @@
 import { ElementFinder, $ } from 'protractor';
+import { waitForVisible } from '../../Helpers';
 
 export class HamburgerMenu {
   static rootSelector: ElementFinder = $('main-menu');
@@ -13,6 +14,7 @@ export class HamburgerMenu {
 
   static async open() {
     await this.menuBtn.click();
+    await waitForVisible(this.dropdownMenu);
   }
 
   static async goToHome() {

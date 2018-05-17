@@ -2,13 +2,14 @@ import { browser } from 'protractor';
 
 import { DataProvider } from '../Data/DataProvider';
 import { Footer, WelcomeWizard, HamburgerMenu } from '../Pages/Components';
-import { AbstractPage, MapPage } from '../Pages';
+import { AbstractPage, MapPage, MatrixPage } from '../Pages';
 
 describe('Welcome wizard', () => {
   beforeEach(async () => {
     await browser.get(AbstractPage.url);
     await browser.executeScript('window.localStorage.clear()'); // clear localStorage to reveal WelcomeWizard
     await browser.refresh();
+    await MatrixPage.waitForSpinner();
   });
 
   it('Check text on Welcome wizard', async () => {
