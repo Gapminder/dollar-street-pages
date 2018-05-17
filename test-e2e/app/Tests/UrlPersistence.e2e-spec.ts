@@ -12,10 +12,11 @@ describe('Storing state in URL', () => {
     await MatrixPage.familyLink.get(1).click();
 
     const urlBefore = await browser.getCurrentUrl();
+    await MatrixPage.waitForSpinner();
     const selectedImageBefore = await MatrixPage.bigImageFromBigSection.getAttribute('src');
 
     await browser.refresh();
-
+    await MatrixPage.waitForSpinner();
     const selectedImageAfter = await MatrixPage.bigImageFromBigSection.getAttribute('src');
     const urlAfter = await browser.getCurrentUrl();
 

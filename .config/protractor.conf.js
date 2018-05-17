@@ -14,7 +14,7 @@ exports.config = {
     shardTestFiles: true,
     maxInstances: 4,
     chromeOptions: {
-      args: ['no-sandbox', 'headless']
+      args: [ 'headless']
     }
   },
 
@@ -88,8 +88,7 @@ exports.config = {
     browser.driver
       .manage()
       .window()
-      .maximize()
-      //.setSize(screen.width, screen.height); //1920, 1080
+      .setSize(1920, 1080);
     let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
     jasmine.getEnv().addReporter(

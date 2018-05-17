@@ -79,7 +79,7 @@ describe('Family Page tests', () => {
 
   beforeEach(async () => {
     await browser.get(MatrixPage.url);
-
+    await MatrixPage.waitForSpinner();
     await MatrixPage.familyLink.first().click();
     await new MatrixImagePreview().visitThisHomeBtn.click();
   });
