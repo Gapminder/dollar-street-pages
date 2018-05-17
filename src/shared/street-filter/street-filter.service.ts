@@ -5,51 +5,54 @@ import { MathService, DrawDividersInterface } from '../../common';
 import { scaleLog } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
-import { Place } from '../../interfaces';
+import { Place, Currency, SubscriptionsList, DividersGaps } from '../../interfaces';
 import { SVG_DEFAULTS } from '../street/svg-parameters';
+import { Subscription } from 'rxjs';
+import * as _ from 'lodash';
 
 @Injectable()
 export class StreetFilterDrawService {
-  public width: number;
-  public height: number;
-  public halfOfHeight: number;
-  public lowIncome: number;
-  public highIncome: number;
-  public streetOffset: number = 60;
-  public halfOfStreetOffset: number = 30;
-  public scale: any;
-  public axisLabel: number[] = [];
-  public svg: any;
-  public incomeArr: any[] = [];
-  public dividersData: any;
-  public touchMoveSubscriber: any;
-  public touchUpSubscriber: any;
-  public sliderRightBorder: number;
-  public sliderLeftBorder: number;
-  public sliderRightMove: boolean = false;
-  public sliderLeftMove: boolean = false;
-  public draggingSliders: boolean = false;
-  public distanceDraggingLeftSlider: number = 0;
-  public distanceDraggingRightSlider: number = 0;
-  public leftScroll: any;
-  public rightScroll: any;
-  public leftScrollOpacityStreet: any;
-  public leftScrollOpacityLabels: any;
-  public leftScrollOpacityHomes: any;
-  public rightScrollOpacityStreet: any;
-  public rightScrollOpacityLabels: any;
-  public rightScrollOpacityHomes: any;
-  public leftScrollText: any;
-  public rightScrollText: any;
-  public math: MathService;
-  public filter: Subject<any> = new Subject<any>();
-  public currencyUnit: any;
+  width: number;
+  height: number;
+  halfOfHeight: number;
+  lowIncome: number;
+  highIncome: number;
+  streetOffset = 60;
+  halfOfStreetOffset = 30;
+  scale;
+  axisLabel: number[] = [];
+  svg;
+  incomeArr: any[] = [];
+  dividersData;
+  touchMoveSubscriber;
+  touchUpSubscriber;
+  sliderRightBorder: number;
+  sliderLeftBorder: number;
+  sliderRightMove = false;
+  sliderLeftMove = false;
+  draggingSliders = false;
+  distanceDraggingLeftSlider = 0;
+  distanceDraggingRightSlider = 0;
+  leftScroll;
+  rightScroll;
+  leftScrollOpacityStreet;
+  leftScrollOpacityLabels;
+  leftScrollOpacityHomes;
+  rightScrollOpacityStreet;
+  rightScrollOpacityLabels;
+  rightScrollOpacityHomes;
+  leftScrollText;
+  rightScrollText;
+  math: MathService;
+  filter: Subject<any> = new Subject<any>();
+  currencyUnit: Currency;
+  ngSubscribtions: SubscriptionsList = {};
 
-  public constructor(math: MathService) {
+  constructor(math: MathService) {
     this.math = math;
   }
 
-  public init(lowIncome: any, highIncome: any, drawDividers: DrawDividersInterface): this {
+  init(lowIncome, highIncome, drawDividers: DrawDividersInterface): this {
     this.axisLabel = [drawDividers.low, drawDividers.medium, drawDividers.high];
     this.dividersData = drawDividers;
     this.lowIncome = lowIncome || drawDividers.poor;
@@ -65,17 +68,17 @@ export class StreetFilterDrawService {
     return this;
   }
 
-  public set setSvg(element: HTMLElement) {
+  set setSvg(element: HTMLElement) {
     this.svg = select(element);
   }
 
-  public set(key: any, val: any): this {
+  set(key, val): this {
     this[key] = val;
 
     return this;
   };
 
-  public isDrawDividers(drawDividers: DrawDividersInterface): this {
+  isDrawDividers(drawDividers: DrawDividersInterface): this {
     if (!drawDividers.showDividers) {
       return;
     }
@@ -85,14 +88,14 @@ export class StreetFilterDrawService {
       .data(this.axisLabel)
       .enter()
       .append('text')
-      .text((d: any) => {
+      .text((d) => {
         return `${this.math.roundIncome(d * this.currencyUnit.value)}${this.currencyUnit.symbol}`;
       })
-      .attr('x', (d: any) => {
-
-        return this.scale(d);
+      .attr('x', (d) => {
+        return this.scale(d) + this.streetOffset/2;
+        //return this.scale(d);
       })
-      .attr('class', (d: any) => {
+      .attr('class', (d) => {
         return 'scale-label' + d;
       })
       .attr('y', this.height)
@@ -109,19 +112,20 @@ export class StreetFilterDrawService {
       .attr('height', SVG_DEFAULTS.squarePoints.height)
       .attr('y', SVG_DEFAULTS.squarePoints.positionY)
       .attr('x', (d: number) => {
-        const x = this.scale(d)
+
+        const x = this.scale(d) - (SVG_DEFAULTS.squarePoints.width / 2) + (this.streetOffset / 2);
 
         return x;
       })
       .on('mousedown', (): void => {
       this.draggingSliders = true;
     }, {passive: true})
-      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
+      .on('touchstart', () => this.draggingSliders = true, { passive: true });
 
     return this;
   }
 
-  public drawScale(places: any, drawDividers: any): this {
+  drawScale(places, drawDividers): this {
     let halfHouseWidth = 7;
     let roofX = 2 - halfHouseWidth;
     let roofY = this.halfOfHeight - 10;
@@ -134,40 +138,7 @@ export class StreetFilterDrawService {
       .tickFormat(() => {
         return void 0;
       });
-    // .tickSize(6, 0);
 
-    // this.svg
-    //   .selectAll('polygon')
-    //   .data(places)
-    //   .enter()
-    //   .append('polygon')
-    //   .attr('class', 'point')
-    //   .attr('points', (datum: any): any => {
-    //     let point1: string;
-    //     let point2: string;
-    //     let point3: string;
-    //     let point4: string;
-    //     let point5: string;
-    //     let point6: string;
-    //     let point7: string;
-    //
-    //     if (datum) {
-    //       let scaleDatumIncome = this.scale(datum.income);
-    //       point1 = `${this.halfOfStreetOffset + scaleDatumIncome + roofX },${this.halfOfHeight - 4}`;
-    //       point2 = `${this.halfOfStreetOffset + scaleDatumIncome + roofX},${roofY}`;
-    //       point3 = `${this.halfOfStreetOffset + scaleDatumIncome - halfHouseWidth},${roofY}`;
-    //       point4 = `${this.halfOfStreetOffset + scaleDatumIncome},${this.halfOfHeight - 17}`;
-    //       point5 = `${this.halfOfStreetOffset + scaleDatumIncome + halfHouseWidth },${roofY}`;
-    //       point6 = `${this.halfOfStreetOffset + scaleDatumIncome - roofX },${roofY}`;
-    //       point7 = `${this.halfOfStreetOffset + scaleDatumIncome - roofX },${this.halfOfHeight - 4}`;
-    //     }
-    //
-    //     return !datum ? void 0 : point1 + ' ' + point2 + ' ' +
-    //     point3 + ' ' + point4 + ' ' + point5 + ' ' + point6 + ' ' + point7;
-    //   })
-    //   .attr('stroke-width', 1)
-    //   .style('fill', '#cfd2d6')
-    //   .style('opacity', '0.6');
 
     this.svg
       .selectAll('use.icon-background-home')
@@ -211,7 +182,7 @@ export class StreetFilterDrawService {
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
+      .on('touchstart', () => this.draggingSliders = true, { passive: true });
 
     this.svg
       .append('line')
@@ -229,7 +200,7 @@ export class StreetFilterDrawService {
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
+      .on('touchstart', () => this.draggingSliders = true, { passive: true });
 
     this.svg
       .append('line')
@@ -247,7 +218,7 @@ export class StreetFilterDrawService {
       .on('mousedown', (): void => {
         this.draggingSliders = true;
       })
-      .on('touchstart', (): any => this.draggingSliders = true, { passive: true });
+      .on('touchstart', () => this.draggingSliders = true, { passive: true });
 
     this.incomeArr.length = 0;
 
@@ -256,79 +227,113 @@ export class StreetFilterDrawService {
     this.drawLeftSlider(this.scale(this.lowIncome), true);
     this.drawRightSlider(this.scale(this.highIncome));
 
-    if (this.touchMoveSubscriber) {
-      this.touchMoveSubscriber.unsubscribe();
+    if (_.get(this.ngSubscribtions, 'touchMove', false)) {
+      this.ngSubscribtions.touchMove.unsubscribe();
     }
 
-    this.touchMoveSubscriber = fromEvent(window, 'touchmove', { passive: true })
+    this.ngSubscribtions.touchMove = fromEvent(window, 'touchmove', { passive: true })
       .subscribe((e: TouchEvent)=> {
-        if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
-          return;
-        }
+        const touch: Touch = e.touches[0];
 
-        let positionX = e.touches[0].pageX;
-
-        if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
-          document.body.classList.add('draggingSliders');
-
-          // todo: distance from cursor to sliders
-          if (!this.distanceDraggingLeftSlider) {
-            this.distanceDraggingLeftSlider = positionX - 35 - this.sliderLeftBorder;
-          }
-
-          if (!this.distanceDraggingRightSlider) {
-            this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - 40);
-          }
-
-          if (
-            positionX - this.distanceDraggingLeftSlider >= 30 &&
-            positionX + this.distanceDraggingRightSlider <= this.width + 45) {
-            this.drawLeftSlider(positionX - 30 - this.distanceDraggingLeftSlider);
-            this.drawRightSlider(positionX - 40 + this.distanceDraggingRightSlider);
-            return;
-          }
-          return;
-        }
-
-        if (this.sliderLeftMove && positionX <= this.sliderRightBorder - 25 && positionX >= 30) {
-          return this.drawLeftSlider(positionX - 30);
-        }
-
-        if (this.sliderRightMove && this.sliderLeftBorder + 102 <= positionX && positionX <= this.width + 45) {
-          return this.drawRightSlider(positionX - 40);
-        }
+        this.onMouseEvent(touch);
       });
 
-    if (this.touchUpSubscriber) {
-      this.touchUpSubscriber.unsubscribe();
+    if (_.get(this.ngSubscribtions, 'mouseMove', false)) {
+      this.ngSubscribtions.mouseMove.unsubscribe();
     }
 
-    this.touchUpSubscriber = fromEvent(window, 'touchend', { passive: true })
+    this.ngSubscribtions.mouseMove = fromEvent(window, 'mousemove', { passive: true })
+      .subscribe( (e: MouseEvent) => {
+
+        this.onMouseEvent(e);
+      });
+
+    if (_.get(this.ngSubscribtions, 'touchUp', false)) {
+      this.ngSubscribtions.touchUp.unsubscribe();
+    }
+
+    this.ngSubscribtions.mouseUp = fromEvent(window, 'mouseup' , { passive: true })
+    .subscribe(() => {
+
+      if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
+        return;
+      }
+
+      this.pressedSlider();
+    });
+
+    this.ngSubscribtions.touchUp = fromEvent(window, 'touchend', { passive: true })
       .subscribe(() => {
         if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
           return;
         }
 
-        this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
-        this.distanceDraggingLeftSlider = 0;
-        this.distanceDraggingRightSlider = 0;
-
-        document.body.classList.remove('draggingSliders');
-
-        if (this.highIncome > this.dividersData.rich) {
-          this.highIncome = this.dividersData.rich + 0.00002;
-        }
-
-        this.filter.next({
-          lowIncome: Math.round(this.lowIncome),
-          highIncome: Math.round(this.highIncome)
-        });
+        this.pressedSlider();
       });
 
     return this;
   };
 
-  public drawLeftSlider(x: number, init: boolean = false): this {
+  
+
+  pressedSlider(): void {
+    this.draggingSliders = this.sliderLeftMove = this.sliderRightMove = false;
+    this.distanceDraggingLeftSlider = 0;
+    this.distanceDraggingRightSlider = 0;
+
+    document.body.classList.remove('draggingSliders');
+
+    if (this.highIncome > this.dividersData.rich) {
+      this.highIncome = this.dividersData.rich + 0.00002;
+    }
+
+    this.filter.next({
+      lowIncome: Math.round(this.lowIncome),
+      highIncome: Math.round(this.highIncome)
+    });
+  }
+
+  onMouseEvent(e: MouseEvent | Touch): void | this {
+
+    if (!this.sliderLeftMove && !this.sliderRightMove && !this.draggingSliders) {
+      return;
+    }
+
+    let positionX = e.pageX;
+
+    if (this.draggingSliders && !this.sliderLeftMove && !this.sliderRightMove) {
+      document.body.classList.add('draggingSliders');
+
+      // todo: distance from cursor to sliders
+      if (!this.distanceDraggingLeftSlider) {
+        this.distanceDraggingLeftSlider = positionX - this.streetOffset/2 - this.sliderLeftBorder;
+      }
+
+      if (!this.distanceDraggingRightSlider) {
+        this.distanceDraggingRightSlider = this.sliderRightBorder - (positionX - this.streetOffset/2);
+      }
+
+      if (
+        positionX - this.distanceDraggingLeftSlider >= 30 &&
+        positionX + this.distanceDraggingRightSlider <= this.width + 45) {
+        this.drawLeftSlider(positionX - this.streetOffset/2 - this.distanceDraggingLeftSlider);
+        this.drawRightSlider(positionX - this.streetOffset/2 + this.distanceDraggingRightSlider);
+        return;
+      }
+      return;
+    }
+
+    if (this.sliderLeftMove && positionX <= this.sliderRightBorder - 25 && positionX >= 30) {
+
+      return this.drawLeftSlider(positionX - this.streetOffset/2);
+    }
+
+    if (this.sliderRightMove && this.sliderLeftBorder + 102 <= positionX && positionX <= this.width + 45) {
+      return this.drawRightSlider(positionX - this.streetOffset/2);
+    }
+  };
+
+  drawLeftSlider(x: number, init: boolean = false): this {
     this.sliderLeftBorder = x;
 
     if (!this.leftScrollOpacityHomes) {
@@ -385,7 +390,7 @@ export class StreetFilterDrawService {
         .on('mousedown', (): void => {
           this.sliderLeftMove = true;
         })
-        .on('touchstart', (): any => this.sliderLeftMove = true, { passive: true });
+        .on('touchstart', () => this.sliderLeftMove = true, { passive: true });
     }
 
     this.leftScroll
@@ -393,13 +398,13 @@ export class StreetFilterDrawService {
 
     this.leftScrollOpacityStreet
       .attr('width', () => {
-        const width = x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2;
+        const width = x + this.halfOfStreetOffset ;
 
         return  width > 0 ? width : 0;
       });
     this.leftScrollOpacityHomes
       .attr('width', () => {
-        const width = x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2;
+        const width = x + this.halfOfStreetOffset ;
 
         return  width > 0 ? width : 0;
       });
@@ -415,7 +420,7 @@ export class StreetFilterDrawService {
     return this;
   };
 
-  public drawRightSlider(x: number): this {
+  drawRightSlider(x: number): this {
     this.sliderRightBorder = x;
 
     if (!this.rightScrollOpacityHomes) {
@@ -479,16 +484,16 @@ export class StreetFilterDrawService {
         .on('mousedown', (): void => {
           this.sliderRightMove = true;
         })
-        .on('touchstart', (): any => this.sliderRightMove = true, { passive: true });
+        .on('touchstart', () => this.sliderRightMove = true, { passive: true });
     }
 
     this.rightScroll
       .attr('x',  x);
 
-    this.rightScrollOpacityStreet.attr('x', x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2)
-      .attr('width', this.width + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2);
-    this.rightScrollOpacityHomes.attr('x', x + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2)
-      .attr('width', this.width + this.halfOfStreetOffset - this.scale(SVG_DEFAULTS.sliders.width) / 2);
+    this.rightScrollOpacityStreet.attr('x', x + this.halfOfStreetOffset)
+      .attr('width', this.width + this.halfOfStreetOffset );
+    this.rightScrollOpacityHomes.attr('x', x + this.halfOfStreetOffset )
+      .attr('width', this.width + this.halfOfStreetOffset );
     this.highIncome = this.scale.invert(x);
 
     this.drawScrollLabel();
@@ -496,7 +501,7 @@ export class StreetFilterDrawService {
     return this;
   };
 
-  public clearSvg(): this {
+  clearSvg(): this {
     this.leftScroll = void 0;
     this.rightScroll = void 0;
     this.leftScrollOpacityStreet = void 0;
@@ -513,9 +518,36 @@ export class StreetFilterDrawService {
     return this;
   };
 
-  public drawScrollLabel(): this {
-    let incomeL: any = Math.round(this.lowIncome ? this.lowIncome : 0);
-    let incomeR: any = Math.round(this.highIncome ? this.highIncome : this.dividersData.rich);
+  getDividersGaps(divider: number, dividersSpace = SVG_DEFAULTS.sliders.gaps ): DividersGaps {
+    const coordsDivider = this.scale(divider);
+    
+    const dividerGaps = {
+      from: (coordsDivider - dividersSpace),
+      to: (coordsDivider + dividersSpace),
+    }
+
+    return dividerGaps;
+  }
+
+  dividerFallWithinGaps(dividerPosition: number, dividersGap: DividersGaps): boolean {
+    let fall = false;
+    if ((dividerPosition >= dividersGap.from) && (dividerPosition <= dividersGap.to)) {
+      fall = true;
+    }
+
+    return fall;
+  }
+
+  drawScrollLabel(): this {
+    const poorGaps = this.getDividersGaps(this.dividersData.poor);
+    const richGaps = this.getDividersGaps(this.dividersData.rich)
+
+    const lowGaps = this.getDividersGaps(this.dividersData.low);
+    const mediumGaps = this.getDividersGaps(this.dividersData.medium);
+    const hightGaps = this.getDividersGaps(this.dividersData.high);
+
+    let incomeL = Math.round(this.lowIncome ? this.lowIncome : 0);
+    let incomeR = Math.round(this.highIncome ? this.highIncome : this.dividersData.rich);
 
     if (incomeR > this.dividersData.rich) {
       incomeR = this.dividersData.rich;
@@ -524,26 +556,38 @@ export class StreetFilterDrawService {
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    if (((this.dividersData.lowDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xR + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 45 > xR) || ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xL + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 45 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#fff');
+    if (this.dividerFallWithinGaps(xL, lowGaps) || this.dividerFallWithinGaps(xR, lowGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', SVG_DEFAULTS.levels.color);
     }
 
-    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xR + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 55 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xL + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 55 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#fff');
+    if (this.dividerFallWithinGaps(xL, mediumGaps) || this.dividerFallWithinGaps(xR, mediumGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', SVG_DEFAULTS.levels.color);
     }
 
-    if (((this.dividersData.highDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 65 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) < xL + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.halfOfStreetOffset)) + 65 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#fff');
+    if (this.dividerFallWithinGaps(xL, hightGaps) || this.dividerFallWithinGaps(xR, hightGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', SVG_DEFAULTS.levels.color);
     }
 
-    incomeL = this.math.roundIncome(incomeL * this.currencyUnit.value);
-    incomeR = this.math.roundIncome(incomeR * this.currencyUnit.value);
+    if ((this.dividerFallWithinGaps(xL, poorGaps)) || (this.dividerFallWithinGaps(xR, poorGaps))) {
+      this.svg.selectAll('text.poorest').attr('fill', SVG_DEFAULTS.levels.colorToHide);
+    } else {
+      this.svg.selectAll('text.poorest').attr('fill', SVG_DEFAULTS.levels.color);
+    }
+
+    if ((this.dividerFallWithinGaps(xL, richGaps)) || (this.dividerFallWithinGaps(xR, richGaps))) {
+      this.svg.selectAll('text.richest').attr('fill', SVG_DEFAULTS.levels.colorToHide);
+    } else {
+      this.svg.selectAll('text.richest').attr('fill', SVG_DEFAULTS.levels.color);
+    }
+
+    incomeL = Number(this.math.roundIncome(incomeL * this.currencyUnit.value));
+    incomeR = Number(this.math.roundIncome(incomeR * this.currencyUnit.value));
 
     if ((xR + 75) > this.width) {
       this.svg.selectAll('text.richest').attr('fill', '#fff');
@@ -579,8 +623,8 @@ export class StreetFilterDrawService {
         .attr('fill', '#767d86');
     }
 
-    const leftScrollTextStyle: {width: any; height: any;} = this.leftScrollText.node().getBBox();
-    const rightScrollTextStyle: {width: any; height: any;} = this.rightScrollText.node().getBBox();
+    const leftScrollTextStyle: {width; height;} = this.leftScrollText.node().getBBox();
+    const rightScrollTextStyle: {width; height;} = this.rightScrollText.node().getBBox();
 
     const leftScrollTextWidth: number = parseInt(leftScrollTextStyle.width, 10);
     const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);

@@ -7,7 +7,7 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: -100%;
+  bottom: -101%;
   z-index: 99;
 
   -webkit-transition: bottom .5s ease;

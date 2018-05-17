@@ -14,7 +14,8 @@ import { SVG_DEFAULTS } from './svg-parameters';
 import {
   AppStates,
   DrawDividersInterface,
-  Place
+  Place,
+  DividersGaps
 } from '../../interfaces';
 import {
   DefaultUrlParameters,
@@ -169,7 +170,7 @@ export class StreetDrawService {
       .attr('height', SVG_DEFAULTS.squarePoints.height)
       .attr('y', SVG_DEFAULTS.squarePoints.positionY)
       .attr('x', (d: number) => {
-        const x = this.scale(d) - SVG_DEFAULTS.squarePoints.width/2
+        const x = this.scale(d) - SVG_DEFAULTS.squarePoints.width/2 + this.streetOffset/2;
 
         return x;
       });
@@ -194,7 +195,7 @@ export class StreetDrawService {
       })
       .attr('x', (d: any) => {
 
-        return this.scale(d);
+        return this.scale(d) + this.streetOffset/2;
       })
       .attr('class', (d: any) => {
         return `currency-text scale-label${d}`;
@@ -901,53 +902,58 @@ export class StreetDrawService {
   };
 
   drawScrollLabel(): this {
+    const poorGaps = this.getDividersGaps(this.dividersData.poor);
+    const richGaps = this.getDividersGaps(this.dividersData.rich)
+
+    const lowGaps = this.getDividersGaps(this.dividersData.low);
+    const mediumGaps = this.getDividersGaps(this.dividersData.medium);
+    const hightGaps = this.getDividersGaps(this.dividersData.high);
 
     let incomeL = Math.round(+this.lowIncome ? +this.lowIncome : 0);
     let incomeR = Math.round(+this.highIncome ? +this.highIncome : +this.dividersData.rich);
+
     if (incomeR > +this.dividersData.rich) {
       incomeR = +this.dividersData.rich;
     }
 
+    
+
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    if (((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 45 > xR) || ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 45 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#fff');
+    
+    if (this.dividerFallWithinGaps(xL, lowGaps) || this.dividerFallWithinGaps(xR, lowGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', SVG_DEFAULTS.levels.color);
     }
 
-    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 55 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 55 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#fff');
+    if (this.dividerFallWithinGaps(xL, mediumGaps) || this.dividerFallWithinGaps(xR, mediumGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', SVG_DEFAULTS.levels.color);
     }
 
-    if (((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 65 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 65 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#fff');
+    if (this.dividerFallWithinGaps(xL, hightGaps) || this.dividerFallWithinGaps(xR, hightGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', SVG_DEFAULTS.levels.color);
+    }
+
+    if ((this.dividerFallWithinGaps(xL, poorGaps)) || (this.dividerFallWithinGaps(xR, poorGaps))) {
+      this.svg.selectAll('text.poorest').attr('fill', SVG_DEFAULTS.levels.colorToHide);
+    } else {
+      this.svg.selectAll('text.poorest').attr('fill', SVG_DEFAULTS.levels.color);
+    }
+
+    if ((this.dividerFallWithinGaps(xL, richGaps)) || (this.dividerFallWithinGaps(xR, richGaps))) {
+      this.svg.selectAll('text.richest').attr('fill', SVG_DEFAULTS.levels.colorToHide);
+    } else {
+      this.svg.selectAll('text.richest').attr('fill', SVG_DEFAULTS.levels.color);
     }
 
     incomeL = +this.math.roundIncome(incomeL * Number(this.currencyUnit.value));
     incomeR = +this.math.roundIncome(incomeR * Number(this.currencyUnit.value));
-
-
-    if ((xR + 75) > this.width) {
-      this.svg.selectAll('text.richest').attr('fill', '#fff');
-    }
-
-    if ((xR + 75) < this.width) {
-      this.svg.selectAll('text.richest').attr('fill', '#767d86');
-    }
-
-    if (xL < 55) {
-      this.svg.selectAll('text.poorest').attr('fill', '#fff');
-    }
-
-    if (xL > 55) {
-      this.svg.selectAll('text.poorest').attr('fill', '#767d86');
-    }
 
     if (!this.leftScrollText) {
       this.leftScrollText = this.svg
@@ -955,7 +961,7 @@ export class StreetDrawService {
         .attr('class', 'left-scroll-label')
         .text(`${this.currencyUnit.symbol}${incomeL * this.currencyUnit.value}`)
         .attr('y', this.height - 2)
-        .attr('fill', '#767d86');
+        .attr('fill', SVG_DEFAULTS.levels.color);
     }
 
     if (!this.rightScrollText) {
@@ -964,16 +970,18 @@ export class StreetDrawService {
         .attr('class', 'right-scroll-label')
         .text(`${this.currencyUnit.symbol}${incomeR * this.currencyUnit.value}`)
         .attr('y', this.height - 2)
-        .attr('fill', '#767d86');
+        .attr('fill', SVG_DEFAULTS.levels.color);
     }
 
     const leftScrollTextStyle: {width: any; height: any;} = this.leftScrollText.node().getBBox();
     const rightScrollTextStyle: {width: any; height: any;} = this.rightScrollText.node().getBBox();
 
-    const leftScrollTextWidth: number = parseInt(leftScrollTextStyle.width, 10);
-    const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);
+    const leftScrollTextWidth = parseInt(leftScrollTextStyle.width, 10);
+    const rightScrollTextWidth = parseInt(rightScrollTextStyle.width, 10);
 
-    if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+    if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) &&
+    (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+
       incomeL = Math.round(this.minIncome * this.currencyUnit.value);
       incomeL = +this.math.roundIncome(incomeL);
 
@@ -986,7 +994,9 @@ export class StreetDrawService {
         .attr('x', () => xL + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
     }
 
-    if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+    if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) &&
+    (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+      
       incomeR = Math.round(this.maxIncome * this.currencyUnit.value);
       incomeR = +this.math.roundIncome(incomeR);
 
@@ -1001,6 +1011,26 @@ export class StreetDrawService {
 
     return this;
   };
+
+  getDividersGaps(divider: number, dividersSpace = SVG_DEFAULTS.sliders.gaps ): DividersGaps {
+    const coordsDivider = this.scale(divider);
+    
+    const dividerGaps = {
+      from: (coordsDivider - dividersSpace),
+      to: (coordsDivider + dividersSpace),
+    }
+
+    return dividerGaps;
+  }
+
+  dividerFallWithinGaps(dividerPosition: number, dividersGap: DividersGaps): boolean {
+    let fall = false;
+    if ((dividerPosition >= dividersGap.from) && (dividerPosition <= dividersGap.to)) {
+      fall = true;
+    }
+
+    return fall;
+  }
 
   drawHouses(places: Place[]): this {
     this.placesArray = [];

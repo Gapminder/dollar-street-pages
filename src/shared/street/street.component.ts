@@ -41,43 +41,43 @@ const FREQUENCY_UPDATE_STREET = 10;
 })
 export class StreetComponent implements OnDestroy, AfterViewInit {
   @ViewChild('streetBox')
-  public streetBox: ElementRef;
+  streetBox: ElementRef;
   @ViewChild('svg')
-  public svg: ElementRef;
+  svg: ElementRef;
 
   @Input()
-  public places: Observable<any>;
+  places: Observable<any>;
   @Input()
-  public chosenPlaces: Observable<any>;
+  chosenPlaces: Observable<any>;
   @Input()
-  public hoverPlace: Subject<any>;
+  hoverPlace: Subject<any>;
   @Output()
-  public filterStreet: EventEmitter<any> = new EventEmitter<any>();
+  filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
-  public query: string;
-  public data: any;
-  public window: Window = window;
-  public getTranslationSubscribe: Subscription;
-  public street: any;
-  public regions: any;
-  public thingName: any;
-  public countries: any;
-  public streetData: DrawDividersInterface;
-  public element: HTMLElement;
-  public resize: any;
-  public drawOnMap = false;
-  public isStreetInit = false;
-  public placesSubscribe: Subscription;
-  public hoverPlaceSubscribe: Subscription;
-  public chosenPlacesSubscribe: Subscription;
-  public streetFilterSubscribe: Subscription;
-  public placesArr: any;
-  public streetBoxContainer: HTMLElement;
-  public streetBoxContainerMargin: number;
-  public currencyUnit: any;
-  public appStatesSubscription: Subscription;
+  query: string;
+  data: any;
+  window: Window = window;
+  getTranslationSubscribe: Subscription;
+  street;
+  regions;
+  thingName;
+  countries;
+  streetData: DrawDividersInterface;
+  element: HTMLElement;
+  resize;
+  drawOnMap = false;
+  isStreetInit = false;
+  placesSubscribe: Subscription;
+  hoverPlaceSubscribe: Subscription;
+  chosenPlacesSubscribe: Subscription;
+  streetFilterSubscribe: Subscription;
+  placesArr;
+  streetBoxContainer: HTMLElement;
+  streetBoxContainerMargin: number;
+  currencyUnit;
+  appStatesSubscription: Subscription;
 
-  public constructor(elementRef: ElementRef,
+  constructor(elementRef: ElementRef,
                      streetDrawService: StreetDrawService,
                      private activatedRoute: ActivatedRoute,
                      private math: MathService,
@@ -88,7 +88,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     this.street = streetDrawService;
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.street.setSvg = this.svg.nativeElement;
     this.streetBoxContainer = this.streetBox.nativeElement;
 
@@ -236,7 +236,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       });
   }
 
-  public redrawStreet(): void {
+  redrawStreet(): void {
     if (
       this.street.lowIncome
       && this.street.highIncome
@@ -257,7 +257,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.resize) {
       this.resize.unsubscribe();
     }

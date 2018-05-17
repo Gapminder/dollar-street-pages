@@ -9,6 +9,8 @@ import { TranslateTestingModule } from '../../../test/translateTesting.module';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { forEach } from 'lodash';
+import { Subscription } from 'rxjs';
 
 describe('Component: FloatFooterComponent', () => {
   let fixture: ComponentFixture<FloatFooterComponent>;
@@ -61,13 +63,15 @@ describe('Component: FloatFooterComponent', () => {
     component.ngOnInit();
     component.ngAfterViewInit();
 
-    expect(component.isDesktop).toBeTruthy();
-    expect(component.scrollSubscribe).toBeDefined();
-
-    spyOn(component.scrollSubscribe, 'unsubscribe');
-
+    forEach(component.ngSubscriptions, (subscription: Subscription) => {
+      spyOn(subscription, 'unsubscribe');
+    });
     component.ngOnDestroy();
 
-    expect(component.scrollSubscribe.unsubscribe).toHaveBeenCalled();
+    forEach(component.ngSubscriptions, (subscription: Subscription) => {
+      expect(subscription.unsubscribe).toHaveBeenCalled();
+    });
+
+    
   });
 });

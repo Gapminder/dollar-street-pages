@@ -26,12 +26,17 @@
             [ngClass]="{'grey-bg white-font': !isPreviewView && !isEmbedMode, 'text-center': isPreviewView || isEmbedMode}">
 
 
-          <p>
-            <span class="title-icon" *ngIf="isPreviewView || isEmbedMode">
-              <img class="logo" src="assets/img/dollar-street-logo.png" alt=""/>
+          <div class="pin-title">
+            <span class="title-body">
+                <span class="title-icon" *ngIf="isPreviewView || isEmbedMode">
+                  <img class="logo" src="assets/img/dollar-street-logo.png" alt=""/>
+                </span>
             </span>
-            {{ pinHeaderTitle }}
-          </p>
+            <span class="title-text">
+              <span class="title-project">Dollar Street</span>
+              <span class="title-name">{{ pinHeaderTitle }}</span>
+            </span>
+          </div>
 
           <button type="button" *ngIf="!isPreviewView" (click)="pinModeClose(true)" class="pin-mode-guide-btn">
             Quick guide to Dollar Street
@@ -45,6 +50,8 @@
           </div>
         </div>
 
+        <div class="pin-body-wrap">
+        <div class="pin-body">
         <div class="places-container"
              [ngClass]="{'column-2': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 2),
                          'column-3': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 3),
@@ -161,7 +168,11 @@
 
 
                   <div class="share-link-container">
-                    <input class="share-link-input" type="text" name="" value="">
+                    <input #pinField class="share-link-input" type="text" name="" value="">
+                  </div>
+                  <div class="share-link-button">
+                    <button ngxClipboard [cbContent]='embedLink' (cbOnSuccess)="clipboardSuccess()">Copy link</button>
+                    <span class="clipboardNotice" [class.show]='showClipboardNotice'>Link copied</span>
                   </div>
                 </div>
 
@@ -174,6 +185,8 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
         </div>
           <div *ngIf="isEmbedMode"
                class="embed-footer-text">
