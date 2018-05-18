@@ -56,7 +56,8 @@ describe('MatrixViewBlockComponent', () => {
       rich: 60,
       lowDividerCoord: 0,
       mediumDividerCoord: 100,
-      highDividerCoord: 200
+      highDividerCoord: 200,
+      dividers: [1, 2, 3]
     };
   }));
 

@@ -15,7 +15,8 @@ export class StreetSettingsServiceMock {
       lowDividerCoord: 78,
       mediumDividerCoord: 490,
       highDividerCoord: 920,
-      __v: 0
+      __v: 0,
+      dividers: [30, 300, 3000]
     };
     let response: any = {success: true, error: false, msg: [], data: context};
 

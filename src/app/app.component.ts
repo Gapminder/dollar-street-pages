@@ -15,6 +15,7 @@ import {
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { SubscriptionsList } from '../interfaces';
 import { forEach, has } from 'lodash';
+import { DEBOUNCE_TIME } from '../defaultState';
 
 @Component({
   selector: 'consumer-app',
@@ -48,8 +49,10 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.ngSubscriptions.documentCreated = Observable.fromEvent(document, 'DOMContentLoaded')
+      .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
-          this.fontDetectorService.detectFont();
+
+        this.fontDetectorService.detectFont();
           this.googleAnalyticsService.googleAnalyticsContent();
       });
 

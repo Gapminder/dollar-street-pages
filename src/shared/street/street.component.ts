@@ -18,7 +18,7 @@ import {
   AppStates,
   DrawDividersInterface,
   Place,
-  IncomeFilter,
+  IncomeFilter, Currency,
 } from '../../interfaces';
 import {ActivatedRoute} from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
@@ -74,7 +74,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   placesArr;
   streetBoxContainer: HTMLElement;
   streetBoxContainerMargin: number;
-  currencyUnit;
+  currencyUnit: Currency;
   appStatesSubscription: Subscription;
 
   constructor(elementRef: ElementRef,
@@ -112,19 +112,23 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       const streetSetting = state.streetSettings;
       const thingsFilter = state.thingsFilter;
       const countryFilter = state.countriesFilter;
-
-      if (this.currencyUnit !== matrix.currencyUnit) {
+        console.log(matrix);
+        if (this.currencyUnit !== matrix.currencyUnit) {
         this.currencyUnit = matrix.currencyUnit;
         this.street.currencyUnit = this.currencyUnit;
       }
-
+        console.log(matrix.timeUnit.per)
       if (this.streetData !== streetSetting.streetSettings) {
         this.streetData = streetSetting.streetSettings;
 
-        if (this.placesArr) {
-          this.setDividers(this.placesArr, this.streetData);
+      }
 
-        }
+      if (this.placesArr && this.streetData) {
+        console.log(matrix.timeUnit.per)
+        const factorTimeUnit = this.street.factorTimeUnit(matrix.timeUnit.per);
+
+        this.setDividers(this.placesArr, this.streetData, factorTimeUnit);
+
       }
 
       const lowIncome = _.get(streetSetting.streetSettings, 'filters.lowIncome', DefaultUrlParameters.lowIncome);
@@ -292,7 +296,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  private setDividers(places: any, drawDividers: any): void {
+  private setDividers(places: any, drawDividers: any, factorTimeUnit = 1): void {
     if (this.street.lowIncome && this.street.highIncome && this.streetData && this.regions && this.countries && this.thingName) {
     this.street
       .clearSvg()
@@ -309,7 +313,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
         })
         .compact()
         .value())
-      .drawScale(places, drawDividers);
+      .drawScale(places, drawDividers, factorTimeUnit);
 
       if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
         this.street.clearAndRedraw(this.street.chosenPlaces);

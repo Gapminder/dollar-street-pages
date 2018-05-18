@@ -1,3 +1,5 @@
+import { FontDetectorServiceMock } from './mocks/font-detector.service.mock';
+
 export { BrowserDetectionServiceMock } from './mocks/browserDetection.service.mock';
 export { UtilsServiceMock } from './mocks/utils.service.mock';
 export { LoaderServiceMock } from './mocks/loader.service.mock';
@@ -14,3 +16,4 @@ export { TranslateServiceMock } from './mocks/translate.service.mock';
 export { TranslateLoaderMock } from './mocks/translateLoader.mock';
 export { TranslateParserMock } from './mocks/translateParser.mock';
 export { IncomeCalcServiceMock } from './mocks/incomeCalc.service.mock';
+export { FontDetectorServiceMock } from './mocks/font-detector.service.mock';
