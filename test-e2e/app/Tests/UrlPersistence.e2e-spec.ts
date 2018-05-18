@@ -6,6 +6,7 @@ import { Header } from '../Pages/Components';
 describe('Storing state in URL', () => {
   beforeAll(async () => {
     await browser.get(MatrixPage.url);
+    await MatrixPage.waitForSpinner();
   });
 
   it(`Image selected after the page reload`, async () => {

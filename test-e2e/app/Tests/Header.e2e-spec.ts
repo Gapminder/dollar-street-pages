@@ -68,6 +68,7 @@ describe('Header tests', () => {
 
     it('Open QuickGuide when it was saved in LocalStorage', async () => {
       await WelcomeWizard.disableWizard();
+      await waitForLoader();
       await HamburgerMenu.openQuickGuide();
 
       expect(await WelcomeWizard.rootSelector.isDisplayed()).toBeTruthy('QuickGuide should be opened');
@@ -75,6 +76,7 @@ describe('Header tests', () => {
 
     it('Open Home page', async () => {
       await browser.get(MapPage.url);
+      await waitForLoader();
       await HamburgerMenu.goToHome();
 
       expect(await browser.getCurrentUrl()).toContain(MatrixPage.url);

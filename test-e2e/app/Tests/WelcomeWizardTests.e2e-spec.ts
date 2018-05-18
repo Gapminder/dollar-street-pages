@@ -3,6 +3,7 @@ import { browser } from 'protractor';
 import { DataProvider } from '../Data/DataProvider';
 import { Footer, WelcomeWizard, HamburgerMenu } from '../Pages/Components';
 import { AbstractPage, MapPage, MatrixPage } from '../Pages';
+import { waitForLoader } from '../Helpers/commonHelper';
 
 describe('Welcome wizard', () => {
   beforeEach(async () => {
@@ -27,7 +28,7 @@ describe('Welcome wizard', () => {
 
   it('Open Welcome wizard', async () => {
     await WelcomeWizard.disableWizard();
-
+    await waitForLoader();
     await HamburgerMenu.openQuickGuide();
 
     expect(await WelcomeWizard.quckGuideContainer.isDisplayed()).toBeTruthy('Welcome Wizard should be opened');

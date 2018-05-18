@@ -11,7 +11,7 @@ let familyImage: FamilyImage;
 async function goToFamilyFromMatrix(familyIndex = 0): Promise<void> {
   await browser.get(MatrixPage.url);
   await WelcomeWizard.disableWizard();
-
+  await MatrixPage.waitForSpinner();
   const family: FamilyImage = MatrixPage.getFamily();
 
   const familyPreview = await family.openPreview();

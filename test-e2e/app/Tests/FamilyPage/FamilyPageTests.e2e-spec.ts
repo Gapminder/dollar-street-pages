@@ -9,6 +9,7 @@ describe('Famyli Page test (go to Family after Matrix)', () => {
   beforeAll(async () => {
     await browser.get(MatrixPage.url);
     await WelcomeWizard.disableWizard();
+    await MatrixPage.waitForSpinner();
   });
 
   it('Check basic elements presence on FamilyPage', async () => {
@@ -39,6 +40,7 @@ describe('Family Page (direct opening): ', () => {
        * open 'place' page and check text
        */
       await browser.get(`${AbstractPage.url}/family?place=${element}`);
+      await MatrixPage.waitForSpinner();
 
       const familyName = await FamilyPage.familyName.getText();
 
@@ -52,6 +54,7 @@ describe('Family Page (direct opening): ', () => {
       for (let i = 0; i < 5; i++) {
         await FamilyPage.familyImages.get(i).click();
 
+        await MatrixPage.waitForImageSpinner();
         expect(await FamilyPage.thingNameOnImg.get(i).getText()).toEqual(await FamilyPage.thingNameInBIS.getText());
         expect(await FamilyPage.closeInBIS.isDisplayed()).toBeTruthy();
         expect(await FamilyPage.relatedSearchesInBIS.getText()).toEqual('Related searches');

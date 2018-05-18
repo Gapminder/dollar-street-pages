@@ -4,7 +4,7 @@ import { waitForVisible } from '../../Helpers';
 export class HamburgerMenu {
   static rootSelector: ElementFinder = $('main-menu');
 
-  static menuBtn: ElementFinder = HamburgerMenu.rootSelector.$('.btn-group');
+  static menuBtn: ElementFinder = HamburgerMenu.rootSelector.$('.main-menu .btn-group');
   static dropdownMenu: ElementFinder = HamburgerMenu.rootSelector.$('.dropdown-menu');
   static homeLink: ElementFinder = HamburgerMenu.rootSelector.$('[routerLink="/matrix"]');
   static quickGuide: ElementFinder = HamburgerMenu.rootSelector.$$('li').get(1);
@@ -13,8 +13,10 @@ export class HamburgerMenu {
   static mapLink: ElementFinder = HamburgerMenu.rootSelector.$('[routerLink="/map"]');
 
   static async open() {
+    await waitForVisible(this.menuBtn);
     await this.menuBtn.click();
     await waitForVisible(this.dropdownMenu);
+
   }
 
   static async goToHome() {
