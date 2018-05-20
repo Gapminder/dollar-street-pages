@@ -357,13 +357,15 @@ export class StreetDrawService {
         .value();
       this.placesArray = sortedPlaces;
 
-      if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-        this.minIncome = _.head(this.placesArray).income;
-        this.maxIncome = _.last(this.placesArray).income;
-      } else {
+      // if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+      //   const minPlacesIncome = _.head(this.placesArray).income;
+      //   const maxPlacesIncome = _.last(this.placesArray).income;
+      //   this.minIncome = minPlacesIncome < this.lowIncome ? minPlacesIncome : this.lowIncome;
+      //   this.maxIncome = maxPlacesIncome > this.highIncome ? maxPlacesIncome : this.highIncome;
+      // } else {
         this.minIncome = drawDividers.poor;
         this.maxIncome = drawDividers.rich;
-      }
+      // }
 
       this.leftPoint = this.scale(this.minIncome) - SVG_DEFAULTS.sliders.moreThenNeed;
       this.rightPoint = this.scale(this.maxIncome) + SVG_DEFAULTS.sliders.moreThenNeed;
@@ -674,7 +676,7 @@ export class StreetDrawService {
         if (this.leftPoint >= x) {
           return this.leftPoint + SVG_DEFAULTS.sliders.differentSize;
         } else {
-          const position = x + SVG_DEFAULTS.sliders.differentSize;
+          const position = (x < 0 ? 0 : x) + SVG_DEFAULTS.sliders.differentSize;
 
           return position;
         }
@@ -682,16 +684,16 @@ export class StreetDrawService {
 
     if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
       if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4) && !this.isMobile) {
-        this.sliderLeftBorder = this.leftPoint ;
+        this.sliderLeftBorder = this.leftPoint < 0 ? 0 : this.leftPoint;
         this.leftScrollOpacityStreet
           .attr('width', this.leftPoint + this.streetOffset / 2);
         this.leftScrollOpacityHomes
           .attr('width', this.leftPoint + this.streetOffset / 2);
       } else {
         this.leftScrollOpacityStreet
-          .attr('width', x + this.streetOffset / 2);
+          .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
         this.leftScrollOpacityHomes
-          .attr('width', x + this.streetOffset / 2);
+          .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
       }
     } else {
       this.leftScrollOpacityStreet
