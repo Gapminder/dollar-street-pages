@@ -11,14 +11,14 @@ import {
   OnDestroy,
   EventEmitter,
   ViewChild,
-  AfterViewInit, AfterViewChecked
+  AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   AppStates,
   DrawDividersInterface,
   Place,
-  IncomeFilter, Currency,
+  IncomeFilter, Currency, TimeUnit,
 } from '../../interfaces';
 import {ActivatedRoute} from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
@@ -75,6 +75,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   streetBoxContainer: HTMLElement;
   streetBoxContainerMargin: number;
   currencyUnit: Currency;
+  timeUnit: TimeUnit;
   appStatesSubscription: Subscription;
 
   constructor(elementRef: ElementRef,
@@ -112,23 +113,24 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       const streetSetting = state.streetSettings;
       const thingsFilter = state.thingsFilter;
       const countryFilter = state.countriesFilter;
-        console.log(matrix);
+
         if (this.currencyUnit !== matrix.currencyUnit) {
-        this.currencyUnit = matrix.currencyUnit;
-        this.street.currencyUnit = this.currencyUnit;
-      }
-        console.log(matrix.timeUnit.per)
+          this.currencyUnit = matrix.currencyUnit;
+          this.street.currencyUnit = this.currencyUnit;
+        }
+
       if (this.streetData !== streetSetting.streetSettings) {
         this.streetData = streetSetting.streetSettings;
 
       }
 
+        if (this.timeUnit !== matrix.timeUnit) {
+          this.timeUnit = matrix.timeUnit;
+          this.street.timeUnit = this.timeUnit;
+        }
+
       if (this.placesArr && this.streetData) {
-        console.log(matrix.timeUnit.per)
-        const factorTimeUnit = this.street.factorTimeUnit(matrix.timeUnit.per);
-
-        this.setDividers(this.placesArr, this.streetData, factorTimeUnit);
-
+        this.setDividers(this.placesArr, this.streetData);
       }
 
       const lowIncome = _.get(streetSetting.streetSettings, 'filters.lowIncome', DefaultUrlParameters.lowIncome);
@@ -295,7 +297,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  private setDividers(places: any, drawDividers: any, factorTimeUnit = 1): void {
+  private setDividers(places: any, drawDividers: any): void {
     if (this.street.lowIncome && this.street.highIncome && this.streetData && this.regions && this.countries && this.thingName) {
     this.street
       .clearSvg()
@@ -312,7 +314,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
         })
         .compact()
         .value())
-      .drawScale(places, drawDividers, factorTimeUnit);
+      .drawScale(places, drawDividers);
 
       if (this.street.chosenPlaces && this.street.chosenPlaces.length) {
         this.street.clearAndRedraw(this.street.chosenPlaces);

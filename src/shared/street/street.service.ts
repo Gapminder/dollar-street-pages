@@ -180,11 +180,12 @@ export class StreetDrawService {
     return this;
   }
 
-  isDrawCurrency(drawDividers: DrawDividersInterface, factorTimeUnit: number): this {
+  isDrawCurrency(drawDividers: DrawDividersInterface): this {
     if (!_.get(drawDividers, 'showCurrency', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
-    console.log(factorTimeUnit);
+    const factorTimeUnit = this.factorTimeUnit(this.timeUnit.per);
+
     this.svg
       .selectAll('text.scale-label')
       .data(this.axisLabel)
@@ -460,7 +461,7 @@ export class StreetDrawService {
     this.incomeArr.length = 0;
 
     this.isDrawDividers(drawDividers);
-    this.isDrawCurrency(drawDividers, factorTimeUnit);
+    this.isDrawCurrency(drawDividers);
     this.isDrawLabels(drawDividers);
 
 
@@ -1138,7 +1139,6 @@ export class StreetDrawService {
   }
 
   factorTimeUnit(unitCode: string): number {
-    console.log(SVG_DEFAULTS.factorTimeUnits[unitCode]);
     return SVG_DEFAULTS.factorTimeUnits[unitCode];
   }
 }
