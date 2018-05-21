@@ -167,3 +167,9 @@
     display: inline-block;
   }
 }
+
+@media (max-height: 500px) {
+  .float-footer-container {
+     display: none;
+  }
+}

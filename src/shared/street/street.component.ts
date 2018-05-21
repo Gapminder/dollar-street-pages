@@ -149,7 +149,6 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     });
 
     this.streetFilterSubscribe = this.street.filter.subscribe((filter: IncomeFilter): void => {
-
       this.street.set('lowIncome', filter.lowIncome);
       this.street.set('highIncome', filter.highIncome);
 
