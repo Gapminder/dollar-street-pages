@@ -11,14 +11,14 @@ import {
   OnDestroy,
   EventEmitter,
   ViewChild,
-  AfterViewInit, AfterViewChecked
+  AfterViewInit
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   AppStates,
   DrawDividersInterface,
   Place,
-  IncomeFilter,
+  IncomeFilter, Currency, TimeUnit,
 } from '../../interfaces';
 import {ActivatedRoute} from '@angular/router';
 import { sortBy, chain, differenceBy } from 'lodash';
@@ -74,7 +74,8 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   placesArr;
   streetBoxContainer: HTMLElement;
   streetBoxContainerMargin: number;
-  currencyUnit;
+  currencyUnit: Currency;
+  timeUnit: TimeUnit;
   appStatesSubscription: Subscription;
 
   constructor(elementRef: ElementRef,
@@ -113,18 +114,23 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       const thingsFilter = state.thingsFilter;
       const countryFilter = state.countriesFilter;
 
-      if (this.currencyUnit !== matrix.currencyUnit) {
-        this.currencyUnit = matrix.currencyUnit;
-        this.street.currencyUnit = this.currencyUnit;
-      }
+        if (this.currencyUnit !== matrix.currencyUnit) {
+          this.currencyUnit = matrix.currencyUnit;
+          this.street.currencyUnit = this.currencyUnit;
+        }
 
       if (this.streetData !== streetSetting.streetSettings) {
         this.streetData = streetSetting.streetSettings;
 
-        if (this.placesArr) {
-          this.setDividers(this.placesArr, this.streetData);
+      }
 
+        if (this.timeUnit !== matrix.timeUnit) {
+          this.timeUnit = matrix.timeUnit;
+          this.street.timeUnit = this.timeUnit;
         }
+
+      if (this.placesArr && this.streetData) {
+        this.setDividers(this.placesArr, this.streetData);
       }
 
       const lowIncome = _.get(streetSetting.streetSettings, 'filters.lowIncome', DefaultUrlParameters.lowIncome);

@@ -98,6 +98,7 @@ export interface DrawDividersInterface {
     lowIncome: number;
     highIncome: number;
   };
+  dividers: number[];
 }
 
 export interface DividersGaps {

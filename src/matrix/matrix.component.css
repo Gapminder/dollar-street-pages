@@ -271,6 +271,11 @@ matrix-images {
   text-align: left;
 }
 
+.pin-body.fullsize  {
+  display: block;
+  width: 100%;
+}
+
 .places-container .embed-close-button {
   position: absolute;
   top: 10px;

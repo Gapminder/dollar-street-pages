@@ -15,7 +15,7 @@ import {
   AppStates,
   DrawDividersInterface,
   Place,
-  DividersGaps
+  DividersGaps, Currency, TimeUnit
 } from '../../interfaces';
 import {
   DefaultUrlParameters,
@@ -79,7 +79,8 @@ export class StreetDrawService {
   windowInnerWidth: number = window.innerWidth;
   isDesktop: boolean;
   isMobile: boolean;
-  currencyUnit;
+  currencyUnit: Currency;
+  timeUnit: TimeUnit;
 
   colors = {
     fills: {
@@ -104,10 +105,11 @@ export class StreetDrawService {
   }
 
   init(lowIncome: number, highIncome: number, drawDividers: DrawDividersInterface, regions: string[], countries: string[], thing: string): this {
+
     this.thingname = thing;
     this.countries = countries[0];
     this.regions = regions[0];
-    this.axisLabel = [ _.get(drawDividers, 'low', 0), _.get(drawDividers, 'medium', 0), _.get(drawDividers, 'high', 0)];
+    this.axisLabel = drawDividers.dividers;
     this.levelLabels = [
       _.get(drawDividers, 'firstLabelName', ''),
       _.get(drawDividers, 'secondLabelName', ''),
@@ -182,6 +184,7 @@ export class StreetDrawService {
     if (!_.get(drawDividers, 'showCurrency', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
+    const factorTimeUnit = this.factorTimeUnit(this.timeUnit.per);
 
     this.svg
       .selectAll('text.scale-label')
@@ -191,7 +194,8 @@ export class StreetDrawService {
       .attr('class', 'currency-text')
       .attr('text-anchor', 'middle')
       .text((d: any) => {
-        return `${this.currencyUnit.symbol}${this.math.roundIncome(d * this.currencyUnit.value)}`;
+
+        return `${this.currencyUnit.symbol}${this.math.roundIncome(d * this.currencyUnit.value * factorTimeUnit)}`;
       })
       .attr('x', (d: any) => {
 
@@ -310,7 +314,7 @@ export class StreetDrawService {
 
   }
 
-  drawScale(places: Place[], drawDividers: DrawDividersInterface): this {
+  drawScale(places: Place[], drawDividers: DrawDividersInterface, factorTimeUnit = 1): this {
 
     axisBottom(this.scale)
       .tickFormat(() => {
@@ -918,12 +922,12 @@ export class StreetDrawService {
       incomeR = +this.dividersData.rich;
     }
 
-    
+
 
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    
+
     if (this.dividerFallWithinGaps(xL, lowGaps) || this.dividerFallWithinGaps(xR, lowGaps)) {
       this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
@@ -998,7 +1002,7 @@ export class StreetDrawService {
 
     if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) &&
     (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      
+
       incomeR = Math.round(this.maxIncome * this.currencyUnit.value);
       incomeR = +this.math.roundIncome(incomeR);
 
@@ -1016,7 +1020,7 @@ export class StreetDrawService {
 
   getDividersGaps(divider: number, dividersSpace = SVG_DEFAULTS.sliders.gaps ): DividersGaps {
     const coordsDivider = this.scale(divider);
-    
+
     const dividerGaps = {
       from: (coordsDivider - dividersSpace),
       to: (coordsDivider + dividersSpace),
@@ -1132,6 +1136,10 @@ export class StreetDrawService {
       highIncome: highFilter
     });
 
+  }
+
+  factorTimeUnit(unitCode: string): number {
+    return SVG_DEFAULTS.factorTimeUnits[unitCode];
   }
 }
 

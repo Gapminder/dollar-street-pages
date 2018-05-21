@@ -51,7 +51,7 @@
         </div>
 
         <div class="pin-body-wrap">
-        <div class="pin-body">
+        <div class="pin-body" [ngClass]="{'fullsize' : !isPreviewView && !isEmbedMode}">
         <div class="places-container"
              [ngClass]="{'column-2': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 2),
                          'column-3': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 3),

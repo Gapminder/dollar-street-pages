@@ -80,5 +80,11 @@ export const SVG_DEFAULTS = {
     color: '#232B31',
   },
   mobileWidth: 700,
-  minSliderSpace: 40
+  minSliderSpace: 40,
+  factorTimeUnits: {
+    month: 1,
+    week: 0.25,
+    day: 0.03333,
+    year: 12
+  }
 };

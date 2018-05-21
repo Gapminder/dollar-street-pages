@@ -423,5 +423,6 @@ const defaultStreetSettings: DrawDividersInterface = {
   rich: 5,
   lowDividerCoord: 5,
   mediumDividerCoord: 6,
-  highDividerCoord: 7
+  highDividerCoord: 7,
+  dividers: [1, 2, 3]
 };

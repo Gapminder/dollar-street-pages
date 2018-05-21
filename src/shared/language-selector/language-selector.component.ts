@@ -7,6 +7,7 @@ import {
   Input
 } from '@angular/core';
 import {
+  FontDetectorService,
   LanguageService
 } from '../../common';
 import { AppStates, LanguageState } from '../../interfaces';
@@ -33,6 +34,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
 
   public constructor(elementRef: ElementRef,
                      private languageService: LanguageService,
+                     private fontDetectorService: FontDetectorService,
                      private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
   }
@@ -51,7 +53,7 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
           this.languageService.changeLanguage(this.currentLanguage);
           this.updateLanguages();
         }
-      })
+      });
   }
 
   public ngOnDestroy(): void {
@@ -70,6 +72,8 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
         this.selectedLanguage = find(this.languages, lang => lang.code === 'en');
         this.filteredLanguages = filter(this.languages, lang => lang.code !== 'en');
       }
+
+      this.fontDetectorService.detectFont();
     }
   }
 
