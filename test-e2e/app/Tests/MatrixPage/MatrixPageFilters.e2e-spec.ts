@@ -9,6 +9,7 @@ describe('Matrix Page: Filters', () => {
 
     // TODO quick guide could broke tests
     await WelcomeWizard.disableWizard();
+    await MatrixPage.waitForSpinner();
 
   });
 
@@ -98,7 +99,7 @@ describe('Matrix Page: Filters', () => {
     expect(await browser.getCurrentUrl()).toContain(`countries=${COUNTRY}`);
   });
 
-  xit('Filter by Income: currency and income updated in images list', async () => {
+  it('Filter by Income: currency and income updated in images list', async () => {
     const expectedCurrency = {
       name: 'Euro',
       symbol: '€',
@@ -130,7 +131,7 @@ describe('Matrix Page: Filters', () => {
     expect(await browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
   });
 
-  xit('Filter by Income: currency and income updated in image preview', async () => {
+  it('Filter by Income: currency and income updated in image preview', async () => {
     const random = getRandomNumber();
     const expectedCurrency = {
       name: 'Krona',
@@ -150,6 +151,8 @@ describe('Matrix Page: Filters', () => {
     expect(await browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
   });
 
+
+  // Failed because of https://github.com/Gapminder/dollar-street-pages/issues/1096
   xit('Filter by Income: currency and income updated in image preview when imagePreview is opened', async () => {
     const random = getRandomNumber();
     const expectedCurrency = {
@@ -170,7 +173,7 @@ describe('Matrix Page: Filters', () => {
     expect(await browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
   });
 
-  xit('Filter by Income: currency updated on family page (https://github.com/Gapminder/dollar-street-pages/issues/1189)', async () => {
+  it('Filter by Income: currency updated on family page)', async () => {
     const random = getRandomNumber();
     const expectedCurrency = {
       name: 'Euro',
@@ -189,7 +192,5 @@ describe('Matrix Page: Filters', () => {
       .then(familyCurrency => {
         expect(familyCurrency).toEqual(expectedCurrency.symbol);
       });
-
-    expect(await browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
   });
 });

@@ -47,6 +47,10 @@ export async function waitForVisible(element: ElementFinder, timeout = 5000): Pr
   await browser.wait(EC.visibilityOf(element), timeout);
 }
 
+export async function waitForPresence(element: ElementFinder, timeout = 5000): Promise<void> {
+  await browser.wait(EC.presenceOf(element), timeout);
+}
+
 export function isInViewport(element: ElementFinder): promise.Promise<boolean> {
   return browser.executeScript(elementToCheck => {
     const rect = elementToCheck.getBoundingClientRect();
