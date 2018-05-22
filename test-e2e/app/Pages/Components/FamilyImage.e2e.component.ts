@@ -3,7 +3,7 @@ import { ElementFinder, $$ } from 'protractor';
 import { MatrixImagePreview } from './MatrixImagePreview.e2e.component';
 import { FamilyImagePreview } from './FamilyImagePreview.e2e.component';
 import { MatrixPage, FamilyPage } from '..';
-import { waitForVisible } from '../../Helpers';
+import { waitForPresence, waitForVisible } from '../../Helpers/commonHelper';
 
 export class FamilyImage {
   rootSelector: ElementFinder;
@@ -21,6 +21,7 @@ export class FamilyImage {
   }
 
   get income(): ElementFinder {
+    waitForPresence(this.rootSelector.$('.place-image-box-income'));
     return this.rootSelector.$('.place-image-box-income');
   }
 
