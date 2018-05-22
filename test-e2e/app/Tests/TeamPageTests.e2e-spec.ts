@@ -24,6 +24,4 @@ describe('Team Page test', () => {
       expect(await element().isDisplayed()).toBeTruthy();
     }
   });
-
-  
 });

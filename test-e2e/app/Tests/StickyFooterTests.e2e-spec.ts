@@ -7,6 +7,7 @@ import { scrollIntoView } from '../Helpers/commonHelper';
 describe('Matrix Page sticky footer test', () => {
   beforeAll(async () => {
     await browser.get(MatrixPage.url);
+    await MatrixPage.waitForSpinner();
   });
 
   it('Scroll down and check texts, icons', async () => {
