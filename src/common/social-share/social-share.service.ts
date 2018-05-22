@@ -138,7 +138,7 @@ export class SocialShareService {
               return;
             }
 
-            let params: URLSearchParams = new URLSearchParams();
+          let params: URLSearchParams = new URLSearchParams();
 
             switch(target) {
               case 'twitter':

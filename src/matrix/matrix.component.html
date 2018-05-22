@@ -98,14 +98,19 @@
              [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode}">
           <div *ngIf="isPinMode || isEmbedMode"
                class="street-pinned-container"
-               [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode, 'white-font': !isPreviewView && !isEmbedMode}">
-            <street-pinned
-                 [places]="placesSet"
-                 [hoverPlace]="hoverPinnedPlace">
-            </street-pinned>
 
-            <span class="poorest">POOREST</span>
-            <span class="richest">RICHEST</span>
+               [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode, 'white-font': !isPreviewView && !isEmbedMode,
+                          'short-width': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 2)}">
+            <div class="street-pinned-cell">
+              <street-pinned
+                   [places]="placesSet"
+                   [hoverPlace]="hoverPinnedPlace">
+              </street-pinned>
+              <span class="poorest">POOREST</span>
+              <span class="richest">RICHEST</span>
+            </div>
+
+
           </div>
 
 
