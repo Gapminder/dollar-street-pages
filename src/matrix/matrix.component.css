@@ -184,12 +184,12 @@ matrix-images {
 }
 
 .street-pinned-container .poorest {
-  bottom: 0px;
+  bottom: -5px;
   left: 20px;
 }
 
 .street-pinned-container .richest {
-  bottom: 0px;
+  bottom: -5px;
   right: 20px;
 }
 
@@ -267,8 +267,9 @@ matrix-images {
 }
 
 .pin-body {
-  display: inline-block;
-  text-align: left;
+  /*display: inline-block;*/
+  /*text-align: left;*/
+  /*max-width: 95%;*/
 }
 
 .pin-body.fullsize  {
@@ -744,6 +745,25 @@ matrix-images {
 
 .street-pinned-container.white-font span {
   color: white;
+}
+
+.street-pinned-container.short-width {
+  /*max-width: 1030px;*/
+  /*margin: 0 auto;*/
+}
+
+.street-pinned-container {
+  display: flex;
+  justify-content: center;
+}
+
+.street-pinned-cell {
+  flex: 0 1 100%;
+  position: relative;
+}
+
+.street-pinned-container.short-width .street-pinned-cell {
+  flex-basis: 990px;
 }
 
 .pin-header p {

@@ -2,11 +2,13 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from  'rxjs/Subject';
 import { Injectable } from '@angular/core';
 
+const STREET_PADDING = 30;
+
 @Injectable()
 export class ImageGeneratorService {
   public iconSelector: string = 'logo';
   public headerSelector: string = 'pin-header';
-  public streetSelector: string = 'street-container';
+  public streetContainerSelector: string = 'street-pinned-cell';
   public streetSvgSelector: string = '.street-pinned-box-container svg';
   public placesSelector: string = 'places-container';
   public paragraphSelector: string = 'pin-footer-paragraph';
@@ -22,17 +24,17 @@ export class ImageGeneratorService {
         // this.getCanvas(windowObj, documentObj.getElementsByClassName(this.iconSelector)[0] as HTMLElement),
         this.getCanvas(windowObj, documentObj.getElementsByClassName(this.headerSelector)[0] as HTMLElement),
         this.getCanvas(windowObj, documentObj.getElementsByClassName(this.placesSelector)[0] as HTMLElement),
-        this.getCanvas(windowObj, documentObj.getElementsByClassName(this.streetSelector)[0] as HTMLElement),
+        this.getCanvas(windowObj, documentObj.getElementsByClassName(this.streetContainerSelector)[0] as HTMLElement),
         this.getCanvas(windowObj, documentObj.getElementsByClassName(this.paragraphSelector)[0] as HTMLElement)
       ]).then((result) => {
         // let iconCanvas = result[0];
         let headerCanvas = result[0];
         let placesCanvas = result[1];
-        let streetCanvas = result[2];
+        let streetContainerCanvas = result[2];
         let paragraphCanvas = result[3];
 
         sourceCanvas.width = headerCanvas.width;
-        sourceCanvas.height = headerCanvas.height + streetCanvas.height + placesCanvas.height + paragraphCanvas.height;
+        sourceCanvas.height = headerCanvas.height + streetContainerCanvas.height + placesCanvas.height + paragraphCanvas.height;
 
         // let iconImage = iconCanvas.getContext('2d').getImageData(0, 0, 48, 48);
         let headerImage = headerCanvas.getContext('2d').getImageData(0, 0, headerCanvas.width, headerCanvas.height);
@@ -64,7 +66,8 @@ export class ImageGeneratorService {
           // sourceCanvas.getContext('2d').putImageData(streetImage, 0, headerCanvas.height);
           sourceCanvas.getContext('2d').putImageData(placesImage, 0, headerCanvas.height);
           sourceCanvas.getContext('2d').putImageData(streetBackground, 0, headerCanvas.height + placesCanvas.height);
-          sourceCanvas.getContext('2d').putImageData(streetImage, 30, headerCanvas.height + placesCanvas.height);
+          const streetXPosition = (headerCanvas.width - streetContainerCanvas.width ) / 2 + STREET_PADDING;
+          sourceCanvas.getContext('2d').putImageData(streetImage, streetXPosition, headerCanvas.height + placesCanvas.height);
           sourceCanvas.getContext('2d').putImageData(paragraphImage, 0, headerCanvas.height + streetCanvas.height + placesCanvas.height);
 
           resolve(sourceCanvas.toDataURL('image/jpeg'));
