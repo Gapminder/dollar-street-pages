@@ -1,19 +1,20 @@
-import { $, browser, ExpectedConditions as EC } from 'protractor';
+import { $, browser, ElementFinder, ExpectedConditions as EC } from 'protractor';
 
 import { getRandomNumber, disableAnimations } from '../../Helpers';
 
 import { MatrixPage, AbstractPage } from '../../Pages';
 import { PinnedContainer, Footer } from '../../Pages/Components';
+import { waitForInvisibility } from '../../Helpers/commonHelper';
 
 let imageToSelect: number;
 const pinnedContainer: PinnedContainer = new PinnedContainer();
 
-xdescribe('Embed feature tests', () => {
+describe('Embed feature tests', () => {
   describe('Pin container tests', () => {
     beforeEach(async () => {
       imageToSelect = getRandomNumber();
       await browser.get(MatrixPage.url);
-
+      await MatrixPage.waitForSpinner();
       await browser
         .actions()
         .mouseMove(MatrixPage.familyLink.get(10))
@@ -67,6 +68,7 @@ xdescribe('Embed feature tests', () => {
     beforeEach(async () => {
       imageToSelect = getRandomNumber();
       await browser.get(MatrixPage.url);
+      await MatrixPage.waitForSpinner();
 
       await browser
         .actions()
@@ -93,12 +95,31 @@ xdescribe('Embed feature tests', () => {
 
     it(`Cancel sharing remove pinContainer and leads back to default Matrix page`, async () => {
       await pinnedContainer.shareBtn.click();
-      await browser.wait(EC.invisibilityOf($('.loader-content')), 10000);
+      await waitForInvisibility(pinnedContainer.commonSpinerPinnedContainer);
       await pinnedContainer.cancelBtn.click();
 
       expect(await pinnedContainer.rootSelector.isPresent()).toBeFalsy('pin container');
       expect(await pinnedContainer.streetChart.isPresent()).toBeFalsy('pinned street');
       expect(await MatrixPage.imagesContainer.isDisplayed()).toBeTruthy('images container');
+    });
+
+    it(`Social Network icons, Copy Link, Cancel and Download btn are displayed `, async () => {
+      await pinnedContainer.shareBtn.click();
+      await waitForInvisibility(pinnedContainer.commonSpinerPinnedContainer);
+      await waitForInvisibility(pinnedContainer.spinerPinnedContainer);
+
+      expect(await pinnedContainer.getSocialNetworkIconArray().count()).toBe(4);
+      expect(await pinnedContainer.buttonCopyLink.isDisplayed()).toBeTruthy();
+      expect(await pinnedContainer.cancelBtn.isDisplayed()).toBeTruthy();
+      expect(await pinnedContainer.buttonDownload.isDisplayed()).toBeTruthy();
+    });
+
+    it(`Title of sharing screen is Dollar Street`, async () => {
+      await pinnedContainer.shareBtn.click();
+      await waitForInvisibility(pinnedContainer.commonSpinerPinnedContainer);
+      await waitForInvisibility(pinnedContainer.spinerPinnedContainer);
+
+      expect(await pinnedContainer.titlePinnedContainer.getText()).toBe('Dollar Street');
     });
   });
 

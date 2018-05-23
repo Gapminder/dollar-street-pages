@@ -34,7 +34,11 @@ export async function disableAnimations(): Promise<{}> {
 }
 
 export async function waitForLoader(timeout = 40000): Promise<void> {
-  await browser.wait(EC.invisibilityOf(AbstractPage.loader), 40000);
+  await browser.wait(EC.invisibilityOf(AbstractPage.loader), timeout);
+}
+
+export async function waitForInvisibility(element: ElementFinder, timeout = 40000): Promise<void> {
+  await browser.wait(EC.invisibilityOf(element), timeout);
 }
 
 export async function scrollIntoView(element: ElementFinder): Promise<void> {
