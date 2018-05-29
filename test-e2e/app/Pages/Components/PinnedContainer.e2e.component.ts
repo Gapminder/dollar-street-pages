@@ -1,9 +1,17 @@
 import { $, $$, ElementArrayFinder, ElementFinder } from 'protractor';
 import { promise } from 'selenium-webdriver';
+import { waitForPresence } from '../../Helpers/commonHelper';
 
 export class PinnedContainer {
   rootSelector: ElementFinder = $('.pin-container');
 
+
+  titlePinnedContainer: ElementFinder = this.rootSelector.$('.title-project');
+  iconGroupSocialNetworks: ElementFinder = this.rootSelector.$('.share-buttons-container');
+  buttonCopyLink: ElementFinder = this.rootSelector.$('.share-link-button');
+  buttonDownload: ElementFinder = this.rootSelector.$('.download-icon');
+  spinerPinnedContainer: ElementFinder = $('.la-ball-spin');
+  commonSpinerPinnedContainer: ElementFinder = $('.loader-content');
   closeIcon: ElementFinder = $('.pin-mode-close');
   deselectImageIcon: ElementArrayFinder = this.rootSelector.$$('.heart-container .heart-circle');
   streetChart: ElementFinder = this.rootSelector.$('#chart');
@@ -41,6 +49,11 @@ export class PinnedContainer {
 
   getfamiliesList(): promise.Promise<string> {
     return this.familiesList.getText();
+  }
+
+  getSocialNetworkIconArray(): ElementArrayFinder {
+    waitForPresence(this.iconGroupSocialNetworks, 10000);
+    return this.iconGroupSocialNetworks.$$('svg');
   }
 
   close() {
