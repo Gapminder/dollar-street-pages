@@ -4,7 +4,7 @@ import { ElementFinder, ElementArrayFinder } from 'protractor/built/index';
 import { MatrixPage } from '../Pages';
 
 export class DataProvider {
- 
+
   static countryPageText = {
     VisitedFamilies: { element: (): ElementFinder => $('p[class*="home"]') },
     TotalPhotos: { element: (): ElementFinder => $('p[class="photo"]') },
@@ -308,10 +308,17 @@ export class DataProvider {
       actualIncome: '466'
     }
   };
+
   static mapPageHover = {
     'Family Image': { element: (): ElementFinder => $('.hover_portrait_box>img') },
     'Family Name': { element: (): ElementFinder => element.all(by.css('.name')).first() },
     'Country Name': { element: (): ElementFinder => element.all(by.css('.country')).first() },
     'Family Income': { element: (): ElementFinder => element.all(by.css('.income')).first() }
+  };
+
+  static socialNetworksAccounts = {
+    Twitter: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' },
+    FaceBook: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' },
+    LinkedIn: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' }
   };
 }
