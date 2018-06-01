@@ -36,6 +36,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('socialShareContent')
   public socialShareContent: ElementRef;
 
+  analyticLocation = 'menu';
   public element: HTMLElement;
   public window: Window = window;
   public isOpenMenu: boolean = false;

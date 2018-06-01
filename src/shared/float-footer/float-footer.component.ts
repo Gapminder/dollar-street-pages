@@ -33,11 +33,11 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('floatFooterContainer')
   floatFooterContainer: ElementRef;
 
+  analyticLocation = 'footer';
   element: HTMLElement;
   scrollSubscribe: Subscription;
   isDesktop: boolean;
-  routerEventsSubscription: Subscription;
-  storeSubscription: Subscription
+
   ngSubscriptions: SubscriptionsList = {};
   isMatrixPage: boolean;
   pinMode: boolean;

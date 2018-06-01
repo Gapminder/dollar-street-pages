@@ -8,6 +8,8 @@ import { LanguageServiceMock } from '../../../test/';
 import { SocialShareButtonsComponent } from '../social-share-buttons.component';
 import { SocialShareButtonsService } from '../social-share-buttons.service';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { Angulartics2GoogleTagManager } from 'angulartics2';
+import { Angulartics2GoogleAnalyticsMock } from '../../../test/mocks/angulartics2GoogleAnalytics.mock';
 
 describe('SocialShareButtonsComponent', () => {
   let fixture: ComponentFixture<SocialShareButtonsComponent>;
@@ -24,6 +26,7 @@ describe('SocialShareButtonsComponent', () => {
       providers: [
         { provide: SocialShareService, useValue: {} },
         { provide: SocialShareButtonsService, useClass: SocialShareButtonsServiceMock },
+        { provide: Angulartics2GoogleTagManager, useClass: Angulartics2GoogleAnalyticsMock },
       ]
     });
 
@@ -38,7 +41,7 @@ describe('SocialShareButtonsComponent', () => {
 
   it('check subscriptions on init', () => {
     fixture.detectChanges();
-    
+
     expect(component.getTranslationSubscribe).toBeDefined();
   });
 
@@ -56,7 +59,7 @@ describe('SocialShareButtonsComponent', () => {
     spyOn(socialShareButtonsService, 'getUrl').and.returnValue(Observable.of({ err: null, url: '/expected/url' }));
 
     fixture.detectChanges();
-    
+
     const twitterBtn = fixture.debugElement.query(By.css('.share-button.twitter a'));
     twitterBtn.triggerEventHandler('click', null);
 
@@ -71,7 +74,7 @@ describe('SocialShareButtonsComponent', () => {
     spyOn(socialShareButtonsService, 'getUrl').and.returnValue(Observable.of({ err: null, url: '/expected/url' }));
 
     fixture.detectChanges();
-    
+
     const facebookBtn = fixture.debugElement.query(By.css('.share-button.facebook a'));
     facebookBtn.triggerEventHandler('click', null);
 
@@ -86,7 +89,7 @@ describe('SocialShareButtonsComponent', () => {
     spyOn(socialShareButtonsService, 'getUrl').and.returnValue(Observable.of({ err: null, url: '/expected/url' }));
 
     fixture.detectChanges();
-    
+
     const linkedinBtn = fixture.debugElement.query(By.css('.share-button.linkedin a'));
     linkedinBtn.triggerEventHandler('click', null);
 
@@ -101,7 +104,7 @@ describe('SocialShareButtonsComponent', () => {
     spyOn(socialShareButtonsService, 'getUrl').and.returnValue(Observable.of({ err: null, url: '/expected/url' }));
 
     fixture.detectChanges();
-    
+
     const googlePlusBtn = fixture.debugElement.query(By.css('.share-button.google a'));
     googlePlusBtn.triggerEventHandler('click', null);
 
