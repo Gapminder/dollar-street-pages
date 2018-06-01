@@ -27,6 +27,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('floatFooterContainer')
   public floatFooterContainer: ElementRef;
 
+  analyticLocation = 'footer';
   public element: HTMLElement;
   public scrollSubscribe: Subscription;
   public isDesktop: boolean;
