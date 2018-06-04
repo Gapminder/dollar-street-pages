@@ -7,6 +7,7 @@ git:
   submodules: false
 addons:
   ssh_known_hosts: 52.211.52.39
+
 stages:
 - name: Precache
 - name: Lint
@@ -15,34 +16,34 @@ stages:
 - name: Deploy
 cache:
   directories:
-  - node_modules
+   - node_modules
 before_deploy:
-- openssl aes-256-cbc -K $encrypted_3b9e3d10b787_key -iv $encrypted_3b9e3d10b787_iv
-  -in id_rsa.enc -out id_rsa -d
+- openssl aes-256-cbc -K $encrypted_3b9e3d10b787_key -iv $encrypted_3b9e3d10b787_iv -in id_rsa.enc -out id_rsa -d
 - eval "$(ssh-agent -s)"
 - chmod 600 id_rsa
 - ssh-add id_rsa
 script:
 - echo "skipping tests"
+
 jobs:
   include:
-  - stage: Precache
-    script: true
-    install: npm install
-  - stage: Lint
-    script: npm run lint
-  - stage: Unit tests
-    script: npm run test
-    after_success: npm run codecov
-  - stage: Build
-    skip_cleanup: true
-    script: npm run build
-  - stage: Deploy
-    if: "(branch = development AND type = push)"
-    deploy:
-      provider: script
-      skip_cleanup: true
-      script: ssh -o StrictHostKeyChecking=no -i id_rsa ubuntu@52.211.52.39 /home/ubuntu/www/run_ds_consumer_api.sh
-      on: development
+   - stage: Precache
+     script: true
+     install: npm install
+   - stage: Lint
+     script: npm run lint
+   - stage: Unit tests
+     script: npm run test
+     after_success: npm run codecov
+   - stage: Build
+     skip_cleanup: true
+     script: npm run build
+   - stage: Deploy
+     if: "(branch = development AND type = push)"
+     deploy:
+       provider: script
+       skip_cleanup: true
+       script: ssh -o StrictHostKeyChecking=no -i id_rsa ubuntu@52.211.52.39 /home/ubuntu/www/run_ds_consumer_api.sh
+       on: development
 
 
