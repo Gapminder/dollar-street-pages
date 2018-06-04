@@ -68,3 +68,20 @@ export function isInViewport(element: ElementFinder): promise.Promise<boolean> {
     );
   }, element);
 }
+
+export function getRandomString(length: number): string {
+  let str = '';
+  let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  for (let i = 0; i < length; i++) {
+    str += letters.charAt(Math.floor(Math.random() * letters.length));
+  }
+  return str;
+}
+
+export async function switchWindow(winToSwitch: number) {
+  let win = await browser.getAllWindowHandles(); //Get All available windows
+  if (win.length - 1 >= winToSwitch) {
+    browser.switchTo().window(win[winToSwitch]);
+  }
+}
+
