@@ -41,7 +41,7 @@ import {
   BrowserDetectionService,
   LanguageService,
   UtilsService,
-  UrlChangeService
+  UrlChangeService, IncomeCalcService
 } from '../../common';
 import { MatrixViewBlockService } from './matrix-view-block.service';
 import { StreetDrawService } from '../../shared/street/street.service';
@@ -123,7 +123,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      public streetService: StreetDrawService,
                      private urlParametersService : UrlParametersService,
                      private pagePositionService: PagePositionService,
-                     private imageService: ImageLoadedService) {
+                     private imageService: ImageLoadedService,
+                     private incomeCalcService: IncomeCalcService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -177,6 +178,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           this.timeUnits = data.timeUnits;
           this.changeTimeUnit(this.timeUnit.code);
         }
+
+        if (this.timeUnit && this.currencyUnit && this.place) {
+          const income = this.incomeCalcService.calcPlaceIncome(this.place.income, this.timeUnit.code, this.currencyUnit.value)
+          this.place.showIncome = income.toString();
+        }
+
     });
 
     this.ngSubscriptions.timeUnitTranslation = combineLatest(matrixState, languageState)
