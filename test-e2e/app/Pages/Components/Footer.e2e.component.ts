@@ -8,6 +8,7 @@ export class Footer {
   static dollarStreetText: ElementFinder = Footer.rootSelector.$('.logo-container>p');
   static heartIcon: ElementFinder = Footer.floatingFooter.$('.pin-icon');
   static twitterIcon: ElementFinder = Footer.floatingFooter.$('.share-button.twitter');
+  static facebookIcon: ElementFinder = Footer.floatingFooter.$('.share-button.facebook');
 
   static async checkFooterText(): Promise<void> {
     for (const [name, { element, actualResult }] of Object.entries(DataProvider.footerTextInfo)) {

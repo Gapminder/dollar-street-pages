@@ -47,8 +47,8 @@ export async function scrollIntoView(element: ElementFinder): Promise<void> {
   }, element);
 }
 
-export async function waitForVisible(element: ElementFinder, timeout = 5000): Promise<void> {
-  await browser.wait(EC.visibilityOf(element), timeout);
+export async function waitForVisible(element: ElementFinder, timeout = 5000, message = '' ): Promise<void> {
+  await browser.wait(EC.visibilityOf(element), timeout, message);
 }
 
 export async function waitForPresence(element: ElementFinder, timeout = 5000): Promise<void> {
@@ -84,4 +84,20 @@ export async function switchWindow(winToSwitch: number) {
     browser.switchTo().window(win[winToSwitch]);
   }
 }
-
+export async function waitTillWindowClosed() {
+  let win = await browser.getAllWindowHandles(); //Get All available windows
+  let winAfter
+  let win2 ;
+  let winBefore = win.length;
+  for (let i = 0; i < 15; i++) {
+     win2 = await browser.getAllWindowHandles();
+     winAfter = win2.length;
+    if (winBefore > winAfter) {
+      return;
+    }
+    browser.sleep(500);
+  }
+}
+export async function waitForURLContain(url: string, timeout = 40000): Promise<void> {
+  await browser.wait(EC.urlContains(url), timeout);
+}

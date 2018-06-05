@@ -11,6 +11,7 @@ export class HamburgerMenu {
   static aboutLink: ElementFinder = HamburgerMenu.rootSelector.$('[routerLink="/about"]');
   static donateLink: ElementFinder = HamburgerMenu.rootSelector.$('[routerLink="/donate"]');
   static mapLink: ElementFinder = HamburgerMenu.rootSelector.$('[routerLink="/map"]');
+  static facebookIcon: ElementFinder = HamburgerMenu.rootSelector.$('.dropdown-menu .share-button.facebook');
 
   static async open() {
     await waitForVisible(this.menuBtn);
