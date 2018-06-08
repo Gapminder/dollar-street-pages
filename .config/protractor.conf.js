@@ -14,7 +14,10 @@ exports.config = {
     shardTestFiles: true,
     maxInstances: 4,
     chromeOptions: {
-      args: [ 'headless']
+      args: [ 'headless', '--window-size=1920x1080'],
+      prefs: {
+        'profile.managed_default_content_settings.notifications' : 1,
+      }
     }
   },
 
@@ -28,7 +31,7 @@ exports.config = {
   },
 
   specs: ['../test-e2e/app/Tests/**/*.e2e-spec.ts'],
-  exclude: ['../test-e2e/app/CMS/**/*.e2e-spec.ts', '../test-e2e/app/Tests/ClickEachLink.e2e-spec.ts'],
+  exclude: ['../test-e2e/app/CMS/**/*.e2e-spec.ts', '../test-e2e/app/Tests/ClickEachLink.e2e-spec.ts','../test-e2e/app/Tests/Facebook.e2e-spec.ts'],
 
   framework: 'jasmine',
 
@@ -81,7 +84,6 @@ exports.config = {
     fs.openSync(testResultsFile, 'w');
     fs.openSync(consoleErrorsFile, 'w');
   },
-
   onPrepare: function() {
     require('ts-node').register({ project: `${__dirname}/../test-e2e`});
 

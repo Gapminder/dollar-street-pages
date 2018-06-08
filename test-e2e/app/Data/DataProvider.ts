@@ -318,7 +318,7 @@ export class DataProvider {
 
   static socialNetworksAccounts = {
     Twitter: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' },
-    FaceBook: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' },
+    Facebook: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' },
     LinkedIn: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' }
   };
 }
