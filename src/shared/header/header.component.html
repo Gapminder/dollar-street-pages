@@ -79,7 +79,7 @@
                   <div class="currency-unit-cell">
 
                     <div dropdown class="control-section">
-                      <span class="control-label">{{ 'CURRENCY' | translate }}</span>
+                      <span class="control-label">{{ 'INCOME_POPUP_CURRENCY' | translate }}</span>
                       <button type="button"
                               class="dropdown-button"
                               dropdownToggle
@@ -108,12 +108,12 @@
                   <div class="currency-unit-cell">
 
                     <div dropdown class="control-section">
-                      <span class="control-label">{{ 'TIME_UNIT' | translate }}</span>
+                      <span class="control-label">{{ 'INCOME_POPUP_TIME_UNIT' | translate }}</span>
                       <button type="button"
                               class="dropdown-button"
                               dropdownToggle
                               [disabled]="disabled">
-                        <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
+                        <span class="dropdown-selected">{{ timeUnitTemp?.translatedName}}</span>
                         <span class="button-icon">
                           <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
                         </span>
@@ -126,22 +126,22 @@
                         <li class="dropdown-item"
                             role="menuitem"
                             (click)="timeUnitFilterSelect('DAY')">
-                          <span class="dropdown-item">Day</span>
+                          <span class="dropdown-item">{{'DAY' | translate}}</span>
                         </li>
                         <li class="dropdown-item"
                             role="menuitem"
                             (click)="timeUnitFilterSelect('WEEK')">
-                          <span class="dropdown-item">Week</span>
+                          <span class="dropdown-item">{{'WEEK' | translate}}</span>
                         </li>
                         <li class="dropdown-item"
                             role="menuitem"
                             (click)="timeUnitFilterSelect('MONTH')">
-                          <span class="dropdown-item">Month</span>
+                          <span class="dropdown-item">{{'MONTH' | translate}}</span>
                         </li>
                         <li class="dropdown-item"
                             role="menuitem"
                             (click)="timeUnitFilterSelect('YEAR')">
-                          <span class="dropdown-item">Year</span>
+                          <span class="dropdown-item">{{'YEAR' | translate}}</span>
                         </li>
                       </ul>
                     </div>
@@ -159,10 +159,10 @@
               </div>
 
               <div class="income-filter-desktop-footer">
-                <div (click)="closeIncomeFilterDesktop($event)" class="close-button">Close</div>
+                <div (click)="closeIncomeFilterDesktop($event)" class="close-button">{{'CLOSE' | translate }}</div>
                 <div (click)="applyIncomeFilterDesktop($event)" class="ok-button">
                   <img src="/assets/img/apply.svg" alt=""/>
-                  <span>Ok</span>
+                  <span>{{'INCOME_POPUP_BTN_OK' | translate }}</span>
                 </div>
               </div>
             </div>
