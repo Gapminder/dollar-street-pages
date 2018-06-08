@@ -12,6 +12,7 @@ export class HamburgerMenu {
   static donateLink: ElementFinder = HamburgerMenu.rootSelector.$('[routerLink="/donate"]');
   static mapLink: ElementFinder = HamburgerMenu.rootSelector.$('[routerLink="/map"]');
   static facebookIcon: ElementFinder = HamburgerMenu.rootSelector.$('.dropdown-menu .share-button.facebook');
+  static comparisonButton: ElementFinder = HamburgerMenu.rootSelector.$('#comparisonButton');
 
   static async open() {
     await waitForVisible(this.menuBtn);
@@ -43,5 +44,10 @@ export class HamburgerMenu {
   static async openQuickGuide() {
     await this.open();
     await this.quickGuide.click();
+  }
+
+  static async openEmbedModal() {
+    await this.open();
+    await this.comparisonButton.click();
   }
 }

@@ -9,6 +9,7 @@ import {
   BrowserDetectionService,
   Angulartics2GoogleAnalytics, SocialShareService
 } from '../../../common';
+import { forEach } from 'lodash';
 import {
     LanguageServiceMock,
     LoaderServiceMock,
@@ -21,6 +22,7 @@ import { MainMenuComponent } from '../main-menu.component';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
 import { SocialShareButtonsService } from '../../social-share-buttons/social-share-buttons.service';
 import { SocialShareServiceMock } from '../../../test/mocks/socialShare.service.mock';
+import { Subscription } from 'rxjs/Subscription';
 
 class SocialShareButtonsServiceMock {
 
@@ -62,16 +64,15 @@ describe('MainMenuComponent', () => {
         component.ngOnInit();
         component.ngAfterViewInit();
 
-        expect(component.streetSettingsStateSubscription).toBeDefined();
-        expect(component.appStateSubscription).toBeDefined();
-
-        spyOn(component.getTranslationSubscribe, 'unsubscribe');
-        spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
-        spyOn(component.appStateSubscription, 'unsubscribe');
+        forEach(component.ngSubscriptions, (subscription: Subscription) => {
+          spyOn(subscription, 'unsubscribe');
+        });
 
         component.ngOnDestroy();
 
-        expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
+        forEach(component.ngSubscriptions, (subscription: Subscription) => {
+          expect(subscription.unsubscribe).toHaveBeenCalled();
+        });
+
     });
 });

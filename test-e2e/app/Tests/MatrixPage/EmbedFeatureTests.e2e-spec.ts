@@ -3,7 +3,7 @@ import { $, browser, ElementFinder, ExpectedConditions as EC } from 'protractor'
 import { getRandomNumber, disableAnimations } from '../../Helpers';
 
 import { MatrixPage, AbstractPage } from '../../Pages';
-import { PinnedContainer, Footer } from '../../Pages/Components';
+import { PinnedContainer, Footer, HamburgerMenu } from '../../Pages/Components';
 import { waitForInvisibility } from '../../Helpers/commonHelper';
 
 let imageToSelect: number;
@@ -15,15 +15,16 @@ describe('Embed feature tests', () => {
       imageToSelect = getRandomNumber();
       await browser.get(MatrixPage.url);
       await MatrixPage.waitForSpinner();
-      await browser
-        .actions()
-        .mouseMove(MatrixPage.familyLink.get(10))
-        .perform();
-      await disableAnimations();
-      await Footer.heartIcon.click();
+      // await browser
+      //   .actions()
+      //   .mouseMove(MatrixPage.familyLink.get(10))
+      //   .perform();
+      // await disableAnimations();
+      await HamburgerMenu.openEmbedModal();
+      // await Footer.heartIcon.click();
     });
 
-    it(`Click on Heart icon add image to pin area`, async () => {
+    fit(`Click on Heart icon add image to pin area`, async () => {
       await selectImageToShare(imageToSelect);
 
       const selectedImage = await MatrixPage.familyImages.get(imageToSelect).getCssValue('background-image');
@@ -33,13 +34,13 @@ describe('Embed feature tests', () => {
       expect(selectedImage).toEqual(`url("${pinnedImage}")`);
     });
 
-    it(`Houses added to pinned street when picture added`, async () => {
+    fit(`Houses added to pinned street when picture added`, async () => {
       await selectImageToShare(imageToSelect);
 
       expect(await pinnedContainer.housesOnStreet.count()).toEqual(1);
     });
 
-    it(`Families texted on the top of pinned items`, async () => {
+    fit(`Families texted on the top of pinned items`, async () => {
       const firstSelectedImage = await MatrixPage.countryInImageDescription.get(imageToSelect).getText();
       const secondSelectedImage = await MatrixPage.countryInImageDescription.get(imageToSelect + 1).getText();
 
@@ -52,7 +53,7 @@ describe('Embed feature tests', () => {
       expect(pinnedHeaderText).toContain(secondSelectedImage);
     });
 
-    it(`Zoom buttons won't affect the sharing`, async () => {
+    fit(`Zoom buttons won't affect the sharing`, async () => {
       await MatrixPage.zoomDecrease.click();
       await selectImageToShare(imageToSelect);
 
@@ -70,12 +71,14 @@ describe('Embed feature tests', () => {
       await browser.get(MatrixPage.url);
       await MatrixPage.waitForSpinner();
 
-      await browser
-        .actions()
-        .mouseMove(MatrixPage.familyLink.get(10))
-        .perform();
-      await disableAnimations();
-      await Footer.heartIcon.click();
+      await HamburgerMenu.openEmbedModal();
+
+      // await browser
+      //   .actions()
+      //   .mouseMove(MatrixPage.familyLink.get(10))
+      //   .perform();
+      // await disableAnimations();
+      // await Footer.heartIcon.click();
 
       // selected two images to proceed sharing
       await selectImageToShare(imageToSelect);
