@@ -6,7 +6,6 @@ export class Footer {
   static floatingFooter: ElementFinder = $('.float-footer-container')
 
   static dollarStreetText: ElementFinder = Footer.rootSelector.$('.logo-container>p');
-  // static heartIcon: ElementFinder = Footer.floatingFooter.$('.pin-icon');
   static twitterIcon: ElementFinder = Footer.floatingFooter.$('.share-button.twitter');
   static facebookIcon: ElementFinder = Footer.floatingFooter.$('.share-button.facebook');
 
