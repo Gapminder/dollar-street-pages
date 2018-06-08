@@ -10,7 +10,7 @@ import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from '../matrix/ngrx/matrix.actions';
 import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter.actions';
 import * as CountriesFilterActions from '../shared/countries-filter/ngrx/countries-filter.actions';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import * as LanguageActions from '../common/language/ngrx/language.actions';
 import { LocalStorageService } from '../common/local-storage/local-storage.service';
@@ -33,6 +33,7 @@ export class UrlParametersService {
     private location: Location,
     private browserDetectionService: BrowserDetectionService,
     private languageService: LanguageService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.parameters = Object.assign({}, DefaultUrlParameters);
     this.isMobile = this.browserDetectionService.isMobile() || this.browserDetectionService.isTablet();
@@ -253,5 +254,17 @@ export class UrlParametersService {
   public removeActiveImage(): void {
     this.parameters.activeImage = undefined;
     this.combineUrlPerPage();
+  }
+
+  isCurrentPage(name: string): boolean {
+    const shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
+
+    if (shap) {
+      if (shap[0][0] === name) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

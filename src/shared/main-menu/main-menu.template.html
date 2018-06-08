@@ -29,6 +29,9 @@
             <social-share-buttons></social-share-buttons>
           </div>
         </li>
+        <li *ngIf="isMatrixPage">
+          <button (click)="SetPinMode()" class="comparisonButton" id="comparisonButton" [ngClass]="{active: pinMode || embedMode}">Create Comparison</button>
+        </li>
         <li>
           <div class="feedback-container">
             <div class="feedback-content">

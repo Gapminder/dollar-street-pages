@@ -93,7 +93,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     const isScrolled = !!scrollTop;
 
-    if (!isPageWithScroll && 
+    if (!isPageWithScroll &&
       !floatFooterContainerElement.classList.contains(CLASS_TO_SHOW_FOOTER)) {
 
         floatFooterContainerElement.classList.add('show-float-footer');
@@ -118,12 +118,6 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     return false;
-  }
-
-  SetPinMode(): void {
-    if (!this.pinMode && !this.embedMode) {
-      this.store.dispatch(new MatrixActions.SetPinMode(true));
-    }
   }
 
   scrollTop(e: MouseEvent): void {

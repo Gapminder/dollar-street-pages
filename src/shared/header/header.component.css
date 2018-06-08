@@ -145,7 +145,7 @@ family-header .header-content {
   position: relative;
   z-index: 1;
   display: flex;
-  transform: translateZ(0);
+  /*transform: translateZ(0);*/
 }
 
 .header-content .icon-container {

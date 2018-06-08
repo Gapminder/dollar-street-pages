@@ -10,6 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import {
@@ -20,8 +21,11 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import {AppState, AppStates, StreetSettingsState} from '../../interfaces';
+import { AppState, AppStates, MatrixState, StreetSettingsState, SubscriptionsList } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import { DEBOUNCE_TIME } from '../../defaultState';
+import { get, forEach } from 'lodash';
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 
 @Component({
   selector: 'main-menu',
@@ -42,12 +46,11 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public isTablet: boolean;
   public socialShareContentElement: HTMLElement;
   public shareTranslation: string;
-  public streetSettingsState: Observable<StreetSettingsState>;
-  public streetSettingsStateSubscription: Subscription;
-  public appState: Observable<AppState>;
-  public appStateSubscription: Subscription;
-  public languagesListSubscription: Subscription;
   public additionUrlParams: string;
+  pinMode = false;
+  embedMode = false;
+  ngSubscriptions: SubscriptionsList = {};
+  isMatrixPage = false;
 
   public constructor(elementRef: ElementRef,
                      private router: Router,
@@ -55,11 +58,10 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
                      private localStorageService: LocalStorageService,
                      private browserDetectionService: BrowserDetectionService,
                      private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private urlParametersService: UrlParametersService,
                      private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
 
-    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
-    this.appState = this.store.select((appStates: AppStates) => appStates.app);
   }
 
   public ngAfterViewInit(): void {
@@ -75,7 +77,10 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
 
-    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+    this.ngSubscriptions.streetSettings = this.store
+      .select((appStates: AppStates) => appStates.streetSettings)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((data: StreetSettingsState) => {
       if (data) {
         if (data.streetSettings) {
           this.streetData = data.streetSettings;
@@ -83,9 +88,27 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.appStateSubscription = this.appState.subscribe((data: AppState) => {
+    this.ngSubscriptions.appState = this.store
+      .select((appStates: AppStates) => appStates.app)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((data: AppState) => {
       if (data && data.query) {
         this.additionUrlParams = data.query;
+      }
+    });
+
+    this.ngSubscriptions.matrixState = this.store
+      .select((appStates: AppStates) => appStates.matrix)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((matrix: MatrixState) => {
+        console.log(matrix);
+        this.pinMode = get(matrix, 'pinMode', false);
+        this.embedMode = get(matrix, 'embedMode', false);
+      });
+
+    this.ngSubscriptions.routerEvents = this.router.events.subscribe( event => {
+      if (event instanceof NavigationEnd) {
+        this.isMatrixPage = this.urlParametersService.isCurrentPage('matrix');
       }
     });
   }
@@ -107,25 +130,18 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnDestroy(): void {
-    if (this.languagesListSubscription) {
-      this.languagesListSubscription.unsubscribe();
-    }
 
     if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
     }
 
-    if (this.streetSettingsStateSubscription) {
-      this.streetSettingsStateSubscription.unsubscribe();
-    }
-
-    if (this.appStateSubscription) {
-      this.appStateSubscription.unsubscribe();
-    }
-
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
+
+    forEach(this.ngSubscriptions, (subscription: Subscription) => {
+      subscription.unsubscribe();
+    })
   }
 
   public openMenu(isOpenMenu: boolean): void {
@@ -214,5 +230,12 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['/matrix']);
 
     this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
+  }
+
+  SetPinMode(): void {
+    if (!this.pinMode && !this.embedMode) {
+      this.store.dispatch(new MatrixActions.SetPinMode(true));
+      this.openMenu(this.isOpenMenu);
+    }
   }
 }
