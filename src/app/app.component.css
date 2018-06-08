@@ -1,0 +1,21 @@
+.container {
+  padding-top: 64px;
+  position: relative;
+}
+
+.guide-position {
+  /*position: absolute;*/
+  /*z-index: 1;*/
+  /*top: 135px;*/
+  /*left: 0;*/
+  /*width: 100%;*/
+}
+
+.header-position {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+

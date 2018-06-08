@@ -1,0 +1,288 @@
+.view-image-block-container {
+  margin: 5px 5px 0;
+  position: relative;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .header-container,
+.view-image-block-container .view-image-block-content {
+  overflow: hidden;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .header-container {
+  margin-bottom: 15px;
+  margin-right: 10px;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .header-container img {
+  width: 30px;
+  margin-right: 9px;
+  vertical-align: baseline;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .header-container span {
+  font-size: 24px;
+  vertical-align: bottom;
+}
+
+.view-image-block-container .view-image-block-content > div {
+  float: left;
+}
+
+.view-image-block-container .view-image-block-content .view-image-container {
+  width: calc(100% - 329px);
+}
+
+.view-image-block-container .view-image-block-content .view-image-container .view-image-content {
+  height: 705px;
+  background-color: #e4e7ea;
+  padding: 12px;
+  box-shadow: 0 0 5px #ddd inset;
+  position: relative;
+  text-align: center;
+}
+
+.view-image-block-container .view-image-block-content .view-image-container .view-image-content img {
+  max-height: 100%;
+  max-width: 100%;
+  cursor: pointer;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 12px;
+}
+
+.view-image-block-container .view-image-block-content .view-image-container .image-footer-container {
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container > div {
+  float: left;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container a {
+  color: #374551;
+  font-size: 20px;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container .photographer-container a,
+.view-image-block-container .view-image-block-content .image-footer-container .photographer-container p {
+  color: #374551;
+  font-size: 16px;
+  margin: 0;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container .photographer-container p {
+  margin-top: 3px;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container .photographer-container img {
+  margin-top: -3px;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container {
+  text-align: right;
+  float: right;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container .button-text {
+  margin-left: 10px;
+}
+
+.view-image-block-container .view-image-block-content .zoom-download-container a.download img {
+  margin-top: -7px;
+}
+
+.view-image-block-container .view-image-block-content .zoom-download-container a:last-child img {
+  vertical-align: baseline;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container img {
+  width: 17px;
+  margin-right: 2px;
+}
+
+.view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container a.download {
+  display: inline-block;
+  margin-right: 16px;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container {
+  width: 319px;
+  margin-left: 10px;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container > div {
+  float: left;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .house-info-content {
+  width: 300px;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .house-info-content > p {
+  font-size: 16px;
+  color: #767d86;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .house-info-content > p a {
+  color: #b04514;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .close-block {
+  width: 19px;
+}
+
+.view-image-block-container .view-image-block-content .house-info-container .close-block img {
+  width: 100%;
+  cursor: pointer;
+}
+
+.view-image-block-container .thing-button-container {
+  margin-top: 50px;
+}
+
+.view-image-block-container .thing-button-container p {
+  color: #374551;
+  font-size: 20px;
+  margin: 0;
+}
+
+.view-image-block-container .thing-button-container a {
+  display: block;
+  border: 1px solid #374551;
+  color: #374551;
+  font-size: 20px;
+  font-family: 'Font Light', sans-serif;
+  padding: 4px 35px 4px 14px;
+  position: relative;
+  margin: 9px 0 0;
+  background-color: transparent;
+}
+
+.view-image-block-container .thing-button-container a:hover {
+  background-color: #374551;
+  color: #fff;
+}
+
+.view-image-block-container .thing-button-container a span:not(.in) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: calc(50% - 12px);
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+
+.view-image-block-container .thing-button-container a img {
+  height: 15px;
+  position: absolute;
+  top: calc(50% - 7.5px);
+  right: 16px;
+  opacity: 1;
+}
+
+.view-image-block-container .thing-button-container a img:last-child,
+.view-image-block-container .thing-button-container a:hover img:first-child {
+  opacity: 0;
+}
+
+.view-image-block-container .thing-button-container a:hover img:last-child {
+  opacity: 1;
+}
+
+.view-image-block-container .isLoad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+}
+
+.view-image-block-container .isLoad > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.view-image-block-container .active-house {
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 17px solid #fff;
+  position: absolute;
+  top: -22px;
+  z-index: 9;
+}
+
+.fancyBox-container {
+  position: fixed !important;
+  background-color: rgba(0, 0, 0, .7);
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+}
+
+.fancyBox-container,
+.fancyBox-container .load,
+.fancyBox-container .load-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.fancyBox-container .load {
+  width: 65px;
+  height: 65px;
+  margin: auto;
+}
+
+.fancyBox-container .fancyBox-image {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.mobile-image-container {
+  width: 100%;
+  position: relative;
+}
+
+@media (max-width: 1440px) {
+  .view-image-block-container .view-image-block-content .view-image-container .view-image-content {
+    height: 485px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .view-image-block-container .view-image-block-content .view-image-container .view-image-content {
+    height: 420px;
+  }
+
+  .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container .button-text {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .view-image-block-container .view-image-block-content .image-footer-container .zoom-download-container a.download {
+    margin-right: 10px;
+  }
+}

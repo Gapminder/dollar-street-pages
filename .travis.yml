@@ -1,53 +1,38 @@
-language: node_js
 sudo: false
-# test with node 4.* and 5.*
-node_js:
-  - "5"
-  - "4"
+language: node_js
+node_js: 8.8.1
 
-# cache node_modules (read more: https://docs.travis-ci.com/user/caching/)
+addons:
+  ssh_known_hosts: 52.211.52.39
+
+stages:
+- name: Precache
+- name: Build
+- name: Deploy
 cache:
   directories:
     - node_modules
-
-
-env:
-  CXX=g++-4.8
-
-before_install:
-- npm install -g npm@latest
-
-before_script:
-# set up UI for travis-ci (read more https://docs.travis-ci.com/user/gui-and-headless-browsers/)
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
-# build client project
-- npm run build:prod
-# start file server in background
-- npm run serve &
-- sleep 3
-# update webdrived for karma tests
-- npm run update-webdriver
-
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_3b9e3d10b787_key -iv $encrypted_3b9e3d10b787_iv -in id_rsa.enc -out id_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 id_rsa
+- ssh-add id_rsa
 script:
-# run local karma tests
-- npm test
-# run protractor tests
-- npm run e2e
-# submit coverage report to coveralls
-- cat ./coverage/report-lcov/lcov.info | ./node_modules/.bin/coveralls --verbose
-# run karma tests at browser stack
-#- npm run test-bs
-# run karma tests at sauce labs
-#- npm run karma-sauce
+- echo "skipping tests"
 
-addons:
-  # sauce labs tunel connector (read more https://docs.travis-ci.com/user/sauce-connect/ )
-  sauce_connect: true
-  firefox: "42.0"
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    # required by node-gyp to build some packages
-    packages:
-    - g++-4.8
+jobs:
+  fast_finish: true
+  include:
+  - stage: Precache
+    script: true
+    install: npm install
+  - stage: Build
+    skip_cleanup: true
+    script: npm run build
+  - stage: Deploy
+    if: "(branch = development AND type = push)"
+    deploy:
+      provider: script
+      skip_cleanup: true
+      script: ssh -o StrictHostKeyChecking=no -i id_rsa ubuntu@52.211.52.39 /home/ubuntu/www/run_ds_pages.sh
+      on: development

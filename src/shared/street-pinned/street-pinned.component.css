@@ -1,0 +1,26 @@
+.street-pinned-box-container {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  padding: 0 22px;
+  height: 64px;
+  transform: translateZ(0);
+  /*background-color: #fff;*/
+}
+
+.street-pinned-box-container svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1023px) {
+  .street-pinned-box-container {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 599px) {
+  .street-pinned-box-container {
+    padding: 0 5px;
+  }
+}

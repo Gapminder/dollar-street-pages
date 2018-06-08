@@ -1,0 +1,175 @@
+.float-footer-container {
+  overflow: hidden;
+  padding: 9px 22px;
+  background-color: #fff;
+  border-top: 1px solid #e0ebf9;
+
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -101%;
+  z-index: 99;
+
+  -webkit-transition: bottom .5s ease;
+  -moz-transition: bottom .5s ease;
+  -o-transition: bottom .5s ease;
+  transition: bottom .5s ease;
+
+  transform: translateZ(0);
+}
+
+.float-footer-container.show-float-footer {
+  bottom: 0;
+}
+
+.float-footer-container >>> span {
+  color: #767d86;
+  font-size: 16px;
+  float: left;
+  margin: 2px 0 -2px;
+  cursor: default;
+}
+
+.float-footer-container .share-image {
+  width: 19px;
+  margin: 1px 0 0;
+  vertical-align: top;
+  display: none;
+}
+
+.float-footer-container social-share-buttons {
+  display: inline-block;
+  float: left;
+  margin-top: 3px;
+}
+
+.float-footer-container social-share-buttons >>> .share-button svg {
+  width: 21px;
+  height: 21px;
+}
+
+.float-footer-container social-share-buttons >>> .share-button.twitter svg .cls-1 {
+  fill: #1da1f2;
+}
+
+.float-footer-container social-share-buttons >>> .share-button.facebook svg .cls-1 {
+  fill: #3b5998;
+}
+
+.float-footer-container social-share-buttons >>> .share-button.linkedin svg .cls-1 {
+  fill: #0077b5;
+}
+
+.float-footer-container social-share-buttons >>> .share-button.google svg .cls-1 {
+  fill: #cc3732;
+}
+
+.float-footer-container .follow-buttons-container {
+  float: right;
+}
+
+.float-footer-container .follow-buttons-container >>> .twitter-follow-button {
+  margin-right: 10px;
+  margin-bottom: -2px;
+}
+
+.float-footer-container .follow-buttons-container >>> .fb-like {
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.float-footer-container .back-to-top {
+  color: #767d86;
+  font-size: 18px;
+  float: right;
+  cursor: pointer;
+}
+
+.float-footer-container .back-to-top img {
+  width: 19px;
+  margin: 4px 0 0;
+  vertical-align: top;
+}
+
+.float-footer-container .pin-icon {
+  width: 24px;
+  height: 24px;
+  float: left;
+  margin: 0 0 0 14px;
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  outline: none;
+}
+
+.float-footer-container .pin-icon .icon-active,
+.float-footer-container .pin-icon .icon-inactive {
+  display: block;
+}
+
+.float-footer-container .pin-icon .icon-active,
+.float-footer-container .pin-icon .icon-inactive,
+.float-footer-container .pin-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.float-footer-container .pin-icon .icon-active{
+  display: none;
+}
+
+.float-footer-container .pin-icon:hover .icon-active,
+.float-footer-container .pin-icon.active .icon-active{
+  display: block;
+}
+
+.float-footer-container .pin-icon:hover .icon-inactive,
+.float-footer-container .pin-icon.active .icon-inactive{
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .float-footer-container {
+    padding: 9px 10px;
+  }
+}
+
+@media (max-width: 599px) {
+  .float-footer-container {
+    padding: 9px 5px;
+  }
+
+  .float-footer-container >>> span {
+    font-size: 16px;
+    margin: 1px -4px 0 0;
+  }
+
+  .float-footer-container .back-to-top {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .float-footer-container .share-text {
+    display: none;
+  }
+
+  .float-footer-container .share-image {
+    display: inline-block;
+  }
+
+  .float-footer-container .follow-buttons-container >>> .twitter-follow-button {
+    margin: 0;
+  }
+
+  .float-footer-container .follow-buttons-container >>> .fb-like {
+    margin-right: 10px;
+    display: inline-block;
+  }
+}
+
+@media (max-height: 500px) {
+  .float-footer-container {
+     display: none;
+  }
+}

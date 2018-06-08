@@ -1,0 +1,422 @@
+.close-button {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #ced1d5;;
+}
+
+#things-filter-mobile {
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+  width: 100%;
+}
+
+#things-filter-mobile .tabs-header-container {
+  border-bottom: 1px solid #e4e6e7;
+  padding: 0 20px;
+}
+
+#things-filter-mobile .tabs-header-container span {
+  color: #767d86;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 30px;
+  display: inline-block;
+  padding: 10px 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+#things-filter-mobile .tabs-header-container span.active:before {
+  content: "";
+  height: 2px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffcb34;
+}
+
+#things-filter-mobile .tabs-header-container span.active {
+  color: #374551;
+}
+
+#things-filter-mobile .container-filter {
+  display: none;
+}
+
+#things-filter-mobile.open-things-filter .container-filter {
+  top: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  display: block;
+  z-index: 667;
+  height: 100vh;
+}
+
+#things-filter-mobile .thing-filter-header .thing-filter-header-content {
+  min-width: 150px;
+  text-align: left;
+  padding: 16px 35px 20px 20px;
+  color: #374551;
+  height: 55px;
+  font-size: 24px;
+  line-height: 20px;
+  border-bottom: 1px solid #c6c7c9;
+}
+
+#things-filter-mobile .thing-filter-header .thing-filter-header-content img {
+  width: 25px;
+  height: 25px;
+  float: left;
+  margin: -3px 10px 0 0;
+}
+
+#things-filter-mobile .things-filter-button {
+  position: relative;
+}
+
+#things-filter-mobile .things-filter-button .things-filter-button-content {
+  background-color: white;
+  border: 1px solid #e4e6e7;
+  border-radius: 6px;
+  min-width: 150px;
+  text-align: left;
+  padding: 7px 35px 4px 14px;
+  color: #374551;
+  font-size: 24px;
+  line-height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#things-filter-mobile .things-filter-button .things-filter-button-content img {
+  width: 25px;
+  height: 25px;
+  float: left;
+  margin: -3px 10px 0 0;
+}
+
+#things-filter-mobile .things-filter-button .things-filter-button-content span.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid #374551;
+  position: absolute;
+  top: 18px;
+  right: 11px;
+}
+
+#things-filter-mobile.open-things-filter .things-filter-button .things-filter-button-content {
+  box-shadow: 0 0 10px rgba(55, 69, 81, 0.1)
+}
+
+#things-filter-mobile.open-things-filter .things-filter-button .things-filter-button-content span.arrow {
+  border-bottom: 7px solid #374551;
+  border-top: 0 solid transparent;
+  position: absolute;
+  top: 18px;
+  right: 11px;
+}
+
+#things-filter-mobile .thing-filter-header {
+  width: 100%;
+  height: 55px;
+  background-color: #f6f7f8;
+}
+
+#things-filter-mobile .tabs-content-container {
+  position: relative;
+  overflow-y: auto;
+}
+
+#things-filter-mobile .search-container[hidden] + .tabs-header-container + .tabs-content-container {
+  height: calc(100% - 106px);
+  overflow-y: auto;
+}
+
+#things-filter-mobile .thing-content {
+  padding: 0px 11px 4px 24px;
+  position: relative;
+  border-bottom: 1px solid #e4e6e7;
+  width: 100%;
+}
+
+#things-filter-mobile .thing-content:last-child {
+  border-bottom: 0;
+}
+
+#things-filter-mobile .thing-content.empty {
+}
+
+#things-filter-mobile .thing-content:hover {
+  background-color: #f4f5f5;
+}
+
+#things-filter-mobile .thing-content .thing-icon-container {
+  position: relative;
+  top: 12px;
+}
+
+#things-filter-mobile .thing-content .thing-apply-icon {
+  position: absolute;
+  top: calc(50% - 12px);
+  right: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+#things-filter-mobile .thing-content .thing-apply-icon img {
+  position: relative;
+  top: 0;
+  width: 20px;
+  height: 20px;
+}
+
+#things-filter-mobile .thing-content img {
+  position: relative;
+  top: 0;
+  width: 24px;
+  height: 24px;
+}
+
+#things-filter-mobile .thing-content span {
+  color: #374551;
+  font-size: 22px;
+  line-height: 30px;
+  display: block;
+  width: calc(100% - 50px);
+  margin-top: -14px;
+  margin-bottom: 3px;
+  margin-left: 35px;
+  cursor: pointer;
+}
+
+#things-filter-mobile .thing-content.empty span {
+  color: #a9a9a9;
+}
+
+#things-filter-mobile .things-search {
+  position: relative;
+  margin: 15px 20px 5px;
+}
+
+#things-filter-mobile .things-search input:focus {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
+}
+
+#things-filter-mobile .things-search input {
+  font-size: 18px;
+  color: #767d86;
+  padding: 3px 35px 3px 20px;
+  background-color: white;
+  border: 1px solid #9c9fa4;
+  border-radius: 16px;
+  text-align: left;
+  width: 100%;
+}
+
+#things-filter-mobile .things-search img {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  width: 18px;
+}
+
+#things-filter-mobile.open-things-filter .things-filter-container {
+  display: block;
+}
+
+#things-filter-mobile .things-filter-button .thing-pop-up {
+  position: absolute;
+  top: 100%;
+  left: -7px;
+  z-index: 999;
+  padding-top: 3px;
+  display: none;
+  text-align: left;
+}
+
+#things-filter-mobile .things-filter-button:hover .thing-pop-up {
+  display: block;
+}
+
+#things-filter-mobile .things-filter-button.exist:hover .thing-pop-up {
+  display: block;
+}
+
+#things-filter-mobile .things-filter-button .thing-pop-up span {
+  width: 50px;
+  height: 10px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+#things-filter-mobile .things-filter-button .thing-pop-up span:after {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: white;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: 5px;
+  left: 0;
+  right: 0;
+  box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+  margin: auto;
+}
+
+#things-filter-mobile .things-filter-button .thing-pop-up-content {
+  width: 450px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 20px 15px;
+  box-shadow: 0px 2px 12.04px 1.96px rgba(0, 0, 0, 0.28);
+}
+
+#things-filter-mobile .things-filter-button .thing-pop-up-content p {
+  font-family: 'Font Light', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #5f6a74;
+  margin-bottom: 0;
+}
+
+#things-filter-mobile #countries-filter .countries-search input:focus {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 0, 0, .12);
+}
+
+#things-filter-mobile .things-filter-button .thing-pop-up-content p a {
+  color: #0567bf;
+  font-family: 'Font Regular', sans-serif;
+}
+
+@media (min-width: 1024px) {
+  #things-filter-mobile .things-filter-button .things-filter-button-content {
+    padding: 8px 35px 9px 14px;
+    font-size: 28px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 701px) {
+  #things-filter-mobile .things-filter-button .things-filter-button-content {
+    /*max-width: 190px;*/
+  }
+}
+
+@media (max-width: 700px) {
+  #things-filter-mobile .things-filter-button .things-filter-button-content {
+    max-width: 100%;
+  }
+
+  #things-filter-mobile {
+    display: inline-block;
+    position: relative;
+    vertical-align: bottom;
+    width: 100%
+  }
+
+  #things-filter-mobile .close-button {
+    position: absolute;
+    top: 18px;
+    right: 8px;
+  }
+
+  #things-filter-mobile .tabs-header-container span {
+    font-size: 24px;
+    padding: 10px 14px;
+  }
+
+  #things-filter-mobile .thing-filter-header .thing-filter-header-content {
+    padding: 18px 35px 14px 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  #things-filter-mobile .things-filter-button {
+    position: relative;
+    width: 100%
+  }
+
+  #things-filter-mobile .things-filter-button .things-filter-button-content {
+    text-align: left;
+    padding: 7px 29px 6px 12px;
+  }
+
+  #things-filter-mobile .things-filter-button .things-filter-button-content img {
+    width: 23px;
+    float: left;
+    margin: -3px 9px 0 0;
+    position: static;
+  }
+
+  #things-filter-mobile.open-things-filter .things-filter-button .things-filter-button-content span.arrow,
+  #things-filter-mobile .things-filter-button .things-filter-button-content span.arrow {
+    display: none;
+  }
+
+  #things-filter-mobile .tabs-content-container {
+    height: calc(100% - 160px);
+  }
+
+  .tabs-content-container-two-rows {
+    height: calc(100% - 209px) !important;
+  }
+
+  #things-filter-mobile .thing-content {
+    padding: 0 18px 4px 12px;
+  }
+
+  #things-filter-mobile .thing-content .thing-apply-icon {
+    position: absolute;
+    top: calc(50% - 10px);
+    right: 8px;
+    width: 20px;
+    height: 20px;
+  }
+
+  #things-filter-mobile .things-search {
+    position: relative;
+    margin: 15px 8px 5px;
+  }
+}
+
+@media (max-width: 568px) {
+  #things-filter-mobile .tabs-header-container span {
+    color: #767d86;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 30px;
+    display: inline-block;
+    padding: 10px 10px;
+    position: relative;
+  }
+
+  #things-filter-mobile .tabs-header-container {
+    border-bottom: 1px solid #e4e6e7;
+    padding: 0 10px;
+  }
+}

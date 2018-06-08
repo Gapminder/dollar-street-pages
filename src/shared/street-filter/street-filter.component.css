@@ -1,0 +1,9 @@
+.street-box svg {
+  position: relative;
+  width: 100%;
+  height: 65px;
+  z-index: 9;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+}

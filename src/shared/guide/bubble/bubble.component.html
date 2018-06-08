@@ -1,0 +1,59 @@
+<div #bubblesContainer
+     class="bubbles-container"
+     [ngClass]="{
+        center: step === 1,
+        things: step === 2,
+        geo: step === 3,
+        none: step === 4,
+        last: step === 5,
+        'close-bubble': isCloseBubble}"
+     [style.top.px]="position.top"
+     [style.left.px]="position.left">
+  <div class="bubbles-content">
+    <p class="bubbles-steps">{{step}} {{ 'OF' | translate }} {{bubbles.length}}</p>
+    <h3 class="bubbles-title">{{bubble?.header}}</h3>
+    <p class="bubbles-description">{{bubble?.description}}</p>
+
+    <p class="welcome" *ngIf="step === 5">{{ 'WELCOME_TO' | translate }} Dollar Street! </p>
+
+    <div class="button-container">
+      <span class="back" *ngIf="step !== 1" (click)="back()"><< {{ 'BACK' | translate }}</span>
+      <button type="button" *ngIf="step !== 5" (click)="next()">{{ 'NEXT' | translate }} >></button>
+      <button type="button" *ngIf="step === 5" (click)="getBubble(6)">{{ 'READY_TO_START' | translate }}</button>
+    </div>
+  </div>
+
+  <div class="footer-container" *ngIf="step === 5">
+    <p>{{ 'SHARE' | translate }}</p>
+
+    <social-share-buttons></social-share-buttons>
+
+    <a target="_blank"
+       *ngIf="step === bubbles.length"
+       [href]="bubble?.link?.href">{{bubble?.link?.text}}</a>
+  </div>
+
+  <img class="close-bubble" src="/assets/img/close-button-bubbles.svg" alt="" (click)="getBubble(6)">
+</div>
+
+<div class="street-label poorest-label desktop" *ngIf="step === 1" [style.top.px]="position.top - 17">
+  <span>{{ 'POOREST' | translate }}</span>
+</div>
+
+<div class="street-label richest-label desktop" *ngIf="step === 1" [style.top.px]="position.top - 17">
+  <span>{{ 'RICHEST' | translate }}</span>
+</div>
+
+<div class="street-label poorest-label mobile" *ngIf="step === 1" [style.top.px]="position.top - 37">
+  <span>{{ 'POOREST' | translate }}</span>
+</div>
+
+<div class="street-label richest-label mobile" *ngIf="step === 1" [style.top.px]="position.top - 37">
+  <span>{{ 'RICHEST' | translate }}</span>
+</div>
+
+<div class="slider-label left-slider" *ngIf="step === 4" [style.top.px]="position.top - 65">
+</div>
+
+<div class="slider-label right-slider" *ngIf="step === 4" [style.top.px]="position.top - 65">
+</div>

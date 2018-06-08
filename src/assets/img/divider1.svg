@@ -1,0 +1,21 @@
+<svg id="divider2" xmlns="http://www.w3.org/2000/svg" width="9" height="24" viewBox="0 0 18 48">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: #525c64;
+      fill-rule: evenodd;
+      }
+
+      .cls-2 {
+      fill: #cbd2d9;
+      }
+    </style>
+  </defs>
+  <path id="hor-left" class="cls-1" d="M1158,578h3v48h-3V578Z" transform="translate(-1154 -578)"/>
+  <path id="left-bottom" class="cls-1" d="M1154,626v-2h4v2h-4Z" transform="translate(-1154 -578)"/>
+  <path id="left-top" class="cls-1" d="M1154,580v-2h4v2h-4Z" transform="translate(-1154 -578)"/>
+  <rect id="body" class="cls-2" x="7" width="4" height="48"/>
+  <path id="hor-right" class="cls-1" d="M1165,578h3v48h-3V578Z" transform="translate(-1154 -578)"/>
+  <path id="right-top" class="cls-1" d="M1168,580v-2h4v2h-4Z" transform="translate(-1154 -578)"/>
+  <path id="right-bottom" class="cls-1" d="M1168,626v-2h4v2h-4Z" transform="translate(-1154 -578)"/>
+</svg>

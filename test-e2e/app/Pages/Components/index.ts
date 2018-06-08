@@ -1,0 +1,9 @@
+export { Header } from './Header.e2e.component';
+export { FamilyImage } from './FamilyImage.e2e.component';
+export { MatrixImagePreview } from './MatrixImagePreview.e2e.component';
+export { PinnedContainer } from './PinnedContainer.e2e.component';
+export { Street } from './Street.e2e.component';
+export { WelcomeWizard } from './WelcomeWizard.e2e.component';
+export { HamburgerMenu } from './HamburgerMenu.e2e.component';
+export { Footer } from './Footer.e2e.component';
+export { FamilyImagePreview } from './FamilyImagePreview.e2e.component';

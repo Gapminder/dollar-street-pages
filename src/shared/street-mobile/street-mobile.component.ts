@@ -1,0 +1,127 @@
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Rx';
+import {
+  Component,
+  Input,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppStates, StreetSettingsState, DrawDividersInterface } from '../../interfaces';
+import { sortBy, chain } from 'lodash';
+import { StreetMobileDrawService } from './street-mobile.service';
+import { DEBOUNCE_TIME } from "../../defaultState";
+
+@Component({
+  selector: 'street-mobile',
+  templateUrl: './street-mobile.component.html',
+  styleUrls: ['./street-mobile.component.css']
+})
+export class StreetMobileComponent implements OnDestroy, AfterViewInit {
+  @ViewChild('svg')
+  public svg: ElementRef;
+
+  @Input()
+  public places: Observable<any>;
+
+  public street: any;
+  public streetData: StreetSettingsState;
+  public element: HTMLElement;
+  public resizeSubscribe: Subscription;
+  public windowInnerWidth: number = window.innerWidth;
+  public placesSubscribe: Subscription;
+  public placesArr: any;
+  public streetSettingsState: Observable<StreetSettingsState>;
+  public streetSettingsStateSubscription: Subscription;
+  public orientationChangeSubscription: Subscription;
+
+  public constructor(element: ElementRef,
+                     streetDrawService: StreetMobileDrawService,
+                     private store: Store<AppStates>) {
+    this.element = element.nativeElement;
+    this.street = streetDrawService;
+
+    this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+  }
+
+  public ngAfterViewInit(): void {
+    this.street.setSvg = this.svg.nativeElement;
+
+    this.street.set('isInit', true);
+
+    this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
+      this.streetData = data;
+
+      if (!this.placesArr) {
+        return;
+      }
+
+      this.setDividers(this.placesArr);
+    });
+
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe(() => {
+        if (!this.street.places || this.windowInnerWidth === window.innerWidth) {
+          return;
+        }
+
+        this.setDividers(this.placesArr);
+      });
+
+    this.orientationChangeSubscription = fromEvent(window, 'orientationchange')
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe(() => {
+        this.street.clearSvg();
+      });
+
+    this.placesSubscribe = this.places && this.places
+        .subscribe((places: any): void => {
+          this.placesArr = places;
+
+          if (!this.streetData) {
+            return;
+          }
+
+          this.setDividers(this.placesArr);
+        });
+  }
+
+  public ngOnDestroy(): void {
+    this.resizeSubscribe.unsubscribe();
+
+    if (this.placesSubscribe) {
+      this.placesSubscribe.unsubscribe();
+    }
+
+    if (this.streetSettingsStateSubscription) {
+      this.streetSettingsStateSubscription.unsubscribe();
+    }
+
+    if (this.orientationChangeSubscription) {
+      this.orientationChangeSubscription.unsubscribe();
+    }
+  }
+
+  private setDividers(places: any): void {
+    this.street
+      .clearSvg()
+      .init(this.streetData)
+      .set('places', sortBy(places, 'income'))
+      .set('fullIncomeArr', chain(this.street.places)
+        .sortBy('income')
+        .map((place: any) => {
+          if (!place) {
+            return void 0;
+          }
+
+          return this.street.scale(place.income);
+        })
+        .compact()
+        .value())
+      .drawScale(places);
+  }
+}

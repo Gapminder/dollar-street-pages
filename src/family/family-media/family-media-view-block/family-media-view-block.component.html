@@ -1,0 +1,245 @@
+<div class="view-image-block-container" *ngIf="isDesktop">
+  <div class="active-house" [style.left]=" imageViewBlockPosition.point.left+'px'"></div>
+
+  <div class="view-image-block-content">
+    <div class="view-image-container">
+      <div class="view-image-content">
+
+        <img (click)="openPopUp()"
+             [src]="viewImage">
+        <div class="loader-content" [hidden]="imageLoader">
+          <div class="isLoad">
+            <div class="la-ball-spin la-dark la-2x">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="image-footer-container">
+        <div class="photographer-container">
+          <p><img src="/assets/img/cc-icon-small.svg">
+            {{ 'PHOTO' | translate }}: <a [routerLink]="['/photographer', imageData.photographer._id]"
+                      [queryParams]="{}"
+                      angulartics2On="click"
+                      angularticsEvent="Photographer profile">
+              {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> {{ 'FOR' | translate }} Dollar Street
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> (CC BY 4.0)</a>
+          </p>
+        </div>
+
+        <div class="zoom-download-container">
+          <a class="download" target="_blank" [href]="consumerApi + '/v1/download-image/' + imageData.imageId">
+            <img src="/assets/img/download-icon.svg" alt=""><span class="button-text">{{ 'DOWNLOAD' | translate }}</span>
+          </a>
+
+          <a (click)="openPopUp()">
+            <img src="/assets/img/fullsize-icon.svg" alt=""><span class="button-text">{{ 'FULLSIZE' | translate }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="house-info-container">
+      <div class="house-info-content">
+        <div class="header-container">
+          <img *ngIf="thing.icon" [src]="thing.icon" alt="">
+          <span>{{thing.thingName}}</span>
+        </div>
+
+        <p *ngIf="article?.description">{{article.description}} <a
+          *ngIf="article?.isDescription"
+          [routerLink]="['/article', thing._id]"
+          [queryParams]="{}"
+          angulartics2On="click"
+          angularticsEvent="Article page">
+          {{ 'READ_MORE' | translate }} >></a></p>
+
+        <translate-me *ngIf="showTranslateMe"></translate-me>
+
+        <div class="thing-button-container">
+          <p>{{ 'RELATED_SEARCHES' | translate }}</p>
+
+          <a
+            [routerLink]="['/matrix']"
+            [queryParams]="showInCountry"
+            (click)="goToPage('/matrix',showInCountry)"
+            angulartics2On="click"
+            angularticsEvent="Matrix page">
+            <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{countryName}}</span> <img
+            src="/assets/img/arrow-right-icon.svg" alt=""><img
+            src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+          <a
+            [routerLink]="['/matrix']"
+            [queryParams]="showInRegion"
+            (click)="goToPage('/matrix',showInRegion)"
+            angulartics2On="click"
+            angularticsEvent="Matrix page">
+            <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{country?.region}}</span> <img
+            src="/assets/img/arrow-right-icon.svg" alt=""><img
+            src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+          <a
+            [routerLink]="['/matrix']"
+            [queryParams]="showInTheWorld"
+            (click)="goToPage('/matrix',showInTheWorld)"
+            angulartics2On="click"
+            angularticsEvent="Matrix page">
+            <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{ 'THE_WORLD' | translate }}</span> <img
+            src="/assets/img/arrow-right-icon.svg" alt=""><img
+            src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+        </div>
+      </div>
+
+      <div class="close-block" (click)="closeImageBlock()">
+        <img src="/assets/img/close-button.svg" alt="">
+      </div>
+    </div>
+  </div>
+
+  <div class="isLoad" [hidden]="loader">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-view-image-block-container" *ngIf="!isDesktop">
+  <div class="active-house" [style.left]=" imageViewBlockPosition.point.left+'px'"></div>
+
+  <div class="view-image-container">
+    <div class="mobile-image-container">
+    <img (click)="openPopUp()" [src]="viewImage">
+      <div class="isLoad" [hidden]="imageLoader">
+      <div class="la-ball-spin la-dark la-2x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <div class="close-box-container" (click)="closeImageBlock()">
+      <img class="close-box" src="/assets/img/close-button-mobile.svg" alt="x">
+    </div>
+    </div>
+
+    <div class="view-image-block-footer-container">
+      <div class="photographer-container">
+        <p><img src="/assets/img/cc-icon-small-white.svg">
+          {{ 'PHOTO' | translate }}: <a [routerLink]="['/photographer', imageData.photographer._id]"
+                    [queryParams]="{}"
+                    angulartics2On="click"
+                    angularticsEvent="Photographer profile">
+            {{imageData.photographer.firstName}} {{imageData.photographer.lastName}}</a> <span class="tablet">
+            {{ 'FOR' | translate }} Dollar Street <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">(CC BY 4.0)</a>
+          </span>
+          <span class="mobile"><a href="https://creativecommons.org/licenses/by/4.0/"
+                                  target="_blank">CC BY 4.0</a></span></p>
+      </div>
+
+      <div class="download-container">
+        <a target="_blank" [href]="consumerApi + '/v1/download-image/' + imageData.imageId">
+          <img src="/assets/img/download-icon-white.svg" alt="">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="house-info-container">
+    <div #homeDescriptionContainer
+         class="home-description-container">
+      <div class="thing-container">
+        <div class="thing-content">
+          <img *ngIf="thing.icon" [src]="thing.icon" alt="">
+          <h3>{{thing.thingName}}</h3>
+        </div>
+
+        <div class="thing-description" *ngIf="article?.shortDescription">
+          <p>{{article.shortDescription}} <a
+            *ngIf="article?.isDescription"
+            [routerLink]="['/article', thing._id]"
+            [queryParams]="{}"
+            angulartics2On="click"
+            angularticsEvent="Article page">
+            {{ 'READ_MORE' | translate }} >></a></p>
+        </div>
+      </div>
+
+      <translate-me *ngIf="showTranslateMe"></translate-me>
+
+      <a class="link"
+         [routerLink]="['/matrix']"
+         [queryParams]="showInCountry"
+         (click)="goToMatrixWithParams(showInCountry)"
+         angulartics2On="click"
+         angularticsEvent="Matrix page">
+        <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{countryName}}</span> <img
+        src="/assets/img/arrow-right-icon.svg" alt=""><img
+        src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+      <a class="link"
+         [routerLink]="['/matrix']"
+         [queryParams]="showInRegion"
+         (click)="goToMatrixWithParams(showInRegion)"
+         angulartics2On="click"
+         angularticsEvent="Matrix page">
+        <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{country?.region}}</span> <img
+        src="/assets/img/arrow-right-icon.svg" alt=""><img
+        src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+      <a class="link"
+         [routerLink]="['/matrix']"
+         [queryParams]="showInTheWorld"
+         (click)="goToMatrixWithParams(showInTheWorld)"
+         angulartics2On="click"
+         angularticsEvent="Matrix page">
+        <span>{{thing.plural}}</span><span class="in"> {{ 'IN' | translate }} </span><span>{{ 'THE_WORLD' | translate }}</span> <img
+        src="/assets/img/arrow-right-icon.svg" alt=""><img
+        src="/assets/img/arrow-right-icon-white.svg" alt=""></a>
+    </div>
+  </div>
+
+  <div class="isLoad" [hidden]="loader">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+<div class="fancyBox-container" *ngIf="popIsOpen" (click)="fancyBoxClose()">
+  <div class="fancyBox-image" [hidden]="!fancyBoxImage" [ngStyle]="{'background-image': fancyBoxImage}"></div>
+
+  <div class="load" [hidden]="fancyBoxImage">
+    <div class="la-ball-spin la-dark la-2x">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

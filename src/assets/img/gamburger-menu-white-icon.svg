@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="27" height="21" viewBox="0 0 54 42">
+  <defs>
+    <style>
+      .cls-1 {
+      fill: #fff;
+      fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="gamburger_menu_icon" data-name="gamburger menu icon" class="cls-1"
+        d="M2603.5,444h51a1.5,1.5,0,0,1,1.5,1.5v3a1.5,1.5,0,0,1-1.5,1.5h-51a1.5,1.5,0,0,1-1.5-1.5v-3A1.5,1.5,0,0,1,2603.5,444Zm0,18h51a1.5,1.5,0,0,1,1.5,1.5v3a1.5,1.5,0,0,1-1.5,1.5h-51a1.5,1.5,0,0,1-1.5-1.5v-3A1.5,1.5,0,0,1,2603.5,462Zm0,18h51a1.5,1.5,0,0,1,1.5,1.5v3a1.5,1.5,0,0,1-1.5,1.5h-51a1.5,1.5,0,0,1-1.5-1.5v-3A1.5,1.5,0,0,1,2603.5,480Z"
+        transform="translate(-2602 -444)"/>
+</svg>

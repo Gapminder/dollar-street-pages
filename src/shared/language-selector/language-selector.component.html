@@ -1,0 +1,35 @@
+<div class="lang-container">
+    <div *ngIf="languages && languages.length"
+       dropdown
+       class="btn-group"
+       [(isOpen)]="status.isOpen">
+      <button id="single-button"
+              type="button"
+              class="btn"
+              dropdownToggle
+              [disabled]="disabled">
+        <span class="active-languages">
+          <span class="lang-outside">
+            {{selectedLanguage?.name}}
+          </span>
+        </span>
+
+        <span class="icon-btn">
+          <img src="assets/img/lang-selector-arrow.svg" alt="">
+        </span>
+    </button>
+
+    <ul dropdownMenu
+        role="menu"
+        aria-labelledby="single-button"
+        class="dropdown-languages">
+      <li *ngFor="let language of filteredLanguages; let i = index"
+          class="selector"
+          role="menuitem">
+        <span class="lang-selector"
+              (click)="changeLanguage(language.code)">{{language.name}}
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
