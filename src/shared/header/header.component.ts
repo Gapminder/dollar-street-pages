@@ -15,6 +15,7 @@ import {
   HostListener
 } from '@angular/core';
 import { Store } from '@ngrx/store';
+import {combineLatest} from 'rxjs/observable/combineLatest';
 import {
   AppStates,
   TimeUnit,
@@ -122,6 +123,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   incomeTitleText: string;
   isIncomeFilter: boolean;
   ngSubscriptions: SubscriptionsList = {};
+  translations: string[];
   private headerTitle: ElementRef;
 
   constructor(elementRef: ElementRef,
@@ -264,6 +266,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
 
+    const matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
+    const languageState = this.store.select((appStates: AppStates) => appStates.language);
+
     this.store.dispatch(new MatrixActions.GetCurrencyUnits());
     this.store.dispatch(new MatrixActions.GetTimeUnits());
 
@@ -322,11 +327,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.calcIncomeSize();
     });
 
-    this.ngSubscriptions.languageState = this.store
-      .select((appStates: AppStates) => appStates.language)
+    this.ngSubscriptions.languageState = languageState
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((language: LanguageState) => {
         this.urlParams.lang = get(language, 'lang', DefaultUrlParameters.lang);
+        this.translations = get(language, 'translations', []);
       });
 
     this.ngSubscriptions.appState = this.store
@@ -347,8 +352,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
     });
 
-    this.ngSubscriptions.matrixState = this.store
-      .select((appStates: AppStates) => appStates.matrix)
+    this.ngSubscriptions.matrixState = matrixState
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((matrix: MatrixState) => {
       if (get(matrix, 'pinMode', false)) {
@@ -371,6 +375,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.urlParams.time);
 
         this.timeUnit = this.timeUnitTemp;
+        this.translateTimeUnit();
 
         this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
       }
@@ -433,6 +438,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.ngSubscriptions.titleHeader = this.titleHeaderService.getTitleEvent().subscribe((data: {title: string}) => {
       this.rendererTitle(data.title);
     });
+
+    combineLatest(languageState, matrixState)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((arr: [LanguageState, MatrixState]) => {
+        this.translateTimeUnit();
+      })
+
   }
 
   isCurrentPage(name: string): boolean {
@@ -465,6 +477,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
     this.timeUnitTemp = this.timeUnit;
     this.currencyUnitTemp = this.currencyUnit;
+    this.translateTimeUnit();
   }
 
   incomeContainerClick(e: MouseEvent): void {
@@ -473,6 +486,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   timeUnitFilterSelect(code: string): void {
     this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, code);
+    this.translateTimeUnit()
   }
 
   currencyUnitFilterSelect(code: string): void {
@@ -689,5 +703,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   resetStage(): void {
     const resetParams = assign({},  DefaultUrlParameters, { lang: this.urlParams.lang });
     this.urlParametersService.dispatchToStore(resetParams);
+  }
+
+  translateTimeUnit(): void {
+    if (this.timeUnitTemp) {
+      this.timeUnitTemp.translatedName = get(this.translations, this.timeUnitTemp.code, this.timeUnitTemp.name);
+    }
   }
 }

@@ -129,6 +129,7 @@ export interface TimeUnit {
   per: string;
   translationCode?: string;
   translationIncome?: string;
+  translatedName?: string;
 }
 
 export interface TimeUnitCode {
