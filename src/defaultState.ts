@@ -30,7 +30,7 @@ export const DefaultUrlParameters: UrlParameters = {
   countries: ['World'],
   regions: ['World'],
   zoom: '4',
-  mobileZoom: '3',
+  mobileZoom: '4',
   row: '1',
   lowIncome: '13',
   highIncome: '10813',
