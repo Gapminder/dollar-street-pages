@@ -216,7 +216,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
 
           process.nextTick(() => {
 // wait render view block, without nextTick page does't have scroll for bottom grid elements doesn't appear view block
-            this.goToRow(data.activeHouseOptions.row);
+            this.pagePositionService.goToRow(data.activeHouseOptions.row)
           });
         }
       } else {
@@ -467,21 +467,10 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public goToRow(row: number): void {
-    let showPartPrevImage: number = 60;
+    // setTimeout(() => {
+      this.pagePositionService.goToRow(row);
 
-    if (this.windowInnerWidth < MOBILE_SIZE) {
-      showPartPrevImage = -20;
-    }
-
-    let scrollTop: number = row * this.itemSize - showPartPrevImage;
-
-    if (this.quickGuideElement) {
-       scrollTop += this.quickGuideElement.offsetHeight;
-    }
-
-    setTimeout(() => {
-      document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
-    }, 0);
+    // }, 0);
   }
 
   public calcItemSize(): void {

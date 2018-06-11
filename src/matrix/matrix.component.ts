@@ -701,7 +701,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     if (this.row && !this.activeHouse) {
       this.itemSize = size;
 
-      this.matrixImagesComponent.goToRow(this.row);
+      this.pagePositionService.goToRow(this.row);
     }
   }
 
@@ -724,14 +724,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     const imageHeight = (imagesContainerElement.offsetWidth - boxContainerPadding - widthScroll) / this.zoom;
 
     this.itemSize = imageHeight;
-  }
-
-  scrollTopZero(): void {
-    if (document.body.scrollTop) {
-      document.body.scrollTop = 0;
-    } else {
-      document.documentElement.scrollTop = 0;
-    }
   }
 
   processMatrixImages(data: any): void {
