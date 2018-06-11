@@ -10,6 +10,7 @@ import { LanguageServiceMock } from '../../test/';
 import { ArticleComponent } from '../article.component';
 import { ArticleService } from '../article.service';
 import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ArticleComponent Test', () => {
   let component: ArticleComponent;
@@ -20,7 +21,10 @@ describe('ArticleComponent Test', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonServicesTestingModule],
+      imports: [
+        RouterTestingModule,
+        CommonServicesTestingModule
+      ],
       declarations: [
         ArticleComponent,
         MockComponent({ selector: 'translate-me' })

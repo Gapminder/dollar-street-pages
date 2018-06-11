@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../environments/environment';
+import { DefaultUrlParameters } from '../defaultState';
+import { UrlParametersService } from '../url-parameters/url-parameters.service';
 
 @Injectable()
 export class MatrixService {
-  public constructor(private http: Http) {
+  public constructor(private http: Http,
+                     private urlParamenterService: UrlParametersService) {
   }
 
   public uploadScreenshot(data: any): Promise<any> {
@@ -39,6 +42,12 @@ export class MatrixService {
   public getMatrixImages(query: string): Observable<any> {
     return this.http.get(`${environment.consumerApi}/v1/things?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
+      console.log(parseRes.success)
+
+      if (!parseRes.success) {
+        this.urlParamenterService.dispatchToStore(DefaultUrlParameters);
+      }
+
       return {err: parseRes.error, data: parseRes.data};
     });
   }

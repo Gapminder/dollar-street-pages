@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { LoaderService, TitleHeaderService, LanguageService } from '../common';
 
@@ -23,6 +23,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   public constructor(elementRef: ElementRef,
                      private activatedRoute: ActivatedRoute,
+                     private router: Router,
                      private loaderService: LoaderService,
                      private articleService: ArticleService,
                      private titleHeaderService: TitleHeaderService,
@@ -41,9 +42,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.articleServiceSubscribe = this.articleService
       .getArticle(`id=${this.thingId}${this.languageService.getLanguageParam()}`)
       .subscribe((val: any) => {
-        if (val.err) {
+        if (!val.success) {
           // TODO handle the error
-          console.error(val.err);
+          this.router.navigate(['./matrix'])
+
           return;
         }
 
