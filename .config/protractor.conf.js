@@ -3,17 +3,21 @@ const fs = require('fs');
 
 const testResultsDir = 'results';
 const testResultsFile = `${testResultsDir}/testResults.txt`;
+const consoleErrorsFile = `${testResultsDir}/consoleErrors.txt`;
+const BOUNDARY = '\n***************\n';
 
 exports.config = {
   baseUrl: 'http://localhost:4200',
 
   capabilities: {
     browserName: 'chrome',
-    screenResolution: '1920x1080',
     shardTestFiles: true,
     maxInstances: 4,
     chromeOptions: {
-      args: ['no-sandbox', 'headless']
+      args: [ 'headless', '--window-size=1920x1080'],
+      prefs: {
+        'profile.managed_default_content_settings.notifications' : 1,
+      }
     }
   },
 
@@ -27,7 +31,12 @@ exports.config = {
   },
 
   specs: ['../test-e2e/app/Tests/**/*.e2e-spec.ts'],
-  exclude: ['../test-e2e/app/CMS/**/*.e2e-spec.ts', '../test-e2e/app/Tests/ClickEachLink.e2e-spec.ts'],
+  exclude: [
+    '../test-e2e/app/CMS/**/*.e2e-spec.ts',
+    '../test-e2e/app/Tests/ClickEachLink.e2e-spec.ts',
+    '../test-e2e/app/Tests/Facebook.e2e-spec.ts',
+    '../test-e2e/app/Tests/SocialNetworks/*.e2e-spec.ts'
+  ],
 
   framework: 'jasmine',
 
@@ -52,7 +61,8 @@ exports.config = {
   // this will be run after all the tests will be finished
   afterLaunch: function() {
     const fileParse = fs.readFileSync(testResultsFile, 'utf-8');
-    const testResults = JSON.parse(fileParse);
+    const rawTestResults = fileParse.split(BOUNDARY).filter(el=>el);
+    const testResults = rawTestResults.map(res => JSON.parse(res));
 
     // print consolidated report to the console
     for (const testResult of testResults) {
@@ -75,12 +85,12 @@ exports.config = {
     for (const file of files) {
       fs.unlinkSync(`${testResultsDir}/${file}`);
     }
-    // fill the testResults file with default values
-    fs.writeFileSync(testResultsFile, JSON.stringify([]), 'utf-8');
+    // fill the testResults files with default values
+    fs.openSync(testResultsFile, 'w');
+    fs.openSync(consoleErrorsFile, 'w');
   },
-
   onPrepare: function() {
-    require('ts-node').register({ project: 'test-e2e' });
+    require('ts-node').register({ project: `${__dirname}/../test-e2e`});
 
     browser.driver
       .manage()
@@ -102,18 +112,14 @@ exports.config = {
           // take screenshot on fail
           browser.takeScreenshot().then(function(screenShot) {
             // Save screenshot
-            fs.writeFile(`${testResultsDir}/${result.fullName}`, screenShot, 'base64', function(err) {
+            fs.writeFileSync(`${testResultsDir}/${result.fullName}`, screenShot, 'base64', function(err) {
               if (err) throw err;
               console.log('File saved.');
             });
           });
 
-          const existingResults = fs.readFileSync(testResultsFile, 'utf-8');
-          const appendedRes = JSON.parse(existingResults);
-          appendedRes.push(result);
-
-          // write consolidated result to file
-          fs.writeFileSync(testResultsFile, JSON.stringify(appendedRes), 'utf-8');
+          // save testResult in file
+          fs.appendFileSync(testResultsFile, JSON.stringify(result) + BOUNDARY, 'utf-8');
         }
 
         browser
@@ -124,7 +130,7 @@ exports.config = {
               browserLogs.forEach(function(log) {
                 if (log.level.value > 900) {
                   // it's an error log
-                  fs.writeFileSync(`${testResultsDir}/${result.fullName}.txt`, require('util').inspect(log), 'utf-8');
+                  fs.appendFileSync(consoleErrorsFile, result.fullName + '\n' + require('util').inspect(log) + BOUNDARY, 'utf-8');
                 }
               });
             });

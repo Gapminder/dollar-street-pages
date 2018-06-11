@@ -1,14 +1,16 @@
-sudo: false
+sudo: required
 language: node_js
 node_js: 8.8.1
 
 addons:
   ssh_known_hosts: 52.211.52.39
-
+  chrome: stable
 stages:
 - name: Precache
 - name: Build
 - name: Deploy
+- name: Unit-test-run
+- name: E2e-test-run
 cache:
   directories:
     - node_modules
@@ -36,3 +38,7 @@ jobs:
       skip_cleanup: true
       script: ssh -o StrictHostKeyChecking=no -i id_rsa ubuntu@52.211.52.39 /home/ubuntu/www/run_ds_pages.sh
       on: development
+  - stage: Unit-test-run
+    script: npm run test
+  - stage: e2e-test-run
+    script: npm run e2e:CI
