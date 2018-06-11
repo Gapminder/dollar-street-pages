@@ -31,7 +31,7 @@ exports.config = {
   },
 
   specs: ['../test-e2e/app/Tests/**/*.e2e-spec.ts'],
-  exclude: ['../test-e2e/app/CMS/**/*.e2e-spec.ts', '../test-e2e/app/Tests/ClickEachLink.e2e-spec.ts','../test-e2e/app/Tests/Facebook.e2e-spec.ts'],
+  exclude: ['../test-e2e/app/CMS/**/*.e2e-spec.ts', '../test-e2e/app/Tests/ClickEachLink.e2e-spec.ts','../test-e2e/app/Tests/SocialNetworks/*.e2e-spec.ts'],
 
   framework: 'jasmine',
 
