@@ -30,7 +30,7 @@
           </div>
         </li>
         <li *ngIf="isMatrixPage">
-          <button (click)="SetPinMode()" class="comparisonButton" id="comparisonButton" [ngClass]="{active: pinMode || embedMode}">Create Comparison</button>
+          <button (click)="SetPinMode()" class="comparisonButton" id="comparisonButton" [ngClass]="{active: pinMode || embedMode}">{{'CREATE_COMPARISON' | translate }}</button>
         </li>
         <li>
           <div class="feedback-container">
