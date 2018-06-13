@@ -22,7 +22,8 @@ describe('FamilyService', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [HttpModule],
+            imports: [
+              HttpModule],
             providers: [
                 FamilyService,
                 MockBackend,

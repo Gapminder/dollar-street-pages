@@ -33,6 +33,7 @@ import { PagePositionServiceMock } from "../../../test/mocks/page-position.servi
 import { PagePositionService } from "../../../shared/page-position/page-position.service";
 import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
 import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('FamilyMediaComponent', () => {
     let componentInstance: FamilyMediaComponent;
@@ -63,7 +64,8 @@ describe('FamilyMediaComponent', () => {
     beforeEach((() => {
         TestBed.configureTestingModule({
             imports: [
-                        FamilyModule
+                        FamilyModule,
+                        RouterTestingModule
                      ],
             declarations: [ BlankComponentStub ],
             providers: [

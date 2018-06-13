@@ -14,6 +14,7 @@ export class MatrixService {
   public uploadScreenshot(data: any): Promise<any> {
     return this.http.post(`${environment.consumerApi}/v1/upload-screenshot`, data).map((res: any) => {
       let parseRes = JSON.parse(res._body);
+
       return {err: parseRes.error, data: parseRes.data};
     }).toPromise();
   }
@@ -21,6 +22,7 @@ export class MatrixService {
   public savePinnedPlaces(query: string): Promise<any> {
     return this.http.get(`${environment.consumerApi}/v1/save-pinned-places?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
+
       return {err: parseRes.error, data: parseRes.data};
     }).toPromise();
   }
@@ -35,6 +37,7 @@ export class MatrixService {
   public removeTempImages(query: string): Promise<any> {
     return this.http.get(`${environment.consumerApi}/v1/remove-temp-images?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
+
       return {err: parseRes.error, data: parseRes.data};
     }).toPromise();
   }
@@ -42,7 +45,6 @@ export class MatrixService {
   public getMatrixImages(query: string): Observable<any> {
     return this.http.get(`${environment.consumerApi}/v1/things?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
-      console.log(parseRes.success)
 
       if (!parseRes.success) {
         this.urlParamenterService.dispatchToStore(DefaultUrlParameters);
@@ -55,6 +57,7 @@ export class MatrixService {
   public getCurrencyUnits(): Promise<any> {
     return this.http.get(`${environment.consumerApi}/v1/get-exchange-data`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
+
       return {err: parseRes.error, data: parseRes.data};
     }).toPromise();
   }
