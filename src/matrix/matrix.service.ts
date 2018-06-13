@@ -7,8 +7,9 @@ import { UrlParametersService } from '../url-parameters/url-parameters.service';
 
 @Injectable()
 export class MatrixService {
-  public constructor(private http: Http,
-                     private urlParamenterService: UrlParametersService) {
+  public constructor(
+    private http: Http,
+    private urlParamenterService: UrlParametersService) {
   }
 
   public uploadScreenshot(data: any): Promise<any> {

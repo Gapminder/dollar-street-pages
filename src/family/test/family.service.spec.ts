@@ -23,21 +23,22 @@ describe('FamilyService', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-              HttpModule],
+              HttpModule
+            ],
             providers: [
-                FamilyService,
-                MockBackend,
-                BaseRequestOptions,
-                {
-                    deps: [
-                        MockBackend,
-                        BaseRequestOptions
-                    ],
-                    provide: Http,
-                    useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-                        return new Http(backend, defaultOptions);
-                    }
+              FamilyService,
+              MockBackend,
+              BaseRequestOptions,
+              {
+                deps: [
+                    MockBackend,
+                    BaseRequestOptions
+                ],
+                provide: Http,
+                useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
+                    return new Http(backend, defaultOptions);
                 }
+              }
             ]
         });
 
@@ -55,7 +56,7 @@ describe('FamilyService', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
             expect(connection.request.url.indexOf(`/v1/thing?${query}`)).toBeGreaterThan(-1);
 
-            let mockResponse = new ResponseOptions({
+            const mockResponse = new ResponseOptions({
                 body: `{"success":true,"error":null,"msg":[],"data":${JSON.stringify(context)}}`
             });
 

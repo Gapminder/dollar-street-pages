@@ -64,24 +64,22 @@ describe('FamilyMediaComponent', () => {
     beforeEach((() => {
         TestBed.configureTestingModule({
             imports: [
-                        FamilyModule,
-                        RouterTestingModule
+              FamilyModule,
+              RouterTestingModule
                      ],
             declarations: [ BlankComponentStub ],
             providers: [
-                            SpyLocation,
-                            { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-                            { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-                            { provide: UtilsService, useClass: UtilsServiceMock },
-                            { provide: LoaderService, useClass: LoaderServiceMock },
-                            { provide: FamilyMediaService, useClass: FamilyMediaServiceMock },
-                            { provide: LanguageService, useClass: LanguageServiceMock },
-                            { provide: Location, useClass: SpyLocation },
-                            { provide: Store, useClass: StoreMock},
-                            { provide: UrlParametersService, useClass: UrlParametersServiceMock },
-                            { provide: PagePositionService, useClass: PagePositionServiceMock },
-
-
+              SpyLocation,
+              { provide: UrlChangeService, useClass: UrlChangeServiceMock },
+              { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+              { provide: UtilsService, useClass: UtilsServiceMock },
+              { provide: LoaderService, useClass: LoaderServiceMock },
+              { provide: FamilyMediaService, useClass: FamilyMediaServiceMock },
+              { provide: LanguageService, useClass: LanguageServiceMock },
+              { provide: Location, useClass: SpyLocation },
+              { provide: Store, useClass: StoreMock},
+              { provide: UrlParametersService, useClass: UrlParametersServiceMock },
+              { provide: PagePositionService, useClass: PagePositionServiceMock },
             ]
         }).compileComponents();
 
