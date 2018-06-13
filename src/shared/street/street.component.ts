@@ -1,6 +1,5 @@
 import 'rxjs/operator/debounceTime';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import {
@@ -18,19 +17,19 @@ import {
   AppStates,
   DrawDividersInterface,
   Place,
-  IncomeFilter, Currency, TimeUnit,
+  IncomeFilter, Currency, TimeUnit, SubscriptionsList,
 } from '../../interfaces';
 import {ActivatedRoute} from '@angular/router';
-import { sortBy, chain, differenceBy } from 'lodash';
+import { get, sortBy, chain, differenceBy, forEach } from 'lodash';
 import {
   MathService,
   LanguageService,
-  UtilsService
 } from '../../common';
 import { StreetDrawService} from './street.service';
 import * as StreetSettingsActions from '../../common';
 import * as _ from 'lodash';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
+import { MatrixService } from '../../matrix/matrix.service';
 
 const FREQUENCY_UPDATE_STREET = 10;
 
@@ -49,8 +48,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   places: Observable<any>;
   @Input()
   chosenPlaces: Observable<any>;
-  @Input()
-  hoverPlace: Subject<any>;
+
   @Output()
   filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
@@ -64,27 +62,23 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   countries;
   streetData: DrawDividersInterface;
   element: HTMLElement;
-  resize;
   drawOnMap = false;
   isStreetInit = false;
-  placesSubscribe: Subscription;
-  hoverPlaceSubscribe: Subscription;
-  chosenPlacesSubscribe: Subscription;
-  streetFilterSubscribe: Subscription;
   placesArr;
   streetBoxContainer: HTMLElement;
   streetBoxContainerMargin: number;
   currencyUnit: Currency;
   timeUnit: TimeUnit;
-  appStatesSubscription: Subscription;
+  ngSubscriptions: SubscriptionsList = {};
 
   constructor(elementRef: ElementRef,
-                     streetDrawService: StreetDrawService,
-                     private activatedRoute: ActivatedRoute,
-                     private math: MathService,
-                     private languageService: LanguageService,
-                     private store: Store<AppStates>,
-                     private utilsService: UtilsService) {
+    private streetDrawService: StreetDrawService,
+    private activatedRoute: ActivatedRoute,
+    private math: MathService,
+    private languageService: LanguageService,
+    private store: Store<AppStates>,
+    private matrixService: MatrixService) {
+
     this.element = elementRef.nativeElement;
     this.street = streetDrawService;
   }
@@ -101,12 +95,12 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
     this.street.set('isInit', true);
     this.street.set('chosenPlaces', []);
 
-    this.getTranslationSubscribe = this.languageService.getTranslation(['POOREST', 'RICHEST']).subscribe((trans: any) => {
+    this.ngSubscriptions.getTranslation = this.languageService.getTranslation(['POOREST', 'RICHEST']).subscribe((trans: any) => {
       this.street.poorest = trans.POOREST.toUpperCase();
       this.street.richest = trans.RICHEST.toUpperCase();
     });
 
-    this.appStatesSubscription = this.store
+    this.ngSubscriptions.appStates = this.store
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((state: AppStates) => {
       const matrix = state.matrix;
@@ -150,7 +144,7 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
 
     });
 
-    this.streetFilterSubscribe = this.street.filter.subscribe((filter: IncomeFilter): void => {
+    this.ngSubscriptions.streetFilter = this.street.filter.subscribe((filter: IncomeFilter): void => {
       this.street.set('lowIncome', filter.lowIncome);
       this.street.set('highIncome', filter.highIncome);
 
@@ -162,30 +156,32 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.store.dispatch(new StreetSettingsActions.UpdateStreetFilters({
         lowIncome: filter.lowIncome,
         highIncome: filter.highIncome
-      }))
+      }));
     });
 
-    this.chosenPlacesSubscribe = this.chosenPlaces && this.chosenPlaces
-      .debounceTime(FREQUENCY_UPDATE_STREET)
-      .subscribe((chosenPlaces: any): void => {
-        const difference = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
+    if (get(this, 'chosenPlaces', false)) {
+      this.ngSubscriptions.chosenPlaces = this.chosenPlaces
+        .debounceTime(FREQUENCY_UPDATE_STREET)
+        .subscribe((chosenPlaces: any): void => {
+          const difference = differenceBy(chosenPlaces, this.street.chosenPlaces, '_id');
 
-      if (this.placesArr && this.streetData) {
-        this.setDividers(this.placesArr, this.streetData);
-      }
+          if (this.placesArr && this.streetData) {
+            this.setDividers(this.placesArr, this.streetData);
+          }
 
-      if (difference.length || chosenPlaces.length !== this.street.chosenPlaces.length) {
-        this.street.set('chosenPlaces', chosenPlaces.length ? chosenPlaces : []);
+          if (difference.length || chosenPlaces.length !== this.street.chosenPlaces.length) {
+            this.street.set('chosenPlaces', chosenPlaces.length ? chosenPlaces : []);
 
-        if (!this.street.scale) {
-          return;
-        }
+            if (!this.street.scale) {
+              return;
+            }
 
-        this.street.clearAndRedraw(chosenPlaces);
-      }
-    });
+            this.street.clearAndRedraw(chosenPlaces);
+          }
+      });
+    }
 
-    this.hoverPlaceSubscribe = this.hoverPlace && this.hoverPlace.subscribe((hoverPlace: any): void => {
+    this.ngSubscriptions.hoverPlace = this.matrixService.hoverPlace.subscribe((hoverPlace: Place): void => {
       if (this.drawOnMap) {
         this.drawOnMap = !this.drawOnMap;
 
@@ -210,23 +206,25 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
       this.street.drawHoverHouse(hoverPlace);
     });
 
-    this.placesSubscribe = this.places && this.places.subscribe((places: Place[]): void => {
-      this.placesArr = places;
+    if (get(this, 'places', false)) {
+      this.ngSubscriptions.places = this.places.subscribe((places: Place[]): void => {
+        this.placesArr = places;
 
-      if (!this.streetData) {
-        return;
-      }
+        if (!this.streetData) {
+          return;
+        }
 
-      if (!places.length) {
-        this.redrawStreet();
-      }
+        if (!places.length) {
+          this.redrawStreet();
+        }
 
-      this.setDividers(this.placesArr, this.streetData);
-    });
+        this.setDividers(this.placesArr, this.streetData);
+      });
+    }
 
     this.street.filter.next({lowIncome: this.street.lowIncome, highIncome: this.street.highIncome});
 
-    this.resize = fromEvent(window, 'resize')
+    this.ngSubscriptions.resize = fromEvent(window, 'resize')
       .debounceTime(DEBOUNCE_TIME)
       .subscribe(() => {
         if (!this.street.places) {
@@ -263,33 +261,10 @@ export class StreetComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    if (this.resize) {
-      this.resize.unsubscribe();
-    }
 
-    if (this.appStatesSubscription) {
-      this.appStatesSubscription.unsubscribe();
-    }
-
-    if (this.placesSubscribe) {
-      this.placesSubscribe.unsubscribe();
-    }
-
-    if (this.hoverPlaceSubscribe) {
-      this.hoverPlaceSubscribe.unsubscribe();
-    }
-
-    if (this.chosenPlacesSubscribe) {
-      this.chosenPlacesSubscribe.unsubscribe();
-    }
-
-    if (this.getTranslationSubscribe) {
-      this.getTranslationSubscribe.unsubscribe();
-    }
-
-    if (this.streetFilterSubscribe) {
-      this.streetFilterSubscribe.unsubscribe();
-    }
+    forEach(this.ngSubscriptions, (subscription: Subscription) => {
+      subscription.unsubscribe();
+    })
 
     if (this.street) {
       this.street.clearAndRedraw();

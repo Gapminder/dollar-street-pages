@@ -77,7 +77,7 @@ export class PagePositionService {
   goToRow(row = 1): void {
     const gridContainerPosition = window.scrollY + this.getGridContainerRect().top;
     const scrollTop = (row) * this.itemSize - gridContainerPosition;
-    console.log(scrollTop);
+
     document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
   }
 }
