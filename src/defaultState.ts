@@ -8,7 +8,7 @@ export const FAMILY_GRID_CONTAINER_CLASS = 'family-image-container';
 export const TIME_UNIT_CODES: {[key: string]: TimeUnitCode} = {
   day: {
     code: 'DAY',
-    income: 'DAYLY_INCOME'
+    income: 'DAILY_INCOME'
   },
   week: {
     code: 'WEEK',
