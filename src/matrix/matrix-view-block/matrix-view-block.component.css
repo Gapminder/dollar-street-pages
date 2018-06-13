@@ -48,7 +48,7 @@
 }
 
 .view-image-block-content .house-info-container {
-  
+
 }
 
 .view-image-block-content .close-container {
@@ -69,6 +69,10 @@
   color: #374551;
   font-size: 32px;
   line-height: 32px;
+}
+
+.header-container .income-time {
+  text-transform: lowercase;
 }
 
 .view-image-block-container .view-image-block-content .house-info-container .header-container span {
@@ -485,7 +489,7 @@
 }
 
 @media (min-width: 1281px) {
-  
+
 
 
   .description-title {
