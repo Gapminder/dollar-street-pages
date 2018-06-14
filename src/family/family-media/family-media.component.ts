@@ -31,10 +31,11 @@ import { FamilyMediaService } from './family-media.service';
 import { FamilyComponent } from '../family.component';
 import { FamilyMediaViewBlockComponent } from './family-media-view-block';
 import { ImageResolutionInterface } from '../../interfaces';
-import { DEBOUNCE_TIME } from "../../defaultState";
+import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
 import { PagePositionService } from "../../shared/page-position/page-position.service";
 import { UrlParametersService } from "../../url-parameters/url-parameters.service";
 import {combineLatest} from "rxjs/observable/combineLatest";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -97,6 +98,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
   public constructor(element: ElementRef,
                      viewContainerRef: ViewContainerRef,
                      private zone: NgZone,
+                     private router: Router,
                      private loaderService: LoaderService,
                      private familyMediaService: FamilyMediaService,
                      private browserDetectionService: BrowserDetectionService,
@@ -357,7 +359,10 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.familyPlaceServiceSubscribe = this.familyMediaService
       .getFamilyMedia(query)
       .subscribe((res: any) => {
-        if (res.err) {
+        if (!res.success) {
+          this.router.navigate(['./matrix']);
+          this.urlParametersService.dispatchToStore(DefaultUrlParameters);
+
           return;
         }
 

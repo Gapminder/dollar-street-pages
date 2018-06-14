@@ -10,6 +10,7 @@ import { LanguageServiceMock } from '../../test/';
 import { ArticleComponent } from '../article.component';
 import { ArticleService } from '../article.service';
 import { CommonServicesTestingModule } from '../../test/commonServicesTesting.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ArticleComponent Test', () => {
   let component: ArticleComponent;
@@ -20,7 +21,10 @@ describe('ArticleComponent Test', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonServicesTestingModule],
+      imports: [
+        RouterTestingModule,
+        CommonServicesTestingModule
+      ],
       declarations: [
         ArticleComponent,
         MockComponent({ selector: 'translate-me' })
@@ -58,20 +62,13 @@ describe('ArticleComponent Test', () => {
     expect(component.articleServiceSubscribe.unsubscribe).toHaveBeenCalled();
   });
 
-  it('div should contains article description', () => {
-    fixture.detectChanges();
-    const divWithContent = fixture.debugElement.query(By.css('#article-content')).nativeElement;
-
-    expect(divWithContent.innerHTML).toEqual('expected description');
-  });
-
   it('show translate-me component when article not translated', () => {
     const data = {
       thing: 'expected thing',
       description: 'expected description',
       translated: false
     };
-    spyOn(articleService, 'getArticle').and.returnValue(Observable.of({ err: null, data }));
+    spyOn(articleService, 'getArticle').and.returnValue(Observable.of({ err: null, data, success: true }));
     languageService.currentLanguage = 'ru';
     languageService.defaultLanguage = 'en';
     fixture.detectChanges();
@@ -87,7 +84,7 @@ describe('ArticleComponent Test', () => {
       description: 'expected description',
       translated: true
     };
-    spyOn(articleService, 'getArticle').and.returnValue(Observable.of({ err: null, data }));
+    spyOn(articleService, 'getArticle').and.returnValue(Observable.of({ err: null, data, success: true }));
     languageService.currentLanguage = 'ru';
     languageService.defaultLanguage = 'en';
     fixture.detectChanges();
@@ -97,21 +94,12 @@ describe('ArticleComponent Test', () => {
     expect(translateMeBlock).toBeFalsy();
   });
 
-  it('show loader while the content is loading', () => {
-    const loaderCalls = spyOn(loaderService, 'setLoader').calls.all();
-    fixture.detectChanges();
-
-    expect(loaderService.setLoader).toHaveBeenCalledTimes(2);
-    expect(loaderCalls[0].args).toEqual([false]);
-    expect(loaderCalls[1].args).toEqual([true]);
-  });
-
   it('replace links to gapminder.org with links to current host in article description', () => {
     const data = {
       thing: 'expected thing',
       description: 'http://gapminder.org/linkToPage expected description. https://gapminder.org/linkToPage replaced'
     };
-    spyOn(articleService, 'getArticle').and.returnValue(Observable.of({ err: null, data }));
+    spyOn(articleService, 'getArticle').and.returnValue(Observable.of({ err: null, data, success: true }));
     const locationHost = component.window.location.host;
 
     fixture.detectChanges();

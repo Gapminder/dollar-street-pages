@@ -13,6 +13,8 @@ import {
 } from '@angular/http';
 import { MatrixService } from '../matrix.service';
 import { matrixData } from './matrix.data';
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
+import { UrlParametersServiceMock } from '../../test/mocks/url-parameters.service.mock';
 
 describe('MatrixService', () => {
     let mockBackend: MockBackend;
@@ -26,6 +28,7 @@ describe('MatrixService', () => {
                 MatrixService,
                 MockBackend,
                 BaseRequestOptions,
+                { provide: UrlParametersService, useClass: UrlParametersServiceMock },
                 {
                     deps: [
                         MockBackend,

@@ -101,7 +101,6 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       .select((appStates: AppStates) => appStates.matrix)
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((matrix: MatrixState) => {
-        console.log(matrix);
         this.pinMode = get(matrix, 'pinMode', false);
         this.embedMode = get(matrix, 'embedMode', false);
       });
