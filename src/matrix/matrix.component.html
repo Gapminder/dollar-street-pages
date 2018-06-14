@@ -12,7 +12,6 @@
         <div class="street-content">
           <street
                   [places]="streetPlaces"
-                  [hoverPlace]="hoverPlace"
                   [chosenPlaces]="chosenPlaces">
           </street>
         </div>
@@ -214,7 +213,6 @@
   <div class="grid-container">
   <matrix-images [thing]="thing"
                 [places]="matrixPlaces"
-                (hoverPlace)="hoverPlaces($event)"
                 (activeHouseOptions)="activeHouseOptions($event)"
                 (imageHeightChanged)="imageHeightChanged($event)">
   </matrix-images>

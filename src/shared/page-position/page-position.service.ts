@@ -73,4 +73,11 @@ export class PagePositionService {
       document.documentElement.scrollTop = 0;
     }
   }
+
+  goToRow(row = 1): void {
+    const gridContainerPosition = window.scrollY + this.getGridContainerRect().top;
+    const scrollTop = (row) * this.itemSize - gridContainerPosition;
+
+    document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
+  }
 }
