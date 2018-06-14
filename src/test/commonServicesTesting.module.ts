@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TranslateLoader, TranslateModule, TranslateStaticLoader } from 'ng2-translate';
-import { Angulartics2, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Angulartics2, Angulartics2GoogleTagManager } from 'angulartics2';
 
 import { LanguageService } from '../common/language/language.service';
 import { StreetSettingsService } from '../common/street-settings/street-settings.service';
@@ -46,7 +46,7 @@ import { PagePositionServiceMock } from './mocks/page-position.service.mock';
     { provide: UtilsService, useClass: UtilsServiceMock },
     { provide: LoaderService, useClass: LoaderServiceMock },
     { provide: StreetSettingsService, useClass: StreetSettingsServiceMock },
-    { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+    { provide: Angulartics2GoogleTagManager, useClass: AngularticsMock },
     { provide: LanguageService, useClass: LanguageServiceMock },
     { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },
     { provide: IncomeCalcService, useClass: IncomeCalcServiceMock },

@@ -17,7 +17,7 @@ import {
   DrawDividersInterface,
   LocalStorageService,
   BrowserDetectionService,
-  Angulartics2GoogleAnalytics,
+  Angulartics2GoogleTagManager,
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
@@ -57,7 +57,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
                      private languageService: LanguageService,
                      private localStorageService: LocalStorageService,
                      private browserDetectionService: BrowserDetectionService,
-                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
                      private urlParametersService: UrlParametersService,
                      private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
@@ -166,32 +166,32 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         break;
 
       case '/about':
-        this.angulartics2GoogleAnalytics.eventTrack('From menu to About page', {});
+        this.angulartics2GoogleTagManager.eventTrack('From menu to About page', {});
         this.router.navigate([url]);
         break;
 
       case 'https://www.gapminder.org/category/dollarstreet/':
-        this.angulartics2GoogleAnalytics.eventTrack('From menu to Blog page', {});
+        this.angulartics2GoogleTagManager.eventTrack('From menu to Blog page', {});
         this.window.open(url, '_blank');
         break;
 
       case '/donate':
-        this.angulartics2GoogleAnalytics.eventTrack('From menu to Donate page', {});
+        this.angulartics2GoogleTagManager.eventTrack('From menu to Donate page', {});
         this.router.navigate([url]);
         break;
 
       case '/map':
-        this.angulartics2GoogleAnalytics.eventTrack('From menu to Map page', {});
+        this.angulartics2GoogleTagManager.eventTrack('From menu to Map page', {});
         this.router.navigate([url]);
         break;
 
       case 'https://www.gapminder.org':
-        this.angulartics2GoogleAnalytics.eventTrack('Go to Gapminder.org from menu', {});
+        this.angulartics2GoogleTagManager.eventTrack('Go to Gapminder.org from menu', {});
         this.window.open(url, '_blank');
         break;
 
       case 'https://getsatisfaction.com/gapminder':
-        this.angulartics2GoogleAnalytics.eventTrack('Go to Getsatisfaction.com/gapminder from menu', {});
+        this.angulartics2GoogleTagManager.eventTrack('Go to Getsatisfaction.com/gapminder from menu', {});
         this.window.open(url, '_blank');
         break;
 
@@ -228,7 +228,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.router.navigate(['/matrix']);
 
-    this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from menu', {});
+    this.angulartics2GoogleTagManager.eventTrack('Go to Matrix page from menu', {});
   }
 
   SetPinMode(): void {

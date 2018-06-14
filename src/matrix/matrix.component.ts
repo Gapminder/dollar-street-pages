@@ -30,7 +30,7 @@ import { chain, cloneDeep, find, map, difference, forEach, get, uniq } from 'lod
 import {
   LoaderService,
   UrlChangeService,
-  Angulartics2GoogleAnalytics,
+  Angulartics2GoogleTagManager,
   BrowserDetectionService,
   LanguageService,
   UtilsService,
@@ -165,7 +165,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
                      private loaderService: LoaderService,
                      private urlChangeService: UrlChangeService,
                      private browserDetectionService: BrowserDetectionService,
-                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
                      private languageService: LanguageService,
                      private changeDetectorRef: ChangeDetectorRef,
                      private utilsService: UtilsService,
@@ -761,7 +761,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     this.matrixService.setHoverPlaces(undefined);
 
-    this.angulartics2GoogleAnalytics.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
+    this.angulartics2GoogleTagManager.eventTrack(`Change filters to thing=${this.thing} countries=${this.selectedCountries} regions=${this.selectedRegions} zoom=${this.zoom} incomes=${this.lowIncome} - ` + this.highIncome, {});
   }
 
   urlChanged(options: any): void {

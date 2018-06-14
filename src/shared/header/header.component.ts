@@ -34,7 +34,7 @@ import { ThingsFilterComponent } from '../things-filter/things-filter.component'
 import { CountriesFilterComponent } from '../countries-filter/countries-filter.component';
 import {
   MathService,
-  Angulartics2GoogleAnalytics,
+  Angulartics2GoogleTagManager,
   BrowserDetectionService,
   LanguageService,
   UtilsService,
@@ -132,7 +132,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
               private languageService: LanguageService,
               private activatedRoute: ActivatedRoute,
               private browserDetectionService: BrowserDetectionService,
-              private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+              private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
               private changeDetectorRef: ChangeDetectorRef,
               private utilsService: UtilsService,
               private urlChangeService: UrlChangeService,
@@ -610,7 +610,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   goToMatrixPage(): void {
     this.scrollTopZero();
-    this.angulartics2GoogleAnalytics.eventTrack('From header to Matrix page', {});
+    this.angulartics2GoogleTagManager.eventTrack('From header to Matrix page', {});
   }
 
   isFilterGotData(event: any): any {

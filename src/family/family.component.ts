@@ -21,7 +21,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { chain, get } from 'lodash';
 import {
   UrlChangeService,
-  Angulartics2GoogleAnalytics,
+  Angulartics2GoogleTagManager,
   BrowserDetectionService,
   LanguageService,
   DrawDividersInterface,
@@ -84,7 +84,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
                      private router: Router,
                      private activatedRoute: ActivatedRoute,
                      private urlChangeService: UrlChangeService,
-                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
                      private familyService: FamilyService,
                      private languageService: LanguageService,
                      private browserDetectionService: BrowserDetectionService,
@@ -114,7 +114,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
         this.placeId = matrix.place;
       } else {
         this.router.navigate(['/matrix']);
-        this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
+        this.angulartics2GoogleTagManager.eventTrack('Go to Matrix page from Home page', {});
       }
 
       if (this.streetSettings !== streetSetting.streetSettings) {
@@ -330,7 +330,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.placeId) {
       this.router.navigate(['/matrix']);
 
-      this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from Home page', {});
+      this.angulartics2GoogleTagManager.eventTrack('Go to Matrix page from Home page', {});
 
       return;
     }
