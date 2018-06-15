@@ -7,23 +7,23 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SocialShareService {
-    public url: string;
-    public locationPath: string;
-    public newWindow: any;
-    public location: any = location;
-    public window: Window = window;
-    public document: Document = document;
-    public elementTagName: string = 'script';
-    public facebookElementId: string = 'facebook-jssdk';
-    public twitterElementId: string = 'twitter-wjs';
-    public documentCreatedSubscribe: Subscription;
-    public twitterInstance: any;
-    public sharesTitleTranslated: string;
-    public shareMessageTranslated: string;
-    public getTranslationSubscribe: Subscription;
-    public getLanguagesListSubscription: Subscription;
+    url: string;
+    locationPath: string;
+    newWindow: any;
+    location: any = location;
+    window: Window = window;
+    document: Document = document;
+    elementTagName: string = 'script';
+    facebookElementId: string = 'facebook-jssdk';
+    twitterElementId: string = 'twitter-wjs';
+    documentCreatedSubscribe: Subscription;
+    twitterInstance: any;
+    sharesTitleTranslated: string;
+    shareMessageTranslated: string;
+    getTranslationSubscribe: Subscription;
+    getLanguagesListSubscription: Subscription;
 
-    public constructor(private languageService: LanguageService,
+    constructor(private languageService: LanguageService,
                        private http: Http) {
         this.documentCreatedSubscribe = Observable.fromEvent(document, 'DOMContentLoaded')
           .subscribe(() => {
@@ -44,7 +44,7 @@ export class SocialShareService {
       }).toPromise();
     }
 
-    public facebookLike(): void {
+    facebookLike(): void {
         const languageReplaceSchema: any = {
             ur_IN: 'ur_PK'
         };
@@ -73,7 +73,7 @@ export class SocialShareService {
         });
     }
 
-    public twitterFollow(): any {
+    twitterFollow(): any {
         let fjs: HTMLElement = this.document.getElementsByTagName(this.elementTagName)[0] as HTMLElement;
 
         this.twitterInstance = this.twitterInstance || {};
@@ -96,7 +96,24 @@ export class SocialShareService {
         return this.twitterInstance;
     }
 
+    toFacebookCache(url: string) {
+      // const facebookUrl: string = 'http://www.facebook.com/sharer.php';
+      const facebookUrl: string = 'https://graph.facebook.com/?';
+
+      const params: URLSearchParams = new URLSearchParams();
+      params.set('id', url);
+
+      this.url = params.toString();
+
+      const link = `${facebookUrl}${this.url}&scrape=true`;
+
+      this.http.post(link).subscribe( (data) => {
+        console.log(data);
+      });
+    }
+
     public openPopUp(target: string, url: string = null): void {
+      console.log(url);
       const twitterUrl: string = 'https://twitter.com/intent/tweet';
       const facebookUrl: string = 'http://www.facebook.com/sharer.php';
       const linkedinUrl: string = 'http://www.linkedin.com/shareArticle';
@@ -171,7 +188,7 @@ export class SocialShareService {
             this.openWindow(originalUrl, this.url);
           });
       } else {
-        let params: URLSearchParams = new URLSearchParams();
+        const params: URLSearchParams = new URLSearchParams();
 
         switch(target) {
           case 'twitter':
