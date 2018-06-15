@@ -1,4 +1,4 @@
-import { $, $$, browser, ElementArrayFinder, ElementFinder } from 'protractor';
+import { $, $$, browser, by, element, ElementArrayFinder, ElementFinder } from 'protractor';
 
 import { waitForLoader } from '../Helpers/commonHelper';
 import { AbstractPage } from './Abstract.page';
@@ -27,6 +27,14 @@ export class MapPage {
   static sideFamilyTitleLink: ElementFinder = MapPage.sideFamiliesContainer.$('.header a');
   static sideFamilyContainerClose: ElementFinder = MapPage.sideFamiliesContainer.$('.close-button');
 
+  static searchInFilterByThing: ElementFinder = $('input[placeholder*="things"]');
+  static filterByThing: ElementFinder = $('.things-filter-button-content');
+  static mapTitle: ElementFinder = $('.map-things-text');
+  static countryListBlock: ElementFinder = $('.row.countries-list');
+  static allTopicsBox: ElementFinder = $('.other-things-content');
+  static thingsFilterFirsResult: ElementFinder = MapPage.allTopicsBox.$$('.thing-name').first();
+  static selectedFilter: ElementFinder = $$('.things-filter-button-content span').first();
+  static countryList: ElementArrayFinder = MapPage.countryListBlock.$$('.row.countries-list li');
 
   static async open(): Promise<void> {
     await browser.get(this.url);
@@ -59,5 +67,12 @@ export class MapPage {
 
   static async closeSideFamiliesContainer() {
     await this.sideFamilyContainerClose.click();
+  }
+
+  static getCurrentCuntryListCount() {
+    return MapPage.countryList.count();
+  }
+  static getFilter(type: string): ElementFinder {
+    return element(by.id(`${type}-filter`));
   }
 }

@@ -166,6 +166,16 @@ export class DataProvider {
     ThingBooks: { query: 'Books' }
   };
 
+  static mapPageQueries = {
+    ThingPets: { query: 'Armchairs' , count: 50 },
+    ThingFamilySnapshots: { query: 'Family snapshots', count: 28 },
+    ThingWalls: { query: 'Wall decorations', count: 49 },
+    ThingFrontDoor: { query: 'Front doors', count: 50 },
+    ThingSittingArea: { query: 'Sitting areas', count: 39 },
+    ThingArmchair: { query: 'Cars', count: 27 },
+    ThingBooks: { query: 'Books', count: 46 }
+  };
+
   static countryPageId = {
     Bangladesh: { countryId: '55ef338d0d2b3c82037884d0', numberOfCell: '73' },
     Cambodia: { countryId: '55ef338d0d2b3c82037884d3', numberOfCell: '89' },
