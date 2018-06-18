@@ -7,7 +7,7 @@ import {
   HostListener,
   ElementRef,
   AfterViewInit,
-  ViewChild
+  ViewChild, Output
 } from '@angular/core';
 import {
   NavigationEnd,
@@ -34,26 +34,26 @@ import { UrlParametersService } from '../../url-parameters/url-parameters.servic
 })
 export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('socialShareContent')
-  public socialShareContent: ElementRef;
+   socialShareContent: ElementRef;
 
   analyticLocation = 'menu';
-  public element: HTMLElement;
-  public window: Window = window;
-  public isOpenMenu: boolean = false;
-  public streetData: DrawDividersInterface;
-  public getTranslationSubscribe: Subscription;
-  public isDesktop: boolean;
-  public isMobile: boolean;
-  public isTablet: boolean;
-  public socialShareContentElement: HTMLElement;
-  public shareTranslation: string;
-  public additionUrlParams: string;
+  element: HTMLElement;
+  window: Window = window;
+  isOpenMenu: boolean = false;
+  streetData: DrawDividersInterface;
+  getTranslationSubscribe: Subscription;
+  isDesktop: boolean;
+  isMobile: boolean;
+  isTablet: boolean;
+  socialShareContentElement: HTMLElement;
+  shareTranslation: string;
+  additionUrlParams: string;
   pinMode = false;
   embedMode = false;
   ngSubscriptions: SubscriptionsList = {};
   isMatrixPage = false;
 
-  public constructor(elementRef: ElementRef,
+  constructor(elementRef: ElementRef,
                      private router: Router,
                      private languageService: LanguageService,
                      private localStorageService: LocalStorageService,
@@ -65,7 +65,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
       this.shareTranslation = trans;
 
@@ -73,7 +73,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.isMobile = this.browserDetectionService.isMobile();
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
@@ -113,7 +113,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  public processShareTranslation(): void {
+  processShareTranslation(): void {
     if (!this.shareTranslation || !this.socialShareContent) {
       return;
     }
@@ -129,7 +129,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
 
     if (this.getTranslationSubscribe) {
       this.getTranslationSubscribe.unsubscribe();
@@ -144,7 +144,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
-  public openMenu(isOpenMenu: boolean): void {
+  openMenu(isOpenMenu: boolean): void {
     this.isOpenMenu = !isOpenMenu;
 
     if (this.isOpenMenu && this.isMobile || this.isTablet) {
@@ -156,7 +156,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public goToPage(url: string, saveUrlData = false): void {
+  goToPage(url: string, saveUrlData = false): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }
@@ -204,13 +204,13 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @HostListener('document:click', ['$event'])
-  public isOutsideMainMenuClick(event: any): void {
+  isOutsideMainMenuClick(event: any): void {
     if (!this.element.contains(event.target) && this.isOpenMenu) {
       this.isOpenMenu = false;
     }
   }
 
-  public openQuickGuide(): void {
+  openQuickGuide(): void {
     this.localStorageService.removeItem('quick-guide');
 
     document.body.scrollTop = 0;
@@ -222,7 +222,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.goToMatrixPage();
   }
 
-  public goToMatrixPage(): void {
+  goToMatrixPage(): void {
     if (this.isMobile) {
       document.body.classList.remove('hideScroll');
     }

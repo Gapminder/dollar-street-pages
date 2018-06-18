@@ -3,6 +3,8 @@ import { URLSearchParams } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
 import { Angulartics2GoogleTagManager, LanguageService, SocialShareService } from '../../common';
 import { SocialShareButtonsService } from './social-share-buttons.service';
+import { Angulartics2 } from 'angulartics2';
+declare let ga: Function;
 
 const ANALYTIC_TEXTS = {
   network: {
@@ -56,7 +58,8 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
   public constructor(private socialShareButtonsService: SocialShareButtonsService,
                      private languageService: LanguageService,
                      private socialShareService: SocialShareService,
-                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager) {
+                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
+                     private angulartics2: Angulartics2) {
   }
 
   public ngOnInit(): void {
@@ -154,13 +157,15 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
     const analyticText = `${ANALYTIC_TEXTS.network[target].text} ${ANALYTIC_TEXTS.location[this.analyticLocation].text}`;
     const analyticParams = {
-      category: ANALYTIC_TEXTS.location[this.analyticLocation].category,
-      action: 'click',
-      label: ANALYTIC_TEXTS.network[target].action
+      hitType: 'event',
+      eventCategory: ANALYTIC_TEXTS.location[this.analyticLocation].category,
+      eventAction: 'click',
+      eventLabel: ANALYTIC_TEXTS.network[target].action
     };
     console.log(analyticText);
     console.log(analyticParams);
-    this.angulartics2GoogleTagManager.eventTrack(analyticText, analyticParams);
+    //this.angulartics2.eventTrack.next({ action: 'click', properties: analyticParams});
+    ga('send', analyticParams);
   }
 
 
