@@ -1,8 +1,8 @@
 import { browser } from 'protractor';
 
-import { FamilyPage, MapPage } from '../Pages';
-import { waitForVisible } from '../Helpers';
-import { Header } from '../Pages/Components';
+import { FamilyPage, MapPage } from '../../Pages';
+import { waitForVisible } from '../../Helpers';
+import { Header } from '../../Pages/Components';
 
 describe('Map Page Tests', () => {
   beforeAll(async () => {
