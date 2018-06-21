@@ -20,6 +20,7 @@ export class SocialShareService {
     twitterInstance: any;
     sharesTitleTranslated: string;
     shareMessageTranslated: string;
+    twitterShareMessageTranslated: string;
     getTranslationSubscribe: Subscription;
     getLanguagesListSubscription: Subscription;
 
@@ -31,9 +32,10 @@ export class SocialShareService {
               this.twitterInstance = this.twitterFollow();
           });
 
-        this.getTranslationSubscribe = this.languageService.getTranslation(['PHOTOS_AS_DATA','LIVES_ON_DOLLAR_STREET']).subscribe((trans: any) => {
+        this.getTranslationSubscribe = this.languageService.getTranslation(['PHOTOS_AS_DATA','LIVES_ON_DOLLAR_STREET', 'LIVES_ON_DOLLAR_STREET_TWITTER']).subscribe((trans: any) => {
             this.sharesTitleTranslated = trans.PHOTOS_AS_DATA;
             this.shareMessageTranslated = trans.LIVES_ON_DOLLAR_STREET;
+            this.twitterShareMessageTranslated = trans.LIVES_ON_DOLLAR_STREET_TWITTER;
         });
     }
 
@@ -107,9 +109,10 @@ export class SocialShareService {
 
       const link = `${facebookUrl}${this.url}&scrape=true`;
 
-      this.http.post(link).subscribe( (data) => {
-        console.log(data);
-      });
+      // TODO: add request fpr pre cache images for facebook
+      // this.http.post(link).subscribe( (data) => {
+      //   console.log(data);
+      // });
     }
 
     public openPopUp(target: string, url: string = null): void {
@@ -160,7 +163,7 @@ export class SocialShareService {
             switch(target) {
               case 'twitter':
                 params.set('url', res.url);
-                params.set('text', this.shareMessageTranslated + '- Dollar Street');
+                params.set('text', this.twitterShareMessageTranslated);
               break;
 
               case 'facebook':
@@ -193,7 +196,7 @@ export class SocialShareService {
         switch(target) {
           case 'twitter':
             params.set('url', url);
-            params.set('text', this.shareMessageTranslated + '- Dollar Street');
+            params.set('text', this.twitterShareMessageTranslated);
           break;
 
           case 'facebook':
