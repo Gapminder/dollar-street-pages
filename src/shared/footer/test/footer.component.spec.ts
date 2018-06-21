@@ -17,7 +17,7 @@ import {
     TranslateServiceMock
 } from '../../../test/';
 import { StoreModule } from '@ngrx/store';
-import { Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Angulartics2GoogleTagManager } from 'angulartics2';
 import { FooterComponent } from '../footer.component';
 import { FooterService } from '../footer.service';
 import { SocialFollowButtonsComponent } from '../../social-follow-buttons/social-follow-buttons.component';
@@ -55,7 +55,7 @@ describe('FooterComponent', () => {
                 { provide: TranslateParser, useClass: TranslateParserMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+                { provide: Angulartics2GoogleTagManager, useClass: AngularticsMock },
                 { provide: FooterService, useClass: FooterServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock }
             ]

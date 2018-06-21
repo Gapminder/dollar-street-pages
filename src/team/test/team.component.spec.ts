@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Angulartics2GoogleAnalytics, Angulartics2, Angulartics2Module } from 'angulartics2';
+import { Angulartics2, Angulartics2Module } from 'angulartics2';
 import { Observable } from 'rxjs/Observable';
 import {
-    LoaderService,
-    TitleHeaderService,
-    LanguageService
+  LoaderService,
+  TitleHeaderService,
+  LanguageService, Angulartics2GoogleTagManager
 } from '../../common';
 import {
     Angulartics2GoogleAnalyticsMock,
@@ -34,7 +34,7 @@ describe('TeamComponent', () => {
             declarations: [TeamComponent],
             providers: [
                 { provide: TeamService, useClass: TeamServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+                { provide: Angulartics2GoogleTagManager, useClass: Angulartics2GoogleAnalyticsMock },
                 { provide: Angulartics2, useClass: AngularticsMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: TitleHeaderService, useClass: TitleHeaderServiceMock },

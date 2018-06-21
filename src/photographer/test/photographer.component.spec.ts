@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PhotographerComponent } from '../photographer.component';
 import { TranslateModule } from 'ng2-translate';
-import { Angulartics2, Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
+import { Angulartics2, Angulartics2GoogleTagManager, Angulartics2Module } from 'angulartics2';
 import { LanguageService, LoaderService, MathService, TitleHeaderService } from '../../common';
 import {
   Angulartics2GoogleAnalyticsMock,
@@ -32,7 +32,7 @@ describe('PhotographerComponent', () => {
         MathService,
         { provide: TitleHeaderService, useValue: TitleHeaderServiceMock },
         { provide: Angulartics2, useClass: AngularticsMock },
-        { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+        { provide: Angulartics2GoogleTagManager, useClass: Angulartics2GoogleAnalyticsMock },
         { provide: LanguageService, useClass: LanguageServiceMock },
         { provide: LoaderService, useClass: LoaderServiceMock }
       ]

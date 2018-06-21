@@ -4,7 +4,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
-import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleTagManager, Angulartics2Module } from 'angulartics2';
 
 import { MathService, StreetSettingsEffects } from '../../common';
 import { FamilyComponent } from '../family.component';
@@ -65,7 +65,7 @@ describe('Component: FamilyComponent', () => {
         TranslateTestingModule,
         CommonServicesTestingModule,
         StoreModule.forRoot({}),
-        Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+        Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
         EffectsModule.forRoot([StreetSettingsEffects]),
         RouterTestingModule.withRoutes([{
           path: 'matrix',

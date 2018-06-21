@@ -1,8 +1,41 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
-import { LanguageService, SocialShareService } from '../../common';
+import { Angulartics2GoogleTagManager, LanguageService, SocialShareService } from '../../common';
 import { SocialShareButtonsService } from './social-share-buttons.service';
+import { Angulartics2 } from 'angulartics2';
+declare let ga: Function;
+
+const ANALYTIC_TEXTS = {
+  network: {
+    twitter: {
+      text: 'Clicked share to Twitter',
+      action: 'Twitter'
+    },
+    facebook: {
+      text: 'Clicked share to Facebook',
+      action: 'Facebook'
+    },
+    linkedin: {
+      text: 'Clicked share to LinkedIn',
+      action: 'Linkedin'
+    },
+    google: {
+      text: 'Clicked share to Google Plus',
+      action: 'GooglePlus'
+    }
+  },
+  location: {
+    menu: {
+      text: 'from menu',
+      category: 'Menu'
+    },
+    footer: {
+      text: 'from footer',
+      category: 'Footer'
+    },
+  }
+}
 
 @Component({
   selector: 'social-share-buttons',
@@ -10,6 +43,9 @@ import { SocialShareButtonsService } from './social-share-buttons.service';
   styleUrls: ['./social-share-buttons.component.css']
 })
 export class SocialShareButtonsComponent implements OnInit, OnDestroy {
+  @Input()
+  analyticLocation = '';
+
   public url: string;
   public locationPath: string;
   public newWindow: any;
@@ -21,7 +57,9 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
   public constructor(private socialShareButtonsService: SocialShareButtonsService,
                      private languageService: LanguageService,
-                     private socialShareService: SocialShareService) {
+                     private socialShareService: SocialShareService,
+                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
+                     private angulartics2: Angulartics2) {
   }
 
   public ngOnInit(): void {
@@ -116,6 +154,18 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
 
         this.openWindow(originalUrl, this.url);
       });
+
+    const analyticText = `${ANALYTIC_TEXTS.network[target].text} ${ANALYTIC_TEXTS.location[this.analyticLocation].text}`;
+    const analyticParams = {
+      hitType: 'event',
+      eventCategory: ANALYTIC_TEXTS.location[this.analyticLocation].category,
+      eventAction: 'click',
+      eventLabel: ANALYTIC_TEXTS.network[target].action
+    };
+    console.log(analyticText);
+    console.log(analyticParams);
+    //this.angulartics2.eventTrack.next({ action: 'click', properties: analyticParams});
+    ga('send', analyticParams);
   }
 
 

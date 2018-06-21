@@ -19,7 +19,7 @@ import {
   CommonAppModule,
   StreetSettingsEffects
 } from '../common';
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { UrlParametersComponent } from '../url-parameters/url-parameters.component';
 import { UrlParametersService } from '../url-parameters/url-parameters.service';
@@ -52,7 +52,7 @@ export class CustomLoader implements TranslateLoader {
       CountriesFilterEffects
     ]),
     TranslateModule.forRoot({ provide: TranslateLoader, useClass: CustomLoader }),
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
+    Angulartics2Module.forRoot([ Angulartics2GoogleTagManager ])
   ],
   bootstrap: [AppComponent]
 })

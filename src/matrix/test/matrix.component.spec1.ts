@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Angulartics2GoogleTagManager } from 'angulartics2';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from 'ng2-translate';
 import { MatrixImagesComponent } from '../matrix-images';
@@ -53,7 +53,7 @@ describe('MatrixComponent', () => {
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+                { provide: Angulartics2GoogleTagManager, useClass: Angulartics2GoogleAnalyticsMock },
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock }
             ]

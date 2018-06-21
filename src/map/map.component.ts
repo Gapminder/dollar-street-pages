@@ -26,7 +26,7 @@ import {
   MathService,
   LoaderService,
   UrlChangeService,
-  Angulartics2GoogleAnalytics,
+  Angulartics2GoogleTagManager,
   DrawDividersInterface,
   BrowserDetectionService,
   LanguageService,
@@ -97,7 +97,7 @@ export class MapComponent implements OnInit, OnDestroy {
                      private activatedRoute: ActivatedRoute,
                      private urlChangeService: UrlChangeService,
                      private browserDetectionService: BrowserDetectionService,
-                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
                      private languageService: LanguageService,
                      private store: Store<AppStates>,
                      private incomeCalcService: IncomeCalcService,
@@ -498,7 +498,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     if (this.leftSideCountries && this.leftSideCountries.length === 1) {
-      this.angulartics2GoogleAnalytics
+      this.angulartics2GoogleTagManager
         .eventTrack(`Look at ${this.hoverPlace.family} place from ${this.hoverPlace.country} with map page`, {});
       this.store.dispatch(new MatrixActions.SetPlace(this.hoverPlace._id));
       this.router.navigate(['/family'], {queryParams: {place: this.hoverPlace._id}});

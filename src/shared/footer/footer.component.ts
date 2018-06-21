@@ -12,7 +12,7 @@ import { compact } from 'lodash';
 import { FooterService } from './footer.service';
 import {
   BrowserDetectionService,
-  Angulartics2GoogleAnalytics,
+  Angulartics2GoogleTagManager,
   LanguageService,
   UtilsService
 } from '../../common';
@@ -38,7 +38,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public constructor(private router: Router,
                      private footerService: FooterService,
                      private browserDetectionService: BrowserDetectionService,
-                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
                      private languageService: LanguageService,
                      private utilsService: UtilsService,
                      private store: Store<AppStates>) {
@@ -119,7 +119,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   public goToMatrixPage(): void {
-    this.angulartics2GoogleAnalytics.eventTrack('Go to Matrix page from footer', {});
+    this.angulartics2GoogleTagManager.eventTrack('Go to Matrix page from footer', {});
 
     let queryParams: any = {
       thing: 'Families',

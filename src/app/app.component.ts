@@ -16,6 +16,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { SubscriptionsList } from '../interfaces';
 import { forEach, has } from 'lodash';
 import { DEBOUNCE_TIME } from '../defaultState';
+declare let ga: Function;
 
 @Component({
   selector: 'consumer-app',
@@ -74,6 +75,9 @@ export class AppComponent implements OnInit, OnDestroy {
         if (activePage === '/matrix') {
           this.currentPage = 'matrix';
         }
+
+        ga('set', 'page', event.urlAfterRedirects);
+        ga('send', 'pageview');
       }
     });
 

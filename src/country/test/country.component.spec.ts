@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
-import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleTagManager, Angulartics2Module } from 'angulartics2';
 
 import { MathService, TitleHeaderService } from '../../common';
 import { CountryComponent } from '../country.component';
@@ -22,7 +22,7 @@ describe('CountryComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+        Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
         TranslateTestingModule,
         StoreModule.forRoot({}),
         CommonServicesTestingModule

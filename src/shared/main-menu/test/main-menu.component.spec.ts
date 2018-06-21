@@ -7,7 +7,7 @@ import {
   LanguageService,
   LocalStorageService,
   BrowserDetectionService,
-  Angulartics2GoogleAnalytics, SocialShareService
+  Angulartics2GoogleTagManager, SocialShareService
 } from '../../../common';
 import { forEach } from 'lodash';
 import {
@@ -52,7 +52,7 @@ describe('MainMenuComponent', () => {
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: LocalStorageService, useClass: LoaderServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock }
+                { provide: Angulartics2GoogleTagManager, useClass: AngularticsMock }
             ]
         });
 

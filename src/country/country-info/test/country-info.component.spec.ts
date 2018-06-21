@@ -7,7 +7,7 @@ import {
     MathService,
     LanguageService,
     BrowserDetectionService,
-    Angulartics2GoogleAnalytics
+    Angulartics2GoogleTagManager
 } from '../../../common';
 import { StoreModule } from '@ngrx/store';
 import {
@@ -63,7 +63,7 @@ describe('CountryInfoComponent', () => {
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: CountryInfoService, useClass: CountryInfoServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+                { provide: Angulartics2GoogleTagManager, useClass: Angulartics2GoogleAnalyticsMock },
                 { provide: StreetDrawService, useValue: StreetDrawServiceMock}
             ]
         });
