@@ -1,5 +1,4 @@
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { Subscription } from 'rxjs/Subscription';
 import {
   Component,
   ElementRef,
@@ -11,12 +10,14 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppStates } from '../../interfaces';
+import { AppStates, SubscriptionsList } from '../../interfaces';
 import {
   BrowserDetectionService,
   UtilsService
 } from '../../common';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
+import { forEach } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'float-footer',
@@ -25,20 +26,19 @@ import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 })
 export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('floatFooterContainer')
-  public floatFooterContainer: ElementRef;
+  floatFooterContainer: ElementRef;
 
   analyticLocation = 'footer';
-  public element: HTMLElement;
-  public scrollSubscribe: Subscription;
-  public isDesktop: boolean;
-  public routerEventsSubscription: Subscription;
-  public storeSubscription: Subscription
-  public isMatrixPage: boolean;
-  public pinMode: boolean;
-  public embedMode: boolean;
+  element: HTMLElement;
+  isDesktop: boolean;
+
+  ngSubscriptions: SubscriptionsList = {};
+  isMatrixPage: boolean;
+  pinMode: boolean;
+  embedMode: boolean;
   showEmbeded = false; //TODO: hided embed features for prod 20.02.18
 
-  public constructor(elementRef: ElementRef,
+  constructor(elementRef: ElementRef,
                      private zone: NgZone,
                      private browserDetectionService: BrowserDetectionService,
                      private utilsService: UtilsService,
@@ -49,11 +49,11 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this.scrollSubscribe = fromEvent(document, 'scroll')
+    this.ngSubscriptions.scroll = fromEvent(document, 'scroll')
       .subscribe(() => {
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+        const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-        let floatFooterContainerElement: HTMLElement = this.floatFooterContainer.nativeElement;
+        const floatFooterContainerElement: HTMLElement = this.floatFooterContainer.nativeElement;
 
         this.zone.run(() => {
           floatFooterContainerElement.classList.add('show-float-footer');
@@ -68,25 +68,22 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnInit(): any {
     this.isDesktop = this.browserDetectionService.isDesktop();
 
-    this.routerEventsSubscription = this.router.events.subscribe((event: any) => {
+    this.ngSubscriptions.routerEvents = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.isMatrixPage = this.isCurrentPage('matrix');
       }
     });
 
-    this.storeSubscription = this.store.select('matrix').subscribe(matrix => {
+    this.ngSubscriptions.store = this.store.select('matrix').subscribe(matrix => {
       this.pinMode = matrix.pinMode;
       this.embedMode = matrix.embedMode;
     });
   }
 
   public ngOnDestroy(): void {
-    if (this.scrollSubscribe) {
-      this.scrollSubscribe.unsubscribe();
-    }
-
-    this.routerEventsSubscription.unsubscribe();
-    this.storeSubscription.unsubscribe();
+    forEach(this.ngSubscriptions, ( subscription: Subscription ) => {
+      subscription.unsubscribe()
+    });
   }
 
   public isCurrentPage(name: string): boolean {

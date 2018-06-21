@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import {TranslateLoader, TranslateModule, TranslateParser, TranslateService} from 'ng2-translate';
-import { Angulartics2Module, Angulartics2, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Angulartics2Module, Angulartics2, Angulartics2GoogleTagManager } from 'angulartics2';
 import { DropdownModule } from 'ng2-bootstrap';
 import { StoreModule } from '@ngrx/store';
 
@@ -79,7 +79,7 @@ describe('HeaderComponent', () => {
                 SocialShareButtonsService,
                 SocialShareService,
                 { provide: Angulartics2, useClass: AngularticsMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+                { provide: Angulartics2GoogleTagManager, useClass: Angulartics2GoogleAnalyticsMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock },

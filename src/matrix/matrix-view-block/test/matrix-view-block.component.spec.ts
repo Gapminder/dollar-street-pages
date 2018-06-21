@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleTagManager, Angulartics2Module } from 'angulartics2';
 import { TranslateModule } from 'ng2-translate';
 import { StoreModule } from '@ngrx/store';
 import { AngularticsMock } from '../../../test/';
@@ -37,7 +37,7 @@ describe('MatrixViewBlockComponent', () => {
       ],
       providers: [
         { provide: MatrixViewBlockService, useClass: MatrixViewBlockServiceMock },
-        { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock },
+        { provide: Angulartics2GoogleTagManager, useClass: AngularticsMock },
         { provide: StreetDrawService, useClass: StreetDrawServiceMock },
         { provide: ImageLoadedService, useClass: ImageLoadedServiceMock },
       ]

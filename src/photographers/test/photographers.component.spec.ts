@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
-import { Angulartics2GoogleAnalytics, Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleTagManager, Angulartics2Module } from 'angulartics2';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
@@ -22,7 +22,7 @@ describe('Component: PhotographersComponent', () => {
       imports: [
         RouterTestingModule,
         CommonServicesTestingModule,
-        Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+        Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
         TranslateTestingModule
       ],
       declarations: [

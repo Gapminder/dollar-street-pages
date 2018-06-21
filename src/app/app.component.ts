@@ -13,6 +13,8 @@ import {
   GoogleAnalyticsService
 } from '../common';
 
+declare let ga: Function;
+
 @Component({
   selector: 'consumer-app',
   templateUrl: './app.component.html',
@@ -64,6 +66,9 @@ export class AppComponent implements OnInit, OnDestroy {
         if (activePage === '/matrix') {
           this.currentPage = 'matrix';
         }
+
+        ga('set', 'page', event.urlAfterRedirects);
+        ga('send', 'pageview');
       }
     });
   }

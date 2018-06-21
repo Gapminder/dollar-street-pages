@@ -18,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppStates } from '../../interfaces';
 import {
-  Angulartics2GoogleAnalytics,
+  Angulartics2GoogleTagManager,
   BrowserDetectionService,
   UtilsService,
   UrlChangeService
@@ -70,7 +70,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
                      private activatedRoute: ActivatedRoute,
                      private zone: NgZone,
                      private browserDetectionService: BrowserDetectionService,
-                     private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+                     private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
                      private utilsService: UtilsService,
                      private store: Store<AppStates>,
                      private changeDetectorRef: ChangeDetectorRef,
@@ -226,7 +226,7 @@ export class ThingsFilterComponent implements OnInit, OnDestroy {
     this.isOpenThingsFilter = false;
     this.search = {text: ''};
     this.urlParametersService.dispatchToStore({thing});
-    this.angulartics2GoogleAnalytics.eventTrack(`Matrix page with thing - ${thingObj.originPlural}`, {});
+    this.angulartics2GoogleTagManager.eventTrack(`Matrix page with thing - ${thingObj.originPlural}`, {});
   }
 
   public setActiveThingsColumn(column: string): void {

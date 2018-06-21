@@ -8,7 +8,7 @@ import { LanguageServiceMock } from '../../../test/';
 import { SocialShareButtonsComponent } from '../social-share-buttons.component';
 import { SocialShareButtonsService } from '../social-share-buttons.service';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
-import { Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Angulartics2GoogleTagManager } from 'angulartics2';
 import { Angulartics2GoogleAnalyticsMock } from '../../../test/mocks/angulartics2GoogleAnalytics.mock';
 
 describe('SocialShareButtonsComponent', () => {
@@ -26,7 +26,7 @@ describe('SocialShareButtonsComponent', () => {
       providers: [
         { provide: SocialShareService, useValue: {} },
         { provide: SocialShareButtonsService, useClass: SocialShareButtonsServiceMock },
-        { provide: Angulartics2GoogleAnalytics, useClass: Angulartics2GoogleAnalyticsMock },
+        { provide: Angulartics2GoogleTagManager, useClass: Angulartics2GoogleAnalyticsMock },
       ]
     });
 

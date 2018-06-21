@@ -4,10 +4,10 @@ import { TranslateModule } from 'ng2-translate';
 import { DropdownModule } from 'ng2-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import {
-    LanguageService,
-    LocalStorageService,
-    BrowserDetectionService,
-    Angulartics2GoogleAnalytics
+  LanguageService,
+  LocalStorageService,
+  BrowserDetectionService,
+  Angulartics2GoogleTagManager
 } from '../../../common';
 import {
     LanguageServiceMock,
@@ -18,6 +18,8 @@ import {
 import { SocialShareButtonsComponent } from '../../social-share-buttons/social-share-buttons.component';
 import { LanguageSelectorComponent } from '../../language-selector/language-selector.component';
 import { MainMenuComponent } from '../main-menu.component';
+import { Subscription } from 'rxjs/Subscription';
+import { forEach } from 'lodash';
 
 describe('MainMenuComponent', () => {
     let component: MainMenuComponent;
@@ -40,7 +42,7 @@ describe('MainMenuComponent', () => {
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: LocalStorageService, useClass: LoaderServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-                { provide: Angulartics2GoogleAnalytics, useClass: AngularticsMock }
+                { provide: Angulartics2GoogleTagManager, useClass: AngularticsMock }
             ]
         });
 
@@ -49,24 +51,17 @@ describe('MainMenuComponent', () => {
     }));
 
     it('ngOnInit(), ngAfterViewInit(), ngOnDestroy()', () => {
-        component.ngOnInit();
-        component.ngAfterViewInit();
+      component.ngOnInit();
+      component.ngAfterViewInit();
 
-        expect(component.getTranslationSubscribe).toBeDefined();
-        expect(component.streetSettingsStateSubscription).toBeDefined();
-        expect(component.appStateSubscription).toBeDefined();
-        // expect(component.languagesListSubscription).toBeDefined();
+      forEach(component.ngSubscriptions, ( subscription: Subscription ) => {
+        spyOn(subscription, 'unsubscribe');
+      });
 
-        spyOn(component.getTranslationSubscribe, 'unsubscribe');
-        spyOn(component.streetSettingsStateSubscription, 'unsubscribe');
-        spyOn(component.appStateSubscription, 'unsubscribe');
-        // spyOn(component.languagesListSubscription, 'unsubscribe');
+      component.ngOnDestroy();
 
-        component.ngOnDestroy();
-
-        expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-        // expect(component.languagesListSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.streetSettingsStateSubscription.unsubscribe).toHaveBeenCalled();
-        expect(component.appStateSubscription.unsubscribe).toHaveBeenCalled();
+      forEach(component.ngSubscriptions, ( subscription: Subscription ) => {
+        expect(subscription.unsubscribe).toHaveBeenCalled();
+      });
     });
 });
