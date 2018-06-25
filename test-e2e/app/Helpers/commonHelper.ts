@@ -101,3 +101,7 @@ export async function waitTillWindowClosed() {
 export async function waitForURLContain(url: string, timeout = 40000): Promise<void> {
   await browser.wait(EC.urlContains(url), timeout);
 }
+
+export async function isElementClickable(element: ElementFinder, timeout = 5000, customError = ''): Promise<any> {
+  return browser.wait(EC.elementToBeClickable(element), timeout, customError);
+}
