@@ -70,7 +70,13 @@ export class ImageGeneratorService {
           sourceCanvas.getContext('2d').putImageData(streetImage, streetXPosition, headerCanvas.height + placesCanvas.height);
           sourceCanvas.getContext('2d').putImageData(paragraphImage, 0, headerCanvas.height + streetCanvas.height + placesCanvas.height);
 
-          resolve(sourceCanvas.toDataURL('image/jpeg'));
+          resolve({
+            image: sourceCanvas.toDataURL('image/jpeg'),
+            size: {
+              height: sourceCanvas.height,
+              width: sourceCanvas.width,
+            }
+          });
         });
       });
     });
