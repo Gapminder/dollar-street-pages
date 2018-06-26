@@ -513,6 +513,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
       this.store.dispatch(new MatrixActions.SetPinnedPlaces(updatedSet));
 
       this.imageGeneratorService.generateImage().then((screenshot: any) => {
+
           let filesToRemove = Object.keys(placesList).map(k => placesList[k]).map(l => {
             let arr = l.split('/');
             return arr[arr.length - 1];
@@ -520,7 +521,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
           this.matrixService.removeTempImages(`images=${filesToRemove.join(',')}`).then((a) => {});
 
-          const screenData = {imageData: screenshot, imageName: Date.now()+'.jpg', embedId: this.embedSetId};
+          const screenData = {imageData: screenshot.image, size: screenshot.size,  imageName: Date.now()+'.jpg', embedId: this.embedSetId};
           this.matrixService.uploadScreenshot(screenData).then((res: any) => {
             this.sharedImageUrl = res.data.imageUrl;
 

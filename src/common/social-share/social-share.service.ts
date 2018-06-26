@@ -103,14 +103,19 @@ export class SocialShareService {
       const facebookUrl: string = 'https://graph.facebook.com/?';
 
       const params: URLSearchParams = new URLSearchParams();
-      params.set('id', url);
+      // params.set('id', url);
 
       this.url = params.toString();
 
-      const link = `${facebookUrl}${this.url}&scrape=true`;
+      const link = `${facebookUrl}id=${decodeURIComponent(url)}&scrape=true`;
+      // const link = `${facebookUrl}`;
 
       // TODO: add request fpr pre cache images for facebook
-      // this.http.post(link).subscribe( (data) => {
+      // this.http.post(link, {
+      //   access_tocken: '135732313883245',
+      //   id: decodeURIComponent(url),
+      //   scrape: true
+      // }).subscribe((data) => {
       //   console.log(data);
       // });
     }
