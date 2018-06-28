@@ -541,7 +541,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
             this.pinField.nativeElement.value = this.embedLink;
             this.pinField.nativeElement.select();
-            this.socialShareService.toFacebookCache(this.shareUrl);
           });
         });
     });
