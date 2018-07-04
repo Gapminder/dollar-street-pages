@@ -12,6 +12,10 @@ export class FamilyImage {
   constructor(url: string, index: number) {
     if (url === MatrixPage.url) {
       this.type = 'matrix';
+
+
+
+
       waitForVisible(MatrixPage.imagesContainer);
       this.rootSelector = $$('matrix-images div[class*="image-content"]').get(index);
     } else {
