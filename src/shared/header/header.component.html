@@ -45,16 +45,15 @@
             <countries-filter (isFilterGotData)="isFilterGotData($event)"></countries-filter>
           </div>
 
+          <span class="accordance-with">
+            {{ 'IN_ACCORDANCE_WITH' | translate }}
+          </span>
+
           <span #incomeTitleContainer
                 class="income-title-container">
-            <!--<span class="income-title filter"
-                  (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>-->
             <span class="income-title filter currency-filter"
-                  (click)="toggleIncomeFilterDesktop()">{{ 'BY_INCOME' | translate }}</span>
-            <!--<span class="income-title-text"-->
-              <!--*ngIf="!isMobile">-->
-              <!--{{ byIncomeText }}-->
-            <!--</span>-->
+                  (click)="toggleIncomeFilterDesktop()">{{ 'WITH_INCOME' | translate }}</span>
+
             <span class="income-title short-filter"
                   [ngClass]="{opened: isIncomeDesktopOpened, filter: isIncomeFilter}"
                   (click)="openIncomeFilter($event)">
