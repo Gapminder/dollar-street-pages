@@ -106,7 +106,7 @@ export class DataProvider {
           .all(by.css('div[class*="some-filter-container"]>span'))
           .last()
           .getText(),
-      actualResult: 'by income'
+      actualResult: 'income'
     },
     PoorestHeaderOnStreetWidget: {
       element: () => $('text[class="poorest"]').getText(),
@@ -146,7 +146,7 @@ export class DataProvider {
     },
     AllIncomesHeaderInSearch: {
       element: (): ElementFinder => element.all(by.css('.income-title-container')).last(),
-      actualResult: 'by income'
+      actualResult: 'income'
     },
     TheWorldHeaderInSearch: {
       element: (): ElementFinder => element.all(by.css('div[class*="countries-filter-button"] span')).first(),
