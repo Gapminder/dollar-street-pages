@@ -49,6 +49,7 @@ import { MatrixService } from './matrix.service';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../defaultState';
 import { UrlParametersService } from '../url-parameters/url-parameters.service';
 import { PagePositionService } from "../shared/page-position/page-position.service";
+import { reject } from 'q';
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -491,54 +492,26 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
   }
 
-  preloadImages (list: {[key: string]: string}): Promise<boolean> {
-    const IS_LOADED = 'isLoaded';
+  awaitLoadImage(src: string) {
+    const MAX_TIME_FOR_LOAD = 15000;
 
-    const preloadList = {};
-
-    interface PreloadList {
-      id: string;
-      isLoaded: boolean;
-      src: string;
-    }
-
-    forEach(list, (value, index: string) => {
-      const elem: PreloadList = {
-        id: index,
-        src: value,
-        [IS_LOADED]: false
-      };
-      preloadList[index] = elem;
-    });
-
-    return new Promise ( resolve => {
-
-      function checkAllLoads() {
-        let complite = true;
-
-        forEach(preloadList, item => {
-          if (!get(item, IS_LOADED, false)) {
-            complite = false;
-          }
-        });
-        if (complite) {
-          resolve(true);
-        };
+    return new Promise( (resolve, reject) => {
+      const img = new Image();
+      const complete = false;
+      img.onload = () => {
+        complete = true;
+        resolve(true);
       };
 
-      forEach(preloadList, (value, index) => {
-        const img = new Image();
-        img.onload = ( (e) => {
-          preloadList[index][IS_LOADED] = true;
+      img.src = src;
 
-          checkAllLoads();
-        });
-        img.src = value['src'];
-      });
+      setTimeout( () => {
+        reject(false);
+      }, MAX_TIME_FOR_LOAD);
     });
   }
 
-  public shareEmbed(): void {
+  shareEmbed(): void {
     this.isScreenshotProcessing = true;
     this.store.dispatch(new MatrixActions.SetIsEmbededShared(true));
     const query = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=${this.imageResolution.image}`;
@@ -559,7 +532,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
       this.store.dispatch(new MatrixActions.SetPinnedPlaces(updatedSet));
 
-      this.preloadImages(placesList).then(() => this.imageGeneratorService.generateImage()).then((screenshot: any) => {
+      const awaitImagesLoaded = [];
+      forEach(placesList, src => {
+        awaitImagesLoaded.push(this.awaitLoadImage(src));
+      })
+
+      Promise.all(awaitImagesLoaded).then(() => this.imageGeneratorService.generateImage()).then((screenshot: any) => {
 
           let filesToRemove = Object.keys(placesList).map(k => placesList[k]).map(l => {
             let arr = l.split('/');
@@ -589,7 +567,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
             this.pinField.nativeElement.value = this.embedLink;
             this.pinField.nativeElement.select();
           });
-        });
+        }).catch(() => {
+          this.pinModeClose();
+      });
     });
   }
 
