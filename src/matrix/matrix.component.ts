@@ -491,6 +491,53 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
   }
 
+  preloadImages (list: {[key: string]: string}): Promise<boolean> {
+    const IS_LOADED = 'isLoaded';
+
+    const preloadList = {};
+
+    interface PreloadList {
+      id: string;
+      isLoaded: boolean;
+      src: string;
+    }
+
+    forEach(list, (value, index: string) => {
+      const elem: PreloadList = {
+        id: index,
+        src: value,
+        [IS_LOADED]: false
+      };
+      preloadList[index] = elem;
+    });
+
+    return new Promise ( resolve => {
+
+      function checkAllLoads() {
+        let complite = true;
+
+        forEach(preloadList, item => {
+          if (!get(item, IS_LOADED, false)) {
+            complite = false;
+          }
+        });
+        if (complite) {
+          resolve(true);
+        };
+      };
+
+      forEach(preloadList, (value, index) => {
+        const img = new Image();
+        img.onload = ( (e) => {
+          preloadList[index][IS_LOADED] = true;
+
+          checkAllLoads();
+        });
+        img.src = value['src'];
+      });
+    });
+  }
+
   public shareEmbed(): void {
     this.isScreenshotProcessing = true;
     this.store.dispatch(new MatrixActions.SetIsEmbededShared(true));
@@ -512,7 +559,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
       this.store.dispatch(new MatrixActions.SetPinnedPlaces(updatedSet));
 
-      this.imageGeneratorService.generateImage().then((screenshot: any) => {
+      this.preloadImages(placesList).then(() => this.imageGeneratorService.generateImage()).then((screenshot: any) => {
 
           let filesToRemove = Object.keys(placesList).map(k => placesList[k]).map(l => {
             let arr = l.split('/');
