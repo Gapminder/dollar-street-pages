@@ -26,7 +26,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { chain, cloneDeep, find, map, difference, forEach, get, uniq } from 'lodash';
+import { chain, cloneDeep, find, map, difference, forEach, get, uniq, filter } from 'lodash';
 import {
   LoaderService,
   UrlChangeService,
@@ -497,14 +497,24 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     return new Promise( (resolve, reject) => {
       const img = new Image();
+      let finish = false;
       img.onload = () => {
-        resolve(true);
+        finish = true;
+        resolve({
+          src,
+          isLoaded: true,
+        });
       };
 
       img.src = src;
 
       setTimeout( () => {
-        reject(false);
+        if (!finish) {
+          resolve({
+            src,
+            isLoaded: false,
+          });
+        }
       }, MAX_TIME_FOR_LOAD);
     });
   }
@@ -535,7 +545,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
         awaitImagesLoaded.push(this.awaitLoadImage(src));
       })
 
-      Promise.all(awaitImagesLoaded).then(() => this.imageGeneratorService.generateImage()).then((screenshot: any) => {
+      Promise.all(awaitImagesLoaded).then(() => this.imageGeneratorService.generateImage())
+        .then((screenshot: any) => {
 
           let filesToRemove = Object.keys(placesList).map(k => placesList[k]).map(l => {
             let arr = l.split('/');
