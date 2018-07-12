@@ -497,9 +497,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     return new Promise( (resolve, reject) => {
       const img = new Image();
-      let finish = false;
       img.onload = () => {
-        finish = true;
         resolve({
           src,
           isLoaded: true,
@@ -509,12 +507,10 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
       img.src = src;
 
       setTimeout( () => {
-        if (!finish) {
-          resolve({
-            src,
-            isLoaded: false,
-          });
-        }
+        resolve({
+          src,
+          isLoaded: false,
+        });
       }, MAX_TIME_FOR_LOAD);
     });
   }
