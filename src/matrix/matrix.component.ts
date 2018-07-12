@@ -493,13 +493,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   awaitLoadImage(src: string) {
-    const MAX_TIME_FOR_LOAD = 15000;
+    const MAX_TIME_FOR_LOAD = 30000;
 
     return new Promise( (resolve, reject) => {
       const img = new Image();
-      const complete = false;
       img.onload = () => {
-        complete = true;
         resolve(true);
       };
 
