@@ -26,7 +26,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { chain, cloneDeep, find, map, difference, forEach, get, uniq } from 'lodash';
+import { chain, cloneDeep, find, map, difference, forEach, get, uniq, filter } from 'lodash';
 import {
   LoaderService,
   UrlChangeService,
@@ -49,6 +49,7 @@ import { MatrixService } from './matrix.service';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../defaultState';
 import { UrlParametersService } from '../url-parameters/url-parameters.service';
 import { PagePositionService } from "../shared/page-position/page-position.service";
+import { reject } from 'q';
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -491,7 +492,30 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
   }
 
-  public shareEmbed(): void {
+  awaitLoadImage(src: string) {
+    const MAX_TIME_FOR_LOAD = 30000;
+
+    return new Promise( (resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        resolve({
+          src,
+          isLoaded: true,
+        });
+      };
+
+      img.src = src;
+
+      setTimeout( () => {
+        resolve({
+          src,
+          isLoaded: false,
+        });
+      }, MAX_TIME_FOR_LOAD);
+    });
+  }
+
+  shareEmbed(): void {
     this.isScreenshotProcessing = true;
     this.store.dispatch(new MatrixActions.SetIsEmbededShared(true));
     const query = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=${this.imageResolution.image}`;
@@ -512,7 +536,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
       this.store.dispatch(new MatrixActions.SetPinnedPlaces(updatedSet));
 
-      this.imageGeneratorService.generateImage().then((screenshot: any) => {
+      const awaitImagesLoaded = [];
+      forEach(placesList, src => {
+        awaitImagesLoaded.push(this.awaitLoadImage(src));
+      })
+
+      Promise.all(awaitImagesLoaded).then(() => this.imageGeneratorService.generateImage())
+        .then((screenshot: any) => {
 
           let filesToRemove = Object.keys(placesList).map(k => placesList[k]).map(l => {
             let arr = l.split('/');
@@ -542,7 +572,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
             this.pinField.nativeElement.value = this.embedLink;
             this.pinField.nativeElement.select();
           });
-        });
+        }).catch(() => {
+          this.pinModeClose();
+      });
     });
   }
 

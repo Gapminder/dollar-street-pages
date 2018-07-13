@@ -65,7 +65,14 @@
                (mouseleave)="onPinnedPlaceHover()"
                isImageLoaded [imageLoadedUrl]="place?.background"
                (imageLoadedEvent)="imageIsUploaded(i)">
-            <img src="{{place?.isUploaded ? place?.showBackground : ''}}" alt="">
+            <div class="image-backgroung">
+              <svg>
+                <use xlink:href="#camera"></use>
+              </svg>
+            </div>
+            <div class="place-image">
+              <img src="{{place?.isUploaded ? place?.showBackground : ''}}" alt="">
+            </div>
 
             <div class="image-description" [ngClass]="{'one-row': isPreviewView || isEmbedMode}">
               <span class="place-image-box-income">{{currencyUnit?.symbol}}{{place?.showIncome}}</span>
