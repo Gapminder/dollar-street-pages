@@ -99,7 +99,7 @@ describe('Matrix Page: Filters', () => {
     expect(await browser.getCurrentUrl()).toContain(`countries=${COUNTRY}`);
   });
 
-  it('Filter by Income: currency and income updated in images list', async () => {
+  xit('Filter by Income: currency and income updated in images list', async () => {
     const expectedCurrency = {
       name: 'Euro',
       symbol: '€',
@@ -131,7 +131,7 @@ describe('Matrix Page: Filters', () => {
     expect(await browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
   });
 
-  it('Filter by Income: currency and income updated in image preview', async () => {
+  xit('Filter by Income: currency and income updated in image preview', async () => {
     const random = getRandomNumber();
     const expectedCurrency = {
       name: 'Krona',
@@ -173,7 +173,7 @@ describe('Matrix Page: Filters', () => {
     expect(await browser.getCurrentUrl()).toContain(`currency=${expectedCurrency.code}`);
   });
 
-  it('Filter by Income: currency updated on family page)', async () => {
+  xit('Filter by Income: currency updated on family page)', async () => {
     const random = getRandomNumber();
     const expectedCurrency = {
       name: 'Euro',

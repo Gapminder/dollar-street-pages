@@ -348,23 +348,39 @@ family-header .header-content {
   line-height: 40px;
 }
 
-.income-filter-desktop-header img {
-  width: 14px;
-  height: 14px;
-  cursor: pointer;
-  margin-top: 16px;
-  margin-left: 6px;
-  right: 10px;
+.income-filter-desktop-container .info {
+  flex: 1 1 100%;
 }
 
-.income-filter-desktop-header .close-button {
+.income-filter-desktop-container .info-link {
+  display: block;
+  padding: 0 10px;
+}
+
+.income-filter-desktop-container .info img {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.income-filter-desktop-container .top-close-button {
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
   position: absolute;
   width: 15px;
   height: 15px;
-  margin-top: 14px;
-  margin-right: 10px;
   cursor: pointer;
   right: 4px;
+  top: 4px;
+}
+
+.income-filter-desktop-container .top-close-button img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .dropdown-button {
@@ -376,6 +392,7 @@ family-header .header-content {
   background-color: white;
   border-radius: 4px;
   padding: 0 4px;
+  outline: none;
 }
 
 .dropdown-button img {
@@ -399,6 +416,10 @@ family-header .header-content {
   height: 152px;
   width: 100%;
   overflow-y: scroll;
+}
+
+.income-filter-desktop-content .control-section .dropdown-container {
+  width: 100%;
 }
 
 .dropdown-selected,
@@ -486,12 +507,12 @@ family-header .header-content {
 }
 
 .income-filter-desktop-footer .ok-button {
-  display: inline-block;
+  flex: 0 0 65px;
   cursor: pointer;
   align-self: center;
   height: 30px;
   font-size: 24px;
-  margin-right: 10px;
+  margin: 0  10px;
   color: #374551;
 }
 
@@ -507,6 +528,11 @@ family-header .header-content {
   color: #767d86;
   font-size: 24px;
   margin-right: 10px;
+}
+
+.income-filter-desktop-content .bottom-description {
+  font-size: 14px;
+  padding: 0 10px;
 }
 
 .show-levels-container {
