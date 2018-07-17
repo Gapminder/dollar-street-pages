@@ -63,31 +63,23 @@
             <div (click)="incomeContainerClick($event)"
                  [ngStyle]="{display: isIncomeDesktopOpened ? 'block' : 'none'}"
                  class="income-filter-desktop-container">
-              <div class="income-filter-desktop-header">
-                <span>Income</span>
-                <img [routerLink]="['/about']"
-                     [queryParams]="{jump: 'income-calc'}"
-                     src="/assets/img/info-icon.svg"/>
-                <img class="close-button"
-                     src="/assets/img/close-button.svg"
-                     (click)="closeIncomeFilterDesktop()"/>
-              </div>
-
               <div class="income-filter-desktop-content">
                 <div class="currency-unit-container">
                   <div class="currency-unit-cell">
 
+                    <button class="top-close-button" (click)="closeIncomeFilterDesktop()">
+                      <img src="/assets/img/close-button.svg"/>
+                    </button>
                     <div dropdown class="control-section">
-                      <span class="control-label">{{ 'INCOME_POPUP_CURRENCY' | translate }}</span>
+                      <span class="control-label">{{ 'INCOME_POPUP__PPP_CURRENCY' | translate }}</span>
                       <button type="button"
                               class="dropdown-button"
-                              dropdownToggle
                               [disabled]="disabled"
-                              [title]="currencyUnitTemp?.currency">
-                        <span class="dropdown-selected">{{ currencyUnitTemp?.currency }}</span>
-                        <span class="button-icon">
-                          <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
-                        </span>
+                              title="{{currencyUnitTemp?.code}} - {{currencyUnitTemp?.visibleName}}"> <!--dropdownToggle-->
+                        <span class="dropdown-selected">{{currencyUnitTemp?.code}} - {{ currencyUnitTemp?.visibleName }}</span>
+                        <!--<span class="button-icon">-->
+                          <!--<img src="assets/img/lang-selector-arrow.svg" alt="button icon">-->
+                        <!--</span>-->
                       </button>
 
                       <ul dropdownMenu
@@ -98,7 +90,7 @@
                             class="dropdown-item"
                             role="menuitem"
                             (click)="currencyUnitFilterSelect(currUnit.code)">
-                          <span class="dropdown-item">{{ currUnit?.code }} - {{ currUnit?.currency }}</span>
+                          <span class="dropdown-item">{{ currUnit.code }} - {{ currUnit.visibleName }}</span>
                         </li>
                       </ul>
                     </div>
@@ -107,7 +99,7 @@
                   <div class="currency-unit-cell">
 
                     <div dropdown class="control-section">
-                      <span class="control-label">{{ 'INCOME_POPUP_TIME_UNIT' | translate }}</span>
+                      <span class="control-label">{{ 'INCOME_POPUP_TIME_LABEL' | translate }}</span>
                       <button type="button"
                               class="dropdown-button"
                               dropdownToggle
@@ -146,18 +138,21 @@
                     </div>
 
                   </div>
-
-                </div>
-                <div class="show-levels-container">
-                  <!--<span class="show-levels-label">levels</span>
-                  <label class="switch">
-                    <input type="checkbox" [(ngModel)]="showStreetAttrsTemp">
-                    <span class="slider round"></span>
-                  </label>-->
+                  <div class="bottom-description">
+                    <span>{{ 'INCOME_POPUP_PER_ADULT' | translate }}</span>
+                  </div>
                 </div>
               </div>
 
               <div class="income-filter-desktop-footer">
+                <div class="info">
+                  <a href="" class="info-link">
+                    <img [routerLink]="['/about']"
+                         [queryParams]="{jump: 'income-calc'}"
+                         src="/assets/img/info-icon.svg"/>
+                  </a>
+                </div>
+
                 <div (click)="closeIncomeFilterDesktop($event)" class="close-button">{{'CLOSE' | translate }}</div>
                 <div (click)="applyIncomeFilterDesktop($event)" class="ok-button">
                   <img src="/assets/img/apply.svg" alt=""/>

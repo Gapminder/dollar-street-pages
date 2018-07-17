@@ -144,6 +144,7 @@ export interface Currency {
   symbol: string;
   updated: Date | number;
   translations: {}[];
+  visibleName?: string;
 }
 
 export interface Continent {

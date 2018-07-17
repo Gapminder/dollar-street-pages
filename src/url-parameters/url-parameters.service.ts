@@ -44,10 +44,17 @@ export class UrlParametersService {
       const countriesFilter = state.countriesFilter;
       const streetSettings = get(state.streetSettings, 'streetSettings', undefined);
 
+      if (get(languageState, 'lang', false)
+        && this.parameters.lang !== languageState.lang) {
+        this.parameters.lang = get(languageState, 'lang', DefaultUrlParameters.lang);
+        this.combineUrlPerPage();
+        this.window.location.reload();
+      }
+
       if (!get(matrix, 'currencyUnit', false)
       && get(matrix, 'currencyUnits', false)) {
         const currencyUnit = this.incomeCalcService
-          .getCurrencyUnitByCode(matrix.currencyUnits, this.parameters.currency);
+          .getCurrencyUnitByCode(matrix.currencyUnits, this.parameters.currency, this.parameters.lang);
 
         this.store.dispatch(new MatrixActions.SetCurrencyUnit(currencyUnit));
       }
@@ -83,12 +90,7 @@ export class UrlParametersService {
       this.parameters.highIncome = get(streetSettings, 'filters.highIncome', DefaultUrlParameters.highIncome).toString();
       this.parameters.lowIncome = get(streetSettings, 'filters.lowIncome', DefaultUrlParameters.lowIncome).toString();
 
-      if (get(languageState, 'lang', false)
-        && this.parameters.lang !== languageState.lang) {
-        this.parameters.lang = get(languageState, 'lang', DefaultUrlParameters.lang);
-        this.combineUrlPerPage();
-        this.window.location.reload();
-      }
+
 
       this.combineUrlPerPage();
     });

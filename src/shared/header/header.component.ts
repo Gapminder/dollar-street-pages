@@ -1,5 +1,5 @@
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { forEach, difference, map, find, get, assign } from 'lodash';
+import { forEach, difference, map, find, get, assign, filter } from 'lodash';
 import {
   Component,
   Input,
@@ -381,11 +381,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
 
       if (get(matrix, 'currencyUnits', false) && this.currencyUnits !== matrix.currencyUnits) {
-        this.currencyUnits = matrix.currencyUnits;
+        this.currencyUnits = this.incomeCalcService.addCurrencyNames(matrix.currencyUnits, this.languageService.currentLanguage);
 
         if (!this.currencyUnit) {
           if (this.urlParams.currency) {
-            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
+            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency, this.languageService.currentLanguage);
           } else {
             this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
           }
@@ -486,11 +486,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   timeUnitFilterSelect(code: string): void {
     this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, code);
-    this.translateTimeUnit()
+    this.translateTimeUnit();
   }
 
   currencyUnitFilterSelect(code: string): void {
-    this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, code);
+    this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, code, this.languageService.currentLanguage);
   }
 
   applyIncomeFilterDesktop(e): void {
