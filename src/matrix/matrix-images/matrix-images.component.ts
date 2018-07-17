@@ -247,6 +247,10 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   togglePlaceToSet(place: Place): void {
+    if (this.isEmbederShared) {
+      return;
+    }
+
     if (!place.pinned) {
       if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
         place.pinned = true;
