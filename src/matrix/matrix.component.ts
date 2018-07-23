@@ -148,7 +148,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   streetPlacesData: Place[];
   timeUnits: TimeUnit[];
   plusSignWidth: number;
-  pinPlusArr: number[] = new Array(6);
   pinPlusCount = 6;
   pinPlusOffset = 16;
   matrixContainerElement: HTMLElement;
@@ -157,6 +156,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   storeSubscription: Subscription;
   embedLink = '';
   showClipboardNotice = false;
+  canAddToPin = false;
 
   constructor(element: ElementRef,
                      private zone: NgZone,
@@ -212,7 +212,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
         const countriesFilter = state.countriesFilter;
         const thingFilter = state.thingsFilter;
         const streetSettings = state.streetSettings;
-
+        console.log(matrix);
         if (get(appState, 'query', false)
         && this.query !== appState.query) {
             this.query = appState.query;
@@ -389,10 +389,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
       }
     });
 
-    if (this.pinPlusCount - this.placesSet.length > 0) {
-      this.pinPlusArr = new Array(this.pinPlusCount - this.placesSet.length);
-    }
-
     if (!this.isPinMode && this.placesSet.length) {
       this.isEmbedMode = true;
     }
@@ -539,7 +535,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
       const awaitImagesLoaded = [];
       forEach(placesList, src => {
         awaitImagesLoaded.push(this.awaitLoadImage(src));
-      })
+      });
 
       Promise.all(awaitImagesLoaded).then(() => this.imageGeneratorService.generateImage())
         .then((screenshot: any) => {
