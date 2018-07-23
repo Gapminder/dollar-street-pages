@@ -101,14 +101,6 @@ describe('Embed feature tests', () => {
       expect(await pinnedContainer.cancelBtn.isDisplayed()).toBeTruthy();
       expect(await pinnedContainer.buttonDownload.isDisplayed()).toBeTruthy();
     });
-
-    it(`Title of sharing screen is Dollar Street`, async () => {
-      await pinnedContainer.shareBtn.click();
-      await waitForInvisibility(pinnedContainer.commonSpinerPinnedContainer);
-      await waitForInvisibility(pinnedContainer.spinerPinnedContainer);
-
-      expect(await pinnedContainer.titlePinnedContainer.getText()).toBe('Dollar Street');
-    });
   });
 
   async function selectImageToShare(index: number): Promise<void> {
@@ -122,7 +114,7 @@ describe('Embed feature tests', () => {
      */
     // use scrollIntoView() instead
 
-    const elementToScroll = await MatrixPage.heartIconsOnImage.get(index);
+    const elementToScroll = await MatrixPage.comparisonIconsOnImage.get(index);
     await browser.executeScript(element => {
       element.scrollIntoView(false);
     }, elementToScroll);
@@ -135,6 +127,6 @@ describe('Embed feature tests', () => {
       .perform();
 
     // click on the heart icon
-    await MatrixPage.heartIconsOnImage.get(index).click();
+    await MatrixPage.comparisonIconsOnImage.get(index).click();
   }
 });

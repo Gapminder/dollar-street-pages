@@ -212,7 +212,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
         const countriesFilter = state.countriesFilter;
         const thingFilter = state.thingsFilter;
         const streetSettings = state.streetSettings;
-        console.log(matrix);
         if (get(appState, 'query', false)
         && this.query !== appState.query) {
             this.query = appState.query;
