@@ -119,7 +119,9 @@
           <div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length > 1)"
                 class="pin-footer-edit">
             <button type="button" class="pin-done-share"
-                  (click)="doneAndShare()">Share now</button>
+                  (click)="doneAndShare()">Preview and publish</button>
+            <button type="button" class="close-share"
+            (click)="pinModeClose()">{{ 'CANCEL' | translate }}</button>
           </div>
 
           <div *ngIf="isPreviewView"
@@ -146,7 +148,7 @@
                           <!--<div></div>-->
                         <!--</div>-->
                       <!--</div>-->
-                      <p>Preview and publich<span class="dots-animation">.<span class="dot-middle">.</span><span class="dot-last">.</span></span></p>
+                      <p class="in-process">Preview and publish in preparing process<span class="dots-animation">.<span class="dot-middle">.</span><span class="dot-last">.</span></span></p>
                     </div>
                 </div>
 

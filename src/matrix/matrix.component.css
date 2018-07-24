@@ -149,7 +149,7 @@ matrix-images {
 
 .street-pinned-container {
   position: relative;
-  padding-bottom: 6px;
+  padding-bottom: 10px;
 }
 
 .street-pinned-container span {
@@ -321,6 +321,9 @@ matrix-images {
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-end;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .places-container .place-image-box-country,
@@ -394,10 +397,17 @@ matrix-images {
 .shared-ready-section .loader-content {
   /*position: absolute;*/
   /*height: 90px;*/
+  height: 58px;
   margin: auto;
   text-align: center;
   padding: 10px 0;
   /*z-index: 999;*/
+}
+
+.shared-ready-section .loader-content .in-process {
+  height: 38px;
+  line-height: 38px;
+  display: inline-block;
 }
 
 .shared-ready-section .isLoad {
@@ -436,27 +446,38 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /* margin-top: -14px; */
-  /* height: 60px; */
-  /* background-color: #394450; */
-  background-color: rgba(255, 255, 255, 0);
+  background-color: #000;
+  padding: 10px 0;
 }
 
 .pin-footer-edit .pin-done-share {
   font-size: 18px;
-  padding: 0;
+  padding: 0 10px;
   text-align: center;
-  width: 110px;
-  color: #394450;
-  border: 2px solid #394450;
-  background-color: #fff;
+  color: #fff;
+  border: 0;
+  /*border: 2px solid #fff;*/
+  background-color: #000;
   height: 38px;
-  margin-bottom: 10px;
   transition: background-color 0.4s, color 0.4s;
   border-radius: 2px;
 }
 
-.pin-footer-edit .pin-done-share:hover {
+.pin-footer-edit .close-share {
+  margin: 0 10px;
+  font-size: 18px;
+  padding: 0 10px;
+  text-align: center;
+  color: #fff;
+  height: 38px;
+  border: 0;
+  background: transparent;
+  transition: background-color 0.4s, color 0.4s;
+  border-radius: 2px;
+}
+
+.pin-footer-edit .pin-done-share:hover,
+.pin-footer-edit .close-share:hover {
   background-color: #394450;
   color: #fff;
 }
@@ -571,9 +592,9 @@ matrix-images {
 .pin-footer-share .share-buttons-container span {
   width: 46px;
   font-size: 18px;
-  font-weight: 400;
   vertical-align: baseline;
   display: inline-block;
+  font-weight: bold;
 }
 
 .pin-footer-share .share-buttons-container svg {
@@ -622,6 +643,7 @@ matrix-images {
   text-align: center;
   border: 0;
   white-space: nowrap;
+  font-weight: bold;
 }
 
 .pin-footer-share .share-link-container {
@@ -669,6 +691,7 @@ matrix-images {
   margin: 0 10px;
   text-align: center;
   border: 0;
+  font-weight: bold;
 }
 
 .pin-footer-share .download-link-container .download-icon,
@@ -686,6 +709,7 @@ matrix-images {
   border-radius: 2px;
   box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.15);
   padding: 0 5px;
+  color: #000;
 }
 
 .pin-header {
