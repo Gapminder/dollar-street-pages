@@ -11,7 +11,6 @@ export class ImageGeneratorService {
   public streetContainerSelector: string = 'street-pinned-cell';
   public streetSvgSelector: string = '.street-pinned-box-container svg';
   public placesSelector: string = 'places-container';
-  public paragraphSelector: string = 'pin-footer-paragraph';
 
   public generateImage(): Promise<any> {
     let windowObj: any = window;
@@ -21,32 +20,20 @@ export class ImageGeneratorService {
       let sourceCanvas = document.createElement('canvas');
 
       Promise.all([
-        // this.getCanvas(windowObj, documentObj.getElementsByClassName(this.iconSelector)[0] as HTMLElement),
         this.getCanvas(windowObj, documentObj.getElementsByClassName(this.headerSelector)[0] as HTMLElement),
         this.getCanvas(windowObj, documentObj.getElementsByClassName(this.placesSelector)[0] as HTMLElement),
         this.getCanvas(windowObj, documentObj.getElementsByClassName(this.streetContainerSelector)[0] as HTMLElement),
-        this.getCanvas(windowObj, documentObj.getElementsByClassName(this.paragraphSelector)[0] as HTMLElement)
       ]).then((result) => {
-        // let iconCanvas = result[0];
         let headerCanvas = result[0];
         let placesCanvas = result[1];
         let streetContainerCanvas = result[2];
-        let paragraphCanvas = result[3];
 
         sourceCanvas.width = headerCanvas.width;
-        sourceCanvas.height = headerCanvas.height + streetContainerCanvas.height + placesCanvas.height + paragraphCanvas.height;
+        sourceCanvas.height = headerCanvas.height + streetContainerCanvas.height + placesCanvas.height;
 
-        // let iconImage = iconCanvas.getContext('2d').getImageData(0, 0, 48, 48);
         let headerImage = headerCanvas.getContext('2d').getImageData(0, 0, headerCanvas.width, headerCanvas.height);
         let placesImage = placesCanvas.getContext('2d').getImageData(0, 0, placesCanvas.width, placesCanvas.height);
-        // let streetImage = streetCanvas.getContext('2d').getImageData(0, 0, streetCanvas.width, streetCanvas.height);
-        let paragraphImage = paragraphCanvas.getContext('2d').getImageData(0, 0, paragraphCanvas.width, paragraphCanvas.height);
 
-        /*sourceCanvas.getContext('2d').putImageData(headerImage, 0, 0);
-        // sourceCanvas.getContext('2d').putImageData(iconImage, 10, 10);
-        // sourceCanvas.getContext('2d').putImageData(streetImage, 0, headerCanvas.height);
-        sourceCanvas.getContext('2d').putImageData(placesImage, 0, headerCanvas.height + streetCanvas.height);
-        sourceCanvas.getContext('2d').putImageData(paragraphImage, 0, headerCanvas.height + streetCanvas.height + placesCanvas.height);*/
 
         this.getStreetCanvas(headerCanvas.width, 64).then((streetCanvas) => {
           let streetImage = streetCanvas.getContext('2d').getImageData(0, 0, streetCanvas.width, streetCanvas.height);
@@ -62,13 +49,10 @@ export class ImageGeneratorService {
           let streetBackground = streetBackgroundContext.getImageData(0, 0, streetCanvas.width, streetCanvas.height);
 
           sourceCanvas.getContext('2d').putImageData(headerImage, 0, 0);
-          // sourceCanvas.getContext('2d').putImageData(iconImage, 10, 10);
-          // sourceCanvas.getContext('2d').putImageData(streetImage, 0, headerCanvas.height);
           sourceCanvas.getContext('2d').putImageData(placesImage, 0, headerCanvas.height);
           sourceCanvas.getContext('2d').putImageData(streetBackground, 0, headerCanvas.height + placesCanvas.height);
           const streetXPosition = (headerCanvas.width - streetContainerCanvas.width ) / 2 + STREET_PADDING;
           sourceCanvas.getContext('2d').putImageData(streetImage, streetXPosition, headerCanvas.height + placesCanvas.height);
-          sourceCanvas.getContext('2d').putImageData(paragraphImage, 0, headerCanvas.height + streetCanvas.height + placesCanvas.height);
 
           resolve({
             image: sourceCanvas.toDataURL('image/jpeg'),

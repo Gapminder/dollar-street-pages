@@ -627,15 +627,17 @@ input:checked + .slider:before {
   flex: 0 0 47px;
 }
 
-@media (min-width: 1025px) {
-  .menu-container {
-    flex-basis: 185px;
-  }
+.filters-container .some-filter-container .accordance-with {
+  display: none;
 }
 
 @media (min-width: 1025px) {
   .menu-container {
     flex-basis: 225px;
+  }
+
+  .filters-container .some-filter-container .accordance-with {
+    display: inline-block;
   }
 }
 

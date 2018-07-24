@@ -108,9 +108,8 @@ matrix-images {
 }
 
 .logo {
-  width: 55px;
-  height: 55px;
-  margin: 0px 0px 8px 0;
+  width: 30px;
+  height: 30px;
 }
 
 .quick-guide-btn {
@@ -122,12 +121,6 @@ matrix-images {
 }
 
 .heart-container .heart-circle {
-  /*align-self: center;
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  background-color: white;
-  cursor: pointer;*/
   width: 23px;
   height: 23px;
   position: absolute;
@@ -136,44 +129,27 @@ matrix-images {
   cursor: pointer;
 }
 
-.heart-circle img {
+.heart-circle .close-img {
   width: 100%;
   height: 100%;
-  opacity: 0.8;
-}
-
-/*.heart-container svg {
-  margin: 19px 17px 17px 17px;
-  width: 40px;
-  height: 37px;
-}*/
-
-.pin-plus-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.pin-container .pin-plus {
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
-.pin-plus .pin-plus-sign {
-  width: 37px;
-  height: 37px;
-  align-self: center;
-}
-
-.pin-plus img {
-  width: 100%;
-  height: 100%;
-  opacity: 0.2;
+.heart-circle svg {
+  width: 50%;
+  height: 50%;
+  fill: #ffffff;
+  stroke: #ffffff;
+  stroke-width: 4px;
 }
 
 .street-pinned-container {
   position: relative;
-  padding-bottom: 6px;
+  padding-bottom: 10px;
 }
 
 .street-pinned-container span {
@@ -234,33 +210,28 @@ matrix-images {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
-  justify-content: flex-start;
   position: relative;
   padding: 10px 20px 10px 20px;
   min-height: 64px;
   max-height: 50vh;
   transform: translateZ(0);
+  justify-content: center;
+  align-items: center;
 }
 
 .grey-bg {
   background-color: #394450;
 }
 
-.embed-footer-text h3 {
+.embed-footer-text {
   text-align: center;
+  margin: 0 auto;
+  padding: 0 10px 10px;
+  max-width: 990px;
+}
+
+.embed-footer-text p {
   margin: 0;
-}
-
-.embed-footer-text span {
-  font-size: 24px;
-  color: #394451;
-  padding-left: 20px;
-}
-
-.embed-footer-text img {
-  height: 20px;
-  font-weight: 400;
-  margin-bottom: 6px;
 }
 
 .pin-body-wrap {
@@ -295,29 +266,13 @@ matrix-images {
 
 .places-container .pin-place {
   margin: 0 5px;
-  max-width: 50vh;
+  width: 300px;
+  max-width: 16%;
   position: relative;
 }
 
-.places-container.column-2 .pin-place {
-  width: calc(50% - 10px);
-}
-
-.places-container.column-3 .pin-place {
-  width: calc(33.33% - 10px);
-}
-
-.places-container.column-4 .pin-place {
-  width: calc(25% - 10px);
-}
-
-.places-container.column-5 .pin-place {
-  width: calc(20% - 10px);
-}
-
-.places-container.column-6 .pin-place {
-  width: calc(16.66% - 5px);
-  margin: 0 2.5px;
+.places-container.large-images .pin-place {
+  max-width: 23%;
 }
 
 .pin-place .image-backgroung {
@@ -350,26 +305,6 @@ matrix-images {
 
 }
 
-/*.places-container.height-2 {
-  min-height: 450px;
-}
-
-.places-container.height-3 {
-  min-height: 450px;
-}
-
-.places-container.height-4 {
-  min-height: 336px;
-}
-
-.places-container.height-5 {
-  min-height: 266px;
-}
-
-.places-container.height-6 {
-  min-height: 225px;
-}*/
-
 .places-container .image-description {
   position: absolute;
   z-index: 2;
@@ -379,12 +314,16 @@ matrix-images {
   padding: 15px 9px 6px;
   font-size: 20px;
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
+  text-align: left;
 }
 
 .places-container .image-description.one-row {
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-end;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .places-container .place-image-box-country,
@@ -393,16 +332,23 @@ matrix-images {
   display: block;
 }
 
-.places-container .one-row .place-image-box-country,
-.places-container .one-row .place-image-box-income {
-  flex: 1 1 50%;
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 24px;
-}
+/*.places-container .one-row .place-image-box-country,*/
+/*.places-container .one-row .place-image-box-income {*/
+  /*flex: 1 1 50%;*/
+  /*font-weight: bold;*/
+  /*font-size: 24px;*/
+  /*line-height: 24px;*/
+/*}*/
 
-.places-container .one-row .place-image-box-income {
-  text-align: right;
+/*.places-container .one-row .place-image-box-income {*/
+  /*text-align: right;*/
+/*}*/
+
+.places-container .extend-area{
+  font-size: 50px;
+  width: 15%;
+  text-align: center;
+  font-family: 'Font Light';
 }
 
 .pin-container .pin-place {
@@ -418,6 +364,23 @@ matrix-images {
   height: 100%;
 }
 
+.pin-places-placeholder {
+  text-align: center;
+  font-size: 28px;
+  font-family: 'Font Light';
+  padding: 25px 0 0;
+
+}
+
+.pin-places-placeholder .placeholder-title {
+  font-size: 38px;
+  font-weight: bold;
+}
+
+.pin-places-placeholder .placeholder-symbol {
+  font-size: 50px;
+}
+
 .shared-completed-section {
   display: flex;
   flex-direction: column;
@@ -426,15 +389,25 @@ matrix-images {
 
 .shared-ready-section {
   /*margin-bottom: 20px;*/
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
 }
 
 .shared-ready-section .loader-content {
   /*position: absolute;*/
-  height: 90px;
+  /*height: 90px;*/
+  height: 58px;
   margin: auto;
   text-align: center;
   padding: 10px 0;
   /*z-index: 999;*/
+}
+
+.shared-ready-section .loader-content .in-process {
+  height: 38px;
+  line-height: 38px;
+  display: inline-block;
 }
 
 .shared-ready-section .isLoad {
@@ -451,8 +424,11 @@ matrix-images {
 .pin-footer-row {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   padding: 5px 0;
+  background-color: #000;
+  color: #fff;
 }
 
 .pin-footer-row .shared-completed-section {
@@ -470,26 +446,40 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /* margin-top: -14px; */
-  /* height: 60px; */
-  /* background-color: #394450; */
-  background-color: rgba(255, 255, 255, 0);
+  background-color: #000;
+  padding: 10px 0;
 }
 
 .pin-footer-edit .pin-done-share {
-  color: white;
   font-size: 18px;
-  line-height: 34px;
+  padding: 0 10px;
   text-align: center;
-  border: 1px solid white;
-  width: 110px;
-  height: 30px;
-  /* background-color: #495863; */
-  background-color: #394450;;
-  /*padding: 0px 40px;*/
+  color: #fff;
+  border: 0;
+  /*border: 2px solid #fff;*/
+  background-color: #000;
   height: 38px;
-  margin-bottom: 10px;
-  /* line-height: 38px; */
+  transition: background-color 0.4s, color 0.4s;
+  border-radius: 2px;
+}
+
+.pin-footer-edit .close-share {
+  margin: 0 10px;
+  font-size: 18px;
+  padding: 0 10px;
+  text-align: center;
+  color: #fff;
+  height: 38px;
+  border: 0;
+  background: transparent;
+  transition: background-color 0.4s, color 0.4s;
+  border-radius: 2px;
+}
+
+.pin-footer-edit .pin-done-share:hover,
+.pin-footer-edit .close-share:hover {
+  background-color: #394450;
+  color: #fff;
 }
 
 .pin-mode-close {
@@ -562,23 +552,23 @@ matrix-images {
   /*min-height: 48px;*/
 }
 
-.shared-ready-section span {
-  display: inline-block;
-  width: 180px;
-  height: 48px;
-  cursor: pointer;
-  line-height: 48px;
-  text-align: center;
-  border: 1px solid #737B84;
-  justify-content: center;
-}
+/*.shared-ready-section span {*/
+  /*display: inline-block;*/
+  /*width: 180px;*/
+  /*!*height: 48px;*!*/
+  /*cursor: pointer;*/
+  /*!*line-height: 48px;*!*/
+  /*text-align: center;*/
+  /*border: 1px solid #737B84;*/
+  /*justify-content: center;*/
+/*}*/
 
 .pin-footer-share p {
   min-width: 818px;
   font-size: 18px;
   font-weight: 400;
   line-height: 30px;
-  color: #3a4450;
+  /*color: #3a4450;*/
   margin: 0 auto;
   align-self: center;
   text-align: center;
@@ -601,11 +591,10 @@ matrix-images {
 
 .pin-footer-share .share-buttons-container span {
   width: 46px;
-  color: #767d86;
   font-size: 18px;
-  font-weight: 400;
   vertical-align: baseline;
   display: inline-block;
+  font-weight: bold;
 }
 
 .pin-footer-share .share-buttons-container svg {
@@ -646,7 +635,7 @@ matrix-images {
   min-width: 86px;
   height: 38px;
   display: inline-block;
-  color: #374551;
+  color: #fff;
   font-size: 20px;
   line-height: 36px;
   cursor: pointer;
@@ -654,6 +643,7 @@ matrix-images {
   text-align: center;
   border: 0;
   white-space: nowrap;
+  font-weight: bold;
 }
 
 .pin-footer-share .share-link-container {
@@ -694,13 +684,14 @@ matrix-images {
   min-width: 86px;
   height: 38px;
   display: inline-block;
-  color: #374551;
+  color: #fff;
   font-size: 20px;
   line-height: 36px;
   cursor: pointer;
   margin: 0 10px;
   text-align: center;
   border: 0;
+  font-weight: bold;
 }
 
 .pin-footer-share .download-link-container .download-icon,
@@ -718,6 +709,7 @@ matrix-images {
   border-radius: 2px;
   box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.15);
   padding: 0 5px;
+  color: #000;
 }
 
 .pin-header {
@@ -732,6 +724,9 @@ matrix-images {
 
 .pin-title {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pin-title .title-body {
@@ -754,24 +749,19 @@ matrix-images {
   display: block;
 }
 
-.pin-title .title-text .title-project {
-  font-size: 30px;
-  line-height: 30px;
-}
-
 .pin-title .title-text .title-name {
-  font-size: 22px;
+  font-size: 26px;
+  line-height: 26px;
 }
 
 .pin-container-inner {
   flex: 0 0 auto;
+  margin: 5px;
 }
 
-.pin-container-inner.inner-border {
-  margin: 5px;
+.pin-container-inner.with-border {
   border: 2px solid #374551;
 }
-
 .pin-header.white-font p {
   color: white;
 }
@@ -932,4 +922,38 @@ matrix-images {
   .grid-container {
     padding-top: 72px;
   }
+}
+
+.dots-animation {
+  display: inline-block;
+}
+
+.dots-animation .dot-middle {
+  animation: dotsAnimationMiddle 3s infinite;
+  display: inline-block;
+}
+
+.dots-animation .dot-last {
+  animation: dotsAnimationLaft 3s infinite;
+  display: inline-block;
+}
+
+@keyframes dotsAnimationMiddle {
+  0% {
+    opacity: 0;
+  }
+  33%, 100% {
+    opacity: 1;
+  }
+
+}
+
+@keyframes dotsAnimationLaft {
+  0% {
+    opacity: 0;
+  }
+  66%, 100% {
+    opacity: 1;
+  }
+
 }

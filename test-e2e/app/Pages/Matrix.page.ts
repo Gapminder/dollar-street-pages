@@ -52,7 +52,7 @@ export class MatrixPage {
   /**
    * Embed feature
    */
-  static heartIconsOnImage: ElementArrayFinder = $$('matrix-images .heart-circle');
+  static comparisonIconsOnImage: ElementArrayFinder = $$('matrix-images .comparison-image');
   static pinHeader: ElementFinder = $('.pin-header');
 
   static getThingLinkInSearch(thingNumber: number): ElementFinder {

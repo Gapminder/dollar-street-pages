@@ -19,46 +19,47 @@
       <div class="pin-wrap">
       <div *ngIf="(isPinMode || isEmbedMode)"
            class="pin-container">
-        <div class="pin-container-inner" [ngClass]="{'inner-border': isEmbedMode}">
+        <div class="pin-container-inner" [ngClass]="{'with-border': !isEmbedMode}">
         <div *ngIf="isPinMode || isEmbedMode"
-            class="pin-header"
-            [ngClass]="{'grey-bg white-font': !isPreviewView && !isEmbedMode, 'text-center': isPreviewView || isEmbedMode}">
-
-
+            class="pin-header">
           <div class="pin-title">
             <span class="title-body">
-                <span class="title-icon" *ngIf="isPreviewView || isEmbedMode">
+                <span class="title-icon" *ngIf="pinHeaderTitle.length">
                   <img class="logo" src="assets/img/dollar-street-logo.png" alt=""/>
                 </span>
             </span>
             <span class="title-text">
-              <span class="title-project">Dollar Street</span>
               <span class="title-name">{{ pinHeaderTitle }}</span>
             </span>
           </div>
 
-          <button type="button" *ngIf="!isPreviewView" (click)="pinModeClose(true)" class="pin-mode-guide-btn">
-            Quick guide to Dollar Street
-          </button>
+          <!--<button type="button" *ngIf="!isPreviewView" (click)="pinModeClose(true)" class="pin-mode-guide-btn">-->
+            <!--Quick guide to Dollar Street-->
+          <!--</button>-->
 
           <div *ngIf="!isPreviewView"
                class="pin-mode-close"
                (click)="pinModeClose(false)">
-            <img *ngIf="isPinMode" src="assets/img/close-button-embed-white.svg" alt="">
-            <img *ngIf="isEmbedMode" src="assets/img/close-button-embed-black.svg" alt="">
+            <img src="assets/img/close-button-embed-black.svg" alt="">
           </div>
         </div>
 
         <div class="pin-body-wrap">
         <div class="pin-body" [ngClass]="{'fullsize' : !isPreviewView && !isEmbedMode}">
-        <div class="places-container"
-             [ngClass]="{'column-2': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 2),
-                         'column-3': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 3),
-                         'column-4': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 4),
-                         'column-5': placesSet && (placesSet.length === 5),
-                         'column-6': placesSet && ((!isPreviewView && !isEmbedMode) || placesSet.length === 6),
-                         'embed-bg': (!isEmbedMode && !isPreviewView)}"
-             [ngStyle]="{'justify-content': !isPreviewView && !isEmbedMode ? 'flex-start' : 'center'}">
+
+        <div class="pin-places-placeholder" *ngIf="!placesSet.length">
+          <p class="placeholder-title">Create a  comparison</p>
+          <p>Click on a photo below to select it and add it to this street</p>
+          <div class="placeholder-symbol">
+            +
+          </div>
+        </div>
+
+        <div class="places-container" [ngClass]="{'large-images': placesSet && placesSet.length && (placesSet.length <=4) }">
+          <div class="extend-area" *ngIf="isPinMode && !isEmbedShared && !isScreenshotProcessing && placesSet.length && (placesSet.length < 6)">
+            <span>+</span>
+          </div>
+
           <div *ngFor="let place of placesSet; let i = index"
                class="pin-place"
                (mouseenter)="onPinnedPlaceHover(place)"
@@ -83,30 +84,24 @@
                  class="heart-container">
               <div class="heart-circle"
                    (click)="removePlaceFromSet($event, place)">
-                   <img src="assets/img/remove-image-embed.svg" alt="">
+                <span class="close-img">
+                  <svg>
+                    <use xlink:href="#close"></use>
+                  </svg>
+                </span>
               </div>
             </div>
           </div>
-
-          <div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length < pinPlusCount)"
-               class="pin-plus-container">
-            <div *ngFor="let i of pinPlusArr"
-                 class="pin-plus"
-                 [ngStyle]="{'width': plusSignWidth + 'px'}">
-              <div class="pin-plus-sign">
-                <img src="assets/img/plus-icon-embed.svg" alt="">
-              </div>
-            </div>
+          <div class="extend-area" *ngIf="isPinMode && !isEmbedShared && !isScreenshotProcessing && placesSet.length && (placesSet.length < 6)">
+            <span>+</span>
           </div>
         </div>
 
-        <div class="pin-footer"
-             [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode}">
+        <div class="pin-footer">
           <div *ngIf="isPinMode || isEmbedMode"
                class="street-pinned-container"
 
-               [ngClass]="{'grey-bg': !isPreviewView && !isEmbedMode, 'white-font': !isPreviewView && !isEmbedMode,
-                          'short-width': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 2)}">
+               [ngClass]="{'short-width': placesSet && ((isPreviewView || isEmbedMode) && placesSet.length === 2)}">
             <div class="street-pinned-cell">
               <street-pinned
                    [places]="placesSet"
@@ -123,34 +118,37 @@
 
           <div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length > 1)"
                 class="pin-footer-edit">
-            <span class="pin-done-share"
-                  (click)="doneAndShare()">Share now</span>
+            <button type="button" class="pin-done-share"
+                  (click)="doneAndShare()">Preview and publish</button>
+            <button type="button" class="close-share"
+            (click)="pinModeClose()">{{ 'CANCEL' | translate }}</button>
           </div>
 
           <div *ngIf="isPreviewView"
                class="pin-footer-share">
-                <div class="pin-footer-paragraph">
-                  <p>
-                    Visit hundreds of families from all over the World to see their beds, stoves, toothbrushes and more. www.dollarstreet.org
-                  </p>
-                </div>
+                <!--<div class="pin-footer-paragraph">-->
+                  <!--<p>-->
+                    <!--Visit hundreds of families from all over the World to see their beds, stoves, toothbrushes and more. www.dollarstreet.org-->
+                  <!--</p>-->
+                <!--</div>-->
 
                 <div *ngIf="!isEmbedShared"
                       class="shared-ready-section">
 
                     <div class="loader-content" *ngIf="isScreenshotProcessing">
-                    <div class="isLoad">
-                      <div class="la-ball-spin la-dark la-2x">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                      </div>
-                    </div>
+                      <!--<div class="isLoad">-->
+                        <!--<div class="la-ball-spin la-dark la-2x">-->
+                          <!--<div></div>-->
+                          <!--<div></div>-->
+                          <!--<div></div>-->
+                          <!--<div></div>-->
+                          <!--<div></div>-->
+                          <!--<div></div>-->
+                          <!--<div></div>-->
+                          <!--<div></div>-->
+                        <!--</div>-->
+                      <!--</div>-->
+                      <p class="in-process">Preview and publish in preparing process<span class="dots-animation">.<span class="dot-middle">.</span><span class="dot-last">.</span></span></p>
                     </div>
                 </div>
 
@@ -158,12 +156,7 @@
 
                 <div class="shared-completed-section">
 
-                  <div class="download-link-container">
-                    <button (click)="downloadImage()">
-                      <img class="download-icon" alt="" src="/assets/img/download-icon.svg">
-                      <span>Download image</span>
-                    </button>
-                  </div>
+
 
                   <div class="share-buttons-container">
                     <span>Share:</span>
@@ -177,14 +170,22 @@
                     </svg>
                   </div>
 
-
-                  <div class="share-link-container">
-                    <input #pinField class="share-link-input" type="text" name="" value="">
-                  </div>
                   <div class="share-link-button">
                     <button ngxClipboard [cbContent]='embedLink' (cbOnSuccess)="clipboardSuccess()">Copy link</button>
                     <span class="clipboardNotice" [class.show]='showClipboardNotice'>Link copied</span>
                   </div>
+
+                  <div class="share-link-container">
+                    <input #pinField class="share-link-input" type="text" name="" value="">
+                  </div>
+
+                </div>
+
+                <div class="download-link-container">
+                  <button (click)="downloadImage()" class="download-link">
+                    <!--<img class="download-icon" alt="" src="/assets/img/download-icon.svg">-->
+                    <span>Download image</span>
+                  </button>
                 </div>
 
                 <div *ngIf="isEmbedShared"
@@ -201,8 +202,7 @@
         </div>
           <div *ngIf="isEmbedMode"
                class="embed-footer-text">
-            <span>More families from all over the World</span>
-            <img src="assets/img/arrow-down-embed.svg" alt="">
+            <p>{{ "LIVES_ON_DOLLAR_STREET" | translate }}</p>
           </div>
 
       </div>

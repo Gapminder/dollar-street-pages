@@ -6,10 +6,9 @@ export class PinnedContainer {
   rootSelector: ElementFinder = $('.pin-container');
 
 
-  titlePinnedContainer: ElementFinder = this.rootSelector.$('.title-project');
   iconGroupSocialNetworks: ElementFinder = this.rootSelector.$('.share-buttons-container');
   buttonCopyLink: ElementFinder = this.rootSelector.$('.share-link-button');
-  buttonDownload: ElementFinder = this.rootSelector.$('.download-icon');
+  buttonDownload: ElementFinder = this.rootSelector.$('.download-link');
   spinerPinnedContainer: ElementFinder = $('.la-ball-spin');
   commonSpinerPinnedContainer: ElementFinder = $('.loader-content');
   closeIcon: ElementFinder = $('.pin-mode-close');
