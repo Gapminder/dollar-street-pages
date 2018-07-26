@@ -69,7 +69,7 @@
   font-weight: bold;
   width: 50px;
   height: 50px;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.6);
   border-radius: 50%;
   text-align: center;
   display: flex;
@@ -79,7 +79,7 @@
 }
 
 .comparison-image:hover .symbol-position {
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.7);
 }
 
 .comparison-image .symbol {
@@ -171,6 +171,7 @@
 .place-image-box-income {
   color: white;
   display: block;
+  font-weight: bold;
 }
 
 .image-content.no-row .place-image-box-country,
@@ -217,7 +218,7 @@
   }
 
   .place-image-box-income {
-    font-size: 18px;
+    font-size: 20px;
     line-height: 24px;
   }
 
@@ -236,8 +237,8 @@
 
   .column-6 .place-image-box-income,
   .column-7 .place-image-box-income {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 20px;
+    line-height: 24px;
   }
 
   .column-8 .place-image-box-income,
@@ -251,12 +252,12 @@
 @media (max-width: 1023px) {
   .place-image-box-country {
     font-size: 18px;
-    line-height: 20px;
+    line-height: 22px;
   }
 
   .place-image-box-income {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 18px;
+    line-height: 22px;
   }
 
   .images-container {
@@ -280,12 +281,12 @@
   }
 
   .place-image-box-income {
-    font-size: 14px;
-    line-height: 18px;
+    font-size: 16px;
+    line-height: 16px;
   }
 
   .place-image-box-country {
-    font-size: 14px;
-    line-height: 14px;
+    font-size: 16px;
+    line-height: 16px;
   }
 }

@@ -114,7 +114,9 @@
 
           </div>
 
-
+          <div *ngIf="isEmbedMode || isEmbedShared" class="embed-footer-text">
+            <p>{{ "LIVES_ON_DOLLAR_STREET" | translate }}</p>
+          </div>
 
           <div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length > 1)"
                 class="pin-footer-edit">
@@ -151,7 +153,6 @@
                       <p class="in-process">Preview and publish in preparing process<span class="dots-animation">.<span class="dot-middle">.</span><span class="dot-last">.</span></span></p>
                     </div>
                 </div>
-
             <div class="pin-footer-row" *ngIf="isEmbedShared">
 
                 <div class="shared-completed-section">
@@ -200,10 +201,7 @@
       </div>
     </div>
         </div>
-          <div *ngIf="isEmbedMode"
-               class="embed-footer-text">
-            <p>{{ "LIVES_ON_DOLLAR_STREET" | translate }}</p>
-          </div>
+
 
       </div>
       </div>
