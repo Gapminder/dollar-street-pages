@@ -313,6 +313,7 @@ matrix-images {
   right: 0;
   padding: 15px 9px 6px;
   font-size: 20px;
+  line-height: 20px;
   font-weight: bold;
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
   text-align: left;
@@ -890,6 +891,7 @@ matrix-images {
 @media (min-width: 1400px) {
   .places-container .image-description,
   .places-container .image-description.one-row {
-    font-size: 30px;
+    font-size: 28px;
+    line-height: 28px;
   }
 }
