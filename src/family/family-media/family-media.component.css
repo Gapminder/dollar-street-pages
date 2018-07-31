@@ -121,13 +121,12 @@
 
 .image-description .category-image {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: bottom;
 
 }
 
 .family-things-container .image-description img {
   width: 30px;
-  margin: 0 0 10px;
   display: block;
 }
 
