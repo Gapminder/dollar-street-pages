@@ -24,7 +24,7 @@ export const SVG_DEFAULTS = {
       width: 60,
       height: 15,
       fill: '#232B31',
-      positionY: 56,
+      positionY: 51,
       styles: 'font-size: 16px;',
     },
     textBg: {
@@ -34,7 +34,7 @@ export const SVG_DEFAULTS = {
       fill: '#ffffff',
       stroke: '#232B31',
       opacity: 0.9,
-      positionY: 37,
+      positionY: 32,
       strokeWidth: 1.4,
       widthBySymbol: 15,
     }

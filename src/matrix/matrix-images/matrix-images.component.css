@@ -83,18 +83,13 @@
 }
 
 .comparison-image .symbol {
-  /*width: 50px;*/
-  /*height: 50px;*/
+  width: 50px;
+  height: 50px;
   color: #fff;
   transition: color 0.4s;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.comparison-image:hover .symbol {
-  color: rgba(215,70,45,1);
-
 }
 
 .comparison-image.pinned .symbol-position {
@@ -116,11 +111,11 @@
 }
 
 .comparison-image:not(.pinned):hover .symbol svg {
-  fill: rgba(215,70,45,1);
+  fill: rgba(60,60,60,0.3);
 }
 
 .pinned svg {
-  fill: rgba(0,255,0,1);
+  fill: rgba(45,196,50,0.8);
 }
 
 .flex-container {
