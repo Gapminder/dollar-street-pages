@@ -318,32 +318,11 @@ matrix-images {
   text-align: left;
 }
 
-.places-container .image-description.one-row {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: flex-end;
-  justify-content: space-between;
-  font-size: 20px;
-  font-weight: bold;
-}
-
 .places-container .place-image-box-country,
 .places-container .place-image-box-income {
   color: white;
   display: block;
 }
-
-/*.places-container .one-row .place-image-box-country,*/
-/*.places-container .one-row .place-image-box-income {*/
-  /*flex: 1 1 50%;*/
-  /*font-weight: bold;*/
-  /*font-size: 24px;*/
-  /*line-height: 24px;*/
-/*}*/
-
-/*.places-container .one-row .place-image-box-income {*/
-  /*text-align: right;*/
-/*}*/
 
 .places-container .extend-area{
   font-size: 50px;
