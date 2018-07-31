@@ -19,7 +19,7 @@ export class PinnedContainer {
   cancelBtn: ElementFinder = this.rootSelector.$('.share-close-buttons');
   shareLink: ElementFinder = this.rootSelector.$('.share-link-input');
   housesOnStreet: ElementArrayFinder = this.streetChart.$$('.point');
-  shareBtn: ElementFinder = $('.pin-done-share');
+  shareBtn: ElementFinder = $('.e2e-shate-button');
 
   getImageIncome(index: number): promise.Promise<number> {
     return this.pinnedImages.get(index).$('.place-image-box-income').getText()

@@ -113,15 +113,22 @@
   right: 0;
   padding: 30px 8px 8px;
   font-size: 20px;
+  line-height: 20px;
   font-weight: bold;
   font-family: 'Font Regular Italic', sans-serif;
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
 }
 
+.image-description .category-image {
+  display: inline-block;
+  vertical-align: top;
+
+}
+
 .family-things-container .image-description img {
-  float: left;
   width: 30px;
-  margin: -8px 7px 0 0;
+  margin: 0 0 10px;
+  display: block;
 }
 
 .family-image .hover-block {
@@ -204,5 +211,11 @@ family-media-view-block {
   .family-things-container .image-description img {
     width: 20px;
     margin: -3px 7px 0 0;
+  }
+}
+
+@media (min-width: 1400px) {
+  .family-things-container .image-description {
+    font-size: 28px;
   }
 }

@@ -120,9 +120,9 @@
 
           <div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length > 1)"
                 class="pin-footer-edit">
-            <button type="button" class="pin-done-share"
+            <button type="button" class="pin-bottom-button e2e-shate-button"
                   (click)="doneAndShare()">Preview and publish</button>
-            <button type="button" class="close-share"
+            <button type="button" class="pin-bottom-button"
             (click)="pinModeClose()">{{ 'CANCEL' | translate }}</button>
           </div>
 
@@ -172,7 +172,7 @@
                   </div>
 
                   <div class="share-link-button">
-                    <button ngxClipboard [cbContent]='embedLink' (cbOnSuccess)="clipboardSuccess()">Copy link</button>
+                    <button ngxClipboard [cbContent]='embedLink' (cbOnSuccess)="clipboardSuccess()" class="pin-bottom-button">Copy link</button>
                     <span class="clipboardNotice" [class.show]='showClipboardNotice'>Link copied</span>
                   </div>
 
@@ -183,16 +183,15 @@
                 </div>
 
                 <div class="download-link-container">
-                  <button (click)="downloadImage()" class="download-link">
-                    <!--<img class="download-icon" alt="" src="/assets/img/download-icon.svg">-->
-                    <span>Download image</span>
+                  <button (click)="downloadImage()" class="download-link pin-bottom-button">
+                    Download image
                   </button>
                 </div>
 
                 <div *ngIf="isEmbedShared"
                      class="share-close-buttons">
                   <!-- <span (click)="shareEmbed()">Share Now</span> -->
-                  <button type="button" (click)="pinModeClose()">Cancel</button>
+                  <button type="button" (click)="pinModeClose()" class="pin-bottom-button">Cancel</button>
                 </div>
 
             </div>

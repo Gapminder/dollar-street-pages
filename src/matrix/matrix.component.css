@@ -313,6 +313,7 @@ matrix-images {
   right: 0;
   padding: 15px 9px 6px;
   font-size: 20px;
+  font-weight: bold;
   background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
   text-align: left;
 }
@@ -426,7 +427,7 @@ matrix-images {
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  padding: 5px 0;
+  padding: 10px 0;
   background-color: #000;
   color: #fff;
 }
@@ -450,37 +451,6 @@ matrix-images {
   padding: 10px 0;
 }
 
-.pin-footer-edit .pin-done-share {
-  font-size: 18px;
-  padding: 0 10px;
-  text-align: center;
-  color: #fff;
-  border: 0;
-  /*border: 2px solid #fff;*/
-  background-color: #000;
-  height: 38px;
-  transition: background-color 0.4s, color 0.4s;
-  border-radius: 2px;
-}
-
-.pin-footer-edit .close-share {
-  margin: 0 10px;
-  font-size: 18px;
-  padding: 0 10px;
-  text-align: center;
-  color: #fff;
-  height: 38px;
-  border: 0;
-  background: transparent;
-  transition: background-color 0.4s, color 0.4s;
-  border-radius: 2px;
-}
-
-.pin-footer-edit .pin-done-share:hover,
-.pin-footer-edit .close-share:hover {
-  background-color: #394450;
-  color: #fff;
-}
 
 .pin-mode-close {
   /*color: #737B84;
@@ -629,22 +599,7 @@ matrix-images {
   opacity: 1;
 }
 
-.share-link-button button {
-  background: transparent;
-  padding: 0 10px;
-  min-width: 86px;
-  height: 38px;
-  display: inline-block;
-  color: #fff;
-  font-size: 20px;
-  line-height: 36px;
-  cursor: pointer;
-  margin: 0 10px;
-  text-align: center;
-  border: 0;
-  white-space: nowrap;
-  font-weight: bold;
-}
+
 
 .pin-footer-share .share-link-container {
   display: flex;
@@ -665,39 +620,8 @@ matrix-images {
   flex-direction: row;
   justify-content: center;
   flex: 1 1 100%;
-  padding: 5px 10px;
+  padding: 0 10px;
 
-}
-
-.pin-footer-share .share-close-buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex: 1 1 100%;
-  padding: 5px 10px;
-}
-
-.pin-footer-share .download-link-container button,
-.pin-footer-share .share-close-buttons button {
-  background: transparent;
-  padding: 0 16px;
-  min-width: 86px;
-  height: 38px;
-  display: inline-block;
-  color: #fff;
-  font-size: 20px;
-  line-height: 36px;
-  cursor: pointer;
-  margin: 0 10px;
-  text-align: center;
-  border: 0;
-  font-weight: bold;
-}
-
-.pin-footer-share .download-link-container .download-icon,
-.pin-footer-share .share-close-buttons .download-icon {
-  width: 20px;
-  height: auto;
 }
 
 .pin-footer-share .share-link-container input {
@@ -859,6 +783,32 @@ matrix-images {
   padding-top: 69px;
 }
 
+.pin-bottom-button {
+  background: transparent;
+  padding: 0 10px;
+  min-width: 86px;
+  height: 38px;
+  display: inline-block;
+  color: #fff;
+  font-size: 20px;
+  line-height: 36px;
+  cursor: pointer;
+  margin: 0 10px;
+  text-align: center;
+  border: 0;
+  white-space: nowrap;
+  font-weight: bold;
+  border-radius: 2px;
+  transition: background-color 0.4s;
+}
+
+
+.pin-bottom-button:hover {
+  background-color: #394450;
+  color: #fff;
+}
+
+
 
 @media (max-width: 700px) {
   .street-container.fixed {
@@ -884,7 +834,7 @@ matrix-images {
   }
 
   .pin-footer-share .download-link-container {
-    flex: 0 0 230px;
+    flex: 0 0 160px;
     padding: 0 10px;
 
   }
@@ -956,4 +906,11 @@ matrix-images {
     opacity: 1;
   }
 
+}
+
+@media (min-width: 1400px) {
+  .places-container .image-description,
+  .places-container .image-description.one-row {
+    font-size: 30px;
+  }
 }

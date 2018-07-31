@@ -43,7 +43,16 @@
            [ngClass]="{'pinned' : place.pinned}"
             class="comparison-image">
         <div class="symbol-position">
-          <span class="symbol">+</span>
+          <span class="symbol" *ngIf="!place.pinned">
+            <svg>
+              <use xlink:href="#plus"></use>
+            </svg>
+          </span>
+          <span class="symbol" *ngIf="place.pinned">
+            <svg>
+              <use xlink:href="#check-mark"></use>
+            </svg>
+          </span>
         </div>
       </div>
         </div>
