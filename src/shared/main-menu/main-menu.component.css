@@ -101,13 +101,9 @@
 
 #main-menu .open .dropdown-menu li div span {
   display: inline-block;
-  width: 42px;
-  font-size: 14px;
   text-transform: uppercase;
   color: #edf0f5;
-  margin-top: 5px;
-  line-height: 14px;
-  float: left;
+  font-size: 18px;
 }
 
 #main-menu .open .dropdown-menu li .menu-links {
