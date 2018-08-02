@@ -69,7 +69,7 @@
   font-weight: bold;
   width: 50px;
   height: 50px;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.6);
   border-radius: 50%;
   text-align: center;
   display: flex;
@@ -79,16 +79,17 @@
 }
 
 .comparison-image:hover .symbol-position {
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,1);
 }
 
 .comparison-image .symbol {
-  display: block;
   width: 50px;
   height: 50px;
-  line-height: 40px;
   color: #fff;
   transition: color 0.4s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .comparison-image.pinned .symbol-position {
@@ -96,7 +97,25 @@
 }
 
 .comparison-image.pinned .symbol {
-  color: #d7462d;
+  fill: rgba(0,255,0,1);
+  color: rgba(0,255,0,1);
+}
+
+.symbol svg {
+  display: block;
+  max-width: 70%;
+  max-height: 70%;
+  fill: rgba(255,255,255,1);
+  transition: all 0.4s;
+  stroke-linecap: round;
+}
+
+.comparison-image:not(.pinned):hover .symbol svg {
+  fill: rgba(60,60,60,0.3);
+}
+
+.pinned svg {
+  fill: rgba(45,196,50,0.8);
 }
 
 .flex-container {
@@ -171,6 +190,7 @@
 .place-image-box-income {
   color: white;
   display: block;
+  font-weight: bold;
 }
 
 .image-content.no-row .place-image-box-country,
@@ -217,46 +237,20 @@
   }
 
   .place-image-box-income {
-    font-size: 18px;
+    font-size: 20px;
     line-height: 24px;
-  }
-
-  .column-6 .place-image-box-country,
-  .column-7 .place-image-box-country {
-    font-size: 18px;
-    line-height: 18px;
-  }
-
-  .column-8 .place-image-box-country,
-  .column-9 .place-image-box-country,
-  .column-10 .place-image-box-country {
-    font-size: 16px;
-    line-height: 16px;
-  }
-
-  .column-6 .place-image-box-income,
-  .column-7 .place-image-box-income {
-    font-size: 16px;
-    line-height: 22px;
-  }
-
-  .column-8 .place-image-box-income,
-  .column-9 .place-image-box-income,
-  .column-10 .place-image-box-income {
-    font-size: 14px;
-    line-height: 20px;
   }
 }
 
 @media (max-width: 1023px) {
   .place-image-box-country {
     font-size: 18px;
-    line-height: 20px;
+    line-height: 22px;
   }
 
   .place-image-box-income {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 18px;
+    line-height: 22px;
   }
 
   .images-container {
@@ -280,12 +274,24 @@
   }
 
   .place-image-box-income {
-    font-size: 14px;
-    line-height: 18px;
+    font-size: 16px;
+    line-height: 16px;
   }
 
   .place-image-box-country {
-    font-size: 14px;
-    line-height: 14px;
+    font-size: 16px;
+    line-height: 16px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .place-image-box-country {
+    font-size: 28px;
+    line-height: 28px;
+  }
+
+  .place-image-box-income {
+    font-size: 28px;
+    line-height: 28px;
   }
 }

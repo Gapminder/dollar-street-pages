@@ -555,22 +555,50 @@ export class StreetDrawService {
     this.drawLeftSlider(this.scale(this.lowIncome), true);
     this.drawRightSlider(this.scale(this.highIncome), true);
 
+    // this.svg
+    //   .selectAll('use.hover-bg')
+    //   .data([place])
+    //   .enter()
+    //   .append('use')
+
     this.svg
-      .selectAll('use.hover-bg')
+      .selectAll('rect.hover-bg')
       .data([place])
       .enter()
-      .append('use')
+      .append('rect')
+      .attr('rx', 3)
+      .attr('ry', 3)
       .attr('class', 'hover-bg')
-      .attr('xlink:href', SVG_DEFAULTS.hoverHomes.textBg.name)
-      .attr('width', SVG_DEFAULTS.hoverHomes.textBg.width)
+      // .attr('xlink:href', SVG_DEFAULTS.hoverHomes.textBg.name)
+      .attr('width', (datum: Place) => {
+
+        const widthBySymbol = datum.showIncome.toString().length * SVG_DEFAULTS.hoverHomes.textBg.widthBySymbol;
+        const maxWidth = SVG_DEFAULTS.hoverHomes.textBg.width;
+        console.log(widthBySymbol);
+        if (widthBySymbol < maxWidth) {
+          return widthBySymbol;
+        }
+
+        return maxWidth;
+      })
       .attr('height', SVG_DEFAULTS.hoverHomes.textBg.height)
       .attr('y', SVG_DEFAULTS.hoverHomes.textBg.positionY)
       .attr('fill', SVG_DEFAULTS.hoverHomes.textBg.fill)
       .attr('stroke', SVG_DEFAULTS.hoverHomes.textBg.stroke)
       .attr('stroke-width', SVG_DEFAULTS.hoverHomes.textBg.strokeWidth)
       .attr('x', ( datum: Place ) => {
+        let width = 0;
+        const widthBySymbol = datum.showIncome.toString().length * SVG_DEFAULTS.hoverHomes.textBg.widthBySymbol;
+        const maxWidth = SVG_DEFAULTS.hoverHomes.textBg.width;
+        console.log(widthBySymbol);
+        if (widthBySymbol < maxWidth) {
+          width = widthBySymbol;
+        } else {
+          width = maxWidth
+        }
+
         const scaleDatumIncome = this.scale(datum.income);
-        const position = (this.streetOffset / 2) + scaleDatumIncome - SVG_DEFAULTS.hoverHomes.textBg.width / 2 ;
+        const position = (this.streetOffset / 2) + scaleDatumIncome - width / 2 ;
 
         return position;
       })
@@ -876,7 +904,7 @@ export class StreetDrawService {
 
     if (selector === 'hover') {
       this.svg.selectAll('text.hover-house-text').remove();
-      this.svg.selectAll('use.hover-bg').remove();
+      this.svg.selectAll('rect.hover-bg').remove();
     }
 
     return this;

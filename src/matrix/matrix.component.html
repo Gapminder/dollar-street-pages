@@ -75,7 +75,7 @@
               <img src="{{place?.isUploaded ? place?.showBackground : ''}}" alt="">
             </div>
 
-            <div class="image-description" [ngClass]="{'one-row': isPreviewView || isEmbedMode}">
+            <div class="image-description">
               <span class="place-image-box-income">{{currencyUnit?.symbol}}{{place?.showIncome}}</span>
               <span class="place-image-box-country">{{place?.country}}</span>
             </div>
@@ -114,13 +114,15 @@
 
           </div>
 
-
+          <div *ngIf="isEmbedMode || isEmbedShared" class="embed-footer-text">
+            <p>{{ "LIVES_ON_DOLLAR_STREET" | translate }}</p>
+          </div>
 
           <div *ngIf="!isPreviewView && !isEmbedMode && (placesSet && placesSet.length > 1)"
                 class="pin-footer-edit">
-            <button type="button" class="pin-done-share"
+            <button type="button" class="pin-bottom-button e2e-share-button"
                   (click)="doneAndShare()">Preview and publish</button>
-            <button type="button" class="close-share"
+            <button type="button" class="pin-bottom-button"
             (click)="pinModeClose()">{{ 'CANCEL' | translate }}</button>
           </div>
 
@@ -151,7 +153,6 @@
                       <p class="in-process">Preview and publish in preparing process<span class="dots-animation">.<span class="dot-middle">.</span><span class="dot-last">.</span></span></p>
                     </div>
                 </div>
-
             <div class="pin-footer-row" *ngIf="isEmbedShared">
 
                 <div class="shared-completed-section">
@@ -171,7 +172,7 @@
                   </div>
 
                   <div class="share-link-button">
-                    <button ngxClipboard [cbContent]='embedLink' (cbOnSuccess)="clipboardSuccess()">Copy link</button>
+                    <button ngxClipboard [cbContent]='embedLink' (cbOnSuccess)="clipboardSuccess()" class="pin-bottom-button">Copy link</button>
                     <span class="clipboardNotice" [class.show]='showClipboardNotice'>Link copied</span>
                   </div>
 
@@ -182,16 +183,15 @@
                 </div>
 
                 <div class="download-link-container">
-                  <button (click)="downloadImage()" class="download-link">
-                    <!--<img class="download-icon" alt="" src="/assets/img/download-icon.svg">-->
-                    <span>Download image</span>
+                  <button (click)="downloadImage()" class="download-link pin-bottom-button">
+                    Download image
                   </button>
                 </div>
 
                 <div *ngIf="isEmbedShared"
                      class="share-close-buttons">
                   <!-- <span (click)="shareEmbed()">Share Now</span> -->
-                  <button type="button" (click)="pinModeClose()">Cancel</button>
+                  <button type="button" (click)="pinModeClose()" class="pin-bottom-button">Cancel</button>
                 </div>
 
             </div>
@@ -200,10 +200,7 @@
       </div>
     </div>
         </div>
-          <div *ngIf="isEmbedMode"
-               class="embed-footer-text">
-            <p>{{ "LIVES_ON_DOLLAR_STREET" | translate }}</p>
-          </div>
+
 
       </div>
       </div>
