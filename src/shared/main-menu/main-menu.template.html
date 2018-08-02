@@ -30,14 +30,14 @@
           </div>
         </li>
         <li *ngIf="isMatrixPage">
-          <button (click)="SetPinMode()" class="comparisonButton" id="comparisonButton" [ngClass]="{active: pinMode || embedMode}">{{'CREATE_COMPARISON' | translate }}</button>
+          <button (click)="SetPinMode()" class="comparisonButton" id="comparisonButton" [ngClass]="{active: pinMode || embedMode}">{{'CREATE_A_COMPARISON' | translate }}</button>
         </li>
         <li>
           <a (click)="goToPage('https://getsatisfaction.com/gapminder')">
             {{ 'SEND_FEEDBACK' | translate }}</a>
         </li>
         <li>
-          <a (click)="goToPage('https://www.gapminder.org')">{{ 'MORE_FROM' | translate }} gapminder >></a>
+          <a (click)="goToPage('https://www.gapminder.org')">{{ 'MORE_FROM' | translate }} gapminder</a>
         </li>
       </ul>
     </div>
