@@ -574,7 +574,6 @@ export class StreetDrawService {
 
         const widthBySymbol = datum.showIncome.toString().length * SVG_DEFAULTS.hoverHomes.textBg.widthBySymbol;
         const maxWidth = SVG_DEFAULTS.hoverHomes.textBg.width;
-        console.log(widthBySymbol);
         if (widthBySymbol < maxWidth) {
           return widthBySymbol;
         }
@@ -590,7 +589,6 @@ export class StreetDrawService {
         let width = 0;
         const widthBySymbol = datum.showIncome.toString().length * SVG_DEFAULTS.hoverHomes.textBg.widthBySymbol;
         const maxWidth = SVG_DEFAULTS.hoverHomes.textBg.width;
-        console.log(widthBySymbol);
         if (widthBySymbol < maxWidth) {
           width = widthBySymbol;
         } else {
