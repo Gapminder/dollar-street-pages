@@ -40,7 +40,7 @@
           <div class="images-container"
                *ngIf="familyData.goToPlaceData">
             <div class="image-content"
-                 *ngIf="familyData?.familyImage"
+                 *ngIf="familyData.familyImage"
                  [routerLink]="['/family']"
                  [queryParams]="{place: place._id}"
                  (click)="visitThisHome(place._id)"
@@ -64,6 +64,7 @@
             </div>
 
             <div class="image-content"
+                 *ngIf="familyData.houseImage"
                  [routerLink]="['/family']"
                  [queryParams]="{place: place._id}"
                  (click)="visitThisHome(place._id)"
