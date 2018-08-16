@@ -315,7 +315,6 @@ matrix-images {
   font-size: 20px;
   line-height: 20px;
   font-weight: bold;
-  background: linear-gradient(to top, rgba(0, 0, 0, .2), rgba(255, 255, 255, 0));
   text-align: left;
 }
 
