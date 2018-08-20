@@ -245,7 +245,8 @@
 @media (max-width: 1023px) {
   .place-image-box-country {
     font-size: 18px;
-    line-height: 22px;
+    line-height: 20px;
+    font-weight: normal;
   }
 
   .place-image-box-income {

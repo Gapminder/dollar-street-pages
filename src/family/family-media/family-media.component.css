@@ -191,6 +191,10 @@ family-media-view-block {
     width: 33.33%;
     padding: 5px;
   }
+
+  .family-things-container .image-description {
+    font-weight: normal;
+  }
 }
 
 @media (max-width: 599px) {
