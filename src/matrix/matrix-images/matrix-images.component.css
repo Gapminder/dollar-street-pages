@@ -245,7 +245,8 @@
 @media (max-width: 1023px) {
   .place-image-box-country {
     font-size: 18px;
-    line-height: 22px;
+    line-height: 20px;
+    font-weight: normal;
   }
 
   .place-image-box-income {
@@ -274,13 +275,15 @@
   }
 
   .place-image-box-income {
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: normal;
   }
 
   .place-image-box-country {
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: normal;
   }
 }
 
