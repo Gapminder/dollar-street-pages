@@ -513,7 +513,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   shareEmbed(): void {
     this.isScreenshotProcessing = true;
     this.store.dispatch(new MatrixActions.SetIsEmbededShared(true));
-    const query = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=${this.imageResolution.image}`;
+    const query = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=480x480`;
     this.matrixService.savePinnedPlaces(query).then(data => {
       const embedId = data.data._id;
       const placesList = data.data.places;
