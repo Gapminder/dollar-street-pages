@@ -157,7 +157,7 @@ describe('Matrix Page: Image Preview:', () => {
   it('Photographer name leads to photographer page', async () => {
       const familyImagePreview = await family.openPreview();
       const photographerName = await familyImagePreview.photographerName.getText();
-      await MatrixPage.getAngleUp.click();
+      // await MatrixPage.getAngleUp.click();
 
       await scrollIntoView(familyImagePreview.photographerName);
       await familyImagePreview.photographerName.click();
