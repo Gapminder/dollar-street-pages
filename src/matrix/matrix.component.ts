@@ -624,6 +624,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   pinModeClose(openQuickGuide = false): void {
+      const pinContainer = document.querySelector('.pin-wrap') as HTMLElement;
+      pinContainer.style.height = '0';
+
       this.store.dispatch(new MatrixActions.SetPinMode(false));
       this.store.dispatch(new MatrixActions.SetEmbedMode(false));
       this.store.dispatch(new MatrixActions.SetIsEmbededShared(false));
@@ -944,10 +947,17 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   setPinModeContainerSize():void {
+    const APP_CONTAINER_PAGGING = 72;
     const container = document.querySelector('.pin-wrap') as HTMLElement;
     const pinContainer = container.querySelector('.pin-container') as HTMLElement;
+    const appContainer = document.querySelector('#app-container') as HTMLElement;
+    const streetContainer = document.querySelector('.street-container') as HTMLElement;
+
+    const appTopSpace = appContainer.getBoundingClientRect().top;
+    const streetHeight = streetContainer.offsetHeight;
+
     const height = pinContainer ? pinContainer.offsetHeight : 0;
-    container.style.height = `${height.toString()}px`;
+    container.style.height = `${(height - appTopSpace - streetHeight - APP_CONTAINER_PAGGING).toString()}px`;
   }
 
   clipboardSuccess(): void {
