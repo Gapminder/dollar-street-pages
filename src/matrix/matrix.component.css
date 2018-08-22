@@ -241,7 +241,7 @@ matrix-images {
 .pin-body {
   display: inline-block;
   text-align: left;
-  max-width: 95%;
+  max-width: 100%;
 }
 
 
