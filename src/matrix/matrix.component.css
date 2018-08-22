@@ -277,11 +277,6 @@ matrix-images {
   max-width: 50%;
 }
 
-.fullsize .places-container.large-images .pin-place {
-  width: 300px;
-  max-width: 26vw;
-}
-
 .pin-place .image-backgroung {
   position: absolute;
   width: 100%;
