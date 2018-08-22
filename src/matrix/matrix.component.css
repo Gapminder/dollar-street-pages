@@ -239,10 +239,12 @@ matrix-images {
 }
 
 .pin-body {
-  /*display: inline-block;*/
-  /*text-align: left;*/
-  /*max-width: 95%;*/
+  display: inline-block;
+  text-align: left;
+  max-width: 100%;
 }
+
+
 
 .pin-body.fullsize  {
   display: block;
@@ -266,12 +268,12 @@ matrix-images {
 
 .places-container .pin-place {
   margin: 0 5px;
-  width: 40%;
+  max-width: 27%;
   position: relative;
 }
 
 .places-container.large-images .pin-place {
-  max-width: 27%;
+  max-width: 50%;
 }
 
 .pin-place .image-backgroung {
@@ -549,10 +551,12 @@ matrix-images {
   height: 26px;
   margin-left: 10px;
   cursor: pointer;
+  background: #fff;
+  border-radius: 5px;
 }
 
 .share-link-button {
-  flex: 0 0 100px;
+  flex: 0 0 auto;
   position: relative;
 }
 
@@ -671,11 +675,6 @@ matrix-images {
   color: white;
 }
 
-.street-pinned-container.short-width {
-  /*max-width: 1030px;*/
-  /*margin: 0 auto;*/
-}
-
 .street-pinned-container {
   display: flex;
   justify-content: center;
@@ -684,10 +683,6 @@ matrix-images {
 .street-pinned-cell {
   flex: 0 1 100%;
   position: relative;
-}
-
-.street-pinned-container.short-width .street-pinned-cell {
-  flex-basis: 990px;
 }
 
 .pin-header p {
@@ -803,7 +798,7 @@ matrix-images {
   }
 }
 
-@media (min-width: 750px) {
+@media (min-width: 850px) {
   .pin-footer-row .shared-completed-section {
     flex-direction: row;
     flex: 0 1 auto;
@@ -826,6 +821,10 @@ matrix-images {
     flex: 0 1 410px;
     padding: 0 10px;
     min-width: 170px;
+  }
+
+  .pin-footer-share .share-link-button {
+    flex-basis: 100px;
   }
 }
 

@@ -28,7 +28,7 @@ export class ImageGeneratorService {
         let placesCanvas = result[1];
         let streetContainerCanvas = result[2];
 
-        sourceCanvas.width = headerCanvas.width;
+        sourceCanvas.width = placesCanvas.width;
         sourceCanvas.height = headerCanvas.height + streetContainerCanvas.height + placesCanvas.height;
 
         let headerImage = headerCanvas.getContext('2d').getImageData(0, 0, headerCanvas.width, headerCanvas.height);
@@ -48,10 +48,10 @@ export class ImageGeneratorService {
 
           let streetBackground = streetBackgroundContext.getImageData(0, 0, streetCanvas.width, streetCanvas.height);
 
-          sourceCanvas.getContext('2d').putImageData(headerImage, 0, 0);
+          sourceCanvas.getContext('2d').putImageData(headerImage, (sourceCanvas.width - headerCanvas.width)/2, 0);
           sourceCanvas.getContext('2d').putImageData(placesImage, 0, headerCanvas.height);
           sourceCanvas.getContext('2d').putImageData(streetBackground, 0, headerCanvas.height + placesCanvas.height);
-          const streetXPosition = (headerCanvas.width - streetContainerCanvas.width ) / 2 + STREET_PADDING;
+          const streetXPosition = (sourceCanvas.width - streetContainerCanvas.width ) / 2 + STREET_PADDING;
           sourceCanvas.getContext('2d').putImageData(streetImage, streetXPosition, headerCanvas.height + placesCanvas.height);
 
           resolve({
