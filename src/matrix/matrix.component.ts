@@ -36,7 +36,6 @@ import {
   UtilsService,
   DrawDividersInterface,
   MathService,
-  ImageGeneratorService,
   SocialShareService,
   SortPlacesService,
   IncomeCalcService,
@@ -173,7 +172,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
                      private store: Store<AppStates>,
                      private math: MathService,
                      private matrixService: MatrixService,
-                     private imageGeneratorService: ImageGeneratorService,
                      private socialShareService: SocialShareService,
                      private sortPlacesService: SortPlacesService,
                      private incomeCalcService: IncomeCalcService,
@@ -513,63 +511,35 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   shareEmbed(): void {
     this.isScreenshotProcessing = true;
     this.store.dispatch(new MatrixActions.SetIsEmbededShared(true));
-    const query = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=${this.imageResolution.image}`;
-    this.matrixService.savePinnedPlaces(query).then(data => {
-      const embedId = data.data._id;
-      const placesList = data.data.places;
-      const shareUrl = data.data.url;
-      this.embedSetId = embedId;
+    const queryUrl = `places=${this.placesSet.map(place => place._id).join(',')}&thingId=${this.activeThing._id}&resolution=480x480`;
+
+
+
+    this.matrixService.savePinnedPlaces(queryUrl).then(res => {
+      this.isScreenshotProcessing = false;
+      const { data: { _id, embedUrl, imageUrl } } = res;
+
+      this.embedSetId = _id;
+      this.shareUrl = embedUrl;
+      this.sharedImageUrl = imageUrl;
 
       const queryParams = this.utilsService.parseUrl(this.query);
       queryParams.embed = this.embedSetId;
 
-      const updatedSet = this.placesSet.map((place: Place) => {
-        place.showBackground = placesList[place._id];
+      this.isEmbedShared = true;
 
-        return place;
-      });
+      this.changeDetectorRef.detectChanges();
 
-      this.store.dispatch(new MatrixActions.SetPinnedPlaces(updatedSet));
+      this.urlParametersService.dispatchToStore({embed: this.embedSetId});
 
-      const awaitImagesLoaded = [];
-      forEach(placesList, src => {
-        awaitImagesLoaded.push(this.awaitLoadImage(src));
-      });
+      const link = window.location.href.split('?')[0];
+      const shareParams = this.urlParametersService.getParamsStingForPage('embed');
 
-      Promise.all(awaitImagesLoaded).then(() => this.imageGeneratorService.generateImage())
-        .then((screenshot: any) => {
+      this.embedLink = `${link}?${shareParams}`;
 
-          let filesToRemove = Object.keys(placesList).map(k => placesList[k]).map(l => {
-            let arr = l.split('/');
-            return arr[arr.length - 1];
-          });
+      this.pinField.nativeElement.value = this.embedLink;
+      this.pinField.nativeElement.select();
 
-          this.matrixService.removeTempImages(`images=${filesToRemove.join(',')}`).then((a) => {});
-
-          const screenData = {imageData: screenshot.image, size: screenshot.size,  imageName: Date.now()+'.jpg', embedId: this.embedSetId};
-          this.matrixService.uploadScreenshot(screenData).then((res: any) => {
-            this.sharedImageUrl = res.data.imageUrl;
-
-            this.isScreenshotProcessing = false;
-
-            this.isEmbedShared = true;
-
-            this.changeDetectorRef.detectChanges();
-
-            this.shareUrl = shareUrl;
-            this.urlParametersService.dispatchToStore({embed: this.embedSetId});
-
-            const link = window.location.href.split('?')[0];
-            const shareParams = this.urlParametersService.getParamsStingForPage('embed');
-
-            this.embedLink = `${link}?${shareParams}`;
-
-            this.pinField.nativeElement.value = this.embedLink;
-            this.pinField.nativeElement.select();
-          });
-        }).catch(() => {
-          this.pinModeClose();
-      });
     });
   }
 
@@ -654,6 +624,9 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   pinModeClose(openQuickGuide = false): void {
+      const pinContainer = document.querySelector('.pin-wrap') as HTMLElement;
+      pinContainer.style.height = '0';
+
       this.store.dispatch(new MatrixActions.SetPinMode(false));
       this.store.dispatch(new MatrixActions.SetEmbedMode(false));
       this.store.dispatch(new MatrixActions.SetIsEmbededShared(false));
@@ -974,10 +947,17 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   setPinModeContainerSize():void {
+    const APP_CONTAINER_PAGGING = 72;
     const container = document.querySelector('.pin-wrap') as HTMLElement;
     const pinContainer = container.querySelector('.pin-container') as HTMLElement;
+    const appContainer = document.querySelector('#app-container') as HTMLElement;
+    const streetContainer = document.querySelector('.street-container') as HTMLElement;
+
+    const appTopSpace = appContainer.getBoundingClientRect().top;
+    const streetHeight = streetContainer.offsetHeight;
+
     const height = pinContainer ? pinContainer.offsetHeight : 0;
-    container.style.height = `${height.toString()}px`;
+    container.style.height = `${(height - appTopSpace - streetHeight - APP_CONTAINER_PAGGING).toString()}px`;
   }
 
   clipboardSuccess(): void {

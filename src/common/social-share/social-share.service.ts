@@ -99,7 +99,6 @@ export class SocialShareService {
     }
 
     public openPopUp(target: string, url: string = null): void {
-      console.log(url);
       const twitterUrl: string = 'https://twitter.com/intent/tweet';
       const facebookUrl: string = 'http://www.facebook.com/sharer.php';
       const linkedinUrl: string = 'http://www.linkedin.com/shareArticle';
