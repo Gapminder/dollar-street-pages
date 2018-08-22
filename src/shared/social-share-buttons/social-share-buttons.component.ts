@@ -162,8 +162,7 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
       eventAction: 'click',
       eventLabel: ANALYTIC_TEXTS.network[target].action
     };
-    console.log(analyticText);
-    console.log(analyticParams);
+
     //this.angulartics2.eventTrack.next({ action: 'click', properties: analyticParams});
     ga('send', analyticParams);
   }

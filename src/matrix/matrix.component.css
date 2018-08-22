@@ -918,5 +918,5 @@ matrix-images {
 }
 
 .for-screenshot .pin-mode-close {
-  opacity: 0;
+  display: none;
 }
