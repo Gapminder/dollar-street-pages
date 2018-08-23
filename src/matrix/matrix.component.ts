@@ -950,14 +950,11 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     const APP_CONTAINER_PAGGING = 72;
     const container = document.querySelector('.pin-wrap') as HTMLElement;
     const pinContainer = container.querySelector('.pin-container') as HTMLElement;
-    const appContainer = document.querySelector('#app-container') as HTMLElement;
     const streetContainer = document.querySelector('.street-container') as HTMLElement;
-
-    const appTopSpace = appContainer.getBoundingClientRect().top;
     const streetHeight = streetContainer.offsetHeight;
 
     const height = pinContainer ? pinContainer.offsetHeight : 0;
-    container.style.height = `${(height - appTopSpace - streetHeight - APP_CONTAINER_PAGGING).toString()}px`;
+    container.style.height = `${(height - streetHeight - APP_CONTAINER_PAGGING).toString()}px`;
   }
 
   clipboardSuccess(): void {
