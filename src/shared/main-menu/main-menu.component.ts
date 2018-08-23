@@ -234,6 +234,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   SetPinMode(): void {
     if (!this.pinMode && !this.embedMode) {
+      this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
       this.store.dispatch(new MatrixActions.SetPinMode(true));
       this.openMenu(this.isOpenMenu);
     }
