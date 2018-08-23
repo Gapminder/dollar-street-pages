@@ -99,33 +99,33 @@ export class SocialShareService {
     }
 
     public openPopUp(target: string, url: string = null): void {
-      const twitterUrl: string = 'https://twitter.com/intent/tweet';
-      const facebookUrl: string = 'http://www.facebook.com/sharer.php';
-      const linkedinUrl: string = 'http://www.linkedin.com/shareArticle';
-      const googleUrl: string = 'https://plus.google.com/share';
+      const twitterUrl = 'https://twitter.com/intent/tweet';
+      const facebookUrl = 'http://www.facebook.com/sharer.php';
+      const linkedinUrl = 'https://www.linkedin.com/shareArticle';
+      const googleUrl = 'https://plus.google.com/share';
 
-      let originalUrl: string = '';
+      let originalUrl = '';
 
-      switch(target) {
+      switch (target) {
         case 'twitter':
           originalUrl = twitterUrl;
-        break;
+          break;
 
         case 'facebook':
           originalUrl = facebookUrl;
-        break;
+          break;
 
         case 'linkedin':
           originalUrl = linkedinUrl;
-        break;
+          break;
 
         case 'google':
           originalUrl = googleUrl;
-        break;
+          break;
 
         default:
           originalUrl = '';
-        break;
+          break;
       }
 
       let left: number = (this.window.innerWidth - 490) / 2;
@@ -157,6 +157,7 @@ export class SocialShareService {
                 params.set('mini', 'true');
                 params.set('url', res.url);
                 params.set('summary', this.shareMessageTranslated);
+                params.set('description', this.shareMessageTranslated);
               break;
 
               case 'google':
@@ -190,6 +191,7 @@ export class SocialShareService {
           case 'linkedin':
             params.set('mini', 'true');
             params.set('url', url);
+            params.set('title', this.sharesTitleTranslated);
             params.set('summary', this.shareMessageTranslated);
           break;
 

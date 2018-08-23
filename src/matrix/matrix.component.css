@@ -270,6 +270,7 @@ matrix-images {
   margin: 0 5px;
   max-width: 27%;
   position: relative;
+  max-height: calc(60vh - 20px);
 }
 
 .places-container.large-images .pin-place {
@@ -345,8 +346,11 @@ matrix-images {
 }
 
 .pin-container .pin-place img {
-  width: 100%;
-  height: 100%;
+  /*width: 100%;*/
+  max-width: 100%;
+  /*height: 100%;*/
+  max-width: 100%;
+  max-height: calc(60vh - 20px);
 }
 
 .pin-places-placeholder {
@@ -543,6 +547,13 @@ matrix-images {
   align-items: center;
 }
 
+.share-buttons-container button {
+  background: transparent;
+  padding: 0;
+  margin: 0 0 0 10px;
+  border: 0;
+}
+
 .pin-footer-share .share-buttons-container span {
   width: 46px;
   font-size: 18px;
@@ -554,10 +565,10 @@ matrix-images {
 .pin-footer-share .share-buttons-container svg {
   width: 26px;
   height: 26px;
-  margin-left: 10px;
   cursor: pointer;
   background: #fff;
   border-radius: 5px;
+  display: block;
 }
 
 .share-link-button {
