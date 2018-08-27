@@ -22,14 +22,6 @@ export class MatrixService {
     this.hoverPlace.next(place);
   }
 
-  uploadScreenshot(data: any): Promise<any> {
-    return this.http.post(`${environment.consumerApi}/v1/upload-screenshot`, data).map((res: any) => {
-      let parseRes = JSON.parse(res._body);
-
-      return {err: parseRes.error, data: parseRes.data};
-    }).toPromise();
-  }
-
   savePinnedPlaces(query: string): Promise<any> {
     return this.http.get(`${environment.consumerApi}/v1/save-pinned-places?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
@@ -41,14 +33,6 @@ export class MatrixService {
   getPinnedPlaces(query: string): Promise<any> {
     return this.http.get(`${environment.consumerApi}/v1/get-pinned-places?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
-      return {err: parseRes.error, data: parseRes.data};
-    }).toPromise();
-  }
-
-  removeTempImages(query: string): Promise<any> {
-    return this.http.get(`${environment.consumerApi}/v1/remove-temp-images?${query}`).map((res: any) => {
-      let parseRes = JSON.parse(res._body);
-
       return {err: parseRes.error, data: parseRes.data};
     }).toPromise();
   }

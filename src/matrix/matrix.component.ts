@@ -152,6 +152,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   matrixContainerElement: HTMLElement;
   shareUrl: string;
   sharedImageUrl: string;
+  downloadImageUrl: string;
   storeSubscription: Subscription;
   embedLink = '';
   showClipboardNotice = false;
@@ -517,11 +518,12 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     this.matrixService.savePinnedPlaces(queryUrl).then(res => {
       this.isScreenshotProcessing = false;
-      const { data: { _id, embedUrl, imageUrl } } = res;
+      const { data: { _id, embedUrl, imageUrl, downloadUrl } } = res;
 
       this.embedSetId = _id;
       this.shareUrl = embedUrl;
       this.sharedImageUrl = imageUrl;
+      this.downloadImageUrl = downloadUrl;
 
       const queryParams = this.utilsService.parseUrl(this.query);
       queryParams.embed = this.embedSetId;
@@ -544,7 +546,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   downloadImage(): void {
-    const url = this.sharedImageUrl;
+    const url = this.downloadImageUrl;
     const countries = this.placesSet.map(place => place.country);
     const filename = `DollarStreet_${this.thing}_in_${countries}`;
     const xhr = new XMLHttpRequest();

@@ -908,6 +908,71 @@ matrix-images {
   }
 }
 
+.download-footer-text {
+  display: none;
+  text-align: center;
+  font-size: 20px;
+  padding: 0 0 15px;
+}
+
+.download-link-text {
+  color: #07C;
+}
+
+.for-download .download-footer-text{
+  display: block;
+}
+
+.for-download:not(.for-screenshot) .pin-title .title-text .title-name {
+  font-size: 36px;
+  line-height: 36px;
+}
+
+.for-download:not(.for-screenshot).places-lenght-3 .pin-title .title-text .title-name{
+  font-size: 42px;
+  line-height: 42px;
+}
+
+.for-download:not(.for-screenshot).places-lenght-4 .pin-title .title-text .title-name{
+  font-size: 46px;
+  line-height: 46px;
+}
+
+.for-download:not(.for-screenshot).places-lenght-5 .pin-title .title-text .title-name{
+  font-size: 50px;
+  line-height: 50px;
+}
+
+.for-download:not(.for-screenshot).places-lenght-6 .pin-title .title-text .title-name{
+  font-size: 56px;
+  line-height: 56px;
+}
+
+.for-download .logo {
+  width: 38px;
+  height: 38px;
+}
+
+.for-download:not(.for-screenshot).places-lenght-3 .logo{
+  width: 44px;
+  height: 44px;
+}
+
+.for-download:not(.for-screenshot).places-lenght-4 .logo{
+  width: 48px;
+  height: 48px;
+}
+
+.for-download:not(.for-screenshot).places-lenght-5 .logo{
+  width: 52px;
+  height: 52px;
+}
+
+.for-download:not(.for-screenshot).places-lenght-6 .logo{
+  width: 54px;
+  height: 54px;
+}
+
 .for-screenshot {
   position: fixed;
   top:0;
@@ -918,6 +983,10 @@ matrix-images {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.for-screenshot.for-download .download-footer-text {
+  display: none;
 }
 
 .embed-preview-content-position {
@@ -932,6 +1001,7 @@ matrix-images {
   max-height: 100%;
 }
 
-.for-screenshot .pin-mode-close {
+.for-screenshot .pin-mode-close,
+.for-download .pin-mode-close {
   display: none;
 }
