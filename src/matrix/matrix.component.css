@@ -953,22 +953,22 @@ matrix-images {
   height: 38px;
 }
 
-.for-download:not(.for-screenshot).places-lenght-3 .logo{
+.for-download.places-lenght-3 .logo{
   width: 44px;
   height: 44px;
 }
 
-.for-download:not(.for-screenshot).places-lenght-4 .logo{
+.for-download.places-lenght-4 .logo{
   width: 48px;
   height: 48px;
 }
 
-.for-download:not(.for-screenshot).places-lenght-5 .logo{
+.for-download.places-lenght-5 .logo{
   width: 52px;
   height: 52px;
 }
 
-.for-download:not(.for-screenshot).places-lenght-6 .logo{
+.for-download.places-lenght-6 .logo{
   width: 54px;
   height: 54px;
 }
