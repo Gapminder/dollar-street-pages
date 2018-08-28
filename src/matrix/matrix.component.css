@@ -923,27 +923,27 @@ matrix-images {
   display: block;
 }
 
-.for-download:not(.for-screenshot) .pin-title .title-text .title-name {
+.for-download .pin-title .title-text .title-name {
   font-size: 36px;
   line-height: 36px;
 }
 
-.for-download:not(.for-screenshot).places-lenght-3 .pin-title .title-text .title-name{
+.for-download.places-lenght-3 .pin-title .title-text .title-name{
   font-size: 42px;
   line-height: 42px;
 }
 
-.for-download:not(.for-screenshot).places-lenght-4 .pin-title .title-text .title-name{
+.for-download.places-lenght-4 .pin-title .title-text .title-name{
   font-size: 46px;
   line-height: 46px;
 }
 
-.for-download:not(.for-screenshot).places-lenght-5 .pin-title .title-text .title-name{
+.for-download.places-lenght-5 .pin-title .title-text .title-name{
   font-size: 50px;
   line-height: 50px;
 }
 
-.for-download:not(.for-screenshot).places-lenght-6 .pin-title .title-text .title-name{
+.for-download.places-lenght-6 .pin-title .title-text .title-name{
   font-size: 56px;
   line-height: 56px;
 }
