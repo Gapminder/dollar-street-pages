@@ -735,6 +735,8 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     if (!this.streetPlacesData.length) {
       this.streetPlaces.next([]);
       this.chosenPlaces.next([]);
+      this.matrixPlaces.next([]);
+
       return;
     }
 
