@@ -26,7 +26,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { chain, cloneDeep, find, map, difference, forEach, get, uniq, filter } from 'lodash';
+import { chain, cloneDeep, find, map, difference, forEach, get, uniq } from 'lodash';
 import {
   LoaderService,
   UrlChangeService,
@@ -48,7 +48,6 @@ import { MatrixService } from './matrix.service';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from '../defaultState';
 import { UrlParametersService } from '../url-parameters/url-parameters.service';
 import { PagePositionService } from "../shared/page-position/page-position.service";
-import { reject } from 'q';
 
 const TITLE_MAX_VISIBLE_COUNTRIES = 3;
 
@@ -156,7 +155,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   storeSubscription: Subscription;
   embedLink = '';
   showClipboardNotice = false;
-  canAddToPin = false;
 
   constructor(element: ElementRef,
                      private zone: NgZone,
@@ -517,6 +515,13 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
 
     this.matrixService.savePinnedPlaces(queryUrl).then(res => {
+
+      if (!get(res, 'data._id', false)) {
+        this.pinModeClose();
+
+        return ;
+      }
+
       this.isScreenshotProcessing = false;
       const { data: { _id, embedUrl, imageUrl, downloadUrl } } = res;
 
@@ -959,6 +964,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     const height = pinContainer ? pinContainer.offsetHeight : 0;
     container.style.height = `${(height - streetHeight - APP_CONTAINER_PAGGING).toString()}px`;
+
   }
 
   clipboardSuccess(): void {
