@@ -436,7 +436,7 @@
   }
 
   .description-title {
-    flex: 0 0 auto;
+    flex: 1 0 auto;
     overflow: hidden;
   }
 
@@ -493,7 +493,8 @@
 
 
   .description-title {
-    flex: 0 0 auto;
+    min-height: 30px;
+    flex: 1 0 auto;
   }
 }
 
