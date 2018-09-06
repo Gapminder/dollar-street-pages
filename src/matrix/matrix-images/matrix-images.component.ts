@@ -15,7 +15,6 @@ import {
   ChangeDetectorRef, ViewChildren, QueryList
 } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 
 import {
   MathService,
@@ -29,8 +28,8 @@ import { Store } from '@ngrx/store';
 import { AppStates, Currency, LanguageState, MatrixState, UrlParameters } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { Place } from '../../interfaces';
-import { DEBOUNCE_TIME, DefaultUrlParameters, MOBILE_SIZE } from '../../defaultState';
-import { get } from "lodash";
+import { DEBOUNCE_TIME, DefaultUrlParameters, MAX_PINNED_PLACES, MOBILE_SIZE } from '../../defaultState';
+import { get, forEach, findIndex, map, difference } from "lodash";
 import { PagePositionService } from '../../shared/page-position/page-position.service';
 import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 import { MatrixService } from '../matrix.service';
@@ -99,7 +98,6 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   matrixState: Observable<MatrixState>;
   matrixStateSubscription: Subscription;
   placesSet: Place[];
-  maxPinnedCount = 6;
   currencyUnit: Currency;
   viewChildrenSubscription: Subscription;
 
@@ -189,18 +187,19 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
       this.isPinMode = get(data, 'pinMode', false);
       this.isEmbederShared = get(data, 'isEmbederShared', false);
 
-      if (_.get(data, 'placesSet', false)
+      if (get(data, 'placesSet', false)
       && data.placesSet !== this.placesSet) {
         this.placesSet = data.placesSet;
+        this.setPinnedPlaces();
       }
 
-      if (_.get(data, 'currencyUnit', false)) {
+      if (get(data, 'currencyUnit', false)) {
         if (this.currencyUnit !== data.currencyUnit) {
           this.currencyUnit = data.currencyUnit;
         }
       }
 
-      this.zoom = _.get(data, 'zoom', Number(DefaultUrlParameters.zoom));
+      this.zoom = get(data, 'zoom', Number(DefaultUrlParameters.zoom));
 
       if (get(data, 'activeHouseOptions.row'), false) {
         this.row = data.activeHouseOptions.row;
@@ -252,9 +251,9 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
     }
 
     if (!place.pinned) {
-      if (this.placesSet && this.placesSet.length < this.maxPinnedCount) {
-        place.pinned = true;
-        place.showBackground = place.background;
+      if (this.placesSet && this.placesSet.length < MAX_PINNED_PLACES) {
+        // place.pinned = true;
+        // place.showBackground = place.background;
 
         this.store.dispatch(new MatrixActions.AddPlaceToSet(place));
       }
@@ -263,6 +262,17 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
 
       this.store.dispatch(new MatrixActions.RemovePlaceFromSet(place));
     }
+  }
+
+  setPinnedPlaces(): void {
+    forEach(this.placesSet, (place) => {
+      place.showBackground = place.background;
+
+      const placeIndex = findIndex(this.placesArr, {_id: place._id});
+      if (placeIndex !== -1) {
+        this.placesArr[placeIndex].pinned = true;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -367,23 +377,23 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
         this.activeCountries = this.theWorldTranslate;
       } else {
         let sumCountries = 0;
-        let difference: string[] = [];
+        let _difference: string[] = [];
         let regionCountries: string[] = [];
 
-        _.forEach(this.locations, (location: any) => {
+        forEach(this.locations, (location: any) => {
           if (regions.indexOf(location.region) !== -1) {
-            regionCountries = regionCountries.concat((_.map(location.countries, 'country')) as string[]);
+            regionCountries = regionCountries.concat((map(location.countries, 'country')) as string[]);
             sumCountries = +location.countries.length;
           }
         });
 
         if (sumCountries !== countries.length) {
-          difference = _.difference(countries, regionCountries);
+          _difference = difference(countries, regionCountries);
         }
 
-        if (difference.length) {
+        if (_difference.length) {
 
-          this.activeCountries = regions.join(',') + ',' + difference;
+          this.activeCountries = regions.join(',') + ',' + _difference;
         } else {
           this.activeCountries = regions.join(' & ');
         }
@@ -434,7 +444,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
 
     this.indexViewBoxHouse = index;
     this.positionInRow = (this.indexViewBoxHouse + 1) % this.zoom;
-    const offset: number = this.zoom - this.positionInRow;
+    const offset = this.zoom - this.positionInRow;
 
     this.imageBlockLocation = this.positionInRow ? offset + this.indexViewBoxHouse : this.indexViewBoxHouse;
 

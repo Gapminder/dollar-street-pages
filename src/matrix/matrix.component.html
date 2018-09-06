@@ -58,13 +58,14 @@
           </div>
         </div>
 
-        <div class="places-container" [ngClass]="{'large-images': placesSet && placesSet.length && (placesSet.length <=4) }">
+        <div class="places-container " [ngClass]="{'large-images': placesSet && placesSet.length && (placesSet.length <=4) }">
           <div class="extend-area" *ngIf="isPinMode && !isEmbedShared && !isScreenshotProcessing && placesSet.length && (placesSet.length < 6)">
             <span>+</span>
           </div>
 
           <div *ngFor="let place of placesSet; let i = index"
                class="pin-place"
+
                (mouseenter)="onPinnedPlaceHover(place)"
                (mouseleave)="onPinnedPlaceHover()"
                isImageLoaded [imageLoadedUrl]="place?.background"
@@ -99,7 +100,7 @@
             <span>+</span>
           </div>
         </div>
-
+          <div class="street-pinned-wrap">
           <div *ngIf="isPinMode || isEmbedMode"
                class="street-pinned-container">
             <div class="street-pinned-cell">
@@ -110,6 +111,7 @@
               <span class="poorest">POOREST</span>
               <span class="richest">RICHEST</span>
             </div>
+          </div>
           </div>
       </div>
     </div>

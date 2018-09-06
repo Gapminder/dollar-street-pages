@@ -7,7 +7,7 @@ import { UrlParametersService } from '../../url-parameters/url-parameters.servic
 @Injectable()
 export class PagePositionService {
   gridContainer: HTMLElement;
-  public row = 1;
+  row = 1;
   _itemSize = 0;
 
   get itemSize(): number {

@@ -4,6 +4,7 @@ export const DEBOUNCE_TIME = 100;
 export const MOBILE_SIZE = 600;
 export const MATRIX_GRID_CONTAINER_CLASS = 'images-container';
 export const FAMILY_GRID_CONTAINER_CLASS = 'family-image-container';
+export const MAX_PINNED_PLACES = 6;
 
 export const TIME_UNIT_CODES: {[key: string]: TimeUnitCode} = {
   day: {
