@@ -111,7 +111,15 @@
               <span class="poorest">POOREST</span>
               <span class="richest">RICHEST</span>
             </div>
+
+            </div>
           </div>
+        </div>
+        <div class="pin-footer">
+
+
+          <div *ngIf="isEmbedMode || isEmbedShared" class="embed-footer-text">
+            <p>{{ "LIVES_ON_DOLLAR_STREET" | translate }}</p>
           </div>
       </div>
     </div>
@@ -170,6 +178,7 @@
                       </button>
                     </div>
 
+
                     <div class="share-link-button">
                       <button ngxClipboard [cbContent]='embedLink' (cbOnSuccess)="clipboardSuccess()" class="pin-bottom-button">Copy link</button>
                       <span class="clipboardNotice" [class.show]='showClipboardNotice'>Link copied</span>
@@ -199,6 +208,8 @@
           </div>
         </div>
       </div>
+    </div>
+
 
 
     <income-filter *ngIf="isOpenIncomeFilter"
