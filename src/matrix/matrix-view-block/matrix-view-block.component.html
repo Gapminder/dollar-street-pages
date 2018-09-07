@@ -27,15 +27,17 @@
         <div class="header-container">{{currencyUnit?.symbol}} {{place?.showIncome}}<span class="income-time">/{{timeUnit.translationCode || timeUnit.name}}</span></div>
 
         <div class="home-description-container">
-          <h3 class="description-title">
-            <span *ngIf="familyData?.familyName">{{familyData?.familyName}}<span *ngIf="currentLanguage == 'en'"> {{ 'FAMILY' | translate }}</span>,</span>
+          <div class="description-title">
+            <h3 class="description-title">
+              <span *ngIf="familyData?.familyName">{{familyData?.familyName}}<span *ngIf="currentLanguage == 'en'"> {{ 'FAMILY' | translate }}</span>,</span>
 
-            <span style="cursor:pointer"
-                  [routerLink]="['/country', familyData?.country?._id]"
-                  [queryParams]="{}"
-                  angulartics2On="click"
-                  angularticsEvent="From Matrix page to {{familyData?.country?.country}} page ">{{familyData?.country?.alias || familyData?.country?.country}}</span>
-          </h3>
+              <span style="cursor:pointer"
+                    [routerLink]="['/country', familyData?.country?._id]"
+                    [queryParams]="{}"
+                    angulartics2On="click"
+                    angularticsEvent="From Matrix page to {{familyData?.country?.country}} page ">{{familyData?.country?.alias || familyData?.country?.country}}</span>
+            </h3>
+          </div>
 
           <div class="images-container"
                *ngIf="familyData.goToPlaceData">
