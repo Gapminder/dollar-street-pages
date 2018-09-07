@@ -209,3 +209,14 @@ export interface TranslationsInterface {
 export interface SubscriptionsList {
   [key: string]: Subscription;
 }
+
+export interface ActionsAfterViewLoad {
+  row: number,
+  activeHouse: string,
+  activeImage: string
+}
+
+export interface ProcessActionsAfterViewLoad {
+  actions: ActionsAfterViewLoad;
+  complete: boolean;
+}

@@ -330,6 +330,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public visitThisHome(placeId: string): void {
+    this.urlParametersService.resetRow();
     this.store.dispatch(new MatrixActions.SetPlace(placeId));
     this.streetService.clearAndRedraw();
   }

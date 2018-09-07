@@ -12,7 +12,7 @@ import {
   OnDestroy,
   NgZone,
   ViewChild,
-  ChangeDetectorRef, ViewChildren, QueryList
+  ChangeDetectorRef, ViewChildren, QueryList, AfterViewChecked
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -25,7 +25,13 @@ import {
   SortPlacesService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppStates, Currency, LanguageState, MatrixState, UrlParameters } from '../../interfaces';
+import {
+  ActionsAfterViewLoad,
+  AppStates,
+  Currency,
+  MatrixState, ProcessActionsAfterViewLoad,
+  UrlParameters
+} from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { Place } from '../../interfaces';
 import { DEBOUNCE_TIME, DefaultUrlParameters, MAX_PINNED_PLACES, MOBILE_SIZE } from '../../defaultState';
@@ -39,7 +45,7 @@ import { MatrixService } from '../matrix.service';
   templateUrl: './matrix-images.component.html',
   styleUrls: ['./matrix-images.component.css']
 })
-export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
+export class MatrixImagesComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
 
   @ViewChild('imagesContainer')
   imagesContainer: ElementRef;
@@ -100,6 +106,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
   placesSet: Place[];
   currencyUnit: Currency;
   viewChildrenSubscription: Subscription;
+  actionsAfterViewLoad: ProcessActionsAfterViewLoad;
 
   constructor(
     elementRef: ElementRef,
@@ -166,7 +173,7 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
         this.placesArr = this.currentPlaces.slice(0, sliceCount);
         this.changeDetectorRef.detectChanges();
         window.dispatchEvent(new Event('resize'));
-      })
+      });
     });
 
     this.viewChildrenSubscription = this.viewChildren
@@ -238,7 +245,54 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
         });
       });
 
+
+    this.urlParametersService.actionAfterViewLoad
+      .take(1)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((actions: ActionsAfterViewLoad) => {
+        this.setActionsAfterInit(actions);
+
+      });
+
+
     this.changeDetectorRef.detectChanges();
+  }
+
+  ngAfterViewChecked(): void {
+    if (!this.actionsAfterViewLoad.complete && document.querySelectorAll('.image-content').length) {
+      this.processActionAfterViewLoad();
+    }
+  }
+
+  setActionsAfterInit(actions: ActionsAfterViewLoad): void {
+    this.actionsAfterViewLoad = {
+      actions,
+      complete: false
+    };
+  }
+
+  processActionAfterViewLoad(): void {
+    const images = document.querySelectorAll('.image-content');
+
+    const {
+      activeHouse,
+      activeImage,
+      row
+    } = this.actionsAfterViewLoad.actions;
+
+    if (row) {
+      const zoom = Number(this.urlParametersService.parameters.zoom);
+      const index = zoom * row - zoom;
+      console.log(index)
+
+      const place = images[index];
+
+      if (place) {
+        window.scrollTo(0, images[index].getBoundingClientRect().top);
+      }
+    }
+
+    this.actionsAfterViewLoad.complete = true;
   }
 
   checkQuickGuide(): void {
@@ -499,7 +553,11 @@ export class MatrixImagesComponent implements AfterViewInit, OnDestroy {
 
     const imageHeight: number = imagesContainerElement.offsetWidth / this.zoom;
 
-    const visibleRows: number = Math.round(window.innerHeight / imageHeight);
+    let visibleRows: number = Math.round(window.innerHeight / imageHeight);
+    if (this.actionsAfterViewLoad.actions.row && this.actionsAfterViewLoad.actions.row > visibleRows) {
+      visibleRows = this.actionsAfterViewLoad.actions.row + 1;
+    }
+
     this.visibleImages = this.zoom * visibleRows;
   }
 
