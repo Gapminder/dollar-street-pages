@@ -703,34 +703,26 @@ export class StreetDrawService {
 
     this.leftScroll
       .attr('x',  () => {
-        if (this.leftPoint >= x) {
-          return this.leftPoint + SVG_DEFAULTS.sliders.differentSize;
-        } else {
+        // if (this.leftPoint >= x) {
+        //   return this.leftPoint + SVG_DEFAULTS.sliders.differentSize;
+        // } else {
           const position = (x < 0 ? 0 : x) + SVG_DEFAULTS.sliders.differentSize;
 
           return position;
-        }
+        // }
       });
 
-    if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4) && !this.isMobile) {
-        this.sliderLeftBorder = this.leftPoint < 0 ? 0 : this.leftPoint;
-        this.leftScrollOpacityStreet
-          .attr('width', this.leftPoint + this.streetOffset / 2);
-        this.leftScrollOpacityHomes
-          .attr('width', this.leftPoint + this.streetOffset / 2);
-      } else {
-        this.leftScrollOpacityStreet
-          .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
-        this.leftScrollOpacityHomes
-          .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
-      }
-    } else {
+    // if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+    //   this.leftScrollOpacityStreet
+    //     .attr('width', (x < 0 ? 0 : x) + this.streetOffset);
+    //   this.leftScrollOpacityHomes
+    //     .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
+    // } else {
       this.leftScrollOpacityStreet
-        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2 - SVG_DEFAULTS.sliders.moreThenNeed / 2);
+        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
       this.leftScrollOpacityHomes
         .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2 - SVG_DEFAULTS.sliders.moreThenNeed / 2);
-    }
+    // }
 
     this.lowIncome = this.scale.invert(x);
 
