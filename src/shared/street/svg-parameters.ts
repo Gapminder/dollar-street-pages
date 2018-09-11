@@ -63,7 +63,7 @@ export const SVG_DEFAULTS = {
     name: '#slider',
     width: 32,
     height: 50,
-    positionY: 0,
+    positionY: 15,
     differentSize: 5,
     moreThenNeed: 10,
     strokeWidth: 2,
