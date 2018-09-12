@@ -1004,3 +1004,36 @@ matrix-images {
 .for-download .pin-mode-close {
   display: none;
 }
+
+.for-screenshot .places-container,
+.for-download .places-container{
+  width: 100%;
+}
+
+.pin-container .for-screenshot  .places-container,
+.pin-container .for-download .places-container {
+  max-height: none;
+}
+
+.for-screenshot .pin-body,
+.for-download .pin-body {
+  width: 100%;
+}
+
+.for-screenshot .pin-place,
+.for-download .pin-place {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.for-screenshot.places-2 .pin-place,
+.for-download.places-2 .pin-place {
+  width: 40%;
+}
+
+.pin-container .for-screenshot.places-2 .pin-place img,
+.pin-container .for-download.places-2 .pin-place img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+}
