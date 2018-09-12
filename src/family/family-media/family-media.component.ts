@@ -351,7 +351,7 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     const imageHeight = this.familyThingsContainerElement.offsetWidth / this.zoom;
     let visibleRows = Math.round(window.innerHeight / imageHeight);
 
-    const indexActiveImage = Number(this.urlParametersService.parameters.activeImage);
+    const indexActiveImage = Number(get(this.urlParametersService, 'parameters.activeImage' , undefined));
     if (indexActiveImage && ((indexActiveImage % this.zoom) > visibleRows ) ) {
       visibleRows = indexActiveImage % this.zoom + 1;
     }
