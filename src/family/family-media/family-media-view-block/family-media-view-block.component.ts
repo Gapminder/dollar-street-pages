@@ -14,7 +14,7 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
-  SimpleChanges
+  SimpleChanges, AfterViewChecked
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
@@ -46,7 +46,7 @@ interface ImageViewBlockPosition {
   templateUrl: './family-media-view-block.component.html',
   styleUrls: ['./family-media-view-block.component.css', './family-media-view-block.component.mobile.css']
 })
-export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
+export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy, AfterViewChecked{
   @ViewChild('homeDescriptionContainer')
   public homeDescriptionContainer: ElementRef;
 
@@ -82,6 +82,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public showInCountry: any;
   public showInRegion: any;
   public showInTheWorld: any;
+  needNavigateToBlock = false;
   private imageViewBlockPosition: ImageViewBlockPosition = {
     point: {
       left: 0
@@ -144,6 +145,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (get(changes, 'imageData', false)) {
+      console.log(changes);
       this.setPointPositionMediaBlock();
       this.country = void 0;
       this.loader = false;
@@ -203,15 +205,28 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
           this.viewImage = this.imageData.image;
 
-          this.scrollToBlock();
+          this.needNavigateToBlock= true;
+        process.nextTick(() => {
+
+        })
+
       });
     }
   }
 
+  ngAfterViewChecked(): void {
+    if (this.needNavigateToBlock) {
+      // this.scrollToBlock();
+      this.needNavigateToBlock = false;
+    }
+  }
+
   scrollToBlock(): void {
+
     const rect = this.imageBlockContainer.nativeElement.getBoundingClientRect();
     const elementHeightTop = window.scrollY  + rect.top;
     const scrollTo = elementHeightTop - FAMILY_HEADER_PADDING;
+    console.log(scrollTo)
 
     window.scrollTo(0, scrollTo);
   }
@@ -299,9 +314,9 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
-  public goToPage(url: string, params: UrlParameters): void {
-    this.urlParametersService.dispatchToStore(params);
-  }
+  // public goToPage(url: string, params: UrlParameters): void {
+  //   this.urlParametersService.dispatchToStore(params);
+  // }
 
   public goToMatrixWithParams(params: UrlParameters) {
     this.urlParametersService.dispatchToStore(params);
