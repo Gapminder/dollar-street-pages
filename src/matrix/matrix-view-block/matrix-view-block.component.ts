@@ -295,7 +295,15 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       if (get(this.familyData, 'houseImage', false)) {
         this.uploadImages(this.familyData.houseImage.url, 'houseImage');
       }
+
+      this.scrollToBlock();
     });
+  }
+
+  scrollToBlock(): void {
+    if (this.showblock) {
+      window.scrollTo(0, this.viewImageBlockContainer.nativeElement.offsetTop);
+    }
   }
 
   public ngOnDestroy(): void {

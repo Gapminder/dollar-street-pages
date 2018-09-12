@@ -221,7 +221,7 @@ export class MatrixImagesComponent implements AfterViewInit, AfterViewChecked, O
 
           process.nextTick(() => {
 // wait render view block, without nextTick page does't have scroll for bottom grid elements doesn't appear view block
-            this.pagePositionService.goToRow(data.activeHouseOptions.row)
+            //this.pagePositionService.goToRow(data.activeHouseOptions.row)
           });
         }
       } else {
