@@ -156,6 +156,8 @@ describe('Matrix Page: Image Preview', () => {
   it('Photographer name leads to photographer page', async () => {
     const familyImagePreview = await family.openPreview();
     const photographerName = await familyImagePreview.photographerName.getText();
+
+    await scrollIntoView(familyImagePreview.photographerName);
     await familyImagePreview.photographerName.click();
 
     expect(await browser.getCurrentUrl()).toContain('photographer');
