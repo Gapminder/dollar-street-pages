@@ -283,7 +283,6 @@ export class MatrixImagesComponent implements AfterViewInit, AfterViewChecked, O
     if (row) {
       const zoom = Number(this.urlParametersService.parameters.zoom);
       const index = zoom * row - zoom;
-      console.log(index)
 
       const place = images[index];
 

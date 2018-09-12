@@ -112,9 +112,9 @@ describe('FamilyMediaComponent', () => {
 
     it('openMedia()', (() => {
         componentFixture.whenStable().then(() => {
-            componentInstance.goToRow = (row: number) => {
-                return row;
-            };
+            // componentInstance.goToRow = (row: number) => {
+            //     return row;
+            // };
 
             componentInstance.openMedia(componentInstance.images[0], 0);
 

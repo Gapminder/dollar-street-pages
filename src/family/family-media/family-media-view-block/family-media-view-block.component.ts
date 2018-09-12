@@ -32,7 +32,7 @@ import { FamilyMediaViewBlockService } from './family-media-view-block.service';
 import { ImageResolutionInterface } from '../../../interfaces';
 import { get } from 'lodash';
 import { UrlParametersService } from '../../../url-parameters/url-parameters.service';
-import { DEBOUNCE_TIME } from '../../../defaultState';
+import { DEBOUNCE_TIME, FAMILY_HEADER_PADDING } from '../../../defaultState';
 import { StreetDrawService } from '../../../shared/street/street.service';
 import { PagePositionService } from '../../../shared/page-position/page-position.service';
 import { ImageLoadedService } from '../../../shared/image-loaded/image-loaded.service';
@@ -49,6 +49,9 @@ interface ImageViewBlockPosition {
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('homeDescriptionContainer')
   public homeDescriptionContainer: ElementRef;
+
+  @ViewChild('imageBlockContainer')
+  public imageBlockContainer: ElementRef;
 
   @Input()
   public imageData: any;
@@ -199,8 +202,18 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
           this.uploadImages(this.imageData.image);
 
           this.viewImage = this.imageData.image;
+
+          this.scrollToBlock();
       });
     }
+  }
+
+  scrollToBlock(): void {
+    const rect = this.imageBlockContainer.nativeElement.getBoundingClientRect();
+    const elementHeightTop = window.scrollY  + rect.top;
+    const scrollTo = elementHeightTop - FAMILY_HEADER_PADDING;
+
+    window.scrollTo(0, scrollTo);
   }
 
   private setPointPositionMediaBlock() {
