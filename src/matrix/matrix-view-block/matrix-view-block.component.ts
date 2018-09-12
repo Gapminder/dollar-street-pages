@@ -301,8 +301,16 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   scrollToBlock(): void {
+    let additionTop = 0;
+    const guide = document.querySelector('.guide-position');
+    console.log(guide);
+    if (guide) {
+      additionTop = guide.getBoundingClientRect().height;
+    }
+
+
     if (this.showblock) {
-      window.scrollTo(0, this.viewImageBlockContainer.nativeElement.offsetTop);
+      window.scrollTo(0, this.viewImageBlockContainer.nativeElement.offsetTop + additionTop);
     }
   }
 
