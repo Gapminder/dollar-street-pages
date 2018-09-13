@@ -31,7 +31,6 @@ import { FamilyService } from './family.service';
 import { FamilyMediaComponent } from './family-media';
 import { FamilyHeaderComponent } from './family-header';
 import { DEBOUNCE_TIME, DefaultUrlParameters } from "../defaultState";
-import { combineLatest } from "rxjs/observable/combineLatest";
 import * as MatrixActions from '../matrix/ngrx/matrix.actions';
 
 @Component({
@@ -41,46 +40,46 @@ import * as MatrixActions from '../matrix/ngrx/matrix.actions';
 })
 export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(FamilyMediaComponent)
-  public familyMediaComponent: FamilyMediaComponent;
+  familyMediaComponent: FamilyMediaComponent;
   @ViewChild(FamilyHeaderComponent)
-  public familyHeaderComponent: FamilyHeaderComponent;
+  familyHeaderComponent: FamilyHeaderComponent;
   @ViewChild('familyContainer')
-  public familyContainer: ElementRef;
+  familyContainer: ElementRef;
 
-  public theWorldTranslate: string;
-  public window: Window = window;
-  public document: Document = document;
-  public streetFamilyData: {income: number; region: string};
-  public zoom: number;
-  public openFamilyExpandBlock: Subject<any> = new Subject<any>();
-  public placeId: string;
-  public urlParams;
-  public streetSettings: DrawDividersInterface;
-  public rich;
-  public poor;
-  public thing = {};
-  public locations: CountriesFilterState;
-  public countries: {}[];
-  public activeImageIndex: number;
-  public windowHistory = history;
-  public getTranslationSubscribe: Subscription;
-  public scrollSubscribe: Subscription;
-  public device: BrowserDetectionService;
-  public isDesktop: boolean;
-  public zoomPositionFixed: boolean;
-  public element: HTMLElement;
-  public query: string;
-  public headerElement: HTMLElement;
-  public streetFamilyContainerElement: HTMLElement;
-  public shortFamilyInfoContainerElement: HTMLElement;
-  public streetSettingsStateSubscription: Subscription;
+  theWorldTranslate: string;
+  window: Window = window;
+  document: Document = document;
+  streetFamilyData: {income: number; region: string};
+  zoom: number;
+  openFamilyExpandBlock: Subject<any> = new Subject<any>();
+  placeId: string;
+  urlParams;
+  streetSettings: DrawDividersInterface;
+  rich;
+  poor;
+  thing = {};
+  locations: CountriesFilterState;
+  countries: {}[];
+  activeImageIndex: number;
+  windowHistory = history;
+  getTranslationSubscribe: Subscription;
+  scrollSubscribe: Subscription;
+  device: BrowserDetectionService;
+  isDesktop: boolean;
+  zoomPositionFixed: boolean;
+  element: HTMLElement;
+  query: string;
+  headerElement: HTMLElement;
+  streetFamilyContainerElement: HTMLElement;
+  shortFamilyInfoContainerElement: HTMLElement;
+  streetSettingsStateSubscription: Subscription;
   @Output()
-  public itemSize: number;
-  public row: number;
-  public rowEtalon: number;
-  public appStatesSubscription: Subscription;
+  itemSize: number;
+  row: number;
+  rowEtalon: number;
+  appStatesSubscription: Subscription;
 
-  public constructor(elementRef: ElementRef,
+  constructor(elementRef: ElementRef,
                      private router: Router,
                      private activatedRoute: ActivatedRoute,
                      private urlChangeService: UrlChangeService,
@@ -96,7 +95,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isDesktop = this.browserDetectionService.isDesktop();
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.getTranslationSubscribe = this.languageService.getTranslation('THE_WORLD').subscribe(trans => {
       this.theWorldTranslate = trans.toLowerCase();
     });
@@ -138,7 +137,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.headerElement = document.querySelector('.header-content') as HTMLElement;
     this.streetFamilyContainerElement = this.element.querySelector('.street-family-container') as HTMLElement;
     this.shortFamilyInfoContainerElement = this.element.querySelector('.short-family-info-container') as HTMLElement;
@@ -157,7 +156,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
         });
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.appStatesSubscription) {
       this.appStatesSubscription.unsubscribe();
     }
@@ -175,7 +174,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public scrollTopZero(): void {
+  scrollTopZero(): void {
     if (document.body.scrollTop) {
       document.body.scrollTop = 0;
     } else {
@@ -183,14 +182,14 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public changeZoom(zoom: number): void {
+  changeZoom(zoom: number): void {
     const prevZoom: number = this.zoom;
 
     // this.urlChanged({isZoom: true, url: this.query});
     this.store.dispatch(new MatrixActions.ChangeZoom(zoom));
   }
 
-  public processScroll(): void {
+  processScroll(): void {
     const scrollTop = (document.body.scrollTop || document.documentElement.scrollTop);
 
     const distance = scrollTop / this.itemSize;
@@ -218,7 +217,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public applyStyles(): void {
+  applyStyles(): void {
     const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
     if (scrollTop > 0) {
@@ -248,7 +247,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public setZoom(zoom: number): void {
+  setZoom(zoom: number): void {
     if (this.isDesktop && (!this.zoom || this.zoom < 2 || this.zoom > 10)) {
       this.zoom = zoom ? zoom : Number(DefaultUrlParameters.zoom);
     }
@@ -258,7 +257,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public calcItemSize(): void {
+  calcItemSize(): void {
     const familyThingsContainerElement: HTMLElement = this.element
       .querySelector('.family-things-container') as HTMLElement;
     const familyImageContainerElement: HTMLElement = this.element
@@ -283,7 +282,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.itemSize = imageHeight + imageMargin;
   }
 
-  public setZoomButtonPosition(): void {
+  setZoomButtonPosition(): void {
     const scrollTop: number = (this.document.body.scrollTop || this.document.documentElement.scrollTop) + this.window.innerHeight;
 
     const containerHeight: number = this.familyContainer.nativeElement.offsetHeight + 30;
@@ -291,7 +290,7 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.zoomPositionFixed = scrollTop > containerHeight;
   }
 
-  public activeImageOptions(options: any): void {
+  activeImageOptions(options: any): void {
     const {row, activeImageIndex} = options;
 
     const queryParams = this.utilsService.parseUrl(this.query);
@@ -318,11 +317,11 @@ export class FamilyComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store.dispatch(new AppActions.SetQuery(url));
   }
 
-  public isOpenFamilyExpandBlock(data: any): void {
+  isOpenFamilyExpandBlock(data: any): void {
     this.openFamilyExpandBlock.next(data);
   }
 
-  public initData(): void {
+  initData(): void {
     if (!this.streetSettings) {
       return;
     }

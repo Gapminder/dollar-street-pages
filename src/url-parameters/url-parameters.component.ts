@@ -11,6 +11,7 @@ import { DefaultUrlParameters } from '../defaultState';
 import { LocalStorageService } from '../common/local-storage/local-storage.service';
 import { TranslateService } from 'ng2-translate';
 
+
 interface NavigationEndInterface {
   id: number;
   url: string;
@@ -27,11 +28,12 @@ export class UrlParametersComponent implements  OnDestroy {
   constructor(
     router: Router,
     store: Store<AppStates>,
-    urlParametersService: UrlParametersService,
+    private urlParametersService: UrlParametersService,
     pagePositionService: PagePositionService,
     location: Location,
     private translate: TranslateService,
     private localStorageService: LocalStorageService) {
+
 
     const navigationEndSubscribe = router.events
       .filter(event => event instanceof NavigationEnd)
@@ -64,6 +66,13 @@ export class UrlParametersComponent implements  OnDestroy {
           params.activeImage = (Number(params.activeImage) - 1).toString();
           urlParametersService.activeImageByRoute = params.activeImage;
         }
+
+        this.urlParametersService.setActionAfterViewLoad({
+          row: get(params, 'row', null),
+          activeHouse: get(params, 'activeHouse', null),
+          activeImage: get(params, 'activeImage', null)
+        });
+
       });
     this.subscribtions.push(navigationEndSubscribe);
 

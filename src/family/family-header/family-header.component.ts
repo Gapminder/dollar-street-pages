@@ -47,47 +47,47 @@ import {
 })
 export class FamilyHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('homeDescriptionContainer')
-  public homeDescriptionContainer: ElementRef;
+  homeDescriptionContainer: ElementRef;
   @ViewChild('aboutDataContainer')
-  public aboutDataContainer: ElementRef;
+  aboutDataContainer: ElementRef;
   @ViewChild('shortFamilyInfoContainer')
-  public shortFamilyInfoContainer: ElementRef;
+  shortFamilyInfoContainer: ElementRef;
 
-  public placeId: string;
+  placeId: string;
   @Output()
-  public familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
+  familyExpandBlock: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  public streetFamilyData: EventEmitter<any> = new EventEmitter<any>();
+  streetFamilyData: EventEmitter<any> = new EventEmitter<any>();
 
-  public readMoreTranslate: string;
-  public readLessTranslate: string;
-  public home: any = {};
-  public mapData: any;
-  public countryName: any;
-  public isOpenArticle: boolean;
-  public isShowAboutData: boolean;
-  public isShowAboutDataFullScreen: boolean;
-  public aboutDataPosition: {left?: number;top?: number;} = {};
-  public windowHeight: number = window.innerHeight;
-  public maxHeightPopUp: number = this.windowHeight * .95 - 91;
-  public familyHeaderServiceSubscribe: Subscription;
-  public resizeSubscribe: Subscription;
-  public element: HTMLElement;
-  public streetData: DrawDividersInterface;
-  public isDesktop: boolean;
-  public isMobile: boolean;
-  public isTablet: boolean;
-  public getTranslationSubscribe: Subscription;
-  public currentLanguage: string;
-  public showTranslateMe: boolean;
-  public timeUnit: TimeUnit;
-  public timeUnits: TimeUnit[];
-  public currencyUnit: Currency;
-  public currencyUnits: Currency[];
-  public familyIncome: string;
-  public appStatesSubscription: Subscription;
+  readMoreTranslate: string;
+  readLessTranslate: string;
+  home: any = {};
+  mapData: any;
+  countryName: any;
+  isOpenArticle: boolean;
+  isShowAboutData: boolean;
+  isShowAboutDataFullScreen: boolean;
+  aboutDataPosition: {left?: number;top?: number;} = {};
+  windowHeight: number = window.innerHeight;
+  maxHeightPopUp: number = this.windowHeight * .95 - 91;
+  familyHeaderServiceSubscribe: Subscription;
+  resizeSubscribe: Subscription;
+  element: HTMLElement;
+  streetData: DrawDividersInterface;
+  isDesktop: boolean;
+  isMobile: boolean;
+  isTablet: boolean;
+  getTranslationSubscribe: Subscription;
+  currentLanguage: string;
+  showTranslateMe: boolean;
+  timeUnit: TimeUnit;
+  timeUnits: TimeUnit[];
+  currencyUnit: Currency;
+  currencyUnits: Currency[];
+  familyIncome: string;
+  appStatesSubscription: Subscription;
 
-  public constructor(elementRef: ElementRef,
+  constructor(elementRef: ElementRef,
                      private zone: NgZone,
                      private math: MathService,
                      private familyHeaderService: FamilyHeaderService,
@@ -103,7 +103,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.element = elementRef.nativeElement;
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isMobile = this.browserDetectionService.isMobile();
     this.isTablet = this.browserDetectionService.isTablet();
@@ -187,7 +187,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getFamilyHeaderData(): void {
+  getFamilyHeaderData(): void {
     if (this.placeId) {
       const query = `placeId=${this.placeId}${this.languageService.getLanguageParam()}`;
       this.familyHeaderServiceSubscribe = this.familyHeaderService.getFamilyHeaderData(query).subscribe((res: any): any => {
@@ -242,7 +242,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if(this.familyHeaderServiceSubscribe) {
       this.familyHeaderServiceSubscribe.unsubscribe();
     }
@@ -260,11 +260,11 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  public openInfo(isOpenArticle: boolean): void {
+  openInfo(isOpenArticle: boolean): void {
     this.isOpenArticle = !isOpenArticle;
   }
 
-  public closeAboutDataPopUp(event: MouseEvent): void {
+  closeAboutDataPopUp(event: MouseEvent): void {
     let el = event && event.target as HTMLElement;
 
     if (el.className.indexOf('closeMenu') !== -1) {
@@ -273,7 +273,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  public showAboutData(event: MouseEvent, fixed: boolean): void {
+  showAboutData(event: MouseEvent, fixed: boolean): void {
     if (fixed) {
       event.preventDefault();
     }
@@ -301,7 +301,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  public scrollToStart(event: MouseEvent): void {
+  scrollToStart(event: MouseEvent): void {
     const targetElement = event.target as HTMLElement;
     const elementClassName: string = targetElement.className;
 
@@ -314,7 +314,7 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     this.utilsService.animateScroll('scrollBackToTop', 20, 1000, this.isDesktop);
   }
 
-  public truncCountryName(countryData: any): any {
+  truncCountryName(countryData: any): any {
     switch (countryData.alias) {
       case 'South Africa' :
         this.countryName = 'SA';
@@ -334,11 +334,11 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  public openExpandBlock(): void {
+  openExpandBlock(): void {
     this.familyExpandBlock.emit({thingId: this.home.familyThingId});
   }
 
-  public goToPage(url: string, params: UrlParameters): void {
+  goToPage(url: string, params: UrlParameters): void {
     this.urlParametersService.dispatchToStore(params);
   }
 }
