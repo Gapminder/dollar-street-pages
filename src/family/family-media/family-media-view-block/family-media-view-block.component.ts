@@ -48,40 +48,40 @@ interface ImageViewBlockPosition {
 })
 export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestroy, AfterViewChecked{
   @ViewChild('homeDescriptionContainer')
-  public homeDescriptionContainer: ElementRef;
+  homeDescriptionContainer: ElementRef;
 
   @ViewChild('imageBlockContainer')
-  public imageBlockContainer: ElementRef;
+  imageBlockContainer: ElementRef;
 
   @Input()
-  public imageData: any;
+  imageData: any;
 
   @Output()
-  public closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
+  closeBigImageBlock: EventEmitter<any> = new EventEmitter<any>();
 
-  public loader: boolean = false;
+  loader: boolean = false;
   imageLoader = false;
-  public popIsOpen: boolean = false;
-  public fancyBoxImage: string;
-  public country: any;
-  public countryName: string;
-  public article: any;
-  public streetData: DrawDividersInterface;
-  public viewBlockServiceSubscribe: Subscription;
-  public resizeSubscribe: Subscription;
-  public imageResolution: ImageResolutionInterface;
-  public windowInnerWidth: number = window.innerWidth;
-  public isDesktop: boolean;
-  public thing: any = {};
-  public showTranslateMe: boolean;
-  public element: HTMLElement;
-  public streetSettingsState: Observable<StreetSettingsState>;
-  public viewImage: string = '';
-  public streetSettingsStateSubscription: Subscription;
-  public consumerApi: string;
-  public showInCountry: any;
-  public showInRegion: any;
-  public showInTheWorld: any;
+  popIsOpen: boolean = false;
+  fancyBoxImage: string;
+  country: any;
+  countryName: string;
+  article: any;
+  streetData: DrawDividersInterface;
+  viewBlockServiceSubscribe: Subscription;
+  resizeSubscribe: Subscription;
+  imageResolution: ImageResolutionInterface;
+  windowInnerWidth: number = window.innerWidth;
+  isDesktop: boolean;
+  thing: any = {};
+  showTranslateMe: boolean;
+  element: HTMLElement;
+  streetSettingsState: Observable<StreetSettingsState>;
+  viewImage: string = '';
+  streetSettingsStateSubscription: Subscription;
+  consumerApi: string;
+  showInCountry: any;
+  showInRegion: any;
+  showInTheWorld: any;
   needNavigateToBlock = false;
   private imageViewBlockPosition: ImageViewBlockPosition = {
     point: {
@@ -89,7 +89,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     }
   };
 
-  public constructor(elementRef: ElementRef,
+  constructor(elementRef: ElementRef,
                      private zone: NgZone,
                      private browserDetectionService: BrowserDetectionService,
                      private viewBlockService: FamilyMediaViewBlockService,
@@ -98,7 +98,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      private store: Store<AppStates>,
                      private urlParametersService: UrlParametersService,
                      private urlChangeService: UrlChangeService,
-                     public streetService: StreetDrawService,
+                     streetService: StreetDrawService,
                      private pagePositionService: PagePositionService,
                      private imagesService: ImageLoadedService) {
     this.element = elementRef.nativeElement;
@@ -119,7 +119,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     });
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.streetSettingsStateSubscription = this.streetSettingsState.subscribe((data: StreetSettingsState) => {
       if (get(data, 'streetSettings', false)) {
         this.streetData = data.streetSettings;
@@ -143,9 +143,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     this.setPointPositionMediaBlock();
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (get(changes, 'imageData', false)) {
-      console.log(changes);
       this.setPointPositionMediaBlock();
       this.country = void 0;
       this.loader = false;
@@ -216,18 +215,20 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
   ngAfterViewChecked(): void {
     if (this.needNavigateToBlock) {
-      // this.scrollToBlock();
+      this.scrollToBlock();
+
+      // TODO: need create separate the Family service which will upload and manage all Family data, for don't want to  expect to will be uploaded some data other components;
+      setTimeout(() => {
+        this.scrollToBlock();
+      }, 1500)
       this.needNavigateToBlock = false;
     }
   }
 
   scrollToBlock(): void {
-
     const rect = this.imageBlockContainer.nativeElement.getBoundingClientRect();
     const elementHeightTop = window.scrollY  + rect.top;
     const scrollTo = elementHeightTop - FAMILY_HEADER_PADDING;
-    console.log(scrollTo)
-
     window.scrollTo(0, scrollTo);
   }
 
@@ -241,7 +242,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.resizeSubscribe) {
       this.resizeSubscribe.unsubscribe();
     }
@@ -255,7 +256,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
-  public openPopUp(): void {
+  openPopUp(): void {
     this.popIsOpen = true;
 
     const imgUrl = this.imageData.image.replace(this.imageResolution.expand, this.imageResolution.full);
@@ -269,16 +270,16 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     newImage.src = imgUrl;
   }
 
-  public fancyBoxClose(): void {
+  fancyBoxClose(): void {
     this.popIsOpen = false;
     this.fancyBoxImage = void 0;
   }
 
-  public closeImageBlock(): void {
+  closeImageBlock(): void {
     this.closeBigImageBlock.emit({});
   }
 
-  public truncCountryName(countryData: any): any {
+  truncCountryName(countryData: any): any {
     switch (countryData.name) {
       case 'South Africa' :
         this.countryName = 'SA';
@@ -294,7 +295,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
-  public getDescription(shortDescription: string): string {
+  getDescription(shortDescription: string): string {
     let numbers: number = 600;
 
     if (this.isDesktop) {
@@ -314,14 +315,12 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
-  // public goToPage(url: string, params: UrlParameters): void {
-  //   this.urlParametersService.dispatchToStore(params);
-  // }
+  goToPage(url: string, params: UrlParameters): void {
+    this.urlParametersService.dispatchToStore(params);
+  }
 
-  public goToMatrixWithParams(params: UrlParameters) {
+  goToMatrixWithParams(params: UrlParameters) {
     this.urlParametersService.dispatchToStore(params);
     this.pagePositionService.scrollTopZero();
   }
-
-
 }
