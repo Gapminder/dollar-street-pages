@@ -286,8 +286,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
           && this.placesSet !== matrix.placesSet) {
           this.placesSet = matrix.placesSet;
 
-          console.log(this.placesSet);
-
           if (this.currencyUnit) {
             this.initPlacesSet();
           }
