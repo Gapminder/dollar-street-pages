@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActionsAfterViewLoad, AppStates, UrlParameters } from '../interfaces';
-import { DEBOUNCE_TIME, DefaultUrlParameters, VisibleParametersPerPage } from '../defaultState';
+import { DEBOUNCE_TIME, DefaultUrlParameters, PinnedPlacesParameters, VisibleParametersPerPage } from '../defaultState';
 import { difference, get, reduce } from 'lodash';
 import * as StreetSettingsActions from '../common';
 import { BrowserDetectionService, IncomeCalcService, LanguageService, UtilsService } from '../common';
@@ -13,7 +13,6 @@ import * as CountriesFilterActions from '../shared/countries-filter/ngrx/countri
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import * as LanguageActions from '../common/language/ngrx/language.actions';
-import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
@@ -277,5 +276,21 @@ export class UrlParametersService {
 
   resetRow() {
     this.parameters.zoom = '0';
+  }
+
+  getQueryPinnedPlace(): string {
+    if (this.parameters.embed) {
+      const params = reduce(PinnedPlacesParameters, (result: string[], param: string) => {
+        result.push(`${param}=${this.parameters[param]}&`);
+
+        return result;
+      }, []);
+
+      params.push(`resolution=${this.utilsService.getImageResolution(true).image}`);
+
+      return params.join('&');
+    }
+
+    return '';
   }
 }

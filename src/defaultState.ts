@@ -88,3 +88,9 @@ export const VisibleParametersPerPage = {
     'activeImage'
   ]
 };
+
+export const PinnedPlacesParameters = [
+  'thing',
+  'embed',
+  'lang',
+]
