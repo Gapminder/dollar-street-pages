@@ -1,7 +1,7 @@
-import { browser, $ } from 'protractor';
+import { browser } from 'protractor';
 
 import { DataProvider } from '../Data/DataProvider';
-import { AbstractPage, PhotographersPage, PhotographerPage } from '../Pages';
+import { AbstractPage, PhotographerPage, PhotographersPage } from '../Pages';
 import { Footer } from '../Pages/Components';
 
 describe('Photographers Page test', () => {
@@ -20,7 +20,7 @@ describe('Photographers Page test', () => {
       await PhotographersPage.searchButton.sendKeys(`${photographerQuery}\n`);
       const firstPhogrName = await PhotographersPage.foundPhotographer.getText();
 
-      expect(firstPhogrName).toContain(photographerQuery);
+      expect(firstPhogrName.toLocaleLowerCase()).toContain(photographerQuery.toLocaleLowerCase());
     }
   });
 
@@ -33,11 +33,11 @@ describe('Photographers Page test', () => {
   });
 
   it(`click on photographer image leads to Photographer Page`, async () => {
-    const photogrName = await PhotographersPage.photographerName.first().getText();    
+    const photogrName = await PhotographersPage.photographerName.first().getText();
     await PhotographersPage.photographerPortrait.first().click();
 
     expect(await browser.getCurrentUrl()).toContain('photographer');
-    expect(await PhotographerPage.getPhotographerName()).toEqual(photogrName);    
+    expect(await PhotographerPage.getPhotographerName()).toEqual(photogrName);
   });
 
   it(`click on photographer name from left sidepanel leads to Photographer Page`, async () => {
@@ -46,7 +46,7 @@ describe('Photographers Page test', () => {
     await photographerInList.click();
 
     expect(await browser.getCurrentUrl()).toContain('photographer');
-    expect(await PhotographerPage.getPhotographerName()).toEqual(photogrName);    
+    expect(await PhotographerPage.getPhotographerName()).toEqual(photogrName);
   });
 
   it(`check basic elements presence`, async () => {

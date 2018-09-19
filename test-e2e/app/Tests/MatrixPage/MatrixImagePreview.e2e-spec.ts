@@ -1,9 +1,9 @@
 import { browser } from 'protractor';
 
 import { getRandomNumber, isInViewport } from '../../Helpers';
-import { MatrixPage, CountryPage, AbstractPage, FamilyPage } from '../../Pages';
-import { MatrixImagePreview, FamilyImage, WelcomeWizard, FamilyImagePreview } from '../../Pages/Components';
-import {scrollIntoView} from '../../Helpers/commonHelper';
+import { CountryPage, FamilyPage, MatrixPage } from '../../Pages';
+import { FamilyImage, FamilyImagePreview, MatrixImagePreview, WelcomeWizard } from '../../Pages/Components';
+import { scrollIntoView } from '../../Helpers/commonHelper';
 
 const pattern = /^.*(\/)/; // grab everything to last slash
 let random: number;
@@ -123,7 +123,7 @@ describe('Matrix Page: Image Preview:', () => {
 
     await familyImagePreview.visitThisHomeBtn.click();
 
-    const familyPhotoSrc = (await FamilyPage.familyPhoto.getAttribute('src')).match(pattern)[0]; // TODO refactor this
+    const familyPhotoSrc = (await FamilyPage.familyPhoto.getAttribute('src')).match(pattern)[ 0 ]; // TODO refactor this
 
     await expect(previewImageSrc).toEqual(familyPhotoSrc);
     expect(await browser.getCurrentUrl()).toContain('family?');
@@ -155,14 +155,13 @@ describe('Matrix Page: Image Preview:', () => {
   });
 
   it('Photographer name leads to photographer page', async () => {
-      const familyImagePreview = await family.openPreview();
-      const photographerName = await familyImagePreview.photographerName.getText();
-      await MatrixPage.getAngleUp.click();
+    const familyImagePreview = await family.openPreview();
+    const photographerName = await familyImagePreview.photographerName.getText();
 
-      await scrollIntoView(familyImagePreview.photographerName);
-      await familyImagePreview.photographerName.click();
+    await scrollIntoView(familyImagePreview.photographerName);
+    await familyImagePreview.photographerName.click();
 
-      expect(await browser.getCurrentUrl()).toContain('photographer');
-      expect(await CountryPage.countryName.getText()).toContain(photographerName); // refactor: move this into header
-    });
+    expect(await browser.getCurrentUrl()).toContain('photographer');
+    expect(await CountryPage.countryName.getText()).toContain(photographerName); // refactor: move this into header
+  });
 });

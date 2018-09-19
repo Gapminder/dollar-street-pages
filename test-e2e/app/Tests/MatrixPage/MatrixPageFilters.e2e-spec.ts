@@ -65,8 +65,7 @@ describe('Matrix Page: Filters', () => {
   it('Show all countries', async () => {
     const COUNTRY = 'Sweden'; //TODO: Remowe hardcode
     waitForVisible(MatrixPage.familyLink.get(0));
-    const totalCountriesBefore = await MatrixPage.familyLink.count();
-
+    const totalCountriesBefore = await MatrixPage.familyLink.count() - 8;
     await Header.filterByCountry(COUNTRY);
     await Header.filterByAllCountries();
 
