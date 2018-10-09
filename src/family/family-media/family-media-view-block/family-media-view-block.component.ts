@@ -204,10 +204,8 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
 
           this.viewImage = this.imageData.image;
 
-          this.needNavigateToBlock= true;
-        process.nextTick(() => {
+          this.needNavigateToBlock = true;
 
-        })
 
       });
     }

@@ -270,11 +270,15 @@ export class FamilyMediaComponent implements OnDestroy, AfterViewInit {
     this.imageData.index = !countByIndex ? this.zoom : countByIndex;
     this.imageData.placeId = this.placeId;
     this.imageData.imageId = image._id;
+    let iconColored = null;
+    if (image.thingIcon) {
+      iconColored = image.thingIcon.replace('FFFFFF', '2C4351');
+    }
     this.imageData.thing = {
       _id: image.thing,
       plural: image.plural,
       thingName: image.thingName,
-      icon: image.thingIcon.replace('FFFFFF', '2C4351')
+      icon: iconColored
     };
 
     this.imageData.image = image.background
