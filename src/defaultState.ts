@@ -28,7 +28,7 @@ export const TIME_UNIT_CODES: {[key: string]: TimeUnitCode} = {
 
 export const DefaultUrlParameters: UrlParameters = {
   lang: 'en',
-  thing: 'Families',
+  thing: 'Clinics',
   countries: ['World'],
   regions: ['World'],
   zoom: '4',
