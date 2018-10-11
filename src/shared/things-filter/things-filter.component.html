@@ -35,7 +35,7 @@
              *ngFor="let thing of relatedThings"
              (click)="goToThing(thing)"
              [ngClass]="{'empty': thing.empty}">
-          <div class="thing-icon-container">
+          <div class="thing-icon-container" *ngIf="thing.icon">
             <img class="thing-icon" [src]="thing.icon" alt="">
           </div>
 
@@ -52,7 +52,7 @@
              *ngFor="let thing of popularThings"
              (click)="goToThing(thing)"
              [ngClass]="{'empty': thing.empty}">
-          <div class="thing-icon-container">
+          <div class="thing-icon-container" *ngIf="thing.icon">
             <img class="thing-icon" [src]="thing.icon" alt="">
           </div>
 
@@ -85,7 +85,7 @@
              *ngFor="let thing of otherThings | ThingsFilterPipe:search.text"
              (click)="goToThing(thing)"
              [ngClass]="{'empty': thing.empty}">
-          <div class="thing-icon-container">
+          <div class="thing-icon-container" *ngIf="thing.icon">
             <img class="thing-icon"
                  [src]="thing.icon"
                  [alt]="thing.plural">
