@@ -157,7 +157,7 @@ export class DataProvider {
   static matrixPageQueries = {
     ThingPets: { query: 'Pets' },
     ThingFamilySnapshots: { query: 'Family snapshots' },
-    ThingWalls: { query: 'Wall decorations' },
+
     ThingFrontDoor: { query: 'Front doors' },
     ThingSittingArea: { query: 'Sitting areas' },
     'ThingPlaces for dinner': { query: 'Places for dinner' },
