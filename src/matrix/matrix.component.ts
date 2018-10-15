@@ -330,7 +330,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
         if (get(matrix, 'embedSetId', false)
           && this.embedSetId !== matrix.embedSetId) {
           this.embedSetId = matrix.embedSetId;
-          const query = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+          const query = this.getQueryPinnedPlaces();
           this.store.dispatch(new MatrixActions.GetPinnedPlaces(query));
           this.store.dispatch(new MatrixActions.SetEmbedMode(true));
         }
@@ -390,6 +390,15 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
 
     this.setPinHeaderTitle();
+  }
+
+  getQueryPinnedPlaces() {
+    const q = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
+
+    const query = this.urlParametersService.getQueryPinnedPlace();
+    console.log(query);
+
+    return query;
   }
 
   onPinnedPlaceHover(place: Place): void {

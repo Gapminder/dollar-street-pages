@@ -224,9 +224,9 @@
 
 .donate-btn {
   display: inline-block;
-  max-width: 162px;
+  max-width: 100%;
   min-width: 162px;
-  padding: 14px 20px;
+  padding: 14px 25px;
   border-radius: 5px;
   background-color: #ffce00;
   -webkit-transition: all 300ms ease;

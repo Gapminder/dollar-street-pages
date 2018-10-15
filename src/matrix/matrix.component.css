@@ -9,7 +9,7 @@ matrix-images {
 .zoom-column {
   position: fixed;
   right: 32px;
-  bottom: 52px;
+  bottom: 22px;
   z-index: 10;
   transform: translateZ(0);
 }
@@ -918,6 +918,11 @@ matrix-images {
   color: #07C;
 }
 
+.for-download .pin-header,
+.for-screenshot .pin-header{
+  padding: 7px;
+}
+
 .for-download .download-footer-text{
   display: block;
 }
@@ -988,7 +993,8 @@ matrix-images {
   display: none;
 }
 
-.embed-preview-content-position {
+.for-screenshot .embed-preview-content-position,
+.for-download  .embed-preview-content-position {
   width: 100%;
 }
 
@@ -1003,4 +1009,32 @@ matrix-images {
 .for-screenshot .pin-mode-close,
 .for-download .pin-mode-close {
   display: none;
+}
+
+.pin-container .for-screenshot  .places-container,
+.pin-container .for-download .places-container {
+  max-height: none;
+}
+
+.for-screenshot .pin-body,
+.for-download .pin-body {
+  /*width: 100%;*/
+}
+
+.for-screenshot .pin-place,
+.for-download .pin-place {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.for-screenshot.places-lenght-3 .pin-place,
+.for-download.places-lenght-3 .pin-place {
+  width: 45%;
+}
+
+.pin-container .for-screenshot.places-lenght-2 .pin-place img,
+.pin-container .for-download.places-lenght-2 .pin-place img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AppStates, UrlParameters } from '../interfaces';
-import { DEBOUNCE_TIME, DefaultUrlParameters, VisibleParametersPerPage } from '../defaultState';
+import { ActionsAfterViewLoad, AppStates, UrlParameters } from '../interfaces';
+import { DEBOUNCE_TIME, DefaultUrlParameters, PinnedPlacesParameters, VisibleParametersPerPage } from '../defaultState';
 import { difference, get, reduce } from 'lodash';
 import * as StreetSettingsActions from '../common';
 import { BrowserDetectionService, IncomeCalcService, LanguageService, UtilsService } from '../common';
@@ -13,17 +13,17 @@ import * as CountriesFilterActions from '../shared/countries-filter/ngrx/countri
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import * as LanguageActions from '../common/language/ngrx/language.actions';
-import { LocalStorageService } from '../common/local-storage/local-storage.service';
-import { TranslateService } from 'ng2-translate';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class UrlParametersService {
   parameters: UrlParameters;
   window: Window = window;
   isMobile:boolean;
-  public needPositionByRoute = null;
-  public activeHouseByRoute = null;
-  public activeImageByRoute = null;
+  needPositionByRoute = null;
+  activeHouseByRoute = null;
+  activeImageByRoute = null;
+  actionAfterViewLoad = new BehaviorSubject({});
 
   public constructor(
     private utilsService: UtilsService,
@@ -268,5 +268,29 @@ export class UrlParametersService {
     }
 
     return false;
+  }
+
+  setActionAfterViewLoad(actions: ActionsAfterViewLoad): void {
+    this.actionAfterViewLoad.next(actions);
+  }
+
+  resetRow() {
+    this.parameters.zoom = '0';
+  }
+
+  getQueryPinnedPlace(): string {
+    if (this.parameters.embed) {
+      const params = reduce(PinnedPlacesParameters, (result: string[], param: string) => {
+        result.push(`${param}=${this.parameters[param]}&`);
+
+        return result;
+      }, []);
+
+      params.push(`resolution=${this.utilsService.getImageResolution(true).image}`);
+
+      return params.join('&');
+    }
+
+    return '';
   }
 }

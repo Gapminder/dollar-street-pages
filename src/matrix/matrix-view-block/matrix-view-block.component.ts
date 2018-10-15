@@ -295,7 +295,22 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       if (get(this.familyData, 'houseImage', false)) {
         this.uploadImages(this.familyData.houseImage.url, 'houseImage');
       }
+
+      this.scrollToBlock();
     });
+  }
+
+  scrollToBlock(): void {
+    let additionTop = 0;
+    const guide = document.querySelector('.guide-position');
+    if (guide) {
+      additionTop = guide.getBoundingClientRect().height;
+    }
+
+
+    if (this.showblock) {
+      window.scrollTo(0, this.viewImageBlockContainer.nativeElement.offsetTop + additionTop);
+    }
   }
 
   public ngOnDestroy(): void {
@@ -330,6 +345,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public visitThisHome(placeId: string): void {
+    this.urlParametersService.resetRow();
     this.store.dispatch(new MatrixActions.SetPlace(placeId));
     this.streetService.clearAndRedraw();
   }

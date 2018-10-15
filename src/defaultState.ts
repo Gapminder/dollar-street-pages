@@ -5,6 +5,7 @@ export const MOBILE_SIZE = 600;
 export const MATRIX_GRID_CONTAINER_CLASS = 'images-container';
 export const FAMILY_GRID_CONTAINER_CLASS = 'family-image-container';
 export const MAX_PINNED_PLACES = 6;
+export const FAMILY_HEADER_PADDING = 185;
 
 export const TIME_UNIT_CODES: {[key: string]: TimeUnitCode} = {
   day: {
@@ -87,3 +88,9 @@ export const VisibleParametersPerPage = {
     'activeImage'
   ]
 };
+
+export const PinnedPlacesParameters = [
+  'thing',
+  'embed',
+  'lang',
+]
