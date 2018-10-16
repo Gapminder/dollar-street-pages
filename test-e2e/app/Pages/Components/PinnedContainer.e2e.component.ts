@@ -16,8 +16,8 @@ export class PinnedContainer {
   streetChart: ElementFinder = this.rootSelector.$('#chart');
   familiesList: ElementFinder = $('.pin-header');
   pinnedImages: ElementArrayFinder = $$('.pin-place');
-  cancelBtn: ElementFinder = this.rootSelector.$('.share-close-buttons');
-  shareLink: ElementFinder = this.rootSelector.$('.share-link-input');
+  cancelBtn: ElementFinder = this.rootSelector.$$('.pin-bottom-button').last();
+  shareLink: ElementFinder = this.rootSelector.$('e2e-share-button');
   housesOnStreet: ElementArrayFinder = this.streetChart.$$('.point');
   shareBtn: ElementFinder = $('.e2e-share-button');
 
