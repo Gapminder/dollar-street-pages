@@ -23,19 +23,20 @@ describe('Header tests', () => {
     expect(await browser.getCurrentUrl()).toContain(`lang=${language.code}`);
   });
 
-  it('Click on logo reset all settings', async () => {
+  it('Click on logo reset all, but language, settings', async () => {
     const random = getRandomNumber();
 
     // tslint:disable-next-line:max-line-length
     await WelcomeWizard.disableWizard(); // TODO remove this after fix https://github.com/Gapminder/dollar-street-pages/issues/1264
     await Header.changeLanguage(Header.languages.spanish.name);
+    const urlSpanish = await browser.getCurrentUrl();
     const imagePreview = await MatrixPage.getFamily(random).openPreview();
     await imagePreview.visitThisHomeBtn.click();
 
     await Header.clickOnLogo();
     await browser.refresh(); // some issue with chrome or chromedriver. Investigation is needed
-    const url = await browser.getCurrentUrl();
-    expect(url).toEqual(MatrixPage.url); // Matrix page is default page
+    const url = await browser.getCurrentUrl(); // Lang should not be reset by click on logo please see #1268
+    expect(url).toEqual(urlSpanish); //Check that url lang param isn't changed after click on page logo.
   });
 
   describe('Check links in hamburger menu', () => {
