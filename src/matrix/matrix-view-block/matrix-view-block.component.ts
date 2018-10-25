@@ -327,7 +327,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public openPopUp(): void {
     this.popIsOpen = true;
 
-    let imgUrl = this.place.background.replace(this.imageResolution.expand, this.imageResolution.full);
+    let imgUrl = this.consumerApi + '/v1/download-image/' + this.place.image
+
     let newImage = new Image();
 
     newImage.onload = () => {
