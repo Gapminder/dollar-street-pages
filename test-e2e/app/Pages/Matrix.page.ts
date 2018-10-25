@@ -41,6 +41,7 @@ export class MatrixPage {
   static familyIncomeInPreview: ElementFinder = $('.matrix-view-block .header-container');
 
   static getFamily(index = 0): FamilyImage {
+    this.waitForSpinner();
     return new FamilyImage(this.url, index);
   }
 
@@ -86,4 +87,5 @@ export class MatrixPage {
       .getText()
       .then(income => Number(income.replace(/\D/g, '')));
   }
+
 }
