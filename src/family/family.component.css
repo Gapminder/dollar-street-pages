@@ -10,7 +10,7 @@
 .zoom-column {
   position: fixed;
   right: 32px;
-  bottom: 52px;
+  bottom: 10px;
 }
 
 .zoom-column.stop {
