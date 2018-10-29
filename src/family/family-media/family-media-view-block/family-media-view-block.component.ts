@@ -230,7 +230,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public openPopUp(): void {
     this.popIsOpen = true;
 
-    const imgUrl = this.consumerApi + '/v1/download-image/' + this.imageData.imageId;
+    const imgUrl = this.consumerApi + environment.pathToDownloadImages + this.imageData.imageId;
     const newImage = new Image();
 
     newImage.onload = () => {
