@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from 'ng2-translate';
+import { TranslateModule, TranslateService } from 'ng2-translate';
 import { DropdownModule } from 'ng2-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import {
   LanguageService,
   LocalStorageService,
   BrowserDetectionService,
-  Angulartics2GoogleTagManager
+  Angulartics2GoogleTagManager, SocialShareService
 } from '../../../common';
+import { forEach } from 'lodash';
 import {
     LanguageServiceMock,
     LoaderServiceMock,
@@ -18,8 +19,14 @@ import {
 import { SocialShareButtonsComponent } from '../../social-share-buttons/social-share-buttons.component';
 import { LanguageSelectorComponent } from '../../language-selector/language-selector.component';
 import { MainMenuComponent } from '../main-menu.component';
+import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { SocialShareButtonsService } from '../../social-share-buttons/social-share-buttons.service';
+import { SocialShareServiceMock } from '../../../test/mocks/socialShare.service.mock';
 import { Subscription } from 'rxjs/Subscription';
-import { forEach } from 'lodash';
+
+class SocialShareButtonsServiceMock {
+
+};
 
 describe('MainMenuComponent', () => {
     let component: MainMenuComponent;
@@ -28,6 +35,7 @@ describe('MainMenuComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
+                CommonServicesTestingModule,
                 TranslateModule,
                 DropdownModule,
                 RouterTestingModule,
@@ -39,6 +47,8 @@ describe('MainMenuComponent', () => {
                 LanguageSelectorComponent
             ],
             providers: [
+                { provide: SocialShareService, useClass: SocialShareServiceMock },
+                { provide: SocialShareButtonsService, useClass: SocialShareButtonsServiceMock },
                 { provide: LanguageService, useClass: LanguageServiceMock },
                 { provide: LocalStorageService, useClass: LoaderServiceMock },
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
@@ -54,13 +64,13 @@ describe('MainMenuComponent', () => {
       component.ngOnInit();
       component.ngAfterViewInit();
 
-      forEach(component.ngSubscriptions, ( subscription: Subscription ) => {
+      forEach(component.ngSubscriptions, (subscription: Subscription) => {
         spyOn(subscription, 'unsubscribe');
       });
 
       component.ngOnDestroy();
 
-      forEach(component.ngSubscriptions, ( subscription: Subscription ) => {
+      forEach(component.ngSubscriptions, (subscription: Subscription) => {
         expect(subscription.unsubscribe).toHaveBeenCalled();
       });
     });

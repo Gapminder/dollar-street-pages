@@ -1,3 +1,21 @@
+.main-menu {
+  display: none;
+}
+
+.main-mobile-menu {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .main-menu {
+    display: block;
+  }
+
+  .main-mobile-menu {
+    display: none;
+  }
+}
+
 #main-menu .menu-icon {
   display: block;
   width: 62px;
@@ -51,7 +69,7 @@
   padding: 0;
   border-radius: 0;
   box-shadow: none;
-  width: 232px;
+  width: 285px;
   z-index: 10;
 }
 
@@ -83,49 +101,15 @@
 
 #main-menu .open .dropdown-menu li div span {
   display: inline-block;
-  width: 42px;
-  font-size: 14px;
   text-transform: uppercase;
   color: #edf0f5;
-  margin-top: 5px;
-  line-height: 14px;
-  float: left;
+  font-size: 18px;
 }
 
 #main-menu .open .dropdown-menu li .menu-links {
   font-size: 14px;
   line-height: 10px;
   text-decoration: underline;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-#main-menu .open .dropdown-menu li .feedback-container {
-  padding: 5px 20px 5px 15px;
-  text-align: center;
-}
-
-#main-menu .open .dropdown-menu li .feedback-container .feedback-content {
-  margin: 0px;
-  padding: 0px;
-  display: inline-block;
-}
-
-#main-menu .open .dropdown-menu li .feedback-container .feedback-icon {
-  display: inline-block;
-  float: left;
-  width: 16px;
-  height: 16px;
-  background-position: 0px;
-  margin-top: 4px;
-}
-
-#main-menu .open .dropdown-menu li .feedback {
-  display: inline-block;
-  float: left;
-  margin-left: 4px;
-  font-size: 14px;
-  padding: 4px 0 2px 0;
   text-transform: uppercase;
   text-align: center;
 }
@@ -199,3 +183,20 @@
   }
 }
 
+.comparisonButton {
+  text-transform: uppercase;
+  color: #edf0f5;
+  font-size: 18px;
+  display: block;
+  padding: 14px 20px;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  text-align: left;
+  outline: none;
+}
+
+.comparisonButton.active {
+  background-color: #edf0f5;
+  color: #374551;
+}
