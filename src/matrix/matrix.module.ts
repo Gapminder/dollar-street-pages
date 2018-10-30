@@ -18,6 +18,8 @@ import { MatrixImagesComponent } from './matrix-images';
 import { MatrixViewBlockComponent,
          MatrixViewBlockService } from './matrix-view-block';
 
+import { ClipboardModule } from 'ngx-clipboard';
+
 @NgModule({
   declarations: [
     MatrixComponent,
@@ -29,7 +31,8 @@ import { MatrixViewBlockComponent,
     CommonModule,
     SharedModule,
     InfiniteScrollModule,
-    EffectsModule.forFeature([MatrixEffects])
+    EffectsModule.forFeature([MatrixEffects]),
+    ClipboardModule
   ],
   providers: [
     MatrixService,
