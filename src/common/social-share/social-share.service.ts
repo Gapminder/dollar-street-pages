@@ -7,23 +7,24 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SocialShareService {
-    public url: string;
-    public locationPath: string;
-    public newWindow: any;
-    public location: any = location;
-    public window: Window = window;
-    public document: Document = document;
-    public elementTagName: string = 'script';
-    public facebookElementId: string = 'facebook-jssdk';
-    public twitterElementId: string = 'twitter-wjs';
-    public documentCreatedSubscribe: Subscription;
-    public twitterInstance: any;
-    public sharesTitleTranslated: string;
-    public shareMessageTranslated: string;
-    public getTranslationSubscribe: Subscription;
-    public getLanguagesListSubscription: Subscription;
+    url: string;
+    locationPath: string;
+    newWindow: any;
+    location: any = location;
+    window: Window = window;
+    document: Document = document;
+    elementTagName: string = 'script';
+    facebookElementId: string = 'facebook-jssdk';
+    twitterElementId: string = 'twitter-wjs';
+    documentCreatedSubscribe: Subscription;
+    twitterInstance: any;
+    sharesTitleTranslated: string;
+    shareMessageTranslated: string;
+    twitterShareMessageTranslated: string;
+    getTranslationSubscribe: Subscription;
+    getLanguagesListSubscription: Subscription;
 
-    public constructor(private languageService: LanguageService,
+    constructor(private languageService: LanguageService,
                        private http: Http) {
         this.documentCreatedSubscribe = Observable.fromEvent(document, 'DOMContentLoaded')
           .subscribe(() => {
@@ -31,9 +32,10 @@ export class SocialShareService {
               this.twitterInstance = this.twitterFollow();
           });
 
-        this.getTranslationSubscribe = this.languageService.getTranslation(['PHOTOS_AS_DATA','LIVES_ON_DOLLAR_STREET']).subscribe((trans: any) => {
+        this.getTranslationSubscribe = this.languageService.getTranslation(['PHOTOS_AS_DATA','LIVES_ON_DOLLAR_STREET', 'LIVES_ON_DOLLAR_STREET_TWITTER']).subscribe((trans: any) => {
             this.sharesTitleTranslated = trans.PHOTOS_AS_DATA;
             this.shareMessageTranslated = trans.LIVES_ON_DOLLAR_STREET;
+            this.twitterShareMessageTranslated = trans.LIVES_ON_DOLLAR_STREET_TWITTER;
         });
     }
 
@@ -44,7 +46,7 @@ export class SocialShareService {
       }).toPromise();
     }
 
-    public facebookLike(): void {
+    facebookLike(): void {
         const languageReplaceSchema: any = {
             ur_IN: 'ur_PK'
         };
@@ -73,7 +75,7 @@ export class SocialShareService {
         });
     }
 
-    public twitterFollow(): any {
+    twitterFollow(): any {
         let fjs: HTMLElement = this.document.getElementsByTagName(this.elementTagName)[0] as HTMLElement;
 
         this.twitterInstance = this.twitterInstance || {};
@@ -97,33 +99,33 @@ export class SocialShareService {
     }
 
     public openPopUp(target: string, url: string = null): void {
-      const twitterUrl: string = 'https://twitter.com/intent/tweet';
-      const facebookUrl: string = 'http://www.facebook.com/sharer.php';
-      const linkedinUrl: string = 'http://www.linkedin.com/shareArticle';
-      const googleUrl: string = 'https://plus.google.com/share';
+      const twitterUrl = 'https://twitter.com/intent/tweet';
+      const facebookUrl = 'http://www.facebook.com/sharer.php';
+      const linkedinUrl = 'https://www.linkedin.com/shareArticle';
+      const googleUrl = 'https://plus.google.com/share';
 
-      let originalUrl: string = '';
+      let originalUrl = '';
 
-      switch(target) {
+      switch (target) {
         case 'twitter':
           originalUrl = twitterUrl;
-        break;
+          break;
 
         case 'facebook':
           originalUrl = facebookUrl;
-        break;
+          break;
 
         case 'linkedin':
           originalUrl = linkedinUrl;
-        break;
+          break;
 
         case 'google':
           originalUrl = googleUrl;
-        break;
+          break;
 
         default:
           originalUrl = '';
-        break;
+          break;
       }
 
       let left: number = (this.window.innerWidth - 490) / 2;
@@ -138,12 +140,12 @@ export class SocialShareService {
               return;
             }
 
-            let params: URLSearchParams = new URLSearchParams();
+          let params: URLSearchParams = new URLSearchParams();
 
             switch(target) {
               case 'twitter':
                 params.set('url', res.url);
-                params.set('text', this.shareMessageTranslated + '- Dollar Street');
+                params.set('text', this.twitterShareMessageTranslated);
               break;
 
               case 'facebook':
@@ -155,6 +157,7 @@ export class SocialShareService {
                 params.set('mini', 'true');
                 params.set('url', res.url);
                 params.set('summary', this.shareMessageTranslated);
+                params.set('description', this.shareMessageTranslated);
               break;
 
               case 'google':
@@ -171,12 +174,12 @@ export class SocialShareService {
             this.openWindow(originalUrl, this.url);
           });
       } else {
-        let params: URLSearchParams = new URLSearchParams();
+        const params: URLSearchParams = new URLSearchParams();
 
         switch(target) {
           case 'twitter':
             params.set('url', url);
-            params.set('text', this.shareMessageTranslated + '- Dollar Street');
+            params.set('text', this.twitterShareMessageTranslated);
           break;
 
           case 'facebook':
@@ -188,12 +191,12 @@ export class SocialShareService {
           case 'linkedin':
             params.set('mini', 'true');
             params.set('url', url);
+            params.set('title', this.sharesTitleTranslated);
             params.set('summary', this.shareMessageTranslated);
           break;
 
           case 'google':
             params.set('url', url);
-            params.set('text', this.shareMessageTranslated);
           break;
 
           default:

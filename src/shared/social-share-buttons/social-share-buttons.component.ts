@@ -155,12 +155,14 @@ export class SocialShareButtonsComponent implements OnInit, OnDestroy {
         this.openWindow(originalUrl, this.url);
       });
 
+    const analyticText = `${ANALYTIC_TEXTS.network[target].text} ${ANALYTIC_TEXTS.location[this.analyticLocation].text}`;
     const analyticParams = {
       hitType: 'event',
       eventCategory: ANALYTIC_TEXTS.location[this.analyticLocation].category,
       eventAction: 'click',
       eventLabel: ANALYTIC_TEXTS.network[target].action
     };
+    //this.angulartics2.eventTrack.next({ action: 'click', properties: analyticParams});
     ga('send', analyticParams);
   }
 
