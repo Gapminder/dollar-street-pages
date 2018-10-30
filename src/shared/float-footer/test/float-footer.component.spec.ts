@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SocialShareService } from '../../../common';
 import { FloatFooterComponent } from '../float-footer.component';
-import { SocialShareButtonsComponent } from '../../social-share-buttons/social-share-buttons.component';
 import { SocialShareButtonsService } from '../../social-share-buttons/social-share-buttons.service';
 import { Store, StoreModule } from '@ngrx/store';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -63,15 +62,13 @@ describe('Component: FloatFooterComponent', () => {
     component.ngOnInit();
     component.ngAfterViewInit();
 
-    forEach(component.ngSubscriptions, ( subscription: Subscription ) => {
+    forEach(component.ngSubscriptions, (subscription: Subscription) => {
       spyOn(subscription, 'unsubscribe');
     });
-
     component.ngOnDestroy();
 
-    forEach(component.ngSubscriptions, ( subscription: Subscription ) => {
+    forEach(component.ngSubscriptions, (subscription: Subscription) => {
       expect(subscription.unsubscribe).toHaveBeenCalled();
     });
-
   });
 });
