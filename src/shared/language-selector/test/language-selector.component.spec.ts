@@ -3,7 +3,8 @@ import { DropdownModule } from 'ng2-bootstrap';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
 import {
-    LanguageService
+  FontDetectorService,
+  LanguageService
 } from '../../../common';
 import {
     LanguageServiceMock
@@ -11,6 +12,7 @@ import {
 import { LanguageSelectorComponent } from '../language-selector.component';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
 import { StoreModule } from '@ngrx/store';
+import { FontDetectorServiceMock } from '../../../test/mocks/font-detector.service.mock';
 
 describe('LanguageSelectorComponent', () => {
     let fixture: ComponentFixture<LanguageSelectorComponent>;
@@ -27,7 +29,8 @@ describe('LanguageSelectorComponent', () => {
             ],
             declarations: [LanguageSelectorComponent],
             providers: [
-                { provide: LanguageService, useClass: LanguageServiceMock }
+                { provide: LanguageService, useClass: LanguageServiceMock },
+                { provide: FontDetectorService, useClass: FontDetectorServiceMock },
             ]
         });
 
