@@ -98,6 +98,12 @@ export interface DrawDividersInterface {
     lowIncome: number;
     highIncome: number;
   };
+  dividers: number[];
+}
+
+export interface DividersGaps {
+  from: number;
+  to: number;
 }
 
 export interface Place {
@@ -123,6 +129,7 @@ export interface TimeUnit {
   per: string;
   translationCode?: string;
   translationIncome?: string;
+  translatedName?: string;
 }
 
 export interface TimeUnitCode {
@@ -137,6 +144,7 @@ export interface Currency {
   symbol: string;
   updated: Date | number;
   translations: {}[];
+  visibleName?: string;
 }
 
 export interface Continent {
@@ -200,4 +208,15 @@ export interface TranslationsInterface {
 
 export interface SubscriptionsList {
   [key: string]: Subscription;
+}
+
+export interface ActionsAfterViewLoad {
+  row: number,
+  activeHouse: string,
+  activeImage: string
+}
+
+export interface ProcessActionsAfterViewLoad {
+  actions: ActionsAfterViewLoad;
+  complete: boolean;
 }
