@@ -14,7 +14,8 @@ import { SVG_DEFAULTS } from './svg-parameters';
 import {
   AppStates,
   DrawDividersInterface,
-  Place
+  Place,
+  DividersGaps, Currency, TimeUnit
 } from '../../interfaces';
 import {
   DefaultUrlParameters,
@@ -78,7 +79,8 @@ export class StreetDrawService {
   windowInnerWidth: number = window.innerWidth;
   isDesktop: boolean;
   isMobile: boolean;
-  currencyUnit;
+  currencyUnit: Currency;
+  timeUnit: TimeUnit;
 
   colors = {
     fills: {
@@ -103,10 +105,11 @@ export class StreetDrawService {
   }
 
   init(lowIncome: number, highIncome: number, drawDividers: DrawDividersInterface, regions: string[], countries: string[], thing: string): this {
+
     this.thingname = thing;
     this.countries = countries[0];
     this.regions = regions[0];
-    this.axisLabel = [ _.get(drawDividers, 'low', 0), _.get(drawDividers, 'medium', 0), _.get(drawDividers, 'high', 0)];
+    this.axisLabel = drawDividers.dividers;
     this.levelLabels = [
       _.get(drawDividers, 'firstLabelName', ''),
       _.get(drawDividers, 'secondLabelName', ''),
@@ -169,7 +172,7 @@ export class StreetDrawService {
       .attr('height', SVG_DEFAULTS.squarePoints.height)
       .attr('y', SVG_DEFAULTS.squarePoints.positionY)
       .attr('x', (d: number) => {
-        const x = this.scale(d) - SVG_DEFAULTS.squarePoints.width/2
+        const x = this.scale(d) - SVG_DEFAULTS.squarePoints.width/2 + this.streetOffset/2;
 
         return x;
       });
@@ -181,6 +184,7 @@ export class StreetDrawService {
     if (!_.get(drawDividers, 'showCurrency', false) /*|| !this.showStreetAttrs*/) {
       return;
     }
+    const factorTimeUnit = this.factorTimeUnit(this.timeUnit.per);
 
     this.svg
       .selectAll('text.scale-label')
@@ -190,11 +194,12 @@ export class StreetDrawService {
       .attr('class', 'currency-text')
       .attr('text-anchor', 'middle')
       .text((d: any) => {
-        return `${this.currencyUnit.symbol}${this.math.roundIncome(d * this.currencyUnit.value)}`;
+
+        return `${this.currencyUnit.symbol}${this.math.roundIncome(d * this.currencyUnit.value * factorTimeUnit)}`;
       })
       .attr('x', (d: any) => {
 
-        return this.scale(d);
+        return this.scale(d) + this.streetOffset/2;
       })
       .attr('class', (d: any) => {
         return `currency-text scale-label${d}`;
@@ -309,7 +314,7 @@ export class StreetDrawService {
 
   }
 
-  drawScale(places: Place[], drawDividers: DrawDividersInterface): this {
+  drawScale(places: Place[], drawDividers: DrawDividersInterface, factorTimeUnit = 1): this {
 
     axisBottom(this.scale)
       .tickFormat(() => {
@@ -356,13 +361,15 @@ export class StreetDrawService {
         .value();
       this.placesArray = sortedPlaces;
 
-      if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-        this.minIncome = _.head(this.placesArray).income;
-        this.maxIncome = _.last(this.placesArray).income;
-      } else {
+      // if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+      //   const minPlacesIncome = _.head(this.placesArray).income;
+      //   const maxPlacesIncome = _.last(this.placesArray).income;
+      //   this.minIncome = minPlacesIncome < this.lowIncome ? minPlacesIncome : this.lowIncome;
+      //   this.maxIncome = maxPlacesIncome > this.highIncome ? maxPlacesIncome : this.highIncome;
+      // } else {
         this.minIncome = drawDividers.poor;
         this.maxIncome = drawDividers.rich;
-      }
+      // }
 
       this.leftPoint = this.scale(this.minIncome) - SVG_DEFAULTS.sliders.moreThenNeed;
       this.rightPoint = this.scale(this.maxIncome) + SVG_DEFAULTS.sliders.moreThenNeed;
@@ -548,22 +555,48 @@ export class StreetDrawService {
     this.drawLeftSlider(this.scale(this.lowIncome), true);
     this.drawRightSlider(this.scale(this.highIncome), true);
 
+    // this.svg
+    //   .selectAll('use.hover-bg')
+    //   .data([place])
+    //   .enter()
+    //   .append('use')
+
     this.svg
-      .selectAll('use.hover-bg')
+      .selectAll('rect.hover-bg')
       .data([place])
       .enter()
-      .append('use')
+      .append('rect')
+      .attr('rx', 3)
+      .attr('ry', 3)
       .attr('class', 'hover-bg')
-      .attr('xlink:href', SVG_DEFAULTS.hoverHomes.textBg.name)
-      .attr('width', SVG_DEFAULTS.hoverHomes.textBg.width)
+      // .attr('xlink:href', SVG_DEFAULTS.hoverHomes.textBg.name)
+      .attr('width', (datum: Place) => {
+
+        const widthBySymbol = datum.showIncome.toString().length * SVG_DEFAULTS.hoverHomes.textBg.widthBySymbol;
+        const maxWidth = SVG_DEFAULTS.hoverHomes.textBg.width;
+        if (widthBySymbol < maxWidth) {
+          return widthBySymbol;
+        }
+
+        return maxWidth;
+      })
       .attr('height', SVG_DEFAULTS.hoverHomes.textBg.height)
       .attr('y', SVG_DEFAULTS.hoverHomes.textBg.positionY)
       .attr('fill', SVG_DEFAULTS.hoverHomes.textBg.fill)
       .attr('stroke', SVG_DEFAULTS.hoverHomes.textBg.stroke)
       .attr('stroke-width', SVG_DEFAULTS.hoverHomes.textBg.strokeWidth)
       .attr('x', ( datum: Place ) => {
+        let width = 0;
+        const widthBySymbol = datum.showIncome.toString().length * SVG_DEFAULTS.hoverHomes.textBg.widthBySymbol;
+        const maxWidth = SVG_DEFAULTS.hoverHomes.textBg.width;
+        if (widthBySymbol < maxWidth) {
+          width = widthBySymbol;
+        } else {
+          width = maxWidth
+        }
+
         const scaleDatumIncome = this.scale(datum.income);
-        const position = (this.streetOffset / 2) + scaleDatumIncome - SVG_DEFAULTS.hoverHomes.textBg.width / 2 ;
+        const position = (this.streetOffset / 2) + scaleDatumIncome - width / 2 ;
 
         return position;
       })
@@ -670,34 +703,26 @@ export class StreetDrawService {
 
     this.leftScroll
       .attr('x',  () => {
-        if (this.leftPoint >= x) {
-          return this.leftPoint + SVG_DEFAULTS.sliders.differentSize;
-        } else {
-          const position = x + SVG_DEFAULTS.sliders.differentSize;
+        // if (this.leftPoint >= x) {
+        //   return this.leftPoint + SVG_DEFAULTS.sliders.differentSize;
+        // } else {
+          const position = (x < 0 ? 0 : x) + SVG_DEFAULTS.sliders.differentSize;
 
           return position;
-        }
+        // }
       });
 
-    if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
-      if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(x + this.streetOffset / 2 + 4) && !this.isMobile) {
-        this.sliderLeftBorder = this.leftPoint ;
-        this.leftScrollOpacityStreet
-          .attr('width', this.leftPoint + this.streetOffset / 2);
-        this.leftScrollOpacityHomes
-          .attr('width', this.leftPoint + this.streetOffset / 2);
-      } else {
-        this.leftScrollOpacityStreet
-          .attr('width', x + this.streetOffset / 2);
-        this.leftScrollOpacityHomes
-          .attr('width', x + this.streetOffset / 2);
-      }
-    } else {
+    // if ((this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+    //   this.leftScrollOpacityStreet
+    //     .attr('width', (x < 0 ? 0 : x) + this.streetOffset);
+    //   this.leftScrollOpacityHomes
+    //     .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
+    // } else {
       this.leftScrollOpacityStreet
-        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2 - SVG_DEFAULTS.sliders.moreThenNeed / 2);
+        .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2);
       this.leftScrollOpacityHomes
         .attr('width', (x < 0 ? 0 : x) + this.streetOffset / 2 - SVG_DEFAULTS.sliders.moreThenNeed / 2);
-    }
+    // }
 
     this.lowIncome = this.scale.invert(x);
 
@@ -869,7 +894,7 @@ export class StreetDrawService {
 
     if (selector === 'hover') {
       this.svg.selectAll('text.hover-house-text').remove();
-      this.svg.selectAll('use.hover-bg').remove();
+      this.svg.selectAll('rect.hover-bg').remove();
     }
 
     return this;
@@ -901,53 +926,58 @@ export class StreetDrawService {
   };
 
   drawScrollLabel(): this {
+    const poorGaps = this.getDividersGaps(this.dividersData.poor);
+    const richGaps = this.getDividersGaps(this.dividersData.rich)
+
+    const lowGaps = this.getDividersGaps(this.dividersData.low);
+    const mediumGaps = this.getDividersGaps(this.dividersData.medium);
+    const hightGaps = this.getDividersGaps(this.dividersData.high);
 
     let incomeL = Math.round(+this.lowIncome ? +this.lowIncome : 0);
     let incomeR = Math.round(+this.highIncome ? +this.highIncome : +this.dividersData.rich);
+
     if (incomeR > +this.dividersData.rich) {
       incomeR = +this.dividersData.rich;
     }
 
+
+
     let xL = this.scale(incomeL);
     let xR = this.scale(incomeR);
 
-    if (((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 45 > xR) || ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 45) && ((this.dividersData.lowDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 45 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#fff');
+
+    if (this.dividerFallWithinGaps(xL, lowGaps) || this.dividerFallWithinGaps(xR, lowGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.low).attr('fill', SVG_DEFAULTS.levels.color);
     }
 
-    if (((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 55 > xR) || ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 115) && ((this.dividersData.mediumDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 55 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#fff');
+    if (this.dividerFallWithinGaps(xL, mediumGaps) || this.dividerFallWithinGaps(xR, mediumGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.medium).attr('fill', SVG_DEFAULTS.levels.color);
     }
 
-    if (((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xR + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 65 > xR) || ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) < xL + 140) && ((this.dividersData.highDividerCoord / 1000 * (this.width + this.streetOffset / 2)) + 65 > xL )) {
-      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#fff');
+    if (this.dividerFallWithinGaps(xL, hightGaps) || this.dividerFallWithinGaps(xR, hightGaps)) {
+      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', SVG_DEFAULTS.levels.colorToHide);
     } else {
-      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', '#767d86');
+      this.svg.selectAll('text.scale-label' + this.dividersData.high).attr('fill', SVG_DEFAULTS.levels.color);
+    }
+
+    if ((this.dividerFallWithinGaps(xL, poorGaps)) || (this.dividerFallWithinGaps(xR, poorGaps))) {
+      this.svg.selectAll('text.poorest').attr('fill', SVG_DEFAULTS.levels.colorToHide);
+    } else {
+      this.svg.selectAll('text.poorest').attr('fill', SVG_DEFAULTS.levels.color);
+    }
+
+    if ((this.dividerFallWithinGaps(xL, richGaps)) || (this.dividerFallWithinGaps(xR, richGaps))) {
+      this.svg.selectAll('text.richest').attr('fill', SVG_DEFAULTS.levels.colorToHide);
+    } else {
+      this.svg.selectAll('text.richest').attr('fill', SVG_DEFAULTS.levels.color);
     }
 
     incomeL = +this.math.roundIncome(incomeL * Number(this.currencyUnit.value));
     incomeR = +this.math.roundIncome(incomeR * Number(this.currencyUnit.value));
-
-
-    if ((xR + 75) > this.width) {
-      this.svg.selectAll('text.richest').attr('fill', '#fff');
-    }
-
-    if ((xR + 75) < this.width) {
-      this.svg.selectAll('text.richest').attr('fill', '#767d86');
-    }
-
-    if (xL < 55) {
-      this.svg.selectAll('text.poorest').attr('fill', '#fff');
-    }
-
-    if (xL > 55) {
-      this.svg.selectAll('text.poorest').attr('fill', '#767d86');
-    }
 
     if (!this.leftScrollText) {
       this.leftScrollText = this.svg
@@ -955,7 +985,7 @@ export class StreetDrawService {
         .attr('class', 'left-scroll-label')
         .text(`${this.currencyUnit.symbol}${incomeL * this.currencyUnit.value}`)
         .attr('y', this.height - 2)
-        .attr('fill', '#767d86');
+        .attr('fill', SVG_DEFAULTS.levels.color);
     }
 
     if (!this.rightScrollText) {
@@ -964,16 +994,18 @@ export class StreetDrawService {
         .attr('class', 'right-scroll-label')
         .text(`${this.currencyUnit.symbol}${incomeR * this.currencyUnit.value}`)
         .attr('y', this.height - 2)
-        .attr('fill', '#767d86');
+        .attr('fill', SVG_DEFAULTS.levels.color);
     }
 
     const leftScrollTextStyle: {width: any; height: any;} = this.leftScrollText.node().getBBox();
     const rightScrollTextStyle: {width: any; height: any;} = this.rightScrollText.node().getBBox();
 
-    const leftScrollTextWidth: number = parseInt(leftScrollTextStyle.width, 10);
-    const rightScrollTextWidth: number = parseInt(rightScrollTextStyle.width, 10);
+    const leftScrollTextWidth = parseInt(leftScrollTextStyle.width, 10);
+    const rightScrollTextWidth = parseInt(rightScrollTextStyle.width, 10);
 
-    if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+    if (Math.round(this.leftPoint + this.streetOffset / 2) > Math.round(xL + this.streetOffset / 2 + 4) &&
+    (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+
       incomeL = Math.round(this.minIncome * this.currencyUnit.value);
       incomeL = +this.math.roundIncome(incomeL);
 
@@ -986,7 +1018,9 @@ export class StreetDrawService {
         .attr('x', () => xL + this.streetOffset / 2 - 4.5 - leftScrollTextWidth / 2);
     }
 
-    if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) && (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+    if (Math.round(this.rightPoint + this.streetOffset / 2) < Math.round(xR + this.streetOffset / 2 - 1) &&
+    (this.thingname !== 'Families' || this.countries !== 'World' || this.regions !== 'World') && !this.isMobile) {
+
       incomeR = Math.round(this.maxIncome * this.currencyUnit.value);
       incomeR = +this.math.roundIncome(incomeR);
 
@@ -1001,6 +1035,26 @@ export class StreetDrawService {
 
     return this;
   };
+
+  getDividersGaps(divider: number, dividersSpace = SVG_DEFAULTS.sliders.gaps ): DividersGaps {
+    const coordsDivider = this.scale(divider);
+
+    const dividerGaps = {
+      from: (coordsDivider - dividersSpace),
+      to: (coordsDivider + dividersSpace),
+    }
+
+    return dividerGaps;
+  }
+
+  dividerFallWithinGaps(dividerPosition: number, dividersGap: DividersGaps): boolean {
+    let fall = false;
+    if ((dividerPosition >= dividersGap.from) && (dividerPosition <= dividersGap.to)) {
+      fall = true;
+    }
+
+    return fall;
+  }
 
   drawHouses(places: Place[]): this {
     this.placesArray = [];
@@ -1100,6 +1154,10 @@ export class StreetDrawService {
       highIncome: highFilter
     });
 
+  }
+
+  factorTimeUnit(unitCode: string): number {
+    return SVG_DEFAULTS.factorTimeUnits[unitCode];
   }
 }
 

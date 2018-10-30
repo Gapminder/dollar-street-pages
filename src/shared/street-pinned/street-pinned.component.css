@@ -3,6 +3,7 @@
   -webkit-user-select: none;
   padding: 0 22px;
   height: 64px;
+  transform: translateZ(0);
   /*background-color: #fff;*/
 }
 

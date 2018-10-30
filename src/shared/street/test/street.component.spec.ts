@@ -11,6 +11,10 @@ import {
 } from '../../../test/';
 import { StreetComponent } from '../street.component';
 import { StreetDrawService } from '../street.service';
+import { forEach } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
+import { MatrixService } from '../../../matrix/matrix.service';
+import { MatrixServiceMock } from '../../../test/mocks/matrixService.service.mock';
 
 describe('StreetComponent', () => {
   let languageService: LanguageServiceMock;
@@ -31,7 +35,8 @@ describe('StreetComponent', () => {
         {provide: UrlChangeService, useClass: UrlChangeServiceMock},
         {provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock},
         {provide: LanguageService, useClass: LanguageServiceMock},
-        {provide: UtilsService, useClass: UtilsServiceMock}
+        {provide: UtilsService, useClass: UtilsServiceMock},
+        {provide: MatrixService, useClass: MatrixServiceMock}
       ]
     });
 
@@ -47,21 +52,14 @@ describe('StreetComponent', () => {
 
     component.ngAfterViewInit();
 
-    expect(component.getTranslationSubscribe).toBeDefined();
-    expect(component.appStatesSubscription).toBeDefined();
-    expect(component.streetFilterSubscribe).toBeDefined();
-    expect(component.resize).toBeDefined();
-
-    spyOn(component.getTranslationSubscribe, 'unsubscribe');
-    spyOn(component.appStatesSubscription, 'unsubscribe');
-    spyOn(component.streetFilterSubscribe, 'unsubscribe');
-    spyOn(component.resize, 'unsubscribe');
+    forEach(component.ngSubscriptions, (subscription: Subscription) => {
+      spyOn(subscription, 'unsubscribe');
+    });
 
     component.ngOnDestroy();
 
-    expect(component.getTranslationSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.appStatesSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.streetFilterSubscribe.unsubscribe).toHaveBeenCalled();
-    expect(component.resize.unsubscribe).toHaveBeenCalled();
+    forEach(component.ngSubscriptions, (subscription: Subscription) => {
+      expect(subscription.unsubscribe).toHaveBeenCalled();
+    })
   });
 });
