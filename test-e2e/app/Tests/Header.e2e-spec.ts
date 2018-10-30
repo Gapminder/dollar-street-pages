@@ -11,14 +11,14 @@ describe('Header tests', () => {
     await waitForLoader();
   });
 
-  xit('Change language', async () => {
+  it('Change language', async () => {
     const language = Header.languages.spanish;
 
     await Header.changeLanguage(language.name);
     const chosenLanguage = await Header.language.getText();
 
     expect(chosenLanguage).toEqual(language.name);
-    expect(await Header.thingsFilter.getText()).toEqual('Familias');
+    expect(await Header.thingsFilter.getText()).toEqual('Familias'); // TODO: Delete hard code text
     expect(await Header.countryFilter.getText()).toEqual('El mundo');
     expect(await browser.getCurrentUrl()).toContain(`lang=${language.code}`);
   });
@@ -68,6 +68,7 @@ describe('Header tests', () => {
 
     it('Open QuickGuide when it was saved in LocalStorage', async () => {
       await WelcomeWizard.disableWizard();
+      await waitForLoader();
       await HamburgerMenu.openQuickGuide();
 
       expect(await WelcomeWizard.rootSelector.isDisplayed()).toBeTruthy('QuickGuide should be opened');
@@ -75,6 +76,7 @@ describe('Header tests', () => {
 
     it('Open Home page', async () => {
       await browser.get(MapPage.url);
+      await waitForLoader();
       await HamburgerMenu.goToHome();
 
       expect(await browser.getCurrentUrl()).toContain(MatrixPage.url);

@@ -1,4 +1,4 @@
-import { ElementFinder, $, ElementArrayFinder, $$ } from 'protractor';
+import { $, ElementArrayFinder, ElementFinder } from 'protractor';
 
 import { isInViewport } from '../../Helpers';
 import { MatrixPage } from '../../Pages';
@@ -7,20 +7,20 @@ export class MatrixImagePreview {
   pattern = /^.*(\/)/; // grab everything to last slash
   rootSelector: ElementFinder = $('matrix-view-block');
 
-  familyName: ElementFinder = this.rootSelector.$('.home-description-container > h3');
-  familyDescription: ElementFinder = this.rootSelector.$('.home-description-container > p');
+  familyName: ElementFinder = this.rootSelector.$('.home-description-container h3');
+  familyDescription: ElementFinder = this.rootSelector.$('.home-description-container .description-text  p');
   familyPhotos: ElementArrayFinder = this.rootSelector.$$('.image-content>img');
-  familyIncome: ElementFinder = this.rootSelector.$('.header-container');
+  familyIncome: ElementFinder = this.rootSelector.$('.house-info-content .header-container');
   image: ElementFinder = this.rootSelector.$('.view-image-container > img');
-  visitThisHomeBtn: ElementFinder = this.rootSelector.$$('.home-description-container > a').first(); // TODO add test attribute
-  allFamiliesBtn: ElementFinder = this.rootSelector.$$('.home-description-container > a').last(); // TODO add test attribute
+  visitThisHomeBtn: ElementFinder = this.rootSelector.$$('.view-image-block-container .description-actions > a').first(); // TODO add test attribute
+  allFamiliesBtn: ElementFinder = this.rootSelector.$$('.view-image-block-container .description-actions > a.description-button').last(); // TODO add test attribute
   miniMap: ElementFinder = this.rootSelector.$('region-map');
   photographerName: ElementFinder = this.rootSelector.$$('.photographer-container a').first(); // TODO add test attribute
   fullSizeBtn: ElementFinder = this.rootSelector.$('.zoom-download-container a'); // TODO add test attribute
   closeBtn: ElementFinder = this.rootSelector.$('.close-container');
   fullSizeImage: ElementFinder = this.rootSelector.$('.fancyBox-image');
 
-  isDisplayed() {
+  isDisplayed () {
     return Promise.all([
       expect(this.familyName.isDisplayed()).toBeTruthy(),
       expect(this.familyDescription.isDisplayed()).toBeTruthy(),
@@ -35,42 +35,42 @@ export class MatrixImagePreview {
     ]);
   }
 
-  isPresent() {
+  isPresent () {
     return this.rootSelector.isPresent();
   }
 
-  async isInViewport() {
+  async isInViewport () {
     return await isInViewport(this.image);
   }
 
-  async getImageSrc(): Promise<string> {
-    return (await this.image.getAttribute('src')).match(this.pattern)[0];
+  async getImageSrc (): Promise<string> {
+    return (await this.image.getAttribute('src')).match(this.pattern)[ 0 ];
   }
 
-  async close(): Promise<void> {
+  async close (): Promise<void> {
     await this.closeBtn.click();
   }
 
-  async openFullSizePreview(): Promise<void> {
+  async openFullSizePreview (): Promise<void> {
     await this.image.click();
     await MatrixPage.waitForSpinner();
   }
 
-  async getFullSizeImageSrc(): Promise<string> {
+  async getFullSizeImageSrc (): Promise<string> {
     const backgroundImg = await this.fullSizeImage.getCssValue('background-image');
 
-    return backgroundImg.replace('url("', '').match(this.pattern)[0];
+    return backgroundImg.replace('url("', '').match(this.pattern)[ 0 ];
   }
 
-  async getPlaceId(): Promise<string> {
-    return (await this.visitThisHomeBtn.getAttribute('href')).match(/place=(.*)/)[1];
+  async getPlaceId (): Promise<string> {
+    return (await this.visitThisHomeBtn.getAttribute('href')).match(/place=(.*)/)[ 1 ];
   }
 
-  async getCurrency(): Promise<string> {
+  async getCurrency (): Promise<string> {
     return this.familyIncome.getText().then(income => income.replace(/\d+.*/g, '').trim());
   }
 
-  async getIncome(): Promise<string> {
+  async getIncome (): Promise<string> {
     return this.familyIncome.getText().then(income => income.replace(/\D/g, ''));
   }
 }

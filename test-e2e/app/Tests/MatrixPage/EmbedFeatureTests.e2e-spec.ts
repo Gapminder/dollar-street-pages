@@ -1,25 +1,21 @@
-import { $, browser, ExpectedConditions as EC } from 'protractor';
+import { browser } from 'protractor';
 
-import { getRandomNumber, disableAnimations } from '../../Helpers';
+import { getRandomNumber } from '../../Helpers';
 
-import { MatrixPage, AbstractPage } from '../../Pages';
-import { PinnedContainer, Footer } from '../../Pages/Components';
+import { MatrixPage } from '../../Pages';
+import { PinnedContainer, HamburgerMenu } from '../../Pages/Components';
+import { waitForInvisibility } from '../../Helpers/commonHelper';
 
 let imageToSelect: number;
 const pinnedContainer: PinnedContainer = new PinnedContainer();
 
-xdescribe('Embed feature tests', () => {
+describe('Embed feature tests', () => {
   describe('Pin container tests', () => {
     beforeEach(async () => {
       imageToSelect = getRandomNumber();
       await browser.get(MatrixPage.url);
-
-      await browser
-        .actions()
-        .mouseMove(MatrixPage.familyLink.get(10))
-        .perform();
-      await disableAnimations();
-      await Footer.heartIcon.click();
+      await MatrixPage.waitForSpinner();
+      await HamburgerMenu.openEmbedModal();
     });
 
     it(`Click on Heart icon add image to pin area`, async () => {
@@ -67,14 +63,8 @@ xdescribe('Embed feature tests', () => {
     beforeEach(async () => {
       imageToSelect = getRandomNumber();
       await browser.get(MatrixPage.url);
-
-      await browser
-        .actions()
-        .mouseMove(MatrixPage.familyLink.get(10))
-        .perform();
-      await disableAnimations();
-      await Footer.heartIcon.click();
-
+      await MatrixPage.waitForSpinner();
+      await HamburgerMenu.openEmbedModal();
       // selected two images to proceed sharing
       await selectImageToShare(imageToSelect);
       await selectImageToShare(imageToSelect + 1);
@@ -93,12 +83,23 @@ xdescribe('Embed feature tests', () => {
 
     it(`Cancel sharing remove pinContainer and leads back to default Matrix page`, async () => {
       await pinnedContainer.shareBtn.click();
-      await browser.wait(EC.invisibilityOf($('.loader-content')), 10000);
+      await waitForInvisibility(pinnedContainer.commonSpinerPinnedContainer);
       await pinnedContainer.cancelBtn.click();
 
       expect(await pinnedContainer.rootSelector.isPresent()).toBeFalsy('pin container');
       expect(await pinnedContainer.streetChart.isPresent()).toBeFalsy('pinned street');
       expect(await MatrixPage.imagesContainer.isDisplayed()).toBeTruthy('images container');
+    });
+
+    it(`Social Network icons, Copy Link, Cancel and Download btn are displayed `, async () => {
+      await pinnedContainer.shareBtn.click();
+      await waitForInvisibility(pinnedContainer.commonSpinerPinnedContainer);
+      await waitForInvisibility(pinnedContainer.spinerPinnedContainer);
+
+      expect(await pinnedContainer.getSocialNetworkIconArray().count()).toBe(4);
+      expect(await pinnedContainer.buttonCopyLink.isDisplayed()).toBeTruthy();
+      expect(await pinnedContainer.cancelBtn.isDisplayed()).toBeTruthy();
+      expect(await pinnedContainer.buttonDownload.isDisplayed()).toBeTruthy();
     });
   });
 
@@ -113,7 +114,7 @@ xdescribe('Embed feature tests', () => {
      */
     // use scrollIntoView() instead
 
-    const elementToScroll = await MatrixPage.heartIconsOnImage.get(index);
+    const elementToScroll = await MatrixPage.comparisonIconsOnImage.get(index);
     await browser.executeScript(element => {
       element.scrollIntoView(false);
     }, elementToScroll);
@@ -126,6 +127,6 @@ xdescribe('Embed feature tests', () => {
       .perform();
 
     // click on the heart icon
-    await MatrixPage.heartIconsOnImage.get(index).click();
+    await MatrixPage.comparisonIconsOnImage.get(index).click();
   }
 });

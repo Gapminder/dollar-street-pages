@@ -1,18 +1,25 @@
 import { $, $$, ElementArrayFinder, ElementFinder } from 'protractor';
 import { promise } from 'selenium-webdriver';
+import { waitForPresence } from '../../Helpers/commonHelper';
 
 export class PinnedContainer {
   rootSelector: ElementFinder = $('.pin-container');
 
+
+  iconGroupSocialNetworks: ElementFinder = this.rootSelector.$('.share-buttons-container');
+  buttonCopyLink: ElementFinder = this.rootSelector.$('.share-link-button');
+  buttonDownload: ElementFinder = this.rootSelector.$('.download-link');
+  spinerPinnedContainer: ElementFinder = $('.la-ball-spin');
+  commonSpinerPinnedContainer: ElementFinder = $('.loader-content');
   closeIcon: ElementFinder = $('.pin-mode-close');
   deselectImageIcon: ElementArrayFinder = this.rootSelector.$$('.heart-container .heart-circle');
   streetChart: ElementFinder = this.rootSelector.$('#chart');
   familiesList: ElementFinder = $('.pin-header');
   pinnedImages: ElementArrayFinder = $$('.pin-place');
-  cancelBtn: ElementFinder = this.rootSelector.$('.share-close-buttons');
-  shareLink: ElementFinder = this.rootSelector.$('.share-link-input');
+  cancelBtn: ElementFinder = this.rootSelector.$$('.pin-bottom-button').last();
+  shareLink: ElementFinder = this.rootSelector.$('e2e-share-button');
   housesOnStreet: ElementArrayFinder = this.streetChart.$$('.point');
-  shareBtn: ElementFinder = $('.pin-done-share');
+  shareBtn: ElementFinder = $('.e2e-share-button');
 
   getImageIncome(index: number): promise.Promise<number> {
     return this.pinnedImages.get(index).$('.place-image-box-income').getText()
@@ -41,6 +48,11 @@ export class PinnedContainer {
 
   getfamiliesList(): promise.Promise<string> {
     return this.familiesList.getText();
+  }
+
+  getSocialNetworkIconArray(): ElementArrayFinder {
+    waitForPresence(this.iconGroupSocialNetworks, 10000);
+    return this.iconGroupSocialNetworks.$$('svg');
   }
 
   close() {

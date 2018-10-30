@@ -1,12 +1,12 @@
 import { browser } from 'protractor';
 
-import { DataProvider } from '../Data/DataProvider';
-import { Footer } from '../Pages/Components';
-import { AbstractPage } from '../Pages';
+import { DataProvider } from '../../Data/DataProvider';
+import { Footer } from '../../Pages/Components/index';
+import { TeamPage } from '../../Pages/Team.page';
 
 describe('Team Page test', () => {
   beforeAll(async () => {
-    await browser.get(`${AbstractPage.url}/team`);
+    await browser.get(TeamPage.url);
   });
   afterAll(async () => {
     await Footer.checkFooterText();
@@ -24,6 +24,4 @@ describe('Team Page test', () => {
       expect(await element().isDisplayed()).toBeTruthy();
     }
   });
-
-  
 });

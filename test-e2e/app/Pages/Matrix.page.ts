@@ -32,6 +32,7 @@ export class MatrixPage {
   static fancyPreview: ElementFinder = $('.fancyBox-image');
   static spinner: ElementFinder = $('[class="load"]');
   static imagesContainer: ElementFinder = $('.images-container .flex-container');
+  static spinnerImageLoad: ElementFinder = MatrixPage.imagesContainer.$('.isLoad');
   static visitThisHomeBtn: ElementFinder = $('.home-description-container > a:nth-child(4)'); // TODO add tests class
   static allFamiliesInCountryBtn: ElementFinder = $('.home-description-container > a:nth-child(5)'); // TODO add tests class
   static countryInImageDescription: ElementArrayFinder = $$('.place-image-box-country');
@@ -51,7 +52,7 @@ export class MatrixPage {
   /**
    * Embed feature
    */
-  static heartIconsOnImage: ElementArrayFinder = $$('matrix-images .heart-circle');
+  static comparisonIconsOnImage: ElementArrayFinder = $$('matrix-images .comparison-image');
   static pinHeader: ElementFinder = $('.pin-header');
 
   static getThingLinkInSearch(thingNumber: number): ElementFinder {
@@ -72,6 +73,10 @@ export class MatrixPage {
 
   static async waitForSpinner(): Promise<{}> {
     return browser.wait(EC.invisibilityOf(this.spinner), 10000);
+  }
+
+  static async waitForImageSpinner(): Promise<{}> {
+    return browser.wait(EC.invisibilityOf(this.spinnerImageLoad), 10000);
   }
 
   static async getFamilyIncome(index: number): Promise<number> {

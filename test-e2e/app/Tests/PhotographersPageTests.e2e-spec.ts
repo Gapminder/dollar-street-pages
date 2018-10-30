@@ -1,7 +1,7 @@
-import { browser, $ } from 'protractor';
+import { browser } from 'protractor';
 
 import { DataProvider } from '../Data/DataProvider';
-import { AbstractPage, PhotographersPage, PhotographerPage } from '../Pages';
+import { AbstractPage, PhotographerPage, PhotographersPage } from '../Pages';
 import { Footer } from '../Pages/Components';
 
 describe('Photographers Page test', () => {
