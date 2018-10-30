@@ -6,7 +6,7 @@
       [ngClass]="{'small-container': isMapPage || isAboutPage || isTeamPage ||
                                      isDonatePage || isCountryPage || isArticlePage ||
                                      isPhotographersPage || isPhotographerPage}">
-    <div class="icon-container pull-left"
+    <div class="icon-container"
          *ngIf="(isMatrixPage && !isMobile && isPinMode) ||
                 (isMatrixPage && !isMobile) ||
                 isAboutPage || isDonatePage || isArticlePage ||
@@ -27,7 +27,7 @@
           <h2 #headerTitle class="header-title heading pull-left"></h2>
     </div>
 
-    <div #filtersContainer>
+    <div #filtersContainer class="filters-position">
       <div *ngIf="((isMatrixPage && !isPinMode) || (isMatrixPage && isPinMode)) || isMapPage"
           class="filters-container"
           [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
@@ -41,51 +41,45 @@
             class="some-filter-container incomeby">
           <span class="mobile-ver">{{ 'IN' | translate }}</span>
 
-          <countries-filter (isFilterGotData)="isFilterGotData($event)"></countries-filter>
+          <div class="countries-filter-container">
+            <countries-filter (isFilterGotData)="isFilterGotData($event)"></countries-filter>
+          </div>
+
+          <span class="accordance-with">
+            {{ 'IN_ACCORDANCE_WITH' | translate }}
+          </span>
 
           <span #incomeTitleContainer
                 class="income-title-container">
-            <!--<span class="income-title filter"
-                  (click)="openIncomeFilter()">{{ 'BY_DOLLAR' | translate }}</span>
-            <span class="income-title filter"
-                  (click)="openIncomeFilterDesktop($event)">{{ 'BY_INCOME' | translate }}</span>-->
-            <span class="income-title-text"
-              *ngIf="!isMobile">
-              {{ byIncomeText }}
-            </span>
-            <span class="income-title"
-                  *ngIf="isMobile"
+            <span class="income-title filter currency-filter"
+                  (click)="toggleIncomeFilterDesktop()">{{ 'WITH_INCOME' | translate }}</span>
+
+            <span class="income-title short-filter"
                   [ngClass]="{opened: isIncomeDesktopOpened, filter: isIncomeFilter}"
-                  (click)="openIncomeFilter($event)">{{ incomeTitleText }}</span>
+                  (click)="openIncomeFilter($event)">
+              <span class="short">{{ byDollarText }}</span>
+            </span>
 
             <div (click)="incomeContainerClick($event)"
                  [ngStyle]="{display: isIncomeDesktopOpened ? 'block' : 'none'}"
                  class="income-filter-desktop-container">
-              <div class="income-filter-desktop-header">
-                <span>Income</span>
-                <img [routerLink]="['/about']"
-                     [queryParams]="{jump: 'income-calc'}"
-                     src="/assets/img/info-icon.svg"/>
-                <img class="close-button"
-                     src="/assets/img/close-button.svg"
-                     (click)="closeIncomeFilterDesktop($event)"/>
-              </div>
-
               <div class="income-filter-desktop-content">
                 <div class="currency-unit-container">
                   <div class="currency-unit-cell">
 
+                    <button class="top-close-button" (click)="closeIncomeFilterDesktop()">
+                      <img src="/assets/img/close-button.svg"/>
+                    </button>
                     <div dropdown class="control-section">
-                      <span class="control-label">{{ 'CURRENCY' | translate }}</span>
+                      <span class="control-label">{{ 'INCOME_POPUP__PPP_CURRENCY' | translate }}</span>
                       <button type="button"
                               class="dropdown-button"
-                              dropdownToggle
                               [disabled]="disabled"
-                              [title]="currencyUnitTemp?.currency">
-                        <span class="dropdown-selected">{{ currencyUnitTemp?.currency }}</span>
-                        <span class="button-icon">
-                          <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
-                        </span>
+                              title="{{currencyUnitTemp?.code}} - {{currencyUnitTemp?.visibleName}}"> <!--dropdownToggle-->
+                        <span class="dropdown-selected">{{currencyUnitTemp?.code}} - {{ currencyUnitTemp?.visibleName }}</span>
+                        <!--<span class="button-icon">-->
+                          <!--<img src="assets/img/lang-selector-arrow.svg" alt="button icon">-->
+                        <!--</span>-->
                       </button>
 
                       <ul dropdownMenu
@@ -96,7 +90,7 @@
                             class="dropdown-item"
                             role="menuitem"
                             (click)="currencyUnitFilterSelect(currUnit.code)">
-                          <span class="dropdown-item">{{ currUnit?.code }} - {{ currUnit?.currency }}</span>
+                          <span class="dropdown-item">{{ currUnit.code }} - {{ currUnit.visibleName }}</span>
                         </li>
                       </ul>
                     </div>
@@ -105,12 +99,12 @@
                   <div class="currency-unit-cell">
 
                     <div dropdown class="control-section">
-                      <span class="control-label">{{ 'TIME_UNIT' | translate }}</span>
+                      <span class="control-label">{{ 'INCOME_POPUP_TIME_LABEL' | translate }}</span>
                       <button type="button"
                               class="dropdown-button"
                               dropdownToggle
                               [disabled]="disabled">
-                        <span class="dropdown-selected">{{ timeUnitTemp?.name }}</span>
+                        <span class="dropdown-selected">{{ timeUnitTemp?.translatedName}}</span>
                         <span class="button-icon">
                           <img src="assets/img/lang-selector-arrow.svg" alt="button icon">
                         </span>
@@ -123,43 +117,46 @@
                         <li class="dropdown-item"
                             role="menuitem"
                             (click)="timeUnitFilterSelect('DAY')">
-                          <span class="dropdown-item">Day</span>
+                          <span class="dropdown-item">{{'DAY' | translate}}</span>
                         </li>
                         <li class="dropdown-item"
                             role="menuitem"
                             (click)="timeUnitFilterSelect('WEEK')">
-                          <span class="dropdown-item">Week</span>
+                          <span class="dropdown-item">{{'WEEK' | translate}}</span>
                         </li>
                         <li class="dropdown-item"
                             role="menuitem"
                             (click)="timeUnitFilterSelect('MONTH')">
-                          <span class="dropdown-item">Month</span>
+                          <span class="dropdown-item">{{'MONTH' | translate}}</span>
                         </li>
                         <li class="dropdown-item"
                             role="menuitem"
                             (click)="timeUnitFilterSelect('YEAR')">
-                          <span class="dropdown-item">Year</span>
+                          <span class="dropdown-item">{{'YEAR' | translate}}</span>
                         </li>
                       </ul>
                     </div>
 
                   </div>
-
-                </div>
-                <div class="show-levels-container">
-                  <!--<span class="show-levels-label">levels</span>
-                  <label class="switch">
-                    <input type="checkbox" [(ngModel)]="showStreetAttrsTemp">
-                    <span class="slider round"></span>
-                  </label>-->
+                  <div class="bottom-description">
+                    <span>{{ 'INCOME_POPUP_PER_ADULT' | translate }}</span>
+                  </div>
                 </div>
               </div>
 
               <div class="income-filter-desktop-footer">
-                <div (click)="closeIncomeFilterDesktop($event)" class="close-button">Close</div>
+                <div class="info">
+                  <a href="" class="info-link">
+                    <img [routerLink]="['/about']"
+                         [queryParams]="{jump: 'income-calc'}"
+                         src="/assets/img/info-icon.svg"/>
+                  </a>
+                </div>
+
+                <div (click)="closeIncomeFilterDesktop($event)" class="close-button">{{'CLOSE' | translate }}</div>
                 <div (click)="applyIncomeFilterDesktop($event)" class="ok-button">
                   <img src="/assets/img/apply.svg" alt=""/>
-                  <span>Ok</span>
+                  <span>{{'INCOME_POPUP_BTN_OK' | translate }}</span>
                 </div>
               </div>
             </div>
@@ -178,7 +175,7 @@
       </div>
     </div>
 
-    <div class="menu-container pull-right">
+    <div class="menu-container">
       <main-menu class="pull-right"></main-menu>
 
       <span class="language-selector-header">
