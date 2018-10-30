@@ -18,7 +18,6 @@ export { FontDetectorService } from './font-detector/font-detector.service';
 export { GoogleAnalyticsService } from './google-analytics/google-analytics.service';
 export { CountryDetectorService } from './country-detector/country-detector.service';
 export { UtilsService } from './utils/utils.service';
-export { ImageGeneratorService } from './image-generator/image-generator.service';
 export { SortPlacesService } from './sort-places/sort-places.service';
 export { IncomeCalcService } from './income-calc/income-calc.service';
 export { DrawDividersInterface } from '../interfaces';
