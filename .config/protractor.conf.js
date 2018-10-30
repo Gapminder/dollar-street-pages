@@ -48,7 +48,8 @@ exports.config = {
     isVerbose: false,
     includeStackTrace: false,
     defaultTimeoutInterval: 60000,
-    print: function() {}
+    print: function () {
+    }
   },
   directConnect: true,
 
@@ -59,9 +60,9 @@ exports.config = {
   useAllAngular2AppRoots: true,
 
   // this will be run after all the tests will be finished
-  afterLaunch: function() {
+  afterLaunch: function () {
     const fileParse = fs.readFileSync(testResultsFile, 'utf-8');
-    const rawTestResults = fileParse.split(BOUNDARY).filter(el=>el);
+    const rawTestResults = fileParse.split(BOUNDARY).filter(el => el);
     const testResults = rawTestResults.map(res => JSON.parse(res));
 
     // print consolidated report to the console
@@ -74,7 +75,7 @@ exports.config = {
   },
 
   // will be run before any test starts
-  beforeLaunch: function() {
+  beforeLaunch: function () {
     // create directory for testResults if not exist
     if (!fs.existsSync(testResultsDir)) {
       fs.mkdirSync(testResultsDir);
@@ -89,8 +90,8 @@ exports.config = {
     fs.openSync(testResultsFile, 'w');
     fs.openSync(consoleErrorsFile, 'w');
   },
-  onPrepare: function() {
-    require('ts-node').register({ project: `${__dirname}/../test-e2e`});
+  onPrepare: function () {
+    require('ts-node').register({project: `${__dirname}/../test-e2e`});
 
     browser.driver
       .manage()
@@ -107,12 +108,12 @@ exports.config = {
     );
 
     jasmine.getEnv().addReporter({
-      specDone: function(result) {
+      specDone: function (result) {
         if (result.status === 'failed') {
           // take screenshot on fail
-          browser.takeScreenshot().then(function(screenShot) {
+          browser.takeScreenshot().then(function (screenShot) {
             // Save screenshot
-            fs.writeFileSync(`${testResultsDir}/${result.fullName}`, screenShot, 'base64', function(err) {
+            fs.writeFileSync(`${testResultsDir}/${result.fullName}`, screenShot, 'base64', function (err) {
               if (err) throw err;
               console.log('File saved.');
             });
@@ -123,17 +124,17 @@ exports.config = {
         }
 
         browser
-            .manage()
-            .logs()
-            .get('browser')
-            .then(function(browserLogs) {
-              browserLogs.forEach(function(log) {
-                if (log.level.value > 900) {
-                  // it's an error log
-                  fs.appendFileSync(consoleErrorsFile, result.fullName + '\n' + require('util').inspect(log) + BOUNDARY, 'utf-8');
-                }
-              });
+          .manage()
+          .logs()
+          .get('browser')
+          .then(function (browserLogs) {
+            browserLogs.forEach(function (log) {
+              if (log.level.value > 900) {
+                // it's an error log
+                fs.appendFileSync(consoleErrorsFile, result.fullName + '\n' + require('util').inspect(log) + BOUNDARY, 'utf-8');
+              }
             });
+          });
       }
     });
   }
