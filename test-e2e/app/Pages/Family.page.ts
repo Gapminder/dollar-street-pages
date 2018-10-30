@@ -13,7 +13,7 @@ export class FamilyPage {
   static familyImages: ElementArrayFinder = $$('.family-image');
   static familyPhoto: ElementFinder = $('.home-description-container [class="image-container"] img');
 
-  static thingNameOnImg: ElementArrayFinder = $$('.image-description>span');
+  static thingNameOnImg: ElementArrayFinder = $$('.e2e-name-on-image');
   static thingNameInBIS: ElementFinder = $('.header-container>span');
   static closeInBIS: ElementFinder = $('.close-block>img');
   static relatedSearchesInBIS: ElementFinder = $('.thing-button-container>p');

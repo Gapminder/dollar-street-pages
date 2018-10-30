@@ -1,5 +1,5 @@
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { forEach, difference, map, find, get, assign } from 'lodash';
+import { forEach, difference, map, find, get, assign, filter } from 'lodash';
 import {
   Component,
   Input,
@@ -15,6 +15,7 @@ import {
   HostListener
 } from '@angular/core';
 import { Store } from '@ngrx/store';
+import {combineLatest} from 'rxjs/observable/combineLatest';
 import {
   AppStates,
   TimeUnit,
@@ -117,11 +118,12 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   currencyUnitTemp: Currency;
   isEmbedMode: boolean;
   headerContainerElement: HTMLElement;
-  paddingPlaceElement: HTMLElement;
+  // paddingPlaceElement: HTMLElement;
   byDollarText: string;
   incomeTitleText: string;
   isIncomeFilter: boolean;
   ngSubscriptions: SubscriptionsList = {};
+  translations: string[];
   private headerTitle: ElementRef;
 
   constructor(elementRef: ElementRef,
@@ -146,13 +148,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   isOutsideIncomeFilterClick(event: any): void {
     const container = this.element.querySelector('.income-title-container');
     if (container && !container.contains(event.target) && this.isIncomeDesktopOpened) {
-      this.closeIncomeFilterDesktop(new MouseEvent(''));
+      this.closeIncomeFilterDesktop();
     }
   }
 
   ngAfterViewInit(): void {
     this.headerContainerElement = this.element.querySelector('.header-container') as HTMLElement;
-    this.paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
+    // this.paddingPlaceElement = document.querySelector('.padding-place') as HTMLElement;
 
     this.ngSubscriptions.resize = fromEvent(window, 'resize')
       .debounceTime(DEBOUNCE_TIME)
@@ -194,36 +196,36 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   checkHeaderFloat(): void {
-    let paddingHeight = 0;
+    // let paddingHeight = 0;
+    //
+    // paddingHeight += this.headerContainerElement.clientHeight;
+    //
+    // if (this.isMatrixPage) {
+    //   // const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+    //
+    //   paddingHeight += streetContainerElement.clientHeight;
+    //
+    //   streetContainerElement.style.position = 'fixed';
+    //   streetContainerElement.style.top = this.headerContainerElement.clientHeight + 'px';
+    //   streetContainerElement.style.zIndex = '998';
+    // }
 
-    paddingHeight += this.headerContainerElement.clientHeight;
+    // this.paddingPlaceElement.style.height = `${paddingHeight}px`;
 
-    if (this.isMatrixPage) {
-      const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
-
-      paddingHeight += streetContainerElement.clientHeight;
-
-      streetContainerElement.style.position = 'fixed';
-      streetContainerElement.style.top = this.headerContainerElement.clientHeight + 'px';
-      streetContainerElement.style.zIndex = '998';
-    }
-
-    this.paddingPlaceElement.style.height = `${paddingHeight}px`;
-
-    this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);
+    // this.toggleStyleClass(this.headerContainerElement, 'position-fixed', true);
   }
 
   preventHeaderFloat(): void {
-    if (this.isMatrixPage) {
-      const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+    // if (this.isMatrixPage) {
+    //   const streetContainerElement = document.querySelector('.street-and-title-container') as HTMLElement;
+    //
+    //   streetContainerElement.style.position = 'static';
+    //   streetContainerElement.style.zIndex = '0';
+    // }
 
-      streetContainerElement.style.position = 'static';
-      streetContainerElement.style.zIndex = '0';
-    }
+    // this.paddingPlaceElement.style.height = '0px';
 
-    this.paddingPlaceElement.style.height = '0px';
-
-    this.toggleStyleClass(this.headerContainerElement, 'position-fixed', false);
+    // this.toggleStyleClass(this.headerContainerElement, 'position-fixed', false);
   }
 
   toggleStyleClass(el: HTMLElement, cls: string, toggle: boolean): void {
@@ -243,8 +245,6 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     }
 
     if (this.isTablet || this.isMobile) {
-      this.incomeTitleText = this.byDollarText;
-
       this.isIncomeFilter = !this.isTablet;
     }
   }
@@ -265,6 +265,9 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.isMobile = this.browserDetectionService.isMobile();
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
+
+    const matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
+    const languageState = this.store.select((appStates: AppStates) => appStates.language);
 
     this.store.dispatch(new MatrixActions.GetCurrencyUnits());
     this.store.dispatch(new MatrixActions.GetTimeUnits());
@@ -324,11 +327,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       this.calcIncomeSize();
     });
 
-    this.ngSubscriptions.languageState = this.store
-      .select((appStates: AppStates) => appStates.language)
+    this.ngSubscriptions.languageState = languageState
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((language: LanguageState) => {
         this.urlParams.lang = get(language, 'lang', DefaultUrlParameters.lang);
+        this.translations = get(language, 'translations', []);
       });
 
     this.ngSubscriptions.appState = this.store
@@ -349,8 +352,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       }
     });
 
-    this.ngSubscriptions.matrixState = this.store
-      .select((appStates: AppStates) => appStates.matrix)
+    this.ngSubscriptions.matrixState = matrixState
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((matrix: MatrixState) => {
       if (get(matrix, 'pinMode', false)) {
@@ -373,16 +375,17 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
         this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, this.urlParams.time);
 
         this.timeUnit = this.timeUnitTemp;
+        this.translateTimeUnit();
 
         this.store.dispatch(new MatrixActions.SetTimeUnit(this.timeUnit));
       }
 
       if (get(matrix, 'currencyUnits', false) && this.currencyUnits !== matrix.currencyUnits) {
-        this.currencyUnits = matrix.currencyUnits;
+        this.currencyUnits = this.incomeCalcService.addCurrencyNames(matrix.currencyUnits, this.languageService.currentLanguage);
 
         if (!this.currencyUnit) {
           if (this.urlParams.currency) {
-            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency);
+            this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, this.urlParams.currency, this.languageService.currentLanguage);
           } else {
             this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitForLang(this.currencyUnits, this.languageService.currentLanguage);
           }
@@ -435,6 +438,13 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.ngSubscriptions.titleHeader = this.titleHeaderService.getTitleEvent().subscribe((data: {title: string}) => {
       this.rendererTitle(data.title);
     });
+
+    combineLatest(languageState, matrixState)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((arr: [LanguageState, MatrixState]) => {
+        this.translateTimeUnit();
+      })
+
   }
 
   isCurrentPage(name: string): boolean {
@@ -449,16 +459,25 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     return false;
   }
 
-  openIncomeFilterDesktop(e: MouseEvent): void {
+  toggleIncomeFilterDesktop(): void {
+    if (this.isIncomeDesktopOpened) {
+      this.closeIncomeFilterDesktop();
+    } else {
+      this.openIncomeFilterDesktop();
+    }
+  }
+
+  openIncomeFilterDesktop(): void {
     this.isIncomeDesktopOpened = true;
   }
 
-  closeIncomeFilterDesktop(e: MouseEvent): void {
+  closeIncomeFilterDesktop(): void {
 
     this.isIncomeDesktopOpened = false;
 
     this.timeUnitTemp = this.timeUnit;
     this.currencyUnitTemp = this.currencyUnit;
+    this.translateTimeUnit();
   }
 
   incomeContainerClick(e: MouseEvent): void {
@@ -467,14 +486,15 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
 
   timeUnitFilterSelect(code: string): void {
     this.timeUnitTemp = this.incomeCalcService.getTimeUnitByCode(this.timeUnits, code);
+    this.translateTimeUnit();
   }
 
   currencyUnitFilterSelect(code: string): void {
-    this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, code);
+    this.currencyUnitTemp = this.incomeCalcService.getCurrencyUnitByCode(this.currencyUnits, code, this.languageService.currentLanguage);
   }
 
   applyIncomeFilterDesktop(e): void {
-    this.openIncomeFilterDesktop(e);
+    this.openIncomeFilterDesktop();
     this.timeUnit = this.timeUnitTemp;
     this.currencyUnit = this.currencyUnitTemp;
 
@@ -558,18 +578,16 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
       return;
     }
 
-    /*
-    TODO: hided desktop income filter for prod 20.02.18
 
     if (this.isIncomeDesktopOpened) {
-      this.closeIncomeFilterDesktop(new MouseEvent(''));
+      this.closeIncomeFilterDesktop();
+
       return;
     }
 
-    if (!this.isMobile) {
-      this.openIncomeFilterDesktop(e);
-    }
-    */
+    // if (!this.isMobile) {
+    //   this.openIncomeFilterDesktop(e);
+    // }
 
     this.store.dispatch(new MatrixActions.OpenIncomeFilter(true));
   }
@@ -685,5 +703,11 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   resetStage(): void {
     const resetParams = assign({},  DefaultUrlParameters, { lang: this.urlParams.lang });
     this.urlParametersService.dispatchToStore(resetParams);
+  }
+
+  translateTimeUnit(): void {
+    if (this.timeUnitTemp) {
+      this.timeUnitTemp.translatedName = get(this.translations, this.timeUnitTemp.code, this.timeUnitTemp.name);
+    }
   }
 }

@@ -6,9 +6,10 @@ import {
   HostListener,
   ElementRef,
   AfterViewInit,
-  ViewChild
+  ViewChild, Output
 } from '@angular/core';
 import {
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import {
@@ -19,10 +20,11 @@ import {
   LanguageService
 } from '../../common';
 import { Store } from '@ngrx/store';
-import { AppState, AppStates, StreetSettingsState, SubscriptionsList } from '../../interfaces';
+import { AppState, AppStates, MatrixState, StreetSettingsState, SubscriptionsList } from '../../interfaces';
 import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
 import { DEBOUNCE_TIME } from '../../defaultState';
-import { forEach } from 'lodash';
+import { get, forEach } from 'lodash';
+import { UrlParametersService } from '../../url-parameters/url-parameters.service';
 
 @Component({
   selector: 'main-menu',
@@ -32,7 +34,6 @@ import { forEach } from 'lodash';
 export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('socialShareContent')
   socialShareContent: ElementRef;
-
   analyticLocation = 'menu';
   element: HTMLElement;
   window: Window = window;
@@ -48,6 +49,7 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   pinMode = false;
   embedMode = false;
   ngSubscriptions: SubscriptionsList = {};
+  isMatrixPage = false;
 
   constructor(elementRef: ElementRef,
                      private router: Router,
@@ -55,12 +57,14 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
                      private localStorageService: LocalStorageService,
                      private browserDetectionService: BrowserDetectionService,
                      private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
+                     private urlParametersService: UrlParametersService,
                      private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
+
   }
 
   ngAfterViewInit(): void {
-    this.ngSubscriptions.getTranslation = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
+    this.getTranslationSubscribe = this.languageService.getTranslation('SHARE').subscribe((trans: any) => {
       this.shareTranslation = trans;
 
       this.processShareTranslation();
@@ -72,7 +76,8 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isDesktop = this.browserDetectionService.isDesktop();
     this.isTablet = this.browserDetectionService.isTablet();
 
-    this.ngSubscriptions.streetSettingsState = this.store
+    this.ngSubscriptions.streetSettings = this.store
+
       .select((appStates: AppStates) => appStates.streetSettings)
       .debounceTime(DEBOUNCE_TIME)
       .subscribe((data: StreetSettingsState) => {
@@ -89,6 +94,20 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((data: AppState) => {
       if (data && data.query) {
         this.additionUrlParams = data.query;
+      }
+    });
+
+    this.ngSubscriptions.matrixState = this.store
+      .select((appStates: AppStates) => appStates.matrix)
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe((matrix: MatrixState) => {
+        this.pinMode = get(matrix, 'pinMode', false);
+        this.embedMode = get(matrix, 'embedMode', false);
+      });
+
+    this.ngSubscriptions.routerEvents = this.router.events.subscribe( event => {
+      if (event instanceof NavigationEnd) {
+        this.isMatrixPage = this.urlParametersService.isCurrentPage('matrix');
       }
     });
   }
@@ -110,9 +129,17 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    forEach(this.ngSubscriptions, ( subscription: Subscription ) => {
+    if (this.getTranslationSubscribe) {
+      this.getTranslationSubscribe.unsubscribe();
+    }
+
+    if (this.isMobile) {
+      document.body.classList.remove('hideScroll');
+    }
+
+    forEach(this.ngSubscriptions, (subscription: Subscription) => {
       subscription.unsubscribe();
-    });
+    })
   }
 
   openMenu(isOpenMenu: boolean): void {
@@ -201,5 +228,13 @@ export class MainMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['/matrix']);
 
     this.angulartics2GoogleTagManager.eventTrack('Go to Matrix page from menu', {});
+  }
+
+  SetPinMode(): void {
+    if (!this.pinMode && !this.embedMode) {
+      this.store.dispatch(new MatrixActions.OpenQuickGuide(false));
+      this.store.dispatch(new MatrixActions.SetPinMode(true));
+      this.openMenu(this.isOpenMenu);
+    }
   }
 }

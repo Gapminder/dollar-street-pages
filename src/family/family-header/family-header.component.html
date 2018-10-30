@@ -65,8 +65,7 @@
         <div class="family-short-info">
           {{home.familyInfoSummary}}
         </div>
-        <div class="family-full-info">
-          {{home.familyInfo}}
+        <div class="family-full-info" [innerHTML]="home.htmlFamilyInfo">
         </div>
       </div>
 

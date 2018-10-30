@@ -13,7 +13,6 @@ import { FontDetectorService } from './font-detector/font-detector.service';
 import { GoogleAnalyticsService } from './google-analytics/google-analytics.service';
 import { CountryDetectorService } from './country-detector/country-detector.service';
 import { UtilsService } from './utils/utils.service';
-import { ImageGeneratorService } from './image-generator/image-generator.service';
 import { SortPlacesService } from './sort-places/sort-places.service';
 import { IncomeCalcService } from './income-calc/income-calc.service';
 
@@ -33,7 +32,6 @@ import { IncomeCalcService } from './income-calc/income-calc.service';
     GoogleAnalyticsService,
     CountryDetectorService,
     UtilsService,
-    ImageGeneratorService,
     SortPlacesService,
     IncomeCalcService
   ]

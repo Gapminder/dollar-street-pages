@@ -24,18 +24,19 @@ export const SVG_DEFAULTS = {
       width: 60,
       height: 15,
       fill: '#232B31',
-      positionY: 50,
-      styles: 'font-size: 13px;',
+      positionY: 51,
+      styles: 'font-size: 16px;',
     },
     textBg: {
       name: '#hover-bg',
-      width: 58,
-      height: 20,
+      width: 68,
+      height: 26,
       fill: '#ffffff',
       stroke: '#232B31',
       opacity: 0.9,
-      positionY: 37,
+      positionY: 32,
       strokeWidth: 1.4,
+      widthBySymbol: 15,
     }
   },
   road: {
@@ -54,6 +55,7 @@ export const SVG_DEFAULTS = {
   },
   levels: {
     color: '#767d86',
+    colorToHide: '#ffffff',
     positionY: 63
   },
   sliders: {
@@ -63,12 +65,13 @@ export const SVG_DEFAULTS = {
     height: 50,
     positionY: 15,
     differentSize: 5,
-    moreThenNeed: 13,
+    moreThenNeed: 10,
     strokeWidth: 2,
     strokeColor: '#ffffff',
     filter: '#dropshadow',
     leftSliderMargin: -15,
-    rightSliderMargin: 15
+    rightSliderMargin: 15,
+    gaps: 40,
   },
   squarePoints: {
     name: '#square',
@@ -78,5 +81,11 @@ export const SVG_DEFAULTS = {
     color: '#232B31',
   },
   mobileWidth: 700,
-  minSliderSpace: 40
+  minSliderSpace: 40,
+  factorTimeUnits: {
+    month: 1,
+    week: 0.25,
+    day: 0.03333,
+    year: 12
+  }
 };

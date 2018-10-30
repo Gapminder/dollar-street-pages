@@ -15,9 +15,13 @@ import {
   BrowserDetectionService,
   UtilsService
 } from '../../common';
-import * as MatrixActions from '../../matrix/ngrx/matrix.actions';
-import { forEach } from 'lodash';
 import { Subscription } from 'rxjs/Subscription';
+import { debounce } from 'rxjs/operator/debounce';
+import { debounceTime } from 'rxjs/operator/debounceTime';
+import { forEach } from 'lodash';
+
+const CLASS_TO_SHOW_FOOTER = 'show-float-footer';
+
 
 @Component({
   selector: 'float-footer',
@@ -30,6 +34,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   analyticLocation = 'footer';
   element: HTMLElement;
+  scrollSubscribe: Subscription;
   isDesktop: boolean;
 
   ngSubscriptions: SubscriptionsList = {};
@@ -48,24 +53,19 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     this.element = elementRef.nativeElement;
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
+    this.setPositionByScroll();
     this.ngSubscriptions.scroll = fromEvent(document, 'scroll')
       .subscribe(() => {
-        const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-
-        const floatFooterContainerElement: HTMLElement = this.floatFooterContainer.nativeElement;
-
-        this.zone.run(() => {
-          floatFooterContainerElement.classList.add('show-float-footer');
-
-          if (!scrollTop) {
-            floatFooterContainerElement.classList.remove('show-float-footer');
-          }
-        });
+        this.setPositionByScroll();
+      });
+    this.ngSubscriptions.resize = fromEvent(window, 'resize')
+      .subscribe(() => {
+          this.setPositionByScroll();
       });
   }
 
-  public ngOnInit(): any {
+  ngOnInit(): void {
     this.isDesktop = this.browserDetectionService.isDesktop();
 
     this.ngSubscriptions.routerEvents = this.router.events.subscribe((event: any) => {
@@ -80,13 +80,34 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  public ngOnDestroy(): void {
-    forEach(this.ngSubscriptions, ( subscription: Subscription ) => {
-      subscription.unsubscribe()
-    });
+  ngOnDestroy(): void {
+    forEach(this.ngSubscriptions, (subscription: Subscription) => {
+      subscription.unsubscribe();
+    })
   }
 
-  public isCurrentPage(name: string): boolean {
+  setPositionByScroll(): void {
+    const floatFooterContainerElement: HTMLElement = this.floatFooterContainer.nativeElement;
+    const isPageWithScroll = document.body.clientHeight > window.innerHeight;
+    const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    const isScrolled = !!scrollTop;
+
+    if (!isPageWithScroll &&
+      !floatFooterContainerElement.classList.contains(CLASS_TO_SHOW_FOOTER)) {
+
+        floatFooterContainerElement.classList.add('show-float-footer');
+    };
+
+    if (isPageWithScroll && isScrolled){
+        floatFooterContainerElement.classList.add('show-float-footer');
+    }
+
+    if (isPageWithScroll && !isScrolled) {
+      floatFooterContainerElement.classList.remove('show-float-footer');
+    }
+  }
+
+  isCurrentPage(name: string): boolean {
     let shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
 
     if (shap) {
@@ -98,13 +119,7 @@ export class FloatFooterComponent implements OnInit, OnDestroy, AfterViewInit {
     return false;
   }
 
-  public SetPinMode(): void {
-    if (!this.pinMode && !this.embedMode) {
-      this.store.dispatch(new MatrixActions.SetPinMode(true));
-    }
-  }
-
-  public scrollTop(e: MouseEvent): void {
+  scrollTop(e: MouseEvent): void {
     this.utilsService.animateScroll('scrollBackToTop', 100, 1000, this.isDesktop);
   };
 }

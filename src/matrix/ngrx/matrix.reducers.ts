@@ -1,6 +1,6 @@
 import * as MatrixActions from './matrix.actions';
 import { MatrixState } from '../../interfaces';
-import { DefaultUrlParameters } from '../../defaultState';
+import { DefaultUrlParameters, MAX_PINNED_PLACES } from '../../defaultState';
 
 export const initialState: MatrixState = {
     matrixImages: null,
@@ -58,7 +58,9 @@ export function matrixReducer(state: MatrixState = initialState, action: MatrixA
         }
 
         case MatrixActions.ADD_PLACE_TO_SET: {
-            return Object.assign({}, state, {placesSet: [...state.placesSet, action.payload].sort((a, b) => a.income > b.income ? 1 : -1)});
+            const pinnedPlaces = state.placesSet.length < MAX_PINNED_PLACES ? {placesSet: [...state.placesSet, action.payload].sort((a, b) => a.income > b.income ? 1 : -1)} : state.placesSet;
+
+            return Object.assign({}, state, pinnedPlaces);
         }
 
         case MatrixActions.REMOVE_PLACE_FROM_SET: {

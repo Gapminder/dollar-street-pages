@@ -1,4 +1,4 @@
-<div id="main-menu" *ngIf="isDesktop">
+<div id="main-menu" class="main-menu">
   <div class="btn-group" [ngClass]="{open: isOpenMenu}">
     <span class="menu-icon" (click)="openMenu(isOpenMenu)">
       <img class="unactive" src="/assets/img/gamburger-menu-icon.svg" alt=""/>
@@ -8,7 +8,7 @@
     <div class="dropdown-menu">
       <ul class="header-menu-list">
         <li>
-          <a (click)="goToPage({})" routerLink="/matrix">{{ 'HOME' | translate }}</a>
+          <a (click)="goToPage('/matrix', true)" routerLink="/matrix">{{ 'HOME' | translate }}</a>
         </li>
         <li>
           <a (click)="openQuickGuide()">{{ 'QUICK_GUIDE' | translate }}</a>
@@ -25,28 +25,26 @@
         <li class="social-share-container">
           <div #socialShareContent
                class="social-share-content">
-            <span>{{ 'SHARE' | translate }}: </span>
+            <span>{{ 'SHARE' | translate }} </span>
             <social-share-buttons [analyticLocation]='analyticLocation'></social-share-buttons>
           </div>
         </li>
-        <li>
-          <div class="feedback-container">
-            <div class="feedback-content">
-              <img class="feedback-icon" src="assets/img/feedback-icon.svg"/>
-              <a class="feedback" (click)="goToPage('https://getsatisfaction.com/gapminder')">
-                {{ 'SEND_FEEDBACK' | translate }}</a>
-            </div>
-          </div>
+        <li *ngIf="isMatrixPage">
+          <button (click)="SetPinMode()" class="comparisonButton" id="comparisonButton" [ngClass]="{active: pinMode || embedMode}">{{'CREATE_A_COMPARISON' | translate }}</button>
         </li>
         <li>
-          <a class="menu-links" (click)="goToPage('https://www.gapminder.org')">{{ 'MORE_FROM' | translate }} gapminder >></a>
+          <a (click)="goToPage('https://getsatisfaction.com/gapminder')">
+            {{ 'SEND_FEEDBACK' | translate }}</a>
+        </li>
+        <li>
+          <a (click)="goToPage('https://www.gapminder.org')">{{ 'MORE_FROM' | translate }} gapminder</a>
         </li>
       </ul>
     </div>
   </div>
 </div>
 
-<div id="main-mobile-menu" *ngIf="isMobile || isTablet">
+<div id="main-mobile-menu" class="main-mobile-menu">
   <div class="btn-group" [ngClass]="{open: isOpenMenu}">
     <span class="menu-icon" (click)="openMenu(isOpenMenu)">
       <img class="unactive" src="/assets/img/gamburger-menu-icon.svg" alt=""/>
@@ -97,7 +95,6 @@
             <div class="share-text">
               {{ 'SHARE' | translate }}:
             </div>
-
             <social-share-buttons [analyticLocation]='analyticLocation'></social-share-buttons>
           </div>
         </li>

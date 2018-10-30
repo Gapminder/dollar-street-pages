@@ -221,3 +221,9 @@
     top: -12px;
   }
 }
+
+@media (min-width: 1025px) {
+  .mobile-view-image-block-container {
+    display: none;
+  }
+}

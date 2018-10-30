@@ -1,12 +1,13 @@
 import { $, ElementFinder } from 'protractor';
-
 import { DataProvider } from '../../Data/DataProvider';
 
 export class Footer {
   static rootSelector: ElementFinder = $('footer');
+  static floatingFooter: ElementFinder = $('.float-footer-container')
 
-  static dollarStreetText = Footer.rootSelector.$('.logo-container>p');
-  static heartIcon = Footer.rootSelector.$('.pin-icon');
+  static dollarStreetText: ElementFinder = Footer.rootSelector.$('.logo-container>p');
+  static twitterIcon: ElementFinder = Footer.floatingFooter.$('.share-button.twitter');
+  static facebookIcon: ElementFinder = Footer.floatingFooter.$('.share-button.facebook');
 
   static async checkFooterText(): Promise<void> {
     for (const [name, { element, actualResult }] of Object.entries(DataProvider.footerTextInfo)) {

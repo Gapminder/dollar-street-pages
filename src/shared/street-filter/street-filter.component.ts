@@ -34,29 +34,29 @@ import { DEBOUNCE_TIME } from "../../defaultState";
 })
 export class StreetFilterComponent implements OnDestroy, AfterViewInit {
   @ViewChild('svg')
-  public svg: ElementRef;
+  svg: ElementRef;
 
   @Input()
-  public places: Place[];
+  places: Place[];
   @Input()
-  public lowIncome: number;
+  lowIncome: number;
   @Input()
-  public highIncome: number;
+  highIncome: number;
   @Output()
-  public filterStreet: EventEmitter<any> = new EventEmitter<any>();
+  filterStreet: EventEmitter<any> = new EventEmitter<any>();
 
-  public street: any;
-  public streetData: DrawDividersInterface;
-  public element: HTMLElement;
-  public streetFilterSubscribe: Subscription;
-  public resizeSubscription: Subscription;
-  public streetSettingsState: Observable<StreetSettingsState>;
-  public streetSettingsStateSubscription: Subscription;
-  public currencyUnit: Currency;
-  public matrixState: Observable<MatrixState>;
-  public matrixStateSubscription: Subscription;
+  street;
+  streetData: DrawDividersInterface;
+  element: HTMLElement;
+  streetFilterSubscribe: Subscription;
+  resizeSubscription: Subscription;
+  streetSettingsState: Observable<StreetSettingsState>;
+  streetSettingsStateSubscription: Subscription;
+  currencyUnit: Currency;
+  matrixState: Observable<MatrixState>;
+  matrixStateSubscription: Subscription;
 
-  public constructor(elementRef: ElementRef,
+  constructor(elementRef: ElementRef,
                      streetDrawService: StreetFilterDrawService,
                      private math: MathService,
                      private store: Store<AppStates>) {
@@ -67,7 +67,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
     this.matrixState = this.store.select((appStates: AppStates) => appStates.matrix);
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.street.setSvg = this.svg.nativeElement;
 
     this.street.set('isInit', true);
@@ -104,7 +104,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
@@ -120,7 +120,7 @@ export class StreetFilterComponent implements OnDestroy, AfterViewInit {
     this.streetFilterSubscribe.unsubscribe();
   }
 
-  public setDividers(places: any, drawDividers: any): void {
+  setDividers(places: any, drawDividers: any): void {
     this.street
       .clearSvg()
       .init(this.lowIncome, this.highIncome, this.streetData)

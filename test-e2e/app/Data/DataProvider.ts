@@ -1,10 +1,9 @@
 'use strict';
-import { element, by, $ } from 'protractor';
-import { ElementFinder, ElementArrayFinder } from 'protractor/built/index';
-import { MatrixPage } from '../Pages';
+import { $, by, element } from 'protractor';
+import { ElementArrayFinder, ElementFinder } from 'protractor/built/index';
 
 export class DataProvider {
- 
+
   static countryPageText = {
     VisitedFamilies: { element: (): ElementFinder => $('p[class*="home"]') },
     TotalPhotos: { element: (): ElementFinder => $('p[class="photo"]') },
@@ -107,7 +106,7 @@ export class DataProvider {
           .all(by.css('div[class*="some-filter-container"]>span'))
           .last()
           .getText(),
-      actualResult: 'by income'
+      actualResult: 'income'
     },
     PoorestHeaderOnStreetWidget: {
       element: () => $('text[class="poorest"]').getText(),
@@ -147,7 +146,7 @@ export class DataProvider {
     },
     AllIncomesHeaderInSearch: {
       element: (): ElementFinder => element.all(by.css('.income-title-container')).last(),
-      actualResult: 'by income'
+      actualResult: 'income'
     },
     TheWorldHeaderInSearch: {
       element: (): ElementFinder => element.all(by.css('div[class*="countries-filter-button"] span')).first(),
@@ -164,6 +163,16 @@ export class DataProvider {
     'ThingPlaces for dinner': { query: 'Places for dinner' },
     ThingArmchair: { query: 'Armchairs' },
     ThingBooks: { query: 'Books' }
+  };
+
+  static mapPageQueries = {
+    ThingPets: { query: 'Armchairs' , count: 51 },
+    ThingFamilySnapshots: { query: 'Family snapshots', count: 29 },
+    ThingWalls: { query: 'Wall decorations', count: 49 },
+    ThingFrontDoor: { query: 'Front doors', count: 51 },
+    ThingSittingArea: { query: 'Sitting areas', count: 43 },
+    ThingArmchair: { query: 'Cars', count: 28 },
+    ThingBooks: { query: 'Books', count: 47 }
   };
 
   static countryPageId = {
@@ -308,10 +317,33 @@ export class DataProvider {
       actualIncome: '466'
     }
   };
+
   static mapPageHover = {
     'Family Image': { element: (): ElementFinder => $('.hover_portrait_box>img') },
     'Family Name': { element: (): ElementFinder => element.all(by.css('.name')).first() },
     'Country Name': { element: (): ElementFinder => element.all(by.css('.country')).first() },
     'Family Income': { element: (): ElementFinder => element.all(by.css('.income')).first() }
+  };
+
+  static socialNetworksAccounts = {
+    Twitter: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' },
+    Facebook: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' },
+    LinkedIn: { userEmail: 'testvalorsoftware@gmail.com', password: 'testvalor' }
+  };
+
+  static aboutPageLinksURLs = {
+    gapminderHere: { selector: 'a[href=\'https://www.gapminder.org/about-gapminder/\']'},
+    ccLicence: { selector: 'a[href=\'https://creativecommons.org/licenses/by/4.0/\']'},
+    termsOfUse: { selector: 'a[href=\'https://docs.google.com/document/pub?id=1POd-pBMc5vDXAmxrpGjPLaCSDSWuxX6FLQgq5DhlUhM\']'},
+    PrivacyPolicy: { selector: 'a[href=\'https://docs.google.com/document/d/1mjAd9CI42lqqENX2RRa0jQgtK4-ogqhhjCYrq9mjDfg/edit\']'},
+    signUpHere: { selector: 'a[href=\'https://docs.google.com/a/gapminder.org/forms/d/e/1FAIpQLSdvIkRRpk0ikGYiimjtCTbCngLvIQeB6jz6KoTp2C_lciYzpw/viewform\']'},
+    hereAreTheResources: { selector: 'a[href=\'https://drive.google.com/drive/folders/0By2siUCQWXnSallDVzdwel9Rd00\']'},
+    qAndA: { selector: 'a[href=\'https://docs.google.com/document/d/13u87BWz450cqvqr4TaiWi84yiNa5MOItr46_g1xRcTY/edit?usp=sharing\']' },
+    pressKit: { selector: 'a[href=\'https://drive.google.com/drive/folders/0B0HB08a-a9MbVGJDX0hPSHhETnc\']' },
+    ideasAward: { selector: 'a[href=\'https://www.fastcompany.com/3068873/announcing-the-winners-of-the-2017-world-changing-ideas-awards\']' },
+    brewhouseAward: { selector: 'a[href=\'http://brewhouse.se/the-brewhouse-award/#the-brewhouse-award-2015\']' },
+    detailedIncomeCalculations: { selector: 'a[href=\'https://drive.google.com/drive/folders/0B9jWD65HiLUnRm5ZNWlMSU5GNEU?usp=sharing\']' },
+    annasEmail: { selector: 'a[href=\'mailto:anna@gapminder.org\']' },
+    fernandasEmail: { selector: 'a[href=\'mailto:fernanda@gapminder.org\']' }
   };
 }

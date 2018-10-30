@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AppStates, UrlParameters } from '../interfaces';
-import { DEBOUNCE_TIME, DefaultUrlParameters, VisibleParametersPerPage } from '../defaultState';
+import { ActionsAfterViewLoad, AppStates, UrlParameters } from '../interfaces';
+import { DEBOUNCE_TIME, DefaultUrlParameters, PinnedPlacesParameters, VisibleParametersPerPage } from '../defaultState';
 import { difference, get, reduce } from 'lodash';
 import * as StreetSettingsActions from '../common';
 import { BrowserDetectionService, IncomeCalcService, LanguageService, UtilsService } from '../common';
@@ -10,20 +10,20 @@ import * as AppActions from '../app/ngrx/app.actions';
 import * as MatrixActions from '../matrix/ngrx/matrix.actions';
 import * as ThingsFilterActions from '../shared/things-filter/ngrx/things-filter.actions';
 import * as CountriesFilterActions from '../shared/countries-filter/ngrx/countries-filter.actions';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import * as LanguageActions from '../common/language/ngrx/language.actions';
-import { LocalStorageService } from '../common/local-storage/local-storage.service';
-import { TranslateService } from 'ng2-translate';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class UrlParametersService {
   parameters: UrlParameters;
   window: Window = window;
   isMobile:boolean;
-  public needPositionByRoute = null;
-  public activeHouseByRoute = null;
-  public activeImageByRoute = null;
+  needPositionByRoute = null;
+  activeHouseByRoute = null;
+  activeImageByRoute = null;
+  actionAfterViewLoad = new BehaviorSubject({});
 
   public constructor(
     private utilsService: UtilsService,
@@ -33,6 +33,7 @@ export class UrlParametersService {
     private location: Location,
     private browserDetectionService: BrowserDetectionService,
     private languageService: LanguageService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.parameters = Object.assign({}, DefaultUrlParameters);
     this.isMobile = this.browserDetectionService.isMobile() || this.browserDetectionService.isTablet();
@@ -43,10 +44,17 @@ export class UrlParametersService {
       const countriesFilter = state.countriesFilter;
       const streetSettings = get(state.streetSettings, 'streetSettings', undefined);
 
+      if (get(languageState, 'lang', false)
+        && this.parameters.lang !== languageState.lang) {
+        this.parameters.lang = get(languageState, 'lang', DefaultUrlParameters.lang);
+        this.combineUrlPerPage();
+        this.window.location.reload();
+      }
+
       if (!get(matrix, 'currencyUnit', false)
       && get(matrix, 'currencyUnits', false)) {
         const currencyUnit = this.incomeCalcService
-          .getCurrencyUnitByCode(matrix.currencyUnits, this.parameters.currency);
+          .getCurrencyUnitByCode(matrix.currencyUnits, this.parameters.currency, this.parameters.lang);
 
         this.store.dispatch(new MatrixActions.SetCurrencyUnit(currencyUnit));
       }
@@ -82,12 +90,7 @@ export class UrlParametersService {
       this.parameters.highIncome = get(streetSettings, 'filters.highIncome', DefaultUrlParameters.highIncome).toString();
       this.parameters.lowIncome = get(streetSettings, 'filters.lowIncome', DefaultUrlParameters.lowIncome).toString();
 
-      if (get(languageState, 'lang', false)
-        && this.parameters.lang !== languageState.lang) {
-        this.parameters.lang = get(languageState, 'lang', DefaultUrlParameters.lang);
-        this.combineUrlPerPage();
-        this.window.location.reload();
-      }
+
 
       this.combineUrlPerPage();
     });
@@ -253,5 +256,41 @@ export class UrlParametersService {
   public removeActiveImage(): void {
     this.parameters.activeImage = undefined;
     this.combineUrlPerPage();
+  }
+
+  isCurrentPage(name: string): boolean {
+    const shap = this.activatedRoute.snapshot.root.children.map(child => child.url).map(snap => snap.map(s => s.path));
+
+    if (shap) {
+      if (shap[0][0] === name) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  setActionAfterViewLoad(actions: ActionsAfterViewLoad): void {
+    this.actionAfterViewLoad.next(actions);
+  }
+
+  resetRow() {
+    this.parameters.zoom = '0';
+  }
+
+  getQueryPinnedPlace(): string {
+    if (this.parameters.embed) {
+      const params = reduce(PinnedPlacesParameters, (result: string[], param: string) => {
+        result.push(`${param}=${this.parameters[param]}&`);
+
+        return result;
+      }, []);
+
+      params.push(`resolution=${this.utilsService.getImageResolution(true).image}`);
+
+      return params.join('&');
+    }
+
+    return '';
   }
 }

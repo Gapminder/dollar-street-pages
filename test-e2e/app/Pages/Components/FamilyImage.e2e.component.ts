@@ -1,8 +1,9 @@
-import { ElementFinder, $, $$ } from 'protractor';
+import { ElementFinder, $$ } from 'protractor';
 
 import { MatrixImagePreview } from './MatrixImagePreview.e2e.component';
 import { FamilyImagePreview } from './FamilyImagePreview.e2e.component';
 import { MatrixPage, FamilyPage } from '..';
+import { waitForPresence, waitForVisible } from '../../Helpers/commonHelper';
 
 export class FamilyImage {
   rootSelector: ElementFinder;
@@ -11,6 +12,7 @@ export class FamilyImage {
   constructor(url: string, index: number) {
     if (url === MatrixPage.url) {
       this.type = 'matrix';
+      waitForVisible(MatrixPage.imagesContainer);
       this.rootSelector = $$('matrix-images div[class*="image-content"]').get(index);
     } else {
       this.type = 'family';
@@ -19,6 +21,7 @@ export class FamilyImage {
   }
 
   get income(): ElementFinder {
+    waitForPresence(this.rootSelector.$('.place-image-box-income'));
     return this.rootSelector.$('.place-image-box-income');
   }
 

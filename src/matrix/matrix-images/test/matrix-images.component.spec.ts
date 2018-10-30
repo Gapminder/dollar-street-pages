@@ -8,6 +8,8 @@ import { MatrixImagesComponent } from '../matrix-images.component';
 import { SortPlacesService } from '../../../common/sort-places/sort-places.service';
 import { Place } from '../../../interfaces';
 import { CommonServicesTestingModule } from '../../../test/commonServicesTesting.module';
+import { MatrixService } from '../../matrix.service';
+import { MatrixServiceMock } from '../../../test/mocks/matrixService.service.mock';
 
 describe('MatrixImagesComponent', () => {
   let component: MatrixImagesComponent;
@@ -40,6 +42,7 @@ describe('MatrixImagesComponent', () => {
       declarations: [MatrixImagesComponent],
       providers: [
         { provide: SortPlacesService, useValue: {} },
+        { provide: MatrixService, useClass: MatrixServiceMock }
       ]
     });
 

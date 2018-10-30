@@ -17,12 +17,14 @@ import {
 import { BubbleComponent } from '../bubble.component';
 import { SocialShareButtonsComponent } from '../../../social-share-buttons/social-share-buttons.component';
 import {CommonServicesTestingModule} from '../../../../test/commonServicesTesting.module';
-import {StoreModule} from "@ngrx/store";
+import { Store, StoreModule } from '@ngrx/store';
 import * as fromRoot from "../../../../app/ngrx/root.reducer";
+import { AppStates } from '../../../../interfaces';
 
 describe('BubbleComponent', () => {
     let component: BubbleComponent;
     let fixture: ComponentFixture<BubbleComponent>;
+    let store: Store<AppStates>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -44,7 +46,10 @@ describe('BubbleComponent', () => {
                 { provide: LoaderService, useClass: LoaderServiceMock },
                 { provide: UtilsService, useClass: UtilsServiceMock }
             ]
-        })
+        });
+
+        store = TestBed.get(Store);
+        spyOn(store, 'dispatch').and.callThrough();
 
         fixture = TestBed.createComponent(BubbleComponent);
         component = fixture.componentInstance;

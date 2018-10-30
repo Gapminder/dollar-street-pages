@@ -1,17 +1,21 @@
-<quick-guide *ngIf="currentPage === 'matrix'"></quick-guide>
+<div class="app-container">
+<div class="guide-position">
+  <quick-guide *ngIf="currentPage === 'matrix'"></quick-guide>
+</div>
 
-<header [currentPage]="currentPage"></header>
+<div id="app-container" class="container stuck-header-position" footerSpace #container>
+  <div class="header-position" #headerPosition>
+    <header [currentPage]="currentPage"></header>
+  </div>
 
-<div class="padding-place"></div>
 
-<div id="app-container" class="container" footerSpace>
   <router-outlet></router-outlet>
 </div>
 
 <footer></footer>
 <url-parameters></url-parameters>
 <page-position></page-position>
-
+</div>
 <loader [hidden]="isLoader"></loader>
 
 <div style="display: none;">
@@ -19,6 +23,11 @@
     <defs>
       <path d="M3,9 L0,9 L14,0 L28,9 L25,9 L25,25 L3,25 L3,9 Z" id="icon-house"></path>
     </defs>
+    <symbol id="arrow-right-icon" viewBox="0 0 32 30">
+      <path
+      d="M2574.55,1435.59a2,2,0,0,0-2.86,0,2.046,2.046,0,0,0,0,2.88l9.42,9.48h-23.08a2.04,2.04,0,0,0,0,4.08h23.08l-9.42,9.47a2.046,2.046,0,0,0,0,2.88,1.969,1.969,0,0,0,2.85,0l12.86-12.94a2.052,2.052,0,0,0,.02-2.9Z"
+      transform="translate(-2556 -1435)"/>
+    </symbol>
     <symbol id="icon-background-house" fill="#CFD2D6" viewBox="0 0 28 25">
       <use xlink:href="#icon-house"></use>
     </symbol>
@@ -37,5 +46,23 @@
     <symbol id='hover-bg' viewBox="0 0 60 20" x="0" y="0">
       <rect x="0" y="0" width="58" height="18" rx="3" ry="3"></rect>
     </symbol>
+    <symbol id='camera' viewBox="0 0 24 24" x="0" y="0">
+      <path d="M0 0h24v24H0z" fill="none"/>
+      <path d="M9.4 10.5l4.77-8.26C13.47 2.09 12.75 2 12 2c-2.4 0-4.6.85-6.32 2.25l3.66 6.35.06-.1zM21.54 9c-.92-2.92-3.15-5.26-6-6.34L11.88 9h9.66zm.26 1h-7.49l.29.5 4.76 8.25C21 16.97 22 14.61 22 12c0-.69-.07-1.35-.2-2zM8.54 12l-3.9-6.75C3.01 7.03 2 9.39 2 12c0 .69.07 1.35.2 2h7.49l-1.15-2zm-6.08 3c.92 2.92 3.15 5.26 6 6.34L12.12 15H2.46zm11.27 0l-3.9 6.76c.7.15 1.42.24 2.17.24 2.4 0 4.6-.85 6.32-2.25l-3.66-6.35-.93 1.6z"/>
+    </symbol>
+    <symbol id='close' viewBox="0 0 40 39" x="0" y="0">
+      <g transform="translate(-2624 -23)">
+        <path d="M2646.44 43l15.05-15.06a1.73 1.73 0 1 0-2.44-2.44L2644 40.56l-15.06-15.06a1.73 1.73 0 0 0-2.44 2.45L2641.56 43l-15.06 15.05a1.73 1.73 0 0 0 2.44 2.44L2644 45.44l15.05 15.05a1.73 1.73 0 1 0 2.44-2.44z"/>
+      </g>
+    </symbol>
+    <symbol id='check-mark' viewBox="0 0 24 24" x="0" y="0">
+      <path d="M0 0h24v24H0z" fill="none"/>
+      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+    </symbol>
+    <symbol id='plus' viewBox="0 0 24 24" x="0" y="0">
+      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      <path d="M0 0h24v24H0z" fill="none"/>
+    </symbol>
   </svg>
 </div>
+

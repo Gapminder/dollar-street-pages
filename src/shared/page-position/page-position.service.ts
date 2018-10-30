@@ -7,7 +7,7 @@ import { UrlParametersService } from '../../url-parameters/url-parameters.servic
 @Injectable()
 export class PagePositionService {
   gridContainer: HTMLElement;
-  public row = 1;
+  row = 1;
   _itemSize = 0;
 
   get itemSize(): number {
@@ -72,5 +72,12 @@ export class PagePositionService {
     } else {
       document.documentElement.scrollTop = 0;
     }
+  }
+
+  goToRow(row = 1): void {
+    const gridContainerPosition = window.scrollY + this.getGridContainerRect().top;
+    const scrollTop = (row) * this.itemSize - gridContainerPosition;
+
+    document.body.scrollTop = document.documentElement.scrollTop = scrollTop;
   }
 }

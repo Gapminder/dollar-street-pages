@@ -28,16 +28,16 @@ describe('Matrix Page: Sorting on matrix', () => {
     // chec that sorting in row is correct
     expect(await checkImagesOrder(IMAGES_IN_ROW));
   });
-
-  it('Images resorted on zoom out', async () => {
+  //Blocked due #1311
+  xit('Images resorted on zoom out', async () => {
     const IMAGES_IN_ROW = 4;
     await MatrixPage.zoomDecrease.click();
     await MatrixPage.zoomDecrease.click();
 
     expect(await checkImagesOrder(IMAGES_IN_ROW + 2));
   });
-
-  it('Images resorted on zoom in', async () => {
+  //Blocked due #1311
+  xit('Images resorted on zoom in', async () => {
     const IMAGES_IN_ROW = 4;
     await MatrixPage.zoomIncrease.click();
 

@@ -41,7 +41,7 @@ import {
   BrowserDetectionService,
   LanguageService,
   UtilsService,
-  UrlChangeService
+  UrlChangeService, IncomeCalcService
 } from '../../common';
 import { MatrixViewBlockService } from './matrix-view-block.service';
 import { StreetDrawService } from '../../shared/street/street.service';
@@ -123,7 +123,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      public streetService: StreetDrawService,
                      private urlParametersService : UrlParametersService,
                      private pagePositionService: PagePositionService,
-                     private imageService: ImageLoadedService) {
+                     private imageService: ImageLoadedService,
+                     private incomeCalcService: IncomeCalcService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
 
@@ -177,6 +178,12 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
           this.timeUnits = data.timeUnits;
           this.changeTimeUnit(this.timeUnit.code);
         }
+
+        if (this.timeUnit && this.currencyUnit && this.place) {
+          const income = this.incomeCalcService.calcPlaceIncome(this.place.income, this.timeUnit.code, this.currencyUnit.value)
+          this.place.showIncome = income.toString();
+        }
+
     });
 
     this.ngSubscriptions.timeUnitTranslation = combineLatest(matrixState, languageState)
@@ -288,7 +295,22 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
       if (get(this.familyData, 'houseImage', false)) {
         this.uploadImages(this.familyData.houseImage.url, 'houseImage');
       }
+
+      this.scrollToBlock();
     });
+  }
+
+  scrollToBlock(): void {
+    let additionTop = 0;
+    const guide = document.querySelector('.guide-position');
+    if (guide) {
+      additionTop = guide.getBoundingClientRect().height;
+    }
+
+
+    if (this.showblock) {
+      window.scrollTo(0, this.viewImageBlockContainer.nativeElement.offsetTop + additionTop);
+    }
   }
 
   public ngOnDestroy(): void {
@@ -323,6 +345,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public visitThisHome(placeId: string): void {
+    this.urlParametersService.resetRow();
     this.store.dispatch(new MatrixActions.SetPlace(placeId));
     this.streetService.clearAndRedraw();
   }
@@ -365,21 +388,22 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getDescription(shortDescription: string): string {
-    let numbers: number = 300;
-
-    if (this.isDesktop) {
-      if (this.windowInnerWidth > 1440 && shortDescription.length > 300) {
-        numbers = 300;
-      } else if (this.windowInnerWidth <= 1440 && shortDescription.length > 113) {
-        numbers = 113;
-      }
-    }
-
-    if (shortDescription.length > numbers) {
-      return shortDescription.slice(0, numbers) + '...';
-    } else {
-      return shortDescription;
-    }
+    // let numbers: number = 300;
+    //
+    // if (this.isDesktop) {
+    //   if (this.windowInnerWidth > 1440 && shortDescription.length > 300) {
+    //     numbers = 300;
+    //   } else if (this.windowInnerWidth <= 1440 && shortDescription.length > 113) {
+    //     numbers = 113;
+    //   }
+    // }
+    //
+    // if (shortDescription.length > numbers) {
+    //   return shortDescription.slice(0, numbers) + '...';
+    // } else {
+    //   return shortDescription;
+    // }
+    return shortDescription + shortDescription;
   }
 
   public truncCountryName(countryData: any): string {

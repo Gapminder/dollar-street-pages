@@ -13,7 +13,7 @@ import {
   UtilsService,
   UrlChangeService,
   TitleHeaderService,
-  LocalStorageService, SocialShareService,
+  LocalStorageService, SocialShareService, FontDetectorService,
 } from '../../../common';
 import { MainMenuComponent } from '../../main-menu/main-menu.component';
 import { LanguageSelectorComponent } from '../../language-selector/language-selector.component';
@@ -33,7 +33,8 @@ import {
   UtilsServiceMock,
   UrlChangeServiceMock,
   IncomeCalcServiceMock,
-  TitleHeaderServiceMock
+  TitleHeaderServiceMock,
+  FontDetectorServiceMock
 } from '../../../test/';
 import {SocialShareButtonsService} from '../../social-share-buttons/social-share-buttons.service';
 import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
@@ -85,6 +86,7 @@ describe('HeaderComponent', () => {
                 { provide: UtilsService, useClass: UtilsServiceMock },
                 { provide: UrlChangeService, useClass: UrlChangeServiceMock },
                 { provide: IncomeCalcService, useClass: IncomeCalcServiceMock },
+                { provide: FontDetectorService, useClass: FontDetectorServiceMock },
                 { provide: UrlParametersService, useClass: UrlParametersServiceMock }
             ]
         });

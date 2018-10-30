@@ -20,6 +20,22 @@ body.draggingSliders #chart * {
   cursor: grabbing !important;
 }
 
+.stuck-header-position .header-position,
+.stuck-header-position .street-container{
+  position: absolute !important;
+  top: 0;
+}
+
+.stuck-header-position .street-container {
+  top: 38px;
+}
+
+@media (min-width: 1025px) {
+  .stuck-header-position .street-container {
+    top: 0;
+  }
+}
+
 .gapminder-link {
   color: #b0450a;
   text-decoration: none;

@@ -7,7 +7,7 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: -100%;
+  bottom: -101%;
   z-index: 99;
 
   -webkit-transition: bottom .5s ease;
@@ -165,5 +165,11 @@
   .float-footer-container .follow-buttons-container >>> .fb-like {
     margin-right: 10px;
     display: inline-block;
+  }
+}
+
+@media (max-height: 500px) {
+  .float-footer-container {
+     display: none;
   }
 }

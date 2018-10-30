@@ -15,7 +15,7 @@ export class FamilyMediaService {
     return this.http.get(`${environment.consumerApi}/v1/home-media?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
-      return {err: parseRes.error, data: parseRes.data};
+      return {err: parseRes.error, data: parseRes.data, success: parseRes.success};
     });
   }
 }
