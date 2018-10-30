@@ -15,7 +15,7 @@ export class FamilyService {
     return this.http.get(`${environment.consumerApi}/v1/thing?${query}`).map((res: any) => {
       let parseRes = JSON.parse(res._body);
 
-      return {err: parseRes.error, data: parseRes.data};
+      return {err: parseRes.error, data: parseRes.data, success: true};
     });
   }
 }

@@ -23,8 +23,10 @@
       <div class="family-image"
            [ngStyle]="{'background-image': image.isUploaded && image.background}">
         <div class="image-description">
-          <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
-          <span>{{image.thingName}}</span>
+          <span class="category-image">
+            <img *ngIf="image.thingIcon" [src]="image.thingIcon" alt="">
+          </span>
+          <span class="e2e-name-on-image">{{image.thingName}}</span>
         </div>
       </div>
 

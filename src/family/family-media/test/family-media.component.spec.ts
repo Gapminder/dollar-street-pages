@@ -33,6 +33,7 @@ import { PagePositionServiceMock } from "../../../test/mocks/page-position.servi
 import { PagePositionService } from "../../../shared/page-position/page-position.service";
 import { UrlParametersService } from "../../../url-parameters/url-parameters.service";
 import { UrlParametersServiceMock } from "../../../test/mocks/url-parameters.service.mock";
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('FamilyMediaComponent', () => {
     let componentInstance: FamilyMediaComponent;
@@ -63,23 +64,22 @@ describe('FamilyMediaComponent', () => {
     beforeEach((() => {
         TestBed.configureTestingModule({
             imports: [
-                        FamilyModule
+              FamilyModule,
+              RouterTestingModule
                      ],
             declarations: [ BlankComponentStub ],
             providers: [
-                            SpyLocation,
-                            { provide: UrlChangeService, useClass: UrlChangeServiceMock },
-                            { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
-                            { provide: UtilsService, useClass: UtilsServiceMock },
-                            { provide: LoaderService, useClass: LoaderServiceMock },
-                            { provide: FamilyMediaService, useClass: FamilyMediaServiceMock },
-                            { provide: LanguageService, useClass: LanguageServiceMock },
-                            { provide: Location, useClass: SpyLocation },
-                            { provide: Store, useClass: StoreMock},
-                            { provide: UrlParametersService, useClass: UrlParametersServiceMock },
-                            { provide: PagePositionService, useClass: PagePositionServiceMock },
-
-
+              SpyLocation,
+              { provide: UrlChangeService, useClass: UrlChangeServiceMock },
+              { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock },
+              { provide: UtilsService, useClass: UtilsServiceMock },
+              { provide: LoaderService, useClass: LoaderServiceMock },
+              { provide: FamilyMediaService, useClass: FamilyMediaServiceMock },
+              { provide: LanguageService, useClass: LanguageServiceMock },
+              { provide: Location, useClass: SpyLocation },
+              { provide: Store, useClass: StoreMock},
+              { provide: UrlParametersService, useClass: UrlParametersServiceMock },
+              { provide: PagePositionService, useClass: PagePositionServiceMock },
             ]
         }).compileComponents();
 
@@ -112,9 +112,9 @@ describe('FamilyMediaComponent', () => {
 
     it('openMedia()', (() => {
         componentFixture.whenStable().then(() => {
-            componentInstance.goToRow = (row: number) => {
-                return row;
-            };
+            // componentInstance.goToRow = (row: number) => {
+            //     return row;
+            // };
 
             componentInstance.openMedia(componentInstance.images[0], 0);
 
