@@ -103,7 +103,7 @@ describe('Matrix Page: Image Preview', () => {
     expect(await familyImagePreview.isPresent()).toBeFalsy('Image preview should not exist');
   });
 
-  it('open fullSize preview by click on image', async () => {
+  xit('open fullSize preview by click on image', async () => {
     // check images src to make sure that correct image has been opened
     const familyImageSrc = await family.getImageSrc();
     const familyImagePreview = await family.openPreview();

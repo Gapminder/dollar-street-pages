@@ -76,6 +76,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public viewImage: string = '';
   public streetSettingsStateSubscription: Subscription;
   public consumerApi: string;
+  public pathToDownloadImages: string;
   public showInCountry: any;
   public showInRegion: any;
   public showInTheWorld: any;
@@ -99,6 +100,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
                      private imagesService: ImageLoadedService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
+    this.pathToDownloadImages = environment.pathToDownloadImages;
 
     this.isDesktop = this.browserDetectionService.isDesktop();
 
@@ -230,7 +232,7 @@ export class FamilyMediaViewBlockComponent implements OnInit, OnChanges, OnDestr
   public openPopUp(): void {
     this.popIsOpen = true;
 
-    const imgUrl = this.consumerApi + environment.pathToDownloadImages + this.imageData.imageId;
+    const imgUrl = this.consumerApi + this.pathToDownloadImages + this.imageData.imageId;
     const newImage = new Image();
 
     newImage.onload = () => {
