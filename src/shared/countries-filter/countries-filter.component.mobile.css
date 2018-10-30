@@ -397,7 +397,7 @@
 
 /* IE */
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   #countries-filter-mobile .countries-filter-button {
     text-align: center;
     padding: 9px 35px 10px 14px;
@@ -418,7 +418,7 @@
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
   #countries-filter-mobile {
     width: 100%;
     margin: 6px 0;
