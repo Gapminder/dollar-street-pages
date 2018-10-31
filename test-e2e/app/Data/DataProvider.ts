@@ -166,13 +166,13 @@ export class DataProvider {
   };
 
   static mapPageQueries = {
-    ThingPets: { query: 'Armchairs' , count: 51 },
+    ThingPets: { query: 'Armchairs' , count: 52 },
     ThingFamilySnapshots: { query: 'Family snapshots', count: 29 },
-    ThingWalls: { query: 'Wall decorations', count: 49 },
-    ThingFrontDoor: { query: 'Front doors', count: 51 },
-    ThingSittingArea: { query: 'Sitting areas', count: 43 },
-    ThingArmchair: { query: 'Cars', count: 28 },
-    ThingBooks: { query: 'Books', count: 47 }
+    ThingWalls: { query: 'Wall decorations', count: 50 },
+    ThingFrontDoor: { query: 'Front doors', count: 52 },
+    ThingSittingArea: { query: 'Sitting areas', count: 44 },
+    ThingArmchair: { query: 'Cars', count: 29 },
+    ThingBooks: { query: 'Books', count: 49 }
   };
 
   static countryPageId = {

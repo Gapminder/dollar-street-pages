@@ -9,7 +9,7 @@ import { waitForInvisibility } from '../../Helpers/commonHelper';
 let imageToSelect: number;
 const pinnedContainer: PinnedContainer = new PinnedContainer();
 
-describe('Embed feature tests', () => {
+xdescribe('Embed feature tests', () => {
   describe('Pin container tests', () => {
     beforeEach(async () => {
       imageToSelect = getRandomNumber();
