@@ -18,5 +18,9 @@
     "typeRoots": [
       "../node_modules/@types"
     ]
-  }
+  },
+  "includes": [
+    "app/**/**/*.ts",
+    "app/**/*.ts"
+  ]
 }

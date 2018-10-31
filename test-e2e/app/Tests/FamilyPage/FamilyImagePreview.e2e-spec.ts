@@ -1,12 +1,16 @@
 import { browser } from 'protractor';
-
+import * as request from 'request';
+import * as _ from 'lodash';
 import { getRandomNumber } from '../../Helpers';
-import { MatrixPage, FamilyPage, CountryPage, AbstractPage } from '../../Pages';
-import { MatrixImagePreview, FamilyImage, WelcomeWizard, FamilyImagePreview } from '../../Pages/Components';
-import { scrollIntoView, waitForLoader, isInViewport } from '../../Helpers/commonHelper';
+import { CountryPage, FamilyPage, MatrixPage } from '../../Pages';
+import { FamilyImage, FamilyImagePreview, MatrixImagePreview, WelcomeWizard } from '../../Pages/Components';
+import { scrollIntoView, waitForLoader } from '../../Helpers/commonHelper';
+
+const consumerApiURL = process.env.API_URL;
 
 let random: number;
 let familyImage: FamilyImage;
+
 
 async function goToFamilyFromMatrix(familyIndex = 0): Promise<void> {
   await browser.get(MatrixPage.url);
@@ -18,7 +22,7 @@ async function goToFamilyFromMatrix(familyIndex = 0): Promise<void> {
   await familyPreview.visitThisHomeBtn.click();
 }
 
-describe('Family Page: Image Preview', () => {
+fdescribe('Family Page: Image Preview', () => {
   const NUMBER_OF_LINKS_TO_TEST = 2;
 
   beforeEach(async () => {
@@ -38,7 +42,7 @@ describe('Family Page: Image Preview', () => {
   }
 
   for (let i = 0; i < NUMBER_OF_LINKS_TO_TEST; i++) {
-    fit(`Open image preview and check image src for ${i} image`, async () => {
+    it(`Open image preview and check image src for ${i} image`, async () => {
       /**
        * click on image in matrix page should open preview for that image
        * loop is needed to check specific issue when image doesn't update
@@ -110,11 +114,28 @@ describe('Family Page: Image Preview', () => {
     const familyImagePreview = await familyImage.openPreview();
     await familyImagePreview.openFullSizePreview();
 
-    const fullSizeImageSrc = await familyImagePreview.getFullSizeImageSrc();
+    const placeId = await FamilyPage.getFamyliId();
+    const fullImageId = await familyImagePreview.getfullImageId();
+    const url = `${consumerApiURL}/home-media?placeId=${placeId}&resolution=480x480`;
+    const getDataFromRemoteServerPromise = (urlString) => {
+      return new Promise((resolve, reject) => {
+        request.get(urlString, (err, res, body) => {
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve(JSON.parse(body));
+        });
+      });
+    };
+    const {data: {images}} = (await getDataFromRemoteServerPromise(url) as any);
+    //familyImageSrc
+    const imageObject = _.find(images, {_id: fullImageId});
 
     expect(await familyImagePreview.fullSizeImage.isDisplayed()).toBeTruthy('FullSize image should be displayed');
-    expect(familyImageSrc).toEqual(fullSizeImageSrc);
+    expect((imageObject as any).background).toContain(decodeURIComponent(familyImageSrc.split('//')[1]));
   });
+
 
   it('"Thing in Country" button leads to matrix page with active filters', async () => {
     familyImage = FamilyPage.getFamilyImage(random);

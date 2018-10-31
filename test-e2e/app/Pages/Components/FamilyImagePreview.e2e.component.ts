@@ -64,6 +64,12 @@ export class FamilyImagePreview {
     return backgroundImg.replace('url("', '').match(this.pattern)[0];
   }
 
+  async getfullImageId(): Promise<string> {
+    const backgroundImg = await this.fullSizeImage.getCssValue('background-image');
+
+    return backgroundImg.replace('url("', '').replace(/\"\)$/g, '').match(/(?!\/)(\w+|\d+)$/g)[0];
+  }
+
   async getThingNamePlural(): Promise<string> {
     const textFromBtn = await this.thingInCountryFilter.getText();
 
