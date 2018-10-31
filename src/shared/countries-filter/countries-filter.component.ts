@@ -272,7 +272,7 @@ export class CountriesFilterComponent implements OnInit, OnDestroy, OnChanges {
         let regionsContainerElement = regionsContainerElementList[i];
 
           regionsContainerElement.addEventListener('mousewheel', (e) => {
-          let whellDir: string = e.wheelDelta < 0 ? 'down' : 'up';
+          let whellDir: string = (e as any).wheelDelta < 0 ? 'down' : 'up';
 
           let deltaHeight: number = regionsContainerElement.scrollHeight - regionsContainerElement.offsetHeight;
 

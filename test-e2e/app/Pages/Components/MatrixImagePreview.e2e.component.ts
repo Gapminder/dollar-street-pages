@@ -57,9 +57,13 @@ export class MatrixImagePreview {
   }
 
   async getFullSizeImageSrc(): Promise<string> {
+    return this.fullSizeImage.getCssValue('background-image');
+  }
+
+  async getfullImageId(): Promise<string> {
     const backgroundImg = await this.fullSizeImage.getCssValue('background-image');
 
-    return backgroundImg.replace('url("', '').match(this.pattern)[0];
+    return backgroundImg.replace('url("', '').replace(/\"\)$/g, '').match(/(?!\/)(\w+|\d+)$/g)[0];
   }
 
   async getPlaceId(): Promise<string> {

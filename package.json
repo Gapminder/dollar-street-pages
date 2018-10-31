@@ -13,7 +13,7 @@
     "test:w": "ng test",
     "test:c": "ng test --code-coverage",
     "postinstall": "concurrently \"npm run update-webdriver\"",
-    "update-webdriver": "webdriver-manager update",
+    "update-webdriver": "webdriver-manager update --versions.chrome 2.40",
     "deploy:github": "npm run build && npm run publish:gh-pages",
     "deploy:firebase": "npm run build && npm run publish:firebase",
     "publish:gh-pages": "./tools/gh-pages-publish.js",
@@ -24,8 +24,8 @@
     "lint": "npm run tslint",
     "lint:all": "npm run tslint && npm run eslint",
     "tslint": "gulp tslint",
-    "e2e:CI": "ng e2e --no-webdriver-update --environment=qa --base-href /dollar-street --aot --prod",
-    "e2e:local": "protractor ./.config/protractor.conf.js",
+    "e2e:CI": "export API_URL=http://52.211.52.39:8015/v1 && ng e2e --no-webdriver-update --environment=qa --base-href /dollar-street --aot --prod",
+    "e2e:local": "API_URL=http://localhost:8015/v1 protractor ./.config/protractor.conf.js",
     "e2e:local:consumer-dev": "API_URL=http://52.211.52.39:8015/v1 protractor ./.config/protractor.conf.js",
     "e2e:dev": "API_URL=http://52.211.52.39:8015/v1 protractor --baseUrl='http://ds-dev.dollarstreet.org' ./.config/protractor.conf.js"
   },
@@ -67,6 +67,7 @@
     "lodash": "4.*",
     "ng2-bootstrap": "1.1.16",
     "ng2-translate": "5.0.0",
+    "request": "2.88.0",
     "rxjs": "5.5.6",
     "typings-core": "2.3.3",
     "zone.js": "0.8.11"
