@@ -90,7 +90,7 @@ exports.config = {
     fs.openSync(consoleErrorsFile, 'w');
   },
   onPrepare: function() {
-    require('ts-node').register({ project: `${__dirname}/../test-e2e/tsconfig.json`, cache: false});
+    require('ts-node').register({ project: `${__dirname}/../test-e2e`});
 
     browser.driver
       .manage()

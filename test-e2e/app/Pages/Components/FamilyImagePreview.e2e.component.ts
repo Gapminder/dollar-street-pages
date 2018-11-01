@@ -58,12 +58,6 @@ export class FamilyImagePreview {
     await MatrixPage.waitForSpinner();
   }
 
-  async getFullSizeImageSrc(): Promise<string> {
-    const backgroundImg = await this.fullSizeImage.getCssValue('background-image');
-
-    return backgroundImg.replace('url("', '').match(this.pattern)[0];
-  }
-
   async getfullImageId(): Promise<string> {
     const backgroundImg = await this.fullSizeImage.getCssValue('background-image');
 

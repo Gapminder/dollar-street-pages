@@ -22,7 +22,7 @@ async function goToFamilyFromMatrix(familyIndex = 0): Promise<void> {
   await familyPreview.visitThisHomeBtn.click();
 }
 
-fdescribe('Family Page: Image Preview', () => {
+describe('Family Page: Image Preview', () => {
   const NUMBER_OF_LINKS_TO_TEST = 2;
 
   beforeEach(async () => {
