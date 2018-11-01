@@ -13,7 +13,7 @@
     "test:w": "ng test",
     "test:c": "ng test --code-coverage",
     "postinstall": "concurrently \"npm run update-webdriver\"",
-    "update-webdriver": "webdriver-manager update --versions.chrome 2.40",
+    "update-webdriver": "webdriver-manager update",
     "deploy:github": "npm run build && npm run publish:gh-pages",
     "deploy:firebase": "npm run build && npm run publish:firebase",
     "publish:gh-pages": "./tools/gh-pages-publish.js",
