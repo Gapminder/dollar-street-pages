@@ -103,6 +103,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public currentLanguage: string;
   public viewImage: string;
   public consumerApi: string;
+  public pathToDownloadImages: string;
   public currencyUnit: Currency;
   public timeUnit: TimeUnit;
   public timeUnits: TimeUnit[];
@@ -126,6 +127,7 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
                      private imageService: ImageLoadedService) {
     this.element = elementRef.nativeElement;
     this.consumerApi = environment.consumerApi;
+    this.pathToDownloadImages = environment.pathToDownloadImages;
 
     this.isDesktop = this.browserDetectionService.isDesktop();
 
@@ -305,7 +307,8 @@ export class MatrixViewBlockComponent implements OnInit, OnChanges, OnDestroy {
   public openPopUp(): void {
     this.popIsOpen = true;
 
-    let imgUrl = this.place.background.replace(this.imageResolution.expand, this.imageResolution.full);
+    let imgUrl = this.consumerApi + this.pathToDownloadImages + this.place.image;
+
     let newImage = new Image();
 
     newImage.onload = () => {

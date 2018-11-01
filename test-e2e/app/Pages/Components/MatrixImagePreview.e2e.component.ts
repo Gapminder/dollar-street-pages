@@ -5,6 +5,7 @@ import { MatrixPage } from '../../Pages';
 
 export class MatrixImagePreview {
   pattern = /^.*(\/)/; // grab everything to last slash
+  patternId = /(?!\/)(\w+|\d+)$/g;
   rootSelector: ElementFinder = $('matrix-view-block');
 
   familyName: ElementFinder = this.rootSelector.$('.home-description-container > h3');
@@ -56,10 +57,10 @@ export class MatrixImagePreview {
     await MatrixPage.waitForSpinner();
   }
 
-  async getFullSizeImageSrc(): Promise<string> {
+  async getfullImageId(): Promise<string> {
     const backgroundImg = await this.fullSizeImage.getCssValue('background-image');
 
-    return backgroundImg.replace('url("', '').match(this.pattern)[0];
+    return backgroundImg.replace('url("', '').replace(/\"\)$/g, '').match(this.patternId)[0];
   }
 
   async getPlaceId(): Promise<string> {

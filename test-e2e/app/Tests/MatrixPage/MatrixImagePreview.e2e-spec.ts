@@ -1,10 +1,11 @@
 import { browser } from 'protractor';
-
+import * as request from 'request';
 import { getRandomNumber, isInViewport } from '../../Helpers';
-import { MatrixPage, CountryPage, AbstractPage, FamilyPage } from '../../Pages';
-import { MatrixImagePreview, FamilyImage, WelcomeWizard, FamilyImagePreview } from '../../Pages/Components';
+import { CountryPage, FamilyPage, MatrixPage } from '../../Pages';
+import { FamilyImage, FamilyImagePreview, MatrixImagePreview, WelcomeWizard } from '../../Pages/Components';
 
 const pattern = /^.*(\/)/; // grab everything to last slash
+const consumerApiURL = process.env.API_URL;
 let random: number;
 let family: FamilyImage;
 
@@ -106,13 +107,29 @@ describe('Matrix Page: Image Preview', () => {
   it('open fullSize preview by click on image', async () => {
     // check images src to make sure that correct image has been opened
     const familyImageSrc = await family.getImageSrc();
+
     const familyImagePreview = await family.openPreview();
+    const linkToSelectedPlace = await familyImagePreview.visitThisHomeBtn.getAttribute('href');
+    const placeId = linkToSelectedPlace.split('place=')[1];
     await familyImagePreview.openFullSizePreview();
 
-    const fullSizeImageSrc = await familyImagePreview.getFullSizeImageSrc();
+    const fullImageId = await familyImagePreview.getfullImageId();
+    const url = `${consumerApiURL}/matrix-view-block/?placeId=${placeId}&thingId=Families`;
+    const getDataFromRemoteServerPromise = (urlString) => {
+      return new Promise((resolve, reject) => {
+        request.get(urlString, (err, res, body) => {
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve(JSON.parse(body));
+        });
+      });
+    };
+    const {data: {familyImage}} = (await getDataFromRemoteServerPromise(url) as any);
 
     expect(await familyImagePreview.fullSizeImage.isDisplayed()).toBeTruthy('FullSize image should be displayed');
-    expect(familyImageSrc).toEqual(fullSizeImageSrc);
+    expect((familyImage as any).url).toContain(decodeURIComponent(familyImageSrc.split('//')[1]));
   });
 
   it('"Visit this home" button leads to family page', async () => {
