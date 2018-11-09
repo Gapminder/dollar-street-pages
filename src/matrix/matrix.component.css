@@ -795,7 +795,13 @@ matrix-images {
   color: #fff;
 }
 
-
+@media (max-width: 1023px) {
+  .place-image-box-country {
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: normal;
+  }
+}
 
 @media (max-width: 700px) {
   .street-container.fixed {
@@ -810,6 +816,14 @@ matrix-images {
 
   .desktop-view .street-and-title-container {
     top: 106px;
+  }
+}
+@media (max-width: 599px) {
+  .place-image-box-income,
+  .place-image-box-country {
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: normal;
   }
 }
 
