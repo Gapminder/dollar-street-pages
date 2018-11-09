@@ -561,13 +561,19 @@ matrix-images {
   font-weight: bold;
 }
 
-.pin-footer-share .share-buttons-container svg {
+.pin-footer-share .shared-btn {
   width: 26px;
   height: 26px;
   cursor: pointer;
   background: #fff;
   border-radius: 5px;
-  display: block;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: inset 0 0 6px #000;
+}
+
+.pin-footer-share .shared-btn svg {
+  vertical-align: top;
 }
 
 .share-link-button {
@@ -745,10 +751,6 @@ matrix-images {
   text-align: center;
   line-height: 32px;
   margin-right: 24px;
-}
-
-.street-and-title-container {
-
 }
 
 .street-container {
