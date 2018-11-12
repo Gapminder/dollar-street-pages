@@ -396,7 +396,6 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
     const q = `thing=${this.thing}&embed=${this.embedSetId}&resolution=${this.imageResolution.image}&lang=${this.languageService.currentLanguage}`;
 
     const query = this.urlParametersService.getQueryPinnedPlace();
-    console.log(query);
 
     return query;
   }
