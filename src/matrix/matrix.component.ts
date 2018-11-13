@@ -155,6 +155,7 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   storeSubscription: Subscription;
   embedLink = '';
   showClipboardNotice = false;
+  showStreet: boolean = false;
 
   constructor(element: ElementRef,
                      private zone: NgZone,
@@ -606,8 +607,20 @@ export class MatrixComponent implements OnDestroy, AfterViewInit, OnChanges {
   imageIsUploaded(index: number): void {
     this.zone.run(() => {
       this.placesSet[index].isUploaded = true;
+      this.allImagesIsUploaded();
     });
   }
+
+  allImagesIsUploaded(): void {
+    let isUploaded = this.placesSet.filter((image) => image.isUploaded === true);
+
+    if(isUploaded.length === this.placesSet.length) {
+      this.showStreet = true;
+
+    }
+  }
+
+
 
   toUrl(image: any): string {
     return `url("${image}")`;

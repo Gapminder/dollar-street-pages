@@ -133,7 +133,8 @@ matrix-images {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.6);
+  box-shadow: 0 0 1px #333;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,8 +143,8 @@ matrix-images {
 .heart-circle svg {
   width: 50%;
   height: 50%;
-  fill: #ffffff;
-  stroke: #ffffff;
+  fill: #333;
+  stroke: #333;
   stroke-width: 4px;
 }
 
@@ -207,7 +208,7 @@ matrix-images {
 }
 
 .pin-container .places-container {
-  display: flex;
+  display: inline-flex;
   flex-wrap: nowrap;
   flex-direction: row;
   position: relative;
@@ -240,7 +241,6 @@ matrix-images {
 
 .pin-body {
   display: inline-block;
-  text-align: left;
   max-width: 100%;
 }
 
