@@ -197,6 +197,7 @@ export class SocialShareService {
 
           case 'google':
             params.set('url', url);
+            params.set('text', this.shareMessageTranslated);
           break;
 
           default:
