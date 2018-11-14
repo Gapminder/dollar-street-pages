@@ -212,7 +212,7 @@ matrix-images {
   flex-wrap: nowrap;
   flex-direction: row;
   position: relative;
-  padding: 10px 20px 10px 20px;
+  padding: 10px 20px;
   min-height: 64px;
   max-height: 60vh;
   transform: translateZ(0);
@@ -345,9 +345,6 @@ matrix-images {
 }
 
 .pin-container .pin-place img {
-  /*width: 100%;*/
-  max-width: 100%;
-  /*height: 100%;*/
   max-width: 100%;
   max-height: calc(60vh - 20px);
 }
@@ -376,20 +373,16 @@ matrix-images {
 }
 
 .shared-ready-section {
-  /*margin-bottom: 20px;*/
   background-color: #000;
   color: #fff;
   font-weight: bold;
 }
 
 .shared-ready-section .loader-content {
-  /*position: absolute;*/
-  /*height: 90px;*/
   height: 58px;
   margin: auto;
   text-align: center;
   padding: 10px 0;
-  /*z-index: 999;*/
 }
 
 .shared-ready-section .loader-content .in-process {
@@ -440,13 +433,6 @@ matrix-images {
 
 
 .pin-mode-close {
-  /*color: #737B84;
-  font-size: 18px;
-  padding: 0px 40px;
-  text-align: center;
-  height: 38px;
-  line-height: 38px;*/
-
   width: 20px;
   height: 20px;
   position: absolute;
@@ -504,28 +490,15 @@ matrix-images {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /*margin-top: 20px;*/
   position: relative;
-  /*min-height: 48px;*/
 }
 
-/*.shared-ready-section span {*/
-  /*display: inline-block;*/
-  /*width: 180px;*/
-  /*!*height: 48px;*!*/
-  /*cursor: pointer;*/
-  /*!*line-height: 48px;*!*/
-  /*text-align: center;*/
-  /*border: 1px solid #737B84;*/
-  /*justify-content: center;*/
-/*}*/
 
 .pin-footer-share p {
   min-width: 818px;
   font-size: 18px;
   font-weight: 400;
   line-height: 30px;
-  /*color: #3a4450;*/
   margin: 0 auto;
   align-self: center;
   text-align: center;
@@ -640,8 +613,6 @@ matrix-images {
 
 .pin-header {
   padding-top: 10px;
-  /* background-color: #394450; */
-  /* background-color: #4D4D4D; */
 }
 
 .pin-header.text-center {
@@ -797,6 +768,158 @@ matrix-images {
   color: #fff;
 }
 
+
+.download-footer-text {
+  display: none;
+  text-align: center;
+  font-size: 20px;
+  padding: 0 0 15px;
+}
+
+.download-link-text {
+  color: #07C;
+}
+
+.for-download .pin-header,
+.for-screenshot .pin-header{
+  padding: 7px;
+}
+
+.for-download .download-footer-text{
+  display: block;
+}
+
+.for-download .pin-title .title-text .title-name {
+  font-size: 36px;
+  line-height: 36px;
+}
+
+.for-download.places-lenght-3 .pin-title .title-text .title-name{
+  font-size: 42px;
+  line-height: 42px;
+}
+
+.for-download.places-lenght-4 .pin-title .title-text .title-name{
+  font-size: 46px;
+  line-height: 46px;
+}
+
+.for-download.places-lenght-5 .pin-title .title-text .title-name{
+  font-size: 50px;
+  line-height: 50px;
+}
+
+.for-download.places-lenght-6 .pin-title .title-text .title-name{
+  font-size: 56px;
+  line-height: 56px;
+}
+
+.for-download .logo {
+  width: 38px;
+  height: 38px;
+}
+
+.for-download.places-lenght-3 .logo{
+  width: 44px;
+  height: 44px;
+}
+
+.for-download.places-lenght-4 .logo{
+  width: 48px;
+  height: 48px;
+}
+
+.for-download.places-lenght-5 .logo{
+  width: 52px;
+  height: 52px;
+}
+
+.for-download.places-lenght-6 .logo{
+  width: 54px;
+  height: 54px;
+}
+.for-download .embed-footer-text p {
+  display: none;
+}
+
+.for-screenshot {
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.for-screenshot .embed-preview-content-position,
+.for-download  .embed-preview-content-position {
+  width: 100%;
+}
+
+.for-screenshot .places-container.large-images .pin-place {
+  max-width: 50%;
+}
+.for-screenshot  .download-footer-text {
+  padding-bottom: 0;
+}
+
+
+.pin-container .for-screenshot .places-container {
+  max-height: 100%;
+  padding: 0 20px;
+}
+
+.for-screenshot .pin-mode-close,
+.for-download .pin-mode-close {
+  display: none;
+}
+
+.pin-container .for-screenshot  .places-container,
+.pin-container .for-download .places-container {
+  max-height: none;
+}
+
+.for-screenshot .download-footer-text {
+  display: block;
+}
+
+.for-screenshot .embed-footer-text p {
+  font-size: 26px;
+  line-height: 26px;
+  margin-top: 10px;
+  display: none;
+}
+
+.for-screenshot .street-pinned-container span {
+  font-size: 26px;
+  bottom: -21px;
+}
+.for-screenshot .download-footer-text {
+  font-size: 24px;
+}
+
+.for-screenshot .pin-place,
+.for-download .pin-place {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.for-screenshot.places-lenght-3 .pin-place,
+.for-download.places-lenght-3 .pin-place {
+  width: 45%;
+}
+
+.pin-container .for-screenshot.places-lenght-2 .pin-place img,
+.pin-container .for-download.places-lenght-2 .pin-place img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+}
+
 @media (max-width: 1023px) {
   .place-image-box-country {
     font-size: 18px;
@@ -921,136 +1044,4 @@ matrix-images {
     font-size: 28px;
     line-height: 28px;
   }
-}
-
-.download-footer-text {
-  display: none;
-  text-align: center;
-  font-size: 20px;
-  padding: 0 0 15px;
-}
-
-.download-link-text {
-  color: #07C;
-}
-
-.for-download .pin-header,
-.for-screenshot .pin-header{
-  padding: 7px;
-}
-
-.for-download .download-footer-text{
-  display: block;
-}
-
-.for-download .pin-title .title-text .title-name {
-  font-size: 36px;
-  line-height: 36px;
-}
-
-.for-download.places-lenght-3 .pin-title .title-text .title-name{
-  font-size: 42px;
-  line-height: 42px;
-}
-
-.for-download.places-lenght-4 .pin-title .title-text .title-name{
-  font-size: 46px;
-  line-height: 46px;
-}
-
-.for-download.places-lenght-5 .pin-title .title-text .title-name{
-  font-size: 50px;
-  line-height: 50px;
-}
-
-.for-download.places-lenght-6 .pin-title .title-text .title-name{
-  font-size: 56px;
-  line-height: 56px;
-}
-
-.for-download .logo {
-  width: 38px;
-  height: 38px;
-}
-
-.for-download.places-lenght-3 .logo{
-  width: 44px;
-  height: 44px;
-}
-
-.for-download.places-lenght-4 .logo{
-  width: 48px;
-  height: 48px;
-}
-
-.for-download.places-lenght-5 .logo{
-  width: 52px;
-  height: 52px;
-}
-
-.for-download.places-lenght-6 .logo{
-  width: 54px;
-  height: 54px;
-}
-
-.for-screenshot {
-  position: fixed;
-  top:0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.for-screenshot.for-download .download-footer-text {
-  display: none;
-}
-
-.for-screenshot .embed-preview-content-position,
-.for-download  .embed-preview-content-position {
-  width: 100%;
-}
-
-.for-screenshot .places-container.large-images .pin-place {
-  max-width: 50%;
-}
-
-.pin-container .for-screenshot .places-container {
-  max-height: 100%;
-}
-
-.for-screenshot .pin-mode-close,
-.for-download .pin-mode-close {
-  display: none;
-}
-
-.pin-container .for-screenshot  .places-container,
-.pin-container .for-download .places-container {
-  max-height: none;
-}
-
-.for-screenshot .pin-body,
-.for-download .pin-body {
-  /*width: 100%;*/
-}
-
-.for-screenshot .pin-place,
-.for-download .pin-place {
-  max-height: 100%;
-  max-width: 100%;
-}
-
-.for-screenshot.places-lenght-3 .pin-place,
-.for-download.places-lenght-3 .pin-place {
-  width: 45%;
-}
-
-.pin-container .for-screenshot.places-lenght-2 .pin-place img,
-.pin-container .for-download.places-lenght-2 .pin-place img {
-  width: 100%;
-  height: 100%;
-  max-height: none;
 }
