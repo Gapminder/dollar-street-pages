@@ -27,7 +27,9 @@
     "e2e:CI": "export API_URL=http://52.211.52.39:8015/v1 && ng e2e --no-webdriver-update --environment=qa --base-href /dollar-street --aot --prod",
     "e2e:local": "API_URL=http://localhost:8015/v1 protractor ./.config/protractor.conf.js",
     "e2e:local:consumer-dev": "API_URL=http://52.211.52.39:8015/v1 protractor ./.config/protractor.conf.js",
-    "e2e:dev": "API_URL=http://52.211.52.39:8015/v1 protractor --baseUrl='http://ds-dev.dollarstreet.org' ./.config/protractor.conf.js"
+    "e2e:dev": "API_URL=http://52.211.52.39:8015/v1 protractor --baseUrl='http://ds-dev.dollarstreet.org' ./.config/protractor.conf.js",
+    "api-test": "jasmine --config=test-api/jasmine.json --helper=test-api/{reporter,ts-node}.helper.js",
+    "preapi-test": "node ./test-api/get-list-of-houses.ts"
   },
   "pre-commit": [
     "lint",
@@ -118,6 +120,7 @@
     "protractor": "5.1.2",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.10",
+    "request-promise": "4.2.2",
     "shelljs": "0.7.8",
     "source-map-loader": "0.2.1",
     "ts-loader": "2.1.0",
