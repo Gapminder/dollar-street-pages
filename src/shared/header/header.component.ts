@@ -122,6 +122,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
   incomeTitleText: string;
   isIncomeFilter: boolean;
   ngSubscriptions: SubscriptionsList = {};
+  shouldPlacePrepositionsAfter: boolean;
   private headerTitle: ElementRef;
 
   constructor(elementRef: ElementRef,
@@ -278,6 +279,7 @@ export class HeaderComponent implements OnDestroy, AfterViewInit, OnInit {
     this.ngSubscriptions.combileTranslations = fromEvent(this.languageService.translationsLoadedEvent, this.languageService.translationsLoadedString)
       .subscribe(( trans: TranslationsInterface ) => {
       this.getTranslations(trans)
+      this.shouldPlacePrepositionsAfter = this.languageService.shouldPlacePrepositionsAfter();
     });
 
     this.ngSubscriptions.routerEvents = this.router.events.subscribe( event => {

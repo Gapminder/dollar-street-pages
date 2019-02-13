@@ -235,6 +235,13 @@ export class LanguageService {
     return `&lang=${this.currentLanguage}`;
   }
 
+  public shouldPlacePrepositionsAfter(): boolean {
+    // In Japanese, many prepositions like "of" or "in" must be placed after the word
+    // instead of before. So instead of "A of B", in Japanese you must say
+    // "B {{ 'of' | translate }} A".
+    return this.currentLanguage === 'ja';
+  }
+
   private processTranslation(observer: Observer<any>, translations: any, key: string | string[]): void {
     if (typeof key === 'string') {
       observer.next(translations[key as string]);

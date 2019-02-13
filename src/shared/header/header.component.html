@@ -32,16 +32,23 @@
           class="filters-container"
           [ngStyle]="{visibility: ((isCountryFilterReady && isThingFilterReady) || (isMapPage && isThingFilterReady)) ? 'visible' : 'hidden'}">
 
-        <things-filter (isFilterGotData)="isFilterGotData($event)"></things-filter>
-
-        <span *ngIf="isMapPage"
+        <span *ngIf="(isMapPage && shouldPlacePrepositionsAfter)"
+              class="map-things-text">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
+        <things-filter *ngIf="!isMatrixPage" (isFilterGotData)="isFilterGotData($event)"></things-filter>
+        <span *ngIf="(isMapPage && !shouldPlacePrepositionsAfter)"
               class="map-things-text">{{ 'ON_THE_WORLD_MAP' | translate }}</span>
 
         <div *ngIf="isMatrixPage"
             class="some-filter-container incomeby">
-          <span class="mobile-ver">{{ 'IN' | translate }}</span>
+          <things-filter *ngIf="!shouldPlacePrepositionsAfter" (isFilterGotData)="isFilterGotData($event)"></things-filter>
+
+          <span *ngIf="!shouldPlacePrepositionsAfter" class="mobile-ver">{{ 'IN' | translate }}</span>
 
           <countries-filter (isFilterGotData)="isFilterGotData($event)"></countries-filter>
+
+          <span *ngIf="shouldPlacePrepositionsAfter" class="mobile-ver">{{ 'IN' | translate }}</span>
+
+          <things-filter *ngIf="shouldPlacePrepositionsAfter" (isFilterGotData)="isFilterGotData($event)"></things-filter>
 
           <span #incomeTitleContainer
                 class="income-title-container">
