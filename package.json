@@ -56,7 +56,7 @@
     "@types/node": "7.0.28",
     "angular2-infinite-scroll": "0.3.5",
     "angulartics2": "3.3.0",
-    "bootstrap": "3.3.7",
+    "bootstrap": "3.4.1",
     "d3-axis": "1.0.7",
     "d3-interpolate": "1.1.5",
     "d3-scale": "1.0.6",
