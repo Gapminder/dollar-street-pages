@@ -111,7 +111,7 @@
     "karma-sourcemap-loader": "0.3.7",
     "karma-spec-reporter": "0.0.31",
     "ng2-mock-component": "0.1.1",
-    "node-fetch": "2.1.1",
+    "node-fetch": "3.1.1",
     "phantomjs-polyfill": "0.0.2",
     "phantomjs-prebuilt": "2.1.14",
     "pre-commit": "1.2.2",
